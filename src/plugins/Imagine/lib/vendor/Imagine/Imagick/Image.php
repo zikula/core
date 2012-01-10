@@ -24,7 +24,6 @@ use Imagine\Image\Fill\Gradient\Vertical;
 use Imagine\Image\Point;
 use Imagine\Image\PointInterface;
 use Imagine\Image\ImageInterface;
-use Imagine\Mask\MaskInterface;
 
 final class Image implements ImageInterface
 {
@@ -250,6 +249,7 @@ final class Image implements ImageInterface
      */
     public function show($format, array $options = array())
     {
+        header('Content-type: '.$this->getMimeType($format));
         echo $this->get($format, $options);
 
         return $this;
@@ -374,6 +374,13 @@ final class Image implements ImageInterface
         $mask->imagick->negateImage(true);
 
         try {
+            // remove transparent areas of the original from the mask
+            $mask->imagick->compositeImage(
+                $this->imagick,
+                \Imagick::COMPOSITE_DSTIN,
+                0, 0
+            );
+
             $this->imagick->compositeImage(
                 $mask->imagick,
                 \Imagick::COMPOSITE_COPYOPACITY,
@@ -579,5 +586,36 @@ final class Image implements ImageInterface
 
         $gradient->clear();
         $gradient->destroy();
+    }
+
+    /**
+     * Internal
+     * 
+     * Get the mime type based on format.
+     * 
+     * @param string $format
+     * 
+     * @return string mime-type
+     * 
+     * @throws RuntimeException
+     */
+    private function getMimeType($format) {
+        static $mimeTypes = array(
+            'jpeg' => 'image/jpeg',
+            'jpg'  => 'image/jpeg',
+            'gif'  => 'image/gif',
+            'png'  => 'image/png',
+            'wbmp' => 'image/vnd.wap.wbmp',
+            'xbm'  => 'image/xbm',
+        );
+
+        if (!isset($mimeTypes[$format])) {
+            throw new RuntimeException(sprintf(
+                'Unsupported format given. Only %s are supported, %s given',
+                implode(", ", array_keys($mimeTypes)), $format
+            ));
+        }
+
+        return $mimeTypes[$format];
     }
 }

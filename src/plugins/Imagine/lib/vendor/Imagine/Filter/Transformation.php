@@ -26,7 +26,6 @@ use Imagine\Filter\Basic\Show;
 use Imagine\Filter\Basic\Thumbnail;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\ImagineInterface;
-use Imagine\ImageFactoryInterface;
 use Imagine\Image\BoxInterface;
 use Imagine\Image\Color;
 use Imagine\Image\Fill\FillInterface;
@@ -71,8 +70,11 @@ final class Transformation implements FilterInterface, ManipulatorInterface
     public function applyFilter(ImageInterface $image, FilterInterface $filter)
     {
         if ($filter instanceof ImagineAware) {
-            if (!$this->imagine instanceof ImagineInterface) {
-                throw new InvalidArgumentException(sprintf('In order to use %s pass an Imagine\Image\ImagineInterface instance to Transformation constructor', get_class($filter)));
+            if ($this->imagine === null) {
+                throw new InvalidArgumentException(sprintf(
+                    'In order to use %s pass an Imagine\Image\ImagineInterface instance '.
+                    'to Transformation constructor', get_class($filter)
+                ));
             }
             $filter->setImagine($this->imagine);
         }
