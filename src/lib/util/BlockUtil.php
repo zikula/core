@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
@@ -172,28 +173,21 @@ class BlockUtil
         global $blocks_modules;
 
         $blockInstance = self::load($modname, $block);
-        if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
-            $displayfunc = array($blockInstance, 'display');
-        } else {
-            $displayfunc = "{$modname}_{$block}block_display";
+        if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
+            throw new \RuntimeException(sprintf('BlockInstance %s::%s must an instance of AbstractBlock', $modname, $block));
         }
+
+        $displayfunc = array($blockInstance, 'display');
 
         if (is_callable($displayfunc)) {
             if (is_array($displayfunc)) {
                 return call_user_func($displayfunc, $blockinfo);
-            } else {
-                return $displayfunc($blockinfo);
             }
         } else {
-            // Old-style blocks
-            if (isset($blocks_modules[0][$block]['func_display'])) {
-                return $blocks_modules[0][$block]['func_display']($blockinfo);
-            } else {
-                if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                    $blockinfo['title'] = __f("Block type '%s' not found", $block);
-                    $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $block);
-                    return self::themeBlock($blockinfo);
-                }
+            if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
+                $blockinfo['title'] = __f("Block type '%s' not found", $block);
+                $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $block);
+                return self::themeBlock($blockinfo);
             }
         }
     }
@@ -285,7 +279,6 @@ class BlockUtil
 
         $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $moddir = DataUtil::formatForOS($modinfo['directory']);
-        $blockdir = "$basedir/$moddir/lib/$moddir/Block";
         ModUtil::load($modname);
 
         // get the block info
@@ -534,5 +527,4 @@ class BlockUtil
     {
         return self::themeBlock($blockinfo);
     }
-
 }
