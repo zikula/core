@@ -400,7 +400,12 @@ class Zikula_View_Theme extends Zikula_View
         $themeDir = DataUtil::formatForOS($this->directory);
         $osTemplate = DataUtil::formatForOS($template);
 
-        $relativePath = "themes/$themeDir/templates";
+        if (is_dir("themes/$themeDir/Resources/view")) {
+            $relativePath = "themes/$themeDir/Resources/view";
+        } else {
+            $relativePath = "themes/$themeDir/templates";
+        }
+
         $templateFile = "$relativePath/$osTemplate";
         $override = self::getTemplateOverride($templateFile);
         if ($override === false) {
