@@ -418,25 +418,6 @@ class Zikula_View_Theme extends Zikula_View
             }
         }
 
-        // The rest of this code is scheduled for removal from 1.4.0 - drak
-
-        // Define the locations in which we will look for templates
-        // (in this order)
-        // 1. Master template path
-        $masterPath = "themes/$themeDir/templates";
-        // 2. The module template path
-        $modulePath = "themes/$themeDir/templates/modules";
-        // 4. The block template path
-        $blockPath = "themes/$themeDir/templates/blocks";
-
-        $search_path = array($masterPath, $modulePath, $blockPath);
-        foreach ($search_path as $path) {
-            if (is_readable("$path/$osTemplate")) {
-                $this->templateCache[$template] = $path;
-                return $path;
-            }
-        }
-
         // when we arrive here, no path was found
         return false;
     }

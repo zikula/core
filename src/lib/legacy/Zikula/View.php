@@ -557,37 +557,6 @@ class Zikula_View extends Smarty implements TranslatableInterface
                     return $path;
                 }
             }
-
-            // The rest of this code is scheduled for removal from 1.4.0 - drak
-
-            // check the module for which we're looking for a template is the
-            // same as the top level mods. This limits the places to look for
-            // templates.
-            if ($module == $modname) {
-                $search_path = array(
-                        "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module", //global path
-                        "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates", // modpath old
-                );
-            } else {
-                $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
-                        "themes/$os_theme/templates/modules/$os_module", // themepath
-                        "config/templates/$os_module/$os_modname", //globalhookpath
-                        "config/templates/$os_module", //global path
-                        "$os_dir/$os_module/templates/$os_modname", //modhookpath
-                        "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
-                        "$os_dir/$os_module/pntemplates", // modpath old
-                );
-            }
-
-            foreach ($search_path as $path) {
-                if (is_readable("$path/$ostemplate")) {
-                    $this->templateCache[$template] = $path;
-                    return $path;
-                }
-            }
         }
 
         // when we arrive here, no path was found
