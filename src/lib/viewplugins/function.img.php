@@ -139,7 +139,7 @@ function smarty_function_img($params, Zikula_View $view)
 
     // form the array of paths
     if ($modname == 'core') {
-        $paths = array($themepath, $corethemepath, $modpath, $rmodpath);
+        $paths = array($themepath, $corethemepath, $modpath);
     } else {
         $paths = array($themelangpath, $themepath, $corethemepath, $rmodlangpath, $rmodpath, $modlangpath, $modpath);
     }
