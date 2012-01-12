@@ -532,14 +532,17 @@ class Zikula_View extends Smarty implements TranslatableInterface
             // prepare the values for OS
             $module = $modinfo['name'];
 
-            $os_modname = DataUtil::formatForOS($modname);
             $os_module = DataUtil::formatForOS($module);
-            $os_theme = DataUtil::formatForOS($this->theme);
             $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template);
 
-            $relativepath = "$os_dir/$os_module/templates";
+            if (is_dir("$os_dir/$os_module/Resources/view")) {
+                $relativepath = "$os_dir/$os_module/Resources/view";
+            } else {
+                $relativepath = "$os_dir/$os_module/templates";
+            }
+
             $templatefile = "$relativepath/$ostemplate";
             $override = self::getTemplateOverride($templatefile);
             if ($override === false) {
