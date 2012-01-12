@@ -336,10 +336,14 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                     $menutexttitle = $modinfo['description'];
 
                     $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-                    $adminicons = array($modpath . '/' . $osmoddir . '/images/admin.png',
-                            $modpath . '/' . $osmoddir . '/images/admin.jpg',
-                            $modpath . '/' . $osmoddir . '/images/admin.gif',
-                            'system/Admin/images/default.gif');
+                    $adminicons = array(
+                        $modpath . '/' . $osmoddir . '/Resources/images/admin.png',
+                        $modpath . '/' . $osmoddir . '/Resources/images/admin.jpg',
+                        $modpath . '/' . $osmoddir . '/Resources/images/admin.gif',
+                        $modpath . '/' . $osmoddir . '/images/admin.png',
+                        $modpath . '/' . $osmoddir . '/images/admin.jpg',
+                        $modpath . '/' . $osmoddir . '/images/admin.gif',
+                        'system/Admin/Resources/images/default.gif');
 
                     foreach ($adminicons as $adminicon) {
                         if (is_readable($adminicon)) {

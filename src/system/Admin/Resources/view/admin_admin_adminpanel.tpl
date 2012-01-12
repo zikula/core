@@ -63,4 +63,4 @@
     {/if}
 </div>
 
-<div class="z-admin-coreversion z-right">Zikula {$coredata.version_num}</div>
+<div class="z-admin-coreversion z-right">Zikula {$coredata.version_num} ({$coredata.version_sub})</div>

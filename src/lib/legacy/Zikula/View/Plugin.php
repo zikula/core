@@ -131,18 +131,26 @@ class Zikula_View_Plugin extends Zikula_View
 
         switch ($modinfo['type'])
         {
-            case ModUtil::TYPE_SYSTEM:
-                $pluginsDir = "system/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
+            case ModUtil::TYPE_MODULE :
+                $mpluginPath = "modules/" . $modinfo['directory'] . "/plugins/$plugin/Resources/view/plugins";
+                if (!is_dir($mpluginPath)) {
+                    $mpluginPath = "modules/" . $modinfo['directory'] . "/plugins/$plugin/templates/plugins";
+                }
                 break;
-            case ModUtil::TYPE_MODULE:
-                $pluginsDir = "modules/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
+            case ModUtil::TYPE_SYSTEM :
+                $mpluginPath = "system/" . $modinfo['directory'] . "/plugins/$plugin/Rsources/view/plugins";
+                if (!is_dir($mpluginPath)) {
+                    $mpluginPath = "system/" . $modinfo['directory'] . "/plugins/$plugin/templates/plugins";
+                }
                 break;
             case ModUtil::TYPE_CORE:
-                $pluginsDir = "plugins/$plugin/templates/plugins";
-                break;
+                $mpluginPath = "plugins/$plugin/Resources/view/plugins";
+                if (!is_dir($mpluginPath)) {
+                    $mpluginPath = "plugins/$plugin/templates/plugins";
+                }
         }
 
-        $this->addPluginDir($pluginsDir);
+        $this->addPluginDir($mpluginsDir);
     }
 
     /**

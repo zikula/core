@@ -26,13 +26,13 @@ class Users_Api_User extends Zikula_AbstractApi
      * integer $args['starnum']  First item to return (optional).
      * integer $args['numitems'] Number if items to return (optional).
      * array   $args['sort']     The field(s) on which to sort the result (optional).
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array An array of users, or false on failure.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have overview access.
      */
     public function getAll($args)
@@ -144,7 +144,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * -------------------------------------
      * numeric $args['uid']   The id of user to get (required, unless uname specified).
      * string  $args['uname'] The user name of user to get (ignored if uid is specified, otherwise required).
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return array The user record as an array, or false on failure.
@@ -186,7 +186,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * string $args['letter'] If specified, then only those user records whose user name begins with the specified letter are counted.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return int Number of users.
@@ -232,7 +232,7 @@ class Users_Api_User extends Zikula_AbstractApi
      *                                          in the form users_userapi_{type}mail.tpl and/or .txt.
      * array  $args['templateArgs']     One or more arguments to pass to the renderer for use in the template.
      * string $args['subject']          The e-mail subject, overriding the template's subject.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return <type>
@@ -316,7 +316,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * -------------------------------------
      * string $args['idfield'] The value 'email'.
      * string $args['id']      The user's e-mail address.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True if user name sent; otherwise false.
@@ -325,7 +325,7 @@ class Users_Api_User extends Zikula_AbstractApi
     {
         $emailMessageSent = false;
 
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) 
+        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
             $this->registerError(LogUtil::getErrorMsgArgs());
             return false;
@@ -342,10 +342,10 @@ class Users_Api_User extends Zikula_AbstractApi
         }
 
         $userObj = UserUtil::getVars($args['id'], true, $args['idfield']);
-        
+
         if ($userObj) {
             $authenticationMethods = UserUtil::getUserAccountRecoveryInfo($userObj['uid']);
-            
+
             $view = Zikula_View::getInstance($this->name, false);
             $viewArgs = array(
                 'uname'                 => $userObj['uname'],
@@ -369,7 +369,7 @@ class Users_Api_User extends Zikula_AbstractApi
                 'body'      => $htmlBody,
                 'altbody'   => $plainTextBody
             ));
-            
+
             if (!$emailMessageSent) {
                 $this->registerError($this->__('Error! Unable to send user name e-mail message.'));
             }
@@ -384,7 +384,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * string $args['email'] The user's e-mail address.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True if confirmation code sent; otherwise false.
@@ -393,7 +393,7 @@ class Users_Api_User extends Zikula_AbstractApi
     {
         $emailMessageSent = false;
 
-        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) 
+        if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
                 ) {
             $this->registerError(LogUtil::getErrorMsgArgs());
@@ -459,7 +459,7 @@ class Users_Api_User extends Zikula_AbstractApi
                         'body'      => $htmlBody,
                         'altbody'   => $plainTextBody
                     ));
-                    
+
                     if (!$emailMessageSent) {
                         $this->registerError($this->__('Error! Unable to send confirmation code e-mail message.'));
                     }
@@ -482,7 +482,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * string $args['idfield'] Either 'uname' or 'email'.
      * string $args['id']      The user's user name or e-mail address, depending on the value of idfield.
      * string $args['code']    The confirmation code.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True if the new password was sent; otherwise false.
@@ -563,8 +563,8 @@ class Users_Api_User extends Zikula_AbstractApi
 
             $modpath = ($mod['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-            $ooAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/lib/{$mod['directory']}/Api/Account.php");
-            $legacyAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/pnaccountapi.php");
+            $legacyAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/lib/{$mod['directory']}/Api/Account.php");
+            $ooAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/Api/Account.php");
             if (file_exists($ooAccountApiFile) || file_exists($legacyAccountApiFile)) {
                 $items = ModUtil::apiFunc($mod['name'], 'account', 'getAll');
                 if ($items) {
@@ -593,11 +593,11 @@ class Users_Api_User extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * string $args['newemail'] The new e-mail address to store pending confirmation.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True if success and false otherwise.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
      */
     public function savePreEmail($args)
@@ -666,7 +666,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * Retrieve the user's new e-mail address that is awaiting his confirmation.
      *
      * @return string The e-mail address waiting for confirmation for the current user.
-     * 
+     *
      * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
      */
     public function getUserPreEmail()
@@ -710,7 +710,7 @@ class Users_Api_User extends Zikula_AbstractApi
      *                                          than one type is to be removed, use an array. Optional. If
      *                                          not specifed, all verifychg records for the user will be
      *                                          removed. Note: specifying an empty array will remove none.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return void|bool Null on success, false on error.
@@ -796,7 +796,7 @@ class Users_Api_User extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * array   $args['registrationErrors'] The array of registration errors from getRegistrationErrors or one of its related functions.
-     * 
+     *
      * @param array $args All parameters passed to the function.
      *
      * @return array Modified error information.

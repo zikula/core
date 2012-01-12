@@ -162,7 +162,7 @@
 }
 
 .z-pointericon {
-    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
+    background: url("../../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
     border: 1px solid transparent;
     cursor: pointer;
     height: 1em;
@@ -172,7 +172,7 @@
 }
 
 .z-pointericon:hover {
-    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
+    background: url("../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
     border: 1px solid #999;
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -208,37 +208,37 @@
 
 /* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
-    background: url("../../../images/icons/extrasmall/bell.png") #FFF6BF 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
+    background: url("../../../../images/icons/extrasmall/bell.png") #FFF6BF 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
     border: 2px solid #ffd324;
 }
 
 /* styling for status update checker */
 #z-maincontent div#z-updatechecker {
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
+    background: url("../../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
     border: 2px solid #7Ec573;
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
-    background: url("../../../images/icons/extrasmall/error.png") #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    background: url("../../../../images/icons/extrasmall/error.png") #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
 }
 
 /* styling for developer notices */
 #z-maincontent div#z-developernotices {
-    background: url("../../../images/icons/extrasmall/run.png") #C5E8F1 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
+    background: url("../../../../images/icons/extrasmall/run.png") #C5E8F1 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url("../../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
     border: 2px solid #95C9EF;
 }
 
@@ -499,19 +499,19 @@ ul#admintabs li#addcat > a:hover {
 }
 
 ul#admintabs li#addcat #addcatlink {
-    background: url("../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% transparent;
+    background: url("../../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% transparent;
     width: 20px;
 }
 
 ul#admintabs li#addcat a#addcatlink:hover {
-    background: url("../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% #FFF !important;
+    background: url("../../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% #FFF !important;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
 }
 
 ul#admintabs li > .z-admindrop {
-    background: url("../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
+    background: url("../../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
     border-left: 1px solid transparent;
     cursor: pointer;
     float: left;
@@ -521,7 +521,7 @@ ul#admintabs li > .z-admindrop {
 }
 
 ul#admintabs li > .z-admindrop:hover {
-    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% #FFFFFF;
+    background: url("../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% #FFFFFF;
     border-left: 1px solid #CCCCCC;
     -webkit-border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;
@@ -529,7 +529,7 @@ ul#admintabs li > .z-admindrop:hover {
 }
 
 ul#admintabs li.active > .z-admindrop:hover {
-    background: url("../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
+    background: url("../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
     border-left: 1px solid transparent;
     -webkit-border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;

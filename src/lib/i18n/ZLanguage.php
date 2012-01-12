@@ -419,7 +419,8 @@ class ZLanguage
         }
 
         $domain = self::getModuleDomain($modName);
-        $path = $_this->searchOverrides($domain, "modules/$modName/locale");
+        $dir = is_dir("modules/$modName/Resources/locale") ? "modules/$modName/Resources/locale" : "modules/$modName/locale";
+        $path = $_this->searchOverrides($domain, $dir);
         return self::bindDomain($domain, $path);
     }
 
@@ -441,7 +442,8 @@ class ZLanguage
 
         $_this  = self::getInstance();
         $domain = self::getModulePluginDomain($moduleName, $pluginName);
-        $path = $_this->searchOverrides($domain, "modules/$moduleName/plugins/$pluginName/locale");
+        $dir = is_dir("modules/$moduleName/plugins/$pluginName/Resources/locale") ? "modules/$moduleName/plugins/$pluginName/Resources/locale" : "modules/$moduleName/plugins/$pluginName/locale";
+        $path = $_this->searchOverrides($domain, $dir);
         return self::bindDomain($domain, $path);
     }
 
@@ -456,7 +458,8 @@ class ZLanguage
     {
         $_this  = self::getInstance();
         $domain = self::getSystemPluginDomain($pluginName);
-        $path = $_this->searchOverrides($domain, "plugins/$pluginName/locale");
+        $dir = is_dir("plugins/$pluginName/Resources/locale") ? "plugins/$pluginName/Resources/locale" : "plugins/$pluginName/locale";
+        $path = $_this->searchOverrides($domain, $dir);
         return self::bindDomain($domain, $path);
     }
 

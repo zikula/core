@@ -298,6 +298,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        ZLoader::addModule($osdir, $modpath);
 
         $version = Extensions_Util::getVersionMeta($osdir, $modpath);
 
@@ -307,7 +308,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale")) {
+            if (is_dir("modules/$osdir/locale") || is_dir("modules/$osdir/Resources/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -317,12 +318,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-                if (!include_once($file)) {
-                    LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-                }
-            }
-
             $className = ucwords($modinfo['name']) . '_Installer';
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
@@ -424,18 +419,11 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
 
                 foreach ($dirs as $dir) {
-                    $oomod = false;
-                    // register autoloader
-                    if (is_dir("$rootdir/$dir/lib")) {
-                        ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
-                        $oomod = true;
-                    }
+                    ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
+                    ZLoader::addModule($dir, $rootdir);
 
                     // loads the gettext domain for 3rd party modules
-                    if ($rootdir == 'modules' && is_dir("modules/$dir/locale")) {
-                        // This is required here since including pnversion automatically executes the pnversion code
-                        // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
-                        // since loading is self contained in each zOO application.
+                    if ($rootdir == 'modules' && (is_dir("modules/$dir/locale") || is_dir("modules/$dir/Resources/locale"))) {
                         ZLanguage::bindModuleDomain($dir);
                     }
 
@@ -453,14 +441,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     $name = $dir;
 
                     // Work out if admin-capable
-                    if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                    if (class_exists("{$dir}_Controller_Admin")) {
                         $caps = $modversion['capabilities'];
                         $caps['admin'] = array('version' => '1.0');
                         $modversion['capabilities'] = $caps;
                     }
 
                     // Work out if user-capable
-                    if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                    if (class_exists("{$dir}_Controller_User")) {
                         $caps = $modversion['capabilities'];
                         $caps['user'] = array('version' => '1.0');
                         $modversion['capabilities'] = $caps;
@@ -499,22 +487,22 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     } else {
                         $moddependencies = serialize(array());
                     }
-                    //if (!isset($args['name'])) {
-                        $filemodules[$name] = array(
-                                'directory'       => $dir,
-                                'name'            => $name,
-                                'type'            => $moduletype,
-                                'displayname'     => $displayname,
-                                'url'             => $url,
-                                'oldnames'        => $oldnames,
-                                'version'         => $version,
-                                'capabilities'    => $capabilities,
-                                'description'     => $description,
-                                'securityschema'  => $securityschema,
-                                'dependencies'    => $moddependencies,
-                                'core_min'        => $core_min,
-                                'core_max'        => $core_max,
-                        );
+
+                    $filemodules[$name] = array(
+                        'directory'       => $dir,
+                        'name'            => $name,
+                        'type'            => $moduletype,
+                        'displayname'     => $displayname,
+                        'url'             => $url,
+                        'oldnames'        => $oldnames,
+                        'version'         => $version,
+                        'capabilities'    => $capabilities,
+                        'description'     => $description,
+                        'securityschema'  => $securityschema,
+                        'dependencies'    => $moddependencies,
+                        'core_min'        => $core_min,
+                        'core_max'        => $core_max,
+                    );
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in
@@ -578,7 +566,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             if (isset($modinfo['oldnames']) && !empty($modinfo['oldnames'])) {
                 $tables = DBUtil::getTables();
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
-                    if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
+                    if (isset($dbmodinfo['name']) && in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
                         $cols = $tables['module_vars_column'];
                         $save = array('modname' => $modinfo['name']);
@@ -758,6 +746,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // load module maintainence functions
         ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        ZLoader::addModule($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -765,7 +754,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale")) {
+            if (is_dir("modules/$osdir/locale") || is_dir("modules/$osdir/Resources/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -869,6 +858,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // load module maintainence functions
         ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        ZLoader::addModule($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -876,7 +866,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale")) {
+            if (is_dir("modules/$osdir/locale") || is_dir("modules/$osdir/Resources/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -1058,10 +1048,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
     public function getlinks()
     {
         $links = array();
-
-        // assign variables from input
-        $startnum = (int)$this->request->query->get('startnum', null);
-        $letter = $this->request->query->get('letter', null);
 
         if (SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'view'),
