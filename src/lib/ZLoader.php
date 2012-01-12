@@ -109,6 +109,10 @@ class ZLoader
 
     public static function addModule($namespace, $path)
     {
+        if (self::$moduleLoader->hasAutoloader($namespace)) {
+            return;
+        }
+        
         self::$moduleLoader->register($namespace, $path);
     }
 
