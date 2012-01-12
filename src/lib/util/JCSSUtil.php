@@ -41,7 +41,6 @@ class JCSSUtil
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
         if (System::isLegacyMode()) {
             $return .= 'document.location.entrypoint="' . $config['entrypoint'] . '";';
-            $return .= 'document.location.pnbaseURL="' . $config['baseURL'] . '"; ';
             $return .= 'document.location.ajaxtimeout=' . $config['ajaxtimeout'] . ";\n";
         }
         $return .= "if (typeof(Zikula) == 'undefined') {var Zikula = {};}\n";

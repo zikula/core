@@ -174,6 +174,7 @@ class ModuleClassLoader
 
         $class = str_replace('_', '\\', $class);
 
+        $file = '';
         foreach ($this->namespaces as $namespace => $path) {
             $file = $this->getClassIncludePath($namespace, $path, $class);
             if ($file) {

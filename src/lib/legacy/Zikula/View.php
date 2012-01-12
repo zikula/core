@@ -210,30 +210,37 @@ class Zikula_View extends Smarty implements TranslatableInterface
 
         // system info
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-        $this->theme = $theme = $this->themeinfo['directory'];
+        $this->theme = $this->themeinfo['directory'];
 
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
         switch ($this->modinfo['type'])
         {
             case ModUtil::TYPE_MODULE :
-                $mpluginPath = "modules/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "modules/" . $this->modinfo['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "modules/" . $this->modinfo['directory'] . "/Resources/view/plugins";
+                if (!is_dir($mpluginPath)) {
+                    $mpluginPath = "modules/" . $this->modinfo['directory'] . "/templates/plugins";
+                }
                 break;
             case ModUtil::TYPE_SYSTEM :
-                $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->modinfo['directory'] . "/Rsources/view/plugins";
+                if (!is_dir($mpluginPath)) {
+                    $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
+                }
                 break;
             default:
-                $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
+                $mpluginPath = "system/" . $this->modinfo['directory'] . "/Rsources/view/plugins";
+                if (!is_dir($mpluginPath)) {
+                    $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
+                }
         }
 
         // add standard plugin search path
         $this->plugins_dir = array();
+        $this->addPluginDir('config/Resources/plugins'); // Official override
         $this->addPluginDir('config/plugins'); // Official override
         $this->addPluginDir('lib/viewplugins'); // Core plugins
-        $this->addPluginDir("themes/$theme/plugins"); // Theme plugins
+        $this->addPluginDir("themes/$this->theme/plugins"); // Theme plugins
         $this->addPluginDir('plugins'); // Smarty core plugins
         $this->addPluginDir($mpluginPath); // Plugins for current module
 
@@ -241,7 +248,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
         // include system/Admin/templates/plugins to the plugins_dir array
         if ($type === 'admin') {
             if (!$this instanceof Zikula_View_Theme) {
-                $this->addPluginDir('system/Admin/templates/plugins');
+                $this->addPluginDir('system/Admin/Resources/view/plugins');
             } else {
                 $this->load_filter('output', 'admintitle');
             }
@@ -311,7 +318,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
              ->assign('func', $this->func)
              ->assign('lang', $this->language)
              ->assign('themeinfo', $this->themeinfo)
-             ->assign('themepath', $this->baseurl . 'themes/' . $theme)
+             ->assign('themepath', $this->baseurl . 'themes/' . $this->theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri);
 
@@ -379,11 +386,10 @@ class Zikula_View extends Smarty implements TranslatableInterface
             $module = $view->toplevelmodule;
         }
 
-        if (!array_key_exists($module, $view->module)) {
+//        if (!array_key_exists($module, $view->module)) {
             $view->module[$module] = ModUtil::getInfoFromName($module);
-            //$instance->modinfo = ModUtil::getInfoFromName($module);
             $view->_add_plugins_dir($module);
-        }
+//        }
 
         // for {gt} template plugin to detect gettext domain
         if ($view->module[$module]['type'] == ModUtil::TYPE_MODULE) {
@@ -1005,7 +1011,13 @@ class Zikula_View extends Smarty implements TranslatableInterface
         }
 
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $this->addPluginDir("$modpath/$modinfo[directory]/templates/plugins");
+        if (is_dir("$modpath/$modinfo[directory]/Resources/view/plugins")) {
+            $this->addPluginDir("$modpath/$modinfo[directory]/Resources/view/plugins");
+        }
+
+        if (is_dir("$modpath/$modinfo[directory]/templates/plugins")) {
+            $this->addPluginDir("$modpath/$modinfo[directory]/templates/plugins");
+        }
     }
 
     /**

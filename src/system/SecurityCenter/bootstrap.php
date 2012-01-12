@@ -22,8 +22,12 @@ if (!defined('PHPIDS_PATH_PREFIX')) {
 
 // include the PHPIDS and get access to the result object
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/lib/vendor'));
-ZLoader::addAutoloader('HTMLPurifier', realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'));
-ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/lib/vendor'));
+$autoloader = new Symfony\Component\ClassLoader\UniversalClassLoader();
+$autoloader->register();
+$autoloader->registerPrefixes(array(
+    'HTMLPurifier' => realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'),
+    'IDS' => realpath(dirname(__FILE__) . '/lib/vendor'),
+));
 
 // register event handlers
 //EventUtil::attachCustomHandlers('system/SecurityCenter/lib/SecurityCenter/EventHandler');

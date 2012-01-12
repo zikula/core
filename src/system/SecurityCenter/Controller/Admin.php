@@ -333,7 +333,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return return $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
     }
 
     /**

@@ -412,9 +412,7 @@ function installmodules($lang = 'en')
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
         $modpath = 'system';
-        if (is_dir("$modpath/$coremodule/lib")) {
-            ZLoader::addAutoloader($coremodule, "$modpath/$coremodule/lib");
-        }
+        ZLoader::addModule($coremodule, $modpath);
 
         $bootstrap = "$modpath/$coremodule/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -496,9 +494,9 @@ function installmodules($lang = 'en')
             continue;
         }
         $modpath = 'modules';
-        if (is_dir("$modpath/$module/lib")) {
-            ZLoader::addAutoloader($module, "$modpath/$module/lib");
-        }
+        ZLoader::addAutoloader($module, "$modpath/$module/lib");
+        ZLoader::addModule($module, $modpath);
+
         $bootstrap = "$modpath/$module/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
