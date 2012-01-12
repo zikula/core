@@ -11,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
 /**
  * Doctrine plugin definition.
  */
@@ -33,12 +35,14 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         // register namespace
         // Because the standard kernel classloader already has Doctrine registered as a namespace
         // we have to add a new loader onto the spl stack.
-        $autoloader = new Zikula\Common\KernelClassLoader();
-        $autoloader->spl_autoload_register();
-        $autoloader->register('Doctrine\\Common', ZLOADER_PATH . '/../vendor/doctrine-common/lib', '\\');
-        $autoloader->register('Doctrine\\DBAL', ZLOADER_PATH . '/../vendor/doctrine-dbal/lib', '\\');
-        $autoloader->register('Doctrine\\ORM', ZLOADER_PATH . '/../vendor/doctrine/lib', '\\');
-        $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
+        $autoloader = new UniversalClassLoader();
+        $autoloader->register();
+        $autoloader->registerNamespaces(array(
+            'Doctrine\\Common' => ZLOADER_PATH . '/../vendor/doctrine-common/lib',
+            'Doctrine\\DBAL' => ZLOADER_PATH . '/../vendor/doctrine-dbal/lib',
+            'Doctrine\\ORM' => ZLOADER_PATH . '/../vendor/doctrine/lib',
+            'DoctrineProxy' => 'ztemp/doctrinemodels',
+            ));
 
         $serviceManager = $event->getDispatcher()->getServiceManager();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];

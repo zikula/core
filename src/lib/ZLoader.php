@@ -11,12 +11,16 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
 if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
 
 include 'lib/i18n/ZGettextFunctions.php';
 include 'lib/Zikula/Common/KernelClassLoader.php';
+include __DIR__ .'/../vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
@@ -39,9 +43,16 @@ class ZLoader
     /**
      * Autoloaders.
      *
-     * @var \Zikula\Common\KernelClassLoader
+     * @var UniversalClassLoader
      */
     private static $autoloaders;
+
+    /**
+     * Autoloaders.
+     *
+     * @var \Zikula\Framework\ModuleClassLoader
+     */
+    private static $moduleLoader;
 
     /**
      * Base setup.
@@ -51,21 +62,27 @@ class ZLoader
     public static function register()
     {
         spl_autoload_register(array('ZLoader', 'autoload'));
-        $autoloader = new Zikula\Common\KernelClassLoader();
-        $autoloader->spl_autoload_register();
-        $autoloader->register('Zikula', ZLOADER_PATH);
-        self::$autoloaders = new Zikula\Common\KernelClassLoader();
-        self::$autoloaders->spl_autoload_register();
-        self::addAutoloader('Symfony', ZLOADER_PATH . '/../vendor/symfony/src', '\\');
+
+        $autoloader = new UniversalClassLoader();
+        $autoloader->register();
+        $autoloader->registerNamespaces(array(
+            'Zikula' => ZLOADER_PATH,
+            'Symfony' => ZLOADER_PATH . '/../vendor/symfony/src',
+        ));
+
+        self::$autoloaders = new UniversalClassLoader();
+        self::$autoloaders->register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
         self::addAutoloader('Twig', ZLOADER_PATH . '/../vendor/twig/lib', '_');
-        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
-        self::addAutoloader('Categories', 'system/Categories/lib');
-        self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
+        self::addAutoloader('Categories', 'system/Categories/lib', '_');
+        self::addAutoloader('Zend', ZLOADER_PATH . '/vendor', '_');
 
         $mapClassLoader = new \Symfony\Component\ClassLoader\MapClassLoader(self::map());
         $mapClassLoader->register();
+
+        self::$moduleLoader = new \Zikula\Framework\ModuleClassLoader();
+        self::$moduleLoader->spl_autoload_register();
     }
 
     /**
@@ -79,11 +96,20 @@ class ZLoader
      */
     public static function addAutoloader($namespace, $path = '', $separator = '_')
     {
-        if (self::$autoloaders->hasAutoloader($namespace)) {
+        if (in_array($namespace, self::$autoloaders->getNamespaces())) {
             return;
         }
 
+        if ($separator == '_') {
+            return self::$autoloaders->registerPrefix($namespace.'_', $path);
+        }
+
         self::$autoloaders->register($namespace, $path, $separator);
+    }
+
+    public static function addModule($namespace, $path)
+    {
+        self::$moduleLoader->register($namespace, $path);
     }
 
     /**
@@ -97,10 +123,15 @@ class ZLoader
     {
         // Classloader for SystemPlugin
         if (strpos($class, 'SystemPlugin') === 0) {
-            $array = explode('_', $class);
+            $pluginClass = str_replace('_', '\\', $class);
+            $array = explode('\\', $pluginClass);
             $pluginName = $array[1];
-            $name = substr($class, strlen("SystemPlugin_{$pluginName}") + 1, strlen($class));
-            $path = str_replace('_', '/', "plugins/$pluginName/lib/$pluginName/$name.php");
+            $name = substr($pluginClass, strlen("SystemPlugin\\{$pluginName}") + 1, strlen($pluginClass));
+            $path = str_replace('\\', '/', "plugins/$pluginName/lib/$pluginName/$name.php");
+            if (file_exists($path)) {
+                return include $path;
+            }
+            $path = str_replace('\\', '/', "plugins/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
             }
@@ -108,34 +139,46 @@ class ZLoader
 
         // Classloader for ModulePlugin
         if (strpos($class, 'ModulePlugin') === 0) {
-            $array = explode('_', $class);
+            $pluginClass = str_replace('_', '\\', $class);
+            $array = explode('\\', $pluginClass);
             $moduleName = $array[1];
             $pluginName = $array[2];
             $modinfo = ModUtil::getInfoFromName($moduleName);
             $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
-            $name = substr($class, strlen("ModulePlugin_{$moduleName}_{$pluginName}") + 1, strlen($class));
-            $path = str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/lib/$pluginName/$name.php");
+            $name = substr($pluginClass, strlen("ModulePlugin\\{$moduleName}\\{$pluginName}") + 1, strlen($pluginClass));
+            $path = str_replace('\\', '/', "$base/$moduleName/plugins/$pluginName/lib/$pluginName/$name.php");
+            if (file_exists($path)) {
+                return include $path;
+            }
+            $path = str_replace('\\', '/', "$base/$moduleName/plugins/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
             }
         }
 
         // Classloader for Themes
-        if (strpos($class, 'Themes') === 0) {
-            $array = explode('_', $class);
+        if (strpos($class, 'Themes\\') === 0 || strpos($class, 'Themes_') === 0) {
+            $themeClass = str_replace('_', '\\', $class);
+            $array = explode('\\', $themeClass);
             $themeName = $array[1];
-            $name = substr($class, strlen("Themes") + 1, strlen($class));
-            $path = str_replace('_', '/', "themes/$themeName/lib/$name.php");
+            $name = substr($themeClass, strlen("Themes") + 1, strlen($themeClass));
+            $path = str_replace('\\', '/', "themes/$themeName/lib/$name.php");
+            if (file_exists($path)) {
+                return include $path;
+            }
+
+            $path = str_replace('\\', '/', "themes/$themeName/$name.php");
             if (file_exists($path)) {
                 return include $path;
             }
         }
 
         // generic PEAR style namespace to path, i.e Foo_Bar -> Foo/Bar.php
-        if (strpos($class, '_')) {
-            $array = explode('_', $class);
+        if (strpos($class, '_') || strpos($class, '\\')) {
+            $pearClass = str_replace('_', '\\', $class);
+            $array = explode('\\', $pearClass);
             $prefix = (isset($map[$array[0]]) ? $map[$array[0]] . '/' : '');
-            $path = ZLOADER_PATH . $prefix . str_replace('_', '/', $class) . '.php';
+            $path = ZLOADER_PATH . $prefix . str_replace('\\', '/', $pearClass) . '.php';
             if (file_exists($path)) {
                 return include $path;
             }

@@ -13,6 +13,7 @@
 
 use Zikula\Framework\Plugin\AlwaysOnInterface;
 use Zikula\Framework\AbstractPlugin;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 /**
  * Doctrine plugin definition.
@@ -41,8 +42,8 @@ class SystemPlugin_Imagine_Plugin extends AbstractPlugin implements AlwaysOnInte
      */
     public function initialize()
     {
-        $autoloader = new Zikula\Common\KernelClassLoader();
-        $autoloader->spl_autoload_register();
-        $autoloader->register('Imagine', dirname(__FILE__) . '/lib/vendor', '\\');
+        $autoloader = new UniversalClassLoader();
+        $autoloader->register();
+        $autoloader->registerNamespace('Imagine', dirname(__FILE__) . '/lib/vendor');
     }
 }
