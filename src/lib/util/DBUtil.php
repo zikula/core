@@ -275,7 +275,7 @@ class DBUtil
             }
 
             $stmt = $connection->prepare($sql);
-            //$stmt->setHydrationMode(Doctrine::HYDRATE_RECORD);
+            //$stmt->setHydrationMode(Doctrine_Core::HYDRATE_RECORD);
             if ($stmt->execute()) {
                 $result = $stmt;
             }
@@ -1384,7 +1384,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'result'));
         }
 
-        $resultRows = $result->fetchAll(Doctrine::FETCH_NUM);
+        $resultRows = $result->fetchAll(Doctrine_Core::FETCH_NUM);
         $fieldArray = array();
         if ($assocKey) {
             foreach ($resultRows as $resultRow) {
@@ -1434,7 +1434,7 @@ class DBUtil
         $object = array();
         $objectArray = array();
         $fetchedObjectCount = 0;
-        $resultRows = $result->fetchAll(Doctrine::FETCH_ASSOC);
+        $resultRows = $result->fetchAll(Doctrine_Core::FETCH_ASSOC);
         if ($resultRows && $objectColumns && count($resultRows[0]) != count($objectColumns)) {
             throw new Exception('$objectColumn field count must match the resultset');
         }
@@ -2179,7 +2179,7 @@ class DBUtil
             return $res;
         }
 
-        $res = $res->fetchAll(Doctrine::FETCH_COLUMN);
+        $res = $res->fetchAll(Doctrine_Core::FETCH_COLUMN);
 
         if ($res) {
             if (isset($res[0])) {

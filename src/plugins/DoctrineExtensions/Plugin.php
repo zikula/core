@@ -15,6 +15,7 @@ use Zikula\Common\ServiceManager\Definition;
 use Zikula\Common\ServiceManager\Reference;
 use Zikula\Framework\Plugin\AlwaysOnInterface;
 use Zikula\Framework\AbstractPlugin;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 /**
  * DoctrineExtensions plugin definition.
@@ -43,11 +44,11 @@ class SystemPlugin_DoctrineExtensions_Plugin extends AbstractPlugin implements A
      */
     public function initialize()
     {
-        $autoloader = new Zikula\Common\KernelClassLoader();
-        $autoloader->spl_autoload_register();
-        $autoloader->register('Gedmo', dirname(__DIR__) . '/../vendor/gedmo-doctrine-extensions/lib', '\\');
-        $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib', '\\');
-        $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib', '\\');
+        $autoloader = new UniversalClassLoader();
+        $autoloader->register();
+        $autoloader->register('Gedmo', dirname(__DIR__) . '/../vendor/gedmo-doctrine-extensions/lib');
+        $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
+        $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib');
 
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__DIR__) . '/../vendor/gedmo-doctrine-extensions/lib');
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
