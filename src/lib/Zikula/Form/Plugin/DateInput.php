@@ -301,9 +301,9 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
 
         if (strlen($this->text) > 0) {
             if ($this->includeTime) {
-                $dateValue = DateUtil::transformInternalDateTime(DateUtil::parseUIDate($this->text));
+                $dateValue = DateUtil::transformInternalDateTime(DateUtil::parseUIDate($this->text, $this->ifFormat));
             } else {
-                $dateValue = DateUtil::transformInternalDate(DateUtil::parseUIDate($this->text));
+                $dateValue = DateUtil::transformInternalDate(DateUtil::parseUIDate($this->text, $this->ifFormat));
             }
 
             if ($dateValue == null) {
