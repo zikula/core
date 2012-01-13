@@ -173,7 +173,7 @@ class BlockUtil
         global $blocks_modules;
 
         $blockInstance = self::load($modname, $block);
-        if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
+        if (!$blockInstance instanceof \Zikula\Framework\Controller\AbstractBlock) {
             throw new \RuntimeException(sprintf('BlockInstance %s::%s must an instance of AbstractBlock', $modname, $block));
         }
 
@@ -268,7 +268,7 @@ class BlockUtil
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
 
-        $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block);
+        $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block.'Block');
         if ($sm->hasService($serviceId)) {
             return $sm->getService($serviceId);
         }
@@ -277,26 +277,12 @@ class BlockUtil
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
 
-        $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $moddir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::load($modname);
 
         // get the block info
-        $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+        $className = ucwords($modinfo['name']) . '_Block_' . ucwords($block) . 'Block';
         $r = new ReflectionClass($className);
         $blockInstance = $r->newInstanceArgs(array($sm));
-        try {
-            if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
-                throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
-            }
-        } catch (LogicException $e) {
-            if (System::isDevelopmentMode()) {
-                throw $e;
-            } else {
-                LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
-                return false;
-            }
-        }
 
         $sm->attachService($serviceId, $blockInstance);
 

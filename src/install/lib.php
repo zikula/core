@@ -494,8 +494,8 @@ function installmodules($lang = 'en')
             continue;
         }
         $modpath = 'modules';
-        ZLoader::addAutoloader($module, "$modpath/$module/lib");
         ZLoader::addModule($module, $modpath);
+        ZLoader::addAutoloader($module, "$modpath/$module/lib");
 
         $bootstrap = "$modpath/$module/bootstrap.php";
         if (file_exists($bootstrap)) {
