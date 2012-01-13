@@ -901,7 +901,7 @@ class DateUtil
             $format[] = $matches[3]; // position 2
             $format[] = $matches[5]; // position 3
             if ($matchCount > 8) {
-                if ($matches[7] != $matches[9]) {
+                if ($matchCount == 11 && $matches[7] != $matches[9]) {
                     // TODO A throw exception here (dateformat separators must match) - drak
                     z_exit(__f('Dateformat time separators must be the same in %s', $dateformat));
                 }
