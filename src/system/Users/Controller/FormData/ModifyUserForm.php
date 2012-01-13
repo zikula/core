@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager
+use Zikula\Common\ServiceManager\ServiceManager;
 
 /**
  * Contains and validates the data found on the Users module's modify user form.

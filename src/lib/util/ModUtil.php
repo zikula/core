@@ -554,6 +554,7 @@ class ModUtil
         if (!$modinfo) {
             return false;
         }
+
         return (bool)array_key_exists($capability, $modinfo['capabilities']);
     }
 
@@ -570,6 +571,7 @@ class ModUtil
         if (array_key_exists($module, $modules)) {
             return $modules[$module]['capabilities'];
         }
+
         return false;
     }
 
@@ -586,7 +588,7 @@ class ModUtil
 
         if (empty(self::$cache['modsarray'])) {
             $all = self::getModsTable();
-            foreach ($all as $key => $mod) {
+            foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
                     || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
@@ -656,16 +658,12 @@ class ModUtil
         // Load the database definition if required
         $files = array();
         $files[] = "$modpath/$directory/tables.php";
-        $files[] = "$modpath/$directory/pntables.php";
 
         if (Loader::loadOneFile($files)) {
             // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
-            $tablefuncOld = $modname . '_pntables';
             if (function_exists($tablefunc)) {
                 $data = call_user_func($tablefunc);
-            } elseif (function_exists($tablefuncOld)) {
-                $data = call_user_func($tablefuncOld);
             }
 
             // Generate _column automatically from _column_def if it is not present.
@@ -777,9 +775,6 @@ class ModUtil
             return false;
         }
 
-        // create variables for the OS preped version of the directory
-        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-
         // if class is loadable or has been loaded exit here.
         if (self::isInitialized($modname)) {
             self::_loadStyleSheets($modname, $api, $type);
@@ -873,7 +868,7 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname) . '_Controller_' . ucwords($type);
+        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) . 'Api' : ucwords($modname) . '_Controller_' . ucwords($type) . 'Controller';
 
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
@@ -934,30 +929,15 @@ class ModUtil
             return false;
         }
 
-        $serviceId = strtolower("module.$className");
+        $serviceId = str_replace('\\', '_', strtolower("module.$className"));
         $sm = ServiceUtil::getManager();
 
-        $callable = false;
         if ($sm->hasService($serviceId)) {
             $object = $sm->getService($serviceId);
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
-            try {
-                if (strrpos($className, 'Api') && !$object instanceof \Zikula\Framework\Api\AbstractApi) {
-                    throw new LogicException(sprintf('Api %s must inherit from Zikula\Framework\Api\AbstractApi', $className));
-                } elseif (!strrpos($className, 'Api') && !$object instanceof \Zikula\Framework\Controller\AbstractController) {
-                    throw new LogicException(sprintf('Controller %s must inherit from Zikula\Framework\Controller\AbstractController', $className));
-                }
-            } catch (LogicException $e) {
-                if (System::isDevelopmentMode()) {
-                    throw $e;
-                } else {
-                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
-                    return false;
-                }
-            }
-            $sm->attachService(strtolower($serviceId), $object);
+            $sm->attachService($serviceId, $object);
         }
 
         return $object;
@@ -982,6 +962,7 @@ class ModUtil
         }
 
         $object = self::getObject($className);
+        $func = $api ? $func : $func.'Action';
         if (is_callable(array($object, $func))) {
             return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func));
         }
@@ -1008,7 +989,6 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
-        $ftype = ($api ? 'api' : '');
         $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
 
         // validate
@@ -1017,7 +997,6 @@ class ModUtil
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
-        $path = ($modinfo['type'] == self::TYPE_SYSTEM ? 'system' : 'modules');
 
         $controller = null;
         $modfunc = null;
@@ -1026,11 +1005,6 @@ class ModUtil
         if ($result) {
             $modfunc = $result['callable'];
             $controller = $modfunc[0];
-            if (!is_null($instanceof)) {
-                if (!$controller instanceof $instanceof) {
-                    throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
-                }
-            }
         }
 
         $eventManager = EventUtil::getManager();
@@ -1041,53 +1015,12 @@ class ModUtil
             if (is_callable($modfunc)) {
                 $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
 
-                if ($modfunc[0] instanceof Zikula\Framework\Controller\AbstractController) {
-                    $reflection = call_user_func(array($modfunc[0], 'getReflection'));
-                    $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
-                    if ($subclassOfReflection->hasMethod($modfunc[1])) {
-                        // Don't allow front controller to access any public methods inside the controller's parents
-                        throw new Zikula_Exception_NotFound();
-                    }
-                    $modfunc[0]->preDispatch();
-                }
+                $modfunc[0]->preDispatch();
 
                 $postExecuteEvent->setData(call_user_func($modfunc, $args));
-                if ($modfunc[0] instanceof Zikula\Framework\Controller\AbstractController) {
-                    $modfunc[0]->postDispatch();
-                }
+                $modfunc[0]->postDispatch();
 
                 return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-            }
-
-            // get the theme
-            if (ServiceUtil::getManager()->getService('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
-                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php")) {
-                    include_once $file;
-                    if (function_exists($modfunc)) {
-                        EventUtil::notify($preExecuteEvent);
-                        $postExecuteEvent->setData($modfunc($args));
-                        return EventUtil::notify($postExecuteEvent)->getData();
-                    }
-                }
-            }
-
-            if (file_exists($file = "config/functions/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
-                include_once $file;
-                if (is_callable($modfunc)) {
-                    $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-                    return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-                }
-            }
-
-            if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php")) {
-                include_once $file;
-                if (is_callable($modfunc)) {
-                    $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-                    return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-                }
             }
 
             // try to load plugin
@@ -1110,7 +1043,7 @@ class ModUtil
 
         // Issue not found exception for controller requests
         if (!$api) {
-            throw new Zikula_Exception_NotFound(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
+            throw new \Zikula\Framework\Exception\NotFoundException(__f('The requested controller action %s_Controller_%s::%s() could not be found', array($modname, $type, $func)));
         }
     }
 
@@ -1562,8 +1495,8 @@ class ModUtil
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"), '_');
         ZLoader::addModule($moduleName, realpath($modpath));
+        ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"), '_');
 
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -1610,8 +1543,6 @@ class ModUtil
             self::$ooModules[$moduleName]['initialized'] = false;
             self::$ooModules[$moduleName]['oo'] = false;
             $modinfo = self::getInfo(self::getIdFromName($moduleName));
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
 
             if (!$modinfo) {
                 return false;

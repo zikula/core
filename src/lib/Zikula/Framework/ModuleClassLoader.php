@@ -143,7 +143,8 @@ class ModuleClassLoader
         // namespace 'Bar', separator '_', class Bar_Exception should match and become Bar\Exception.php
         if (strpos($class, $namespace) === 0 || $class == $namespace || empty($namespace)) {
             // replace namespace separator with \DIRECTORY_SEPARATOR
-            $file = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+            $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+            $file = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
 
             // add include path if required
             if (!empty($path)) {
@@ -172,7 +173,7 @@ class ModuleClassLoader
             $class == substr($class, 1, strlen($class));
         }
 
-        $class = str_replace('_', '\\', $class);
+//        $class = str_replace('_', '\\', $class);
 
         $file = '';
         foreach ($this->namespaces as $namespace => $path) {
