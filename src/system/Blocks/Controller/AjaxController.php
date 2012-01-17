@@ -15,7 +15,7 @@
 /**
  * Blocks_Controller_Ajax class.
  */
-class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class Blocks_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 {
     /**
      * Changeblockorder.
@@ -61,7 +61,7 @@ class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * This function toggles active/inactive.
      *
      * @param bid int  id of block to toggle.
-     * 
+     *
      * @return mixed true or Ajax error
      */
     public function toggleblockAction()

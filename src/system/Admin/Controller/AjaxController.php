@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 {
     /**
      * Change the category a module belongs to by ajax.
@@ -202,7 +202,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         //unknown error
         throw new Zikula_Exception_Fatal($this->__('Error! Could not make this category default.'));
     }
-    
+
     public function sortCategoriesAction()
     {
         $this->checkAjaxToken();
@@ -218,8 +218,8 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         DBUtil::updateObjectArray($objects,'admin_category','cid');
         return new Zikula_Response_Ajax(array());
     }
-    
-    
+
+
      public function sortModulesAction()
     {
         $this->checkAjaxToken();
