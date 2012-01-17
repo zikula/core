@@ -38,7 +38,6 @@ abstract class AbstractInstaller extends AbstractBase
         $parts = explode('_', $this->getReflection()->getName());
         $this->name = $parts[0];
         $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
-        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
         $this->modinfo = array(
             'directory' => $this->name,
             'type'      => \ModUtil::getModuleBaseDir($this->name) == 'system' ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE
