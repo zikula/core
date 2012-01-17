@@ -227,7 +227,7 @@ class Generator
 
     /**
      * Gets the max lifetime in seconds.
-     * 
+     *
      * @return integer
      */
     public function getMaxLifetime()
