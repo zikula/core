@@ -18,7 +18,7 @@ use Zikula\Framework\Response\Ajax\PlainResponse;
 /**
  * Access to actions initiated through AJAX for the Users module.
  */
-class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class Users_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 {
     /**
      * Performs a user search based on the user name fragment entered so far.

@@ -55,7 +55,7 @@ abstract class AbstractAuthentication extends AbstractController
      *
      * @return string the rendered HTML fragment containing the authentication module fields for the login form or block.
      */
-    abstract public function getLoginFormFields(array $args);
+    abstract public function getLoginFormFieldsAction(array $args);
 
     /**
      * Render and return an authentication method selector for the login page form or login block form.
@@ -64,7 +64,7 @@ abstract class AbstractAuthentication extends AbstractController
      *
      * @return string The rendered authentication method selector for the login page or block.
      */
-    abstract public function getAuthenticationMethodSelector(array $args);
+    abstract public function getAuthenticationMethodSelectorAction(array $args);
 
     /**
      * Performs initial user-interface level validation on the authentication information received by the user from the login process.
@@ -103,5 +103,5 @@ abstract class AbstractAuthentication extends AbstractController
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
      */
-    abstract public function validateAuthenticationInformation(array $args);
+    abstract public function validateAuthenticationInformationAction(array $args);
 }

@@ -14,7 +14,7 @@
 
 use Zikula\Core\Event\GenericEvent;
 
-class Theme_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class Theme_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 {
     public function dispatchAction()
     {

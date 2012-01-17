@@ -16,7 +16,7 @@
 /**
  * Access to user-initiated authentication actions for the Users module.
  */
-class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthentication
+class Users_Controller_AuthenticationController extends Zikula_Controller_AbstractAuthentication
 {
     /**
      * Post initialise.
