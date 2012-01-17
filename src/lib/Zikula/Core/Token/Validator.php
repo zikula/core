@@ -75,7 +75,7 @@ class Validator
         }
 
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
-        $decoded = array('id' => $id, 'timestamp' => $timestamp);
+        $decoded = array('id' => $id, 'time' => $timestamp);
 
         // Garbage collect the session.
         $this->tokenGenerator->garbageCollection();
@@ -87,7 +87,7 @@ class Validator
         }
 
         // Check if the token has been tampered with.
-        $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['timestamp'])->getToken();
+        $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['time'])->getToken();
         if ($stored['token'] !== $duplicateToken) {
             $this->storage->delete($decoded['id']);
             return false;
@@ -95,7 +95,7 @@ class Validator
 
         // Check if token has expired.
         if ($checkExpire) {
-            $timeDiff = ((int)$decoded['timestamp'] + $this->tokenGenerator->getMaxLifetime()) - time();
+            $timeDiff = ((int)$decoded['time'] + $this->tokenGenerator->getMaxLifetime()) - time();
             if ($timeDiff < 0) {
                 $this->storage->delete($decoded['id']);
                 return false;

@@ -71,7 +71,7 @@ class SessionStorage implements StorageInterface
     public function save($id, $token, $timestamp)
     {
         $tokens = $this->session->get('_tokens', array());
-        $tokens[$id] = array('token' => $token, 'timestamp' => (int)$timestamp);
+        $tokens[$id] = array('token' => $token, 'time' => (int)$timestamp);
         $this->session->set($this->key, $tokens);
     }
 
