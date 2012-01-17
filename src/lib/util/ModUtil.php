@@ -649,8 +649,8 @@ class ModUtil
         }
 
         // no need for tables.php scan if using Doctrine
-        $doctrineModelDir  = "$modpath/$directory/lib/$directory/Model";
-        $doctrineEntityDir = "$modpath/$directory/lib/$directory/Entity";
+        $doctrineModelDir  = "$modpath/$directory/Model";
+        $doctrineEntityDir = "$modpath/$directory/Entity";
         if (is_dir($doctrineModelDir) || is_dir($doctrineEntityDir)) {
             return true;
         }

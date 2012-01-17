@@ -23,6 +23,13 @@ use \Zikula\Common\I18n\TranslatableInterface;
 abstract class AbstractBase implements TranslatableInterface
 {
     /**
+     * Base path of module.
+     *
+     * @var string
+     */
+    static protected $path;
+
+    /**
      * Name.
      *
      * @var string
@@ -42,13 +49,6 @@ abstract class AbstractBase implements TranslatableInterface
      * @var string
      */
     protected $systemBaseDir;
-
-    /**
-     * Component's lib/ base dir.
-     *
-     * @var string
-     */
-    protected $libBaseDir;
 
     /**
      * Modinfo.
@@ -132,12 +132,12 @@ abstract class AbstractBase implements TranslatableInterface
      */
     protected function _configureBase()
     {
+        $this->getPath();
         $this->systemBaseDir = realpath('.');
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
         $baseDir = \ModUtil::getModuleBaseDir($this->name);
         $this->baseDir = realpath("{$this->systemBaseDir}/$baseDir/" . $this->name);
-        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
         if ($baseDir == 'modules') {
             $this->domain = \ZLanguage::getModuleDomain($this->name);
         }
@@ -168,6 +168,23 @@ abstract class AbstractBase implements TranslatableInterface
     }
 
     /**
+     * Gets the base path of the module.
+     *
+     * @return string
+     */
+    static public function getPath()
+    {
+        if (null !== self::$path) {
+            return self::$path;
+        }
+
+        $reflection = new \ReflectionClass(get_called_class());
+        self::$path = dirname($reflection->getFileName());
+
+        return self::$path;
+    }
+
+    /**
      * Get reflection of this object.
      *
      * @return \ReflectionObject
@@ -177,6 +194,7 @@ abstract class AbstractBase implements TranslatableInterface
         if (!$this->reflection) {
             $this->reflection = new \ReflectionObject($this);
         }
+
         return $this->reflection;
     }
 
@@ -252,16 +270,6 @@ abstract class AbstractBase implements TranslatableInterface
     public function getBaseDir()
     {
         return $this->baseDir();
-    }
-
-    /**
-     * Get lib/ location for this component.
-     *
-     * @return string
-     */
-    public function getLibBaseDir()
-    {
-        return $this->libBaseDir;
     }
 
     /**

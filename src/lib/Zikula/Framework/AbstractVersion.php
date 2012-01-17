@@ -21,11 +21,19 @@ use Zikula\Common\ClassProperties;
 abstract class AbstractVersion implements \ArrayAccess
 {
     /**
+     * Base path of module.
+     *
+     * @var string
+     */
+    static protected $path;
+
+    /**
      * The module name, computed from the implementing class name.
      *
      * @var string
      */
     protected $name;
+
 
     /**
      * The display name for the module.
@@ -142,34 +150,6 @@ abstract class AbstractVersion implements \ArrayAccess
     protected $oldnames;
 
     /**
-     * The base directory for the module, computed.
-     *
-     * @var string
-     */
-    protected $baseDir;
-
-    /**
-     * The base directory for this module's libraries, computed.
-     *
-     * @var string
-     */
-    protected $libBaseDir;
-
-    /**
-     * The system base directory, computed.
-     *
-     * @var string
-     */
-    protected $systemBaseDir;
-
-    /**
-     * A {@link ReflectionObject} instance for this instance of the class.
-     *
-     * @var \ReflectionObject
-     */
-    protected $reflection;
-
-    /**
      * Hook subscriber bundles.
      *
      * @var array Indexed array of Zikula_Version_HookSubscriberBundle
@@ -190,13 +170,12 @@ abstract class AbstractVersion implements \ArrayAccess
      */
     public function __construct()
     {
+        $this->getPath();
         $this->systemBaseDir = realpath('.');
         $this->reflection = new \ReflectionObject($this);
         $p = explode('_', get_class($this));
         $this->name = $p[0];
         $this->directory = $this->name; // legacy handling
-        $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
-        $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
         $this->type = \ModUtil::getModuleBaseDir($this->name) == 'system' ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE;
         if ($this->type == \ModUtil::TYPE_MODULE) {
             $this->domain = \ZLanguage::getModuleDomain($this->name);
@@ -205,6 +184,23 @@ abstract class AbstractVersion implements \ArrayAccess
 
         // Load configuration of any hook bundles.
         $this->setupHookBundles();
+    }
+
+    /**
+     * Gets the base path of the module.
+     *
+     * @return string
+     */
+    static public function getPath()
+    {
+        if (null !== self::$path) {
+            return self::$path;
+        }
+
+        $reflection = new \ReflectionClass(get_called_class());
+        self::$path = dirname($reflection->getFileName());
+
+        return self::$path;
     }
 
     /**
@@ -254,36 +250,6 @@ abstract class AbstractVersion implements \ArrayAccess
     public function __f($msgid, $params)
     {
         return __f($msgid, $params, $this->domain);
-    }
-
-    /**
-     * Retrieve the module base directory.
-     *
-     * @return string The directory.
-     */
-    public function getBaseDir()
-    {
-        return $this->baseDir;
-    }
-
-    /**
-     * Return the base directory for the module's libraries.
-     *
-     * @return string The directory.
-     */
-    public function getLibBaseDir()
-    {
-        return $this->libBaseDir;
-    }
-
-    /**
-     * Return the system base directory.
-     *
-     * @return string The directory.
-     */
-    public function getSystemBaseDir()
-    {
-        return $this->systemBaseDir;
     }
 
     /**

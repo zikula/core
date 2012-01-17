@@ -62,6 +62,7 @@ abstract class AbstractPlugin extends AbstractController
      */
     protected function _configureBase()
     {
+        $this->getPath();
         $this->systemBaseDir = realpath('.');
         $parts = explode('_', get_class($this));
         $this->name = $parts[0];
@@ -69,12 +70,9 @@ abstract class AbstractPlugin extends AbstractController
         $this->pluginName = $this->plugin->getPluginName();
         $this->moduleName = $this->plugin->getModuleName();
         $this->modinfo = $this->plugin->getModInfo();
-        if ($this->plugin->getPluginType() == AbstractPlugin::TYPE_SYSTEM) {
-            $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
-        } else {
+        if (!$this->plugin->getPluginType() == AbstractPlugin::TYPE_SYSTEM) {
             $modbase = ($this->modinfo['type'] == AbstractPlugin::TYPE_MODULE) ? 'modules' : 'system';
             $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
-            $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
         }
         $this->domain = $this->plugin->getDomain();
     }
