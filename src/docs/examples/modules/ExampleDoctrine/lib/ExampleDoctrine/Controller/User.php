@@ -54,13 +54,39 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
      *
      * @return string|boolean Output.
      */
-    public function edit()
-    {
+    public function edit() {
         if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
+           return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
         }
 
-        $form = FormUtil::newForm('ExampleDoctrine', $this);
-        return $form->execute('exampledoctrine_user_edit.tpl', new ExampleDoctrine_Handler_Edit());
+        $id = $this->request->query->getInt('id');
+        if ($id) {
+            // load user with id
+            $user = $this->entityManager->find('ExampleDoctrine_Entity_User', $id);
+
+            if (!$user) {
+                return LogUtil::registerError($this->__f('User with id %s not found', $id));
+            }
+        } else {
+            $user = new ExampleDoctrine_Entity_User();
+        }
+
+        /* @var $form Symfony\Component\Form\Form */
+        $form = $this->serviceManager->getService('symfony.formfactory')
+                     ->create(new ExampleDoctrine_Form_UserType(), $user);
+        
+        if($this->request->getMethod() == 'POST') {
+            $form->bindRequest($this->request);
+            
+            if($form->isValid()) {
+                $data = $form->getData();
+                $this->entityManager->persist($data);
+                $this->entityManager->flush();
+                return $this->redirect(ModUtil::url('ExampleDoctrine', 'user','view'));
+            }
+        }
+
+        return $this->view->assign('form', $form->createView())
+                          ->fetch('exampledoctrine_user_edit.tpl');
     }
 }
