@@ -25,7 +25,7 @@ namespace Symfony\Component\Console\Input;
  *     $input = new ArgvInput($_SERVER['argv']);
  *
  * If you pass it yourself, don't forget that the first element of the array
- * is the name of the running program.
+ * is the name of the running application.
  *
  * When passing an argument to the constructor, be sure that it respects
  * the same rules as the argv one. It's almost always better to use the
@@ -33,8 +33,8 @@ namespace Symfony\Component\Console\Input;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
- * @see http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
- * @see http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap12.html#tag_12_02
+ * @see    http://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
+ * @see    http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap12.html#tag_12_02
  *
  * @api
  */
@@ -57,7 +57,7 @@ class ArgvInput extends Input
             $argv = $_SERVER['argv'];
         }
 
-        // strip the program name
+        // strip the application name
         array_shift($argv);
 
         $this->tokens = $argv;
@@ -253,10 +253,10 @@ class ArgvInput extends Input
     }
 
     /**
-     * Returns true if the raw parameters (not parsed) contains a value.
+     * Returns true if the raw parameters (not parsed) contain a value.
      *
      * This method is to be used to introspect the input parameters
-     * before it has been validated. It must be used carefully.
+     * before they have been validated. It must be used carefully.
      *
      * @param string|array $values The value(s) to look for in the raw parameters (can be an array)
      *
@@ -279,10 +279,11 @@ class ArgvInput extends Input
      * Returns the value of a raw option (not parsed).
      *
      * This method is to be used to introspect the input parameters
-     * before it has been validated. It must be used carefully.
+     * before they have been validated. It must be used carefully.
      *
      * @param string|array $values The value(s) to look for in the raw parameters (can be an array)
      * @param mixed $default The default value to return if no result is found
+     *
      * @return mixed The option value
      */
     public function getParameterOption($values, $default = false)

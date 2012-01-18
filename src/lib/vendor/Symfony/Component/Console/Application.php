@@ -71,12 +71,25 @@ class Application
         $this->catchExceptions = true;
         $this->autoExit = true;
         $this->commands = array();
-        $this->helperSet = $this->getDefaultHelperSet();
-        $this->definition = $this->getDefaultInputDefinition();
+        $this->helperSet = new HelperSet(array(
+            new FormatterHelper(),
+            new DialogHelper(),
+        ));
 
-        foreach ($this->getDefaultCommands() as $command) {
-            $this->add($command);
-        }
+        $this->add(new HelpCommand());
+        $this->add(new ListCommand());
+
+        $this->definition = new InputDefinition(array(
+            new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
+
+            new InputOption('--help',           '-h', InputOption::VALUE_NONE, 'Display this help message.'),
+            new InputOption('--quiet',          '-q', InputOption::VALUE_NONE, 'Do not output any message.'),
+            new InputOption('--verbose',        '-v', InputOption::VALUE_NONE, 'Increase verbosity of messages.'),
+            new InputOption('--version',        '-V', InputOption::VALUE_NONE, 'Display this application version.'),
+            new InputOption('--ansi',           '',   InputOption::VALUE_NONE, 'Force ANSI output.'),
+            new InputOption('--no-ansi',        '',   InputOption::VALUE_NONE, 'Disable ANSI output.'),
+            new InputOption('--no-interaction', '-n', InputOption::VALUE_NONE, 'Do not ask any interactive question.'),
+        ));
     }
 
     /**
@@ -155,13 +168,6 @@ class Application
 
         if (true === $input->hasParameterOption(array('--no-interaction', '-n'))) {
             $input->setInteractive(false);
-        }
-
-        if (function_exists('posix_isatty') && $this->getHelperSet()->has('dialog')) {
-            $inputStream = $this->getHelperSet()->get('dialog')->getInputStream();
-            if (!posix_isatty($inputStream)) {
-                $input->setInteractive(false);
-            }
         }
 
         if (true === $input->hasParameterOption(array('--quiet', '-q'))) {
@@ -381,12 +387,6 @@ class Application
     public function add(Command $command)
     {
         $command->setApplication($this);
-
-        if (!$command->isEnabled()) {
-            $command->setApplication(null);
-
-            return;
-        }
 
         $this->commands[$command->getName()] = $command;
 
@@ -798,49 +798,6 @@ class Application
     }
 
     /**
-     * Gets the default input definition.
-     *
-     * @return InputDefinition An InputDefinition instance
-     */
-    protected function getDefaultInputDefinition()
-    {
-        return new InputDefinition(array(
-            new InputArgument('command', InputArgument::REQUIRED, 'The command to execute'),
-
-            new InputOption('--help',           '-h', InputOption::VALUE_NONE, 'Display this help message.'),
-            new InputOption('--quiet',          '-q', InputOption::VALUE_NONE, 'Do not output any message.'),
-            new InputOption('--verbose',        '-v', InputOption::VALUE_NONE, 'Increase verbosity of messages.'),
-            new InputOption('--version',        '-V', InputOption::VALUE_NONE, 'Display this program version.'),
-            new InputOption('--ansi',           '',   InputOption::VALUE_NONE, 'Force ANSI output.'),
-            new InputOption('--no-ansi',        '',   InputOption::VALUE_NONE, 'Disable ANSI output.'),
-            new InputOption('--no-interaction', '-n', InputOption::VALUE_NONE, 'Do not ask any interactive question.'),
-        ));
-    }
-
-    /**
-     * Gets the default commands that should always be available.
-     *
-     * @return array An array of default Command instances
-     */
-    protected function getDefaultCommands()
-    {
-        return array(new HelpCommand(), new ListCommand());
-    }
-
-    /**
-     * Gets the default helper set with the helpers that should always be available.
-     *
-     * @return HelperSet A HelperSet instance
-     */
-    protected function getDefaultHelperSet()
-    {
-        return new HelperSet(array(
-            new FormatterHelper(),
-            new DialogHelper(),
-        ));
-    }
-
-    /**
      * Sorts commands in alphabetical order.
      *
      * @param array $commands An associative array of commands to sort
@@ -879,6 +836,14 @@ class Application
         return sprintf('%s, %s%s', $abbrevs[0], $abbrevs[1], count($abbrevs) > 2 ? sprintf(' and %d more', count($abbrevs) - 2) : '');
     }
 
+    /**
+     * Returns the namespace part of the command name.
+     *
+     * @param string $name  The full name of the command
+     * @param string $limit The maximum number of parts of the namespace
+     *
+     * @return string The namespace of the command
+     */
     private function extractNamespace($name, $limit = null)
     {
         $parts = explode(':', $name);
