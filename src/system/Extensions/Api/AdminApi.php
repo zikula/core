@@ -29,7 +29,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
      */
     public function modify($args)
     {
-        return DBUtil::selectObjectByID('modules', $args['id'], 'id');
+        return $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findOneBy($args);
     }
 
     /**
@@ -76,14 +76,13 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Rename operation
-        $obj = array('id'          => $args['id'],
-                     'displayname' => $args['displayname'],
-                     'description' => $args['description'],
-                     'url'         => $args['url']);
+        $entity = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findOneBy(array('id' => $args['id']));
+        $entity->setDisplayname($args['displayname']);
+        $entity->setDescription($args['description']);
+        $entity->setUrl($args['url']);
 
-        if (!DBUtil::updateObject($obj, 'modules')) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
-        }
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
 
         return true;
     }
@@ -215,8 +214,6 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        $name = $result['name'];
-        $directory = $result['directory'];
         $oldstate = $result['state'];
 
         $modinfo = ModUtil::getInfo($args['id']);

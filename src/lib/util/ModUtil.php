@@ -108,17 +108,16 @@ class ModUtil
         }
 
         // This loads all module variables into the modvars static class variable.
-        $modvars = DBUtil::selectObjectArray('module_vars');
+        $em = ServiceUtil::getService('doctrine.entitymanager');
+        $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVars')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var['modname'], self::$modvars)) {
                 self::$modvars[$var['modname']] = array();
             }
             if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
                 self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
-            } elseif ($var['value'] == '0' || $var['value'] == '1') {
-                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             } else {
-                self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
+                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             }
          }
 
@@ -193,34 +192,8 @@ class ModUtil
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            if (System::isUpgrading()) {
-                $tables = DBUtil::getTables();
-                $col = $tables['module_vars_column'];
-                $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
-                // The following line is not a mistake. A sort string containing one space is used to disable the default sort for DBUtil::selectFieldArray().
-                $sort = ' ';
-
-                $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
-
-                if (is_array($results)) {
-                    if (!empty($results)) {
-                        foreach ($results as $k => $v) {
-                            // ref #2045 vars are being stored with 0/1 unserialised.
-                            if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
-                                self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
-                            } else if ($v == '0' || $v == '1') {
-                                self::$modvars[$modname][$k] = $v;
-                            } else {
-                                self::$modvars[$modname][$k] = unserialize($v);
-                            }
-                        }
-                    }
-                }
-                // TODO - There should probably be an exception thrown here if $results === false
-            } else {
-                // Prevent a re-query for the same module in the future, where the module does not define any module variables.
-                self::$modvars[$modname] = array();
-            }
+            // Prevent a re-query for the same module in the future, where the module does not define any module variables.
+            self::$modvars[$modname] = array();
         }
 
         // if they didn't pass a variable name then return every variable
@@ -261,26 +234,21 @@ class ModUtil
             return false;
         }
 
-        $obj = array();
-        $obj['value'] = serialize($value);
-
+        $em = ServiceUtil::getService('doctrine.entitymanager');
         if (self::hasVar($modname, $name)) {
-            $tables = DBUtil::getTables();
-            $cols = $tables['module_vars_column'];
-            $where = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
-                         AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
-            $res = DBUtil::updateObject($obj, 'module_vars', $where);
+            list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVars')->findBy(array('modname' => $modname, 'name' => $name));
+            $entity->setValue($value);
         } else {
-            $obj['name'] = $name;
-            $obj['modname'] = $modname;
-            $res = DBUtil::insertObject($obj, 'module_vars');
+            $entity = new \Zikula\Core\Doctrine\Entity\ExtensionVars();
+            $entity->setModname($modname);
+            $entity->setName($name);
+            $entity->setValue($value);
+            $em->persist($entity);
         }
 
-        if ($res) {
-            self::$modvars[$modname][$name] = $value;
-        }
+        self::$modvars[$modname][$name] = $entity->toArray();
 
-        return (bool)$res;
+        return $em->flush();
     }
 
     /**
@@ -340,20 +308,12 @@ class ModUtil
             }
         }
 
-        $tables = DBUtil::getTables();
-        $cols = $tables['module_vars_column'];
+        $em = ServiceUtil::getService('doctrine.entitymanager');
 
-        // check if we're deleting one module var or all module vars
-        $specificvar = '';
-        $name = DataUtil::formatForStore($name);
-        $modname = DataUtil::formatForStore($modname);
-        if (!empty($name)) {
-            $specificvar = " AND $cols[name] = '$name'";
-        }
+        list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVars')->findBy(array('modname' => $modname, 'name' => $name));
 
-        $where = "WHERE $cols[modname] = '$modname' $specificvar";
-        $res = (bool)DBUtil::deleteWhere('module_vars', $where);
-        return ($val ? $val : $res);
+        $em->remove($entity);
+        $em->flush();
     }
 
     /**
