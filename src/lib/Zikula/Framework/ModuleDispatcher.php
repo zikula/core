@@ -19,6 +19,7 @@ namespace Zikula\Framework;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Framework\Response\PlainResponse;
 
 class ModuleDispatcher
 {
@@ -96,7 +97,6 @@ class ModuleDispatcher
                 $message = $e->getMessage();
                 if (\System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
                     $return = __('Error! The transaction failed. Performing rollback.') . $return;
-                    $dbConn->rollback();
                 } else {
                     $return = __('Error! The transaction failed.') . $return;
                 }
@@ -115,8 +115,8 @@ class ModuleDispatcher
 
         switch (true) {
             case ($return === true):
-                // prevent rendering of the theme.
-                \System::shutDown();
+                $return = new PlainResponse();
+                // prevent rendering of the theme (BC)
                 break;
 
             case ($httpCode == 403):
