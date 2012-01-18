@@ -124,26 +124,6 @@ class NodeBuilder implements NodeParentInterface
 
         $node = new $class($name);
 
-        $this->append($node);
-
-        return $node;
-    }
-
-    /**
-     * Append a node definition.
-     *
-     *     $node = new ArrayNodeDefinition('name')
-     *         ->children()
-     *             ->scalarNode('foo')
-     *             ->scalarNode('baz')
-     *             ->append($this->getBarNodeDefinition())
-     *         ->end()
-     *     ;
-     *
-     * @return NodeBuilder This node builder
-     */
-    public function append(NodeDefinition $node)
-    {
         if ($node instanceof ParentNodeDefinitionInterface) {
             $builder = clone $this;
             $builder->setParent(null);
@@ -156,7 +136,7 @@ class NodeBuilder implements NodeParentInterface
             $node->setParent($this);
         }
 
-        return $this;
+        return $node;
     }
 
     /**
@@ -164,8 +144,6 @@ class NodeBuilder implements NodeParentInterface
      *
      * @param string $type The name of the type
      * @param string $class The fully qualified name the node definition class
-     *
-     * @return NodeBuilder This node builder
      */
     public function setNodeClass($type, $class)
     {

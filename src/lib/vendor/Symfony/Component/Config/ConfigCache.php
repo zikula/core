@@ -56,7 +56,7 @@ class ConfigCache
      */
     public function isFresh()
     {
-        if (!is_file($this->file)) {
+        if (!file_exists($this->file)) {
             return false;
         }
 
@@ -65,7 +65,7 @@ class ConfigCache
         }
 
         $metadata = $this->file.'.meta';
-        if (!is_file($metadata)) {
+        if (!file_exists($metadata)) {
             return false;
         }
 

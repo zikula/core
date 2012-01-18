@@ -18,19 +18,16 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 /**
  * A Shell wraps an Application to add shell capabilities to it.
  *
- * Support for history and completion only works with a PHP compiled
- * with readline support (either --with-readline or --with-libedit)
+ * This class only works with a PHP compiled with readline support
+ * (either --with-readline or --with-libedit)
  *
  * @author Fabien Potencier <fabien@symfony.com>
- * @author Martin Hasoň <martin.hason@gmail.com>
  */
 class Shell
 {
     private $application;
     private $history;
     private $output;
-    private $hasReadline;
-    private $prompt;
 
     /**
      * Constructor.
@@ -44,11 +41,13 @@ class Shell
      */
     public function __construct(Application $application)
     {
-        $this->hasReadline = function_exists('readline');
+        if (!function_exists('readline')) {
+            throw new \RuntimeException('Unable to start the shell as the Readline extension is not enabled.');
+        }
+
         $this->application = $application;
         $this->history = getenv('HOME').'/.history_'.$application->getName();
         $this->output = new ConsoleOutput();
-        $this->prompt = $application->getName().' > ';
     }
 
     /**
@@ -59,14 +58,12 @@ class Shell
         $this->application->setAutoExit(false);
         $this->application->setCatchExceptions(true);
 
-        if ($this->hasReadline) {
-            readline_read_history($this->history);
-            readline_completion_function(array($this, 'autocompleter'));
-        }
+        readline_read_history($this->history);
+        readline_completion_function(array($this, 'autocompleter'));
 
         $this->output->writeln($this->getHeader());
         while (true) {
-            $command = $this->readline();
+            $command = readline($this->application->getName().' > ');
 
             if (false === $command) {
                 $this->output->writeln("\n");
@@ -74,34 +71,13 @@ class Shell
                 break;
             }
 
-            if ($this->hasReadline) {
-                readline_add_history($command);
-                readline_write_history($this->history);
-            }
+            readline_add_history($command);
+            readline_write_history($this->history);
 
             if (0 !== $ret = $this->application->run(new StringInput($command), $this->output)) {
                 $this->output->writeln(sprintf('<error>The command terminated with an error status (%s)</error>', $ret));
             }
         }
-    }
-
-    /**
-     * Returns the shell header.
-     *
-     * @return string The header string
-     */
-    protected function getHeader()
-    {
-        return <<<EOF
-
-Welcome to the <info>{$this->application->getName()}</info> shell (<comment>{$this->application->getVersion()}</comment>).
-
-At the prompt, type <comment>help</comment> for some help,
-or <comment>list</comment> to get a list of available commands.
-
-To exit the shell, type <comment>^D</comment>.
-
-EOF;
     }
 
     /**
@@ -140,20 +116,21 @@ EOF;
     }
 
     /**
-     * Reads a single line from standard input.
+     * Returns the shell header.
      *
-     * @return string The single line from standard input
+     * @return string The header string
      */
-    private function readline()
+    protected function getHeader()
     {
-        if ($this->hasReadline) {
-            $line = readline($this->prompt);
-        } else {
-            $this->output->write($this->prompt);
-            $line = fgets(STDIN, 1024);
-            $line = (!$line && strlen($line) == 0) ? false : rtrim($line);
-        }
+        return <<<EOF
 
-        return $line;
+Welcome to the <info>{$this->application->getName()}</info> shell (<comment>{$this->application->getVersion()}</comment>).
+
+At the prompt, type <comment>help</comment> for some help,
+or <comment>list</comment> to get a list of available commands.
+
+To exit the shell, type <comment>^D</comment>.
+
+EOF;
     }
 }
