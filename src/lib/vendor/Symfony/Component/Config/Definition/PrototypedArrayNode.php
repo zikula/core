@@ -82,6 +82,7 @@ class PrototypedArrayNode extends ArrayNode
      * Sets the default value of this node.
      *
      * @param string $value
+     *
      * @throws \InvalidArgumentException if the default value is not an array
      */
     public function setDefaultValue($value)
@@ -127,6 +128,7 @@ class PrototypedArrayNode extends ArrayNode
      * Disable adding concrete children for prototyped nodes.
      *
      * @param NodeInterface $node The child node to add
+     *
      * @throws \RuntimeException Prototyped array nodes can't have concrete children.
      */
     public function addChild(NodeInterface $node)
@@ -138,7 +140,9 @@ class PrototypedArrayNode extends ArrayNode
      * Finalizes the value of this node.
      *
      * @param mixed $value
+     *
      * @return mixed The finalised value
+     *
      * @throws UnsetKeyException
      * @throws InvalidConfigurationException if the node doesn't have enough children
      */
@@ -173,6 +177,7 @@ class PrototypedArrayNode extends ArrayNode
      * Normalizes the value.
      *
      * @param mixed $value The value to normalize
+     *
      * @return mixed The normalized value
      */
     protected function normalizeValue($value)
@@ -192,7 +197,7 @@ class PrototypedArrayNode extends ArrayNode
                     $ex->setPath($this->getPath());
 
                     throw $ex;
-                } else if (isset($v[$this->keyAttribute])) {
+                } elseif (isset($v[$this->keyAttribute])) {
                     $k = $v[$this->keyAttribute];
 
                     // remove the key attribute when required
@@ -231,7 +236,9 @@ class PrototypedArrayNode extends ArrayNode
      *
      * @param mixed $leftSide The left side to merge.
      * @param mixed $rightSide The right side to merge.
+     *
      * @return mixed The merged values
+     *
      * @throws InvalidConfigurationException
      * @throws \RuntimeException
      */

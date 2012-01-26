@@ -80,7 +80,8 @@ abstract class NodeDefinition implements NodeParentInterface
      */
     public function getNode($forceRootNode = false)
     {
-        if ($forceRootNode) {
+        if ($forceRootNode)
+        {
             $this->parent = null;
         }
 

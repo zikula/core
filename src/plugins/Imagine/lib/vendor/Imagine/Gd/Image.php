@@ -23,7 +23,6 @@ use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\OutOfBoundsException;
 use Imagine\Exception\RuntimeException;
 use Imagine\Gd\Imagine;
-use Imagine\Mask\MaskInterface;
 
 final class Image implements ImageInterface
 {
@@ -146,16 +145,22 @@ final class Image implements ImageInterface
 
         $dest = $this->createImage($size, 'resize');
 
+        imagealphablending($this->resource, true);
+        imagealphablending($dest, true);
+
         if (false === imagecopyresampled($dest, $this->resource, 0, 0, 0, 0,
             $width, $height, imagesx($this->resource), imagesy($this->resource)
         )) {
             throw new RuntimeException('Image resize operation failed');
         }
 
+        imagealphablending($this->resource, false);
+        imagealphablending($dest, false);
+
         imagedestroy($this->resource);
 
         $this->resource = $dest;
-
+        
         return $this;
     }
 
@@ -201,6 +206,8 @@ final class Image implements ImageInterface
      */
     public function show($format, array $options = array())
     {
+        header('Content-type: '.$this->getMimeType($format));
+        
         $this->saveOrOutput($format, $options);
 
         return $this;
@@ -299,7 +306,7 @@ final class Image implements ImageInterface
 
         if ($mode === ImageInterface::THUMBNAIL_INSET) {
             $ratio = min($ratios);
-        } else if ($mode === ImageInterface::THUMBNAIL_OUTBOUND) {
+        } else {
             $ratio = max($ratios);
         }
 
@@ -357,20 +364,15 @@ final class Image implements ImageInterface
 
         for ($x = 0, $width = $size->getWidth(); $x < $width; $x++) {
             for ($y = 0, $height = $size->getHeight(); $y < $height; $y++) {
-                $color     = imagecolorat($this->resource, $x, $y);
-                $info      = imagecolorsforindex($this->resource, $color);
-                $maskColor = $color = imagecolorat($mask->resource, $x, $y);
-                $maskInfo  = imagecolorsforindex($mask->resource, $maskColor);
+                $position  = new Point($x, $y);
+                $color     = $this->getColorAt($position);
+                $maskColor = $mask->getColorAt($position);
+                $round     = (int) round(max($color->getAlpha(), (100 - $color->getAlpha()) * $maskColor->getRed() / 255));
+
                 if (false === imagesetpixel(
                     $this->resource,
                     $x, $y,
-                    imagecolorallocatealpha(
-                        $this->resource,
-                        $info['red'],
-                        $info['green'],
-                        $info['blue'],
-                        round((127 - $info['alpha']) * $maskInfo['red'] / 255)
-                    )
+                    $this->getColor($color->dissolve($round - $color->getAlpha()))
                 )) {
                     throw new RuntimeException('Apply mask operation failed');
                 }
@@ -466,12 +468,11 @@ final class Image implements ImageInterface
      * @param string $format
      * @param array  $options
      * @param string $filename
-     * @param Imagine\Image\Color $color
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    private function saveOrOutput($format, array $options, $filename = null, Color $background = null)
+    private function saveOrOutput($format, array $options, $filename = null)
     {
 
         if (!$this->supported($format)) {
@@ -487,81 +488,31 @@ final class Image implements ImageInterface
 
         if (($format === 'jpeg' || $format === 'png') &&
             isset($options['quality'])) {
-            // png compression quality is 0-9, so here we get the value from percent
+            // Png compression quality is 0-9, so here we get the value from percent.
+            // Beaware that compression level for png works the other way around.
+            // For PNG 0 means no compression and 9 means highest compression level.
             if ($format === 'png') {
-                $options['quality'] = round($options['quality'] * 9 / 100);
+                $options['quality'] = round((100 - $options['quality']) * 9 / 100);
             }
             $args[] = $options['quality'];
         }
 
-        if ($format === 'jpeg') {
-            $size   = $this->getSize();
-            $output = $this->createImage($size, 'save jpeg');
-            $color  = $this->getColor($background ? $background : new Color('fff'));
-
-            imagefill($output, 0, 0, $color);
-            imagealphablending($output, true);
-            imagecopy($output, $this->resource, 0, 0, 0, 0, $size->getWidth(), $size->getHeight());
-            imagealphablending($output, false);
-
-            $this->resource = $output;
-        }
-
-        if ($format === 'png') {
-            imagealphablending($this->resource, false);
-            imagesavealpha($this->resource, true);
-
-            if (isset($options['filters'])) {
-                $args[] = $options['filters'];
-            }
-        }
-
-        /*
-         * Very heavy treatment, but obligate to transform each pixels
-         */
-        if ($format === 'gif'){
-            $size       = $this->getSize();
-            $output     = $this->createImage($size, 'save jpeg');
-            $color      = $background ? $background : new Color('ffffff');
-            $lightalpha = $strongalpha = false;
-
-            for ($x = 0, $width = $size->getWidth(); $x < $width; $x++) {
-                for ($y = 0, $height = $size->getHeight(); $y < $height; $y++) {
-                    $rgb = imagecolorat($this->resource, $x, $y);
-                    $colorAt = imagecolorsforindex($this->resource, $rgb);
-                    // 100 because resize with copyresampled dissolve colors,
-                    // normaly 1 for gif to gif, but as before ending, the output format isn't known...
-                    if ($colorAt['alpha'] >= 100) {
-                        imagesetpixel($this->resource, $x, $y, $this->getColor($color));
-                        $strongalpha = true;
-                    } elseif ($colorAt['alpha'] > 0) {
-                        $lightalpha = true;
-                    }
-                }
-            }
-
-            if ($lightalpha) { //set a background
-                imagefill($output, 0, 0, $this->getColor($color));
-                imagealphablending($output, true);
-                imagecopy($output, $this->resource, 0, 0, 0, 0, $size->getWidth(), $size->getHeight());
-                imagealphablending($output, false);
-                $this->resource = $output;
-            }
-
-            if ($strongalpha) { //set a transparency
-                imagecolortransparent($this->resource, $this->getColor($color));
-            }
-
+        if ($format === 'png' && isset($options['filters'])) {
+            $args[] = $options['filters'];
         }
 
         if (($format === 'wbmp' || $format === 'xbm') &&
             isset($options['foreground'])) {
             $args[] = $options['foreground'];
         }
+        
+        $this->setExceptionHandler();
 
         if (false === call_user_func_array($save, $args)) {
             throw new RuntimeException('Save operation failed');
         }
+
+        $this->resetExceptionHandler();
     }
 
     /**
@@ -594,18 +545,9 @@ final class Image implements ImageInterface
             imageantialias($resource, true);
         }
 
-        $red = $green = $blue = 255;
-
-        $index = imagecolortransparent($this->resource);
-
-        if($index !== -1){
-            $color = imagecolorsforindex($this->resource, $index);
-            $red   = $color['red'];
-            $green = $color['green'];
-            $blue  = $color['blue'];
-        }
-
-        imagefill($resource, 0, 0, imagecolorallocatealpha($resource, $red, $green, $blue, 127));
+        $transparent = imagecolorallocatealpha($resource, 255, 255, 255, 127);
+        imagefill($resource, 0, 0, $transparent);
+        imagecolortransparent($resource, $transparent);
 
         return $resource;
     }
@@ -623,18 +565,12 @@ final class Image implements ImageInterface
      */
     private function getColor(Color $color)
     {
-        static $cache = array();
+        $index = imagecolorallocatealpha(
+            $this->resource, $color->getRed(), $color->getGreen(),
+            $color->getBlue(), round(127 * $color->getAlpha() / 100)
+        );
 
-        $key = (string) $color . "-" . $color->getAlpha();
-
-        if (!isset($cache[$key])) {
-            $cache[$key] = imagecolorallocatealpha(
-                $this->resource, $color->getRed(), $color->getGreen(),
-                $color->getBlue(), round(127 * $color->getAlpha() / 100)
-            );
-        }
-
-        if (false === $cache[$key]) {
+        if (false === $index) {
             throw new RuntimeException(sprintf(
                 'Unable to allocate color "RGB(%s, %s, %s)" with transparency '.
                 'of %d percent', $color->getRed(), $color->getGreen(),
@@ -642,7 +578,7 @@ final class Image implements ImageInterface
             ));
         }
 
-        return $cache[$key];
+        return $index;
     }
 
     /**
@@ -669,5 +605,53 @@ final class Image implements ImageInterface
         }
 
         return in_array($format, $formats);
+    }
+
+    private function setExceptionHandler()
+    {
+        set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
+
+            if (0 === error_reporting()) {
+                return;
+            }
+
+            throw new RuntimeException(
+                $errstr, $errno,
+                new \ErrorException($errstr, 0, $errno, $errfile, $errline)
+            );
+        }, E_WARNING | E_NOTICE);
+    }
+
+    private function resetExceptionHandler()
+    {
+        restore_error_handler();
+    }
+
+    /**
+     * Internal
+     * 
+     * Get the mime type based on format.
+     * 
+     * @param string $format
+     * 
+     * @return string mime-type
+     * 
+     * @throws RuntimeException
+     */
+    private function getMimeType($format) {
+        if (!$this->supported($format)) {
+            throw new RuntimeException('Invalid format');
+        }
+
+        static $mimeTypes = array(
+            'jpeg' => 'image/jpeg',
+            'jpg'  => 'image/jpeg',
+            'gif'  => 'image/gif',
+            'png'  => 'image/png',
+            'wbmp' => 'image/vnd.wap.wbmp',
+            'xbm'  => 'image/xbm',
+        );
+
+        return $mimeTypes[$format];
     }
 }

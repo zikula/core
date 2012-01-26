@@ -68,6 +68,16 @@ class Command
     }
 
     /**
+     * Ignores validation errors.
+     *
+     * This is mainly useful for the help command.
+     */
+    public function ignoreValidationErrors()
+    {
+        $this->ignoreValidationErrors = true;
+    }
+
+    /**
      * Sets the application instance for this command.
      *
      * @param Application $application An Application instance
@@ -114,19 +124,6 @@ class Command
     public function getApplication()
     {
         return $this->application;
-    }
-
-    /**
-     * Checks whether the command is enabled or not in the current environment
-     *
-     * Override this to check for x or y and return false if the command can not
-     * run properly under the current conditions.
-     *
-     * @return Boolean
-     */
-    public function isEnabled()
-    {
-        return true;
     }
 
     /**
@@ -257,9 +254,10 @@ class Command
             return;
         }
 
-        $currentArguments = $this->definition->getArguments();
-        $this->definition->setArguments($this->application->getDefinition()->getArguments());
-        $this->definition->addArguments($currentArguments);
+        $this->definition->setArguments(array_merge(
+            $this->application->getDefinition()->getArguments(),
+            $this->definition->getArguments()
+        ));
 
         $this->definition->addOptions($this->application->getDefinition()->getOptions());
 

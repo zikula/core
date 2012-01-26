@@ -55,7 +55,7 @@ class ClassCollectionLoader
         $reload = false;
         if ($autoReload) {
             $metadata = $cacheDir.'/'.$name.$extension.'.meta';
-            if (!is_file($metadata) || !is_file($cache)) {
+            if (!file_exists($metadata) || !file_exists($cache)) {
                 $reload = true;
             } else {
                 $time = filemtime($cache);
@@ -65,7 +65,7 @@ class ClassCollectionLoader
                     $reload = true;
                 } else {
                     foreach ($meta[0] as $resource) {
-                        if (!is_file($resource) || filemtime($resource) > $time) {
+                        if (!file_exists($resource) || filemtime($resource) > $time) {
                             $reload = true;
 
                             break;
@@ -75,7 +75,7 @@ class ClassCollectionLoader
             }
         }
 
-        if (!$reload && is_file($cache)) {
+        if (!$reload && file_exists($cache)) {
             require_once $cache;
 
             return;

@@ -16,7 +16,7 @@ namespace Symfony\Component\Config\Resource;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class DirectoryResource implements ResourceInterface, \Serializable
+class DirectoryResource implements ResourceInterface
 {
     private $resource;
     private $pattern;
@@ -53,11 +53,6 @@ class DirectoryResource implements ResourceInterface, \Serializable
         return $this->resource;
     }
 
-    public function getPattern()
-    {
-        return $this->pattern;
-    }
-
     /**
      * Returns true if the resource has not been updated since the given timestamp.
      *
@@ -67,7 +62,7 @@ class DirectoryResource implements ResourceInterface, \Serializable
      */
     public function isFresh($timestamp)
     {
-        if (!is_dir($this->resource)) {
+        if (!file_exists($this->resource)) {
             return false;
         }
 
@@ -88,15 +83,5 @@ class DirectoryResource implements ResourceInterface, \Serializable
         }
 
         return $newestMTime < $timestamp;
-    }
-
-    public function serialize()
-    {
-        return serialize(array($this->resource, $this->pattern));
-    }
-
-    public function unserialize($serialized)
-    {
-        list($this->resource, $this->pattern) = unserialize($serialized);
     }
 }
