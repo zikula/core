@@ -30,7 +30,7 @@ class JCSSUtil
     {
         $return = '';
         $config = array(
-                'entrypoint' => System::getHomepageUrl(),
+                'entrypoint' => System::getVar('entrypoint', 'index.php'),
                 'baseURL' => System::getBaseUrl(),
                 'baseURI' => System::getBaseUri() . '/',
                 'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
