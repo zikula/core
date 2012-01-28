@@ -44,7 +44,7 @@ class DoctrineHelper
         }
     }
 
-    public static function updateSchema(EntityManager $em, array $classes)
+    public static function updateSchema(EntityManager $em, array $classes, $saveMode=true)
     {
         $tool = new SchemaTool($em);
         $metaClasses = array();
@@ -52,7 +52,7 @@ class DoctrineHelper
             $metaClasses[] = $em->getClassMetadata($class);
         }
         try {
-            $tool->updateSchema($metaClasses);
+            $tool->updateSchema($metaClasses, $saveMode);
         } catch (\PDOException $e) {
             throw $e;
         }
