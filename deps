@@ -4,15 +4,15 @@
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
-    version=2.2.0-RC4
+    version=2.2.0
 
 [doctrine-dbal]
     git=http://github.com/doctrine/dbal.git
-    version=2.2.0-BETA2
+    version=2.2.1
 
 [doctrine]
     git=http://github.com/doctrine/doctrine2.git
-    version=2.2.0-BETA2
+    version=2.2.0
 
 [gedmo-doctrine-extensions]
     git=http://github.com/l3pp4rd/DoctrineExtensions.git
