@@ -16,7 +16,7 @@
 
 [gedmo-doctrine-extensions]
     git=http://github.com/l3pp4rd/DoctrineExtensions.git
-    version=origin/master
+    version=2.2.x
 
 [twig]
     git=http://github.com/fabpot/Twig.git
