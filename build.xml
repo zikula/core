@@ -63,7 +63,7 @@
  ${builddir}/tmp/Legal" />
         <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
 
-        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/release-2.0
+        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/release-1.6
  ${builddir}/tmp/Profile" />
         <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
 
