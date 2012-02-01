@@ -366,7 +366,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                             $state = 'display_method_selector';
                         }
                     } else {
-                        if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                        if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                             $this->registerError($this->__('We were unable to confirm your credentials with the selected service.'));
                         }
                         $state = 'display_method_selector';
@@ -1229,7 +1229,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                                 if (!$loggedIn) {
                                     // Because the user was preauthentication, this should never happen, but just in case...
 
-                                    if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                                    if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                                         $this->registerError($this->__('Your log-in request was not completed.'));
                                     }
 
@@ -1247,7 +1247,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                                     }
                                 }
                             } else {
-                                if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                                if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                                     $this->registerError($this->__('Your log-in request was not completed.'));
                                 }
 
@@ -1265,7 +1265,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                                 }
                             }
                         } else {
-                            if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                            if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                                 $this->registerError($this->__('There is no user account matching that information, or the password you gave does not match the password on file for that account.'));
                             }
 
@@ -1283,7 +1283,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                             }
                         }
                     } else {
-                        if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                        if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                             $this->registerError($this->__('The credentials you entered were not valid. Please reenter the requested information and try again.'));
                         }
                     }
@@ -1543,7 +1543,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                                         break;
                                 }
                             } else {
-                                if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+                                if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                                     $this->registerError($this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'))
                                             ->redirect(ModUtil::url($this->name, 'user', 'main'));
                                 } else {
