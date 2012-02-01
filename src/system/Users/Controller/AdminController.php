@@ -832,7 +832,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         if ($userNameSent) {
             $this->registerStatus($this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']))
                     ->redirect(ModUtil::url($this->name, 'admin', 'view'));
-        } elseif (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+        } elseif (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
             $this->registerError($this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']))
                     ->redirect(ModUtil::url($this->name, 'admin', 'view'));
         }
@@ -1213,7 +1213,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         $reglist = ModUtil::apiFunc($this->name, 'registration', 'getAll', array('limitoffset' => $limitOffset, 'limitnumrows' => $limitNumRows));
 
         if (($reglist === false) || !is_array($reglist)) {
-            if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+            if (!$this->request->getSession()->hasFlashes(Zikula_Session::MESSAGE_ERROR)) {
                 $this->registerError($this->__('An error occurred while trying to retrieve the registration records.'));
             }
             return $this->redirect(ModUtil::url($this->name, 'admin'), null, 500);
