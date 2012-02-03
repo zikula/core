@@ -1406,10 +1406,6 @@ class ModUtil
         if (!isset(self::$cache['modgetname'])) {
             self::$cache['modgetname'] = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
-            if (empty(self::$cache['modgetname']) && System::getVar('shorturls', 0) == 1) {
-                self::$cache['modgetname'] = System::getVar('shorturlsdefaultmodule');
-            }
-
             if (empty(self::$cache['modgetname'])) {
                 self::$cache['modgetname'] = System::getVar('startpage');
             }
@@ -1421,6 +1417,7 @@ class ModUtil
                 $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
                 self::$cache['modgetname'] = $modinfo['name'];
+
                 if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !self::available(self::$cache['modgetname'])) {
                     self::$cache['modgetname'] = System::getVar('startpage');
                 }
