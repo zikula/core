@@ -87,17 +87,16 @@ function install(Zikula_Core $core)
     }
 
     // load the installer language files
-    if (!$notinstalled && empty($lang)) {
-        $available = ZLanguage::getInstalledLanguages();
-        $detector = new ZLanguageBrowser($available);
-        $lang = $detector->discover();
-    } elseif ($notinstalled) {
-        $installerConfig = array('language' => 'en');
+    if (empty($lang)) {
         if (is_readable('config/installer.ini')) {
             $test = parse_ini_file('config/installer.ini');
-            $installerConfig = isset($test['language']) ? $test : $installerConfig;
+            $lang = isset($test['language']) ? $test['language'] : 'en';
+        } else {
+            $available = ZLanguage::getInstalledLanguages();
+            $detector = new ZLanguageBrowser($available);
+            $lang = $detector->discover();
         }
-        $lang = DataUtil::formatForDisplay($installerConfig['language']);
+        $lang = DataUtil::formatForDisplay($lang);
     }
 
     // setup multilingual

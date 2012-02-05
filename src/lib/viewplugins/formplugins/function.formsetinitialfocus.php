@@ -44,7 +44,7 @@ function smarty_function_formsetinitialfocus($params, $view)
         $selectHtml = '';
     }
 
-    // FIXME: part of PN???
+    // FIXME: ???
     $html = "
 <script type=\"text/javascript\">
 var bodyElement = document.getElementsByTagName('body')[0];

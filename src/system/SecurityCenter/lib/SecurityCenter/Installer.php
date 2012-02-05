@@ -99,7 +99,7 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
         $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/full.txt'));
         System::setVar('fullcontent', $fullcontent);
 
-        // cci vars, see pndocs/ccisecuritystrings.txt
+        // cci vars, see docs/ccisecuritystrings.txt
         System::setVar('usehtaccessbans', 0);
         System::setVar('extrapostprotection', 0);
         System::setVar('extragetprotection', 0);

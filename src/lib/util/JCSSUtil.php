@@ -37,11 +37,6 @@ class JCSSUtil
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
-        if (System::isLegacyMode()) {
-            $return .= 'document.location.entrypoint="' . $config['entrypoint'] . '";';
-            $return .= 'document.location.pnbaseURL="' . $config['baseURL'] . '"; ';
-            $return .= 'document.location.ajaxtimeout=' . $config['ajaxtimeout'] . ";\n";
-        }
         $return .= "if (typeof(Zikula) == 'undefined') {var Zikula = {};}\n";
         $return .= "Zikula.Config = " . json_encode($config) . "\n";
         $return .= ' /* ]]> */</script>' . "\n";
@@ -69,25 +64,6 @@ class JCSSUtil
         $javascripts = PageUtil::getVar('javascript');
         $stylesheets = PageUtil::getVar('stylesheet');
 
-        if (System::isLegacyMode()) {
-            $replaceLightbox = false;
-            // check if we need to perform ligthbox replacement -- javascript
-            if (is_array($javascripts) && !empty($javascripts)) {
-                $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-                if ($key && !is_readable('javascript/ajax/lightbox.js')) {
-                    $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-                    $replaceLightbox = true;
-                }
-            }
-
-            // check if we need to perform ligthbox replacement -- css
-            if ($replaceLightbox) {
-                $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
-                if ($key) {
-                    $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
-                }
-            }
-        }
         $javascripts = self::prepareJavascripts($javascripts, $combine);
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array)$stylesheets, (array)PageUtil::getVar('stylesheet'));
@@ -236,7 +212,6 @@ class JCSSUtil
      * Checks the given script name (alias or path).
      *
      * If this is the core script is returning it's alias.
-     * This method also hanldes all legacy for script paths.
      *
      * @param string $script Script path or alias to verify.
      *
@@ -244,7 +219,6 @@ class JCSSUtil
      */
     public static function getScriptName($script)
     {
-        $script = self::handleLegacy($script);
         $coreScripts = self::scriptsMap();
         $_script = strtolower($script);
         if (array_key_exists($_script, $coreScripts)) {

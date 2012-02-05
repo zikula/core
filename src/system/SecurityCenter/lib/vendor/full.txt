@@ -42,6 +42,6 @@ Information in the $_FILES array
 
 =====================================
 Information in the $_SESSION array
-(session information -- variables starting with PNSV are Zikula session variables)
+(session information -- variables starting with ZSV are Zikula session variables)
 =====================================
 %sessionarray%

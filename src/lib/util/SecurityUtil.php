@@ -198,12 +198,6 @@ class SecurityUtil
             $modname = ModUtil::getName();
         }
 
-        // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Warning! "Modules" module has been renamed to "Extensions".  Please update any "confirmAuthKey" calls in PHP or templates.'));
-            $modname = 'Extensions';
-        }
-
         // get the module info
         $modinfo = ModUtil::getInfoFromName($modname);
         $modname = strtolower($modinfo['name']);
@@ -248,66 +242,6 @@ class SecurityUtil
     }
 
     /**
-     * Generate auth key.
-     *
-     * @param string $modname Module name.
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return string An encrypted key for use in authorisation of operations.
-     */
-    public static function generateAuthKey($modname = '')
-    {
-        // Ugly hack for Zikula_Response_Ajax which for BC reasons needs to add authid to response
-        // So when this method is called by Zikula_Response_Ajax  or Zikula_Response_Ajax_Error class
-        // do not mark it as deprecated.
-        $trace = debug_backtrace(false);
-        if (!isset($trace[1]['class']) || !in_array($trace[1]['class'], array('Zikula_Response_Ajax', 'Zikula_Response_Ajax_Error'))) {
-            LogUtil::log(__f('Warning! Static call %1$s is deprecated. Please use %2$s instead.', array(
-            'SecurityUtil::generateAuthKey()',
-            'SecurityUtil::generateCsrfToken()')), E_USER_DEPRECATED);
-        }
-
-        // since we need sessions for authorisation keys we should check
-        // if a session exists and if not create one
-        SessionUtil::requireSession();
-
-        if (empty($modname)) {
-            $modname = ModUtil::getName();
-        }
-
-        // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update any generateAuthKey calls in PHP or templates.'));
-            $modname = 'Extensions';
-        }
-
-        // get the module info
-        $modinfo = ModUtil::getInfoFromName($modname);
-        $modname = strtolower($modinfo['name']);
-
-        // get the array of randomed values per module
-        // and generate the one of the current module if doesn't exist
-        $rand_arr = SessionUtil::getVar('rand');
-
-        if (!isset($rand_arr[$modname])) {
-            $rand_arr[$modname] = RandomUtil::getString(32, 40, false, true, true, false, true, true, false);
-            SessionUtil::setVar('rand', $rand_arr);
-        }
-
-        $key = $rand_arr[$modname] . $modname;
-        if (System::getVar('keyexpiry') > 0) {
-            $timestamp = time();
-            $authid = sha1($key . $timestamp) . $timestamp;
-        } else {
-            $authid = sha1($key);
-        }
-
-        // Return encrypted key
-        return $authid;
-    }
-
-    /**
      * Get auth info.
      *
      * @param integer $user User Id.
@@ -316,7 +250,7 @@ class SecurityUtil
      */
     public static function getAuthInfo($user = null)
     {
-        // Table columns we use - ModUtil::dbInfoLoad is done in pnInit
+        // Table columns we use - ModUtil::dbInfoLoad is done during core init
         $dbtable = DBUtil::getTables();
         $groupmembershipcolumn = $dbtable['group_membership_column'];
         $grouppermcolumn = $dbtable['group_perms_column'];

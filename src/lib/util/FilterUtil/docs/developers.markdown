@@ -3,7 +3,7 @@
 
 FilterUtil brings a filter system to a module's list view. It's using an extended
 pagesetter­-like filter syntax providing a maximum of flexibility, able to work on
-pntable and Doctrine based modules.
+table and Doctrine based modules.
 
 In this document we will help you understand the implementation of _FilterUtil_
 in your module.
@@ -16,14 +16,14 @@ Implementing FilterUtil is very easy. Simply load it and create a new instance b
     [php]
     $filterUtil = new FilterUtil('ModuleName', $table, $config);
 
-Where `$table` can be a *Doctrine_Table* instance or a pntable name string,
+Where `$table` can be a *Doctrine_Table* instance or a table name string,
 and `$config` is an array of additional attributes:
 
 1. **varname**: The name of the filter variable in the URL. Default: “filter”
 2. **plugins**: The plugins to load and their configuration.
    A plugin name => plugin configuration array.
 3. **alias**: Alias of the main table of the query.
-4. **join**: (only for pntables) A reference to a DBUtil JOIN array.
+4. **join**: (only for tables) A reference to a DBUtil JOIN array.
    This will be extended by FilterUtil if necessary.
 
 
@@ -114,7 +114,7 @@ Enrich a *Doctrine_Query* with the filter conditions.
     [php]
     $result = $filterUtil->getSQL();
 
-Returns the where clause and join conditions for pntable based modules.
+Returns the where clause and join conditions for table based modules.
 The result is an array with:
 
 - *where*: the WHERE clause.

@@ -14,7 +14,7 @@
  */
 
 /**
- * selector_module: generate a PN Module selector
+ * selector_module: generate a module selector
  *
  * Parameters:
  *  name          The name of the selector tag

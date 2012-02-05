@@ -17,7 +17,7 @@
  * Zikula_View function to get all session variables.
  *
  * This function gets all session vars from the Zikula system assigns the names and
- * values to two array. This is being used in pndebug to show them.
+ * values to two array. This is being used in debug to show them.
  *
  * Example
  *   {debugenvironment}

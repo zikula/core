@@ -44,15 +44,15 @@
 function smarty_function_calendarinput($params, Zikula_View $view)
 {
     if (!isset($params['objectname'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('calendarinput', 'objectname')));
         return false;
     }
     if (!isset($params['htmlname'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'htmlname')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('calendarinput', 'htmlname')));
         return false;
     }
     if (!isset($params['dateformat'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'dateformat')));
+        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('calendarinput', 'dateformat')));
         return false;
     }
     $ifformat = isset($params['ifformat']) ? $params['ifformat'] : $params['dateformat'];
@@ -63,8 +63,8 @@ function smarty_function_calendarinput($params, Zikula_View $view)
         $ifformat = $inctime ? '%Y-%m-%d %H:%M' : '%Y-%m-%d';
     }
 
-    // start of old pncalendarinit
-    // pagevars make an extra pncalendarinit obsolete, they take care about the fact
+    // start of old calendarinit
+    // pagevars make an extra calendarinit obsolete, they take care about the fact
     // that the styles/jsvascript do not get loaded multiple times
     static $firstTime = true;
 
@@ -94,7 +94,7 @@ function smarty_function_calendarinput($params, Zikula_View $view)
         PageUtil::addVar('javascript', $headers);
     }
     $firstTime = false;
-    // end of old pncalendarinit
+    // end of old calendarinit
 
     if (!isset($params['defaultstring'])) $params['defaultstring'] = null;
     if (!isset($params['defaultdate']))   $params['defaultdate'] = null;

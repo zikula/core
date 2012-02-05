@@ -25,38 +25,6 @@ function Extensions_tables()
     // Initialise table array
     $dbtable = array();
 
-    // modules module
-    $hooks = 'hooks';
-    $dbtable['hooks'] = $hooks;
-    $dbtable['hooks_column'] = array(
-            'id' => 'id',
-            'object' => 'object',
-            'action' => 'action',
-            'smodule' => 'smodule',
-            'stype' => 'stype',
-            'tarea' => 'tarea',
-            'tmodule' => 'tmodule',
-            'ttype' => 'ttype',
-            'tfunc' => 'tfunc',
-            'sequence' => 'sequence');
-
-    // column definition
-    $dbtable['hooks_column_def'] = array(
-            'id' => 'I AUTO PRIMARY',
-            'object' => "C(64) NOTNULL DEFAULT ''",
-            'action' => "C(64) NOTNULL DEFAULT ''",
-            'smodule' => "C(64) NOTNULL DEFAULT ''",
-            'stype' => "C(64) NOTNULL DEFAULT ''",
-            'tarea' => "C(64) NOTNULL DEFAULT ''",
-            'tmodule' => "C(64) NOTNULL DEFAULT ''",
-            'ttype' => "C(64) NOTNULL DEFAULT ''",
-            'tfunc' => "C(64) NOTNULL DEFAULT ''",
-            'sequence' => "I NOTNULL DEFAULT 0");
-
-    // additional indexes
-    $dbtable['hooks_column_idx'] = array('smodule' => 'smodule',
-            'smodule_tmodule' => array('smodule', 'tmodule'));
-
     $modules = 'modules';
     $dbtable['modules'] = $modules;
     $dbtable['modules_column'] = array(

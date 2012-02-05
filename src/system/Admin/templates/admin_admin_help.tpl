@@ -118,8 +118,5 @@
 
     <h5 id="admin_security_center_warning3">{gt text="You see the message"}: {gt text="Security center module is not activated, but preferably should be."}</h5>
     <p>{gt text="When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site's security."}</p>
-
-    <h5 id="admin_legacymodewarning">{gt text="You see the message"}: {gt text="Legacy module support is enabled, but preferably should be disabled."}</h5>
-    <p>{gt text="You have the possibility of enabling support for legacy PostNuke modules. However, legacy modules can contain security holes that can compromise a site's security. You are strongly recommended to only use up-to-date versions of modules that are compliant with the project's official API (Application Programming Interface). In this case, legacy module support can be disabled (this is the default setting when a site is first installed)."}</p>
 </fieldset>
 {adminfooter}

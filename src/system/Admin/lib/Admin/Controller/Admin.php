@@ -339,10 +339,6 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                     $adminicons = array($modpath . '/' . $osmoddir . '/images/admin.png',
                             $modpath . '/' . $osmoddir . '/images/admin.jpg',
                             $modpath . '/' . $osmoddir . '/images/admin.gif',
-                            $modpath . '/' . $osmoddir . '/pnimages/admin.gif',
-                            $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
-                            $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
-                            $modpath . '/' . $osmoddir . '/pnimages/admin.png',
                             'system/Admin/images/default.gif');
 
                     foreach ($adminicons as $adminicon) {
