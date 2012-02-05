@@ -93,7 +93,7 @@ function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClas
         $html .= !empty($treeClassPrefix) ? ' class="'.$treeClassPrefix.$tab['item']['id'].'"' : '';
         $html .= '>';
         $attr  = !empty($tab['item']['title']) ? ' title="'.$tab['item']['title'].'"' : '';
-        $attr .= !empty($tab['item']['className']) ? ' class="'.$tab['item']['className'].'"' : '';
+        $attr .= !empty($tab['item']['class']) ? ' class="'.$tab['item']['class'].'"' : '';
         if(!empty($tab['item']['href'])) {
             $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
         } else {
@@ -130,7 +130,7 @@ function _htmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId
         $html .= !empty($treeNodePrefix) ? ' id="'.$treeNodePrefix.$tab['item']['id'].'"' : '';
         $html .= ' class="'.$class.'">';
         $attr  = !empty($tab['item']['title']) ? ' title="'.$tab['item']['title'].'"' : '';
-        $attr .= !empty($tab['item']['className']) ? ' class="'.$tab['item']['className'].'"' : '';
+        $attr .= !empty($tab['item']['class']) ? ' class="'.$tab['item']['class'].'"' : '';
         if(!empty($tab['item']['href'])) {
             $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
         } else {
