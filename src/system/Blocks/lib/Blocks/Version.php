@@ -24,7 +24,9 @@ class Blocks_Version extends Zikula_AbstractVersion
         $meta['version']        = '3.8.0';
 
         $meta['securityschema'] = array('Blocks::' => 'Block key:Block title:Block ID',
-                'Blocks::position' => 'Position name::Position ID');
+                'Blocks::position' => 'Position name::Position ID',
+                'Menutree:menutreeblock:' => 'Block ID:Link Name:Link ID',
+                'ExtendedMenublock::' => 'Block ID:Link ID:');
         return $meta;
     }
 
