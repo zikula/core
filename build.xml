@@ -24,13 +24,13 @@
     <property name="checksumpath" value="${archivedir}/${package}-checksums" />
     <property name="patchdir" value="${builddir}/patch" />
     <property name="tmpdir" value="${builddir}/tmp" />
-    <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy,plugins/*" />
+    <property name="ignorepaths" value="vendor/*,lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy,plugins/*" />
 
     <property name="ownjslist" value="javascript/helpers/Zikula.js,javascript/helpers/Zikula.ImageViewer.js,javascript/helpers/Zikula.Tree.js,javascript/helpers/Zikula.itemlist.js,javascript/helpers/Zikula.UI.js,system/Admin/Resources/javascript/admin_admin_ajax.js,system/Admin/Resources/javascript/admin_admin_modifyconfig.js,system/Blocks/Resources/javascript/blocks.js,system/Blocks/Resources/javascript/contextmenu.js,system/Blocks/Resources/javascript/functions.js,system/Blocks/Resources/javascript/Zikula.Menutree.Tree.js,system/Categories/Resources/javascript/categories_admin_edit.js,system/Categories/Resources/javascript/categories_admin_view.js,system/Extensions/Resources/javascript/hookui.js,system/Groups/Resources/javascript/groups.js,system/Mailer/Resources/javascript/mailer_admin_modifyconfig.js,system/Mailer/Resources/javascript/mailer_admin_testconfig.js,system/PageLock/Resources/javascript/pagelock.js,system/Permissions/Resources/javascript/permissions.js,system/Search/Resources/javascript/search_user_form.js,system/SecurityCenter/Resources/javascript/securitycenter_admin_allowedhtm.js,system/SecurityCenter/Resources/javascript/securitycenter_admin_modifyconfig.js,system/SecurityCenter/Resources/javascript/securitycenter_admin_purifierconfig.js,system/Settings/Resources/javascript/settings_admin_modifyconfig.js,system/Settings/Resources/javascript/settings_admin_multilingual.js,system/Theme/Resources/javascript/form/form.js,system/Theme/Resources/javascript/form/form_tabbedpanelset.js,system/Theme/Resources/javascript/themeswitcher.js,system/Theme/Resources/javascript/theme_admin_modifyconfig.js,system/Users/Resources/javascript/users.js,system/Users/Resources/javascript/users_admin_modifyregistration.js,system/Users/Resources/javascript/Zikula.Users.NewUser.js,system/Users/Resources/javascript/Zikula.Users.LoginBlock.js,system/Users/Resources/javascript/Zikula.Users.PassMeter.js" />
 
 
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
-    <property name="docbloxignorepaths" value="lib/vendor/,javascript/,system/" />
+    <property name="docbloxignorepaths" value="vendor/,lib/vendor/,javascript/,system/" />
     <property name="ignorefiletypes" value="*.css,*.js" />
 
     <target name="clean">
