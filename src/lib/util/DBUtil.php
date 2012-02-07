@@ -2260,7 +2260,7 @@ class DBUtil
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
-        $fieldName = $columns[$field];
+        $fieldName = isset($columns[$field]) ? 'tbl.'.$columns[$field] : $field;
 
         $sqlJoinArray = self::_processJoinArray($table, $joinInfo);
         $sqlJoin = $sqlJoinArray[0];
@@ -2269,8 +2269,7 @@ class DBUtil
         $where = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
 
-        $alias = empty($sqlJoinArray[0]) ? 'tbl.' : 'a.';
-        $dSql = ($distinct ? "DISTINCT({$alias}$fieldName)" : "{$alias}$fieldName");
+        $dSql = ($distinct ? "DISTINCT($fieldName)" : "$fieldName");
         $sqlStart = "SELECT $dSql ";
         $sqlFrom = "FROM $tableName AS tbl ";
 
