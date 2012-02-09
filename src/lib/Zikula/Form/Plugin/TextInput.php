@@ -410,7 +410,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
         if ($this->mandatory && $this->isEmpty()) {
             $this->setError(__('Error! An entry in this field is mandatory.'));
         } else if (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
-            $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.'), $this->maxLength));
+            $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.', $this->maxLength)));
         } else if ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
             $this->setError($view->translateForDisplay($this->regexValidationMessage));
         }
