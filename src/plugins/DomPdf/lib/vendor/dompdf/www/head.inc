@@ -1,10 +1,20 @@
 <?php
+
+session_start();
+
+require_once "../dompdf_config.inc.php";
+require_once "functions.inc.php";
+
 function li_arrow() {
   return '<li style="list-style-image: url(\'images/arrow_0' . rand(1,6) . '.gif\');">';  
 }
+
 function li_star() {
   return '<li style="list-style-image: url(\'images/star_0' . rand(1,5) . '.gif\');">';  
 }
+
+auth_check();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +23,12 @@ function li_star() {
   <link rel="stylesheet" href="style.css" type="text/css"/>
   <link rel="SHORTCUT ICON" href="images/favicon.ico"/>
   <script type="text/javascript" src="jquery-1.4.2.js"></script>
+  
+  <?php if (isset($_SESSION["auth_message"])) { ?>
+    <script type="text/javascript">
+      alert("<?php echo $_SESSION["auth_message"]; ?>");
+    </script>
+  <?php } ?>
 </head>
 
 <body>
@@ -31,6 +47,7 @@ function li_star() {
     <li style="list-style-image: url('images/star_02.gif');"><a href="examples.php">Examples</a></li>
     <li style="list-style-image: url('images/star_02.gif');"><a href="demo.php">Demo</a></li>
     <li style="list-style-image: url('images/star_02.gif');"><a href="setup.php">Setup / Config</a></li>
+    <li style="list-style-image: url('images/star_02.gif');"><a href="fonts.php">Fonts</a></li>
   </ul>
 </div>
 

@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: block_renderer.cls.php,v $
- * Created on: 2004-06-03
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: block_renderer.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: block_renderer.cls.php 346 2011-01-09 13:23:22Z fabien.menager $ */
 
 /**
  * Renders block frames
@@ -51,10 +19,21 @@ class Block_Renderer extends Abstract_Renderer {
 
   function render(Frame $frame) {
     $style = $frame->get_style(); 
-    list($x, $y, $w, $h) = $frame->get_padding_box();
+    list($x, $y, $w, $h) = $frame->get_border_box();
     
     $this->_set_opacity( $frame->get_opacity( $style->opacity ) );
 
+    if ( $frame->get_node()->nodeName === "body" ) {
+      $h = $frame->get_containing_block("h") - $style->length_in_pt(array(
+        $style->margin_top,
+        $style->padding_top,
+        $style->border_top_width,
+        $style->border_bottom_width,
+        $style->padding_bottom,
+        $style->margin_bottom),
+      $style->width);
+    }
+    
     // Draw our background, border and content
     if ( ($bg = $style->background_color) !== "transparent" ) {
       $this->_canvas->filled_rectangle( $x, $y, $w, $h, $bg );
@@ -74,8 +53,8 @@ class Block_Renderer extends Abstract_Renderer {
     }
     
     if (DEBUG_LAYOUT && DEBUG_LAYOUT_LINES && $frame->get_decorator()) {
-      foreach ($frame->get_decorator()->get_lines() as $line) {
-        $frame->_debug_layout(array($line["x"], $line["y"], $line["w"], $line["h"]), "orange");
+      foreach ($frame->get_decorator()->get_line_boxes() as $line) {
+        $frame->_debug_layout(array($line->x, $line->y, $line->w, $line->h), "orange");
       }
     }
   }

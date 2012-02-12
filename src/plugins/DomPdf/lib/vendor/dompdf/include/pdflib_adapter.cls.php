@@ -1,48 +1,12 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: pdflib_adapter.cls.php,v $
- * Created on: 2005-02-28
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
  * @package dompdf
- *
- * Changes
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version 0.5.1.htischer.20090507
- * - Clarify temp file name, optional debug output for temp file tracking
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: pdflib_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: pdflib_adapter.cls.php 355 2011-01-27 07:44:54Z fabien.menager $ */
 
 /**
  * PDF rendering interface
@@ -208,7 +172,9 @@ class PDFLib_Adapter implements Canvas {
     if ( self::$IN_MEMORY )
       $this->_pdf->begin_document("","");
     else {
-      $this->_file = tempnam(DOMPDF_TEMP_DIR, "libdompdf_pdf_").'.pdf';
+      $tempname = tempnam(DOMPDF_TEMP_DIR, "libdompdf_pdf_");
+      @unlink($tempname);
+      $this->_file = "$tempname.pdf";
       $this->_pdf->begin_document($this->_file,"");
     }
 
@@ -484,7 +450,7 @@ class PDFLib_Adapter implements Canvas {
    */
   protected function _set_stroke_color($color) {
     if($this->_last_stroke_color == $color)
-    	return;
+      return;
 
     $this->_last_stroke_color = $color;
 
@@ -511,7 +477,7 @@ class PDFLib_Adapter implements Canvas {
    */
   protected function _set_fill_color($color) {
     if($this->_last_fill_color == $color)
-    	return;
+      return;
 
     $this->_last_fill_color = $color;
 
@@ -543,6 +509,22 @@ class PDFLib_Adapter implements Canvas {
       $this->_pdf->set_gstate($gstate);
     }
   }
+  
+  function set_default_view($view, $options = array()) {
+    // TODO
+    // http://www.pdflib.com/fileadmin/pdflib/pdf/manuals/PDFlib-8.0.2-API-reference.pdf
+    /**
+     * fitheight Fit the page height to the window, with the x coordinate left at the left edge of the window.
+     * fitrect Fit the rectangle specified by left, bottom, right, and top to the window.
+     * fitvisible Fit the visible contents of the page (the ArtBox) to the window.
+     * fitvisibleheight Fit the visible contents of the page to the window with the x coordinate left at the left edge of the window.
+     * fitvisiblewidth Fit the visible contents of the page to the window with the y coordinate top at the top edge of the window.
+     * fitwidth Fit the page width to the window, with the y coordinate top at the top edge of the window.
+     * fitwindow Fit the complete page to the window.
+     * fixed
+     */
+    //$this->_pdf->set_parameter("openaction", $view);
+  }
 
   /**
    * Loads a specific font and stores the corresponding descriptor.
@@ -554,13 +536,8 @@ class PDFLib_Adapter implements Canvas {
 
     // Check if the font is a native PDF font
     // Embed non-native fonts
-    $native_fonts = array("courier", "courier-bold", "courier-oblique", "courier-boldoblique",
-                          "helvetica", "helvetica-bold", "helvetica-oblique", "helvetica-boldoblique",
-                          "times-roman", "times-bold", "times-italic", "times-bolditalic",
-                          "symbol", "zapfdinbats");
-
     $test = strtolower(basename($font));
-    if ( in_array($test, $native_fonts) ) {
+    if ( in_array($test, DOMPDF::$native_fonts) ) {
       $font = basename($font);
 
     } else {
@@ -737,26 +714,22 @@ class PDFLib_Adapter implements Canvas {
 
   //........................................................................
 
-  function image($img_url, $img_type, $x, $y, $w, $h) {
+  function image($img_url, $x, $y, $w, $h, $resolution = "normal") {
     $w = (int)$w;
     $h = (int)$h;
 
-    $img_type = strtolower($img_type);
+    $img_type = Image_Cache::detect_type($img_url);
+    $img_ext  = Image_Cache::type_to_ext($img_type);
 
-    if ( $img_type === "jpg" )
-      $img_type = "jpeg";
-
-    if ( isset($this->_imgs[$img_url]) )
+    if ( isset($this->_imgs[$img_url]) ) {
       $img = $this->_imgs[$img_url];
-
+    }
     else {
-
       $img = $this->_imgs[$img_url] = $this->_pdf->load_image($img_type, $img_url, "");
     }
 
     $y = $this->y($y) - $h;
-    $this->_pdf->fit_image($img, $x, $y, 'boxsize={'. "$w $h" .'} fitmethod=entire');
-
+    $this->_pdf->fit_image($img, $x, $y, "boxsize=\{$w $h\} fitmethod=entire");
   }
 
   //........................................................................
@@ -859,6 +832,10 @@ class PDFLib_Adapter implements Canvas {
 
     // $desc is usually < 0,
     return $size * ($asc - $desc) * DOMPDF_FONT_HEIGHT_RATIO;
+  }
+  
+  function get_font_baseline($font, $size) {
+    return $this->get_font_height($font, $size) / DOMPDF_FONT_HEIGHT_RATIO * 1.1;
   }
 
   //........................................................................

@@ -1,49 +1,12 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: list_bullet_renderer.cls.php,v $
- * Created on: 2004-06-23
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
  * @package dompdf
-
- *
- * Changes
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version 20090622
- * - bullet size proportional to font size, center position
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: list_bullet_renderer.cls.php 468 2012-02-05 10:51:40Z fabien.menager $
  */
-
-/* $Id: list_bullet_renderer.cls.php 354 2011-01-24 21:59:54Z fabien.menager $ */
 
 /**
  * Renders list bullets
@@ -52,6 +15,53 @@
  * @package dompdf
  */
 class List_Bullet_Renderer extends Abstract_Renderer {
+  static function get_counter_chars($type) {
+    static $cache = array();
+    
+    if ( isset($cache[$type]) ) {
+      return $cache[$type];
+    }
+    
+    $uppercase = false;
+    $text = "";
+    
+    switch ($type) {
+      case "decimal-leading-zero":
+      case "decimal":
+      case "1":
+        return "0123456789";
+      
+      case "upper-alpha":
+      case "upper-latin":
+      case "A":
+        $uppercase = true;
+      case "lower-alpha":
+      case "lower-latin":
+      case "a":
+        $text = "abcdefghijklmnopqrstuvwxyz";
+        break;
+        
+      case "upper-roman":
+      case "I":
+        $uppercase = true;
+      case "lower-roman":
+      case "i":
+        $text = "ivxlcdm";
+        break;
+      
+      case "lower-greek":
+        for($i = 0; $i < 24; $i++) {
+          $text .= unichr($i+944);
+        }
+        break;
+    }
+    
+    if ( $uppercase ) {
+      $text = strtoupper($text);
+    }
+    
+    return $cache[$type] = "$text.";
+  }
 
   //........................................................................
   private function make_counter($n, $type, $pad = null){
@@ -92,14 +102,14 @@ class List_Bullet_Renderer extends Abstract_Renderer {
         break;
     }
     
-    if ($uppercase) 
+    if ( $uppercase ) {
       $text = strtoupper($text);
-      
-    return $text.".";
+    }
+    
+    return "$text.";
   }
   
   function render(Frame $frame) {
-
     $style = $frame->get_style();
     $font_size = $style->get_font_size();
     $line_height = $style->length_in_pt($style->line_height, $frame->get_containing_block("w"));
@@ -109,7 +119,7 @@ class List_Bullet_Renderer extends Abstract_Renderer {
     // Handle list-style-image
     // If list style image is requested but missing, fall back to predefined types
     if ( $style->list_style_image !== "none" &&
-         strcmp($img = $frame->get_image_url(), DOMPDF_LIB_DIR . "/res/broken_image.png") != 0) {
+         !Image_Cache::is_broken($img = $frame->get_image_url())) {
 
       list($x,$y) = $frame->get_position();
       
@@ -126,7 +136,7 @@ class List_Bullet_Renderer extends Abstract_Renderer {
       $x -= $w;
       $y -= ($line_height - $font_size)/2; //Reverse hinting of list_bullet_positioner
 
-      $this->_canvas->image( $img, $frame->get_image_ext(), $x, $y, $w, $h);
+      $this->_canvas->image( $img, $x, $y, $w, $h);
 
     } else {
 
@@ -156,7 +166,7 @@ class List_Bullet_Renderer extends Abstract_Renderer {
         $y += ($font_size*(1-List_Bullet_Frame_Decorator::BULLET_DESCENT-List_Bullet_Frame_Decorator::BULLET_SIZE))/2;
         $this->_canvas->filled_rectangle($x, $y, $w, $w, $style->color);
         break;
-		
+    
       case "decimal-leading-zero":
       case "decimal":
       case "lower-alpha":
@@ -171,22 +181,31 @@ class List_Bullet_Renderer extends Abstract_Renderer {
       case "i":
       case "A":
       case "I":
-        list($x,$y) = $frame->get_position();
+        $li = $frame->get_parent();
         
         $pad = null;
         if ( $bullet_style === "decimal-leading-zero" ) {
-          $pad = strlen($frame->get_parent()->get_parent()->get_node()->getAttribute("dompdf-children-count"));
+          $pad = strlen($li->get_parent()->get_node()->getAttribute("dompdf-children-count"));
         }
         
         $index = $frame->get_node()->getAttribute("dompdf-counter");
         $text = $this->make_counter($index, $bullet_style, $pad);
-        $font_family = $style->font_family;
-        $spacing = 0; //$frame->get_text_spacing() + $style->word_spacing;
         
-        if ( trim($text) == "" )
+        if ( trim($text) == "" ) {
           return;
+        }
+        
+        $spacing = 0;
+        $font_family = $style->font_family;
+        
+        $line = $li->get_containing_line();
+        list($x, $y) = array($frame->get_position("x"), $line->y);
 
         $x -= Font_Metrics::get_text_width($text, $font_family, $font_size, $spacing);
+        
+        // Take line-height into account
+        $line_height = $style->line_height;
+        $y += ($line_height - $font_size) / 4; // FIXME I thought it should be 2, but 4 gives better results
         
         $this->_canvas->text($x, $y, $text,
                              $font_family, $font_size,
