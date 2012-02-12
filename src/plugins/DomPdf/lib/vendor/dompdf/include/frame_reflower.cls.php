@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: frame_reflower.cls.php,v $
- * Created on: 2004-06-17
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: frame_reflower.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: frame_reflower.cls.php 357 2011-01-30 20:56:46Z fabien.menager $ */
 
 /**
  * Base reflower class
@@ -73,9 +41,18 @@ abstract class Frame_Reflower {
     clear_object($this);
   }
 
+  /**
+   * Collapse frames margins
+   * http://www.w3.org/TR/CSS2/box.html#collapsing-margins
+   */
   protected function _collapse_margins() {
-    $cb = $this->_frame->get_containing_block();
-    $style = $this->_frame->get_style();
+    $frame = $this->_frame;
+    $cb = $frame->get_containing_block();
+    $style = $frame->get_style();
+    
+    if ( !$frame->is_in_flow() ) {
+      return;
+    }
 
     $t = $style->length_in_pt($style->margin_top, $cb["h"]);
     $b = $style->length_in_pt($style->margin_bottom, $cb["h"]);
@@ -92,31 +69,49 @@ abstract class Frame_Reflower {
     }
 
     // Collapse vertical margins:
-    $n = $this->_frame->get_next_sibling();
-    
-    // FIXME If there is a non-empty inline frame between the blocks, it is not taken into account
-    while ( $n && !in_array($n->get_style()->display, Style::$BLOCK_TYPES) ) {
-      $n = $n->get_next_sibling();
+    $n = $frame->get_next_sibling();
+    if ( $n && !$n->is_block() ) {
+      while ( $n = $n->get_next_sibling() ) {
+        if ( $n->is_block() ) {
+          break;
+        }
+        
+        if ( !$n->get_first_child() ) {
+          $n = null;
+          break;
+        }
+      }
     }
     
-    if ( $n ) { // && !$n instanceof Page_Frame_Decorator ) {
-      $b = max($b, $style->length_in_pt($n->get_style()->margin_top, $cb["h"]));
-      $n->get_style()->margin_top = "0pt";
+    if ( $n ) {
+      $n_style = $n->get_style();
+      $b = max($b, $n_style->length_in_pt($n_style->margin_top, $cb["h"]));
+      $n_style->margin_top = "0pt";
       $style->margin_bottom = $b."pt";
     }
 
     // Collapse our first child's margin
-    $f = $this->_frame->get_first_child();
-    while ( $f && !in_array($f->get_style()->display, Style::$BLOCK_TYPES) )
-      $f = $f->get_next_sibling();
-
-    // Margin are collapsed only between block elements
-    if ( $f && in_array($f->get_style()->display, Style::$BLOCK_TYPES)) {
-      $t = max( $t, $style->length_in_pt($f->get_style()->margin_top, $cb["h"]));
-      $style->margin_top = $t."pt";
-      $f->get_style()->margin_bottom = "0pt";
+    /*$f = $this->_frame->get_first_child();
+    if ( $f && !$f->is_block() ) {
+      while ( $f = $f->get_next_sibling() ) {
+        if ( $f->is_block() ) {
+          break;
+        }
+        
+        if ( !$f->get_first_child() ) {
+          $f = null;
+          break;
+        }
+      }
     }
 
+    // Margin are collapsed only between block elements
+    if ( $f ) {
+      $f_style = $f->get_style();
+      $t = max($t, $f_style->length_in_pt($f_style->margin_top, $cb["h"]));
+      $style->margin_top = $t."pt";
+      $f_style->margin_bottom = "0pt";
+    }*/
   }
 
   //........................................................................
@@ -325,8 +320,8 @@ abstract class Frame_Reflower {
           else
             $type = null;
 
-          $p = $this->_frame->find_block_parent();
-
+          $p = $this->_frame->lookup_counter_frame($counter_id);
+          
           $text .= $p->counter_value($counter_id, $type);
 
         } else if ( $match[1][7] === "s" ) {
@@ -341,11 +336,11 @@ abstract class Frame_Reflower {
           else
             $type = null;
 
-          $p = $this->_frame->find_block_parent();
+          $p = $this->_frame->lookup_counter_frame($counter_id);
           $tmp = "";
           while ($p) {
             $tmp = $p->counter_value($counter_id, $type) . $string . $tmp;
-            $p = $p->find_block_parent();
+            $p = $p->lookup_counter_frame($counter_id);
           }
           $text .= $tmp;
 
@@ -396,7 +391,7 @@ abstract class Frame_Reflower {
     $frame = $this->_frame;
     $style = $frame->get_style();
   
-    if ( $style->content && $frame->get_node()->nodeName === "dompdf_generated" ) {
+    if ( $style->content && !$frame->get_first_child() && $frame->get_node()->nodeName === "dompdf_generated" ) {
       $content = $this->_parse_content();
       $node = $frame->get_node()->ownerDocument->createTextNode($content);
       
@@ -410,5 +405,11 @@ abstract class Frame_Reflower {
       $new_frame->get_decorator()->set_root($frame->get_root());
       $frame->append_child($new_frame);
     }
+    
+    if ( $style->counter_reset && ($reset = $style->counter_reset) !== "none" )
+      $frame->reset_counter($reset);
+    
+    if ( $style->counter_increment && ($increment = $style->counter_increment) !== "none" )
+      $frame->increment_counters($increment);
   }
 }
