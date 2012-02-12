@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: frame_decorator.cls.php,v $
- * Created on: 2004-06-02
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: frame_decorator.cls.php 464 2012-01-30 20:44:53Z fabien.menager $
  */
-
-/* $Id: frame_decorator.cls.php 357 2011-01-30 20:56:46Z fabien.menager $ */
 
 /**
  * Base Frame_Decorator class
@@ -46,6 +14,9 @@
  * @package dompdf
  */
 abstract class Frame_Decorator extends Frame {
+  const DEFAULT_COUNTER = "-dompdf-default-counter";
+  
+  public $_counters = array(); // array([id] => counter_value) (for generated content)
   
   /**
    * The root node of the DOM tree
@@ -85,7 +56,7 @@ abstract class Frame_Decorator extends Frame {
   /**
    * First block parent
    * 
-   * @var Frame_Decorator
+   * @var Block_Frame_Decorator
    */
   private $_block_parent;
   
@@ -171,6 +142,8 @@ abstract class Frame_Decorator extends Frame {
    */
   function reset() {
     $this->_frame->reset();
+    
+    $this->_counters = array();
 
     // Reset all children
     foreach ($this->get_children() as $child)
@@ -344,13 +317,6 @@ abstract class Frame_Decorator extends Frame {
   }
 
   /**
-   * @return FrameList
-   */
-  function get_children() {
-    return new FrameList($this);
-  }
-
-  /**
    * @return FrameTreeList
    */
   function get_subtree() {
@@ -373,6 +339,9 @@ abstract class Frame_Decorator extends Frame {
       $this->_frame->set_reflower( $reflower );
   }
   
+  /**
+   * @return Frame_Reflower
+   */
   function get_reflower() { return $this->_reflower; }
   
   //........................................................................
@@ -383,23 +352,26 @@ abstract class Frame_Decorator extends Frame {
         $this->_frame->set_root($root);
   }
   
+  /**
+   * @return Page_Frame_Decorator
+   */
   function get_root() { return $this->_root; }
   
   //........................................................................
 
   /**
-   * @return Frame_Decorator
+   * @return Block_Frame_Decorator
    */
   function find_block_parent() {
-    //if ( $this->_block_parent ) return $this->_block_parent; // FIXME: makes dom_anchor_link example fail
+    /*if ( $this->_block_parent && !isset($this->_block_parent->_splitted) ) {
+      return $this->_block_parent;
+    }*/
     
     // Find our nearest block level parent
     $p = $this->get_parent();
     
     while ( $p ) {
-      if ( in_array($p->get_style()->display, Style::$BLOCK_TYPES) )
-        break;
-
+      if ( $p->is_block() ) break;
       $p = $p->get_parent();
     }
 
@@ -410,20 +382,19 @@ abstract class Frame_Decorator extends Frame {
    * @return Frame_Decorator
    */
   function find_positionned_parent() {
-    //if ( $this->_positionned_parent ) return $this->_positionned_parent; // FIXME: makes dom_anchor_link example fail
+    /*if ( $this->_positionned_parent && !isset($this->_block_parent->_splitted) ) {
+      return $this->_positionned_parent;
+    }*/
 
     // Find our nearest relative positionned parent
     $p = $this->get_parent();
     while ( $p ) {
-      if ( in_array($p->get_style()->position, Style::$POSITIONNED_TYPES) ) {
-        break;
-      }
-
+      if ( $p->is_positionned() ) break;
       $p = $p->get_parent();
     }
     
     if ( !$p ) {
-      $p = $this->_root;
+      $p = $this->_root->get_first_child(); // <body>
     }
 
     return $this->_positionned_parent = $p;
@@ -450,8 +421,31 @@ abstract class Frame_Decorator extends Frame {
     if ( $child->get_parent() !== $this )
       throw new DOMPDF_Exception("Unable to split: frame is not a child of this one.");
 
-    $split = $this->copy( $this->_frame->get_node()->cloneNode() );
+    $node = $this->_frame->get_node();
+    
+    // mark the frame as splitted (don't use the find_***_parent cache)
+    //$this->_splitted = true;
+    
+    $split = $this->copy( $node->cloneNode() );
     $split->reset();
+    $split->get_original_style()->text_indent = 0;
+    
+    // The body's properties must be kept
+    if ( $node->nodeName !== "body" ) {
+      // Style reset on the first and second parts
+      $style = $this->_frame->get_style();
+      $style->margin_bottom = 0;
+      $style->padding_bottom = 0;
+      $style->border_bottom = 0;
+      
+      // second
+      $orig_style = $split->get_original_style();
+      $orig_style->text_indent = 0;
+      $orig_style->margin_top = 0;
+      $orig_style->padding_top = 0;
+      $orig_style->border_top = 0;
+    }
+    
     $this->get_parent()->insert_child_after($split, $this);
 
     // Add $frame and all following siblings to the new split node
@@ -466,9 +460,94 @@ abstract class Frame_Decorator extends Frame {
     $this->get_parent()->split($split, $force_pagebreak);
   }
 
+  function reset_counter($id = self::DEFAULT_COUNTER, $value = 0) {
+    $this->get_parent()->_counters[$id] = $value;
+  }
+  
+  function increment_counters($counters) {
+    foreach($counters as $id => $increment) {
+      $this->increment_counter($id, $increment);
+    }
+  }
+
+  function increment_counter($id = self::DEFAULT_COUNTER, $increment = 1) {
+    $counter_frame = $this->lookup_counter_frame($id);
+
+    if ( $counter_frame ) {
+      if ( !isset($counter_frame->_counters[$id]) ) {
+        $counter_frame->_counters[$id] = 0;
+      }
+      
+      $counter_frame->_counters[$id] += $increment;
+    }
+  }
+  
+  function lookup_counter_frame($id = self::DEFAULT_COUNTER) {
+    $f = $this->get_parent();
+    
+    while( $f ) {
+      if( isset($f->_counters[$id]) ) {
+        return $f;
+      }
+      $fp = $f->get_parent();
+      
+      if ( !$fp ) {
+        return $f;
+      }
+      
+      $f = $fp;
+    }
+  }
+
+  // TODO: What version is the best : this one or the one in List_Bullet_Renderer ?
+  function counter_value($id = self::DEFAULT_COUNTER, $type = "decimal") {
+    $type = mb_strtolower($type);
+    
+    if ( !isset($this->_counters[$id]) ) {
+      $value = $this->_counters[$id] = 0;
+    }
+    else {
+      $value = $this->_counters[$id];
+    }
+    
+    switch ($type) {
+
+    default:
+    case "decimal":
+      return $value;
+
+    case "decimal-leading-zero":
+      return str_pad($value, 2, "0");
+
+    case "lower-roman":
+      return dec2roman($value);
+
+    case "upper-roman":
+      return mb_strtoupper(dec2roman($value));
+
+    case "lower-latin":
+    case "lower-alpha":
+      return chr( ($value % 26) + ord('a') - 1);
+
+    case "upper-latin":
+    case "upper-alpha":
+      return chr( ($value % 26) + ord('A') - 1);
+
+    case "lower-greek":
+      return unichr($value + 944);
+
+    case "upper-greek":
+      return unichr($value + 912);
+    }
+  }
+
   //........................................................................
 
   final function position() { $this->_positioner->position();  }
+  
+  final function move($offset_x, $offset_y, $ignore_self = false) { 
+    $this->_positioner->move($offset_x, $offset_y, $ignore_self); 
+  }
   
   final function reflow(Frame_Decorator $block = null) {
     // Uncomment this to see the frames before they're laid out, instead of

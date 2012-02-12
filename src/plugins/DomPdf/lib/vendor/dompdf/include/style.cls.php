@@ -1,76 +1,13 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: style.cls.php,v $
- * Created on: 2004-06-01
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
  * @package dompdf
- *
- * Changes
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version 0.5.1.htischer.20090507
- * - Fix px to pt conversion according to DOMPDF_DPI
- * - Recognize css styles with !important attribute, and store !important attribute within style
- * - Propagate !important by inherit and sequences of styles with merge.
- * - Add missing style property cache flushes for consistent rendering, e.g. on explicte assignments
- * - Add important set/get for access from outside of class
- * - Fix font_family search path with multiple fonts list in css attribute:
- *   On missing font, do not immediately fall back to default font,
- *   but try subsequent fonts in search chain. Only when none found, explicitely
- *   refer to default font.
- * - Allow read of background individual properties
- * - Add support for individual styles background-position, background-attachment, background-repeat
- * - Complete style components of list-style
- * - Add support for combined styles in addition to individual styles
- *   like {border: red 1px solid;}, { border-width: 1px;}, { border-right-color: red; } ...
- *   for font, background
- * - Propagate attributes including !important from combined style to individual component
- *   for border, background, padding, margin, font, list_style
- * - Refactor common code of border, background, padding, margin, font, list_style
- * - Refactor common code of list-style-image and background-image
- * - special treatment of css images "none" instead of url(...), otherwise would prepend string "none" with path name
- * - Added comments
- * - Added debug output
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version dompdf_trunk_with_helmut_mods.20090524
- * - Allow superflous white space and string delimiter in font search path.
- * - Restore lost change of default font of above
- * @version 20090610
- * - Allow absolute path from web server root as html image reference
- * - More accurate handling of css property cache consistency
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: style.cls.php 469 2012-02-05 22:25:30Z fabien.menager $
  */
-
-/* $Id: style.cls.php 355 2011-01-27 07:44:54Z fabien.menager $ */
 
 /**
  * Represents CSS properties.
@@ -84,6 +21,9 @@
  * @package dompdf
  */
 class Style {
+  
+  const CSS_IDENTIFIER = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
+  const CSS_INTEGER    = "-?\d+";
 
   /**
    * Default font size, in points.
@@ -167,6 +107,13 @@ class Style {
    * @var array
    */
   static protected $_inherited = null;
+  
+  /**
+   * Caches method_exists result
+   * 
+   * @var array<bool>
+   */
+  static protected $_methods_cache = array();
 
   /**
    * The stylesheet this style belongs to
@@ -206,6 +153,13 @@ class Style {
    */
   protected $_frame;
   
+  /**
+   * The origin of the style
+   * 
+   * @var int
+   */
+  protected $_origin = Stylesheet::ORIG_AUTHOR;
+  
   // private members
   /**
    * True once the font size is resolved absolutely
@@ -219,10 +173,11 @@ class Style {
    *
    * @param Stylesheet $stylesheet the stylesheet this Style is associated with.
    */
-  function __construct(Stylesheet $stylesheet) {
+  function __construct(Stylesheet $stylesheet, $origin = Stylesheet::ORIG_AUTHOR) {
     $this->_props = array();
     $this->_important_props = array();
     $this->_stylesheet = $stylesheet;
+    $this->_origin = $origin;
     $this->_parent_font_size = null;
     $this->__font_size_calculated = false;
     
@@ -236,6 +191,8 @@ class Style {
       $d["background_attachment"] = "scroll";
       $d["background_color"] = "transparent";
       $d["background_image"] = "none";
+      $d["background_image_resolution"] = "normal";
+      $d["_dompdf_background_image_resolution"] = $d["background_image_resolution"];
       $d["background_position"] = "0% 0%";
       $d["background_repeat"] = "repeat";
       $d["background"] = "";
@@ -285,6 +242,8 @@ class Style {
       $d["font_weight"] = "normal";
       $d["font"] = "";
       $d["height"] = "auto";
+      $d["image_resolution"] = "normal";
+      $d["_dompdf_image_resolution"] = $d["image_resolution"];
       $d["left"] = "auto";
       $d["letter_spacing"] = "normal";
       $d["line_height"] = "normal";
@@ -349,6 +308,7 @@ class Style {
       $d["voice_family"] = "";
       $d["volume"] = "medium";
       $d["white_space"] = "normal";
+      $d["word_wrap"] = "normal";
       $d["widows"] = "2";
       $d["width"] = "auto";
       $d["word_spacing"] = "normal";
@@ -360,6 +320,7 @@ class Style {
 
       // Properties that inherit by default
       self::$_inherited = array("azimuth",
+                                 "background_image_resolution",
                                  "border_collapse",
                                  "border_spacing",
                                  "caption_side",
@@ -374,6 +335,7 @@ class Style {
                                  "font_variant",
                                  "font_weight",
                                  "font",
+                                 "image_resolution",
                                  "letter_spacing",
                                  "line_height",
                                  "list_style_image",
@@ -399,6 +361,7 @@ class Style {
                                  "voice_family",
                                  "volume",
                                  "white_space",
+                                 "word_wrap",
                                  "widows",
                                  "word_spacing");
     }
@@ -418,6 +381,14 @@ class Style {
   
   function get_frame() {
     return $this->_frame;
+  }
+  
+  function set_origin($origin) {
+    $this->_origin = $origin;
+  }
+  
+  function get_origin() {
+    return $this->_origin;
   }
   
   /**
@@ -442,12 +413,19 @@ class Style {
    * @return float
    */
   function length_in_pt($length, $ref_size = null) {
-
+    static $cache = array();
+    
     if ( !is_array($length) )
       $length = array($length);
 
     if ( !isset($ref_size) )
       $ref_size = self::$default_font_size;
+      
+    $key = implode("@", $length)."/$ref_size";
+    
+    if ( isset($cache[$key]) ) {
+      return $cache[$key];
+    }
 
     $ret = 0;
     foreach ($length as $l) {
@@ -494,14 +472,19 @@ class Style {
         $ret += mb_substr($l, 0, $i);
         continue;
       }
-
-      if ( ($i = mb_strpos($l, "em"))  !== false ) {
-        $ret += mb_substr($l, 0, $i) * $this->__get("font_size");
-        continue;
-      }
       
       if ( ($i = mb_strpos($l, "%"))  !== false ) {
         $ret += mb_substr($l, 0, $i)/100 * $ref_size;
+        continue;
+      }
+
+      if ( ($i = mb_strpos($l, "rem"))  !== false ) {
+        $ret += mb_substr($l, 0, $i) * $this->_stylesheet->get_dompdf()->get_tree()->get_root()->get_style()->font_size;
+        continue;
+      }
+
+      if ( ($i = mb_strpos($l, "em"))  !== false ) {
+        $ret += mb_substr($l, 0, $i) * $this->__get("font_size");
         continue;
       }
           
@@ -517,7 +500,7 @@ class Style {
       
       // FIXME: em:ex ratio?
       if ( ($i = mb_strpos($l, "ex"))  !== false ) {
-        $ret += mb_substr($l, 0, $i) * $this->__get("font_size");
+        $ret += mb_substr($l, 0, $i) * $this->__get("font_size") / 2;
         continue;
       }
       
@@ -527,7 +510,7 @@ class Style {
       }
           
       if ( ($i = mb_strpos($l, "pc")) !== false ) {
-        $ret += mb_substr($l, 0, $i) / 12;
+        $ret += mb_substr($l, 0, $i) * 12;
         continue;
       }
           
@@ -535,7 +518,7 @@ class Style {
       $ret += $ref_size;
     }
 
-    return $ret;
+    return $cache[$key] = $ret;
   }
 
   
@@ -690,8 +673,12 @@ class Style {
     }
     
     $method = "set_$prop";
+    
+    if ( !isset(self::$_methods_cache[$method]) ) {
+      self::$_methods_cache[$method] = method_exists($this, $method);
+    }
 
-    if ( method_exists($this, $method) )
+    if ( self::$_methods_cache[$method] )
       $this->$method($val);
     else
       $this->_props[$prop] = $val;
@@ -723,12 +710,19 @@ class Style {
     if ( !isset($this->_props[$prop]) )
       $this->_props[$prop] = self::$_defaults[$prop];
 
-    if ( method_exists($this, $method) )
+    if ( !isset(self::$_methods_cache[$method]) ) {
+      self::$_methods_cache[$method] = method_exists($this, $method);
+    }
+    
+    if ( self::$_methods_cache[$method] )
       return $this->_prop_cache[$prop] = $this->$method();
 
     return $this->_prop_cache[$prop] = $this->_props[$prop];
   }
 
+  function get_font_family_raw(){
+    return trim($this->_props["font_family"], " \t\n\r\x0B\"'");
+  }
 
   /**
    * Getter for the 'font-family' CSS property.
@@ -790,7 +784,7 @@ class Style {
       list(,$family) = each($families);
       //remove leading and trailing string delimiters, e.g. on font names with spaces;
       //remove leading and trailing whitespace
-      $family=trim($family," \t\n\r\x0B\"'");
+      $family = trim($family, " \t\n\r\x0B\"'");
       if ($DEBUGCSS) print '('.$family.')';
       $font = Font_Metrics::get_font($family, $subtype);
 
@@ -1319,7 +1313,9 @@ class Style {
   }
 
   protected function _set_style_type($style,$type,$val,$important) {
+    $val = preg_replace("/\s*\,\s*/", ",", $val); // when rgb() has spaces
     $arr = explode(" ", $val);
+    
     switch (count($arr)) {
     case 1:
       $this->_set_style_sides_type($style,$arr[0],$arr[0],$arr[0],$arr[0],$type,$important);
@@ -2119,6 +2115,72 @@ class Style {
     //see __set and __get, on all assignments clear cache, not needed on direct set through __set
     $this->_prop_cache["transform_origin"] = null;
     $this->_props["transform_origin"] = $values;
+  }
+  
+  protected function parse_image_resolution($val) {
+    // If exif data could be get: 
+    // $re = '/^\s*(\d+|normal|auto)(?:\s*,\s*(\d+|normal))?\s*$/';
+    
+    $re = '/^\s*(\d+|normal|auto)\s*$/';
+    
+    if ( !preg_match($re, $val, $matches) ) {
+      return null;
+    }
+    
+    return $matches[1];
+  }
+  
+  // auto | normal | dpi
+  function set_background_image_resolution($val) {
+    $parsed = $this->parse_image_resolution($val);
+    
+    $this->_prop_cache["background_image_resolution"] = null;
+    $this->_props["background_image_resolution"] = $parsed;
+  }
+  
+  // auto | normal | dpi
+  function set_image_resolution($val) {
+    $parsed = $this->parse_image_resolution($val);
+    
+    $this->_prop_cache["image_resolution"] = null;
+    $this->_props["image_resolution"] = $parsed;
+  }
+  
+  function set__dompdf_background_image_resolution($val) {
+    return $this->set_background_image_resolution($val);
+  }
+  
+  function set__dompdf_image_resolution($val) {
+    return $this->set_image_resolution($val);
+  }
+
+  function set_z_index($val) {
+    if ( round($val) != $val && $val !== "auto" ) {
+      return;
+    }
+
+    $this->_prop_cache["z_index"] = null;
+    $this->_props["z_index"] = $val;
+  }
+  
+  function set_counter_increment($val) {
+    $val = trim($val);
+    $value = null;
+    
+    if ( in_array($val, array("none", "inherit")) ) {
+      $value = $val;
+    }
+    else {
+      if ( preg_match_all("/(".self::CSS_IDENTIFIER.")(?:\s+(".self::CSS_INTEGER."))?/", $val, $matches, PREG_SET_ORDER) ){
+        $value = array();
+        foreach($matches as $match) {
+          $value[$match[1]] = isset($match[2]) ? $match[2] : 1;
+        }
+      }
+    }
+
+    $this->_prop_cache["counter_increment"] = null;
+    $this->_props["counter_increment"] = $value;
   }
 
   /**
