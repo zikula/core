@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: cellmap.cls.php,v $
- * Created on: 2004-07-28
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: cellmap.cls.php 464 2012-01-30 20:44:53Z fabien.menager $
  */
-
-/* $Id: cellmap.cls.php 283 2010-07-19 17:57:40Z fabien.menager $ */
 
 /**
  * Maps table cells to the table grid.
@@ -63,6 +31,7 @@ class Cellmap {
                                                 "dashed" => 6,
                                                 "solid"  => 7,
                                                 "double" => 8,
+                                                "hidden" => 9,
                                                 "none"   => 0);
 
   /**
@@ -123,18 +92,19 @@ class Cellmap {
   protected $_frames;
 
   /**
-   * Current column when adding cells, 0-based
-   *
-   * @var int
+   * @var int Current column when adding cells, 0-based
    */
   private $__col;
 
   /**
-   * Current row when adding cells, 0-based
-   *
-   * @var int
+   * @var int Current row when adding cells, 0-based
    */
   private $__row;
+  
+  /**
+   * @var bool Tells wether the columns' width can be modified
+   */
+  private $_columns_locked = false;
 
   //........................................................................
 
@@ -144,7 +114,7 @@ class Cellmap {
   }
   
   function __destruct() {
-  	clear_object($this);
+    clear_object($this);
   }
   //........................................................................
 
@@ -155,7 +125,10 @@ class Cellmap {
     $this->_cells  = array();
     $this->_frames = array();
 
-    $this->_columns = array();
+    if ( !$this->_columns_locked ) {
+      $this->_columns = array();
+    }
+    
     $this->_rows = array();
 
     $this->_borders = array();
@@ -165,11 +138,23 @@ class Cellmap {
 
   //........................................................................
 
+  function lock_columns() { 
+    $this->_columns_locked = true; 
+  }
+
+  function is_columns_locked() {
+    return $this->_columns_locked;
+  }
+  
   function get_num_rows() { return $this->_num_rows; }
   function get_num_cols() { return $this->_num_cols; }
 
   function &get_columns() {
     return $this->_columns;
+  }
+
+  function set_columns($columns) {
+    $this->_columns = $columns;
   }
 
   function &get_column($i) {
@@ -224,7 +209,7 @@ class Cellmap {
     $key = $frame->get_id();
 
     if ( !isset($this->_frames[$key]) ) {
-      throw new DOMPDF_Internal_Exception("Frame not found in cellmap");
+      throw new DOMPDF_Exception("Frame not found in cellmap");
     }
 
     return $this->_frames[$key];
@@ -242,7 +227,7 @@ class Cellmap {
     $key = $frame->get_id();
 
     if ( !isset($this->_frames[$key]) ) {
-      throw new DOMPDF_Internal_Exception("Frame not found in cellmap");
+      throw new DOMPDF_Exception("Frame not found in cellmap");
     }
 
     $col = $this->_frames[$key]["columns"][0];
@@ -267,7 +252,7 @@ class Cellmap {
     $key = $frame->get_id();
 
     if ( !isset($this->_frames[$key]) ) {
-      throw new DOMPDF_Internal_Exception("Frame not found in cellmap");
+      throw new DOMPDF_Exception("Frame not found in cellmap");
     }
 
     $cols = $this->_frames[$key]["columns"];
@@ -282,8 +267,9 @@ class Cellmap {
   function get_frame_height($frame) {
     $key = $frame->get_id();
 
-    if ( !isset($this->_frames[$key]) )
-      throw new DOMPDF_Internal_Exception("Frame not found in cellmap");
+    if ( !isset($this->_frames[$key]) ) {
+      throw new DOMPDF_Exception("Frame not found in cellmap");
+    }
 
     $rows = $this->_frames[$key]["rows"];
     $h = 0;
@@ -301,6 +287,10 @@ class Cellmap {
   //........................................................................
 
   function set_column_width($j, $width) {
+    if ( $this->_columns_locked ) {
+      return;
+    }
+    
     $col =& $this->get_column($j);
     $col["used-width"] = $width;
     $next_col =& $this->get_column($j+1);
@@ -309,8 +299,10 @@ class Cellmap {
 
   function set_row_height($i, $height) {
     $row =& $this->get_row($i);
-    if ( $height <= $row["height"] )
+    
+    if ( $row["height"] !== null && $height <= $row["height"] ) {
       return;
+    }
 
     $row["height"] = $height;
     $next_row =& $this->get_row($i+1);
@@ -497,40 +489,42 @@ class Cellmap {
       $val = $style->length_in_pt($frame_min) / $colspan;
     }
 
-    $min = 0;
-    $max = 0;
-    for ( $cs = 0; $cs < $colspan; $cs++ ) {
-
-      // Resolve the frame's width(s) with other cells
-      $col =& $this->get_column( $this->__col + $cs );
-
-      // Note: $var is either 'percent' or 'absolute'.  We compare the
-      // requested percentage or absolute values with the existing widths
-      // and adjust accordingly.
-      if ( isset($var) && $val > $col[$var] ) {
-        $col[$var] = $val;
-        $col["auto"] = false;
+    if (!$this->_columns_locked) {
+      $min = 0;
+      $max = 0;
+      for ( $cs = 0; $cs < $colspan; $cs++ ) {
+  
+        // Resolve the frame's width(s) with other cells
+        $col =& $this->get_column( $this->__col + $cs );
+  
+        // Note: $var is either 'percent' or 'absolute'.  We compare the
+        // requested percentage or absolute values with the existing widths
+        // and adjust accordingly.
+        if ( isset($var) && $val > $col[$var] ) {
+          $col[$var] = $val;
+          $col["auto"] = false;
+        }
+  
+        $min += $col["min-width"];
+        $max += $col["max-width"];
       }
-
-      $min += $col["min-width"];
-      $max += $col["max-width"];
-    }
-
-
-    if ( $frame_min > $min ) {
-      // The frame needs more space.  Expand each sub-column
-      $inc = ($frame_min - $min) / $colspan;
-      for ($c = 0; $c < $colspan; $c++) {
-        $col =& $this->get_column($this->__col + $c);
-        $col["min-width"] += $inc;
+  
+  
+      if ( $frame_min > $min ) {
+        // The frame needs more space.  Expand each sub-column
+        $inc = ($frame_min - $min) / $colspan;
+        for ($c = 0; $c < $colspan; $c++) {
+          $col =& $this->get_column($this->__col + $c);
+          $col["min-width"] += $inc;
+        }
       }
-    }
-
-    if ( $frame_max > $max ) {
-      $inc = ($frame_max - $max) / $colspan;
-      for ($c = 0; $c < $colspan; $c++) {
-        $col =& $this->get_column($this->__col + $c);
-        $col["max-width"] += $inc;
+  
+      if ( $frame_max > $max ) {
+        $inc = ($frame_max - $max) / $colspan;
+        for ($c = 0; $c < $colspan; $c++) {
+          $col =& $this->get_column($this->__col + $c);
+          $col["max-width"] += $inc;
+        }
       }
     }
 
@@ -639,6 +633,10 @@ class Cellmap {
     // Pre-condition: widths must be resolved and assigned to columns and
     // column[0]["x"] must be set.
 
+    if ( $this->_columns_locked ) {
+      return;
+    }
+    
     $x = $this->_columns[0]["x"];
     foreach ( array_keys($this->_columns) as $j ) {
       $this->_columns[$j]["x"] = $x;

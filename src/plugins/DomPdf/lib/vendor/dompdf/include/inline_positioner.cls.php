@@ -1,43 +1,12 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: inline_positioner.cls.php,v $
- * Created on: 2004-06-08
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: inline_positioner.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
 
-/* $Id: inline_positioner.cls.php 357 2011-01-30 20:56:46Z fabien.menager $ */
 /**
  * Positions inline frames
  *
@@ -51,7 +20,10 @@ class Inline_Positioner extends Positioner {
   //........................................................................
 
   function position() {
-    // Find our nearest block level parent and access its lines property.
+    /**
+     * Find our nearest block level parent and access its lines property.
+     * @var Block_Frame_Decorator
+     */ 
     $p = $this->_frame->find_block_parent();
 
     // Debugging code:
@@ -68,8 +40,7 @@ class Inline_Positioner extends Positioner {
     $f = $this->_frame;
     
     $cb = $f->get_containing_block();
-    $style = $f->get_style();
-    $line = $p->get_current_line();
+    $line = $p->get_current_line_box();
 
     // Skip the page break if in a fixed position element
     $is_fixed = false;
@@ -84,19 +55,17 @@ class Inline_Positioner extends Positioner {
 
     if ( !$is_fixed && $f->get_parent() &&
          $f->get_parent() instanceof Inline_Frame_Decorator &&
-         $f->get_node()->nodeName === "#text" ) {
+         $f->is_text_node() ) {
       
       $min_max = $f->get_reflower()->get_min_max_width();
-      $initialcb = $f->get_root()->get_containing_block();
-      $height = $style->length_in_pt($style->height, $initialcb["h"]);
       
       // If the frame doesn't fit in the current line, a line break occurs
-      if ( $min_max["min"] > ($cb["w"]-$line["left"]-$line["w"]-$line["right"]) ) {
+      if ( $min_max["min"] > ($cb["w"] - $line->left - $line->w - $line->right) ) {
         $p->add_line();
       }
     }
-
-    $this->_frame->set_position($cb["x"] + $line["w"], $line["y"]);
+    
+    $f->set_position($cb["x"] + $line->w, $line->y);
 
   }
 }
