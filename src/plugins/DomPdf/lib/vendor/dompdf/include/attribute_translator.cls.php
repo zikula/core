@@ -1,43 +1,12 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: attribute_translator.cls.php,v $
- * Created on: 2004-09-13
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: attribute_translator.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: attribute_translator.cls.php 346 2011-01-09 13:23:22Z fabien.menager $ */
 
 /**
  * Translates HTML 4.0 attributes into CSS rules
@@ -46,11 +15,11 @@
  * @package dompdf
  */
 class Attribute_Translator {
+  static $_style_attr = "_html_style_attribute";
   
   // Munged data originally from
   // http://www.w3.org/TR/REC-html40/index/attributes.html
-  //
-  // thank you var_export() :D
+  // http://www.cs.tut.fi/~jkorpela/html2css.html
   static private $__ATTRIBUTE_LOOKUP = array(
     //'caption' => array ( 'align' => '', ),
     'img' => array(
@@ -75,8 +44,8 @@ class Attribute_Translator {
       ),
       'bgcolor' => 'background-color: %s;',
       'border' => '!set_table_border',
-      'cellpadding' => '!set_table_cellpadding',
-      'cellspacing' => 'border-spacing: %0.2F; border-collapse: separate;',
+      'cellpadding' => '!set_table_cellpadding',//'border-spacing: %0.2F; border-collapse: separate;',
+      'cellspacing' => '!set_table_cellspacing',
       'frame' => array(
         'void'   => 'border-style: none;',
         'above'  => 'border-top-style: solid;',
@@ -92,10 +61,10 @@ class Attribute_Translator {
       'width' => 'width: %s;',
     ),
     'hr' => array(
-      'align' => '!set_hr_align', // Need to grab width to set 'left' & 'right' correctly
+      'align'   => '!set_hr_align', // Need to grab width to set 'left' & 'right' correctly
       'noshade' => 'border-style: solid;',
-      'size' => 'border-width: %0.2F px;',
-      'width' => 'width: %s;',
+      'size'    => '!set_hr_size', //'border-width: %0.2F px;',
+      'width'   => 'width: %s;',
     ),
     'div' => array(
       'align' => 'text-align: %s;',
@@ -135,7 +104,7 @@ class Attribute_Translator {
     ),
     'td' => array(
       'align'   => 'text-align: %s;',
-      'bgcolor' => 'background-color: %s;',
+      'bgcolor' => '!set_background_color',
       'height'  => 'height: %s;',
       'nowrap'  => 'white-space: nowrap;',
       'valign'  => 'vertical-align: %s;',
@@ -147,7 +116,7 @@ class Attribute_Translator {
     ),
     'th' => array(
       'align'   => 'text-align: %s;',
-      'bgcolor' => 'background-color: %s;',
+      'bgcolor' => '!set_background_color',
       'height'  => 'height: %s;',
       'nowrap'  => 'white-space: nowrap;',
       'valign'  => 'vertical-align: %s;',
@@ -164,20 +133,20 @@ class Attribute_Translator {
     ),
     'body' => array(
       'background' => 'background-image: url(%s);',
-      'bgcolor'    => 'background-color: %s;',
+      'bgcolor'    => '!set_background_color',
       'link'       => '!set_body_link',
-      'text'       => 'color: %s;',
+      'text'       => '!set_color',
     ),
     'br' => array(
       'clear' => 'clear: %s;',
     ),
     'basefont' => array(
-      'color' => 'color: %s;',
+      'color' => '!set_color',
       'face'  => 'font-family: %s;',
       'size'  => '!set_basefont_size',
     ),
     'font' => array(
-      'color' => 'color: %s;',
+      'color' => '!set_color',
       'face'  => 'font-family: %s;',
       'size'  => '!set_font_size',
     ),
@@ -207,7 +176,6 @@ class Attribute_Translator {
       'width' => 'width: %s;',
     ),
   );
-
   
   static protected $_last_basefont_size = 3;
   static protected $_font_size_lookup = array(
@@ -233,7 +201,7 @@ class Attribute_Translator {
   );
   
   
-  static function translate_attributes($frame) {
+  static function translate_attributes(Frame $frame) {
     $node = $frame->get_node();
     $tag = $node->tagName;
 
@@ -242,7 +210,7 @@ class Attribute_Translator {
 
     $valid_attrs = self::$__ATTRIBUTE_LOOKUP[$tag];
     $attrs = $node->attributes;
-    $style = rtrim($node->getAttribute("style"), "; ");
+    $style = rtrim($node->getAttribute(self::$_style_attr), "; ");
     if ( $style != "" )
       $style .= ";";
 
@@ -265,9 +233,10 @@ class Attribute_Translator {
         $style .= " " . self::_resolve_target($node, $target, $value);
       }
     }
+    
     if ( !is_null($style) ) {
       $style = ltrim($style);
-      $node->setAttribute("style", $style);
+      $node->setAttribute(self::$_style_attr, $style);
     }
     
   }
@@ -281,56 +250,89 @@ class Attribute_Translator {
     
     return $value ? sprintf($target, $value) : "";
   }
+  
+  static function append_style(DOMNode $node, $new_style) {
+    $style = rtrim($node->getAttribute(self::$_style_attr), ";");
+    $style .= $new_style;
+    $style = ltrim($style, ";");
+    $node->setAttribute(self::$_style_attr, $style);
+  }
+  
+  static protected function get_cell_list($node) {
+    $xpath = new DOMXpath($node->ownerDocument);
+    
+    switch($node->nodeName) {
+      case "table":
+        $query = "tr/td | thead/tr/td | tbody/tr/td | tfoot/tr/td | tr/th | thead/tr/th | tbody/tr/th | tfoot/tr/th";
+        break;
+        
+      case "tbody":
+      case "tfoot":
+      case "thead":
+        $query = "tr/td | tr/th";
+        break;
+        
+      case "tr":
+        $query = "td | th";
+        break;
+    }
+    
+    return $xpath->query($query, $node);
+  } 
 
   //.....................................................................
+  
+  static protected function _get_valid_color($value) {
+    if ( preg_match('/^#?([0-9A-F]{6})$/i', $value, $matches) ) {
+      $value = "#$matches[1]";
+    }
+    
+    return $value;
+  }
+
+  static protected function _set_color($node, $value) {
+    $value = self::_get_valid_color($value);
+    return "color: $value;";
+  }
+
+  static protected function _set_background_color($node, $value) {
+    $value = self::_get_valid_color($value);
+    return "background-color: $value;";
+  }
 
   static protected function _set_table_cellpadding($node, $value) {
-    $td_list = $node->getElementsByTagName("td");
-    foreach ($td_list as $td) {
-      $style = rtrim($td->getAttribute("style"), ";");
-      $style .= "; padding: $value" . "px;";
-      $style = ltrim($style, ";");
-      $td->setAttribute("style", $style);
+    $cell_list = self::get_cell_list($node);
+    
+    foreach ($cell_list as $cell) {
+      self::append_style($cell, "; padding: {$value}px;");
     }
+    
     return null;
   }
 
   static protected function _set_table_border($node, $value) {
-    $td_list = $node->getElementsByTagName("td");
-    foreach ($td_list as $td) {
-      $style = $td->getAttribute("style");
-      if ( strpos($style, "border") !== false )
-        continue;
-      $style = rtrim($style, ";");
+    $cell_list = self::get_cell_list($node);
+
+    foreach ($cell_list as $cell) {
+      $style = rtrim($cell->getAttribute(self::$_style_attr));
       $style .= "; border-width: " . ($value > 0 ? 1 : 0) . "pt; border-style: inset;";
       $style = ltrim($style, ";");
-      $td->setAttribute("style", $style);
+      $cell->setAttribute(self::$_style_attr, $style);
     }
     
-    $th_list = $node->getElementsByTagName("th");
-    foreach ($th_list as $th) {
-      $style = $th->getAttribute("style");
-      if ( strpos($style, "border") !== false )
-        continue;
-      $style = rtrim($style, ";");
-      $style .= "; border-width: " . ($value > 0 ? 1 : 0) . "pt; border-style: inset;";
-      $style = ltrim($style, ";");
-      $th->setAttribute("style", $style);
-    }
-    
-    $style = rtrim($node->getAttribute("style"),";");
+    $style = rtrim($node->getAttribute(self::$_style_attr), ";");
     $style .= "; border-width: $value" . "px; ";
     return ltrim($style, "; ");
   }
 
   static protected function _set_table_cellspacing($node, $value) {
-    $style = rtrim($node->getAttribute($style), ";");
+    $style = rtrim($node->getAttribute(self::$_style_attr), ";");
 
     if ( $value == 0 )
       $style .= "; border-collapse: collapse;";
       
     else
-      $style = "; border-collapse: separate;";
+      $style .= "; border-spacing: {$value}px; border-collapse: separate;";
       
     return ltrim($style, ";");
   }
@@ -363,18 +365,28 @@ class Attribute_Translator {
       return null;
     }
 
-    $td_list = $node->getElementsByTagName("td");
+    $cell_list = self::get_cell_list($node);
     
-    foreach ($td_list as $td) {
-      $style = $td->getAttribute("style");
+    foreach ($cell_list as $cell) {
+      $style = $cell->getAttribute(self::$_style_attr);
       $style .= $new_style;
-      $td->setAttribute("style", $style);
+      $cell->setAttribute(self::$_style_attr, $style);
     }
-    return null;
+    
+    $style = rtrim($node->getAttribute(self::$_style_attr), ";");
+    $style .= "; border-collapse: collapse; ";
+    
+    return ltrim($style, "; ");
+  }
+
+  static protected function _set_hr_size($node, $value) {
+    $style = rtrim($node->getAttribute(self::$_style_attr), ";");
+    $style .= "; border-width: ".max(0, $value-2)."; ";
+    return ltrim($style, "; ");
   }
 
   static protected function _set_hr_align($node, $value) {
-    $style = rtrim($node->getAttribute("style"),";");
+    $style = rtrim($node->getAttribute(self::$_style_attr),";");
     $width = $node->getAttribute("width");
     if ( $width == "" )
       $width = "100%";
@@ -401,56 +413,42 @@ class Attribute_Translator {
   }
 
   static protected function _set_table_row_align($node, $value) {
+    $cell_list = self::get_cell_list($node);
 
-    $td_list = $node->getElementsByTagName("td");
-
-    foreach ($td_list as $td) {
-      $style = rtrim($td->getAttribute("style"), ";");
-      $style .= "; text-align: $value;";
-      $style = ltrim($style, "; ");
-      $td->setAttribute("style", $style);
+    foreach ($cell_list as $cell) {
+      self::append_style($cell, "; text-align: $value;");
     }
 
     return null;
   }
 
   static protected function _set_table_row_valign($node, $value) {
+    $cell_list = self::get_cell_list($node);
 
-    $td_list = $node->getElementsByTagName("td");
-
-    foreach ($td_list as $td) {
-      $style = rtrim($td->getAttribute("style"), ";");
-      $style .= "; vertical-align: $value;";
-      $style = ltrim($style, "; ");
-      $td->setAttribute("style", $style);
+    foreach ($cell_list as $cell) {
+      self::append_style($cell, "; vertical-align: $value;");
     }
 
     return null;
   }
 
   static protected function _set_table_row_bgcolor($node, $value) {
-
-    $td_list = $node->getElementsByTagName("td");
-
-    foreach ($td_list as $td) {
-      $style = rtrim($td->getAttribute("style"), ";");
-      $style .= "; background-color: $value;";
-      $style = ltrim($style, "; ");
-      $td->setAttribute("style", $style);
+    $cell_list = self::get_cell_list($node);
+    $value = self::_get_valid_color($value);
+    
+    foreach ($cell_list as $cell) {
+      self::append_style($cell, "; background-color: $value;");
     }
 
     return null;
   }
 
   static protected function _set_body_link($node, $value) {
-
     $a_list = $node->getElementsByTagName("a");
-
+    $value = self::_get_valid_color($value);
+    
     foreach ($a_list as $a) {
-      $style = rtrim($a->getAttribute("style"), ";");
-      $style .= "; color: $value;";
-      $style = ltrim($style, "; ");
-      $a->setAttribute("style", $style);
+      self::append_style($a, "; color: $value;");
     }
 
     return null;
@@ -464,7 +462,7 @@ class Attribute_Translator {
   }
   
   static protected function _set_font_size($node, $value) {
-    $style = $node->getAttribute("style");
+    $style = $node->getAttribute(self::$_style_attr);
 
     if ( $value[0] === "-" || $value[0] === "+" )
       $value = self::$_last_basefont_size + (int)$value;
@@ -475,7 +473,5 @@ class Attribute_Translator {
       $style .= "; font-size: $value;";
 
     return ltrim($style, "; ");
-    
   }
-
 }
