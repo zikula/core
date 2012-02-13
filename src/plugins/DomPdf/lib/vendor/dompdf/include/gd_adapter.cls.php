@@ -1,43 +1,12 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: gd_adapter.cls.php,v $
- * Created on: 2004-06-06
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: gd_adapter.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: gd_adapter.cls.php 355 2011-01-27 07:44:54Z fabien.menager $ */
 
 /**
  * Image rendering interface
@@ -560,33 +529,20 @@ class GD_Adapter implements Canvas {
    * @param int $w width (in pixels)
    * @param int $h height (in pixels)
    */
-  function image($img_url, $img_type, $x, $y, $w, $h) {
+  function image($img_url, $x, $y, $w, $h, $resolution = "normal") {
+    $img_type = Image_Cache::detect_type($img_url);
+    $img_ext  = Image_Cache::type_to_ext($img_type);
 
-    switch ($img_type) {
-    case "png":
-      $src = @imagecreatefrompng($img_url);
-      break;
-      
-    case "gif":
-      $src = @imagecreatefromgif($img_url);
-      break;
-      
-    case "bmp":
-      $src = @imagecreatefrombmp($img_url);
-      break;
-      
-    case "jpg":
-    case "jpeg":
-      $src = @imagecreatefromjpeg($img_url);
-      break;
-
-    default:
-      break;
-      
+    if ( !$img_ext ) {
+      return;
     }
+    
+    $func = "imagecreatefrom$img_ext";
+    $src = @$func($img_url);
 
-    if ( !$src )
+    if ( !$src ) {
       return; // Probably should add to $_dompdf_errors or whatever here
+    }
     
     // Scale by the AA factor
     $x *= $this->_aa_factor;
@@ -597,7 +553,6 @@ class GD_Adapter implements Canvas {
     
     $img_w = imagesx($src);
     $img_h = imagesy($src);
-
     
     imagecopyresampled($this->_img, $src, $x, $y, 0, 0, $w, $h, $img_w, $img_h);
     
@@ -629,8 +584,7 @@ class GD_Adapter implements Canvas {
     
     $text = mb_encode_numericentity($text, array(0x0080, 0xff, 0, 0xff), 'UTF-8');
 
-    if ( strpos($font, '.ttf') === false )
-      $font .= ".ttf";
+    $font = $this->get_ttf_file($font);
 
     // FIXME: word spacing
     @imagettftext($this->_img, $size, $angle, $x, $y + $h, $c, $font, $text);
@@ -673,6 +627,10 @@ class GD_Adapter implements Canvas {
     // N/A
   }
   
+  function set_default_view($view, $options = array()) {
+    // N/A
+  }
+  
   /**
    * Calculates text size, in points
    *
@@ -682,16 +640,27 @@ class GD_Adapter implements Canvas {
    * @param float  $spacing word spacing, if any
    * @return float
    */
-  function get_text_width($text, $font, $size, $word_spacing = 0, $char_spacing = 0) {    
-
-    if ( strpos($font, '.ttf') === false )
-      $font .= ".ttf";
+  function get_text_width($text, $font, $size, $word_spacing = 0, $char_spacing = 0) {
+    $font = $this->get_ttf_file($font);
       
     $text = mb_encode_numericentity($text, array(0x0080, 0xffff, 0, 0xffff), 'UTF-8');
 
     // FIXME: word spacing
     list($x1,,$x2) = @imagettfbbox($size, 0, $font, $text);
     return $x2 - $x1;
+  }
+  
+  function get_ttf_file($font) {
+    if ( strpos($font, '.ttf') === false )
+      $font .= ".ttf";
+    
+    /*$filename = substr(strtolower(basename($font)), 0, -4);
+    
+    if ( in_array($filename, DOMPDF::$native_fonts) ) {
+      return "arial.ttf";
+    }*/
+    
+    return $font;
   }
 
   /**
@@ -702,14 +671,16 @@ class GD_Adapter implements Canvas {
    * @return float
    */
   function get_font_height($font, $size) {
-    if ( strpos($font, '.ttf') === false )
-      $font .= ".ttf";
-
+    $font = $this->get_ttf_file($font);
+      
     // FIXME: word spacing
     list(,$y2,,,,$y1) = imagettfbbox($size, 0, $font, "MXjpqytfhl");  // Test string with ascenders, descenders and caps
     return ($y2 - $y1) * DOMPDF_FONT_HEIGHT_RATIO;
   }
-
+  
+  function get_font_baseline($font, $size) {
+    return $this->get_font_height($font, $size) / DOMPDF_FONT_HEIGHT_RATIO;
+  }
   
   /**
    * Starts a new page

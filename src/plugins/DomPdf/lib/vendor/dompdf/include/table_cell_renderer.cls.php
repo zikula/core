@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: table_cell_renderer.cls.php,v $
- * Created on: 2004-06-09
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: table_cell_renderer.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: table_cell_renderer.cls.php 311 2010-09-05 20:02:01Z fabien.menager $ */
 
 /**
  * Renders table cells
@@ -51,33 +19,36 @@ class Table_Cell_Renderer extends Block_Renderer {
 
   function render(Frame $frame) {
     $style = $frame->get_style();
+    
+    if ( trim($frame->get_node()->nodeValue) === "" && $style->empty_cells === "hide" ) {
+      return;
+    }
 
     $this->_set_opacity( $frame->get_opacity( $style->opacity ) );
+    list($x, $y, $w, $h) = $frame->get_border_box();
     
     // Draw our background, border and content
     if ( ($bg = $style->background_color) !== "transparent" ) {
-      list($x, $y, $w, $h) = $frame->get_padding_box();
-      $this->_canvas->filled_rectangle( $x, $y, $w, $h, $bg );
-    }
-    else {
-      list($x, $y, $w, $h) = $frame->get_padding_box();
+      $this->_canvas->filled_rectangle($x, $y, $w, $h, $bg);
     }
 
     if ( ($url = $style->background_image) && $url !== "none" ) {
       $this->_background_image($url, $x, $y, $w, $h, $style);
     }
+    
+    $table = Table_Frame_Decorator::find_parent_table($frame);
 
-    if ( $style->border_collapse !== "collapse" ) {
-      $this->_render_border($frame, "bevel");
-      $this->_render_outline($frame, "bevel");
+    if ( $table->get_style()->border_collapse !== "collapse" ) {
+      $this->_render_border($frame);
+      $this->_render_outline($frame);
       return;
     }
 
     // The collapsed case is slightly complicated...
     // @todo Add support for outlines here
 
-    $cellmap = Table_Frame_Decorator::find_parent_table($frame)->get_cellmap();
-    $cells = $cellmap->get_spanned_cells($frame);
+    $cellmap  = $table->get_cellmap();
+    $cells    = $cellmap->get_spanned_cells($frame);
     $num_rows = $cellmap->get_num_rows();
     $num_cols = $cellmap->get_num_cols();
 
