@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: page_frame_decorator.cls.php,v $
- * Created on: 2004-06-15
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: page_frame_decorator.cls.php 457 2012-01-22 11:48:20Z fabien.menager $
  */
-
-/* $Id: page_frame_decorator.cls.php 337 2010-12-01 21:30:27Z fabien.menager $ */
 
 /**
  * Decorates frames for page layout
@@ -74,6 +42,13 @@ class Page_Frame_Decorator extends Frame_Decorator {
    * @var Renderer
    */
   protected $_renderer;
+  
+  /**
+   * This page's floating frames
+   * 
+   * @var array
+   */
+  protected $_floating_frames = array();
 
   //........................................................................
 
@@ -88,7 +63,6 @@ class Page_Frame_Decorator extends Frame_Decorator {
     $this->_in_table = 0;
     $this->_bottom_page_margin = null;
   }
-
 
   /**
    * Set the renderer used for this pdf
@@ -118,7 +92,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
    */
   function set_containing_block($x = null, $y = null, $w = null, $h = null) {
     parent::set_containing_block($x,$y,$w,$h);
-    $w = $this->get_containing_block("w");
+    //$w = $this->get_containing_block("w");
     if ( isset($h) )
       $this->_bottom_page_margin = $h; // - $this->_frame->get_style()->length_in_pt($this->_frame->get_style()->margin_bottom, $w);
   }
@@ -136,6 +110,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
    * Start a new page by resetting the full flag.
    */
   function next_page() {
+    $this->_floating_frames = array();
     $this->_renderer->new_page();
     $this->_page_full = false;
   }
@@ -174,7 +149,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
    * @return bool true if a page break occured
    */
   function check_forced_page_break(Frame $frame) {
-    	
+      
     // Skip check if page is already split
     if ( $this->_page_full )
       return;
@@ -202,7 +177,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       // $frame->style to the frame's orignal style.
       $frame->get_style()->page_break_before = "auto";
       $this->_page_full = true;
-			
+      
       return true;
     }
 
@@ -213,7 +188,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       $this->_page_full = true;
       return true;
     }
-		
+    
     if( $prev && $prev->get_last_child() && $frame->get_node()->nodeName != "body" ) {
       $prev_last_child = $prev->get_last_child();
       if ( in_array($prev_last_child->get_style()->page_break_after, $page_breaks) ) {
@@ -347,7 +322,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
 
       // Rule C
       $block_parent = $frame->find_block_parent();
-      if ( count($block_parent->get_lines() ) < $frame->get_style()->orphans ) {
+      if ( count($block_parent->get_line_boxes() ) < $frame->get_style()->orphans ) {
           dompdf_debug("page-break", "orphans");
         return false;
       }
@@ -369,7 +344,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       // page-break-inside: avoid, ensure that at least one frame with
       // some content is on the page before splitting.
       $prev = $frame->get_prev_sibling();
-      while ( $prev && ($prev->get_node()->nodeName === "#text" && trim($prev->get_node()->nodeValue) == "") )
+      while ( $prev && ($prev->is_text_node() && trim($prev->get_node()->nodeValue) == "") )
         $prev = $prev->get_prev_sibling();
 
       if ( $block_parent->get_node()->nodeName === "body" && !$prev ) {
@@ -379,7 +354,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       }
 
       // Skip breaks on empty text nodes
-      if ( $frame->get_node()->nodeName === "#text" &&
+      if ( $frame->is_text_node() &&
            $frame->get_node()->nodeValue == "" )
         return false;
 
@@ -447,7 +422,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
     // If the frame is absolute of fixed it shouldn't break
     $p = $frame;
     do {
-      if ( in_array($p->get_style()->position, array("fixed", "absolute")) )
+      if ( $p->is_absolute() )
         return false;
     } while ( $p = $p->get_parent() );
     
@@ -510,7 +485,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       if ( !$flg && $next = $iter->get_last_child() ) {
          dompdf_debug("page-break", "following last child.");
 
-        if ( in_array($next->get_style()->display, Style::$TABLE_TYPES) )
+        if ( $next->is_table() )
           $this->_in_table++;
 
         $iter = $next;
@@ -520,12 +495,10 @@ class Page_Frame_Decorator extends Frame_Decorator {
       if ( $next = $iter->get_prev_sibling() ) {
          dompdf_debug("page-break", "following prev sibling.");
 
-        if ( in_array($next->get_style()->display, Style::$TABLE_TYPES) &&
-             !in_array($iter->get_style()->display, Style::$TABLE_TYPES) )
+             if ( $next->is_table() && !$iter->is_table() )
           $this->_in_table++;
 
-        else if ( !in_array($next->get_style()->display, Style::$TABLE_TYPES) &&
-                  in_array($iter->get_style()->display, Style::$TABLE_TYPES) )
+        else if ( !$next->is_table() && $iter->is_table() )
           $this->_in_table--;
 
         $iter = $next;
@@ -536,7 +509,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       if ( $next = $iter->get_parent() ) {
          dompdf_debug("page-break", "following parent.");
 
-        if ( in_array($iter->get_style()->display, Style::$TABLE_TYPES) )
+        if ( $iter->is_table() )
           $this->_in_table--;
 
         $iter = $next;
@@ -557,7 +530,7 @@ class Page_Frame_Decorator extends Frame_Decorator {
       $num_tables = $this->_in_table - 1;
 
       $iter = $frame;
-      while ( $iter && $num_tables && $iter->get_style->display !== "table" ) {
+      while ( $iter && $num_tables && $iter->get_style()->display !== "table" ) {
         $iter = $iter->get_parent();
         $num_tables--;
       }
@@ -578,6 +551,46 @@ class Page_Frame_Decorator extends Frame_Decorator {
 
   function split($frame = null, $force_pagebreak = false) {
     // Do nothing
+  }
+  
+  /**
+   * Add a floating frame
+   * 
+   * @param $child Frame
+   */
+  function add_floating_frame(Frame $frame) {
+    array_unshift($this->_floating_frames, $frame);
+  }
+  
+  /**
+   * @return array
+   */
+  function get_floating_frames() { 
+    return $this->_floating_frames; 
+  }
+
+  public function remove_floating_frame($key) {
+    unset($this->_floating_frames[$key]);
+  }
+
+  public function get_lowest_float_offset(Frame $child) {
+    $style = $child->get_style();
+    $side = $style->clear;
+    $float = $style->float;
+    
+    $y = 0;
+    
+    foreach($this->_floating_frames as $key => $frame) {
+      if ( $side === "both" || $frame->get_style()->float === $side ) {
+        $y = max($y, $frame->get_position("y") + $frame->get_margin_height());
+        
+        if ( $float !== "none" ) {
+          $this->remove_floating_frame($key);
+        }
+      }
+    }
+    
+    return $y;
   }
 
 }

@@ -1,43 +1,11 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: frame_tree.cls.php,v $
- * Created on: 2004-06-02
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
  * @package dompdf
-
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: frame_tree.cls.php 464 2012-01-30 20:44:53Z fabien.menager $
  */
-
-/* $Id: frame_tree.cls.php 332 2010-11-27 14:06:34Z fabien.menager $ */
 
 /**
  * Represents an entire document as a tree of frames
@@ -114,8 +82,8 @@ class Frame_Tree {
 
   /**
    * Returns the root frame of the tree
-   *
-   * @return Frame
+   * 
+   * @return Page_Frame_Decorator
    */
   function get_root() { return $this->_root; }
 
@@ -145,8 +113,32 @@ class Frame_Tree {
     if ( is_null($html) )
       throw new DOMPDF_Exception("Requested HTML document contains no data.");
 
+    $this->fix_tables();
+    
     $this->_root = $this->_build_tree_r($html);
 
+  }
+  
+  /**
+   * Adds missing TBODYs around TR
+   */
+  protected function fix_tables(){
+    $xp = new DOMXPath($this->_dom);
+    
+    // Move table caption before the table
+    // FIXME find a better way to deal with it...
+    $captions = $xp->query("//table/caption");
+    foreach($captions as $caption) {
+      $table = $caption->parentNode;
+      $table->parentNode->insertBefore($caption, $table);
+    }
+    
+    $rows = $xp->query("//table/tr");
+    foreach($rows as $row) {
+      $tbody = $this->_dom->createElement("tbody");
+      $tbody = $row->parentNode->insertBefore($tbody, $row);
+      $tbody->appendChild($row);
+    }
   }
 
   /**
@@ -226,5 +218,7 @@ class Frame_Tree {
       $parent->prepend_child($frame, false);
     else 
       $parent->append_child($frame, false);
+      
+    return $frame_id;
   }
 }

@@ -1,54 +1,13 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: stylesheet.cls.php,v $
- * Created on: 2004-06-01
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
  * @package dompdf
- *
- * Changes
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version 0.5.1.htischer.20090507
- * - Specifity of css selector chain was too small because leading whitespace
- *   to be counted as number of elements was removed
- * - On parsing css properties accept and register !important attribute
- * - Add optional debug output
- * @version 20090610
- * - _parse_properties on style property name and value remove augmenting superflous
- *   space for consistent parsing, in particular combined values like background
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: stylesheet.cls.php 461 2012-01-26 20:26:02Z fabien.menager $
  */
-
-/* $Id: stylesheet.cls.php 360 2011-02-15 19:33:52Z fabien.menager $ */
 
 /**
  * The location of the default built-in CSS file.
@@ -73,7 +32,37 @@ class Stylesheet {
    * The location of the default built-in CSS file.
    */
   const DEFAULT_STYLESHEET = __DEFAULT_STYLESHEET; 
+  
+  /**
+   * User agent stylesheet origin
+   * @var int
+   */
+  const ORIG_UA = 1;
+  
+  /**
+   * User normal stylesheet origin
+   * @var int
+   */
+  const ORIG_USER = 2;
+  
+  /**
+   * Author normal stylesheet origin
+   * @var int
+   */
+  const ORIG_AUTHOR = 3;
+  
+  private static $_stylesheet_origins = array(
+    self::ORIG_UA =>     -0x0FFFFFFF, // user agent style sheets
+    self::ORIG_USER =>   -0x0000FFFF, // user normal style sheets
+    self::ORIG_AUTHOR =>  0x00000000, // author normal style sheets
+  );
 
+  /**
+   * Current dompdf instance
+   * @var DOMPDF
+   */
+  private $_dompdf;
+  
   /**
    * Array of currently defined styles
    * @var array
@@ -102,16 +91,18 @@ class Stylesheet {
   private $_base_path;
 
   /**
-   * The style defined by @page rules
-   * @var Style
+   * The styles defined by @page rules
+   * @var array<Style>
    */
-  private $_page_style;
+  private $_page_styles;
 
   /**
    * List of loaded files, used to prevent recursion
    * @var array
    */
   private $_loaded_files;
+  
+  private $_current_origin = self::ORIG_UA;
 
   /**
    * Accepted CSS media types
@@ -135,11 +126,12 @@ class Stylesheet {
    * The base protocol, host & path are initialized to those of
    * the current script.
    */
-  function __construct() {
+  function __construct(DOMPDF $dompdf) {
+    $this->_dompdf = $dompdf;
     $this->_styles = array();
     $this->_loaded_files = array();
     list($this->_protocol, $this->_base_host, $this->_base_path) = explode_url($_SERVER["SCRIPT_FILENAME"]);
-    $this->_page_style = null;
+    $this->_page_styles = array("base" => null);
   }
   
   /**
@@ -171,6 +163,13 @@ class Stylesheet {
   function set_base_path($path) { $this->_base_path = $path; }
 
   /**
+   * Return the DOMPDF object
+   *
+   * @return DOMPDF
+   */
+  function get_dompdf() { return $this->_dompdf; }
+
+  /**
    * Return the base protocol for this stylesheet
    *
    * @return string
@@ -192,11 +191,11 @@ class Stylesheet {
   function get_base_path() { return $this->_base_path; }
   
   /**
-   * Return the page style
+   * Return the array of page styles
    *
-   * @return Style
+   * @return array<Style>
    */
-  function get_page_style() { return $this->_page_style; }
+  function get_page_styles() { return $this->_page_styles; }
 
   /**
    * Add a new Style object to the stylesheet
@@ -215,6 +214,8 @@ class Stylesheet {
       $this->_styles[$key]->merge($style);
     else
       $this->_styles[$key] = clone $style;
+      
+    $this->_styles[$key]->set_origin( $this->_current_origin );
   }
 
   /**
@@ -240,7 +241,7 @@ class Stylesheet {
    * @return Style
    */
   function create_style(Style $parent = null) {
-    return new Style($this, $parent);
+    return new Style($this, $this->_current_origin);
   }
 
   /**
@@ -256,8 +257,12 @@ class Stylesheet {
    *
    * @param string $file
    */
-  function load_css_file($file) {
+  function load_css_file($file, $origin = self::ORIG_AUTHOR) {
     global $_dompdf_warnings;
+    
+    if ( $origin ) {
+      $this->_current_origin = $origin;
+    }
 
     // Prevent circular references
     if ( isset($this->_loaded_files[$file]) )
@@ -268,12 +273,6 @@ class Stylesheet {
 
     list($this->_protocol, $this->_base_host, $this->_base_path, $filename) = $parsed_url;
 
-    if ( !DOMPDF_ENABLE_REMOTE &&
-         ($this->_protocol != "" && $this->_protocol !== "file://") ) {
-      record_warnings(E_USER_WARNING, "Remote CSS file '$file' requested, but DOMPDF_ENABLE_REMOTE is false.", __FILE__, __LINE__);
-      return;
-    }
-
     // Fix submitted by Nick Oostveen for aliased directory support:
     if ( $this->_protocol == "" )
       $file = $this->_base_path . $filename;
@@ -281,11 +280,27 @@ class Stylesheet {
       $file = build_url($this->_protocol, $this->_base_host, $this->_base_path, $filename);
 
     set_error_handler("record_warnings");
-    $css = file_get_contents($file);
+    $css = file_get_contents($file, null, $this->_dompdf->get_http_context());
+    
+    $good_mime_type = true;
+    
+    if ( !$this->_dompdf->get_quirksmode() ) {
+      // See http://the-stickman.com/web-development/php/getting-http-response-headers-when-using-file_get_contents/
+      if ( isset($http_response_header) ) {
+        foreach($http_response_header as $_header) {
+          if ( preg_match("@Content-Type:\s*([\w/]+)@i", $_header, $matches) ) {
+            if ( $matches[1] !== "text/css" ) {
+              $good_mime_type = false;
+            }
+          }
+        }
+      }
+    }
+    
     restore_error_handler();
 
-    if ( $css == "" ) {
-      record_warnings(E_USER_WARNING, "Unable to load css file $file", __FILE__, __LINE__);;
+    if ( !$good_mime_type || $css == "" ) {
+      record_warnings(E_USER_WARNING, "Unable to load css file $file", __FILE__, __LINE__);
       return;
     }
 
@@ -293,17 +308,26 @@ class Stylesheet {
   }
 
   /**
-   * @link http://www.w3.org/TR/CSS21/cascade.html#specificity}
+   * @link http://www.w3.org/TR/CSS21/cascade.html#specificity
+   * 
+   * 
    *
    * @param string $selector
+   * @param string $origin : 
+   *    - ua: user agent style sheets
+   *    - un: user normal style sheets
+   *    - an: author normal style sheets
+   *    - ai: author important style sheets
+   *    - ui: user important style sheets
+   *    
    * @return int
    */
-  private function _specificity($selector) {
+  private function _specificity($selector, $origin = self::ORIG_AUTHOR) {
     // http://www.w3.org/TR/CSS21/cascade.html#specificity
     // ignoring the ":" pseudoclass modifyers
     // also ignored in _css_selector_to_xpath
 
-    $a = ($selector === "!style attribute") ? 1 : 0;
+    $a = ($selector === "!attr") ? 1 : 0;
 
     $b = min(mb_substr_count($selector, "#"), 255);
 
@@ -320,17 +344,17 @@ class Stylesheet {
     //this can lead to a too small specificity
     //see _css_selector_to_xpath
 
-    if ( !in_array($selector[0], array(" ", ">", ".", "#", "+", ":", "[")) ) {
-    	$d++;
+    if ( !in_array($selector[0], array(" ", ">", ".", "#", "+", ":", "["))/* && $selector !== "*"*/) {
+      $d++;
     }
 
     if (DEBUGCSS) {
-      /*DEBUGCSS*/	print "<pre>\n";
-      /*DEBUGCSS*/	printf("_specificity(): 0x%08x \"%s\"\n", ($a << 24) | ($b << 16) | ($c << 8) | ($d), $selector);
-      /*DEBUGCSS*/	print "</pre>";
+      /*DEBUGCSS*/  print "<pre>\n";
+      /*DEBUGCSS*/  printf("_specificity(): 0x%08x \"%s\"\n", ($a << 24) | ($b << 16) | ($c << 8) | ($d), $selector);
+      /*DEBUGCSS*/  print "</pre>";
     }
-
-    return ($a << 24) | ($b << 16) | ($c << 8) | ($d);
+    
+    return self::$_stylesheet_origins[$origin] + ($a << 24) | ($b << 16) | ($c << 8) | ($d);
   }
 
   /**
@@ -355,7 +379,7 @@ class Stylesheet {
     // Parse the selector
     //$s = preg_split("/([ :>.#+])/", $selector, -1, PREG_SPLIT_DELIM_CAPTURE);
 
-    $delimiters = array(" ", ">", ".", "#", "+", ":", "[");
+    $delimiters = array(" ", ">", ".", "#", "+", ":", "[", "(");
 
     // Add an implicit * at the beginning of the selector 
     // if it begins with an attribute selector
@@ -405,6 +429,9 @@ class Stylesheet {
         if ( mb_substr($query, -1, 1) !== "/" )
           $query .= "/";
 
+        // Tag names are case-insensitive
+        $tok = strtolower($tok);
+        
         if ( !$tok )
           $tok = "*";
 
@@ -445,6 +472,13 @@ class Stylesheet {
         break;
 
       case ":":
+        $i2 = $i-strlen($tok)-2; // the char before ":"
+        if ( !isset($selector[$i2]) || in_array($selector[$i2], $delimiters) ) {
+          $query .= "*";
+        }
+        
+        $last = false;
+        
         // Pseudo-classes
         switch ($tok) {
 
@@ -458,6 +492,52 @@ class Stylesheet {
           $tok = "";
           break;
 
+        case "first-of-type":
+          $query .= "[position() = 1]";
+          $tok = "";
+          break;
+
+        case "last-of-type":
+          $query .= "[position() = last()]";
+          $tok = "";
+          break;
+
+        // an+b, n, odd, and even
+        case "nth-last-of-type":
+        case "nth-last-child":
+          $last = true;
+          
+        case "nth-of-type":
+        case "nth-child":
+          $p = $i+1;
+          $nth = trim(mb_substr($selector, $p, strpos($selector, ")", $i)-$p));
+          
+          $condition = "";
+          
+          // 1
+          if ( preg_match("/^\d+$/", $nth) ) {
+            $condition = "position() = $nth";
+          }
+          
+          // odd
+          elseif ( $nth === "odd" ) {
+            $condition = "(position() mod 2) = 1";
+          }
+          
+          // even
+          elseif ( $nth === "even" ) {
+            $condition = "(position() mod 2) = 0";
+          }
+          
+          // an+b
+          else {
+            $condition = $this->_selector_an_plus_b($nth, $last);
+          }
+          
+          $query .= "[$condition]";
+          $tok = "";
+          break;
+
         case "link":
           $query .= "[@href]";
           $tok = "";
@@ -468,8 +548,9 @@ class Stylesheet {
         
         // N/A
         case "active":
+        case "hover":
         case "visited":
-          $query .= "[@dummy]";
+          $query .= "[false()]";
           $tok = "";
           break;
 
@@ -632,6 +713,31 @@ class Stylesheet {
 
     return array("query" => $query, "pseudo_elements" => $pseudo_elements);
   }
+  
+  // https://github.com/tenderlove/nokogiri/blob/master/lib/nokogiri/css/xpath_visitor.rb
+  protected function _selector_an_plus_b($expr, $last = false) {
+    $expr = preg_replace("/\s/", "", $expr);
+    if ( !preg_match("/^(?P<a>-?[0-9]*)?n(?P<b>[-+]?[0-9]+)?$/", $expr, $matches)) {
+      return "false()";
+    }
+    
+    $a = ((isset($matches["a"]) && $matches["a"] !== "") ? intval($matches["a"]) : 1);
+    $b = ((isset($matches["b"]) && $matches["b"] !== "") ? intval($matches["b"]) : 0);
+    
+    $position = ($last ? "(last()-position()+1)" : "position()");
+
+    if ($b == 0) {
+      return "($position mod $a) = 0";
+    }
+    else {
+      $compare = (($a < 0) ? "<=" : ">=");
+      $b2 = -$b;
+      if( $b2 >= 0 ) {
+        $b2 = "+$b2";
+      }
+      return "($position $compare $b) and ((($position $b2) mod ".abs($a).") = 0)";
+    }
+  }
 
   /**
    * applies all current styles to a particular document tree
@@ -643,7 +749,6 @@ class Stylesheet {
    * @param Frame_Tree $tree
    */
   function apply_styles(Frame_Tree $tree) {
-
     // Use XPath to select nodes.  This would be easier if we could attach
     // Frame objects directly to DOMNodes using the setUserData() method, but
     // we can't do that just yet.  Instead, we set a _node attribute_ in
@@ -675,6 +780,11 @@ class Stylesheet {
       
       foreach ($nodes as $i => $node) {
         foreach ($query["pseudo_elements"] as $pos) {
+          // Do not add a new pseudo element if another one already matched
+          if ( $node->hasAttribute("dompdf_{$pos}_frame_id") ) {
+            continue;
+          }
+          
           if (($src = $this->_image($style->content)) !== "none") {
             $new_node = $node->ownerDocument->createElement("img_generated");
             $new_node->setAttribute("src", $src);
@@ -682,9 +792,12 @@ class Stylesheet {
           else {
             $new_node = $node->ownerDocument->createElement("dompdf_generated");
           }
+          
           $new_node->setAttribute($pos, $pos);
           
-          $tree->insert_node($node, $new_node, $pos);
+          $new_frame_id = $tree->insert_node($node, $new_node, $pos);
+          
+          $node->setAttribute("dompdf_{$pos}_frame_id", $new_frame_id);
         }
       }
     }
@@ -718,8 +831,8 @@ class Stylesheet {
     $root_flg = false;
     foreach ($tree->get_frames() as $frame) {
       // pre_r($frame->get_node()->nodeName . ":");
-      if ( !$root_flg && $this->_page_style ) {
-        $style = $this->_page_style;
+      if ( !$root_flg && $this->_page_styles["base"] ) {
+        $style = $this->_page_styles["base"];
         $root_flg = true;
       } else
         $style = $this->create_style();
@@ -743,13 +856,17 @@ class Stylesheet {
 
       // Handle HTML 4.0 attributes
       Attribute_Translator::translate_attributes($frame);
+      if ( ($str = $frame->get_node()->getAttribute(Attribute_Translator::$_style_attr)) !== "" ) {
+        // Lowest specificity 
+        $styles[$id][1][] = $this->_parse_properties($str);
+      }
 
       // Locate any additional style attributes
       if ( ($str = $frame->get_node()->getAttribute("style")) !== "" ) {
         // Destroy CSS comments
         $str = preg_replace("'/\*.*?\*/'si", "", $str);
         
-        $spec = $this->_specificity("!style attribute");
+        $spec = $this->_specificity("!attr");
         $styles[$id][$spec][] = $this->_parse_properties($str);
       }
 
@@ -884,12 +1001,17 @@ class Stylesheet {
 
         case "media":
           $acceptedmedia = self::$ACCEPTED_GENERIC_MEDIA_TYPES;
+          
           if ( defined("DOMPDF_DEFAULT_MEDIA_TYPE") ) {
             $acceptedmedia[] = DOMPDF_DEFAULT_MEDIA_TYPE;
-          } else {
+          } 
+          else {
             $acceptedmedia[] = self::$ACCEPTED_DEFAULT_MEDIA_TYPE;
           }
-          if ( in_array(mb_strtolower(trim($match[3])), $acceptedmedia ) ) {
+          
+          $media = preg_split("/\s*,\s*/", mb_strtolower(trim($match[3])));
+          
+          if ( count(array_intersect($acceptedmedia, $media)) ) {
             $this->_parse_sections($match[5]);
           }
           break;
@@ -915,14 +1037,28 @@ class Stylesheet {
           //assign it to the <body> tag, possibly only for the css of the correct media type.
 
           // If the page has a name, skip the style.
-          if ($match[3] !== "")
-            return;
+          $page_selector = trim($match[3]);
+          
+          switch($page_selector) {
+            case "": 
+              $key = "base"; 
+              break;
+              
+            case ":left":
+            case ":right":
+            case ":odd":
+            case ":even":
+            case ":first":
+              $key = $page_selector;
+              
+            default: continue;
+          }
 
           // Store the style for later...
-          if ( is_null($this->_page_style) )
-            $this->_page_style = $this->_parse_properties($match[5]);
+          if ( empty($this->_page_styles[$key]) )
+            $this->_page_styles[$key] = $this->_parse_properties($match[5]);
           else
-            $this->_page_style->merge($this->_parse_properties($match[5]));
+            $this->_page_styles[$key]->merge($this->_parse_properties($match[5]));
           break;
 
         case "font-face":
@@ -1051,15 +1187,35 @@ class Stylesheet {
     preg_match_all("/(url|local)\s*\([\"\']?([^\"\'\)]+)[\"\']?\)\s*(format\s*\([\"\']?([^\"\'\)]+)[\"\']?\))?/i", $descriptors->src, $src);
     
     $sources = array();
+    $valid_sources = array();
+    
     foreach($src[0] as $i => $value) {
-      $sources[] = array(
+      $source = array(
         "local"  => strtolower($src[1][$i]) === "local",
         "uri"    => $src[2][$i],
         "format" => $src[4][$i],
+        "path"   => build_url($this->_protocol, $this->_base_host, $this->_base_path, $src[2][$i]),
       );
+      
+      if ( !$source["local"] && in_array($source["format"], array("", "woff", "opentype", "truetype")) ) {
+        $valid_sources[] = $source;
+      }
+      
+      $sources[] = $source;
     }
     
-    //@todo download font file, ttf2afm, etc
+    // No valid sources
+    if ( empty($valid_sources) ) {
+      return;
+    }
+    
+    $style = array(
+      "family" => $descriptors->get_font_family_raw(),
+      "weight" => $descriptors->font_weight,
+      "style"  => $descriptors->font_style,
+    );
+    
+    Font_Metrics::register_font($style, $valid_sources[0]["path"]);
   }
 
   /**
@@ -1078,6 +1234,7 @@ class Stylesheet {
 
     // Create the style
     $style = new Style($this);
+    
     foreach ($properties as $prop) {
       // If the $prop contains an url, the regex may be wrong
       // @todo: fix the regex so that it works everytime
@@ -1095,24 +1252,27 @@ class Stylesheet {
       //Therefore set a _important_props["prop_name"]=true to indicate the modifier
 
       /* Instead of short code, prefer the typical case with fast code
-	  $important = preg_match("/(.*?)!\s*important/",$prop,$match);
+    $important = preg_match("/(.*?)!\s*important/",$prop,$match);
       if ( $important ) {
-      	$prop = $match[1];
+        $prop = $match[1];
       }
       $prop = trim($prop);
       */
       if (DEBUGCSS) print '(';
- 	  $important = false;
+      
+      $important = false;
       $prop = trim($prop);
-      if (substr($prop,-9) === 'important') {
-      	$prop_tmp = rtrim(substr($prop,0,-9));
-      	if (substr($prop_tmp,-1) === '!') {
-      		$prop = rtrim(substr($prop_tmp,0,-1));
-      		$important = true;
-      	}
+      
+      if ( substr($prop, -9) === 'important' ) {
+        $prop_tmp = rtrim(substr($prop, 0, -9));
+        
+        if ( substr($prop_tmp, -1) === '!' ) {
+          $prop = rtrim(substr($prop_tmp, 0, -1));
+          $important = true;
+        }
       }
 
-      if ($prop == "") {
+      if ( $prop === "" ) {
         if (DEBUGCSS) print 'empty)';
         continue;
       }

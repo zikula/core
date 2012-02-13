@@ -1,56 +1,13 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: abstract_renderer.cls.php,v $
- * Created on: 2004-06-01
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
  * @package dompdf
- *
- * Changes
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version 0.5.1.htischer.20090507
- * - On background image
- *   - Clip invisible areas from background images, then merge identical
- *     image/size/offset to a single image.
- *   - Fix rounding of background image size.
- *   - Fix background image position given as percent
- *   - Check if identical image is already cached by cpdf. Then do not create
- *     duplicates to save memory and CPU time
- *   - Fix skipping of image repetition if area is too small
- *   - Do not create temporary files, but pass gd object directly
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: abstract_renderer.cls.php 448 2011-11-13 13:00:03Z fabien.menager $
  */
-
-/* $Id: abstract_renderer.cls.php 361 2011-02-16 21:03:05Z fabien.menager $ */
 
 /**
  * Base renderer class
@@ -111,17 +68,20 @@ abstract class Abstract_Renderer {
     // Skip degenerate cases
     if ( $width == 0 || $height == 0 )
       return;
+    
+    $box_width = $width;
+    $box_height = $height;
 
     //debugpng
     if (DEBUGPNG) print '[_background_image '.$url.']';
 
-    list($img, $ext) = Image_Cache::resolve_url($url,
+    list($img, $type, $msg) = Image_Cache::resolve_url($url,
                                                 $sheet->get_protocol(),
                                                 $sheet->get_host(),
                                                 $sheet->get_base_path());
 
     // Bail if the image is no good
-    if ( $img === DOMPDF_LIB_DIR . "/res/broken_image.png" )
+    if ( Image_Cache::is_broken($img) )
       return;
 
     //Try to optimize away reading and composing of same background multiple times
@@ -154,10 +114,12 @@ abstract class Abstract_Renderer {
       $x1 = $p * $img_w;
       $x2 = $p * $bg_width;
 
-      $bg_x = round($x2 - $x1);
+      $bg_x = $x2 - $x1;
     } else {
-      $bg_x = round((float)($style->length_in_pt($bg_x)*DOMPDF_DPI) / 72);
+      $bg_x = (float)($style->length_in_pt($bg_x)*DOMPDF_DPI) / 72;
     }
+    
+    $bg_x = round($bg_x + $style->length_in_pt($style->border_left_width)*DOMPDF_DPI / 72);
 
     if ( is_percent($bg_y) ) {
       // The point $bg_y % from the left edge of the image is placed
@@ -166,10 +128,12 @@ abstract class Abstract_Renderer {
       $y1 = $p * $img_h;
       $y2 = $p * $bg_height;
 
-      $bg_y = round($y2 - $y1);
+      $bg_y = $y2 - $y1;
     } else {
-      $bg_y = round((float)($style->length_in_pt($bg_y)*DOMPDF_DPI) / 72);
+      $bg_y = (float)($style->length_in_pt($bg_y)*DOMPDF_DPI) / 72;
     }
+    
+    $bg_y = round($bg_y + $style->length_in_pt($style->border_top_width)*DOMPDF_DPI / 72);
 
     //clip background to the image area on partial repeat. Nothing to do if img off area
     //On repeat, normalize start position to the tile at immediate left/top or 0/0 of area
@@ -189,7 +153,7 @@ abstract class Abstract_Renderer {
         $bg_x = 0;
       }
       if ($bg_width <= 0) {
-          return;
+        return;
       }
       $width = (float)($bg_width * 72)/DOMPDF_DPI;
     } else {
@@ -217,7 +181,7 @@ abstract class Abstract_Renderer {
         $bg_y = 0;
       }
       if ($bg_height <= 0) {
-          return;
+        return;
       }
       $height = (float)($bg_height * 72)/DOMPDF_DPI;
     } else {
@@ -274,6 +238,7 @@ abstract class Abstract_Renderer {
     }
     */
     
+    $is_png = false;
     $filedummy .= '_'.$bg_width.'_'.$bg_height.'_'.$bg_x.'_'.$bg_y.'_'.$repeat;
     //debugpng
     //if (DEBUGPNG) print '<pre>[_background_image name '.$filedummy.']</pre>';
@@ -296,24 +261,23 @@ abstract class Abstract_Renderer {
     // Create a new image to fit over the background rectangle
     $bg = imagecreatetruecolor($bg_width, $bg_height);
     
-    //anyway default
-    //imagealphablending($img, true);
-
-    switch (strtolower($ext)) {
-      case "png":
+    switch (strtolower($type)) {
+      case IMAGETYPE_PNG:
+        $is_png = true;
+        imagesavealpha($bg, true);
+        imagealphablending($bg, false);
         $src = imagecreatefrompng($img);
         break;
   
-      case "jpg":
-      case "jpeg":
+      case IMAGETYPE_JPEG:
         $src = imagecreatefromjpeg($img);
         break;
   
-      case "gif":
+      case IMAGETYPE_GIF:
         $src = imagecreatefromgif($img);
         break;
         
-      case "bmp":
+      case IMAGETYPE_BMP:
         $src = imagecreatefrombmp($img);
         break;
   
@@ -435,6 +399,8 @@ abstract class Abstract_Renderer {
 
     } /* End optimize away creation of duplicates */
 
+    $this->_canvas->clipping_rectangle($x, $y, $box_width, $box_height);
+    
     //img: image url string
     //img_w, img_h: original image size in px
     //width, height: box size in pt
@@ -446,19 +412,22 @@ abstract class Abstract_Renderer {
     //$src: GD object of original image
     //When using cpdf and optimization to direct png creation from gd object is available,
     //don't create temp file, but place gd object directly into the pdf
-    if ( method_exists( $this->_canvas, "get_cpdf" ) && 
+    if ( !$is_png && method_exists( $this->_canvas, "get_cpdf" ) && 
          method_exists( $this->_canvas->get_cpdf(), "addImagePng" ) ) {
       // Note: CPDF_Adapter image converts y position
       $this->_canvas->get_cpdf()->addImagePng($filedummy, $x, $this->_canvas->get_height() - $y - $height, $width, $height, $bg);
     } 
     
     else {
-      $tmp_file = tempnam(DOMPDF_TEMP_DIR, "bg_dompdf_img_").'.png';
+      $tmp_name = tempnam(DOMPDF_TEMP_DIR, "bg_dompdf_img_");
+      @unlink($tmp_name);
+      $tmp_file = "$tmp_name.png";
+      
       //debugpng
       if (DEBUGPNG) print '[_background_image '.$tmp_file.']';
 
       imagepng($bg, $tmp_file);
-      $this->_canvas->image($tmp_file, "png", $x, $y, $width, $height);
+      $this->_canvas->image($tmp_file, $x, $y, $width, $height);
       imagedestroy($bg);
 
       //debugpng
@@ -467,6 +436,8 @@ abstract class Abstract_Renderer {
       if (!DEBUGKEEPTEMP)
         unlink($tmp_file);
     }
+    
+    $this->_canvas->clipping_end();
   }
   
   protected function _get_dash_pattern($style, $width) {
@@ -483,8 +454,8 @@ abstract class Abstract_Renderer {
       case "none": break;
       
       case "dotted": 
-        if ( $width < 2 )
-          $pattern = array($width, 2);
+        if ( $width <= 1 )
+          $pattern = array($width, $width*2);
         else
           $pattern = array($width);
       break;
@@ -498,6 +469,10 @@ abstract class Abstract_Renderer {
   }
 
   protected function _border_none($x, $y, $length, $color, $widths, $side, $corner_style = "bevel") {
+    return;
+  }
+  
+  protected function _border_hidden($x, $y, $length, $color, $widths, $side, $corner_style = "bevel") {
     return;
   }
   
@@ -624,7 +599,7 @@ abstract class Abstract_Renderer {
   protected function _border_double($x, $y, $length, $color, $widths, $side, $corner_style = "bevel") {
     list($top, $right, $bottom, $left) = $widths;
     
-    $line_width = $$side / 4;
+    $line_width = $$side / 3;
     
     // We draw the outermost edge first. Points are ordered: outer left,
     // outer right, inner right, inner left, or outer top, outer bottom,
@@ -633,8 +608,8 @@ abstract class Abstract_Renderer {
 
     case "top":
       if ( $corner_style === "bevel" ) {
-        $left_line_width = $left / 4;
-        $right_line_width = $right / 4;
+        $left_line_width = $left / 3;
+        $right_line_width = $right / 3;
         
         $points = array($x, $y,
                         $x + $length, $y,
@@ -657,8 +632,8 @@ abstract class Abstract_Renderer {
       
     case "bottom":
       if ( $corner_style === "bevel" ) {
-        $left_line_width = $left / 4;
-        $right_line_width = $right / 4;
+        $left_line_width = $left / 3;
+        $right_line_width = $right / 3;
         
         $points = array($x, $y,
                         $x + $length, $y,
@@ -681,8 +656,8 @@ abstract class Abstract_Renderer {
 
     case "left":
       if ( $corner_style === "bevel" ) {
-        $top_line_width = $top / 4;
-        $bottom_line_width = $bottom / 4;
+        $top_line_width = $top / 3;
+        $bottom_line_width = $bottom / 3;
         
         $points = array($x, $y,
                         $x, $y + $length,
@@ -705,8 +680,8 @@ abstract class Abstract_Renderer {
                       
     case "right":
       if ( $corner_style === "bevel" ) {
-        $top_line_width = $top / 4;
-        $bottom_line_width = $bottom / 4;
+        $top_line_width = $top / 3;
+        $bottom_line_width = $bottom / 3;
         
       
         $points = array($x, $y,

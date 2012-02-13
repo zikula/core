@@ -1,169 +1,139 @@
 <?php
+/**
+ * A PHP class to provide the basic functionality to create a pdf document without
+ * any requirement for additional modules.
+ *
+ * Extended by Orion Richardson to support Unicode / UTF-8 characters using
+ * TCPDF and others as a guide.
+ *
+ * @author  Wayne Munro <pdf@ros.co.nz>
+ * @author  Orion Richardson <orionr@yahoo.com>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @author  Ryan H. Masten <ryan.masten@gmail.com>
+ * @author  Brian Sweeney <eclecticgeek@gmail.com>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @version $Id: class.pdf.php 469 2012-02-05 22:25:30Z fabien.menager $
+ * @license Public Domain http://creativecommons.org/licenses/publicdomain/
+ * @package Cpdf
+ */
+class Cpdf {
+  
   /**
-   * Cpdf
-   *
-   * http://www.ros.co.nz/pdf
-   *
-   * A PHP class to provide the basic functionality to create a pdf document without
-   * any requirement for additional modules.
-   *
-   * Note that the companion class CezPdf can be used to extend this class and dramatically
-   * simplify the creation of documents.
-   *
-   * Extended by Orion Richardson to support Unicode / UTF-8 characters using
-   * TCPDF and others as a guide.
-   *
-   * IMPORTANT NOTE
-   * there is no warranty, implied or otherwise with this software.
-   *
-   * LICENCE
-   * This code has been placed in the Public Domain for all to enjoy.
-   *
-   * @author       Wayne Munro <pdf@ros.co.nz>
-   * @contributor  Orion Richardson <orionr@yahoo.com>
-   * @contributor  Helmut Tischer <htischer@weihenstephan.org>
-   * @contributor  Ryan H. Masten <ryan.masten@gmail.com>
-   * @version  009
-   * @package  Cpdf
-   *
-   * Changes
-   * @contributor Helmut Tischer <htischer@weihenstephan.org>
-   * @version 0.5.1.htischer.20090507
-   * - On multiple identical png and jpg images, put only one copy into the pdf file and refer to it.
-   *   This reduces file size and rendering time.
-   * - Allow font metrics cache to be a different folder as the font metrics. This allows a read only installation.
-   * - Allow adding images directly from a gd object. This increases performance by avoiding temporary files.
-   * - On png image files remove alpa channel to allow display of typical png files in pdf.
-   * - On addImage avoid temporary file. Todo: Duplicate Image (currently not used)
-   * - Add a check function, whether image is already cached, This avoids double creation by caller which saves
-   *   CPU time and memory.
-   * @contributor Helmut Tischer <htischer@weihenstephan.org>
-   * @version dompdf_trunk_with_helmut_mods.20090524
-   * - Allow temp and fontcache folders to be passed in by class creator
-   * @version dompdf_trunk_with_helmut_mods.20090528
-   * - typo 'decent' instead of 'descent' at various locations made getFontDescender worthless
-   */
-
-/* $Id: class.pdf.php 360 2011-02-15 19:33:52Z fabien.menager $ */
-
-class  Cpdf {
-
-
-  /**
-   * the current number of pdf objects in the document
+   * @var integer The current number of pdf objects in the document
    */
   public  $numObj = 0;
 
   /**
-   * this array contains all of the pdf objects, ready for final assembly
+   * @var array This array contains all of the pdf objects, ready for final assembly
    */
   public  $objects =  array();
 
   /**
-   * the objectId (number within the objects array) of the document catalog
+   * @var integer The objectId (number within the objects array) of the document catalog
    */
   public  $catalogId;
 
   /**
-   * array carrying information about the fonts that the system currently knows about
-   * used to ensure that a font is not loaded twice, among other things
+   * @var array Array carrying information about the fonts that the system currently knows about
+   * Used to ensure that a font is not loaded twice, among other things
    */
   public  $fonts = array();
   
   /**
-   * the default font metrics file to use if no other font has been loaded
-   * the path to the directory containing the font metrics should be included
+   * @var string The default font metrics file to use if no other font has been loaded.
+   * The path to the directory containing the font metrics should be included
    */
   public  $defaultFont = './fonts/Helvetica.afm';
   
   /**
-   * a record of the current font
+   * @string A record of the current font
    */
   public  $currentFont = '';
 
   /**
-   * the current base font
+   * @var string The current base font
    */
   public  $currentBaseFont = '';
 
   /**
-   * the number of the current font within the font array
+   * @var integer The number of the current font within the font array
    */
   public  $currentFontNum = 0;
 
   /**
-   *
+   * @var integer
    */
   public  $currentNode;
 
   /**
-   * object number of the current page
+   * @var integer Object number of the current page
    */
   public  $currentPage;
 
   /**
-   * object number of the currently active contents block
+   * @var integer Object number of the currently active contents block
    */
   public  $currentContents;
 
   /**
-   * number of fonts within the system
+   * @var integer Number of fonts within the system
    */
   public  $numFonts = 0;
 
   /**
-   * Number of graphic state resources used
+   * @var integer Number of graphic state resources used
    */
   private  $numStates =  0;
 
   /**
-   * current colour for fill operations, defaults to inactive value, all three components should be between 0 and 1 inclusive when active
+   * @var array Current colour for fill operations, defaults to inactive value, 
+   * all three components should be between 0 and 1 inclusive when active
    */
   public  $currentColour = null;
 
   /**
-   * current colour for stroke operations (lines etc.)
+   * @var array Current colour for stroke operations (lines etc.)
    */
   public  $currentStrokeColour = null;
 
   /**
-   * current style that lines are drawn in
+   * @var string Current style that lines are drawn in
    */
   public  $currentLineStyle = '';
 
   /**
-   * current line transparency (partial graphics state)
+   * @var array Current line transparency (partial graphics state)
    */
   public $currentLineTransparency = array("mode" => "Normal", "opacity" => 1.0);
   
   /**
-   * current fill transparency (partial graphics state)
+   * array Current fill transparency (partial graphics state)
    */
   public $currentFillTransparency = array("mode" => "Normal", "opacity" => 1.0);
   
   /**
-   * an array which is used to save the state of the document, mainly the colours and styles
+   * @var array An array which is used to save the state of the document, mainly the colours and styles
    * it is used to temporarily change to another state, the change back to what it was before
    */
   public  $stateStack =  array();
 
   /**
-   * number of elements within the state stack
+   * @var integer Number of elements within the state stack
    */
   public  $nStateStack =  0;
 
   /**
-   * number of page objects within the document
+   * @var integer Number of page objects within the document
    */
   public  $numPages = 0;
 
   /**
-   * object Id storage stack
+   * @var array Object Id storage stack
    */
   public  $stack = array();
 
   /**
-   * number of elements within the object Id storage stack
+   * @var integer Number of elements within the object Id storage stack
    */
   public  $nStack = 0;
 
@@ -179,53 +149,53 @@ class  Cpdf {
   public  $addLooseObjects = array();
 
   /**
-   * the objectId of the information object for the document
+   * @var integer The objectId of the information object for the document
    * this contains authorship, title etc.
    */
   public  $infoObject = 0;
 
   /**
-   * number of images being tracked within the document
+   * @var integer Number of images being tracked within the document
    */
   public  $numImages = 0;
 
   /**
-   * an array containing options about the document
+   * @var array An array containing options about the document
    * it defaults to turning on the compression of the objects
    */
   public  $options = array('compression'=>true);
 
   /**
-   * the objectId of the first page of the document
+   * @var integer The objectId of the first page of the document
    */
   public  $firstPageId;
 
   /**
-   * used to track the last used value of the inter-word spacing, this is so that it is known
+   * @var float Used to track the last used value of the inter-word spacing, this is so that it is known
    * when the spacing is changed.
    */
   public  $wordSpaceAdjust = 0;
 
   /**
-   * used to track the last used value of the inter-letter spacing, this is so that it is known
+   * @var float Used to track the last used value of the inter-letter spacing, this is so that it is known
    * when the spacing is changed.
    */
   public  $charSpaceAdjust = 0;
   
   /**
-   * the object Id of the procset object
+   * @var integer The object Id of the procset object
    */
   public  $procsetObjectId;
 
   /**
-   * store the information about the relationship between font families
+   * @var array Store the information about the relationship between font families
    * this used so that the code knows which font is the bold version of another font, etc.
    * the value of this array is initialised in the constuctor function.
    */
   public  $fontFamilies =  array();
  
   /**
-   * folder for php serialized formats of font metrics files.
+   * @var string Folder for php serialized formats of font metrics files.
    * If empty string, use same folder as original metrics files.
    * This can be passed in from class creator.
    * If this folder does not exist or is not writable, Cpdf will be **much** slower.
@@ -234,13 +204,13 @@ class  Cpdf {
   public  $fontcache = '';
   
   /**
-   * The version of the font metrics cache file.
+   * @var integer The version of the font metrics cache file.
    * This value must be manually incremented whenever the internal font data structure is modified.
    */
-  public  $fontcacheVersion = 4;
+  public  $fontcacheVersion = 5;
 
   /**
-   * temporary folder.
+   * @var string Temporary folder.
    * If empty string, will attempty system tmp folder.
    * This can be passed in from class creator.
    * Only used for conversion of gd images to jpeg images.
@@ -248,70 +218,71 @@ class  Cpdf {
   public  $tmp = '';
 
   /**
-   * track if the current font is bolded or italicised
+   * @var string Track if the current font is bolded or italicised
    */
   public  $currentTextState =  '';
 
   /**
-   * messages are stored here during processing, these can be selected afterwards to give some useful debug information
+   * @var string Messages are stored here during processing, these can be selected afterwards to give some useful debug information
    */
   public  $messages = '';
 
   /**
-   * the ancryption array for the document encryption is stored here
+   * @var string The ancryption array for the document encryption is stored here
    */
   public  $arc4 = '';
 
   /**
-   * the object Id of the encryption information
+   * @var integer The object Id of the encryption information
    */
   public  $arc4_objnum = 0;
 
   /**
-   * the file identifier, used to uniquely identify a pdf document
+   * @var string The file identifier, used to uniquely identify a pdf document
    */
   public  $fileIdentifier = '';
 
   /**
-   * a flag to say if a document is to be encrypted or not
+   * @var boolean A flag to say if a document is to be encrypted or not
    */
-  public  $encrypted = 0;
+  public  $encrypted = false;
 
   /**
-   * the ancryption key for the encryption of all the document content (structure is not encrypted)
+   * @var string The encryption key for the encryption of all the document content (structure is not encrypted)
    */
   public  $encryptionKey = '';
 
   /**
-   * array which forms a stack to keep track of nested callback functions
+   * @var array Array which forms a stack to keep track of nested callback functions
    */
   public  $callback =  array();
 
   /**
-   * the number of callback functions in the callback array
+   * @var integer The number of callback functions in the callback array
    */
   public  $nCallback =  0;
 
   /**
-   * store label->id pairs for named destinations, these will be used to replace internal links
+   * @var array Store label->id pairs for named destinations, these will be used to replace internal links
    * done this way so that destinations can be defined after the location that links to them
    */
   public  $destinations =  array();
 
   /**
-   * store the stack for the transaction commands, each item in here is a record of the values of all the
+   * @var array Store the stack for the transaction commands, each item in here is a record of the values of all the
    * publiciables within the class, so that the user can rollback at will (from each 'start' command)
    * note that this includes the objects array, so these can be large.
    */
   public  $checkpoint =  '';
 
-  /* Table of Image origin filenames and image labels which were already added with o_image().
+  /**
+   * @var array Table of Image origin filenames and image labels which were already added with o_image().
    * Allows to merge identical images
    */
   public  $imagelist = array();
 
   /**
-   * whether the text passed in should be treated as Unicode or just local character set.
+   * @var boolean Whether the text passed in should be treated as Unicode or just local character set.
    */
   public  $isUnicode = false;
 
@@ -326,20 +297,37 @@ class  Cpdf {
   protected $compressionReady = false;
 
   /**
-   * @var array current page size
+   * @var array Current page size
    */
   protected $currentPageSize = array("width" => 0, "height" => 0);
   
   /**
-   * @var string the target internal encoding
+   * @var array All the chars that will be required in the font subsets
+   */
+  protected $stringSubsets = array();
+  
+  /**
+   * @var string The target internal encoding
    */
   static protected $targetEncoding = 'iso-8859-1';
   
   /**
+   * @var array The list of the core fonts
+   */
+  static protected $coreFonts = array(
+    'courier', 'courier-bold', 'courier-oblique', 'courier-boldoblique',
+    'helvetica', 'helvetica-bold', 'helvetica-oblique', 'helvetica-boldoblique',
+    'times-roman', 'times-bold', 'times-italic', 'times-bolditalic',
+    'symbol', 'zapfdingbats'
+  );
+  
+  /**
    * class constructor
    * this will start a new document
-   * @var array array of 4 numbers, defining the bottom left and upper right corner of the page. first two are normally zero.
-   * @var boolean whether text will be treated as Unicode or not.
+   * @var array   $pageSize  Array of 4 numbers, defining the bottom left and upper right corner of the page. first two are normally zero.
+   * @var boolean $isUnicode Whether text will be treated as Unicode or not.
+   * @var string  $fontcache The font cache folder
+   * @var string  $tmp The temporary folder
    */
   function __construct ($pageSize = array(0, 0, 612, 792), $isUnicode = false, $fontcache = '', $tmp = '') {
     $this->isUnicode = $isUnicode;
@@ -356,14 +344,6 @@ class  Cpdf {
     // also initialize the font families that are known about already
     $this->setFontFamily('init');
     //  $this->fileIdentifier = md5('xxxxxxxx'.time());
-  }
-
-
-  /**
-   * Class destructor
-   */
-  function __destruct() {
-    clear_object($this);
   }
   
   /**
@@ -417,7 +397,6 @@ class  Cpdf {
     }
   }
 
-
   /**
    * set the viewer preferences
    */
@@ -456,7 +435,6 @@ class  Cpdf {
       return  $res;
     }
   }
-
 
   /**
    * define the document catalog, the overall controller for the document
@@ -522,7 +500,6 @@ class  Cpdf {
       return  $res;
     }
   }
-
 
   /**
    * object which is a parent to the pages in the document
@@ -657,7 +634,6 @@ class  Cpdf {
     }
   }
 
-
   /**
    * define the outlines in the doc, empty for now
    */
@@ -691,7 +667,6 @@ class  Cpdf {
       return  $res;
     }
   }
-
 
   /**
    * an object to hold the font description
@@ -863,7 +838,6 @@ EOT;
     }
   }
 
-
   /**
    * a font descriptor, needed for including additional fonts
    */
@@ -921,7 +895,6 @@ EOT;
     }
   }
 
-
   /**
    * the font encoding
    */
@@ -965,7 +938,6 @@ EOT;
       return  $res;
     }
   }
-
 
   /**
    * a descendent cid font,  needed for unicode fonts
@@ -1055,7 +1027,6 @@ EOT;
     }
   }
   
-
   /**
    * a font glyph to character map,  needed for unicode fonts
    */
@@ -1099,7 +1070,6 @@ EOT;
     }
   }
   
-
   /**
    * the document procset, solves some problems with printing to old PS printers
    */
@@ -1136,7 +1106,6 @@ EOT;
       return  $res;
     }
   }
-
 
   /**
    * define the document information
@@ -1189,7 +1158,6 @@ EOT;
     }
   }
 
-
   /**
    * an action object, used to link to URLS initially
    */
@@ -1216,6 +1184,8 @@ EOT;
       $res = "\n$id 0 obj\n<< /Type /Action";
       switch ($o['type']) {
       case  'ilink':
+        if (!isset($this->destinations[(string)$o['info']['label']])) break;
+        
         // there will be an 'label' setting, this is the name of the destination
         $res.= "\n/S /GoTo\n/D ".$this->destinations[(string)$o['info']['label']]." 0 R";
         break;
@@ -1223,9 +1193,9 @@ EOT;
       case  'URI':
         $res.= "\n/S /URI\n/URI (";
         if  ($this->encrypted) {
-          $res.= $this->filterText($this->ARC4($o['info']));
+          $res.= $this->filterText($this->ARC4($o['info']), true, false);
         } else {
-          $res.= $this->filterText($o['info']);
+          $res.= $this->filterText($o['info'], true, false);
         }
 
         $res.= ")";
@@ -1236,7 +1206,6 @@ EOT;
       return  $res;
     }
   }
-
 
   /**
    * an annotation object, this will add an annotation to the current page.
@@ -1295,7 +1264,6 @@ EOT;
       return  $res;
     }
   }
-
 
   /**
    * a page object, it also creates a contents object to hold its contents
@@ -1379,7 +1347,6 @@ EOT;
       return  $res;
     }
   }
-
 
   /**
    * the contents objects hold all of the content which appears on pages
@@ -1615,7 +1582,6 @@ EOT;
     }
   }
 
-
   /**
    * graphics state object
    */
@@ -1653,7 +1619,6 @@ EOT;
       return  $res;
     }
   }
-
 
   /**
    * encryption object.
@@ -1706,7 +1671,7 @@ EOT;
       $ukey =  substr($tmp, 0, 5);
       $this->ARC4_init($ukey);
       $this->encryptionKey =  $ukey;
-      $this->encrypted = 1;
+      $this->encrypted = true;
       $uvalue = $this->ARC4($pad);
       $this->objects[$id]['info']['U'] = $uvalue;
       $this->encryptionKey = $ukey;
@@ -1728,7 +1693,6 @@ EOT;
     }
   }
 
-
   /**
    * ARC4 functions
    * A series of function to implement ARC4 encoding in PHP
@@ -1746,7 +1710,6 @@ EOT;
     return  $out;
   }
 
-
   /**
    * initialize the encryption for processing a particular object
    */
@@ -1760,7 +1723,6 @@ EOT;
     $key =  $this->md5_16($tmp);
     $this->ARC4_init(substr($key, 0, 10));
   }
-
 
   /**
    * initialize the ARC4 encryption
@@ -1793,7 +1755,6 @@ EOT;
     }
   }
 
-
   /**
    * ARC4 encrypt a text string
    */
@@ -1815,7 +1776,6 @@ EOT;
     return  $out;
   }
 
-
   /**
    * functions which can be called to adjust or add to the document
    */
@@ -1829,7 +1789,6 @@ EOT;
     $this->o_annotation($this->numObj, 'new', $info);
   }
 
-
   /**
    * add a link in the document to an internal destination (ie. within the document)
    */
@@ -1838,7 +1797,6 @@ EOT;
     $info =  array('type'=>'ilink', 'label'=>$label, 'rect'=>array($x0, $y0, $x1, $y1));
     $this->o_annotation($this->numObj, 'new', $info);
   }
-
 
   /**
    * set the encryption of the document
@@ -1870,13 +1828,11 @@ EOT;
     }
   }
 
-
   /**
    * should be used for internal checks, not implemented as yet
    */
   function checkAllHere() {
   }
-
 
   /**
    * return the pdf stream as a string returned from the function
@@ -2011,15 +1967,16 @@ EOT;
     
     $this->addMessage("openFont: $font - $name");
 
-    $metrics_name = $name . ($this->isUnicode ? '.ufm' : '.afm');
-    
-    // Core fonts don't currently work with composite fonts (for Unicode support).
-    // The .ufm files have been removed so we need to check whether or not to use the
-    // .ufm or .afm.
-    if ($this->isUnicode && !file_exists("$dir/$metrics_name")) { $metrics_name = $name . '.afm'; }
+    if ( !$this->isUnicode || in_array(mb_strtolower(basename($name)), self::$coreFonts) ) {
+      $metrics_name = "$name.afm";
+    }
+    else {
+      $metrics_name = "$name.ufm";
+    }
     
     $cache_name = "$metrics_name.php";
     $this->addMessage("metrics: $metrics_name, cache: $cache_name");
+    
     if  (file_exists($fontcache . $cache_name)) {
       $this->addMessage("openFont: php file exists $fontcache$cache_name");
       $this->fonts[$font] = require($fontcache . $cache_name);
@@ -2071,6 +2028,7 @@ EOT;
           case  'FontName':
           case  'FullName':
           case  'FamilyName':
+          case  'PostScriptName':
           case  'Weight':
           case  'ItalicAngle':
           case  'IsFixedPitch':
@@ -2238,6 +2196,8 @@ EOT;
       if  (isset($this->fonts[$fontName])) {
         $this->numObj++;
         $this->numFonts++;
+    
+        $font = &$this->fonts[$fontName];
 
         //$this->numFonts = md5($fontName);
         $pos =  strrpos($fontName, '/');
@@ -2261,21 +2221,22 @@ EOT;
 
         $fontObj =  $this->numObj;
         $this->o_font($this->numObj, 'new', $options);
-        $this->fonts[$fontName]['fontNum'] =  $this->numFonts;
+        $font['fontNum'] =  $this->numFonts;
 
         // if this is a '.afm' font, and there is a '.pfa' file to go with it ( as there
         // should be for all non-basic fonts), then load it into an object and put the
         // references into the font object
         $basefile =  $fontName;
-        if  (file_exists($basefile.'.pfb')) {
+        
+        $fbtype = '';
+        if  (file_exists("$basefile.pfb")) {
           $fbtype =  'pfb';
-        } else  if  (file_exists($basefile.'.ttf')) {
+        } 
+        elseif  (file_exists("$basefile.ttf")) {
           $fbtype =  'ttf';
-        } else {
-          $fbtype =  '';
         }
 
-        $fbfile =  $basefile.'.'.$fbtype;
+        $fbfile =  "$basefile.$fbtype";
 
         //      $pfbfile = substr($fontName,0,strlen($fontName)-4).'.pfb';
         //      $ttffile = substr($fontName,0,strlen($fontName)-4).'.ttf';
@@ -2283,10 +2244,10 @@ EOT;
 
         // OAR - I don't understand this old check
         // if  (substr($fontName, -4) ===  '.afm' &&  strlen($fbtype)) {
-        if  (mb_strlen($fbtype, '8bit')) {
-          $adobeFontName =  $this->fonts[$fontName]['FontName'];
+        if  ($fbtype) {
+          $adobeFontName =  isset($font['PostScriptName']) ? $font['PostScriptName'] : $font['FontName'];
           //        $fontObj = $this->numObj;
-          $this->addMessage('selectFont: adding font file - '.$fbfile.' - '.$adobeFontName);
+          $this->addMessage("selectFont: adding font file - $fbfile - $adobeFontName");
 
           // find the array of font widths, and put that into an object.
           $firstChar =  -1;
@@ -2294,9 +2255,9 @@ EOT;
           $widths =  array();
           $cid_widths = array();
 
-          foreach ($this->fonts[$fontName]['C'] as  $num => $d) {
+          foreach ($font['C'] as  $num => $d) {
             if  (intval($num) >0 ||  $num ==  '0') {
-              if (!$this->fonts[$fontName]['isUnicode']) {
+              if (!$font['isUnicode']) {
                 // With Unicode, widths array isn't used
                 if  ($lastChar>0 &&  $num>$lastChar+1) {
                   for ($i =  $lastChar+1;$i<$num;$i++) {
@@ -2307,7 +2268,7 @@ EOT;
 
               $widths[] =  $d;
 
-              if ($this->fonts[$fontName]['isUnicode']) {
+              if ($font['isUnicode']) {
                 $cid_widths[$num] =  $d;
               }
 
@@ -2323,7 +2284,7 @@ EOT;
           if  (isset($options['differences'])) {
             foreach($options['differences'] as  $charNum => $charName) {
               if  ($charNum > $lastChar) {
-                if (!$this->fonts[$fontName]['isUnicode']) {
+                if (!$font['isUnicode']) {
                   // With Unicode, widths array isn't used
                   for ($i =  $lastChar + 1; $i <=  $charNum; $i++) {
                     $widths[] =  0;
@@ -2333,17 +2294,17 @@ EOT;
                 $lastChar =  $charNum;
               }
 
-              if  (isset($this->fonts[$fontName]['C'][$charName])) {
-                $widths[$charNum-$firstChar] =  $this->fonts[$fontName]['C'][$charName];
-                if ($this->fonts[$fontName]['isUnicode']) {
-                  $cid_widths[$charName] =  $this->fonts[$fontName]['C'][$charName];
+              if  (isset($font['C'][$charName])) {
+                $widths[$charNum-$firstChar] =  $font['C'][$charName];
+                if ($font['isUnicode']) {
+                  $cid_widths[$charName] =  $font['C'][$charName];
                 }
               }
             }
           }
 
-          if ($this->fonts[$fontName]['isUnicode']) {
-            $this->fonts[$fontName]['CIDWidths'] = $cid_widths;
+          if ($font['isUnicode']) {
+            $font['CIDWidths'] = $cid_widths;
           }
 
           $this->addMessage('selectFont: FirstChar = '.$firstChar);
@@ -2351,37 +2312,98 @@ EOT;
 
           $widthid = -1;
 
-          if (!$this->fonts[$fontName]['isUnicode']) {
+          if (!$font['isUnicode']) {
             // With Unicode, widths array isn't used
 
             $this->numObj++;
             $this->o_contents($this->numObj, 'new', 'raw');
-            $this->objects[$this->numObj]['c'].=  '[';
-
-            foreach($widths as  $width) {
-              $this->objects[$this->numObj]['c'].=  ' '.$width;
-            }
-
-            $this->objects[$this->numObj]['c'].=  ' ]';
+            $this->objects[$this->numObj]['c'].=  '['.implode(' ', $widths).']';
             $widthid =  $this->numObj;
           }
 
           $missing_width = 500;
           $stemV = 70;
 
-          if (isset($this->fonts[$fontName]['MissingWidth'])) {
-            $missing_width =  $this->fonts[$fontName]['MissingWidth'];
+          if (isset($font['MissingWidth'])) {
+            $missing_width =  $font['MissingWidth'];
           }
-          if (isset($this->fonts[$fontName]['StdVW'])) {
-            $stemV = $this->fonts[$fontName]['StdVW'];
-          } elseif (isset($this->fonts[$fontName]['Weight']) && preg_match('!(bold|black)!i', $this->fonts[$fontName]['Weight'])) {
+          if (isset($font['StdVW'])) {
+            $stemV = $font['StdVW'];
+          } elseif (isset($font['Weight']) && preg_match('!(bold|black)!i', $font['Weight'])) {
             $stemV = 120;
           }
-
+          
           // load the pfb file, and put that into an object too.
           // note that pdf supports only binary format type 1 font files, though there is a
           // simple utility to convert them from pfa to pfb.
-          $data =  file_get_contents($fbfile);
+          if (!$this->isUnicode || $fbtype !== 'ttf' || empty($this->stringSubsets)) {
+            $data = file_get_contents($fbfile);
+          }
+          else {
+            require_once dirname(__FILE__)."/php-font-lib/classes/font.cls.php";
+            
+            $this->stringSubsets[$fontName][] = 32; // Force space if not in yet
+            
+            $subset = $this->stringSubsets[$fontName];
+            sort($subset);
+            
+            // Load font
+            $font_obj = Font::load($fbfile);
+            $font_obj->parse();
+            
+            // Define subset
+            $font_obj->setSubset($subset);
+            $font_obj->reduce();
+            
+            // Write new font
+            $tmp_name = "$fbfile.tmp.".sprintf("%u", crc32(implode($subset)));
+            $font_obj->open($tmp_name, Font_Binary_Stream::modeWrite);
+            $font_obj->encode(array("OS/2"));
+            $font_obj->close();
+            
+            // Parse the new font to get cid2gid and widths
+            $font_obj = Font::load($tmp_name);
+            
+            // Find Unicode char map table
+            $subtable = null;
+            foreach($font_obj->getData("cmap", "subtables") as $_subtable) {
+              if ($_subtable["platformID"] == 0 || $_subtable["platformID"] == 3 && $_subtable["platformSpecificID"] == 1) {
+                $subtable = $_subtable;
+                break;
+              }
+            }
+            
+            if ($subtable) {
+              $glyphIndexArray = $subtable["glyphIndexArray"];
+              $hmtx = $font_obj->getData("hmtx");
+              
+              unset($glyphIndexArray[0xFFFF]);
+              
+              $cidtogid = str_pad('', max(array_keys($glyphIndexArray))*2+1, "\x00");
+              $font['CIDWidths'] = array();
+              
+              foreach($glyphIndexArray as $cid => $gid) {
+                if ($cid >= 0 && $cid < 0xFFFF && $gid) {
+                  $cidtogid[$cid*2] = chr($gid >> 8);
+                  $cidtogid[$cid*2 + 1] = chr($gid & 0xFF);
+                }
+                
+                $width = $font_obj->normalizeFUnit(isset($hmtx[$gid]) ? $hmtx[$gid][0] : $hmtx[0][0]);
+                $font['CIDWidths'][$cid] = $width;
+              }
+              
+              $font['CIDtoGID'] = base64_encode(gzcompress($cidtogid));
+              $font['CIDtoGID_Compressed'] = true;
+              
+              $data = file_get_contents($tmp_name);
+            }
+            else {
+              $data = file_get_contents($fbfile);
+            }
+            
+            $font_obj->close();
+            unlink($tmp_name);
+          }
 
           // create the font descriptor
           $this->numObj++;
@@ -2393,11 +2415,11 @@ EOT;
           // determine flags (more than a little flakey, hopefully will not matter much)
           $flags =  0;
 
-          if  ($this->fonts[$fontName]['ItalicAngle'] !=  0) {
+          if  ($font['ItalicAngle'] !=  0) {
             $flags+=  pow(2, 6);
           }
 
-          if  ($this->fonts[$fontName]['IsFixedPitch'] === 'true') {
+          if  ($font['IsFixedPitch'] === 'true') {
             $flags+=  1;
           }
 
@@ -2417,8 +2439,8 @@ EOT;
           );
 
           foreach($list as  $k => $v) {
-            if  (isset($this->fonts[$fontName][$v])) {
-              $fdopt[$k] =  $this->fonts[$fontName][$v];
+            if  (isset($font[$v])) {
+              $fdopt[$k] =  $font[$v];
             }
           }
 
@@ -2459,10 +2481,10 @@ EOT;
             $tmp['SubType'] =  'TrueType';
           }
 
-          $this->addMessage('adding extra info to font.('.$fontObj.')');
+          $this->addMessage("adding extra info to font.($fontObj)");
 
           foreach($tmp as  $fk => $fv) {
-            $this->addMessage($fk." : ".$fv);
+            $this->addMessage("$fk : $fv");
           }
 
           $this->o_font($fontObj, 'add', $tmp);
@@ -2473,7 +2495,7 @@ EOT;
         // also set the differences here, note that this means that these will take effect only the
         //first time that a font is selected, else they are ignored
         if  (isset($options['differences'])) {
-          $this->fonts[$fontName]['differences'] =  $options['differences'];
+          $font['differences'] =  $options['differences'];
         }
       }
     }
@@ -2530,7 +2552,6 @@ EOT;
     //  }
   }
 
-
   /**
    * function for the user to find out what the ID is of the first page that was created during
    * startup - useful if they wish to add something to it later.
@@ -2538,7 +2559,6 @@ EOT;
   function getFirstPageId() {
     return  $this->firstPageId;
   }
-
 
   /**
    * add content to the currently active object
@@ -2548,7 +2568,6 @@ EOT;
   function addContent($content) {
     $this->objects[$this->currentContents]['c'].=  $content;
   }
-
 
   /**
    * sets the colour for fill operations
@@ -2569,7 +2588,6 @@ EOT;
     }
   }
 
-
   /**
    * sets the colour for stroke operations
    */
@@ -2589,7 +2607,6 @@ EOT;
     }
   }
 
-
   /**
    * Set the graphics state for compositions
    */
@@ -2600,7 +2617,6 @@ EOT;
     $this->o_extGState($this->numObj,  'new',  $parameters);
     $this->objects[ $this->currentContents ]['c'].=  "\n/GS$this->numStates gs";
   }
-
 
   /**
    * Set current blend mode & opacity for lines.
@@ -2678,7 +2694,6 @@ EOT;
     $this->objects[$this->currentContents]['c'] .= sprintf("\n%.3F %.3F m %.3F %.3F l S", $x1, $y1, $x2, $y2);
   }
 
-
   /**
    * draw a bezier curve based on 4 control points
    */
@@ -2689,7 +2704,6 @@ EOT;
       sprintf("\n%.3F %.3F m %.3F %.3F %.3F %.3F %.3F %.3F c S", $x0, $y0, $x1, $y1, $x2, $y2, $x3, $y3);
   }
 
-
   /**
    * draw a part of an ellipse
    */
@@ -2697,14 +2711,12 @@ EOT;
     $this->ellipse($x0, $y0, $r1, $r2, $angle, $nSeg, $astart, $afinish, false);
   }
 
-
   /**
    * draw a filled ellipse
    */
   function filledEllipse($x0, $y0, $r1, $r2 =  0, $angle =  0, $nSeg =  8, $astart =  0, $afinish =  360) {
     return  $this->ellipse($x0, $y0, $r1, $r2 =  0, $angle, $nSeg, $astart, $afinish, true, true);
   }
-
 
   /**
    * draw an ellipse
@@ -2784,7 +2796,6 @@ EOT;
     }
   }
 
-
   /**
    * this sets the line drawing style.
    * width, is the thickness of the line in user units
@@ -2826,8 +2837,6 @@ EOT;
     $this->objects[$this->currentContents]['c'].=  "\n$string";
   }
 
-
-
   /**
    * draw a polygon, the syntax for this is similar to the GD polygon command
    */
@@ -2845,7 +2854,6 @@ EOT;
     }
   }
 
-
   /**
    * a filled rectangle, note that it is the width and height of the rectangle which are the secondary paramaters, not
    * the coordinates of the upper-right corner
@@ -2853,7 +2861,6 @@ EOT;
   function filledRectangle($x1, $y1, $width, $height) {
     $this->objects[$this->currentContents]['c'].=  sprintf("\n%.3F %.3F %.3F %.3F re f", $x1, $y1, $width, $height);
   }
-
 
   /**
    * draw a rectangle, note that it is the width and height of the rectangle which are the secondary paramaters, not
@@ -2863,11 +2870,13 @@ EOT;
     $this->objects[$this->currentContents]['c'].=  sprintf("\n%.3F %.3F %.3F %.3F re S", $x1, $y1, $width, $height);
   }
 
-
   /**
    * save the current graphic state
    */
   function save() {
+    // we must reset the colour cache or it will keep bad colours after clipping
+    $this->currentColour = null;
+    $this->currentStrokeColour = null;
     $this->objects[$this->currentContents]['c'].=  "\nq";
   }
   
@@ -2886,8 +2895,7 @@ EOT;
     $this->objects[$this->currentContents]['c'].=  sprintf("\n%.3F %.3F %.3F %.3F re W n", $x1, $y1, $width, $height);
   }
 
-  
-  /*
+  /**
    * ends the last clipping shape
    */
   function clippingEnd() {
@@ -2981,7 +2989,6 @@ EOT;
       vsprintf("\n %.3F %.3F %.3F %.3F %.3F %.3F cm", $tm);
   }
 
-
   /**
    * add a new page to the document
    * this also makes the new page the current active object
@@ -3033,7 +3040,6 @@ EOT;
     return  $this->currentContents;
   }
 
-
   /**
    * output the pdf code, streaming it to the browser
    * the relevant headers are set so that hopefully the browser will recognise it
@@ -3081,7 +3087,6 @@ EOT;
     flush();
   }
 
-
   /**
    * return the height in units of the current font in the given size
    */
@@ -3115,7 +3120,24 @@ EOT;
 
     return  $size*$h/1000;
   }
+  
+  function getFontXHeight($size) {
+    if  (!$this->numFonts) {
+      $this->selectFont($this->defaultFont);
+    }
+    
+    $font = $this->fonts[$this->currentFont];
+    
+    // for the current font, and the given size, what is the height of the font in user units
+    if ( isset($font['XHeight']) ) {
+      $xh =  $font['Ascender']-$font['Descender'];
+    }
+    else {
+      $xh =  $this->getFontHeight($size) / 2;
+    }
 
+    return  $size*$xh/1000;
+  }
 
   /**
    * return the font descender, this will normally return a negative number
@@ -3133,7 +3155,6 @@ EOT;
 
     return  $size*$h/1000;
   }
-
 
   /**
    * filter the text, this is applied to all text just before being inserted into the pdf document
@@ -3267,7 +3288,6 @@ EOT;
     return $out;
   }
 
-
   /**
    * given a start position and information about how text is to be laid out, calculate where
    * on the page the text will end
@@ -3287,7 +3307,6 @@ EOT;
     return  array(cos($a) *$w+$x, -sin($a) *$w+$y);
   }
 
-
   /**
    * wrapper function for PRVTcheckTextDirective1
    *
@@ -3299,7 +3318,6 @@ EOT;
     $y =  0;
     return  $this->PRVTcheckTextDirective1($text, $i, $f, 0, $x, $y);
   }
-
 
   /**
    * checks if the text stream contains a control directive
@@ -3486,10 +3504,38 @@ EOT;
     return  $directive;
   }
   
+  /**
+   * Callback method used by smallCaps
+   * 
+   * @param array $matches
+   * @return string
+   */
   function toUpper($matches) {
     return mb_strtoupper($matches[0]);
   }
+  
+  function concatMatches($matches) {
+    $str = "";
+    foreach($matches as $match){
+      $str .= $match[0];
+    }
+    return $str;
+  }
 
+  /**
+   * add text to the document, at a specified location, size and angle on the page
+   */
+  function registerText($font, $text) {
+    if ( !$this->isUnicode || in_array(mb_strtolower(basename($font)), self::$coreFonts) ) {
+      return;
+    }
+    
+    if ( !isset($this->stringSubsets[$font]) ) {
+      $this->stringSubsets[$font] = array();
+    }
+    
+    $this->stringSubsets[$font] = array_unique(array_merge($this->stringSubsets[$font], $this->utf8toCodePointsArray($text)));
+  }
 
   /**
    * add text to the document, at a specified location, size and angle on the page
@@ -3498,9 +3544,19 @@ EOT;
     if  (!$this->numFonts) {
       $this->selectFont($this->defaultFont);
     }
+
+    $text = str_replace(array("\r", "\n"), "", $text);
     
-    if ($smallCaps) {
-      $text = preg_replace_callback("/\p{Ll}/u", array($this, "toUpper"), $text);
+    if ( $smallCaps ) {
+      preg_match_all("/(\P{Ll}+)/u", $text, $matches, PREG_SET_ORDER);
+      $lower = $this->concatMatches($matches);
+      d($lower);
+      
+      preg_match_all("/(\p{Ll}+)/u", $text, $matches, PREG_SET_ORDER);
+      $other = $this->concatMatches($matches);
+      d($other);
+      
+      //$text = preg_replace_callback("/\p{Ll}/u", array($this, "toUpper"), $text);
     }
 
     // if there are any open callbacks, then they should be called, to show the start of the line
@@ -3622,12 +3678,13 @@ EOT;
     }
   }
 
-
   /**
    * calculate how wide a given text string will be on a page, at a given size.
    * this can be called externally, but is alse used by the other class functions
    */
   function getTextWidth($size, $text, $word_spacing =  0, $char_spacing =  0) {
+    static $ord_cache = array();
+    
     // this function should not change any of the settings, though it will need to
     // track any directives which change during calculation, so copy them at the start
     // and put them back at the end.
@@ -3636,6 +3693,8 @@ EOT;
     if (!$this->numFonts) {
       $this->selectFont($this->defaultFont);
     }
+
+    $text = str_replace(array("\r", "\n"), "", $text);
 
     // converts a number or a float to a string so it can get the width
     $text = "$text";
@@ -3687,7 +3746,8 @@ EOT;
       $len = mb_strlen($text, 'Windows-1252');
 
       for ($i = 0; $i < $len; $i++) {
-        $char = ord($text[$i]);
+        $c = $text[$i];
+        $char = isset($ord_cache[$c]) ? $ord_cache[$c] : ($ord_cache[$c] = ord($c));
         
         // check if we have to replace character
         if ( isset($current_font['differences'][$char])) {
@@ -3719,7 +3779,6 @@ EOT;
 
     return  $w*$size/1000;
   }
-
 
   /**
    * do a part of the calculation for sorting out the justification of the text
@@ -3753,7 +3812,6 @@ EOT;
       break;
     }
   }
-
 
   /**
    * add text to the page, but ensure that it fits within a certain width
@@ -3904,7 +3962,6 @@ EOT;
     return  '';
   }
 
-
   /**
    * this will be called at a new page to return the state to what it was on the
    * end of the previous page, before the stack was closed down
@@ -3934,7 +3991,6 @@ EOT;
     $this->save();
   }
 
-
   /**
    * restore a previously saved state
    */
@@ -3952,7 +4008,6 @@ EOT;
     
     $this->restore();
   }
-
 
   /**
    * make a loose object, the output will go into this object, until it is closed, then will revert to
@@ -3972,7 +4027,6 @@ EOT;
     return  $this->numObj;
   }
 
-
   /**
    * open an existing object for editing
    */
@@ -3986,7 +4040,6 @@ EOT;
       $this->currentPage =  $this->objects[$id]['onPage'];
     }
   }
-
 
   /**
    * close an object
@@ -4003,7 +4056,6 @@ EOT;
     }
   }
 
-
   /**
    * stop an object from appearing on pages from this point on
    */
@@ -4014,7 +4066,6 @@ EOT;
       $this->addLooseObjects[$id] =  '';
     }
   }
-
 
   /**
    * after an object has been created, it wil only show if it has been added, using this function.
@@ -4070,7 +4121,6 @@ EOT;
     }
   }
 
-
   /**
    * return a storable representation of a specific object
    */
@@ -4078,7 +4128,6 @@ EOT;
     if  ( array_key_exists($id,  $this->objects))
       return  var_export($this->objects[$id],  true);
   }
-
 
   /**
    * restore an object from its stored representation.  returns its new object id.
@@ -4089,7 +4138,6 @@ EOT;
     $this->closeObject();
     return  $obj_id;
   }
-
 
   /**
    * add content to the documents info object
@@ -4108,7 +4156,6 @@ EOT;
     }
   }
 
-
   /**
    * set the viewer preferences of the document, it is up to the browser to obey these.
    */
@@ -4122,7 +4169,6 @@ EOT;
       $this->o_catalog($this->catalogId, 'viewerPreferences', array($label => $value));
     }
   }
-
 
   /**
    * extract an integer from a position in a byte stream
@@ -4140,6 +4186,13 @@ EOT;
     return  $ret;
   }
 
+  /**
+   * Check if image already added to pdf image directory.
+   * If yes, need not to create again (pass empty data)
+   */
+  function image_iscached($imgname) {
+    return isset($this->imagelist[$imgname]);
+  }
 
   /**
    * add a PNG image into the document, from a GD object
@@ -4158,7 +4211,8 @@ EOT;
     //if already cached, need not to read again
     if ( isset($this->imagelist[$file]) ) {
       $data = null;
-    } else {
+    }
+    else {
       // Example for transparency handling on new image. Retain for current image
       // $tIndex = imagecolortransparent($img);
       // if ($tIndex > 0) {
@@ -4207,11 +4261,24 @@ EOT;
       return;
     }
     
+    // FIXME The pixel transformation doesn't work well with 8bit PNGs
+    $eight_bit = ($byte & 4) !== 4;
+    
     $wpx = imagesx($img);
     $hpx = imagesy($img);
-    
+      
     imagesavealpha($img, false);
     
+    // create temp alpha file
+    $tempfile_alpha = tempnam($this->tmp, "cpdf_img_");
+    @unlink($tempfile_alpha);
+    $tempfile_alpha = "$tempfile_alpha.png";
+    
+    // create temp plain file
+    $tempfile_plain = tempnam($this->tmp, "cpdf_img_");
+    @unlink($tempfile_plain);
+    $tempfile_plain = "$tempfile_plain.png";
+      
     $imgalpha = imagecreate($wpx, $hpx);
     imagesavealpha($imgalpha, false);
     
@@ -4219,59 +4286,113 @@ EOT;
     for ($c = 0; $c < 256; ++$c) {
       imagecolorallocate($imgalpha, $c, $c, $c);
     }
-   
-    // FIXME The pixel transformation doesn't work well with 8bit PNGs
-    $eight_bit = ($byte & 4) !== 4;
     
-    // allocated colors cache
-    $allocated_colors = array();
-    
-    // extract alpha channel
-    for ($xpx = 0; $xpx < $wpx; ++$xpx) {
-      for ($ypx = 0; $ypx < $hpx; ++$ypx) {
-        $color = imagecolorat($img, $xpx, $ypx);
-        $col = imagecolorsforindex($img, $color);
-        $alpha = $col['alpha'];
-        
-        if ($eight_bit) {
-          // with gamma correction
-          $gammacorr = 2.2;
-          $pixel = pow((((127 - $alpha) * 255 / 127) / 255), $gammacorr) * 255;
-        }
-        
-        else {
-          // without gamma correction
-          $pixel = (127 - $alpha) * 2;
-          
-          $key = implode("-", array($col['red'], $col['green'], $col['blue']));
-          
-          if (!isset($allocated_colors[$key])) {
-            $pixel_img = imagecolorallocate($img, $col['red'], $col['green'], $col['blue']);
-            $allocated_colors[$key] = $pixel_img;
-          }
-          else {
-            $pixel_img = $allocated_colors[$key]; 
-          }
-          
-          imagesetpixel($img, $xpx, $ypx, $pixel_img);
-        }
-        
-        imagesetpixel($imgalpha, $xpx, $ypx, $pixel);
-      }
-    }
+    // Use PECL gmagick + Graphics Magic to process transparent PNG images
+    if (extension_loaded("gmagick")) {
+      $gmagick = new Gmagick($file);
+      $gmagick->setimageformat('png');
       
-    // create temp alpha file
-    $tempfile_alpha = tempnam($this->tmp, "cpdf_img_").'.png';
-    imagepng($imgalpha, $tempfile_alpha);
+      // Get opacity channel (negative of alpha channel)
+      $alpha_channel_neg = clone $gmagick;
+      $alpha_channel_neg->separateimagechannel(Gmagick::CHANNEL_OPACITY);
+      
+      // Negate opacity channel
+      $alpha_channel = new Gmagick();
+      $alpha_channel->newimage($wpx, $hpx, "#FFFFFF", "png");
+      $alpha_channel->compositeimage($alpha_channel_neg, Gmagick::COMPOSITE_DIFFERENCE, 0, 0);
+      $alpha_channel->separateimagechannel(Gmagick::CHANNEL_RED);
+      $alpha_channel->writeimage($tempfile_alpha);
+      
+      // Cast to 8bit+palette
+      $imgalpha_ = imagecreatefrompng($tempfile_alpha);
+      imagecopy($imgalpha, $imgalpha_, 0, 0, 0, 0, $wpx, $hpx);
+      imagedestroy($imgalpha_);
+      imagepng($imgalpha, $tempfile_alpha);
+      
+      // Make opaque image
+      $color_channels = new Gmagick();
+      $color_channels->newimage($wpx, $hpx, "#FFFFFF", "png");
+      $color_channels->compositeimage($gmagick, Gmagick::COMPOSITE_COPYRED, 0, 0);
+      $color_channels->compositeimage($gmagick, Gmagick::COMPOSITE_COPYGREEN, 0, 0);
+      $color_channels->compositeimage($gmagick, Gmagick::COMPOSITE_COPYBLUE, 0, 0);
+      $color_channels->writeimage($tempfile_plain);
+      
+      $imgplain = imagecreatefrompng($tempfile_plain);
+    }
     
-    // extract image without alpha channel
-    $imgplain = imagecreatetruecolor($wpx, $hpx);
-    imagecopy($imgplain, $img, 0, 0, 0, 0, $wpx, $hpx);
-    imagedestroy($img);
-    
-    // create temp image file
-    $tempfile_plain = tempnam($this->tmp, "cpdf_img_").'.png';
-    imagepng($imgplain, $tempfile_plain);
+    // Use PECL imagick + ImageMagic to process transparent PNG images
+    elseif (extension_loaded("imagick")) {
+      $imagick = new Imagick($file);
+      $imagick->setFormat('png');
+      
+      // Get opacity channel (negative of alpha channel)
+      $alpha_channel = clone $imagick;
+      $alpha_channel->separateImageChannel(Imagick::CHANNEL_ALPHA);
+      $alpha_channel->negateImage(true);
+      $alpha_channel->writeImage($tempfile_alpha);
+      
+      // Cast to 8bit+palette
+      $imgalpha_ = imagecreatefrompng($tempfile_alpha);
+      imagecopy($imgalpha, $imgalpha_, 0, 0, 0, 0, $wpx, $hpx);
+      imagedestroy($imgalpha_);
+      imagepng($imgalpha, $tempfile_alpha);
+      
+      // Make opaque image
+      $color_channels = new Imagick();
+      $color_channels->newImage($wpx, $hpx, "#FFFFFF", "png");
+      $color_channels->compositeImage($imagick, Imagick::COMPOSITE_COPYRED, 0, 0);
+      $color_channels->compositeImage($imagick, Imagick::COMPOSITE_COPYGREEN, 0, 0);
+      $color_channels->compositeImage($imagick, Imagick::COMPOSITE_COPYBLUE, 0, 0);
+      $color_channels->writeImage($tempfile_plain);
+      
+      $imgplain = imagecreatefrompng($tempfile_plain);
+    }
+    else {
+      // allocated colors cache
+      $allocated_colors = array();
+      
+      // extract alpha channel
+      for ($xpx = 0; $xpx < $wpx; ++$xpx) {
+        for ($ypx = 0; $ypx < $hpx; ++$ypx) {
+          $color = imagecolorat($img, $xpx, $ypx);
+          $col = imagecolorsforindex($img, $color);
+          $alpha = $col['alpha'];
+          
+          if ($eight_bit) {
+            // with gamma correction
+            $gammacorr = 2.2;
+            $pixel = pow((((127 - $alpha) * 255 / 127) / 255), $gammacorr) * 255;
+          }
+          
+          else {
+            // without gamma correction
+            $pixel = (127 - $alpha) * 2;
+            
+            $key = $col['red'].$col['green'].$col['blue'];
+            
+            if (!isset($allocated_colors[$key])) {
+              $pixel_img = imagecolorallocate($img, $col['red'], $col['green'], $col['blue']);
+              $allocated_colors[$key] = $pixel_img;
+            }
+            else {
+              $pixel_img = $allocated_colors[$key]; 
+            }
+            
+            imagesetpixel($img, $xpx, $ypx, $pixel_img);
+          }
+          
+          imagesetpixel($imgalpha, $xpx, $ypx, $pixel);
+        }
+      }
+      
+      // extract image without alpha channel
+      $imgplain = imagecreatetruecolor($wpx, $hpx);
+      imagecopy($imgplain, $img, 0, 0, 0, 0, $wpx, $hpx);
+      imagedestroy($img);
+        
+      imagepng($imgalpha, $tempfile_alpha);
+      imagepng($imgplain, $tempfile_plain);
+    }
     
     // embed mask image
     $this->addImagePng($tempfile_alpha, $x, $y, $w, $h, $imgalpha, true);
@@ -4286,7 +4407,6 @@ EOT;
     unlink($tempfile_plain);
   }
 
-
   /**
    * add a PNG image into the document, from a file
    * this should work with remote files
@@ -4298,11 +4418,19 @@ EOT;
     } 
     
     else {
-      $byte = ord (file_get_contents ($file, false, null, 25, 1));
-      $is_alpha = ($byte & 6); // 6 => 32b, 4 => 8b
+      $info = file_get_contents ($file, false, null, 24, 5);
+      $meta = unpack("CbitDepth/CcolorType/CcompressionMethod/CfilterMethod/CinterlaceMethod", $info);
+      $bit_depth = $meta["bitDepth"];
+      $color_type = $meta["colorType"];
+      
+      // http://www.w3.org/TR/PNG/#11IHDR
+      // 3 => indexed
+      // 4 => greyscale with alpha
+      // 6 => fullcolor with alpha
+      $is_alpha = in_array($color_type, array(4, 6)) || ($color_type == 3 && $bit_depth != 4);
 
       if ($is_alpha) { // exclude grayscale alpha
-        return $this->addImagePngAlpha($file, $x, $y, $w, $h, $byte);
+        return $this->addImagePngAlpha($file, $x, $y, $w, $h, $color_type);
       }
 
       //png files typically contain an alpha channel.
@@ -4339,17 +4467,17 @@ EOT;
       imagedestroy($imgtmp);
     }
     $this->addImagePng($file, $x, $y, $w, $h, $img);
-    imagedestroy($img);
+    
+    if ( $img ) {
+      imagedestroy($img);
+    }
   }
-
 
   /**
    * add a PNG image into the document, from a memory buffer of the file
    */
   function addPngFromBuf($file, $x, $y, $w =  0, $h =  0, &$data, $is_mask = false, $mask = null) {
     if ( isset($this->imagelist[$file]) ) {
-      //debugpng
-      //if (DEBUGPNG) print '[addPngFromBuf Duplicate '.$file.']';
       $data = null;
       $info['width'] = $this->imagelist[$file]['w'];
       $info['height'] = $this->imagelist[$file]['h'];
@@ -4361,207 +4489,213 @@ EOT;
         $this->addMessage('addPngFromBuf error - ('.$imgname.') data not present!');
         return;
       }
-      //debugpng
-      //if (DEBUGPNG) print '[addPngFromBuf file='.$file.']';
-    $error =  0;
-
-    if  (!$error) {
-      $header =  chr(137) .chr(80) .chr(78) .chr(71) .chr(13) .chr(10) .chr(26) .chr(10);
-      if  (mb_substr($data, 0, 8, '8bit') !=  $header) {
-        $error =  1;
-        //debugpng
-        if (DEBUGPNG) print '[addPngFromFile this file does not have a valid header '.$file.']';
-
-        $errormsg =  'this file does not have a valid header';
-      }
-    }
-
-    if  (!$error) {
-      // set pointer
-      $p =  8;
-      $len =  mb_strlen($data, '8bit');
-
-      // cycle through the file, identifying chunks
-      $haveHeader =  0;
-      $info =  array();
-      $idata =  '';
-      $pdata =  '';
-
-      while  ($p < $len) {
-        $chunkLen =  $this->PRVT_getBytes($data, $p, 4);
-        $chunkType =  mb_substr($data, $p+4, 4, '8bit');
-        //      echo $chunkType.' - '.$chunkLen.'<br>';
-        switch ($chunkType) {
-        case  'IHDR':
-          // this is where all the file information comes from
-          $info['width'] =  $this->PRVT_getBytes($data, $p+8, 4);
-          $info['height'] =  $this->PRVT_getBytes($data, $p+12, 4);
-          $info['bitDepth'] =  ord($data[$p+16]);
-          $info['colorType'] =  ord($data[$p+17]);
-          $info['compressionMethod'] =  ord($data[$p+18]);
-          $info['filterMethod'] =  ord($data[$p+19]);
-          $info['interlaceMethod'] =  ord($data[$p+20]);
-
-          //print_r($info);
-          $haveHeader =  1;
-          if  ($info['compressionMethod'] !=  0) {
-            $error =  1;
-
-            //debugpng
-            if (DEBUGPNG) print '[addPngFromFile unsupported compression method '.$file.']';
-
-            $errormsg =  'unsupported compression method';
-          }
-
-          if  ($info['filterMethod'] !=  0) {
-            $error =  1;
-
-            //debugpng
-            if (DEBUGPNG) print '[addPngFromFile unsupported filter method '.$file.']';
-
-            $errormsg =  'unsupported filter method';
-          }
-          break;
-
-        case  'PLTE':
-          $pdata.=  mb_substr($data, $p+8, $chunkLen, '8bit');
-          break;
-
-        case  'IDAT':
-          $idata.=  mb_substr($data, $p+8, $chunkLen, '8bit');
-          break;
-
-        case  'tRNS':
-          //this chunk can only occur once and it must occur after the PLTE chunk and before IDAT chunk
-          //print "tRNS found, color type = ".$info['colorType']."\n";
-          $transparency =  array();
-
-          if  ($info['colorType'] ==  3) {
-            // indexed color, rbg
-            /* corresponding to entries in the plte chunk
-             Alpha for palette index 0: 1 byte
-             Alpha for palette index 1: 1 byte
-             ...etc...
-            */
-            // there will be one entry for each palette entry. up until the last non-opaque entry.
-            // set up an array, stretching over all palette entries which will be o (opaque) or 1 (transparent)
-            $transparency['type'] =  'indexed';
-            $numPalette =  mb_strlen($pdata, '8bit')/3;
-            $trans =  0;
-
-            for  ($i =  $chunkLen;$i >=  0;$i--) {
-              if  (ord($data[$p+8+$i]) ==  0) {
-                $trans =  $i;
-              }
-            }
-
-            $transparency['data'] =  $trans;
-          } elseif ($info['colorType'] ==  0) {
-            // grayscale
-            /* corresponding to entries in the plte chunk
-             Gray: 2 bytes, range 0 .. (2^bitdepth)-1
-            */
-            //            $transparency['grayscale'] = $this->PRVT_getBytes($data,$p+8,2); // g = grayscale
-            $transparency['type'] =  'indexed';
-
-            $transparency['data'] =  ord($data[$p+8+1]);
-          } elseif ($info['colorType'] ==  2) {
-            // truecolor
-            /* corresponding to entries in the plte chunk
-             Red: 2 bytes, range 0 .. (2^bitdepth)-1
-             Green: 2 bytes, range 0 .. (2^bitdepth)-1
-             Blue: 2 bytes, range 0 .. (2^bitdepth)-1
-            */
-            $transparency['r'] =  $this->PRVT_getBytes($data, $p+8, 2);
-            // r from truecolor
-            $transparency['g'] =  $this->PRVT_getBytes($data, $p+10, 2);
-            // g from truecolor
-            $transparency['b'] =  $this->PRVT_getBytes($data, $p+12, 2);
-            // b from truecolor
-
-            $transparency['type'] = 'color-key';
-            
-          } else {
-            //unsupported transparency type
-            //debugpng
-            if (DEBUGPNG) print '[addPngFromFile unsupported transparency type '.$file.']';
-          }
-          // KS End new code
-          break;
-
-        default:
-          break;
-        }
-
-        $p+=  $chunkLen+12;
-      }
-
-
-      if (!$haveHeader) {
-        $error =  1;
-
-        //debugpng
-        if (DEBUGPNG) print '[addPngFromFile information header is missing '.$file.']';
-
-        $errormsg =  'information header is missing';
-      }
-
-      if  (isset($info['interlaceMethod']) &&  $info['interlaceMethod']) {
-        $error =  1;
-
-        //debugpng
-        if (DEBUGPNG) print '[addPngFromFile no support for interlaced images in pdf '.$file.']';
-
-        $errormsg =  'There appears to be no support for interlaced images in pdf.';
-      }
-    }
-
-    if  (!$error &&  $info['bitDepth'] > 8) {
-      $error =  1;
-
-      //debugpng
-      if (DEBUGPNG) print '[addPngFromFile bit depth of 8 or less is supported '.$file.']';
-
-      $errormsg =  'only bit depth of 8 or less is supported';
-    }
-    
-    if  (!$error) {
-      switch  ($info['colorType']) {
-      case  3:
-        $color =  'DeviceRGB';
-        $ncolor =  1;
-        break;
-
-      case  2:
-        $color =  'DeviceRGB';
-        $ncolor =  3;
-        break;
-
-      case  0:
-        $color =  'DeviceGray';
-        $ncolor =  1;
-        break;
       
-      default: 
-        $error =  1;
-
-        //debugpng
-        if (DEBUGPNG) print '[addPngFromFile alpha channel not supported: '.$info['colorType'].' '.$file.']';
-
-        $errormsg =  'transparancey alpha channel not supported, transparency only supported for palette images.';
+      $error =  0;
+  
+      if  (!$error) {
+        $header =  chr(137) .chr(80) .chr(78) .chr(71) .chr(13) .chr(10) .chr(26) .chr(10);
+        
+        if  (mb_substr($data, 0, 8, '8bit') !=  $header) {
+          $error =  1;
+          
+          if (DEBUGPNG) print '[addPngFromFile this file does not have a valid header '.$file.']';
+  
+          $errormsg =  'this file does not have a valid header';
+        }
       }
-    }
-
-    if  ($error) {
-      $this->addMessage('PNG error - ('.$file.') '.$errormsg);
-      return;
-    }
+  
+      if  (!$error) {
+        // set pointer
+        $p =  8;
+        $len =  mb_strlen($data, '8bit');
+  
+        // cycle through the file, identifying chunks
+        $haveHeader =  0;
+        $info =  array();
+        $idata =  '';
+        $pdata =  '';
+  
+        while  ($p < $len) {
+          $chunkLen =  $this->PRVT_getBytes($data, $p, 4);
+          $chunkType =  mb_substr($data, $p+4, 4, '8bit');
+          
+          switch ($chunkType) {
+          case  'IHDR':
+            // this is where all the file information comes from
+            $info['width'] =  $this->PRVT_getBytes($data, $p+8, 4);
+            $info['height'] =  $this->PRVT_getBytes($data, $p+12, 4);
+            $info['bitDepth'] =  ord($data[$p+16]);
+            $info['colorType'] =  ord($data[$p+17]);
+            $info['compressionMethod'] =  ord($data[$p+18]);
+            $info['filterMethod'] =  ord($data[$p+19]);
+            $info['interlaceMethod'] =  ord($data[$p+20]);
+  
+            //print_r($info);
+            $haveHeader =  1;
+            if  ($info['compressionMethod'] !=  0) {
+              $error =  1;
+  
+              //debugpng
+              if (DEBUGPNG) print '[addPngFromFile unsupported compression method '.$file.']';
+  
+              $errormsg =  'unsupported compression method';
+            }
+  
+            if  ($info['filterMethod'] !=  0) {
+              $error =  1;
+  
+              //debugpng
+              if (DEBUGPNG) print '[addPngFromFile unsupported filter method '.$file.']';
+  
+              $errormsg =  'unsupported filter method';
+            }
+            break;
+  
+          case  'PLTE':
+            $pdata.=  mb_substr($data, $p+8, $chunkLen, '8bit');
+            break;
+  
+          case  'IDAT':
+            $idata.=  mb_substr($data, $p+8, $chunkLen, '8bit');
+            break;
+  
+          case  'tRNS':
+            //this chunk can only occur once and it must occur after the PLTE chunk and before IDAT chunk
+            //print "tRNS found, color type = ".$info['colorType']."\n";
+            $transparency =  array();
+            
+            switch ($info['colorType']) {
+              // indexed color, rbg
+              case 3:
+                /* corresponding to entries in the plte chunk
+                 Alpha for palette index 0: 1 byte
+                 Alpha for palette index 1: 1 byte
+                 ...etc...
+                */
+                // there will be one entry for each palette entry. up until the last non-opaque entry.
+                // set up an array, stretching over all palette entries which will be o (opaque) or 1 (transparent)
+                $transparency['type'] =  'indexed';
+                
+                $numPalette =  mb_strlen($pdata, '8bit')/3;
+                $trans =  0;
+    
+                for  ($i =  $chunkLen;$i >=  0;$i--) {
+                  if  (ord($data[$p+8+$i]) ==  0) {
+                    $trans =  $i;
+                  }
+                }
+    
+                $transparency['data'] =  $trans;
+              break;
+              
+              // grayscale
+              case 0:
+                /* corresponding to entries in the plte chunk
+                 Gray: 2 bytes, range 0 .. (2^bitdepth)-1
+                */
+                //            $transparency['grayscale'] = $this->PRVT_getBytes($data,$p+8,2); // g = grayscale
+                $transparency['type'] =  'indexed';
+                $transparency['data'] =  ord($data[$p+8+1]);
+              break;
+              
+              // truecolor
+              case 2:      
+                /* corresponding to entries in the plte chunk
+                 Red: 2 bytes, range 0 .. (2^bitdepth)-1
+                 Green: 2 bytes, range 0 .. (2^bitdepth)-1
+                 Blue: 2 bytes, range 0 .. (2^bitdepth)-1
+                */
+                $transparency['r'] =  $this->PRVT_getBytes($data, $p+8, 2);
+                // r from truecolor
+                $transparency['g'] =  $this->PRVT_getBytes($data, $p+10, 2);
+                // g from truecolor
+                $transparency['b'] =  $this->PRVT_getBytes($data, $p+12, 2);
+                // b from truecolor
+    
+                $transparency['type'] = 'color-key';
+              break;
+              
+              //unsupported transparency type
+              default:
+                if (DEBUGPNG) print '[addPngFromFile unsupported transparency type '.$file.']';
+                break;
+            }
+  
+            // KS End new code
+            break;
+  
+          default:
+            break;
+          }
+  
+          $p +=  $chunkLen+12;
+        }
+  
+        if (!$haveHeader) {
+          $error =  1;
+  
+          //debugpng
+          if (DEBUGPNG) print '[addPngFromFile information header is missing '.$file.']';
+  
+          $errormsg =  'information header is missing';
+        }
+  
+        if  (isset($info['interlaceMethod']) &&  $info['interlaceMethod']) {
+          $error =  1;
+  
+          //debugpng
+          if (DEBUGPNG) print '[addPngFromFile no support for interlaced images in pdf '.$file.']';
+  
+          $errormsg =  'There appears to be no support for interlaced images in pdf.';
+        }
+      }
+  
+      if  (!$error &&  $info['bitDepth'] > 8) {
+        $error =  1;
+  
+        //debugpng
+        if (DEBUGPNG) print '[addPngFromFile bit depth of 8 or less is supported '.$file.']';
+  
+        $errormsg =  'only bit depth of 8 or less is supported';
+      }
+      
+      if  (!$error) {
+        switch  ($info['colorType']) {
+        case  3:
+          $color =  'DeviceRGB';
+          $ncolor =  1;
+          break;
+  
+        case  2:
+          $color =  'DeviceRGB';
+          $ncolor =  3;
+          break;
+  
+        case  0:
+          $color =  'DeviceGray';
+          $ncolor =  1;
+          break;
+        
+        default: 
+          $error =  1;
+  
+          //debugpng
+          if (DEBUGPNG) print '[addPngFromFile alpha channel not supported: '.$info['colorType'].' '.$file.']';
+  
+          $errormsg =  'transparancey alpha channel not supported, transparency only supported for palette images.';
+        }
+      }
+  
+      if  ($error) {
+        $this->addMessage('PNG error - ('.$file.') '.$errormsg);
+        return;
+      }
 
       //print_r($info);
       // so this image is ok... add it in.
       $this->numImages++;
       $im =  $this->numImages;
-      $label =  'I'.$im;
+      $label =  "I$im";
       $this->numObj++;
 
       //  $this->o_image($this->numObj,'new',array('label' => $label,'data' => $idata,'iw' => $w,'ih' => $h,'type' => 'png','ic' => $info['width']));
@@ -4604,10 +4738,8 @@ EOT;
       $h =  $w*$info['height']/$info['width'];
     }
 
-    $this->objects[$this->currentContents]['c'].=  sprintf("\nq\n%.3F 0 0 %.3F %.3F %.3F cm", $w, $h, $x, $y);
-    $this->objects[$this->currentContents]['c'].=  "\n/$label Do\nQ";
+    $this->objects[$this->currentContents]['c'].=  sprintf("\nq\n%.3F 0 0 %.3F %.3F %.3F cm /%s Do\nQ", $w, $h, $x, $y, $label);
   }
-
 
   /**
    * add a JPEG image into the document, from a file
@@ -4620,17 +4752,18 @@ EOT;
       return;
     }
 
-  if ( isset($this->imagelist[$img]) ) {
-    $data = null;
+    if ( $this->image_iscached($img) ) {
+      $data = null;
       $imageWidth  = $this->imagelist[$img]['w'];
       $imageHeight = $this->imagelist[$img]['h'];
       $channels    = $this->imagelist[$img]['c'];
-  } else {
+    } 
+    else {
       $tmp = getimagesize($img);
       $imageWidth  = $tmp[0];
       $imageHeight = $tmp[1];
 
-      if  (isset($tmp['channels'])) {
+      if ( isset($tmp['channels']) ) {
         $channels =  $tmp['channels'];
       } else {
         $channels =  3;
@@ -4654,76 +4787,13 @@ EOT;
     $this->addJpegImage_common($data, $x, $y, $w, $h, $imageWidth, $imageHeight, $channels, $img);
   }
 
-
-  /**
-   * add an image into the document, from a GD object
-   * this function is not all that reliable, and I would probably encourage people to use
-   * the file based functions
-   */
-  function addImage(&$img, $x, $y, $w =  0, $h =  0, $quality =  75) {
-    /* Todo:
-     * Pass in original filename as $imgname
-     * If already cached like image_iscached(), allow empty $img
-     * How to get w  and h in this case?
-     * Then caller can check with image_iscached() whether generation of image is needed.
-     *
-     * But anyway, this function is not used!
-     */
-    $imgname = tempnam($this->tmp, "cpdf_img_").'.jpeg';
-
-    // add a new image into the current location, as an external object
-    // add the image at $x,$y, and with width and height as defined by $w & $h
-
-    // note that this will only work with full colour images and makes them jpg images for display
-    // later versions could present lossless image formats if there is interest.
-
-    // there seems to be some problem here in that images that have quality set above 75 do not appear
-    // not too sure why this is, but in the meantime I have restricted this to 75.
-    if  ($quality>75) {
-      $quality =  75;
-    }
-
-    // if the width or height are set to zero, then set the other one based on keeping the image
-    // height/width ratio the same, if they are both zero, then give up :)
-    $imageWidth =  imagesx($img);
-    $imageHeight =  imagesy($img);
-
-    if  ($w <=  0 &&  $h <=  0) {
-      return;
-    }
-
-    if  ($w ==  0) {
-      $w =  $h/$imageHeight*$imageWidth;
-    }
-
-    if  ($h ==  0) {
-      $h =  $w*$imageHeight/$imageWidth;
-    }
-
-    // gotta get the data out of the img..
-    ob_start();
-    imagejpeg($img, '', $quality);
-    $data = ob_get_clean();
-
-    $this->addJpegImage_common($data, $x, $y, $w, $h, $imageWidth, $imageHeight, $imgname);
-  }
-
-
-  /* Check if image already added to pdf image directory.
-   * If yes, need not to create again (pass empty data)
-   */
-  function image_iscached($imgname) {
-    return isset($this->imagelist[$imgname]);
-  }
-
-
   /**
    * common code used by the two JPEG adding functions
    *
    * @access private
    */
   function addJpegImage_common(&$data, $x, $y, $w =  0, $h =  0, $imageWidth, $imageHeight, $channels =  3, $imgname) {
-    if ( isset($this->imagelist[$imgname]) ) {
+    if ( $this->image_iscached($imgname) ) {
       $label = $this->imagelist[$imgname]['label'];
       //debugpng
       //if (DEBUGPNG) print '[addJpegImage_common Duplicate '.$imgname.']';
@@ -4738,7 +4808,7 @@ EOT;
       // it is just the common code between the GD and the file options
       $this->numImages++;
       $im =  $this->numImages;
-      $label =  'I'.$im;
+      $label =  "I$im";
       $this->numObj++;
       
       $this->o_image($this->numObj, 'new', array(
@@ -4748,13 +4818,12 @@ EOT;
         'ih' => $imageHeight, 
         'channels' => $channels
       ));
+      
       $this->imagelist[$imgname] = array('label' =>$label, 'w' => $imageWidth, 'h' => $imageHeight, 'c'=> $channels );
     }
 
-    $this->objects[$this->currentContents]['c'].=  sprintf("\nq\n%.3F 0 0 %.3F %.3F %.3F cm", $w, $h, $x, $y);
-    $this->objects[$this->currentContents]['c'].=  "\n/$label Do\nQ";
+    $this->objects[$this->currentContents]['c'].=  sprintf("\nq\n%.3F 0 0 %.3F %.3F %.3F cm /%s Do\nQ ", $w, $h, $x, $y, $label);
   }
-
 
   /**
    * specify where the document should open when it first starts
@@ -4776,10 +4845,15 @@ EOT;
     $this->o_catalog($id, 'openHere', $this->numObj);
   }
   
+  /**
+   * Add JavaScript code to the PDF document
+   * 
+   * @param string $code
+   * @return void
+   */
   function addJavascript($code) {
     $this->javascript .= $code;
   }
-
 
   /**
    * create a labelled destination within the document
@@ -4795,7 +4869,6 @@ EOT;
     // store the label->idf relationship, note that this means that labels can be used only once
     $this->destinations["$label"] =  $id;
   }
-
 
   /**
    * define font families, this is used to initialize the font families for the default fonts
@@ -4842,7 +4915,6 @@ EOT;
   function addMessage($message) {
     $this->messages.=  $message."\n";
   }
-
 
   /**
    * a few functions which should allow the document to be treated transactionally.
@@ -4894,4 +4966,4 @@ EOT;
     }
   }
 }
-// end of class
+

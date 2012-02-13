@@ -1,51 +1,14 @@
 <?php
 /**
- * DOMPDF - PHP5 HTML to PDF renderer
- *
- * File: $RCSfile: text_renderer.cls.php,v $
- * Created on: 2004-06-01
- *
- * Copyright (c) 2004 - Benj Carson <benjcarson@digitaljunkies.ca>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library in the file LICENSE.LGPL; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
- *
- * Alternatively, you may distribute this software under the terms of the
- * PHP License, version 3.0 or later.  A copy of this license should have
- * been distributed with this file in the file LICENSE.PHP .  If this is not
- * the case, you can obtain a copy at http://www.php.net/license/3_0.txt.
- *
- * The latest version of DOMPDF might be available at:
- * http://www.dompdf.com/
- *
- * @link http://www.dompdf.com/
- * @copyright 2004 Benj Carson
- * @author Benj Carson <benjcarson@digitaljunkies.ca>
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
  * @package dompdf
-
- *
- * Changes
- * @contributor Helmut Tischer <htischer@weihenstephan.org>
- * @version dompdf_trunk_with_helmut_mods.20090528
- * - fix text decoration positions according to font metrics
- * @version 20090610
- * - better accuracy on using different renderer as cpdf, added comments
+ * @link    http://www.dompdf.com/
+ * @author  Benj Carson <benjcarson@digitaljunkies.ca>
+ * @author  Helmut Tischer <htischer@weihenstephan.org>
+ * @author  Fabien Ménager <fabien.menager@gmail.com>
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @version $Id: text_renderer.cls.php 471 2012-02-06 21:59:10Z fabien.menager $
  */
 
-/* $Id: text_renderer.cls.php 357 2011-01-30 20:56:46Z fabien.menager $ */
 /**
  * Renders text frames
  *
@@ -109,15 +72,20 @@ class Text_Renderer extends Abstract_Renderer {
     
     // FIXME Instead of using the tallest frame to position,
     // the decoration, the text should be well placed
-    if ( false && $line["tallest_frame"] ) {
-      $base_frame = $line["tallest_frame"];
+    if ( false && $line->tallest_frame ) {
+      $base_frame = $line->tallest_frame;
       $style = $base_frame->get_style();
       $size = $style->font_size;
-      $height = $line["h"] * ($size / $style->line_height);
+      $height = $line->h * ($size / $style->line_height);
     }
     
     if ( method_exists( $this->_canvas, "get_cpdf" ) ) {
       $cpdf = $this->_canvas->get_cpdf();
+      
+      //$cpdf_font = $cpdf->fonts[$style->font_family];
+      //$base = ($cpdf_font["UnderlinePosition"]*$size)/1000;
+      //$descent = (($cpdf_font["Ascender"]-$cpdf_font["Descender"])*$size)/1000;
+      
       $fontBBox = $cpdf->fonts[$style->font_family]['FontBBox'];
       $base = (($fontBBox[3]*$size)/1000) * 0.90;
       $descent = ($fontBBox[1]*$size)/1000;
@@ -140,13 +108,13 @@ class Text_Renderer extends Abstract_Renderer {
     while ( $p = $p->get_parent() )
       $stack[] = $p;
     
-    while ( count($stack) > 0 ) {
+    while ( isset($stack[0]) ) {
       $f = array_pop($stack);
 
       if ( ($text_deco = $f->get_style()->text_decoration) === "none" )
         continue;
         
-      $deco_y = $y; //$line["y"];
+      $deco_y = $y; //$line->y;
       $color = $f->get_style()->color;
 
       switch ($text_deco) {
@@ -176,7 +144,7 @@ class Text_Renderer extends Abstract_Renderer {
     
     if (DEBUG_LAYOUT && DEBUG_LAYOUT_LINES) {
       $text_width = Font_Metrics::get_text_width($text, $font, $frame_font_size);
-      $this->_debug_layout(array($x, $y, $text_width+($line["wc"]-1)*$word_spacing, $frame_font_size), "orange", array(0.5, 0.5));
+      $this->_debug_layout(array($x, $y, $text_width+($line->wc-1)*$word_spacing, $frame_font_size), "orange", array(0.5, 0.5));
     }
   }
 }
