@@ -1399,7 +1399,8 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function activatePlugin()
     {
-        $this->checkCsrfToken();
+        $csrftoken = $this->request->getGet()->get('csrftoken', false);
+        $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
