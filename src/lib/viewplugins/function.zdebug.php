@@ -51,6 +51,7 @@ function smarty_function_zdebug($params, Zikula_View $view)
         // backup and modify the view attributes
         $_template_dir_orig = $view->template_dir;
         $_default_resource_type_orig = $view->default_resource_type;
+        $_plugins_outputfilter = $view->_plugins['outputfilter'];
         $_compile_id_orig   = $view->_compile_id;
 
         $view->template_dir = 'system/Theme/templates';
@@ -81,6 +82,7 @@ function smarty_function_zdebug($params, Zikula_View $view)
         $view->_compile_id = $_compile_id_orig;
         $view->template_dir = $_template_dir_orig;
         $view->default_resource_type = $_default_resource_type_orig;
+        $view->_plugins['outputfilter'] = $_plugins_outputfilter;
     }
 
     return $zdebug;
