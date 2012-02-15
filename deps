@@ -1,6 +1,6 @@
 [symfony]
     git=http://github.com/drak/symfony.git
-    version=origin/session_refactor2
+    version=origin/session_flashmessages
 
 [doctrine-common]
     git=http://github.com/doctrine/common.git
@@ -16,7 +16,7 @@
 
 [gedmo-doctrine-extensions]
     git=http://github.com/l3pp4rd/DoctrineExtensions.git
-    version=2.2.x
+    version=v2.2.0
 
 [twig]
     git=http://github.com/fabpot/Twig.git
