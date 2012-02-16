@@ -7,10 +7,10 @@
     <parameters>
         <parameter key="servicemanagerawareeventmanager.class">Zikula\Common\EventManager\ServiceManagerAwareEventManager</parameter>
 
-        <parameter key="session.class">Symfony\Component\HttpFoundation\Session</parameter>
+        <parameter key="session.class">Symfony\Component\HttpFoundation\Session\Session</parameter>
         <parameter key="session.storage.class">Zikula\Core\SessionStorage\LegacySessionStorage</parameter>
-        <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\NamespacedAttributeBag</parameter>
-        <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\FlashBag</parameter>
+        <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Attribute\NamespacedAttributeBag</parameter>
+        <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Flash\FlashBag</parameter>
 
         <parameter key="hookmanager.class">Zikula\Common\HookManager\HookManager</parameter>
         <parameter key="hookmanager.storage.class">Zikula\Common\HookManager\Storage\Doctrine</parameter>
