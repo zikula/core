@@ -132,7 +132,7 @@ class ZI18n
     {
         $this->processSign($number);
         $decimal_points = (isset($decimal_points) ? $decimal_points : $this->locale['frac_digits']);
-        if (!$decimal_points) {
+        if (!$decimal_points && $decimal_points !== 0) {
             list($a, $b) = explode('.', $number);
             $decimal_points = strlen($b);
         }
