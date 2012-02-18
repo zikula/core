@@ -570,7 +570,10 @@ class FilterUtil extends FilterUtil_AbstractBase
             }
         }
 
-        return array('where' => $where, 'params' => $params);
+        return array(
+            'where'  => (empty($where) ? '' : "($where)"),
+            'params' => $params
+        );
     }
 
     /**
@@ -588,7 +591,7 @@ class FilterUtil extends FilterUtil_AbstractBase
         $result = $this->_genDqlRecursive($object);
 
         if (is_array($result) && !empty($result['where'])) {
-            $query->AndWhere($result['where'], $result['params']);
+            $query->andWhere(substr($result['where'], 1, -1), $result['params']);
             $this->_dql = $result;
         }
     }
