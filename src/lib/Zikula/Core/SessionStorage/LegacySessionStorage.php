@@ -16,10 +16,10 @@
 
 namespace Zikula\Core\SessionStorage;
 
-use Symfony\Component\HttpFoundation\AttributeBagInterface;
-use Symfony\Component\HttpFoundation\FlashBagInterface;
-use Symfony\Component\HttpFoundation\SessionStorage\SessionSaveHandlerInterface;
-use Symfony\Component\HttpFoundation\SessionStorage\AbstractSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionHandlerInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\AbstractSessionStorage;
 use \SessionUtil;
 use \System;
 use \DataUtil;
@@ -31,7 +31,7 @@ use \DBUtil;
  * This Storage driver couples directly to the old SessionUtil methodology.
  * This will eventually be phased out.
  */
-class LegacySessionStorage extends AbstractSessionStorage implements SessionSaveHandlerInterface
+class LegacySessionStorage extends AbstractSessionStorage implements SessionHandlerInterface
 {
     private $isNew = true;
 
@@ -43,7 +43,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
 
     private $expired = false;
 
-    public function __construct(AttributeBagInterface $attributes = null, FlashBagInterface $flashes = null, array $options = array())
+    public function __construct(array $options = array())
     {
         // create IP finger print
         $current_ipaddr = '';
@@ -82,7 +82,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
             'cookie_path' => $path,
             ), $options);
 
-        parent::__construct($attributes, $flashes, $options);
+        parent::__construct($options);
     }
 
     /**
@@ -144,8 +144,8 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
             $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
             $daysold = ($now - (int)(System::getVar('secmeddays') * 86400));
             $lastused = $this->object['lastused'];
-            $this->attributeBag->set('uid', $this->object['uid']);
-            $rememberme = $this->attributeBag->get('rememberme', 0);
+            $this->getBag('attributes')->set('uid', $this->object['uid']);
+            $rememberme = $this->getBag('attributes')->get('rememberme', 0);
 
             switch (System::getVar('seclevel')) {
                 case 'Low':
@@ -195,9 +195,9 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
         $_SESSION = array();
         $this->loadSession();
 
-        $this->attributeBag->set('uid', 0);
-        $this->attributeBag->set('rememberme', 0);
-        $this->attributeBag->set('useragent', sha1(System::serverGetVar('HTTP_USER_AGENT')));
+        $this->getBag('attributes')->set('uid', 0);
+        $this->getBag('attributes')->set('rememberme', 0);
+        $this->getBag('attributes')->set('useragent', sha1(System::serverGetVar('HTTP_USER_AGENT')));
 
         $this->isNew = true;
 
@@ -211,9 +211,9 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
      */
     public function expire()
     {
-        if ($this->attributeBag->get('uid') == '0') {
+        if ($this->getBag('attributes')->get('uid') == '0') {
             // no need to do anything for guests without sessions
-            if ($this->attributeBag->get('anonymoussessions') == '0' && !session_id()) {
+            if ($this->getBag('attributes')->get('anonymoussessions') == '0' && !session_id()) {
                 return;
             }
 
@@ -280,7 +280,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     /**
      * {@inheritdoc}
      */
-    public function sessionOpen($savePath, $sessionName)
+    public function open($savePath, $sessionName)
     {
         return true;
     }
@@ -288,7 +288,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     /**
      * {@inheritdoc}
      */
-    public function sessionClose()
+    public function close()
     {
         return true;
     }
@@ -296,7 +296,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     /**
      * {@inheritdoc}
      */
-    public function sessionRead($sessionId)
+    public function read($sessionId)
     {
         $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
         if (!$result) {
@@ -313,11 +313,11 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     /**
      * {@inheritdoc}
      */
-    public function sessionWrite($sessionId, $vars)
+    public function write($sessionId, $vars)
     {
         $this->object['vars'] = $vars;
-        $this->object['remember'] = $this->attributeBag->get('rememberme', 0);
-        $this->object['uid'] = $this->attributeBag->get('uid', 0);
+        $this->object['remember'] = $this->getBag('attributes')->get('rememberme', 0);
+        $this->object['uid'] = $this->getBag('attributes')->get('uid', 0);
         $this->object['lastused'] = date('Y-m-d H:i:s', time());
 
         $obj = $this->object;
@@ -345,7 +345,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     /**
      * {@inheritdoc}
      */
-    public function sessionDestroy($sessionId)
+    public function destroy($sessionId)
     {
         $res = DBUtil::deleteObjectByID('session_info', $sessionId, 'sessid');
         return (bool)$res;
@@ -354,7 +354,7 @@ class LegacySessionStorage extends AbstractSessionStorage implements SessionSave
     /**
      * {@inheritdoc}
      */
-    public function sessionGc($lifetime)
+    public function gc($lifetime)
     {
         $now = time();
         $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));

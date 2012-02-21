@@ -9,8 +9,8 @@
 
         <parameter key="session.class">Symfony\Component\HttpFoundation\Session\Session</parameter>
         <parameter key="session.storage.class">Zikula\Core\SessionStorage\LegacySessionStorage</parameter>
-        <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Attribute\NamespacedAttributeBag</parameter>
-        <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Flash\FlashBag</parameter>
+        <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
+        <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
 
         <parameter key="hookmanager.class">Zikula\Common\HookManager\HookManager</parameter>
         <parameter key="hookmanager.storage.class">Zikula\Common\HookManager\Storage\Doctrine</parameter>
@@ -43,8 +43,6 @@
         <service id="session.flash_bag" class="%session.flash_bag.class%" public="false" />
 
         <service id="session.storage" class="%session.storage.class%" public="false">
-            <argument type="service" id="session.attribute_bag" />
-            <argument type="service" id="session.flash_bag" />
         </service>
 
         <service id="token.storage" class="%token.storage.class%">

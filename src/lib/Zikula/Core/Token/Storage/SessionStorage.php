@@ -15,7 +15,7 @@
 
 namespace Zikula\Core\Token\Storage;
 
-use Symfony\Component\HttpFoundation\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Stores tokens in session.
