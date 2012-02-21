@@ -385,6 +385,11 @@ function createuser($username, $password, $email)
 
 function installmodules($lang = 'en')
 {
+    // This is a temporary hack for release 1.3.x to be able to install modules
+    if (!class_exists('DoctrineHelper')) {
+        include_once 'plugins/Doctrine/lib/DoctrineHelper.php';
+    }
+
     $connection = Doctrine_Manager::connection();
 
     // Lang validation
