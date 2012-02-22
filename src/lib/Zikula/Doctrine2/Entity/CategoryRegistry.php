@@ -40,15 +40,20 @@ class Zikula_Doctrine2_Entity_CategoryRegistry {
      * @var integer 
      */
     private $categoryId;
+    /**
+     * @ORM\Column(type="string", length=60)
+     * @var string 
+     */
+    private $modname;
+    /**
+     * @ORM\Column(type="string", length=60)
+     * @var string 
+     */
+    private $tablename;
 
     public function getId() 
     {
         return $this->id;
-    }
-    
-    public function setId($id) 
-    {
-        $this->id;
     }
 
     public function getProperty()
@@ -70,4 +75,26 @@ class Zikula_Doctrine2_Entity_CategoryRegistry {
     {
         $this->categoryId = $categoryId;
     }
+    
+    public function getModname()
+    {
+        return $this->modname;
+    }
+
+    public function setModname($modname)
+    {
+        $this->modname = $modname;
+    }
+
+    public function getTablename()
+    {
+        return $this->tablename;
+    }
+
+    public function setTablename($tablename)
+    {
+        $this->tablename = $tablename;
+    }
+
+
 }
