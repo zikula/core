@@ -22,13 +22,19 @@
     </thead>
     <tbody>
         {section name=category loop=$categories}
+        {assign var='category_id' value=$categories[category].cid}
+        {assign var='category_name' value=$categories[category].name|safetext}
+        {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_EDIT" assign="access_edit"}
+        {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_DELETE" assign="access_delete"}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{modurl modname=Admin type=admin func=adminpanel acid=$categories[category].cid}">{$categories[category].catname|safetext}</a></td>
+            <td><a href="{modurl modname=Admin type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
             <td>
-                {assign var="options" value=$categories[category].options}
-                {section name=option loop=$options}
-                <a href="{$options[option].url|safetext}">{img modname=core set=icons/extrasmall src=$options[option].image title=$options[option].title alt=$options[option].title class='tooltips'}</a>
-                {/section}
+                {if $access_edit}
+                <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit' class='tooltips'}</a>
+                {/if}
+                {if $access_delete}
+                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' __title='Delete' __alt='Delete' class='tooltips'}</a>
+                {/if}
             </td>
         </tr>
         {sectionelse}
