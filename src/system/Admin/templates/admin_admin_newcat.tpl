@@ -11,7 +11,7 @@
             <legend>{gt text="New module category"}</legend>
             <div class="z-formrow">
                 <label for="admin_name">{gt text="Name"}</label>
-                <input id="admin_name" name="category[catname]" type="text" size="30" maxlength="50" />
+                <input id="admin_name" name="category[name]" type="text" size="30" maxlength="50" />
             </div>
             <div class="z-formrow">
                 <label for="admin_description">{gt text="Description"}</label>
