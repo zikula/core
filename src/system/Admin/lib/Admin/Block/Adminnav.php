@@ -79,9 +79,8 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
 
         // Display each item, permissions permitting
         $admincategories = array();
-        foreach ($items as $item)
-        {
-            if (SecurityUtil::checkPermission('Admin::', "$item[catname]::$item[cid]", ACCESS_READ)) {
+        foreach ($items as $item) {
+            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $adminlinks = array();
                 foreach ($adminmodules as $adminmodule) {
                     // Get all modules in the category
@@ -97,7 +96,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
                     }
                 }
                 $admincategories[] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel', array('cid' => $item['cid'])),
-                                           'title' => DataUtil::formatForDisplay($item['catname']),
+                                           'title' => DataUtil::formatForDisplay($item['name']),
                                            'modules' => $adminlinks);
             }
         }
