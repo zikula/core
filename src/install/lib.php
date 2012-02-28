@@ -466,7 +466,7 @@ function installmodules($lang = 'en')
     $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
     $modscat = array();
     foreach ($categories as $category) {
-        $modscat[$category['catname']] = $category['cid'];
+        $modscat[$category['name']] = $category['cid'];
     }
     foreach ($coremodules as $coremodule) {
         $category = $coremodscat[$coremodule];
