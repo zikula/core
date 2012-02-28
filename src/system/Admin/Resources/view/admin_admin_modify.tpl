@@ -12,7 +12,7 @@
             <legend>{gt text="Module category"}</legend>
             <div class="z-formrow">
                 <label for="admin_name">{gt text="Name"}</label>
-                <input id="admin_name" name="category[catname]" type="text" size="30" maxlength="50" value="{$category.catname|safetext}" />
+                <input id="admin_name" name="category[name]" type="text" size="30" maxlength="50" value="{$category.name|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="admin_description">{gt text="Description"}</label>

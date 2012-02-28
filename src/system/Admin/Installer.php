@@ -23,11 +23,10 @@ class Admin_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
-        if (!DBUtil::createTable('admin_category')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('admin_module')) {
+        // create tables
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array('Admin_Entity_AdminCategory', 'Admin_Entity_AdminModule'));
+        } catch (Exception $e) {
             return false;
         }
 
@@ -103,11 +102,10 @@ class Admin_Installer extends Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        if (!DBUtil::dropTable('admin_module')) {
-            return false;
-        }
-
-        if (!DBUtil::dropTable('admin_category')) {
+        // drop tables
+        try {
+            DoctrineHelper::dropSchema($this->entityManager, array('Admin_Entity_AdminCategory', 'Admin_Entity_AdminModule'));
+        } catch (Exception $e) {
             return false;
         }
 
@@ -127,19 +125,26 @@ class Admin_Installer extends Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $record = array(array('catname'     => $this->__('System'),
-                        'description' => $this->__('Core modules at the heart of operation of the site.')),
-                array('catname'     => $this->__('Layout'),
-                        'description' => $this->__("Layout modules for controlling the site's look and feel.")),
-                array('catname'     => $this->__('Users'),
-                        'description' => $this->__('Modules for controlling user membership, access rights and profiles.')),
-                array('catname'     => $this->__('Content'),
-                        'description' => $this->__('Modules for providing content to your users.')),
-                array('catname'     => $this->__('Uncategorised'),
-                        'description' => $this->__('Newly-installed or uncategorized modules.')),
-                array('catname'     => $this->__('Security'),
-                        'description' => $this->__('Modules for managing the site\'s security.')));
-
-        DBUtil::insertObjectArray($record, 'admin_category', 'cid');
+        $records = array(
+                    array('name'     => $this->__('System'),
+                          'description' => $this->__('Core modules at the heart of operation of the site.')),
+                    array('name'     => $this->__('Layout'),
+                          'description' => $this->__("Layout modules for controlling the site's look and feel.")),
+                    array('name'     => $this->__('Users'),
+                          'description' => $this->__('Modules for controlling user membership, access rights and profiles.')),
+                    array('name'     => $this->__('Content'),
+                          'description' => $this->__('Modules for providing content to your users.')),
+                    array('name'     => $this->__('Uncategorised'),
+                          'description' => $this->__('Newly-installed or uncategorized modules.')),
+                    array('name'     => $this->__('Security'),
+                          'description' => $this->__('Modules for managing the site\'s security.')));
+        
+        foreach ($records as $record) {
+            $item = new Admin_Entity_AdminCategory;
+            $item->merge($record);
+            $this->entityManager->persist($item);
+        }
+        
+        $this->entityManager->flush();
     }
 }

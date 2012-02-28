@@ -42,6 +42,16 @@ class CategoryRegistry {
      * @var integer
      */
     private $categoryId;
+    /**
+     * @ORM\Column(type="string", length=60)
+     * @var string 
+     */
+    private $modname;
+    /**
+     * @ORM\Column(type="string", length=60)
+     * @var string 
+     */
+    private $tablename;
 
     public function getId()
     {
@@ -72,4 +82,26 @@ class CategoryRegistry {
     {
         $this->categoryId = $categoryId;
     }
+    
+    public function getModname()
+    {
+        return $this->modname;
+    }
+
+    public function setModname($modname)
+    {
+        $this->modname = $modname;
+    }
+
+    public function getTablename()
+    {
+        return $this->tablename;
+    }
+
+    public function setTablename($tablename)
+    {
+        $this->tablename = $tablename;
+    }
+
+
 }

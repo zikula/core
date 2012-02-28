@@ -16,33 +16,62 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
 {
     /**
      * create a admin category
-     * @param string $args['catname'] name of the category
+     * @param string $args['name'] name of the category
      * @param string $args['description'] description of the category
      * @return mixed admin category ID on success, false on failure
      */
     public function create($args)
     {
         // Argument check
-        if (!isset($args['catname']) ||
-                !strlen($args['catname']) ||
-                !isset($args['description'])) {
+        if (!isset($args['name']) || !strlen($args['name']) ||
+            !isset($args['description'])) {
             return LogUtil::registerArgsError();
         }
 
-        // Security check
-        if (!SecurityUtil::checkPermission('Admin::Category', "$args[catname]::", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError ();
-        }
-
-        $count = $categories = ModUtil::apiFunc('Admin', 'admin', 'countitems');
-        $category = array('catname' => $args['catname'], 'description' => $args['description'], 'order' => $count);
-
-        if (!DBUtil::insertObject($category, 'admin_category', 'cid')) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
+        $args['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countitems');
+        
+        $item = new Admin_Entity_AdminCategory();
+        $item->merge($args);
+        $this->entityManager->persist($item);
+        $this->entityManager->flush();
 
         // Return the id of the newly created item to the calling process
-        return $category['cid'];
+        return $item['cid'];
+    }
+    
+    /**
+     * update a admin category
+     * @param int $args['cid'] the ID of the category
+     * @param string $args['name'] the new name of the category
+     * @param string $args['description'] the new description of the category
+     * @return bool true on success, false on failure
+     */
+    public function update($args)
+    {
+        // Argument check
+        if (!isset($args['cid']) || !is_numeric($args['cid']) ||
+            !isset($args['name']) || !strlen($args['name']) ||
+            !isset($args['description'])) {
+            return LogUtil::registerArgsError();
+        }
+
+        // Get the existing item
+        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+
+        if (empty($item)) {
+            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+        }
+
+        // Security check (old item)
+        if (!SecurityUtil::checkPermission('Admin::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError ();
+        }
+        
+        $item->merge($args);
+        $this->entityManager->flush();
+
+        // Let the calling process know that we have finished successfully
+        return true;
     }
 
     /**
@@ -56,89 +85,33 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
-
-        if ($category == false) {
+        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        if (empty($item)) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
-        }
-
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$category[cid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError ();
         }
 
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
-        if ($category['cid'] == $defaultcategory) {
+        if ($item['cid'] == $defaultcategory) {
             return LogUtil::registerError($this->__('Error! You cannot delete the default module category used in the administration panel.'));
         }
 
         // Avoid deletion of the start category
         $startcategory = $this->getVar('startcategory');
-        if ($category['cid'] == $startcategory) {
+        if ($item['cid'] == $startcategory) {
             return LogUtil::registerError($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
         }
-
+        
         // move all modules from the category to be deleted into the
-        // default category. We can't do this via a simple DBUtil call
-        // because it's a non-object based mass update of the key field.
-        $dbtable = DBUtil::getTables();
-        $column  = $dbtable['admin_module_column'];
-        $where   = "WHERE $column[cid] = '" . (int)DataUtil::formatForStore($category['cid']) . "'";
-
-        $obj = array();
-        $obj['cid'] = $defaultcategory;
-        $res = DBUtil::updateObject ($obj, 'admin_module', $where);
-        if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
+        // default category.
+        $entity = $this->name . '_Entity_AdminModule';
+        $dql = "UPDATE $entity m SET m.cid = {$defaultcategory} WHERE m.cid = {$item['cid']}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
         // Now actually delete the category
-        if (!DBUtil::deleteObjectByID ('admin_category', $category['cid'], 'cid')) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
-
-        // Let the calling process know that we have finished successfully
-        return true;
-    }
-
-    /**
-     * update a admin category
-     * @param int $args['cid'] the ID of the category
-     * @param string $args['catname'] the new name of the category
-     * @param string $args['description'] the new description of the category
-     * @return bool true on success, false on failure
-     */
-    public function update($args)
-    {
-        // Argument check
-        if (!isset($args['cid']) ||
-                !is_numeric($args['cid']) ||
-                !isset($args['catname']) ||
-                !strlen($args['catname']) ||
-                !isset($args['description'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        // Get the existing item
-        $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
-
-        if ($category == false) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
-        }
-
-        // Security checks (both old item and updated item)
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[catname]::$args[cid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError ();
-        }
-        if (!SecurityUtil::checkPermission('Admin::Category', "$args[catname]:$args[cid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError ();
-        }
-
-        $category = array('cid' => $args['cid'], 'catname' => $args['catname'], 'description' => $args['description']);
-
-        if (!DBUtil::updateObject($category, 'admin_category', '', 'cid')) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
-        }
+        $this->entityManager->remove($item);
+        $this->entityManager->flush();
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -154,43 +127,42 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         // Optional arguments.
         if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
-            $args['startnum'] = 1;
+            $args['startnum'] = 0;
         }
         if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
-            $args['numitems'] = -1;
+            $args['numitems'] = 1000000; // TODO: tfotis - null doesn't work here! Doctrine bug?
         }
 
         // argument check
-        if (!isset($args['startnum']) ||
-                !isset($args['numitems'])) {
+        if (!isset($args['startnum']) || !isset($args['numitems'])) {
             return LogUtil::registerArgsError();
         }
 
-        $categories = array();
+        $items = array();
 
         // Security check
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
-            return $categories;
+            return $items;
         }
+        
+        $entity = $this->name . '_Entity_AdminCategory';
+        $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'DESC'), $args['numitems'], $args['startnum']);
 
-        // get the necessary db information
-        ModUtil::dbInfoLoad('Admin', 'Admin');
-        $dbtable = DBUtil::getTables();
-        $admincategorycolumn = &$dbtable['admin_category_column'];
-
-        // get all categories the user has permission to see
-        $orderBy = "ORDER BY $admincategorycolumn[order]";
-        $permFilter = array(array('realm'          => 0,
-                        'component_left' => 'Admin',
-                        'instance_left'  => 'catname',
-                        'instance_right' => 'cid',
-                        'level'          => ACCESS_READ));
-        $categories = DBUtil::selectObjectArray('admin_category', '', $orderBy, $args['startnum']-1, $args['numitems'], '', $permFilter);
-        if (!$categories) {
-            return false;
-        }
-
-        return $categories;
+        return $items;
+    }
+    
+    /**
+     * utility function to count the number of items held by this module
+     * @return int number of items held by this module
+     */
+    public function countitems()
+    {   
+        $entity = $this->name . '_Entity_AdminCategory';
+        $dql = "SELECT count(c.cid) FROM $entity c"; 
+        $query = $this->entityManager->createQuery($dql);
+        $numitems = $query->getSingleScalarResult();
+        
+        return (int)$numitems;
     }
 
     /**
@@ -206,26 +178,15 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // retrieve the category object
-        $category = DBUtil::selectObjectByID('admin_category', (int)$args['cid'], 'cid');
-        if (!$category) {
-            return false;
-        }
+        $entity = $this->name . '_Entity_AdminCategory';
+        $category = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => (int)$args['cid']));
 
-        if (!SecurityUtil::checkPermission('Admin::', "$category[catname]::$category[cid]", ACCESS_READ)) {
-            return LogUtil::registerPermissionError ();
+        if (!$category) {
+            return array();
         }
 
         // Return the item array
         return $category;
-    }
-
-    /**
-     * utility function to count the number of items held by this module
-     * @return int number of items held by this module
-     */
-    public function countitems()
-    {
-        return DBUtil::selectObjectCount('admin_category');
     }
 
     /**
@@ -237,31 +198,34 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     public function addmodtocategory($args)
     {
         if (!isset($args['module']) ||
-                !isset($args['category'])) {
+            !isset($args['category'])) {
             return LogUtil::registerArgsError();
         }
-
+        
         // this function is called durung the init process so we have to check in installing
         // is set as alternative to the correct permission check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('Admin::Category', "::", ACCESS_ADD)) {
             return LogUtil::registerPermissionError ();
         }
+        
+        $entity = $this->name . '_Entity_AdminModule';
 
         // get module id
-        $mid = ModUtil::getIdFromName($args['module']);
-        if (!DBUtil::deleteObjectByID ('admin_module', $mid, 'mid')) {
-            return false;
+        $mid = (int)ModUtil::getIdFromName($args['module']);
+        
+        $item = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => $mid));
+        if (!$item) {
+            $item = new $entity;
         }
-
+        
         $values = array();
-        $values['cid'] = $args['category'];
+        $values['cid'] = (int)$args['category'];
         $values['mid'] = $mid;
-
-        $values['order'] = ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' =>$args['category']));
-
-        if (!DBUtil::insertObject($values, 'admin_module')) {
-            return false;
-        }
+        $values['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' => $args['category']));
+        
+        $item->merge($values);
+        $this->entityManager->persist($item);
+        $this->entityManager->flush();
 
         // Return success
         return true;
@@ -286,16 +250,17 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         if (isset($catitems[$args['mid']])) {
             return $catitems[$args['mid']];
         }
+        
+        $entity = $this->name . '_Entity_AdminModule';
 
         // retrieve the admin module object array
-        $result = DBUtil::selectObjectArray('admin_module', '', '', -1, -1, 'mid');
-        if (!$result) {
+        $associations = $this->entityManager->getRepository($entity)->findAll();
+        if (!$associations) {
             return false;
         }
-
-        $ak = array_keys($result);
-        foreach ($ak as $val) {
-            $catitems[$val] = $result[$val]['cid'];
+        
+        foreach ($associations as $association) {
+            $catitems[$association['mid']] = $association['cid']; 
         }
 
         // Return the category id
@@ -307,53 +272,27 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     }
 
     /**
-     * Get the category a module belongs to
+     * Get the sortorder of a module
      * @param int $args['mid'] id of the module
      * @return mixed category id, or false on failure
      */
     public function getSortOrder($args)
     {
-
         // Argument check
         if (!isset($args['mid'])) {
             return LogUtil::registerArgsError();
         }
 
+        $entity = $this->name . '_Entity_AdminModule';
+        
         // retrieve the admin module object array
-        //$result = DBUtil::selectObject('admin_module', );
-        $result = DBUtil::selectObjectByID('admin_module', (int)$args['mid'], 'mid');
+        $result = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => (int)$args['mid']));
+        
         if (!$result) {
             return false;
         }
-        return $result['order'];
-
-    }
-
-
-
-
-    /**
-     * Get the category a module belongs to
-     * @return array of categories
-     */
-    public function getmodcategories($args)
-    {
-
-        $joinInfo = array();
-        $joinInfo[] = array ( 'join_table'          =>  'admin_category',
-                'join_field'          =>  'catname',
-                'object_field_name'   =>  'category_name',
-                'compare_field_table' =>  'cid',
-                'compare_field_join'  =>  'cid');
-
-
-        // retrieve the admin module object array
-        $result = DBUtil::selectExpandedObjectArray('admin_module', $joinInfo, '', '', -1, -1, 'mid');
-        if (!$result) {
-            return false;
-        }
-
-        return $result;
+        
+        return $result['sortorder'];
     }
 
     /**
@@ -365,8 +304,8 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         // check our input and get the module information
         if (!isset($args['modname']) ||
-                !is_string($args['modname']) ||
-                !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
+            !is_string($args['modname']) ||
+            !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
             return LogUtil::registerArgsError();
         }
 
@@ -421,7 +360,12 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        return DBUtil::selectObjectCountByID('admin_module', $args['cid'], 'cid');
+        $entity = $this->name . '_Entity_AdminModule';
+        $dql = "SELECT count(m.amid) FROM $entity m WHERE m.cid = {$args['cid']}"; 
+        $query = $this->entityManager->createQuery($dql);
+        $count = $query->getSingleScalarResult();
+        
+        return (int)$count;
     }
 
     /**
