@@ -15,6 +15,7 @@
 namespace Zikula\Core\Doctrine\Entity;
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Category doctrine2 entity.
@@ -104,8 +105,22 @@ class Category extends EntityAccess
      * @var integer
      */
     private $status;
-
-    public function getId()
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Zikula_Doctrine2_Entity_CategoryAttribute", 
+     *                mappedBy="objectId", cascade={"all"}, 
+     *                orphanRemoval=true, indexBy="name")
+     * 
+     * @var ArrayCollection
+     */
+    private $attributes;
+    
+    public function __construct()
+    {
+        $this->attributes = new ArrayCollection();
+    }
+    
+    public function getId() 
     {
         return $this->id;
     }
@@ -234,4 +249,23 @@ class Category extends EntityAccess
     {
         $this->status = $status;
     }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+    
+    public function setAttribute($name, $value)
+    {
+        if(isset($this->attributes[$name])) {
+            if($value == null) {
+                $this->attributes->remove($name);
+            } else {
+                $this->attributes[$name]->setValue($value);
+            }
+        } else {
+            $this->attributes[$name] = new Zikula_Doctrine2_Entity_CategoryAttribute($this->getId(), 'A', $name, $value);
+        }
+    }
+    
 }

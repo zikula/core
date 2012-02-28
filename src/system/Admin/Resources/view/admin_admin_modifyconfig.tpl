@@ -60,9 +60,9 @@
                 <select id="admin_startcategory" name="modvars[startcategory]">
                     {section name=category loop=$categories}
                     {if  $modvars.Admin.startcategory eq $categories[category].cid}
-                    <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].catname|safetext}</option>
+                    <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].name|safetext}</option>
                     {else}
-                    <option value="{$categories[category].cid|safetext}">{$categories[category].catname|safetext}</option>
+                    <option value="{$categories[category].cid|safetext}">{$categories[category].name|safetext}</option>
                     {/if}
                     {/section}
                 </select>
@@ -75,9 +75,9 @@
                 <select id="admin_defaultcategory" name="modvars[defaultcategory]">
                     {section name=category loop=$categories}
                     {if  $modvars.Admin.defaultcategory eq $categories[category].cid}
-                    <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].catname|safetext}</option>
+                    <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].name|safetext}</option>
                     {else}
-                    <option value="{$categories[category].cid|safetext}">{$categories[category].catname|safetext}</option>
+                    <option value="{$categories[category].cid|safetext}">{$categories[category].name|safetext}</option>
                     {/if}
                     {/section}
                 </select>
@@ -88,9 +88,9 @@
                 <select id="admin_{$modulecategories[modulecategory].name}" name="adminmods[{$modulecategories[modulecategory].name|safetext}]">
                     {section name=category loop=$categories}
                     {if  $modulecategories[modulecategory].category eq $categories[category].cid}
-                    <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].catname|safetext}</option>
+                    <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].name|safetext}</option>
                     {else}
-                    <option value="{$categories[category].cid|safetext}">{$categories[category].catname|safetext}</option>
+                    <option value="{$categories[category].cid|safetext}">{$categories[category].name|safetext}</option>
                     {/if}
                     {/section}
                 </select>

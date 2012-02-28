@@ -216,7 +216,7 @@ Admin.Editor.Add = function(nid)
         callback: function(form, value) {
             var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
             return {
-                catname: value,
+                name: value,
                 cid: cid
             };
         },
@@ -413,14 +413,14 @@ Admin.Category.New = function(cat)
 Admin.Category.Add = function(cat)
 {
     var oldcat = $('ajaxCatImage');
-    catname = $('ajaxNewCatForm').elements['catName'].value;
-    if (catname == '') {
+    name = $('ajaxNewCatForm').elements['catName'].value;
+    if (name == '') {
         Zikula.showajaxerror(Zikula.__('You must enter a name for the new category'));
         Admin.Category.Cancel(oldcat);
         return false;
     }
     var pars = {
-        catname: catname
+        name: name
     }
     new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
         parameters: pars,
@@ -460,7 +460,7 @@ Admin.Category.addResponse = function(req)
     var data = req.getData();
     newcat = $('addcat');
     newcat.innerHTML = '<a id="C' + data.response + '" href="'
-        + data.url + '">' + catname + '</a><span id="catcontext' 
+        + data.url + '">' + name + '</a><span id="catcontext' 
         + data.response + '" class="z-admindrop">&nbsp;</span>';
     newcat.setAttribute("class","admintab");
     newcat.setAttribute("id", "admintab_" + data.response);
