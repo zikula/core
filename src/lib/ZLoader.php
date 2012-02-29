@@ -69,6 +69,9 @@ class ZLoader
             'Zikula' => ZLOADER_PATH,
             'Symfony' => ZLOADER_PATH . '/../vendor/symfony/src',
         ));
+        if (!interface_exists('SessionHandlerInterface')) {
+            $autoloader->registerPrefix('SessionHandlerInterface', ZLOADER_PATH . '/../vendor/symfony/src/Symfony/Component/HttpFoundation/stubs');
+        }
 
         self::$autoloaders = new UniversalClassLoader();
         self::$autoloaders->register();
@@ -112,7 +115,7 @@ class ZLoader
         if (self::$moduleLoader->hasAutoloader($namespace)) {
             return;
         }
-        
+
         self::$moduleLoader->register($namespace, $path);
     }
 
