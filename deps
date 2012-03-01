@@ -20,7 +20,7 @@
 
 [twig]
     git=https://github.com/fabpot/Twig.git
-    version=v1.6.0
+    version=v1.6.1
 
 [swiftmailer]
     git=https://github.com/swiftmailer/swiftmailer.git
