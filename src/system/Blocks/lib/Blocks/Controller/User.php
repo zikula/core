@@ -40,20 +40,16 @@ class Blocks_Controller_User extends Zikula_AbstractController
         $bid = FormUtil::getPassedValue('bid');
         $uid = UserUtil::getVar('uid');
 
-        $dbtable = DBUtil::getTables();
-        $column = $dbtable['userblocks_column'];
-
-        $where = "WHERE $column[bid]='" . DataUtil::formatForStore($bid) . "' AND $column[uid]='" . DataUtil::formatForStore($uid) . "'";
-        $active = DBUtil::selectField('userblocks', 'active', $where);
-
-        $obj = array();
-        $obj['active'] = ($active ? 0 : 1);
-        $where = "WHERE $column[uid]='" . DataUtil::formatForStore($uid) . "' AND $column[bid]='" . DataUtil::formatForStore($bid) . "'";
-        $res = DBUtil::updateObject($obj, 'userblocks', $where);
-
-        if (!$res) {
-            return LogUtil::registerError($this->__('Error! An SQL error occurred.'));
+        $entity = $this->name . '_Entity_UserBlock';
+        $item = $this->entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $bid));
+        
+        if ($item['active'] == 1) {
+            $item['active'] = 0;
+        } else {
+            $item['active'] = 1;
         }
+        
+        $this->entityManager->flush();
 
         // now lets get back to where we came from
         $this->redirect(System::serverGetVar('HTTP_REFERER'));
