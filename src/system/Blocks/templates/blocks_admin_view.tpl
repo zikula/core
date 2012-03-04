@@ -27,12 +27,17 @@
     <fieldset>
         <legend>{$lblFilter}</legend>
         <span class="z-nowrap">
-            <label for="filter_blockposition_id_">{gt text="Block Position"}</label>
-            {selector_field_array name="filter[blockposition_id]" modname="Blocks" table="block_positions" field="name" assocKey="pid" sort="name" allText=$lblAll allValue=0 selectedValue=$filter.blockposition_id|default:0}
+            <label for="filter_blockposition_id">{gt text="Block Position"}</label>
+            <select id="filter_blockposition_id" name="filter[blockposition_id]">
+                <option value="0">{$lblAll}</option>
+                {foreach from=$positions item='position'}
+                    <option value="{$position.pid}" {if $filter.blockposition_id eq $position.pid}selected="selected"{/if}>{$position.name|safetext}</option>
+                {/foreach}
+            </select>
         </span>
         <span class="z-nowrap">
-            <label for="filter_modid_">{gt text="Module"}</label>
-            {selector_module name="filter[modid]" field="id" allText=$lblAll allValue=0 selectedValue=$filter.modid|default:0}
+            <label for="filter_module_id_">{gt text="Module"}</label>
+            {selector_module name="filter[module_id]" field="id" allText=$lblAll allValue=0 selectedValue=$filter.module_id|default:0}
         </span>
         <span class="z-nowrap">
             <label for="filter_language">{gt text="Language"}</label>
@@ -66,7 +71,7 @@
                 {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='Module' sort='module_name' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {gt text="Module"}
             </th>
             <th>
                 {sortlink __linktext='Name' sort='bkey' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
@@ -83,6 +88,12 @@
     </thead>
     <tbody>
         {foreach item=block from=$blocks}
+        {gt text='Deactivate %s' tag1=$block.title|safetext assign='lbl_deactivate_block'}
+        {gt text='Activate %s' tag1=$block.title|safetext assign='lbl_activate_block'}
+        {gt text='Edit %s' tag1=$block.title|safetext assign='lbl_edit_block'}
+        {gt text='Delete %s' tag1=$block.title|safetext assign='lbl_delete_block'}
+        {checkpermission component="`$module`::" instance="`$block.bkey`:`$block.title`:`$block.bid`" level="ACCESS_EDIT" assign="access_edit"}
+        {checkpermission component="`$module`::" instance="`$block.bkey`:`$block.title`:`$block.bid`" level="ACCESS_DELETE" assign="access_delete"}
         <tr class="{cycle values="z-odd,z-even" name=blocks}">
             <td>{$block.bid|safetext}</td>
             <td>{$block.title|safetext}</td>
@@ -94,20 +105,21 @@
             <td>
                 {if $block.active}
                 <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="active_`$block.bid`"}{img src="redled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$activate alt=$activate style="display: none;" id="inactive_`$block.bid`"}</a>
-                <noscript><div>{img src=greenled.png modname=core set=icons/extrasmall __title="Active" __alt="Active" }</div></noscript>
+                <noscript><div><a href="{modurl modname=$module type='admin' func='deactivate' bid=$block.bid|safetext csrftoken=$csrftoken}">{img src='folder_green.png' modname='core' set='icons/extrasmall' title=$lbl_deactivate_block alt=$lbl_deactivate_block}</a></div></noscript>
                 &nbsp;<span id="activity_{$block.bid}">{gt text="Active"}</span>
                 {else}
                 <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate style="display: none;" id="active_`$block.bid`"}{img src="redled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="inactive_`$block.bid`"}</a>
-                <noscript><div>{img src=redled.png modname=core set=icons/extrasmall __title="Inactive" __alt="Inactive" }</div></noscript>
+                <noscript><div><a href="{modurl modname=$module type='admin' func='activate' bid=$block.bid|safetext csrftoken=$csrftoken}">{img src='folder_grey.png' modname='core' set='icons/extrasmall' title=$lbl_activate_block alt=$lbl_activate_block}</a></div></noscript>
                 &nbsp;<span id="activity_{$block.bid}">{gt text="Inactive"}</span>
                 {/if}
             </td>
             <td class="z-right">
-                {foreach item=option from=$block.options}
-                {if $option.noscript eq true}<noscript><div>{/if}
-                    <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>
-                {if $option.noscript eq true}</div></noscript>{/if}
-                {/foreach}
+                {if $access_edit}
+                <a href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}">{img modname='core' src='xedit.png' set='icons/extrasmall' title=$lbl_edit_block alt=$lbl_edit_block class='tooltips'}</a>
+                {/if}
+                {if $access_delete}
+                <a href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}">{img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' title=$lbl_delete_block alt=$lbl_delete_block class='tooltips'}</a>
+                {/if}
             </td>
         </tr>
         {foreachelse}
@@ -130,14 +142,21 @@
     </thead>
     <tbody>
         {foreach from=$positions item=position}
+        {gt text='Edit blockposition %s' tag1=$position.name|safetext assign='lbl_edit_blockposition'}
+        {gt text='Delete blockposition %s' tag1=$position.name|safetext assign='lbl_delete_blockposition'}
+        {checkpermission component="`$module`::position" instance="`$position.name`:`$position.pid`" level="ACCESS_EDIT" assign="access_edit"}
+        {checkpermission component="`$module`::position" instance="`$position.name`:`$position.pid`" level="ACCESS_DELETE" assign="access_delete"}
         <tr class="{cycle values="z-odd,z-even" name=blockpositions}">
             <td>{$position.name|safehtml}</td>
             <td>{$position.description|truncate:25|safehtml}</td>
-            <td><pre style="margin:0;padding:0;">&#123;blockposition name={$position.name|safehtml}&#125;</pre></td>
+            <td><pre style="margin:0;padding:0;">&#123;blockposition name='{$position.name|safehtml}'&#125;</pre></td>
             <td class="z-right">
-                {foreach item=option from=$position.options}
-                <a href="{$option.url|safetext}">{img modname=core src=$option.image set=icons/extrasmall title=$option.title alt=$option.title class='tooltips'}</a>
-                {/foreach}
+                {if $access_edit}
+                <a href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}">{img modname='core' src='xedit.png' set='icons/extrasmall' title=$lbl_edit_blockposition alt=$lbl_edit_blockposition class='tooltips'}</a>
+                {/if}
+                {if $access_delete}
+                <a href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}">{img modname='core' src='14_layer_deletelayer.png' set='icons/extrasmall' title=$lbl_delete_blockposition alt=$lbl_delete_blockposition class='tooltips'}</a>
+                {/if}
             </td>
         </tr>
         {foreachelse}

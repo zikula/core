@@ -40,22 +40,22 @@ class BlockUtil
             return null;
         }
 
-        ModUtil::dbInfoLoad('Blocks', 'Blocks');
-
         // get the block position
         if (empty($positions)) {
-            $positions = DBUtil::selectObjectArray('block_positions', null, null, -1, -1, 'name');
+            $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
         }
+
         if (!isset($positions[$side])) {
             return;
         }
+        
         if (!isset($modname)) {
             $modname = FormUtil::getPassedValue('module', '_homepage_', 'GETPOST', FILTER_SANITIZE_STRING);
         }
 
-        // get the blocks in this block position
+        // get all block placements
         if (empty($blockplacements)) {
-            $blockplacements = DBUtil::selectObjectArray('block_placements', null, 'sortorder');
+            $blockplacements = ModUtil::apiFunc('Blocks', 'user', 'getallplacements');
         }
 
         // get variables from input
@@ -98,6 +98,7 @@ class BlockUtil
             if ($blockplacement['pid'] != $positions[$side]['pid']) {
                 continue;
             }
+            
             // get the full block info
             $blockinfo = self::getBlockInfo($blockplacement['bid']);
 
@@ -161,20 +162,21 @@ class BlockUtil
      * Show a block.
      *
      * @param string $modname   Module name.
-     * @param string $block     Name of the block.
+     * @param string $blockname Name of the block.
      * @param array  $blockinfo Information parameters.
      *
      * @return mixed Blockinfo array or null.
      */
-    public static function show($modname, $block, $blockinfo = array())
+    public static function show($modname, $blockname, $blockinfo = array())
     {
         global $blocks_modules;
 
-        $blockInstance = self::load($modname, $block);
+        $blockInstance = self::load($modname, $blockname);
+
         if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
             $displayfunc = array($blockInstance, 'display');
         } else {
-            $displayfunc = "{$modname}_{$block}block_display";
+            $displayfunc = "{$modname}_{$blockname}block_display";
         }
 
         if (is_callable($displayfunc)) {
@@ -185,12 +187,12 @@ class BlockUtil
             }
         } else {
             // Old-style blocks
-            if (isset($blocks_modules[0][$block]['func_display'])) {
-                return $blocks_modules[0][$block]['func_display']($blockinfo);
+            if (isset($blocks_modules[0][$blockname]['func_display'])) {
+                return $blocks_modules[0][$blockname]['func_display']($blockinfo);
             } else {
                 if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                    $blockinfo['title'] = __f("Block type '%s' not found", $block);
-                    $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $block);
+                    $blockinfo['title'] = __f("Block type '%s' not found", $blockname);
+                    $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $blockname);
                     return self::themeBlock($blockinfo);
                 }
             }
@@ -241,7 +243,8 @@ class BlockUtil
                 }
             }
 
-            if (self::checkUserBlock($blockinfo) == '1') {
+            $checkUserBlock = self::checkUserBlock($blockinfo);
+            if ($checkUserBlock) {
                 if (!empty($blockinfo['title'])) {
                     $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
                 }
@@ -452,33 +455,26 @@ class BlockUtil
      */
     public static function checkUserBlock($blockinfo)
     {
-        if (!isset($blockinfo['bid'])) {
-            $blockinfo['bid'] = '';
-        }
-
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
-            $dbtable = DBUtil::getTables();
-            $column = $dbtable['userblocks_column'];
-            $where = "WHERE $column[bid] = '" . DataUtil::formatForStore($blockinfo['bid']) . "'
-                  AND $column[uid] = '" . DataUtil::formatForStore($uid) . "'";
+            
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->getService('doctrine.entitymanager');
+            
+            $entity = 'Blocks_Entity_UserBlock';
+            $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
+            
+            if (!$item) {
+                $item = new $entity;
+                $item['uid'] = (int)$uid;
+                $item['bid'] = $blockinfo['bid'];
+                $item['active'] = $blockinfo['defaultstate'];
+                
+                $entityManager->persist($item);
+                $entityManager->flush();
+            }
 
-            $result = DBUtil::selectObject('userblocks', $where);
-            if ($result === false) {
-                LogUtil::registerError(__f('Error! A database error occurred: \'%1$s: %2$s\'.', array($dbconn->ErrorNo(), $dbconn->ErrorMsg())));
-                return true; // FIXME: should this really return true (RNG)
-            }
-            if (!$result) {
-                $uid = DataUtil::formatForStore($uid);
-                $obj = array('uid' => $uid, 'bid' => $blockinfo['bid'], 'active' => $blockinfo['defaultstate']);
-                if (!DBUtil::insertObject($obj, 'userblocks', 'bid', true)) {
-                    LogUtil::registerError(__f('Error! A database error occurred: \'%1$s: %2$s\'.', array($dbconn->ErrorNo(), $dbconn->ErrorMsg())));
-                    return true; // FIXME: should this really return true (RNG)
-                }
-                return true; // FIXME: should this really return true (RNG)
-            } else {
-                return $result['active'];
-            }
+            return (boolean)$item['active'];
         }
 
         return false;
@@ -491,8 +487,7 @@ class BlockUtil
      */
     public static function getBlocksInfo()
     {
-        ModUtil::dbInfoLoad('Blocks', 'Blocks');
-        return DBUtil::selectObjectArray('blocks');
+        return ModUtil::apiFunc('Blocks', 'user', 'getall');
     }
 
     /**
@@ -510,11 +505,9 @@ class BlockUtil
         if (!isset($blockinfo[$assocKey]) || empty($blockinfo[$assocKey])) {
             $blockinfo[$assocKey] = array();
             $blocks = self::getBlocksInfo();
-            $ak = array_keys($blocks);
-            foreach ($ak as $k) {
-                $key = $blocks[$k][$assocKey];
-                $blocks[$k]['filter'] = strlen($blocks[$k]['filter']) > 0 ? array_filter((array)unserialize($blocks[$k]['filter'])) : array();
-                $blockinfo[$assocKey][$key] = $blocks[$k];
+            foreach ($blocks as $block) {
+                $key = $block[$assocKey];
+                $blockinfo[$assocKey][$key] = $block->toArray();
             }
         }
 
