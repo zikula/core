@@ -4,7 +4,7 @@
 
 [doctrine-common]
     git=https://github.com/doctrine/common.git
-    version=2.2.0
+    version=2.2.1
 
 [doctrine-dbal]
     git=https://github.com/doctrine/dbal.git
@@ -12,7 +12,7 @@
 
 [doctrine]
     git=https://github.com/doctrine/doctrine2.git
-    version=2.2.0
+    version=2.2.1
 
 [gedmo-doctrine-extensions]
     git=https://github.com/l3pp4rd/DoctrineExtensions.git
