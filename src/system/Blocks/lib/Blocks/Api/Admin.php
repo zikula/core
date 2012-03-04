@@ -32,87 +32,47 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
      */
     public function update($args)
     {
-        // Optional arguments
-        if (!isset($args['url'])) {
-            $args['url'] = '';
-        }
-        if (!isset($args['content'])) {
-            $args['content'] = '';
-        }
-
         // Argument check
-        if (!isset($args['bid']) ||
-                !is_numeric($args['bid']) ||
-                !isset($args['content']) ||
-                !isset($args['title']) ||
-                !isset($args['description']) ||
-                !isset($args['language']) ||
-                !isset($args['collapsable']) ||
-                !isset($args['defaultstate'])) {
+        if (!isset($args['bid']) || !is_numeric($args['bid']) ||
+            !isset($args['content']) ||
+            !isset($args['title']) ||
+            !isset($args['description']) ||
+            !isset($args['language']) ||
+            !isset($args['collapsable']) ||
+            !isset($args['defaultstate'])) {
             return LogUtil::registerArgsError();
         }
 
-        $block = DBUtil::selectObjectByID('blocks', $args['bid'], 'bid');
-
         // Security check
-        // this function is called durung the init process so we have to check in _ZINSTALLVER
+        // this function is called during the init process so we have to check in _ZINSTALLVER
         // is set as alternative to the correct permission check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_EDIT)) {
+        if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-
-        $item = array(
-                'bid' => isset($args['bid']) ? $args['bid'] : $block['bid'],
-                'content' => isset($args['content']) ? $args['content'] : $block['content'],
-                'title' => isset($args['title']) ? $args['title'] : $block['title'],
-                'description' => isset($args['description']) ? $args['description'] : $block['description'],
-                'filter' => isset($args['filter']) ? serialize($args['filter']) : $block['filter'],
-                'url' => isset($args['url']) ? $args['url'] : $block['url'],
-                'refresh' => isset($args['refresh']) ? $args['refresh'] : $block['refresh'],
-                'language' => isset($args['language']) ? $args['language'] : $block['language'],
-                'collapsable' => isset($args['collapsable']) ? $args['collapsable'] : $block['collapsable'],
-                'defaultstate' => isset($args['defaultstate']) ? $args['defaultstate'] : $block['defaultstate']
-        );
-
-        $res = DBUtil::updateObject($item, 'blocks', '', 'bid');
-        if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
-        }
-
-        // leave unchanged positions as is, delete removed positions from placements table
-        // and add placement for new positions
-        if (isset($args['positions'])) {
-            // Get all existing block positions. We do not use the userapi function here because we need
-            // an associative array for the next steps: key = pid (position id)
-            $allblockspositions = DBUtil::selectObjectArray('block_positions', null, 'pid', -1, -1, 'pid', null);
-            foreach ($allblockspositions as $positionid => $blockposition) {
-                if (in_array($positionid, $args['positions'])) {
-                    // position name is present in the array submitted from the user
-                    $where = "WHERE pid = '" . DataUtil::formatForStore($positionid) . '\'';
-                    $blocksinposition = DBUtil::selectObjectArray('block_placements', $where, 'sortorder', -1, -1, 'bid');
-                    if (array_key_exists($item['bid'], $blocksinposition)) {
-                        // block is already in this position, placement did not change, this means we do nothing
-                    } else {
-                        // add the block to the given position as last entry (max(sortorder) +1
-                        $newplacement = array('pid' => $blockposition['pid'],
-                                'bid' => $item['bid'],
-                                'order' => count($blocksinpositions));
-                        $res = DBUtil::insertObject($newplacement, 'block_placements', 'bid', true);
-                        if (!$res) {
-                            return LogUtil::registerError($this->__('Error! Could not perform the insertion.'));
-                        }
-                    }
-                } else {
-                    // position name is NOT present in the array submitted from the user
-                    // delete the block id from the placements table for this position
-                    $where = '(bid = \'' . DataUtil::formatForStore($item['bid']) . '\' AND pid = \'' . DataUtil::formatForStore($blockposition['pid']) . '\')';
-                    $res = DBUtil::deleteWhere('block_placements', $where);
-                    if (!$res) {
-                        return LogUtil::registerError($this->__('Error! Could not save your changes.'));
-                    }
-                }
+        
+        // remove old placements and insert the new ones
+        $entity = $this->name . '_Entity_BlockPlacement';
+        $dql = "DELETE FROM $entity p WHERE p.bid = {$args['bid']}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
+        
+        if (isset($args['positions']) && is_array($args['positions'])) {
+            
+            foreach ($args['positions'] as $position) {
+                $placement = new Blocks_Entity_BlockPlacement();
+                $placement->setPid($position);
+                $placement->setBid($args['bid']);
+                $this->entityManager->persist($placement);
             }
         }
+        
+        unset($args['positions']);
+        
+        // update item
+        $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
+        $item->merge($args);
+
+        $this->entityManager->flush();
 
         return true;
     }
@@ -132,13 +92,13 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
     {
         // Argument check
         if ((!isset($args['title'])) ||
-                (!isset($args['description'])) ||
-                (!isset($args['mid'])) ||
-                (!isset($args['language'])) ||
-                (!isset($args['collapsable'])) ||
-                (!isset($args['defaultstate'])) ||
-                (!isset($args['bkey']))) {
-            return LogUtil::registerArgsError();
+            (!isset($args['description'])) ||
+            (!isset($args['mid'])) ||
+            (!isset($args['language'])) ||
+            (!isset($args['collapsable'])) ||
+            (!isset($args['defaultstate'])) ||
+            (!isset($args['bkey']))) {
+                return LogUtil::registerArgsError();
         }
 
         // Security check
@@ -152,43 +112,36 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         }
 
         $block = array(
-                'title' => $args['title'],
-                'description' => $args['description'],
-                'language' => $args['language'],
-                'collapsable' => $args['collapsable'],
-                'mid' => $args['mid'],
-                'defaultstate' => $args['defaultstate'],
-                'bkey' => $args['bkey'],
-                'content' => $args['content']
+            'title' => $args['title'],
+            'description' => $args['description'],
+            'language' => $args['language'],
+            'collapsable' => $args['collapsable'],
+            'mid' => $args['mid'],
+            'defaultstate' => $args['defaultstate'],
+            'bkey' => $args['bkey'],
+            'content' => $args['content']
         );
-
-        $block['url'] = '';
-        $block['filter'] = '';
-        $block['active'] = 1;
-        $block['refresh'] = 3600;
-        $block['last_update'] = DateUtil::getDatetime();
-        $block['active'] = 1;
-
-        $res = DBUtil::insertObject($block, 'blocks', 'bid');
-
-        if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
-
-        // empty block positions for this block
-        if (isset($args['positions'])) {
-            // add new block positions
-            $blockplacments = array();
+        
+        $item = new Blocks_Entity_Block();
+        $item->merge($block);
+        $this->entityManager->persist($item);
+        $this->entityManager->flush();
+        
+        // insert block positions for this block
+        if (isset($args['positions']) && is_array($args['positions'])) {
+            
             foreach ($args['positions'] as $position) {
-                $blockplacments[] = array('bid' => $block['bid'], 'pid' => $position);
+                $placement = new Blocks_Entity_BlockPlacement();
+                $placement->setPid($position);
+                $placement->setBid($item['bid']);
+                var_dump($placement);
+                $this->entityManager->persist($placement);
             }
-            $res = DBUtil::insertObjectArray($blockplacments, 'block_placements');
-            if (!$res) {
-                return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-            }
+            
+            $this->entityManager->flush();
         }
 
-        return $block['bid'];
+        return $item['bid'];
     }
 
     /**
@@ -203,21 +156,22 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!isset($block['bid']) || !is_numeric($block['bid'])) {
             return LogUtil::registerArgsError();
         }
+
         if (!isset($block['active']) || !is_numeric($block['active'])) {
             return LogUtil::registerArgsError();
         }
+
         $blockinfo = BlockUtil::getBlockInfo($block['bid']);
+
         if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$block[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
-        // create a new object to ensure that we only update the 'active' field
-        $obj = array();
-        $obj['bid'] = $block['bid'];
-        $obj['active'] = $block['active'];
-        $res = DBUtil::updateObject($obj, 'blocks', '', 'bid');
+        // set block's new state
+        $blockinfo->setActive($block['active']);
+        $this->entityManager->flush();
 
-        return $res;
+        return true;
     }
 
     /**
@@ -272,24 +226,23 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $block = DBUtil::selectObjectByID('blocks', $args['bid'], 'bid');
-
+        $block = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
+        
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
-        // delete block placements for this block
-        $res = DBUtil::deleteObjectByID('block_placements', $args['bid'], 'bid');
-        if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
-
-        // delete the block itself
-        $res = DBUtil::deleteObjectByID('blocks', $args['bid'], 'bid');
-        if (!$res) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
+        // delete block's placements and block itself
+        $entity = $this->name . '_Entity_BlockPlacement';
+        $dql = "DELETE FROM $entity p WHERE p.bid = {$block[bid]}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
+        
+        $entity = $this->name . '_Entity_Block';
+        $dql = "DELETE FROM $entity b WHERE b.bid = {$block[bid]}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
         return true;
     }
@@ -305,10 +258,9 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
     public function createposition($args)
     {
         // Argument check
-        if (!isset($args['name']) ||
-                !strlen($args['name']) ||
-                !isset($args['description'])) {
-            return LogUtil::registerArgsError();
+        if (!isset($args['name']) || !strlen($args['name']) ||
+            !isset($args['description'])) {
+                return LogUtil::registerArgsError();
         }
 
         // Security check
@@ -324,12 +276,11 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 }
             }
         }
-
-        $item = array('name' => $args['name'], 'description' => $args['description']);
-
-        if (!DBUtil::insertObject($item, 'block_positions', 'pid')) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
+        
+        $item = new Blocks_Entity_BlockPosition();
+        $item->merge($args);
+        $this->entityManager->persist($item);
+        $this->entityManager->flush();
 
         // Return the id of the newly created item to the calling process
         return $item['pid'];
@@ -348,12 +299,12 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['pid']) ||
-                !isset($args['name']) ||
-                !isset($args['description'])) {
-            return LogUtil::registerArgsError();
+            !isset($args['name']) ||
+            !isset($args['description'])) {
+                return LogUtil::registerArgsError();
         }
 
-        // Get the existing admin message
+        // Get the existing position
         $item = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
 
         if ($item == false) {
@@ -364,13 +315,19 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$item[pid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-
-        // create the item array
-        $item = array('pid' => $args['pid'], 'name' => $args['name'], 'description' => $args['description']);
-
-        if (!DBUtil::updateObject($args, 'block_positions', '', 'pid')) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
+        
+        $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        if (isset($positions) && is_array($positions)) {
+            foreach ($positions as $position) {
+                if ($position['name'] == $args['name'] && $position['pid'] != $args['pid']) {
+                    return LogUtil::registerError($this->__('Error! There is already a block position with the name you entered.'));
+                }
+            }
         }
+        
+        // update item
+        $item->merge($args);
+        $this->entityManager->flush();
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -388,21 +345,24 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
+        
+        $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
 
-        $item = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
-
-        if ($item == false) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
-        }
-
-        if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$item[pid]", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('Blocks::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
+        
+        // delete placements of the position to be deleted
+        $entity = $this->name . '_Entity_BlockPlacement';
+        $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
-        // Now actually delete the category
-        if (!DBUtil::deleteObjectByID('block_positions', $args['pid'], 'pid')) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
+        // delete position
+        $entity = $this->name . '_Entity_BlockPosition';
+        $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -447,5 +407,4 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
 
         return $links;
     }
-
 }
