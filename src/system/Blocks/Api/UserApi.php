@@ -21,11 +21,10 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
      *
      * This function gets all block entries from the database.
      *
-     * @param 'active_status'   filter by active status (0=all, 1=active, 2=inactive).
-     * @param 'blockposition'   block position id to filter block selection for.
-     * @param 'inactive'        force inclusion of inactive blocks (true overrides active_status to 0, false goes with active_status).
-     * @param 'language'        language to filter block selection for.
-     * @param 'module_id'       module id to filter block selection for.
+     * @param 'blockposition_id'    block position id to filter block selection for.
+     * @param 'module_id'           module id to filter block selection for.
+     * @param 'language'            language to filter block selection for.
+     * @param 'active_status'       filter by active status (0=all, 1=active, 2=inactive).
      *
      * @return   array   array of items, or false on failure.
      */
@@ -38,77 +37,67 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
-
-        $dbtable = DBUtil::getTables();
-        $blockstable = $dbtable['blocks'];
-        $blockscolumn = $dbtable['blocks_column'];
-        $sort = isset($args['sort']) && $args['sort'] ? $args['sort'] : '';
-        $sortdir = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
-        if ($sort) {
-            $sort .= " $sortdir";
-        } else {
-            $sort = 'title';
-        }
-
-        // backwards parameter compatability
-        if (isset($args['modid']) && is_numeric($args['modid'])) {
+        
+        // backwards compatibility
+        if (isset($args['modid']) && !isset($args['module_id'])) {
             $args['module_id'] = $args['modid'];
         }
-
-        // initialise the where arguments array
-        $whereargs = array();
-
-        // filter by block position
+        
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+        
+        // add select and from params 
+        $qb->select('b')
+           ->from('Blocks_Entity_Block', 'b');
+        
+        // add clause for filtering blockposition
         if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {
-            $where = "pid = $args[blockposition_id]";
-            $bids = DBUtil::selectFieldArray('block_placements', 'bid', $where);
-            $bidList = $bids ? implode(',', $bids) : -1;
-            $whereargs[] = "$blockscolumn[bid] IN ($bidList)";
+            $entity = $this->name . '_Entity_BlockPlacement';
+            $blockitems = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['blockposition_id']));
+            
+            $bidList = array(0);
+            foreach ($blockitems as $blockitem) {
+                $bidList[] = $blockitem['bid'];
+            }
+            
+            $qb->andWhere($qb->expr()->in('b.bid', $bidList));
         }
-
-        // filter by active block status
-        if (isset($args['inactive']) && $args['inactive']) {
-            $args['active_status'] = 0;
-        }
-        if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) { // new logic
-            $whereargs[] = "$blockscolumn[active] = " . ($args['active_status'] == 1 ? '1' : '0');
-        }
-
-        // filter by module
+        
+        // add clause for filtering module
         if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {
-            $whereargs[] = "$blockscolumn[mid] = '" . DataUtil::formatForStore($args['module_id']) . "'";
+            $qb->andWhere($qb->expr()->eq('b.mid', $qb->expr()->literal($args['module_id'])));
         }
-
-        // filter by language
+        
+        // add clause for filtering language
         if (isset($args['language']) && $args['language']) {
-            $whereargs[] = "$blockscolumn[language] = '" . DataUtil::formatForStore($args['language']) . "'";
+            $qb->andWhere($qb->expr()->eq('b.language', $qb->expr()->literal($args['language'])));
         }
-
-        // construct the where clause
-        $where = '';
-        if (!empty($whereargs)) {
-            $where = 'WHERE ' . implode(' AND ', $whereargs);
+        
+        // add clause for filtering status
+        if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) {
+            if ($args['active_status'] == 1) {
+                $active = 1;
+            } else {
+                 $active = 0;
+            }
+            
+            $qb->andWhere($qb->expr()->eq('b.active', $qb->expr()->literal($active)));
         }
+        
+        // add clause for ordering
+        $sort = (isset($args['sort']) && $args['sort']) ? 'b.' . $args['sort'] : 'b.title';
+        $sortdir = (isset($args['sortdir']) && $args['sortdir']) ? $args['sortdir'] : 'ASC';
+        $qb->addOrderBy($sort, $sortdir);
+        
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
+        
+        //echo $query->getSQL();
 
-        $permFilter = array();
-        $permFilter[] = array(
-                'component_left' => 'Blocks',
-                'component_middle' => '',
-                'component_right' => '',
-                'instance_left' => 'bkey',
-                'instance_middle' => 'title',
-                'instance_right' => 'bid',
-                'level' => ACCESS_OVERVIEW);
+        // execute query
+        $items = $query->getResult();
 
-        $joinInfo = array();
-        $joinInfo[] = array(
-                'join_table' => 'modules',
-                'join_field' => 'name',
-                'object_field_name' => 'module_name',
-                'compare_field_table' => 'mid',
-                'compare_field_join' => 'id');
-
-        return DBUtil::selectExpandedObjectArray('blocks', $joinInfo, $where, $sort, -1, -1, '', $permFilter);
+        return $items;
     }
 
     /**
@@ -125,7 +114,10 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         }
 
         // Return the item array
-        return BlockUtil::getBlockInfo($args['bid']);
+        $entity = $this->name . '_Entity_Block';
+        $item = $this->entityManager->getRepository($entity)->findOneBy(array('bid' => $args['bid']));
+
+        return $item;
     }
 
     /**
@@ -135,18 +127,12 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        $permFilter = array();
-        $permFilter[] = array(
-                'component_left' => 'Blocks',
-                'component_middle' => '',
-                'component_right' => '',
-                'instance_left' => 'bkey',
-                'instance_middle' => 'title',
-                'instance_right' => 'bid',
-                'level' => ACCESS_OVERVIEW);
-
-        $blocks = DBUtil::selectObjectArray('blocks', '', '', -1, -1, '', $permFilter);
-        return count($blocks);
+        $entity = $this->name . '_Entity_Block';
+        $dql = "SELECT count(b.bid) FROM $entity b";
+        $query = $this->entityManager->createQuery($dql);
+        $numitems = $query->getSingleScalarResult();
+        
+        return $numitems;
     }
 
     /**
@@ -156,17 +142,42 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
      *
      * @return   array   array of items, or false on failure.
      */
-    public function getallpositions($args)
+    public function getallpositions()
     {
         // create an empty items array
-        $block_positions = array();
+        static $block_positions = array();
 
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_OVERVIEW)) {
             return $block_positions;
         }
+        
+        if (empty($block_positions)) {
+            
+            $entity = $this->name . '_Entity_BlockPosition';
+            $items = $this->entityManager->getRepository($entity)->findBy(array(), array('name' => 'ASC'));
 
-        return DBUtil::selectObjectArray('block_positions', null, 'name', -1, -1, 'name', null);
+            foreach ($items as $item) {
+                $block_positions[$item['name']] = $item;
+            }
+        }
+
+        return $block_positions;
+    }
+    
+    /**
+     * Get all block placements.
+     *
+     * This function gets all block placements entries from the database.
+     *
+     * @return   array   array of items, or false on failure.
+     */
+    public function getallplacements()
+    {
+        $entity = $this->name . '_Entity_BlockPlacement';
+        $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'));
+
+        return $items;
     }
 
     /**
@@ -182,12 +193,16 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
+        
+        // Return the item array
+        $entity = $this->name . '_Entity_BlockPosition';
+        $item = $this->entityManager->getRepository($entity)->findOneBy(array('pid' => $args['pid']));
 
-        return DBUtil::selectObjectByID('block_positions', $args['pid'], 'pid');
+        return $item;
     }
 
     /**
-     * Get all block id's a block position.
+     * Get all blocks that are placed in a position
      *
      * @param int $args['pid'] position id.
      *
@@ -199,12 +214,14 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-        $where = "WHERE pid = '" . DataUtil::formatForStore($args['pid']) . '\'';
-        return DBUtil::selectObjectArray('block_placements', $where, 'sortorder');
+        
+        $entity = $this->name . '_Entity_BlockPlacement';
+        $items = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['pid']), array('sortorder' => 'ASC'));
+        return $items;
     }
 
     /**
-     * Get all block id's a block position.
+     * Get all placements of a block
      *
      * @param int $args['bid'] block id.
      *
@@ -216,8 +233,10 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
             return LogUtil::registerArgsError();
         }
-        $where = "WHERE bid = '" . DataUtil::formatForStore($args['bid']) . '\'';
-        return DBUtil::selectObjectArray('block_placements', $where, 'sortorder');
+        
+        $entity = $this->name . '_Entity_BlockPlacement';
+        $items = $this->entityManager->getRepository($entity)->findBy(array('bid' => $args['bid']), array('sortorder' => 'ASC'));
+        return $items;
     }
 
     /**
@@ -265,5 +284,4 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         }
         return ModUtil::url($modname, $type, $func, $params);
     }
-
 }
