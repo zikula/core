@@ -26,7 +26,7 @@ class LogUtil
     public static function hasErrors()
     {
         $session = ServiceUtil::getService('request')->getSession();
-        return $session->hasFlashes(Zikula_Session::MESSAGE_ERROR);
+        return $session->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR);
     }
 
     /**
