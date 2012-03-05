@@ -19,14 +19,14 @@ class Blocks_Version extends Zikula_AbstractVersion
         $meta = array();
         $meta['displayname']    = $this->__('Blocks');
         $meta['description']    = $this->__('Block administration module.');
-        //! module name that appears in URL
         $meta['url']            = $this->__('blocks');
-        $meta['version']        = '3.8.0';
-
-        $meta['securityschema'] = array('Blocks::' => 'Block key:Block title:Block ID',
-                'Blocks::position' => 'Position name::Position ID',
-                'Menutree:menutreeblock:' => 'Block ID:Link Name:Link ID',
-                'ExtendedMenublock::' => 'Block ID:Link ID:');
+        $meta['version']        = '3.8.1';
+        $meta['securityschema'] = array(
+            'Blocks::' => 'Block key:Block title:Block ID',
+            'Blocks::position' => 'Position name::Position ID',
+            'Menutree:menutreeblock:' => 'Block ID:Link Name:Link ID',
+            'ExtendedMenublock::' => 'Block ID:Link ID:');
+        
         return $meta;
     }
 

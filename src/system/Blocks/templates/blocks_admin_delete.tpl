@@ -4,13 +4,13 @@
     <h3>{$blockname|safetext}</h3>
 </div>
 
-<p class="z-warningmsg">{gt text="Do you really want to delete this block?"}</p>
+<p class="z-warningmsg">{gt text="Do you really want to delete block '%s'?" tag1=$block.title|safetext}</p>
 
 <form class="z-form" action="{modurl modname="Blocks" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
-        <input type="hidden" name="bid" value="{$bid|safetext}" />
+        <input type="hidden" name="bid" value="{$block.bid|safetext}" />
         <fieldset>
             <legend>{gt text="Confirmation prompt"}</legend>
             <div class="z-buttons z-formbuttons">
