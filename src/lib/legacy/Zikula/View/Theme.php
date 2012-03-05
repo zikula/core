@@ -366,7 +366,7 @@ class Zikula_View_Theme extends Zikula_View
 
         } else {
             if (!empty($block['title'])) {
-                $return .= '<h4>' . DataUtil::formatForDisplay($block['title']) . ' ' . $block['minbox'] . '</h4>';
+                $return .= '<h4>' . DataUtil::formatForDisplayHTML($block['title']) . ' ' . $block['minbox'] . '</h4>';
             }
             $return .= $block['content'];
         }
