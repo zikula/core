@@ -53,6 +53,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         $sfilter = SessionUtil::getVar('filter', array(), '/Blocks');
         $filter = FormUtil::getPassedValue('filter', $sfilter);
+        
         $clear = FormUtil::getPassedValue('clear', 0);
         if ($clear) {
             $filter = array();
@@ -62,120 +63,68 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // sort and sortdir GET parameters override filter values
         $sort = (isset($filter['sort']) && !empty($filter['sort'])) ? strtolower($filter['sort']) : 'bid';
         $sortdir = (isset($filter['sortdir']) && !empty($filter['sortdir'])) ? strtoupper($filter['sortdir']) : 'ASC';
+        
         $filter['sort'] = FormUtil::getPassedValue('sort', $sort, 'GET');
         $filter['sortdir'] = FormUtil::getPassedValue('sortdir', $sortdir, 'GET');
         if ($filter['sortdir'] != 'ASC' && $filter['sortdir'] != 'DESC') {
-                $filter['sortdir'] = 'ASC';
+            $filter['sortdir'] = 'ASC';
         }
         $filter['blockposition_id'] = isset($filter['blockposition_id']) ? $filter['blockposition_id'] : 0;
-        $filter['modid'] = isset($filter['modid']) ? $filter['modid'] : 0;
+        $filter['module_id'] = isset($filter['module_id']) ? $filter['module_id'] : 0;
         $filter['language'] = isset($filter['language']) ? $filter['language'] : '';
         $filter['active_status'] = isset($filter['active_status']) ? $filter['active_status'] : 0;
-
+        
+        $this->view->assign('filter', $filter)
+                   ->assign('sort', $filter['sort'])
+                   ->assign('sortdir', $filter['sortdir']);
+        
         // generate an authorisation key for the links
-        $token = SecurityUtil::generateCsrfToken($this->serviceManager, true);
-
-        // set some default variables
-        $rownum = 1;
-        $lastpos = '';
+        $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
+        $this->view->assign('csrftoken', $csrftoken);
 
         // Get all blocks
         $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', $filter);
 
-        // we can easily count the number of blocks using count() rather than
-        // calling the api function
-        $numrows = count($blocks);
-
-        // create an empty arrow to hold the processed items
-        $blockitems = array();
-
-        // get all possible block positions
+        // get all possible block positions and build assoc array for easier usage later on
         $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
-        // build assoc array for easier usage later on
         foreach ($blockspositions as $blocksposition) {
             $allbposarray[$blocksposition['pid']] = $blocksposition['name'];
         }
+
         // loop round each item calculating the additional information
         $blocksitems = array();
         foreach ($blocks as $key => $block) {
+            
+            $block = $block->toArray();
 
             // set the module that holds the block
             $modinfo = ModUtil::getInfo($block['mid']);
             $block['modname'] = $modinfo['displayname'];
 
-            // set the blocks language
+            // set the block's language
             if (empty($block['language'])) {
                 $block['language'] = $this->__('All');
             } else {
                 $block['language'] = ZLanguage::getLanguageName($block['language']);
             }
-
-            $thisblockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $block['bid']));
+            
+            // set the block's position(s)
             $bposarray = array();
+            $thisblockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $block['bid']));
             foreach ($thisblockspositions as $singleblockposition) {
                 $bposarray[] = $allbposarray[$singleblockposition['pid']];
             }
             $block['positions'] = implode(', ', $bposarray);
             unset($bposarray);
-
-            // calculate what options the user has over this block
-            $block['options'] = array();
-            if ($block['active']) {
-                $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'deactivate',
-                                array('bid' => $block['bid'], 'csrftoken' => $token)),
-                        'image' => 'folder_grey.png',
-                        'title' => $this->__f('Deactivate \'%s\'', $block['title']),
-                        'noscript' => true);
-            } else {
-                $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'activate',
-                                array('bid' => $block['bid'], 'csrftoken' => $token)),
-                        'image' => 'folder_green.png',
-                        'title' => $this->__f('Activate \'%s\'', $block['title']),
-                        'noscript' => true);
-            }
-
-            $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $block['bid'])),
-                    'image' => 'xedit.png',
-                    'title' => $this->__f('Edit \'%s\'', $block['title']),
-                    'noscript' => false);
-            $block['options'][] = array('url' => ModUtil::url('Blocks', 'admin', 'delete', array('bid' => $block['bid'])),
-                    'image' => '14_layer_deletelayer.png',
-                    'title' => $this->__f('Delete \'%s\'', $block['title']),
-                    'noscript' => false);
-
+            
+            // push block to array
             $blocksitems[] = $block;
         }
         $this->view->assign('blocks', $blocksitems);
 
-        // get the block positions
-        $items = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
-
-        // Loop through each returned item adding in the options that the user has over the item
-        foreach ($items as $key => $item) {
-            if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_READ)) {
-                $options = array();
-                if (SecurityUtil::checkPermission('Blocks::', "$item[name]::$", ACCESS_EDIT)) {
-                    $options[] = array('url' => ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $item['pid'])),
-                            'image' => 'xedit.png',
-                            'title' => $this->__f('Edit blockposition \'%s\'', $item['name']));
-                    if (SecurityUtil::checkPermission('Blocks::', "$item[name]::", ACCESS_DELETE)) {
-                        $options[] = array('url' => ModUtil::url('Blocks', 'admin', 'deleteposition', array('pid' => $item['pid'])),
-                                'image' => '14_layer_deletelayer.png',
-                                'title' => $this->__f('Delete blockposition \'%s\'', $item['name']));
-                    }
-                }
-                // Add the calculated menu options to the item array
-                $items[$key]['options'] = $options;
-            }
-        }
-
-        // Assign the items to the template
-        ksort($items);
-        $this->view->assign('positions', $items);
-
-        $this->view->assign('filter', $filter)
-                ->assign('sort', $filter['sort'])
-                ->assign('sortdir', $filter['sortdir']);
+        // get the block positions and assign them to the template
+        $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        $this->view->assign('positions', $positions);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('blocks_admin_view.tpl');
@@ -253,14 +202,14 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         if (empty($blockinfo)) {
             return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
         }
-
-        // get the block placements
-        $where = "WHERE bid = '" . DataUtil::formatForStore($bid) . "'";
-        $placements = DBUtil::selectObjectArray('block_placements', $where, 'sortorder', -1, -1, '', null);
-        $blockinfo['placements'] = array();
+        
+        // get the block's placements
+        $placements = ModUtil::apiFunc('Blocks', 'user', 'getallblockspositions', array('bid' => $bid));
+        $placements_pids = array();
         foreach ($placements as $placement) {
-            $blockinfo['placements'][] = $placement['pid'];
+            $placements_pids[] = $placement['pid'];
         }
+        $blockinfo['placements'] = $placements_pids;
 
         // Load block
         $modinfo = ModUtil::getInfo($blockinfo['mid']);
@@ -268,7 +217,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         if (!$blockObj) {
             return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
         }
-
+        
         // Title - putting a title ad the head of each page reminds the user what
         // they are doing
         if (!empty($modinfo['name'])) {
@@ -277,8 +226,8 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         // Add hidden block id to form
         $this->view->assign('bid', $bid);
-
-        // assign the block
+        
+        // assign the block values to the template
         $this->view->assign($blockinfo);
 
         // build and assign the list of modules
@@ -329,23 +278,24 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $this->view->assign($GLOBALS['blocks_modules'][$blockinfo['mid']][$blockinfo['bkey']]);
 
         // Refresh
-        $refreshtimes = array(60 => $this->__('One minute'),
-                120 => $this->__('Two minutes'),
-                300 => $this->__('Five minutes'),
-                600 => $this->__('Ten minutes'),
-                900 => $this->__('Fifteen minutes'),
-                1800 => $this->__('Half an hour'),
-                3600 => $this->__('One hour'),
-                7200 => $this->__('Two hours'),
-                14400 => $this->__('Four hours'),
-                43200 => $this->__('Twelve hours'),
-                86400 => $this->__('One day'),
-                172800 => $this->__('Two days'),
-                259200 => $this->__('Three days'),
-                345600 => $this->__('Four days'),
-                432000 => $this->__('Five days'),
-                518400 => $this->__('Six days'),
-                604800 => $this->__('Seven days'));
+        $refreshtimes = array(
+            60 => $this->__('One minute'),
+            120 => $this->__('Two minutes'),
+            300 => $this->__('Five minutes'),
+            600 => $this->__('Ten minutes'),
+            900 => $this->__('Fifteen minutes'),
+            1800 => $this->__('Half an hour'),
+            3600 => $this->__('One hour'),
+            7200 => $this->__('Two hours'),
+            14400 => $this->__('Four hours'),
+            43200 => $this->__('Twelve hours'),
+            86400 => $this->__('One day'),
+            172800 => $this->__('Two days'),
+            259200 => $this->__('Three days'),
+            345600 => $this->__('Four days'),
+            432000 => $this->__('Five days'),
+            518400 => $this->__('Six days'),
+            604800 => $this->__('Seven days'));
         $this->view->assign('blockrefreshtimes', $refreshtimes);
 
         // Return the output that has been generated by this function
@@ -371,6 +321,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     public function update()
     {
         $this->checkCsrfToken();
+        
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
         $title = FormUtil::getPassedValue('title');
@@ -403,6 +354,8 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
 
         // Get and update block info
         $blockinfo = BlockUtil::getBlockInfo($bid);
+        
+        
         $blockinfo['title'] = $title;
         $blockinfo['description'] = $description;
         $blockinfo['bid'] = $bid;
@@ -435,6 +388,9 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         if (!$blockinfo) {
             $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
+        
+        // unset reflection
+        unset($blockinfo['reflection']);
 
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'update', $blockinfo)) {
@@ -482,7 +438,6 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // Block
         // Load all blocks
         $blocks = BlockUtil::loadAll();
-
         if (!$blocks) {
             return LogUtil::registerError($this->__('Error! Could not load blocks.'));
         }
@@ -599,7 +554,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             }
 
             // add the block id
-            $this->view->assign('bid', $bid);
+            $this->view->assign('block', $blockinfo);
 
             // Return the output that has been generated by this function
             return $this->view->fetch('blocks_admin_delete.tpl');
@@ -608,8 +563,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Pass to API
-        if (ModUtil::apiFunc('Blocks', 'admin', 'delete',
-                        array('bid' => $bid))) {
+        if (ModUtil::apiFunc('Blocks', 'admin', 'delete', array('bid' => $bid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Block deleted.'));
         }
@@ -661,12 +615,12 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // add the new block position
         $pid = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => $position['name'], 'description' => $position['description']));
 
-        if (!$pid) {
+        if ($pid) {
             LogUtil::registerStatus($this->__('Done! Block position created.'));
+            $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform'));
         }
 
-        // all done
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $pid), null, 'blockpositionform'));
+        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
     }
 
     /**
@@ -678,7 +632,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
     {
         // get our input
         $pid = FormUtil::getPassedValue('pid');
-
+        
         // get the block position
         $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $pid));
 
@@ -687,8 +641,10 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        // assign the item
-        $this->view->assign($position);
+        // assign the position item
+        $this->view->assign('pid', $position['pid'])
+                   ->assign('name', $position['name'])
+                   ->assign('description', $position['description']);
 
         // get all blocks in the position
         $block_placements = ModUtil::apiFunc('blocks', 'user', 'getblocksinposition', array('pid' => $pid));
@@ -696,18 +652,18 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // get all defined blocks
         $allblocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('active_status' => 0));
         foreach ($allblocks as $key => $allblock) {
+            $allblock = $allblock->toArray();
             // set the module that holds the block
             $modinfo = ModUtil::getInfo($allblock['mid']);
-            $allblocks[$key]['modname'] = $modinfo['name'];
+            $allblock['modname'] = $modinfo['name'];
+            $allblocks[$key] = $allblock;
         }
-
 
         // loop over arrays forming a list of blocks not in the block positon and obtaining
         // full details on those that are
         $blocks = array();
         foreach ($block_placements as $blockplacement) {
             $block = BlockUtil::getBlockInfo($blockplacement['bid']);
-            $block['order'] = $blockplacement['order'];
             foreach ($allblocks as $key => $allblock) {
                 if ($allblock['bid'] == $blockplacement['bid']) {
                     unset($allblocks[$key]);
@@ -718,7 +674,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         }
 
         $this->view->assign('assignedblocks', $blocks)
-                ->assign('unassignedblocks', $allblocks);
+                   ->assign('unassignedblocks', $allblocks);
 
         // Return the output that has been generated by this function
         return $this->view->fetch('blocks_admin_modifyposition.tpl');
@@ -746,9 +702,11 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
                         array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
             // all done
             LogUtil::registerStatus($this->__('Done! Block position saved.'));
+            
+            $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
-        $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
+        $this->redirect(ModUtil::url('Blocks', 'admin', 'modifyposition', array('pid' => $position['pid'])));
     }
 
     /**
@@ -782,7 +740,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         // Check for confirmation.
         if (empty($confirmation)) {
             // No confirmation yet
-            $this->view->assign('pid', $pid);
+            $this->view->assign('position', $item);
 
             return $this->view->fetch('blocks_admin_deleteposition.tpl');
         }
