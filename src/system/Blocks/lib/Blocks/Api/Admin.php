@@ -134,7 +134,6 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 $placement = new Blocks_Entity_BlockPlacement();
                 $placement->setPid($position);
                 $placement->setBid($item['bid']);
-                var_dump($placement);
                 $this->entityManager->persist($placement);
             }
             
