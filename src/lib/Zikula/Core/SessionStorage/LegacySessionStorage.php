@@ -18,7 +18,6 @@ namespace Zikula\Core\SessionStorage;
 
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\SessionHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\AbstractSessionStorage;
 use \SessionUtil;
 use \System;
@@ -31,7 +30,7 @@ use \DBUtil;
  * This Storage driver couples directly to the old SessionUtil methodology.
  * This will eventually be phased out.
  */
-class LegacySessionStorage extends AbstractSessionStorage implements SessionHandlerInterface
+class LegacySessionStorage extends AbstractSessionStorage implements \SessionHandlerInterface
 {
     private $isNew = true;
 

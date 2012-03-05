@@ -70,7 +70,7 @@ class ZLoader
             'Symfony' => ZLOADER_PATH . '/../vendor/symfony/src',
         ));
         if (!interface_exists('SessionHandlerInterface')) {
-            $autoloader->registerPrefix('SessionHandlerInterface', ZLOADER_PATH . '/../vendor/symfony/src/Symfony/Component/HttpFoundation/stubs');
+            $autoloader->registerPrefix('SessionHandlerInterface', ZLOADER_PATH . '/../vendor/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs');
         }
 
         self::$autoloaders = new UniversalClassLoader();
