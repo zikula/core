@@ -88,16 +88,17 @@
     </thead>
     <tbody>
         {foreach item=block from=$blocks}
-        {gt text='Deactivate %s' tag1=$block.title|safetext assign='lbl_deactivate_block'}
-        {gt text='Activate %s' tag1=$block.title|safetext assign='lbl_activate_block'}
-        {gt text='Edit %s' tag1=$block.title|safetext assign='lbl_edit_block'}
-        {gt text='Delete %s' tag1=$block.title|safetext assign='lbl_delete_block'}
+        {assign var='lbl_block' value=$block.title|strip_tags|safetext}
+        {gt text='Deactivate %s' tag1=$lbl_block assign='lbl_deactivate_block'}
+        {gt text='Activate %s' tag1=$lbl_block assign='lbl_activate_block'}
+        {gt text='Edit %s' tag1=$lbl_block assign='lbl_edit_block'}
+        {gt text='Delete %s' tag1=$lbl_block assign='lbl_delete_block'}
         {checkpermission component="`$module`::" instance="`$block.bkey`:`$block.title`:`$block.bid`" level="ACCESS_EDIT" assign="access_edit"}
         {checkpermission component="`$module`::" instance="`$block.bkey`:`$block.title`:`$block.bid`" level="ACCESS_DELETE" assign="access_delete"}
         <tr class="{cycle values="z-odd,z-even" name=blocks}">
             <td>{$block.bid|safetext}</td>
-            <td>{$block.title|safetext}</td>
-            <td>{$block.description|safetext}</td>
+            <td>{$block.title|safehtml}</td>
+            <td>{$block.description|safehtml}</td>
             <td>{$block.modname|safetext}</td>
             <td>{$block.bkey|safetext}</td>
             <td>{$block.positions|safetext}</td>
