@@ -28,32 +28,38 @@ class Zikula_Doctrine2_Entity_HookArea {
      * @var integer 
      */
     private $id;
+    
     /**
      * @ORM\Column(type="string", length=40)
      * @var string 
      */
     private $owner;
+    
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
      * @var integer 
      */
     private $subowner;
+    
     /**
      * @ORM\Column(type="string", length=1)
      * @var string 
      */
     private $areatype;
+    
     /**
      * @ORM\Column(type="string", length=20)
      * @var string 
      */
     private $category;
+    
     /**
      * @ORM\Column(type="string", length=100)
      * @var string 
      */    
     private $areaname;
     
+    /* getters and setters */
     public function getId()
     {
         return $this->id;
