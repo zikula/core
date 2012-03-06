@@ -32,8 +32,6 @@ class Blocks_Installer extends Zikula_AbstractInstaller
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
         } catch (Exception $e) {
-            var_dump($e);
-            exit;
             return false;
         }
 
@@ -82,7 +80,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
             case '3.8.0':
                 // update empty filter fields to an empty array
                 $entity = $this->name . '_Entity_Block';
-                $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = ''";
+                $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = '' OR p.filter = 's:0:\"\";'";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
                 
