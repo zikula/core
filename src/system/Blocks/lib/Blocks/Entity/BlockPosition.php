@@ -1,4 +1,16 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @package Zikula
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,39 +42,70 @@ class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
     private $description;
     
 
-    /* constructor */
+    /**
+     * constructor 
+     */
     public function __construct()
     {
         $this->name = '';
         $this->description = '';
     }
 
-    /* getters & setters */
+    /**
+     * get the id of the position
+     * 
+     * @return integer the position's id 
+     */
     public function getPid()
     {
         return $this->pid;
     }
 
+    /**
+     * set the id for the position
+     * 
+     * @param integer $pid the position's id
+     */
     public function setPid($pid)
     {
         $this->pid = $pid;
     }
     
+    /**
+     * get the name of the position
+     * 
+     * @return string the position's name 
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * set the name for the position
+     * 
+     * @param string $name the position's name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
     
+    /**
+     * get the description of the position
+     * 
+     * @return string the position's description 
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * set the description for the position
+     * 
+     * @param string $description the position's description
+     */
     public function setDescription($description)
     {
         $this->description = $description;
