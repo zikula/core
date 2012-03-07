@@ -36,7 +36,12 @@ class Search_EventHandlers
             $blocks = BlockUtil::getBlocksInfo();
 
             foreach ($blocks as $block) {
-                if ($block['bkey'] != 'Search') continue;
+                
+                $block = $block->toArray();
+                
+                if ($block['bkey'] != 'Search') {
+                    continue;
+                }
 
                 $content = BlockUtil::varsFromContent($block['content']);
 
