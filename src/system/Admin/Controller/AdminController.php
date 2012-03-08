@@ -573,6 +573,7 @@ class Admin_Controller_AdminController extends Zikula_AbstractController
         $notices['developer'] = $this->_developernotices();
         $this->view->assign('notices', $notices);
 
+        // this should not return a response since it's being used as an API call for some odd reason... drak
         return $this->view->fetch('admin_admin_categorymenu.tpl');
     }
 
