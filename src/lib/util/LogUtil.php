@@ -168,7 +168,7 @@ class LogUtil
         // check if we've got an error type
         if (isset($type) && is_numeric($type)) {
             $session = ServiceUtil::getService('request')->getSession();
-            $session->hasFlashes(Zikula_Session::MESSAGE_ERROR);
+            $session->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR);
         }
 
         // check if we want to redirect
