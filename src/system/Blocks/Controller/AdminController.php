@@ -386,9 +386,6 @@ class Blocks_Controller_AdminController extends Zikula_AbstractController
         if (!$blockinfo) {
             return $this->redirect(ModUtil::url('Blocks', 'admin', 'modify', array('bid' => $bid)));
         }
-        
-        // unset reflection
-        unset($blockinfo['reflection']);
 
         // Pass to API
         if (ModUtil::apiFunc('Blocks', 'admin', 'update', $blockinfo)) {
