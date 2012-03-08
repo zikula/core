@@ -66,7 +66,15 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
             }
         }
         
-        unset($args['positions']);
+        // unset positions
+        if (isset($args['positions'])) {
+            unset($args['positions']);
+        }
+
+        // unset reflection
+        if (isset($args['reflection']) && is_object($args['reflection']) && $args['reflection']->getName() == 'Blocks_Entity_Block') {
+            unset($args['reflection']);
+        }
         
         // update item
         $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
