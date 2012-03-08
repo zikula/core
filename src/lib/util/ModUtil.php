@@ -246,7 +246,7 @@ class ModUtil
             $em->persist($entity);
         }
 
-        self::$modvars[$modname][$name] = $entity->toArray();
+        self::$modvars[$modname][$name] = $value;
 
         return $em->flush();
     }
