@@ -97,7 +97,7 @@ foreach ($deps as $name => $dep) {
         $url = $dep['git'];
 
         if (!is_dir($installDir)) {
-            system(sprintf('git clone --depth 20 %s %s', escapeshellarg($url), escapeshellarg($installDir)));
+            system(sprintf('git clone --depth 40 %s %s', escapeshellarg($url), escapeshellarg($installDir)));
         }
 
         // revision
