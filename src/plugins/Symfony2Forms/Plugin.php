@@ -33,12 +33,9 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
                      'version'     => '1.0.0'
                       );
     }
-    
+
     public function initialize()
     {
-        // class loading
-        ZLoader::addAutoloader("Zikula\\Core\\Forms", __DIR__ . '/lib', '\\');
-
         // register symfony validation annorations
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/src');
 
@@ -55,50 +52,50 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
-        
+
         $this->serviceManager->attachService('symfony.formfactory', $formFactory);
-        
-        
+
+
         $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->eventManager);
         $this->serviceManager->attachService('symfony.formrenderer', $formRenderer);
     }
-    
+
     protected function setupHandlerDefinitions()
     {
         $this->addHandlerDefinition('view.init', 'initView');
         $this->addHandlerDefinition('symfony.formrenderer.lookup', 'registerRenderer');
     }
-    
-    public function initView(GenericEvent $event) 
+
+    public function initView(GenericEvent $event)
     {
         /* @var $view Zikula_View */
         $view = $event->getSubject();
-        
-        $view->register_function('sform_enctype', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_enctype', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderEnctype'));
-        
-        $view->register_function('sform_row', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_row', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderRow'));
-        
-        $view->register_function('sform_label', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_label', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderLabel'));
-        
-        $view->register_function('sform_errors', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_errors', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderErrors'));
-        
-        $view->register_function('sform_widget', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_widget', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderWidget'));
-        
-        $view->register_function('sform_rest', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_rest', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderRest'));
-        
-        $view->register_function('sform_all_errors', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_function('sform_all_errors', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderGlobalErrors'));
-        
-        $view->register_block('sform', array($this->serviceManager->getService('symfony.formrenderer'), 
+
+        $view->register_block('sform', array($this->serviceManager->getService('symfony.formrenderer'),
                                                     'renderFormTag'));
     }
-    
+
     public function registerRenderer(Zikula_Event $event)
     {
         $event->getSubject()->append(new Renderer\FieldRow());
