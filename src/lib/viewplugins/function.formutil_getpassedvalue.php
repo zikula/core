@@ -51,7 +51,13 @@ function smarty_function_formutil_getpassedvalue($params, Zikula_View $view)
         $key = isset($params['name']) ? $params['name'] : null;
     }
 
-    $val = FormUtil::getPassedValue($key, $default, $source);
+    if (isset($source)) {
+        $method = "get" . ucfirst($source);
+        $val = $view->getRequest()->$method()->get($key, $default);
+    } else {
+        // source not set: pull value from first GET then POST
+        $val = $view->getRequest()->getGet()->get($key, $view->getRequest()->getPost()->get($key, $default));
+    }
 
     if ($noprocess) {
         $val = $val;
