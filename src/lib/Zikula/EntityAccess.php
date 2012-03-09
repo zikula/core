@@ -64,11 +64,12 @@ class Zikula_EntityAccess implements ArrayAccess
         while($r !== false) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
-            if ($property->name == 'reflection') {
-                continue;
-            }
-            
+                        
             foreach ($properties as $property) {
+                if ($property->name == 'reflection') {
+                    continue;
+                }
+                
                 $method = "get" . ucfirst($property->name);
                 $array[$property->name] = $this->$method();
             }
