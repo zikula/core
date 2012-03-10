@@ -46,7 +46,7 @@ ul.errorlist {
 ul.errorlist li {
     padding: 0;
     margin: 0;
-    list-style-image: url(../../../images/icons/extrasmall/error.png);
+    list-style-image: url(../../../../images/icons/extrasmall/error.png);
 }
 
 .activationbutton {
