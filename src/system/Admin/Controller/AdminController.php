@@ -287,7 +287,7 @@ class Admin_Controller_AdminController extends Zikula_AbstractController
 
         // Get Details on the selected category
         if ($acid > 0) {
-            $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+            $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $acid));
         } else {
             $category = null;
         }
