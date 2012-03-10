@@ -22,7 +22,7 @@
 }
 
 #liveusersearch .autocomplete_user ul li {
-    background: transparent url(../../../images/icons/extrasmall/user.png) no-repeat scroll 0 50%;
+    background: transparent url(../../../../images/icons/extrasmall/user.png) no-repeat scroll 0 50%;
     cursor: pointer;
     margin: 0;
     padding: 3px 0 3px 25px;
@@ -74,35 +74,35 @@ div.z-accountlink  img {
 }
 
 .user-icon-adduser {
-    background: transparent url("../../../images/icons/extrasmall/add_user.png") no-repeat scroll center left;
+    background: transparent url("../../../../images/icons/extrasmall/add_user.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 .user-icon-lostusername {
-    background: transparent url("../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
+    background: transparent url("../../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 .user-icon-password {
-    background: transparent url("../../../images/icons/extrasmall/password.png") no-repeat scroll center left;
+    background: transparent url("../../../../images/icons/extrasmall/password.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
 
 .user-icon-greenled {
-    background: url("../../../images/icons/extrasmall/greenled.png") no-repeat scroll 0 50% transparent;
+    background: url("../../../../images/icons/extrasmall/greenled.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
 .user-icon-redled {
-    background: url("../../../images/icons/extrasmall/redled.png") no-repeat scroll 0 50% transparent;
+    background: url("../../../../images/icons/extrasmall/redled.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
 .user-icon-mail_delete {
-    background: url("../../../images/icons/extrasmall/mail_delete.png") no-repeat scroll 0 50% transparent;
+    background: url("../../../../images/icons/extrasmall/mail_delete.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
 .user-icon-status_unknown {
-    background: url("../../../images/icons/extrasmall/flag.png") no-repeat scroll 0 50% transparent;
+    background: url("../../../../images/icons/extrasmall/flag.png") no-repeat scroll 0 50% transparent;
     padding: 0 0 0 20px;
 }
 
@@ -236,27 +236,27 @@ div.authentication_select_method_smallbutton .authentication_select_method_selec
 }
 
 div.authentication_select_method_bigbutton #authentication_select_method_submit_users_uname {
-    background-image: url("../../../images/icons/medium/user.png");
+    background-image: url("../../../../images/icons/medium/user.png");
 }
 
 div.authentication_select_method_smallbutton #authentication_select_method_submit_users_uname {
-    background-image: url("../../../images/icons/small/user.png");
+    background-image: url("../../../../images/icons/small/user.png");
 }
 
 div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_users_uname {
-    background-image: url("../../../images/icons/extrasmall/user.png");
+    background-image: url("../../../../images/icons/extrasmall/user.png");
 }
 
 div.authentication_select_method_bigbutton #authentication_select_method_submit_users_email {
-    background-image: url("../../../images/icons/medium/mail_generic.png");
+    background-image: url("../../../../images/icons/medium/mail_generic.png");
 }
 
 div.authentication_select_method_smallbutton #authentication_select_method_submit_users_email {
-    background-image: url("../../../images/icons/small/mail_generic.png");
+    background-image: url("../../../../images/icons/small/mail_generic.png");
 }
 
 div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_users_email {
-    background-image: url("../../../images/icons/extrasmall/mail_generic.png");
+    background-image: url("../../../../images/icons/extrasmall/mail_generic.png");
 }
 
 table.z-datatable td.users_activated {
