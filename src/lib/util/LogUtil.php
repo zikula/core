@@ -97,9 +97,9 @@ class LogUtil
         $session = ServiceUtil::getManager()->getService('session');
 
         if ($type === Zikula_AbstractErrorHandler::INFO) {
-            $session->getFlashBag()->add(DataUtil::formatForDisplayHTML($message), Zikula_Session::MESSAGE_STATUS);
+            $session->getFlashBag()->add(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
-            $session->getFlashBag()->add(DataUtil::formatForDisplayHTML($message), Zikula_Session::MESSAGE_ERROR);
+            $session->getFlashBag()->add(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
         } else {
             throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
         }
