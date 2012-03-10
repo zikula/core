@@ -23,28 +23,28 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @var Zikula_Request_Collection
      */
-    protected $get;
+    public $query;
 
     /**
      * Container for POST.
      *
      * @var Zikula_Request_Collection
      */
-    protected $post;
+    public $request;
 
     /**
      * Container for FILES.
      *
      * @var Zikula_Request_Collection
      */
-    protected $files;
+    public $files;
 
     /**
      * Container for COOKIES.
-     * 
+     *
      * @var Zikula_Request_Collection
      */
-    protected $cookie;
+    public $cookie;
 
     /**
      * Session object.
@@ -58,7 +58,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      *
      * @var Zikula_Request_Collection
      */
-    protected $server;
+    public $server;
 
     /**
      * Container for ENV.
@@ -73,7 +73,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      * @var Zikula_Request_Collection
      */
     protected $args;
-    
+
     /**
      * Initialize request object.
      *
@@ -84,9 +84,9 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     // needs to be public for temporary workaround for short urls in SystemListeners::setupRequest
     public /*protected */function initialize(array $options = array())
     {
-        $this->get = new Zikula_Request_Collection(isset($options['get']) ? $options['get'] : $_GET);
-        $this->post = new Zikula_Request_Collection(isset($options['post']) ? $options['post'] : $_POST);
-        $this->request = new Zikula_Request_Collection(isset($options['request']) ? $options['request'] : $_POST);
+        $this->query = new Zikula_Request_Collection(isset($options['get']) ? $options['get'] : $_GET);
+        $this->request = new Zikula_Request_Collection(isset($options['post']) ? $options['post'] : $_POST);
+        //$this->request = new Zikula_Request_Collection(isset($options['request']) ? $options['request'] : $_POST);
         $this->files = new Zikula_Request_Collection(isset($options['files']) ? $options['files'] : $_FILES);
         $this->cookie = new Zikula_Request_Collection(isset($options['cookie']) ? $options['cookie'] : $_COOKIE);
         $this->server = new Zikula_Request_Collection(isset($options['server']) ? $options['server'] : $_SERVER);
@@ -95,7 +95,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 
     /**
      * Return the request method.
-     * 
+     *
      * @return string
      */
     public function getMethod()
@@ -110,7 +110,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getGet()
     {
-        return $this->get;
+        LogUtil::log('Zikula_Request_Http->getGet() is deprecated, please use $request->query', E_USER_DEPRECATED);
+        return $this->query;
     }
 
     /**
@@ -120,7 +121,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getPost()
     {
-        return $this->post;
+        LogUtil::log('Zikula_Request_Http->getPost() is deprecated, please use $request->request', E_USER_DEPRECATED);
+        return $this->request;
     }
 
     /**
@@ -140,6 +142,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getServer()
     {
+        LogUtil::log('Zikula_Request_Http->getServer() is deprecated, please use $request->server', E_USER_DEPRECATED);
         return $this->server;
     }
 
@@ -170,6 +173,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function getFiles()
     {
+        LogUtil::log('Zikula_Request_Http->getFiles() is deprecated, please use $request->files', E_USER_DEPRECATED);
         return $this->files;
     }
 
