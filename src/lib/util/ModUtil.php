@@ -248,7 +248,9 @@ class ModUtil
 
         self::$modvars[$modname][$name] = $value;
 
-        return $em->flush();
+        $em->flush();
+        
+        return true;
     }
 
     /**
