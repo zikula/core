@@ -13,7 +13,7 @@ ol#permissionlist .adminpermission {
     padding-left: 30px !important;
 }
 ol#permissionlist .permlocked {
-    background-image:url(../../../images/icons/extrasmall/locked.png);
+    background-image:url(../../../../images/icons/extrasmall/locked.png);
     background-position:5px 50%;
     background-repeat:no-repeat;
 }
