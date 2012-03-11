@@ -110,7 +110,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
         $recurse        = isset($params['recurse'])     ? $params['recurse']     : true;
         $relative       = isset($params['relative'])    ? $params['relative']    : true;
         $sortField      = isset($params['sortField'])   ? $params['sortField']   : 'sort_value';
-        $field          = isset($params['field'])       ? $params['field']       : 'id';
+        $catField       = isset($params['catField'])    ? $params['catField']    : 'id';
 
         $allCats = array();
 
@@ -156,7 +156,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             $catName = html_entity_decode((isset($cat['display_name'][$lang]) ? $cat['display_name'][$lang] : $cat['name']));
-            $list->addItem($indent . ' ' . $catName, isset($cat[$field]) ? $cat[$field] : $cat['id']);
+            $list->addItem($indent . ' ' . $catName, isset($cat[$catField]) ? $cat[$catField] : $cat['id']);
         }
     }
 
@@ -231,23 +231,23 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                 $data[$this->group]['Categories'][$this->dataField] = array('category_id' => $this->getSelectedValue(),
                                                                             'reg_property' => $this->dataField);
             }
-        } else if($this->doctrine2) {
+        } else if ($this->doctrine2) {
             $entity = $view->get_template_vars($this->group);
-            
+
             // load category from db
             $em = ServiceUtil::getService('doctrine.entitymanager');
             $category = $em->find('Zikula_Doctrine2_Entity_Category', $this->getSelectedValue());
-            
+
             $collection = $em->getClassMetadata(get_class($entity))
                              ->getFieldValue($entity, $this->dataField);
-            
-            if(!$collection) {
+
+            if (!$collection) {
                 $collection = new \Doctrine\Common\Collections\ArrayCollection();
                 $em->getClassMetadata(get_class($entity))
                    ->setFieldValue($entity, $this->dataField, $collection);
             }
 
-            if($collection->containsKey($this->registryId)) {
+            if ($collection->containsKey($this->registryId)) {
                 $collection->get($this->registryId)->setCategory($category);
             } else {
                 $class = $em->getClassMetadata(get_class($entity))->getAssociationTargetClass($this->dataField);
@@ -299,6 +299,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             $this->setSelectedValue($value);
+
         } else if ($this->enableDoctrine && $this->dataBased) {
             $items = null;
             $value = null;
@@ -327,12 +328,13 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             }
 
             $this->setSelectedValue($value);
-        } else if($this->doctrine2) {
-            if(isset($values[$this->group])) {
+
+        } else if ($this->doctrine2) {
+            if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
-                if(isset($entity[$this->dataField])) {
+                if (isset($entity[$this->dataField])) {
                     $collection = $entity[$this->dataField];
-                    if(isset($collection[$this->registryId])) {
+                    if (isset($collection[$this->registryId])) {
                         $value = $collection[$this->registryId]->getCategory()->getId();
                         $this->setSelectedValue($value);
                     }
