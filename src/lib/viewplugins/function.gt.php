@@ -46,9 +46,6 @@
  */
 function smarty_function_gt($params, Zikula_View $view)
 {
-    // the check order here is important because:
-    // if we are calling from a theme both $view->themeDomain and $view->renderDomain are set.
-    // if the call was from a template only $view->renderDomain is set.
     if (isset($params['domain'])) {
         $domain = (strtolower($params['domain']) == 'zikula' ? null : $params['domain']);
     } else {
