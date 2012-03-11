@@ -302,7 +302,7 @@ class Zikula_View_Theme extends Zikula_View
         ob_end_clean();
 
         // add the module wrapper
-        if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper']) {
+        if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper'] && $this->toplevelmodule) {
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
