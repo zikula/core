@@ -41,7 +41,6 @@
  */
 function smarty_function_modfunc($params, Zikula_View $view)
 {
-    //889$saveDomain = $view->renderDomain;
     $assign  = isset($params['assign'])                  ? $params['assign']  : null;
     $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'main';
     $modname = isset($params['modname'])                 ? $params['modname'] : null;

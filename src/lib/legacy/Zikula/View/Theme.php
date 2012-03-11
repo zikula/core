@@ -297,7 +297,7 @@ class Zikula_View_Theme extends Zikula_View
     public function themefooter($maincontent)
     {
         // add the module wrapper
-        if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper']) {
+        if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper'] && $this->toplevelmodule) {
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 

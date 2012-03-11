@@ -102,9 +102,9 @@ class Zikula_View_Plugin extends Zikula_View
 
         // for {gt} template plugin to detect gettext domain
         if ($view->module[$moduleName]['type'] == ModUtil::TYPE_MODULE || $view->module[$moduleName]['type'] == ModUtil::TYPE_SYSTEM) {
-            $view->renderDomain = ZLanguage::getModulePluginDomain($view->module[$moduleName]['name'], $view->pluginName);
+            $view->domain = ZLanguage::getModulePluginDomain($view->module[$moduleName]['name'], $view->getPluginName());
         } elseif ($view->module[$moduleName]['type'] == ModUtil::TYPE_CORE) {
-            $view->renderDomain = ZLanguage::getSystemPluginDomain($view->module[$moduleName]['name'], $view->pluginName);
+            $view->domain = ZLanguage::getSystemPluginDomain($view->getPluginName());
         }
 
         return $view;
