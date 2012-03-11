@@ -130,17 +130,9 @@ class ServiceManagerAwareEventManager extends EventManager implements EventManag
 
     public function dispatch($name, SymfonyEvent $event = null)
     {
-        if (!$event) {
-            $event = new Event();
-        }
+        $this->addServiceListeners($name);
 
-        $event->setName($name);
-
-        $this->addServiceListeners($event->getName());
-
-        parent::dispatch($event->getName(), $event);
-
-        return $event;
+        return parent::dispatch($name, $event);
     }
 
     /**
