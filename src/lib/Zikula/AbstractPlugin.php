@@ -215,7 +215,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
             $this->moduleName = 'zikula';
             $this->pluginName = $p[1];
             $this->pluginType = self::TYPE_SYSTEM;
-            $this->domain = ZLanguage::getSystemPluginDomain($this->moduleName, $this->pluginName);
+            $this->domain = ZLanguage::getSystemPluginDomain($this->pluginName);
             ZLanguage::bindSystemPluginDomain($this->pluginName);
         } else {
             throw new LogicException(sprintf('This class %s does not appear to be named correctly.  System plugins should be named {SystemPlugin}_{Name}_Plugin, module plugins should be named {ModulePlugin}_{ModuleName}_{PluginName}_Plugin.', $this->className));
