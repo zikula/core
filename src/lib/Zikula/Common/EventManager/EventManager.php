@@ -16,7 +16,6 @@
 namespace Zikula\Common\EventManager;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
 
 /**
  * EventManager.
@@ -68,19 +67,6 @@ class EventManager extends EventDispatcher implements EventManagerInterface
     public function notify(Event $event)
     {
         return $this->dispatch($event->getName(), $event);
-    }
-
-    public function dispatch($name, SymfonyEvent $event = null)
-    {
-        if (!$event) {
-            $event = new Event();
-        }
-
-        $event->setName($name);
-
-        parent::dispatch($event->getName(), $event);
-
-        return $event;
     }
 
     /**
