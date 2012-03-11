@@ -18,6 +18,8 @@ use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
 use Zikula\Common\I18n\TranslatableInterface;
 use Zikula\Framework\Controller\AbstractPlugin as AbstractControllerPlugin;
+use \ZLanguage;
+use \PluginUtil;
 
 /**
  * AbstractPlugin abstract class.
@@ -213,15 +215,15 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
             $this->moduleName = $p[1];
             $this->pluginName = $p[2];
             $this->pluginType = self::TYPE_MODULE;
-            $this->domain = \ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
-            \ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
+            $this->domain = ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
+            ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
         } elseif (strpos($this->serviceId, 'systemplugin') === 0) {
             // SystemPlugin_{PluginName}_Plugin
             // $p[1] = ModuleName
             $this->moduleName = 'zikula';
             $this->pluginName = $p[1];
             $this->pluginType = self::TYPE_SYSTEM;
-            $this->domain = \ZLanguage::getSystemPluginDomain($this->pluginName);
+            $this->domain = ZLanguage::getSystemPluginDomain($this->pluginName);
             ZLanguage::bindSystemPluginDomain($this->pluginName);
         } else {
             throw new \LogicException(sprintf('This class %s does not appear to be named correctly.  System plugins should be named {SystemPlugin}_{Name}_Plugin, module plugins should be named {ModulePlugin}_{ModuleName}_{PluginName}_Plugin.', $this->className));
@@ -483,7 +485,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
         }
 
         $plugin = \PluginUtil::getState($this->serviceId, \PluginUtil::getDefaultState());
-        return ($plugin['state'] === \PluginUtil::ENABLED) ? true : false;
+        return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
     }
 
     /**
@@ -497,8 +499,8 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
             return true;
         }
 
-        $plugin = \PluginUtil::getState($this->serviceId, \PluginUtil::getDefaultState());
-        return ($plugin['state'] === \PluginUtil::NOTINSTALLED) ? false : true;
+        $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
+        return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }
 
     /**
