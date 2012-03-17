@@ -18,7 +18,8 @@ namespace Zikula\Core\SessionStorage;
 
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\AbstractSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
 use \SessionUtil;
 use \System;
 use \DataUtil;
@@ -30,7 +31,7 @@ use \DBUtil;
  * This Storage driver couples directly to the old SessionUtil methodology.
  * This will eventually be phased out.
  */
-class LegacySessionStorage extends AbstractSessionStorage implements \SessionHandlerInterface
+class LegacySessionStorage extends NativeSessionStorage implements \SessionHandlerInterface
 {
     private $isNew = true;
 
@@ -81,7 +82,19 @@ class LegacySessionStorage extends AbstractSessionStorage implements \SessionHan
             'cookie_path' => $path,
             ), $options);
 
-        parent::__construct($options);
+        $this->setOptions($options);
+
+        session_set_save_handler(
+            array($this, 'open'),
+            array($this, 'close'),
+            array($this, 'read'),
+            array($this, 'write'),
+            array($this, 'destroy'),
+            array($this, 'gc')
+        );
+
+        register_shutdown_function('session_write_close');
+        $this->saveHandler = new SessionHandlerProxy($this);
     }
 
     /**
