@@ -75,7 +75,7 @@ foreach ($_GET as $domain => $meta) {
             break;
     }
 
-    $override = "config/$lang/LC_MESSAGES/{$domain}.mo";
+    $override = "config/locale/$lang/LC_MESSAGES/{$domain}.mo";
     $path = "{$type}locale";
     if (file_exists($override)) {
         $path = 'config/locale';
