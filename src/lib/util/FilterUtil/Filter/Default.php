@@ -273,11 +273,11 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
                 break;
 
             case 'null':
-                $where = "$column = '' OR $column IS NULL";
+                $where = "($column = '' OR $column IS NULL)";
                 break;
 
             case 'notnull':
-                $where = "$column <> '' OR $column IS NOT NULL";
+                $where = "($column <> '' OR $column IS NOT NULL)";
                 break;
         }
 
