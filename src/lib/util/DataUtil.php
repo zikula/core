@@ -471,7 +471,7 @@ class DataUtil
         $permasearch = explode(',', System::getVar('permasearch'));
         $permareplace = explode(',', System::getVar('permareplace'));
         foreach ($permasearch as $key => $value) {
-            $var = mb_ereg_replace("[$value]", $permareplace[$key], $var);
+            $var = mb_ereg_replace($value, $permareplace[$key], $var);
         }
 
         $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var));
@@ -479,7 +479,29 @@ class DataUtil
         // final clean
         $permalinksseparator = System::getVar('shorturlsseparator');
         $var = mb_ereg_replace("[^a-z0-9_{$permalinksseparator}]", '', $var, "imsr");
+        $var = preg_replace('/'.$permalinksseparator.'+/', $permalinksseparator, $var); // remove replicated separator
         $var = trim($var, $permalinksseparator);
+
+        return $var;
+    }
+
+	/**
+     * Transliterate a variable.
+     *
+     * @param string $var The variable to format.
+     *
+     * @return string The formatted variable.
+     */
+    public static function formatTransliterate($var)
+    {
+        $strIsUpper = (strcmp($var, mb_strtoupper($var)) == 0);
+        // replace all chars $permasearch with the one in $permareplace
+        $permasearch = explode(',', System::getVar('permasearch'));
+        $permareplace = explode(',', System::getVar('permareplace'));
+        foreach ($permasearch as $key => $value) {
+            $var = mb_ereg_replace($value, $permareplace[$key], $var);
+        }
+        if ($strIsUpper) $var = mb_strtoupper($var);
 
         return $var;
     }
