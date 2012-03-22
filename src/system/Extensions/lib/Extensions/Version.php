@@ -21,7 +21,6 @@ class Extensions_Version extends Zikula_AbstractVersion
         // @ is only relevent for this module, please do not replicate elsewhere, refs #980- drak
         @$meta['displayname'] = $this->__('Extensions');
         @$meta['description'] = $this->__('Manage your modules and plugins.');
-        //! module name that appears in URL
         $meta['url']  = $this->__('extensions');
         $meta['version'] = '3.7.10';
         $meta['securityschema'] = array('Extensions::' => '::');
