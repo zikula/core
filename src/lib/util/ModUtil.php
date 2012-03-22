@@ -104,19 +104,27 @@ class ModUtil
         if (!$force && System::isInstalling()) {
             return;
         }
+        
+        // the following is to be removed in 1.4
+        ZLoader::addAutoloader('Extensions', 'system/Extensions/lib'); // manually add Extensions module to autoloader
+        include_once __DIR__ . '/../../plugins/Doctrine/Plugin.php';
+        PluginUtil::loadPlugin('SystemPlugin_Doctrine_Plugin'); // manually load Doctrine plugin
+    
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
 
-        // This loads all module variables into the modvars static class variable.
-        $modvars = DBUtil::selectObjectArray('module_vars');
-        foreach ($modvars as $var) {
+        // loads all module variables into the modvars static class variable.
+        $variables = $entityManager->getRepository('Extensions_Entity_ExtensionVar')->findAll();
+
+        foreach ($variables as $var) {
             if (!array_key_exists($var['modname'], self::$modvars)) {
                 self::$modvars[$var['modname']] = array();
             }
             if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
                 self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
-            } elseif ($var['value'] == '0' || $var['value'] == '1') {
-                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             } else {
-                self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
+                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             }
          }
 
@@ -124,7 +132,7 @@ class ModUtil
          // do not define any module variables to prevent unnecessary SQL queries to
          // the module_vars table.
          $knownModules = self::getAllMods();
-         foreach ($knownModules as $key => $mod) {
+         foreach ($knownModules as $mod) {
              if (!array_key_exists($mod['name'], self::$modvars)) {
                  self::$modvars[$mod['name']] = array();
              }
@@ -188,10 +196,20 @@ class ModUtil
             $modname = self::getName();
         }
 
-        // if we haven't got vars for this module (or pseudo-module) yet then lets get them
+        // if we haven't got vars for this module (or pseudo-module) yet, then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
-            // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
+            // A query out to the database should only be needed if the system is upgrading. 
+            // Use the isUpgrading flag to determine this.
             if (System::isUpgrading()) {
+                $sm = ServiceUtil::getManager();
+                if (!$sm->hasService('doctrine.entitymanager')) {
+                    die('ModUtil::getVar - Doctrine not available');
+                }
+                $entityManager = $sm->getService('doctrine.entitymanager');
+                var_dump('Hooray...We have Doctrine, fetch the vars');
+                exit;
+                
+                /*
                 $tables = DBUtil::getTables();
                 $col = $tables['module_vars_column'];
                 $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
@@ -214,7 +232,7 @@ class ModUtil
                         }
                     }
                 }
-                // TODO - There should probably be an exception thrown here if $results === false
+                */
             } else {
                 // Prevent a re-query for the same module in the future, where the module does not define any module variables.
                 self::$modvars[$modname] = array();
@@ -258,27 +276,34 @@ class ModUtil
         if (!System::varValidate($modname, 'mod') || !isset($name)) {
             return false;
         }
+        
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
 
-        $obj = array();
-        $obj['value'] = serialize($value);
-
-        if (self::hasVar($modname, $name)) {
-            $tables = DBUtil::getTables();
-            $cols = $tables['module_vars_column'];
-            $where = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
-                         AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
-            $res = DBUtil::updateObject($obj, 'module_vars', $where);
-        } else {
-            $obj['name'] = $name;
-            $obj['modname'] = $modname;
-            $res = DBUtil::insertObject($obj, 'module_vars');
+        // entity for Doctrine
+        $entity = 'Extensions_Entity_ExtensionVar';
+        
+        // try to get var
+        // create a new one if var doesn't exist
+        $var = $entityManager->getRepository($entity)->findOneBy(array('modname' => $modname, 'name' => $name));
+        if (!$var) {
+            $var = new $entity;
+            $var['modname'] = $modname;
+            $var['name'] = $name;
         }
-
-        if ($res) {
-            self::$modvars[$modname][$name] = $value;
-        }
-
-        return (bool)$res;
+        
+        // set new var
+        $var['value'] = $value;
+        
+        // write to db
+        $entityManager->persist($var);
+        $entityManager->flush();
+        
+        // and store the new value to our cached result
+        self::$modvars[$modname][$name] = $value;
+        
+        return true;
     }
 
     /**
@@ -337,21 +362,27 @@ class ModUtil
                 self::$modvars[$modname] = $array;
             }
         }
-
-        $tables = DBUtil::getTables();
-        $cols = $tables['module_vars_column'];
-
-        // check if we're deleting one module var or all module vars
-        $specificvar = '';
-        $name = DataUtil::formatForStore($name);
-        $modname = DataUtil::formatForStore($modname);
-        if (!empty($name)) {
-            $specificvar = " AND $cols[name] = '$name'";
+        
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        
+        // our entity
+        $entity = 'Extensions_Entity_ExtensionVar';
+        
+        // if $name is not provided, delete all variables of this module
+        // else just delete this specific variable
+        if (empty($name)) {
+            $dql = "DELETE FROM $entity v WHERE v.modname = '{$modname}'";
+        } else {
+            $dql = "DELETE FROM $entity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
         }
-
-        $where = "WHERE $cols[modname] = '$modname' $specificvar";
-        $res = (bool)DBUtil::deleteWhere('module_vars', $where);
-        return ($val ? $val : $res);
+        
+        $query = $entityManager->createQuery($dql);
+        
+        $result = $query->getResult();
+        
+        return (boolean)$result;
     }
 
     /**
@@ -707,6 +738,7 @@ class ModUtil
         if (strtolower(substr($type, -3)) == 'api') {
             return false;
         }
+
         return self::loadGeneric($modname, $type, $force);
     }
 
@@ -961,7 +993,6 @@ class ModUtil
         $serviceId = strtolower("module.$className");
         $sm = ServiceUtil::getManager();
 
-        $callable = false;
         if ($sm->hasService($serviceId)) {
             $object = $sm->getService($serviceId);
         } else {
@@ -1518,11 +1549,23 @@ class ModUtil
             LogUtil::log(__('OO module types may not make use of this legacy API'), Zikula_AbstractErrorHandler::ERR);
             return false;
         }
-
+        
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        
         // Insert hook
-        $obj = array('object' => $hookobject, 'action' => $hookaction, 'tarea' => $hookarea, 'tmodule' => $hookmodule, 'ttype' => $hooktype, 'tfunc' => $hookfunc);
-
-        return (bool)DBUtil::insertObject($obj, 'hooks', 'id');
+        $hook = new Extensions_Entity_Hook();
+        $hook['object'] = $hookobject;
+        $hook['action'] = $hookaction;
+        $hook['tarea'] = $hookarea;
+        $hook['tmodule'] = $hookmodule;
+        $hook['ttype'] = $hooktype;
+        $hook['tfunc'] = $hookfunc;
+        
+        $entityManager->persist($hook);
+        $entityManager->flush();
+        
+        return true;
     }
 
     /**
@@ -1548,20 +1591,30 @@ class ModUtil
         if (!System::varValidate($hookmodule, 'mod')) {
             return false;
         }
+        
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        
+        // our entity
+        $entity = 'Extensions_Entity_Hook';
+        
+        // dql to delete hook
+        $dql = "
+        DELETE FROM $entity h 
+        WHERE h.object = '{$hookobject}' 
+          AND h.action = '{$hookaction}'
+          AND h.tarea = '{$hookarea}'
+          AND h.tmodule = '{$hookmodule}'
+          AND h.ttype = '{$hooktype}'
+          AND h.tfunc = '{$hookfunc}'";
+        
+        
+        $query = $entityManager->createQuery($dql);
+        
+        $result = $query->getResult();
 
-        // Get database info
-        $tables = DBUtil::getTables();
-        $hookscolumn = $tables['hooks_column'];
-
-        // Remove hook
-        $where = "WHERE $hookscolumn[object] = '" . DataUtil::formatForStore($hookobject) . "'
-                    AND $hookscolumn[action] = '" . DataUtil::formatForStore($hookaction) . "'
-                    AND $hookscolumn[tarea] = '" . DataUtil::formatForStore($hookarea) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($hookmodule) . "'
-                    AND $hookscolumn[ttype] = '" . DataUtil::formatForStore($hooktype) . "'
-                    AND $hookscolumn[tfunc] = '" . DataUtil::formatForStore($hookfunc) . "'";
-
-        return (bool)DBUtil::deleteWhere('hooks', $where);
+        return (bool)$result;
     }
 
     /**
@@ -1604,12 +1657,11 @@ class ModUtil
 
         $lModname = strtolower($modname);
         if (!isset(self::$cache['modulehooks'][$lModname])) {
-            // Get database info
-            $tables = DBUtil::getTables();
-            $cols = $tables['hooks_column'];
-            $where = "WHERE $cols[smodule] = '" . DataUtil::formatForStore($modname) . "'";
-            $orderby = "$cols[sequence] ASC";
-            $hooks = DBUtil::selectObjectArray('hooks', $where, $orderby);
+            // get entityManager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->getService('doctrine.entitymanager');
+            
+            $hooks = $entityManager->getRepository('Extensions_Entity_Hook')->findBy(array('smodule' => $modname), array('sequence' => 'ASC'));
             self::$cache['modulehooks'][$lModname] = $hooks;
         }
 
@@ -1679,17 +1731,24 @@ class ModUtil
         if (!System::varValidate($tmodule, 'mod') || !System::varValidate($smodule, 'mod')) {
             return false;
         }
+        
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        $entity = 'Extensions_Entity_Hook';
+        
+        // dql to count hooks
+        $dql = "
+        SELECT COUNT(h.id) 
+        FROM $entity h 
+        WHERE h.smodule = '{$smodule}' 
+          AND h.tmodule = '{$tmodule}'";
+        
+        $query = $entityManager->createQuery($dql);
+        
+        $count = (int)$query->getSingleScalarResult();
 
-        // Get database info
-        $tables = DBUtil::getTables();
-        $hookscolumn = $tables['hooks_column'];
-
-        // Get applicable hooks
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($smodule) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($tmodule) . "'";
-
-        self::$cache['ishooked'][$tmodule][$smodule] = $numitems = DBUtil::selectObjectCount('hooks', $where);
-        self::$cache['ishooked'][$tmodule][$smodule] = ($numitems > 0);
+        self::$cache['ishooked'][$tmodule][$smodule] = ($count > 0);
 
         return self::$cache['ishooked'][$tmodule][$smodule];
     }
@@ -1749,18 +1808,31 @@ class ModUtil
         }
 
         if (!self::$cache['modstable'] || System::isInstalling()) {
-            self::$cache['modstable'] = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
-            foreach (self::$cache['modstable'] as $mid => $module) {
+            // get entityManager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->getService('doctrine.entitymanager');
+            
+            // get all modules
+            $modules = $entityManager->getRepository('Extensions_Entity_Extension')->findAll();
+            
+            foreach ($modules as $module) {
+                $module = $module->toArray();
                 if (!isset($module['url']) || empty($module['url'])) {
-                    self::$cache['modstable'][$mid]['url'] = $module['displayname'];
+                    $module['url'] = strtolower($module['displayname']);
                 }
-                self::$cache['modstable'][$mid]['capabilities'] = unserialize($module['capabilities']);
-                self::$cache['modstable'][$mid]['securityschema'] = unserialize($module['securityschema']);
+                self::$cache['modstable'][$module['id']] = $module;
             }
+            
+            // add Core module (hack).
+            self::$cache['modstable'][0] = array(
+                'id' => 0, 
+                'name' => 'zikula', 
+                'type' => self::TYPE_CORE, 
+                'directory' => '', 
+                'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 
+                'version' => Zikula_Core::VERSION_NUM, 
+                'state' => self::STATE_ACTIVE);
         }
-
-        // add Core module (hack).
-        self::$cache['modstable'][0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 'version' => Zikula_Core::VERSION_NUM, 'state' => self::STATE_ACTIVE);
 
         return self::$cache['modstable'];
     }
@@ -1771,14 +1843,20 @@ class ModUtil
      * Only modules in the module table are returned
      * which means that new/unscanned modules will not be returned.
      *
-     * @param string $where The where clause to use for the select.
+     * @param array  $where The where parameters to use for the select.
      * @param string $sort  The sort to use.
      *
      * @return array The resulting module object array.
      */
-    public static function getModules($where='', $sort='displayname')
+    public static function getModules($where=array(), $sort='displayname')
     {
-        return DBUtil::selectObjectArray('modules', $where, $sort);
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        
+        // get all modules
+        $modules = $entityManager->getRepository('Extensions_Entity_Extension')->findBy($where, array($sort => 'ASC'));
+        return $modules;
     }
 
     /**
@@ -1794,12 +1872,10 @@ class ModUtil
      */
     public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
-        $tables = DBUtil::getTables();
-        $cols = $tables['modules_column'];
-
-        $where = "$cols[state] = $state";
-
-        return DBUtil::selectObjectArray('modules', $where, $sort);
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        $modules = $entityManager->getRepository('Extensions_Entity_Extension')->findBy(array('state' => $state), array($sort => 'ASC'));
+        return $modules;
     }
 
     /**
