@@ -84,10 +84,11 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
             $description = (isset($modversion['description']) ? $modversion['description'] : '');
 
             $obj = array(
-                    'id' => $id,
-                    'displayname' => $displayname,
-                    'url' => $url,
-                    'description' => $description);
+                'id' => $id,
+                'displayname' => $displayname,
+                'url' => $url,
+                'description' => $description
+            );
         }
 
         $this->view->assign($obj);
@@ -115,10 +116,10 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
 
         // Pass to API
         if (ModUtil::apiFunc('Extensions', 'admin', 'update', array(
-        'id' => $id,
-        'displayname' => $newdisplayname,
-        'description' => $newdescription,
-        'url' => $newurl))) {
+                'id' => $id,
+                'displayname' => $newdisplayname,
+                'description' => $newdescription,
+                'url' => $newurl))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Saved module information.'));
         } else {
@@ -199,6 +200,8 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         $moduleinfo = array();
         if (!empty($mods)) {
             foreach ($mods as $mod) {
+                $mod = $mod->toArray();
+
                 // Add applicable actions
                 $actions = array();
 
@@ -458,6 +461,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
             $modulenotfound = false;
             if (!$confirmation && $dependencies) {
                 foreach ($dependencies as $key => $dependency) {
+                    $dependencies[$key] = $dependency->toArray();
                     $dependencies[$key]['insystem'] = true;
                     $modinfo = ModUtil::getInfoFromName($dependency['modname']);
                     $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
@@ -619,9 +623,8 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         }
 
         // Update state
-        if (ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                             array('id' => $id,
-                                   'state' => ModUtil::STATE_ACTIVE))) {
+        $setstate = ModUtil::apiFunc('Extensions', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_ACTIVE));
+        if ($setstate) {
             // Success
             LogUtil::registerStatus($this->__('Done! Activated module.'));
         }
@@ -726,6 +729,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         $startnum = (int) $this->request->query->get('startnum', null);
         $letter = $this->request->query->get('letter', null);
         $state = $this->request->query->get('state', null);
+
         if (empty($id) || !is_numeric($id)) {
             return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
         }
@@ -735,6 +739,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         if ($modinfo == false) {
             return LogUtil::registerError($this->__('Error! No such module ID exists.'), 404, ModUtil::url('Extensions', 'admin', 'view'));
         }
+
         $startmod = System::getVar('startpage');
         if ($startmod == $modinfo['name']) {
             return LogUtil::registerError($this->__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, ModUtil::url('Extensions', 'admin', 'view'));
@@ -745,9 +750,8 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         }
 
         // Update state
-        if (ModUtil::apiFunc('Extensions', 'admin', 'setstate', array(
-        'id' => $id,
-        'state' => ModUtil::STATE_INACTIVE))) {
+        $setstate = ModUtil::apiFunc('Extensions', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_INACTIVE));
+        if ($setstate) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deactivated module.'));
         }
@@ -805,8 +809,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
             $this->view->assign('id', $id);
 
             // assign any dependencies - filtering out non-active module dependents
-            $dependents = ModUtil::apiFunc('Extensions', 'admin', 'getdependents', array(
-                    'modid' => $id));
+            $dependents = ModUtil::apiFunc('Extensions', 'admin', 'getdependents', array('modid' => $id));
             foreach ($dependents as $key => $dependent) {
                 $modinfo = ModUtil::getInfo($dependent['modid']);
                 if (!ModUtil::available($modinfo['name'])) {
@@ -815,9 +818,9 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
                     $dependents[$key] = array_merge($dependents[$key], $modinfo);
                 }
             }
+
             // check the blocks module for existing blocks
-            $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array(
-                    'modid' => $id));
+            $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('modid' => $id));
             $this->view->assign('hasBlocks', count($blocks));
 
             $this->view->assign('dependents', $dependents)
@@ -836,8 +839,8 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
 
         // remove dependent modules
         foreach ($dependents as $dependent) {
-            if (!ModUtil::apiFunc('Extensions', 'admin', 'remove', array(
-            'id' => $dependent))) {
+            $remove = ModUtil::apiFunc('Extensions', 'admin', 'remove', array('id' => $dependent));
+            if (!$remove) {
                 return $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                         'startnum' => $startnum,
                         'letter' => $letter,
@@ -846,11 +849,10 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         }
 
         // remove the module blocks
-        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array(
-                'modid' => $id));
+        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('modid' => $id));
         foreach ($blocks as $block) {
-            if (!ModUtil::apiFunc('Blocks', 'admin', 'delete', array(
-            'bid' => $block['bid']))) {
+            $delete = ModUtil::apiFunc('Blocks', 'admin', 'delete', array('bid' => $block['bid']));
+            if (!$delete) {
                 LogUtil::registerError($this->__f('Error! Deleting the block %s .', $block['title']));
                 return $this->redirect(ModUtil::url('Extensions', 'admin', 'view', array(
                         'startnum' => $startnum,
@@ -860,9 +862,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         }
 
         // Now we've removed dependents and associated blocks remove the main module
-        $res = ModUtil::apiFunc('Extensions', 'admin', 'remove', array(
-                'id' => $id,
-                'interactive_remove' => $interactive_remove));
+        $res = ModUtil::apiFunc('Extensions', 'admin', 'remove', array('id' => $id, 'interactive_remove' => $interactive_remove));
         if (is_bool($res) && $res == true) {
             // Success
             $session->remove('modules_id');
