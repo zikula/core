@@ -23,18 +23,16 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
-        // modules
-        if (!DBUtil::createTable('modules')) {
-            return false;
-        }
-
-        // module_vars
-        if (!DBUtil::createTable('module_vars')) {
-            return false;
-        }
-
-        // module_deps
-        if (!DBUtil::createTable('module_deps')) {
+        // create tables
+        $tables = array(
+            'Zikula\Core\Doctrine\Entity\Extension',
+            'Zikula\Core\Doctrine\Entity\ExtensionDependency',
+            'Zikula\Core\Doctrine\Entity\ExtensionVar'
+        );
+        
+        try {
+            DoctrineHelper::createSchema($this->entityManager, $tables);
+        } catch (Exception $e) {
             return false;
         }
 
@@ -128,9 +126,14 @@ class Extensions_Installer extends Zikula_AbstractInstaller
     {
         $version = new Extensions_Version();
         $meta = $version->toArray();
-        $meta['capabilities'] = serialize($meta['capabilities']);
-        $meta['securityschema'] = serialize($meta['securityschema']);
         $meta['state'] = ModUtil::STATE_ACTIVE;
-        DBUtil::insertObject($meta, 'modules');
+        
+        unset($meta['dependencies']);
+        
+        $item = new Zikula\Core\Doctrine\Entity\Extension();
+        $item->merge($meta);
+        
+        $this->entityManager->persist($item);
+        $this->entityManager->flush();
     }
 }

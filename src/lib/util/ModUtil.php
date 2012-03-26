@@ -249,7 +249,7 @@ class ModUtil
         self::$modvars[$modname][$name] = $value;
 
         $em->flush();
-        
+
         return true;
     }
 
@@ -1381,18 +1381,31 @@ class ModUtil
         }
 
         if (!self::$cache['modstable'] || System::isInstalling()) {
-            self::$cache['modstable'] = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
-            foreach (self::$cache['modstable'] as $mid => $module) {
-                if (!isset($module['url']) || empty($module['url'])) {
-                    self::$cache['modstable'][$mid]['url'] = $module['displayname'];
-                }
-                self::$cache['modstable'][$mid]['capabilities'] = unserialize($module['capabilities']);
-                self::$cache['modstable'][$mid]['securityschema'] = unserialize($module['securityschema']);
-            }
-        }
+            // get entityManager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->getService('doctrine.entitymanager');
 
-        // add Core module (hack).
-        self::$cache['modstable'][0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 'version' => Zikula_Core::VERSION_NUM, 'state' => self::STATE_ACTIVE);
+            // get all modules
+            $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findAll();
+
+            foreach ($modules as $module) {
+                $module = $module->toArray();
+                if (!isset($module['url']) || empty($module['url'])) {
+                    $module['url'] = strtolower($module['displayname']);
+                }
+                self::$cache['modstable'][$module['id']] = $module;
+            }
+
+            // add Core module (hack).
+            self::$cache['modstable'][0] = array(
+                'id' => 0,
+                'name' => 'zikula',
+                'type' => self::TYPE_CORE,
+                'directory' => '',
+                'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM,
+                'version' => Zikula_Core::VERSION_NUM,
+                'state' => self::STATE_ACTIVE);
+        }
 
         return self::$cache['modstable'];
     }
@@ -1408,9 +1421,15 @@ class ModUtil
      *
      * @return array The resulting module object array.
      */
-    public static function getModules($where='', $sort='displayname')
+    public static function getModules($where=array(), $sort='displayname')
     {
-        return DBUtil::selectObjectArray('modules', $where, $sort);
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+
+        // get all modules
+        $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findBy($where, array($sort => 'ASC'));
+        return $modules;
     }
 
     /**
@@ -1426,12 +1445,10 @@ class ModUtil
      */
     public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
-        $tables = DBUtil::getTables();
-        $cols = $tables['modules_column'];
-
-        $where = "$cols[state] = $state";
-
-        return DBUtil::selectObjectArray('modules', $where, $sort);
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->getService('doctrine.entitymanager');
+        $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findBy(array('state' => $state), array($sort => 'ASC'));
+        return $modules;
     }
 
     /**

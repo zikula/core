@@ -442,7 +442,7 @@ class Core
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
-            \ModUtil::dbInfoLoad('Extensions', 'Extensions');
+//            \ModUtil::dbInfoLoad('Extensions', 'Extensions');
             \ModUtil::initCoreVars();
             \ModUtil::dbInfoLoad('Settings', 'Settings');
             \ModUtil::dbInfoLoad('Theme', 'Theme');
