@@ -38,9 +38,6 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         $autoloader = new UniversalClassLoader();
         $autoloader->register();
         $autoloader->registerNamespaces(array(
-            'Doctrine\\Common' => ZLOADER_PATH . '/../vendor/doctrine-common/lib',
-            'Doctrine\\DBAL' => ZLOADER_PATH . '/../vendor/doctrine-dbal/lib',
-            'Doctrine\\ORM' => ZLOADER_PATH . '/../vendor/doctrine/lib',
             'DoctrineProxy' => 'ztemp/doctrinemodels',
             ));
 
@@ -62,7 +59,7 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         CacheUtil::createLocalDir('doctrinemodels');
 
         // setup annotations base
-        include_once ZLOADER_PATH . '/../vendor/doctrine/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        include_once ZLOADER_PATH . '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
 
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();

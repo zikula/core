@@ -19,8 +19,6 @@ if (!extension_loaded('xdebug')) {
 }
 
 include 'lib/i18n/ZGettextFunctions.php';
-include 'lib/Zikula/Common/KernelClassLoader.php';
-include __DIR__ .'/../vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
@@ -33,13 +31,6 @@ include 'Smarty/Smarty.class.php';
  */
 class ZLoader
 {
-    /**
-     * Map.
-     *
-     * @var array
-     */
-    private static $map;
-
     /**
      * Autoloaders.
      *
@@ -67,17 +58,12 @@ class ZLoader
         $autoloader->register();
         $autoloader->registerNamespaces(array(
             'Zikula' => ZLOADER_PATH,
-            'Symfony' => ZLOADER_PATH . '/../vendor/symfony/src',
         ));
-        if (!interface_exists('SessionHandlerInterface')) {
-            $autoloader->registerPrefix('SessionHandlerInterface', ZLOADER_PATH . '/../vendor/symfony/src/Symfony/Component/HttpFoundation/Resources/stubs');
-        }
 
         self::$autoloaders = new UniversalClassLoader();
         self::$autoloaders->register();
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
-        self::addAutoloader('Twig', ZLOADER_PATH . '/../vendor/twig/lib', '_');
         self::addAutoloader('Categories', 'system/Categories/lib', '_');
         self::addAutoloader('Zend', ZLOADER_PATH . '/vendor', '_');
 
