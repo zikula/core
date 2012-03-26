@@ -543,6 +543,8 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
+        $entity = 'Zikula\Core\Doctrine\Entity\Extension';
+        
         // default action
         $filemodules = $args['filemodules'];
         $defaults = (isset($args['defaults']) ? $args['defaults'] : false);
@@ -576,7 +578,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
                     if (isset($dbmodinfo['name']) && in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
                         $dql = "
-                        UPDATE Zikula\Core\DoctrineEntity\\ExtensionVar v
+                        UPDATE Zikula\Core\DoctrineEntity\ExtensionVar v
                         SET v.modname = '{$modinfo['name']}'
                         WHERE v.modname = '{$dbname}'";
                         $query = $this->entityManager->createQuery($dql);

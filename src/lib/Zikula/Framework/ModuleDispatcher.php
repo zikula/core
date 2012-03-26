@@ -128,7 +128,7 @@ class ModuleDispatcher
             // there is no break here deliberately.
             case ($return === false):
                 $session = \ServiceUtil::getService('session');
-                if (!$session->hasFlashes(\Zikula_Session::MESSAGE_ERROR)) {
+                if (!$session->getFlashBag()->has(\Zikula_Session::MESSAGE_ERROR)) {
                     \LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
                 }
                 $return = \ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
