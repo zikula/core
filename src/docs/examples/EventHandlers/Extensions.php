@@ -48,7 +48,7 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
 
         // Zikula Modules and Themes versions
         $view = Zikula_View::getInstance('Users');
-        $view->assign('mods', ModuleUtil::getModules());
+        $view->assign('mods', ModUtil::getModules());
         $view->assign('themes', ThemeUtil::getAllThemes());
 
         $event->setData($view->fetch('users_admin_extensions.tpl'));

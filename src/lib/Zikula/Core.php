@@ -409,9 +409,10 @@ class Zikula_Core
         }
 
         if ($stage & self::STAGE_TABLES) {
-            // Initialise dbtables
-            ModUtil::dbInfoLoad('Extensions', 'Extensions');
+            // load variables
             ModUtil::initCoreVars();
+            
+            // Initialise dbtables
             ModUtil::dbInfoLoad('Settings', 'Settings');
             ModUtil::dbInfoLoad('Theme', 'Theme');
             ModUtil::dbInfoLoad('Users', 'Users');

@@ -27,7 +27,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
      */
     public function modify($args)
     {
-        return DBUtil::selectObjectByID('modules', $args['id'], 'id');
+        return $this->entityManager->getRepository('Extensions_Entity_Extension')->find($args['id']);
     }
 
     /**
@@ -44,9 +44,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id']) ||
-                !isset($args['displayname']) ||
-                !isset($args['description']) ||
-                !isset($args['url'])) {
+            !isset($args['displayname']) ||
+            !isset($args['description']) ||
+            !isset($args['url'])) {
             return LogUtil::registerArgsError();
         }
 
@@ -58,8 +58,10 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // check for duplicate display names
         // get the module info for the module being updated
         $moduleinforeal = ModUtil::getInfo($args['id']);
+
         // validate URL
         $moduleinfourl = ModUtil::getInfoFromName($args['url']);
+
         // If the two real module name don't match then the new display name can't be used
         if ($moduleinfourl && $moduleinfourl['name'] != $moduleinforeal['name']) {
             return LogUtil::registerError($this->__('Error! Could not save the module URL information. A duplicate module URL was detected.'));
@@ -73,15 +75,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! Module URL is a required field, please enter a unique name.'));
         }
 
-        // Rename operation
-        $obj = array('id'          => $args['id'],
-                     'displayname' => $args['displayname'],
-                     'description' => $args['description'],
-                     'url'         => $args['url']);
+        // get module
+        $module = $this->entityManager->getRepository('Extensions_Entity_Extension')->find($args['id']);
 
-        if (!DBUtil::updateObject($obj, 'modules')) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
-        }
+        // update module with new data
+        $module->merge($args);
+
+        // write changes to db
+        $this->entityManager->flush();
 
         return true;
     }
@@ -109,36 +110,32 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        // Optional arguments.
-        $startnum = (empty($args['startnum']) || $args['startnum'] < 0) ? 1 : (int)$args['startnum'];
-        $numitems = (empty($args['numitems']) || $args['numitems'] < 0) ? -1 : (int)$args['numitems'];
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+
+        // add select and from params
+        $qb->select('e')
+           ->from('Extensions_Entity_Extension', 'e');
+
+        // filter by first letter of module
+        if (isset($args['letter']) && !empty($args['letter'])) {
+            $clause1 = $qb->expr()->like('e.name', $qb->expr()->literal($args['letter'] . '%'));
+            $clause2 = $qb->expr()->like('e.name', $qb->expr()->literal(strtolower($args['letter']) . '%'));
+            $qb->andWhere($clause1 . ' OR ' . $clause2);
+        }
+
+        // filter by type
+        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
+        if ($type != 0) {
+            $qb->andWhere($qb->expr()->eq('e.type', $qb->expr()->literal($type)));
+        }
+
+        // filter by module state
         if ($this->serviceManager['multisites.enabled'] == 1) {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
         } else {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
         }
-
-        // for incompatible versions of the modules with the core
-        $state = $args['state'];
-
-        $type    = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
-        $sort    = empty($args['sort']) ? null : (string)$args['sort'];
-        $sortdir = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
-
-        // Obtain information
-        $dbtable = DBUtil::getTables();
-        $modulescolumn = $dbtable['modules_column'];
-
-        // filter my first letter of module
-        if (isset($args['letter']) && !empty($args['letter'])) {
-            $where[] = "$modulescolumn[name] LIKE '" . DataUtil::formatForStore($args['letter']) . "%' OR " . "$modulescolumn[name] LIKE '" . DataUtil::formatForStore(strtolower($args['letter'])) . "%'";
-        }
-
-        if ($type != 0) {
-            $where[] = "$modulescolumn[type] = '" . (int)DataUtil::formatForStore($type) . "'";
-        }
-
-        // filter by module state
         switch ($state) {
             case ModUtil::STATE_UNINITIALISED:
             case ModUtil::STATE_INACTIVE:
@@ -147,37 +144,37 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             case ModUtil::STATE_UPGRADED:
             case ModUtil::STATE_NOTALLOWED:
             case ModUtil::STATE_INVALID:
-                $where[] = "$modulescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
+                $qb->andWhere($qb->expr()->eq('e.state', $qb->expr()->literal($state)));
+                break;
+
+            case 10:
+                $qb->andWhere($qb->expr()->gt('e.state', 10));
                 break;
         }
 
-        if ($state == 10) {
-            $where[] = "$modulescolumn[state] > 10";
+
+        // add clause for ordering
+        $sort = isset($args['sort']) ? (string)$args['sort'] : 'name';
+        $sortdir = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
+        $qb->orderBy('e.' . $sort, $sortdir);
+
+        // add limit and offset
+        $startnum = (!isset($args['startnum']) || empty($args['startnum']) || $args['startnum'] < 0) ? 0 : (int)$args['startnum'];
+        $numitems = (!isset($args['numitems']) || empty($args['numitems']) || $args['numitems'] < 0) ? 0 : (int)$args['numitems'];
+        if ($numitems > 0) {
+            $qb->setFirstResult($startnum)
+               ->setMaxResults($numitems);
         }
 
-        // generate where clause
-        $wheresql = '';
-        if (isset($where) && is_array($where)) {
-            $wheresql = 'WHERE ' . implode(' AND ', $where);
-        }
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
 
-        if ($sort == 'displayname') {
-            $orderBy = "ORDER BY UPPER($modulescolumn[displayname]) $sortdir";
-        } else {
-            $orderBy = "ORDER BY UPPER($modulescolumn[name]) $sortdir";
-        }
+        //echo $query->getSQL();
 
-        $objArray = DBUtil::selectObjectArray('modules', $wheresql, $orderBy, $startnum - 1, $numitems);
+        // execute query
+        $result = $query->getResult();
 
-        if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
-        }
-
-        foreach ($objArray as $key => $object) {
-            $objArray[$key]['capabilities'] = unserialize($object['capabilities']);
-        }
-
-        return $objArray;
+        return $result;
     }
 
     /**
@@ -203,21 +200,12 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        // Set state
-        $result = DBUtil::selectObjectByID('modules', $args['id'], 'id', null, null, false);
-        if (empty($result)) {
+        // get module
+        $module = $this->entityManager->getRepository('Extensions_Entity_Extension')->find($args['id']);
+        if (empty($module)) {
             return false;
         }
 
-        if ($result === false) {
-            return LogUtil::registerPermissionError();
-        }
-
-        $name = $result['name'];
-        $directory = $result['directory'];
-        $oldstate = $result['state'];
-
-        $modinfo = ModUtil::getInfo($args['id']);
         // Check valid state transition
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
@@ -234,18 +222,19 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             case ModUtil::STATE_MISSING:
                 break;
             case ModUtil::STATE_UPGRADED:
+                $oldstate = $module['state'];
                 if ($oldstate == ModUtil::STATE_UNINITIALISED) {
                     return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                 }
                 break;
         }
 
-        $obj = array('id' => $args['id'], 'state' => $args['state']);
-        if (!DBUtil::updateObject($obj, 'modules')) {
-            return false;
-        }
+        // change state
+        $module['state'] = $args['state'];
+        $this->entityManager->flush();
 
-        // State change, so update the ModUtil::available-info for this module.
+        // state changed, so update the ModUtil::available-info for this module.
+        $modinfo = ModUtil::getInfo($args['id']);
         ModUtil::available($modinfo['name'], true);
 
         return true;
@@ -381,14 +370,16 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        // Remove variables and module
-        // Delete any module variables that the module cleanup function might
-        // have missed
-        DBUtil::deleteObjectByID('module_vars', $modinfo['name'], 'modname');
+        // Delete any module variables that the module cleanup function might have missed
+        $dql = "DELETE FROM Extensions_Entity_ExtensionVar v WHERE v.modname = '{$modinfo['name']}'";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
         // clean up any hooks activated for this module
         if (System::isLegacyMode()) {
-            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+            $dql = "DELETE FROM Extensions_Entity_Hook h WHERE h.tmodule = '{$modinfo['name']}'";
+            $query = $this->entityManager->createQuery($dql);
+            $query->getResult();
         }
 
         if ($oomod) {
@@ -404,13 +395,17 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
-                DBUtil::deleteObjectByID('modules', $args['id'], 'id');
+                $dql = "DELETE FROM Extensions_Entity_Extension e WHERE e.id = {$args['id']}";
+                $query = $this->entityManager->createQuery($dql);
+                $query->getResult();
             } else {
                 //set state as uninnitialised
                 ModUtil::apiFunc('modules', 'admin', 'setstate', array('id' => $args['id'], 'state' => ModUtil::STATE_UNINITIALISED));
             }
         } else {
-            DBUtil::deleteObjectByID('modules', $args['id'], 'id');
+            $dql = "DELETE FROM Extensions_Entity_Extension e WHERE e.id = {$args['id']}";
+            $query = $this->entityManager->createQuery($dql);
+            $query->getResult();
         }
 
         $event = new Zikula_Event('installer.module.uninstalled', null, $modinfo);
@@ -598,11 +593,18 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $filemodules = $args['filemodules'];
         $defaults = (isset($args['defaults']) ? $args['defaults'] : false);
 
-        // Get all modules in DB
-        $dbmodules = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'name');
+        $entity = $this->name . '_Entity_Extension';
 
-        if (!$dbmodules) {
+        // Get all modules in DB
+        $allmodules = $this->entityManager->getRepository($entity)->findAll();
+        if (!$allmodules) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
+        }
+
+        // index modules by name
+        $dbmodules = array();
+        foreach ($allmodules as $module) {
+            $dbmodules[$module['name']] = $module->toArray();
         }
 
         // build a list of found modules and dependencies
@@ -618,44 +620,55 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // see if any modules have changed name since last generation
         foreach ($filemodules as $name => $modinfo) {
             if (isset($modinfo['oldnames']) && !empty($modinfo['oldnames'])) {
-                $tables = DBUtil::getTables();
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
                     if (in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
-                        $cols = $tables['module_vars_column'];
-                        $save = array('modname' => $modinfo['name']);
-                        DBUtil::updateObject($save, 'module_vars', "{$cols['modname']} = '$dbname'");
+                        $dql = "
+                        UPDATE Extensions_Entity_ExtensionVar v
+                        SET v.modname = '{$modinfo['name']}'
+                        WHERE v.modname = '{$dbname}'";
+                        $query = $this->entityManager->createQuery($dql);
+                        $query->getResult();
 
                         // rename the module register
-                        $save = $dbmodules[$dbname];
-                        $save['name'] = $modinfo['name'];
+                        $dql = "
+                        UPDATE Extensions_Entity_Extension e
+                        SET e.name = '{$modinfo['name']}'
+                        WHERE e.id = {$dbmodules[$dbname]['id']}";
+                        $query = $this->entityManager->createQuery($dql);
+                        $query->getResult();
+
+                        // replace the old module with the new one in the dbmodules array
+                        $newmodule = $dbmodules[$dbname];
+                        $newmodule['name'] = $modinfo['name'];
                         unset($dbmodules[$dbname]);
                         $dbname = $modinfo['name'];
-                        $dbmodules[$dbname] = $save;
-                        DBUtil::updateObject($dbmodules[$dbname], 'modules');
+                        $dbmodules[$dbname] = $newmodule;
 
                         // rename hooks in the hooks table.
-                        $hooksColumns = $tables['hooks_column'];
-                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[smodule] = '$save[name]'");
-                        if ($hooks) {
-                            foreach ($hooks as $hook) {
-                                $hook['smodule'] = $dbmodinfo['name'];
-                                DBUtil::updateObject($hook, 'hooks');
-                            }
-                        }
+                        $dql = "
+                        UPDATE Extensions_Entity_Hook h
+                        SET h.smodule = '{$dbmodinfo['name']}'
+                        WHERE h.smodule = '{$newmodule['name']}'";
+                        $query = $this->entityManager->createQuery($dql);
+                        $query->getResult();
 
-                        $hooks = DBUtil::selectObjectArray('hooks', "$hooksColumns[tmodule] = '$save[name]'");
-                        if ($hooks) {
-                            foreach ($hooks as $hook) {
-                                $hook['tmodule'] = $dbmodinfo['name'];
-                                DBUtil::updateObject($hook, 'hooks');
-                            }
-                        }
+                        $dql = "
+                        UPDATE Extensions_Entity_Hook h
+                        SET h.tmodule = '{$dbmodinfo['name']}'
+                        WHERE h.tmodule = '{$newmodule['name']}'";
+                        $query = $this->entityManager->createQuery($dql);
+                        $query->getResult();
 
-                        DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
+                        $dql = "
+                        DELETE FROM Extensions_Entity_Hook h
+                        WHERE h.tmodule = '{$modinfo['name']}'";
+                        $query = $this->entityManager->createQuery($dql);
+                        $query->getResult();
                     }
                 }
-                unset($tables);
+
+
             }
 
             if (isset($dbmodules[$name]) && $dbmodules[$name]['state'] > 10) {
@@ -673,7 +686,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     unset($modinfo['description']);
                     unset($modinfo['url']);
                 }
-                DBUtil::updateObject($modinfo, 'modules');
+
+                unset($modinfo['oldnames']);
+                unset($modinfo['dependencies']);
+                $modinfo['capabilities'] = unserialize($modinfo['capabilities']);
+                $modinfo['securityschema'] = unserialize($modinfo['securityschema']);
+                $module = $this->entityManager->getRepository($entity)->find($modinfo['id']);
+                $module->merge($modinfo);
+                $this->entityManager->flush();
             }
 
             // check core version is compatible with current
@@ -700,26 +720,22 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // See if we have lost any modules since last generation
         foreach ($dbmodules as $name => $modinfo) {
             if (!in_array($name, $module_names)) {
-                $result = DBUtil::selectObjectByID('modules', $name, 'name');
-
-                if ($result === false) {
-                    return LogUtil::registerError($this->__('Error! Could not load data.'));
-                }
-
-                if (empty($result)) {
-                    die($this->__('Error! Could not retrieve module ID.'));
+                $lostmodule = $this->entityManager->getRepository($entity)->findOneBy(array('name' => $name));
+                if (!$lostmodule) {
+                    return LogUtil::registerError($this->__f('Error! Could not load data for module %s.', array($name)));
                 }
 
                 if ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID) {
                     // module was invalid and now it was removed, delete it
-                    $this->remove(array('id'   => $dbmodules[$name]['id']));
+                    $this->remove(array('id' => $dbmodules[$name]['id']));
                 } elseif ($dbmodules[$name]['state'] == ModUtil::STATE_UNINITIALISED) {
                     // module was uninitialised and subsequently removed, delete it
-                    $this->remove(array('id'   => $dbmodules[$name]['id']));
+                    $this->remove(array('id' => $dbmodules[$name]['id']));
                 } else {
                     // Set state of module to 'missing'
                     $this->setState(array('id' => $result['id'], 'state' => ModUtil::STATE_MISSING));
                 }
+
                 unset($dbmodules[$name]);
             }
         }
@@ -728,20 +744,35 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // or if any current modules have been upgraded
         foreach ($filemodules as $name => $modinfo) {
             if (empty($dbmodules[$name])) {
-                // New module
-                // RNG: set state to invalid if we can't determine an ID
+                // set state to invalid if we can't determine an ID
                 $modinfo['state'] = ModUtil::STATE_UNINITIALISED;
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
                 }
+
+                // unset some vars
+                unset($modinfo['oldnames']);
+                unset($modinfo['dependencies']);
+
+                // unserialze some vars
+                $modinfo['capabilities'] = unserialize($modinfo['capabilities']);
+                $modinfo['securityschema'] = unserialize($modinfo['securityschema']);
+
+                // insert new module to db
                 if ($this->serviceManager['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
                     if (($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
-                        DBUtil::insertObject($modinfo, 'modules');
+                        $item = new $entity;
+                        $item->merge($modinfo);
+                        $this->entityManager->persist($item);
                     }
                 } else {
-                    DBUtil::insertObject($modinfo, 'modules');
+                    $item = new $entity;
+                    $item->merge($modinfo);
+                    $this->entityManager->persist($item);
                 }
+
+                $this->entityManager->flush();
             } else {
                 // module is in the db already
                 if ($dbmodules[$name]['state'] == ModUtil::STATE_MISSING) {
@@ -749,9 +780,11 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_INACTIVE));
                 } elseif ($dbmodules[$name]['state'] == ModUtil::STATE_INVALID && $modinfo['version']) {
                     // module was invalid, now it is valid
-                    $modinfo = array_merge($modinfo, array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_UNINITIALISED));
-                    DBUtil::updateObject($modinfo, 'modules');
+                    $item = $this->entityManager->getRepository($entity)->find($dbmodules[$name]['id']);
+                    $item['state'] = ModUtil::STATE_UNINITIALISED;
+                    $this->entityManager->flush();
                 }
+
                 if ($dbmodules[$name]['version'] != $modinfo['version']) {
                     if ($dbmodules[$name]['state'] != ModUtil::STATE_UNINITIALISED &&
                             $dbmodules[$name]['state'] != ModUtil::STATE_INVALID) {
@@ -762,20 +795,26 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         // now clear re-load the dependencies table with all current dependencies
-        DBUtil::truncateTable('module_deps');
+        $connection = $this->entityManager->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeUpdate($platform->getTruncateTableSQL('module_deps', true));
+
         // loop round dependences adding the module id - we do this now rather than
         // earlier since we won't have the id's for new modules at that stage
-        $dependencies = array();
         ModUtil::flushCache();
         foreach ($moddependencies as $modname => $moddependency) {
             $modid = ModUtil::getIdFromName($modname);
+
             // each module may have multiple dependencies
             foreach ($moddependency as $dependency) {
                 $dependency['modid'] = $modid;
-                $dependencies[] = $dependency;
+                $item = new Extensions_Entity_ExtensionDependency();
+                $item->merge($dependency);
+                $this->entityManager->persist($item);
             }
         }
-        DBUtil::insertObjectArray($dependencies, 'module_deps');
+
+        $this->entityManager->flush();
 
         return true;
     }
@@ -928,6 +967,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
+        $entity = 'Extensions_Entity_Extension';
+
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
         if (empty($modinfo)) {
@@ -1022,8 +1063,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             if (is_string($result)) {
                 if ($result != $modinfo['version']) {
                     // update the last successful updated version
-                    $modinfo['version'] = $result;
-                    $obj = DBUtil::updateObject($modinfo, 'modules', '', 'id', true);
+                    $item = $this->entityManager->getRepository($entity)->find($modinfo['id']);
+                    $item['version'] = $result;
+                    $this->entityManager->flush();
                 }
                 return false;
             } elseif ($result != true) {
@@ -1043,26 +1085,21 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return false;
         }
 
-        // Note the changes in the database...
-        // Get module database info
-        ModUtil::dbInfoLoad('Extensions');
-
-        $obj = array('id'      => $args['id'],
-                     'version' => $version);
-
-        DBUtil::updateObject($obj, 'modules');
+        // update the module with the new version
+        $item = $this->entityManager->getRepository($entity)->find($args['id']);
+        $item['version'] = $version;
+        $this->entityManager->flush();
 
         // legacy to be removed from 1.4 - remove hooks during upgrade since we cannot rely on
         // module authors to do this - drak
         if ($oomod) {
-            $tables = DBUtil::getTables();
-            $hooksCol = $tables['hooks_column'];
-            $where = "$hooksCol[smodule] = '$modinfo[name]' OR $hooksCol[tmodule] = '$modinfo[name]'";
-            $hooks = DBUtil::selectObjectArray('hooks', $where);
-            if ($hooks) {
-                foreach ($hooks as $hook) {
-                    DBUtil::deleteObject($hook, 'hooks');
-                }
+            $dql = "
+            DELETE FROM Extensions_Entity_Hook h
+            WHERE h.smodule = '{$modinfo['name']}' OR h.tmodule = '{$modinfo['name']}'";
+            $query = $this->entityManager->createQuery($dql);
+            $removed = $query->getResult();
+
+            if ($removed > 0) {
                 LogUtil::registerStatus($this->__f("NOTICE! Legacy hook configurations for %s have been removed.", $modinfo['name']));
             }
         }
@@ -1083,7 +1120,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
     public function upgradeall()
     {
         $upgradeResults = array();
-        $usersModule = array();
 
         // regenerate modules list
         $filemodules = $this->getfilemodules();
@@ -1128,42 +1164,59 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
      */
     public function countitems($args)
     {
-        $dbtable = DBUtil::getTables();
-        $modulescolumn = $dbtable['modules_column'];
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
 
-        // filter my first letter of module
+        // add select and from params
+        $qb->select('COUNT(e.id)')
+           ->from('Extensions_Entity_Extension', 'e');
+
+        // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $where[] = "$modulescolumn[name] LIKE '" . DataUtil::formatForStore($args['letter']) . "%'";
+            $clause1 = $qb->expr()->like('e.name', $qb->expr()->literal($args['letter'] . '%'));
+            $clause2 = $qb->expr()->like('e.name', $qb->expr()->literal(strtolower($args['letter']) . '%'));
+            $qb->andWhere($clause1 . ' OR ' . $clause2);
+        }
+
+        // filter by type
+        $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
+        if ($type != 0) {
+            $qb->andWhere($qb->expr()->eq('e.type', $qb->expr()->literal($type)));
+        }
+
+        if ($this->serviceManager['multisites.enabled'] == 1) {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
+        } else {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
         }
 
         // filter by module state
-        switch ($args['state']) {
+        if ($this->serviceManager['multisites.enabled'] == 1) {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
+        } else {
+            $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
+        }
+        switch ($state) {
             case ModUtil::STATE_UNINITIALISED:
             case ModUtil::STATE_INACTIVE:
             case ModUtil::STATE_ACTIVE:
             case ModUtil::STATE_MISSING:
             case ModUtil::STATE_UPGRADED:
+            case ModUtil::STATE_NOTALLOWED:
             case ModUtil::STATE_INVALID:
-                $where[] = "$modulescolumn[state] = '" . DataUtil::formatForStore($args['state']) . "'";
+                $qb->andWhere($qb->expr()->eq('e.state', $qb->expr()->literal($state)));
                 break;
-            default:
-                if ($args['state'] > 10) {
-                    $where[] = "$modulescolumn[state] > 10 ";
-                }
+
+            case 10:
+                $qb->andWhere($qb->expr()->gt('e.state', 10));
+                break;
         }
 
-        // generate where clause
-        $wheresql = '';
-        if (isset($where) && is_array($where)) {
-            $wheresql = 'WHERE ' . implode(' AND ', $where);
-        }
+        $query = $qb->getQuery();
 
-        $count = DBUtil::selectObjectCount('modules', $wheresql);
-        if ($count === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
-        }
+        $count = $query->getSingleScalarResult();
 
-        return $count;
+        return (int)$count;
     }
 
     /**
@@ -1228,7 +1281,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                                                    'text' => $this->__('Active'))
                                                ));
 
-            $legacyHooks = DBUtil::selectObjectArray('hooks');
+
+            $legacyHooks = $this->entityManager->getRepository('Extensions_Entity_Hook')->findAll();
             if (System::isLegacyMode() && $legacyHooks) {
                 $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-hook');
             }
@@ -1254,9 +1308,11 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
      *
      * @return array Array of dependencies.
      */
-    public function getdallependencies($args)
+    public function getdallependencies()
     {
-        return DBUtil::selectObjectArray('module_deps', '', 'modid');
+        $dependencies = $this->entityManager->getRepository('Extensions_Entity_ExtensionDependency')->findBy(array(), array('modid' => 'ASC'));
+
+        return $dependencies;
     }
 
     /**
@@ -1274,9 +1330,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $where = "modid = '" . DataUtil::formatForStore($args['modid']) . "'";
+        $dependencies = $this->entityManager->getRepository('Extensions_Entity_ExtensionDependency')->findBy(array('modid' => $args['modid']));
 
-        return DBUtil::selectObjectArray('module_deps', $where, 'modname');
+        return $dependencies;
     }
 
     /**
@@ -1295,9 +1351,10 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         $modinfo = ModUtil::getInfo($args['modid']);
-        $where = "modname = '" . DataUtil::formatForStore($modinfo['name']) . "'";
 
-        return DBUtil::selectObjectArray('module_deps', $where, 'modid');
+        $dependents = $this->entityManager->getRepository('Extensions_Entity_ExtensionDependency')->findBy(array('modname' => $modinfo['name']));
+
+        return $dependents;
     }
 
     /**
@@ -1420,40 +1477,41 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        // Rename operation
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
+        $entity = 'Extensions_Entity_Hook';
 
-        // Hooks
         // Get module name
         $modinfo = ModUtil::getInfo($args['id']);
 
-        // Delete hook regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-                    AND $hookscolumn[tmodule] <> ''";
+        // delete hook regardless
+        $dql = "DELETE FROM $entity h WHERE h.smodule = '{$modinfo['name']}' AND h.tmodule != ''";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
-        DBUtil::deleteWhere('hooks', $where);
-
-        $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
-
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-        if ($objArray === false) {
+        // get hooks
+        $hooks = $this->entityManager->getRepository($entity)->findBy(array('smodule' => ''), array('tmodule' => 'ASC', 'smodule' => 'DESC'));
+        if (!$hooks) {
             return false;
         }
 
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
+        foreach ($hooks as $hook) {
+            $hook = $hook->toArray();
+
             // Get selected value of hook
-            $hookvalue = FormUtil::getPassedValue('hooks_' . $objArray[$v]['tmodule']);
+            $hookvalue = FormUtil::getPassedValue('hooks_' . $hook['tmodule']);
+
             // See if this is checked and isn't in the database
-            if (isset($hookvalue) && empty($objArray[$v]['smodule'])) {
-                $objArray[$v]['smodule'] = $modinfo['name'];
-                if (DBUtil::insertObject($objArray[$v], 'hooks') === false) {
-                    return false;
-                }
+            if (isset($hookvalue) && empty($hook['smodule'])) {
+                unset($hook['id']);
+                $hook['smodule'] = $modinfo['name'];
+
+                $item = new $entity;
+                $item->merge($hook);
+
+                $this->entityManager->persist($item);
             }
         }
+
+        $this->entityManager->flush();
 
         return true;
     }
@@ -1481,36 +1539,42 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
 
-        $where = "WHERE $hookscolumn[tmodule]='" . DataUtil::formatForStore($args['hookmodname']) . "'";
+        // add select, from and where params
+        $qb->select('e')
+           ->from('Extensions_Entity_Hook', 'h')
+           ->where($qb->expr()->eq('h.tmodule', $qb->expr()->literal($args['hookmodname'])));
+
         if (!empty($args['hookobject'])) {
-            $where .= " AND $hookscolumn[object]='" . DataUtil::formatForStore($args['hookobject']) . "'";
+            $qb->andWhere($qb->expr()->eq('h.object', $qb->expr()->literal($args['hookobject'])));
         }
+
         if (!empty($args['hookaction'])) {
-            $where .= " AND $$hookscolumn[action]='" . DataUtil::formatForStore($args['hookaction']) . "'";
+            $qb->andWhere($qb->expr()->eq('h.action', $qb->expr()->literal($args['hookaction'])));
         }
+
         if (!empty($args['hookarea'])) {
-            $where .= " AND $hookscolumn[tarea]='" . DataUtil::formatForStore($args['hookarea']) . "'";
+            $qb->andWhere($qb->expr()->eq('h.tarea', $qb->expr()->literal($args['hookarea'])));
         }
 
-        $objArray = DBUtil::selectObjectArray('hooks', $where);
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
 
-        // Check for an error with the database
-        if ($objArray === false) {
-            return false;
-        }
+        // execute query
+        $hooks = $query->getResult();
 
         // modlist will hold the hooked modules
         static $modlist = array();
-        foreach ($objArray as $obj) {
-            $smod = $obj['smodule'];
+
+        foreach ($hooks as $hook) {
+            $smod = $hook['smodule'];
             if (empty($smod)) {
                 continue;
             }
 
-            $styp = $obj['stype'];
+            $styp = $hook['stype'];
             if (empty($styp)) {
                 $styp = 0;
             }
@@ -1542,37 +1606,31 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
+        $entity = 'Extensions_Entity_Hook';
 
-        // Rename operation
-        // Delete hooks regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+        // delete hooks regardless
+        $dql = "DELETE FROM $entity h WHERE h.smodule = '{$args['callermodname']}' AND h.tmodule = '{$args['hookmodname']}'";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
-        if (!DBUtil::deleteWhere('hooks', $where)) {
+        // get hooks
+        $hooks = $this->entityManager->getRepository($entity)->findBy(array('smodule' => '', 'tmodule' => $args['hookmodname']));
+        if (!$hooks) {
             return false;
         }
 
-        $where = "WHERE $hookscolumn[smodule] = ''
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
-
-        $objArray = DBUtil::selectObjectArray('hooks', $where, '', -1, -1, 'id');
-        if (!$objArray) {
-            return false;
-        }
-
-        $newHooks = array();
-        foreach ($objArray as $hook) {
+        foreach ($hooks as $hook) {
+            $hook = $hook->toArray();
             unset($hook['id']);
-            $hook['smodule'] = $args['callermodname'];
-            $newHooks[] = $hook;
+
+            $newhook = new $entity;
+            $newhook->merge($hook);
+            $newhook['smodule'] = $args['callermodname'];
+
+            $this->entityManager->persist($newhook);
         }
 
-        $result = DBUtil::insertObjectArray($newHooks, 'hooks');
-        if (!$result) {
-            return false;
-        }
+        $this->entityManager->flush();
 
         return true;
     }
@@ -1601,16 +1659,13 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             $args['calleritemtype'] = '';
         }
 
-        // Rename operation
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
+        $entity = 'Extensions_Entity_Hook';
 
-        // Delete hooks regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($args['callermodname']) . "'
-                    AND $hookscolumn[stype]   = '" . DataUtil::formatForStore($args['calleritemtype']) . "'
-                    AND $hookscolumn[tmodule] = '" . DataUtil::formatForStore($args['hookmodname']) . "'";
+        $dql = "DELETE FROM $entity h WHERE h.smodule = '{$args['callermodname']}' AND h.tmodule = '{$args['hookmodname']}' AND h.stype = '{$args['calleritemtype']}'";
+        $query = $this->entityManager->createQuery($dql);
+        $result = $query->getResult();
 
-        return DBUtil::deleteWhere('hooks', $where);
+        return $result;
     }
 
     /**
@@ -1636,33 +1691,42 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
+        $entity = 'Extensions_Entity_Hook';
 
-        $where = "WHERE $hookscolumn[smodule] = ''
-                     OR $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
-        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
+        // get hooks
+        $dql = "
+        SELECT h
+        FROM $entity h
+        WHERE h.smodule = '' OR h.smodule = '{$modinfo['name']}'
+        ORDER BY h.tmodule ASC, h.smodule DESC";
 
-        if ($objArray === false) {
-            return false;
+        $query = $this->entityManager->createQuery($dql);
+
+        $hooks = $query->getResult();
+
+        if (!$hooks) {
+            return array();
         }
 
         $displayed = array();
-        $ak = array_keys($objArray);
         $myArray = array();
-        foreach ($ak as $v) {
-            if (isset($displayed[$objArray[$v]['tmodule']])) {
+
+        foreach ($hooks as $hook) {
+            $hook = $hook->toArray();
+
+            if (isset($displayed[$hook['tmodule']])) {
                 continue;
             }
-            $displayed[$objArray[$v]['tmodule']] = true;
 
-            if (!empty($objArray[$v]['smodule'])) {
-                $objArray[$v]['hookvalue'] = 1;
+            $displayed[$hook['tmodule']] = true;
+
+            if (!empty($hook['smodule'])) {
+                $hook['hookvalue'] = 1;
             } else {
-                $objArray[$v]['hookvalue'] = 0;
+                $hook['hookvalue'] = 0;
             }
-            array_push($myArray, $objArray[$v]);
+
+            array_push($myArray, $hook);
         }
 
         return $myArray;
@@ -1691,40 +1755,35 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        $dbtable = DBUtil::getTables();
-        $hookscolumn = $dbtable['hooks_column'];
+        $entity = 'Extensions_Entity_Hook';
 
-        $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[action], $hookscolumn[sequence] ASC";
-        $hooksArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-
+        $hooksArray = $this->entityManager->getRepository($entity)->findBy(array('smodule' => ''), array('action' => 'ASC', 'sequence' => 'ASC'));
         // sort the hooks by action
         $grouped_hooks = array();
+
         foreach ($hooksArray as $hookobject) {
+            $hookobject = $hookobject->toArray();
+
             if (!array_key_exists($hookobject['action'], $grouped_hooks)) {
                 $grouped_hooks[$hookobject['action']] = array();
             }
+
             $hookobject['hookvalue'] = 0;
+
             $grouped_hooks[$hookobject['action']][$hookobject['tmodule']] = $hookobject;
         }
+
         if ($grouped_hooks === false) {
             return false;
         }
 
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'";
-        $orderBy = "ORDER BY $hookscolumn[action], $hookscolumn[sequence] ASC";
+        $objArray = $this->entityManager->getRepository($entity)->findBy(array('smodule' => $modinfo['name']), array('action' => 'ASC', 'sequence' => 'ASC'));
 
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-        if ($objArray === false) {
-            return false;
-        }
-
-        $displayed = array();
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
-            unset($grouped_hooks[$objArray[$v]['action']][$objArray[$v]['tmodule']]);
-            $objArray[$v]['hookvalue'] = 1;
-            $grouped_hooks[$objArray[$v]['action']][$objArray[$v]['tmodule']] = $objArray[$v];
+        foreach ($objArray as $obj) {
+            $obj = $obj->toArray();
+            unset($grouped_hooks[$obj['action']][$obj['tmodule']]);
+            $obj['hookvalue'] = 1;
+            $grouped_hooks[$obj['action']][$obj['tmodule']] = $obj;
         }
 
         return $grouped_hooks;
@@ -1751,34 +1810,21 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        // Rename operation
-        $dbtable = DBUtil::getTables();
-
-        $hookscolumn = $dbtable['hooks_column'];
-
-        // Hooks
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
 
-        // Delete hook regardless
-        $where = "WHERE $hookscolumn[smodule] = '" . DataUtil::formatForStore($modinfo['name']) . "'
-                    AND $hookscolumn[tmodule] <> ''";
+        $entity = 'Extensions_Entity_Hook';
 
-        DBUtil::deleteWhere('hooks', $where);
+        $dql = "DELETE FROM $entity h WHERE h.smodule = '{$modinfo['name']}' AND h.tmodule != ''";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
-        $where = "WHERE $hookscolumn[smodule] = ''";
-        $orderBy = "ORDER BY $hookscolumn[tmodule], $hookscolumn[smodule] DESC";
-
-        // read the hooks themselves - the entries in the database that are not connected
-        // with a module
-        $objArray = DBUtil::selectObjectArray('hooks', $where, $orderBy);
-        if ($objArray === false) {
-            return false;
-        }
+        $hooks = $this->entityManager->getRepository($entity)->findBy(array('smodule' => ''), array('tmodule' => 'ASC', 'smodule' => 'DESC'));
 
         // sort the hooks by action
         $grouped_hooks = array();
-        foreach ($objArray as $hookobject) {
+        foreach ($hooks as $hookobject) {
+            $hookobject = $hookobject->toArray();
             if (!array_key_exists($hookobject['action'], $grouped_hooks)) {
                 $grouped_hooks[$hookobject['action']] = array();
             }
@@ -1800,12 +1846,16 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 $hookobject = $grouped_hooks[$action][$smodule];
                 $hookobject['sequence'] = $sequence;
                 $hookobject['smodule'] = $modinfo['name'];
-                if (DBUtil::insertObject($hookobject, 'hooks') === false) {
-                    return false;
-                }
+
+                $item = new $entity;
+                $item->merge($hookobject);
+                $this->entityManager->persist($item);
+
                 $sequence++;
             }
         }
+
+        $this->entityManager->flush();
 
         return true;
     }
