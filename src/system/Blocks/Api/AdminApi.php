@@ -162,15 +162,14 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($block['active']) || !is_numeric($block['active'])) {
             return LogUtil::registerArgsError();
         }
-
-        $blockinfo = BlockUtil::getBlockInfo($block['bid']);
-
-        if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$block[bid]", ACCESS_EDIT)) {
+        
+        $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $block['bid']));
+        if (!SecurityUtil::checkPermission('Blocks::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
         // set block's new state
-        $blockinfo->setActive($block['active']);
+        $item['active'] = $block['active'];
         $this->entityManager->flush();
 
         return true;
