@@ -109,7 +109,7 @@ class ModUtil
 
         // This loads all module variables into the modvars static class variable.
         $em = ServiceUtil::getService('doctrine.entitymanager');
-        $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVars')->findAll();
+        $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var['modname'], self::$modvars)) {
                 self::$modvars[$var['modname']] = array();
@@ -236,10 +236,10 @@ class ModUtil
 
         $em = ServiceUtil::getService('doctrine.entitymanager');
         if (self::hasVar($modname, $name)) {
-            list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVars')->findBy(array('modname' => $modname, 'name' => $name));
+            list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findBy(array('modname' => $modname, 'name' => $name));
             $entity->setValue($value);
         } else {
-            $entity = new \Zikula\Core\Doctrine\Entity\ExtensionVars();
+            $entity = new \Zikula\Core\Doctrine\Entity\ExtensionVar();
             $entity->setModname($modname);
             $entity->setName($name);
             $entity->setValue($value);
@@ -312,7 +312,7 @@ class ModUtil
 
         $em = ServiceUtil::getService('doctrine.entitymanager');
 
-        list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVars')->findBy(array('modname' => $modname, 'name' => $name));
+        list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findBy(array('modname' => $modname, 'name' => $name));
 
         $em->remove($entity);
         $em->flush();
