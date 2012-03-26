@@ -351,7 +351,7 @@ function install(Core $core)
 function createuser($username, $password, $email)
 {
     if (!class_exists('Users_Constant')) {
-        require_once 'system/Users/lib/Users/Constant.php';
+        require_once 'system/Users/Constant.php';
     }
     $connection = Doctrine_Manager::connection();
 
@@ -393,8 +393,6 @@ function installmodules($lang = 'en')
     include_once __DIR__ . '/../plugins/DoctrineExtensions/Plugin.php';
     PluginUtil::loadPlugin('SystemPlugin_DoctrineExtensions_Plugin');
 
-    $connection = Doctrine_Manager::connection();
-
     // Lang validation
     $lang = DataUtil::formatForOS($lang);
 
@@ -402,7 +400,6 @@ function installmodules($lang = 'en')
     $results = array();
 
     $sm = ServiceUtil::getManager();
-    $em = EventUtil::getManager();
 
     $coremodules = array('Extensions',
             'Settings',
@@ -501,6 +498,7 @@ function installmodules($lang = 'en')
         $modpath = 'modules';
         ZLoader::addModule($module, $modpath);
         ZLoader::addAutoloader($module, "$modpath/$module/lib");
+        ZLoader::addAutoloader($module, "$modpath");
 
         $bootstrap = "$modpath/$module/bootstrap.php";
         if (file_exists($bootstrap)) {
