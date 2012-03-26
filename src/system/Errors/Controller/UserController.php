@@ -43,7 +43,7 @@ class Errors_Controller_UserController extends Zikula_AbstractController
                    ->assign('reportlevel', System::getVar('reportlevel'))
                    ->assign('funtext', System::getVar('funtext'));
 
-        $messages = $session->popFlashes(Zikula_Session::MESSAGE_ERROR);
+        $messages = $session->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
         // show the detailed error message for admins only
         if (System::isDevelopmentMode() || SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
             $message ? $messages[] = $message : null;
