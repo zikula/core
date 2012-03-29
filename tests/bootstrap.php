@@ -22,7 +22,7 @@ $classLoader->register();
 $classLoader = new ClassLoader('Zikula\\Tests', __DIR__.'/lib', '\\');
 $classLoader->register();
 
-$classLoader = new ClassLoader('Symfony', __DIR__.'/../src/vendor/symfony/src', '\\');
+$classLoader = new ClassLoader('Symfony', __DIR__.'/../src/vendor/symfony/symfony/src', '\\');
 $classLoader->register();
 
 // Set include path to load the actual source libraries, this will be used by the autoloader when it resolve relative paths
