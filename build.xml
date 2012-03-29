@@ -52,7 +52,6 @@
         <mkdir dir="${builddir}/jsdoc" />
         <echo msg="Downloading vendors..." />
         <exec command="chmod 755 ${workspace}/source/composer.phar;${workspace}/source/composer.phar install" />
-        <exec command="find -type d -iname .git | xargs rm -rf" />
     </target>
 
     <!-- Build archives -->
