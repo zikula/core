@@ -62,12 +62,13 @@
                     <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="A cache lifetime of -1 will set the cache output to never expire."}</p>
                 </div>
                 <div class="z-formrow">
-                    <label for="theme_nocache">{gt text="Modules to exclude from caching"}</label>
+                    <label for="theme_nocache">{gt text="Modules to exclude from theme caching"}</label>
                     <div id="theme_nocache">
                         {foreach from=$mods key=modname item=moddisplayname}
                         <div class="z-formlist">
                             <input id="theme_nocache_{$modname|safetext}" type="checkbox" name="modulesnocache[]" value="{$modname|safetext}"{if isset($modulesnocache.$modname)} checked="checked"{/if} />
                             <label for="theme_nocache_{$modname|safetext}">{$moddisplayname|safetext}</label>
+                            <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                         </div>
                         {/foreach}
                     </div>
