@@ -557,8 +557,8 @@ class Zikula_View_Theme extends Zikula_View
         if ($this->caching && !$this->cache_id) {
             // module / type / function / uid_X|guest / customargs|homepage/startpageargs
             $this->cache_id = $this->toplevelmodule . '/' . $this->type . '/' . $this->func
-                            . '/' . UserUtil::getUidCacheString()
-                            . (!$this->homepage ? $this->_get_customargs() : '/homepage/' . str_replace(',', '/', System::getVar('startargs')));
+                            . (!$this->homepage ? $this->_get_customargs() : '/homepage/' . str_replace(',', '/', System::getVar('startargs')))
+                            . '/' . UserUtil::getUidCacheString();
         }
 
         // assign some basic paths for the engine
