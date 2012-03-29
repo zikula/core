@@ -558,7 +558,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // define the cache_id if not set yet
         if ($this->caching && !$this->cache_id) {
-            // module / type / function / uid_X|guest / customargs|homepage/startpageargs
+            // module / type / function / customargs|homepage/startpageargs / uid_X|guest
             $this->cache_id = $this->toplevelmodule . '/' . $this->type . '/' . $this->func
                             . (!$this->homepage ? $this->_get_customargs() : '/homepage/' . str_replace(',', '/', System::getVar('startargs')))
                             . '/' . UserUtil::getUidCacheString();
