@@ -1136,6 +1136,10 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         if ($cache_lifetime < -1) $cache_lifetime = 3600;
         $this->setVar('cache_lifetime', $cache_lifetime);
 
+        $cache_lifetime_mods = (int)FormUtil::getPassedValue('cache_lifetime_mods', isset($args['cache_lifetime_mods']) ? $args['cache_lifetime_mods'] : 3600, 'POST');
+        if ($cache_lifetime_mods < -1) $cache_lifetime_mods = 3600;
+        $this->setVar('cache_lifetime_mods', $cache_lifetime_mods);
+
         $force_compile = (bool)FormUtil::getPassedValue('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false, 'POST');
         $this->setVar('force_compile', $force_compile);
 

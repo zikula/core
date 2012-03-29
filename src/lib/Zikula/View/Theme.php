@@ -215,6 +215,9 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime');
+        if (!$this->homepage) {
+            $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime_mods');
+        }
 
         // assign all our base template variables
         $this->_base_vars();
