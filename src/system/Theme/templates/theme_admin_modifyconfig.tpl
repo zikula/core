@@ -55,13 +55,21 @@
             <div id="theme_caching">
                 <div class="z-formrow">
                     <label for="cache_lifetime">{gt text="Length of time to keep cached theme pages"}</label>
+                    <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="A cache lifetime of -1 will set the cache output to never expire."}</p>
+                    <label for="cache_lifetime">{gt text="For homepage"}</label>
                     <span>
-                        {gt text="For homepage"} <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
-                        {gt text="seconds"};&nbsp;&nbsp;&nbsp;
-                        {gt text="For modules"} <input type="text" name="cache_lifetime_mods" id="cache_lifetime_mods" value="{$cache_lifetime_mods|safetext}" size="6" tabindex="2" />
+                        <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
+                        {gt text="seconds"}
+                        <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                    </span>
+                </div>
+                <div class="z-formrow">
+                    <label for="cache_lifetime_mods">{gt text="For modules"}</label>
+                    <span>
+                        <input type="text" name="cache_lifetime_mods" id="cache_lifetime_mods" value="{$cache_lifetime_mods|safetext}" size="6" tabindex="2" />
                         {gt text="seconds"}
                     </span>
-                    <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="A cache lifetime of -1 will set the cache output to never expire."}</p>
+
                 </div>
                 <div class="z-formrow">
                     <label for="theme_nocache">{gt text="Modules to exclude from theme caching"}</label>
