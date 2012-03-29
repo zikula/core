@@ -1238,7 +1238,13 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         }
 
         $theme = Zikula_View_Theme::getInstance();
-        $res   = $theme->clear_all_cache();
+
+        $cacheid = FormUtil::getPassedValue('cacheid');
+        if ($cacheid) {
+            $res   = $theme->clear_cache(null, $cacheid);
+        } else {
+            $res   = $theme->clear_all_cache();
+        }
 
         if ($res) {
             LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.'));
