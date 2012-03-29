@@ -56,7 +56,9 @@
                 <div class="z-formrow">
                     <label for="cache_lifetime">{gt text="Length of time to keep cached theme pages"}</label>
                     <span>
-                        <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
+                        {gt text="For homepage"} <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
+                        {gt text="seconds"};&nbsp;&nbsp;&nbsp;
+                        {gt text="For modules"} <input type="text" name="cache_lifetime_mods" id="cache_lifetime_mods" value="{$cache_lifetime_mods|safetext}" size="6" tabindex="2" />
                         {gt text="seconds"}
                     </span>
                     <p class="z-formnote z-informationmsg">{gt text="Notice: A cache lifetime of 0 will set the cache to continually regenerate; this is equivalent to no caching."}<br />{gt text="A cache lifetime of -1 will set the cache output to never expire."}</p>
