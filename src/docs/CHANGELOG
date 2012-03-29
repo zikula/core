@@ -1,3 +1,12 @@
+CHANGELOG - ZIKULA 1.3.3
+------------------------
+
+- Change order in auto generated cache_id for theme caching to: module / type / function / customargs|homepage/startpageargs / uid_X|guest.
+
+- In Admin -> Themes -> Settings: added possibility to delete theme cache for specific module or homepage.
+
+- In Admin -> Themes -> Settings -> 'Length of time to keep cached theme pages' current value is for home page, added other value for modules.
+
 CHANGELOG - ZIKULA 1.3.1
 ------------------------
 
