@@ -486,7 +486,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The concrete path and file name to the content.
      */
-    function _get_auto_filename($path, $auto_source = null, $auto_id = null)
+    function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
     {
         // enables a flags to detect when is treating compiled templates
         $tocompile = ($path == $this->compile_dir) ? true : false;
@@ -495,7 +495,11 @@ class Zikula_View_Theme extends Zikula_View
         $auto_source = DataUtil::formatForOS($auto_source);
 
         // add the Theme name as first folder
-        $path .= '/' . $this->directory;
+        if (empty($themedir)) {
+            $path .= '/' . $this->directory;
+        } else {
+            $path .= '/' . $themedir;
+        }
 
         // the last folder is the cache_id if set
         $path .= !empty($auto_id) ? '/' . $auto_id : '';
