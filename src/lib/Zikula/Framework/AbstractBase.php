@@ -269,7 +269,7 @@ abstract class AbstractBase implements TranslatableInterface
      */
     public function getBaseDir()
     {
-        return $this->baseDir();
+        return $this->baseDir;
     }
 
     /**
