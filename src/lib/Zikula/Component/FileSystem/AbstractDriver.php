@@ -12,8 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem;
-use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
+namespace Zikula\Component\FileSystem;
+use Zikula\Component\FileSystem\Configuration\ConfigurationInterface;
 
 /**
  * Driver Abstract.
@@ -51,8 +51,8 @@ abstract class AbstractDriver
     public function __construct(ConfigurationInterface $configuration)
     {
         // validate we get correct configuration class type.
-        $type = (string)preg_filter('/Zikula\\\Common\\\FileSystem\\\(\w+)$/', '$1', get_class($this));
-        $validName = "Zikula\\Common\\FileSystem\\Configuration\\{$type}Configuration";
+        $type = (string)preg_filter('/Zikula\\\Component\\\FileSystem\\\(\w+)$/', '$1', get_class($this));
+        $validName = "Zikula\\Component\\FileSystem\\Configuration\\{$type}Configuration";
 
         if ($validName != get_class($configuration)) {
             throw new \InvalidArgumentException(
@@ -62,7 +62,7 @@ abstract class AbstractDriver
 
         $this->configuration = $configuration;
 
-        $facade = "Zikula\\Common\\FileSystem\\Facade\\{$type}Facade";
+        $facade = "Zikula\\Component\\FileSystem\\Facade\\{$type}Facade";
         $this->driver = new $facade();
         $this->errorHandler = new Error();
     }

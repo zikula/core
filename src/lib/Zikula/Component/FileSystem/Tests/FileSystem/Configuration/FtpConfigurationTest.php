@@ -1,8 +1,8 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem\Configuration;
+namespace Zikula\Component\FileSystem\Tests\Configuration;
 
-use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
-use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
+use Zikula\Component\FileSystem\Configuration\FtpConfiguration;
+use Zikula\Component\FileSystem\Configuration\ConfigurationInterface;
 /**
  * Zikula_FileSystem_Configuration_Ftp test case.
  */
@@ -38,7 +38,7 @@ class FtpConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function test__construct()
     {
-        $this->assertInstanceOf('Zikula\Common\FileSystem\Configuration\ConfigurationInterface', $this->ftp);
+        $this->assertInstanceOf('Zikula\Component\FileSystem\Configuration\ConfigurationInterface', $this->ftp);
     }
 
     public function testGetUser()

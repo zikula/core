@@ -13,9 +13,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem\Facade;
+namespace Zikula\Component\FileSystem\Facade;
 
-use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
+use Zikula\Component\FileSystem\Configuration\FtpConfiguration;
 
 /**
  * FtpFacade is a facade interface for FTP connections.

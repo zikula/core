@@ -13,10 +13,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem;
+namespace Zikula\Component\FileSystem;
 
-use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
-use Zikula\Common\FileSystem\Configuration\LocalConfiguration;
+use Zikula\Component\FileSystem\Configuration\ConfigurationInterface;
+use Zikula\Component\FileSystem\Configuration\LocalConfiguration;
 
 /**
  * Local is the standard driver for Local/Direct connections.

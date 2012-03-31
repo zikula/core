@@ -1,9 +1,9 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem;
+namespace Zikula\Component\FileSystem\Tests;
 
-use Zikula\Common\FileSystem\Error;
-use Zikula\Common\FileSystem\Ftp;
-use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
+use Zikula\Component\FileSystem\Error;
+use Zikula\Component\FileSystem\Ftp;
+use Zikula\Component\FileSystem\Configuration\FtpConfiguration;
 
 class ErrorTest extends \PHPUnit_Framework_TestCase
 {

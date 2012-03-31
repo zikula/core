@@ -1,8 +1,8 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem;
+namespace Zikula\Component\FileSystem\Tests;
 
-use Zikula\Common\FileSystem\Ftp;
-use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
+use Zikula\Component\FileSystem\Ftp;
+use Zikula\Component\FileSystem\Configuration\FtpConfiguration;
 
 /**
  * Zikula_FileSystem_Ftp test case.
@@ -10,7 +10,7 @@ use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
 class FtpTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Zikula\Common\FileSystem\Ftp
+     * @var \Zikula\Component\FileSystem\Ftp
      */
     private $ftp;
 
@@ -34,7 +34,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     {
         $config = new FtpConfiguration(1,2,3,4,5,6,true);
         $fs = new Ftp($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('ssl_connect')
              ->will($this->returnValue(true));
@@ -52,7 +52,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
 
         $config = new FtpConfiguration();
         $fs = new Ftp($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -70,7 +70,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
 
         $config = new FtpConfiguration();
         $fs = new Ftp($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(false));
@@ -88,7 +88,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
 
         $config = new FtpConfiguration();
         $fs = new Ftp($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -106,7 +106,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
 
         $config = new FtpConfiguration();
         $fs = new Ftp($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -124,7 +124,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
 
         $config = new FtpConfiguration();
         $fs = new Ftp($config);
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('connect')
              ->will($this->returnValue(true));
@@ -144,7 +144,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testPut()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('put')
              ->will($this->returnValue(true));
@@ -153,7 +153,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->put(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('put')
              ->will($this->returnValue(false));
@@ -168,7 +168,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testFput()
     {
         /// Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fput')
              ->will($this->returnValue(true));
@@ -177,7 +177,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->fput(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fput')
              ->will($this->returnValue(false));
@@ -189,7 +189,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('get')
              ->will($this->returnValue(true));
@@ -198,7 +198,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->get(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('get')
              ->will($this->returnValue(false));
@@ -211,7 +211,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testFget()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue(true));
@@ -220,7 +220,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('resource', $this->ftp->fget(1));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue(false));
@@ -233,7 +233,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     {
         // Configure the stub.
         $perm = '777';
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chmod')
              ->will($this->returnValue((int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT))));
@@ -242,7 +242,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($perm, $this->ftp->chmod($perm,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chmod')
              ->will($this->returnValue(false));
@@ -255,7 +255,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     {
     	$array = array('1','2');
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('nlist')
              ->will($this->returnValue($array));
@@ -264,7 +264,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $this->ftp->ls(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('nlist')
              ->will($this->returnValue(false));
@@ -276,7 +276,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testCd()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(true));
@@ -285,7 +285,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->cd(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('chdir')
              ->will($this->returnValue(false));
@@ -297,7 +297,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testMv()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('rename')
              ->will($this->returnValue(true));
@@ -306,7 +306,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->mv(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('rename')
              ->will($this->returnValue(false));
@@ -320,7 +320,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     {
         // Configure the stub.
         $handle = fopen('php://temp', 'r+');
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue($handle));
@@ -332,7 +332,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->cp(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue(false));
@@ -341,7 +341,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $this->ftp->cp(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('fget')
              ->will($this->returnValue($handle));
@@ -356,7 +356,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testRm()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('delete')
              ->will($this->returnValue(true));
@@ -365,7 +365,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->rm(1,2));
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('delete')
              ->will($this->returnValue(false));
@@ -377,7 +377,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
     public function testIsAlive()
     {
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('systype')
              ->will($this->returnValue(true));
@@ -386,7 +386,7 @@ class FtpTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $this->ftp->isAlive());
 
         // Configure the stub.
-        $stub = $this->getMock('Zikula\Common\FileSystem\Facade\FtpFacade');
+        $stub = $this->getMock('Zikula\Component\FileSystem\Facade\FtpFacade');
         $stub->expects($this->any())
              ->method('systype')
              ->will($this->returnValue(false));

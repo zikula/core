@@ -1,9 +1,9 @@
 <?php
 
-namespace Zikula\Tests\Common\FileSystem\Configuration;
+namespace Zikula\Component\FileSystem\Tests\Configuration;
 
-use Zikula\Common\FileSystem\Configuration\SftpConfiguration;
-use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
+use Zikula\Component\FileSystem\Configuration\SftpConfiguration;
+use Zikula\Component\FileSystem\Configuration\ConfigurationInterface;
 
 class SftpConfigurationTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +46,7 @@ class SftpConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function test__construct()
     {
-        $this->assertInstanceOf('Zikula\Common\FileSystem\Configuration\ConfigurationInterface', $this->sftp);
+        $this->assertInstanceOf('Zikula\Component\FileSystem\Configuration\ConfigurationInterface', $this->sftp);
     }
 
     public function testGetUser()

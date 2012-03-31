@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem\Facade;
+namespace Zikula\Component\FileSystem\Facade;
 
 /**
  * LocalFacade is a facade interface for Local connections.

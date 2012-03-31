@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem\Configuration;
+namespace Zikula\Component\FileSystem\Configuration;
 
 /**
  * FTP Configuration class.

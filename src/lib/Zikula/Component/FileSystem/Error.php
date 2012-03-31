@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem;
+namespace Zikula\Component\FileSystem;
 
 /**
  * Error class deals with errors which may be thrown by drivers.
