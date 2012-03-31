@@ -1,8 +1,8 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem\Configuration;
+namespace Zikula\Component\FileSystem\Tests\Configuration;
 
-use Zikula\Common\FileSystem\Configuration\LocalConfiguration;
-use Zikula\Common\FileSystem\Configuration\ConfigurationInterface;
+use Zikula\Component\FileSystem\Configuration\LocalConfiguration;
+use Zikula\Component\FileSystem\Configuration\ConfigurationInterface;
 
 /**
  * Zikula_FileSystem_Configuration_Local test case.
@@ -48,7 +48,7 @@ class LocalConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function test__construct()
     {
-        $this->assertInstanceOf('Zikula\Common\FileSystem\Configuration\ConfigurationInterface', $this->local);
+        $this->assertInstanceOf('Zikula\Component\FileSystem\Configuration\ConfigurationInterface', $this->local);
         $this->assertAttributeEquals('dir', 'dir', $this->local);
 	    $this->assertAttributeEquals('', 'dir', $this->local2);
     }

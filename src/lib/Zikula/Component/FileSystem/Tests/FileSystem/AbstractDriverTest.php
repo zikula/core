@@ -1,11 +1,12 @@
 <?php
-namespace Zikula\Tests\Common\FileSystem;
-use Zikula\Common\FileSystem\Configuration\FtpConfiguration;
-use Zikula\Common\FileSystem\Configuration\LocalConfiguration;
-use Zikula\Common\FileSystem\Ftp;
+namespace Zikula\Component\FileSystem\Tests;
+
+use Zikula\Component\FileSystem\Configuration\FtpConfiguration;
+use Zikula\Component\FileSystem\Configuration\LocalConfiguration;
+use Zikula\Component\FileSystem\Ftp;
 
 /**
- * Zikula_FileSystem_Error test case.
+ * AbstractDriver test case.
  */
 class AbstractDriverTest extends \PHPUnit_Framework_TestCase
 {

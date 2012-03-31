@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem;
+namespace Zikula\Component\FileSystem;
 
 /**
  * Ftp is the standard driver for FTP connections.

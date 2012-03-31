@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\FileSystem\Configuration;
+namespace Zikula\Component\FileSystem\Configuration;
 
 /**
  * Interface for configuration classes.
