@@ -507,27 +507,6 @@ class DataUtil
     }
 
     /**
-     * Transliterate a variable.
-     *
-     * @param string $var The variable to format.
-     *
-     * @return string The formatted variable.
-     */
-    public static function formatTransliterate($var)
-    {
-        $strIsUpper = (strcmp($var, mb_strtoupper($var)) == 0);
-        // replace all chars $permasearch with the one in $permareplace
-        $permasearch = explode(',', System::getVar('permasearch'));
-        $permareplace = explode(',', System::getVar('permareplace'));
-        foreach ($permasearch as $key => $value) {
-            $var = mb_ereg_replace($value, $permareplace[$key], $var);
-        }
-        if ($strIsUpper) $var = mb_strtoupper($var);
-
-        return $var;
-    }
-
-    /**
      * Censor variable contents. This method is recursive array safe.
      *
      * @param string $var The variable to censor.
