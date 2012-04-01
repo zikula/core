@@ -215,6 +215,9 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime');
+        if (!$this->homepage) {
+            $this->cache_lifetime = ModUtil::getVar('Theme', 'cache_lifetime_mods');
+        }
 
         // assign all our base template variables
         $this->_base_vars();
@@ -472,6 +475,35 @@ class Zikula_View_Theme extends Zikula_View
     }
 
     /**
+     * Clears the cache for a specific cache_id's in all active themes.
+     *
+     * @param string $cache_ids   Array of given cache ID's for which to clear theme cache.
+     * @param string $themes   Array of theme objects for which to clear theme cache.
+     *
+     * @return boolean True on success.
+     */
+    public function clear_cacheid_allthemes($cache_ids, $themes = null)
+    {
+        if ($cache_ids) {
+            if (!is_array($cache_ids)) {
+                $cache_ids = array($cache_ids);
+            }
+            if (!$themes) {
+                $themes = ThemeUtil::getAllThemes();
+            }
+            $theme = Zikula_View_Theme::getInstance();
+            foreach ($themes as $themearr) {
+                foreach ($cache_ids as $cache_id) {
+                    $theme->clear_cache(null, $cache_id, null, null, $themearr['directory']);
+                    LogUtil::registerStatus('$cache_id='.$cache_id.', '.$themearr['directory']);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Get a concrete filename for automagically created content.
      *
      * Generates a filename path like: Theme / auto_id [/ source_dir / filename-l{lang}.ext]
@@ -483,7 +515,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The concrete path and file name to the content.
      */
-    function _get_auto_filename($path, $auto_source = null, $auto_id = null)
+    function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
     {
         // enables a flags to detect when is treating compiled templates
         $tocompile = ($path == $this->compile_dir) ? true : false;
@@ -492,7 +524,11 @@ class Zikula_View_Theme extends Zikula_View
         $auto_source = DataUtil::formatForOS($auto_source);
 
         // add the Theme name as first folder
-        $path .= '/' . $this->directory;
+        if (empty($themedir)) {
+            $path .= '/' . $this->directory;
+        } else {
+            $path .= '/' . $themedir;
+        }
 
         // the last folder is the cache_id if set
         $path .= !empty($auto_id) ? '/' . $auto_id : '';
@@ -555,10 +591,10 @@ class Zikula_View_Theme extends Zikula_View
 
         // define the cache_id if not set yet
         if ($this->caching && !$this->cache_id) {
-            // module / type / function / uid_X|guest / customargs|homepage/startpageargs
+            // module / type / function / customargs|homepage/startpageargs / uid_X|guest
             $this->cache_id = $this->toplevelmodule . '/' . $this->type . '/' . $this->func
-                            . '/' . UserUtil::getUidCacheString()
-                            . (!$this->homepage ? $this->_get_customargs() : '/homepage/' . str_replace(',', '/', System::getVar('startargs')));
+                            . (!$this->homepage ? $this->_get_customargs() : '/homepage/' . str_replace(',', '/', System::getVar('startargs')))
+                            . '/' . UserUtil::getUidCacheString();
         }
 
         // assign some basic paths for the engine
