@@ -1136,6 +1136,10 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         if ($cache_lifetime < -1) $cache_lifetime = 3600;
         $this->setVar('cache_lifetime', $cache_lifetime);
 
+        $cache_lifetime_mods = (int)FormUtil::getPassedValue('cache_lifetime_mods', isset($args['cache_lifetime_mods']) ? $args['cache_lifetime_mods'] : 3600, 'POST');
+        if ($cache_lifetime_mods < -1) $cache_lifetime_mods = 3600;
+        $this->setVar('cache_lifetime_mods', $cache_lifetime_mods);
+
         $force_compile = (bool)FormUtil::getPassedValue('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false, 'POST');
         $this->setVar('force_compile', $force_compile);
 
@@ -1237,13 +1241,30 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $theme = Zikula_View_Theme::getInstance();
-        $res   = $theme->clear_all_cache();
+        $cacheid = FormUtil::getPassedValue('cacheid');
 
-        if ($res) {
-            LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.'));
+        $theme = Zikula_View_Theme::getInstance();
+
+        if ($cacheid) {
+            // clear cache for all active themes
+            $themesarr = ThemeUtil::getAllThemes();
+            foreach ($themesarr as $themearr) {
+                $themedir = $themearr['directory'];
+                $res = $theme->clear_cache(null, $cacheid, null, null, $themedir);
+                if ($res) {
+                    LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.').' '.$cacheid.', '.$themedir);
+                } else {
+                    LogUtil::registerError($this->__('Error! Failed to clear theme engine cached templates.').' '.$cacheid.', '.$themedir);
+                }
+            }
         } else {
-            LogUtil::registerError($this->__('Error! Failed to clear theme engine cached templates.'));
+            // this clear all cache for all themes
+            $res = $theme->clear_all_cache();
+            if ($res) {
+                LogUtil::registerStatus($this->__('Done! Deleted theme engine cached templates.'));
+            } else {
+                LogUtil::registerError($this->__('Error! Failed to clear theme engine cached templates.'));
+            }
         }
 
         $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));

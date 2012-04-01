@@ -686,6 +686,7 @@ INSERT INTO `module_vars` VALUES (47,'Theme','modulesnocache','s:0:\"\";');
 INSERT INTO `module_vars` VALUES (48,'Theme','enablecache','b:0;');
 INSERT INTO `module_vars` VALUES (49,'Theme','compile_check','b:1;');
 INSERT INTO `module_vars` VALUES (50,'Theme','cache_lifetime','i:1800;');
+INSERT INTO `module_vars` VALUES (50,'Theme','cache_lifetime_mods','i:1800;');
 INSERT INTO `module_vars` VALUES (51,'Theme','force_compile','b:0;');
 INSERT INTO `module_vars` VALUES (52,'Theme','trimwhitespace','b:0;');
 INSERT INTO `module_vars` VALUES (53,'Theme','maxsizeforlinks','i:30;');
