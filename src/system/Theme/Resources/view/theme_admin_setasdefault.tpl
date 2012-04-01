@@ -5,10 +5,9 @@
 </div>
 
 <p class="z-warningmsg">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename|safetext}</p>
-<form class="z-form" action="{modurl modname="Theme" type="admin" func="setasdefault"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="Theme" type="admin" func="setasdefault" themename=$themename|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <input type="hidden" name="themename" value="{$themename|safetext}" />
         <input type="hidden" name="confirmation" value="1" />
         <fieldset>
             <legend>{gt text="Confirmation prompt"}</legend>

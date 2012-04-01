@@ -19,14 +19,15 @@ class Theme_Installer extends Zikula_AbstractInstaller
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance.
-     * This function MUST exist in the pninit file for a module
      *
      * @return       bool       true on success, false otherwise
      */
     public function install()
     {
         // create the table
-        if (!DBUtil::createTable('themes')) {
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array('Theme\Entity\Theme'));
+        } catch (Exception $e) {
             return false;
         }
 
@@ -72,11 +73,6 @@ class Theme_Installer extends Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
-        // update the table
-        if (!DBUtil::changeTable('themes')) {
-            return false;
-        }
-
         switch ($oldversion)
         {
             case '3.1':
@@ -152,21 +148,12 @@ class Theme_Installer extends Zikula_AbstractInstaller
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance
-     * This function MUST exist in the pninit file for a module
      *
      * Since the theme module should never be deleted we'all always return false here
      * @return       bool       false
      */
     public function uninstall()
     {
-        // drop the table
-        if (!DBUtil::dropTable('Themes')) {
-            return false;
-        }
-
-        // delete all module variables
-        $this->delVar('Theme');
-
         // Deletion not allowed
         return false;
     }

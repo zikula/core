@@ -95,31 +95,43 @@ class ThemeUtil
         $key = md5((string)$filter . (string)$state . (string)$type);
 
         if (empty($themesarray[$key])) {
-            $dbtable = DBUtil::getTables();
-            $themescolumn = $dbtable['themes_column'];
-            $whereargs = array();
+            $filters = array();
+            
             if ($state != self::STATE_ALL) {
-                $whereargs[] = "$themescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
+                $filters['state'] = DataUtil::formatForStore($state);
             }
+            
             if ($type != self::TYPE_ALL) {
-                $whereargs[] = "$themescolumn[type] = '" . (int)DataUtil::formatForStore($type) . "'";
+                $filters['type'] = (int)DataUtil::formatForStore($type);
             }
+            
             if ($filter == self::FILTER_USER) {
-                $whereargs[] = "$themescolumn[user] = '1'";
+                $filters['user'] = 1;
             }
+            
             if ($filter == self::FILTER_SYSTEM) {
-                $whereargs[] = "$themescolumn[system] = '1'";
+                $filters['system'] = 1;
             }
+            
             if ($filter == self::FILTER_ADMIN) {
-                $whereargs[] = "$themescolumn[admin] = '1'";
+                $filters['admin'] = 1;
             }
-
-            $where = implode($whereargs, ' AND ');
-            $orderBy = "ORDER BY $themescolumn[name]";
-            // define the permission filter to apply
-            $permFilter = array(
-                    array('realm' => 0, 'component_left' => 'Theme', 'instance_left' => 'name', 'level' => ACCESS_READ));
-            $themesarray[$key] = DBUtil::selectObjectArray('themes', $where, $orderBy, 0, -1, 'directory', $permFilter);
+            
+            // get entityManager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->getService('doctrine.entitymanager');
+            
+            // get themes
+            $themes = $entityManager->getRepository('Theme\Entity\Theme')->findBy($filters, array('name' => 'ASC'));
+            
+            // index themes array using directory field
+            $dbthemes = array();
+            foreach ($themes as $theme) {
+                $theme = $theme->toArray();
+                $dbthemes[$theme['directory']] = $theme;
+            }
+            
+            $themesarray[$key] = $dbthemes;
             if (!$themesarray[$key]) {
                 return false;
             }
@@ -219,8 +231,15 @@ class ThemeUtil
     {
         static $themestable;
         if (!isset($themestable) || System::isInstalling()) {
-            $array = DBUtil::selectObjectArray('themes', '', '', -1, -1, 'id');
-            foreach ($array as $theme) {
+            // get entityManager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->getService('doctrine.entitymanager');
+            
+            // get all themes
+            $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();
+
+            foreach ($themes as $theme) {
+                $theme = $theme->toArray();
                 $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);
                 $themestable[$theme['id']] = $theme;
             }
