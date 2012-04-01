@@ -485,7 +485,7 @@ class DataUtil
         return $var;
     }
 
-	/**
+    /**
      * Transliterate a variable.
      *
      * @param string $var The variable to format.
