@@ -19,7 +19,6 @@ class Theme_Version extends Zikula_AbstractVersion
         $meta = array();
         $meta['displayname']    = $this->__('Themes');
         $meta['description']    = $this->__('Themes module to manage site layout, render and cache settings.');
-        //! module name that appears in URL
         $meta['url']            = $this->__('theme');
         $meta['version']        = '3.4.1';
         $meta['securityschema'] = array('Theme::' => 'Theme name::');

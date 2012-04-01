@@ -61,10 +61,12 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['themeinfo'])) {
             return LogUtil::registerArgsError();
         }
-
-        if (!DBUtil::updateObject($args['themeinfo'], 'themes')) {
-            return LogUtil::registerError(__('Error! Could not save your changes.'));
-        }
+        
+        unset($args['themeinfo']['i18n']);
+        
+        $item = $this->entityManager->find('Theme\Entity\Theme', $args['themeinfo']['id']);
+        $item->merge($args['themeinfo']);
+        $this->entityManager->flush();
 
         return true;
     }
@@ -91,6 +93,7 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
 
         // if chosen reset all user theme selections
         if ($args['resetuserselected']) {
+            // this will have to be refactored to Doctrine 2 dql once Users module is refactored
             $dbtables = DBUtil::getTables();
             $sql ="UPDATE $dbtables[users] SET theme = ''";
             if (!DBUtil::executeSQL($sql)) {
@@ -163,7 +166,7 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $themeid = ThemeUtil::getIDFromName($args['themename']);
+        $themeid = (int)ThemeUtil::getIDFromName($args['themename']);
 
         // Get the theme info
         $themeinfo = ThemeUtil::getInfo($themeid);
@@ -178,13 +181,18 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // reset the theme for any users utilising this theme.
+        // this will have to be refactored to Doctrine 2 dql once Users module is refactored
         $dbtables = DBUtil::getTables();
         $sql ="UPDATE $dbtables[users] SET theme = '' WHERE theme = '".DataUtil::formatForStore($themeinfo['name']) ."'";
         if (!DBUtil::executeSQL($sql)) {
             return false;
         }
-
-        if (!DBUtil::deleteObjectByID('themes', $themeid, 'id')) {
+        
+        // delete theme
+        $dql = "DELETE FROM Theme\Entity\Theme t WHERE t.id = {$themeid}";
+        $query = $em->createQuery($dql);
+        $result = $query->getResult();
+        if (!$result) {
             return LogUtil::registerError(__('Error! Could not perform the deletion.'));
         }
 

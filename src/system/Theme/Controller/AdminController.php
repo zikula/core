@@ -195,10 +195,11 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
         $newthemeinfo = array_merge($curthemeinfo, $themeinfo);
 
         // rewrite the variables to the running config
-        if (ModUtil::apiFunc('Theme', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo))) {
-            LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
+        $updatesettings = ModUtil::apiFunc('Theme', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
+        if ($updatesettings) {
+            LogUtil::registerStatus($this->__('Done! Updated theme settings.'));
         }
-
+        
         // redirect back to the variables page
         return $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
@@ -892,8 +893,8 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      */
     public function deletepageconfigurationassignmentAction($args)
     {
-        $themename = $this->request->attributes > get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $pcname = $this->request->attributes > get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $pcname = $this->request->query->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
         $confirmation = $this->request->request->get('confirmation', null);
 
         // Get the theme info
@@ -967,8 +968,8 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
     public function setasdefaultAction($args)
     {
         // get our input
-        $themename = $this->request->attributes > get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $confirmation = (int)$this->request->attributes > get('confirmation', false);
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
+        $confirmation = (boolean)$this->request->request->get('confirmation', false);
         $resetuserselected = $this->request->request->get('resetuserselected', isset($args['resetuserselected']) ? $args['resetuserselected'] : null);
 
         // check our input
@@ -982,7 +983,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
         }
 
         // Check for confirmation.
-        if (empty($confirmation)) {
+        if (!$confirmation) {
             // No confirmation yet
             // Add a hidden field for the item ID to the output
             $this->view->assign('themename', $themename);
@@ -1012,12 +1013,8 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      */
     public function deleteAction($args)
     {
-        $themename = $this->request->attributes > get('themename', isset($args['themename']) ? $args['themename'] : null);
-        $objectid = $this->request->attributes > get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
+        $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
         $confirmation = $this->request->request->get('confirmation', null);
-        if (!empty($objectid)) {
-            $mid = $objectid;
-        }
 
         // Get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
@@ -1204,9 +1201,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      * Using this function, the admin can clear all theme engine compiled
      * templates for the system.
      */
-    public function clear_compiled()
+    public function clear_compiledAction()
     {
-        $csrftoken = $this->request->attributes > get('csrftoken');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1232,9 +1229,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      * Using this function, the admin can clear all theme engine cached
      * templates for the system.
      */
-    public function clear_cache()
+    public function clear_cacheAction()
     {
-        $csrftoken = $this->request->attributes > get('csrftoken');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1278,9 +1275,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      * Using this function, the admin can clear all CSS/JS combination cached
      * files for the system.
      */
-    public function clear_cssjscombinecache()
+    public function clear_cssjscombinecacheAction()
     {
-        $csrftoken = $this->request->attributes > get('csrftoken');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1301,9 +1298,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      * Using this function, the admin can clear all theme engine configuration
      * copies created inside the temporary directory.
      */
-    public function clear_config()
+    public function clear_configAction()
     {
-        $csrftoken = $this->request->attributes > get('csrftoken');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1329,9 +1326,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      * Using this function, the admin can clear all render compiled templates
      * for the system.
      */
-    public function render_clear_compiled()
+    public function render_clear_compiledAction()
     {
-        $csrftoken = $this->request->attributes > get('csrftoken');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
@@ -1356,9 +1353,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
      * Using this function, the admin can clear all render cached templates
      * for the system.
      */
-    public function render_clear_cache()
+    public function render_clear_cacheAction()
     {
-        $csrftoken = $this->request->attributes > get('csrftoken');
+        $csrftoken = $this->request->query->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // Security check
