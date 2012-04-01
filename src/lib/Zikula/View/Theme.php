@@ -478,7 +478,7 @@ class Zikula_View_Theme extends Zikula_View
      * Clears the cache for a specific cache_id's in all active themes.
      *
      * @param string $cache_ids   Array of given cache ID's for which to clear theme cache.
-     * @param string $themes   Array of theme objects for which to clear theme cache.
+     * @param string $themes   Array of theme objects for which to clear theme cache, defaults to all active themes.
      *
      * @return boolean True on success.
      */
@@ -495,7 +495,6 @@ class Zikula_View_Theme extends Zikula_View
             foreach ($themes as $themearr) {
                 foreach ($cache_ids as $cache_id) {
                     $theme->clear_cache(null, $cache_id, null, null, $themearr['directory']);
-                    LogUtil::registerStatus('$cache_id='.$cache_id.', '.$themearr['directory']);
                 }
             }
         }
