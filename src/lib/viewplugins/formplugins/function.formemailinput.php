@@ -25,5 +25,5 @@
  */
 function smarty_function_formemailinput($params, $view)
 {
-    return $view->registerPlugin('Zikula_Form_Plugin_EMailInput', $params);
+    return $view->registerPlugin('Zikula_Form_Plugin_EmailInput', $params);
 }

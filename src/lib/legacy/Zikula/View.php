@@ -719,7 +719,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
      *
      * @return string The concrete path and file name to the content.
      */
-    public function _get_auto_filename($path, $auto_source = null, $auto_id = null)
+    public function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
     {
         // enables a flags to detect when is treating compiled templates
         $tocompile = ($path == $this->compile_dir) ? true : false;
@@ -755,7 +755,8 @@ class Zikula_View extends Smarty implements TranslatableInterface
             $path .= FileUtil::getFilebase($auto_source);
 
             // add theme and language to our path
-            $path .= '--t_'.$this->themeinfo['directory'].'-l_' . $this->language;
+            if (empty($themedir)) $themedir = $this->themeinfo['directory'];
+            $path .= '--t_'.$themedir.'-l_' . $this->language;
 
             // if we are not compiling, end with a suffix
             if (!$tocompile) {
@@ -879,13 +880,13 @@ class Zikula_View extends Smarty implements TranslatableInterface
      *
      * @return boolean
      */
-    protected function clear_folder($tmpdir, $auto_id = null, $template = null, $expire = null)
+    protected function clear_folder($tmpdir, $auto_id = null, $template = null, $expire = null, $themedir = null)
     {
         if (!$auto_id && !$template) {
             $result = $this->rmdir($tmpdir, $expire, false);
 
         } else {
-            $autofolder = $this->_get_auto_filename($tmpdir, null, $auto_id);
+            $autofolder = $this->_get_auto_filename($tmpdir, null, $auto_id, $themedir);
 
             if ($template) {
                 $result = $this->rmtpl($autofolder, $template, $expire);
@@ -907,7 +908,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
      *
      * @return boolean True on success, false otherwise.
      */
-    public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null)
+    public function clear_cache($template = null, $cache_id = null, $compile_id = null, $expire = null, $themedir = null)
     {
         if (is_null($compile_id) && $template) {
             $compile_id = $this->compile_id;
@@ -915,7 +916,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
 
         $auto_id = $this->_get_auto_id($cache_id, $compile_id);
 
-        return $this->clear_folder($this->cache_dir, $auto_id, $template, $expire);
+        return $this->clear_folder($this->cache_dir, $auto_id, $template, $expire, $themedir);
     }
 
     /**

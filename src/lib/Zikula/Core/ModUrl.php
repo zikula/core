@@ -63,7 +63,7 @@ class ModUrl
         return $this->fragment;
     }
 
-    public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=true)
+    public function getUrl($ssl = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         return \ModUtil::url($this->application, $this->controller, $this->action, $this->args, $ssl, $this->fragment, $fqurl, $forcelongurl, $forcelang);
     }
