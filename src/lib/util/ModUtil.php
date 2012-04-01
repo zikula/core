@@ -236,7 +236,7 @@ class ModUtil
 
         $em = ServiceUtil::getService('doctrine.entitymanager');
         if (self::hasVar($modname, $name)) {
-            list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findBy(array('modname' => $modname, 'name' => $name));
+            $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findOneBy(array('modname' => $modname, 'name' => $name));
             $entity->setValue($value);
         } else {
             $entity = new \Zikula\Core\Doctrine\Entity\ExtensionVar();
@@ -312,10 +312,18 @@ class ModUtil
 
         $em = ServiceUtil::getService('doctrine.entitymanager');
 
-        list($entity) = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findBy(array('modname' => $modname, 'name' => $name));
+        // if $name is not provided, delete all variables of this module
+        // else just delete this specific variable
+        if (empty($name)) {
+            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVar v WHERE v.modname = '{$modname}'";
+        } else {
+            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVar v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
+        }
+        
+        $query = $em->createQuery($dql);
+        $result = $query->getResult();
 
-        $em->remove($entity);
-        $em->flush();
+        return (boolean)$result;
     }
 
     /**
