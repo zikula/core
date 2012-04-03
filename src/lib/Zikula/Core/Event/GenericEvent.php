@@ -53,13 +53,11 @@ class GenericEvent extends Event implements \ArrayAccess
     protected $exception;
 
     /**
-     * Encapsulate an event called $name with $subject.
+     * Encapsulate an event with $subject, $args, and $data.
      *
-     * @param mixed  $subject Usually and object or other PHP callable.
+     * @param mixed  $subject Usually an object or other PHP callable.
      * @param array  $args    Arguments to store in the event.
      * @param mixed  $data    Convenience argument of data for optional processing.
-     *
-     * @throws \InvalidArgumentException When name is empty.
      */
     public function __construct($subject = null, array $args = array(), $data = null)
     {
@@ -202,7 +200,7 @@ class GenericEvent extends Event implements \ArrayAccess
     /**
      * Has exception.
      *
-     * @return \Exception
+     * @return boolean
      */
     public function hasException()
     {
