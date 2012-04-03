@@ -1,5 +1,5 @@
 {if $pagerPluginArray.includeStylesheet}
-{pageaddvar name="stylesheet" value="system/Theme/style/pagercssadvanced.css"}
+{pageaddvar name="stylesheet" value="system/Theme/Resources/public/css/pagercssadvanced.css"}
 {/if}
 {assign var="separator" value=" | "}
 

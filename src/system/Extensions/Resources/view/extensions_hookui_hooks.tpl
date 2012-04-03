@@ -1,5 +1,5 @@
 {ajaxheader modname='Extensions' filename='hookui.js' ui=true}
-{pageaddvar name='stylesheet' value='system/Extensions/style/hooks.css'}
+{pageaddvar name='stylesheet' value='system/Extensions/Resources/public/css/hooks.css'}
 {pageaddvarblock}
 <script type="text/javascript">
     var subscriber_areas = new Array();
@@ -16,7 +16,7 @@
         subscriber_areas.push('sarea_{{$sarea_md5}}');
         {{/foreach}}
         {{/if}}
-   
+
         initAreasSortables();
         initAreasDraggables();
         initAreasDroppables();
@@ -106,10 +106,10 @@
                             </li>
                         </ol>
                     </div>
-                
+
                 {/foreach}
             </fieldset>
-                
+
             {/foreach}
         </fieldset>
     </div>

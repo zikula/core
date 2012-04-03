@@ -1,8 +1,8 @@
 {ajaxheader modname="blocks" ui=true}
-{pageaddvar name="javascript" value="system/Blocks/javascript/functions.js"}
-{pageaddvar name="javascript" value="system/Blocks/javascript/contextmenu.js"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/adminstyle.css"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/menutree/contextmenu.css"}
+{pageaddvar name="javascript" value="system/Blocks/Resources/public/javascript/functions.js"}
+{pageaddvar name="javascript" value="system/Blocks/Resources/public/javascript/contextmenu.js"}
+{pageaddvar name="stylesheet" value="system/Blocks/Resources/public/css/menutree/adminstyle.css"}
+{pageaddvar name="stylesheet" value="system/Blocks/Resources/public/css/menutree/contextmenu.css"}
 
 {if !empty($redirect)}
 <input type="hidden" name="redirect" value="{$redirect}" />

@@ -1,6 +1,6 @@
 {ajaxheader modname="Blocks" filename="blocks.js"}
 {pageaddvar name="javascript" value="javascript/helpers/Zikula.itemlist.js"}
-{pageaddvar name="stylesheet" value="system/Blocks/style/extmenu_modify.css"}
+{pageaddvar name="stylesheet" value="system/Blocks/Resources/public/css/extmenu_modify.css"}
 {pageaddvarblock}
     <script type="text/javascript">
         /* <![CDATA[ */
