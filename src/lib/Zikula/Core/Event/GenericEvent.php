@@ -255,7 +255,7 @@ class GenericEvent extends Event implements \ArrayAccess
     }
 
     /**
-     * AccessArray has argument.
+     * ArrayAccess has argument.
      *
      * @param string $key Array key.
      *
