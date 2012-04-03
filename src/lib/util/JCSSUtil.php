@@ -298,7 +298,7 @@ class JCSSUtil
             }
         } else if (System::isLegacyMode() && (strpos($script, 'system/') === 0 || strpos($script, 'modules/') === 0)) {
             // check for customized javascripts
-            $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $script);
+            $custom = str_replace('javascript/', '', $script);
             $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
             if (file_exists($custom)) {
                 $script = $custom;

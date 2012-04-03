@@ -45,6 +45,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
 
     public function __construct(array $options = array())
     {
+        $this->setMetadataBag();
         // create IP finger print
         $current_ipaddr = '';
         $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
@@ -261,7 +262,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     /**
      * {@inheritdoc}
      */
-    public function regenerate($destroy = false)
+    public function regenerate($destroy = false, $lifetime = null)
     {
         return;
         // only regenerate if set in admin
