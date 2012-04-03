@@ -96,41 +96,41 @@ class ThemeUtil
 
         if (empty($themesarray[$key])) {
             $filters = array();
-            
+
             if ($state != self::STATE_ALL) {
                 $filters['state'] = DataUtil::formatForStore($state);
             }
-            
+
             if ($type != self::TYPE_ALL) {
                 $filters['type'] = (int)DataUtil::formatForStore($type);
             }
-            
+
             if ($filter == self::FILTER_USER) {
                 $filters['user'] = 1;
             }
-            
+
             if ($filter == self::FILTER_SYSTEM) {
                 $filters['system'] = 1;
             }
-            
+
             if ($filter == self::FILTER_ADMIN) {
                 $filters['admin'] = 1;
             }
-            
+
             // get entityManager
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->getService('doctrine.entitymanager');
-            
+
             // get themes
             $themes = $entityManager->getRepository('Theme\Entity\Theme')->findBy($filters, array('name' => 'ASC'));
-            
+
             // index themes array using directory field
             $dbthemes = array();
             foreach ($themes as $theme) {
                 $theme = $theme->toArray();
                 $dbthemes[$theme['directory']] = $theme;
             }
-            
+
             $themesarray[$key] = $dbthemes;
             if (!$themesarray[$key]) {
                 return false;
@@ -234,7 +234,7 @@ class ThemeUtil
             // get entityManager
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->getService('doctrine.entitymanager');
-            
+
             // get all themes
             $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();
 
@@ -285,8 +285,8 @@ class ThemeUtil
         // module directory
         $modinfo = ModUtil::getInfoFromName($modname);
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $modpath = "modules/$osmoddir/Resources/style";
-        $syspath = "system/$osmoddir/Resources/style";
+        $modpath = "modules/$osmoddir/Resources/public/css";
+        $syspath = "system/$osmoddir/Resources/public/css";
         $modpathOld = "modules/$osmoddir/style";
         $syspathOld = "system/$osmoddir/style";
 

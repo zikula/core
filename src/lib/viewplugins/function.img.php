@@ -36,10 +36,10 @@
  *   - all remaining parameters are passed to the image tag
  *
  * Example: {img src="heading.png" }
- * Output:  <img src="modules/Example/Resources/images/en/heading.png" alt="" width="261" height="69"  />
+ * Output:  <img src="modules/Example/Resources/public/images/en/heading.png" alt="" width="261" height="69"  />
  *
  * Example: {img src="heading.png" width="100" border="1" alt="foobar" }
- * Output:  <img src="modules/Example/Resources/images/en/heading.png" width="100" border="1" alt="foobar"  />
+ * Output:  <img src="modules/Example/Resources/public/images/en/heading.png" width="100" border="1" alt="foobar"  />
  *
  * Example {img src=xhtml11.png modname=core set=powered}
  * <img src="/Theme/images/powered/xhtml11.png" alt="" width="88" height="31"  />
@@ -55,9 +55,9 @@
  * {$myvar.imgtag}
  *
  * Output:
- * modules/Example/Resources/images/en/heading.gif
+ * modules/Example/Resources/public/images/en/heading.gif
  * 261
- * <img src="modules/Example/Resources/images/en/heading.gif" alt="" width="261" height="69"  />
+ * <img src="modules/Example/Resources/public/images/en/heading.gif" alt="" width="261" height="69"  />
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -130,8 +130,8 @@ function smarty_function_img($params, Zikula_View $view)
     if ($modname == 'core') {
         $modpath        = "images/$osset";
     } else {
-        $rmodlangpath    = "$moduleDir/$osmoddir/Resources/images/$lang";
-        $rmodpath        = "$moduleDir/$osmoddir/Resources/images";
+        $rmodlangpath    = "$moduleDir/$osmoddir/Resources/public/images/$lang";
+        $rmodpath        = "$moduleDir/$osmoddir/Resources/public/images";
         $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
         $modpath        = "$moduleDir/$osmoddir/images";
     }
