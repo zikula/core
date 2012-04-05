@@ -138,7 +138,7 @@ abstract class AbstractEventHandler
     /**
      * Get dispatcher.
      *
-     * @return \Zikula\Common\EventManager\EventManager
+     * @return \Symfony\Component\EventDispatcher\EventDispatcher
      */
     public function getDispatcher()
     {
@@ -148,7 +148,7 @@ abstract class AbstractEventHandler
     /**
      * Get servicemanager.
      *
-     * @return \Zikula\Common\ServiceManager\ServiceManager
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     public function getContainer()
     {

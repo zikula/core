@@ -13,7 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
-use \Zikula\Common\ServiceManager\ServiceManager;
+use \Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Zikula_View_Theme class.

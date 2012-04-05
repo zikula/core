@@ -31,10 +31,10 @@ class Exec implements PanelInterface
      */
     private static $OBJECTS_TO_SKIPP = array(
         'Zikula_ServiceManager',
-        'Zikula\Common\ServiceManager\ServiceManager',
+        'Symfony\Component\DependencyInjection\ContainerBuilder',
         'Zikula_View',
         'Zikula_EventManager',
-        'Zikula\Common\EventManager\EventManager',
+        'Symfony\Component\EventDispatcher\EventDispatcher',
         'Doctrine_Table',
         );
 

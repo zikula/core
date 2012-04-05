@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use \Zikula\Common\ServiceManager\ServiceManager;
+use \Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Zikula_View_Plugin for plugin system.

@@ -102,7 +102,7 @@ class Core
     /**
      * ServiceManager.
      *
-     * @var \Zikula\Common\ServiceManager\ServiceManager
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected $container;
 

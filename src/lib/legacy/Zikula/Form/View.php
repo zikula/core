@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use \Zikula\Common\ServiceManager\ServiceManager;
+use \Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * User interaction handler for Form system.

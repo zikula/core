@@ -67,14 +67,14 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * ServiceManager.
      *
-     * @var \Zikula\Common\ServiceManager\ServiceManager
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected $container;
 
     /**
      * EventManager.
      *
-     * @var \Zikula\Common\EventManager\EventManager
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
      */
     protected $dispatcher;
 
@@ -241,7 +241,7 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * Get the EventManager.
      *
-     * @return \Zikula\Common\EventManager\EventManager
+     * @return \Symfony\Component\EventDispatcher\EventDispatcher
      */
     public function getDispatcher()
     {
