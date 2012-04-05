@@ -45,14 +45,14 @@ abstract class AbstractPlugin extends AbstractController
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $container ServiceManager.
      * @param AbstractPlugin $plugin         Plugin.
      * @param array          $options        Options.
      */
-    public function  __construct(ServiceManager $serviceManager, AbstractPlugin $plugin, array $options = array())
+    public function  __construct(ServiceManager $container, AbstractPlugin $plugin, array $options = array())
     {
         $this->plugin = $plugin;
-        parent::__construct($serviceManager, $options);
+        parent::__construct($container, $options);
     }
 
     /**

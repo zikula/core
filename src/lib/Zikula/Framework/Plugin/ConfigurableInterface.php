@@ -24,7 +24,7 @@ interface ConfigurableInterface
      *
      * Example:
      * <samp>
-     *     return new SystemPlugin_Example_Controller($this->serviceManager, array('plugin' => $this));
+     *     return new SystemPlugin_Example_Controller($this->container, array('plugin' => $this));
      * </samp>
      *
      * @return \Zikula\Framework\Controller\AbstractPlugin

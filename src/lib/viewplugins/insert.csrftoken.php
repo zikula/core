@@ -30,5 +30,5 @@
 function smarty_insert_csrftoken($params, $view)
 {
     // NOTE: assign parameter is handled by the smarty_core_run_insert_handler(...) function in lib/vendor/Smarty/internals/core.run_insert_handler.php
-    return SecurityUtil::generateCsrfToken($view->getServiceManager());
+    return SecurityUtil::generateCsrfToken($view->getContainer());
 }

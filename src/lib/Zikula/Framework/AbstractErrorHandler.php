@@ -14,9 +14,11 @@
  */
 
 namespace Zikula\Framework;
+
 use \Zikula\Core\Event\GenericEvent;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\EventManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Zikula ErrorHandler base class.
@@ -37,14 +39,14 @@ abstract class AbstractErrorHandler
      *
      * @var ServiceManager
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * EventManager instance.
      *
      * @var EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * The log event instance.
@@ -120,12 +122,12 @@ abstract class AbstractErrorHandler
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager Servicemanager.
+     * @param ServiceManager $container Servicemanager.
      */
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ContainerInterface $container)
     {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->container = $container;
+        $this->dispatcher = $this->container->get('zikula.eventmanager');
         $this->event = new GenericEvent($this);
     }
 
@@ -207,9 +209,9 @@ abstract class AbstractErrorHandler
      *
      * @return \Zikula\Common\ServiceManager\ServiceManager The service manager instance.
      */
-    public function getServiceManager()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
@@ -217,9 +219,9 @@ abstract class AbstractErrorHandler
      *
      * @return EventManager The event manager instance.
      */
-    public function getEventManager()
+    public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
     /**
@@ -241,7 +243,7 @@ abstract class AbstractErrorHandler
      */
     public function showPHPErrorHandler()
     {
-        return $this->serviceManager['log.show_php_errorhandler'];
+        return $this->container['log.show_php_errorhandler'];
     }
 
     /**
@@ -314,7 +316,7 @@ abstract class AbstractErrorHandler
      */
     public function isDisplayErrorTemplate()
     {
-        return (bool)$this->serviceManager['log.display_template'];
+        return (bool)$this->container['log.display_template'];
     }
 
     /**

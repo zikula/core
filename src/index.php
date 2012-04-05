@@ -20,14 +20,14 @@ use Zikula\Core\Event\GenericEvent;
 include 'lib/bootstrap.php';
 $core->init();
 
-$core->getEventManager()->dispatch('frontcontroller.predispatch', new GenericEvent());
+$core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
 
-$request = $core->getServiceManager()->getService('request');
+$request = $core->getContainer()->get('request');
 
-$core->getEventManager()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
+$core->getDispatcher()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
 
 $resolver = new ControllerResolver();
 
-$kernel = new HttpKernel($core->getEventManager(), $resolver);
+$kernel = new HttpKernel($core->getDispatcher(), $resolver);
 $kernel->handle($request)->send();
 

@@ -65,19 +65,19 @@ class SecurityUtil
     /**
      * Generate a security token.
      *
-     * @param ServiceManager $serviceManager ServiceManager (default = null).
+     * @param ServiceManager $container ServiceManager (default = null).
      * @param boolean        $forceUnique    Force a unique token regardless of system settings.
      *
      * @return string
      */
-    public static function generateCsrfToken(ServiceManager $serviceManager = null, $forceUnique = false)
+    public static function generateCsrfToken(ServiceManager $container = null, $forceUnique = false)
     {
-        if (!$serviceManager) {
-            $serviceManager = ServiceUtil::getManager();
+        if (!$container) {
+            $container = ServiceUtil::getManager();
         }
 
-        $tokenGenerator = $serviceManager->getService('token.generator');
-        $session = $serviceManager->getService('request')->getSession();
+        $tokenGenerator = $container->get('token.generator');
+        $session = $container->get('request')->getSession();
         if (!$forceUnique && $session->get('sessioncsrftokenonetime')) {
             $storage = $tokenGenerator->getStorage();
             $tokenId = $session->get('sessioncsrftokenid');
@@ -101,18 +101,18 @@ class SecurityUtil
      * Validate a given security token.
      *
      * @param string                $token          Token to be validated.
-     * @param ServiceManager $serviceManager ServiceManager default = null.
+     * @param ServiceManager $container ServiceManager default = null.
      *
      * @return boolean
      */
-    public static function validateCsrfToken($token, ServiceManager $serviceManager = null)
+    public static function validateCsrfToken($token, ServiceManager $container = null)
     {
-        if (!$serviceManager) {
-            $serviceManager = ServiceUtil::getManager();
+        if (!$container) {
+            $container = ServiceUtil::getManager();
         }
 
-        $tokenValidator = $serviceManager->getService('token.validator');
-        $session = $serviceManager->getService('request')->getSession();
+        $tokenValidator = $container->get('token.validator');
+        $session = $container->get('request')->getSession();
         if ($session->get('sessioncsrftokenonetime')) {
             $result = $tokenValidator->validate($token, false, false);
             if ($result) {

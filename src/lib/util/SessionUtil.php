@@ -32,7 +32,7 @@ class SessionUtil
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
         if ($path != '/' || $path != '') {
             $name = "$path/$name";
         }
@@ -53,7 +53,7 @@ class SessionUtil
      */
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
 
         if ($name == 'uid') {
             $session->regenerate();
@@ -77,7 +77,7 @@ class SessionUtil
      */
     public static function delVar($name, $default = false, $path = '/')
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
         if ($path != '/' || $path != '') {
             $name = "$path/$name";
         }
@@ -107,7 +107,7 @@ class SessionUtil
      */
     public static function expire()
     {
-        $storage = ServiceUtil::getService('session.storage');
+        $storage = ServiceUtil::get('session.storage');
         $storage->expire();
     }
 
@@ -118,7 +118,7 @@ class SessionUtil
      */
     public static function hasExpired()
     {
-        $storage = ServiceUtil::getService('session.storage');
+        $storage = ServiceUtil::get('session.storage');
         return $storage->isExpired();
     }
 
@@ -131,7 +131,7 @@ class SessionUtil
      */
     public static function regenerate($force = false)
     {
-        $storage = ServiceUtil::getService('session');
+        $storage = ServiceUtil::get('session');
         $storage->migrate();
     }
 

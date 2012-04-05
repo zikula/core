@@ -29,13 +29,13 @@ abstract class Users_Controller_FormData_Validator_AbstractValidator extends Zik
     /**
      * Constructs a new validator instance, initializing the error message.
      *
-     * @param ServiceManager $serviceManager The current service manager instance.
+     * @param ServiceManager $container The current service manager instance.
      * @param string         $errorMessage   The error message to report if the field's data does not validate.
      *
      * @throws InvalidArgumentException Thrown if the error message is not a string or is empty.
      */
-    public function __construct(ServiceManager $serviceManager, $errorMessage = null) {
-        parent::__construct($serviceManager);
+    public function __construct(ServiceManager $container, $errorMessage = null) {
+        parent::__construct($container);
 
         if (isset($errorMessage)) {
             if (is_string($errorMessage) && !empty($errorMessage)) {

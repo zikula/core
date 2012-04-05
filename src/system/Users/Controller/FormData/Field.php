@@ -89,16 +89,16 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * @param string                                     $fieldName      The name of the field.
      * @param mixed                                      $initialValue   The initial value of the field.
      * @param mixed                                      $defaultValue   The defaule value for the field.
-     * @param ServiceManager                             $serviceManager The current service manager instance.
+     * @param ServiceManager                             $container The current service manager instance.
      *
      * @throws InvalidArgumentException Thrown if any of the parameters are not valid.
      */
-    public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, \Zikula\Common\ServiceManager\ServiceManager $serviceManager = null)
+    public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, \Zikula\Common\ServiceManager\ServiceManager $container = null)
     {
-        if (!isset($serviceManager)) {
-            $serviceManager = ServiceUtil::getManager();
+        if (!isset($container)) {
+            $container = ServiceUtil::getManager();
         }
-        parent::__construct($serviceManager);
+        parent::__construct($container);
 
         if (!isset($formContainer)) {
             throw new InvalidArgumentException($this->__f('Invalid formn container.'));

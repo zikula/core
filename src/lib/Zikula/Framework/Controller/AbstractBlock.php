@@ -82,7 +82,7 @@ abstract class AbstractBlock extends AbstractController
     public function __call($method, $args)
     {
         $event = new GenericEvent($this, array('method' => $method, 'args' => $args));
-        $this->eventManager->dispatch('block.method_not_found', $event);
+        $this->dispatcher->dispatch('block.method_not_found', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }

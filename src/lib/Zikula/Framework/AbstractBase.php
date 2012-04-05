@@ -69,14 +69,14 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @var \Zikula\Common\ServiceManager\ServiceManager
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * EventManager.
      *
      * @var \Zikula\Common\EventManager\EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Doctrine EntityManager.
@@ -109,16 +109,16 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager ServiceManager instance.
+     * @param ServiceManager $container ServiceManager instance.
      */
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ServiceManager $container)
     {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->getService('zikula.eventmanager');
+        $this->container = $container;
+        $this->dispatcher = $this->get('zikula.eventmanager');
 
-        $this->request = $this->getService('request');
+        $this->request = $this->get('request');
         $this->session = $this->request->getSession();
-        $this->entityManager = $this->getService('doctrine.entitymanager');
+        $this->entityManager = $this->get('doctrine.entitymanager');
 
         $this->_configureBase();
         $this->initialize();
@@ -233,9 +233,9 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @return ServiceManager
      */
-    public function getServiceManager()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
@@ -243,9 +243,9 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @return \Zikula\Common\EventManager\EventManager
      */
-    public function getEventManager()
+    public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
 
@@ -559,7 +559,7 @@ abstract class AbstractBase implements TranslatableInterface
             $token = $this->request->request->get('csrftoken', false);
         }
 
-        $tokenValidator = $this->serviceManager->getService('token.validator');
+        $tokenValidator = $this->container->get('token.validator');
 
         if (\System::getVar('sessioncsrftokenonetime') && $tokenValidator->validate($token, false, false)) {
             return;
@@ -580,9 +580,9 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @return mixed Service or null.
      */
-    protected function getService($id)
+    protected function get($id)
     {
-        return $this->serviceManager->getService($id);
+        return $this->container->get($id);
     }
 
     /**
@@ -592,9 +592,9 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @return boolean
      */
-    protected function hasService($id)
+    protected function has($id)
     {
-        return $this->serviceManager->hasService($id);
+        return $this->container->has($id);
     }
 
     /**

@@ -140,7 +140,7 @@ class Permissions_Controller_AdminController extends Zikula_AbstractController
         $permissions = array();
         $components = array(-1 => $this->__('All components'));
         if ($numrows > 0) {
-            $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
+            $csrftoken = SecurityUtil::generateCsrfToken($this->container, true);
             $rownum = 1;
             $ak = array_keys($objArray);
             foreach ($ak as $v) {

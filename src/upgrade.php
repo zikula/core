@@ -23,7 +23,7 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
 
-$eventManager = $core->getEventManager();
+$eventManager = $core->getDispatcher();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');
 
 // load zikula core

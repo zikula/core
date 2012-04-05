@@ -16,7 +16,8 @@
 namespace Zikula\Framework;
 use \Zikula\Core\Event\GenericEvent;
 use Zikula\Common\ServiceManager\ServiceManager;
-use Zikula\Common\EventManager\EventManager;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Custom Event Handler interface.
@@ -45,14 +46,14 @@ abstract class AbstractEventHandler
      *
      * @var EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
-     * ServiceManager instance.
+     * DependencyInjection Container instance.
      *
-     * @var ServiceManager
+     * @var ContainerBuilder
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * This object's reflection.
@@ -64,12 +65,12 @@ abstract class AbstractEventHandler
     /**
      * Constructor.
      *
-     * @param EventManager $eventManager EventManager.
+     * @param EventDispatcher $dispatcher EventDispatcher.
      */
-    public function __construct(EventManager $eventManager)
+    public function __construct(EventDispatcher $dispatcher)
     {
-        $this->eventManager = $eventManager;
-        $this->serviceManager = $this->eventManager->getServiceManager();
+        $this->dispatcher = $dispatcher;
+        $this->container = $this->dispatcher->getContainer();
         $this->setupHandlerDefinitions();
     }
 
@@ -83,6 +84,7 @@ abstract class AbstractEventHandler
         if (!$this->reflection) {
             $this->reflection = new \ReflectionObject($this);
         }
+
         return $this->reflection;
     }
 
@@ -95,28 +97,33 @@ abstract class AbstractEventHandler
      *    $this->addHandlerDefinition('some.event', 'handler2', 0);
      * </Samp>
      *
+     * @deprecated
+     *
      * @return void
      */
-    abstract protected function setupHandlerDefinitions();
+    protected function setupHandlerDefinitions()
+    {
+
+    }
 
     /**
      * Add Event definition to handler.
      *
      * @param string  $name   Name of event.
      * @param string  $method Method to invoke when called.
-     * @param integer $weight Handler weight, defaults to 0.
+     * @param integer $priority Handler weight, defaults to 0.
      *
      * @throws \InvalidArgumentException If method specified is invalid.
      *
      * @return void
      */
-    protected function addHandlerDefinition($name, $method, $weight=0)
+    protected function addHandlerDefinition($name, $method, $priority = 0)
     {
         if (!method_exists($this, $method)) {
             throw new \InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
         }
 
-        $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $weight);
+        $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $priority);
     }
 
     /**
@@ -130,13 +137,13 @@ abstract class AbstractEventHandler
     }
 
     /**
-     * Get eventManager.
+     * Get dispatcher.
      *
      * @return \Zikula\Common\EventManager\EventManager
      */
-    public function getEventManager()
+    public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
     /**
@@ -144,9 +151,9 @@ abstract class AbstractEventHandler
      *
      * @return \Zikula\Common\ServiceManager\ServiceManager
      */
-    public function getServiceManager()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
@@ -157,7 +164,7 @@ abstract class AbstractEventHandler
     public function attach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->attach($callable['name'], array($this, $callable['method']), $callable['weight']);
+            $this->dispatcher->addListener($callable['name'], array($this, $callable['method']), $callable['weight']);
         }
     }
 
@@ -169,7 +176,7 @@ abstract class AbstractEventHandler
     public function detach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->detach($callable['name'], array($this, $callable['method']));
+            $this->dispatcher->removeListener($callable['name'], array($this, $callable['method']));
         }
     }
 

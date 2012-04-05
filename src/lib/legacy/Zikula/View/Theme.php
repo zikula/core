@@ -153,10 +153,10 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $container ServiceManager.
      * @param string         $themeName      Theme name.
      */
-    public function __construct(ServiceManager $serviceManager, $themeName)
+    public function __construct(ServiceManager $container, $themeName)
     {
         // store our theme information
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));
@@ -167,7 +167,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->$key = $this->themeinfo[$key];
         }
 
-        parent::__construct($serviceManager);
+        parent::__construct($container);
 
         if ($this->themeinfo['i18n']) {
             ZLanguage::bindThemeDomain($this->name);
@@ -179,12 +179,12 @@ class Zikula_View_Theme extends Zikula_View
 
         EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
         if (is_readable("themes/$themeName/templates/overrides.yml")) {
-            $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
+            $this->dispatcher->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
             $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
         }
 
         $event = new GenericEvent($this);
-        $this->eventManager->dispatch('theme.preinit', $event);
+        $this->dispatcher->dispatch('theme.preinit', $event);
 
         // change some base settings from our parent class
         // template compilation
@@ -253,7 +253,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new GenericEvent($this);
-        $this->eventManager->dispatch('theme.init', $event);
+        $this->dispatcher->dispatch('theme.init', $event);
     }
 
     /**
@@ -272,13 +272,13 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $serviceId = 'zikula.theme';
-        $serviceManager = ServiceUtil::getManager();
+        $container = ServiceUtil::getManager();
 
-        if (!$serviceManager->hasService($serviceId)) {
-            $themeInstance = new self($serviceManager, $themeName);
-            $serviceManager->attachService($serviceId, $themeInstance);
+        if (!$container->has($serviceId)) {
+            $themeInstance = new self($container, $themeName);
+            $container->set($serviceId, $themeInstance);
         } else {
-            $themeInstance = $serviceManager->getService($serviceId);
+            $themeInstance = $container->get($serviceId);
         }
 
         if (!is_null($caching)) {
@@ -305,7 +305,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new GenericEvent($this, array(), $maincontent);
-        $this->eventManager->dispatch('theme.prefetch', $event);
+        $this->dispatcher->dispatch('theme.prefetch', $event);
         $maincontent = $event->getData();
 
         // Assign the main content area to the template engine
@@ -315,7 +315,7 @@ class Zikula_View_Theme extends Zikula_View
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
         $event = new GenericEvent($this, array(), $output);
-        $this->eventManager->dispatch('theme.postfetch', $event);
+        $this->dispatcher->dispatch('theme.postfetch', $event);
         return $event->getData();
     }
 
@@ -505,7 +505,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // make sure the path exists to write the compiled/cached template there
         if (!file_exists($path)) {
-            mkdir($path, $this->serviceManager['system.chmod_dir'], true);
+            mkdir($path, $this->container['system.chmod_dir'], true);
         }
 
         // if there's a explicit source, it
@@ -740,7 +740,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new GenericEvent($this);
-        $this->eventManager->dispatch('theme.load_config', $event);
+        $this->dispatcher->dispatch('theme.load_config', $event);
     }
 
     /**

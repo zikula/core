@@ -35,7 +35,7 @@ class HookManager
      *
      * @var EventManager
      */
-    private $eventManager;
+    private $dispatcher;
 
     /**
      * Runtime hooks handlers loaded flag.
@@ -55,13 +55,13 @@ class HookManager
      * Constructor.
      *
      * @param StorageInterface $storage
-     * @param EventManager     $eventManager
+     * @param EventManager     $dispatcher
      * @param ServiceFactory   $factory
      */
-    public function __construct(StorageInterface $storage, EventManager $eventManager, ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, EventManager $dispatcher, ServiceFactory $factory)
     {
         $this->storage = $storage;
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $dispatcher;
         $this->factory = $factory;
     }
 
@@ -80,7 +80,7 @@ class HookManager
      *
      * @param Hook $hook Hook instance.
      *
-     * @return Hookt
+     * @return Hook
      */
     public function notify(Hook $hook)
     {
@@ -95,7 +95,7 @@ class HookManager
             return $hook;
         }
 
-        $this->eventManager->notify($hook);
+        $this->dispatcher->notify($hook);
         return $hook;
     }
 
@@ -303,7 +303,7 @@ class HookManager
             }
 
             try {
-                $this->eventManager->attach($handler['eventname'], $callable);
+                $this->dispatcher->attach($handler['eventname'], $callable);
             } catch (\InvalidArgumentException $e) {
                 throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
             }
@@ -332,8 +332,21 @@ class HookManager
      */
     private function reload()
     {
-        $this->eventManager->flushHandlers();
+        $this->flushHandlers();
         $this->loadRuntimeHandlers();
     }
 
+    /**
+     * Flush handlers.
+     *
+     * Clears all handlers.
+     *
+     * @return void
+     */
+    public function flushHandlers()
+    {
+        foreach ($this->dispatcher->getListeners() as $eventName => $listener) {
+            $this->dispatcher->removeListener($eventName, $listener);
+        }
+    }
 }

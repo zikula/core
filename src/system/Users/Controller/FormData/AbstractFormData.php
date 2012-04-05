@@ -44,16 +44,16 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * Construct a new form data container instance, initializing the id value.
      *
      * @param string         $formId         A value for the form's id attribute.
-     * @param ServiceManager $serviceManager The current service manager instance.
+     * @param ServiceManager $container The current service manager instance.
      *
      * @throws InvalidArgumentException Thrown if the specified form id is not valid.
      */
-    public function __construct($formId, ServiceManager $serviceManager = null)
+    public function __construct($formId, ServiceManager $container = null)
     {
-        if (!isset($serviceManager)) {
-            $serviceManager = ServiceUtil::getManager();
+        if (!isset($container)) {
+            $container = ServiceUtil::getManager();
         }
-        parent::__construct($serviceManager);
+        parent::__construct($container);
 
         $formId = trim($formId);
         if (!isset($formId) || !is_string($formId) || empty($formId)) {

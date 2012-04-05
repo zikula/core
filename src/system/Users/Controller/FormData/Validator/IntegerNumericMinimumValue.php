@@ -29,15 +29,15 @@ class Users_Controller_FormData_Validator_IntegerNumericMinimumValue extends Use
     /**
      * Constructs a new validator, initializing the minimum valid value.
      *
-     * @param ServiceManager $serviceManager The current service manager instance.
+     * @param ServiceManager $container The current service manager instance.
      * @param integer        $value          The minimum valid value for the field data.
      * @param string         $errorMessage   The error message to return if the field data is not valid.
      *
      * @throws InvalidArgumentException If the minimum value specified is not an integer.
      */
-    public function __construct(ServiceManager $serviceManager, $value, $errorMessage = null)
+    public function __construct(ServiceManager $container, $value, $errorMessage = null)
     {
-        parent::__construct($serviceManager, $errorMessage);
+        parent::__construct($container, $errorMessage);
 
         if (!isset($value) || !is_int($value) || ($value < 0)) {
             throw new InvalidArgumentException($this->__('An invalid integer value was received.'));

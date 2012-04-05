@@ -65,16 +65,16 @@ class Extensions_Controller_AdminpluginController extends Zikula_AbstractControl
             $type = 'ModulePlugin';
             PluginUtil::loadAllModulePlugins();
         }
-        
+
         if ($moduleName) {
             $serviceId = PluginUtil::getServiceId("{$type}_{$moduleName}_{$pluginName}_Plugin");
         } else {
             $serviceId = PluginUtil::getServiceId("{$type}_{$pluginName}_Plugin");
         }
-        
-        $this->throwNotFoundUnless($this->serviceManager->hasService($serviceId));
 
-        $this->plugin = $this->serviceManager->getService($serviceId);
+        $this->throwNotFoundUnless($this->container->has($serviceId));
+
+        $this->plugin = $this->container->get($serviceId);
 
         // Sanity checks.
         $this->throwNotFoundUnless($this->plugin->isInstalled(), __f('Plugin "%s" is not installed', $this->plugin->getMetaDisplayName()));

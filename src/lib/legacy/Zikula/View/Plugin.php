@@ -29,14 +29,14 @@ class Zikula_View_Plugin extends Zikula_View
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $container ServiceManager.
      * @param string         $module         Module name ("zikula" for system plugins).
      * @param string         $pluginName     Plugin name.
      * @param integer|null   $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
-    public function __construct(ServiceManager $serviceManager, $module = 'zikula', $pluginName, $caching = null)
+    public function __construct(ServiceManager $container, $module = 'zikula', $pluginName, $caching = null)
     {
-        parent::__construct($serviceManager, $module, $caching);
+        parent::__construct($container, $module, $caching);
 
         $this->pluginName = $pluginName;
 
@@ -72,14 +72,14 @@ class Zikula_View_Plugin extends Zikula_View
      */
     public static function getPluginInstance($moduleName, $pluginName, $caching = null, $cache_id = null)
     {
-        $serviceManager = ServiceUtil::getManager();
+        $container = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.renderplugin.%s.%s', $moduleName, $pluginName));
 
-        if (!$serviceManager->hasService($serviceId)) {
-            $view = new self($serviceManager, $moduleName, $pluginName, $caching);
-            $serviceManager->attachService($serviceId, $view);
+        if (!$container->has($serviceId)) {
+            $view = new self($container, $moduleName, $pluginName, $caching);
+            $container->set($serviceId, $view);
         } else {
-            return $serviceManager->getService($serviceId);
+            return $container->get($serviceId);
         }
 
         if (!is_null($caching)) {

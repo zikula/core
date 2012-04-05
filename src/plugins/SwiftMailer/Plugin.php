@@ -11,9 +11,9 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\Definition;
-use Zikula\Common\ServiceManager\Argument;
-use Zikula\Common\ServiceManager\Reference;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\Reference;
 use Zikula\Framework\Plugin\ConfigurableInterface;
 use Zikula\Framework\Plugin\AlwaysOnInterface;
 use Zikula\Framework\AbstractPlugin;
@@ -66,12 +66,12 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         // load configuration (todo: move this to persistence).
         include __DIR__ . '/configuration/config.php';
 
-        $this->serviceManager['swiftmailer.preferences.sendmethod'] = $config['sendmethod'];
+        $this->container['swiftmailer.preferences.sendmethod'] = $config['sendmethod'];
 
         $preferences = \Swift_Preferences::getInstance();
-        $this->serviceManager['swiftmailer.preferences.charset'] = $config['charset'];
-        $this->serviceManager['swiftmailer.preferences.cachetype'] = $config['cachetype'];
-        $this->serviceManager['swiftmailer.preferences.tempdir'] = $config['tempdir'];
+        $this->container['swiftmailer.preferences.charset'] = $config['charset'];
+        $this->container['swiftmailer.preferences.cachetype'] = $config['cachetype'];
+        $this->container['swiftmailer.preferences.tempdir'] = $config['tempdir'];
         $preferences->setCharset($config['charset']);
         $preferences->setCacheType($config['cachetype']);
         $preferences->setTempDir($config['tempdir']);
@@ -81,32 +81,32 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         $args = $config['transport'][$type];
         switch ($type) {
             case 'mail':
-                $this->serviceManager['swiftmailer.transport.mail.extraparams'] = $args['extraparams'];
-                $definition = new Definition('Swift_MailTransport', array(new Argument('swiftmailer.transport.mail.extraparams')));
+                $this->container['swiftmailer.transport.mail.extraparams'] = $args['extraparams'];
+                $definition = new Definition('Swift_MailTransport', array(new Parameter('swiftmailer.transport.mail.extraparams')));
                 break;
 
             case 'smtp':
-                $this->serviceManager['swiftmailer.transport.smtp.host'] = $args['host'];
-                $this->serviceManager['swiftmailer.transport.smtp.port'] = $args['port'];
+                $this->container['swiftmailer.transport.smtp.host'] = $args['host'];
+                $this->container['swiftmailer.transport.smtp.port'] = $args['port'];
                 $definition = new Definition('Swift_SmtpTransport', array(
-                                new Argument('swiftmailer.transport.smtp.host'),
-                                new Argument('swiftmailer.transport.smtp.port')));
+                                new Parameter('swiftmailer.transport.smtp.host'),
+                                new Parameter('swiftmailer.transport.smtp.port')));
 
                 if ($args['username'] && $args['password']) {
-                    $this->serviceManager['swiftmailer.transport.smtp.username'] = $args['username'];
-                    $this->serviceManager['swiftmailer.transport.smtp.password'] = $args['password'];
-                    $definition->addMethod('setUserName', new Argument('swiftmailer.transport.smtp.username'));
-                    $definition->addMethod('setPassword', new Argument('swiftmailer.transport.smtp.password'));
+                    $this->container['swiftmailer.transport.smtp.username'] = $args['username'];
+                    $this->container['swiftmailer.transport.smtp.password'] = $args['password'];
+                    $definition->addMethodCall('setUserName', new Parameter('swiftmailer.transport.smtp.username'));
+                    $definition->addMethodCall('setPassword', new Parameter('swiftmailer.transport.smtp.password'));
                 }
                 if (isset($args['encryption'])) {
-                    $this->serviceManager['swiftmailer.transport.smtp.encryption'] = $args['encryption'];
-                    $definition->addMethod('setEncryption', new Argument('swiftmailer.transport.smtp.encryption'));
+                    $this->container['swiftmailer.transport.smtp.encryption'] = $args['encryption'];
+                    $definition->addMethodCall('setEncryption', new Parameter('swiftmailer.transport.smtp.encryption'));
                 }
                 break;
 
             case 'sendmail':
-                $this->serviceManager['swiftmailer.transport.mail.command'] = $args['command'];
-                $definition = new Definition('Swift_SendmailTransport', array(new Argument('swiftmailer.transport.mail.command')));
+                $this->container['swiftmailer.transport.mail.command'] = $args['command'];
+                $definition = new Definition('Swift_SendmailTransport', array(new Parameter('swiftmailer.transport.mail.command')));
                 break;
 
             default:
@@ -116,15 +116,15 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         }
 
         // register transport
-        $this->serviceManager->registerService('swiftmailer.transport', $definition);
+        $this->container->setDefinition('swiftmailer.transport', $definition);
 
         // define and register mailer using transport service
         $definition = new Definition('Swift_Mailer', array(new Reference('swiftmailer.transport')));
-        $this->serviceManager->registerService('mailer', $definition, false);
+        $this->container->setDefinition('mailer', $definition, false);
 
         // register simple mailer service
         $definition = new Definition('SystemPlugins_SwiftMailer_Mailer', array(new Reference('zikula.servicemanager')));
-        $this->serviceManager->registerService('mailer.simple', $definition);
+        $this->container->setDefinition('mailer.simple', $definition);
     }
 
     /**
@@ -134,6 +134,6 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
      */
     public function getConfigurationController()
     {
-        return new SystemPlugin_SwiftMailer_Controller($this->serviceManager, $this);
+        return new SystemPlugin_SwiftMailer_Controller($this->container, $this);
     }
 }

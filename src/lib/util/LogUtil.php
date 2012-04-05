@@ -25,7 +25,7 @@ class LogUtil
      */
     public static function hasErrors()
     {
-        $session = ServiceUtil::getService('request')->getSession();
+        $session = ServiceUtil::get('request')->getSession();
         return $session->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR);
     }
 
@@ -94,7 +94,7 @@ class LogUtil
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
         self::log($message, Zikula_AbstractErrorHandler::DEBUG);
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
 
         if ($type === Zikula_AbstractErrorHandler::INFO) {
             $session->getFlashBag()->add(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
@@ -134,8 +134,8 @@ class LogUtil
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
-                $serviceManager = ServiceUtil::getManager();
-                $request = $serviceManager->getService('request');
+                $container = ServiceUtil::getManager();
+                $request = $container->get('request');
 
                 $loginArgs = array();
                 if ($request->getMethod() == 'GET') {
@@ -167,7 +167,7 @@ class LogUtil
 
         // check if we've got an error type
         if (isset($type) && is_numeric($type)) {
-            $session = ServiceUtil::getService('request')->getSession();
+            $session = ServiceUtil::get('request')->getSession();
             $session->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR);
         }
 
@@ -238,12 +238,12 @@ class LogUtil
             return;
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        if (!$serviceManager->hasService('system.errorreporting')) {
+        $container = ServiceUtil::getManager();
+        if (!$container->has('system.errorreporting')) {
             return;
         }
 
-        $errorReporting = $serviceManager->getService('system.errorreporting');
+        $errorReporting = $container->get('system.errorreporting');
         $errorReporting->handler($level, $msg);
     }
 
@@ -269,7 +269,7 @@ class LogUtil
                 $perc = strpos($logfileSpec, '%s');
                 $start = substr($logfileSpec, 0, $perc + 2);
                 $end = substr($logfileSpec, $perc + 2);
-                $uid = ServiceUtil::getService('session')->get('uid', 0);
+                $uid = ServiceUtil::get('session')->get('uid', 0);
 
                 $logfileSpec = $start . '-%d' . $end;
                 $logfile = sprintf($logfileSpec, date($dateFormat), $uid);

@@ -28,14 +28,14 @@ abstract class AbstractHelper implements TranslatableInterface
      *
      * @var ServiceManager
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * EventManager.
      *
      * @var EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Who we're helping.
@@ -95,14 +95,14 @@ abstract class AbstractHelper implements TranslatableInterface
         $this->object = $object;
 
         if ($object instanceof AbstractBase || $object instanceof AbstractEventHandler || $object instanceof \Zikula\Core\Hook\AbstractHandler || $object instanceof AbstractPlugin) {
-            $this->serviceManager = $object->getServiceManager();
-            $this->eventManager = $object->getEventManager();
+            $this->container = $object->getContainer();
+            $this->dispatcher = $object->getDispatcher();
         } else if ($object instanceof ServiceManager) {
-            $this->serviceManager = $object;
-            $this->eventManager = $object->getService('zikula.eventmanager');
+            $this->container = $object;
+            $this->dispatcher = $object->get('zikula.eventmanager');
         } else if ($object instanceof EventManager) {
-            $this->eventManager = $object;
-            $this->serviceManager = $object->getServiceManager();
+            $this->dispatcher = $object;
+            $this->container = $object->getContainer();
         }
 
         if ($object instanceof AbstractBase) {

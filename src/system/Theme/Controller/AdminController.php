@@ -44,9 +44,9 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1) {
+        if (isset($this->container['multisites.enabled']) && $this->container['multisites.enabled'] == 1) {
             // only the main site can regenerate the themes list
-            if ($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)) {
+            if ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)) {
                 //return true but any action has been made
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
@@ -1087,7 +1087,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
                 // assign all module vars
                 ->assign($this->getVars())
                 // assign an csrftoken for the clear cache/compile links
-                ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->serviceManager, true))
+                ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->container, true))
                 // assign the core config var
                 ->assign('theme_change', System::getVar('theme_change'))
                 // extracted list of non-cached mods

@@ -69,23 +69,23 @@ class DebugToolbar
      *
      * @var EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Sends an event via the EventManager to allow other code to extend the toolbar.
      *
-     * @param EventManager $eventManager Core event manager.
+     * @param EventManager $dispatcher Core event manager.
      */
-    function __construct(EventManager $eventManager)
+    function __construct(EventManager $dispatcher)
     {
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $dispatcher;
         \PageUtil::addVar('javascript', 'prototype');
         \PageUtil::addVar('javascript', 'javascript/debugtoolbar/main.js');
         \PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
         $event = new GenericEvent($this);
-        $this->eventManager->dispatch('debugtoolbar.init', $event);
+        $this->dispatcher->dispatch('debugtoolbar.init', $event);
     }
 
     /**
@@ -127,8 +127,8 @@ class DebugToolbar
     function getContent()
     {
         // check which output type should be returned
-        $serviceManager = $this->eventManager->getServiceManager();
-        $logType = isset($serviceManager['log.to_debug_toolbar_output']) ? $serviceManager['log.to_debug_toolbar_output'] : 0;
+        $container = $this->dispatcher->getContainer();
+        $logType = isset($container['log.to_debug_toolbar_output']) ? $container['log.to_debug_toolbar_output'] : 0;
 
         switch ($logType) {
             case 0:
@@ -196,11 +196,11 @@ class DebugToolbar
      */
     function asJSON()
     {
-        $serviceManager = $this->eventManager->getServiceManager();
-        $request = $serviceManager->getService('request');
+        $container = $this->dispatcher->getContainer();
+        $request = $container->get('request');
 
         // check if security key is defined
-        $secKey = isset($serviceManager['log.to_debug_toolbar_seckey']) ? $serviceManager['log.to_debug_toolbar_seckey'] : false;
+        $secKey = isset($container['log.to_debug_toolbar_seckey']) ? $container['log.to_debug_toolbar_seckey'] : false;
         // if so - get client seckey from http header
         if (!empty($secKey)) {
             $requestSecKey =$request->getServer()->get('HTTP_X_ZIKULA_DEBUGTOOLBAR');

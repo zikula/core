@@ -41,7 +41,7 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
             'DoctrineProxy' => 'ztemp/doctrinemodels',
             ));
 
-        $serviceManager = $event->getDispatcher()->getServiceManager();
+        $container = $event->getDispatcher()->getContainer();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         $dbConfig = array('host' => $config['host'],
                           'user' => $config['user'],
@@ -49,10 +49,10 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
                           'dbname' => $config['dbname'],
                           'driver' => 'pdo_' . $config['dbdriver'],
                           );
-        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
+        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $container['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
         $ORMConfig = new \Doctrine\ORM\Configuration;
-        $serviceManager->attachService('doctrine.configuration', $ORMConfig);
+        $container->set('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
 
         // create proxy cache dir
@@ -64,15 +64,15 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
         $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
-        $serviceManager->attachService('doctrine.annotationreader', $cacheReader);
+        $container->set('doctrine.annotationreader', $cacheReader);
 
         // setup annotation driver
         $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
-        $serviceManager->attachService('doctrine.annotationdriver', $annotationDriver);
+        $container->set('doctrine.annotationdriver', $annotationDriver);
 
         // setup driver chains
         $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
-        $serviceManager->attachService('doctrine.driverchain', $driverChain);
+        $container->set('doctrine.driverchain', $driverChain);
 
         // configure Doctrine ORM
         $ORMConfig->setMetadataDriverImpl($annotationDriver);
@@ -80,24 +80,24 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         $ORMConfig->setProxyDir(CacheUtil::getLocalDir('doctrinemodels'));
         $ORMConfig->setProxyNamespace('DoctrineProxy');
 
-        if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
+        if (isset($container['log.enabled']) && $container['log.enabled']) {
             $ORMConfig->setSQLLogger(new \Zikula\Core\Doctrine\Logger\ZikulaSqlLogger());
         }
 
         // setup doctrine eventmanager
-        $eventManager = new \Doctrine\Common\EventManager;
-        $serviceManager->attachService('doctrine.eventmanager', $eventManager);
+        $dispatcher = new \Doctrine\Common\EventManager;
+        $container->set('doctrine.eventmanager', $dispatcher);
 
          // setup MySQL specific listener (storage engine and encoding)
         if ($config['dbdriver'] == 'mysql') {
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
-            $eventManager->addEventSubscriber($mysqlSessionInit);
+            $dispatcher->addEventSubscriber($mysqlSessionInit);
 
-            $mysqlStorageEvent = new \Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener($eventManager);
+            $mysqlStorageEvent = new \Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener($dispatcher);
         }
 
         // setup the doctrine entitymanager
-        $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
-        $serviceManager->attachService('doctrine.entitymanager', $entityManager);
+        $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $dispatcher);
+        $container->set('doctrine.entitymanager', $entityManager);
     }
 }

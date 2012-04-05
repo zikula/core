@@ -310,8 +310,8 @@ class Users_Installer extends Zikula_AbstractInstaller
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
-        $serviceManager = ServiceUtil::getManager();
-        $dbinfoSystem = $serviceManager['dbtables'];
+        $container = ServiceUtil::getManager();
+        $dbinfoSystem = $container['dbtables'];
         $dbinfo113X = Users_tables('1.13');
         $dbinfo220 = Users_tables('2.2.0');
         $usersOldFields = array(
@@ -344,7 +344,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         $tables['users_verifychg'] = $dbinfo220['users_verifychg'];
         $tables['users_verifychg_column'] = $dbinfo220['users_verifychg_column'];
         $tables['users_verifychg_column_def'] = $dbinfo220['users_verifychg_column_def'];
-        $serviceManager['dbtables'] = array_merge($dbinfoSystem, $tables);
+        $container['dbtables'] = array_merge($dbinfoSystem, $tables);
 
         // Now change the tables
         if (!DBUtil::changeTable('users')) {
@@ -373,7 +373,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         // We need to convert some information over from the old users table fields, so merge the old field list into
         // the new one. The order of array_merge parameters is important here!
         $tables = array('users_column' => array_merge($dbinfo113X['users_column'], $dbinfo220['users_column']));
-        $serviceManager['dbtables'] = array_merge($dbinfoSystem, $tables);
+        $container['dbtables'] = array_merge($dbinfoSystem, $tables);
         // Do the conversion in PHP we use mb_strtolower, and even if MySQL had an equivalent, there is
         // no guarantee that another supported DB platform would.
         $limitNumRows = 100;
@@ -528,14 +528,14 @@ class Users_Installer extends Zikula_AbstractInstaller
 
         // Reset the system tables to the new table definitons, so the rest of the
         // system upgrade goes smoothly.
-        $dbinfoSystem = $serviceManager['dbtables'];
+        $dbinfoSystem = $container['dbtables'];
         foreach ($dbinfo113X as $key => $value) {
             unset($dbinfoSystem[$key]);
         }
         foreach ($dbinfo220 as $key => $value) {
             $dbinfoSystem[$key] = $value;
         }
-        $serviceManager['dbtables'] = $dbinfoSystem;
+        $container['dbtables'] = $dbinfoSystem;
 
         // Update users table for data type change of activated field.
         if (!DBUtil::changeTable('users')) {

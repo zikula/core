@@ -29,7 +29,7 @@ class ServiceUtil
      *
      * @var \Zikula\Common\ServiceManager\ServiceManager
      */
-    private static $serviceManager;
+    private static $container;
 
     /**
      * Service handlers key for persistence.
@@ -52,12 +52,12 @@ class ServiceUtil
      */
     public static function getManager(Zikula\Core\Core $core = null)
     {
-        if (self::$serviceManager) {
-            return self::$serviceManager;
+        if (self::$container) {
+            return self::$container;
         }
 
-        self::$serviceManager = $core->getServiceManager();
-        return self::$serviceManager;
+        self::$container = $core->getContainer();
+        return self::$container;
     }
 
     /**
@@ -67,9 +67,9 @@ class ServiceUtil
      *
      * @return object
      */
-    public static function getService($id)
+    public static function get($id)
     {
-        return self::getManager()->getService($id);
+        return self::getManager()->get($id);
     }
 
     /**
@@ -126,7 +126,7 @@ class ServiceUtil
         }
 
         foreach ($handlers as $id => $handler) {
-            self::$serviceManager->registerService(new Service($id, $handler['definition'], $handler['shared']));
+            self::$container->registerService(new Service($id, $handler['definition'], $handler['shared']));
         }
     }
 }

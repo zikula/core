@@ -114,14 +114,14 @@ class Zikula_View extends Smarty implements TranslatableInterface
      *
      * @var \Zikula\Common\ServiceManager\ServiceManager
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * The event manager instance.
      *
      * @var \Zikula\Common\EventManager\EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Request object.
@@ -168,15 +168,15 @@ class Zikula_View extends Smarty implements TranslatableInterface
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $container ServiceManager.
      * @param string         $moduleName     Module name ("zikula" for system plugins).
      * @param integer|null   $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
-    public function __construct(ServiceManager $serviceManager, $moduleName = '', $caching = null)
+    public function __construct(ServiceManager $container, $moduleName = '', $caching = null)
     {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
-        $this->request = $this->serviceManager->getService('request');
+        $this->container = $container;
+        $this->dispatcher = $this->container->get('zikula.eventmanager');
+        $this->request = $this->container->get('request');
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
@@ -300,7 +300,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
         $this->register_block('nocache', array('Zikula_View_Resource', 'block_nocache'), false);
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($this->serviceManager->getService('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
+        if (($this->container->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 
@@ -331,23 +331,23 @@ class Zikula_View extends Smarty implements TranslatableInterface
         parent::assign('zikula_view', $this);
 
         // add ServiceManager, EventManager and others to all templates
-        parent::assign('serviceManager', $this->serviceManager);
-        parent::assign('eventManager', $this->eventManager);
-        parent::assign('zikula_core', $this->serviceManager->getService('zikula'));
+        parent::assign('container', $this->container);
+        parent::assign('dispatcher', $this->dispatcher);
+        parent::assign('zikula_core', $this->container->get('zikula'));
         parent::assign('request', $this->request);
         parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
 
         $this->add_core_data();
 
         // metadata for SEO
-        if (!isset($this->serviceManager['zikula_view.metatags'])) {
-            $this->serviceManager['zikula_view.metatags'] = new ArrayObject(array());
+        if (!isset($this->container['zikula_view.metatags'])) {
+            $this->container['zikula_view.metatags'] = new ArrayObject(array());
         }
 
-        parent::assign('metatags', $this->serviceManager['zikula_view.metatags']);
+        parent::assign('metatags', $this->container['zikula_view.metatags']);
 
         $event = new GenericEvent($this);
-        $this->eventManager->dispatch('view.init', $event);
+        $this->dispatcher->dispatch('view.init', $event);
     }
 
     /**
@@ -365,13 +365,13 @@ class Zikula_View extends Smarty implements TranslatableInterface
             $module = ModUtil::getName();
         }
 
-        $serviceManager = ServiceUtil::getManager();
+        $container = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.view.%s', $module));
-        if (!$serviceManager->hasService($serviceId)) {
-            $view = new self($serviceManager, $module, $caching);
-            $serviceManager->attachService($serviceId, $view);
+        if (!$container->has($serviceId)) {
+            $view = new self($container, $module, $caching);
+            $container->set($serviceId, $view);
         } else {
-            $view = $serviceManager->getService($serviceId);
+            $view = $container->get($serviceId);
         }
 
         if (!is_null($caching)) {
@@ -583,11 +583,11 @@ class Zikula_View extends Smarty implements TranslatableInterface
      */
     public function add_core_data()
     {
-        if (!isset($this->serviceManager['zikula_view.coredata'])) {
-            $this->serviceManager['zikula_view.coredata'] = new ArrayObject(array());
+        if (!isset($this->container['zikula_view.coredata'])) {
+            $this->container['zikula_view.coredata'] = new ArrayObject(array());
         }
 
-        $core = $this->serviceManager['zikula_view.coredata'];
+        $core = $this->container['zikula_view.coredata'];
         $core['version_num'] = Zikula_Core::VERSION_NUM;
         $core['version_id'] = Zikula_Core::VERSION_ID;
         $core['version_sub'] = Zikula_Core::VERSION_SUB;
@@ -641,7 +641,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
 
         $event = new GenericEvent($this, array('template' => $template), $output);
         try {
-            $this->eventManager->dispatch('view.postfetch', $event);
+            $this->dispatcher->dispatch('view.postfetch', $event);
             $data = $event->getData();
         } catch (Exception $e) {
             var_dump($e->getMessage());
@@ -742,7 +742,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
 
         // make sure the path exists to write the compiled/cached template there
         if (!file_exists($path)) {
-            mkdir($path, $this->serviceManager['system.chmod_dir'], true);
+            mkdir($path, $this->container['system.chmod_dir'], true);
         }
 
         // if there's a explicit source, it
@@ -1317,9 +1317,9 @@ class Zikula_View extends Smarty implements TranslatableInterface
      *
      * @return \Zikula\Common\ServiceManager\ServiceManager The service manager.
      */
-    public function getServiceManager()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
@@ -1327,9 +1327,9 @@ class Zikula_View extends Smarty implements TranslatableInterface
      *
      * @return Zikula_Eventmanager The event manager.
      */
-    public function getEventManager()
+    public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
     /**

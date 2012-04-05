@@ -13,6 +13,7 @@
  */
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * EventUtil
@@ -20,11 +21,11 @@ use Symfony\Component\EventDispatcher\Event;
 class EventUtil
 {
     /**
-     * Singleton instance of EventManager.
+     * Singleton instance of EventDispatcher.
      *
-     * @var \Zikula\Common\EventManager\EventManager
+     * @var EventDispatcher
      */
-    public static $eventManager;
+    public static $dispatcher;
 
     /**
      * Event handlers key for persistence.
@@ -40,33 +41,21 @@ class EventUtil
     }
 
     /**
-     * Get EventManager instance.
+     * Get EventDispatcher instance.
      *
      * @param Zikula\Core\Core $core Core instance.
      *
-     * @return \Zikula\Common\EventManager\EventManager
+     * @return EventDispatcher
      */
     static public function getManager(Zikula\Core\Core $core = null)
     {
-        if (self::$eventManager) {
-            return self::$eventManager;
+        if (self::$dispatcher) {
+            return self::$dispatcher;
         }
 
-        self::$eventManager = $core->getEventManager();
+        self::$dispatcher = $core->getDispatcher();
 
-        return self::$eventManager;
-    }
-
-    /**
-     * Notify event.
-     *
-     * @param Event $event Event.
-     *
-     * @return Event
-     */
-    static public function notify(Event $event)
-    {
-        return self::getManager()->notify($event);
+        return self::$dispatcher;
     }
 
     /**
@@ -79,50 +68,7 @@ class EventUtil
      */
     static public function dispatch($name, Event $event = null)
     {
-        if (!$event) {
-            $event = new Event;
-        }
-
         return self::getManager()->dispatch($name, $event);
-    }
-
-    /**
-     * Attach listener.
-     *
-     * @param string       $name     Name of event.
-     * @param array|string $handler  PHP Callable.
-     * @param integer      $priority Higher get's executed first, default = 0.
-     *
-     * @return void
-     */
-    static public function attach($name, $handler, $priority=0)
-    {
-        self::getManager()->attach($name, $handler, $priority=0);
-    }
-
-    /**
-     * Attach a service handler as an event listener.
-     *
-     * @param string         $name           Event name.
-     * @param ServiceHandler $serviceHandler ServiceHandler (serviceID, Method)
-     * @param string         $priority       Higher get's executed first, default = 0.
-     */
-    static public function attachListenerService($name, ServiceHandler $serviceHandler, $priority=0)
-    {
-        self::getManager()->attachListenerService($name, $serviceHandler, $priority);
-    }
-
-    /**
-     * Detach listener.
-     *
-     * @param string       $name    Name of listener.
-     * @param array|string $handler PHP callable.
-     *
-     * @return void
-     */
-    static public function detach($name, $handler)
-    {
-        self::getManager()->detach($name, $handler);
     }
 
     /**
@@ -134,7 +80,7 @@ class EventUtil
      */
     static public function attachCustomHandlers($dir)
     {
-        self::$eventManager->getServiceManager()->getService('zikula')->attachHandlers($dir);
+        self::$dispatcher->getContainer()->get('zikula')->attachHandlers($dir);
     }
 
     /**
@@ -148,8 +94,8 @@ class EventUtil
      */
     public static function attachEventHandler($className)
     {
-        $serviceManager = ServiceUtil::getManager();
-        $serviceManager->getService('zikula')->attachEventHandler($className);
+        $container = ServiceUtil::getManager();
+        $container->get('zikula')->attachEventHandler($className);
     }
 
     /**
@@ -294,7 +240,7 @@ class EventUtil
                         if (isset($handler['classname'])) {
                             self::attachEventHandler($handler['classname']);
                         } else {
-                            self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
+                            self::$dispatcher->addListener($handler['eventname'], $handler['callable'], $handler['weight']);
                         }
                     } catch (InvalidArgumentException $e) {
                         LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), Zikula_AbstractErrorHandler::ERR);

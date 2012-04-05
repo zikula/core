@@ -31,7 +31,7 @@ $core->boot();
 
 // Load system configuration
 $event = new GenericEvent($core);
-$core->getEventManager()->dispatch('bootstrap.getconfig', $event);
+$core->getDispatcher()->dispatch('bootstrap.getconfig', $event);
 
 $event = new GenericEvent($core);
-$core->getEventManager()->dispatch('bootstrap.custom', $event);
+$core->getDispatcher()->dispatch('bootstrap.custom', $event);

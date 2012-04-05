@@ -108,7 +108,7 @@ class ModUtil
         }
 
         // This loads all module variables into the modvars static class variable.
-        $em = ServiceUtil::getService('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.entitymanager');
         $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var['modname'], self::$modvars)) {
@@ -234,7 +234,7 @@ class ModUtil
             return false;
         }
 
-        $em = ServiceUtil::getService('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.entitymanager');
         if (self::hasVar($modname, $name)) {
             $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVar')->findOneBy(array('modname' => $modname, 'name' => $name));
             $entity->setValue($value);
@@ -310,7 +310,7 @@ class ModUtil
             }
         }
 
-        $em = ServiceUtil::getService('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
@@ -319,7 +319,7 @@ class ModUtil
         } else {
             $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVar v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
         }
-        
+
         $query = $em->createQuery($dql);
         $result = $query->getResult();
 
@@ -590,13 +590,13 @@ class ModUtil
             return false;
         }
 
-        $serviceManager = ServiceUtil::getManager();
+        $container = ServiceUtil::getManager();
 
-        if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
-            $serviceManager['modutil.dbinfoload.loaded'] = array();
+        if (!isset($container['modutil.dbinfoload.loaded'])) {
+            $container['modutil.dbinfoload.loaded'] = array();
         }
 
-        $loaded = $serviceManager['modutil.dbinfoload.loaded'];
+        $loaded = $container['modutil.dbinfoload.loaded'];
 
         // check to ensure we aren't doing this twice
         if (isset($loaded[$modname]) && !$force) {
@@ -605,7 +605,7 @@ class ModUtil
 
         // from here the module dbinfo will be loaded no doubt
         $loaded[$modname] = true;
-        $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
+        $container['modutil.dbinfoload.loaded'] = $loaded;
 
         // get the directory if we don't already have it
         if (empty($directory)) {
@@ -646,19 +646,19 @@ class ModUtil
                 }
             }
 
-            if (!isset($serviceManager['dbtables'])) {
-                $serviceManager['dbtables'] = array();
+            if (!isset($container['dbtables'])) {
+                $container['dbtables'] = array();
             }
 
-            $dbtables = $serviceManager['dbtables'];
-            $serviceManager['dbtables'] = array_merge($dbtables, (array)$data);
+            $dbtables = $container['dbtables'];
+            $container['dbtables'] = array_merge($dbtables, (array)$data);
         } else {
             // marks the module as tableless
             $loaded[$modname] = false;
         }
 
         // update the loaded status
-        $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
+        $container['modutil.dbinfoload.loaded'] = $loaded;
 
         return isset($data) ? $data : $loaded[$modname];
     }
@@ -902,12 +902,12 @@ class ModUtil
         $serviceId = str_replace('\\', '_', strtolower("module.$className"));
         $sm = ServiceUtil::getManager();
 
-        if ($sm->hasService($serviceId)) {
-            $object = $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
-            $sm->attachService($serviceId, $object);
+            $sm->set($serviceId, $object);
         }
 
         return $object;
@@ -977,20 +977,20 @@ class ModUtil
             $controller = $modfunc[0];
         }
 
-        $eventManager = EventUtil::getManager();
+        $dispatcher = EventUtil::getManager();
         if ($loaded) {
             $preExecuteEvent = new GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             $postExecuteEvent = new GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
-                $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
+                $dispatcher->dispatch('module_dispatch.preexecute', $preExecuteEvent);
 
                 $modfunc[0]->preDispatch();
 
                 $postExecuteEvent->setData(call_user_func($modfunc, $args));
                 $modfunc[0]->postDispatch();
 
-                return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
+                return $dispatcher->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
             }
 
             // try to load plugin
@@ -1002,7 +1002,7 @@ class ModUtil
             // return void
             // This event means that no $type was found
             $event = new GenericEvent(null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
-            $eventManager->dispatch('module_dispatch.type_not_found', $event);
+            $dispatcher->dispatch('module_dispatch.type_not_found', $event);
 
             if ($preExecuteEvent->isPropagationStopped()) {
                 return $preExecuteEvent->getData();
@@ -1391,7 +1391,7 @@ class ModUtil
         if (!self::$cache['modstable'] || System::isInstalling()) {
             // get entityManager
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->getService('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine.entitymanager');
 
             // get all modules
             $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findAll();
@@ -1433,7 +1433,7 @@ class ModUtil
     {
         // get entityManager
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->getService('doctrine.entitymanager');
+        $entityManager = $sm->get('doctrine.entitymanager');
 
         // get all modules
         $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findBy($where, array($sort => 'ASC'));
@@ -1454,7 +1454,7 @@ class ModUtil
     public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->getService('doctrine.entitymanager');
+        $entityManager = $sm->get('doctrine.entitymanager');
         $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findBy(array('state' => $state), array($sort => 'ASC'));
         return $modules;
     }

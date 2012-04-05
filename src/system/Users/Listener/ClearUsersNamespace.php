@@ -50,8 +50,8 @@ class Users_Listener_ClearUsersNamespace
                 && isset($modinfo) && is_array($modinfo) && !empty($modinfo) && !isset($modinfo['name']) && ($modinfo['name'] == self::$modname));
 
         if ($doClear) {
-            $serviceManager = ServiceUtil::getManager();
-            $session = $serviceManager->getService('session');
+            $container = ServiceUtil::getManager();
+            $session = $container->get('session');
             $session->clearNamespace('Zikula_Users');
             //Do not setNotified. Not handling the exception, just reacting to it.
         }

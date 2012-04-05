@@ -29,15 +29,15 @@ class Users_Controller_FormData_Validator_StringRegularExpression extends Users_
     /**
      * Constructs the validator, initializing the regular expression.
      *
-     * @param ServiceManager $serviceManager    The current service manager instance.
+     * @param ServiceManager $container    The current service manager instance.
      * @param string         $regularExpression The PCRE regular expression against which to validate the data.
      * @param string         $errorMessage      The error message to return if the data does not match the expression.
      *
      * @throws InvalidArgumentException Thrown if the regular expression is not valid.
      */
-    public function __construct(ServiceManager $serviceManager, $regularExpression, $errorMessage = null)
+    public function __construct(ServiceManager $container, $regularExpression, $errorMessage = null)
     {
-        parent::__construct($serviceManager, $errorMessage);
+        parent::__construct($container, $errorMessage);
 
         if (!isset($regularExpression) || !is_string($regularExpression) || empty($regularExpression)) {
             throw new InvalidArgumentException($this->__('An invalid regular expression was recieved.'));

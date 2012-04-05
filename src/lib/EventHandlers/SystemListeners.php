@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2010 Zikula Foundation
  *
@@ -11,11 +12,10 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Common\ServiceManager\Definition;
-use Zikula\Common\ServiceManager\Reference;
 use Zikula\Core\CoreEvents;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Event handler to override templates.
@@ -107,7 +107,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] & Zikula\Core\Core::STAGE_DECODEURLS) {
             $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
-            $this->serviceManager->attachService('request', $request);
+            $this->container->set('request', $request);
 
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
@@ -118,7 +118,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $request->attributes->set('_action', $action);
             $request->setLocale(ZLanguage::getLanguageCode());
 
-            $session = $this->serviceManager->getService('session');
+            $session = $this->container->get('session');
             $request->setSession($session);
         }
     }
@@ -132,7 +132,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initialHandlerScan(GenericEvent $event)
     {
-        $core = $this->serviceManager->getService('zikula');
+        $core = $this->container->get('zikula');
         ServiceUtil::getManager($core);
         EventUtil::getManager($core);
         $core->attachHandlers('config/EventHandlers');
@@ -148,7 +148,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupCsfrProtection(GenericEvent $event)
     {
         if ($event['stage'] & Zikula\Core\Core::STAGE_MODS) {
-            $this->serviceManager->setArgument('signing.key', System::getVar('signingkey'));
+            $this->container->setParameter('signing.key', System::getVar('signingkey'));
         }
     }
 
@@ -184,8 +184,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function requireSession(GenericEvent $event)
     {
-        $session = $this->serviceManager->getService('session');
-        $request = $this->serviceManager->getService('request');
+        $session = $this->container->get('session');
+        $request = $this->container->get('request');
         $request->setSession($session);
 
         try {
@@ -213,7 +213,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] & Zikula\Core\Core::STAGE_DB) {
             $dbEvent = new GenericEvent();
-            $this->eventManager->dispatch('doctrine.init_connection', $dbEvent);
+            $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent);
         }
     }
 
@@ -248,11 +248,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function defaultErrorReporting(GenericEvent $event)
     {
-        if (!$this->serviceManager['log.enabled']) {
+        if (!$this->container['log.enabled']) {
             return;
         }
 
-        if ($this->serviceManager->hasService('system.errorreporting')) {
+        if ($this->container->has('system.errorreporting')) {
             return;
         }
 
@@ -261,8 +261,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $class = 'Zikula\\Framework\\ErrorHandler\\Ajax';
         }
 
-        $errorHandler = new $class($this->serviceManager);
-        $this->serviceManager->attachService('system.errorreporting', $errorHandler);
+        $errorHandler = new $class($this->container);
+        $this->container->set('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, 'handler'));
         $event->stopPropagation();
     }
@@ -282,25 +282,27 @@ class SystemListeners extends Zikula_AbstractEventHandler
             return;
         }
 
-        if (!$this->serviceManager['log.enabled']) {
+        if (!$this->container['log.enabled']) {
             return;
         }
 
-        if ($this->serviceManager['log.to_display'] || $this->serviceManager['log.sql.to_display']) {
-            $displayLogger = $this->serviceManager->attachService('zend.logger.display', new Zend_Log());
+        if ($this->container['log.to_display'] || $this->container['log.sql.to_display']) {
+            $displayLogger = new Zend_Log();
+            $this->container->set('zend.logger.display', $displayLogger);
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream('php://output');
-            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
+            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />'.PHP_EOL);
             $writer->setFormatter($formatter);
             $displayLogger->addWriter($writer);
         }
 
-        if ($this->serviceManager['log.to_file'] || $this->serviceManager['log.sql.to_file']) {
-            $fileLogger = $this->serviceManager->attachService('zend.logger.file', new Zend_Log());
+        if ($this->container['log.to_file'] || $this->container['log.sql.to_file']) {
+            $fileLogger = new Zend_Log();
+            $this->container->set('zend.logger.file', $fileLogger);
             $filename = LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream($filename);
-            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
+            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%'.PHP_EOL);
 
             $writer->setFormatter($formatter);
             $fileLogger->addWriter($writer);
@@ -340,7 +342,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
                     $line = isset($trace['line']) ? $trace['line'] : null;
 
                     if ($file && $line) {
-                        $message .= ' ' . __f('traced in %1$s line %2$s', array($file, $line)) . "#\n";
+                        $message .= ' '.__f('traced in %1$s line %2$s', array($file, $line))."#\n";
                     }
                 }
             } else {
@@ -348,20 +350,20 @@ class SystemListeners extends Zikula_AbstractEventHandler
             }
         }
 
-        if ($this->serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
-            if (abs($handler->getType()) <= $this->serviceManager['log.display_level']) {
-                $this->serviceManager->getService('zend.logger.display')->log($message, abs($event['type']));
+        if ($this->container['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
+            if (abs($handler->getType()) <= $this->container['log.display_level']) {
+                $this->container->get('zend.logger.display')->log($message, abs($event['type']));
             }
         }
 
-        if ($this->serviceManager['log.to_file']) {
-            if (abs($handler->getType()) <= $this->serviceManager['log.file_level']) {
-                $this->serviceManager->getService('zend.logger.file')->log($message, abs($event['type']));
+        if ($this->container['log.to_file']) {
+            if (abs($handler->getType()) <= $this->container['log.file_level']) {
+                $this->container->get('zend.logger.file')->log($message, abs($event['type']));
             }
         }
 
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
-            if (abs($handler->getType()) <= $this->serviceManager['log.display_ajax_level']) {
+            if (abs($handler->getType()) <= $this->container['log.display_ajax_level']) {
                 // autoloaders don't work inside error handlers!
                 include_once 'lib/Zikula/Exception.php';
                 include_once 'lib/Zikula/Exception/Fatal.php';
@@ -381,18 +383,18 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function logSqlQueries(GenericEvent $event)
     {
-        if (!$this->serviceManager['log.enabled']) {
+        if (!$this->container['log.enabled']) {
             return;
         }
 
         $message = __f('SQL Query: %s took %s sec', array($event['query'], $event['time']));
 
-        if ($this->serviceManager['log.sql.to_display']) {
-            $this->serviceManager->getService('zend.logger.display')->log($message, Zend_Log::DEBUG);
+        if ($this->container['log.sql.to_display']) {
+            $this->container->get('zend.logger.display')->log($message, Zend_Log::DEBUG);
         }
 
-        if ($this->serviceManager['log.sql.to_file']) {
-            $this->serviceManager->getService('zend.logger.file')->log($message, Zend_Log::DEBUG);
+        if ($this->container['log.sql.to_file']) {
+            $this->container->get('zend.logger.file')->log($message, Zend_Log::DEBUG);
         }
     }
 
@@ -407,24 +409,23 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupDebugToolbar(GenericEvent $event)
     {
-        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getArgument('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
 
             // create definitions
-            $toolbar = new Definition(
-                            'Zikula\Framework\DebugToolbar\DebugToolbar',
-                            array(new Reference('zikula.eventmanager')),
-                            array('addPanels' => array(0 => array(
-                                                    new Reference('debug.toolbar.panel.version'),
-                                                    new Reference('debug.toolbar.panel.config'),
-                                                    new Reference('debug.toolbar.panel.memory'),
-                                                    new Reference('debug.toolbar.panel.rendertime'),
-                                                    new Reference('debug.toolbar.panel.sql'),
-                                                    new Reference('debug.toolbar.panel.view'),
-                                                    new Reference('debug.toolbar.panel.exec'),
-                                                    new Reference('debug.toolbar.panel.logs'))))
-            );
+            $toolbar = new Definition('Zikula\Framework\DebugToolbar\DebugToolbar',
+                    array(new Reference('zikula.eventmanager')));
+
+            $toolbar->addMethodCall('addPanels', array(
+                new Reference('debug.toolbar.panel.version'),
+                new Reference('debug.toolbar.panel.config'),
+                new Reference('debug.toolbar.panel.memory'),
+                new Reference('debug.toolbar.panel.rendertime'),
+                new Reference('debug.toolbar.panel.sql'),
+                new Reference('debug.toolbar.panel.view'),
+                new Reference('debug.toolbar.panel.exec'),
+            ));
 
             $versionPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Version');
             $configPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Config');
@@ -436,32 +437,32 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $logsPanel = new Definition('Zikula\Framework\DebugToolbar\Panel\Log');
 
             // save start time (required by rendertime panel)
-            $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
+            $this->container->setParameter('debug.toolbar.panel.rendertime.start', microtime(true));
 
             // register services
-            $this->serviceManager->registerService('debug.toolbar.panel.version', $versionPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.config', $configPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.memory', $momoryPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.rendertime', $rendertimePanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.sql', $sqlPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.view', $viewPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.exec', $execPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.logs', $logsPanel, true);
-            $this->serviceManager->registerService('debug.toolbar', $toolbar, true);
+            $this->container->setDefinition('debug.toolbar.panel.version', $versionPanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.config', $configPanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.memory', $momoryPanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.rendertime', $rendertimePanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.sql', $sqlPanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.view', $viewPanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.exec', $execPanel, true);
+            $this->container->setDefinition('debug.toolbar.panel.logs', $logsPanel, true);
+            $this->container->setDefinition('debug.toolbar', $toolbar, true);
 
             // setup rendering event listeners
-            $this->eventManager->attach('theme.prefetch', array($this, 'debugToolbarRendering'));
-            $this->eventManager->attach('theme.postfetch', array($this, 'debugToolbarRendering'));
+            $this->dispatcher->addListener('theme.prefetch', array($this, 'debugToolbarRendering'));
+            $this->dispatcher->addListener('theme.postfetch', array($this, 'debugToolbarRendering'));
 
             // setup event listeners
-            $this->eventManager->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
-            $this->eventManager->attach('module_dispatch.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'), 20);
-            $this->eventManager->attach('module_dispatch.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'), 20);
-            $this->eventManager->attach('module_dispatch.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'), 20);
-            $this->eventManager->attach('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
-            $this->eventManager->attach('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
-            $this->eventManager->attach('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'), 20);
-            $this->eventManager->attach('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'), 20);
+            $this->dispatcher->addListener('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
+            $this->dispatcher->addListener('module_dispatch.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'), 20);
+            $this->dispatcher->addListener('module_dispatch.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'), 20);
+            $this->dispatcher->addListener('module_dispatch.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'), 20);
+            $this->dispatcher->addListener('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
+            $this->dispatcher->addListener('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
+            $this->dispatcher->addListener('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'), 20);
+            $this->dispatcher->addListener('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'), 20);
         }
     }
 
@@ -477,10 +478,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
             if ($event->getName() == 'theme.prefetch') {
                 // force object construction (debug toolbar constructor registers javascript and css files via PageUtil)
-                $this->serviceManager->getService('debug.toolbar');
+                $this->container->get('debug.toolbar');
             } else {
-                $toolbar = $this->serviceManager->getService('debug.toolbar');
-                $html = $toolbar->getContent() . "\n</body>";
+                $toolbar = $this->container->get('debug.toolbar');
+                $html = $toolbar->getContent()."\n</body>";
                 $event->setData(str_replace('</body>', $html, $event->getData()));
             }
         }
@@ -516,7 +517,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $moduleName = $event['name'];
 
         // remove generated category models for this record
-        $dir = 'doctrinemodels/GeneratedDoctrineModel/' . $moduleName;
+        $dir = 'doctrinemodels/GeneratedDoctrineModel/'.$moduleName;
         if (file_exists(CacheUtil::getLocalDir($dir))) {
             CacheUtil::removeLocalDir($dir, true);
         }
@@ -567,7 +568,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             return;
         }
 
-        if (!SecurityUtil::checkPermission($event['modname'] . '::Hooks', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission($event['modname'].'::Hooks', '::', ACCESS_ADMIN)) {
             return;
         }
 
@@ -577,9 +578,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         $event->data[] = array(
-                'url' => ModUtil::url($event['modname'], 'admin', 'hooks'),
-                'text' => __('Hooks'),
-                'class' => 'z-icon-es-hook'
+            'url' => ModUtil::url($event['modname'], 'admin', 'hooks'),
+            'text' => __('Hooks'),
+            'class' => 'z-icon-es-hook'
         );
     }
 
@@ -602,15 +603,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // notify EVENT here to gather any system service links
         $args = array('modname' => $event->getArg('modname'));
         $localevent = new GenericEvent($event->getSubject(), $args);
-        $this->eventManager->dispatch('module_dispatch.service_links', $localevent);
+        $this->dispatcher->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
 
         if (!empty($sublinks)) {
             $event->data[] = array(
-                    'url' => ModUtil::url($event['modname'], 'admin', 'moduleservices'),
-                    'text' => __('Services'),
-                    'class' => 'z-icon-es-gears',
-                    'links' => $sublinks);
+                'url' => ModUtil::url($event['modname'], 'admin', 'moduleservices'),
+                'text' => __('Services'),
+                'class' => 'z-icon-es-gears',
+                'links' => $sublinks);
         }
     }
 
@@ -636,7 +637,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         foreach ($GLOBALS['ZConfig'] as $config) {
-            $event->getSubject()->getServiceManager()->loadArguments($config);
+            $event->getSubject()->getContainer()->loadArguments($config);
         }
 
         $event->stopPropagation();
@@ -701,31 +702,31 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if (System::isDevelopmentMode() || System::isInstalling()) {
-            $temp = $this->serviceManager->getArgument('temp');
+            $temp = $this->container->getParameter('temp');
             if (!is_dir($temp) || !is_writable($temp)) {
-                echo __f('The temporary directory "%s" and its subfolders must be writable.', $temp) . '<br />';
+                echo __f('The temporary directory "%s" and its subfolders must be writable.', $temp).'<br />';
                 die(__('Please ensure that the permissions are set correctly on your server.'));
             }
 
             $folders = array(
-                    $temp,
-                    "$temp/error_logs",
-                    "$temp/view_compiled",
-                    "$temp/view_cache",
-                    "$temp/Theme_compiled",
-                    "$temp/Theme_cache",
-                    "$temp/Theme_Config",
-                    "$temp/Theme_cache",
-                    "$temp/purifierCache",
-                    "$temp/idsTmp"
+                $temp,
+                "$temp/error_logs",
+                "$temp/view_compiled",
+                "$temp/view_cache",
+                "$temp/Theme_compiled",
+                "$temp/Theme_cache",
+                "$temp/Theme_Config",
+                "$temp/Theme_cache",
+                "$temp/purifierCache",
+                "$temp/idsTmp"
             );
 
             foreach ($folders as $folder) {
                 if (!is_dir($folder)) {
-                    mkdir($folder, $this->serviceManager->getArgument('system.chmod_dir'), true);
+                    mkdir($folder, $this->container->getParameter('system.chmod_dir'), true);
                 }
                 if (!is_writable($folder)) {
-                    echo __f("System error! Folder '%s' was not found or is not writable.", $folder) . '<br />';
+                    echo __f("System error! Folder '%s' was not found or is not writable.", $folder).'<br />';
                     $die = true;
                 }
             }

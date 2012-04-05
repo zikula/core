@@ -929,7 +929,7 @@ class CategoryUtil
         $params['cid'] = $category['id'];
         $url = ModUtil::url('Categories', 'admin', 'edit', $params);
 
-        $request = ServiceUtil::getService('request');
+        $request = ServiceUtil::get('request');
         if ($request->attributes->get('_type') == 'admin') {
             $url .= '#top';
         }
@@ -1136,7 +1136,7 @@ class CategoryUtil
             $params['cid'] = $c['id'];
             $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'admin', 'edit', $params));
 
-            $request = ServiceUtil::getService('request');
+            $request = ServiceUtil::get('request');
             if ($request->attributes->get('_type') == 'admin') {
                 $url .= '#top';
             }

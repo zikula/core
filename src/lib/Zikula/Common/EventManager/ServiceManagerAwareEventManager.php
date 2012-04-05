@@ -16,21 +16,21 @@
 namespace Zikula\Common\EventManager;
 use Zikula\Common\ServiceManager\ServiceManager;
 use Zikula\Common\EventManager\ServiceHandler;
-use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * EventManager.
  *
  * Manages event handlers and invokes them for notified events.
  */
-class ServiceManagerAwareEventManager extends EventManager implements EventManagerInterface
+class ServiceManagerAwareEventManager extends EventDispatcher implements EventManagerInterface
 {
     /**
      * ServiceManager object.
      *
      * @var ServiceManager
      */
-    private $serviceManager;
+    private $container;
 
     /**
      * @var array
@@ -42,11 +42,11 @@ class ServiceManagerAwareEventManager extends EventManager implements EventManag
      *
      * Inject an instance of ServiceManager to enable lazy loading of event handlers.
      *
-     * @param ServiceManager $serviceManager Service manager instance.
+     * @param ServiceManager $container Service manager instance.
      */
-    public function __construct(ServiceManager $serviceManager)
+    public function __construct(ServiceManager $container)
     {
-        $this->serviceManager = $serviceManager;
+        $this->container = $container;
     }
 
     /**
@@ -93,7 +93,7 @@ class ServiceManagerAwareEventManager extends EventManager implements EventManag
      */
     public function attachListenerService($name, ServiceHandler $serviceHandler, $priority=0)
     {
-        if (!$this->serviceManager->hasService($serviceHandler->getId())) {
+        if (!$this->container->hasService($serviceHandler->getId())) {
             throw new \InvalidArgumentException(sprintf('ServiceHandler (id:"%s") is not registered with the ServiceManager', $serviceHandler->getId()));
         }
 
@@ -161,7 +161,7 @@ class ServiceManagerAwareEventManager extends EventManager implements EventManag
 
         foreach ($this->serviceHandlers[$name] as $args) {
             list($serviceHandler, $priority) = $args;
-            $service = $this->serviceManager->getService($serviceHandler->getId());
+            $service = $this->container->getService($serviceHandler->getId());
             $method = $serviceHandler->getMethodName();
             parent::addListener($name, array($service, $method), $priority);
             unset($this->serviceHandlers[$name]);
@@ -169,12 +169,12 @@ class ServiceManagerAwareEventManager extends EventManager implements EventManag
     }
 
     /**
-     * Getter for the serviceManager property.
+     * Getter for the container property.
      *
      * @return ServiceManager instance.
      */
-    public function getServiceManager()
+    public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 }

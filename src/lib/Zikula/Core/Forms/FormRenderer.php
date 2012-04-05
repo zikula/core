@@ -16,13 +16,13 @@ class FormRenderer
 {
     protected $renderer;
     protected $varStack;
-    protected $eventManager;
+    protected $dispatcher;
 
-    public function __construct(EventManagerInterface $eventManager)
+    public function __construct(EventManagerInterface $dispatcher)
     {
         $this->varStack = array();
         $this->renderer = null;
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $dispatcher;
     }
 
     public function renderEnctype($params)
@@ -195,7 +195,7 @@ class FormRenderer
     {
         if($this->renderer == null) {
             $event = new \Zikula_Event('symfony.formrenderer.lookup', new \ArrayObject(array()));
-            $this->eventManager->notify($event);
+            $this->dispatcher->notify($event);
             
             $renderer = array();
             

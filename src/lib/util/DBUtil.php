@@ -62,7 +62,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
             return $cacheDriver->fetch($prefix . $table . $key);
         }
 
@@ -85,7 +85,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
             $cacheDriver->save($prefix . $table . $key, $fields);
         }
     }
@@ -103,7 +103,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
             $cacheDriver->deleteByPrefix($prefix . $table);
         }
     }
@@ -195,9 +195,9 @@ class DBUtil
     public static function getDefaultTableOptions()
     {
         $tableoptions = array();
-        $serviceManager = ServiceUtil::getManager();
+        $container = ServiceUtil::getManager();
 
-        $databases = $serviceManager['databases'];
+        $databases = $container['databases'];
         $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
         $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
         if ($dbDriverName == 'mysql') {

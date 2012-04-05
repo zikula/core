@@ -59,7 +59,7 @@ class StringUtil
 
     /**
      * Translate html input newlines to <br /> sequences.
-     * 
+     *
      * This function is necessary as inputted strings will contain
      * "\n\r" instead of just "\n".
      *
@@ -77,7 +77,7 @@ class StringUtil
 
     /**
      * Tokenize a string according to the given parameters.
-     * 
+     *
      * This function just wraps explode to provide a more java-similar syntax.
      *
      * @param string  $string    The string to tokenize.
@@ -107,7 +107,7 @@ class StringUtil
 
     /**
      * Returns the left x chars of a string.
-     * 
+     *
      * If the string is longer than x, the whole string is returned.
      *
      * @param string  $string The string to operate on.
@@ -126,7 +126,7 @@ class StringUtil
 
     /**
      * Returns the right x chars of a string.
-     * 
+     *
      * If the string is longer than x, the whole string is returned.
      *
      * @param string  $string The string to operate on.
@@ -145,7 +145,7 @@ class StringUtil
 
     /**
      * Markup text with highlight tags around search phrases.
-     * 
+     *
      * Shorten text appropriate to view in hitlist.
      *
      * @param string  $text        The string to operate on.
@@ -195,7 +195,7 @@ class StringUtil
                 ++$endPos;
             }
 
-            // Setup section 
+            // Setup section
             $section = mb_strcut($text, $startPos, $endPos - $startPos);
         } else {
             // Text is shorter than $contextSize
@@ -215,10 +215,10 @@ class StringUtil
 
     /**
      * Camelize string.
-     * 
+     *
      * @param string $string    String to operate on.
      * @param string $separator Seperator.
-     * 
+     *
      * @return string
      */
     public static function camelize($string, $separator = '_')
@@ -246,12 +246,12 @@ class StringUtil
     public static function getMarkdownParser()
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->hasService('markdown_parser')) {
+        if (!$sm->has('markdown_parser')) {
             include_once 'lib/vendor/Markdown/markdown.php';
-            $sm->attachService('markdown_parser', new Markdown_Parser());
+            $sm->set('markdown_parser', new Markdown_Parser());
         }
 
-        return $sm->getService('markdown_parser');
+        return $sm->get('markdown_parser');
     }
 
     /**
@@ -262,12 +262,12 @@ class StringUtil
     public static function getMarkdownExtraParser()
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->hasService('markdownextra_parser')) {
+        if (!$sm->has('markdownextra_parser')) {
             include_once 'lib/vendor/Markdown/markdown.php';
-            $sm->attachService('markdownextra_parser', new MarkdownExtra_Parser());
+            $sm->set('markdownextra_parser', new MarkdownExtra_Parser());
         }
 
-        return $sm->getService('markdownextra_parser');
+        return $sm->get('markdownextra_parser');
     }
 
 }
