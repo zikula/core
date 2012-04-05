@@ -13,8 +13,9 @@
  */
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zikula\Common\ServiceManager\Service;
-use Zikula\Common\ServiceManager\Definition;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
+use Zikula\Core\Core;
 
 /**
  * ServiceUtil
@@ -27,7 +28,7 @@ class ServiceUtil
     /**
      * Service manager instance.
      *
-     * @var \Zikula\Common\ServiceManager\ServiceManager
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     private static $container;
 
@@ -46,17 +47,18 @@ class ServiceUtil
     /**
      * Get manager instance.
      *
-     * @param Zikula\Core\Core $core Core instance (optional).
+     * @param Core $core Core instance (optional).
      *
-     * @return \Zikula\Common\ServiceManager\ServiceManager
+     * @return ContainerBuilder
      */
-    public static function getManager(Zikula\Core\Core $core = null)
+    public static function getManager(Core $core = null)
     {
         if (self::$container) {
             return self::$container;
         }
 
         self::$container = $core->getContainer();
+
         return self::$container;
     }
 
@@ -86,6 +88,12 @@ class ServiceUtil
     public static function registerPersistentService($id, Definition $definition, $shared=true)
     {
         $handlers = ModUtil::getVar(self::HANDLERS, 'definitions', array());
+        if ($shared) {
+            $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
+        } else {
+            $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+        }
+        
         $handlers[$id] = array('definition' => $definition, 'shared' => $shared);
         ModUtil::setVar(self::HANDLERS, 'definitions', $handlers);
     }
@@ -126,7 +134,13 @@ class ServiceUtil
         }
 
         foreach ($handlers as $id => $handler) {
-            self::$container->registerService(new Service($id, $handler['definition'], $handler['shared']));
+            if ($handler['shared']) {
+                $handler['definition']->setScope(ContainerInterface::SCOPE_CONTAINER);
+            } else {
+                $handler['definition']->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+            }
+
+            self::$container->setDefinition($id, $handler['definition']);
         }
     }
 }

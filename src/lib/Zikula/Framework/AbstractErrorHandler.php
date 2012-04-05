@@ -207,7 +207,7 @@ abstract class AbstractErrorHandler
     /**
      * Retrieve the service manager instance.
      *
-     * @return \Zikula\Common\ServiceManager\ServiceManager The service manager instance.
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder The service manager instance.
      */
     public function getContainer()
     {

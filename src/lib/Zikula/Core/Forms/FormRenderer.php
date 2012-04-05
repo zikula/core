@@ -5,7 +5,7 @@ namespace Zikula\Core\Forms;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Util\FormUtil;
-use Zikula\Common\EventManager\EventManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Symfony2 FormView Renderer.

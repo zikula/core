@@ -113,14 +113,14 @@ class Zikula_View extends Smarty implements TranslatableInterface
     /**
      * The service manager instance.
      *
-     * @var \Zikula\Common\ServiceManager\ServiceManager
+     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected $container;
 
     /**
      * The event manager instance.
      *
-     * @var \Zikula\Common\EventManager\EventManager
+     * @var \Symfony\Component\EventDispatcher\EventDispatcher
      */
     protected $dispatcher;
 
