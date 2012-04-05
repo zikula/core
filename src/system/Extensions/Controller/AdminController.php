@@ -163,7 +163,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         $session->remove('interactive_remove');
         $session->remove('interactive_upgrade');
 
-        if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+        if ($this->container['multisites.enabled'] != 1 || ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->container['multisites.based_on_domains'] == 0) || ($this->container['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->container['multisites.based_on_domains'] == 1)) {
             // always regenerate modules list
             $filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
             $inconsistencies = ModUtil::apiFunc('Extensions', 'admin', 'checkconsistency', array('filemodules' => $filemodules));
@@ -195,7 +195,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
                                        'sort' => $sort));
 
         // generate an auth key to use in urls
-        $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
+        $csrftoken = SecurityUtil::generateCsrfToken($this->container, true);
 
         $moduleinfo = array();
         if (!empty($mods)) {
@@ -311,7 +311,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
                                         'state' => $state)),
                                         'image' => 'folder_new.png',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
-//                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+//                                if ($this->container['multisites.enabled'] != 1 || ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->container['multisites.based_on_domains'] == 0) || ($this->container['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->container['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
 //                                            'url' => ModUtil::url('Extensions', 'admin', 'remove', array(
 //                                            'id' => $mod['id'],
@@ -402,7 +402,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
             }
         }
 
-        $this->view->assign('multi', $this->serviceManager['multisites.enabled'])
+        $this->view->assign('multi', $this->container['multisites.enabled'])
                    ->assign('sort', $sort)
                    ->assign('sortdir', $sortdir)
                    ->assign('modules', $moduleinfo);
@@ -998,7 +998,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         $this->view->assign('state', $state);
 
         // generate an auth key to use in urls
-        $csrfToken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
+        $csrfToken = SecurityUtil::generateCsrfToken($this->container, true);
         $plugins = array();
         $pluginClasses = ($systemplugins) ? PluginUtil::loadAllSystemPlugins() : PluginUtil::loadAllModulePlugins();
 

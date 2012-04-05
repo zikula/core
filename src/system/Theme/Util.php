@@ -25,7 +25,7 @@ class Theme_Util
     {
         // Get all themes on filesystem
         $filethemes = array();
-        
+
         if (is_dir('themes')) {
             $dirArray = FileUtil::getFiles('themes', false, true, null, 'd');
             foreach ($dirArray as $dir) {
@@ -72,11 +72,11 @@ class Theme_Util
                 unset($themetype);
             }
         }
-        
+
         // get entityManager
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->getService('doctrine.entitymanager');
-            
+        $entityManager = $sm->get('doctrine.entitymanager');
+
         // Get all themes in DB
         $dbthemes = array();
         $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();
@@ -91,11 +91,11 @@ class Theme_Util
             if (empty($filethemes[$name])) {
                 // delete a running configuration
                 ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $name));
-                
+
                 // delete item from db
                 $item = $entityManager->getRepository('Theme\Entity\Theme')->findOneBy(array('name' => $name));
                 $entityManager->remove($item);
-                
+
                 unset($dbthemes[$name]);
             }
         }
@@ -106,7 +106,7 @@ class Theme_Util
             if (empty($dbthemes[$name])) {
                 // new theme
                 $themeinfo['state'] = ThemeUtil::STATE_ACTIVE;
-                
+
                 // add item to db
                 $item = new Theme\Entity\Theme;
                 $item->merge($themeinfo);
@@ -126,16 +126,16 @@ class Theme_Util
                         ($themeinfo['contact'] != $dbthemes[$name]['contact']) ||
                         ($themeinfo['xhtml'] != $dbthemes[$name]['xhtml'])) {
                     $themeinfo['id'] = $dbthemes[$name]['id'];
-                    
+
                     // update item
                     $item = $entityManager->getRepository('Theme\Entity\Theme')->find($themeinfo['id']);
                     $item->merge($themeinfo);
                 }
             }
         }
-        
+
         $entityManager->flush();
-        
+
         return true;
     }
 }

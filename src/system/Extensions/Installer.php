@@ -86,7 +86,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
 
                 // Load DB connection
                 $dbEvent = new GenericEvent();
-                $connection = $this->eventManager->dispatch('doctrine.init_connection', $dbEvent)->getData();
+                $connection = $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent)->getData();
 
                 foreach ($commands as $sql) {
                     $stmt = $connection->prepare($sql);

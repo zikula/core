@@ -30,5 +30,5 @@
 function smarty_modifier_notifyfilters($content, $eventName)
 {
     $hook = new Zikula_FilterHook($eventName, $content);
-    return ServiceUtil::getManager()->getService('zikula.hookmanager')->notify($hook)->getData();
+    return ServiceUtil::getManager()->get('zikula.hookmanager')->notify($hook)->getData();
 }

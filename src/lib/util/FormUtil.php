@@ -366,12 +366,12 @@ class FormUtil
      */
     public static function newForm($name, Zikula_AbstractController $controller = null, $className=null)
     {
-        $serviceManager = $controller->getServiceManager();
+        $container = $controller->getContainer();
         if ($className && !class_exists($className)) {
             throw new RuntimeException(__f('%s does not exist', $className));
         }
 
-        $form = $className ? new $className($serviceManager, $name) : new Zikula_Form_View($serviceManager, $name);
+        $form = $className ? new $className($container, $name) : new Zikula_Form_View($container, $name);
         if ($className && !$form instanceof Zikula_Form_View) {
             throw new RuntimeException(__f('%s is not an instance of Zikula_Form_View', $className));
         }

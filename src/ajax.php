@@ -19,9 +19,9 @@ use Zikula\Framework\AjaxControllerResolver;
 include 'lib/bootstrap.php';
 $core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
 
-$request = $core->getServiceManager()->getService('request');
+$request = $core->getContainer()->getService('request');
 $resolver = new AjaxControllerResolver();
 
-$kernel = new HttpKernel($core->getEventManager(), $resolver);
+$kernel = new HttpKernel($core->getDispatcher(), $resolver);
 $kernel->handle($request)->send();
 

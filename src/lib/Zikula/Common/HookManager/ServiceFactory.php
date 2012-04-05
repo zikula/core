@@ -36,18 +36,18 @@ class ServiceFactory
      *
      * @var ServiceManager
      */
-    private $serviceManager;
+    private $container;
 
     /**
      * Constructor.
      *
-     * @param ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $container ServiceManager.
      * @param string         $serviceId      ID of service to inject.
      */
-    public function __construct(ServiceManager $serviceManager, $serviceId)
+    public function __construct(ServiceManager $container, $serviceId)
     {
-        $this->serviceManager = $serviceManager;
-        if (!$serviceManager->hasService($serviceId)) {
+        $this->container = $container;
+        if (!$container->hasService($serviceId)) {
             throw new Exception\InvalidArgumentException(sprintf('Service %s is not registered in ServiceManager', $serviceId));
         }
         $this->serviceId = $serviceId;
@@ -67,9 +67,9 @@ class ServiceFactory
      */
     public function buildService($id, $className, $method)
     {
-        if (!$this->serviceManager->hasService($id)) {
+        if (!$this->container->hasService($id)) {
             $definition = new Definition($className, array(new Reference($this->serviceId)));
-            $this->serviceManager->registerService($id, $definition);
+            $this->container->registerService($id, $definition);
         }
 
         return new ServiceHandler($id, $method);

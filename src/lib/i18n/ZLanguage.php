@@ -134,10 +134,10 @@ class ZLanguage
      */
     public function __construct()
     {
-        $this->langSession = ServiceUtil::getService('request')->getSession()->get('language', null);
+        $this->langSession = ServiceUtil::get('request')->getSession()->get('language', null);
         $this->langSystemDefault = System::getVar('language_i18n', 'en');
         $this->languageCode = $this->langSystemDefault;
-        $this->langFixSession = preg_replace('#[^a-z-].#', '', ServiceUtil::getService('request')->getSession()->get('setsessionlanguage', null, 'POST'));
+        $this->langFixSession = preg_replace('#[^a-z-].#', '', ServiceUtil::get('request')->getSession()->get('setsessionlanguage', null, 'POST'));
         $this->multiLingualCapable = System::getVar('multilingual');
         $this->langUrlRule = System::getVar('languageurl', 0);
         $this->langDetect = System::getVar('language_detect', 0);
@@ -183,7 +183,7 @@ class ZLanguage
     private function fixLanguageToSession()
     {
         if ($this->langFixSession) {
-            ServiceUtil::getService('request')->getSession()->set('language', $this->languageCode);
+            ServiceUtil::get('request')->getSession()->set('language', $this->languageCode);
         }
     }
 

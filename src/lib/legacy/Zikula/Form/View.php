@@ -148,17 +148,17 @@ class Zikula_Form_View extends Zikula_View
      *
      * Use FormUtil::newForm() instead of instantiating Zikula_Form_View directly.
      *
-     * @param ServiceManager $serviceManager ServiceManager.
+     * @param ServiceManager $container ServiceManager.
      * @param string                $module         Module name.
      * @param integer               $caching        Caching flag (not used - just for e_strict).
      */
-    public function __construct(ServiceManager $serviceManager, $module, $caching=null)
+    public function __construct(ServiceManager $container, $module, $caching=null)
     {
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
 
         // construct and use the available methods
-        parent::__construct($serviceManager, $module, false);
+        parent::__construct($container, $module, false);
         $this->addPluginDir('lib/viewplugins/formplugins', false);
         $this->setCaching(Zikula_View::CACHE_DISABLED);
 
@@ -249,7 +249,7 @@ class Zikula_Form_View extends Zikula_View
         $this->eventHandler->preInitialize();
 
         if ($this->isPostBack()) {
-            if (!SecurityUtil::validateCsrfToken($this->request->getPost()->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->serviceManager)) {
+            if (!SecurityUtil::validateCsrfToken($this->request->getPost()->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->container)) {
                 return LogUtil::registerAuthidError();
             }
 
@@ -958,7 +958,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function getCsrfTokenHtml()
     {
-        $key = SecurityUtil::generateCsrfToken($this->serviceManager);
+        $key = SecurityUtil::generateCsrfToken($this->container);
         $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken_{$this->formId}\" />";
         return $html;
     }

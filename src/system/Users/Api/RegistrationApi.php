@@ -602,7 +602,7 @@ class Users_Api_RegistrationApi extends Zikula_AbstractApi
             $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
 
             $createEvent = new GenericEvent($userObj);
-            $this->eventManager->dispatch('user.registration.create', $createEvent);
+            $this->dispatcher->dispatch('user.registration.create', $createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $siteurl   = System::getBaseUrl();
@@ -860,7 +860,7 @@ class Users_Api_RegistrationApi extends Zikula_AbstractApi
             // "created" until now. It is way down here so that the activated state can be properly
             // saved before the hook is fired.
             $createEvent = new GenericEvent($userObj);
-            $this->eventManager->dispatch('user.account.create', $createEvent);
+            $this->dispatcher->dispatch('user.account.create', $createEvent);
 
             $regErrors = array();
 
@@ -1291,7 +1291,7 @@ class Users_Api_RegistrationApi extends Zikula_AbstractApi
                 ));
 
                 $deleteEvent = new GenericEvent($registration);
-                $this->eventManager->dispatch('user.registration.delete', $deleteEvent);
+                $this->dispatcher->dispatch('user.registration.delete', $deleteEvent);
             }
         }
 
@@ -1334,7 +1334,7 @@ class Users_Api_RegistrationApi extends Zikula_AbstractApi
                     ));
 
                     $deleteEvent = new GenericEvent($registration);
-                    $this->eventManager->dispatch('user.registration.delete', $deleteEvent);
+                    $this->dispatcher->dispatch('user.registration.delete', $deleteEvent);
                 }
             }
         }

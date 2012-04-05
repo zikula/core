@@ -907,7 +907,7 @@ class UserUtil
                 $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuththenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
             }
 
-            $session = ServiceUtil::getService('request')->getSession();
+            $session = ServiceUtil::get('request')->getSession();
 
             $userObj = self::internalUserAccountValidation($authenticatedUid, true, isset($userObj) ? $userObj : null);
             if ($userObj && is_array($userObj)) {
@@ -1043,7 +1043,7 @@ class UserUtil
             SessionUtil::requireSession();
         }
 
-        $session = ServiceUtil::getService('request')->getSession();
+        $session = ServiceUtil::get('request')->getSession();
 
         // Set session variables -- this is what really does the Zikula login
         $session->set('uid', $userObj['uid']);
@@ -1066,7 +1066,7 @@ class UserUtil
     {
         if (self::isLoggedIn()) {
             $userObj = self::getVars(self::getVar('uid'));
-            $session = ServiceUtil::getService('request')->getSession();
+            $session = ServiceUtil::get('request')->getSession();
             $authenticationMethod = $session->get('users/authentication_method', array('modname' => '', 'method' => ''));
 
             $session->invalidate();
@@ -1082,7 +1082,7 @@ class UserUtil
      */
     public static function isLoggedIn()
     {
-        return (bool)ServiceUtil::getService('request')->getSession()->get('uid');
+        return (bool)ServiceUtil::get('request')->getSession()->get('uid');
     }
 
     /**
@@ -1337,7 +1337,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid = ServiceUtil::getService('request')->getSession()->get('uid');
+            $uid = ServiceUtil::get('request')->getSession()->get('uid');
         }
         if (empty($uid)) {
             return null;
@@ -1453,7 +1453,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid =ServiceUtil::getService('request')->getSession()->get('uid');
+            $uid =ServiceUtil::get('request')->getSession()->get('uid');
         }
         if (empty($uid)) {
             return false;
@@ -1794,7 +1794,7 @@ class UserUtil
         }
 
         if ($uid == -1) {
-            $uid = ServiceUtil::getService('request')->getSession()->get('uid');
+            $uid = ServiceUtil::get('request')->getSession()->get('uid');
         }
         if (empty($uid)) {
             return false;
@@ -1866,7 +1866,7 @@ class UserUtil
                     $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
                     EventUtil::dispatch('user.account.update', $updateEvent);
                 }
-                
+
             }
         }
 
@@ -1897,7 +1897,7 @@ class UserUtil
         }
 
         // Page-specific theme
-        $request = ServiceUtil::getService('request');
+        $request = ServiceUtil::get('request');
         $pagetheme = $request->get('theme', null);
         $type = $request->attributes->get('_controller', null);
         if (!empty($pagetheme)) {
@@ -2094,7 +2094,7 @@ class UserUtil
      */
     public static function isGuestUser()
     {
-        return !ServiceUtil::getService('request')->getSession()->get('uid', 0);
+        return !ServiceUtil::get('request')->getSession()->get('uid', 0);
     }
 
     /**

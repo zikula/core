@@ -136,7 +136,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // filter by module state
-        if ($this->serviceManager['multisites.enabled'] == 1) {
+        if ($this->container['multisites.enabled'] == 1) {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
         } else {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
@@ -221,7 +221,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         // Check valid state transition
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
-                if ($this->serviceManager['multisites.enabled'] == 1) {
+                if ($this->container['multisites.enabled'] == 1) {
                     if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
                         return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                     }
@@ -322,7 +322,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->container));
             $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
@@ -330,7 +330,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
                 if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
                 }
-                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
+                $interactiveController = $reflectionInteractive->newInstance($this->container);
             }
 
             // perform the actual deletion of the module
@@ -369,9 +369,9 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
 
         // remove the entry from the modules table
-        if ($this->serviceManager['multisites.enabled'] == 1) {
+        if ($this->container['multisites.enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
-            $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) ? 1 : 0;
+            $canDelete = (($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->container['multisites.based_on_domains'] == 0) || ($this->container['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->container['multisites.based_on_domains'] == 1)) ? 1 : 0;
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
@@ -389,7 +389,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         $event = new GenericEvent(null, $modinfo);
-        $this->eventManager->dispatch('installer.module.uninstalled', $event);
+        $this->dispatcher->dispatch('installer.module.uninstalled', $event);
 
         return true;
     }
@@ -690,9 +690,9 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
                 $modinfo['securityschema'] = unserialize($modinfo['securityschema']);
 
                 // insert new module to db
-                if ($this->serviceManager['multisites.enabled'] == 1) {
+                if ($this->container['multisites.enabled'] == 1) {
                     // only the main site can regenerate the modules list
-                    if (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+                    if (($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null) && $this->container['multisites.based_on_domains'] == 0) || ($this->container['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->container['multisites.based_on_domains'] == 1)) {
                         $item = new $entity;
                         $item->merge($modinfo);
                         $this->entityManager->persist($item);
@@ -808,7 +808,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
             LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-        $installer = $reflectionInstaller->newInstance($this->serviceManager);
+        $installer = $reflectionInstaller->newInstance($this->container);
         $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
         $interactiveController = null;
         if (class_exists($interactiveClass)) {
@@ -816,7 +816,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
             }
-            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
+            $interactiveController = $reflectionInteractive->newInstance($this->container);
         }
 
         // perform the actual install of the module
@@ -857,7 +857,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
 
         // All went ok so issue installed event
         $event = new GenericEvent(null, $modinfo);
-        $this->eventManager->dispatch('installer.module.installed', $event);
+        $this->dispatcher->dispatch('installer.module.installed', $event);
 
         // Success
         return true;
@@ -922,7 +922,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
             LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->container));
         $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
         $interactiveController = null;
         if (class_exists($interactiveClass)) {
@@ -930,7 +930,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
             }
-            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
+            $interactiveController = $reflectionInteractive->newInstance($this->container);
         }
 
         // perform the actual upgrade of the module
@@ -986,7 +986,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
 
         // Upgrade succeeded, issue event.
         $event = new GenericEvent(null, $modinfo);
-        $this->eventManager->dispatch('installer.module.upgraded', $event);
+        $this->dispatcher->dispatch('installer.module.upgraded', $event);
 
         // Success
         return true;
@@ -1064,14 +1064,14 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             $qb->andWhere($qb->expr()->eq('e.type', $qb->expr()->literal($type)));
         }
 
-        if ($this->serviceManager['multisites.enabled'] == 1) {
+        if ($this->container['multisites.enabled'] == 1) {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
         } else {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];
         }
 
         // filter by module state
-        if ($this->serviceManager['multisites.enabled'] == 1) {
+        if ($this->container['multisites.enabled'] == 1) {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_NOTALLOWED) ? 0 : (int)$args['state'];
         } else {
             $state = (empty($args['state']) || $args['state'] < -1 || $args['state'] > ModUtil::STATE_UPGRADED) ? 0 : (int)$args['state'];

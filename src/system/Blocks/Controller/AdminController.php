@@ -77,7 +77,7 @@ class Blocks_Controller_AdminController extends Zikula_AbstractController
                    ->assign('sortdir', $filter['sortdir']);
         
         // generate an authorisation key for the links
-        $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
+        $csrftoken = SecurityUtil::generateCsrfToken($this->container, true);
         $this->view->assign('csrftoken', $csrftoken);
 
         // Get all blocks

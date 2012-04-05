@@ -29,15 +29,15 @@ class Users_Controller_FormData_Validator_IntegerNumericInSet extends Users_Cont
     /**
      * Creates a new instance of this validator, intializing the list of valid integers.
      *
-     * @param ServiceManager $serviceManager The current service manager.
+     * @param ServiceManager $container The current service manager.
      * @param array          $validIntegers  An array containing a list of integers considered to be valid for the field's data contents.
      * @param type           $errorMessage   The message to return if the data is not valid.
      *
      * @throws InvalidArgumentException Thrown if the list of valid integer numerics is invalid, or if it contains an invalid value.
      */
-    public function __construct(ServiceManager $serviceManager, array $validIntegers, $errorMessage = null)
+    public function __construct(ServiceManager $container, array $validIntegers, $errorMessage = null)
     {
-        parent::__construct($serviceManager, $errorMessage);
+        parent::__construct($container, $errorMessage);
 
         if (empty($validIntegers)) {
             throw new InvalidArgumentException($this->__('An invalid list of valid integers was recieved.'));

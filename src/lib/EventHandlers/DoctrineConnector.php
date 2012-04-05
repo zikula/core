@@ -57,16 +57,16 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
             Doctrine_Core::debug(System::isDevelopmentMode());
             $this->doctrineManager = Doctrine_Manager::getInstance();
             $internalEvent = new GenericEvent($this->doctrineManager);
-            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
+            $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
 
             $internalEvent = new GenericEvent($this->doctrineManager);
-            $this->eventManager->dispatch('doctrine.cache', $internalEvent);
+            $this->dispatcher->dispatch('doctrine.cache', $internalEvent);
         }
 
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : false;
         $name = isset($event['name']) ? $event['name'] : 'default';
 
-        $connectionInfo = $this->serviceManager['databases'][$name];
+        $connectionInfo = $this->container['databases'][$name];
 
         // test the DB connection works or just set lazy
         try {
@@ -80,7 +80,7 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
                 $connection->setOption('password', $connectionInfo['password']);
             }
             $internalEvent = new GenericEvent($connection);
-            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
+            $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
         } catch (PDOException $e) {
             throw new PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
         }
@@ -107,7 +107,7 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
             $connection->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_ALL ^ Doctrine_Core::PORTABILITY_EMPTY_TO_NULL);
         }
 
-        if (isset($this->serviceManager['log.enabled']) && $this->serviceManager['log.enabled']) {
+        if (isset($this->container['log.enabled']) && $this->container['log.enabled']) {
             // add listener that sends events for all sql queries
             $connection->setListener(new Zikula_Doctrine_Listener_Profiler());
         }
@@ -128,8 +128,8 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
     public function configureCache(GenericEvent $event)
     {
         $manager = $event->getSubject();
-        if (!System::isInstalling() && $this->serviceManager['dbcache.enable']) {
-            $type = $this->serviceManager['dbcache.type'];
+        if (!System::isInstalling() && $this->container['dbcache.enable']) {
+            $type = $this->container['dbcache.type'];
 
             // Setup Doctrine Caching
             $type = ucfirst(strtolower($type));
@@ -137,20 +137,21 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
             $r = new ReflectionClass($doctrineCacheClass);
             $options = array('prefix' => 'dd');
             if (strpos($type, 'Memcache') === 0) {
-                $servers = $this->serviceManager['dbcache.servers'];
-                $options = array_merge($options, array('servers' => $servers, 'compression' => $this->serviceManager['dbcache.compression']));
+                $servers = $this->container['dbcache.servers'];
+                $options = array_merge($options, array('servers' => $servers, 'compression' => $this->container['dbcache.compression']));
             }
 
-            $cacheDriver = $this->serviceManager->attachService('doctrine.cachedriver', $r->newInstance($options));
+            $cacheDriver = $r->newInstance($options);
+            $this->container->set('doctrine.cachedriver', $cacheDriver);
             $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $cacheDriver);
             $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $cacheDriver);
 
             // implment resultcache lifespan configuration variable
-            $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, $this->serviceManager['dbcache.cache_result_ttl']);
+            $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, $this->container['dbcache.cache_result_ttl']);
 
             // Support for multisites to prevent clashes
             $name = 'default'; // todo - drak
-            $cacheDriver->setOption('prefix', md5(serialize($this->serviceManager['databases'][$name])));
+            $cacheDriver->setOption('prefix', md5(serialize($this->container['databases'][$name])));
         }
     }
 

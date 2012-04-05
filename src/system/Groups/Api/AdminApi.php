@@ -65,7 +65,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         // Let other modules know that we have created a new group.
         $createEvent = new GenericEvent($obj);
-        $this->eventManager->dispatch('group.create', $createEvent);
+        $this->dispatcher->dispatch('group.create', $createEvent);
 
         // Return the id of the newly created item to the calling process
         return $gid;
@@ -128,7 +128,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         // Let other modules know that we have deleted a group.
         $deleteEvent = new GenericEvent($item);
-        $this->eventManager->dispatch('group.delete', $deleteEvent);
+        $this->dispatcher->dispatch('group.delete', $deleteEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -197,7 +197,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         // Let other modules know that we have updated a group.
         $updateEvent = new GenericEvent($object);
-        $this->eventManager->dispatch('group.update', $updateEvent);
+        $this->dispatcher->dispatch('group.update', $updateEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -243,7 +243,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         // Let other modules know that we have updated a group.
         $adduserEvent = new GenericEvent($object);
-        $this->eventManager->dispatch('group.adduser', $adduserEvent);
+        $this->dispatcher->dispatch('group.adduser', $adduserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -295,7 +295,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         // Let other modules know we have updated a group
         $removeuserEvent = new GenericEvent(array('gid' => $args['gid'],
                         'uid' => $args['uid']));
-        $this->eventManager->dispatch('group.removeuser', $removeuserEvent);
+        $this->dispatcher->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;

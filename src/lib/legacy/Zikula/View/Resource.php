@@ -61,13 +61,13 @@ class Zikula_View_Resource
      */
     public static function getInstance()
     {
-        $serviceManager = ServiceUtil::getManager();
+        $container = ServiceUtil::getManager();
         $serviceId = 'zikula.viewresource';
-        if (!$serviceManager->hasService($serviceId)) {
+        if (!$container->has($serviceId)) {
             $obj = new self();
-            $serviceManager->attachService($serviceId, $obj);
+            $container->set($serviceId, $obj);
         } else {
-            $obj = $serviceManager->getService($serviceId);
+            $obj = $container->get($serviceId);
         }
 
         return $obj;

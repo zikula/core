@@ -30,21 +30,21 @@ class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_
      * Create a new instance of the form data container, intializing the fields and validators.
      *
      * @param string                $formId         The id value to use for the form.
-     * @param ServiceManager $serviceManager The current service manager instance.
+     * @param ServiceManager $container The current service manager instance.
      */
-    public function __construct($formId, ServiceManager $serviceManager = null)
+    public function __construct($formId, ServiceManager $container = null)
     {
-        parent::__construct($formId, $serviceManager);
+        parent::__construct($formId, $container);
 
         $this->addField(new Users_Controller_FormData_Field(
                 $this,
                 'uid',
                 0,
                 0,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be an integer.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -52,21 +52,21 @@ class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_
                 'uname',
                 '',
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
-                $this->serviceManager,
+                $this->container,
                 1,
                 $this->__('A user name is required, and cannot be left blank.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
-                $this->serviceManager,
+                $this->container,
                 '/^'. Users_Constant::UNAME_VALIDATION_PATTERN .'$/uD',
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringLowercase(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -74,17 +74,17 @@ class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_
                 'email',
                 '',
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
-                $this->serviceManager,
+                $this->container,
                 1,
                 $this->__('An e-mail address is required, and cannot be left blank.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
-                $this->serviceManager,
+                $this->container,
                 '/^'. Users_Constant::EMAIL_VALIDATION_PATTERN .'$/Di',
                 $this->__('The value entered does not appear to be a valid e-mail address.')));
 
@@ -93,10 +93,10 @@ class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_
                 'emailagain',
                 '',
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -104,14 +104,14 @@ class Users_Controller_FormData_ModifyRegistrationForm extends Users_Controller_
                 'theme',
                 '',
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')));
 
         $passwordMinimumLength = (int)$this->getVar(Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
-        $this->passwordLengthValidator = new Users_Controller_FormData_Validator_StringMinimumLength($this->serviceManager, $passwordMinimumLength,
+        $this->passwordLengthValidator = new Users_Controller_FormData_Validator_StringMinimumLength($this->container, $passwordMinimumLength,
                 $this->__f('Passwords must be at least %1$d characters in length.', array($passwordMinimumLength)));
 
     }

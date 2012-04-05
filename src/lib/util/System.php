@@ -283,9 +283,9 @@ class System
             self::$cache['baseuri.path'] = substr($script_name, 0, strrpos($script_name, '/'));
         }
 
-        $serviceManager = ServiceUtil::getManager();
-        if ($serviceManager['multisites.enabled'] == 1) {
-            self::$cache['baseuri.path'] = $serviceManager['multisites.sitedns'];
+        $container = ServiceUtil::getManager();
+        if ($container['multisites.enabled'] == 1) {
+            self::$cache['baseuri.path'] = $container['multisites.sitedns'];
         }
 
         return self::$cache['baseuri.path'];
@@ -444,7 +444,7 @@ class System
             return false;
         }
 
-        $mailer = ServiceUtil::getManager()->getService('mailer.simple');
+        $mailer = ServiceUtil::getManager()->get('mailer.simple');
         $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
         $failedRecipients = array();
         if ($headers) {

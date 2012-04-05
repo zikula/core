@@ -41,7 +41,7 @@ class BlockUtil
             return null;
         }
 
-        $request = ServiceUtil::getService('request');
+        $request = ServiceUtil::get('request');
         // get the block position
         if (empty($positions)) {
             $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -50,7 +50,7 @@ class BlockUtil
         if (!isset($positions[$side])) {
             return;
         }
-        
+
         if (!isset($modname)) {
             $modname = filter_var($request->get('module', '_homepage_', FILTER_SANITIZE_STRING));
         }
@@ -100,7 +100,7 @@ class BlockUtil
             if ($blockplacement['pid'] != $positions[$side]['pid']) {
                 continue;
             }
-            
+
             // get the full block info
             $blockinfo = self::getBlockInfo($blockplacement['bid']);
 
@@ -272,8 +272,8 @@ class BlockUtil
         $modinfo = ModUtil::getInfoFromName($modname);
 
         $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block.'Block');
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -287,7 +287,7 @@ class BlockUtil
         $r = new ReflectionClass($className);
         $blockInstance = $r->newInstanceArgs(array($sm));
 
-        $sm->attachService($serviceId, $blockInstance);
+        $sm->set($serviceId, $blockInstance);
 
         $result = $blockInstance;
 
@@ -410,19 +410,19 @@ class BlockUtil
     {
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
-            
+
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->getService('doctrine.entitymanager');
-            
+            $entityManager = $sm->get('doctrine.entitymanager');
+
             $entity = 'Blocks_Entity_UserBlock';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
-            
+
             if (!$item) {
                 $item = new $entity;
                 $item['uid'] = (int)$uid;
                 $item['bid'] = $blockinfo['bid'];
                 $item['active'] = $blockinfo['defaultstate'];
-                
+
                 $entityManager->persist($item);
                 $entityManager->flush();
             }

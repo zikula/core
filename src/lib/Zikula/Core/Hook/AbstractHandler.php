@@ -27,7 +27,7 @@ abstract class AbstractHandler implements TranslatableInterface
      *
      * @var EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Translation domain.
@@ -60,13 +60,13 @@ abstract class AbstractHandler implements TranslatableInterface
     /**
      * Constructor.
      *
-     * @param EventManager $eventManager ServiceManager.
+     * @param EventManager $dispatcher ServiceManager.
      *
      * @throws \InvalidArgumentException If $this->eventNames is invalid.
      */
-    public function __construct(EventManager $eventManager)
+    public function __construct(EventManager $dispatcher)
     {
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $dispatcher;
         $this->setup();
     }
 
@@ -84,13 +84,13 @@ abstract class AbstractHandler implements TranslatableInterface
     }
 
     /**
-     * Get eventManager.
+     * Get dispatcher.
      *
      * @return EventManager
      */
-    public function getEventManager()
+    public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
     /**

@@ -41,23 +41,23 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
 
         // register validator service
         $fileLocator = new FileLocator(array(__DIR__ . '/Resources/config/validator.xml'));
-        $xmlFileLoader = new XmlFileLoader($this->serviceManager->getService('service_container'), $fileLocator);
+        $xmlFileLoader = new XmlFileLoader($this->container->get('service_container'), $fileLocator);
         $xmlFileLoader->load(__DIR__ . '/Resources/config/validator.xml');
 
         // setup symfony forms
         $registry = new \Zikula\Core\Forms\DoctrineRegistryImpl();
         $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \Zikula\Core\Forms\ZikulaCsrfProvider());
         $core = new \Symfony\Component\Form\Extension\Core\CoreExtension();
-        $validator = new \Symfony\Component\Form\Extension\Validator\ValidatorExtension($this->serviceManager->getService("validator"));
+        $validator = new \Symfony\Component\Form\Extension\Validator\ValidatorExtension($this->container->get("validator"));
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
 
-        $this->serviceManager->attachService('symfony.formfactory', $formFactory);
+        $this->container->set('symfony.formfactory', $formFactory);
 
 
         $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->eventManager);
-        $this->serviceManager->attachService('symfony.formrenderer', $formRenderer);
+        $this->container->set('symfony.formrenderer', $formRenderer);
     }
 
     protected function setupHandlerDefinitions()
@@ -71,28 +71,28 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         /* @var $view Zikula_View */
         $view = $event->getSubject();
 
-        $view->register_function('sform_enctype', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_enctype', array($this->container->get('symfony.formrenderer'),
                                                     'renderEnctype'));
 
-        $view->register_function('sform_row', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_row', array($this->container->get('symfony.formrenderer'),
                                                     'renderRow'));
 
-        $view->register_function('sform_label', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_label', array($this->container->get('symfony.formrenderer'),
                                                     'renderLabel'));
 
-        $view->register_function('sform_errors', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_errors', array($this->container->get('symfony.formrenderer'),
                                                     'renderErrors'));
 
-        $view->register_function('sform_widget', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_widget', array($this->container->get('symfony.formrenderer'),
                                                     'renderWidget'));
 
-        $view->register_function('sform_rest', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_rest', array($this->container->get('symfony.formrenderer'),
                                                     'renderRest'));
 
-        $view->register_function('sform_all_errors', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_function('sform_all_errors', array($this->container->get('symfony.formrenderer'),
                                                     'renderGlobalErrors'));
 
-        $view->register_block('sform', array($this->serviceManager->getService('symfony.formrenderer'),
+        $view->register_block('sform', array($this->container->get('symfony.formrenderer'),
                                                     'renderFormTag'));
     }
 

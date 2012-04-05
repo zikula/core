@@ -23,11 +23,11 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
      * Create a new instance of the form data container, intializing the fields and validators.
      *
      * @param string         $formId         The id value to use for the form.
-     * @param ServiceManager $serviceManager The current service manager instance.
+     * @param ServiceManager $container The current service manager instance.
      */
-    public function __construct($formId, ServiceManager $serviceManager = null)
+    public function __construct($formId, ServiceManager $container = null)
     {
-        parent::__construct($formId, $serviceManager);
+        parent::__construct($formId, $container);
 
         $modVars = $this->getVars();
 
@@ -36,10 +36,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS,
                 $modVars[Users_Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS],
                 Users_Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -47,13 +47,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_PAGE,
                 $modVars[Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_PAGE],
                 Users_Constant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                    $this->serviceManager,
+                    $this->container,
                     1,
                     $this->__('The value must be an integer greater than or equal to 1.')));
 
@@ -62,13 +62,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_ROW,
                 $modVars[Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_ROW],
                 Users_Constant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                    $this->serviceManager,
+                    $this->container,
                     1,
                     $this->__('The value must be an integer greater than or equal to 1.')));
 
@@ -77,10 +77,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH,
                 $modVars[Users_Constant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH],
                 Users_Constant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -88,10 +88,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME,
                 $modVars[Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -99,10 +99,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_AVATAR_IMAGE_PATH,
                 $modVars[Users_Constant::MODVAR_AVATAR_IMAGE_PATH],
                 Users_Constant::DEFAULT_AVATAR_IMAGE_PATH,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -110,13 +110,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL,
                 $modVars[Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL],
                 Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                    $this->serviceManager,
+                    $this->container,
                     0,
                     $this->__('The value must be an integer greater than or equal to 0.')));
 
@@ -125,13 +125,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD,
                 $modVars[Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD],
                 Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                    $this->serviceManager,
+                    $this->container,
                     0,
                     $this->__('The value must be an integer greater than or equal to 0.')));
 
@@ -140,10 +140,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_GRAVATARS_ENABLED,
                 $modVars[Users_Constant::MODVAR_GRAVATARS_ENABLED],
                 Users_Constant::DEFAULT_GRAVATARS_ENABLED,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -151,10 +151,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_GRAVATAR_IMAGE,
                 $modVars[Users_Constant::MODVAR_GRAVATAR_IMAGE],
                 Users_Constant::DEFAULT_GRAVATAR_IMAGE,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')));
 
         $hashMethods = new Users_Helper_HashMethodList();
@@ -163,13 +163,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_HASH_METHOD,
                 $modVars[Users_Constant::MODVAR_HASH_METHOD],
                 Users_Constant::DEFAULT_HASH_METHOD,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringInSet(
-                $this->serviceManager,
+                $this->container,
                 $hashMethods->getHashMethods(),
                 $this->__('The value must be one of the following: '. implode(', ', $hashMethods->getHashMethods()) .'.')));
 
@@ -178,13 +178,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_ITEMS_PER_PAGE,
                 $modVars[Users_Constant::MODVAR_ITEMS_PER_PAGE],
                 Users_Constant::DEFAULT_ITEMS_PER_PAGE,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                    $this->serviceManager,
+                    $this->container,
                     $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                    $this->serviceManager,
+                    $this->container,
                     1,
                     $this->__('The value must be an integer greater than or equal to 1.')));
 
@@ -193,10 +193,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS,
                 $modVars[Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS],
                 Users_Constant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -204,10 +204,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS,
                 $modVars[Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS],
                 Users_Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -215,10 +215,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS,
                 $modVars[Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS],
                 Users_Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -226,10 +226,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS,
                 $modVars[Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS],
                 Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -237,13 +237,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_LOGIN_METHOD,
                 $modVars[Users_Constant::MODVAR_LOGIN_METHOD],
                 Users_Constant::DEFAULT_LOGIN_METHOD,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericInSet(
-                $this->serviceManager,
+                $this->container,
                 array(
                     Users_Constant::LOGIN_METHOD_UNAME,
                     Users_Constant::LOGIN_METHOD_EMAIL,
@@ -256,10 +256,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_LOGIN_WCAG_COMPLIANT,
                 $modVars[Users_Constant::MODVAR_LOGIN_WCAG_COMPLIANT],
                 Users_Constant::DEFAULT_LOGIN_WCAG_COMPLIANT,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -267,10 +267,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_MANAGE_EMAIL_ADDRESS,
                 $modVars[Users_Constant::MODVAR_MANAGE_EMAIL_ADDRESS],
                 Users_Constant::DEFAULT_MANAGE_EMAIL_ADDRESS,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -278,13 +278,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH,
                 $modVars[Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH],
                 Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be an integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                $this->serviceManager,
+                $this->container,
                 3,
                 $this->__('The value must be an integer greater than 3.')));
 
@@ -293,10 +293,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED,
                 $modVars[Users_Constant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED],
                 Users_Constant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -304,13 +304,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
-                $this->serviceManager,
+                $this->container,
                 '/^(?:'.Users_Constant::EMAIL_VALIDATION_PATTERN.')?$/Ui',
                 $this->__('The value does not appear to be a properly formatted e-mail address.')));
 
@@ -319,10 +319,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -330,10 +330,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -341,10 +341,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED],
                 Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -352,13 +352,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE],
                 Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericInSet(
-                $this->serviceManager,
+                $this->container,
                 array(
                     Users_Constant::APPROVAL_BEFORE,
                     Users_Constant::APPROVAL_AFTER,
@@ -371,10 +371,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN],
                 Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -382,10 +382,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -393,10 +393,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ENABLED,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ENABLED],
                 Users_Constant::DEFAULT_REGISTRATION_ENABLED,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
 
         $this->addField(new Users_Controller_FormData_Field(
@@ -404,13 +404,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION,
                 $modVars[Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION],
                 Users_Constant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericMinimumValue(
-                $this->serviceManager,
+                $this->container,
                 0,
                 $this->__('The value must be a integer greater than or equal to 0.')));
 
@@ -419,13 +419,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
-                $this->serviceManager,
+                $this->container,
                 '/^(?:[^\s,][^,]*(?:,\s?[^\s,][^,]*)*)?$/',
                 $this->__('The contents of this field does not appear to be a valid comma separated list. The list should consist of one or more string values separated by commas. For example: \'first example, 2nd example, tertiary example\' (the quotes should not appear in the list). One optional space following the comma is ignored for readability. Any other spaces (those appearing before the comma, and any additional spaces beyond the single optional space) will be considered to be part of the string value. Commas cannot be part of the string value. Empty values (two commas together, or separated only by a space) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).')));
 
@@ -434,13 +434,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
-                $this->serviceManager,
+                $this->container,
                 '/^(?:'. Users_Constant::EMAIL_DOMAIN_VALIDATION_PATTERN .'(?:\s*,\s*'. Users_Constant::EMAIL_DOMAIN_VALIDATION_PATTERN .')*)?$/Ui',
                 $this->__('The contents of this field does not appear to be a valid list of e-mail address domains. The list should consist of one or more e-mail address domains (the part after the \'@\'), separated by commas. For example: \'gmail.com, example.org, acme.co.uk\' (the quotes should not appear in the list). Do not include the \'@\' itself. Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).')));
 
@@ -449,13 +449,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES],
                 '',
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_StringType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a string.')))
             ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
-                $this->serviceManager,
+                $this->container,
                 '/^(?:'. Users_Constant::UNAME_VALIDATION_PATTERN .'(?:\s*,\s*'. Users_Constant::UNAME_VALIDATION_PATTERN .')*)?$/uD',
                 $this->__('The value provided does not appear to be a valid list of user names. The list should consist of one or more user names made up of lowercase letters, numbers, underscores, periods, or dashes. Separate each user name with a comma. For example: \'root, administrator, superuser\' (the quotes should not appear in the list). Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).')));
 
@@ -464,13 +464,13 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE,
                 $modVars[Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE],
                 Users_Constant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a integer.')))
             ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericInSet(
-                $this->serviceManager,
+                $this->container,
                 array(
                     Users_Constant::VERIFY_NO,
                     Users_Constant::VERIFY_USERPWD
@@ -482,10 +482,10 @@ class Users_Controller_FormData_ConfigForm extends Users_Controller_FormData_Abs
                 Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL,
                 $modVars[Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL],
                 Users_Constant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
-                $this->serviceManager))
+                $this->container))
             ->setNullAllowed(false)
             ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
-                $this->serviceManager,
+                $this->container,
                 $this->__('The value must be a boolean.')));
     }
 

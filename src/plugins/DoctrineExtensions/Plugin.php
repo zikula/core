@@ -11,8 +11,8 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\Definition;
-use Zikula\Common\ServiceManager\Reference;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Zikula\Framework\Plugin\AlwaysOnInterface;
 use Zikula\Framework\AbstractPlugin;
 use Symfony\Component\ClassLoader\UniversalClassLoader;
@@ -54,7 +54,7 @@ class SystemPlugin_DoctrineExtensions_Plugin extends AbstractPlugin implements A
 
         include 'ExtensionsManager.php';
         $definition = new Definition('SystemPlugins_DoctrineExtensions_ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('zikula.servicemanager')));
-        $this->serviceManager->registerService('doctrine_extensions', $definition);
+        $this->container->setDefinition('doctrine_extensions', $definition);
 
         $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
         foreach ($types as $type) {
@@ -64,10 +64,10 @@ class SystemPlugin_DoctrineExtensions_Plugin extends AbstractPlugin implements A
             } else {
                 $definition = new Definition("Gedmo\\Translatable\\TranslationListener");
             }
-            $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);
+            $this->container->setDefinition(strtolower("doctrine_extensions.listener.$type"), $definition);
         }
 
         $definition = new Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
-        $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.standardfields"), $definition);
+        $this->container->setDefinition(strtolower("doctrine_extensions.listener.standardfields"), $definition);
     }
 }

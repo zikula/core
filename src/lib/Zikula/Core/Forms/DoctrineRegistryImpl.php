@@ -17,9 +17,9 @@ class DoctrineRegistryImpl extends \Symfony\Bridge\Doctrine\ManagerRegistry impl
     protected function getService($name)
     {
         if($name == 'doctrine.entitymanager') {
-            return \ServiceUtil::getService($name);
+            return \ServiceUtil::get($name);
         } else if($name == 'doctrine.connection') {
-            return \ServiceUtil::getService('doctrine.entitymanager')->getConnection();
+            return \ServiceUtil::get('doctrine.entitymanager')->getConnection();
         } else {
             return null;
         }

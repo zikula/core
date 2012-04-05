@@ -27,8 +27,8 @@ function install(Core $core)
 {
     define('_ZINSTALLVER', Core::VERSION_NUM);
 
-    $serviceManager = $core->getServiceManager();
-    $eventManager = $core->getEventManager();
+    $serviceManager = $core->getContainer();
+    $eventManager = $core->getDispatcher();
 
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     $dbEvent = new GenericEvent(null, array('lazy' => true));
