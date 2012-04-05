@@ -14,12 +14,10 @@
 
 namespace Zikula\Core;
 
-use Zikula\Common\ServiceManager\ServiceManager;
-use Zikula\Common\EventManager\ServiceManagerAwareEventManager as EventManager;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\AbstractEventHandler;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Zikula\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
@@ -200,6 +198,7 @@ class Core
         $this->bootime = microtime(true);
 
         $this->container = new ContainerBuilder();
+        $this->container->setAlias('zikula.servicemanager', 'service_container');
         $this->dispatcher = new ContainerAwareEventDispatcher($this->container);
         $this->container->set('zikula.eventmanager', $this->dispatcher);
         $this->container->set('zikula', $this);

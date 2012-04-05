@@ -14,10 +14,9 @@
 
 namespace Zikula\Common\HookManager;
 
-use Zikula\Common\ServiceManager\ServiceManager;
-use Zikula\Common\ServiceManager\Definition;
-use Zikula\Common\ServiceManager\Reference;
-use Zikula\Common\EventManager\ServiceHandler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Factory for hook handler services.
@@ -44,12 +43,13 @@ class ServiceFactory
      * @param ServiceManager $container ServiceManager.
      * @param string         $serviceId      ID of service to inject.
      */
-    public function __construct(ServiceManager $container, $serviceId)
+    public function __construct(ContainerBuilder $container, $serviceId)
     {
         $this->container = $container;
-        if (!$container->hasService($serviceId)) {
-            throw new Exception\InvalidArgumentException(sprintf('Service %s is not registered in ServiceManager', $serviceId));
+        if (!$container->has($serviceId)) {
+            throw new Exception\InvalidArgumentException(sprintf('Service %s is not registered in the DIC', $serviceId));
         }
+
         $this->serviceId = $serviceId;
     }
 
@@ -67,12 +67,12 @@ class ServiceFactory
      */
     public function buildService($id, $className, $method)
     {
-        if (!$this->container->hasService($id)) {
+        if (!$this->container->has($id)) {
             $definition = new Definition($className, array(new Reference($this->serviceId)));
-            $this->container->registerService($id, $definition);
+            $this->container->setDefinition($id, $definition);
         }
 
-        return new ServiceHandler($id, $method);
+        return array($id, $method);
     }
 
 }

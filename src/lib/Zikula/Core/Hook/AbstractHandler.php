@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\EventManager\EventManager;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zikula\Common\I18n\TranslatableInterface;
 
 /**

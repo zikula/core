@@ -409,7 +409,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupDebugToolbar(GenericEvent $event)
     {
-        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
 

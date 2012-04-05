@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Common\ServiceManager\Service;
 use Zikula\Common\ServiceManager\Definition;
 

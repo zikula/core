@@ -14,8 +14,8 @@
  */
 
 namespace Zikula\Framework;
-use Zikula\Common\ServiceManager\ServiceManager;
-use Zikula\Common\EventManager\EventManager;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zikula\Common\I18n\TranslatableInterface;
 use Zikula\Framework\Controller\AbstractPlugin as AbstractControllerPlugin;
 use \ZLanguage;
@@ -41,16 +41,16 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
     const TYPE_SYSTEM = 2;
 
     /**
-     * EventManager.
+     * EventDispatcher.
      *
-     * @var \Zikula\Common\EventManager\EventManager
+     * @var EventDispatcher
      */
     protected $dispatcher;
 
     /**
-     * ServiceManager.
+     * Dependency Injection container.
      *
-     * @var \Zikula\Common\ServiceManager\ServiceManager
+     * @var ContainerBuilder
      */
     protected $container;
 

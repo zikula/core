@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework\DebugToolbar;
-use Zikula\Common\EventManager\EventManager;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use \Zikula\Core\Event\GenericEvent;
 
 /**

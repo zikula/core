@@ -42,7 +42,7 @@ class DBUtil
     public static function hasObjectCache($tablename)
     {
         if (!self::$cache_enabled) {
-            self::$cache_enabled = ServiceUtil::getManager()->getArgument('dbcache.enable');
+            self::$cache_enabled = ServiceUtil::getManager()->getParameter('dbcache.enable');
         }
         return ($tablename != 'session_info' && !System::isInstalling() && self::$cache_enabled);
     }
@@ -59,7 +59,7 @@ class DBUtil
     {
         if (self::hasObjectCache($table)) {
             $key = md5($key);
-            $databases = ServiceUtil::getManager()->getArgument('databases');
+            $databases = ServiceUtil::getManager()->getParameter('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
             $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
@@ -82,7 +82,7 @@ class DBUtil
     {
         if (self::hasObjectCache($table)) {
             $key = md5($key);
-            $databases = ServiceUtil::getManager()->getArgument('databases');
+            $databases = ServiceUtil::getManager()->getParameter('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
             $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
@@ -100,7 +100,7 @@ class DBUtil
     public static function flushCache($table)
     {
         if (self::hasObjectCache($table)) {
-            $databases = ServiceUtil::getManager()->getArgument('databases');
+            $databases = ServiceUtil::getManager()->getParameter('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
             $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
@@ -181,7 +181,7 @@ class DBUtil
      */
     public static function getTables()
     {
-        return ServiceUtil::getManager()->getArgument('dbtables');
+        return ServiceUtil::getManager()->getParameter('dbtables');
     }
 
     /**
