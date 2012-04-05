@@ -15,8 +15,7 @@
 
 namespace Zikula\Common\HookManager;
 
-use Zikula\Common\EventManager\EventManager;
-
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * HookManager class.
@@ -31,9 +30,9 @@ class HookManager
     private $storage;
 
     /**
-     * Event Manager.
+     * EventDispatcher.
      *
-     * @var EventManager
+     * @var EventDispatcher
      */
     private $dispatcher;
 
@@ -55,10 +54,10 @@ class HookManager
      * Constructor.
      *
      * @param StorageInterface $storage
-     * @param EventManager     $dispatcher
+     * @param EventDispatcher  $dispatcher
      * @param ServiceFactory   $factory
      */
-    public function __construct(StorageInterface $storage, EventManager $dispatcher, ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, EventDispatcher $dispatcher, ServiceFactory $factory)
     {
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
@@ -298,16 +297,19 @@ class HookManager
         foreach ($handlers as $handler) {
             if ($handler['serviceid']) {
                 $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+                $this->dispatcher->addListenerService($handler['eventname'], $callable);
             } else {
                 $callable = array($handler['classname'], $handler['method']);
+                $this->dispatcher->addListener($handler['eventname'], $callable);
             }
 
-            try {
-                $this->dispatcher->attach($handler['eventname'], $callable);
-            } catch (\InvalidArgumentException $e) {
-                throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
-            }
+//            try {
+//                $this->dispatcher->addListener($handler['eventname'], $callable);
+//            } catch (\InvalidArgumentException $e) {
+//                throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+//            }
         }
+        
         return $this;
     }
 

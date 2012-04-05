@@ -14,7 +14,7 @@
 
 namespace Zikula\Framework\Controller;
 use Zikula\Framework\AbstractPlugin;
-use Zikula\Common\ServiceManager\ServiceManager;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Zikula_Controller_AbstractPlugin class.

@@ -56,7 +56,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $this->container->set('symfony.formfactory', $formFactory);
 
 
-        $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->eventManager);
+        $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->dispatcher);
         $this->container->set('symfony.formrenderer', $formRenderer);
     }
 

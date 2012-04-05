@@ -15,9 +15,8 @@
 
 namespace Zikula\Framework;
 use \Zikula\Core\Event\GenericEvent;
-use Zikula\Common\ServiceManager\ServiceManager;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Custom Event Handler interface.

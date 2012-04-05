@@ -69,7 +69,7 @@ class RenderTime implements PanelInterface
      */
     public function getTimeDiff()
     {
-        $start = \ServiceUtil::getManager()->getArgument('debug.toolbar.panel.rendertime.start');
+        $start = \ServiceUtil::getManager()->getParameter('debug.toolbar.panel.rendertime.start');
         $end =  microtime(true);
 
         $diff = $end - $start;

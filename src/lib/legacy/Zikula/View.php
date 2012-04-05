@@ -12,8 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-use \Zikula\Common\ServiceManager\ServiceManager;
-use \Zikula\Common\I18n\TranslatableInterface;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventDispacter;
+use Zikula\Common\I18n\TranslatableInterface;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -1313,9 +1314,9 @@ class Zikula_View extends Smarty implements TranslatableInterface
     }
 
     /**
-     * Get ServiceManager.
+     * Gets DependencyInjection container.
      *
-     * @return \Zikula\Common\ServiceManager\ServiceManager The service manager.
+     * @return ContainerBuilder The service manager.
      */
     public function getContainer()
     {
@@ -1323,9 +1324,9 @@ class Zikula_View extends Smarty implements TranslatableInterface
     }
 
     /**
-     * Get EventManager.
+     * Get EventDispatcher.
      *
-     * @return Zikula_Eventmanager The event manager.
+     * @return EventDispatcher The event manager.
      */
     public function getDispatcher()
     {

@@ -82,7 +82,7 @@ class System
         $name = isset($name) ? (string)$name : '';
 
         // The database parameter are not allowed to change
-        if (empty($name) || $name == 'system' || $name == 'prefix' || in_array($name, ServiceUtil::getManager()->getArgument('protected.systemvars'))) {
+        if (empty($name) || $name == 'system' || $name == 'prefix' || in_array($name, ServiceUtil::getManager()->getParameter('protected.systemvars'))) {
             return false;
         }
 

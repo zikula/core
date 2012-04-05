@@ -14,8 +14,8 @@
  */
 
 namespace Zikula\Framework;
-use Zikula\Common\ServiceManager\ServiceManager;
-use Zikula\Common\EventManager\EventManager;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zikula\Common\I18n\TranslatableInterface;
 
 /**

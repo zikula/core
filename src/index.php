@@ -14,6 +14,7 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Framework\ControllerResolver;
 use Zikula\Core\Event\GenericEvent;
 
@@ -29,5 +30,5 @@ $core->getDispatcher()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
 $resolver = new ControllerResolver();
 
 $kernel = new HttpKernel($core->getDispatcher(), $resolver);
-$kernel->handle($request)->send();
+$kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false)->send();
 

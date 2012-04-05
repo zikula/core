@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework;
-use Zikula\Common\ServiceManager\ServiceManager;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use \Zikula\Common\I18n\TranslatableInterface;
 
 /**
@@ -109,16 +109,16 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * Constructor.
      *
-     * @param ServiceManager $container ServiceManager instance.
+     * @param ContainerBuilder $container ContainerBuilder instance.
      */
-    public function __construct(ServiceManager $container)
+    public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
-        $this->dispatcher = $this->get('zikula.eventmanager');
+        $this->dispatcher = $this->container->get('zikula.eventmanager');
 
-        $this->request = $this->get('request');
+        $this->request = $this->container->get('request');
         $this->session = $this->request->getSession();
-        $this->entityManager = $this->get('doctrine.entitymanager');
+        $this->entityManager = $this->container->get('doctrine.entitymanager');
 
         $this->_configureBase();
         $this->initialize();
