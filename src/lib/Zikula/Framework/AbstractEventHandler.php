@@ -17,7 +17,7 @@ namespace Zikula\Framework;
 
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Custom Event Handler interface.
@@ -65,12 +65,12 @@ abstract class AbstractEventHandler
     /**
      * Constructor.
      *
-     * @param EventDispatcher $dispatcher EventDispatcher.
+     * @param ContainerAwareEventDispatcher $dispatcher ContainerAwareEventDispatcher.
      */
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(ContainerAwareEventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
-        $this->container = $this->dispatcher->getContainer();
+        $this->container = $this->dispatcher->getContainer(); // get rid of this as it's available already in $dispatcher
         $this->setupHandlerDefinitions();
     }
 
