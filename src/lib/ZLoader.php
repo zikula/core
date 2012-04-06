@@ -18,14 +18,14 @@ if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
 
-include 'lib/i18n/ZGettextFunctions.php';
+include __DIR__.'/i18n/ZGettextFunctions.php';
 
-define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('ZLOADER_PATH', __DIR__.DIRECTORY_SEPARATOR);
 
 // setup vendors in include path
-set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
+set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
-include 'Smarty/Smarty.class.php';
+include __DIR__.'/vendor/Smarty/Smarty.class.php';
 /**
  * ZLoader.
  */

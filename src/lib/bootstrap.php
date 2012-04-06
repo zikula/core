@@ -23,7 +23,7 @@ if (version_compare($phpVersion, '5.3.2', '>=') == false) {
 }
 
 include __DIR__.'/../vendor/.composer/autoload.php';
-include 'lib/ZLoader.php';
+include __DIR__.'/ZLoader.php';
 ZLoader::register();
 
 $core = new Core(__DIR__.'/Resources/config/core.xml');

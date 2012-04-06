@@ -624,16 +624,16 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function getConfigFile(GenericEvent $event)
     {
-        if (is_readable('config/config.php')) {
-            include 'config/config.php';
+        if (is_readable(ZLOADER_PATH.'/../config/config.php')) {
+            include ZLOADER_PATH.'/../config/config.php';
         }
 
-        if (is_readable('config/personal_config.php')) {
-            include 'config/personal_config.php';
+        if (is_readable(ZLOADER_PATH.'/../config/personal_config.php')) {
+            include ZLOADER_PATH.'/../config/personal_config.php';
         }
 
-        if (is_readable('config/multisites_config.php')) {
-            include 'config/multisites_config.php';
+        if (is_readable(ZLOADER_PATH.'/../config/multisites_config.php')) {
+            include ZLOADER_PATH.'/../config/multisites_config.php';
         }
 
         foreach ($GLOBALS['ZConfig'] as $config) {
