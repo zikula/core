@@ -21,6 +21,8 @@ if (!extension_loaded('xdebug')) {
 include __DIR__.'/i18n/ZGettextFunctions.php';
 
 define('ZLOADER_PATH', __DIR__.DIRECTORY_SEPARATOR);
+define('ZIKULA_CONFIG_PATH', realpath(__DIR__.'/../config'));
+define('ZIKULA_ROOT', realpath(__DIR__.'/..'));
 
 // setup vendors in include path
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
