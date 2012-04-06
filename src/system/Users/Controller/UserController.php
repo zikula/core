@@ -529,8 +529,8 @@ class Users_Controller_UserController extends Zikula_AbstractController
                         $arguments = array(
                             'redirecturl' => $redirectUrl,
                         );
-                        $event = new Zikula_Event('module.users.ui.registration.succeeded', $registeredObj, $arguments);
-                        $event = $this->dispatcher->dispatch($event->getName(), $event);
+                        $event = new GenericEvent($registeredObj, $arguments);
+                        $event = $this->dispatcher->dispatch('module.users.ui.registration.succeeded', $event);
                         $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
 
                         // Set up the next state to follow this one, along with any data needed.

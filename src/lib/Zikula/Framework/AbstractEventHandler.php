@@ -14,7 +14,8 @@
  */
 
 namespace Zikula\Framework;
-use \Zikula\Core\Event\GenericEvent;
+
+use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

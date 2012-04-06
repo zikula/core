@@ -96,7 +96,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
                                                     'renderFormTag'));
     }
 
-    public function registerRenderer(Zikula_Event $event)
+    public function registerRenderer(GenericEvent $event)
     {
         $event->getSubject()->append(new Renderer\FieldRow());
         $event->getSubject()->append(new Renderer\FieldLabel());
