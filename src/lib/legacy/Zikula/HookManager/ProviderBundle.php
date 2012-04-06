@@ -15,6 +15,6 @@
 /**
  * Provider Bundle for Hook Providers
  */
-class Zikula_HookManager_ProviderBundle extends Zikula\Common\HookManager\ProviderBundle
+class Zikula_HookManager_ProviderBundle extends Zikula\Component\HookManager\ProviderBundle
 {
 }

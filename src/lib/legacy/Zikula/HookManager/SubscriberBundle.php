@@ -15,6 +15,6 @@
 /**
  * Bundle for Hook Subscribers
  */
-class Zikula_HookManager_SubscriberBundle extends Zikula\Common\HookManager\SubscriberBundle
+class Zikula_HookManager_SubscriberBundle extends Zikula\Component\HookManager\SubscriberBundle
 {
 }

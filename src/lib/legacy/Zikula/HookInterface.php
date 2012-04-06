@@ -16,6 +16,6 @@
 /**
  * Hook interface
  */
-interface Zikula_HookInterface extends Zikula\Common\HookManager\HookInterface
+interface Zikula_HookInterface extends Zikula\Component\HookManager\HookInterface
 {
 }
