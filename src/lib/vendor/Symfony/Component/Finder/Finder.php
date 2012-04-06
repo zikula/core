@@ -214,7 +214,7 @@ class Finder implements \IteratorAggregate
     /**
      * Excludes directories.
      *
-     * @param  string $dir A directory to exclude
+     * @param  string|array $dirs A directory path or an array of directories
      *
      * @return Finder The current Finder instance
      *
@@ -222,9 +222,9 @@ class Finder implements \IteratorAggregate
      *
      * @api
      */
-    public function exclude($dir)
+    public function exclude($dirs)
     {
-        $this->exclude[] = $dir;
+        $this->exclude = array_merge($this->exclude, (array) $dirs);
 
         return $this;
     }
@@ -332,6 +332,68 @@ class Finder implements \IteratorAggregate
     public function sortByType()
     {
         $this->sort = Iterator\SortableIterator::SORT_BY_TYPE;
+
+        return $this;
+    }
+
+    /**
+     * Sorts files and directories by the last accessed time.
+     *
+     * This is the time that the file was last accessed, read or written to.
+     *
+     * This can be slow as all the matching files and directories must be retrieved for comparison.
+     *
+     * @return Finder The current Finder instance
+     *
+     * @see Symfony\Component\Finder\Iterator\SortableIterator
+     *
+     * @api
+     */
+    public function sortByAccessedTime()
+    {
+        $this->sort = Iterator\SortableIterator::SORT_BY_ACCESSED_TIME;
+
+        return $this;
+    }
+
+    /**
+     * Sorts files and directories by the last inode changed time.
+     *
+     * This is the time that the inode information was last modified (permissions, owner, group or other metadata).
+     *
+     * On Windows, since inode is not available, changed time is actually the file creation time.
+     *
+     * This can be slow as all the matching files and directories must be retrieved for comparison.
+     *
+     * @return Finder The current Finder instance
+     *
+     * @see Symfony\Component\Finder\Iterator\SortableIterator
+     *
+     * @api
+     */
+    public function sortByChangedTime()
+    {
+        $this->sort = Iterator\SortableIterator::SORT_BY_CHANGED_TIME;
+
+        return $this;
+    }
+
+    /**
+     * Sorts files and directories by the last modified time.
+     *
+     * This is the last time the actual contents of the file were last modified.
+     *
+     * This can be slow as all the matching files and directories must be retrieved for comparison.
+     *
+     * @return Finder The current Finder instance
+     *
+     * @see Symfony\Component\Finder\Iterator\SortableIterator
+     *
+     * @api
+     */
+    public function sortByModifiedTime()
+    {
+        $this->sort = Iterator\SortableIterator::SORT_BY_MODIFIED_TIME;
 
         return $this;
     }
@@ -502,7 +564,8 @@ class Finder implements \IteratorAggregate
         }
 
         if ($this->sort) {
-            $iterator = new Iterator\SortableIterator($iterator, $this->sort);
+            $iteratorAggregate = new Iterator\SortableIterator($iterator, $this->sort);
+            $iterator = $iteratorAggregate->getIterator();
         }
 
         return $iterator;
