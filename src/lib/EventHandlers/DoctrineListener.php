@@ -12,6 +12,7 @@
  */
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Doctrine plugin definition.
@@ -30,7 +31,7 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
      *
      * @return void
      */
-    public function initialize(Zikula\Common\EventManager\Event $event)
+    public function initialize(GenericEvent $event)
     {
         // register namespace
         // Because the standard kernel classloader already has Doctrine registered as a namespace
