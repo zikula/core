@@ -14,6 +14,7 @@
  */
 
 namespace Zikula\Core\Hook;
+
 use ArrayObject;
 
 /**
