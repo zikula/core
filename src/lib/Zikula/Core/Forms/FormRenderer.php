@@ -6,10 +6,11 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Util\FormUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Symfony2 FormView Renderer.
- * 
+ *
  * Code of class Symfony\Bridge\Twig\Extension\FormExtension converted to zikula.
  */
 class FormRenderer
@@ -39,7 +40,7 @@ class FormRenderer
     {
         $view = $params['form'];
         $variables = $params['variables'] ? $params['variables'] : array();
-        
+
         return $this->render($view, 'rest', $variables);
     }
 
@@ -47,7 +48,7 @@ class FormRenderer
     {
         $view = $params['form'];
         $variables = $params['variables'] ? $params['variables'] : array();
-        
+
         return $this->render($view, 'widget', $variables);
     }
 
@@ -55,8 +56,8 @@ class FormRenderer
     {
         return $this->render($params['form'], 'errors');
     }
-    
-    public function renderFormTag($params, $content, Zikula_View $view) 
+
+    public function renderFormTag($params, $content, Zikula_View $view)
     {
         if($content) {
             if(isset($params['attr']['class'])) {
@@ -64,38 +65,38 @@ class FormRenderer
             } else {
                 $params['attr']['class'] = 'z-form';
             }
-            
+
             $html = '<form action="' . htmlspecialchars(\System::getCurrentUri()) . '" method="post" ' . $this->renderEnctype(array('form' => $params['form']));
-            
+
             foreach($params['attr'] as $k => $v) {
                 $html .= ' ' . $k . '="' .$v . '"';
             }
-            
+
             $html .= '>' . $content . '</form>';
-            
+
             return $html;
         }
     }
-    
+
     public function renderLabel($params)
     {
         $view = $params['form'];
         $label = $params['label'] ? $params['label'] : null;
         $variables = $params['variables'] ? $params['variables'] : array();
-        
+
         if ($label !== null) {
             $variables += array('label' => $label);
         }
 
         return $this->render($view, 'label', $variables);
     }
-    
+
     public function renderGlobalErrors($params)
     {
         $form = $params['form'];
         $variables = $params['variables'] ? $params['variables'] : array();
         $html = '';
-        
+
         if(!$form->hasParent()) {
             $form->set("omit_errors", true);
             $errors = array();
@@ -106,7 +107,7 @@ class FormRenderer
 
                 foreach ($errors as $child) {
                     foreach($child->get('errors') as $error) {
-                        $html .= '<li>'; 
+                        $html .= '<li>';
                         $html .= '<label for="' . $child->get('id') . '" ';
                         $html .= '>' . $child->get('label') . ': '. $error->getMessageTemplate() .'</label>';  //TODO: $error->getMessageParameters()
                     }
@@ -115,20 +116,20 @@ class FormRenderer
                 $html .= '</ul></div>';
             }
         }
-        
+
         return $html;
     }
-    
+
     private function collectErrors(FormView $form, &$errors) {
         if($form->get('errors')) {
             $errors[] = $form;
         }
-        
+
         foreach($form->getChildren() as $child) {
             $this->collectErrors($child, $errors);
         }
     }
-    
+
     public function isChoiceGroup($label)
     {
         return FormUtil::isChoiceGroup($label);
@@ -148,7 +149,7 @@ class FormRenderer
 
         $id = '_'.$view->get('proto_id', $view->get('id'));
         $template = $id . $section;
-        
+
         $renderer = $this->getRenderer();
 
         if (isset($this->varStack[$template])) {
@@ -194,34 +195,34 @@ class FormRenderer
     protected function getRenderer()
     {
         if($this->renderer == null) {
-            $event = new \Zikula_Event('symfony.formrenderer.lookup', new \ArrayObject(array()));
-            $this->dispatcher->notify($event);
-            
+            $event = new GenericEvent(new \ArrayObject(array()));
+            $this->dispatcher->dispatch('symfony.formrenderer.lookup', $event);
+
             $renderer = array();
-            
+
             foreach($event->getSubject() as $render) {
                 if(!$render instanceof RendererInterface) {
                     throw new \UnexpectedValueException(get_class($render) . ' does not implement Symfony2Forms_RendererInterface');
                 }
-                
+
                 $renderer[$render->getName()] = $render;
             }
-            
+
             $this->renderer = $renderer;
         }
 
         return $this->renderer;
     }
-    
+
     /**
      * Returns a renderer by name
      * @param staring $name name of a renderer, e.g. field_label
-     * @return SystemPlugin_Symfony2Forms_RendererInterface 
+     * @return SystemPlugin_Symfony2Forms_RendererInterface
      */
-    public function getRender($name) 
+    public function getRender($name)
     {
         $renderer = $this->getRenderer();
-        
+
         if(isset($renderer[$name])) {
             return $renderer[$name];
         } else {

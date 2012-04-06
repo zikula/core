@@ -631,9 +631,9 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
+        $removeuserEvent = new GenericEvent(null, array('gid' => $args['gid'],
                         'uid' => $args['uid']));
-        $this->dispatcher->dispatch($event->getName(), $removeuserEvent);
+        $this->dispatcher->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
