@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\HookManager;
+namespace Zikula\Component\HookManager;
 
 /**
  * StorageInterface interface.
