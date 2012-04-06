@@ -12,9 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\HookManager;
+namespace Zikula\Component\HookManager;
 
-use Zikula\Common\EventManager\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * AbstractHook class.

@@ -11,13 +11,13 @@
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
+ */
 
- *  */
-namespace Zikula\Common\HookManager\Exception;
+namespace Zikula\Component\HookManager\Exception;
 
 /**
- * LogicException.
+ * RuntimeException.
  */
-class LogicException extends \LogicException
+class RuntimeException extends \RuntimeException
 {
 }

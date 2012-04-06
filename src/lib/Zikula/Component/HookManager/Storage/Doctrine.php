@@ -13,8 +13,8 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Common\HookManager\Storage;
-use Zikula\Common\HookManager\StorageInterface;
+namespace Zikula\Component\HookManager\Storage;
+use Zikula\Component\HookManager\StorageInterface;
 use Doctrine_Core;
 use Doctrine_Query;
 use Zikula_Doctrine_Model_HookSubscriber;
