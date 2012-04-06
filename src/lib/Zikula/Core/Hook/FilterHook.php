@@ -14,7 +14,8 @@
  */
 
 namespace Zikula\Core\Hook;
-use Zikula\Common\HookManager\Hook;
+
+use Zikula\Component\HookManager\Hook;
 
 /**
  * Content filter hook.
