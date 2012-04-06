@@ -14,7 +14,8 @@
  */
 
 namespace Zikula\Core\Event;
-use Zikula\Common\EventManager\Event;
+
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event encapsulation class.
