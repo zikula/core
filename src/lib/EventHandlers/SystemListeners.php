@@ -628,12 +628,12 @@ class SystemListeners extends Zikula_AbstractEventHandler
             include ZLOADER_PATH.'/../config/config.php';
         }
 
-        if (is_readable(ZLOADER_PATH.'/../config/personal_config.php')) {
-            include ZLOADER_PATH.'/../config/personal_config.php';
+        if (is_readable(ZIKULA_CONFIG_PATH.'/personal_config.php')) {
+            include ZIKULA_CONFIG_PATH.'/personal_config.php';
         }
 
-        if (is_readable(ZLOADER_PATH.'/../config/multisites_config.php')) {
-            include ZLOADER_PATH.'/../config/multisites_config.php';
+        if (is_readable(ZIKULA_CONFIG_PATH.'/multisites_config.php')) {
+            include ZIKULA_CONFIG_PATH.'/multisites_config.php';
         }
 
         foreach ($GLOBALS['ZConfig'] as $config) {

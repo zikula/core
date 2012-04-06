@@ -416,7 +416,7 @@ function installmodules($lang = 'en')
         $modpath = 'system';
         ZLoader::addModule($coremodule, $modpath);
 
-        $bootstrap = "$modpath/$coremodule/bootstrap.php";
+        $bootstrap = __DIR__."/../$modpath/$coremodule/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
@@ -497,10 +497,9 @@ function installmodules($lang = 'en')
         }
         $modpath = 'modules';
         ZLoader::addModule($module, $modpath);
-        ZLoader::addAutoloader($module, "$modpath/$module/lib");
         ZLoader::addAutoloader($module, "$modpath");
 
-        $bootstrap = "$modpath/$module/bootstrap.php";
+        $bootstrap = __DIR__."/../$modpath/$module/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }

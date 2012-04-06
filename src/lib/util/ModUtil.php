@@ -1480,22 +1480,21 @@ class ModUtil
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
         ZLoader::addModule($moduleName, realpath($modpath));
-        ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"), '_');
 
         // load optional bootstrap
-        $bootstrap = "$modpath/$osdir/bootstrap.php";
+        $bootstrap = ZIKULA_ROOT."/$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
 
         // register any event handlers.
         // module handlers must be attached from the bootstrap.
-        if (is_dir("config/EventHandlers/$osdir")) {
-            EventUtil::attachCustomHandlers("config/EventHandlers/$osdir");
+        if (is_dir(ZIKULA_CONFIG_PATH."/EventHandlers/$osdir")) {
+            EventUtil::attachCustomHandlers(ZIKULA_CONFIG_PATH."EventHandlers/$osdir");
         }
 
         // load any plugins
-        PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
+        PluginUtil::loadPlugins(ZIKULA_ROOT."$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
 
         self::$ooModules[$moduleName]['initialized'] = true;
         return true;
@@ -1551,8 +1550,7 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
-            ZLoader::addAutoloader($module['directory'], "$base/$module[directory]/lib");
-            ZLoader::addModule($module['directory'], "$base");
+            ZLoader::addModule($module['directory'], ZIKULA_ROOT."/$base");
         }
     }
 
