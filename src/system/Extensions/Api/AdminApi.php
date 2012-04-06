@@ -360,7 +360,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Delete any module variables that the module cleanup function might have missed
-        $dql = "DELETE FROM Zikula\Core\Doctrine\ExtensionVar v WHERE v.modname = '{$modinfo['name']}'";
+        $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVar v WHERE v.modname = '{$modinfo['name']}'";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
@@ -544,7 +544,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         $entity = 'Zikula\Core\Doctrine\Entity\Extension';
-        
+
         // default action
         $filemodules = $args['filemodules'];
         $defaults = (isset($args['defaults']) ? $args['defaults'] : false);
