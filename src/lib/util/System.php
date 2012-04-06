@@ -362,20 +362,8 @@ class System
                         '%0d',
                         '%0a'), '', $redirecturl);
 
-        // check if the headers have already been sent
-        if (headers_sent ()) {
-            return false;
-        }
-
         // Always close session before redirect
         session_write_close();
-
-        // add any additional headers supplied
-        if (!empty($additionalheaders)) {
-            foreach ($additionalheaders as $additionalheader) {
-                header($additionalheader);
-            }
-        }
 
         if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $redirecturl)) {
             // Absolute URL - simple redirect
@@ -391,9 +379,7 @@ class System
             $redirecturl = $baseurl . $redirecturl;
         }
 
-        header("Location: $redirecturl", true, (int)$type);
-
-        return true;
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, (int) $type, $additionalheaders);
     }
 
     /**
