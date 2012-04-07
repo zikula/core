@@ -1902,7 +1902,7 @@ class UserUtil
         $type = $request->attributes->get('_controller', null);
         if (!empty($pagetheme)) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
-            if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin'))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
+            if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin'))) && is_dir(ZIKULA_ROOT.'/themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 return self::_getThemeFilterEvent($themeinfo['name'], 'page-specific');
             }
         }
@@ -1912,7 +1912,7 @@ class UserUtil
             $admintheme = ModUtil::getVar('Admin', 'admintheme');
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
-                if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
+                if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir(ZIKULA_ROOT.'/themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                     return self::_getThemeFilterEvent($themeinfo['name'], 'admin-theme');
                 }
             }
@@ -1923,7 +1923,7 @@ class UserUtil
         $newtheme = $request->get('newtheme');
         if (!empty($newtheme) && System::getVar('theme_change')) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($newtheme));
-            if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
+            if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir(ZIKULA_ROOT.'/themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 if (self::isLoggedIn()) {
                     self::setVar('theme', $newtheme);
                 } else {
@@ -1941,7 +1941,7 @@ class UserUtil
                 $usertheme = $session->get('theme');
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
-            if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
+            if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir(ZIKULA_ROOT.'/themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 return self::_getThemeFilterEvent($themeinfo['name'], 'user-theme');
             }
         }
@@ -1949,7 +1949,7 @@ class UserUtil
         // default site theme
         $defaulttheme = System::getVar('Default_Theme');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
-        if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
+        if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir(ZIKULA_ROOT.'/themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
             return self::_getThemeFilterEvent($themeinfo['name'], 'default-theme');
         }
 

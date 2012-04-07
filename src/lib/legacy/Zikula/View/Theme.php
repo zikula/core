@@ -13,7 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
-use \Symfony\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Zikula_View_Theme class.
@@ -153,10 +153,10 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Constructor.
      *
-     * @param ServiceManager $container ServiceManager.
-     * @param string         $themeName      Theme name.
+     * @param ContainerBuilder $container ServiceManager.
+     * @param string           $themeName      Theme name.
      */
-    public function __construct(ServiceManager $container, $themeName)
+    public function __construct(ContainerBuilder $container, $themeName)
     {
         // store our theme information
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themeName));

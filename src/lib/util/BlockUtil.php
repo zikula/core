@@ -330,8 +330,8 @@ class BlockUtil
 
             if (!isset($blockdirs[$modname])) {
                 $blockdirs[$modname] = array();
-                $blockdirs[$modname][] = "system/$moddir/lib/$moddir/Block";
-                $blockdirs[$modname][] = "modules/$moddir/lib/$moddir/Block";
+                $blockdirs[$modname][] = ZIKULA_ROOT."/system/$moddir/Block";
+                $blockdirs[$modname][] = ZIKULA_ROOT."/modules/$moddir/Block";
 
                 foreach ($blockdirs[$modname] as $dir) {
                     if (is_dir($dir) && is_readable($dir)) {

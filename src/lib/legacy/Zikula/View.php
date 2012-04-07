@@ -169,11 +169,11 @@ class Zikula_View extends Smarty implements TranslatableInterface
     /**
      * Constructor.
      *
-     * @param ServiceManager $container ServiceManager.
-     * @param string         $moduleName     Module name ("zikula" for system plugins).
-     * @param integer|null   $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
+     * @param ContainerBuilder $container ServiceManager.
+     * @param string           $moduleName     Module name ("zikula" for system plugins).
+     * @param integer|null     $caching        Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      */
-    public function __construct(ServiceManager $container, $moduleName = '', $caching = null)
+    public function __construct(ContainerBuilder $container, $moduleName = '', $caching = null)
     {
         $this->container = $container;
         $this->dispatcher = $this->container->get('zikula.eventmanager');

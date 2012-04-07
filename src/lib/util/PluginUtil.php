@@ -191,7 +191,7 @@ class PluginUtil
     {
         $pluginsArray = array();
 
-        $dirs = array('system', 'modules');
+        $dirs = array(ZIKULA_ROOT.'/system', ZIKULA_ROOT.'/modules');
 
         foreach ($dirs as $dir) {
             $modules = FileUtil::getFiles($dir, false, false, null, 'd');
@@ -483,5 +483,4 @@ class PluginUtil
         }
         return strtolower(str_replace('_', '.', $className));
     }
-
 }

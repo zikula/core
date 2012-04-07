@@ -19,7 +19,7 @@ class FormRenderer
     protected $varStack;
     protected $dispatcher;
 
-    public function __construct(EventManagerInterface $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->varStack = array();
         $this->renderer = null;

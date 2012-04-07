@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Framework\ControllerResolver;
 use Zikula\Core\Event\GenericEvent;
 
-include 'lib/bootstrap.php';
+include __DIR__.'/lib/bootstrap.php';
 $core->init();
 
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
