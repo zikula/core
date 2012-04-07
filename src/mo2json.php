@@ -20,11 +20,11 @@ if (!defined('LC_MESSAGES')) {
     define('LC_MESSAGES', 5);
 }
 
-include 'lib/StreamReader/Abstract.php';
-include 'lib/StreamReader/String.php';
-include 'lib/StreamReader/CachedFile.php';
-include 'lib/i18n/ZGettext.php';
-include 'lib/i18n/ZMO.php';
+include __DIR__.'/lib/StreamReader/Abstract.php';
+include __DIR__.'/lib/StreamReader/String.php';
+include __DIR__.'/lib/StreamReader/CachedFile.php';
+include __DIR__.'/lib/i18n/ZGettext.php';
+include __DIR__.'/lib/i18n/ZMO.php';
 
 if (!isset($_GET['lang']) || count($_GET) < 2) {
     badRequest();
@@ -80,7 +80,7 @@ foreach ($_GET as $domain => $meta) {
     if (file_exists($override)) {
         $path = 'config/locale';
     }
-    
+
     $gettext->bindTextDomain($domain, $path);
     $gettext->bindTextDomainCodeset($domain, 'utf8');
     $reader = $gettext->getReader($domain);

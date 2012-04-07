@@ -122,10 +122,6 @@ class ZLoader
             $array = explode('\\', $pluginClass);
             $pluginName = $array[1];
             $name = substr($pluginClass, strlen("SystemPlugin\\{$pluginName}") + 1, strlen($pluginClass));
-            $path = str_replace('\\', '/', "plugins/$pluginName/lib/$pluginName/$name.php");
-            if (file_exists($path)) {
-                return include $path;
-            }
             $path = str_replace('\\', '/', "plugins/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
@@ -141,10 +137,6 @@ class ZLoader
             $modinfo = ModUtil::getInfoFromName($moduleName);
             $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
             $name = substr($pluginClass, strlen("ModulePlugin\\{$moduleName}\\{$pluginName}") + 1, strlen($pluginClass));
-            $path = str_replace('\\', '/', "$base/$moduleName/plugins/$pluginName/lib/$pluginName/$name.php");
-            if (file_exists($path)) {
-                return include $path;
-            }
             $path = str_replace('\\', '/', "$base/$moduleName/plugins/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
@@ -157,11 +149,6 @@ class ZLoader
             $array = explode('\\', $themeClass);
             $themeName = $array[1];
             $name = substr($themeClass, strlen("Themes") + 1, strlen($themeClass));
-            $path = str_replace('\\', '/', "themes/$themeName/lib/$name.php");
-            if (file_exists($path)) {
-                return include $path;
-            }
-
             $path = str_replace('\\', '/', "themes/$themeName/$name.php");
             if (file_exists($path)) {
                 return include $path;

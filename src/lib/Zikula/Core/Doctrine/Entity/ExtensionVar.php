@@ -45,7 +45,7 @@ class ExtensionVar extends EntityAccess
     private $name;
 
     /**
-     * @ORM\Column(type="text", length=64)
+     * @ORM\Column(type="text", length=512)
      * @var string
      */
     private $value;

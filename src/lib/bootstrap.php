@@ -12,9 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Core;
-use Zikula\Core\Event\GenericEvent;
-
 // Check PHP version
 $x = explode('.', str_replace('-', '.', phpversion()));
 $phpVersion = "$x[0].$x[1].$x[2]";
@@ -26,12 +23,12 @@ include __DIR__.'/../vendor/.composer/autoload.php';
 include __DIR__.'/ZLoader.php';
 ZLoader::register();
 
-$core = new Core(__DIR__.'/Resources/config/core.xml');
+$core = new Zikula\Core\Core(__DIR__.'/Resources/config/core.xml');
 $core->boot();
 
 // Load system configuration
-$event = new GenericEvent($core);
+$event = new Zikula\Core\Event\GenericEvent($core);
 $core->getDispatcher()->dispatch('bootstrap.getconfig', $event);
 
-$event = new GenericEvent($core);
+$event = new Zikula\Core\Event\GenericEvent($core);
 $core->getDispatcher()->dispatch('bootstrap.custom', $event);
