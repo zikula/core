@@ -211,12 +211,6 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             return false;
         }
 
-        if ($result === false) {
-            return LogUtil::registerPermissionError();
-        }
-
-        $oldstate = $result['state'];
-
         $modinfo = ModUtil::getInfo($args['id']);
         // Check valid state transition
         switch ($args['state']) {
