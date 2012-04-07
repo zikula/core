@@ -141,11 +141,11 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
     /**
      * Constructor.
      *
-     * @param ServiceManager $container ServiceManager.
+     * @param ContainerBuilder $container ServiceManager.
      *
      * @throws \InvalidArgumentException If getMeta() is not implemented correctly.
      */
-    public function __construct(ServiceManager $container)
+    public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
         $this->dispatcher = $this->container->get('zikula.eventmanager');

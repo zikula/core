@@ -615,21 +615,20 @@ class ModUtil
 
             $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         } else {
-            $modpath = is_dir("system/$directory") ? 'system' : 'modules';
+            $modpath = is_dir(ZIKULA_ROOT."/system/$directory") ? 'system' : 'modules';
         }
 
         // no need for tables.php scan if using Doctrine
-        $doctrineModelDir  = "$modpath/$directory/Model";
-        $doctrineEntityDir = "$modpath/$directory/Entity";
+        $doctrineModelDir  = ZIKULA_ROOT."/$modpath/$directory/Model";
+        $doctrineEntityDir = ZIKULA_ROOT."/$modpath/$directory/Entity";
         if (is_dir($doctrineModelDir) || is_dir($doctrineEntityDir)) {
             return true;
         }
 
         // Load the database definition if required
-        $files = array();
-        $files[] = "$modpath/$directory/tables.php";
+        $file = ZIKULA_ROOT."/$modpath/$directory/tables.php";
 
-        if (Loader::loadOneFile($files)) {
+        if (file_exists($file) && include $file) {
             // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
             if (function_exists($tablefunc)) {
@@ -1361,14 +1360,14 @@ class ModUtil
         }
 
         $path = System::getBaseUri();
-        $directory = 'system/' . $modname;
+        $directory = ZIKULA_ROOT.'/system/' . $modname;
         if ($path != '') {
             $path .= '/';
         }
 
         $url = $path . $directory;
         if (!is_dir($url)) {
-            $directory = 'modules/' . $modname;
+            $directory = ZIKULA_ROOT.'/modules/' . $modname;
             $url = $path . $directory;
         }
 

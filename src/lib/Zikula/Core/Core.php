@@ -175,9 +175,9 @@ class Core
      *
      * @param string $handlerDir Directory where handlers are located.
      */
-    public function __construct($coreConfig, $handlerDir = 'lib/EventHandlers')
+    public function __construct($coreConfig, $handlerDir = null)
     {
-        $this->handlerDir = $handlerDir;
+        $this->handlerDir = $handlerDir ?: ZLOADER_PATH.'/EventHandlers';
         $this->baseMemory = memory_get_usage();
         $this->coreConfig = $coreConfig;
     }

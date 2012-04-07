@@ -135,7 +135,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $core = $this->container->get('zikula');
         ServiceUtil::getManager($core);
         EventUtil::getManager($core);
-        $core->attachHandlers('config/EventHandlers');
+        $core->attachHandlers(ZIKULA_CONFIG_PATH.'/EventHandlers');
     }
 
     /**
@@ -231,7 +231,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula\Core\Core::STAGE_TABLES) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
-                PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
+                PluginUtil::loadPlugins(ZIKULA_ROOT.'/plugins', "SystemPlugin");
                 EventUtil::loadPersistentEvents();
             }
         }
@@ -365,8 +365,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $this->container['log.display_ajax_level']) {
                 // autoloaders don't work inside error handlers!
-                include_once 'lib/Zikula/Exception.php';
-                include_once 'lib/Zikula/Exception/Fatal.php';
+                include_once ZLOADER_PATH.'/Zikula/Exception.php';
+                include_once ZLOADER_PATH.'/Zikula/Exception/Fatal.php';
                 throw new Zikula_Exception_Fatal($message);
             }
         }
@@ -411,7 +411,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
-            include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
+            include_once ZLOADER_PATH.'/Zikula/Framework/DebugToolbar/Panel/Log.php';
 
             // create definitions
             $toolbar = new Definition('Zikula\Framework\DebugToolbar\DebugToolbar',
@@ -544,8 +544,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function coreStylesheetOverride(GenericEvent $event)
     {
         if ($event->getSubject() == 'stylesheet' && ($key = array_search('style/core.css', (array)$event->data)) !== false) {
-            if (file_exists('config/style/core.css')) {
-                $event->data[$key] = 'config/style/core.css';
+            if (file_exists(ZIKULA_CONFIG_PATH.'/style/core.css')) {
+                $event->data[$key] = ZIKULA_CONFIG_PATH.'/style/core.css';
             }
 
             $event->stopPropagation();
@@ -624,8 +624,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function getConfigFile(GenericEvent $event)
     {
-        if (is_readable(ZLOADER_PATH.'/../config/config.php')) {
-            include ZLOADER_PATH.'/../config/config.php';
+        if (is_readable(ZIKULA_CONFIG_PATH.'/config.php')) {
+            include ZIKULA_CONFIG_PATH.'/config.php';
         }
 
         if (is_readable(ZIKULA_CONFIG_PATH.'/personal_config.php')) {
@@ -702,7 +702,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if (System::isDevelopmentMode() || System::isInstalling()) {
-            $temp = $this->container->getParameter('temp');
+            $temp = ZIKULA_ROOT.'/'.$this->container->getParameter('temp');
             if (!is_dir($temp) || !is_writable($temp)) {
                 echo __f('The temporary directory "%s" and its subfolders must be writable.', $temp).'<br />';
                 die(__('Please ensure that the permissions are set correctly on your server.'));
