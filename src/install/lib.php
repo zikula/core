@@ -74,19 +74,19 @@ function install(Core $core)
 
     // If somehow we are browsing the not installed page but installed, redirect back to homepage
     if ($installedState && $notinstalled) {
-        return System::redirect(System::getHomepageUrl());
+        return System::redirect(System::getHomepageUrl())->send();
     }
 
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
     if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang")->send();
     }
 
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
     if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang")->send();
     }
 
     // load the installer language files
@@ -320,7 +320,7 @@ function install(Core $core)
                 }
             }
             if ($ok) {
-                System::redirect(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang");
+                System::redirect(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang")->send();
                 exit;
             }
 
