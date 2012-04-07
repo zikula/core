@@ -261,7 +261,7 @@ function install(Core $core)
 
                     // create our new site admin
                     // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
-                    $serviceManager->getService('session')->start();
+                    $serviceManager->get('session')->start();
 
                     $authenticationInfo = array(
                         'login_id'  => $username,
@@ -496,7 +496,7 @@ function installmodules($lang = 'en')
             continue;
         }
         $modpath = 'modules';
-        ZLoader::addModule($module, $modpath);
+//        ZLoader::addModule($module, $modpath);
         ZLoader::addAutoloader($module, "$modpath");
 
         $bootstrap = __DIR__."/../$modpath/$module/bootstrap.php";
