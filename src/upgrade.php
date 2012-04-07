@@ -20,8 +20,8 @@ mb_regex_encoding('UTF-8');
 ini_set('memory_limit', '64M');
 ini_set('max_execution_time', 86400);
 
-include 'lib/bootstrap.php';
-ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
+include __DIR__.'/lib/bootstrap.php';
+ZLoader::addAutoloader('Users', __DIR__.'/system');
 
 $eventManager = $core->getDispatcher();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');

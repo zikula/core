@@ -12,6 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-include 'lib/bootstrap.php';
+include __DIR__.'/lib/bootstrap.php';
 $core->init();
 System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));

@@ -65,12 +65,12 @@ class SecurityUtil
     /**
      * Generate a security token.
      *
-     * @param ServiceManager $container ServiceManager (default = null).
-     * @param boolean        $forceUnique    Force a unique token regardless of system settings.
+     * @param ContainerBuilder $container   ContainerBuilder (default = null).
+     * @param boolean          $forceUnique Force a unique token regardless of system settings.
      *
      * @return string
      */
-    public static function generateCsrfToken(ServiceManager $container = null, $forceUnique = false)
+    public static function generateCsrfToken(ContainerBuilder $container = null, $forceUnique = false)
     {
         if (!$container) {
             $container = ServiceUtil::getManager();
@@ -100,12 +100,12 @@ class SecurityUtil
     /**
      * Validate a given security token.
      *
-     * @param string                $token          Token to be validated.
-     * @param ServiceManager $container ServiceManager default = null.
+     * @param string           $token     Token to be validated.
+     * @param ContainerBuilder $container ContainerBuilder default = null.
      *
      * @return boolean
      */
-    public static function validateCsrfToken($token, ServiceManager $container = null)
+    public static function validateCsrfToken($token, ContainerBuilder $container = null)
     {
         if (!$container) {
             $container = ServiceUtil::getManager();

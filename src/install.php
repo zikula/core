@@ -15,6 +15,6 @@
 ini_set('max_execution_time', 86400);
 ini_set('memory_limit', '64M');
 
-include 'lib/bootstrap.php';
-include 'install/lib.php';
+include __DIR__.'/lib/bootstrap.php';
+include __DIR__.'/install/lib.php';
 install($core);
