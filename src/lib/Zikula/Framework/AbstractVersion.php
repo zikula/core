@@ -625,11 +625,11 @@ abstract class AbstractVersion implements \ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param \Zikula\Common\HookManager\SubscriberBundle $bundle HookBundle.
+     * @param \Zikula\Component\HookManager\SubscriberBundle $bundle HookBundle.
      *
      * @return AbstractVersion
      */
-    public function registerHookSubscriberBundle(\Zikula\Common\HookManager\SubscriberBundle $bundle)
+    public function registerHookSubscriberBundle(\Zikula\Component\HookManager\SubscriberBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookSubscriberBundles)) {
             throw new \InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
@@ -646,7 +646,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @return AbstractVersion
      */
-    public function registerHookProviderBundle(\Zikula\Common\HookManager\ProviderBundle $bundle)
+    public function registerHookProviderBundle(\Zikula\Component\HookManager\ProviderBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookProviderBundles)) {
             throw new \InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
@@ -661,7 +661,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of \Zikula\Common\HookManager\SubscriberBundle
+     * @return array Of \Zikula\Component\HookManager\SubscriberBundle
      */
     public function getHookSubscriberBundles()
     {
@@ -673,7 +673,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of \Zikula\Common\HookManager\ProviderBundle
+     * @return array Of \Zikula\Component\HookManager\ProviderBundle
      */
     public function getHookProviderBundles()
     {
@@ -687,7 +687,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @throws \InvalidArgumentException If the area specified is not registered.
      *
-     * @return \Zikula\Common\HookManager\SubscriberBundle
+     * @return \Zikula\Component\HookManager\SubscriberBundle
      */
     public function getHookSubscriberBundle($area)
     {
@@ -705,7 +705,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @throws \InvalidArgumentException If the area specified is not registered.
      *
-     * @return \Zikula\Common\HookManager\ProviderBundle
+     * @return \Zikula\Component\HookManager\ProviderBundle
      */
     public function getHookProviderBundle($area)
     {

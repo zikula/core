@@ -53,11 +53,11 @@ class HookManager
     /**
      * Constructor.
      *
-     * @param StorageInterface $storage
-     * @param EventDispatcher  $dispatcher
-     * @param ServiceFactory   $factory
+     * @param StorageInterface              $storage
+     * @param ContainerAwareEventDispatcher $dispatcher
+     * @param ServiceFactory                $factory
      */
-    public function __construct(StorageInterface $storage, EventDispatcher $dispatcher, ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, ContainerAwareEventDispatcher $dispatcher, ServiceFactory $factory)
     {
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
@@ -309,7 +309,7 @@ class HookManager
 //                throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
 //            }
         }
-        
+
         return $this;
     }
 
