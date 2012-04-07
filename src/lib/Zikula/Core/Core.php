@@ -408,8 +408,8 @@ class Core
 
         // Check that Zikula is installed before continuing
         if (\System::getVar('installed') == 0 && !\System::isInstalling()) {
-            \System::redirect(\System::getBaseUrl().'install.php?notinstalled');
-            \System::shutDown();
+            \System::redirect(\System::getBaseUrl().'install.php?notinstalled')->send();
+            \System::shutdown();
         }
 
         if ($stage & self::STAGE_DB) {
