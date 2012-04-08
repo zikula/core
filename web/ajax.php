@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Zikula\Framework\AjaxControllerResolver;
 
-include __DIR__.'/lib/bootstrap.php';
+include __DIR__.'/../app/bootstrap.php';
 $core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
 
 $request = $core->getContainer()->getService('request');

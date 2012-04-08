@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-include __DIR__.'/lib/bootstrap.php';
+include __DIR__.'/../app/bootstrap.php';
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 global $ZConfig;

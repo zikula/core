@@ -12,6 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-include __DIR__.'/lib/bootstrap.php';
+include __DIR__.'/../app/bootstrap.php';
 $core->init();
 System::redirect(ModUtil::url('Users', 'user', 'main'));
