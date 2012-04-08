@@ -5,6 +5,9 @@
     "autoload": {
         "psr-0": { "Zikula": "src/lib" }
     },
+    "repositories":[
+        { "type":"git", "url":"http://github.com/drak/doctrine1" }
+    ],
     "require": {
         "php": ">=5.3.2",
         "symfony/symfony": "2.1.*",
@@ -12,7 +15,8 @@
         "twig/twig": "1.6.3",
         "twig/extensions": "dev-master",
         "swiftmailer/swiftmailer": "4.1.6",
-        "gedmo/doctrine-extensions": "dev-master"
+        "gedmo/doctrine-extensions": "dev-master",
+        "drak/doctrine1": "dev-master"
     },
     "config": {
         "vendor-dir": "src/vendor",
