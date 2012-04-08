@@ -14,6 +14,7 @@
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Zikula_View_Theme class.
@@ -177,10 +178,10 @@ class Zikula_View_Theme extends Zikula_View
             $this->domain = null;
         }
 
-        EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
+        EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
         if (is_readable("themes/$themeName/templates/overrides.yml")) {
             $this->dispatcher->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
+            $this->_overrideMap = Yaml::parse("themes/$themeName/templates/overrides.yml");
         }
 
         $event = new GenericEvent($this);
