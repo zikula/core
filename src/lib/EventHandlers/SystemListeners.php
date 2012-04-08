@@ -411,7 +411,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
-            include_once 'lib/Zikula/Framework/DebugToolbar/Panel/Log.php';
+            include_once __DIR__.'/../Zikula/Framework/DebugToolbar/Panel/Log.php';
 
             // create definitions
             $toolbar = new Definition('Zikula\Framework\DebugToolbar\DebugToolbar',
@@ -455,14 +455,14 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $this->dispatcher->addListener('theme.postfetch', array($this, 'debugToolbarRendering'));
 
             // setup event listeners
-            $this->dispatcher->addListener('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
-            $this->dispatcher->addListener('module_dispatch.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'), 20);
-            $this->dispatcher->addListener('module_dispatch.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'), 20);
-            $this->dispatcher->addListener('module_dispatch.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'), 20);
-            $this->dispatcher->addListener('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
-            $this->dispatcher->addListener('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
-            $this->dispatcher->addListener('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'), 20);
-            $this->dispatcher->addListener('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'), 20);
+            $this->dispatcher->addListenerService('view.init', array('debug.toolbar.panel.view', 'initRenderer'));
+            $this->dispatcher->addListenerService('module_dispatch.preexecute', array('debug.toolbar.panel.exec', 'modexecPre'), 20);
+            $this->dispatcher->addListenerService('module_dispatch.postexecute', array('debug.toolbar.panel.exec', 'modexecPost'), 20);
+            $this->dispatcher->addListenerService('module_dispatch.execute_not_found', array('debug.toolbar.panel.logs', 'logExecNotFound'), 20);
+            $this->dispatcher->addListenerService('log', array('debug.toolbar.panel.logs', 'log'));
+            $this->dispatcher->addListenerService('log.sql', array('debug.toolbar.panel.sql', 'logSql'));
+            $this->dispatcher->addListenerService('controller.method_not_found', array('debug.toolbar.panel.logs', 'logModControllerNotFound'), 20);
+            $this->dispatcher->addListenerService('controller_api.method_not_found', array('debug.toolbar.panel.logs', 'logModControllerAPINotFound'), 20);
         }
     }
 
