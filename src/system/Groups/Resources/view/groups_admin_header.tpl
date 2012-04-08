@@ -1,4 +1,4 @@
-{ajaxheader modname=Groups filename=groups.js}
+{ajaxheader modname='Groups' filename='groups.js'}
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", function() {

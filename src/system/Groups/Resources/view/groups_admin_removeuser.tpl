@@ -8,12 +8,11 @@
 
 <p class="z-warningmsg">{gt text='Do you really want to remove user "%1$s" from group "%2$s"?' tag1=$uname tag2=$group.name}</p>
 
-<form class="z-form" action="{modurl modname='Groups' type='admin' func='removeuser'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname='Groups' type='admin' func='removeuser' gid=$gid|safetext uid=$uid|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
-        <input type="hidden" name="gid" value="{$gid|safetext}" />
-        <input type="hidden" name="uid" value="{$uid|safetext}" />
+
         <fieldset>
             <legend>{gt text='Confirmation prompt'}</legend>
             <div class="z-buttons z-formbuttons">

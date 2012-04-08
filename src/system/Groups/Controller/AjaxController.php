@@ -29,16 +29,16 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax
      */
-    public function updategroupAction($args)
+    public function updategroupAction()
     {
         $this->checkAjaxToken();
 
-        $gid = $this->request->getPost()->get('gid');
-        $gtype = $this->request->getPost()->get('gtype', 9999);
-        $state = $this->request->getPost()->get('state');
-        $nbumax = $this->request->getPost()->get('nbumax', 9999);
-        $name = $this->request->getPost()->get('name');
-        $description = $this->request->getPost()->get('description');
+        $gid = $this->request->request->get('gid');
+        $gtype = $this->request->request->get('gtype', 9999);
+        $state = $this->request->request->get('state');
+        $nbumax = $this->request->request->get('nbumax', 9999);
+        $name = $this->request->request->get('name');
+        $description = $this->request->request->get('description');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
@@ -54,17 +54,15 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         }
 
         // Pass to API
-        $res = ModUtil::apiFunc('Groups',
-                        'admin',
-                        'update',
+        $res = ModUtil::apiFunc('Groups', 'admin', 'update',
                         array('gid' => $gid,
-                                'name' => $name,
-                                'gtype' => $gtype,
-                                'state' => $state,
-                                'nbumax' => $nbumax,
-                                'description' => $description));
+                              'name' => $name,
+                              'gtype' => $gtype,
+                              'state' => $state,
+                              'nbumax' => $nbumax,
+                              'description' => $description));
 
-        if ($res == false) {
+        if (!$res) {
             // check for sessionvar
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
@@ -78,8 +76,8 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
-        // Using uncached query here as it was returning the unupdated group
-        $group = DBUtil::selectObjectByID('groups', $gid, 'gid', null, null, null, false);
+        // get group
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
         // get group member count
         $group['nbuser'] = ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid));
@@ -107,35 +105,32 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 
         // Default values
         $obj = array(
-                'name' => '',
-                'gtype' => Groups_Helper_Common::GTYPE_CORE,
-                'state' => Groups_Helper_Common::STATE_CLOSED,
-                'nbumax' => 0,
-                'description' => ''
+            'name' => '',
+            'gtype' => Groups_Helper_Common::GTYPE_CORE,
+            'state' => Groups_Helper_Common::STATE_CLOSED,
+            'nbumax' => 0,
+            'description' => ''
         );
 
-        $newgroup = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
+        $group_id = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
 
-        if ($newgroup == false) {
+        if ($group_id == false) {
             throw new Zikula_Exception_Fatal($this->__('Error! Could not create the new group.'));
         }
 
-        // temporary group name
-        $updobj = array(
-                'name' => $this->__f('Group %s', $newgroup),
-                'gid' => $newgroup
-        );
+        // update group's name
+        $group = $this->entityManager->find('Groups\Entity\Group', $group_id);
+        $group['name'] = $this->__f('Group %s', $group_id);
+        $this->entityManager->flush();
 
-        DBUtil::updateObject($updobj, 'groups', null, 'gid');
+        // convert to array
+        $group = $group->toArray();
 
-        // finally select the new group
-        $obj = DBUtil::selectObjectByID('groups', $newgroup, 'gid', null, null, null, false);
+        $group['statelbl'] = $statelabel[$group['state']];
+        $group['gtypelbl'] = $typelabel[$group['gtype']];
+        $group['membersurl'] = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $group_id));
 
-        $obj['statelbl'] = $statelabel[$obj['state']];
-        $obj['gtypelbl'] = $typelabel[$obj['gtype']];
-        $obj['membersurl'] = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $newgroup));
-
-        return new Zikula_Response_Ajax($obj);
+        return new Zikula_Response_Ajax($group);
     }
 
     /**
@@ -149,8 +144,8 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $gid = $this->request->getPost()->get('gid');
-        $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
+        $gid = $this->request->request->get('gid');
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE));
 
@@ -172,8 +167,8 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $gid = (int)$this->request->getPost()->get('gid');
-        $uid = (int)$this->request->getPost()->get('uid');
+        $gid = (int)$this->request->request->get('gid');
+        $uid = (int)$this->request->request->get('uid');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
@@ -185,6 +180,7 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
             'gid' => $gid,
             'uid' => $uid
         );
+        
         return new Zikula_Response_Ajax($result);
     }
 }

@@ -1,5 +1,5 @@
-{pagesetvar name=title value=$templatetitle}
-<h2 class="userheader">{gt text="Groups manager"}</h2>
+{pagesetvar name='title' value=$templatetitle}
+<h2 class="userheader">{gt text="Groups"}</h2>
 {insert name="getstatusmsg"}
 {if $mainpage eq false}
 <ul class="z-menulinks">
