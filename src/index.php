@@ -30,5 +30,6 @@ $core->getDispatcher()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
 $resolver = new ControllerResolver();
 
 $kernel = new HttpKernel($core->getDispatcher(), $resolver);
-$kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false)->send();
-
+$response = $kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
+$response->send();
+$kernel->terminate($request, $response);

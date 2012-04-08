@@ -23,5 +23,6 @@ $request = $core->getContainer()->getService('request');
 $resolver = new AjaxControllerResolver();
 
 $kernel = new HttpKernel($core->getDispatcher(), $resolver);
-$kernel->handle($request)->send();
-
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
