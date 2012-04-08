@@ -42,8 +42,6 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
         // Get parameters from whatever input we need.
         $startnum = (int)$this->request->query->get('startnum', null);
-        $show = $this->request->query->get('show', null);
-        $showgid = $this->request->query->get('showgid', null);
 
         // we need this value multiple times, so we keep it
         $itemsperpage = $this->getVar('itemsperpage');
@@ -54,12 +52,10 @@ class Groups_Controller_UserController extends Zikula_AbstractController
             $islogged = false;
         }
 
-        // The user API function is called.
+        // get groups (not core, only private and public ones)
         $groups = ModUtil::apiFunc('Groups', 'user', 'getallgroups',
                 array('startnum' => $startnum,
-                'numitems' => $itemsperpage,
-                'uid'      => UserUtil::getVar('uid'),
-                'islogged' => $islogged));
+                      'numitems' => $itemsperpage));
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
@@ -67,7 +63,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
         // The return value of the function is checked here, and if the function
         // failed then an appropriate message is posted.
-        if ($groups == false) {
+        if (!$groups) {
             $this->view->assign('nogroups', true);
             return $this->response($this->view->fetch('groups_user_view.tpl'));
         }
@@ -121,6 +117,10 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
             return LogUtil::registerArgsError();
+        }
+        
+        if ($action != 'subscribe' && $action != 'unsubscribe' && $action != 'cancel') {
+            return LogUtil::registerArgsError(ModUtil::url('Groups', 'user', 'view'));
         }
 
         if (!UserUtil::isLoggedIn()) {
@@ -186,7 +186,9 @@ class Groups_Controller_UserController extends Zikula_AbstractController
             return LogUtil::registerArgsError();
         }
 
-        if (empty($tag)) return DataUtil::formatForDisplay($this->__('Error! You must click on the checkbox to confirm your action.'));
+        if (empty($tag)) {
+            return DataUtil::formatForDisplay($this->__('Error! You must click on the checkbox to confirm your action.'));
+        }
 
         $applytext = '';
         if ($action == 'subscribe' && $gtype == Groups_Helper_Common::GTYPE_PRIVATE) {
@@ -195,9 +197,9 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
         $result = ModUtil::apiFunc('Groups', 'user', 'userupdate',
                 array('gid'       => $gid,
-                'action'    => $action,
-                'gtype'     => $gtype,
-                'applytext' => $applytext));
+                      'action'    => $action,
+                      'gtype'     => $gtype,
+                      'applytext' => $applytext));
 
         if ($result == true) {
             LogUtil::registerStatus($this->__('Done! Saved the action.'));
@@ -215,7 +217,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
     public function memberslistAction()
     {
         $gid = (int)$this->request->query->get('gid', null);
-        $startnum = (int)$this->request->query->get('startnum', 1);
+        $startnum = (int)$this->request->query->get('startnum', 0);
 
         if (!is_numeric($startnum)) {
             return LogUtil::registerArgsError();
@@ -225,7 +227,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::memberslist', '::', ACCESS_OVERVIEW));
 
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid'      => $gid,
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid,
                 'numitems' => $itemsperpage,
                 'startnum' => $startnum));
 
@@ -250,7 +252,8 @@ class Groups_Controller_UserController extends Zikula_AbstractController
         $this->view->assign('group', $group);
 
         if ($group['members']) {
-            $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline', array());
+            $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline');
+            
             $members = array();
             foreach($group['members'] as $userid) {
                 $userinfo = UserUtil::getVars($userid['uid']);
@@ -277,6 +280,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
             // test of sorting data
             if (!empty($members)) {
+                $sortAarr = array();
                 foreach($members as $res) {
                     $sortAarr[] = strtolower($res['uname']);
                 }
@@ -295,9 +299,6 @@ class Groups_Controller_UserController extends Zikula_AbstractController
 
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
                                            'itemsperpage' => $itemsperpage));
-
-        $profileModule = System::getVar('profilemodule', '');
-        $this->view->assign('useProfileModule', (!empty($profileModule) && $profileModule == 'Profile' && ModUtil::available($profileModule)));
 
         return $this->response($this->view->fetch('groups_user_memberslist.tpl'));
     }

@@ -7,16 +7,14 @@
     <h3>{$templatetitle}</h3>
 </div>
 
-{if $action != "deny" and $action != "accept"}
-{gt text="Error! Could not load data."}
-{else}
 <form class="z-form" action="{modurl modname="Groups" type="admin" func="userupdate"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <input type="hidden" name="gid" value="{$gid|safetext}" />
-        <input type="hidden" name="action" value="{$action|safetext}" />
         <input type="hidden" name="userid" value="{$userid|safetext}" />
+        <input type="hidden" name="action" value="{$action|safetext}" />
         <input type="hidden" name="tag" value="1" />
+        
         <fieldset>
             <legend>{$templatetitle}</legend>
             <div class="z-formrow">
@@ -34,7 +32,7 @@
             </div>
             {/if}
             <div class="z-formrow">
-                <label for="groups_sendtag">{gt text="Send notification"}</label>
+                <label for="groups_sendtag">{gt text="Notification type"}</label>
                 <select id="groups_sendtag" name="sendtag">
                     {html_options options=$sendoptions}
                 </select>
@@ -50,5 +48,5 @@
         </div>
     </div>
 </form>
-{/if}
+
 {adminfooter}

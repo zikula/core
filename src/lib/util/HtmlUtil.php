@@ -658,7 +658,7 @@ class HtmlUtil
     public static function getSelector_Group($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         $data = array();
-        $grouplist = UserUtil::getGroups('', 'ORDER BY name');
+        $grouplist = UserUtil::getGroups(array(), array('name' => 'ASC'));
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];

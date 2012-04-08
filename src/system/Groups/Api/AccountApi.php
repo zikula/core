@@ -19,19 +19,20 @@ class Groups_Api_AccountApi extends Zikula_AbstractApi
      *
      * @return   array   indexed array of items
      */
-    function getall($args)
+    function getall()
     {
         $items = array();
 
         // Check if there is at least one group to show
-        $result = ModUtil::apiFunc('Groups', 'user', 'getallgroups', array());
+        $groups = ModUtil::apiFunc('Groups', 'user', 'getallgroups');
 
-        if ($result <> false) {
+        if ($groups) {
             // create an array of links to return
-            $items['0'] = array('url'    => ModUtil::url('Groups', 'user', 'main'),
-                    'module' => 'Groups',
-                    'title'  => $this->__('Groups manager'),
-                    'icon'   => 'admin.png');
+            $items['0'] = array(
+                'url'    => ModUtil::url('Groups', 'user', 'main'),
+                'module' => 'Groups',
+                'title'  => $this->__('Groups manager'),
+                'icon'   => 'admin.png');
         }
 
         // Return the items

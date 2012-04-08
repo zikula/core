@@ -70,7 +70,7 @@ class Permissions_Controller_AjaxController extends Zikula_Controller_AbstractAj
                 $perm['groupname'] = $this->__('Unregistered');
                 break;
             default:
-                $group = DBUtil::selectObjectByID('groups', $perm['gid'], 'gid');
+                $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
                 $perm['groupname'] = $group['name'];
         }
 
