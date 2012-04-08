@@ -12,18 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-// Check PHP version
-$x = explode('.', str_replace('-', '.', phpversion()));
-$phpVersion = "$x[0].$x[1].$x[2]";
-if (version_compare($phpVersion, '5.3.2', '>=') == false) {
-    die("Zikula requires PHP version 5.3.2 or greater. Your server is using version $phpVersion.");
-}
-
-include __DIR__.'/../vendor/.composer/autoload.php';
-include __DIR__.'/ZLoader.php';
+include __DIR__.'/autoload.php';
+include __DIR__.'/../src/ZLoader.php';
 ZLoader::register();
 
-$core = new Zikula\Core\Core(__DIR__.'/Resources/config/core.xml');
+$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers');
 $core->boot();
 
 // Load system configuration

@@ -18,16 +18,13 @@ if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
 
-include __DIR__.'/i18n/ZGettextFunctions.php';
-
 define('ZLOADER_PATH', __DIR__.DIRECTORY_SEPARATOR);
-define('ZIKULA_CONFIG_PATH', realpath(__DIR__.'/../config'));
-define('ZIKULA_ROOT', realpath(__DIR__.'/..'));
+define('ZIKULA_CONFIG_PATH', realpath(__DIR__.'/../web/config'));
+define('ZIKULA_ROOT', realpath(__DIR__.'/../web'));
 
 // setup vendors in include path
 set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
-include __DIR__.'/vendor/Smarty/Smarty.class.php';
 /**
  * ZLoader.
  */
@@ -56,17 +53,8 @@ class ZLoader
     {
         spl_autoload_register(array('ZLoader', 'autoload'));
 
-        $autoloader = new UniversalClassLoader();
-        $autoloader->register();
-        $autoloader->registerNamespaces(array(
-            'Zikula' => ZLOADER_PATH,
-        ));
-
         self::$autoloaders = new UniversalClassLoader();
         self::$autoloaders->register();
-        self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
-        self::addAutoloader('Categories', 'system/Categories/lib', '_');
-        self::addAutoloader('Zend', ZLOADER_PATH . '/vendor', '_');
 
         $mapClassLoader = new \Symfony\Component\ClassLoader\MapClassLoader(self::map());
         $mapClassLoader->register();
