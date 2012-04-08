@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * Validates a field's data, ensuring that its string value has a length that is less than or equal to a maximum length.
@@ -29,13 +29,13 @@ class Users_Controller_FormData_Validator_StringMaximumLength extends Users_Cont
     /**
      * Constructs a new validator, initializing the maximum valid string length value.
      *
-     * @param ServiceManager $container The current service manager instance.
+     * @param ContainerBuilder $container The current service manager instance.
      * @param integer        $length         The maximum valid length for the string value.
      * @param string         $errorMessage   The error message to return if the string data exceeds the maximum length.
      *
      * @throws InvalidArgumentException Thrown if the maximum string length value is not an integer or is less than zero.
      */
-    public function __construct(ServiceManager $container, $length, $errorMessage = null)
+    public function __construct(ContainerBuilder $container, $length, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 

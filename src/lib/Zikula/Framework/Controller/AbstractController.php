@@ -16,7 +16,7 @@
 namespace Zikula\Framework\Controller;
 use Zikula\Framework\AbstractBase;
 use Zikula\Framework\Exception\NotFoundException;
-use Zikula\Common\HookManager\Hook;
+use Zikula\Component\HookManager\Hook;
 use Zikula\Core\Event\GenericEvent;
 use Zikula_View;
 use Symfony\Component\HttpFoundation\Response;

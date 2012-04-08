@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * A form data container and validator.
@@ -44,11 +44,11 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * Construct a new form data container instance, initializing the id value.
      *
      * @param string         $formId         A value for the form's id attribute.
-     * @param ServiceManager $container The current service manager instance.
+     * @param ContainerBuilder $container The current service manager instance.
      *
      * @throws InvalidArgumentException Thrown if the specified form id is not valid.
      */
-    public function __construct($formId, ServiceManager $container = null)
+    public function __construct($formId, ContainerBuilder $container = null)
     {
         if (!isset($container)) {
             $container = ServiceUtil::getManager();

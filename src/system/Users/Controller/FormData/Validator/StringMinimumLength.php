@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * Validates a field's data, ensuring that its string value has a length that is greater than or equal to a minimum length.
@@ -29,13 +29,13 @@ class Users_Controller_FormData_Validator_StringMinimumLength extends Users_Cont
     /**
      * Constructs a new validator, initializing the minimum valid string length value.
      *
-     * @param ServiceManager $container The current service manager instance.
+     * @param ContainerBuilder $container The current service manager instance.
      * @param integer        $length         The minimum valid length for the string value.
      * @param string         $errorMessage   The error message to return if the string data's length is less than the minimum length.
      *
      * @throws InvalidArgumentException Thrown if the minimum string length value is not an integer or is less than zero.
      */
-    public function __construct(ServiceManager $container, $length, $errorMessage = null)
+    public function __construct(ContainerBuilder $container, $length, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 

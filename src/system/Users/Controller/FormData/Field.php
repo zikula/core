@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * One field in a form data container.
@@ -89,11 +89,11 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * @param string                                     $fieldName      The name of the field.
      * @param mixed                                      $initialValue   The initial value of the field.
      * @param mixed                                      $defaultValue   The defaule value for the field.
-     * @param ServiceManager                             $container The current service manager instance.
+     * @param ContainerBuilder                             $container The current service manager instance.
      *
      * @throws InvalidArgumentException Thrown if any of the parameters are not valid.
      */
-    public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, \Zikula\Common\ServiceManager\ServiceManager $container = null)
+    public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, \Zikula\Component\DependecyInjection\ContainerBuilder $container = null)
     {
         if (!isset($container)) {
             $container = ServiceUtil::getManager();

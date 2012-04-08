@@ -379,7 +379,10 @@ class System
             $redirecturl = $baseurl . $redirecturl;
         }
 
-        return new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, (int) $type, $additionalheaders);
+        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, (int) $type, $additionalheaders);
+        $response->send();
+
+        exit;
     }
 
     /**

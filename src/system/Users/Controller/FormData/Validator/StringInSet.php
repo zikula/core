@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * Validates a field's data against a list of valid string values.
@@ -29,13 +29,13 @@ class Users_Controller_FormData_Validator_StringInSet extends Users_Controller_F
     /**
      * Creates a new validator, initializing the set of valid string values.
      *
-     * @param ServiceManager $container The current service manager instance.
+     * @param ContainerBuilder $container The current service manager instance.
      * @param array          $validStrings   An array containing valid string values.
      * @param string         $errorMessage   The error message to return if the data is not valid.
      *
      * @throws InvalidArgumentException Thrown if the list of valid string values is not valid, or if it contains an invalid value.
      */
-    public function __construct(ServiceManager $container, array $validStrings, $errorMessage = null)
+    public function __construct(ContainerBuilder $container, array $validStrings, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 

@@ -642,7 +642,7 @@ abstract class AbstractVersion implements \ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param \Zikula\Common\HookManager\ProviderBundle $bundle HookProviderBundle.
+     * @param \Zikula\Component\HookManager\ProviderBundle $bundle HookProviderBundle.
      *
      * @return AbstractVersion
      */

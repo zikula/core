@@ -30,7 +30,7 @@ class Exec implements PanelInterface
      * @var array
      */
     private static $OBJECTS_TO_SKIPP = array(
-        'Zikula\Common\HookManager\HookManager',
+        'Zikula\Component\HookManager\HookManager',
         'Symfony\Component\DependencyInjection\ContainerBuilder',
         'Zikula\Component\DependencyInjection\ContainerBuilder',
         'Zikula_View',
