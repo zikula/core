@@ -64,7 +64,6 @@ class ZLoader
 
         self::$autoloaders = new UniversalClassLoader();
         self::$autoloaders->register();
-        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine1', '_');
         self::addAutoloader('Zikula', ZLOADER_PATH . '/legacy', '_');
         self::addAutoloader('Categories', 'system/Categories/lib', '_');
         self::addAutoloader('Zend', ZLOADER_PATH . '/vendor', '_');
