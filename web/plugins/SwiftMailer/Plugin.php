@@ -52,9 +52,9 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         define('SWIFT_INIT_LOADED', true);
 
         // register namespace
-        \ZLoader::addAutoloader('Swift', dirname(__DIR__) . '/../vendor/swiftmailer/swiftmailer/lib/classes');
+        \ZLoader::addAutoloader('Swift', __DIR__.'/../../../vendor/swiftmailer/swiftmailer/lib/classes');
 
-        $basePath = realpath(dirname(__DIR__) . '/../vendor/swiftmailer/swiftmailer/lib');
+        $basePath = realpath(__DIR__.'/../../../vendor/swiftmailer/swiftmailer/lib');
 
         // initialize Swift
         //require_once realpath($this->baseDir . '/lib/vendor/SwiftMailer/swift_init.php'); // dont use this as it fails in virtual hosting environments with open_basedir restrictions

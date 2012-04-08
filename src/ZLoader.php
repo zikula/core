@@ -23,7 +23,7 @@ define('ZIKULA_CONFIG_PATH', realpath(__DIR__.'/../web/config'));
 define('ZIKULA_ROOT', realpath(__DIR__.'/../web'));
 
 // setup vendors in include path
-set_include_path(get_include_path() . PATH_SEPARATOR . __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
+set_include_path(get_include_path() . PATH_SEPARATOR .realpath(__DIR__.'/../vendor/hard/'));
 
 /**
  * ZLoader.
