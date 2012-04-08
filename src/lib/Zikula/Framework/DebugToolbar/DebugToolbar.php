@@ -72,11 +72,11 @@ class DebugToolbar
     protected $dispatcher;
 
     /**
-     * Sends an event via the EventManager to allow other code to extend the toolbar.
+     * Sends an event via the EventDispatcher to allow other code to extend the toolbar.
      *
-     * @param EventManager $dispatcher Core event manager.
+     * @param EventDispatcher $dispatcher Core event manager.
      */
-    function __construct(EventManager $dispatcher)
+    function __construct(EventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
         \PageUtil::addVar('javascript', 'prototype');
