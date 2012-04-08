@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-include __DIR__.'/autoload.php';
+if (file_exists(__DIR__.'/bootstrap.php.cache')) {
+    include '/bootstrap.php.cache';
+} else {
+    include __DIR__.'/autoload.php';
+}
+
 include __DIR__.'/../src/ZLoader.php';
 ZLoader::register();
 
