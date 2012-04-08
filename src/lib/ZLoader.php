@@ -179,11 +179,11 @@ class ZLoader
     public static function map()
     {
         return array(
-            'ZLanguage' => ZLOADER_PATH . '/i18n/ZLanguage.php',
-            'ZI18n' => ZLOADER_PATH . '/i18n/ZI18n.php',
-            'ZL10n' => ZLOADER_PATH . '/i18n/ZL10n.php',
-            'ZLocale' => ZLOADER_PATH . '/i18n/ZLocale.php',
-            'ZGettext' => ZLOADER_PATH . '/i18n/ZGettext.php',
+            'ZLanguage' => ZLOADER_PATH . 'i18n/ZLanguage.php',
+            'ZI18n' => ZLOADER_PATH . 'i18n/ZI18n.php',
+            'ZL10n' => ZLOADER_PATH . 'i18n/ZL10n.php',
+            'ZLocale' => ZLOADER_PATH . 'i18n/ZLocale.php',
+            'ZGettext' => ZLOADER_PATH . 'i18n/ZGettext.php',
             'ZMO' => ZLOADER_PATH . 'i18n/ZMO.php',
             'ZLanguageBrowser' => ZLOADER_PATH . 'i18n/ZLanguageBrowser.php',
             'DBObject' => ZLOADER_PATH . 'dbobject/DBObject.php',
@@ -221,7 +221,6 @@ class ZLoader
             'UserUtil' => ZLOADER_PATH . 'util/UserUtil.php',
             'ValidationUtil' => ZLOADER_PATH . 'util/ValidationUtil.php',
             'Loader' => ZLOADER_PATH . 'legacy/Loader.php',
-            'sfYaml' => ZLOADER_PATH . 'vendor/Doctrine1/Doctrine/Parser/sfYaml/sfYaml.php', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
         );
     }
 
