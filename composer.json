@@ -16,7 +16,8 @@
         "twig/extensions": "dev-master",
         "swiftmailer/swiftmailer": "4.1.6",
         "gedmo/doctrine-extensions": "dev-master",
-        "drak/doctrine1": "dev-master"
+        "drak/doctrine1": "dev-master",
+        "imagine/Imagine": "v0.2.8"
     },
     "config": {
         "vendor-dir": "src/vendor",
