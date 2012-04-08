@@ -134,42 +134,50 @@ class UserUtil
      */
     public static function getGroup($gid)
     {
-        return DBUtil::selectObjectByID('groups', $gid, 'gid');
+        return ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
     }
 
     /**
      * Return a hash structure mapping gid to groupname.
      *
-     * @param string  $where        The where clause to use (optional) (default='').
-     * @param string  $orderBy      The order by clause to use (optional) (default='').
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
+     * @param string  $where        The where clause to use (optional) (default=array()).
+     * @param string  $orderBy      The order by clause to use (optional) (default=array()).
+     * @param integer $limitOffset  The select-limit offset (optional) (default=null).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=null).
      * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
      * @deprecated since 1.3.0
      *
      * @return array An array mapping gid to groupname
      */
-    public static function getPNGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
+    public static function getPNGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
-        return self::getGroups();
+        return self::getGroups($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 
     /**
      * Return a hash structure mapping gid to groupname.
      *
-     * @param string  $where        The where clause to use (optional) (default='').
-     * @param string  $orderBy      The order by clause to use (optional) (default='').
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
+     * @param string  $where        The where clause to use (optional) (default=array()).
+     * @param string  $orderBy      The order by clause to use (optional) (default=array()).
+     * @param integer $limitOffset  The select-limit offset (optional) (default=null).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=null).
      * @param string  $assocKey     The associative key to apply (optional) (default='gid').
      *
      * @return array An array mapping gid to groupname.
      */
-    public static function getGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
+    public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
-        return DBUtil::selectObjectArray('groups', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        $groups = $em->getRepository('Groups\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        
+        $items = array();
+        foreach ($groups as $group) {
+            $items[$group[$assocKey]] = $group->toArray();
+        }
+        
+        return $items;
     }
 
     /**
@@ -225,7 +233,7 @@ class UserUtil
      *
      * @return string A string list of group ids
      */
-    public static function getPNGroupIdList($where = '', $orderBy = '', $separator = ',')
+    public static function getPNGroupIdList($where = array(), $orderBy = array(), $separator = ',')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
         return self::getGroupIdList($where, $orderBy, $separator);
@@ -240,7 +248,7 @@ class UserUtil
      *
      * @return string A string list of group ids.
      */
-    public static function getGroupIdList($where = '', $orderBy = '', $separator = ',')
+    public static function getGroupIdList($where = array(), $orderBy = array(), $separator = ',')
     {
         $groupdata = self::getGroups($where, $orderBy);
 
@@ -266,13 +274,8 @@ class UserUtil
         if (empty($uid)) {
             return array();
         }
-
-        $where = '';
-        if ($uid != -1) {
-            $where = "WHERE uid = '" . DataUtil::formatForStore($uid) . "'";
-        }
-
-        return DBUtil::selectFieldArray('group_membership', 'gid', $where);
+        
+        return ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
     }
 
     /**
@@ -319,10 +322,18 @@ class UserUtil
         if (!$gid) {
             return array();
         }
+        
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        
+        $members = $group['members'];
+        
+        $uids = array();
+        
+        foreach ($members as $uid => $membership) {
+            $uids[] = $uid;
+        }
 
-        $where = "WHERE gid = '" . DataUtil::formatForStore($gid) . "'";
-
-        return DBUtil::selectFieldArray('group_membership', 'uid', $where);
+        return $uids;
     }
 
     /**
@@ -438,7 +449,7 @@ class UserUtil
             $dropdown[] = array('id' => $defaultValue, 'name' => $defaultText);
         }
 
-        $groupdata = self::getGroups('', 'ORDER BY name');
+        $groupdata = self::getGroups(array(), array('name' => 'ASC'));
 
         if (!$groupdata || !count($groupdata)) {
             return $dropdown;

@@ -48,18 +48,16 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Add item
-        $obj = array('name' => $args['name'],
-                'gtype' => $args['gtype'],
-                'state' => $args['state'],
-                'nbumax' => $args['nbumax'],
-                'description' => $args['description']);
-        $result = DBUtil::insertObject($obj, 'groups', 'gid');
-
-        // Check for an error with the database code
-        if (!$result) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
-
+        $obj = new Groups\Entity\Group;
+        $obj['name'] = $args['name'];
+        $obj['gtype'] = $args['gtype'];
+        $obj['state'] = $args['state'];
+        $obj['nbumax'] = $args['nbumax'];
+        $obj['description'] = $args['description'];
+        
+        $this->entityManager->persist($obj);
+        $this->entityManager->flush();
+        
         // Get the ID of the item that we inserted.
         $gid = $obj['gid'];
 
@@ -87,14 +85,16 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                        array('gid' => $args['gid']));
+        // get item
+        $item = $this->entityManager->find('Groups\Entity\Group', $args['gid']);
 
-        if ($item == false) {
+        if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
-
+        
+        // keep item to pass it to dispatcher later
+        $deletedItem = $item->toArray();
+        
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
@@ -111,23 +111,29 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Sorry! You cannot delete the primary administrators group.'));
         }
 
-        // Delete the item
-        $group_result = DBUtil::deleteObjectByID('groups', $args['gid'], 'gid');
+        // Delete the group
+        $this->entityManager->remove($item);
+        $this->entityManager->flush();
 
         // remove all memberships of this group
-        $groupmembership_result = DBUtil::deleteObjectByID('group_membership', $args['gid'], 'gid');
+        $dql = "DELETE FROM Groups\Entity\GroupMembership m WHERE m.gid = {$args['gid']}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
+
+        // TODO: Is there any reason why we don't delete group applications?
+        //
 
         // Remove any group permissions for this group
         // TODO: Call the permissions API to do this job
         $groupperm_result = DBUtil::deleteObjectByID('group_perms', $args['gid'], 'gid');
 
         // Check for an error with the database code
-        if (!$group_result || !$groupmembership_result || !$groupperm_result) {
+        if (!$groupperm_result) {
             return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
         }
 
         // Let other modules know that we have deleted a group.
-        $deleteEvent = new GenericEvent($item);
+        $deleteEvent = new GenericEvent($deletedItem);
         $this->dispatcher->dispatch('group.delete', $deleteEvent);
 
         // Let the calling process know that we have finished successfully
@@ -151,11 +157,10 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                        array('gid' => $args['gid']));
+        // get item
+        $item = $this->entityManager->find('Groups\Entity\Group', $args['gid']);
 
-        if ($item == false) {
+        if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
@@ -167,7 +172,8 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         // Other check
         $checkname = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
                         array('name' => $args['name'],
-                                'checkgid' => $args['gid']));
+                              'checkgid' => $args['gid']));
+
         if ($checkname != false) {
             return LogUtil::registerError($this->__('Error! There is already a group with that name.'));
         }
@@ -181,22 +187,11 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Update the item
-        $object = array('name' => $args['name'],
-                'gtype' => $args['gtype'],
-                'state' => $args['state'],
-                'nbumax' => (int)$args['nbumax'],
-                'description' => $args['description'],
-                'gid' => (int)$args['gid']);
-
-        $result = DBUtil::updateObject($object, 'groups', '', 'gid');
-
-        // Check for an error with the database code
-        if (!$result) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
-        }
+        $item->merge($args);
+        $this->entityManager->flush();
 
         // Let other modules know that we have updated a group.
-        $updateEvent = new GenericEvent($object);
+        $updateEvent = new GenericEvent($item);
         $this->dispatcher->dispatch('group.update', $updateEvent);
 
         // Let the calling process know that we have finished successfully
@@ -218,11 +213,10 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                        array('gid' => $args['gid']));
+        // get group
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
-        if ($item == false) {
+        if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
@@ -231,18 +225,15 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        // Add item
-        $object = array('gid' => $args['gid'],
-                'uid' => $args['uid']);
-        $result = DBUtil::insertObject($object, 'group_membership');
-
-        // Check for an error with the database code
-        if (!$result) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
+        // Add user to group
+        $membership = new Groups\Entity\GroupMembership;
+        $membership['gid'] = $args['gid'];
+        $membership['uid'] = $args['uid'];
+        $this->entityManager->persist($membership);
+        $this->entityManager->flush();
 
         // Let other modules know that we have updated a group.
-        $adduserEvent = new GenericEvent($object);
+        $adduserEvent = new GenericEvent($membership);
         $this->dispatcher->dispatch('group.adduser', $adduserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -260,16 +251,14 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
     public function removeuser($args)
     {
         // Argument check
-        if ((!isset($args['gid'])) ||
-                (!isset($args['uid']))) {
+        if ((!isset($args['gid'])) || (!isset($args['uid']))) {
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                        array('gid' => $args['gid']));
+        // get group
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
-        if ($item == false) {
+        if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
@@ -277,24 +266,14 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-
-        // Add item
-        $where = "WHERE       $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
-              AND         $groupmembershipcolumn[uid] = '" . (int)DataUtil::formatForStore($args['uid']) . "'";
-        $result = DBUtil::deleteWhere('group_membership', $where);
-
-        // Check for an error with the database code
-        if (!$result) {
-            return false;
-        }
+        
+        // delete user from group
+        $membership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $this->entityManager->remove($membership);
+        $this->entityManager->flush();
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new GenericEvent(array('gid' => $args['gid'],
-                        'uid' => $args['uid']));
+        $removeuserEvent = new GenericEvent(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->dispatcher->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -315,20 +294,28 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['name'])) {
             return LogUtil::registerArgsError();
         }
-
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupcolumn = $dbtable['groups_column'];
-
-        // Get item
-        $where = "WHERE $groupcolumn[name] = '" . DataUtil::formatForStore($args['name']) . "'";
-
+        
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+        
+        // add select and from params 
+        $qb->select('g')
+           ->from('Groups\Entity\Group', 'g');
+        
+        // add clause for filtering name
+        $qb->andWhere($qb->expr()->eq('g.name', $qb->expr()->literal($args['name'])));
+        
         // Optional Where to use when modifying a group to check if there is
         // already another group by that name.
         if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
-            $where .= " AND $groupcolumn[gid] != '" . DataUtil::formatForStore($args['checkgid']) . "'";
+            $qb->andWhere($qb->expr()->neq('g.gid', $qb->expr()->literal($args['checkgid'])));
         }
-        $result = DBUtil::selectObject('groups', $where);
+        
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
+        
+        // execute query
+        $result = $query->getOneOrNullResult();
 
         // error message and return
         if (!$result) {
@@ -342,41 +329,31 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
     /**
      * Get applications.
      *
-     * @param int $args['startnum'].
-     * @param int $args['numitems'].
-     *
      * @return mixed array, false on failure.
      */
-    public function getapplications($args)
+    public function getapplications()
     {
-        if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
-            $args['startnum'] = 1;
-        }
-        if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
-            $args['numitems'] = -1;
-        }
-
-        $dbtable = DBUtil::getTables();
-        $col = $dbtable['group_applications_column'];
-
-        $orderBy = "ORDER BY $col[app_id] ASC";
-        $objArray = DBUtil::selectObjectArray('group_applications', '', $orderBy);
+        $objArray = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findBy(array(), array('app_id' => 'ASC'));
 
         if ($objArray === false) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
 
         $items = array();
+        
         foreach ($objArray as $obj) {
             $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $obj['gid']));
-            if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
-                $items[] = array('app_id' => $obj['app_id'],
+            if ($group) {
+                if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
+                    $items[] = array(
+                        'app_id' => $obj['app_id'],
                         'userid' => $obj['uid'],
                         'username' => UserUtil::getVar('uname', $obj['uid']),
                         'appgid' => $obj['gid'],
                         'gname' => $group['name'],
                         'application' => nl2br($obj['application']),
                         'status' => $obj['status']);
+                }
             }
         }
 
@@ -396,26 +373,14 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['gid']) || !isset($args['userid'])) {
             return LogUtil::registerArgsError();
         }
-
-        $dbtable = DBUtil::getTables();
-        $col = $dbtable['group_applications_column'];
-
-        $where = "WHERE  $col[gid] = '" . DataUtil::formatForStore($args['gid']) . "'
-              AND    $col[uid] = '" . DataUtil::formatForStore($args['userid']) . "'";
-
-        $result = DBUtil::selectObject('group_applications', $where);
-
-        if ($result === false) {
+        
+        $appInfo = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        
+        if (!$appInfo) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
 
-        $appinfo = array('app_id' => $result['app_id'],
-                'appuid' => $result['uid'],
-                'appgid' => $result['gid'],
-                'application' => nl2br($result['application']),
-                'status' => $result['status']);
-
-        return $appinfo;
+        return $appInfo->toArray();
     }
 
     /**
@@ -432,15 +397,11 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['gid']) || !isset($args['userid']) || !isset($args['action'])) {
             return LogUtil::registerArgsError();
         }
-
-        $dbtable = DBUtil::getTables();
-        $col = $dbtable['group_applications_column'];
-
-        $where = "WHERE $col[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
-              AND   $col[uid] = '" . (int)DataUtil::formatForStore($args['userid']) . "'";
-        if (!DBUtil::deleteWhere('group_applications', $where)) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
+        
+        // delete group application
+        $application = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $this->entityManager->remove($application);
+        $this->entityManager->flush();
 
         if ($args['action'] == 'accept') {
             $adduser = ModUtil::apiFunc('Groups', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
@@ -449,24 +410,12 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         // Send message part
         switch ($args['sendtag']) {
             case 1:
-                $send = ModUtil::apiFunc('Messages', 'user', 'create',
-                                array('to_userid' => $args['userid'],
-                                        'subject' => $args['reasontitle'],
-                                        'message' => $args['reason']));
-
-                if ($send == false) {
-                    LogUtil::registerError($this->__('Error! Could not send the private message to the user.'));
-                }
-
-                break;
-
-            case 2:
                 if (ModUtil::available('Mailer')) {
                     $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                     array('toname' => UserUtil::getVar('uname', $args['userid']),
-                                            'toaddress' => UserUtil::getVar('email', $args['userid']),
-                                            'subject' => $args['reasontitle'],
-                                            'body' => $args['reason']));
+                                          'toaddress' => UserUtil::getVar('email', $args['userid']),
+                                          'subject' => $args['reasontitle'],
+                                          'body' => $args['reason']));
                 } else {
                     $send = System::mail(UserUtil::getVar('email', $args['userid']), $args['reasontitle'], $args['reason'], "From: " . System::getVar('adminmail') . "\nX-Mailer: PHP/" . phpversion(), 0);
                 }
@@ -483,7 +432,9 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        return DBUtil::selectObjectCount('groups');
+        $dql = "SELECT count(g.gid) FROM Groups\Entity\Group g";
+        $query = $this->entityManager->createQuery($dql);
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -507,5 +458,4 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         return $links;
     }
-
 }

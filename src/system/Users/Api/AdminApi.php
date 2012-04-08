@@ -187,10 +187,11 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
             if ($markOnly) {
                 UserUtil::setVar('activated', Users_Constant::ACTIVATED_PENDING_DELETE, $userObj['uid']);
             } else {
-                // TODO - This should be in the Groups module, and happen as a result of an event.
-                if (!DBUtil::deleteObjectByID('group_membership', $userObj['uid'], 'uid')) {
-                    return false;
-                }
+                // remove all memberships of this user
+                // TODO? - This should be in the Groups module, and happen as a result of an event.
+                $dql = "DELETE FROM Groups\Entity\GroupMembership m WHERE m.uid = {$userObj['uid']}";
+                $query = $this->entityManager->createQuery($dql);
+                $query->getResult();
 
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
                 DBUtil::deleteObjectByID('session_info', $userObj['uid'], 'uid');
@@ -474,30 +475,20 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
                 . 'Now all these users do not have group.'));
             return false;
         }
-
-        // get available groups
-        $allGroups = ModUtil::apiFunc('Groups', 'user', 'getAll');
-
-        // create an array with the groups identities where the user can add other users
-        $allGroupsArray = array();
-        foreach ($allGroups as $group) {
-            if (SecurityUtil::checkPermission('Groups::', $group['name'] . '::' . $group['gid'], ACCESS_EDIT)) {
-                $allGroupsArray[] = $group['gid'];
-            }
-        }
-
-        $groups = array();
-        // construct a sql statement with all the inserts to reduce SQL queries
+        
+        // add user to groups
+        $error_membership = false;
         foreach ($importValues as $value) {
             $groupsArray = explode('|', $value['groups']);
             foreach ($groupsArray as $group) {
-                $groups[] = array('uid' => $usersInDB[$value['uname']]['uid'], 'gid' => $group);
+                $adduser = ModUtil::apiFunc('Groups', 'user', 'adduser', array('gid' => $group, 'uid' => $usersInDB[$value['uname']]['uid'], 'verbose' => false));
+                if (!$adduser) {
+                    $error_membership = true;
+                }
             }
         }
 
-        // execute sql to create users
-        $result = DBUtil::insertObjectArray($groups, 'group_membership', 'gid', true);
-        if (!$result) {
+        if ($error_membership) {
             $this->registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
             return false;
         }

@@ -583,22 +583,16 @@ class Permissions_Controller_AdminController extends Zikula_AbstractController
      */
     function getGroupsInfo()
     {
-        $dbtable = DBUtil::getTables();
-
-        $groupcolumn = $dbtable['groups_column'];
-
-        $orderBy = "ORDER BY $groupcolumn[name]";
-        $objArrray = DBUtil::selectObjectArray('groups', '', $orderBy);
+        $groups = array();
         $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
         $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
 
-        $ak = array_keys($objArrray);
-        foreach ($ak as $v) {
-            $gid = $objArrray[$v]['gid'];
-            $groups[$gid] = $objArrray[$v]['name'];
+        $objArray = ModUtil::apiFunc('Groups', 'user', 'getall');
+        foreach ($objArray as $group) {
+            $groups[$group['gid']] = $group['name'];
         }
 
-        return($groups);
+        return $groups;
     }
 
     /**

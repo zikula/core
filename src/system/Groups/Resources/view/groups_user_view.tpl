@@ -12,8 +12,9 @@
             <th> {gt text="State"} </th>
             <th> {gt text="Members"} </th>
             <th> {gt text="Maximum membership"} </th>
+            {if $state gt 0}
             <th> {gt text="Functions"} </th>
-            <th> {gt text="Extras"} </th>
+            {/if}
         </tr>
     </thead>
     {if $items}

@@ -40,6 +40,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
     {
         // Security check
         $any_access = false;
+        
         // get all groups from the API
         $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
         if (is_array($groups)) {
@@ -78,14 +79,14 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
 
         // get the default user group
         $defaultgroup = $this->getVar('defaultgroup');
+        
         // get the primary admin group
         $primaryadmingroup = $this->getVar('primaryadmingroup', 2);
 
         // The user API function is called.
         $items = ModUtil::apiFunc('Groups', 'user', 'getall',
                 array('startnum' => $startnum,
-                'numitems' => $itemsperpage));
-
+                      'numitems' => $itemsperpage));
 
         // Setting various defines
         $groupsCommon = new Groups_Helper_Common();
@@ -93,6 +94,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $statelabel = $groupsCommon->stateLabels();
 
         $groups = array();
+        
         foreach ($items as $item) {
 
             if (SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_READ)) {
@@ -100,40 +102,46 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
                 // Options for the item.
                 $options = array();
                 if (SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
+                    
                     $editurl    = ModUtil::url('Groups', 'admin', 'modify', array('gid'     => $item['gid']));
                     $deleteurl  = ModUtil::url('Groups', 'admin', 'view', array());
                     $membersurl = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid']));
+                    
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'modify', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Edit'),
                             'imgfile' => 'xedit.png');
+                    
                     if ((SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE))
-                            && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup))
-                    {
+                            && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup)) {
                         $deleteurl  = ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('Groups', 'admin', 'delete', array('gid'     => $item['gid'])),
                                 'title'   => $this->__('Delete'),
                                 'imgfile' => '14_layer_deletelayer.png');
                     }
+                    
                     $options[] = array('url' => ModUtil::url('Groups', 'admin', 'groupmembership', array('gid'     => $item['gid'])),
                             'title'   => $this->__('Group membership'),
                             'imgfile' => 'agt_family.png');
+                    
                     $nbuser = ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $item['gid']));
-                    $groups[] = array('name'        => $item['name'],
-                            'gid'         => $item['gid'],
-                            'gtype'       => $item['gtype'],
-                            'gtypelbl'    => $typelabel[$item['gtype']],
-                            'description' => ((empty($item['description'])== false) ? $item['description'] : ''),
-                            'prefix'      => $item['prefix'],
-                            'state'       => $item['state'],
-                            'statelbl'    => $statelabel[$item['state']],
-                            'nbuser'      => (($nbuser <> false) ? $nbuser : 0),
-                            'nbumax'      => $item['nbumax'],
-                            'link'        => $item['link'],
-                            'uidmaster'   => $item['uidmaster'],
-                            'options'     => $options,
-                            'editurl'     => $editurl,
-                            'deleteurl'   => $deleteurl,
-                            'membersurl'  => $membersurl);
+                    
+                    $groups[] = array(
+                        'name' => $item['name'],
+                        'gid'         => $item['gid'],
+                        'gtype'       => $item['gtype'],
+                        'gtypelbl'    => $typelabel[$item['gtype']],
+                        'description' => ((empty($item['description'])== false) ? $item['description'] : ''),
+                        'prefix'      => $item['prefix'],
+                        'state'       => $item['state'],
+                        'statelbl'    => $statelabel[$item['state']],
+                        'nbuser'      => (($nbuser <> false) ? $nbuser : 0),
+                        'nbumax'      => $item['nbumax'],
+                        'link'        => $item['link'],
+                        'uidmaster'   => $item['uidmaster'],
+                        'options'     => $options,
+                        'editurl'     => $editurl,
+                        'deleteurl'   => $deleteurl,
+                        'membersurl'  => $membersurl);
                 }
             }
         }
@@ -147,7 +155,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         // permission check for the group is done in this function
         $users = ModUtil::apiFunc('Groups', 'admin', 'getapplications',
                 array('startnum' => $startnum,
-                'numitems' => $itemsperpage));
+                      'numitems' => $itemsperpage));
 
         $this->view->assign('groups',       $groups)
                    ->assign('grouptypes',   $typelabel)
@@ -208,10 +216,8 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $nbumax = $this->request->request->get('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null);
         $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
 
-
         // The API function is called.
-        $check = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
-                array('name' => $name));
+        $check = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname', array('name' => $name));
 
         if ($check != false) {
             // Group already exists
@@ -219,10 +225,10 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         } else {
             $gid = ModUtil::apiFunc('Groups', 'admin', 'create',
                     array('name'        => $name,
-                    'gtype'       => $gtype,
-                    'state'       => $state,
-                    'nbumax'      => $nbumax,
-                    'description' => $description));
+                          'gtype'       => $gtype,
+                          'state'       => $state,
+                          'nbumax'      => $nbumax,
+                          'description' => $description));
 
             // The return value of the function is checked here
             if ($gid != false) {
@@ -250,29 +256,19 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
     {
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $objectid = (int)$this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
 
-        // At this stage we check to see if we have been passed $objectid
-        if (!empty($objectid)) {
-            $gid = $objectid;
-        }
+        // get group
+        $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user',
-                array('gid' => $gid));
-
-        if ($item == false) {
+        if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such group found.'), 404);
         }
 
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT));
 
-        // Add a hidden variable for the item id.
-        $this->view->assign('gid', $gid);
-
         // assign the item
-        $this->view->assign($item);
+        $this->view->assign('item', $item);
 
         // Setting various defines
         $groupsCommon = new Groups_Helper_Common();
@@ -302,27 +298,20 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
 
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $objectid = (int)$this->request->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
         $name = $this->request->request->get('name', isset($args['name']) ? $args['name'] : null);
         $gtype = $this->request->request->get('gtype', isset($args['gtype']) ? $args['gtype'] : null);
         $state = $this->request->request->get('state', isset($args['state']) ? $args['state'] : null);
         $nbumax = $this->request->request->get('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null);
         $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
 
-        // At this stage we check to see if we have been passed $objectid
-        if (!empty($objectid)) {
-            $gid = $objectid;
-        }
-
-
         // The API function is called.
         if (ModUtil::apiFunc('Groups', 'admin', 'update',
-        array('gid'         => $gid,
-        'name'        => $name,
-        'gtype'       => $gtype,
-        'state'       => $state,
-        'nbumax'      => $nbumax,
-        'description' => $description))) {
+                array('gid' => $gid,
+                      'name'        => $name,
+                      'gtype'       => $gtype,
+                      'state'       => $state,
+                      'nbumax'      => $nbumax,
+                      'description' => $description))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Saved group changes.'));
         }
@@ -353,19 +342,13 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
     public function deleteAction($args)
     {
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $objectid = (int)$this->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
-        $confirmation = (bool)$this->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
-
-        if (!empty($objectid)) {
-            $gid = $objectid;
-        }
+        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $confirmation = (bool)$this->request->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
 
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user',
-                array('gid' => $gid));
+        $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
-        if ($item == false) {
+        if (!$item) {
             LogUtil::registerError($this->__('Sorry! No such group found.'));
             return $this->redirect(ModUtil::url('Groups', 'admin', 'view'));
         }
@@ -387,7 +370,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
             // of this action from the user
 
             // Add a hidden variable for the item id.
-            $this->view->assign('gid', $gid);
+            $this->view->assign('item', $item);
 
             // Return the output that has been generated by this function
             return $this->response($this->view->fetch('groups_admin_delete.tpl'));
@@ -398,8 +381,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $this->checkCsrfToken();
 
         // The API function is called.
-        if (ModUtil::apiFunc('Groups', 'admin', 'delete',
-        array('gid' => $gid))) {
+        if (ModUtil::apiFunc('Groups', 'admin', 'delete', array('gid' => $gid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted the group.'));
         }
@@ -420,36 +402,22 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
     {
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $objectid = (int)$this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
         $startnum = (int)$this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null);
         $letter = $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null);
-
-        if (!empty($objectid)) {
-            $gid = $objectid;
-        }
-
+        
         // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user',
-                array('gid' => $gid));
-
-        // check for a letter parameter
-        if (empty($letter) && strlen($letter) != 1) {
-            $letter = 'A';
-        }
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', 
+                array('gid'      => $gid,
+                      'startnum' => $startnum,
+                      'numitems' => $this->getVar('itemsperpage')));
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT));
 
         // assign the group to the template
-        $this->view->assign($item);
+        $this->view->assign('group', $group);
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user',
-                array('gid'      => $gid,
-                'startnum' => $startnum,
-                'numitems' => $this->getVar('itemsperpage')));
-
-        $users = $item['members'];
+        $users = $group['members'];
 
         $currentUid = UserUtil::getVar('uid');
         $defaultGroup = $this->getVar('defaultgroup', 0);
@@ -457,27 +425,26 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
 
         $groupmembers = array();
 
-        if (is_array($users) && SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
+        if (is_array($users) && SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT)) {
             foreach ($users as $user) {
                 $options = array();
+                
                 if (($user['uid'] == $currentUid)
-                    && (($item['gid'] == $defaultGroup) || ($item['gid'] == $primaryAdminGroup)))
-                {
+                    && (($group['gid'] == $defaultGroup) || ($group['gid'] == $primaryAdminGroup))) {
                     $options[] = array();
                 } else {
                     $options[] = array(
-                        'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array(
-                            'gid'    => $item['gid'],
-                            'uid'     => $user['uid']
-                        )),
-                        'imgfile' => 'edit_remove.png',
+                        'url'     => ModUtil::url('Groups', 'admin', 'removeuser', array('gid' => $group['gid'], 'uid' => $user['uid'])),
+                        'imgfile' => 'editdelete.png',
                         'uid'     => $user['uid'],
                         'title'   => $this->__('Remove user from group')
                     );
                 }
+                
                 $groupmembers[] = array(
                     'uname'   => UserUtil::getVar('uname', $user['uid']),
                     'name'    => UserUtil::getVar('name', $user['uid']),
+                    'email'    => UserUtil::getVar('email', $user['uid']),
                     'uid'     => $user['uid'],
                     'options' => $options
                 );
@@ -492,22 +459,20 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         array_multisort($sortAarr, SORT_ASC, $groupmembers);
 
         $this->view->assign('groupmembers', $groupmembers);
-
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user',
-                array('gid' => $gid));
-
-        // Number of items to display per page
-        $row = array();
-
+        
+        // check for a letter parameter
+        if (empty($letter) && strlen($letter) != 1) {
+            $letter = '*';
+        }
+        
         switch($letter) {
             case '?':
-            // read usernames beginning with special chars or numbers
+                // read usernames beginning with special chars or numbers
                 $regexpfield = 'uname';
                 $regexpression = '^[[:punct:][:digit:]]';
                 break;
             case '*':
-            // read allusers
+                // read allusers
                 $regexpfield = '';
                 $regexpression = '';
                 break;
@@ -515,6 +480,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
                 $regexpfield = 'uname';
                 $regexpression = '^' . $letter;
         }
+        
         $users = UserUtil::getAll('uname', 'ASC', -1, -1, '', $regexpfield, $regexpression);
 
         $allusers = array();
@@ -537,7 +503,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         // from the get function
         $flippedusers = array_flip($allusers);
         // now lets diff the array
-        $diffedusers = array_diff($flippedusers, array_keys($item['members']));
+        $diffedusers = array_diff($flippedusers, array_keys($group['members']));
         // now flip the array back
         $allusers = array_flip($diffedusers);
         // sort the users by user name
@@ -570,22 +536,30 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $gid = (int)$this->request->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
         $uid = $this->request->request->get('uid', isset($args['uid']) ? $args['uid'] : null);
 
-
         // The API function is called.
         if (is_array($uid)) {
+            $total_users_added = 0;
+            $total_users_notadded = 0;
+            
             foreach($uid as $id) {
-                if (!ModUtil::apiFunc('Groups', 'admin', 'adduser',
-                array('gid' => $gid,
-                'uid' => $id))) {
-                    // Failure
-                    LogUtil::registerError($this->__('Error! A problem occurred and the user was not added to the group.'));
+                if (!ModUtil::apiFunc('Groups', 'admin', 'adduser', array('gid' => $gid, 'uid' => $id))) {
+                    $total_users_notadded++;
+                } else {
+                    $total_users_added++;
                 }
             }
+            
+            if ($total_users_added > 0) {
+                LogUtil::registerStatus($this->_fn('Done! %s user was added to the group.', 'Done! %s users were added to the group.', $total_users_added, $total_users_added));
+            }
+            if ($total_users_notadded > 0) {
+                LogUtil::registerError($this->_fn('Error! %s user was not added to the group.', 'Error! %s users were not added to the group.', $total_users_notadded, $total_users_notadded));
+            }
         } else {
-            if (ModUtil::apiFunc('Groups', 'admin', 'adduser',
-            array('gid' => $gid,
-            'uid' => $uid))) {
-                // Success
+            if (!ModUtil::apiFunc('Groups', 'admin', 'adduser', array('gid' => $gid, 'uid' => $uid))) {
+                LogUtil::registerError($this->__('Error! A problem occurred and the user was not added to the group.'));
+            } else {
+
                 LogUtil::registerStatus($this->__('Done! The user was added to the group.'));
             }
         }
@@ -605,9 +579,9 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
     public function removeuserAction($args)
     {
         // Get parameters from whatever input we need.
-        $gid = (int)$this->request->get('gid', isset($args['gid']) ? $args['gid'] : null);
-        $uid = (int)$this->request->get('uid', isset($args['uid']) ? $args['uid'] : null);
-        $confirmation = (bool)$this->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
+        $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
+        $uid = (int)$this->request->query->get('uid', isset($args['uid']) ? $args['uid'] : null);
+        $confirmation = (bool)$this->request->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_EDIT));
 
         // Check for confirmation.
@@ -615,13 +589,13 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
             // No confirmation yet - display a suitable form to obtain confirmation
             // of this action from the user
 
-            $group = ModUtil::apiFunc('Groups', 'user', array('gid' => $gid));
+            $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
             // Add a hidden variable for the item id.
             $this->view->assign('gid', $gid)
-                ->assign('group', $group)
-                ->assign('uid', $uid)
-                ->assign('uname', UserUtil::getVar('uname', $uid));
+                       ->assign('uid', $uid)
+                       ->assign('group', $group)
+                       ->assign('uname', UserUtil::getVar('uname', $uid));
 
             // Return the output that has been generated by this function
             return $this->response($this->view->fetch('groups_admin_removeuser.tpl'));
@@ -659,20 +633,12 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'view'));
         }
 
-        $appinfo = ModUtil::apiFunc('Groups', 'admin', 'getapplicationinfo',
-                array('gid'    => $gid,
-                      'userid' => $userid));
-
-        if (ModUtil::available('Messages')) {
-            $sendoptions = array(
-                0 => $this->__('None'),
-                1 => $this->__('Private message'),
-                2 => $this->__('E-mail'));
-        } else {
-            $sendoptions = array(
-                0 => $this->__('None'),
-                2 => $this->__('E-mail'));
-        }
+        $appinfo = ModUtil::apiFunc('Groups', 'admin', 'getapplicationinfo', array('gid' => $gid, 'userid' => $userid));
+        
+        $sendoptions = array(
+            0 => $this->__('None'),
+            1 => $this->__('E-mail')
+        );
 
         $this->view->assign('userid',      $userid)
                    ->assign('gid',         $gid)
@@ -707,7 +673,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'admin', 'view'));
         }
 
-        $group = ModUtil::apiFunc('Groups', 'user', array('gid' => $gid));
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
         if ($action == 'deny') {
 
@@ -731,11 +697,11 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
 
         $result = ModUtil::apiFunc('Groups', 'admin', 'pendingaction',
                 array('userid'      => $userid,
-                'gid'         => $gid,
-                'sendtag'     => $sendtag,
-                'reason'      => $reason,
-                'reasontitle' => $reasontitle,
-                'action'      => $action));
+                      'gid'         => $gid,
+                      'sendtag'     => $sendtag,
+                      'reason'      => $reason,
+                      'reasontitle' => $reasontitle,
+                      'action'      => $action));
 
         if (!$result) {
             if ($action == 'deny') {
@@ -764,12 +730,6 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
     {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
-
-        // assign the module vars
-        $modvars = $this->getVars();
-        $this->view->assign($modvars);
-
-        $this->view->assign('defaultgroupid', $modvars['defaultgroup']);
 
         // get all groups from the API
         $groups = ModUtil::apiFunc('Groups', 'user', 'getall');
@@ -804,14 +764,8 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $itemsperpage = (int)$this->request->request->get('itemsperpage', 25);
         $this->setVar('itemsperpage', $itemsperpage);
 
-        $defaultgroupid = (int)$this->request->request->get('defaultgroupid', 1);
-        // convert id to name
-        $group = ModUtil::apiFunc('Groups', 'user', array('gid' => $defaultgroupid));
-        if($group == false) {
-            LogUtil::registerError($this->__('Error! Could not save the module configuration.'));
-            return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
-        }
-        $this->setVar('defaultgroup', $group['gid']);
+        $defaultgroup = (int)$this->request->request->get('defaultgroup', 1);
+        $this->setVar('defaultgroup', $defaultgroup);
 
         $mailwarning = (bool)$this->request->request->get('mailwarning', false);
         $this->setVar('mailwarning', $mailwarning);
