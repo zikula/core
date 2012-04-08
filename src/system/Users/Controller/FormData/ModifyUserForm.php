@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * Contains and validates the data found on the Users module's modify user form.
@@ -30,9 +30,9 @@ class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData
      * Create a new instance of the form data container, intializing the fields and validators.
      *
      * @param string         $formId         The id value to use for the form.
-     * @param ServiceManager $container The current service manager instance.
+     * @param ContainerBuilder $container The current service manager instance.
      */
-    public function __construct($formId, ServiceManager $container = null)
+    public function __construct($formId, ContainerBuilder $container = null)
     {
         parent::__construct($formId, $container);
 

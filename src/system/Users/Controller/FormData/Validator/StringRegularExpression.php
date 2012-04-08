@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * Validates a field's value, ensuring that its string value matches a PCRE regular expression.
@@ -29,13 +29,13 @@ class Users_Controller_FormData_Validator_StringRegularExpression extends Users_
     /**
      * Constructs the validator, initializing the regular expression.
      *
-     * @param ServiceManager $container    The current service manager instance.
+     * @param ContainerBuilder $container    The current service manager instance.
      * @param string         $regularExpression The PCRE regular expression against which to validate the data.
      * @param string         $errorMessage      The error message to return if the data does not match the expression.
      *
      * @throws InvalidArgumentException Thrown if the regular expression is not valid.
      */
-    public function __construct(ServiceManager $container, $regularExpression, $errorMessage = null)
+    public function __construct(ContainerBuilder $container, $regularExpression, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 

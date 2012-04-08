@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Common\ServiceManager\ServiceManager;
+use Zikula\Component\DependecyInjection\ContainerBuilder;
 
 /**
  * Validates a field against a maximum value, ensuring that the field value is less than or equal to this maximum.
@@ -29,13 +29,13 @@ class Users_Controller_FormData_Validator_IntegerNumericMaximumValue extends Use
     /**
      * Constructs a new validator, initializing the maximum valid value.
      *
-     * @param ServiceManager $container The current service manager instance.
+     * @param ContainerBuilder $container The current service manager instance.
      * @param integer        $value          The maximum valid value for the field data.
      * @param string         $errorMessage   The error message to return if the field data is not valid.
      *
      * @throws InvalidArgumentException If the maximum value specified is not an integer.
      */
-    public function __construct(ServiceManager $container, $value, $errorMessage = null)
+    public function __construct(ContainerBuilder $container, $value, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 
