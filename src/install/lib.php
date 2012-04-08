@@ -296,7 +296,7 @@ function install(Core $core)
                     }
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
-                    System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                    System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'))->send();
                     exit;
                 }
             }
