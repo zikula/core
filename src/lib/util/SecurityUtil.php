@@ -186,16 +186,11 @@ class SecurityUtil
      */
     public static function getAuthInfo($user = null)
     {
-        // Table columns we use - ModUtil::dbInfoLoad is done in pnInit
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-        $grouppermcolumn = $dbtable['group_perms_column'];
-
-        // Empty arrays
         $groupperms = array();
 
         $uids[] = -1;
-        // Get user ID
+        
+        // get user ID
         if (!isset($user)) {
             if (!UserUtil::isLoggedIn()) {
                 // Unregistered UID
@@ -209,13 +204,19 @@ class SecurityUtil
             $uids[] = $user;
             $vars['Active User'] = $user;
         }
-        $uids = implode(',', $uids);
-
-        // Get all groups that user is in
-        $where = "WHERE $groupmembershipcolumn[uid] IN (" . DataUtil::formatForStore($uids) . ')';
-        $fldArray = DBUtil::selectFieldArray('group_membership', 'gid', $where);
-        if ($fldArray === false) {
+        
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        
+        // get all groups that user is in
+        $groupmembership = $em->getRepository('Groups\Entity\GroupMembership')->findBy(array('uid' => $uids));
+        
+        if ($groupmembership === false) {
             return $groupperms;
+        }
+        
+        $fldArray = array();
+        foreach ($groupmembership as $gm) {
+            $fldArray[] = $gm['gid'];
         }
 
         static $usergroups = array();
@@ -230,6 +231,9 @@ class SecurityUtil
         $allgroups = implode(',', $allgroups);
 
         // Get all group permissions
+        $dbtable = DBUtil::getTables();
+        $grouppermcolumn = $dbtable['group_perms_column'];
+        
         $where = "WHERE $grouppermcolumn[gid] IN (" . DataUtil::formatForStore($allgroups) . ')';
         $orderBy = "ORDER BY $grouppermcolumn[sequence]";
         $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy);
@@ -252,6 +256,7 @@ class SecurityUtil
 
         // we've now got the permissions info
         $GLOBALS['authinfogathered'][$user] = 1;
+
         return $groupperms;
     }
 

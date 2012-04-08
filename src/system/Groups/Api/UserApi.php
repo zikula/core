@@ -30,32 +30,36 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
      */
     public function getall($args)
     {
-        // Optional arguments.
-        if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
-            $args['startnum'] = 1;
-        }
-        if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
-            $args['numitems'] = -1;
-        }
-
         $items = array();
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
             return $items;
         }
-
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupcolumn = $dbtable['groups_column'];
-
-        // Get items
-        $orderBy = "ORDER BY $groupcolumn[name]";
-        $permFilter = array(array('realm' => 0,
-                        'component_left' => 'Groups',
-                        'instance_left' => 'gid',
-                        'level' => ACCESS_READ));
-        $objArray = DBUtil::selectObjectArray('groups', '', $orderBy, $args['startnum'] - 1, $args['numitems'], '', $permFilter);
+        
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+        
+        // add select and from params 
+        $qb->select('g')
+           ->from('Groups\Entity\Group', 'g');
+        
+         // add clause for ordering
+        $qb->addOrderBy('g.name', 'ASC');
+        
+        // add limit and offset
+        $startnum = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
+        $numitems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
+        if ($numitems > 0) {
+            $qb->setFirstResult($startnum)
+               ->setMaxResults($numitems);
+        }
+        
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
+        
+        // execute query
+        $objArray = $query->getResult();
 
         // Check for an error with the database code
         if ($objArray === false) {
@@ -82,32 +86,36 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // Optional arguments.
-        if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
-            $args['startnum'] = 1;
-        }
-        if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
-            $args['numitems'] = -1;
-        }
+        // get item
+        $result = $this->entityManager->find('Groups\Entity\Group', $args['gid']);
 
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-
-        // Get item
-        $result = DBUtil::selectObjectByID('groups', $args['gid'], 'gid');
-        // Check for an error with the database code
         if (!$result) {
             return false;
         }
+        
+        // convert to array
+        $result = $result->toArray();
 
         // Get group membership
-        $where = "WHERE  $groupmembershipcolumn[gid]= '" . (int)DataUtil::formatForStore($args['gid']) . "'";
-        $uidsArray = DBUtil::selectObjectArray('group_membership', $where, '', $args['startnum'] - 1, $args['numitems'], 'uid');
+        // Optional arguments.
+        if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
+            $args['startnum'] = null;
+        }
+        if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
+            $args['numitems'] = null;
+        }
+        
+        $groupmembership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
 
         // Check for an error with the database code
-        if ($uidsArray === false) {
+        if ($groupmembership === false) {
             return false;
+        }
+        
+        $uidsArray = array();
+        foreach ($groupmembership as $gm) {
+            $gm = $gm->toArray();
+            $uidsArray[$gm['uid']] = $gm;
         }
 
         // Security check
@@ -121,11 +129,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
         $uid = UserUtil::getVar('uid');
         if ($uid != 0) {
-            $result['status'] = ModUtil::apiFunc('Groups',
-                            'user',
-                            'isuserpending',
-                            array('gid' => $args['gid'],
-                                    'uid' => $uid));
+            $result['status'] = ModUtil::apiFunc('Groups', 'user', 'isuserpending', array('gid' => $args['gid'], 'uid' => $uid));
         } else {
             $result['status'] = false;
         }
@@ -141,14 +145,14 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dbtable = DBUtil::getTables();
-        $grpcol = $dbtable['groups_column'];
-
-        $where = "WHERE {$grpcol['gtype']} != " . Groups_Helper_Common::GTYPE_CORE;
+        $dql = "SELECT count(g.gid) FROM Groups\Entity\Group g WHERE g.gtype <> " . Groups_Helper_Common::GTYPE_CORE;
+        
         if ($this->getVar('hideclosed')) {
-            $where .= " AND {$grpcol['state']} != " . Groups_Helper_Common::STATE_CLOSED;
+            $dql .= " AND g.state <> " . Groups_Helper_Common::STATE_CLOSED;
         }
-        return DBUtil::selectObjectCount('groups', $where);
+        
+        $query = $this->entityManager->createQuery($dql);
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -164,18 +168,14 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         if (!isset($args['gid'])) {
             return LogUtil::registerArgsError();
         }
-
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-
-        // Get item
-        $where = "WHERE $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'";
-        return DBUtil::selectObjectCount('group_membership', $where);
+        
+        $dql = "SELECT count(m.gid) FROM Groups\Entity\GroupMembership m WHERE m.gid = {$args['gid']}";
+        $query = $this->entityManager->createQuery($dql);
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
-     * Get all of a users group memberships.
+     * Get all of a user's group memberships.
      *
      * @param int args['uid'] user id.
      * @param int args['clean'] flag to return an array of GIDs.
@@ -198,25 +198,26 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
             return $items;
         }
-
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-
-        // Get item
-        $where = "WHERE  $groupmembershipcolumn[uid] = '" . (int)DataUtil::formatForStore($args['uid']) . "'";
-        $objArray = DBUtil::selectObjectArray('group_membership', $where, '', -1, -1);
+        
+        $groupmembership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findBy(array('uid' => $args['uid']));
 
         // Check for an error with the database code
-        if ($objArray === false) {
+        if ($groupmembership === false) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
+        }
+        
+        $objArray = array();
+        foreach ($groupmembership as $gm) {
+            $objArray[] = $gm->toArray();
         }
 
         if (isset($args['clean']) && $args['clean']) {
             $newArray = array();
+            
             foreach ($objArray as $obj) {
                 $newArray[] = $obj['gid'];
             }
+            
             $objArray = $newArray;
         }
 
@@ -233,30 +234,44 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
      */
     public function getallgroups($args)
     {
-        // Optional arguments.
-        if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
-            $args['startnum'] = 1;
-        }
-        if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
-            $args['numitems'] = -1;
-        }
-
         $items = array();
 
         if (!SecurityUtil::checkPermission('Groups::', 'ANY', ACCESS_OVERVIEW)) {
             return $items;
         }
-
-        $dbtable = DBUtil::getTables();
-        $grpcol = $dbtable['groups_column'];
-
-        $where = "WHERE {$grpcol['gtype']} != " . Groups_Helper_Common::GTYPE_CORE;
+        
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+        
+        // add select and from params 
+        $qb->select('g')
+           ->from('Groups\Entity\Group', 'g');
+        
+        // add clause for filtering type
+        $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(Groups_Helper_Common::GTYPE_CORE)));
+        
+        // add clause for filtering state
         if ($this->getVar('hideclosed')) {
-            $where .= " AND {$grpcol['state']} != " . Groups_Helper_Common::STATE_CLOSED;
+            $qb->andWhere($qb->expr()->neq('g.state', $qb->expr()->literal(Groups_Helper_Common::STATE_CLOSED)));
         }
-        $orderBy = "ORDER BY {$grpcol['name']}";
-        $objArray = DBUtil::selectObjectArray('groups', $where, $orderBy, $args['startnum'] - 1, $args['numitems']);
+        
+        // add clause for ordering
+        $qb->addOrderBy('g.name', 'ASC');
+        
+        // add limit and offset
+        $startnum = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
+        $numitems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
+        if ($numitems > 0) {
+            $qb->setFirstResult($startnum)
+               ->setMaxResults($numitems);
+        }
+        
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
 
+        // execute query
+        $objArray = $query->getResult();
+        
         if ($objArray === false) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
@@ -274,6 +289,8 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         $row = 1;
 
         foreach ($objArray as $obj) {
+            $obj = $obj->toArray();
+            
             $gid = $obj['gid'];
             $name = $obj['name'];
             $gtype = $obj['gtype'];
@@ -359,7 +376,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
         $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
-        if ($item == false) {
+        if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
@@ -370,20 +387,20 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         // Check in case the user already applied
         $pending = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
                         array('gid' => $args['gid'],
-                                'uid' => $args['uid']));
+                              'uid' => $args['uid']));
 
         if ($pending) {
             return LogUtil::registerError($this->__('Error! You have already applied for membership of this group.'));
         }
 
-        $obj = array('gid' => $args['gid'],
-                'uid' => $args['uid'],
-                'application' => $args['applytext'],
-                'status' => '1');
-
-        if (!DBUtil::insertObject($obj, 'group_applications', 'app_id')) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
+        $application = new Groups\Entity\GroupApplication;
+        $application['uid'] = $args['uid'];
+        $application['gid'] = $args['gid'];
+        $application['application'] = $args['applytext'];
+        $application['status'] = 1;
+        
+        $this->entityManager->persist($application);
+        $this->entityManager->flush();
 
         return true;
     }
@@ -404,19 +421,12 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         // Checking first if this user is really pending.
         $ispending = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
                         array('gid' => $args['gid'],
-                                'uid' => $args['uid']));
+                              'uid' => $args['uid']));
 
         if ($ispending == true) {
-            $dbtable = DBUtil::getTables();
-            $col = $dbtable['group_applications_column'];
-
-            list($gid, $uid) = DataUtil::formatForStore($gid, $uid);
-            $where = "WHERE $col[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
-                  AND   $col[uid] = '" . (int)DataUtil::formatForStore($args['uid']) . "'";
-
-            if (!DBUtil::deleteWhere('group_applications', $where)) {
-                return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-            }
+            $application = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+            $this->entityManager->remove($application);
+            $this->entityManager->flush();
         }
 
         return true;
@@ -435,16 +445,10 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         if (!isset($args['gid']) || !isset($args['uid'])) {
             return LogUtil::registerArgsError();
         }
+        
+        $applications = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
 
-        $dbtable = DBUtil::getTables();
-        $col = $dbtable['group_applications_column'];
-
-        // Check in case the user already applied
-        $where = " WHERE $col[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
-               AND   $col[uid] = '" . (int)DataUtil::formatForStore($args['uid']) . "'";
-        $result = DBUtil::selectObjectCount('group_applications', $where);
-
-        if ($result >= 1) {
+        if (count($applications) >= 1) {
             return true;
         }
 
@@ -486,8 +490,8 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
                 // We save the user in the application table
                 $save = ModUtil::apiFunc('Groups', 'user', 'saveapplication',
                                 array('gid' => $args['gid'],
-                                        'uid' => $userid,
-                                        'applytext' => $args['applytext']));
+                                      'uid' => $userid,
+                                      'applytext' => $args['applytext']));
 
                 if ($save == false) {
                     return false;
@@ -497,15 +501,15 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
                     $uname = UserUtil::getVar('uname', $userid);
                     $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
                                     array('toname' => $this->__('Administrator'),
-                                            'toaddress' => System::getVar('adminmail'),
-                                            'subject' => $this->__('Group membership application registered'),
-                                            'body' => $this->__f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', array($uname, $args['applytext']))));
+                                          'toaddress' => System::getVar('adminmail'),
+                                          'subject' => $this->__('Group membership application registered'),
+                                          'body' => $this->__f('The registered user %1$s has applied for membership of a group. The details of the application are as follows: %2$s', array($uname, $args['applytext']))));
                 }
             } else {
                 // We save the user into the groups
                 $save = ModUtil::apiFunc('Groups', 'user', 'adduser',
                                 array('gid' => $args['gid'],
-                                        'uid' => $userid));
+                                      'uid' => $userid));
 
                 if ($save == false) {
                     return LogUtil::registerError($this->__('Error! Could not add the user to the group.'));
@@ -515,7 +519,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
             $save = ModUtil::apiFunc('Groups', 'user', 'cancelapp',
                             array('gid' => $args['gid'],
-                                    'uid' => $userid));
+                                  'uid' => $userid));
 
             if ($save == false) {
                 return LogUtil::registerError($this->__('Error! Could not remove the user from the group.'));
@@ -524,7 +528,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
             $save = ModUtil::apiFunc('Groups', 'user', 'removeuser',
                             array('gid' => $args['gid'],
-                                    'uid' => $userid));
+                                  'uid' => $userid));
 
             if ($save == false) {
                 return LogUtil::registerError($this->__('Error! Could not remove the user from the group.'));
@@ -549,10 +553,10 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        // get group
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
-        if ($item == false) {
+        if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
@@ -561,29 +565,26 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        //verify if the user is alredy a member of this group
+        // verify if the user is alredy a member of this group
         $is_member = ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $args['gid'], 'uid' => $args['uid']));
 
         // Add item
         if (!$is_member) {
-            $obj = array('gid' => $args['gid'],
-                    'uid' => $args['uid']);
-            $result = DBUtil::insertObject($obj, 'group_membership');
+            $membership = new Groups\Entity\GroupMembership;
+            $membership['gid'] = $args['gid'];
+            $membership['uid'] = $args['uid'];
+            $this->entityManager->persist($membership);
+            $this->entityManager->flush();
+            
+            // Let other modules know that we have updated a group.
+            $adduserEvent = new GenericEvent($membership);
+            $this->dispatcher->dispatch('group.adduser', $adduserEvent);
         } else {
             if (isset($args['verbose']) && !$args['verbose']) {
                 return false;
             }
             return LogUtil::registerError($this->__('Error! You are already a member of this group.'));
         }
-
-        // Check for an error with the database code
-        if (!$result) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
-
-        // Let other modules know that we have updated a group.
-        $adduserEvent = new GenericEvent($obj);
-        $this->dispatcher->dispatch('group.adduser', $adduserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -603,11 +604,10 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // The user API function is called.
-        $item = ModUtil::apiFunc('Groups', 'user', 'get',
-                        array('gid' => $args['gid']));
+        // get group
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
 
-        if ($item == false) {
+        if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
@@ -615,24 +615,14 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
             return LogUtil::registerPermissionError();
         }
-
-        // Get datbase setup
-        $dbtable = DBUtil::getTables();
-        $groupmembershipcolumn = $dbtable['group_membership_column'];
-
-        // delete item
-        $where = "WHERE $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'
-              AND   $groupmembershipcolumn[uid] = '" . (int)DataUtil::formatForStore($args['uid']) . "'";
-        $result = DBUtil::deleteWhere('group_membership', $where);
-
-        // Check for an error with the database code
-        if (!$result) {
-            return LogUtil::registerError($this->__('Error! Could not create the new item.'));
-        }
+        
+        // delete user from group
+        $membership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $this->entityManager->remove($membership);
+        $this->entityManager->flush();
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new GenericEvent(null, array('gid' => $args['gid'],
-                        'uid' => $args['uid']));
+        $removeuserEvent = new GenericEvent(null, array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->dispatcher->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
@@ -646,7 +636,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
      *
      * @return mixed array of users, or false.
      */
-    public function whosonline($args)
+    public function whosonline()
     {
         $dbtable = DBUtil::getTables();
         $col = $dbtable['session_info_column'];
@@ -654,10 +644,13 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
         $where = "WHERE {$col['uid']} != 0 AND {$col['lastused']} > {$activetime} GROUP BY {$col['uid']}";
         $fa = DBUtil::selectFieldArray('session_info', 'uid', $where, '', true);
+        
         $items = array();
+        
         foreach ($fa as $f) {
             $items[] = array('uid' => $f);
         }
+        
         return $items;
     }
 
@@ -672,7 +665,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
     public function isgroupmember($args)
     {
         if (!isset($args['uid']) || !is_numeric($args['uid']) ||
-                !isset($args['gid']) || !is_numeric($args['gid'])) {
+            !isset($args['gid']) || !is_numeric($args['gid'])) {
             return LogUtil::registerArgsError();
         }
 
