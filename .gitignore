@@ -1,20 +1,20 @@
 # /
-app/bootstrap.php.cache
-app/cache/*
-app/logs/*
-build/
-vendor/*
-vendor/!\.htaccess
-composer.phar
+/app/bootstrap.php.cache
+/app/cache/*
+/app/logs/*
+/build/
+/vendor/
+/vendor/!\.htaccess
+!/vendor/hard/
 composer.lock
 
 /web/config/personal_config.php
 /web/config/multisites_config.php
-/web/modules/*
+/web/modules/
 /web/modules/!\.htaccess
-/web/userdata/*
+/web/userdata/
 /web/userdata/!\.htaccess
-/web/ztemp/*
+/web/ztemp/
 /web/ztemp/errors_log/!\.index.html
 /web/ztemp/purifierCache/!\.index.html
 /web/ztemp/idsTmp/!\.index.html
