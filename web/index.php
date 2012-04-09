@@ -18,8 +18,12 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Framework\ControllerResolver;
 use Zikula\Core\Event\GenericEvent;
 
-include __DIR__.'/../app/bootstrap.php';
+require_once __DIR__.'/../app/bootstrap.php';
 $core->init();
+
+$kernel = new AppKernel('prod', false);
+$kernel->loadClassCache();
+//$kernel = new AppCache($kernel);
 
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
 

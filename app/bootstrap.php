@@ -12,13 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-if (file_exists(__DIR__.'/bootstrap.php.cache')) {
-    include '/bootstrap.php.cache';
-} else {
-    include __DIR__.'/autoload.php';
-}
+$bootstrap = file_exists(__DIR__.'/bootstrap.php.cache') ? '/bootstrap.php.cache' : '/autoload.php';
+require_once $bootstrap;
 
-include __DIR__.'/../src/ZLoader.php';
+require_once __DIR__.'/AppKernel.php';
+require_once __DIR__.'/AppCache.php';
+
+require_once __DIR__.'/../src/ZLoader.php';
 ZLoader::register();
 
 $core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers');
