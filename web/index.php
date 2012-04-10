@@ -19,11 +19,14 @@ use Zikula\Framework\ControllerResolver;
 use Zikula\Core\Event\GenericEvent;
 
 require_once __DIR__.'/../app/bootstrap.php';
-$core->init();
 
 $kernel = new AppKernel('prod', true);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
+
+$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers', $kernel->getContainer());
+$core->boot();
+$core->init();
 
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
 

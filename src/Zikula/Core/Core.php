@@ -175,11 +175,12 @@ class Core
      *
      * @param string $handlerDir Directory where handlers are located.
      */
-    public function __construct($coreConfig, $handlerDir = 'lib/EventHandlers')
+    public function __construct($coreConfig, $handlerDir = 'lib/EventHandlers', ContainerBuilder $container = null)
     {
         $this->handlerDir = $handlerDir;
         $this->baseMemory = memory_get_usage();
         $this->coreConfig = $coreConfig;
+        $this->container = $container;
     }
 
     /**
@@ -197,14 +198,24 @@ class Core
 
         $this->bootime = microtime(true);
 
-        $this->container = new ContainerBuilder();
-        $this->container->setAlias('zikula.servicemanager', 'service_container');
-        $this->dispatcher = new ContainerAwareEventDispatcher($this->container);
-        $this->container->set('zikula.eventmanager', $this->dispatcher);
-        $this->container->set('zikula', $this);
+        if (null === $this->container) {
+            $this->container = new ContainerBuilder();
+            $this->container->setAlias('zikula.servicemanager', 'service_container');
+            $this->dispatcher = new ContainerAwareEventDispatcher($this->container);
+            $this->container->set('zikula.eventmanager', $this->dispatcher);
+            $this->container->set('zikula', $this);
+        } else {
+            $this->dispatcher = $this->container->get('event_dispatcher');
+            $this->container->setAlias('zikula.eventmanager', 'event_dispatcher');
+            $this->container->setAlias('zikula.servicemanager', 'service_container');
+        }
 
         $this->loadService($this->coreConfig);
         $this->attachHandlers($this->handlerDir);
+
+        // Load system configuration
+        $this->dispatcher->dispatch('bootstrap.getconfig', new GenericEvent($this));
+        $this->dispatcher->dispatch('bootstrap.custom', new GenericEvent($this));
     }
 
     public function loadService($path)

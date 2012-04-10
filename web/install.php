@@ -17,4 +17,10 @@ ini_set('memory_limit', '64M');
 
 include __DIR__.'/../app/bootstrap.php';
 include __DIR__.'/install/lib.php';
+
+$kernel = new AppKernel('prod', true);
+$kernel->loadClassCache();
+$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers', $kernel->getContainer());
+$core->boot();
+
 install($core);

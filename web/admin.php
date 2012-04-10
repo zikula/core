@@ -13,5 +13,11 @@
  */
 
 include __DIR__.'/../app/bootstrap.php';
+
+$kernel = new AppKernel('prod', true);
+$kernel->loadClassCache();
+$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers', $kernel->getContainer());
+$core->boot();
 $core->init();
+
 System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
