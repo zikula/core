@@ -20,13 +20,3 @@ require_once __DIR__.'/AppCache.php';
 
 require_once __DIR__.'/../src/ZLoader.php';
 ZLoader::register();
-
-$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers');
-$core->boot();
-
-// Load system configuration
-$event = new Zikula\Core\Event\GenericEvent($core);
-$core->getDispatcher()->dispatch('bootstrap.getconfig', $event);
-
-$event = new Zikula\Core\Event\GenericEvent($core);
-$core->getDispatcher()->dispatch('bootstrap.custom', $event);
