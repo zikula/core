@@ -10,11 +10,11 @@
                 <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Search now" domain='zikula'}" />
             </div>
             {/if}
-            {if isset($vars.active) && is_array($vars.active)}
-            {foreach item="dummy" key="actives" from=$vars.active}
-            <input type="hidden" name="active[{$actives|safetext}]" value="1" />
+            <div style="display: none">
+            {foreach from=$plugin_options key='plugin' item='plugin_option'}
+            {$plugin_option}
             {/foreach}
-            {/if}
+            </div>
             
             {searchvartofieldnames data=$modvars.Search prefix="modvar" assign="modvariables"}
             {foreach item="value" key="name" from=$modvariables}
