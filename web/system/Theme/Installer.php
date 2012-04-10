@@ -104,15 +104,12 @@ class Theme_Installer extends Zikula_AbstractInstaller
                 }
 
                 // check and fix permissions
-                $dbtable = DBUtil::getTables();
-                $permscolumn = $dbtable['group_perms_column'];
-                $permswhere = "WHERE $permscolumn[component] = 'pnRender:pnRenderblock:'";
-                $perms = DBUtil::selectObjectArray('group_perms', $permswhere);
-                if (!empty($perms)) {
+                $perms = $this->entityManager->getRepository('Permissions\Entity\Permission')->findBy(array('component' => 'pnRender:pnRenderblock:'));
+                if ($perms) {
                     foreach ($perms as $perm) {
                         $perm['component'] = 'Theme:Renderblock:';
-                        DBUtil::updateObject($perm, 'group_perms', '', 'pid');
                     }
+                    $this->entityManager->flush();
                 }
 
                 // Set Module pnRender 'Inactive'

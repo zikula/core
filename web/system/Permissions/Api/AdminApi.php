@@ -41,31 +41,32 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        // Work out which tables to operate against, and
-        // various other bits and pieces
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where = " AND ($permcolumn[gid]=" . SecurityUtil::PERMS_ALL . " OR $permcolumn[gid]='" . DataUtil::formatForStore($args['permgrp']) . "')";
+            $where_gid = " AND (p.gid = " . SecurityUtil::PERMS_ALL . " OR p.gid = " . DataUtil::formatForStore($args['permgrp']) . ")";
             $showpartly = true;
         } else {
-            $where = '';
+            $where_gid = '';
             $showpartly = false;
         }
 
-        // Get info on current perm
-        $result = DBUtil::selectObjectByID('group_perms', $args['pid'], 'pid');
-        if (!$result) {
+        // get info on current perm
+        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        if (!$permission) {
             return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
-        $sequence = $result['sequence'];
+        
+        $sequence = $permission['sequence'];
 
         if ($sequence != 1) {
             $altsequence = $sequence - 1;
-            // Get info on displaced perm
-            $where = "WHERE $permcolumn[sequence] = '" . (int)DataUtil::formatForStore($altsequence) . "' $where";
-            $result = DBUtil::selectObject('group_perms', $where);
-            if (!$result) {
+            
+            // get info on displaced perm
+            $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
+            $dql = "SELECT p FROM Permissions\Entity\Permission p $where";
+            $query = $this->entityManager->createQuery($dql);
+            $d_permission = $query->getOneOrNullResult();
+            
+            if (!$d_permission) {
                 if ($showpartly) {
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
@@ -73,17 +74,20 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
                 } else {
                     LogUtil::registerError($this->__('Error! No permission rule directly above that one.'));
                 }
+                
                 return false;
             }
-            $altpid = $result['pid'];
+            
+            $altpid = $d_permission['pid'];
 
-            // Swap sequence numbers
-            $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($altpid) . "'";
-            $obj = array('sequence' => $sequence);
-            DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
-            $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($args['pid']) . "'";
-            $obj = array('sequence' => $altsequence);
-            DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
+            // swap sequence numbers
+            $perm1 = $this->entityManager->find('Permissions\Entity\Permission', $altpid);
+            $perm1['sequence'] = $sequence;
+            
+            $perm2 = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+            $perm2['sequence'] = $altsequence;
+            
+            $this->entityManager->flush();
         }
 
         return true;
@@ -108,35 +112,35 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-
-        // Work out which tables to operate against
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
+        
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where = " AND ($permcolumn[gid]=" . SecurityUtil::PERMS_ALL . " OR  $permcolumn[gid]='" . (int)DataUtil::formatForStore($args['permgrp']) . "')";
+            $where_gid = " AND (p.gid = " . SecurityUtil::PERMS_ALL . " OR p.gid = " . DataUtil::formatForStore($args['permgrp']) . ")";
             $showpartly = true;
         } else {
-            $where = '';
+            $where_gid = '';
             $showpartly = false;
         }
 
-        // Get info on current perm
-        $result = DBUtil::selectObjectByID('group_perms', $args['pid'], 'pid');
-        if (!$result) {
+        // get info on current perm
+        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        if (!$permission) {
             return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
-        $sequence = $result['sequence'];
-
-        $maxsequence = $this->maxsequence(array('column' => 'sequence'));
+        
+        $sequence = $permission['sequence'];
+        
+        $maxsequence = $this->maxsequence();
         if ($sequence != $maxsequence) {
             $altsequence = $sequence + 1;
-            // Get info on displaced perm
-            // Filter-view: added extra check to select-query
-            $where = "WHERE $permcolumn[sequence] = '" . (int)DataUtil::formatForStore($altsequence) . "' $where";
-            $result = DBUtil::selectObject('group_perms', $where);
-            if (!$result) {
+            
+            // get info on displaced perm
+            $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
+            $dql = "SELECT p FROM Permissions\Entity\Permission p $where";
+            $query = $this->entityManager->createQuery($dql);
+            $d_permission = $query->getOneOrNullResult();
+            
+            if (!$d_permission) {
                 if ($showpartly) {
-                    // Filter-view
                     // Changing the sequence by moving while in partial view may only be done if there
                     // are no invisible permissions inbetween that might be affected by the move.
                     LogUtil::registerError($this->__('Error! Permission rule-swapping in partial view can only be done if both affected permission rules are visible. Please switch to full view.'));
@@ -145,15 +149,17 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
                 }
                 return false;
             }
-            $altpid = $result['pid'];
-
-            // Swap sequence numbers
-            $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($altpid) . "'";
-            $obj = array('sequence' => $sequence);
-            DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
-            $where = "WHERE $permcolumn[pid] = '" . DataUtil::formatForStore($args['pid']) . "'";
-            $obj = array('sequence' => $altsequence);
-            DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
+            
+            $altpid = $d_permission['pid'];
+            
+            // swap sequence numbers
+            $perm1 = $this->entityManager->find('Permissions\Entity\Permission', $altpid);
+            $perm1['sequence'] = $sequence;
+            
+            $perm2 = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+            $perm2['sequence'] = $altsequence;
+            
+            $this->entityManager->flush();
         }
 
         return true;
@@ -180,31 +186,25 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
 
         // Argument check
         if ((!isset($args['pid'])) ||
-                (!isset($args['seq'])) ||
-                (!isset($args['oldseq'])) ||
-                (!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
-                (!isset($args['component'])) ||
-                (!isset($args['instance'])) ||
-                (!isset($args['level']))) {
+            (!isset($args['seq'])) ||
+            (!isset($args['oldseq'])) ||
+            (!isset($args['realm'])) ||
+            (!isset($args['id'])) ||
+            (!isset($args['component'])) ||
+            (!isset($args['instance'])) ||
+            (!isset($args['level']))) {
             return LogUtil::registerArgsError();
         }
-
-        // Work out which tables to operate against
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
-
-        $obj = array('realm' => $args['realm'],
-                'gid' => $args['id'],
-                'component' => $args['component'],
-                'instance' => $args['instance'],
-                'level' => $args['level']);
-        $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($args['pid']) . "'";
-        $result = DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
-
-        if (!$result) {
-            return LogUtil::registerError($this->__f('Error! Could not save group permission rule %s.', $args[pid]));
-        }
+        
+        // get and update permission
+        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        $permission['gid'] = $args['id'];
+        $permission['realm'] = $args['realm'];
+        $permission['component'] = $args['component'];
+        $permission['instance'] = $args['instance'];
+        $permission['level'] = $args['level'];
+        
+        $this->entityManager->flush();
 
         if ($args['seq'] != $args['oldseq']) {
             $this->resequence(array('type' => 'group', 'newseq' => $args['seq'], 'oldseq' => $args['oldseq']));
@@ -233,49 +233,46 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
 
         // Argument check
         if ((!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
-                (!isset($args['component'])) ||
-                (!isset($args['instance'])) ||
-                (!isset($args['level'])) ||
-                (!isset($args['insseq']))) {
+            (!isset($args['id'])) ||
+            (!isset($args['component'])) ||
+            (!isset($args['instance'])) ||
+            (!isset($args['level'])) ||
+            (!isset($args['insseq']))) {
             return LogUtil::registerArgsError();
         }
 
-        // Work out which tables to operate against
-        $dbtable = DBUtil::getTables();
-        $permtable = $dbtable['group_perms'];
-        $permcolumn = $dbtable['group_perms_column'];
-
         // Insert Capability
         if ($args['insseq'] == -1) {
-            $maxseq = $this->maxsequence(array('column' => 'sequence'));
+            $maxseq = $this->maxsequence();
             $newseq = $maxseq + 1;
         } else {
             // Increase sequence numbers
-            $query = "UPDATE $permtable
-                  SET $permcolumn[sequence] = $permcolumn[sequence] + 1
-                  WHERE $permcolumn[sequence] >= '" . (int)DataUtil::formatForStore($args['insseq']) . "'";
-            if (!DBUtil::executeSQL($query)) {
+            $dql = "UPDATE Permissions\Entity\Permission p SET p.sequence = p.sequence + 1 WHERE p.sequence >= " . (int)DataUtil::formatForStore($args['insseq']);
+            $query = $this->entityManager->createQuery($dql);
+            $result = $query->getResult();
+            
+            if (!$result) {
                 return LogUtil::registerError($this->__('Error! Could not save permission rule sequences.'));
             }
+            
             $newseq = $args['insseq'];
         }
-
-        $obj = array('realm' => (int)$args['realm'],
-                'gid' => (int)$args['id'],
-                'sequence' => $newseq,
-                'component' => $args['component'],
-                'instance' => $args['instance'],
-                'level' => (int)$args['level']);
-
-        $newobj = DBUtil::insertObject($obj, 'group_perms', 'pid');
-        if ($newobj === false) {
-            return LogUtil::registerError('Error adding group permission');
-        }
+        
+        $obj = new Permissions\Entity\Permission;
+        $obj['gid'] = (int)$args['id'];
+        $obj['sequence'] = $newseq;
+        $obj['realm'] = (int)$args['realm'];
+        $obj['component'] = $args['component'];
+        $obj['instance'] = $args['instance'];
+        $obj['level'] = (int)$args['level'];
+        
+        $this->entityManager->persist($obj);
+        $this->entityManager->flush();
 
         // Clean-up
         $this->resequence();
-        return $newobj;
+        
+        return $obj->toArray();
     }
 
     /**
@@ -297,15 +294,11 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-
-        // Work out which tables to operate against
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
-
-        $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($args['pid']) . "'";
-        if (!DBUtil::deleteObjectByID('group_perms', $args['pid'], 'pid')) {
-            return LogUtil::registerError($this->__f('Error! Could not delete group permission rule %s.', $args[pid]));
-        }
+        
+        // get and delete permission
+        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        $this->entityManager->remove($permission);
+        $this->entityManager->flush();
 
         $this->resequence();
 
@@ -313,25 +306,20 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
     }
 
     /**
-     * Get the maximum sequence number currently in a given table.
-     *
-     * @param string $args ['column'] the sequence column name.
+     * Get the maximum sequence number in permissions table.
      *
      * @return int the maximum sequence number.
      */
-    public function maxsequence($args)
+    public function maxsequence()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        // Argument check
-        if (!isset($args['column'])) {
-            return LogUtil::registerArgsError();
-        }
-
-        return DBUtil::selectFieldMax('group_perms', $args['column']);
+        
+        $dql = "SELECT MAX(p.sequence) FROM Permissions\Entity\Permission p";
+        $query = $this->entityManager->createQuery($dql);
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -345,30 +333,25 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Permissions::', "group::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
-
-        // Get the information
-        $orderBy = "ORDER BY $permcolumn[sequence]";
-        $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);
-        if (!$objArray) {
+        
+        // get all permissions
+        $permissions = $this->entityManager->getRepository('Permissions\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));
+        if (!$permissions) {
             return false;
         }
 
-        // Fix sequence numbers
+        // fix sequence numbers
         $sequence = 1;
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
-            $pid = $objArray[$v]['pid'];
-            $curseq = $objArray[$v]['sequence'];
+
+        foreach ($permissions as $permission) {
+            $curseq = $permission['sequence'];
             if ($curseq != $sequence) {
-                $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($pid) . "'";
-                $obj = array('sequence' => $sequence);
-                DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
+                $permission['sequence'] = $sequence;
             }
             $sequence++;
         }
+        
+        $this->entityManager->flush();
 
         return true;
     }
@@ -399,65 +382,60 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
         $oldseq = $args['oldseq'];
         unset($args);
 
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
-
         //find out the maximum sequence number
-        $maxseq = $this->maxsequence(array('column' => 'sequence'));
-
+        $maxseq = $this->maxsequence();
+        
+        // The new sequence is higher in the list
         if ((int)$oldseq > (int)$newseq) {
             if ($newseq < 1) {
                 $newseq = 1;
             }
-            // The new sequence is higher in the list
-            // Get the information
-            $where = "WHERE $permcolumn[sequence] >= '" . (int)$newseq . "'
-                  AND $permcolumn[sequence] <= '" . (int)$oldseq . "'";
-            $orderBy = "ORDER BY $permcolumn[sequence] DESC";
-            $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, '', null, array('pid', 'sequence'));
-
-            $key = 0;
-            while (list($pid, $curseq) = $objArray[$key]) {
+            
+            $dql = "SELECT p FROM Permissions\Entity\Permission p WHERE p.sequence >= {$newseq} AND p.sequence <= {$oldseq} ORDER BY p.sequence DESC";
+            $query = $this->entityManager->createQuery($dql);
+            $permissions = $query->getResult();
+            
+            foreach ($permissions as $permission) {
+                $curseq = $permission['sequence'];
+                
                 if ($curseq == $oldseq) {
                     // we are dealing with the old value so make it the new value
                     $curseq = $newseq;
                 } else {
                     $curseq++;
                 }
-                $key++;
-                $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($pid) . "'";
-                $obj = array('sequence' => (int)$curseq);
-                DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
+                
+                $permission['sequence'] = (int)$curseq;
             }
         } else {
             // The new sequence is lower in the list
-            //if the new requested sequence is bigger than
-            //the maximum sequence number then set it to
-            //the maximum number.  We don't want any spaces
-            //in the sequence.
+            // if the new requested sequence is bigger than
+            // the maximum sequence number then set it to
+            // the maximum number.  We don't want any spaces
+            // in the sequence.
             if ($newseq > $maxseq) {
                 $newseq = (int)$maxseq;
             }
-
-            $where = "WHERE $permcolumn[sequence] >= '" . (int)$oldseq . "'
-                  AND   $permcolumn[sequence] <= '" . (int)$newseq . "'";
-            $orderBy = "ORDER BY $permcolumn[sequence] ASC";
-            $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, '', null, array('pid', 'sequence'));
-
-            $key = 0;
-            while (list($pid, $curseq) = $objArray[$key]) {
+            
+            $dql = "SELECT p FROM Permissions\Entity\Permission p WHERE p.sequence >= {$oldseq} AND p.sequence <= {$newseq} ORDER BY p.sequence ASC";
+            $query = $this->entityManager->createQuery($dql);
+            $permissions = $query->getResult();
+            
+            foreach ($permissions as $permission) {
+                $curseq = $permission['sequence'];
+                
                 if ($curseq == $oldseq) {
                     // we are dealing with the old value so make it the new value
                     $curseq = $newseq;
                 } else {
                     $curseq--;
                 }
-                $key++;
-                $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($pid) . "'";
-                $obj = array('sequence' => (int)$curseq);
-                DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
+                
+                $permission['sequence'] = (int)$curseq;
             }
         }
+        
+        $this->entityManager->flush();
 
         return true;
     }
@@ -492,26 +470,26 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
      *
      * @return array array of admin links.
      */
-    public function getlinks($args)
+    public function getlinks()
     {
-        $permgrp = (isset($args['permgrp']) && !is_numeric($args['permgrp'])) ? $args['permgrp'] : -1;
-
         $links = array();
 
         if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'view', array()), 'text' => $this->__('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-view');
         }
+        
         if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-es-new');
         }
+        
         if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
         }
+        
         if (ModUtil::getName() == 'Permissions') {
             $links[] = array('url' => ModUtil::url('Permissions', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'class' => 'z-icon-es-info showinstanceinformation');
         }
 
         return $links;
     }
-
 }

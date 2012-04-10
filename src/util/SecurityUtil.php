@@ -228,30 +228,31 @@ class SecurityUtil
         }
 
         $allgroups = array_merge($usergroups, $fldArray);
-        $allgroups = implode(',', $allgroups);
-
-        // Get all group permissions
-        $dbtable = DBUtil::getTables();
-        $grouppermcolumn = $dbtable['group_perms_column'];
         
-        $where = "WHERE $grouppermcolumn[gid] IN (" . DataUtil::formatForStore($allgroups) . ')';
-        $orderBy = "ORDER BY $grouppermcolumn[sequence]";
-        $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy);
-        if (!$objArray) {
+        // get all permissions for the groups that the user belongs to
+        $permissions = $em->getRepository('Permissions\Entity\Permission')->findBy(array('gid' => $allgroups), array('sequence' => 'ASC'));
+
+        if (!$permissions) {
             return $groupperms;
         }
 
-        foreach ($objArray as $obj) {
-            $component = self::_fixsecuritystring($obj['component']);
-            $instance = self::_fixsecuritystring($obj['instance']);
-            $level = self::_fixsecuritystring($obj['level']);
+        foreach ($permissions as $permission) {
+            $component = self::_fixsecuritystring($permission['component']);
+            $instance = self::_fixsecuritystring($permission['instance']);
+            $level = self::_fixsecuritystring($permission['level']);
+            
             // Search/replace of special names
             preg_match_all('/<([^>]+)>/', $instance, $res);
             $size = count($res[1]);
             for ($i = 0; $i < $size; $i++) {
                 $instance = preg_replace('/<([^>]+)>/', $vars[$res[1][$i]], $instance, 1);
             }
-            $groupperms[] = array('component' => $component, 'instance' => $instance, 'level' => $level);
+            
+            $groupperms[] = array(
+                'component' => $component, 
+                'instance' => $instance, 
+                'level' => $level
+            );
         }
 
         // we've now got the permissions info
