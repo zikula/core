@@ -124,13 +124,9 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         //
 
         // Remove any group permissions for this group
-        // TODO: Call the permissions API to do this job
-        $groupperm_result = DBUtil::deleteObjectByID('group_perms', $args['gid'], 'gid');
-
-        // Check for an error with the database code
-        if (!$groupperm_result) {
-            return LogUtil::registerError($this->__('Error! Could not perform the deletion.'));
-        }
+        $dql = "DELETE FROM Permissions\Entity\Permission p WHERE p.gid = {$args['gid']}";
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
         // Let other modules know that we have deleted a group.
         $deleteEvent = new GenericEvent($deletedItem);

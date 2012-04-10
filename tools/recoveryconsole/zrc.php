@@ -1961,6 +1961,7 @@ class RecoveryConsole
     public function resetPermissions()
     {
         // Delete all current permission entries.
+        // TODO: this needs to be updated to use Doctrine
         if (!DBUtil::truncateTable('group_perms')) {
             $this->setError(__('Error! Permission not deleted'));
             return false;
