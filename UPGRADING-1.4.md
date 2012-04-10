@@ -126,9 +126,9 @@ http://symfony.com/doc/master/components/dependency_injection.html
 Additional information which is currently undocumented at the vendor can be found
 at the following links:
 
-http://richardmiller.co.uk/2012/02/22/symfony2-manipulating-service-parameters-and-definitions/
-http://richardmiller.co.uk/2012/02/15/symfony2-service-container-compiler-passes/
-http://richardmiller.co.uk/2011/06/01/symfony2-writing-a-dependency-injection-extension-configuration/
+  - http://richardmiller.co.uk/2012/02/22/symfony2-manipulating-service-parameters-and-definitions/
+  - http://richardmiller.co.uk/2012/02/15/symfony2-service-container-compiler-passes/
+  - http://richardmiller.co.uk/2011/06/01/symfony2-writing-a-dependency-injection-extension-configuration/
 
 ## Hook System
 
