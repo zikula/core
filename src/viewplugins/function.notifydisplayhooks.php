@@ -62,7 +62,7 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 
     $output = '';
     foreach ($responses as $result) {
-        $output .= "$result\n";
+        $output .= "<div class=\"z-displayhook\">$result</div>\n";
     }
 
     return $output;
