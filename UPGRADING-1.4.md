@@ -1,12 +1,20 @@
 UPGRADING MODULES TO CORE 1.4
 =============================
 
-## Vendor dependencies are managed by Composer. See http://getcomposer.com/
+This version of Zikula is about migrating previously core technologies out to
+Symfony2 and other 3rd party extensions.
 
-If you work with the core git repository, you must run `php composer.phar install`
-to get the vendors, and periodically `php composer.phar update` as necessary.
+## Vendors
 
-## Module structure has changed and classes should be PSR-0 compliant.
+Vendor dependencies are managed by Composer. See http://getcomposer.com/
+
+If you work with the core git repository directly, you must run
+`php composer.phar install` to get the vendors, and periodically
+`php composer.phar update` as necessary to update vendors.
+
+## Module structure
+
+The module structure has changed and classes should be PSR-0 compliant.
 
 ```
 ExampleModule/
@@ -68,6 +76,7 @@ The `Resources\public` folder contains all web assets.
   - All controller responses should return a `Symfony\Component\HttpFoundation\Response` object.
   - Controller responses which want to prevent the theme from being rendered
     should return a `Zikula\Framework\Response\PlainResponse`.
+  - The namespacing format is as yet undecided.
 
 ## HttpFoundation
 
@@ -101,3 +110,34 @@ at the following links:
 http://richardmiller.co.uk/2012/02/22/symfony2-manipulating-service-parameters-and-definitions/
 http://richardmiller.co.uk/2012/02/15/symfony2-service-container-compiler-passes/
 http://richardmiller.co.uk/2011/06/01/symfony2-writing-a-dependency-injection-extension-configuration/
+
+## Hook System
+
+TBD
+
+## Templating
+
+TBD
+
+## Repository Layout
+
+The repository layout has been amended as follows:
+
+```
+app/
+    cache/
+    config/
+    logs/
+src/
+web/
+vendor/
+    hard/
+```
+
+The `app/` folder is where the application level file live.
+The `src/` folder is where the Zikula specific libraries live.
+The `web/` folder is where web facing files live, eventuallu this will be
+the front controller and web assets (images, js and css) only.
+The `vendor/` folder is where Composer will checkout vendors however the
+`vendor/hard` folder is where dependencies not manageable by Composer are
+stored in the repository.
