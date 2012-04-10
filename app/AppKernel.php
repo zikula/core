@@ -1,6 +1,7 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
+//use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
@@ -9,17 +10,21 @@ class AppKernel extends Kernel
     {
         $bundles = array(
             new Zikula\Bundle\CoreBundle\CoreBundle(),
-            //new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            //new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            //new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
-            //new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            //new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
+            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new JMS\AopBundle\JMSAopBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            //$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
