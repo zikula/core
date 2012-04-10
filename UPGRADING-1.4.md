@@ -97,6 +97,25 @@ the event, rather than by creating the event object.
 Documentation for the dispatcher can be found at:
 http://symfony.com/doc/master/components/event_dispatcher.html
 
+### Refactoring event calls
+
+For events that relied on `Zikula_Event`.
+
+Before:
+
+    $event = new Zikula_Event('foo', $subject, $args, $data);
+    $eventManager->notify($event);
+
+After:
+
+    use Zikula\Core\Event\GenericEvent;
+
+    $event = new GenericEvent($subject, $args, $data);
+    $dispatcher->dispatch('foo', $event);
+
+Please note that both the `dispatch()` and `notify()` methods return the event
+object so you can do shortcuts as before.
+
 ## Dependency Injection
 
 The ServiceManager has been deprecated in favour of Symfony2 DependencyInjection.
