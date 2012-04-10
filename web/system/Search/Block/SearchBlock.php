@@ -67,13 +67,20 @@ class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
             $vars['active'] = array();
         }
 
-        // assign the block vars array
-        $this->view->assign('vars', $vars);
-
         // set a title if one isn't present
         if (empty($blockinfo['title'])) {
             $blockinfo['title'] = __('Search');
         }
+
+        $plugin_options = array();
+
+        foreach(array_keys($vars['active']) as $mod) {
+            $plugin_options[$mod] = ModUtil::apiFunc($mod, 'search', 'options', $vars);
+        }
+
+        // assign the block vars and the plgin options
+        $this->view->assign('vars', $vars)
+                   ->assign('plugin_options', $plugin_options);
 
         // return the rendered block
         $blockinfo['content'] = $this->view->fetch('search_block_search.tpl');
@@ -92,9 +99,6 @@ class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        // get all the search plugins
-        $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
-
         // set some defaults
         if (!isset($vars['displaySearchBtn'])) {
             $vars['displaySearchBtn'] = 0;
@@ -103,6 +107,9 @@ class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
         if (!isset($vars['active'])) {
             $vars['active'] = array();
         }
+
+        // get all the search plugins
+        $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
 
         $searchmodules = array();
         if (is_array($search_modules)) {
