@@ -27,6 +27,6 @@ abstract class ZikulaKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-        return '\Symfony\Component\DependencyInjection\ContainerBuilder';
+        return '\Zikula\Component\DependencyInjection\ContainerBuilder';
     }
 }
