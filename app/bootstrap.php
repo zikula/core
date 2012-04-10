@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-$bootstrap = file_exists(__DIR__.'/bootstrap.php.cache') ? '/bootstrap.php.cache' : '/autoload.php';
+$bootstrap = file_exists(__DIR__.'/bootstrap.php.cache') ? __DIR__.'/bootstrap.php.cache' : __DIR__.'/autoload.php';
 require_once $bootstrap;
 
 require_once __DIR__.'/AppKernel.php';
