@@ -644,13 +644,6 @@ class ModUtil
             $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
 
-        // no need for tables.php scan if using Doctrine
-        $doctrineModelDir  = "$modpath/$directory/lib/$directory/Model";
-        $doctrineEntityDir = "$modpath/$directory/lib/$directory/Entity";
-        if (is_dir($doctrineModelDir) || is_dir($doctrineEntityDir)) {
-            return true;
-        }
-
         // Load the database definition if required
         $files = array();
         $files[] = "$modpath/$directory/tables.php";
