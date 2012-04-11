@@ -181,8 +181,9 @@ ExampleTheme/
             theme_example.pot
         public/
             css/
+                style.css
             images/
-                admin.png
+                example.png
             javascript/
         view/
             blocks/
