@@ -198,7 +198,7 @@ class Theme_Api_UserApi extends Zikula_AbstractApi
         }
 
         $themeinfo   = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
-        $templatedir = ZIKULA_ROOT.'/themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
+        $templatedir = ZIKULA_ROOT.'/themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/config';
 
         // get the available .ini files and exclude the core ones
         $inifiles = FileUtil::getFiles($templatedir, false, true, '.ini', 'f');
@@ -221,7 +221,7 @@ class Theme_Api_UserApi extends Zikula_AbstractApi
         $args['type'] = isset($args['type']) ? DataUtil::formatForOS($args['type']) : 'modules';
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
-        $templatedir = ZIKULA_ROOT.'/themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates';
+        $templatedir = ZIKULA_ROOT.'/themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/view';
 
         if ($args['type'] == 'modules') {
             // for module templates also search on the theme/templates folder
@@ -264,8 +264,8 @@ class Theme_Api_UserApi extends Zikula_AbstractApi
 
         if (file_exists($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile)) {
             return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile, $args['sections']);
-        } else if (file_exists(ZIKULA_ROOT.'/themes/'.$ostheme.'/templates/config/'.$osfile)) {
-            return parse_ini_file(ZIKULA_ROOT.'/themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
+        } else if (file_exists(ZIKULA_ROOT.'/themes/'.$ostheme.'/Resources/config/'.$osfile)) {
+            return parse_ini_file(ZIKULA_ROOT.'/themes/'.$ostheme.'/Resources/config/'.$osfile, $args['sections']);
         }
     }
 
@@ -293,7 +293,7 @@ class Theme_Api_UserApi extends Zikula_AbstractApi
         $osfile  = DataUtil::formatForOS($args['file']);
 
         // verify the writable paths
-        $tpath = ZIKULA_ROOT.'/themes/'.$ostheme.'/templates/config';
+        $tpath = ZIKULA_ROOT.'/themes/'.$ostheme.'/Resources/config';
 
         if (is_writable($tpath.'/'.$osfile)) {
             $handle = fopen($tpath.'/'.$osfile, 'w+');

@@ -43,6 +43,8 @@ ExampleModule/
                 admin.png
             javascript/
         view/
+            plugins/
+                function.foo.php
             admin.tpl
             user.tpl
     Tests/
@@ -160,3 +162,39 @@ the front controller and web assets (images, js and css) only.
 The `vendor/` folder is where Composer will checkout vendors however the
 `vendor/hard` folder is where dependencies not manageable by Composer are
 stored in the repository.
+
+## Theme structure
+
+```
+ExampleTheme/
+    DependencyInjection/
+    Listener/
+        BarListener.php
+    Resources/
+        config/
+            home.ini
+            master.ini
+            overrides.yml
+            themepalettes.ini
+            themevariables.ini
+        locale/
+            theme_example.pot
+        public/
+            css/
+            images/
+                admin.png
+            javascript/
+        view/
+            blocks/
+                lsblock.tpl
+                rsblock.tpl
+            modules/
+                Search/
+                    admin.tpl
+            plugins/
+                function.foo.php
+            admin.tpl
+            user.tpl
+    ExampleTheme.php
+    version.php
+```

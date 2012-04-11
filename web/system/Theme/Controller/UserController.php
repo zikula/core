@@ -39,13 +39,13 @@ class Theme_Controller_UserController extends Zikula_AbstractController
         $currentthemepic = null;
         foreach ($themes as $themeinfo) {
             $themename = $themeinfo['name'];
-            if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_medium.png')) {
+            if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_medium.png')) {
                 $themeinfo['previewImage'] = $themepic;
-                $themeinfo['largeImage'] = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_large.png';
+                $themeinfo['largeImage'] = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/Resources/public/images/preview_large.png';
             }
             else {
-                $themeinfo['previewImage'] = 'system/Theme/images/preview_medium.png';
-                $themeinfo['largeImage'] = 'system/Theme/images/preview_large.png';
+                $themeinfo['previewImage'] = 'system/Theme/Resources/public/images/preview_medium.png';
+                $themeinfo['largeImage'] = 'system/Theme/Resources/public/images/preview_large.png';
             }
             $previewthemes[$themename] = $themeinfo;
             if ($themename == $currenttheme['name']) {
