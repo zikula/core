@@ -240,7 +240,7 @@ class ThemeUtil
 
             foreach ($themes as $theme) {
                 $theme = $theme->toArray();
-                $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);
+                $theme['i18n'] = (is_dir("themes/$theme[name]/Resources/locale") ? 1 : 0);
                 $themestable[$theme['id']] = $theme;
             }
         }
@@ -280,19 +280,17 @@ class ThemeUtil
 
         // theme directory
         $theme = DataUtil::formatForOS(UserUtil::getTheme());
-        $themepath = "themes/$theme/style/$osmodname";
+        $themepath = "themes/$theme/Resources/public/css/$osmodname";
 
         // module directory
         $modinfo = ModUtil::getInfoFromName($modname);
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = "modules/$osmoddir/Resources/public/css";
         $syspath = "system/$osmoddir/Resources/public/css";
-        $modpathOld = "modules/$osmoddir/style";
-        $syspathOld = "system/$osmoddir/style";
 
         // search for the style sheet
         $csssrc = '';
-        foreach (array($configpath, $themepath, $modpath, $syspath, $modpathOld, $syspathOld) as $path) {
+        foreach (array($configpath, $themepath, $modpath, $syspath) as $path) {
             if (is_readable("$path/$osstylesheet")) {
                 $csssrc = "$path/$osstylesheet";
                 break;

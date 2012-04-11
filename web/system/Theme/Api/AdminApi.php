@@ -61,9 +61,9 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['themeinfo'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         unset($args['themeinfo']['i18n']);
-        
+
         $item = $this->entityManager->find('Theme\Entity\Theme', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
@@ -187,7 +187,7 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
         if (!DBUtil::executeSQL($sql)) {
             return false;
         }
-        
+
         // delete theme
         $dql = "DELETE FROM Theme\Entity\Theme t WHERE t.id = {$themeid}";
         $query = $em->createQuery($dql);
@@ -388,17 +388,19 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
         // create the directory structure
         $dirs = array(
                 '',
-                '/docs',
-                '/images',
-                '/plugins',
-                '/locale',
-                '/locale/en',
-                '/locale/en/LC_MESSAGES',
-                '/style',
-                '/templates',
-                '/templates/blocks',
-                '/templates/config',
-                '/templates/modules'
+                '/Resources',
+                '/Resources/docs',
+                '/Resources/public',
+                '/Resources/public/images',
+                '/Resources/public/css',
+                '/Resources/plugins',
+                '/Resources/locale',
+                '/Resources/locale/en',
+                '/Resources/locale/en/LC_MESSAGES',
+                '/Resources/view',
+                '/Resources/view/blocks',
+                '/Resources/view/config',
+                '/Resources/view/modules'
         );
 
         foreach ($dirs as $dir) {
@@ -419,14 +421,14 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
 
         $files = array(
                 "themes/$themeinfo[name]/version.php" => 'versionfile',
-                "themes/$themeinfo[name]/locale/theme_".$themeinfo['name'].".pot" => 'potfile',
-                "themes/$themeinfo[name]/templates/config/themepalettes.ini" => 'palettesfile',
-                "themes/$themeinfo[name]/templates/config/themevariables.ini" => 'variablesfile',
-                "themes/$themeinfo[name]/templates/config/pageconfigurations.ini" => 'pageconfigurationsfile',
-                "themes/$themeinfo[name]/templates/config/master.ini" => 'pageconfigurationfile',
-                "themes/$themeinfo[name]/templates/master.tpl" => 'pagetemplatefile',
-                "themes/$themeinfo[name]/templates/blocks/block.tpl" => 'blockfile',
-                "themes/$themeinfo[name]/style/style.css" => 'cssfile'
+                "themes/$themeinfo[name]/Resources/locale/theme_".$themeinfo['name'].".pot" => 'potfile',
+                "themes/$themeinfo[name]/Resources/config/themepalettes.ini" => 'palettesfile',
+                "themes/$themeinfo[name]/Resources/config/themevariables.ini" => 'variablesfile',
+                "themes/$themeinfo[name]/Resources/config/pageconfigurations.ini" => 'pageconfigurationsfile',
+                "themes/$themeinfo[name]/Resources/config/master.ini" => 'pageconfigurationfile',
+                "themes/$themeinfo[name]/Resources/master.tpl" => 'pagetemplatefile',
+                "themes/$themeinfo[name]/Resources/blocks/block.tpl" => 'blockfile',
+                "themes/$themeinfo[name]/Resources/public/css/style.css" => 'cssfile'
         );
 
         // write the files

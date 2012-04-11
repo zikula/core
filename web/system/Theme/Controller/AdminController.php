@@ -111,7 +111,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
     {
         $ostemp = CacheUtil::getLocalDir();
         $zpath = $ostemp . '/Theme_Config/' . DataUtil::formatForOS($themeinfo['directory']);
-        $tpath = 'themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/templates/config';
+        $tpath = 'themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/Resources/config';
 
         // check if we can edit the theme and, if not, create the running config
         if (!is_writable($tpath . '/pageconfigurations.ini')) {
@@ -199,7 +199,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
         if ($updatesettings) {
             LogUtil::registerStatus($this->__('Done! Updated theme settings.'));
         }
-        
+
         // redirect back to the variables page
         return $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
     }
@@ -488,7 +488,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
                 $pagetypes[$name] = $this->__f('%s type pages', ucfirst(substr($name, 1)));
             }
             // check if the file exists
-            if ($exists = file_exists("themes/$themeinfo[directory]/templates/config/$pageconfiguration[file]")) {
+            if ($exists = file_exists("themes/$themeinfo[directory]/Resources/config/$pageconfiguration[file]")) {
                 $existingconfigs[] = $pageconfiguration['file'];
             }
             $pageconfigfiles[$pageconfiguration['file']] = $exists;

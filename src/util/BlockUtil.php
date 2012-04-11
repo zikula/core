@@ -220,19 +220,19 @@ class BlockUtil
 
             // check for collapsable menus being enabled, and setup the collapsable menu image.
             if (!isset($upb)) {
-                if (file_exists('themes/' . $themedir . '/images/upb.png')) {
-                    $upb = '<img src="themes/' . $themedir . '/images/upb.png" alt="-" />';
-                } elseif (file_exists('themes/' . $themedir . '/images/14_layer_raiselayer.png')) {
-                    $upb = '<img src="themes/' . $themedir . '/images/14_layer_raiselayer.png" alt="-" />';
+                if (file_exists('themes/' . $themedir . '/Resources/public/images/upb.png')) {
+                    $upb = '<img src="themes/' . $themedir . '/Resources/public/images/upb.png" alt="-" />';
+                } elseif (file_exists('themes/' . $themedir . '/Resources/public/images/14_layer_raiselayer.png')) {
+                    $upb = '<img src="themes/' . $themedir . '/Resources/public/images/14_layer_raiselayer.png" alt="-" />';
                 } else {
                     $upb = '<img src="images/icons/extrasmall/14_layer_raiselayer.png" alt="-" />';
                 }
             }
             if (!isset($downb)) {
-                if (file_exists('themes/' . $themedir . '/images/downb.png')) {
-                    $downb = '<img src="themes/' . $themedir . '/images/downb.png" alt="+" />';
-                } elseif (file_exists('themes/' . $themedir . '/images/14_layer_lowerlayer.png')) {
-                    $downb = '<img src="themes/' . $themedir . '/images/14_layer_lowerlayer.png" alt="+" />';
+                if (file_exists('themes/' . $themedir . '/Resources/public/images/downb.png')) {
+                    $downb = '<img src="themes/' . $themedir . '/Resources/public/images/downb.png" alt="+" />';
+                } elseif (file_exists('themes/' . $themedir . '/Resources/public/images/14_layer_lowerlayer.png')) {
+                    $downb = '<img src="themes/' . $themedir . '/Resources/public/images/14_layer_lowerlayer.png" alt="+" />';
                 } else {
                     $downb = '<img src="images/icons/extrasmall/14_layer_lowerlayer.png" alt="+" />';
                 }

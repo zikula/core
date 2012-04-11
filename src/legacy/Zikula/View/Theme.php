@@ -179,9 +179,9 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
-        if (is_readable("themes/$themeName/templates/overrides.yml")) {
+        if (is_readable("themes/$themeName/Resources/config/overrides.yml")) {
             $this->dispatcher->addListener('zikula_view.template_override', array($this, '_templateOverride'), 0);
-            $this->_overrideMap = Yaml::parse("themes/$themeName/templates/overrides.yml");
+            $this->_overrideMap = Yaml::parse("themes/$themeName/Resources/config/overrides.yml");
         }
 
         $event = new GenericEvent($this);
@@ -406,8 +406,6 @@ class Zikula_View_Theme extends Zikula_View
 
         if (is_dir("themes/$themeDir/Resources/view")) {
             $relativePath = "themes/$themeDir/Resources/view";
-        } else {
-            $relativePath = "themes/$themeDir/templates";
         }
 
         $templateFile = "$relativePath/$osTemplate";
@@ -439,7 +437,7 @@ class Zikula_View_Theme extends Zikula_View
     private function _plugin_dirs()
     {
         // add theme specific plugins directories, if they exist
-        $this->addPluginDir('themes/' . $this->directory . '/plugins');
+        $this->addPluginDir('themes/' . $this->directory . '/Resources/view/plugins');
     }
 
     /**
@@ -568,10 +566,10 @@ class Zikula_View_Theme extends Zikula_View
         $this->template_dir  = $this->themepath . '/templates'; // default directory for templates
 
         $this->themepath     = 'themes/' . $this->directory;
-        $this->imagepath     = $this->themepath . '/images';
-        $this->imagelangpath = $this->themepath . '/images/' . $this->language;
-        $this->stylepath     = $this->themepath . '/style';
-        $this->scriptpath    = $this->themepath . '/javascript';
+        $this->imagepath     = $this->themepath . '/Resources/public/images';
+        $this->imagelangpath = $this->themepath . '/Resources/public/images/' . $this->language;
+        $this->stylepath     = $this->themepath . '/Resources/public/css';
+        $this->scriptpath    = $this->themepath . '/Resources/public/javascript';
 
         // make the base vars available to all templates
         $this->assign('module', $this->toplevelmodule)
