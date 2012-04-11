@@ -30,7 +30,7 @@ class Theme_Util
             $dirArray = FileUtil::getFiles('themes', false, true, null, 'd');
             foreach ($dirArray as $dir) {
                 // Work out the theme type
-                if (file_exists("themes/$dir/version.php") && !file_exists("themes/$dir/theme.php")) {
+                if (file_exists("themes/$dir/version.php")) {
                     $themetype = 3;
                 } else {
                     // anything else isn't a theme
