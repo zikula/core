@@ -24,7 +24,7 @@ $core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR_
 $core->boot();
 $core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
 
-$request = $core->getContainer()->getService('request');
+$request = $core->getContainer()->get('request');
 $resolver = new AjaxControllerResolver();
 
 $kernel = new HttpKernel($core->getDispatcher(), $resolver);
