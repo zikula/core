@@ -278,16 +278,25 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
-
-        // retrieve the admin module object array
-        $result = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => (int)$args['mid']));
-
-        if (!$result) {
-            return false;
+        static $associations = array();
+        
+        if (empty($associations)) {
+            $associations = $this->entityManager->getRepository($this->name . '_Entity_AdminModule')->findAll();
+        }
+        
+        $sortorder = -1;
+        foreach ($associations as $association) {
+            if ($association['mid'] == (int)$args['mid']) {
+                $sortorder = $association['sortorder'];
+                break;
+            }
         }
 
-        return $result['sortorder'];
+        if ($sortorder >= 0) {
+            return $sortorder;
+        } else {
+            return false;
+        }
     }
 
     /**
