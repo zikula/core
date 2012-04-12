@@ -947,14 +947,12 @@ class ModUtil
      * @param string  $func       The specific function to run.
      * @param array   $args       The arguments to pass to the function.
      * @param boolean $api        Whether or not to execute an API (or regular) function.
-     * @param string  $instanceof Perform instanceof checking of target class.
      *
      * @throws Zikula_Exception_NotFound If method was not found.
-     * @throws InvalidArgumentException  If the controller is not an instance of the class specified in $instanceof.
      *
      * @return mixed.
      */
-    public static function exec($modname, $type = 'user', $func = 'index', $args = array(), $api = false, $instanceof = null)
+    public static function exec($modname, $type = 'user', $func = 'index', $args = array(), $api = false)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -1023,13 +1021,12 @@ class ModUtil
      * @param string $type       The type of function to run.
      * @param string $func       The specific function to run.
      * @param array  $args       The arguments to pass to the function.
-     * @param string $instanceof Perform instanceof checking of target class.
      *
      * @return mixed.
      */
-    public static function func($modname, $type = 'user', $func = 'index', $args = array(), $instanceof = null)
+    public static function func($modname, $type = 'user', $func = 'index', $args = array())
     {
-        return self::exec($modname, $type, $func, $args, false, $instanceof);
+        return self::exec($modname, $type, $func, $args, false);
     }
 
     /**
@@ -1039,11 +1036,10 @@ class ModUtil
      * @param string $type       The type of function to run.
      * @param string $func       The specific function to run.
      * @param array  $args       The arguments to pass to the function.
-     * @param string $instanceof Perform instanceof checking of target class.
      *
      * @return mixed.
      */
-    public static function apiFunc($modname, $type = 'user', $func = 'index', $args = array(), $instanceof = null)
+    public static function apiFunc($modname, $type = 'user', $func = 'index', $args = array())
     {
         if (empty($type)) {
             $type = 'user';
@@ -1055,7 +1051,7 @@ class ModUtil
             $func = 'index';
         }
 
-        return self::exec($modname, $type, $func, $args, true, $instanceof);
+        return self::exec($modname, $type, $func, $args, true);
     }
 
     /**
