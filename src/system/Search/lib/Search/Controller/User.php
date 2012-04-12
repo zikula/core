@@ -192,6 +192,7 @@ class Search_Controller_User extends Zikula_AbstractController
             return $this->view->fetch('search_user_results.tpl');
         }
         */
+        $this->view->setCaching(false); // not to show equal results for different searches
 
         $result = ModUtil::apiFunc('Search', 'user', 'search', $vars);
 
