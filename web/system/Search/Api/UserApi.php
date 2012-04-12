@@ -98,7 +98,7 @@ class Search_Api_UserApi extends Zikula_AbstractApi
                         $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
                         if (!$ok) {
                             LogUtil::registerError($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
-                            return System::redirect(ModUtil::url('Search', 'user', 'main'));
+                            return $this->redirect(ModUtil::url('Search', 'user', 'main'));
                         }
                     }
                 }

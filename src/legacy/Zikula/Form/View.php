@@ -817,7 +817,7 @@ class Zikula_Form_View extends Zikula_View
 
         // FIXME this executes the redirect immediately,
         // should the View store the url and do it in the end of its lifecycle?
-        return System::redirect($url);
+        return new \Symfony\Component\HttpFoundation\RedirectResponse($url);
     }
 
     /**

@@ -33,25 +33,25 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         if ($this->request->request->get('category_copy', null)) {
             $args['op'] = 'copy';
             $args['cid'] = $_POST['category']['id'];
-            return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if ($this->request->request->get('category_move', null)) {
             $args['op'] = 'move';
             $args['cid'] = $_POST['category']['id'];
-            return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if ($this->request->request->get('category_delete', null)) {
             $args['op'] = 'delete';
             $args['cid'] = $_POST['category']['id'];
-            return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if ($this->request->request->get('category_user_edit', null)) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
             $args['dr'] = $_POST['category']['id'];
-            return System::redirect(ModUtil::url('Categories', 'user', 'edit', $args));
+            return $this->redirect(ModUtil::url('Categories', 'user', 'edit', $args));
         }
 
         $cat = new Categories_DBObject_Category ();
@@ -61,7 +61,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
             $category = $this->request->request->get('category', null);
             $args['cid'] = $category['id'];
             $args['mode'] = 'edit';
-            return System::redirect(ModUtil::url('Categories', 'admin', 'edit', $args));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'edit', $args));
         }
 
         $attributes = array();
@@ -121,11 +121,11 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
 
             $_SESSION['newCategory'] = $newCat;
 
-            return System::redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
         }
 
         if (!$cat->validate('admin')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
         }
 
         $attributes = array();
@@ -162,7 +162,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         }
 
         if ($this->request->request->get('category_cancel', null)) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
         $cid = $this->request->request->get('cid', null);
@@ -194,7 +194,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         }
 
         if ($this->request->request->get('category_cancel', null)) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
         $cid = $this->request->request->get('cid', null);
@@ -220,7 +220,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         }
 
         if ($this->request->request->get('category_cancel', null)) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
         $cid = $this->request->request->get('cid', null);
@@ -267,7 +267,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
             $obj->delete($id);
 
             LogUtil::registerStatus(__('Done! Deleted the category registry entry.'));
-            return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
         }
 
         $args = array();
@@ -275,14 +275,14 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
             $obj = new $class();
             $data = $obj->getDataFromInput($id);
             $args['category_registry'] = $data;
-            return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
 
         $obj = new $class();
         $obj->getDataFromInput();
 
         if (!$obj->validate('admin')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
         }
 
         $obj->save();

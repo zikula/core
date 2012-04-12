@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * System class.
  *
@@ -344,46 +346,46 @@ class System
         return $result;
     }
 
-    /**
-     * Carry out a redirect.
-     *
-     * @param string  $redirecturl       URL to redirect to.
-     * @param array   $additionalheaders Array of header strings to send with redirect.
-     * @param integer $type              Number type of the redirect.
-     *
-     * @return boolean True if redirect successful, false otherwise.
-     */
-    public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
-    {
-        // very basic input validation against HTTP response splitting
-        $redirecturl = str_replace(array(
-                        '\r',
-                        '\n',
-                        '%0d',
-                        '%0a'), '', $redirecturl);
-
-        // Always close session before redirect
-        session_write_close();
-
-        if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $redirecturl)) {
-            // Absolute URL - simple redirect
-        } elseif (substr($redirecturl, 0, 1) == '/') {
-            // Root-relative links
-            $redirecturl = 'http' . (self::serverGetVar('HTTPS') == 'on' ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $redirecturl;
-        } else {
-            // Relative URL
-            // Removing leading slashes from redirect url
-            $redirecturl = preg_replace('!^/*!', '', $redirecturl);
-            // Get base URL and append it to our redirect url
-            $baseurl = self::getBaseUrl();
-            $redirecturl = $baseurl . $redirecturl;
-        }
-
-        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, (int) $type, $additionalheaders);
-        $response->send();
-
-        exit;
-    }
+//    /**
+//     * Carry out a redirect.
+//     *
+//     * @param string  $redirecturl       URL to redirect to.
+//     * @param array   $additionalheaders Array of header strings to send with redirect.
+//     * @param integer $type              Number type of the redirect.
+//     *
+//     * @return boolean True if redirect successful, false otherwise.
+//     */
+//    public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
+//    {
+//        // very basic input validation against HTTP response splitting
+//        $redirecturl = str_replace(array(
+//                        '\r',
+//                        '\n',
+//                        '%0d',
+//                        '%0a'), '', $redirecturl);
+//
+//        // Always close session before redirect
+//        session_write_close();
+//
+//        if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $redirecturl)) {
+//            // Absolute URL - simple redirect
+//        } elseif (substr($redirecturl, 0, 1) == '/') {
+//            // Root-relative links
+//            $redirecturl = 'http' . (self::serverGetVar('HTTPS') == 'on' ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $redirecturl;
+//        } else {
+//            // Relative URL
+//            // Removing leading slashes from redirect url
+//            $redirecturl = preg_replace('!^/*!', '', $redirecturl);
+//            // Get base URL and append it to our redirect url
+//            $baseurl = self::getBaseUrl();
+//            $redirecturl = $baseurl . $redirecturl;
+//        }
+//
+//        $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl, (int) $type, $additionalheaders);
+//        $response->send();
+//
+//        exit;
+//    }
 
     /**
      * Check to see if this is a local referral.
@@ -707,7 +709,8 @@ class System
                 // we are in the homepage, checks if language code is forced
                 if (ZLanguage::getLangUrlRule() && $lang) {
                     // and redirect then
-                    System::redirect(self::getCurrentUrl()."/$lang");
+                    $response = new RedirectResponse(self::getCurrentUrl()."/$lang");
+                    $respose->send();
                     System::shutDown();
                 }
             } else {
@@ -721,7 +724,8 @@ class System
                         foreach ($args as $k => $v) {
                             $args[$k] = urlencode($v);
                         }
-                        System::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''));
+                        $response = new RedirectResponse(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''));
+                        $respose->send();
                         System::shutDown();
                     }
                     self::queryStringSetVar('lang', $args[0]);
@@ -733,7 +737,8 @@ class System
                         $args[$k] = urlencode($v);
                     }
                     $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
-                    System::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args));
+                    $response = new RedirectResponse(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args));
+                    $response->send();
                     System::shutDown();
                 }
 

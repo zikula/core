@@ -20,6 +20,7 @@ use Zikula\Framework\AbstractEventHandler;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 // Defines for access levels
@@ -419,7 +420,8 @@ class Core
 
         // Check that Zikula is installed before continuing
         if (\System::getVar('installed') == 0 && !\System::isInstalling()) {
-            \System::redirect(\System::getBaseUrl().'install.php?notinstalled')->send();
+            $response = new RedirectResponse(\System::getBaseUrl().'install.php?notinstalled');
+            $response->send();
             \System::shutdown();
         }
 
@@ -525,7 +527,9 @@ class Core
                 //        then a new one is created on the reentry into index.php. The message
                 //        set by the registerStatus call below gets lost.
                 \LogUtil::registerStatus(__('You have been logged out.'));
-                \System::redirect(\ModUtil::url('Users', 'user', 'login'));
+                $response = new RedirectResponse(\ModUtil::url('Users', 'user', 'login'));
+                $response->send();
+                exit;
             }
         }
 

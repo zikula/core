@@ -424,7 +424,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
                 'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover);
         } else {
             LogUtil::registerError($this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
-            return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
         }
 
         // rewrite the settings to the running config
