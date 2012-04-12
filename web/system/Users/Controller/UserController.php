@@ -45,10 +45,10 @@ class Users_Controller_UserController extends Zikula_AbstractController
      * @throws Zikula_Exception_Forbidden if the current user does not have adequate permissions to perform
      *          this function.
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check
-        $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'main')))));
+        $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'index')))));
 
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
@@ -105,7 +105,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     public function registerAction()
     {
         // Should not be here if logged in.
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
 
         // check permisisons
         if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
@@ -622,7 +622,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     public function lostPwdUnameAction()
     {
         // we shouldn't get here if logged in already....
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
 
         return $this->response($this->view->fetch('users_user_lostpwduname.tpl'));
     }
@@ -647,7 +647,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     public function lostUnameAction()
     {
         // we shouldn't get here if logged in already....
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
 
         $proceedToForm = true;
         $email = '';
@@ -710,7 +710,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     public function lostPasswordAction()
     {
         // we shouldn't get here if logged in already....
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
 
         $formStage = 'request';
 
@@ -862,7 +862,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     public function lostPasswordCodeAction()
     {
         // we shouldn't get here if logged in already....
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
 
         $formStage = 'code';
         $errorInfo = array();
@@ -1054,7 +1054,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     public function loginAction($args)
     {
         // we shouldn't get here if logged in already....
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
 
         $loggedIn = false;
         $isFunctionCall = false;
@@ -1435,7 +1435,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
     {
         if (UserUtil::isLoggedIn()) {
             $this->registerError($this->__('Sorry! An account cannot be verified while you are logged in.'))
-                    ->redirect(ModUtil::url($this->name, 'user', 'main'));
+                    ->redirect(ModUtil::url($this->name, 'user', 'index'));
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1545,9 +1545,9 @@ class Users_Controller_UserController extends Zikula_AbstractController
                             } else {
                                 if (!$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
                                     $this->registerError($this->__('Sorry! There was an error while marking your registration as verifed. Please contact an administrator.'))
-                                            ->redirect(ModUtil::url($this->name, 'user', 'main'));
+                                            ->redirect(ModUtil::url($this->name, 'user', 'index'));
                                 } else {
-                                    return $this->redirect(ModUtil::url($this->name, 'user', 'main'));
+                                    return $this->redirect(ModUtil::url($this->name, 'user', 'index'));
                                 }
                             }
                         } else {
@@ -1919,7 +1919,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
-            return $this->redirect(ModUtil::url($this->name, 'user', 'main'));
+            return $this->redirect(ModUtil::url($this->name, 'user', 'index'));
         }
 
         $passwordErrors = array();
@@ -2057,7 +2057,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
                 $loginArgs['rememberme']            = $sessionVars['rememberme'];
                 return ModUtil::func($this->name, 'user', 'login', $loginArgs);
             } else {
-                return $this->redirect(ModUtil::url($this->name, 'user', 'main'));
+                return $this->redirect(ModUtil::url($this->name, 'user', 'index'));
             }
         } else {
             $sessionVars['password_errors'] = $passwordErrors;
@@ -2079,7 +2079,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
         }
 
         if ($this->getVar('changeemail', 1) != 1) {
-            return $this->redirect(ModUtil::url($this->name, 'user', 'main'));
+            return $this->redirect(ModUtil::url($this->name, 'user', 'index'));
         }
 
         return $this->response($this->view->fetch('users_user_changeemail.tpl'));
@@ -2113,7 +2113,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
 
         $uservars = $this->getVars();
         if ($uservars['changeemail'] <> 1) {
-            return $this->redirect(ModUtil::url($this->name, 'user', 'main'));
+            return $this->redirect(ModUtil::url($this->name, 'user', 'index'));
         }
 
         $newemail = $this->request->request->get('newemail', '');
@@ -2144,7 +2144,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
         }
 
         $this->registerStatus($this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'))
-                ->redirect(ModUtil::url($this->name, 'user', 'main'));
+                ->redirect(ModUtil::url($this->name, 'user', 'index'));
     }
 
     /**
@@ -2206,7 +2206,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
 
         if (!$preemail || !$validCode) {
             $this->registerError($this->__('Error! Your e-mail has not been found. After your request you have five days to confirm the new e-mail address.'))
-                    ->redirect(ModUtil::url($this->name, 'user', 'main'));
+                    ->redirect(ModUtil::url($this->name, 'user', 'index'));
         }
 
         // user and confirmation code are correct. set the new email
@@ -2219,7 +2219,7 @@ class Users_Controller_UserController extends Zikula_AbstractController
         ));
 
         $this->registerStatus($this->__('Done! Changed your e-mail address.'))
-                ->redirect(ModUtil::url($this->name, 'user', 'main'));
+                ->redirect(ModUtil::url($this->name, 'user', 'index'));
     }
 
     /**

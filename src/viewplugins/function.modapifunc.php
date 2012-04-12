@@ -25,7 +25,7 @@
  * Available parameters:
  *   - modname:  The well-known name of a module to execute a function from (required)
  *   - type:     The type of function to execute; currently one of 'user' or 'admin' (default is 'user')
- *   - func:     The name of the module function to execute (default is 'main')
+ *   - func:     The name of the module function to execute (default is 'index')
  *   - assign:   The name of a variable to which the results are assigned
  *   - all remaining parameters are passed to the module API function
  *
@@ -45,7 +45,7 @@
 function smarty_function_modapifunc($params, Zikula_View $view)
 {
     $assign  = isset($params['assign'])                  ? $params['assign']  : null;
-    $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'main';
+    $func    = isset($params['func']) && $params['func'] ? $params['func']    : 'index';
     $modname = isset($params['modname'])                 ? $params['modname'] : null;
     $type    = isset($params['type']) && $params['type'] ? $params['type']    : 'user';
 

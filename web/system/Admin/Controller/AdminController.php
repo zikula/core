@@ -34,7 +34,7 @@ class Admin_Controller_AdminController extends Zikula_AbstractController
      * view() function)
      * @return string HTML string
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in view()
         return $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
@@ -320,7 +320,7 @@ class Admin_Controller_AdminController extends Zikula_AbstractController
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
                     $modinfo = ModUtil::getInfoFromName($adminmodule['name']);
-                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'main');
+                    $menutexturl = ModUtil::url($modinfo['name'], 'admin', 'index');
                     $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
                     if ($displayNameType == 1) {
@@ -510,7 +510,7 @@ class Admin_Controller_AdminController extends Zikula_AbstractController
                 $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $adminmodule['id']));
                 $order = ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
                                           array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
-                $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'main');
+                $menutexturl = ModUtil::url($adminmodule['name'], 'admin', 'index');
                 $menutext = $adminmodule['displayname'];
                 $menutexttitle = $adminmodule['description'];
                 $adminlinks[$catid][] = array('menutexturl' => $menutexturl,

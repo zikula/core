@@ -790,7 +790,7 @@ class System
                 if (isset($args[2])) {
                     self::queryStringSetVar('func', $args[2]);
                 } else {
-                    self::queryStringSetVar('func', 'main');
+                    self::queryStringSetVar('func', 'index');
                 }
                 if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
                     // any remaining arguments are specific to the module

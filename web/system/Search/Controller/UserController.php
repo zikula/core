@@ -22,7 +22,7 @@ class Search_Controller_UserController extends Zikula_AbstractController
      *
      * @return string HTML string templated
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in form()
         return $this->redirect(ModUtil::url('Search', 'user', 'form'));

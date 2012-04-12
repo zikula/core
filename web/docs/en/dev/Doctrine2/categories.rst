@@ -107,7 +107,7 @@ List you *EntityCategory* subclass in the DoctrineHelper::createSchema() method 
 Add this code to your install method to add an entry to the categories registry::
     
     $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/Global');
-    CategoryRegistryUtil::insertEntry('YourModule', 'MyEntity', 'Main', $rootcat['id']);
+    CategoryRegistryUtil::insertEntry('YourModule', 'MyEntity', 'index', $rootcat['id']);
 
 
 Note: in the past, the registry was tied to a table_name. From now on, please use your EntityName
@@ -117,7 +117,7 @@ registry entries.
     $registry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('YourModule', 'MyEntity');
     foreach ($registry as $propname => $regId) {
         $catId = CategoryRegistryUtil::getRegisteredModuleCategory('YourModule', 'MyEntity', $propName);
-        CategoryRegistyUtil::updateEntry($regId, 'YourModule', 'MyEntity', 'Main', $catId);
+        CategoryRegistyUtil::updateEntry($regId, 'YourModule', 'MyEntity', 'index', $catId);
     }
 
 Working with the entities
@@ -128,7 +128,7 @@ Assign an category to the **Main** property::
     $user = // ...
     $registry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('YourModule', 'MyEntity');
     $category = $entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
-    $user->getCategories()->set($this->registryId, new YourModule_Entity_UserCategory($registry['Main'], $category, $user));
+    $user->getCategories()->set($this->registryId, new YourModule_Entity_UserCategory($registry['index'], $category, $user));
 
     $entityManager->persist($user);
 
@@ -138,14 +138,14 @@ Change category of the **Main** property::
     $user = // ...
     $registry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('YourModule', 'MyEntity');
     $category = $entityManager->find('Zikula_Doctrine2_Entity_Category', $categoryId);
-    $user->getCategories()->get($registry['Main'])->setCategory($category);
+    $user->getCategories()->get($registry['index'])->setCategory($category);
     
     $entityManager->persist($user);
 
 Unassign the category of the **Main** property::
 
     $user = // ...
-    $user->getCategories()->remove($registry['Main']);
+    $user->getCategories()->remove($registry['index']);
     
     $entityManager->persist($user);
   
@@ -153,7 +153,7 @@ Access category data of the **Main** property::
     
     $user = // ...
     $registry = CategoryRegistryUtil::getRegisteredModuleCategoriesIds('YourModule', 'MyEntity');
-    $categoryName = $user->getCategories()->get($registry['Main'])->getCategory()->getName();
+    $categoryName = $user->getCategories()->get($registry['index'])->getCategory()->getName();
     // see Zikula_Doctrine2_Entity_Category class
 
 Category Attributes
@@ -162,7 +162,7 @@ Category Attributes
 If your categories have been assigned attributes, you can access them like so (as of Zikula 1.3.3)
 
     $user = // ...
-    $categoryAttributes = $user->getCategories()->get($registry['Main'])->getCategory()->getAttributes();
+    $categoryAttributes = $user->getCategories()->get($registry['index'])->getCategory()->getAttributes();
     foreach ($categoryAttributes as $attribute) {
         $name = $attribute->getName();
         $value = $attribute->getValue();

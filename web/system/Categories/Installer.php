@@ -717,7 +717,7 @@ class Categories_Installer extends Zikula_AbstractInstaller
     public function updateValueAddons_104()
     {
         // Array of the modules to update
-        $mods = array('News' => array('stories' => 'Main'), 'Pages' => array('pages' => 'Main'), 'FAQ' => array('faqanswer' => 'Main'), 'Feeds' => array('feeds' => 'Main'), 'Reviews' => array('reviews' => 'Main'), 'Content' => array('page' => 'primary'));
+        $mods = array('News' => array('stories' => 'index'), 'Pages' => array('pages' => 'index'), 'FAQ' => array('faqanswer' => 'index'), 'Feeds' => array('feeds' => 'index'), 'Reviews' => array('reviews' => 'index'), 'Content' => array('page' => 'primary'));
 
         $dbtables = DBUtil::getTables();
         $regcol = $dbtables['categories_registry_column'];

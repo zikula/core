@@ -17,7 +17,7 @@ class Categories_Controller_UserController extends Zikula_AbstractController
     /**
      * main user function
      */
-    public function mainAction()
+    public function indexAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();

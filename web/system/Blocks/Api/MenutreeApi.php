@@ -423,7 +423,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                         $lang => array(
                                 'id' => $idoffset++,
                                 'name' => $mod['displayname'],
-                                'href' => ModUtil::url($mod['name'], 'user', 'main'),
+                                'href' => ModUtil::url($mod['name'], 'user', 'index'),
                                 'title' => $mod['description'],
                                 'className' => '',
                                 'state' => 1,

@@ -954,7 +954,7 @@ class ModUtil
      *
      * @return mixed.
      */
-    public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
+    public static function exec($modname, $type = 'user', $func = 'index', $args = array(), $api = false, $instanceof = null)
     {
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
@@ -1027,7 +1027,7 @@ class ModUtil
      *
      * @return mixed.
      */
-    public static function func($modname, $type = 'user', $func = 'main', $args = array(), $instanceof = null)
+    public static function func($modname, $type = 'user', $func = 'index', $args = array(), $instanceof = null)
     {
         return self::exec($modname, $type, $func, $args, false, $instanceof);
     }
@@ -1043,7 +1043,7 @@ class ModUtil
      *
      * @return mixed.
      */
-    public static function apiFunc($modname, $type = 'user', $func = 'main', $args = array(), $instanceof = null)
+    public static function apiFunc($modname, $type = 'user', $func = 'index', $args = array(), $instanceof = null)
     {
         if (empty($type)) {
             $type = 'user';
@@ -1052,7 +1052,7 @@ class ModUtil
         }
 
         if (empty($func)) {
-            $func = 'main';
+            $func = 'index';
         }
 
         return self::exec($modname, $type, $func, $args, true, $instanceof);
@@ -1191,7 +1191,7 @@ class ModUtil
                         $vars .= "/$k/$v"; // &$k=$v
                     }
                 }
-                $url = $modname . ($vars || $func != 'main' ? "/$func$vars" : '');
+                $url = $modname . ($vars || $func != 'index' ? "/$func$vars" : '');
             }
 
             if ($modinfo && $shorturlsdefaultmodule && $shorturlsdefaultmodule == $modinfo['name']) {

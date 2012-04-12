@@ -17,12 +17,12 @@ class Theme_Controller_UserController extends Zikula_AbstractController
     /**
      * display theme changing user interface
      */
-    public function mainAction()
+    public function indexAction()
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
             LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
-            return $this->redirect(ModUtil::url('Users', 'user', 'main'));
+            return $this->redirect(ModUtil::url('Users', 'user', 'index'));
         }
 
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
@@ -71,6 +71,6 @@ class Theme_Controller_UserController extends Zikula_AbstractController
     {
         ModUtil::apiFunc('Theme', 'user', 'resettodefault');
         LogUtil::registerStatus($this->__('Done! Theme has been reset to the default site theme.'));
-        return $this->redirect(ModUtil::url('Theme', 'user', 'main'));
+        return $this->redirect(ModUtil::url('Theme', 'user', 'index'));
     }
 }

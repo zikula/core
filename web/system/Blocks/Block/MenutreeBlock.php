@@ -498,7 +498,7 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
             if (is_array($mods) && count($mods)>0) {
                 foreach ($mods as $mod) {
                     $tmp = array('name'  => $mod['displayname'],
-                                 'href'  => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'main')),
+                                 'href'  => DataUtil::formatForDisplay(ModUtil::url($mod['name'], 'user', 'index')),
                                  'title' => $mod['description']);
 
                     foreach ($langs as $lang) {

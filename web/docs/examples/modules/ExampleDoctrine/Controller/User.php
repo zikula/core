@@ -39,7 +39,7 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
     public function view()
     {
         if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
+            return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'index'));
         }
 
         $em = $this->getService('doctrine.entitymanager');
@@ -56,7 +56,7 @@ class ExampleDoctrine_Controller_User extends Zikula_AbstractController
      */
     public function edit() {
         if (!SecurityUtil::checkPermission('ExampleDoctrine::', '::', ACCESS_ADD)) {
-           return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'main'));
+           return LogUtil::registerPermissionError(ModUtil::url('ExampleDoctrine', 'user', 'index'));
         }
 
         $id = $this->request->query->getInt('id');

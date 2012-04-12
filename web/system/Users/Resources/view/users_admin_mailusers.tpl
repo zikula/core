@@ -93,7 +93,7 @@
 
             <div class="z-formbuttons z-buttons">
                 {button type='submit' src='mail_generic.png' set='icons/extrasmall' __alt="Send e-mail to selected recipients" __title="Send e-mail to selected recipients" __text="Send e-mail to selected recipients"}
-                <a href="{modurl modname='Users' type='admin' func='main'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{modurl modname='Users' type='admin' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </div>

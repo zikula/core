@@ -23,7 +23,7 @@ class Errors_Controller_UserController extends Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function mainAction($args)
+    public function indexAction($args)
     {
         $session = $this->request->getSession();
         $type      = $this->request->query->get('errtype', isset($args['type']) ? $args['type'] : 500);

@@ -164,7 +164,7 @@ class Blocks_Block_ExtmenuBlock extends Zikula_Controller_AbstractBlock
 
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
                     $menuitems[] = array('name'   => $mod['displayname'],
-                                         'url'    => ModUtil::url($mod['name'], 'user', 'main'),
+                                         'url'    => ModUtil::url($mod['name'], 'user', 'index'),
                                          'title'  => $mod['description'],
                                          'level'  => 0,
                                          'parentid' => null,

@@ -128,7 +128,7 @@ class Blocks_Block_LangBlock extends Zikula_Controller_AbstractBlock
                 $type = 'user';
             }
             if (!isset($func)) {
-                $func = 'main';
+                $func = 'index';
             }
         }
 
