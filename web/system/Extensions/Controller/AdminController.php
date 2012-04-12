@@ -33,7 +33,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in view()
         return $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));

@@ -10,28 +10,28 @@
                 <a href="{homepage}"><span>{gt text="Home"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Settings' type='admin' func='main'}"><span>{gt text="Settings"}</span></a>
+                <a href="{modurl modname='Settings' type='admin' func='index'}"><span>{gt text="Settings"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Extensions' type='admin' func='main'}"><span>{gt text="Extensions"}</span></a>
+                <a href="{modurl modname='Extensions' type='admin' func='index'}"><span>{gt text="Extensions"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Blocks' type='admin' func='main'}"><span>{gt text="Blocks"}</span></a>
+                <a href="{modurl modname='Blocks' type='admin' func='index'}"><span>{gt text="Blocks"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Users' type='admin' func='main'}"><span>{gt text="Users"}</span></a>
+                <a href="{modurl modname='Users' type='admin' func='index'}"><span>{gt text="Users"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Groups' type='admin' func='main'}"><span>{gt text="Groups"}</span></a>
+                <a href="{modurl modname='Groups' type='admin' func='index'}"><span>{gt text="Groups"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Permissions' type=admin func='main'}"><span>{gt text="Permission rules"}</span></a>
+                <a href="{modurl modname='Permissions' type=admin func='index'}"><span>{gt text="Permission rules"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Theme' type='admin' func='main'}"><span>{gt text="Themes"}</span></a>
+                <a href="{modurl modname='Theme' type='admin' func='index'}"><span>{gt text="Themes"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Categories' type='admin' func='main'}"><span>{gt text="Categories"}</span></a>
+                <a href="{modurl modname='Categories' type='admin' func='index'}"><span>{gt text="Categories"}</span></a>
             </li>
         </ul>
     </div>

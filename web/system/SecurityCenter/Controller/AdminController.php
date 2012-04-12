@@ -40,7 +40,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
      *
      * @return string HTML string.
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in modifyconfig()
         return $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));

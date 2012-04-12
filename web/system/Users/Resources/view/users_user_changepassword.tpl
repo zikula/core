@@ -94,7 +94,7 @@
             {else}
             {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
             {/if}
-            <a href="{modurl modname='Users' type='user' func='main'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='Users' type='user' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

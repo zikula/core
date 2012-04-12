@@ -146,7 +146,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         $starttype = System::getVar('starttype');
         $pager['type'] = !empty($starttype) ? $starttype : 'user';
         $startfunc = System::getVar('startfunc');
-        $pager['func'] = !empty($startfunc) ? $startfunc : 'main';
+        $pager['func'] = !empty($startfunc) ? $startfunc : 'index';
 
         $startargs = explode(',', System::getVar('startargs'));
         foreach ($startargs as $arg) {

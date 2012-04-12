@@ -49,7 +49,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
      *
      * @return string HTML string containing the rendered view template.
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in view()
         return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
@@ -529,7 +529,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
                 ->assign('mailusers', SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT))
                 ->fetch('users_admin_mailusers.tpl'));
         } elseif ($formId == 'users_mailusers') {
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'main'));
+            return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
         } else {
             throw new Zikula_Exception_Fatal($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
         }
@@ -1962,7 +1962,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             if ($importResults == '') {
                 // the users have been imported successfully
                 $this->registerStatus($this->__('Done! Users imported successfully.'));
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'main'));
+                return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
             }
         }
 

@@ -9,8 +9,8 @@
     <div id="navi" class="z-clearer">
         <ul id="nav">
             <li class="page_item"><a href="{homepage}" title="{gt text="Go to the site's home page"}">{gt text='Home'}</a></li>
-            <li class="page_item"><a href="{modurl modname='Users' type='user' func='main'}" title="{gt text='Go to your account panel'}">{gt text="My Account"}</a></li>
-            <li class="page_item"><a href="{modurl modname='Search' type='user' func='main'}" title="{gt text='Search this site'}">{gt text="Site search"}</a></li>
+            <li class="page_item"><a href="{modurl modname='Users' type='user' func='index'}" title="{gt text='Go to your account panel'}">{gt text="My Account"}</a></li>
+            <li class="page_item"><a href="{modurl modname='Search' type='user' func='index'}" title="{gt text='Search this site'}">{gt text="Site search"}</a></li>
         </ul>
     </div>
     {else}

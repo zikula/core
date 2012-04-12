@@ -40,7 +40,7 @@ class Permissions_Controller_AdminController extends Zikula_AbstractController
      *
      * @return mixed HTML string or true
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in view()
         return $this->redirect(ModUtil::url('Permissions', 'admin', 'view'));

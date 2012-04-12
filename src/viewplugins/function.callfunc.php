@@ -23,7 +23,7 @@
  * Available parameters:
  *   - x_class:    The well-known name of a module to execute a function from (required)
  *   - x_method:   The type of function to execute; currently one of 'user' or 'admin' (default is 'user')
- *   - x_function: The name of the module function to execute (default is 'main')
+ *   - x_function: The name of the module function to execute (default is 'index')
  *   - x_assign:     If set, the results are assigned to the corresponding variable instead of printed out
  *   - all remaining parameters are passed to the callable.
  *
@@ -41,7 +41,7 @@
 function smarty_function_callfunc($params, Zikula_View $view)
 {
     $assign = (isset($params['x_assign']) && !empty($params['x_assign'])) ? $params['x_assign'] : '';
-    
+
     if (array_key_exists('x_class', $params)) {
         $class = $params['x_class'];
         $method = $params['x_method'];

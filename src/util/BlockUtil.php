@@ -62,7 +62,7 @@ class BlockUtil
 
         // get variables from input
         if (!isset($func)) {
-            $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
+            $func = FormUtil::getPassedValue('func', 'index', 'GETPOST');
         }
         if (!isset($type)) {
             $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');

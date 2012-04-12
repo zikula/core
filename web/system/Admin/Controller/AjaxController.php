@@ -51,7 +51,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $output['newParentCat'] = $newParentCat;
         $output['oldcid'] = $oldcid;
         $output['modulename'] = $displayname;
-        $output['url'] = ModUtil::url($module, 'admin', 'main');
+        $output['url'] = ModUtil::url($module, 'admin', 'index');
 
         return new Zikula_Response_Ajax($output);
     }

@@ -28,7 +28,7 @@ class Theme_Controller_AdminController extends Zikula_AbstractController
     /**
      * the main admin function
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in view()
         return $this->redirect(ModUtil::url('Theme', 'admin', 'view'));

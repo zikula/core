@@ -36,7 +36,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check
         $any_access = false;

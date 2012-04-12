@@ -40,7 +40,7 @@ class Search_Controller_AdminController extends Zikula_AbstractController
      *
      * @return string The main module admin page.
      */
-    public function mainAction()
+    public function indexAction()
     {
         // Security check will be done in modifyconfig()
         return $this->redirect(ModUtil::url('Search', 'admin', 'modifyconfig'));

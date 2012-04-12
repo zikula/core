@@ -22,7 +22,7 @@
  * Available parameters:
  *   - modname:  The well-known name of a module for which to create the URL (required)
  *   - type:     The type of function for which to create the URL; currently one of 'user' or 'admin' (default is 'user')
- *   - func:     The actual module function for which to create the URL (default is 'main')
+ *   - func:     The actual module function for which to create the URL (default is 'index')
  *   - fragment: The fragement to target within the URL
  *   - ssl:      See below
  *   - fqurl:    Make a fully qualified URL
@@ -57,25 +57,15 @@ function smarty_function_modurl($params, Zikula_View $view)
     if (isset($params['func']) && $params['func']) {
         $func = $params['func'];
     } else {
-        if (System::isLegacyMode()) {
-            $func = 'main';
-            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)), E_USER_DEPRECATED);
-        } else {
-            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)));
-            return false;
-        }
+        $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)));
+        return false;
     }
 
     if (isset($params['type']) && $params['type']) {
         $type = $params['type'];
     } else {
-        if (System::isLegacyMode()) {
-            $type = 'user';
-            LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)), E_USER_DEPRECATED);
-        } else {
-            $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)));
-            return false;
-        }
+        $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)));
+        return false;
     }
 
     $modname = isset($params['modname']) ? $params['modname'] : null;

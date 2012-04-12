@@ -23,7 +23,7 @@ class Blocks_Controller_UserController extends Zikula_AbstractController
      *
      * @return HTML String.
      */
-    public function mainAction()
+    public function indexAction()
     {
         return LogUtil::registerError(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'), 403);
     }

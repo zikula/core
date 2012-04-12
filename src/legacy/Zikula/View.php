@@ -186,7 +186,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
         // get variables from input
         $module = $this->request->attributes->get('_module', null, 'GETPOST', FILTER_SANITIZE_STRING);
         $type   = $this->request->attributes->get('_controller', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func   = $this->request->attributes->get('_action', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+        $func   = $this->request->attributes->get('_action', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // set vars based on the module structures
         $this->homepage = empty($module) ? true : false;

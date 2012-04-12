@@ -11,10 +11,10 @@
     <dt class="search_hit">
         {if isset($result.url) && $result.url neq ''}
         <a href="{$result.url|safetext}">{$result.title|google_highlight:$q:$limitsummary}</a>
-        &nbsp;&nbsp;<span class="z-sub">(<a href="{modurl modname=$result.module type='user' func='main'}">{$result.displayname}</a>)</span>
+        &nbsp;&nbsp;<span class="z-sub">(<a href="{modurl modname=$result.module type='user' func='index'}">{$result.displayname}</a>)</span>
         {else}
         {$result.title|google_highlight:$q:$limitsummary}
-        &nbsp;&nbsp;<span class="z-sub">(<a href="{modurl modname=$result.module type='user' func='main'}">{$result.displayname}</a>)</span>
+        &nbsp;&nbsp;<span class="z-sub">(<a href="{modurl modname=$result.module type='user' func='index'}">{$result.displayname}</a>)</span>
         {/if}
 
     </dt>
