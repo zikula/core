@@ -32,7 +32,6 @@ abstract class AbstractErrorResponse extends AbstractMediatorBaseResponse
         $this->payload = $payload;
 
         if ($this->newCsrfToken) {
-            $this->authid = \SecurityUtil::generateAuthKey(ModUtil::getName());
             $this->csrfToken = \SecurityUtil::generateCsrfToken();
         }
 

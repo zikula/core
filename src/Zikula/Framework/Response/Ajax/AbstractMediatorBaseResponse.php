@@ -18,7 +18,7 @@ namespace Zikula\Framework\Response\Ajax;
 /**
  * Ajax class.
  */
-abstract class AbstractMediatorBaseReponse extends AbstractBaseResponse
+abstract class AbstractMediatorBaseResponse extends AbstractBaseResponse
 {
     /**
      * CSRF Token.

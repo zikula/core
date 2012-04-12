@@ -14,6 +14,7 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Framework\AjaxControllerResolver;
 
 include __DIR__.'/../app/bootstrap.php';
@@ -28,6 +29,6 @@ $request = $core->getContainer()->get('request');
 $resolver = new AjaxControllerResolver();
 
 $kernel = new HttpKernel($core->getDispatcher(), $resolver);
-$response = $kernel->handle($request);
+$response = $kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
 $response->send();
 $kernel->terminate($request, $response);
