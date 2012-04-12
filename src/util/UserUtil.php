@@ -171,12 +171,12 @@ class UserUtil
     {
         $em = ServiceUtil::get('doctrine.entitymanager');
         $groups = $em->getRepository('Groups\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
-        
+
         $items = array();
         foreach ($groups as $group) {
             $items[$group[$assocKey]] = $group->toArray();
         }
-        
+
         return $items;
     }
 
@@ -274,7 +274,7 @@ class UserUtil
         if (empty($uid)) {
             return array();
         }
-        
+
         return ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
     }
 
@@ -322,13 +322,13 @@ class UserUtil
         if (!$gid) {
             return array();
         }
-        
+
         $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
-        
+
         $members = $group['members'];
-        
+
         $uids = array();
-        
+
         foreach ($members as $uid => $membership) {
             $uids[] = $uid;
         }
@@ -965,7 +965,6 @@ class UserUtil
                             $session->set("$sessionNamespace/$sessionVarName", $sessionVars);
                         }
                         $userObj = false;
-                        //System::redirect($redirectURL);
                         throw new Zikula_Exception_Redirect($redirectURL);
                     } else {
                         throw new Zikula_Exception_Forbidden();

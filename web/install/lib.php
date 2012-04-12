@@ -14,6 +14,7 @@
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Core;
+use Symfony\Component\HttpFoundation\RedirectRespose;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
@@ -74,19 +75,22 @@ function install(Core $core)
 
     // If somehow we are browsing the not installed page but installed, redirect back to homepage
     if ($installedState && $notinstalled) {
-        return System::redirect(System::getHomepageUrl())->send();
+        $response = new RedirectResponse(System::getHomepageUrl());
+        return $response->send();
     }
 
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
     if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang")->send();
+        $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+        return $response->send();
     }
 
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
     if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        return System::redirect(System::getBaseUri() . "/install.php?action=requirements&lang=$lang")->send();
+        $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+        return $response->send();
     }
 
     // load the installer language files
@@ -296,7 +300,8 @@ function install(Core $core)
                     }
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
-                    System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'))->send();
+                    $response = new RedirectResponse(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                    $response->send();
                     exit;
                 }
             }
@@ -320,7 +325,8 @@ function install(Core $core)
                 }
             }
             if ($ok) {
-                System::redirect(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang")->send();
+                $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang");
+                $response->send();
                 exit;
             }
 

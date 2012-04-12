@@ -69,7 +69,7 @@ class ModuleDispatcher
         try {
             if (empty($module)) {
                 // we have a static homepage
-                $return = ' ';
+                $return = new Response();
             } elseif ($modinfo) {
                 // call the requested/homepage module
                 $return = \ModUtil::func($modinfo['name'], $type, $func, $arguments);
@@ -90,7 +90,8 @@ class ModuleDispatcher
                 $message = $e->getMessage();
                 $debug = array_merge($e->getDebug(), $e->getTrace());
             } elseif ($e instanceof \Zikula\Framework\Exception\RedirectException) {
-                \System::redirect($e->getUrl(), array(), $e->getType());
+                $response = new RedirectResponse($e->getUrl(), array(), $e->getType());
+                $response->send();
                 \System::shutDown();
             } elseif ($e instanceof \PDOException) {
                 $httpCode = 500;
