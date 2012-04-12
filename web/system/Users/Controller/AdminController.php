@@ -382,11 +382,11 @@ class Users_Controller_AdminController extends Zikula_AbstractController
     protected function getSearchResults($callbackFunc = 'search')
     {
         $findUsersArgs = array(
-            'uname'         => $this->request->getPost()->get('uname', null),
-            'email'         => $this->request->getPost()->get('email', null),
-            'ugroup'        => $this->request->getPost()->get('ugroup', null),
-            'regdateafter'  => $this->request->getPost()->get('regdateafter', null),
-            'regdatebefore' => $this->request->getPost()->get('regdatebefore', null),
+            'uname'         => $this->request->request->get('uname', null),
+            'email'         => $this->request->request->get('email', null),
+            'ugroup'        => $this->request->request->get('ugroup', null),
+            'regdateafter'  => $this->request->request->get('regdateafter', null),
+            'regdatebefore' => $this->request->request->get('regdatebefore', null),
         );
 
         if ($callbackFunc == 'mailUsers') {
@@ -499,7 +499,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         if ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
 
-            $formId = $this->request->getPost()->get('formid', 'UNKNOWN');
+            $formId = $this->request->request->get('formid', 'UNKNOWN');
 
             if ($formId == 'users_search') {
                 $userList = $this->getSearchResults('mailUsers');
@@ -508,8 +508,8 @@ class Users_Controller_AdminController extends Zikula_AbstractController
                     $this->registerError($this->__('Sorry! No matching users found.'));
                 }
             } elseif ($formId == 'users_mailusers') {
-                $uid = $this->request->getPost()->get('userid', null);
-                $sendmail = $this->request->getPost()->get('sendmail', null);
+                $uid = $this->request->request->get('userid', null);
+                $sendmail = $this->request->request->get('sendmail', null);
 
                 $mailSent = ModUtil::apiFunc($this->name, 'admin', 'sendmail', array(
                     'uid'       => $uid,
@@ -572,7 +572,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             $this->checkCsrfToken();
 
             $formData->setFromRequestCollection($this->request->getPost());
-            $accessPermissions = $this->request->getPost()->get('access_permissions', null);
+            $accessPermissions = $this->request->request->get('access_permissions', null);
             $user = $formData->toUserArray(true);
             $originalUser = UserUtil::getVars($user['uid']);
             $userAttributes = isset($originalUser['__ATTRIBUTES__']) ? $originalUser['__ATTRIBUTES__'] : array();
@@ -689,8 +689,8 @@ class Users_Controller_AdminController extends Zikula_AbstractController
                 $proceedToForm = false;
             }
         } elseif ($this->request->getMethod() == 'GET') {
-            $uid    = $this->request->getGet()->get('userid', null);
-            $uname  = $this->request->getGet()->get('uname', null);
+            $uid    = $this->request->query->get('userid', null);
+            $uname  = $this->request->query->get('uname', null);
 
             // check arguments
             if (is_null($uid) && is_null($uname)) {
@@ -802,10 +802,10 @@ class Users_Controller_AdminController extends Zikula_AbstractController
     {
         if ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $uid = $this->request->getPost()->get('userid', null);
+            $uid = $this->request->request->get('userid', null);
         } else {
-            $this->checkCsrfToken($this->request->getGet()->get('csrftoken'));
-            $uid = $this->request->getGet()->get('userid', null);
+            $this->checkCsrfToken($this->request->query->get('csrftoken'));
+            $uid = $this->request->query->get('userid', null);
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
@@ -863,9 +863,9 @@ class Users_Controller_AdminController extends Zikula_AbstractController
      */
     public function lostPasswordAction()
     {
-        $this->checkCsrfToken($this->request->getGet()->get('csrftoken'));
+        $this->checkCsrfToken($this->request->query->get('csrftoken'));
 
-        $uid = $this->request->getGet()->get('userid', null);
+        $uid = $this->request->query->get('userid', null);
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
             $this->registerError(LogUtil::getErrorMsgArgs())
@@ -927,12 +927,12 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         $processDelete = false;
 
         if ($this->request->getMethod() == 'POST') {
-            $userid = $this->request->getPost()->get('userid', null);
-            $processDelete = $this->request->getPost()->get('process_delete', false);
+            $userid = $this->request->request->get('userid', null);
+            $processDelete = $this->request->request->get('process_delete', false);
             $proceedToForm = !$processDelete;
         } elseif ($this->request->getMethod() == 'GET') {
-            $userid = $this->request->getGet()->get('userid', null);
-            $uname  = $this->request->getGet()->get('uname', null);
+            $userid = $this->request->query->get('userid', null);
+            $uname  = $this->request->query->get('uname', null);
 
             // retreive userid from uname
             if (empty($userid) && !empty($uname)) {
@@ -1153,7 +1153,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             $limitNumRows = 25;
         }
 
-        $backFromAction = $this->request->getGet()->get('restoreview', false);
+        $backFromAction = $this->request->query->get('restoreview', false);
 
         if ($backFromAction) {
             $returnArgs = $this->request->getSession()->get('Users_Controller_Admin_viewRegistrations', array('startnum' => 1), 'Zikula_Users');
@@ -1178,7 +1178,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         } else {
             $reset = false;
 
-            $startNum = $this->request->getGet()->get('startnum', 1);
+            $startNum = $this->request->query->get('startnum', 1);
             if (!is_numeric($startNum) || empty($startNum)  || ((int)$startNum != $startNum) || ($startNum < 1)) {
                 $limitOffset = -1;
                 $reset = true;
@@ -1265,7 +1265,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         // (Note that the name of the passed parameter is 'userid' but that it
         // is actually a registration application id.)
         if ($this->request->getMethod() == 'GET') {
-            $uid = $this->request->getGet()->get('uid', null);
+            $uid = $this->request->query->get('uid', null);
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1345,7 +1345,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
 
             $formData->setFromRequestCollection($this->request->getPost());
 
-            $restoreView = $this->request->getPost()->get('restoreview', 'view');
+            $restoreView = $this->request->request->get('restoreview', 'view');
 
             $registration = $formData->toUserArray(true);
             $originalRegistration = UserUtil::getVars($registration['uid'], false, 'uid', true);
@@ -1430,7 +1430,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             }
 
         } elseif ($this->request->getMethod() == 'GET') {
-            $uid = $this->request->getGet()->get('uid', null);
+            $uid = $this->request->query->get('uid', null);
 
             if (!is_int($uid)) {
                 if (!is_numeric($uid) || ((string)((int)$uid) != $uid)) {
@@ -1450,7 +1450,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             $formData->setFromArray($registration);
             $formData->getField('emailagain')->setData($registration['email']);
 
-            $restoreView = $this->request->getGet()->get('restoreview', 'view');
+            $restoreView = $this->request->query->get('restoreview', 'view');
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1517,16 +1517,16 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         }
 
         if ($this->request->getMethod() == 'GET') {
-            $uid = $this->request->getGet()->get('uid', null);
-            $forceVerification = $this->currentUserIsAdmin() && $this->request->getGet()->get('force', false);
-            $restoreView = $this->request->getGet()->get('restoreview', 'view');
+            $uid = $this->request->query->get('uid', null);
+            $forceVerification = $this->currentUserIsAdmin() && $this->request->query->get('force', false);
+            $restoreView = $this->request->query->get('restoreview', 'view');
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $uid = $this->request->getPost()->get('uid', null);
-            $forceVerification = $this->currentUserIsAdmin() && $this->request->getPost()->get('force', false);
-            $restoreView = $this->request->getPost()->get('restoreview', 'view');
-            $confirmed = $this->request->getPost()->get('confirmed', false);
+            $uid = $this->request->request->get('uid', null);
+            $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
+            $restoreView = $this->request->request->get('restoreview', 'view');
+            $confirmed = $this->request->request->get('confirmed', false);
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1630,13 +1630,13 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         }
 
         if ($this->request->getMethod() == 'GET') {
-            $uid = $this->request->getGet()->get('uid', null);
-            $forceVerification = $this->currentUserIsAdmin() && $this->request->getGet()->get('force', false);
-            $restoreView = $this->request->getGet()->get('restoreview', 'view');
+            $uid = $this->request->query->get('uid', null);
+            $forceVerification = $this->currentUserIsAdmin() && $this->request->query->get('force', false);
+            $restoreView = $this->request->query->get('restoreview', 'view');
         } elseif ($this->request->getMethod() == 'POST') {
-            $uid = $this->request->getPost()->get('uid', null);
-            $forceVerification = $this->currentUserIsAdmin() && $this->request->getPost()->get('force', false);
-            $restoreView = $this->request->getPost()->get('restoreview', 'view');
+            $uid = $this->request->request->get('uid', null);
+            $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
+            $restoreView = $this->request->request->get('restoreview', 'view');
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1674,7 +1674,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         }
 
 
-        $confirmed = $this->request->getGet()->get('confirmed', $this->request->getPost()->get('confirmed', false));
+        $confirmed = $this->request->query->get('confirmed', $this->request->request->get('confirmed', false));
         if (!$confirmed) {
             // Bad or no auth key, or bad or no confirmation, so display confirmation.
 
@@ -1755,16 +1755,16 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         }
 
         if ($this->request->getMethod() == 'GET') {
-            $uid = $this->request->getGet()->get('uid', null);
-            $restoreView = $this->request->getGet()->get('restoreview', 'view');
+            $uid = $this->request->query->get('uid', null);
+            $restoreView = $this->request->query->get('restoreview', 'view');
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $uid = $this->request->getPost()->get('uid', null);
-            $restoreView = $this->request->getPost()->get('restoreview', 'view');
-            $sendNotification = $this->request->getPost()->get('usernotify', false);
-            $reason = $this->request->getPost()->get('reason', '');
-            $confirmed = $this->request->getPost()->get('confirmed', false);
+            $uid = $this->request->request->get('uid', null);
+            $restoreView = $this->request->request->get('restoreview', 'view');
+            $sendNotification = $this->request->request->get('usernotify', false);
+            $reason = $this->request->request->get('reason', '');
+            $confirmed = $this->request->request->get('confirmed', false);
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1947,7 +1947,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $confirmed = $this->request->getPost()->get('confirmed', false);
+            $confirmed = $this->request->request->get('confirmed', false);
         }
 
         // set default parameters
@@ -1957,7 +1957,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         if ($confirmed) {
             // get other import values
             $importFile = $this->request->getFiles()->get('importFile', isset($args['importFile']) ? $args['importFile'] : null);
-            $delimiter = $this->request->getPost()->get('delimiter', isset($args['delimiter']) ? $args['delimiter'] : null);
+            $delimiter = $this->request->request->get('delimiter', isset($args['delimiter']) ? $args['delimiter'] : null);
             $importResults = $this->uploadImport($importFile, $delimiter);
             if ($importResults == '') {
                 // the users have been imported successfully
@@ -2042,14 +2042,14 @@ class Users_Controller_AdminController extends Zikula_AbstractController
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
-            $confirmed  = $this->request->getPost()->get('confirmed', false);
-            $exportFile = $this->request->getPost()->get('exportFile', null);
-            $delimiter  = $this->request->getPost()->get('delimiter', null);
-            $email      = $this->request->getPost()->get('exportEmail', null);
-            $titles     = $this->request->getPost()->get('exportTitles', null);
-            $lastLogin  = $this->request->getPost()->get('exportLastLogin', null);
-            $regDate    = $this->request->getPost()->get('exportRegDate', null);
-            $groups     = $this->request->getPost()->get('exportGroups', null);
+            $confirmed  = $this->request->request->get('confirmed', false);
+            $exportFile = $this->request->request->get('exportFile', null);
+            $delimiter  = $this->request->request->get('delimiter', null);
+            $email      = $this->request->request->get('exportEmail', null);
+            $titles     = $this->request->request->get('exportTitles', null);
+            $lastLogin  = $this->request->request->get('exportLastLogin', null);
+            $regDate    = $this->request->request->get('exportRegDate', null);
+            $groups     = $this->request->request->get('exportGroups', null);
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -2454,7 +2454,7 @@ class Users_Controller_AdminController extends Zikula_AbstractController
     public function toggleForcedPasswordChangeAction()
     {
         if ($this->request->getMethod() == 'GET') {
-            $uid = $this->request->getGet()->get('userid', false);
+            $uid = $this->request->query->get('userid', false);
 
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
                 throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
@@ -2478,8 +2478,8 @@ class Users_Controller_AdminController extends Zikula_AbstractController
         } elseif ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
 
-            $uid = $this->request->getPost()->get('userid', false);
-            $userMustChangePassword = $this->request->getPost()->get('user_must_change_password', false);
+            $uid = $this->request->request->get('userid', false);
+            $userMustChangePassword = $this->request->request->get('user_must_change_password', false);
 
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
                 throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());

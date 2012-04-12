@@ -25,8 +25,8 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
-        $moduleID = $this->request->getPost()->get('modid');
-        $newParentCat = $this->request->getPost()->get('cat');
+        $moduleID = $this->request->request->get('modid');
+        $newParentCat = $this->request->request->get('cat');
 
         //get info on the module
         $module = ModUtil::getInfo($moduleID);
@@ -69,7 +69,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
         //get form information
-        $name = trim($this->request->getPost()->get('name'));
+        $name = trim($this->request->request->get('name'));
 
         //TODO make sure name is set.
 
@@ -116,7 +116,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         //get passed cid to delete
-        $cid = trim($this->request->getPost()->get('cid'));
+        $cid = trim($this->request->request->get('cid'));
 
         //check user has permission to delete this
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE));
@@ -153,8 +153,8 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         //get form values
-        $cid = trim($this->request->getPost()->get('cid'));
-        $name = trim($this->request->getPost()->get('name'));
+        $cid = trim($this->request->request->get('cid'));
+        $name = trim($this->request->request->get('name'));
 
         //security checks
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$name::$cid", ACCESS_EDIT));
@@ -221,7 +221,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
         //get passed cid
-        $cid = trim($this->request->getPost()->get('cid'));
+        $cid = trim($this->request->request->get('cid'));
 
         //find the category corresponding to the cid.
         $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
@@ -249,7 +249,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
-        $data = $this->request->getPost()->get('admintabs');
+        $data = $this->request->request->get('admintabs');
 
         $entity = $this->name . '_Entity_AdminCategory';
 
@@ -271,7 +271,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
-        $data = $this->request->getPost()->get('modules');
+        $data = $this->request->request->get('modules');
 
         $entity = $this->name . '_Entity_AdminModule';
 

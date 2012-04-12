@@ -91,46 +91,46 @@ class Mailer_Controller_AdminController extends Zikula_AbstractController
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
 
         // set our new module variable values
-        $mailertype = (int)$this->request->getPost()->get('mailertype', 1);
+        $mailertype = (int)$this->request->request->get('mailertype', 1);
         $this->setVar('mailertype', $mailertype);
 
-        $charset = (string)$this->request->getPost()->get('charset', ZLanguage::getEncoding());
+        $charset = (string)$this->request->request->get('charset', ZLanguage::getEncoding());
         $this->setVar('charset', $charset);
 
-        $encoding = (string)$this->request->getPost()->get('encoding', '8bit');
+        $encoding = (string)$this->request->request->get('encoding', '8bit');
         $this->setVar('encoding', $encoding);
 
-        $html = (bool)$this->request->getPost()->get('html', false);
+        $html = (bool)$this->request->request->get('html', false);
         $this->setVar('html', $html);
 
-        $wordwrap = (int)$this->request->getPost()->get('wordwrap', 50);
+        $wordwrap = (int)$this->request->request->get('wordwrap', 50);
         $this->setVar('wordwrap', $wordwrap);
 
-        $msmailheaders = (bool)$this->request->getPost()->get('msmailheaders', false);
+        $msmailheaders = (bool)$this->request->request->get('msmailheaders', false);
         $this->setVar('msmailheaders', $msmailheaders);
 
-        $sendmailpath = (string)$this->request->getPost()->get('sendmailpath', '/usr/sbin/sendmail');
+        $sendmailpath = (string)$this->request->request->get('sendmailpath', '/usr/sbin/sendmail');
         $this->setVar('sendmailpath', $sendmailpath);
 
-        $smtpauth = (bool)$this->request->getPost()->get('smtpauth', false);
+        $smtpauth = (bool)$this->request->request->get('smtpauth', false);
         $this->setVar('smtpauth', $smtpauth);
 
-        $smtpserver = (string)$this->request->getPost()->get('smtpserver', 'localhost');
+        $smtpserver = (string)$this->request->request->get('smtpserver', 'localhost');
         $this->setVar('smtpserver', $smtpserver);
 
-        $smtpport = (int)$this->request->getPost()->get('smtpport', 25);
+        $smtpport = (int)$this->request->request->get('smtpport', 25);
         $this->setVar('smtpport', $smtpport);
 
-        $smtptimeout = (int)$this->request->getPost()->get('smtptimeout', 10);
+        $smtptimeout = (int)$this->request->request->get('smtptimeout', 10);
         $this->setVar('smtptimeout', $smtptimeout);
 
-        $smtpusername = (string)$this->request->getPost()->get('smtpusername', '');
+        $smtpusername = (string)$this->request->request->get('smtpusername', '');
         $this->setVar('smtpusername', $smtpusername);
 
-        $smtppassword = (string)$this->request->getPost()->get('smtppassword', '');
+        $smtppassword = (string)$this->request->request->get('smtppassword', '');
         $this->setVar('smtppassword', $smtppassword);
 
-        $smtpsecuremethod = (string)$this->request->getPost()->get('smtpsecuremethod', '');
+        $smtpsecuremethod = (string)$this->request->request->get('smtpsecuremethod', '');
         $this->setVar('smtpsecuremethod', $smtpsecuremethod);
 
         // the module configuration has been updated successfuly
@@ -172,12 +172,12 @@ class Mailer_Controller_AdminController extends Zikula_AbstractController
         // security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
 
-        $toname = (string)$this->request->getPost()->get('toname');
-        $toaddress = (string)$this->request->getPost()->get('toaddress');
-        $subject = (string)$this->request->getPost()->get('subject');
-        $body = (string)$this->request->getPost()->get('body');
-        $altBody = (string)$this->request->getPost()->get('altbody', false);
-        $html = (bool)$this->request->getPost()->get('html', false);
+        $toname = (string)$this->request->request->get('toname');
+        $toaddress = (string)$this->request->request->get('toaddress');
+        $subject = (string)$this->request->request->get('subject');
+        $body = (string)$this->request->request->get('body');
+        $altBody = (string)$this->request->request->get('altbody', false);
+        $html = (bool)$this->request->request->get('html', false);
 
         // set the email
         $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',

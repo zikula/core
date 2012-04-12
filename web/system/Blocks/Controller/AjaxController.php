@@ -30,8 +30,8 @@ class Blocks_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
 
-        $blockorder = $this->request->getPost()->get('blockorder');
-        $position = $this->request->getPost()->get('position');
+        $blockorder = $this->request->request->get('blockorder');
+        $position = $this->request->request->get('position');
 
         // remove all blocks from this position
         $entity = $this->name . '_Entity_BlockPlacement';
@@ -66,7 +66,7 @@ class Blocks_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
 
-        $bid = $this->request->getPost()->get('bid', -1);
+        $bid = $this->request->request->get('bid', -1);
 
         if ($bid == -1) {
             throw new Zikula_Exception_Fatal($this->__('No block ID passed.'));
