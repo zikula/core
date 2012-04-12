@@ -199,3 +199,9 @@ ExampleTheme/
     ExampleTheme.php
     version.php
 ```
+
+## Misc notes
+
+  - The main controller method is now called `indexAction` (renamed from `main`)
+    and the default for the 'func' argument is 'index'.
+  - Removed `System::redirect()`, use `RedirectResponse()` instead.
