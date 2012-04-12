@@ -22,7 +22,7 @@ class PageLock_Controller_AjaxController extends Zikula_Controller_AbstractAjax
     public function refreshpagelockAction($args)
     {
         $this->checkAjaxToken();
-        $lockName = $this->request->getPost()->get('lockname');
+        $lockName = $this->request->request->get('lockname');
 
         $uname = UserUtil::getVar('uname');
 
@@ -48,7 +48,7 @@ class PageLock_Controller_AjaxController extends Zikula_Controller_AbstractAjax
     public function checkpagelockAction($args)
     {
         $this->checkAjaxToken();
-        $lockName = $this->request->getPost()->get('lockname');
+        $lockName = $this->request->request->get('lockname');
 
         $uname = UserUtil::getVar('uname');
 

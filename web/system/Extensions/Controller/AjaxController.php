@@ -27,7 +27,7 @@ class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
-        $subscriberArea = $this->request->getPost()->get('subscriberarea','');
+        $subscriberArea = $this->request->request->get('subscriberarea','');
         if (empty($subscriberArea)) {
             throw new Zikula_Exception_Fatal($this->__('No subscriber area passed.'));
         }
@@ -43,7 +43,7 @@ class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
         // get providerarea from POST
-        $providerArea = $this->request->getPost()->get('providerarea','');
+        $providerArea = $this->request->request->get('providerarea','');
         if (empty($providerArea)) {
             throw new Zikula_Exception_Fatal($this->__('No provider area passed.'));
         }
@@ -96,7 +96,7 @@ class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
-        $subscriberarea = $this->request->getPost()->get('subscriberarea','');
+        $subscriberarea = $this->request->request->get('subscriberarea','');
         if (empty($subscriberarea)) {
             throw new Zikula_Exception_Fatal($this->__('No subscriber area passed.'));
         }
@@ -112,7 +112,7 @@ class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
         // get providers' areas from POST
-        $providerarea = $this->request->getPost()->get('providerarea','');
+        $providerarea = $this->request->request->get('providerarea','');
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
             throw new Zikula_Exception_Fatal($this->__('Providers\' areas order is not an array.'));
         }
@@ -120,7 +120,7 @@ class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAja
         // set sorting
         HookUtil::setBindOrder($subscriberarea, $providerarea);
 
-        $ol_id = $this->request->getPost()->get('ol_id','');
+        $ol_id = $this->request->request->get('ol_id','');
 
         return new Zikula_Response_Ajax(array('result' => true, 'ol_id' => $ol_id));
     }
