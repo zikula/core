@@ -15,10 +15,14 @@
 
 namespace Zikula\Component\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Compiler\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder as BaseContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+
 /**
- * ServiceManager class.
+ * ContainerBuilder class.
  */
-class ContainerBuilder extends \Symfony\Component\DependencyInjection\ContainerBuilder implements \ArrayAccess
+class ContainerBuilder extends BaseContainerBuilder implements \ArrayAccess
 {
     /**
      * Setter for arguments property.
@@ -96,5 +100,12 @@ class ContainerBuilder extends \Symfony\Component\DependencyInjection\ContainerB
         if ($this->hasParameter($id)) {
             unset($this->arguments[$id]);
         }
+    }
+
+    public function compile()
+    {
+        parent::compile();
+
+        $this->parameterBag = new ParameterBag($this->parameterBag->all());
     }
 }

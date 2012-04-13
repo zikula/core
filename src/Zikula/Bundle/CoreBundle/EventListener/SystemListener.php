@@ -12,45 +12,74 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Zikula\Bundle\CoreBundle\EventListener;
+
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\CoreEvents;
+use Zikula\Core\Core;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use System;
+use SessionUtil;
+use SecurityUtil;
+use EventUtil;
+use PluginUtil;
+use ServiceUtil;
+use FormUtil;
+use ZLanguage;
 
 /**
  * Event handler to override templates.
  */
-class SystemListeners extends Zikula_AbstractEventHandler
+class SystemListener implements EventSubscriberInterface
 {
     /**
-     * Setup handler definitions.
-     *
-     * @return void
+     * @var ContainerBuilder
      */
-    protected function setupHandlerDefinitions()
+    private $container;
+
+    public function __construct(ContainerBuilder $container)
     {
-        $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', 100);
-        $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
-        $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
-        $this->addHandlerDefinition(CoreEvents::PREINIT, 'systemCheck');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'setupLoggers');
-        $this->addHandlerDefinition('log', 'errorLog');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'sessionLogging');
-        $this->addHandlerDefinition('session.require', 'requireSession');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'systemPlugins');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'setupRequest');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'setupDebugToolbar');
-        $this->addHandlerDefinition('log.sql', 'logSqlQueries');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'setupAutoloaderForGeneratedCategoryModels');
-        $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
-        $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
-        $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
-        $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'initDB');
-        $this->addHandlerDefinition(CoreEvents::INIT, 'setupCsfrProtection');
-        $this->addHandlerDefinition('theme.init', 'clickJackProtection');
-        $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
-        $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
+        $this->container = $container;
+        $this->dispatcher = $container->get('event_dispatcher');
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'bootstrap.getconfig' => array(
+                array('initialHandlerScan', 100),
+                array('getConfigFile')
+                ),
+            'setup.errorreporting' => array('defaultErrorReporting'),
+            CoreEvents::PREINIT => array('systemCheck'),
+            CoreEvents::INIT => array(
+                array('setupRequest'),
+                array('sessionLogging'),
+                array('systemPlugins'),
+                array('setupDebugToolbar'),
+                array('setupAutoloaderForGeneratedCategoryModels'),
+                array('initDB'),
+                array('setupCsfrProtection'),
+                ),
+            'log' => array('errorLog'),
+            'session.require' => array('requireSession'),
+            'log.sql' => array('logSqlQueries'),
+            'installer.module.uninstalled' => array('deleteGeneratedCategoryModelsOnModuleRemove'),
+            'pageutil.addvar_filter' => array('coreStylesheetOverride'),
+            'theme.init' => array('clickJackProtection'),
+            'module_dispatch.postexecute' => array(
+                array('addHooksLink'),
+                array('addServiceLink'),
+                ),
+            'frontcontroller.predispatch' => array(
+                array('sessionExpired', 3),
+                array('siteOff', 7),
+            ),
+        );
     }
 
     /**
@@ -62,12 +91,12 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function sessionExpired(GenericEvent $event)
     {
-        if (SessionUtil::hasExpired()) {
-            // Session has expired, display warning
-            header('HTTP/1.0 403 Access Denied');
-            $return = ModUtil::apiFunc('Users', 'user', 'expiredsession');
-            System::shutdown();
-        }
+//        if (\SessionUtil::hasExpired()) {
+//            // Session has expired, display warning
+//            header('HTTP/1.0 403 Access Denied');
+//            $return = \ModUtil::apiFunc('Users', 'user', 'expiredsession');
+//            \System::shutdown();
+//        }
     }
 
     /**
@@ -84,7 +113,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // Check for site closed
-        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula\Core\Core::VERSION_NUM != System::getVar('Version_Num'))) {
+        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Core::VERSION_NUM != System::getVar('Version_Num'))) {
             if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
                 UserUtil::logout();
             }
@@ -105,7 +134,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupRequest(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula\Core\Core::STAGE_DECODEURLS) {
+        if ($event['stage'] & Core::STAGE_DECODEURLS) {
             $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
             $this->container->set('request', $request);
 
@@ -132,10 +161,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initialHandlerScan(GenericEvent $event)
     {
-        $core = $this->container->get('zikula');
-        ServiceUtil::getManager($core);
-        EventUtil::getManager($core);
-        $core->attachHandlers(ZIKULA_CONFIG_PATH.'/EventHandlers');
+        ServiceUtil::getManager($this->container);
+        EventUtil::getManager($this->container->get('event_dispatcher'));
+        $event->getSubject()->attachHandlers(ZIKULA_CONFIG_PATH.'/EventHandlers');
     }
 
     /**
@@ -147,7 +175,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupCsfrProtection(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula\Core\Core::STAGE_MODS) {
+        if ($event['stage'] & Core::STAGE_MODS) {
             $this->container->setParameter('signing.key', System::getVar('signingkey'));
         }
     }
@@ -155,7 +183,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * If enabled and logged in, save login name of user in Apache session variable for Apache logs.
      *
-     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_SESSIONS.
+     * Implements CoreEvents::INIT event when Core::STAGE_SESSIONS.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -163,11 +191,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function sessionLogging(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula\Core\Core::STAGE_SESSIONS) {
+        if ($event['stage'] & Core::STAGE_SESSIONS) {
             // If enabled and logged in, save login name of user in Apache session variable for Apache logs
-            if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && ($GLOBALS['ZConfig']['Log']['log.apache_uname']) && UserUtil::isLoggedIn()) {
+            if (isset($GLOBALS['ZConfig']['Log']['log.apache_uname']) && ($GLOBALS['ZConfig']['Log']['log.apache_uname']) && \UserUtil::isLoggedIn()) {
                 if (function_exists('apache_setenv')) {
-                    apache_setenv('Zikula-Username', UserUtil::getVar('uname'));
+                    apache_setenv('Zikula-Username', \UserUtil::getVar('uname'));
                 }
             }
         }
@@ -185,14 +213,14 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(GenericEvent $event)
     {
         $session = $this->container->get('session');
-        $request = $this->container->get('request');
-        $request->setSession($session);
+        //$request = $this->container->get('request');
+        //$request->setSession($session);
 
         try {
             if (!$session->start()) {
-                throw new RuntimeException('Failed to start session');
+                throw new \RuntimeException('Failed to start session');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // session initialization failed so display templated error
             header('HTTP/1.1 503 Service Unavailable');
             require_once System::getSystemErrorTemplate('sessionfailed.tpl');
@@ -203,7 +231,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Initialise DB connection.
      *
-     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_DB.
+     * Implements CoreEvents::INIT event when Core::STAGE_DB.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -211,7 +239,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initDB(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula\Core\Core::STAGE_DB) {
+        if ($event['stage'] & Core::STAGE_DB) {
             $dbEvent = new GenericEvent();
             $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent);
         }
@@ -220,7 +248,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Load system plugins.
      *
-     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_TABLES.
+     * Implements CoreEvents::INIT event when Core::STAGE_TABLES.
      *
      * @param GenericEvent $event The event handler.
      *
@@ -228,7 +256,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function systemPlugins(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula\Core\Core::STAGE_TABLES) {
+        if ($event['stage'] & Core::STAGE_TABLES) {
             if (!System::isInstalling()) {
                 ServiceUtil::loadPersistentServices();
                 PluginUtil::loadPlugins(ZIKULA_ROOT.'/plugins', "SystemPlugin");
@@ -257,7 +285,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         $class = 'Zikula\\Framework\\ErrorHandler\\Standard';
-        if ($event['stage'] & Zikula\Core\Core::STAGE_AJAX) {
+        if ($event['stage'] & Core::STAGE_AJAX) {
             $class = 'Zikula\\Framework\\ErrorHandler\\Ajax';
         }
 
@@ -270,7 +298,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Establish the necessary instances for logging.
      *
-     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_CONFIG.
+     * Implements CoreEvents::INIT event when Core::STAGE_CONFIG.
      *
      * @param GenericEvent $event The event to log.
      *
@@ -278,7 +306,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupLoggers(GenericEvent $event)
     {
-        if (!($event['stage'] & Zikula\Core\Core::STAGE_CONFIG)) {
+        if (!($event['stage'] & Core::STAGE_CONFIG)) {
             return;
         }
 
@@ -287,22 +315,22 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if ($this->container['log.to_display'] || $this->container['log.sql.to_display']) {
-            $displayLogger = new Zend_Log();
+            $displayLogger = new \Zend_Log();
             $this->container->set('zend.logger.display', $displayLogger);
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
-            $writer = new Zend_Log_Writer_Stream('php://output');
-            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />'.PHP_EOL);
+            $writer = new \Zend_Log_Writer_Stream('php://output');
+            $formatter = new \Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />'.\PHP_EOL);
             $writer->setFormatter($formatter);
             $displayLogger->addWriter($writer);
         }
 
         if ($this->container['log.to_file'] || $this->container['log.sql.to_file']) {
-            $fileLogger = new Zend_Log();
+            $fileLogger = new \Zend_Log();
             $this->container->set('zend.logger.file', $fileLogger);
-            $filename = LogUtil::getLogFileName();
+            $filename = \LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
-            $writer = new Zend_Log_Writer_Stream($filename);
-            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%'.PHP_EOL);
+            $writer = new \Zend_Log_Writer_Stream($filename);
+            $formatter = new \Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%'.\PHP_EOL);
 
             $writer->setFormatter($formatter);
             $fileLogger->addWriter($writer);
@@ -334,7 +362,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $message = $event['errstr'];
         if (is_string($event['errstr'])) {
             if ($event['errline'] == 0) {
-                $message = __f('PHP issued an error at line 0, so reporting entire trace to be more helpful: %1$s: %2$s', array(Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr']));
+                $message = __f('PHP issued an error at line 0, so reporting entire trace to be more helpful: %1$s: %2$s', array(\Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr']));
                 $fullTrace = $event['trace'];
                 array_shift($fullTrace); // shift is performed on copy so as not to disturn the event args
                 foreach ($fullTrace as $trace) {
@@ -346,11 +374,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
                     }
                 }
             } else {
-                $message = __f('%1$s: %2$s in %3$s line %4$s', array(Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
+                $message = __f('%1$s: %2$s in %3$s line %4$s', array(\Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
             }
         }
 
-        if ($this->container['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
+        if ($this->container['log.to_display'] && !$handler instanceof \Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $this->container['log.display_level']) {
                 $this->container->get('zend.logger.display')->log($message, abs($event['type']));
             }
@@ -362,12 +390,12 @@ class SystemListeners extends Zikula_AbstractEventHandler
             }
         }
 
-        if ($handler instanceof Zikula_ErrorHandler_Ajax) {
+        if ($handler instanceof \Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $this->container['log.display_ajax_level']) {
                 // autoloaders don't work inside error handlers!
                 include_once 'lib/Zikula/Exception.php';
                 include_once 'lib/Zikula/Exception/Fatal.php';
-                throw new Zikula_Exception_Fatal($message);
+                throw new \Zikula_Exception_Fatal($message);
             }
         }
     }
@@ -390,18 +418,18 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $message = __f('SQL Query: %s took %s sec', array($event['query'], $event['time']));
 
         if ($this->container['log.sql.to_display']) {
-            $this->container->get('zend.logger.display')->log($message, Zend_Log::DEBUG);
+            $this->container->get('zend.logger.display')->log($message, \Zend_Log::DEBUG);
         }
 
         if ($this->container['log.sql.to_file']) {
-            $this->container->get('zend.logger.file')->log($message, Zend_Log::DEBUG);
+            $this->container->get('zend.logger.file')->log($message, \Zend_Log::DEBUG);
         }
     }
 
     /**
      * Debug toolbar startup.
      *
-     * Implements CoreEvents::INIT event when Zikula\Core\Core::STAGE_CONFIG in development mode.
+     * Implements CoreEvents::INIT event when Core::STAGE_CONFIG in development mode.
      *
      * @param GenericEvent $event Event.
      *
@@ -409,7 +437,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupDebugToolbar(GenericEvent $event)
     {
-        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
+        if ($event['stage'] == Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once __DIR__.'/../Zikula/Framework/DebugToolbar/Panel/Log.php';
 
@@ -475,7 +503,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function debugToolbarRendering(GenericEvent $event)
     {
-        if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
+        if (!$event->getSubject() instanceof \Zikula_ErrorHandler_Ajax) {
             if ($event->getName() == 'theme.prefetch') {
                 // force object construction (debug toolbar constructor registers javascript and css files via PageUtil)
                 $this->container->get('debug.toolbar');
@@ -490,7 +518,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     /**
      * Adds an autoloader entry for the cached (generated) doctrine models.
      *
-     * Implements CoreEvents::INIT events when Zikula\Core\Core::STAGE_CONFIG.
+     * Implements CoreEvents::INIT events when Core::STAGE_CONFIG.
      *
      * @param GenericEvent $event Event.
      *
@@ -498,8 +526,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupAutoloaderForGeneratedCategoryModels(GenericEvent $event)
     {
-        if ($event['stage'] == Zikula\Core\Core::STAGE_CONFIG) {
-            ZLoader::addAutoloader('GeneratedDoctrineModel', CacheUtil::getLocalDir('doctrinemodels'));
+        if ($event['stage'] == Core::STAGE_CONFIG) {
+            \ZLoader::addAutoloader('GeneratedDoctrineModel', \CacheUtil::getLocalDir('doctrinemodels'));
         }
     }
 
@@ -519,17 +547,17 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // remove generated category models for this record
         $dir = 'doctrinemodels/GeneratedDoctrineModel/'.$moduleName;
         if (file_exists(CacheUtil::getLocalDir($dir))) {
-            CacheUtil::removeLocalDir($dir, true);
+            \CacheUtil::removeLocalDir($dir, true);
         }
 
         // remove saved data about the record
-        $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
+        $modelsInfo = \ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
         foreach ($modelsInfo as $class => $info) {
             if ($info['module'] == $moduleName) {
                 unset($modelsInfo[$class]);
             }
         }
-        ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
+        \ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
     }
 
     /**
@@ -568,17 +596,17 @@ class SystemListeners extends Zikula_AbstractEventHandler
             return;
         }
 
-        if (!SecurityUtil::checkPermission($event['modname'].'::Hooks', '::', ACCESS_ADMIN)) {
+        if (!\SecurityUtil::checkPermission($event['modname'].'::Hooks', '::', \ACCESS_ADMIN)) {
             return;
         }
 
         // return if module is not subscriber or provider capable
-        if (!HookUtil::isSubscriberCapable($event['modname']) && !HookUtil::isProviderCapable($event['modname'])) {
+        if (!\HookUtil::isSubscriberCapable($event['modname']) && !\HookUtil::isProviderCapable($event['modname'])) {
             return;
         }
 
         $event->data[] = array(
-            'url' => ModUtil::url($event['modname'], 'admin', 'hooks'),
+            'url' => \ModUtil::url($event['modname'], 'admin', 'hooks'),
             'text' => __('Hooks'),
             'class' => 'z-icon-es-hook'
         );
@@ -608,7 +636,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         if (!empty($sublinks)) {
             $event->data[] = array(
-                'url' => ModUtil::url($event['modname'], 'admin', 'moduleservices'),
+                'url' => \ModUtil::url($event['modname'], 'admin', 'moduleservices'),
                 'text' => __('Services'),
                 'class' => 'z-icon-es-gears',
                 'links' => $sublinks);
@@ -624,16 +652,16 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function getConfigFile(GenericEvent $event)
     {
-        if (is_readable(ZIKULA_CONFIG_PATH.'/config.php')) {
-            include ZIKULA_CONFIG_PATH.'/config.php';
+        if (is_readable(\ZIKULA_CONFIG_PATH.'/config.php')) {
+            include \ZIKULA_CONFIG_PATH.'/config.php';
         }
 
-        if (is_readable(ZIKULA_CONFIG_PATH.'/personal_config.php')) {
-            include ZIKULA_CONFIG_PATH.'/personal_config.php';
+        if (is_readable(\ZIKULA_CONFIG_PATH.'/personal_config.php')) {
+            include \ZIKULA_CONFIG_PATH.'/personal_config.php';
         }
 
-        if (is_readable(ZIKULA_CONFIG_PATH.'/multisites_config.php')) {
-            include ZIKULA_CONFIG_PATH.'/multisites_config.php';
+        if (is_readable(\ZIKULA_CONFIG_PATH.'/multisites_config.php')) {
+            include \ZIKULA_CONFIG_PATH.'/multisites_config.php';
         }
 
         foreach ($GLOBALS['ZConfig'] as $config) {
@@ -674,8 +702,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // check PHP version, shouldn't be necessary, but....
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
-        if (version_compare($phpVersion, Zikula\Core\Core::PHP_MINIMUM_VERSION, '>=') == false) {
-            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Zikula\Core\Core::PHP_MINIMUM_VERSION, $phpVersion));
+        if (version_compare($phpVersion, Core::PHP_MINIMUM_VERSION, '>=') == false) {
+            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Core::PHP_MINIMUM_VERSION, $phpVersion));
             $die = true;
         }
 
@@ -701,7 +729,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             exit;
         }
 
-        if (System::isDevelopmentMode() || System::isInstalling()) {
+        if (\System::isDevelopmentMode() || \System::isInstalling()) {
             $temp = $this->container->getParameter('temp');
             if (!is_dir($temp) || !is_writable($temp)) {
                 echo __f('The temporary directory "%s" and its subfolders must be writable.', $temp).'<br />';

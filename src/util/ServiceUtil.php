@@ -47,17 +47,21 @@ class ServiceUtil
     /**
      * Get manager instance.
      *
-     * @param Core $core Core instance (optional).
+     * @param ContainerBuilder $core ContainerBuilder instance).
      *
      * @return ContainerBuilder
      */
-    public static function getManager(Core $core = null)
+    public static function getManager(ContainerBuilder $container = null)
     {
         if (self::$container) {
             return self::$container;
         }
 
-        self::$container = $core->getContainer();
+        if (null === $container) {
+            throw new \InvalidArgumentException('No container was specified or previously loaded');
+        }
+
+        self::$container = $container;
 
         return self::$container;
     }
@@ -93,7 +97,7 @@ class ServiceUtil
         } else {
             $definition->setScope(ContainerInterface::SCOPE_PROTOTYPE);
         }
-        
+
         $handlers[$id] = array('definition' => $definition, 'shared' => $shared);
         ModUtil::setVar(self::HANDLERS, 'definitions', $handlers);
     }

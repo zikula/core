@@ -12,13 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Bundle\CoreBundle\EventListener;
+
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Event handler to override templates.
  */
-class TemplateOverridesYaml extends Zikula_AbstractEventHandler
+class TemplateOverrideYamlListener implements EventSubscriberInterface
 {
     /**
      * Associative array.
@@ -27,25 +30,9 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
      *
      * @var array
      */
-    protected $overrideMap = array();
+    private $overrideMap = array();
 
-    /**
-     * Setup handler definitions.
-     *
-     * @return void
-     */
-    protected function setupHandlerDefinitions()
-    {
-        // weight -5 ensures it's notified before any other handlers since this need to override anything else.
-        $this->addHandlerDefinition('zikula_view.template_override', 'handler', 5);
-    }
-
-    /**
-     * Setup of handlers.
-     *
-     * @return void
-     */
-    public function setup()
+    public function __construct()
     {
         if (is_readable('config/template_overrides.yml')) {
             $this->overrideMap = Yaml::parse('config/template_overrides.yml');
@@ -65,5 +52,10 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
             $event->data = $this->overrideMap[$event->data];
             $event->stopPropagation();
         }
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array('zikula_view.template_override' => array('handler', 5));
     }
 }
