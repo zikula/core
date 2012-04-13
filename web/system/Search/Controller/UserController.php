@@ -174,6 +174,28 @@ class Search_Controller_UserController extends Zikula_AbstractController
             $session->set('searchmodvar', $vars['modvar']);
         }
 
+        /*
+        // FIXME: Cannot cache correctly while do not know
+        // the parameters passed to the search plugins, and
+        // build a complete cache_id
+
+        // setup an individual cache
+        $lifetime = ModUtil::getVar('Theme', 'render_lifetime');
+        $lifetime = $lifetime ? $lifetime : 3600;
+
+        $cacheid = md5($vars['q'].'-'.$vars['searchtype'].'-'.$vars['searchorder']).'/'.UserUtil::getGidCacheString().'/page'.$vars['page'];
+
+        $this->view->setCaching(Zikula_View::CACHE_INDIVIDUAL)
+                   ->setCacheLifetime($lifetime)
+                   ->setCacheId($cacheid);
+
+        // check if the contents are cached
+        if ($this->view->is_cached('search_user_results.tpl')) {
+            return $this->view->fetch('search_user_results.tpl');
+        }
+        */
+        $this->view->setCaching(false); // not to show equal results for different searches
+
         $result = ModUtil::apiFunc('Search', 'user', 'search', $vars);
 
         // Get number of chars to display in search summaries

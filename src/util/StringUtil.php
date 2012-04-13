@@ -158,7 +158,7 @@ class StringUtil
     {
         // Strip HTML tags and special chars completely
         $text = strip_tags($text);
-        $text = html_entity_decode($text);
+        $text = html_entity_decode($text, null, 'UTF-8');
 
         // Split words into word array
         $words = preg_split('/ /', $wordStr, -1, PREG_SPLIT_NO_EMPTY);

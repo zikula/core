@@ -127,15 +127,10 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         // Optional arguments.
         if (!isset($args['startnum']) || !is_numeric($args['startnum'])) {
-            $args['startnum'] = 0;
+            $args['startnum'] = null;
         }
         if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
-            $args['numitems'] = 1000000; // TODO: tfotis - null doesn't work here! Doctrine bug?
-        }
-
-        // argument check
-        if (!isset($args['startnum']) || !isset($args['numitems'])) {
-            return LogUtil::registerArgsError();
+            $args['numitems'] = null;
         }
 
         $items = array();
@@ -283,16 +278,26 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        static $associations = array();
+        
+        if (empty($associations)) {
+            $associations = $this->entityManager->getRepository($this->name . '_Entity_AdminModule')->findAll();
+        }
 
-        // retrieve the admin module object array
-        $result = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => (int)$args['mid']));
+        $sortorder = -1;
+        foreach ($associations as $association) {
+            if ($association['mid'] == (int)$args['mid']) {
+                $sortorder = $association['sortorder'];
+                break;
+            }
+        }
 
-        if (!$result) {
+        if ($sortorder >= 0) {
+            return $sortorder;
+        } else {
             return false;
         }
 
-        return $result['sortorder'];
     }
 
     /**
@@ -366,23 +371,5 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         $count = $query->getSingleScalarResult();
 
         return (int)$count;
-    }
-
-    /**
-     * Open the admin container
-     */
-    public function adminheader()
-    {
-        $view = Zikula_View::getInstance('Admin');
-        return $view->fetch('admin_admin_header.tpl');
-    }
-
-    /**
-     * Close the admin container
-     */
-    public function adminfooter()
-    {
-        $view = Zikula_View::getInstance('Admin');
-        return $view->fetch('admin_admin_footer.tpl');
     }
 }

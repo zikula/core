@@ -618,12 +618,6 @@ class ModUtil
             $modpath = is_dir(ZIKULA_ROOT."/system/$directory") ? 'system' : 'modules';
         }
 
-        // no need for tables.php scan if using Doctrine
-        $doctrineModelDir  = ZIKULA_ROOT."/$modpath/$directory/Model";
-        $doctrineEntityDir = ZIKULA_ROOT."/$modpath/$directory/Entity";
-        if (is_dir($doctrineModelDir) || is_dir($doctrineEntityDir)) {
-            return true;
-        }
 
         // Load the database definition if required
         $file = ZIKULA_ROOT."/$modpath/$directory/tables.php";
