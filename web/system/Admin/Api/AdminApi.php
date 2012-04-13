@@ -279,7 +279,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         }
 
         static $associations = array();
-        
+
         if (empty($associations)) {
             $associations = $this->entityManager->getRepository($this->name . '_Entity_AdminModule')->findAll();
         }
@@ -371,5 +371,24 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         $count = $query->getSingleScalarResult();
 
         return (int)$count;
+    }
+
+
+    /**
+     * Open the admin container
+     */
+    public function adminheader()
+    {
+        $view = Zikula_View::getInstance('Admin');
+        return $view->fetch('admin_admin_header.tpl');
+    }
+
+    /**
+     * Close the admin container
+     */
+    public function adminfooter()
+    {
+        $view = Zikula_View::getInstance('Admin');
+        return $view->fetch('admin_admin_footer.tpl');
     }
 }
