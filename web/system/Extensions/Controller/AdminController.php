@@ -1360,4 +1360,20 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
         ModUtil::apiFunc('Extensions', 'admin', 'upgradeall');
         return $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
+
+    /**
+     * viewPlugins sorter: Sorting by module name
+     */
+    private function viewPluginsSorter_byModule($a, $b)
+    {
+        return strcmp($a['instance']->getModuleName(), $b['instance']->getModuleName());
+    }
+
+    /**
+     * viewPlugins sorter: Sorting by plugin internal name
+     */
+    private function viewPluginsSorter_byName($a, $b)
+    {
+        return strcmp($a['instance']->getPluginName(), $b['instance']->getPluginName());
+    }
 }
