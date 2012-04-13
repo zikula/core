@@ -5,6 +5,10 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>
+        <parameter key="zikula.doctrine1_listener.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1Listener</parameter>
+        <parameter key="zikula.doctrine_listener.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
+        <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
         <parameter key="session.class">Symfony\Component\HttpFoundation\Session\Session</parameter>
         <parameter key="session.storage.class">Zikula\Core\SessionStorage\LegacySessionStorage</parameter>
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
@@ -14,25 +18,15 @@
         <parameter key="hookmanager.storage.class">Zikula\Component\HookManager\Storage\Doctrine</parameter>
         <parameter key="hookmanager.servicefactory.class">Zikula\Component\HookManager\ServiceFactory</parameter>
 
-        <parameter key="request.class">Symfony\Component\HttpFoundation\Request</parameter>
-
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
         <parameter key="token.storage.key">_tokens</parameter>
         <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
         <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
         <parameter key="token.max_life">3600</parameter>
         <parameter key="signing.key">to_be_injected_later</parameter>
-
-
     </parameters>
 
     <services>
-        <service id="request" class="%request.class%">
-            <call method="setSession">
-                <argument type="service" id="session" />
-            </call>
-        </service>
-
         <service id="session" class="%session.class%">
             <argument type="service" id="session.storage" />
         </service>
@@ -60,17 +54,33 @@
 
         <service id="hookmanager.storage" class="%hookmanager.storage.class%" public="false" />
         <service id="hookmanager.servicefactory" class="%hookmanager.servicefactory.class%" public="false">
-            <argument type="service" id="zikula.servicemanager" />
-            <argument>zikula.eventmanager</argument>
+            <argument type="service" id="service_container" />
+            <argument>event_dispatcher</argument>
         </service>
 
-        <service id="zikula.hookmanager" class="%hookmanager.class%" public="false">
+        <service id="zikula.hookmanager" class="%hookmanager.class%">
             <argument type="service" id="hookmanager.storage" />
-            <argument type="service" id="zikula.eventmanager" />
+            <argument type="service" id="event_dispatcher" />
             <argument type="service" id="hookmanager.servicefactory" />
         </service>
 
+        <service id="zikula.system_listeners" class="%zikula.system_listener.class%">
+            <tag name="zikula.event_subscriber" />
+            <argument type="service" id="service_container" />
+        </service>
 
+        <service id="zikula.doctrine1_listener" class="%zikula.doctrine1_listener.class%">
+            <tag name="zikula.event_subscriber" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="service_container" />
+        </service>
 
+        <service id="zikula.doctrine_listener" class="%zikula.doctrine_listener.class%">
+            <tag name="zikula.event_subscriber" />
+        </service>
+
+        <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
+            <tag name="zikula.event_subscriber" />
+        </service>
     </services>
 </container>

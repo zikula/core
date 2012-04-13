@@ -122,13 +122,6 @@ class Core
     protected $booted = false;
 
     /**
-     * Directory where handlers are located.
-     *
-     * @var string
-     */
-    protected $handlerDir;
-
-    /**
      * Array of the attached handlers.
      *
      * @var array
@@ -176,11 +169,9 @@ class Core
      *
      * @param string $handlerDir Directory where handlers are located.
      */
-    public function __construct($coreConfig, $handlerDir = 'lib/EventHandlers', ContainerBuilder $container = null)
+    public function __construct(ContainerBuilder $container)
     {
-        $this->handlerDir = $handlerDir;
         $this->baseMemory = memory_get_usage();
-        $this->coreConfig = $coreConfig;
         $this->container = $container;
     }
 
@@ -199,20 +190,10 @@ class Core
 
         $this->bootime = microtime(true);
 
-        if (null === $this->container) {
-            $this->container = new ContainerBuilder();
-            $this->container->setAlias('zikula.servicemanager', 'service_container');
-            $this->dispatcher = new ContainerAwareEventDispatcher($this->container);
-            $this->container->set('zikula.eventmanager', $this->dispatcher);
-            $this->container->set('zikula', $this);
-        } else {
-            $this->dispatcher = $this->container->get('event_dispatcher');
-            $this->container->setAlias('zikula.eventmanager', 'event_dispatcher');
-            $this->container->setAlias('zikula.servicemanager', 'service_container');
-        }
-
-        $this->loadService($this->coreConfig);
-        $this->attachHandlers($this->handlerDir);
+        $this->dispatcher = $this->container->get('event_dispatcher');
+        $this->container->setAlias('zikula.eventmanager', 'event_dispatcher');
+        $this->container->setAlias('zikula.servicemanager', 'service_container');
+        $this->container->set('zikula', $this);
 
         // Load system configuration
         $this->dispatcher->dispatch('bootstrap.getconfig', new GenericEvent($this));
@@ -442,7 +423,6 @@ class Core
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
-//            \ModUtil::dbInfoLoad('Extensions', 'Extensions');
             \ModUtil::initCoreVars();
             \ModUtil::dbInfoLoad('Settings', 'Settings');
             \ModUtil::dbInfoLoad('Theme', 'Theme');

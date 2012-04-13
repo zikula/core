@@ -12,12 +12,21 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Bundle\CoreBundle\EventListener;
+
 use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine_Core;
+use Doctrine_Manager;
+use PDO;
+use System;
+use DoctrineUtil;
 
 /**
  * Doctrine listeners.
  */
-class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
+class Doctrine1Listener implements EventSubscriberInterface
 {
     /**
      * The Doctrine Manager instance.
@@ -26,16 +35,19 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
      */
     protected $doctrineManager;
 
-    /**
-     * Setup handlers.
-     *
-     * @return void
-     */
-    public function setupHandlerDefinitions()
+    public static function getSubscribedEvents()
     {
-        $this->addHandlerDefinition('doctrine.init_connection', 'doctrineInit');
-        $this->addHandlerDefinition('doctrine.configure', 'configureDoctrine');
-        $this->addHandlerDefinition('doctrine.cache', 'configureCache');
+        return array(
+            'doctrine.init_connection' => array('doctrineInit'),
+            'doctrine.configure' => array('configureDoctrine'),
+            'doctrine.cache' => array('configureCache'),
+            );
+    }
+
+    public function __construct(EventDispatcherInterface $dispatcher, $container)
+    {
+        $this->dispatcher = $dispatcher;
+        $this->container = $container;
     }
 
     /**
@@ -81,8 +93,8 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
             }
             $internalEvent = new GenericEvent($connection);
             $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
-        } catch (PDOException $e) {
-            throw new PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
+        } catch (\PDOException $e) {
+            throw new \PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
         }
 
         // set mysql engine type
@@ -97,7 +109,7 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
             if (isset($connectionInfo['collate'])) {
                 $connection->setCollate($connectionInfo['collate']);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             //if (!System::isInstalling()) {
             //    throw new Exception(__('Error setting database characterset and collation.'));
             //}
@@ -109,7 +121,7 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
 
         if (isset($this->container['log.enabled']) && $this->container['log.enabled']) {
             // add listener that sends events for all sql queries
-            $connection->setListener(new Zikula_Doctrine_Listener_Profiler());
+            $connection->setListener(new \Zikula_Doctrine_Listener_Profiler());
         }
 
         $event->data = $connection;
@@ -128,13 +140,13 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
     public function configureCache(GenericEvent $event)
     {
         $manager = $event->getSubject();
-        if (!System::isInstalling() && $this->container['dbcache.enable']) {
+        if (!\System::isInstalling() && $this->container['dbcache.enable']) {
             $type = $this->container['dbcache.type'];
 
             // Setup Doctrine Caching
             $type = ucfirst(strtolower($type));
             $doctrineCacheClass = "Doctrine_Cache_$type";
-            $r = new ReflectionClass($doctrineCacheClass);
+            $r = new \ReflectionClass($doctrineCacheClass);
             $options = array('prefix' => 'dd');
             if (strpos($type, 'Memcache') === 0) {
                 $servers = $this->container['dbcache.servers'];
@@ -253,7 +265,7 @@ class DoctrineConnector extends Zikula\Framework\AbstractEventHandler
             return;
         }
 
-        throw new Exception(get_class($object) . ' is not valid in configureDoctrine()');
+//        throw new \Exception(get_class($object) . ' is not valid in configureDoctrine()');
     }
 
 }

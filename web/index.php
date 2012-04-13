@@ -20,18 +20,18 @@ use Zikula\Core\Event\GenericEvent;
 
 require_once __DIR__.'/../app/bootstrap.php';
 
-$kernel = new AppKernel('prod', true);
-$kernel->loadClassCache();
+$kernel = new AppKernel('dev', true);
+//$kernel->loadClassCache();
+$kernel->boot();
 //$kernel = new AppCache($kernel);
 
-$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers', $kernel->getContainer());
+$core = new Zikula\Core\Core($kernel->getContainer());
 $core->boot();
 $core->init();
 
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
 
-$request = $core->getContainer()->get('request');
-
+$request = $kernel->getContainer()->get('request');
 $core->getDispatcher()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
 
 $resolver = new ControllerResolver();

@@ -3,21 +3,11 @@
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Symfony\Component\HttpKernel\Kernel;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 abstract class ZikulaKernel extends Kernel
 {
-//    public function __construct($environment, $debug)
-//    {
-//        parent::__construct($environment, $debug);
-//    }
-
-    public function compile()
-    {
-        parent::compile();
-
-        $this->parameterBag->resolve();
-    }
-
     /**
      * Gets the container's base class.
      *
@@ -28,5 +18,15 @@ abstract class ZikulaKernel extends Kernel
     protected function getContainerBaseClass()
     {
         return '\Zikula\Component\DependencyInjection\ContainerBuilder';
+    }
+
+    /**
+     * Gets a new ContainerBuilder instance used to build the service container.
+     *
+     * @return ContainerBuilder
+     */
+    protected function getContainerBuilder()
+    {
+        return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
     }
 }

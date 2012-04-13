@@ -11,17 +11,22 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Bundle\CoreBundle\EventListener;
+
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Doctrine plugin definition.
  */
-class DoctrineListener extends Zikula\Framework\AbstractEventHandler
+class DoctrineListener implements EventSubscriberInterface
 {
-    public function setupHandlerDefinitions()
+    public static function getSubscribedEvents()
     {
-        $this->addHandlerDefinition('core.preinit', 'initialize');
+        return array(
+            'core.preinit' => array('initialize'),
+            );
     }
 
     /**
@@ -57,10 +62,10 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         $ORMConfig->setMetadataCacheImpl($dbCache);
 
         // create proxy cache dir
-        CacheUtil::createLocalDir('doctrinemodels');
+        \CacheUtil::createLocalDir('doctrinemodels');
 
         // setup annotations base
-        include_once ZLOADER_PATH . '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        include_once \ZLOADER_PATH . '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
 
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
@@ -78,7 +83,7 @@ class DoctrineListener extends Zikula\Framework\AbstractEventHandler
         // configure Doctrine ORM
         $ORMConfig->setMetadataDriverImpl($annotationDriver);
         $ORMConfig->setQueryCacheImpl($dbCache);
-        $ORMConfig->setProxyDir(CacheUtil::getLocalDir('doctrinemodels'));
+        $ORMConfig->setProxyDir(\CacheUtil::getLocalDir('doctrinemodels'));
         $ORMConfig->setProxyNamespace('DoctrineProxy');
 
         if (isset($container['log.enabled']) && $container['log.enabled']) {

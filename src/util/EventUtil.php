@@ -13,7 +13,7 @@
  */
 
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * EventUtil
@@ -43,17 +43,21 @@ class EventUtil
     /**
      * Get EventDispatcher instance.
      *
-     * @param Zikula\Core\Core $core Core instance.
+     * @param EventDispatcherInterface $dispatcher
      *
-     * @return EventDispatcher
+     * @return EventDispatcherInterface
      */
-    static public function getManager(Zikula\Core\Core $core = null)
+    static public function getManager(EventDispatcherInterface $dispatcher = null)
     {
         if (self::$dispatcher) {
             return self::$dispatcher;
         }
 
-        self::$dispatcher = $core->getDispatcher();
+        if (null === $dispatcher) {
+            throw new \InvalidArgumentException('No event dispatcher was specified or previously loaded');
+        }
+
+        self::$dispatcher = $dispatcher;
 
         return self::$dispatcher;
     }
