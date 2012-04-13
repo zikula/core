@@ -20,7 +20,7 @@ use Zikula\Core\Event\GenericEvent;
 
 require_once __DIR__.'/../app/bootstrap.php';
 
-$kernel = new AppKernel('dev', true);
+$kernel = new AppKernel('prod', true);
 //$kernel->loadClassCache();
 $kernel->boot();
 //$kernel = new AppCache($kernel);

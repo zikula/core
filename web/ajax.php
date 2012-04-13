@@ -19,9 +19,11 @@ use Zikula\Framework\AjaxControllerResolver;
 
 include __DIR__.'/../app/bootstrap.php';
 
-$kernel = new AppKernel('prod', true);
+$kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
-$core = new Zikula\Core\Core(__DIR__.'/../src/Resources/config/core.xml', __DIR__.'/../src/EventHandlers', $kernel->getContainer());
+$kernel->boot();
+
+$core = new Zikula\Core\Core($kernel->getContainer());
 $core->boot();
 $core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
 
