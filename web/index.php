@@ -20,7 +20,7 @@ use Zikula\Core\Event\GenericEvent;
 
 require_once __DIR__.'/../app/bootstrap.php';
 
-$kernel = new AppKernel('prod', true);
+$kernel = new AppKernel('dev', true);
 //$kernel->loadClassCache();
 $kernel->boot();
 //$kernel = new AppCache($kernel);
@@ -32,11 +32,7 @@ $core->init();
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
 
 $request = $kernel->getContainer()->get('request');
-$core->getDispatcher()->addSubscriber(new Zikula\Core\Listener\ThemeListener());
 
-$resolver = new ControllerResolver();
-
-$kernel = new HttpKernel($core->getDispatcher(), $resolver);
 $response = $kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
 $response->send();
 $kernel->terminate($request, $response);

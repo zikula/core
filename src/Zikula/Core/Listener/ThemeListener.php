@@ -21,6 +21,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Framework\Response\PlainResponse;
+use Zikula\Framework\Response\Ajax\AbstractBaseResponse;
 
 class ThemeListener implements EventSubscriberInterface
 {
@@ -31,8 +32,10 @@ class ThemeListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
-        if ($response instanceof RedirectResponse || $response instanceof PlainResponse) {
-            // dont theme redirects or plain responses
+        if ($response instanceof RedirectResponse ||
+            $response instanceof PlainResponse ||
+            $response instanceof AbstractBaseResponse) {
+            // dont theme redirects, plain responses or Ajax responses
             return;
         }
 

@@ -120,7 +120,7 @@ class HookUtil
      */
     public static function registerProviderBundles(array $bundles)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         foreach ($bundles as $bundle) {
             $hookManager->registerProviderBundle($bundle);
         }
@@ -137,7 +137,7 @@ class HookUtil
      */
     public static function unregisterProviderBundles(array $bundles)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterProviderBundle($bundle);
         }
@@ -152,7 +152,7 @@ class HookUtil
      */
     public static function registerSubscriberBundles(array $bundles)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         foreach ($bundles as $bundle) {
             $hookManager->registerSubscriberBundle($bundle);
         }
@@ -169,7 +169,7 @@ class HookUtil
      */
     public static function unregisterSubscriberBundles(array $bundles)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterSubscriberBundle($bundle);
             $event = new GenericEvent($bundle, array('areaid' => $hookManager->getAreaId($bundle->getArea())));
@@ -179,49 +179,49 @@ class HookUtil
 
     public static function getProviderAreasByOwner($moduleName)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->getProviderAreasByOwner($moduleName);
     }
 
     public static function getSubscriberAreasByOwner($moduleName)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->getSubscriberAreasByOwner($moduleName);
     }
 
     public static function getOwnerByArea($areaName)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->getOwnerByArea($areaName);
     }
 
     public static function getBindingsFor($areaName)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->getBindingsFor($areaName);
     }
 
     public static function setBindOrder($subscriberAreaName, array $providerAreas)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->setBindOrder($subscriberAreaName, $providerAreas);
     }
 
     public static function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->getBindingBetweenAreas($subscriberArea, $providerArea);
     }
 
     public static function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
     }
 
     public static function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
-        $hookManager = ServiceUtil::getManager()->get('zikula.hookmanager');
+        $hookManager = ServiceUtil::getManager()->get('hook_manager');
         return $hookManager->getBindingsBetweenOwners($subscriberOwner, $providerOwner);
     }
 }
