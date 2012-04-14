@@ -30,9 +30,9 @@ class HookManager
     private $storage;
 
     /**
-     * EventDispatcher.
+     * ContainerAwareEventDispatcher.
      *
-     * @var EventDispatcher
+     * @var ContainerAwareEventDispatcher
      */
     private $dispatcher;
 
@@ -79,9 +79,23 @@ class HookManager
      *
      * @param Hook $hook Hook instance.
      *
+     * @deprecated since 1.4
+     *
      * @return Hook
      */
     public function notify(Hook $hook)
+    {
+        return $this->dispatch($hook->getName(), $hook);
+    }
+
+    /**
+     * Dispatch hook listeners.
+     *
+     * @param Hook $hook Hook instance.
+     *
+     * @return Hook
+     */
+    public function dispatch($name, Hook $hook)
     {
         if (!$this->loaded) {
             // lazy load handlers for the first time
@@ -89,13 +103,14 @@ class HookManager
             $this->loaded = true;
         }
 
+        $hook->setName($name);
+
         $this->decorateHook($hook);
         if (!$hook->getAreaId()) {
             return $hook;
         }
 
-        $this->dispatcher->notify($hook);
-        return $hook;
+        return $this->dispatcher->dispatch($name, $hook);
     }
 
     /**
@@ -108,6 +123,7 @@ class HookManager
         foreach ($bundle->getEvents() as $areaType => $eventName) {
             $this->storage->registerSubscriber($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $areaType, $bundle->getCategory(), $eventName);
         }
+
         $this->reload();
     }
 
@@ -119,6 +135,7 @@ class HookManager
     public function unregisterSubscriberBundle(SubscriberBundle $bundle)
     {
         $this->storage->unregisterSubscriberByArea($bundle->getArea());
+
         $this->reload();
     }
 
@@ -132,6 +149,7 @@ class HookManager
         foreach ($bundle->getHooks() as $hook) {
             $this->storage->registerProvider($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $hook['hooktype'], $bundle->getCategory(), $hook['classname'], $hook['method'], $hook['serviceid']);
         }
+
         $this->reload();
     }
 
@@ -143,6 +161,7 @@ class HookManager
     public function unregisterProviderBundle(ProviderBundle $bundle)
     {
         $this->storage->unregisterProviderByArea($bundle->getArea());
+
         $this->reload();
     }
 
@@ -299,15 +318,13 @@ class HookManager
                 $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
                 $this->dispatcher->addListenerService($handler['eventname'], $callable);
             } else {
-                $callable = array($handler['classname'], $handler['method']);
-                $this->dispatcher->addListener($handler['eventname'], $callable);
+                try {
+                    $callable = array($handler['classname'], $handler['method']);
+                    $this->dispatcher->addListener($handler['eventname'], $callable);
+                } catch (\InvalidArgumentException $e) {
+                    throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                }
             }
-
-//            try {
-//                $this->dispatcher->addListener($handler['eventname'], $callable);
-//            } catch (\InvalidArgumentException $e) {
-//                throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
-//            }
         }
 
         return $this;

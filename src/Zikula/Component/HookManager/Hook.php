@@ -17,7 +17,7 @@ namespace Zikula\Component\HookManager;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * AbstractHook class.
+ * Hook class.
  */
 class Hook extends Event
 {
@@ -62,6 +62,7 @@ class Hook extends Event
     public function setCaller($caller)
     {
         $this->caller = $caller;
+
         return $this;
     }
 
@@ -95,6 +96,7 @@ class Hook extends Event
     public function setAreaId($areaId)
     {
         $this->areaId = $areaId;
+        
         return $this;
     }
 }
