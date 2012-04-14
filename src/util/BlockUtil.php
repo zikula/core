@@ -338,7 +338,7 @@ class BlockUtil
                         $dh = opendir($dir);
                         while (($f = readdir($dh)) !== false) {
                             if (substr($f, -4) == '.php') {
-                                $block = substr($f, 0, -4);
+                                $block = substr($f, 0, -9); // -9 = 'Block.php' suffix
                                 self::load($modname, $block);
                             }
                         }
