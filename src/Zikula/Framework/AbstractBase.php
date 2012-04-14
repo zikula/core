@@ -118,7 +118,7 @@ abstract class AbstractBase implements TranslatableInterface
 
         $this->request = $this->container->get('request');
         $this->session = $this->request->getSession();
-        $this->entityManager = $this->container->get('doctrine.entitymanager');
+        $this->entityManager = $this->container->get('doctrine')->getEntityManager();
 
         $this->_configureBase();
         $this->initialize();

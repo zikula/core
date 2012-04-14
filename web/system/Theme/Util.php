@@ -75,7 +75,7 @@ class Theme_Util
 
         // get entityManager
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->get('doctrine.entitymanager');
+        $entityManager = $sm->get('doctrine')->getEntityManager();
 
         // Get all themes in DB
         $dbthemes = array();

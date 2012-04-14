@@ -28,6 +28,8 @@
         "imagine/Imagine": "dev-master",
         "swiftmailer/swiftmailer": "4.1.6",
         "twig/twig": "1.6.4",
+        "pagerfanta/pagerfanta": "dev-master",
+        "white-october/pagerfanta-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
     "config": {

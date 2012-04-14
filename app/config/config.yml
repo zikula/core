@@ -48,11 +48,59 @@ doctrine:
     orm:
         auto_generate_proxy_classes: true
         proxy_namespace: Proxies
+        proxy_dir: %kernel.cache_dir%/doctrine/orm/Proxies
         default_entity_manager: default
         entity_managers:
             default:
                 auto_mapping: true
                 connection: default
+                class_metadata_factory_name: Doctrine\ORM\Mapping\ClassMetadataFactory
+                mappings:
+                    zikula_core_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../src
+                        is_bundle: false
+                        prefix: Zikula
+                    zikula_group_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Group
+                    zikula_permission_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Permission
+                    zikula_theme_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Theme
+                    zikula_admin_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Admin
+                    zikula_block_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Block
+                    zikula_user_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: User
+                    zikula_search_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Search
+                    zikula_security_entities:
+                        type: annotation
+                        dir: %kernel.root_dir%/../web/system
+                        is_bundle: false
+                        prefix: Security
                 metadata_cache_driver: array
                 query_cache_driver: array
 
