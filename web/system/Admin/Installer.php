@@ -25,7 +25,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
     {
         // create tables
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Admin_Entity_AdminCategory', 'Admin_Entity_AdminModule'));
+            DoctrineHelper::createSchema($this->entityManager, array('Admin\Entity\AdminCategory', 'Admin\Entity\AdminModule'));
         } catch (Exception $e) {
             return false;
         }
@@ -104,7 +104,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
     {
         // drop tables
         try {
-            DoctrineHelper::dropSchema($this->entityManager, array('Admin_Entity_AdminCategory', 'Admin_Entity_AdminModule'));
+            DoctrineHelper::dropSchema($this->entityManager, array('Admin\Entity\AdminCategory', 'Admin\Entity\AdminModule'));
         } catch (Exception $e) {
             return false;
         }
@@ -138,13 +138,13 @@ class Admin_Installer extends Zikula_AbstractInstaller
                           'description' => $this->__('Newly-installed or uncategorized modules.')),
                     array('name'     => $this->__('Security'),
                           'description' => $this->__('Modules for managing the site\'s security.')));
-        
+
         foreach ($records as $record) {
-            $item = new Admin_Entity_AdminCategory;
+            $item = new Admin\Entity\AdminCategory;
             $item->merge($record);
             $this->entityManager->persist($item);
         }
-        
+
         $this->entityManager->flush();
     }
 }

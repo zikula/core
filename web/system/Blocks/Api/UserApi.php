@@ -48,11 +48,11 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         
         // add select and from params 
         $qb->select('b')
-           ->from('Blocks_Entity_Block', 'b');
+           ->from('Blocks\Entity\Block', 'b');
         
         // add clause for filtering blockposition
         if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {
-            $entity = $this->name . '_Entity_BlockPlacement';
+            $entity = $this->name . '\Entity\BlockPlacement';
             $blockitems = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['blockposition_id']));
             
             $bidList = array(0);
@@ -114,7 +114,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         }
 
         // Return the item array
-        $entity = $this->name . '_Entity_Block';
+        $entity = $this->name . '\Entity\Block';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('bid' => $args['bid']));
 
         return $item;
@@ -127,7 +127,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        $entity = $this->name . '_Entity_Block';
+        $entity = $this->name . '\Entity\Block';
         $dql = "SELECT count(b.bid) FROM $entity b";
         $query = $this->entityManager->createQuery($dql);
         $numitems = $query->getSingleScalarResult();
@@ -154,7 +154,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         
         if (empty($block_positions)) {
             
-            $entity = $this->name . '_Entity_BlockPosition';
+            $entity = $this->name . '\Entity\BlockPosition';
             $items = $this->entityManager->getRepository($entity)->findBy(array(), array('name' => 'ASC'));
 
             foreach ($items as $item) {
@@ -174,7 +174,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
      */
     public function getallplacements()
     {
-        $entity = $this->name . '_Entity_BlockPlacement';
+        $entity = $this->name . '\Entity\BlockPlacement';
         $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'));
 
         return $items;
@@ -195,7 +195,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
         }
         
         // Return the item array
-        $entity = $this->name . '_Entity_BlockPosition';
+        $entity = $this->name . '\Entity\BlockPosition';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('pid' => $args['pid']));
 
         return $item;
@@ -215,7 +215,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
         
-        $entity = $this->name . '_Entity_BlockPlacement';
+        $entity = $this->name . '\Entity\BlockPlacement';
         $items = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['pid']), array('sortorder' => 'ASC'));
         return $items;
     }
@@ -234,7 +234,7 @@ class Blocks_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
         
-        $entity = $this->name . '_Entity_BlockPlacement';
+        $entity = $this->name . '\Entity\BlockPlacement';
         $items = $this->entityManager->getRepository($entity)->findBy(array('bid' => $args['bid']), array('sortorder' => 'ASC'));
         return $items;
     }

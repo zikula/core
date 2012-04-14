@@ -30,7 +30,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
 
         $args['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countitems');
 
-        $item = new Admin_Entity_AdminCategory();
+        $item = new Admin\Entity\AdminCategory();
         $item->merge($args);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -104,7 +104,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
 
         // move all modules from the category to be deleted into the
         // default category.
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = $this->name . '\Entity\AdminModule';
         $dql = "UPDATE $entity m SET m.cid = {$defaultcategory} WHERE m.cid = {$item['cid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
@@ -140,7 +140,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return $items;
         }
 
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = $this->name . '\Entity\AdminCategory';
         $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'DESC'), $args['numitems'], $args['startnum']);
 
         return $items;
@@ -152,7 +152,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = $this->name . '\Entity\AdminCategory';
         $dql = "SELECT count(c.cid) FROM $entity c";
         $query = $this->entityManager->createQuery($dql);
         $numitems = $query->getSingleScalarResult();
@@ -173,7 +173,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // retrieve the category object
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = $this->name . '\Entity\AdminCategory';
         $category = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => (int)$args['cid']));
 
         if (!$category) {
@@ -203,7 +203,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerPermissionError ();
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = $this->name . '\Entity\AdminModule';
 
         // get module id
         $mid = (int)ModUtil::getIdFromName($args['module']);
@@ -246,7 +246,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return $catitems[$args['mid']];
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = $this->name . '\Entity\AdminModule';
 
         // retrieve the admin module object array
         $associations = $this->entityManager->getRepository($entity)->findAll();
@@ -281,7 +281,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         static $associations = array();
 
         if (empty($associations)) {
-            $associations = $this->entityManager->getRepository($this->name . '_Entity_AdminModule')->findAll();
+            $associations = $this->entityManager->getRepository($this->name . '\Entity\AdminModule')->findAll();
         }
 
         $sortorder = -1;
@@ -365,7 +365,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = $this->name . '\Entity\AdminModule';
         $dql = "SELECT count(m.amid) FROM $entity m WHERE m.cid = {$args['cid']}";
         $query = $this->entityManager->createQuery($dql);
         $count = $query->getSingleScalarResult();

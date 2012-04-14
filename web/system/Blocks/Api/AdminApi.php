@@ -51,7 +51,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         }
         
         // remove old placements and insert the new ones
-        $entity = $this->name . '_Entity_BlockPlacement';
+        $entity = $this->name . '\Entity\BlockPlacement';
         $dql = "DELETE FROM $entity p WHERE p.bid = {$args['bid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
@@ -59,7 +59,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         if (isset($args['positions']) && is_array($args['positions'])) {
             
             foreach ($args['positions'] as $position) {
-                $placement = new Blocks_Entity_BlockPlacement();
+                $placement = new Blocks\Entity\BlockPlacement();
                 $placement->setPid($position);
                 $placement->setBid($args['bid']);
                 $this->entityManager->persist($placement);
@@ -125,7 +125,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
             'content' => $args['content']
         );
         
-        $item = new Blocks_Entity_Block();
+        $item = new Blocks\Entity\Block();
         $item->merge($block);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -134,7 +134,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         if (isset($args['positions']) && is_array($args['positions'])) {
             
             foreach ($args['positions'] as $position) {
-                $placement = new Blocks_Entity_BlockPlacement();
+                $placement = new Blocks\Entity\BlockPlacement();
                 $placement->setPid($position);
                 $placement->setBid($item['bid']);
                 $this->entityManager->persist($placement);
@@ -235,12 +235,12 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // delete block's placements and block itself
-        $entity = $this->name . '_Entity_BlockPlacement';
+        $entity = $this->name . '\Entity\BlockPlacement';
         $dql = "DELETE FROM $entity p WHERE p.bid = {$block[bid]}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
         
-        $entity = $this->name . '_Entity_Block';
+        $entity = $this->name . '\Entity\Block';
         $dql = "DELETE FROM $entity b WHERE b.bid = {$block[bid]}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
@@ -278,7 +278,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
             }
         }
         
-        $item = new Blocks_Entity_BlockPosition();
+        $item = new Blocks\Entity\BlockPosition();
         $item->merge($args);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -354,13 +354,13 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         }
         
         // delete placements of the position to be deleted
-        $entity = $this->name . '_Entity_BlockPlacement';
+        $entity = $this->name . '\Entity\BlockPlacement';
         $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
         // delete position
-        $entity = $this->name . '_Entity_BlockPosition';
+        $entity = $this->name . '\Entity\BlockPosition';
         $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
