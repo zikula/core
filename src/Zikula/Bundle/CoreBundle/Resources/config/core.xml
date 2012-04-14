@@ -16,9 +16,9 @@
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
         <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
 
-        <parameter key="hook_manager.class">Zikula\Component\hook_manager\hook_manager</parameter>
-        <parameter key="hook_manager.storage.class">Zikula\Component\hook_manager\Storage\Doctrine</parameter>
-        <parameter key="hook_manager.servicefactory.class">Zikula\Component\hook_manager\ServiceFactory</parameter>
+        <parameter key="hook_manager.class">Zikula\Component\HookManager\HookManager</parameter>
+        <parameter key="hook_manager.storage.class">Zikula\Component\HookManager\Storage\Doctrine</parameter>
+        <parameter key="hook_manager.servicefactory.class">Zikula\Component\HookManager\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
         <parameter key="token.storage.key">_tokens</parameter>
