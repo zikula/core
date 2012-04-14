@@ -12,9 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Entity\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
 // see http://www.doctrine-project.org/docs/orm/2.1/en/reference/working-with-objects.html#custom-repositories
 // see http://www.doctrine-project.org/docs/orm/2.1/en/reference/query-builder.html
-class Blocks_Entity_Repository_BlockPosition extends Doctrine\ORM\EntityRepository
+class BlockPosition extends EntityRepository
 {
 
 }

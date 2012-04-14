@@ -12,9 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Admin\Entity\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
 // see http://www.doctrine-project.org/docs/orm/2.1/en/reference/working-with-objects.html#custom-repositories
 // see http://www.doctrine-project.org/docs/orm/2.1/en/reference/query-builder.html
-class Admin_Entity_Repository_AdminCategory extends Doctrine\ORM\EntityRepository
+class AdminCategory extends EntityRepository
 {
-    
+
 }

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,10 +21,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Blocks_Entity_Repository_Block")
+ * @ORM\Entity(repositoryClass="Blocks\Entity\Repository\Block")
  * @ORM\Table(name="blocks",indexes={@ORM\index(name="active_idx",columns={"active"})})
  */
-class Blocks_Entity_Block extends Zikula_EntityAccess
+class Block extends \Zikula_EntityAccess
 {
     /**
      * @ORM\Id
@@ -30,67 +32,67 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $bid;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $bkey;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $title;
-    
+
     /**
      * @ORM\Column(type="text")
      */
     private $description;
-    
+
     /**
      * @ORM\Column(type="text")
      */
     private $content;
-    
+
     /**
      * @ORM\Column(type="text")
      */
     private $url;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $mid;
-    
+
     /**
      * @ORM\Column(type="array")
      */
     private $filter;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $active;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $collapsable;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $defaultstate;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $refresh;
-    
+
     /**
      * @ORM\Column(type="datetime")
      */
     private $last_update;
-    
+
     /**
      * @ORM\Column(type="string", length=30)
      */
@@ -98,7 +100,7 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
 
     /**
-     * constructor 
+     * constructor
      */
     public function __construct()
     {
@@ -119,48 +121,48 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * get the id of the block
-     * 
-     * @return integer the block's id 
+     *
+     * @return integer the block's id
      */
     public function getBid()
     {
         return $this->bid;
     }
-    
+
     /**
      * set the id for the block
-     * 
+     *
      * @param integer $bid the block's id
      */
     public function setBid($bid)
     {
         $this->bid = $bid;
     }
-    
+
     /**
      * get the bkey of the block
-     * 
-     * @return string the block's bkey 
+     *
+     * @return string the block's bkey
      */
     public function getBkey()
     {
         return $this->bkey;
     }
-    
+
     /**
      * set the bkey for the block
-     * 
+     *
      * @param string $bkey the block's bkey
      */
     public function setBkey($bkey)
     {
         $this->bkey = $bkey;
     }
-    
+
     /**
      * get the title of the block
-     * 
-     * @return string the block's title 
+     *
+     * @return string the block's title
      */
     public function getTitle()
     {
@@ -169,18 +171,18 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the title for the block
-     * 
+     *
      * @param string $title the block's title
      */
     public function setTitle($title)
     {
         $this->title = $title;
     }
-    
+
     /**
      * get the description of the block
-     * 
-     * @return string the block's description 
+     *
+     * @return string the block's description
      */
     public function getDescription()
     {
@@ -189,18 +191,18 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the description for the block
-     * 
+     *
      * @param string $description the block's description
      */
     public function setDescription($description)
     {
         $this->description = $description;
     }
-    
+
     /**
      * get the content of the block
-     * 
-     * @return string the block's content 
+     *
+     * @return string the block's content
      */
     public function getContent()
     {
@@ -209,18 +211,18 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the content for the block
-     * 
+     *
      * @param string $content the block's content
      */
     public function setContent($content)
     {
         $this->content = $content;
     }
-    
+
     /**
      * get the url of the block
-     * 
-     * @return string the block's url 
+     *
+     * @return string the block's url
      */
     public function getUrl()
     {
@@ -229,38 +231,38 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the url for the block
-     * 
+     *
      * @param string $url the block's url
      */
     public function setUrl($url)
     {
         $this->url = $url;
     }
-    
+
     /**
      * get the id of the module that the block belongs to
-     * 
-     * @return integer the module's id 
+     *
+     * @return integer the module's id
      */
     public function getMid()
     {
         return $this->mid;
     }
-    
+
     /**
      * set the id of the module that the block belongs to
-     * 
+     *
      * @param integer $mid the module's id
      */
     public function setMid($mid)
     {
         $this->mid = $mid;
     }
-    
+
     /**
      * get the filters of the block
-     * 
-     * @return array the block's filters 
+     *
+     * @return array the block's filters
      */
     public function getFilter()
     {
@@ -269,37 +271,37 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the filters for the block
-     * 
+     *
      * @param array $filter the blocks's filters
      */
     public function setFilter($filter)
     {
         $this->filter = $filter;
     }
-    
+
     /**
-     * get the status of the block 
-     * 
+     * get the status of the block
+     *
      * @return integer the status number (0=inactive, 1=active)
      */
     public function getActive()
     {
         return $this->active;
     }
-    
+
     /**
      * set the status of the block
-     * 
+     *
      * @param integer $active the status number (0=inactive, 1=active)
      */
     public function setActive($active)
     {
         $this->active = $active;
     }
-    
+
     /**
-     * get the collapsable status of the block 
-     * 
+     * get the collapsable status of the block
+     *
      * @return integer the collapsable status number (0=not collapsable, 1=collapsable)
      */
     public function getCollapsable()
@@ -309,17 +311,17 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the collapsable status of the block
-     * 
+     *
      * @param integer $collapsable the collapsable status number (0=inactive, 1=active)
      */
     public function setCollapsable($collapsable)
     {
         $this->collapsable = $collapsable;
     }
-    
+
     /**
-     * get the default activation state of the block 
-     * 
+     * get the default activation state of the block
+     *
      * @return integer the state number (0=inactive, 1=active)
      */
     public function getDefaultstate()
@@ -328,38 +330,38 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
     }
 
     /**
-     * set the default activation state of the block 
-     * 
+     * set the default activation state of the block
+     *
      * @param integer $defaultstate the default activation state (0=inactive, 1=active)
      */
     public function setDefaultstate($defaultstate)
     {
         $this->defaultstate = $defaultstate;
     }
-    
+
     /**
-     * get the refresh rate of the block 
-     * 
+     * get the refresh rate of the block
+     *
      * @return integer the refresh rate number
      */
     public function getRefresh()
     {
         return $this->refresh;
     }
-    
+
     /**
-     * set the refresh rate of the block 
-     * 
+     * set the refresh rate of the block
+     *
      * @param integer $refresh the refresh rate in milliseconds (1sec=1000ms)
      */
     public function setRefresh($refresh)
     {
         $this->refresh = $refresh;
     }
-    
+
     /**
-     * get last update time of the block 
-     * 
+     * get last update time of the block
+     *
      * @return datetime the block's last updated time
      */
     public function getLast_Update()
@@ -368,19 +370,19 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
     }
 
     /**
-     * set the last updated time of the block 
-     * 
+     * set the last updated time of the block
+     *
      * @param none
      */
     public function setLast_Update()
     {
         $this->last_update = new \DateTime("now");
     }
-    
+
     /**
      * get the language of the block
-     * 
-     * @return string the block's language 
+     *
+     * @return string the block's language
      */
     public function getLanguage()
     {
@@ -389,7 +391,7 @@ class Blocks_Entity_Block extends Zikula_EntityAccess
 
     /**
      * set the language of the block
-     * 
+     *
      * @param string $language the block's language
      */
     public function setLanguage($language)
