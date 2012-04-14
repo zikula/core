@@ -27,7 +27,8 @@
         "drak/doctrine1": "dev-master",
         "imagine/Imagine": "dev-master",
         "swiftmailer/swiftmailer": "4.1.6",
-        "twig/twig": "1.6.4"
+        "twig/twig": "1.6.4",
+        "doctrine/doctrine-fixtures-bundle": "dev-master"
     },
     "config": {
         "bin-dir": "bin"

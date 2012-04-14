@@ -98,8 +98,6 @@ class DoctrineListener implements EventSubscriberInterface
         if ($config['dbdriver'] == 'mysql') {
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $dispatcher->addEventSubscriber($mysqlSessionInit);
-
-            $mysqlStorageEvent = new \Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener($dispatcher);
         }
 
         // setup the doctrine entitymanager
