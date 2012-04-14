@@ -77,7 +77,8 @@ class HookManager
     /**
      * Dispatch hook listeners.
      *
-     * @param Hook $hook Hook instance.
+     * @param string $name Hook event name.
+     * @param Hook   $hook Hook instance.
      *
      * @return Hook
      */
