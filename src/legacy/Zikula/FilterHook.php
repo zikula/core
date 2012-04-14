@@ -18,4 +18,10 @@
  */
 class Zikula_FilterHook extends Zikula\Core\Hook\FilterHook
 {
+    public function __construct($name, $data=null)
+    {
+        $this->setName($name);
+        
+        parent::__construct($data);
+    }
 }

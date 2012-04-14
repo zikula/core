@@ -251,15 +251,16 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     }
 
     /**
-     * Notify any hookable events.
+     * Dispatch hookable events.
      *
-     * @param Zikula_HookInterface $hook Hook interface.
+     * @param string $name Hook event name.
+     * @param Hook   $hook Hook.
      *
-     * @return mixed Notification result.
+     * @return Hook
      */
-    public function notifyHooks(Zikula_HookInterface $hook)
+    public function dispatchHooks($name, Hook $hook)
     {
-        return $this->view->getContainer()->get('hook_manager')->notify($hook);
+        return $this->view->getContainer()->get('hook_manager')->dispatch($name, $hook);
     }
 
     /**
