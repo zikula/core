@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Blocks\Entity\Repository\BlockPosition")
+ * @ORM\Entity
  * @ORM\Table(name="block_positions",indexes={@ORM\index(name="name_idx",columns={"name"})})
  */
 class BlockPosition extends \Zikula_EntityAccess

@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Admin\Entity\Repository\AdminModule")
+ * @ORM\Entity
  * @ORM\Table(name="admin_module",indexes={@ORM\index(name="mid_cid",columns={"mid","cid"})})
  */
 class AdminModule extends \Zikula_EntityAccess
