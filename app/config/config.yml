@@ -46,8 +46,15 @@ doctrine:
         charset:  UTF8
 
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
+        auto_generate_proxy_classes: true
+        proxy_namespace: Proxies
+        default_entity_manager: default
+        entity_managers:
+            default:
+                auto_mapping: true
+                connection: default
+                metadata_cache_driver: array
+                query_cache_driver: array
 
 # Swiftmailer Configuration
 #swiftmailer:
