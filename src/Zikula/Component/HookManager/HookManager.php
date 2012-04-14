@@ -75,20 +75,6 @@ class HookManager
     }
 
     /**
-     * Notify hook handlers.
-     *
-     * @param Hook $hook Hook instance.
-     *
-     * @deprecated since 1.4
-     *
-     * @return Hook
-     */
-    public function notify(Hook $hook)
-    {
-        return $this->dispatch($hook->getName(), $hook);
-    }
-
-    /**
      * Dispatch hook listeners.
      *
      * @param Hook $hook Hook instance.

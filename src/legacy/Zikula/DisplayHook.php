@@ -18,4 +18,10 @@
  */
 class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
 {
+    public function __construct($name, $id, ModUrl $url = null)
+    {
+        $this->setName($name);
+
+        parent::__construct($id, $url);
+    }
 }

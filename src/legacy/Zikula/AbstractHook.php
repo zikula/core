@@ -15,6 +15,6 @@
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook extends Zikula\Component\HookManager\AbstractHook
+class Zikula_AbstractHook extends Zikula\Component\HookManager\Hook
 {
 }

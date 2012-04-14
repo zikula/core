@@ -84,13 +84,14 @@ abstract class AbstractController extends AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @param HookInterface $hook Hook interface.
+     * @param string $name Name of the hook event.
+     * @param Hook   $hook Hook.
      *
-     * @return HookInterface
+     * @return Hook
      */
-    public function notifyHooks(Hook $hook)
+    public function dispatchHooks($name, Hook $hook)
     {
-        return $this->get('hook_manager')->notify($hook);
+        return $this->get('hook_manager')->dispatch($name, $hook);
     }
 
     /**

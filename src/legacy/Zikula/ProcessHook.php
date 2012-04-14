@@ -21,4 +21,10 @@
  */
 class Zikula_ProcessHook extends Zikula\Core\Hook\ProcessHook
 {
+    public function __construct($name, $id, ModUrl $url=null)
+    {
+        $this->setName($name);
+
+        parent::__construct($id, $url);
+    }
 }
