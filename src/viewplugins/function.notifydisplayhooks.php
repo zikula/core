@@ -51,7 +51,7 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 
     // create event and notify
     $hook = new Zikula_DisplayHook($eventname, $id, $urlObject);
-    $view->getContainer()->get('zikula.hookmanager')->notify($hook);
+    $view->getContainer()->get('hook_manager')->notify($hook);
     $responses = $hook->getResponses();
 
     // assign results, this plugin does not return any display

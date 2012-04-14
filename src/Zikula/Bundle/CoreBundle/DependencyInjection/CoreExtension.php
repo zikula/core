@@ -33,10 +33,12 @@ class CoreExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $loader->load('services.xml');
+        $loader->load('web.xml');
         $loader->load('core.xml');
 
         $this->addClassesToCompile(array(
-            'Zikula\\Component\\DependencyInjection\\ContainerBuilder',
+//            'Zikula\\Component\\DependencyInjection\\ContainerBuilder',
         ));
     }
 

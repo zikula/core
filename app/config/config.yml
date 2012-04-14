@@ -1,34 +1,34 @@
-imports:
-    - { resource: parameters.yml }
-    - { resource: security.yml }
+#imports:
+    #- { resource: parameters.yml }
+    #- { resource: security.yml }
 
-framework:
+#framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
-    secret:          %secret%
-    charset:         UTF-8
-    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
-    form:            true
-    csrf_protection: true
-    validation:      { enable_annotations: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    default_locale:  %locale%
-    session:
-        auto_start:     true
+#    secret:          %secret%
+#    charset:         UTF-8
+#    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+#    form:            true
+#    csrf_protection: true
+#    validation:      { enable_annotations: true }
+#    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+#    default_locale:  %locale%
+#    session:
+#        auto_start:     true
 
 # Twig Configuration
-twig:
-    debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+#twig:
+#    debug:            %kernel.debug%
+#    strict_variables: %kernel.debug%
 
 # Assetic Configuration
-assetic:
-    debug:          %kernel.debug%
-    use_controller: false
-    bundles:        [ ]
+#assetic:
+#    debug:          %kernel.debug%
+#    use_controller: false
+#    bundles:        [ ]
     #java: /usr/bin/java
-    filters:
-        cssrewrite: ~
+#    filters:
+#        cssrewrite: ~
         #closure:
         #    jar: %kernel.root_dir%/Resources/java/compiler.jar
         #yui_css:
@@ -50,9 +50,9 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
-swiftmailer:
-    transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
-    spool:     { type: memory }
+#swiftmailer:
+#    transport: %mailer_transport%
+#    host:      %mailer_host%
+#    username:  %mailer_user%
+#    password:  %mailer_password%
+#    spool:     { type: memory }

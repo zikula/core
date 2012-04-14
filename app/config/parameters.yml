@@ -1,15 +1,13 @@
-parameters:
-    database_driver:   pdo_mysql
-    database_host:     localhost
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+imports:
+    - { resource: config.yml }
 
-    mailer_transport:  smtp
-    mailer_host:       localhost
-    mailer_user:       ~
-    mailer_password:   ~
+parameters:
+
+#    mailer_transport:  smtp
+#    mailer_host:       localhost
+#    mailer_user:       ~
+#    mailer_password:   ~
 
     locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    kernel.default_locale:            en
+ #   secret:            ThisTokenIsNotSoSecretChangeIt

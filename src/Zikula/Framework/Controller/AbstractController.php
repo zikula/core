@@ -90,7 +90,7 @@ abstract class AbstractController extends AbstractBase
      */
     public function notifyHooks(Hook $hook)
     {
-        return $this->get('zikula.hookmanager')->notify($hook);
+        return $this->get('hook_manager')->notify($hook);
     }
 
     /**
