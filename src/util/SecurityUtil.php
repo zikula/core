@@ -189,7 +189,7 @@ class SecurityUtil
         $groupperms = array();
 
         $uids[] = -1;
-        
+
         // get user ID
         if (!isset($user)) {
             if (!UserUtil::isLoggedIn()) {
@@ -204,16 +204,16 @@ class SecurityUtil
             $uids[] = $user;
             $vars['Active User'] = $user;
         }
-        
-        $em = ServiceUtil::get('doctrine.entitymanager');
-        
+
+        $em = ServiceUtil::get('doctrine')->getEntityManager();
+
         // get all groups that user is in
         $groupmembership = $em->getRepository('Groups\Entity\GroupMembership')->findBy(array('uid' => $uids));
-        
+
         if ($groupmembership === false) {
             return $groupperms;
         }
-        
+
         $fldArray = array();
         foreach ($groupmembership as $gm) {
             $fldArray[] = $gm['gid'];
@@ -228,7 +228,7 @@ class SecurityUtil
         }
 
         $allgroups = array_merge($usergroups, $fldArray);
-        
+
         // get all permissions for the groups that the user belongs to
         $permissions = $em->getRepository('Permissions\Entity\Permission')->findBy(array('gid' => $allgroups), array('sequence' => 'ASC'));
 
@@ -240,17 +240,17 @@ class SecurityUtil
             $component = self::_fixsecuritystring($permission['component']);
             $instance = self::_fixsecuritystring($permission['instance']);
             $level = self::_fixsecuritystring($permission['level']);
-            
+
             // Search/replace of special names
             preg_match_all('/<([^>]+)>/', $instance, $res);
             $size = count($res[1]);
             for ($i = 0; $i < $size; $i++) {
                 $instance = preg_replace('/<([^>]+)>/', $vars[$res[1][$i]], $instance, 1);
             }
-            
+
             $groupperms[] = array(
-                'component' => $component, 
-                'instance' => $instance, 
+                'component' => $component,
+                'instance' => $instance,
                 'level' => $level
             );
         }

@@ -119,7 +119,7 @@ class ThemeUtil
 
             // get entityManager
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->get('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine')->getEntityManager();
 
             // get themes
             $themes = $entityManager->getRepository('Theme\Entity\Theme')->findBy($filters, array('name' => 'ASC'));
@@ -233,7 +233,7 @@ class ThemeUtil
         if (!isset($themestable) || System::isInstalling()) {
             // get entityManager
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->get('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine')->getEntityManager();
 
             // get all themes
             $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();

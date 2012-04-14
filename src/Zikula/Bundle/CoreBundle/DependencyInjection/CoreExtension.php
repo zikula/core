@@ -36,6 +36,7 @@ class CoreExtension extends Extension
         $loader->load('services.xml');
         $loader->load('web.xml');
         $loader->load('core.xml');
+        $loader->load('annotations.xml');
 
         $this->addClassesToCompile(array(
 //            'Zikula\\Component\\DependencyInjection\\ContainerBuilder',

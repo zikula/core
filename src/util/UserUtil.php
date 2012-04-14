@@ -169,7 +169,7 @@ class UserUtil
      */
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
-        $em = ServiceUtil::get('doctrine.entitymanager');
+        $em = ServiceUtil::get('doctrine')->getEntityManager();
         $groups = $em->getRepository('Groups\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
