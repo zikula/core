@@ -8,3 +8,7 @@ For more information visit http://zikula.org/
 
 You must run `php composer.phar install` to get the required dependencies.
 
+## Manual installation is currently required
+
+Please use the `installation-140.sql` file to manually install the database.
+The administrative login is "Admin" and "zikula1"
