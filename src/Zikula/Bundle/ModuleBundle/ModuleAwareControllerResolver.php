@@ -5,17 +5,14 @@ namespace Zikula\ModuleBundle;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- *
- */
 class ModuleAwareControllerResolver implements ControllerResolverInterface
 {
     /**
-     * @var ControllerResolverInterface 
+     * @var ControllerResolverInterface
      */
     private $delegate;
     private $kernel;
-    
+
     public function __construct($delegate, $kernel)
     {
         $this->kernel = $kernel;
@@ -30,14 +27,14 @@ class ModuleAwareControllerResolver implements ControllerResolverInterface
     public function getController(Request $request)
     {
         $controller = $this->delegate->getController($request);
-        
-        if(is_array($controller) && is_object($controller[0])) {
-            if($this->kernel->isClassInModule(get_class($controller[0])) 
-                    && !$this->kernel->isClassInActiveModule(get_class($controller[0]))) {
+
+        if (is_array($controller) && is_object($controller[0])) {
+            if ($this->kernel->isClassInModule(get_class($controller[0]))
+                && !$this->kernel->isClassInActiveModule(get_class($controller[0]))) {
                 $controller = false;
             }
         }
-        
+
         return $controller;
     }
 }

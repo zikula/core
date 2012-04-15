@@ -5,17 +5,14 @@ namespace Zikula\ModuleBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- *
- */
 class SandboxContainerExtension implements ExtensionInterface
 {
     /**
-     * @var ExtensionInterface 
+     * @var ExtensionInterface
      */
     private $delegate;
     private $serviceIds = array();
-    
+
     public function __construct($delegate, &$serviceIds)
     {
         $this->delegate = $delegate;
