@@ -5,26 +5,26 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-         <parameter key="event_dispatcher.class">Zikula\ModulesBundle\ModuleAwareEventDispatcher</parameter>
-         <parameter key="debug.event_dispatcher.class">Zikula\ModulesBundle\ModuleAwareTraceableEventDispatcher</parameter>
+         <parameter key="event_dispatcher.class">Zikula\ModuleBundle\ModuleAwareEventDispatcher</parameter>
+         <parameter key="debug.event_dispatcher.class">Zikula\ModuleBundle\ModuleAwareTraceableEventDispatcher</parameter>
     </parameters>
 
     <services>
-        <service id="zikula_modules.routing.loader" class="Zikula\ModulesBundle\ZikulaModuleRoutesLoader" public="false">
+        <service id="zikula_modules.routing.loader" class="Zikula\ModuleBundle\ZikulaModuleRoutesLoader" public="false">
             <tag name="routing.loader" />
             <argument type="service" id="kernel" />
         </service>
         
-        <service id="zikula.modules.storage" class="Zikula\ModulesBundle\ModuleService\DoctrineStorage" public="false">
+        <service id="zikula.modules.storage" class="Zikula\ModuleBundle\ModuleService\DoctrineStorage" public="false">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
         
-        <service id="zikula.modules" class="Zikula\ModulesBundle\DefaultModuleService">
+        <service id="zikula.modules" class="Zikula\ModuleBundle\DefaultModuleService">
             <argument type="service" id="zikula.modules.storage" />
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
         
-        <service id="zikula.controller.resolver" class="Zikula\ModulesBundle\ModuleAwareControllerResolver" public="false">
+        <service id="zikula.controller.resolver" class="Zikula\ModuleBundle\ModuleAwareControllerResolver" public="false">
             <argument type="service" id="controller_resolver" />
             <argument type="service" id="kernel" />
         </service>

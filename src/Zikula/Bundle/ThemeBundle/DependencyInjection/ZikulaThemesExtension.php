@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ThemesBundle\DependencyInjection;
+namespace Zikula\ThemeBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

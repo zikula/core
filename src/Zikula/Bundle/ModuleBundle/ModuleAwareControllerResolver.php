@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModulesBundle;
+namespace Zikula\ModuleBundle;
 
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModulesBundle;
+namespace Zikula\ModuleBundle;
 
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\ConfigCache;
@@ -131,7 +131,7 @@ abstract class ZikulaKernel extends Kernel{
         foreach($dirs as $dir) {
             $class = sprintf('%s\\%sModule', $dir->getFilename(), $dir->getFilename());
             
-            if(!is_subclass_of($class, 'Zikula\ModulesBundle\ZikulaModule')) {
+            if(!is_subclass_of($class, 'Zikula\ModuleBundle\ZikulaModule')) {
                 throw new Exception\InvalidModuleStructureException($dir->getFilename(). ' # '. $class);
             }
             

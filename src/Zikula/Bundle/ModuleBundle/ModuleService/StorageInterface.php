@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModulesBundle\ModuleService;
+namespace Zikula\ModuleBundle\ModuleService;
 
 /**
  * Interface of module metadata storages.
@@ -8,17 +8,17 @@ namespace Zikula\ModulesBundle\ModuleService;
 interface StorageInterface
 {
     /**
-     * @return \Zikula\ModulesBundle\Entity\Module[]
+     * @return \Zikula\ModuleBundle\Entity\Module[]
      */
     public function getAll();
     
     /**
-     * @return \Zikula\ModulesBundle\Entity\Module
+     * @return \Zikula\ModuleBundle\Entity\Module
      */
     public function get($id);
     
-    public function insert(\Zikula\ModulesBundle\Entity\Module $module);
+    public function insert(\Zikula\ModuleBundle\Entity\Module $module);
     
-    public function update(\Zikula\ModulesBundle\Entity\Module $module);
+    public function update(\Zikula\ModuleBundle\Entity\Module $module);
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ThemesBundle\Tests\Controller;
+namespace Zikula\ThemeBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

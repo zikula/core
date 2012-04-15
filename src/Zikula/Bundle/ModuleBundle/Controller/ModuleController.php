@@ -1,13 +1,13 @@
 <?php
 
-namespace Zikula\ModulesBundle\Controller;
+namespace Zikula\ModuleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Zikula\ModulesBundle\Entity\Module;
-use Zikula\ModulesBundle\Form\ModuleType;
+use Zikula\ModuleBundle\Entity\Module;
+use Zikula\ModuleBundle\Form\ModuleType;
 
 /**
  * Module controller.

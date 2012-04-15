@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ThemesBundle\EventListener;
+namespace Zikula\ThemeBundle\EventListener;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
