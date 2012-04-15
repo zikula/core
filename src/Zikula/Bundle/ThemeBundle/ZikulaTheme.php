@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ThemesBundle;
+namespace Zikula\ThemeBundle;
 
 /**
  *

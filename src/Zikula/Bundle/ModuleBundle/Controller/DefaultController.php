@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModulesBundle\Controller;
+namespace Zikula\ModuleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

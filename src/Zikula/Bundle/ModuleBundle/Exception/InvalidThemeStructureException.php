@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModulesBundle\Exception;
+namespace Zikula\ModuleBundle\Exception;
 
 /**
  *

@@ -1,11 +1,11 @@
 <?php
 
-namespace Zikula\ModulesBundle\Entity;
+namespace Zikula\ModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Zikula\ModulesBundle\Entity\Module
+ * Zikula\ModuleBundle\Entity\Module
  *
  * @ORM\Table()
  * @ORM\Entity
