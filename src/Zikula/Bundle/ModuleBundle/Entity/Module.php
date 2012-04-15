@@ -2,7 +2,7 @@
 
 namespace Zikula\ModuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM; 
 
 /**
  * Zikula\ModuleBundle\Entity\Module
@@ -16,7 +16,7 @@ class Module
     const STATE_ACTIVE = 1;
     const STATE_INACTIVE = 2;
     const STATE_NEED_UPGRADE = 3;
-    
+
     /**
      * @var integer $id
      *
@@ -39,7 +39,7 @@ class Module
      * @ORM\Column(name="state", type="smallint")
      */
     private $state;
-    
+
     /**
      * @var string $class
      *
@@ -52,7 +52,7 @@ class Module
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -72,7 +72,7 @@ class Module
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -92,7 +92,7 @@ class Module
     /**
      * Get state
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getState()
     {
@@ -112,7 +112,7 @@ class Module
     /**
      * Get version
      *
-     * @return string 
+     * @return string
      */
     public function getVersion()
     {

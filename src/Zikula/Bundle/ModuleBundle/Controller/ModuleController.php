@@ -49,8 +49,8 @@ class ModuleController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        );
+            'entity' => $entity,
+            'delete_form' => $deleteForm->createView(),);
     }
 
     /**
@@ -73,8 +73,8 @@ class ModuleController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -96,7 +96,7 @@ class ModuleController extends Controller
             throw $this->createNotFoundException('Unable to find Module entity.');
         }
 
-        $editForm   = $this->createForm(new ModuleType(), $entity);
+        $editForm = $this->createForm(new ModuleType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         $request = $this->getRequest();
@@ -110,8 +110,8 @@ class ModuleController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -147,8 +147,8 @@ class ModuleController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
+                ->add('id', 'hidden')
+                ->getForm()
         ;
     }
 }

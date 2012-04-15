@@ -2,23 +2,24 @@
 
 namespace Zikula\ModuleBundle\ModuleService;
 
+use Zikula\ModuleBundle\Entity\Module;
+
 /**
  * Interface of module metadata storages.
  */
 interface StorageInterface
 {
     /**
-     * @return \Zikula\ModuleBundle\Entity\Module[]
+     * @return Module
      */
     public function getAll();
-    
+
     /**
-     * @return \Zikula\ModuleBundle\Entity\Module
+     * @return Module
      */
     public function get($id);
-    
-    public function insert(\Zikula\ModuleBundle\Entity\Module $module);
-    
-    public function update(\Zikula\ModuleBundle\Entity\Module $module);
-}
 
+    public function insert(Module $module);
+
+    public function update(Module $module);
+}
