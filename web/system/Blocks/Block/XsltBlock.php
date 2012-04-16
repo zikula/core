@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_XsltBlock extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil;
+
+class XsltBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
@@ -59,8 +64,8 @@ class Blocks_Block_XsltBlock extends Zikula_Controller_AbstractBlock
         }
 
         // create new objects
-        $doc = new DOMDocument();
-        $xsl = new XSLTProcessor();
+        $doc = new \DOMDocument();
+        $xsl = new \XSLTProcessor();
 
         // load stylesheet
         if (isset($vars['styleurl']) && !empty($vars['styleurl'])) {
@@ -94,7 +99,7 @@ class Blocks_Block_XsltBlock extends Zikula_Controller_AbstractBlock
         // Get our block vars
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         // assign our block vars
         $this->view->assign($vars);

@@ -12,6 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Api;
+
+use ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use UserUtil;
+use Blocks\MenutreeUtil;
+
 class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 {
     /**
@@ -55,7 +61,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         $links = array();
@@ -212,7 +218,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
 
         // load plugin language file
         pnModLangLoad('menutree','externalapi_blank');
@@ -302,7 +308,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $extrainfo['groupby'] = isset($extrainfo['groupby'])? $extrainfo['groupby'] : 'menuitem';
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         $links = array();
@@ -391,7 +397,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         $links = array();
@@ -477,7 +483,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $extrainfo['links'] = isset($extrainfo['links'])? explode(',',$extrainfo['links']) : array('all');
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         // load plugin language file
@@ -565,9 +571,6 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                 );
             }
             $catParentNode = !$extrainfo['flat'] ? $links['cat'][$lang]['id'] : $item['parent'];
-
-            Loader::loadClass('CategoryRegistryUtil');
-            Loader::loadClass('CategoryUtil');
 
             $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories ('News', 'stories');
             if(!empty($catregistry)) {
@@ -672,7 +675,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         // module config
@@ -749,7 +752,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
             $request = $this->container->get('request');
 
             $loginArgs = array();
-            if ($request->isGet()) {
+            if ($request->isMethod('GET')) {
                 $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
             }
             $links['login'] = array(

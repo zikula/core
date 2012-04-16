@@ -12,7 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Controller_UserController extends Zikula_AbstractController
+namespace Categories\Controller;
+
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use StringUtil, System, Zikula_View;
+use Categories\DBObject\Category;
+use Categories\Installer;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * main user function
@@ -28,7 +35,7 @@ class Categories_Controller_UserController extends Zikula_AbstractController
             $this->request->getSession()->set('categories_referer', $referer);
         }
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
         return $this->response($this->view->fetch('categories_user_editcategories.tpl'));
@@ -118,7 +125,7 @@ class Categories_Controller_UserController extends Zikula_AbstractController
 
         $languages = ZLanguage::getInstalledLanguages();
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         return $this->response($this->view->assign('rootCat', $rootCat)
                     ->assign('category', $editCat)
@@ -126,7 +133,7 @@ class Categories_Controller_UserController extends Zikula_AbstractController
                     ->assign('allCats', $allCats)
                     ->assign('languages', $languages)
                     ->assign('userlanguage', ZLanguage::getLanguageCode())
-                    ->assign('referer', SessionUtil::getVar('categories_referer'))
+                    ->assign('referer', \SessionUtil::getVar('categories_referer'))
                     ->fetch('categories_user_edit.tpl'));
     }
 
@@ -177,7 +184,7 @@ class Categories_Controller_UserController extends Zikula_AbstractController
                 return LogUtil::registerError($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
             }
 
-            $installer = new Categories_Installer(ServiceUtil::getManager());
+            $installer = new Installer($this->getContainer);
             $cat = array('id' => '',
                     'parent_id' => $userRootCat['id'],
                     'name' => $userCatName,
@@ -187,7 +194,7 @@ class Categories_Controller_UserController extends Zikula_AbstractController
                     'path' => $thisUserRootCatPath,
                     'status' => 'A');
 
-            $obj = new Categories_DBObject_Category();
+            $obj = new Category();
             $obj->setData($cat);
             $obj->insert();
             // since the original insert can't construct the ipath (since

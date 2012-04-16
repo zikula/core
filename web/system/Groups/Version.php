@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Version extends Zikula_AbstractVersion
+namespace Groups;
+
+class Version extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {

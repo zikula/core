@@ -12,12 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Controller;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
+use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Exception_BadData;
+use Blocks\Entity\BlockPlacement;
+
 /**
  * Blocks_Controller_User class.
  */
-class Blocks_Controller_UserController extends Zikula_AbstractController
+class UserController extends \Zikula_AbstractController
 {
-
     /**
      * The main blocks user function.
      *

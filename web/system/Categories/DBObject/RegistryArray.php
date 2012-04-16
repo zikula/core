@@ -12,6 +12,10 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\DBObject;
+
+use DBObjectArray;
+
 /**
  * CategoryRegistryArray
  */

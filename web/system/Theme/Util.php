@@ -12,12 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Theme;
+
+use FileUtil, CacheUtil, ModUtil, ServiceUtil, LogUtil, ThemeUtil;
+
 /**
  * Theme_Util class.
  */
-class Theme_Util
+class Util
 {
-
     /**
      * Regenerates the theme list.
      */
@@ -108,7 +111,7 @@ class Theme_Util
                 $themeinfo['state'] = ThemeUtil::STATE_ACTIVE;
 
                 // add item to db
-                $item = new Theme\Entity\Theme;
+                $item = new \Theme\Entity\Theme;
                 $item->merge($themeinfo);
                 $entityManager->persist($item);
             }

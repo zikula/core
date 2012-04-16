@@ -12,12 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Groups\Api;
+
 use Zikula\Core\Event\GenericEvent;
+use LogUtil, SecurityUtil, ModUtil, UserUtil, System;
+use Groups\Entity\Group;
+use Groups\Entity\GroupMembership;
+use Groups\Helper\CommonHelper;
 
 /**
  * Groups_Api_Admin class.
  */
-class Groups_Api_AdminApi extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
 
     /**
@@ -36,10 +42,10 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         // Setting defaults
         if (!isset($args['gtype'])) {
-            $args['gtype'] = Groups_Helper_Common::GTYPE_CORE;
+            $args['gtype'] = CommonHelper::GTYPE_CORE;
         }
         if (!isset($args['state'])) {
-            $args['state'] = Groups_Helper_Common::STATE_CLOSED;
+            $args['state'] = CommonHelper::STATE_CLOSED;
         }
 
         // Security check
@@ -48,7 +54,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Add item
-        $obj = new Groups\Entity\Group;
+        $obj = new Group;
         $obj['name'] = $args['name'];
         $obj['gtype'] = $args['gtype'];
         $obj['state'] = $args['state'];
@@ -176,10 +182,10 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
 
         // Setting defaults
         if (!isset($args['gtype'])) {
-            $args['gtype'] = Groups_Helper_Common::GTYPE_CORE;
+            $args['gtype'] = CommonHelper::GTYPE_CORE;
         }
         if (!isset($args['state'])) {
-            $args['state'] = Groups_Helper_Common::STATE_CLOSED;
+            $args['state'] = CommonHelper::STATE_CLOSED;
         }
 
         // Update the item
@@ -222,7 +228,7 @@ class Groups_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Add user to group
-        $membership = new Groups\Entity\GroupMembership;
+        $membership = new GroupMembership;
         $membership['gid'] = $args['gid'];
         $membership['uid'] = $args['uid'];
         $this->entityManager->persist($membership);

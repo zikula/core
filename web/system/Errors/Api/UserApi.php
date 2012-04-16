@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Errors\Api;
+
+use System;
+use Zikula\Core\Core;
+
 /**
  * Errors_Api_User class.
  */
-class Errors_Api_UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * This function e-mails the site administrator with an error.
@@ -45,7 +50,7 @@ class Errors_Api_UserApi extends Zikula_AbstractApi
         $body .= "REQUEST\n-- Host: " . System::serverGetVar('HTTP_HOST') . "\n-- Query String: " . System::serverGetVar('REDIRECT_QUERY_STRING') . "\n";
         $body .= "-- Method: " . System::serverGetVar('$REQUEST_METHOD') . "\n\n";
         $body .= "USER\n-- Host: " . System::serverGetVar('REMOTE_HOST') . "\n-- IP: " . System::serverGetVar('REMOTE_ADDR') . "\n-- User: " . System::serverGetVar('REMOTE_USER') . "\n-- Agent: " . System::serverGetVar('HTTP_USER_AGENT') . "\n-- Cookies: " . System::serverGetVar('HTTP_COOKIE') . "\n\n";
-        $body .= "Envolution\n-- version: " . Zikula_Core::VERSION_NUM;
+        $body .= "Envolution\n-- version: " . Core::VERSION_NUM;
 
         // Send the mail message.
         System::mail($adminmail, $headers, $body);

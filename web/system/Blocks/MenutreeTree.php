@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks;
+
+use PageUtil, DataUtil, ModUtil;
+
 /**
  * Zikula_Tree class.
  */
-class  Blocks_MenutreeTree extends Zikula_Tree
+class  MenutreeTree extends \Zikula_Tree
 {
     /**
      * Constructor.

@@ -12,11 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData\Validator;
+
 /**
  * Validates that a field's data is compatible with an integer numeric type.
  */
-class Users_Controller_FormData_Validator_IntegerNumericType extends Users_Controller_FormData_Validator_AbstractValidator {
-    
+class IntegerNumericType extends AbstractValidator
+{
     /**
      * Validates that the specified data is an integer or an integer numeric string.
      *

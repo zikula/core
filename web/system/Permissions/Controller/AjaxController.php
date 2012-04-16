@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+namespace Permissions\Controller;
+
+use SecurityUtil, ModUtil, DataUtil, UserUtil;
+use Zikula_Response_Ajax, Zikula_Exception_Fatal;
+
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a permission rule in the database
@@ -82,7 +87,6 @@ class Permissions_Controller_AjaxController extends Zikula_Controller_AbstractAj
     }
 
     /**
-     *
      * @param permorder array of sorted permissions (value = permission id)
      * @return mixed true or Ajax error
      */
@@ -125,7 +129,7 @@ class Permissions_Controller_AjaxController extends Zikula_Controller_AbstractAj
 
         $newperm = ModUtil::apiFunc('Permissions', 'admin', 'create', $dummyperm);
         if ($newperm == false) {
-            AjaxUtil::error($this->__('Error! Could not create new permission rule.'));
+            return new \Zikula_Response_Ajax_Fatal($this->__('Error! Could not create new permission rule.'));
         }
 
         $accesslevels = SecurityUtil::accesslevelnames();
@@ -141,7 +145,6 @@ class Permissions_Controller_AjaxController extends Zikula_Controller_AbstractAj
     /**
      * Delete a permission
      *
-     * @param pid the permission id
      * @return mixed the id of the permission that has been deleted or Ajax error
      */
     public function deletepermissionAction()
@@ -172,10 +175,6 @@ class Permissions_Controller_AjaxController extends Zikula_Controller_AbstractAj
     /**
      * Test a permission rule for a given username
      *
-     * @param test_user the username
-     * @param test_component the component
-     * @param test_instance the instance
-     * @param test_level the accesslevel
      * @return string with test result for display
      */
     public function testpermissionAction()

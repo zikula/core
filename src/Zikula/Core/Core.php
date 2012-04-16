@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Users\Constants as UsersConstant;
 
 
 // Defines for access levels
@@ -110,7 +111,7 @@ class Core
     /**
      * EventDispatcher.
      *
-     * @var EventDispatcher
+     * @var ContainerAwareEventDispatcher
      */
     protected $dispatcher;
 
@@ -147,7 +148,7 @@ class Core
     /**
      * Getter for servicemanager property.
      *
-     * @return ContaineBuilder
+     * @return ContainerBuilder
      */
     public function getContainer()
     {
@@ -157,7 +158,7 @@ class Core
     /**
      * Getter for eventmanager property.
      *
-     * @return EventDispatcher
+     * @return ContainerAwareEventDispatcher
      */
     public function getDispatcher()
     {
@@ -434,6 +435,7 @@ class Core
             if (!\System::isInstalling()) {
                 \ModUtil::registerAutoloaders();
             }
+
             $coreInitEvent->setArg('stage', self::STAGE_TABLES);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
@@ -501,7 +503,7 @@ class Core
         // check the users status, if not 1 then log him out
         if (\UserUtil::isLoggedIn()) {
             $userstatus = \UserUtil::getVar('activated');
-            if ($userstatus != \Users_Constant::ACTIVATED_ACTIVE) {
+            if ($userstatus != UsersConstant::ACTIVATED_ACTIVE) {
                 \UserUtil::logout();
                 // TODO - When getting logged out this way, the existing session is destroyed and
                 //        then a new one is created on the reentry into index.php. The message

@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Block_RenderBlock extends Zikula_Controller_AbstractBlock
+namespace Theme\Block;
+
+use Zikula_View, SecurityUtil, ModUtil, LogUtil, BlockUtil, Zikula_View_Theme;
+
+class RenderBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * Module to render.

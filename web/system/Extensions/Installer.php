@@ -12,9 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions;
+
+use Zikula\Core\Event\GenericEvent;
+use Zikula_View, SecurityUtil, HookUtil, LogUtil, EventUtil;
 use Zikula\Core\Event\GenericEvent;
 
-class Extensions_Installer extends Zikula_AbstractInstaller
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * Install the Extensions module.
@@ -31,13 +35,14 @@ class Extensions_Installer extends Zikula_AbstractInstaller
         );
         
         try {
-            DoctrineHelper::createSchema($this->entityManager, $tables);
+            \DoctrineHelper::createSchema($this->entityManager, $tables);
         } catch (Exception $e) {
             return false;
         }
 
         // create hook provider table.
-        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
+        \Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea',
+            'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
         EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
         EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
 
@@ -67,14 +72,15 @@ class Extensions_Installer extends Zikula_AbstractInstaller
             case '3.6':
             case '3.7':
                 // legacy is no longer supported
-                System::delVar('loadlegacy');
-                DBUtil::changeTable('modules');
+                \System::delVar('loadlegacy');
+                \DBUtil::changeTable('modules');
             case '3.7.4':
             case '3.7.5':
             case '3.7.6':
             case '3.7.8':
                 // create the new hooks tables
-                Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
+                \Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea',
+                    'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
                 EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
                 EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
             case '3.7.9':
@@ -124,13 +130,13 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $version = new Extensions_Version();
+        $version = new Version();
         $meta = $version->toArray();
-        $meta['state'] = ModUtil::STATE_ACTIVE;
+        $meta['state'] = \ModUtil::STATE_ACTIVE;
         
         unset($meta['dependencies']);
         
-        $item = new Zikula\Core\Doctrine\Entity\Extension();
+        $item = new \Zikula\Core\Doctrine\Entity\Extension();
         $item->merge($meta);
         
         $this->entityManager->persist($item);

@@ -12,49 +12,41 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Util
+namespace Extensions;
+
+use LogUtil, System;
+use Zikula_AbstractErrorHandler;
+use Zikula_AbstractVersion;
+
+class Util
 {
     /**
      * Get version metadata for a module.
      *
      * @param string $moduleName Module Name.
-     * @param string $rootdir    Root directory of the module (default: modules).
      *
      * @return Zikula_AbstractVersion|array
      */
-    public static function getVersionMeta($moduleName, $rootdir = 'modules')
+    public static function getVersionMeta($moduleName)
     {
         $modversion = array();
 
-        $class = "{$moduleName}_Version";
+        $class = "{$moduleName}\Version";
         if (class_exists($class)) {
             try {
                 $modversion = new $class();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_AbstractErrorHandler::CRIT);
-                throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
+                throw new \InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class,
+                    $e->getMessage())), 0, $e);
             }
-            if (!$modversion instanceof Zikula_AbstractVersion) {
-                LogUtil::registerError(__f('%s is not an instance of Zikula_AbstractVersion', get_class($modversion)));
+            if (!$modversion instanceof \Zikula_AbstractVersion) {
+                LogUtil::registerError(__f('%s is not an instance of Zikula\Framework\AbstractVersion',
+                    get_class($modversion)));
             }
-        } elseif (is_dir("$rootdir/$moduleName/lib")) {
-            LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
         } else {
-            // pre 1.3 modules
-            $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
-            if (!file_exists($legacyVersionPath)) {
-                if (!System::isUpgrading()) {
-                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
-                    LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
-                }
-                $modversion = array(
-                    'name' => $moduleName,
-                    'description' => '',
-                    'version' => 0
-                );
-            } else {
-                include $legacyVersionPath;
-            }
+            LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}\Version",
+                $moduleName)));
         }
 
         return $modversion;

@@ -13,19 +13,23 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Listener;
+
 use Zikula\Core\Event\GenericEvent;
+use Users\Constants as UsersConstant;
+use UserUtil, LogUtil;
 
 /**
  * Persistent event listener for user.login.veto events that forces the change of a user's password.
  */
-class Users_Listener_ForcedPasswordChange
+class ForcedPasswordChangeListener
 {
     /**
      * The module name.
      *
      * @var string
      */
-    protected static $modname = Users_Constant::MODNAME;
+    protected static $modname = UsersConstant::MODNAME;
 
     /**
      * Vetos (denies) a login attempt, and forces the user to change his password.
@@ -47,7 +51,7 @@ class Users_Listener_ForcedPasswordChange
 
         $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $userObj['uid'], false);
 
-        if ($userMustChangePassword && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
+        if ($userMustChangePassword && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
             $event->stopPropagation();
             $event->setData(array(
                 'redirect_func'  => array(

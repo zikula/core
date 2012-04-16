@@ -12,8 +12,11 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Api;
 
-class Categories_Api_AccountApi extends Zikula_AbstractApi
+use SecurityUtil, System, ModUtil;
+
+class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.

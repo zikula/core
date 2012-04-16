@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Installer extends Zikula_AbstractInstaller
+namespace Admin;
+
+use DoctrineHelper, DBUtil;
+use Admin\Entity\AdminCategory;
+
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the Admin module.
@@ -26,7 +31,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
         // create tables
         try {
             DoctrineHelper::createSchema($this->entityManager, array('Admin\Entity\AdminCategory', 'Admin\Entity\AdminModule'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -105,7 +110,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
         // drop tables
         try {
             DoctrineHelper::dropSchema($this->entityManager, array('Admin\Entity\AdminCategory', 'Admin\Entity\AdminModule'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -140,7 +145,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
                           'description' => $this->__('Modules for managing the site\'s security.')));
 
         foreach ($records as $record) {
-            $item = new Admin\Entity\AdminCategory;
+            $item = new AdminCategory;
             $item->merge($record);
             $this->entityManager->persist($item);
         }

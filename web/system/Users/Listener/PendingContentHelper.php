@@ -13,19 +13,23 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Listener;
+
 use Zikula\Core\Event\GenericEvent;
+use Users\Constants as UsersConstant;
+use ModUtil, SecurityUtil, LogUtil;
 
 /**
  * Persistent event listener for pending content queries.
  */
-class Users_Listener_PendingContent
+class PendingContentListener
 {
     /**
      * The module name.
      *
      * @var string
      */
-    protected static $modname = Users_Constant::MODNAME;
+    protected static $modname = UsersConstant::MODNAME;
 
     /**
      * Respond to 'get.pending_content' events with registration requests pending approval.
@@ -56,16 +60,17 @@ class Users_Listener_PendingContent
     public static function pendingContentListener(GenericEvent $event)
     {
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', Users_Constant::APPROVAL_ANY);
-            if ($approvalOrder == Users_Constant::APPROVAL_AFTER) {
+            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', UsersConstant::APPROVAL_ANY);
+            if ($approvalOrder == UsersConstant::APPROVAL_AFTER) {
                 $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0, 'isverified' => true)));
             } else {
                 $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0)));
             }
 
             if (!empty($numPendingApproval)) {
-                $collection = new Zikula_Collection_Container(self::$modname);
-                $collection->add(new Zikula_Provider_AggregateItem('registrations', __('Registrations pending approval'), $numPendingApproval, 'admin', 'viewRegistrations'));
+                $collection = new \Zikula_Collection_Container(self::$modname);
+                $collection->add(new \Zikula_Provider_AggregateItem('registrations',
+                    __('Registrations pending approval'), $numPendingApproval, 'admin', 'viewRegistrations'));
                 $event->getSubject()->add($collection);
             }
         }

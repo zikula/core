@@ -12,17 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData;
+
+use ServiceUtil;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * One field in a form data container.
  */
-class Users_Controller_FormData_Field extends Zikula_AbstractBase
+class Field extends \Zikula_AbstractBase
 {
     /**
      * A reference back to the parent form data container.
      *
-     * @var Users_Controller_FormData_AbstractFormData
+     * @var AbstractFormData
      */
     private $formContainer;
 
@@ -85,15 +88,16 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
     /**
      * Build a new form data container field.
      *
-     * @param Users_Controller_FormData_AbstractFormData $formContainer  The parent form data container.
+     * @param AbstractFormData $formContainer  The parent form data container.
      * @param string                                     $fieldName      The name of the field.
      * @param mixed                                      $initialValue   The initial value of the field.
      * @param mixed                                      $defaultValue   The defaule value for the field.
      * @param ContainerBuilder                             $container The current service manager instance.
      *
-     * @throws InvalidArgumentException Thrown if any of the parameters are not valid.
+     * @throws \InvalidArgumentException Thrown if any of the parameters are not valid.
      */
-    public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, \Zikula\Component\DependecyInjection\ContainerBuilder $container = null)
+    public function __construct(AbstractFormData $formContainer, $fieldName, $initialValue = null,
+                                $defaultValue = null, ContainerBuilder $container = null)
     {
         if (!isset($container)) {
             $container = ServiceUtil::getManager();
@@ -101,16 +105,17 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
         parent::__construct($container);
 
         if (!isset($formContainer)) {
-            throw new InvalidArgumentException($this->__f('Invalid formn container.'));
+            throw new \InvalidArgumentException($this->__('Invalid formn container.'));
         } else {
             $this->formContainer = $formContainer;
         }
 
         $fieldName = trim($fieldName);
         if (!isset($fieldName) || !is_string($fieldName) || empty($fieldName)) {
-            throw new InvalidArgumentException($this->__f('Invalid field name: \'%1$s\'.', array($fieldName)));
+            throw new \InvalidArgumentException($this->__f('Invalid field name: \'%1$s\'.', array($fieldName)));
         } elseif (!preg_match('/^[a-zA-Z][a-zA-Z0-9_\x7f-\xff]*(\[(\d+|[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\])*$/', $fieldName)) {
-            throw new InvalidArgumentException($this->__f('The field name \'%1$s\' contains invalid characters.', array($fieldName)));
+            throw new \InvalidArgumentException($this->__f('The field name \'%1$s\' contains invalid characters.',
+                array($fieldName)));
         } else {
             $this->fieldName = $fieldName;
             $this->fieldId = preg_replace('/[^a-z0-9_]/', '_', mb_strtolower($fieldName));
@@ -126,7 +131,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
     /**
      * Retrieve the parent form data container.
      *
-     * @return Users_Controller_FormData_AbstractFormData The form data container that owns this field.
+     * @return AbstractFormData The form data container that owns this field.
      */
     public function getFormContainer()
     {
@@ -140,14 +145,15 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      *
      * @return mixed The value of the specified property.
      *
-     * @throws OutOfBoundsException Thrown if the specified name does not exist, the corresponding property does not have an accessor, or the specified name is invalid.
+     * @throws \OutOfBoundsException Thrown if the specified name does not exist, the corresponding property does not
+     * have an accessor, or the specified name is invalid.
      */
     public function __get($name)
     {
         $returnValue = false;
 
         if (!isset($name) || empty($name)) {
-            throw new OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
+            throw new \OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
         } else {
             $methodName = 'get' . ucFirst($name);
             if (method_exists($this, $methodName)) {
@@ -157,7 +163,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
                 if (method_exists($this, $methodName)) {
                     $returnValue = $this->$methodName();
                 } else {
-                    throw new OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
+                    throw new \OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
                 }
             }
         }
@@ -172,20 +178,21 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      *
      * @return boolean True if the property exists, provides an accessor, and is not null.
      *
-     * @throws OutOfBoundsException Thrown if the specified name does not exist, the corresponding property does not have an accessor, or the specified name is invalid.
+     * @throws \OutOfBoundsException Thrown if the specified name does not exist, the corresponding property does not
+     * have an accessor, or the specified name is invalid.
      */
     public function __isset($name)
     {
         $returnValue = false;
 
         if (!isset($name) || empty($name) || ($name[0] == '_')) {
-            throw new OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
+            throw new \OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
         } else {
             $methodName = 'get' . ucFirst($name);
             if (method_exists($this, $methodName)) {
                 $returnValue = isset($this->$name);
             } else {
-                throw new OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
+                throw new \OutOfBoundsException($this->__f('Invalid field name: \'%1$s\'', array($name)));
             }
         }
 
@@ -237,16 +244,17 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      *
      * @param boolean $isNullAllowed True if null values are valid for this field, otherwise false.
      *
-     * @return Users_Controller_FormData_Field Returns $this to allow for function chaining.
+     * @return Field Returns $this to allow for function chaining.
      *
-     * @throws InvalidArgumentException Thrown if the value of the parameter is not a boolean value.
+     * @throws \InvalidArgumentException Thrown if the value of the parameter is not a boolean value.
      */
     public function setNullAllowed($isNullAllowed)
     {
         if (is_bool($isNullAllowed)) {
             $this->nullAllowed = $isNullAllowed;
         } else {
-            throw new InvalidArgumentException($this->__('The value supplied for the $isNullAllowed parameter is not a boolean.'));
+            throw new \InvalidArgumentException($this->__('The value supplied for the $isNullAllowed parameter is not
+             a boolean.'));
         }
 
         return $this;
@@ -267,11 +275,12 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      *
      * This can be called multiple times to add a chain of several validators.
      *
-     * @param Users_Controller_FormData_Validator_AbstractValidator $validator The validator to be attached to this field for validation of its data.
+     * @param Validator\AbstractValidator $validator The validator to be attached to this field for validation of its
+     * data.
      *
-     * @return Users_Controller_FormData_Field Returns $this to allow function chaining.
+     * @return Field Returns $this to allow function chaining.
      */
-    public function addValidator(Users_Controller_FormData_Validator_AbstractValidator $validator)
+    public function addValidator(Validator\AbstractValidator $validator)
     {
         $this->validators[] = $validator;
 

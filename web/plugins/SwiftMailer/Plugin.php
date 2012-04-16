@@ -52,7 +52,7 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         define('SWIFT_INIT_LOADED', true);
 
         // register namespace
-        \ZLoader::addAutoloader('Swift', __DIR__.'/../../../vendor/swiftmailer/swiftmailer/lib/classes');
+        \ZLoader::addAutoloader('Swift', __DIR__.'/../../../vendor/swiftmailer/swiftmailer/lib/classes', '_');
 
         $basePath = realpath(__DIR__.'/../../../vendor/swiftmailer/swiftmailer/lib');
 
@@ -64,6 +64,8 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
         require_once $basePath . '/dependency_maps/transport_deps.php';
 
         // load configuration (todo: move this to persistence).
+        // this include provides the following $config array.
+        /* @var array $config */
         include __DIR__ . '/configuration/config.php';
 
         $this->container['swiftmailer.preferences.sendmethod'] = $config['sendmethod'];

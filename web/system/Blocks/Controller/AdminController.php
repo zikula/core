@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Controller;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
+
 /**
  * Blocks_Controller_Admin class.
  */
-class Blocks_Controller_AdminController extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -373,7 +378,7 @@ class Blocks_Controller_AdminController extends Zikula_AbstractController
         }
 
         // Do block-specific update
-        if ($blockObj instanceof Zikula_Controller_AbstractBlock) {
+        if ($blockObj instanceof \Zikula_Controller_AbstractBlock) {
             $blockinfo = call_user_func(array($blockObj, 'update'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);

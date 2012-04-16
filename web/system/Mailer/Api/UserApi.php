@@ -12,39 +12,42 @@
  * information regarding copyright and licensing.
  */
 
+namespace Mailer\Api;
+
+use SecurityUtil, ModUtil, System, LogUtil;
 use Zikula\Core\Event\GenericEvent;
 
-class Mailer_Api_UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * API function to send e-mail message
-     * @param string args['fromname'] name of the sender
-     * @param string args['fromaddress'] address of the sender
-     * @param string args['toname '] name to the recipient
-     * @param string args['toaddress'] the address of the recipient
-     * @param string args['replytoname '] name to reply to
-     * @param string args['replytoaddress'] address to reply to
-     * @param string args['subject'] message subject
-     * @param string args['contenttype '] optional contenttype of the mail (default config)
-     * @param string args['charset'] optional charset of the mail (default config)
-     * @param string args['encoding'] optional mail encoding (default config)
-     * @param string args['body'] message body, if altbody is provided then this
+     * @param string $args['fromname'] name of the sender
+     * @param string $args['fromaddress'] address of the sender
+     * @param string $args['toname '] name to the recipient
+     * @param string $args['toaddress'] the address of the recipient
+     * @param string $args['replytoname '] name to reply to
+     * @param string $args['replytoaddress'] address to reply to
+     * @param string $args['subject'] message subject
+     * @param string $args['contenttype '] optional contenttype of the mail (default config)
+     * @param string $args['charset'] optional charset of the mail (default config)
+     * @param string $args['encoding'] optional mail encoding (default config)
+     * @param string $args['body'] message body, if altbody is provided then this
      *                  is the HTML version of the body
-     * @param string args['altbody'] alternative plain-text message body, if
+     * @param string $args['altbody'] alternative plain-text message body, if
      *                  specified the e-mail will be sent as multipart/alternative
-     * @param array  args['cc'] addresses to add to the cc list
-     * @param array  args['bcc'] addresses to add to the bcc list
-     * @param array|string args['headers'] custom headers to add
-     * @param int args['html'] HTML flag, if altbody is not specified then this
+     * @param array  $args['cc'] addresses to add to the cc list
+     * @param array  $args['bcc'] addresses to add to the bcc list
+     * @param array|string $args['headers'] custom headers to add
+     * @param int $args['html'] HTML flag, if altbody is not specified then this
      *                  indicates whether body contains HTML or not; if altbody is
      *                  specified, then this value is ignored, the body is assumed
      *                  to be HTML, and the altbody is assumed to be plain text
-     * @param array args['attachments'] array of either absolute filenames to attach
+     * @param array $args['attachments'] array of either absolute filenames to attach
      *                  to the mail or array of arays in format
      *                  array($string,$filename,$encoding,$type)
-     * @param array args['stringattachments'] array of arrays to treat as attachments,
+     * @param array $args['stringattachments'] array of arrays to treat as attachments,
      *                  format array($string,$filename,$encoding,$type)
-     * @param array args['embeddedimages'] array of absolute filenames to image files
+     * @param array $args['embeddedimages'] array of absolute filenames to image files
      *                  to embed in the mail
      * @todo Loading of language file based on Zikula language
      * @return bool true if successful, false otherwise
@@ -59,10 +62,10 @@ class Mailer_Api_UserApi extends Zikula_AbstractApi
         }
 
         // include php mailer class file
-        require_once "system/Mailer/lib/vendor/class.phpmailer.php";
+        require_once \ZIKULA_ROOT."/system/Mailer/lib/vendor/class.phpmailer.php";
 
         // create new instance of mailer class
-        $mail = new PHPMailer();
+        $mail = new \PHPMailer();
 
         // set default message parameters
         $mail->PluginDir = "system/Mailer/lib/vendor/";

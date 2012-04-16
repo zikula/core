@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Block;
+
+use SecurityUtil, BlockUtil, UserUtil;
+
 /**
  * A user-customizable block.
  */
-class Users_Block_UserBlock extends Zikula_Controller_AbstractBlock
+class UserBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise block.

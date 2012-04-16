@@ -12,12 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions\Api;
+
+use LogUtil, SecurityUtil, ModUtil, System, DataUtil, ZLoader, ZLanguage, HookUtil, EventUtil, PluginUtil;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Core;
+use Zikula\Core\Doctrine\Entity\Extension;
+use Extensions\Util;
 
 /**
  * Administrative API functions for the Extensions module.
  */
-class Extensions_Api_AdminApi extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Update module information.
@@ -78,6 +84,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         // Rename operation
+        /* @var Extension $entity */
         $entity = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\Extension')->findOneBy(array('id' => $args['id']));
         $entity->setDisplayname($args['displayname']);
         $entity->setDescription($args['description']);
@@ -293,7 +300,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         ZLoader::addModule($osdir, $modpath);
 
-        $version = Extensions_Util::getVersionMeta($osdir, $modpath);
+        $version = Util::getVersionMeta($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -301,7 +308,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale") || is_dir("modules/$osdir/Resources/locale")) {
+            if (is_dir("modules/$osdir/Resources/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -311,18 +318,20 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            $className = ucwords($modinfo['name']) . '_Installer';
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+            $className = ucwords($modinfo['name']) . '\Installer';
+            $reflectionInstaller = new \ReflectionClass($className);
+            if (!$reflectionInstaller->isSubclassOf('Zikula\Framework\AbstractInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula\Framework\AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($this->container));
             $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
-                $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
+                $reflectionInteractive = new \ReflectionClass($interactiveClass);
+                if (!$reflectionInteractive->isSubclassOf('Zikula\Framework\Controller\AbstractInteractiveInstaller')
+                ) {
+                    LogUtil::registerError($this->__f("%s must be an instance of
+                    Zikula\Framework\Controller\AbstractInteractiveInstaller", $className));
                 }
                 $interactiveController = $reflectionInteractive->newInstance($this->container);
             }
@@ -413,20 +422,19 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
 
         foreach ($rootdirs as $rootdir => $moduletype) {
             if (is_dir($rootdir)) {
-                $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
+                $dirs = \FileUtil::getFiles($rootdir, false, true, null, 'd');
 
                 foreach ($dirs as $dir) {
-                    ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
                     ZLoader::addModule($dir, $rootdir);
 
                     // loads the gettext domain for 3rd party modules
-                    if ($rootdir == 'modules' && (is_dir("modules/$dir/locale") || is_dir("modules/$dir/Resources/locale"))) {
+                    if ($rootdir == 'modules' && (is_dir("modules/$dir/Resources/locale"))) {
                         ZLanguage::bindModuleDomain($dir);
                     }
 
                     try {
-                        $modversion = Extensions_Util::getVersionMeta($dir, $rootdir);
-                    } catch (Exception $e) {
+                        $modversion = Util::getVersionMeta($dir, $rootdir);
+                    } catch (\Exception $e) {
                         LogUtil::registerError($e->getMessage());
                         continue;
                     }
@@ -438,14 +446,14 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
                     $name = $dir;
 
                     // Work out if admin-capable
-                    if (class_exists("{$dir}_Controller_AdminController")) {
+                    if (class_exists("{$dir}\Controller\AdminController")) {
                         $caps = $modversion['capabilities'];
                         $caps['admin'] = array('version' => '1.0');
                         $modversion['capabilities'] = $caps;
                     }
 
                     // Work out if user-capable
-                    if (class_exists("{$dir}_Controller_UserController")) {
+                    if (class_exists("{$dir}\Controller\UserController")) {
                         $caps = $modversion['capabilities'];
                         $caps['user'] = array('version' => '1.0');
                         $modversion['capabilities'] = $caps;
@@ -551,6 +559,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
 
         // index modules by name
         $dbmodules = array();
+        /* @var Extension $module */
         foreach ($allmodules as $module) {
             $dbmodules[$module['name']] = $module->toArray();
         }
@@ -625,7 +634,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             $minok = 0;
             $maxok = 0;
             // strip any -dev, -rcN etc from version number
-            $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
+            $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Core::VERSION_NUM);
             if (!empty($filemodules[$name]['core_min'])) {
                 $minok = version_compare($coreVersion, $filemodules[$name]['core_min']);
             }
@@ -658,7 +667,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
                     $this->remove(array('id' => $dbmodules[$name]['id']));
                 } else {
                     // Set state of module to 'missing'
-                    $this->setState(array('id' => $result['id'], 'state' => ModUtil::STATE_MISSING));
+                    $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => ModUtil::STATE_MISSING));
                 }
 
                 unset($dbmodules[$name]);
@@ -733,7 +742,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             // each module may have multiple dependencies
             foreach ($moddependency as $dependency) {
                 $dependency['modid'] = $modid;
-                $item = new Zikula\Core\Doctrine\Entity\ExtensionDependency();
+                $item = new \Zikula\Core\Doctrine\Entity\ExtensionDependency();
                 $item->merge($dependency);
                 $this->entityManager->persist($item);
             }
@@ -783,7 +792,6 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         ZLoader::addModule($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -792,23 +800,25 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale") || is_dir("modules/$osdir/Resources/locale")) {
+            if (is_dir("modules/$osdir/Resources/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
 
-        $className = ucwords($modinfo['name']) . '_Installer';
-        $reflectionInstaller = new ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+        $className = ucwords($modinfo['name']) . '\Installer';
+        $reflectionInstaller = new \ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula\Framework\AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula\Framework\AbstractInstaller",
+                $className));
         }
         $installer = $reflectionInstaller->newInstance($this->container);
-        $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
+        $interactiveClass = ucwords($modinfo['name']) . '\Controller\Interactiveinstaller';
         $interactiveController = null;
         if (class_exists($interactiveClass)) {
-            $reflectionInteractive = new ReflectionClass($interactiveClass);
-            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
+            $reflectionInteractive = new \ReflectionClass($interactiveClass);
+            if (!$reflectionInteractive->isSubclassOf('Zikula\Framework\Controller\AbstractInteractiveInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of
+                Zikula\Controller\AbstractInteractiveInstaller", $className));
             }
             $interactiveController = $reflectionInteractive->newInstance($this->container);
         }
@@ -823,7 +833,9 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
             return; // return void here
         }
 
-        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && is_callable($interactive_func)) {
+        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false)
+            && is_callable($interactive_func)
+        ) {
             // so we must check if the method actually exists by reflection - drak
             if ($reflectionInteractive->hasMethod('install')) {
                 $this->request->getSession()->set('interactive_init', true);
@@ -906,23 +918,25 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale") || is_dir("modules/$osdir/Resources/locale")) {
+            if (is_dir("modules/$osdir/Resources/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
 
-        $className = ucwords($modinfo['name']) . '_Installer';
-        $reflectionInstaller = new ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+        $className = ucwords($modinfo['name']) . '\Installer';
+        $reflectionInstaller = new \ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula\Framework\AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula\Framework\AbstractInstaller",
+                $className));
         }
         $installer = $reflectionInstaller->newInstanceArgs(array($this->container));
-        $interactiveClass = ucwords($modinfo['name']) . '_Controller_Interactiveinstaller';
+        $interactiveClass = ucwords($modinfo['name']) . '\Controller\Interactiveinstaller';
         $interactiveController = null;
         if (class_exists($interactiveClass)) {
-            $reflectionInteractive = new ReflectionClass($interactiveClass);
-            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
+            $reflectionInteractive = new \ReflectionClass($interactiveClass);
+            if (!$reflectionInteractive->isSubclassOf('Zikula\Framework\Controller\AbstractInteractiveInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of
+                Zikula\Framework\Controller\AbstractInteractiveInstaller", $className));
             }
             $interactiveController = $reflectionInteractive->newInstance($this->container);
         }
@@ -962,7 +976,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
         }
         $modversion['version'] = '0';
 
-        $modversion = Extensions_Util::getVersionMeta($osdir, $modpath);
+        $modversion = Util::getVersionMeta($osdir, $modpath);
         $version = $modversion['version'];
 
         // Update state of module
@@ -1021,7 +1035,7 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
                 $upgradeResults[$mod['name']] = $this->upgrade(array('id' => $mod['id']));
             }
 
-            System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
+            System::setVar('Version_Num', Core::VERSION_NUM);
         }
 
         return $upgradeResults;
@@ -1317,5 +1331,4 @@ class Extensions_Api_AdminApi extends Zikula_AbstractApi
 
         return false;
     }
-
 }

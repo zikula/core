@@ -11,7 +11,14 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Categories_Controller_AdminController extends Zikula_AbstractController
+
+namespace Categories\Controller;
+
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use StringUtil;
+use Categories\DBObject\Category;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -21,7 +28,7 @@ class Categories_Controller_AdminController extends Zikula_AbstractController
     protected function postInitialize()
     {
         // In this controller we do not want caching.
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
     }
 
     /**
@@ -90,7 +97,7 @@ class Categories_Controller_AdminController extends Zikula_AbstractController
                 return LogUtil::registerError($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
 
-            $category = new Categories_DBObject_Category();
+            $category = new Category();
             $editCat = $category->select($cid);
             if ($editCat == false) {
                 return LogUtil::registerError($this->__('Sorry! No such item found.'), 404);
@@ -106,16 +113,16 @@ class Categories_Controller_AdminController extends Zikula_AbstractController
             if (isset($_SESSION['newCategory']) && $_SESSION['newCategory']) {
                 $editCat = $_SESSION['newCategory'];
                 unset($_SESSION['newCategory']);
-                $category = new Categories_DBObject_Category(); // need this for validation info
+                $category = new Category(); // need this for validation info
             }
             // if we're back from validation get the object from input
             elseif (FormUtil::getValidationErrors()) {
-                $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
+                $category = new Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
                 $editCat = $category->get();
             }
             // someone just pressen 'new' -> populate defaults
             else {
-                $category = new Categories_DBObject_Category(); // need this for validation info
+                $category = new Category(); // need this for validation info
                 $editCat['sort_value'] = '0';
             }
         }
@@ -216,7 +223,7 @@ class Categories_Controller_AdminController extends Zikula_AbstractController
     public function newcatAction()
     {
         $_POST['mode'] = 'new';
-        return $this->edit();
+        return $this->editAction();
     }
 
     /**
@@ -232,7 +239,7 @@ class Categories_Controller_AdminController extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $category = new Categories_DBObject_Category();
+        $category = new Category();
         $category = $category->select($cid);
         $subCats = CategoryUtil::getSubCategories($cid, false, false);
         $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true, $cid);

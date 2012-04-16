@@ -13,19 +13,22 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Listener;
+
 use Zikula\Core\Event\GenericEvent;
+use Users\Constants as UsersConstant;
 
 /**
  * Persistent event listener used to clean up the Users module session variables related to logging in.
  */
-class Users_Listener_ClearUsersNamespace
+class ClearUsersNamespaceListener
 {
     /**
      * The module name.
      *
      * @var string
      */
-    protected static $modname = Users_Constant::MODNAME;
+    protected static $modname = UsersConstant::MODNAME;
 
     /**
      * Clears the session variable namespace used by the Users module.

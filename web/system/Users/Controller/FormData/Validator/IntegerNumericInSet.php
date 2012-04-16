@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData\Validator;
+
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Validates a field against a set of integer values, ensuring that the field's data is one of the listed integers.
  */
-class Users_Controller_FormData_Validator_IntegerNumericInSet extends Users_Controller_FormData_Validator_AbstractValidator
+class IntegerNumericInSet extends AbstractValidator
 {
     /**
      * List of valid integers.
@@ -30,24 +32,27 @@ class Users_Controller_FormData_Validator_IntegerNumericInSet extends Users_Cont
      * Creates a new instance of this validator, intializing the list of valid integers.
      *
      * @param ContainerBuilder $container The current service manager.
-     * @param array          $validIntegers  An array containing a list of integers considered to be valid for the field's data contents.
-     * @param type           $errorMessage   The message to return if the data is not valid.
+     * @param array           $validIntegers  An array containing a list of integers considered to be valid for the
+     *                                        field's data contents.
+     * @param string          $errorMessage   The message to return if the data is not valid.
      *
-     * @throws InvalidArgumentException Thrown if the list of valid integer numerics is invalid, or if it contains an invalid value.
+     * @throws \InvalidArgumentException Thrown if the list of valid integer numerics is invalid,
+     * or if it contains an invalid value.
      */
     public function __construct(ContainerBuilder $container, array $validIntegers, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 
         if (empty($validIntegers)) {
-            throw new InvalidArgumentException($this->__('An invalid list of valid integers was recieved.'));
+            throw new \InvalidArgumentException($this->__('An invalid list of valid integers was recieved.'));
         }
 
         foreach ($validIntegers as $validInteger) {
             if (isset($validInteger) && is_int($validInteger)) {
                 $this->validIntegers[$validInteger] = $validInteger;
             } else {
-                throw new InvalidArgumentException($this->__('An invalid value was received in the list of valid integers.'));
+                throw new \InvalidArgumentException($this->__('An invalid value was received in the list of valid
+                integers.'));
             }
         }
     }

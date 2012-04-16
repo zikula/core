@@ -11,10 +11,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Groups\Helper;
+
 /**
  * Common helper functions and constants.
  */
-class Groups_Helper_Common extends Zikula_AbstractHelper
+class CommonHelper extends \Zikula_AbstractHelper
 {
     /**
      * Constant value for core type groups.

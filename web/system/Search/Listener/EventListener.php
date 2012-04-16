@@ -12,12 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Search\EventListener;
+
 use Zikula\Core\Event\GenericEvent;
+use BlockUtil, ModUtil;
 
 /**
- * EventHandlers class.
+ * EventListener class.
  */
-class Search_EventHandlers
+class EventListener
 {
     /**
      * Handle module install event "installer.module.installed".

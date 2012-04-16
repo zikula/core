@@ -12,10 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Api;
+
+use Users\Constants as UsersConstant;
+use Zikula_Exception_Fatal;
+use Zikula_Api_AbstractAuthentication;
+use UserUtil, ModUtil, LogUtil;
+use Users\Helper\AuthenticationMethodHelper;
+
 /**
  * The user authentication services for the log-in process through the core Users table.
  */
-class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
+class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
 {
     /**
      * The list of valid authentication methods that this module supports.
@@ -32,20 +40,21 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
      *
      * @return void
      */
-    protected function  postInitialize() {
+    protected function postInitialize()
+    {
         parent::postInitialize();
 
-        $loginViaOption = $this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME);
+        $loginViaOption = $this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME);
 
         // Register the uname authentication method
-        $authenticationMethod = new Users_Helper_AuthenticationMethod(
+        $authenticationMethod = new AuthenticationMethodHelper(
                 $this->name,
                 'uname',
                 $this->__('User name'),
                 $this->__('User name and password'),
                 false
         );
-        if (($loginViaOption == Users_Constant::LOGIN_METHOD_UNAME) || ($loginViaOption == Users_Constant::LOGIN_METHOD_ANY)) {
+        if (($loginViaOption == UsersConstant::LOGIN_METHOD_UNAME) || ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY)) {
             $authenticationMethod->enableForAuthentication();
         } else {
             $authenticationMethod->disableForAuthentication();
@@ -53,14 +62,14 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
         $this->authenticationMethods['uname'] = $authenticationMethod;
 
         // Register the email authentication method
-        $authenticationMethod = new Users_Helper_AuthenticationMethod(
+        $authenticationMethod = new AuthenticationMethodHelper(
                 $this->name,
                 'email',
                 $this->__('E-mail address'),
                 $this->__('E-mail address and password'),
                 false
         );
-        if (($loginViaOption == Users_Constant::LOGIN_METHOD_EMAIL) || ($loginViaOption == Users_Constant::LOGIN_METHOD_ANY)) {
+        if (($loginViaOption == UsersConstant::LOGIN_METHOD_EMAIL) || ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY)) {
             $authenticationMethod->enableForAuthentication();
         } else {
             $authenticationMethod->disableForAuthentication();
@@ -216,7 +225,6 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
     public function register(array $args)
     {
         throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'Users')));
-        return false;
     }
 
     /**
@@ -314,13 +322,13 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
             // upon verifying his email address). The special marker indicating that the account does not authenticate
             // with the Users module is used when a user registers a new account with the system using an authentication
             // method other than uname/pass or email/pass. In both cases, authentication automatically fails.
-            if (!empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
+            if (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
                 // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
                 // during an upgrade from 1.2.
                 // *** IMPORTANT ***
                 // This needs to be kept for any version that allows an upgrade from Zikula 1.2.X.
-                $methodSaltDelimPosition = strpos($userObj['pass'], Users_Constant::SALT_DELIM);
-                $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], Users_Constant::SALT_DELIM, ($methodSaltDelimPosition + 1));
+                $methodSaltDelimPosition = strpos($userObj['pass'], UsersConstant::SALT_DELIM);
+                $saltPassDelimPosition = ($methodSaltDelimPosition === false) ? false : strpos($userObj['pass'], UsersConstant::SALT_DELIM, ($methodSaltDelimPosition + 1));
                 if ($saltPassDelimPosition === false) {
                     // Old style unsalted password with hash_method in separate field
                     // If this release version of Zikula Users Module allows upgrade from 1.2.X, then this part must be
@@ -354,7 +362,7 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
                         // Check stored hash matches the current system type, if not convert it--but only if the module version is sufficient.
                         // Note: this is purely specific to the Users module authentication. A custom module might do something similar if it
                         // changed the way it stored some piece of data between versions, but in general this would be uncommon.
-                        list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(Users_Constant::SALT_DELIM, $currentPasswordHashed);
+                        list($currentPasswordHashCode, $currentPasswordSaltStr, $currentPasswordHashStr) = explode(UsersConstant::SALT_DELIM, $currentPasswordHashed);
                         $systemHashMethodCode = UserUtil::getPasswordHashMethodCode($this->getVar('hash_method', 'sha256'));
                         if (($systemHashMethodCode != $currentPasswordHashCode) || empty($currentPasswordSaltStr)) {
                             if (!UserUtil::setPassword($authenticationInfo['pass'], $uid)) {
@@ -371,7 +379,8 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
             }
         }
 
-        if (!$passwordAuthenticates && !$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
+        if (!$passwordAuthenticates && !$this->request->getSession()->getFlashBag()->has
+        (\Zikula_Session::MESSAGE_ERROR)) {
             if ($authenticationMethod['method'] == 'email') {
                 $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
             } else {
@@ -419,13 +428,14 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
             'confirm_new_pass',
             'pass_reminder',
         );
+
         foreach ($fieldsToClean as $fieldName) {
-            if (array_key_exists($fieldName, $authenticationInfo)) {
-                unset($authenticationInfo[$fieldName]);
+            if (array_key_exists($fieldName, $args['authenticationInfo'])) {
+                unset($args['authenticationInfo'][$fieldName]);
             }
         }
 
-        return $authenticationInfo;
+        return $args['authenticationInfo'];
     }
 
     /**
@@ -600,7 +610,7 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
      *
      * @param array $args All parameters passed to this function.
      *
-     * @return An array of account recovery information.
+     * @return array of account recovery information.
      *
      * @throws Zikula_Exception_Fatal Thrown if an invalid arguments array or an invalid user id is received by the method.
      */
@@ -619,10 +629,10 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
 
         $lostUserNames = array();
         if ($userObj) {
-            if (!empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
-                $loginOption = $this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD);
+            if (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
+                $loginOption = $this->getVar(UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::DEFAULT_LOGIN_METHOD);
 
-                if (($loginOption == Users_Constant::LOGIN_METHOD_UNAME) || ($loginOption == Users_Constant::LOGIN_METHOD_ANY)) {
+                if (($loginOption == UsersConstant::LOGIN_METHOD_UNAME) || ($loginOption == UsersConstant::LOGIN_METHOD_ANY)) {
                     $lostUserNames[] = array(
                         'modname'           => $this->name,
                         'short_description' => $this->__('User name'),
@@ -632,7 +642,7 @@ class Users_Api_AuthenticationApi extends Zikula_Api_AbstractAuthentication
                     );
                 }
 
-                if (($loginOption == Users_Constant::LOGIN_METHOD_EMAIL) || ($loginOption == Users_Constant::LOGIN_METHOD_ANY)) {
+                if (($loginOption == UsersConstant::LOGIN_METHOD_EMAIL) || ($loginOption == UsersConstant::LOGIN_METHOD_ANY)) {
                     $lostUserNames[] = array(
                         'modname'           => $this->name,
                         'short_description' => $this->__('E-mail Address'),

@@ -13,12 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Api;
+
 use Zikula\Core\Event\GenericEvent;
+use Users\Constants as UsersConstant;
+use SecurityUtil;
 
 /**
  * The administrative system-level and database-level functions for the Users module.
  */
-class Users_Api_AdminApi extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Find users.
@@ -107,7 +111,7 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
             }
         }
         // TODO - Should this exclude pending delete too?
-        $where[] = "({$userscolumn['activated']} != " . Users_Constant::ACTIVATED_PENDING_REG . ")";
+        $where[] = "({$userscolumn['activated']} != " . UsersConstant::ACTIVATED_PENDING_REG . ")";
         $where = 'WHERE ' . implode(' AND ', $where);
 
         $permFilter = array();
@@ -185,7 +189,7 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
 
         foreach ($userList as $userObj) {
             if ($markOnly) {
-                UserUtil::setVar('activated', Users_Constant::ACTIVATED_PENDING_DELETE, $userObj['uid']);
+                UserUtil::setVar('activated', UsersConstant::ACTIVATED_PENDING_DELETE, $userObj['uid']);
             } else {
                 // remove all memberships of this user
                 // TODO? - This should be in the Groups module, and happen as a result of an event.
@@ -356,7 +360,7 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
         // To create a new user (or import users) when registration is enabled, ADD access is required.
         // If registration is disabled, then ADMIN access required.
         // ADMIN access is always required for exporting the users.
-        if ($this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, false)) {
+        if ($this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, false)) {
             $createUserAccessLevel = ACCESS_ADD;
         } else {
             $createUserAccessLevel = ACCESS_ADMIN;
@@ -450,7 +454,7 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
         foreach ($importValues as $key => $value) {
             $usersArray[] = $value['uname'];
             if (!$value['activated']) {
-                $importValues[$key]['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
+                $importValues[$key]['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
             }
         }
 
@@ -504,7 +508,7 @@ class Users_Api_AdminApi extends Zikula_AbstractApi
             $view->assign('siteurl', $siteurl);
 
             foreach ($importValues as $value) {
-                if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
+                if ($value['activated'] != UsersConstant::ACTIVATED_PENDING_REG) {
                     $createEvent = new GenericEvent($value);
                     $this->dispatcher->dispatch('user.account.create', $createEvent);
                 } else {

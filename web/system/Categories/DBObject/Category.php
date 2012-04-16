@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\DBObject;
+
+use CategoryUtil, DataUtil, ZLanguage, DBObject;
+
 /**
  * Category
  */
-class Categories_DBObject_Category extends DBObject
+class Category extends DBObject
 {
     public function __construct($init=null, $key=0)
     {

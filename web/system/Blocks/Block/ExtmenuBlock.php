@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_ExtmenuBlock extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil;
+
+class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
@@ -325,7 +330,7 @@ class Blocks_Block_ExtmenuBlock extends Zikula_Controller_AbstractBlock
         }
         $vars['links'] = $menuitems;
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         // assign the vars
         $this->view->assign($vars)
@@ -388,7 +393,7 @@ class Blocks_Block_ExtmenuBlock extends Zikula_Controller_AbstractBlock
         $this->view->clear_cache(null, $blockinfo['bkey'].'/bid'.$blockinfo['bid']);
 
         // and clear the theme cache
-        Zikula_View_Theme::getInstance()->clear_cache();
+        \Zikula_View_Theme::getInstance()->clear_cache();
 
         return $blockinfo;
     }

@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Api_AccountApi extends Zikula_AbstractApi
+namespace Groups\Api;
+
+use ModUtil;
+
+class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel

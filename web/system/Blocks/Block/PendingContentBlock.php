@@ -12,12 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil;
 use Zikula\Core\Event\GenericEvent;
+use Zikula_Collection_Container;
 
 /**
  * Pending Content block
  */
-class Blocks_Block_PendingContentBlock extends Zikula_Controller_AbstractBlock
+class PendingContentBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise block.
@@ -59,7 +64,7 @@ class Blocks_Block_PendingContentBlock extends Zikula_Controller_AbstractBlock
         }
 
         // trigger event
-        $event = new GenericEvent(new Zikula_Collection_Container('pending_content'));
+        $event = new GenericEvent(new \Zikula_Collection_Container('pending_content'));
         EventUtil::getManager()->dispatch('get.pending_content', $event);
         $pendingCollection = $event->getSubject();
 

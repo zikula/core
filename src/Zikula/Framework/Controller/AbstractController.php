@@ -100,7 +100,7 @@ abstract class AbstractController extends AbstractBase
      * @param string $method Method name called.
      * @param array  $args   Arguments passed to method call.
      *
-     * @throws Zikula_Exception_NotFound If method handler cannot be found..
+     * @throws \Zikula_Exception_NotFound If method handler cannot be found..
      *
      * @return mixed Data.
      */
@@ -140,7 +140,7 @@ abstract class AbstractController extends AbstractBase
      * @param integer $status
      * @param array   $headers
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
     public function response($content = '', $status = 200, $headers = array())
     {
@@ -153,7 +153,7 @@ abstract class AbstractController extends AbstractBase
      * @param string  $url  Url to redirect to.
      * @param integer $type Redirect code, 302 default.
      *
-     * @return void
+     * @return RedirectResponse
      */
     protected function redirect($url, $type = 302)
     {

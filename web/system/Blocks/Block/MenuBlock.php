@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_MenuBlock extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil;
+
+class MenuBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
@@ -304,7 +309,7 @@ class Blocks_Block_MenuBlock extends Zikula_Controller_AbstractBlock
         $this->view->clear_cache('blocks_block_menu.tpl');
 
         // and clear the theme cache
-        Zikula_View_Theme::getInstance()->clear_cache();
+        \Zikula_View_Theme::getInstance()->clear_cache();
 
         return($blockinfo);
     }

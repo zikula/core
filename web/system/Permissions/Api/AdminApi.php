@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Permissions\Api;
+
+use SecurityUtil, LogUtil, ModUtil, DataUtil;
+
 /**
  * Permissions_Api_Admin class.
  */
-class Permissions_Api_AdminApi extends Zikula_AbstractApi
+class Permissions_Api_AdminApi extends \Zikula_AbstractApi
 {
 
     /**
@@ -258,7 +262,7 @@ class Permissions_Api_AdminApi extends Zikula_AbstractApi
             $newseq = $args['insseq'];
         }
         
-        $obj = new Permissions\Entity\Permission;
+        $obj = new \Permissions\Entity\Permission;
         $obj['gid'] = (int)$args['id'];
         $obj['sequence'] = $newseq;
         $obj['realm'] = (int)$args['realm'];

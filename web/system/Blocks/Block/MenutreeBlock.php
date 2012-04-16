@@ -12,7 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil;
+use Blocks\MenutreeTree;
+use Blocks\MenutreeUtil;
+
+class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
@@ -128,7 +135,7 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
                            'list' => $lang,
                            'flat' => true);
 
-            $tree = new Blocks_MenutreeTree();
+            $tree = new MenutreeTree();
             $tree->setOption('langs',(array)$langs['list']);
             $tree->setOption('flat',$langs['flat']);
             $tree->setOption('parseURL',true);
@@ -219,7 +226,7 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
             }
         }
         // decode tree array
-        $tree = new Blocks_MenutreeTree();
+        $tree = new MenutreeTree();
         $tree->setOption('id', 'adm-menutree'.$blockinfo['bid']);
         $tree->setOption('sortable', true);
         if (isset($langs)) {
@@ -231,8 +238,8 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
         $vars['menutree_content'] = $tree->getHTML();
 
         // get all templates and stylesheets.
-        $vars['tpls'] = Blocks_MenutreeUtil::getTemplates();
-        $vars['styles'] =  Blocks_MenutreeUtil::getStylesheets();
+        $vars['tpls'] = MenutreeUtil::getTemplates();
+        $vars['styles'] =  MenutreeUtil::getStylesheets();
         $someThemes = $this->__('Only in some themes');
         $vars['somethemes'] = isset($vars['tpls'][$someThemes]) || isset($vars['styles'][$someThemes]) ? true : false;
 
@@ -286,7 +293,7 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
         }
 
         // Create output object
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         // assign all block variables
         $this->view->assign($vars)
@@ -389,7 +396,7 @@ class Blocks_Block_MenutreeBlock extends Zikula_Controller_AbstractBlock
         $this->view->clear_cache(null, $blockinfo['bkey'].'/bid'.$blockinfo['bid']);
 
         // and clear the theme cache
-        Zikula_View_Theme::getInstance()->clear_cache();
+        \Zikula_View_Theme::getInstance()->clear_cache();
 
         return $blockinfo;
     }

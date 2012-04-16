@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Api_AdminApi extends Zikula_AbstractApi
+namespace Theme\Api;
+
+use System, ModUtil, SecurityUtil, LogUtil, DataUtil, DBUtil, ThemeUtil, CacheUtil, FileUtil;
+use Theme\Util;
+
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Regenerate themes list.
@@ -23,7 +28,7 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
      */
     public function regenerate()
     {
-        return Theme_Util::regenerate();
+        return Util::regenerate();
     }
 
     /**
@@ -190,7 +195,7 @@ class Theme_Api_AdminApi extends Zikula_AbstractApi
 
         // delete theme
         $dql = "DELETE FROM Theme\Entity\Theme t WHERE t.id = {$themeid}";
-        $query = $em->createQuery($dql);
+        $query = $this->entityManager->createQuery($dql);
         $result = $query->getResult();
         if (!$result) {
             return LogUtil::registerError(__('Error! Could not perform the deletion.'));

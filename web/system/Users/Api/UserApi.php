@@ -12,10 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Api;
+
+use SecurityUtil, Zikula_View, System, ModUtil, DBUtil, DataUtil, LogUtil, UserUtil;
+use Zikula_Exception_Fatal, Zikula_Exception_Forbidden;
+use Users\Constants as UsersConstant;
+
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
  */
-class Users_Api_UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all users (for which the current user has permission to read).
@@ -124,7 +130,7 @@ class Users_Api_UserApi extends Zikula_AbstractApi
         if (isset($args['letter'])) {
             $where[] = "({$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%')";
         }
-        $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(Users_Constant::ACTIVATED_PENDING_REG, Users_Constant::ACTIVATED_PENDING_DELETE)) . '))';
+        $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(UsersConstant::ACTIVATED_PENDING_REG, UsersConstant::ACTIVATED_PENDING_DELETE)) . '))';
         $where = 'WHERE ' . implode(' AND ', $where);
 
         $objArray = DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, null, $permFilter);
@@ -350,7 +356,7 @@ class Users_Api_UserApi extends Zikula_AbstractApi
             $viewArgs = array(
                 'uname'                 => $userObj['uname'],
                 'email'                 => $userObj['email'],
-                'has_password'          => !empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION),
+                'has_password'          => !empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION),
                 'authentication_methods'=> $authenticationMethods,
                 'sitename'              => System::getVar('sitename'),
                 'hostname'              => System::serverGetVar('REMOTE_ADDR'),
@@ -416,20 +422,20 @@ class Users_Api_UserApi extends Zikula_AbstractApi
             $confirmationCode = UserUtil::generatePassword();
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
-            if ($confirmationCodeHash !== false) {
+            if ($hashedConfirmationCode !== false) {
                 $tables = DBUtil::getTables();
                 $verifychgColumn = $tables['users_verifychg_column'];
                 DBUtil::deleteWhere('users_verifychg',
-                    "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_PWD . ")");
+                    "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_PWD . ")");
 
-                $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+                $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
                 $verifyChangeObj = array(
-                    'changetype'    => Users_Constant::VERIFYCHGTYPE_PWD,
+                    'changetype'    => UsersConstant::VERIFYCHGTYPE_PWD,
                     'uid'           => $user['uid'],
                     'newemail'      => '',
                     'verifycode'    => $hashedConfirmationCode,
-                    'created_dt'    => $nowUTC->format(Users_Constant::DATETIME_FORMAT),
+                    'created_dt'    => $nowUTC->format(UsersConstant::DATETIME_FORMAT),
                 );
                 $codeSaved = DBUtil::insertObject($verifyChangeObj, 'users_verifychg');
 
@@ -504,19 +510,21 @@ class Users_Api_UserApi extends Zikula_AbstractApi
             return false;
         } else {
             // delete all the records for password reset confirmation that have expired
-            $chgPassExpireDays = $this->getVar(Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
-            if ($chgPassExpireDays > 0) {
-                $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
-                $staleRecordUTC->modify("-{$chgPassExpireDays} days");
-                $staleRecordUTCStr = $staleRecordUTC->format(Users_Constant::DATETIME_FORMAT);
-                $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_PWD . ")";
-                DBUtil::deleteWhere ('users_verifychg', $where);
-            }
+            $chgPassExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
 
             $tables = DBUtil::getTables();
             $verifychgColumn = $tables['users_verifychg_column'];
+
+            if ($chgPassExpireDays > 0) {
+                $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+                $staleRecordUTC->modify("-{$chgPassExpireDays} days");
+                $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
+                $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_PWD . ")";
+                DBUtil::deleteWhere ('users_verifychg', $where);
+            }
+
             $verifychgObj = DBUtil::selectObject('users_verifychg',
-                "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_PWD . ")");
+                "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_PWD . ")");
 
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
@@ -609,7 +617,7 @@ class Users_Api_UserApi extends Zikula_AbstractApi
         $dbinfo = DBUtil::getTables();
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
         $uid = UserUtil::getVar('uid');
         $uname = UserUtil::getVar('uname');
@@ -619,15 +627,15 @@ class Users_Api_UserApi extends Zikula_AbstractApi
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
         $obj = array(
-            'changetype'    => Users_Constant::VERIFYCHGTYPE_EMAIL,
+            'changetype'    => UsersConstant::VERIFYCHGTYPE_EMAIL,
             'uid'           => $uid,
             'newemail'      => DataUtil::formatForStore($args['newemail']),
             'verifycode'    => $confirmCodeHash,
-            'created_dt'    => $nowUTC->format(Users_Constant::DATETIME_FORMAT),
+            'created_dt'    => $nowUTC->format(UsersConstant::DATETIME_FORMAT),
         );
 
         DBUtil::deleteWhere('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_EMAIL . ")");
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_EMAIL . ")");
         $obj = DBUtil::insertObject($obj, 'users_verifychg', 'id');
 
         if (!$obj) {
@@ -679,19 +687,19 @@ class Users_Api_UserApi extends Zikula_AbstractApi
         $verifychgColumn = $dbinfo['users_verifychg_column'];
 
         // delete all the records from e-mail confirmation that have expired
-        $chgEmailExpireDays = $this->getVar(Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
+        $chgEmailExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
         if ($chgEmailExpireDays > 0) {
-            $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+            $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
-            $staleRecordUTCStr = $staleRecordUTC->format(Users_Constant::DATETIME_FORMAT);
-            $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_EMAIL . ")";
+            $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
+            $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_EMAIL . ")";
             DBUtil::deleteWhere ('users_verifychg', $where);
         }
 
         $uid = UserUtil::getVar('uid');
 
         $item = DBUtil::selectObject('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_EMAIL . ")");
+            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_EMAIL . ")");
 
         if (!$item) {
             return false;

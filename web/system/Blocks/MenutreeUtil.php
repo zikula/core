@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_MenutreeUtil
+namespace Blocks;
+
+use PageUtil, DataUtil, ModUtil, FileUtil, ThemeUtil;
+
+class MenutreeUtil
 {
     public static function getIdOffset($id = null)
     {
@@ -84,12 +88,12 @@ class Blocks_MenutreeUtil
         $styles = array();
 
         // restricted stylesheets, array for possible future changes
-        $sysStyles = array('system/Blocks/style/menutree/adminstyle.css',
-                           'system/Blocks/style/menutree/contextmenu.css',
-                           'system/Blocks/style/menutree/tree.css');
+        $sysStyles = array('system/Blocks/Resources/public/css/menutree/adminstyle.css',
+                           'system/Blocks/Resources/public/css/menutree/contextmenu.css',
+                           'system/Blocks/Resources/public/css/menutree/tree.css');
 
         // module stylesheets
-        $modulesStyles = FileUtil::getFiles('system/Blocks/style/menutree', false, false, 'css', false);
+        $modulesStyles = FileUtil::getFiles('system/Blocks/Resources/public/css/menutree', false, false, 'css', false);
         $configStyles = FileUtil::getFiles('config/style/Blocks/menutree', false, false, 'css', false);
         $styles['modules'] = array_merge($modulesStyles, $configStyles);
 
@@ -98,11 +102,11 @@ class Blocks_MenutreeUtil
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesStyles = array();
         foreach ($userThemes as $ut) {
-            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/Blocks/menutree', false, false, 'css', false);
+            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/Resources/public/css/Blocks/menutree', false, false, 'css', false);
         }
         foreach ($adminThemes as $at) {
             if (!array_key_exists($at['name'], $themesStyles)) {
-                $themesStyles[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks/menutree', false, false, 'css', false);
+                $themesStyles[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/Resources/public/css/Blocks/menutree', false, false, 'css', false);
             }
         }
 

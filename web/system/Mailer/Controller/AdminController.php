@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Controller_AdminController extends Zikula_AbstractController
+namespace Mailer\Controller;
+
+use Zikula_View, SecurityUtil, ModUtil, DataUtil, ZLanguage, LogUtil;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.

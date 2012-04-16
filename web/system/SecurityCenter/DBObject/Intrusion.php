@@ -12,14 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace SecurityCenter\DBObject;
 
 /**
  * Intrusion
- *
- * @package Zikula_System_Modules
- * @subpackage SecurityCenter
  */
-class SecurityCenter_DBObject_Intrusion extends DBObject
+class Intrusion extends \DBObject
 {
     function __construct($init = null, $key = 0, $field = null)
     {

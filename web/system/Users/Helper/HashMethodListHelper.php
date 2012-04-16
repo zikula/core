@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Helper;
+
 /**
  * Defines the valid list of password hashing methods.
  */
-class Users_Helper_HashMethodList
+class HashMethodListHelper
 {
     /**
      * Retrieve an array containing the valid hashing methods.

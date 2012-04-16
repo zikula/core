@@ -11,12 +11,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions;
+
 use Zikula\Core\Event\GenericEvent;
+use Zikula_View, SecurityUtil, HookUtil, LogUtil, EventUtil;
 
 /**
  * HooksUI class.
  */
-class Extensions_HookUI
+class HookUI
 {
     public static function hooks(GenericEvent $event)
     {

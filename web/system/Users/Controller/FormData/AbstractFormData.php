@@ -12,12 +12,16 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData;
+
+use ServiceUtil, InvalidArgumentException, Zikula_Request_Collection, Zikula_Session;
+use Users\Controller\FormData\Field;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * A form data container and validator.
  */
-abstract class Users_Controller_FormData_AbstractFormData extends Zikula_AbstractBase
+abstract class AbstractFormData extends \Zikula_AbstractBase
 {
     /**
      * The value for the form's id attribute, and used in creating the id attribute for each field.
@@ -46,7 +50,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * @param string         $formId         A value for the form's id attribute.
      * @param ContainerBuilder $container The current service manager instance.
      *
-     * @throws InvalidArgumentException Thrown if the specified form id is not valid.
+     * @throws \InvalidArgumentException Thrown if the specified form id is not valid.
      */
     public function __construct($formId, ContainerBuilder $container = null)
     {
@@ -57,9 +61,10 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
 
         $formId = trim($formId);
         if (!isset($formId) || !is_string($formId) || empty($formId)) {
-            throw new InvalidArgumentException($this->__('Invalid form id.'));
+            throw new \InvalidArgumentException($this->__('Invalid form id.'));
         } elseif (!preg_match('/^[a-z][a-z0-9_]*$/', $formId)) {
-            throw new InvalidArgumentException($this->__f('The form id \'%1$s\' contains invalid characters.', array($formId)));
+            throw new \InvalidArgumentException($this->__f('The form id \'%1$s\' contains invalid characters.',
+                array($formId)));
         }
         $this->formId = $formId;
 
@@ -70,28 +75,30 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     /**
      * Add a field to the form container.
      *
-     * @param Users_Controller_FormData_Field $field The field definition.
+     * @param Field $field The field definition.
      *
-     * @return Users_Controller_FormData_Field A reference to the field just added, to allow for function chaining to configure the field.
+     * @return Field A reference to the field just added, to allow for function chaining to configure the field.
      *
      * @throws InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
      */
-    public function addField(Users_Controller_FormData_Field $field)
+    public function addField(Field $field)
     {
         if (!isset($field)) {
             throw new InvalidArgumentException($this->__('Invalid field definition'));
         } elseif ($field->getFormContainer() !== $this) {
             throw new InvalidArgumentException($this->__('Form container mismatch.'));
-        } elseif (array_key_exists($field->fieldName, $this->formFields)) {
-            throw new InvalidArgumentException($this->__f('Field defintion for the \'%1$s\' field is already defined.', array($field->fieldName)));
-        } elseif (array_key_exists($field->fieldId, $this->fieldIds)) {
-            throw new InvalidArgumentException($this->__f('Field defintion duplicates the field id \'%1$s\' already claimed by the field \'%2$s\'.', array($field->fieldId, $this->fieldIds[$field->fieldId])));
+        } elseif (array_key_exists($field->getFieldName(), $this->formFields)) {
+            throw new InvalidArgumentException($this->__f('Field defintion for the \'%1$s\' field is already defined
+            .', array($field->getFieldName())));
+        } elseif (array_key_exists($field->getFieldId(), $this->fieldIds)) {
+            throw new InvalidArgumentException($this->__f('Field defintion duplicates the field id \'%1$s\' already
+            claimed by the field \'%2$s\'.', array($field->getFieldId(), $this->fieldIds[$field->getFieldId()])));
         }
 
-        $this->formFields[$field->fieldName] = $field;
-        $this->fieldIds[$field->fieldId] =& $this->formFields[$field->fieldName];
+        $this->formFields[$field->getFieldName()] = $field;
+        $this->fieldIds[$field->getFieldId()] =& $this->formFields[$field->getFieldName()];
 
-        return $this->formFields[$field->fieldName];
+        return $this->formFields[$field->getFieldName()];
     }
 
     /**
@@ -109,7 +116,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      *
      * @param string $fieldName The name of the field previously added to this form container.
      *
-     * @return Users_Controller_FormData_Field The field definition for the specified name.
+     * @return Field The field definition for the specified name.
      *
      * @throws InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
      */

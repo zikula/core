@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData\Validator;
+
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Validates a field's data against specified criteria.
  */
-abstract class Users_Controller_FormData_Validator_AbstractValidator extends Zikula_AbstractBase
+abstract class AbstractValidator extends \Zikula_AbstractBase
 {
     /**
      * An error message that describes why the data is not valid.
@@ -41,7 +43,7 @@ abstract class Users_Controller_FormData_Validator_AbstractValidator extends Zik
             if (is_string($errorMessage) && !empty($errorMessage)) {
                 $this->errorMessage = $errorMessage;
             } else {
-                throw new InvalidArgumentException($this->__('An invalid error message was supplied.'));
+                throw new \InvalidArgumentException($this->__('An invalid error message was supplied.'));
             }
         } else {
             $this->errorMessage($this->__('The value supplied was not valid.'));

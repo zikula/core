@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Search_Version extends Zikula_AbstractVersion
+namespace Search;
+
+class Version extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {

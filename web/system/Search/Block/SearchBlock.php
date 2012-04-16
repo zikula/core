@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Search\Block;
+
+use SecurityUtil, BlockUtil, ModUtil;
+
 /**
  * Search_Block_Search class.
  */
-class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
+class SearchBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
@@ -46,7 +50,7 @@ class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
      * display block
      *
      * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @return       string      the rendered bock
      */
     public function display($blockinfo)
     {
@@ -118,7 +122,7 @@ class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
             }
         }
 
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         // assign the block vars array
         $this->view->assign('searchvars', $vars)
@@ -156,7 +160,7 @@ class Search_Block_SearchBlock extends Zikula_Controller_AbstractBlock
         $this->view->clear_cache('search_block_search.tpl');
 
         // and clear the theme cache
-        Zikula_View_Theme::getInstance()->clear_cache();
+        \Zikula_View_Theme::getInstance()->clear_cache();
 
         return($blockinfo);
     }

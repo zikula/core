@@ -13,10 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users;
+
+use Users\Constants as Constant;
+use HookUtil;
+use Zikula\Component\HookManager\SubscriberBundle;
+
 /**
  * Provides metadata for this module to the Extensions module.
  */
-class Users_Version extends Zikula_AbstractVersion
+class Version extends \Zikula_AbstractVersion
 {
     /**
      * Assemble and return module metadata.
@@ -39,7 +45,7 @@ class Users_Version extends Zikula_AbstractVersion
 
             // Advertised capabilities
             'capabilities'  => array(
-                Users_Constant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
+                Constant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'),
                 HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true)
             ),
 
@@ -63,7 +69,7 @@ class Users_Version extends Zikula_AbstractVersion
     {
         // Subscriber bundles
 
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.user', 'ui_hooks', $this->__('User management hooks'));
+        $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.user', 'ui_hooks', $this->__('User management hooks'));
         $bundle->addEvent('display_view',    'users.ui_hooks.user.display_view');
         
         $bundle->addEvent('form_edit',       'users.ui_hooks.user.form_edit');
@@ -75,7 +81,7 @@ class Users_Version extends Zikula_AbstractVersion
         $bundle->addEvent('process_delete',  'users.ui_hooks.user.process_delete');
         $this->registerHookSubscriberBundle($bundle);
         
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.registration', 'ui_hooks', $this->__('Registration management hooks'));
+        $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.registration', 'ui_hooks', $this->__('Registration management hooks'));
         $bundle->addEvent('display_view',    'users.ui_hooks.registration.display_view');
         
         $bundle->addEvent('form_edit',       'users.ui_hooks.registration.form_edit');
@@ -88,14 +94,14 @@ class Users_Version extends Zikula_AbstractVersion
         $this->registerHookSubscriberBundle($bundle);
         
         // Bundle for the login form
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_screen', 'ui_hooks', $this->__('Login form and block hooks'));
+        $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_screen', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit',     'users.ui_hooks.login_screen.form_edit');
         $bundle->addEvent('validate_edit', 'users.ui_hooks.login_screen.validate_edit');
         $bundle->addEvent('process_edit',  'users.ui_hooks.login_screen.process_edit');
         $this->registerHookSubscriberBundle($bundle);
 
         // Bundle for the login block
-        $bundle = new Zikula_HookManager_SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_block', 'ui_hooks', $this->__('Login form and block hooks'));
+        $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_block', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit',     'users.ui_hooks.login_block.form_edit');
         $bundle->addEvent('validate_edit', 'users.ui_hooks.login_block.validate_edit');
         $bundle->addEvent('process_edit',  'users.ui_hooks.login_block.process_edit');

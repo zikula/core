@@ -831,7 +831,8 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) . 'Api' : ucwords($modname) . '_Controller_' . ucwords($type) . 'Controller';
+        $className = ($api) ? ucwords($modname) . '\\Api\\' . ucwords($type) . 'Api' : ucwords($modname) .
+            '\\Controller\\' . ucwords($type) . 'Controller';
 
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);

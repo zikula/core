@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Permissions\Controller;
+
+use SecurityUtil, LogUtil, ModUtil, DataUtil, Zikula_View, UserUtil;
+
 /**
  * Permissions_Controller_Admin class.
  */
-class Permissions_Controller_AdminController extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -681,7 +685,7 @@ class Permissions_Controller_AdminController extends Zikula_AbstractController
      */
     public function checkpermissionsAction()
     {
-        $returnto = $this->request->request->get('returnto', System::getCurrentUri());
+        $returnto = $this->request->request->get('returnto', \System::getCurrentUri());
         return $this->redirect($returnto);
     }
 

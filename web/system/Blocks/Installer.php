@@ -12,6 +12,13 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View, DBUtil;
+use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Exception_BadData;
+use Blocks\Entity\BlockPlacement;
+
 class Blocks_Installer extends Zikula_AbstractInstaller
 {
     /**
@@ -30,8 +37,8 @@ class Blocks_Installer extends Zikula_AbstractInstaller
         );
         
         try {
-            DoctrineHelper::createSchema($this->entityManager, $classes);
-        } catch (Exception $e) {
+            \DoctrineHelper::createSchema($this->entityManager, $classes);
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -60,9 +67,9 @@ class Blocks_Installer extends Zikula_AbstractInstaller
                 // Rename 'thelang' block.
                 $table = 'blocks';
                 $sql = "UPDATE $table SET bkey = 'lang' WHERE bkey = 'thelang'";
-                DBUtil::executeSQL($sql);
+                \DBUtil::executeSQL($sql);
                 // Optional upgrade
-                if (in_array(DBUtil::getLimitedTablename('message'), DBUtil::metaTables())) {
+                if (in_array(\DBUtil::getLimitedTablename('message'), \DBUtil::metaTables())) {
                     $this->migrateMessages();
                 }
                 $this->migrateBlockNames();
@@ -70,7 +77,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
 
             case '3.7':
             case '3.7.0':
-                if (!DBUtil::changeTable('blocks')) {
+                if (!\DBUtil::changeTable('blocks')) {
                     return false;
                 }
 

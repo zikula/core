@@ -12,14 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace SecurityCenter\DBObject;
 
 /**
  * IntrusionArray
- *
- * @package Zikula_System_Modules
- * @subpackage SecurityCenter
  */
-class SecurityCenter_DBObject_IntrusionArray extends DBObjectArray
+class IntrusionArray extends \DBObjectArray
 {
     function __construct($init = null, $where = '')
     {
@@ -46,7 +44,7 @@ class SecurityCenter_DBObject_IntrusionArray extends DBObjectArray
 
         foreach($filterFields as $fieldName) {
             if (isset($filter[$fieldName]) && $filter[$fieldName]) {
-                $wheres[] = "ids_" . $fieldName . " = '" . DataUtil::formatForStore($filter[$fieldName]) . "'";
+                $wheres[] = "ids_" . $fieldName . " = '" . \DataUtil::formatForStore($filter[$fieldName]) . "'";
             }
         }
 

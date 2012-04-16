@@ -12,19 +12,24 @@
  * information regarding copyright and licensing.
  */
 
+namespace Groups\Api;
 use Zikula\Core\Event\GenericEvent;
+use SecurityUtil, LogUtil, UserUtil, ModUtil;
+use Groups\Helper\CommonHelper;
+use Groups\Entity\GroupApplication;
+use Groups\Entity\GroupMembership;
+
 
 /**
  * Groups_Api_User class.
  */
-class Groups_Api_UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
-
     /**
      * Get all group items.
      *
-     * @param int args['startnum'] record number to start get from.
-     * @param int args['numitems'] number of items to get.
+     * @param int $args['startnum'] record number to start get from.
+     * @param int $args['numitems'] number of items to get.
      *
      * @return mixed array of group items, or false on failure.
      */
@@ -73,9 +78,9 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
     /**
      * Get a specific group item.
      *
-     * @param int args['gid'] id of group item to get.
-     * @param int args['startnum'] record number to start get from (group membership).
-     * @param int args['numitems'] number of items to get (group membership).
+     * @param int $args['gid'] id of group item to get.
+     * @param int $args['startnum'] record number to start get from (group membership).
+     * @param int $args['numitems'] number of items to get (group membership).
      *
      * @return mixed item array, or false on failure.
      */
@@ -145,10 +150,10 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dql = "SELECT count(g.gid) FROM Groups\Entity\Group g WHERE g.gtype <> " . Groups_Helper_Common::GTYPE_CORE;
+        $dql = "SELECT count(g.gid) FROM Groups\Entity\Group g WHERE g.gtype <> " . CommonHelper::GTYPE_CORE;
         
         if ($this->getVar('hideclosed')) {
-            $dql .= " AND g.state <> " . Groups_Helper_Common::STATE_CLOSED;
+            $dql .= " AND g.state <> " . CommonHelper::STATE_CLOSED;
         }
         
         $query = $this->entityManager->createQuery($dql);
@@ -158,7 +163,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
     /**
      * Utility function to count the number of items held by this module.
      *
-     * @param int args['gid'] id of group item to get.
+     * @param int $args['gid'] id of group item to get.
      *
      * @return int number of items held by this module.
      */
@@ -177,8 +182,8 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
     /**
      * Get all of a user's group memberships.
      *
-     * @param int args['uid'] user id.
-     * @param int args['clean'] flag to return an array of GIDs.
+     * @param int $args['uid'] user id.
+     * @param int $args['clean'] flag to return an array of GIDs.
      *
      * @return mixed array of group items, or false on failure.
      */
@@ -248,11 +253,11 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
            ->from('Groups\Entity\Group', 'g');
         
         // add clause for filtering type
-        $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(Groups_Helper_Common::GTYPE_CORE)));
+        $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(CommonHelper::GTYPE_CORE)));
         
         // add clause for filtering state
         if ($this->getVar('hideclosed')) {
-            $qb->andWhere($qb->expr()->neq('g.state', $qb->expr()->literal(Groups_Helper_Common::STATE_CLOSED)));
+            $qb->andWhere($qb->expr()->neq('g.state', $qb->expr()->literal(CommonHelper::STATE_CLOSED)));
         }
         
         // add clause for ordering
@@ -300,10 +305,10 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
             if (SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_OVERVIEW)) {
                 if (!isset($gtype) || is_null($gtype)) {
-                    $gtype = Groups_Helper_Common::GTYPE_CORE;
+                    $gtype = CommonHelper::GTYPE_CORE;
                 }
                 if (is_null($state)) {
-                    $state = Groups_Helper_Common::STATE_CLOSED;
+                    $state = CommonHelper::STATE_CLOSED;
                 }
 
                 $ismember = false;
@@ -328,7 +333,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
                 }
 
                 // Anon users or non-members should not be able to see private groups.
-                if ($gtype == Groups_Helper_Common::GTYPE_PRIVATE) {
+                if ($gtype == CommonHelper::GTYPE_PRIVATE) {
                     if (!$uid || !$this->isgroupmember(array('uid' => $uid, 'gid' => $gid))) {
                         continue;
                     }
@@ -393,7 +398,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! You have already applied for membership of this group.'));
         }
 
-        $application = new Groups\Entity\GroupApplication;
+        $application = new GroupApplication;
         $application['uid'] = $args['uid'];
         $application['gid'] = $args['gid'];
         $application['application'] = $args['applytext'];
@@ -482,7 +487,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
         if ($args['action'] == 'subscribe') {
 
-            if ($args['gtype'] == Groups_Helper_Common::GTYPE_PRIVATE) {
+            if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
                     return LogUtil::registerArgsError();
                 }
@@ -570,7 +575,7 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
 
         // Add item
         if (!$is_member) {
-            $membership = new Groups\Entity\GroupMembership;
+            $membership = new GroupMembership;
             $membership['gid'] = $args['gid'];
             $membership['uid'] = $args['uid'];
             $this->entityManager->persist($membership);
@@ -638,12 +643,12 @@ class Groups_Api_UserApi extends Zikula_AbstractApi
      */
     public function whosonline()
     {
-        $dbtable = DBUtil::getTables();
+        $dbtable = \DBUtil::getTables();
         $col = $dbtable['session_info_column'];
-        $activetime = time() - (System::getVar('secinactivemins') * 60);
+        $activetime = time() - (\System::getVar('secinactivemins') * 60);
 
         $where = "WHERE {$col['uid']} != 0 AND {$col['lastused']} > {$activetime} GROUP BY {$col['uid']}";
-        $fa = DBUtil::selectFieldArray('session_info', 'uid', $where, '', true);
+        $fa = \DBUtil::selectFieldArray('session_info', 'uid', $where, '', true);
         
         $items = array();
         

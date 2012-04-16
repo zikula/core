@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Controller_UserController extends Zikula_AbstractController
+namespace Theme\Controller;
+
+use System, SecurityUtil, LogUtil, ThemeUtil, ModUtil, UserUtil, DataUtil, Zikula_View;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * display theme changing user interface

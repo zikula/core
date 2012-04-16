@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_TextBlock extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil;
+
+class TextBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

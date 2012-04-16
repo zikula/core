@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Settings_Api_AdminApi extends Zikula_AbstractApi
+namespace Settings\Api;
+
+use ModUtil, SecurityUtil, ZLanguage;
+
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Get available admin panel links.

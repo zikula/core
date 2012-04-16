@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Version extends Zikula_AbstractVersion
+namespace Mailer;
+
+class Version extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {

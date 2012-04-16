@@ -11,13 +11,18 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace PageLock;
+
+use UserUtil, PageUtil, Zikula_View, ModUtil, ThemeUtil, DBUtil, DataUtil, DateUtil, System;
+
 /**
  * length of time to lock a page
  *
  */
 define('PageLockLifetime', 30);
 
-class PageLock_Api_UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     public function pageLock($args)
     {

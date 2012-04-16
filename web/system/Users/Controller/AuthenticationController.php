@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller;
+
+use Zikula_View;
+use Zikula_Exception_Fatal;
+
 /**
  * Access to user-initiated authentication actions for the Users module.
  */
-class Users_Controller_AuthenticationController extends Zikula_Controller_AbstractAuthentication
+class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
 {
     /**
      * Post initialise.
@@ -74,7 +79,8 @@ class Users_Controller_AuthenticationController extends Zikula_Controller_Abstra
                     if (!$this->view->template_exists($templateName)) {
                         $templateName = mb_strtolower("users_auth_loginformfields_default_default.tpl");
                         if (!$this->view->template_exists($templateName)) {
-                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($method, $args['form_type'])));
+                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the
+                             %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
                         }
                     }
                 }

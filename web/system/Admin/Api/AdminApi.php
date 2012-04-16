@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Api_AdminApi extends Zikula_AbstractApi
+namespace Admin\Api;
+
+use Admin\Entity\AdminCategory;
+use Admin\Entity\AdminModule;
+
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * create a admin category
@@ -25,12 +30,12 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         // Argument check
         if (!isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
-        $args['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countitems');
+        $args['sortorder'] = \ModUtil::apiFunc('Admin', 'admin', 'countitems');
 
-        $item = new Admin\Entity\AdminCategory();
+        $item = new AdminCategory();
         $item->merge($args);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -52,19 +57,19 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         if (!isset($args['cid']) || !is_numeric($args['cid']) ||
             !isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
         // Get the existing item
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        $item = \ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
 
         if (empty($item)) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            return \LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
         // Security check (old item)
-        if (!SecurityUtil::checkPermission('Admin::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError ();
+        if (!\SecurityUtil::checkPermission('Admin::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
+            return \LogUtil::registerPermissionError ();
         }
 
         $item->merge($args);
@@ -82,24 +87,24 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     public function delete($args)
     {
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        $item = \ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
         if (empty($item)) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            return \LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
         if ($item['cid'] == $defaultcategory) {
-            return LogUtil::registerError($this->__('Error! You cannot delete the default module category used in the administration panel.'));
+            return \LogUtil::registerError($this->__('Error! You cannot delete the default module category used in the administration panel.'));
         }
 
         // Avoid deletion of the start category
         $startcategory = $this->getVar('startcategory');
         if ($item['cid'] == $startcategory) {
-            return LogUtil::registerError($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
+            return \LogUtil::registerError($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
         }
 
         // move all modules from the category to be deleted into the
@@ -136,7 +141,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         $items = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
+        if (!\SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
             return $items;
         }
 
@@ -169,7 +174,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['cid'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
         // retrieve the category object
@@ -194,19 +199,19 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         if (!isset($args['module']) ||
             !isset($args['category'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
         // this function is called durung the init process so we have to check in installing
         // is set as alternative to the correct permission check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('Admin::Category', "::", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError ();
+        if (!\System::isInstalling() && !\SecurityUtil::checkPermission('Admin::Category', "::", ACCESS_ADD)) {
+            return \LogUtil::registerPermissionError ();
         }
 
         $entity = $this->name . '\Entity\AdminModule';
 
         // get module id
-        $mid = (int)ModUtil::getIdFromName($args['module']);
+        $mid = (int)\ModUtil::getIdFromName($args['module']);
 
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => $mid));
         if (!$item) {
@@ -216,7 +221,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         $values = array();
         $values['cid'] = (int)$args['category'];
         $values['mid'] = $mid;
-        $values['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' => $args['category']));
+        $values['sortorder'] = \ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' => $args['category']));
 
         $item->merge($values);
         $this->entityManager->persist($item);
@@ -238,7 +243,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['mid'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
         // check if we've already worked this query out
@@ -275,7 +280,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['mid'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
         static $associations = array();
@@ -310,8 +315,8 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         // check our input and get the module information
         if (!isset($args['modname']) ||
             !is_string($args['modname']) ||
-            !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
-            return LogUtil::registerArgsError();
+            !is_array($modinfo = \ModUtil::getInfoFromName($args['modname']))) {
+            return \LogUtil::registerArgsError();
         }
 
         if (!isset($args['exclude']) || !is_array($args['exclude'])) {
@@ -321,8 +326,8 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         // create an empty result set
         $styles = array();
 
-        $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $base = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $osmoddir = \DataUtil::formatForOS($modinfo['directory']);
+        $base = ($modinfo['type'] == \ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         if (is_dir($dir = "$base/$osmoddir/style") || is_dir($dir = "$base/$osmoddir/Resources/public/css")) {
             $handle = opendir($dir);
             while (false !== ($file = readdir($handle))) {
@@ -345,15 +350,15 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'z-icon-es-view');
+        if (\SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
+            $links[] = array('url' => \ModUtil::url('Admin', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'z-icon-es-new');
+        if (\SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADD)) {
+            $links[] = array('url' => \ModUtil::url('Admin', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'z-icon-es-new');
         }
-        if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'z-icon-es-help');
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+        if (\SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => \ModUtil::url('Admin', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'z-icon-es-help');
+            $links[] = array('url' => \ModUtil::url('Admin', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 
         return $links;
@@ -362,7 +367,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
     public function countModsInCat($args)
     {
         if (!isset($args['cid'])) {
-            return LogUtil::registerArgsError();
+            return \LogUtil::registerArgsError();
         }
 
         $entity = $this->name . '\Entity\AdminModule';
@@ -373,13 +378,12 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
         return (int)$count;
     }
 
-
     /**
      * Open the admin container
      */
     public function adminheader()
     {
-        $view = Zikula_View::getInstance('Admin');
+        $view = \Zikula_View::getInstance('Admin');
         return $view->fetch('admin_admin_header.tpl');
     }
 
@@ -388,7 +392,7 @@ class Admin_Api_AdminApi extends Zikula_AbstractApi
      */
     public function adminfooter()
     {
-        $view = Zikula_View::getInstance('Admin');
+        $view = \Zikula_View::getInstance('Admin');
         return $view->fetch('admin_admin_footer.tpl');
     }
 }

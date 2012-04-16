@@ -12,13 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Theme\Controller;
+
 use Zikula\Core\Event\GenericEvent;
 
-class Theme_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     public function dispatchAction()
     {
-        $this->dispatcher->dispatch('theme.ajax_request', new GenericEvent());
+        $event = $this->dispatcher->dispatch('theme.ajax_request', new GenericEvent());
         $this->throwNotFoundUnless($event->isPropagationStopped(), $this->__('No event handlers responded.'));
         return $event->getData();
     }

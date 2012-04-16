@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions\Controller;
+
+use SecurityUtil, Zikula_View, ModUtil, LogUtil, ZLanguage, System, PluginUtil;
+use Extensions\Util as ExtensionsUtil;
+
 /**
  * Extensions_Controller_Admin class.
  */
-class Extensions_Controller_AdminController extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -75,7 +80,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
                 ZLanguage::bindModuleDomain($obj['directory']);
             }
 
-            $modversion = Extensions_Util::getVersionMeta($obj['directory'], $baseDir);
+            $modversion = ExtensionsUtil::getVersionMeta($obj['directory'], $baseDir);
 
             // load defaults
             $name = (isset($modversion['name']) ? $modversion['name'] : '');
@@ -468,7 +473,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
                     if (is_dir("$base/$dependency[modname]")) {
                         $minok = 0;
                         $maxok = 0;
-                        $modversion = Extensions_Util::getVersionMeta($dependency['modname'], $base);
+                        $modversion = ExtensionsUtil::getVersionMeta($dependency['modname'], $base);
 
                         if (!empty($dependency['minversion'])) {
                             $minok = version_compare($modversion['version'], $dependency['minversion']);
@@ -693,7 +698,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
             }
 
             // Clear the Zikula_View cached/compiled files and Themes cached/compiled/cssjs combination files
-            $theme = Zikula_View_Theme::getInstance('Theme');
+            $theme = \Zikula_View_Theme::getInstance('Theme');
             $theme->clear_compiled();
             $theme->clear_all_cache();
             $theme->clear_cssjscombinecache();
@@ -1007,7 +1012,7 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
             $pluginstate = PluginUtil::getState($instance->getServiceId(), PluginUtil::getDefaultState());
 
             // Tweak UI if the plugin is AlwaysOn
-            if ($instance instanceof Zikula_Plugin_AlwaysOnInterface) {
+            if ($instance instanceof \Zikula_Plugin_AlwaysOnInterface) {
                 $pluginstate['state'] = PluginUtil::ENABLED;
                 $pluginstate['version'] = $instance->getMetaVersion();
             }
@@ -1050,14 +1055,14 @@ class Extensions_Controller_AdminController extends Zikula_AbstractController
                     $pluginLink['_plugin'] = $instance->getPluginName();
                     $pluginLink['_action'] = 'configure';
 
-                    if ($instance instanceof Zikula_Plugin_ConfigurableInterface) {
+                    if ($instance instanceof \Zikula_Plugin_ConfigurableInterface) {
                         $actions[] = array('url' => ModUtil::url('Extensions', 'adminplugin', 'dispatch', $pluginLink),
                                            'image' => 'configure.png',
                                            'title' => $this->__('Configure plugin'));
                     }
 
                     // Dont allow to disable/uninstall plugins that are AlwaysOn
-                    if (!$instance instanceof Zikula_Plugin_AlwaysOnInterface) {
+                    if (!$instance instanceof \Zikula_Plugin_AlwaysOnInterface) {
                         $actions[] = array('url' => ModUtil::url('Extensions', 'admin', 'deactivatePlugin',
                                                     array('plugin' => $className,
                                                           'state'  => $state,

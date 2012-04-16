@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users;
+
 /**
  * Users module-wide constants.
  * 
@@ -21,7 +23,7 @@
  * Constants used for specific classes can be defined in those classes. The constants in this class are module-wide
  * constants.
  */
-class Users_Constant
+class Constants
 {
     /**
      * The name of the module.
@@ -310,7 +312,7 @@ class Users_Constant
     /**
      * Default value for the enabled log-in option (for the Users module).
      */
-    const DEFAULT_LOGIN_METHOD = Users_Constant::LOGIN_METHOD_UNAME;
+    const DEFAULT_LOGIN_METHOD = self::LOGIN_METHOD_UNAME;
 
     /**
      * Module variable key for the flag indicating whether WCAG-compliant log-ins should be used (redirect), or not (meta refresh).
@@ -385,7 +387,7 @@ class Users_Constant
     /**
      * Default value for the code indicating the approval/verification sequencing when both are enabled.
      */
-    const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users_Constant::APPROVAL_BEFORE;
+    const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = self::APPROVAL_BEFORE;
     
     /**
      * Module variable key for the flag indicating when a new user registers, should the user be automatically logged in 
@@ -446,7 +448,7 @@ class Users_Constant
     /**
      * Default value for the flag indicating whether newly registered e-mail addresses must be verified or not.
      */
-    const DEFAULT_REGISTRATION_VERIFICATION_MODE = Users_Constant::VERIFY_USERPWD;
+    const DEFAULT_REGISTRATION_VERIFICATION_MODE = self::VERIFY_USERPWD;
 
     /**
      * Module variable key for the flag indicating whether newly registered e-mail addresses must be unique within the system or not.

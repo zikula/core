@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Helper;
+
+use Zikula_Exception_Fatal;
+use ModUtil, System;
+
 /**
  * Defines one valid authentication method.
  */
-class Users_Helper_AuthenticationMethod extends Zikula_AbstractHelper
+class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 {
     /**
      * The authentication module name that defines the method.

@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData\Validator;
+
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Validates a field's value, ensuring that its string value matches a PCRE regular expression.
  */
-class Users_Controller_FormData_Validator_StringRegularExpression extends Users_Controller_FormData_Validator_AbstractValidator
+class StringRegularExpression extends AbstractValidator
 {
     /**
      * The full PCRE-compatible regular expression against which to validate the data.
@@ -33,14 +35,14 @@ class Users_Controller_FormData_Validator_StringRegularExpression extends Users_
      * @param string         $regularExpression The PCRE regular expression against which to validate the data.
      * @param string         $errorMessage      The error message to return if the data does not match the expression.
      *
-     * @throws InvalidArgumentException Thrown if the regular expression is not valid.
+     * @throws \InvalidArgumentException Thrown if the regular expression is not valid.
      */
     public function __construct(ContainerBuilder $container, $regularExpression, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 
         if (!isset($regularExpression) || !is_string($regularExpression) || empty($regularExpression)) {
-            throw new InvalidArgumentException($this->__('An invalid regular expression was recieved.'));
+            throw new \InvalidArgumentException($this->__('An invalid regular expression was recieved.'));
         }
 
         $this->regularExpression = $regularExpression;

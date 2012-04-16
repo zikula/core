@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Controller_AdminController extends Zikula_AbstractController
+namespace Groups\Controller;
+
+use SecurityUtil, LogUtil, ModUtil, Zikula_View, UserUtil;
+use Groups\Helper\CommonHelper;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -89,7 +94,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
                       'numitems' => $itemsperpage));
 
         // Setting various defines
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
@@ -186,7 +191,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
 
         // Setting various defines
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $grouptype = $groupsCommon->gtypeLabels();
         $groupstate = $groupsCommon->stateLabels();
 
@@ -271,7 +276,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $this->view->assign('item', $item);
 
         // Setting various defines
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $grouptype = $groupsCommon->gtypeLabels();
         $groupstate = $groupsCommon->stateLabels();
 
@@ -486,7 +491,7 @@ class Groups_Controller_AdminController extends Zikula_AbstractController
         $allusers = array();
         foreach ($users as $user) {
             if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'
-                    || $user['uname'] == $this->getVar(Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME)
+                    || $user['uname'] == $this->getVar(\Users\Constant::MODVAR_ANONYMOUS_DISPLAY_NAME)
                     ) {
                 continue;
             }
