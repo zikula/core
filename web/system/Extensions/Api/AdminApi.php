@@ -297,7 +297,6 @@ class AdminApi extends \Zikula_AbstractApi
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         ZLoader::addModule($osdir, $modpath);
 
         $version = Util::getVersionMeta($osdir, $modpath);
@@ -909,7 +908,6 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
         ZLoader::addModule($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
