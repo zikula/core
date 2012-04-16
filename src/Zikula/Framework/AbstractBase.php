@@ -95,7 +95,7 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * Session.
      *
-     * @var \Symfony\Component\HttpFoundation\Session
+     * @var \Symfony\Component\HttpFoundation\Session\Session
      */
     protected $session;
 
