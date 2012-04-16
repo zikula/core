@@ -17,7 +17,7 @@ namespace Users\Api;
 
 use Zikula\Core\Event\GenericEvent;
 use Users\Constants as UsersConstant;
-use SecurityUtil;
+use SecurityUtil, ModUtil, System, DBUtil, UserUtil, DataUtil, Zikula_Exception_Forbidden, Zikula_View;
 
 /**
  * The administrative system-level and database-level functions for the Users module.

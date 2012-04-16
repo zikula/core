@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search\EventListener;
+namespace Search\Listener;
 
 use Zikula\Core\Event\GenericEvent;
 use BlockUtil, ModUtil;

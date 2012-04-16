@@ -15,10 +15,10 @@
 
 namespace Users\Api;
 
-use Users\Constants as UserConstant;
+use Users\Constants as UsersConstant;
 use Zikula_Exception_Fatal;
 use Zikula\Framework\Api\AbstractAuthentication;
-use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DBUtil, DataUtil, DateUtil;
+use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DBUtil, DataUtil, DateUtil, ObjectUtil;
 use Zikula_Session;
 use Users\Helper\AuthenticationMethodHelper;
 use Zikula_Exception_Forbidden;
@@ -1397,11 +1397,11 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
                 return false;
             }
             if (!isset($reginfo['email'])) {
-                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
                 return false;
             }
         }
@@ -1548,11 +1548,11 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
             if (!$reginfo || empty($reginfo)) {
-                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+                $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $args['uid']));
                 return false;
             }
             if (!isset($reginfo['email'])) {
-                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $uid));
+                $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' does not contain an e-mail address.', $args['uid']));
                 return false;
             }
         }
@@ -1618,7 +1618,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Got just an id.
             $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $args['uid']));
             if (!$reginfo) {
-                $this->registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $id));
+                $this->registerError($this->__f('Error! Unable to retrieve registration record with id \'%1$s\'', $args['uid']));
                 return false;
             }
         }
