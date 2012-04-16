@@ -38,12 +38,12 @@ abstract class AbstractInstaller extends AbstractBase
         $class = get_class($this);
         $parts = strpos($class, '_') ? explode('_', $class) : explode('\\', $class);
         $this->name = $parts[0];
-        $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
+        $this->baseDir = realpath(dirname($this->getReflection()->getFileName()).'/../..');
         $this->modinfo = array(
             'directory' => $this->name,
             'type'      => \ModUtil::getModuleBaseDir($this->name) == 'system' ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE
         );
-        $versionClass = "{$this->name}_Version";
+        $versionClass = "{$this->name}\Version";
         $this->version = new $versionClass;
         if ($this->modinfo['type'] == \ModUtil::TYPE_MODULE) {
             $this->domain = \ZLanguage::getModuleDomain($this->name);
