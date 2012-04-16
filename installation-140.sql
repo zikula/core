@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 14, 2012 at 06:05 AM
+-- Generation Time: Apr 16, 2012 at 08:16 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_category`
 --
 
-DROP TABLE IF EXISTS `admin_category`;
 CREATE TABLE IF NOT EXISTS `admin_category` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
@@ -53,7 +52,6 @@ INSERT INTO `admin_category` (`cid`, `name`, `description`, `sortorder`) VALUES
 -- Table structure for table `admin_module`
 --
 
-DROP TABLE IF EXISTS `admin_module`;
 CREATE TABLE IF NOT EXISTS `admin_module` (
   `amid` int(11) NOT NULL AUTO_INCREMENT,
   `mid` int(11) NOT NULL,
@@ -89,7 +87,6 @@ INSERT INTO `admin_module` (`amid`, `mid`, `cid`, `sortorder`) VALUES
 -- Table structure for table `blocks`
 --
 
-DROP TABLE IF EXISTS `blocks`;
 CREATE TABLE IF NOT EXISTS `blocks` (
   `bid` int(11) NOT NULL AUTO_INCREMENT,
   `bkey` varchar(255) NOT NULL,
@@ -126,7 +123,6 @@ INSERT INTO `blocks` (`bid`, `bkey`, `title`, `description`, `content`, `url`, `
 -- Table structure for table `block_placements`
 --
 
-DROP TABLE IF EXISTS `block_placements`;
 CREATE TABLE IF NOT EXISTS `block_placements` (
   `pid` int(11) NOT NULL,
   `bid` int(11) NOT NULL,
@@ -152,7 +148,6 @@ INSERT INTO `block_placements` (`pid`, `bid`, `sortorder`) VALUES
 -- Table structure for table `block_positions`
 --
 
-DROP TABLE IF EXISTS `block_positions`;
 CREATE TABLE IF NOT EXISTS `block_positions` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -181,7 +176,6 @@ INSERT INTO `block_positions` (`pid`, `name`, `description`) VALUES
 -- Table structure for table `categories_category`
 --
 
-DROP TABLE IF EXISTS `categories_category`;
 CREATE TABLE IF NOT EXISTS `categories_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '1',
@@ -214,44 +208,44 @@ CREATE TABLE IF NOT EXISTS `categories_category` (
 --
 
 INSERT INTO `categories_category` (`id`, `parent_id`, `is_locked`, `is_leaf`, `name`, `value`, `sort_value`, `display_name`, `display_desc`, `path`, `ipath`, `status`, `obj_status`, `cr_date`, `cr_uid`, `lu_date`, `lu_uid`) VALUES
-(1, 0, 1, 0, '__SYSTEM__', '', 1, 'b:0;', 'b:0;', '/__SYSTEM__', '/1', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(2, 1, 0, 0, 'Modules', '', 2, 'a:1:{s:2:"en";s:7:"Modules";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules', '/1/2', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(3, 1, 0, 0, 'General', '', 3, 'a:1:{s:2:"en";s:7:"General";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General', '/1/3', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(4, 3, 0, 0, 'YesNo', '', 4, 'a:1:{s:2:"en";s:6:"Yes/No";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/YesNo', '/1/3/4', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(5, 4, 0, 1, '1 - Yes', 'Y', 5, 'b:0;', 'b:0;', '/__SYSTEM__/General/YesNo/1 - Yes', '/1/3/4/5', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(6, 4, 0, 1, '2 - No', 'N', 6, 'b:0;', 'b:0;', '/__SYSTEM__/General/YesNo/2 - No', '/1/3/4/6', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(10, 3, 0, 0, 'Publication Status (extended)', '', 10, 'a:1:{s:2:"en";s:29:"Publication status (extended)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Extended', '/1/3/10', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(11, 10, 0, 1, 'Pending', 'P', 11, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Extended/Pending', '/1/3/10/11', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(12, 10, 0, 1, 'Checked', 'C', 12, 'a:1:{s:2:"en";s:7:"Checked";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Extended/Checked', '/1/3/10/12', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(13, 10, 0, 1, 'Approved', 'A', 13, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Extended/Approved', '/1/3/10/13', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(14, 10, 0, 1, 'On-line', 'O', 14, 'a:1:{s:2:"en";s:7:"On-line";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Extended/Online', '/1/3/10/14', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(15, 10, 0, 1, 'Rejected', 'R', 15, 'a:1:{s:2:"en";s:8:"Rejected";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Extended/Rejected', '/1/3/10/15', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(16, 3, 0, 0, 'Gender', '', 16, 'a:1:{s:2:"en";s:6:"Gender";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender', '/1/3/16', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(17, 16, 0, 1, 'Male', 'M', 17, 'a:1:{s:2:"en";s:4:"Male";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Male', '/1/3/16/17', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(18, 16, 0, 1, 'Female', 'F', 18, 'a:1:{s:2:"en";s:6:"Female";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Female', '/1/3/16/18', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(19, 3, 0, 0, 'Title', '', 19, 'a:1:{s:2:"en";s:5:"Title";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title', '/1/3/19', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(20, 19, 0, 1, 'Mr', 'Mr', 20, 'a:1:{s:2:"en";s:3:"Mr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mr', '/1/3/19/20', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(21, 19, 0, 1, 'Mrs', 'Mrs', 21, 'a:1:{s:2:"en";s:4:"Mrs.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mrs', '/1/3/19/21', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(22, 19, 0, 1, 'Ms', 'Ms', 22, 'a:1:{s:2:"en";s:3:"Ms.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Ms', '/1/3/19/22', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(23, 19, 0, 1, 'Miss', 'Miss', 23, 'a:1:{s:2:"en";s:4:"Miss";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Miss', '/1/3/19/23', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(24, 19, 0, 1, 'Dr', 'Dr', 24, 'a:1:{s:2:"en";s:3:"Dr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Dr', '/1/3/19/24', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(25, 3, 0, 0, 'ActiveStatus', '', 25, 'a:1:{s:2:"en";s:15:"Activity status";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus', '/1/3/25', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(26, 25, 0, 1, 'Active', 'A', 26, 'a:1:{s:2:"en";s:6:"Active";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Active', '/1/3/25/26', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(27, 25, 0, 1, 'Inactive', 'I', 27, 'a:1:{s:2:"en";s:8:"Inactive";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Inactive', '/1/3/25/27', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(28, 3, 0, 0, 'Publication status (basic)', '', 28, 'a:1:{s:2:"en";s:26:"Publication status (basic)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Basic', '/1/3/28', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(29, 28, 0, 1, 'Pending', 'P', 29, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Basic/Pending', '/1/3/28/29', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(30, 28, 0, 1, 'Approved', 'A', 30, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status Basic/Approved', '/1/3/28/30', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(31, 1, 0, 0, 'Users', '', 31, 'a:1:{s:2:"en";s:5:"Users";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Users', '/1/31', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(32, 2, 0, 0, 'Global', '', 32, 'a:1:{s:2:"en";s:6:"Global";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global', '/1/2/32', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(33, 32, 0, 1, 'Blogging', '', 33, 'a:1:{s:2:"en";s:8:"Blogging";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Blogging', '/1/2/32/33', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(34, 32, 0, 1, 'Music and audio', '', 34, 'a:1:{s:2:"en";s:15:"Music and audio";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/MusicAndAudio', '/1/2/32/34', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(35, 32, 0, 1, 'Art and photography', '', 35, 'a:1:{s:2:"en";s:19:"Art and photography";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/ArtAndPhotography', '/1/2/32/35', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(36, 32, 0, 1, 'Writing and thinking', '', 36, 'a:1:{s:2:"en";s:20:"Writing and thinking";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/WritingAndThinking', '/1/2/32/36', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(37, 32, 0, 1, 'Communications and media', '', 37, 'a:1:{s:2:"en";s:24:"Communications and media";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/CommunicationsAndMedia', '/1/2/32/37', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(38, 32, 0, 1, 'Travel and culture', '', 38, 'a:1:{s:2:"en";s:18:"Travel and culture";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/TravelAndCulture', '/1/2/32/38', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(39, 32, 0, 1, 'Science and technology', '', 39, 'a:1:{s:2:"en";s:22:"Science and technology";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/ScienceAndTechnology', '/1/2/32/39', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(40, 32, 0, 1, 'Sport and activities', '', 40, 'a:1:{s:2:"en";s:20:"Sport and activities";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/SportAndActivities', '/1/2/32/40', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(41, 32, 0, 1, 'Business and work', '', 41, 'a:1:{s:2:"en";s:17:"Business and work";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/BusinessAndWork', '/1/2/32/41', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0);
+(1, 0, 1, 0, '__SYSTEM__', '', 1, 's:0:"";', 's:0:"";', '/__SYSTEM__', '/1', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
+(2, 1, 0, 0, 'Modules', '', 2, 'a:1:{s:2:"en";s:7:"Modules";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules', '/1/2', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
+(3, 1, 0, 0, 'General', '', 3, 'a:1:{s:2:"en";s:7:"General";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General', '/1/3', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
+(4, 3, 0, 0, 'YesNo', '', 4, 'a:1:{s:2:"en";s:6:"Yes/No";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/YesNo', '/1/3/4', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
+(5, 4, 0, 1, '1 - Yes', 'Y', 5, 's:0:"";', 's:0:"";', '/__SYSTEM__/General/YesNo/1 - Yes', '/1/3/4/5', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
+(6, 4, 0, 1, '2 - No', 'N', 6, 's:0:"";', 's:0:"";', '/__SYSTEM__/General/YesNo/2 - No', '/1/3/4/6', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(10, 3, 0, 0, 'Publication Status (extended)', '', 10, 'a:1:{s:2:"en";s:29:"Publication status (extended)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)', '/1/3/10', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(11, 10, 0, 1, 'Pending', 'P', 11, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Pending', '/1/3/10/11', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(12, 10, 0, 1, 'Checked', 'C', 12, 'a:1:{s:2:"en";s:7:"Checked";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Checked', '/1/3/10/12', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(13, 10, 0, 1, 'Approved', 'A', 13, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Approved', '/1/3/10/13', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(14, 10, 0, 1, 'On-line', 'O', 14, 'a:1:{s:2:"en";s:7:"On-line";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/On-line', '/1/3/10/14', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(15, 10, 0, 1, 'Rejected', 'R', 15, 'a:1:{s:2:"en";s:8:"Rejected";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Rejected', '/1/3/10/15', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(16, 3, 0, 0, 'Gender', '', 16, 'a:1:{s:2:"en";s:6:"Gender";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender', '/1/3/16', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(17, 16, 0, 1, 'Male', 'M', 17, 'a:1:{s:2:"en";s:4:"Male";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Male', '/1/3/16/17', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(18, 16, 0, 1, 'Female', 'F', 18, 'a:1:{s:2:"en";s:6:"Female";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Female', '/1/3/16/18', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(19, 3, 0, 0, 'Title', '', 19, 'a:1:{s:2:"en";s:5:"Title";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title', '/1/3/19', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(20, 19, 0, 1, 'Mr', 'Mr', 20, 'a:1:{s:2:"en";s:3:"Mr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mr', '/1/3/19/20', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(21, 19, 0, 1, 'Mrs', 'Mrs', 21, 'a:1:{s:2:"en";s:4:"Mrs.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mrs', '/1/3/19/21', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(22, 19, 0, 1, 'Ms', 'Ms', 22, 'a:1:{s:2:"en";s:3:"Ms.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Ms', '/1/3/19/22', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(23, 19, 0, 1, 'Miss', 'Miss', 23, 'a:1:{s:2:"en";s:4:"Miss";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Miss', '/1/3/19/23', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(24, 19, 0, 1, 'Dr', 'Dr', 24, 'a:1:{s:2:"en";s:3:"Dr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Dr', '/1/3/19/24', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(25, 3, 0, 0, 'ActiveStatus', '', 25, 'a:1:{s:2:"en";s:15:"Activity status";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus', '/1/3/25', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(26, 25, 0, 1, 'Active', 'A', 26, 'a:1:{s:2:"en";s:6:"Active";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Active', '/1/3/25/26', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(27, 25, 0, 1, 'Inactive', 'I', 27, 'a:1:{s:2:"en";s:8:"Inactive";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Inactive', '/1/3/25/27', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(28, 3, 0, 0, 'Publication status (basic)', '', 28, 'a:1:{s:2:"en";s:26:"Publication status (basic)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)', '/1/3/28', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(29, 28, 0, 1, 'Pending', 'P', 29, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)/Pending', '/1/3/28/29', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(30, 28, 0, 1, 'Approved', 'A', 30, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)/Approved', '/1/3/28/30', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(31, 1, 0, 0, 'Users', '', 31, 'a:1:{s:2:"en";s:5:"Users";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Users', '/1/31', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(32, 2, 0, 0, 'Global', '', 32, 'a:1:{s:2:"en";s:6:"Global";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global', '/1/2/32', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(33, 32, 0, 1, 'Blogging', '', 33, 'a:1:{s:2:"en";s:8:"Blogging";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Blogging', '/1/2/32/33', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(34, 32, 0, 1, 'Music and audio', '', 34, 'a:1:{s:2:"en";s:15:"Music and audio";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Music and audio', '/1/2/32/34', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(35, 32, 0, 1, 'Art and photography', '', 35, 'a:1:{s:2:"en";s:19:"Art and photography";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Art and photography', '/1/2/32/35', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(36, 32, 0, 1, 'Writing and thinking', '', 36, 'a:1:{s:2:"en";s:20:"Writing and thinking";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Writing and thinking', '/1/2/32/36', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(37, 32, 0, 1, 'Communications and media', '', 37, 'a:1:{s:2:"en";s:24:"Communications and media";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Communications and media', '/1/2/32/37', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(38, 32, 0, 1, 'Travel and culture', '', 38, 'a:1:{s:2:"en";s:18:"Travel and culture";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Travel and culture', '/1/2/32/38', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(39, 32, 0, 1, 'Science and technology', '', 39, 'a:1:{s:2:"en";s:22:"Science and technology";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Science and technology', '/1/2/32/39', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(40, 32, 0, 1, 'Sport and activities', '', 40, 'a:1:{s:2:"en";s:20:"Sport and activities";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Sport and activities', '/1/2/32/40', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
+(41, 32, 0, 1, 'Business and work', '', 41, 'a:1:{s:2:"en";s:17:"Business and work";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Business and work', '/1/2/32/41', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2);
 
 -- --------------------------------------------------------
 
@@ -259,7 +253,6 @@ INSERT INTO `categories_category` (`id`, `parent_id`, `is_locked`, `is_leaf`, `n
 -- Table structure for table `categories_mapmeta`
 --
 
-DROP TABLE IF EXISTS `categories_mapmeta`;
 CREATE TABLE IF NOT EXISTS `categories_mapmeta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `meta_id` int(11) NOT NULL DEFAULT '0',
@@ -279,7 +272,6 @@ CREATE TABLE IF NOT EXISTS `categories_mapmeta` (
 -- Table structure for table `categories_mapobj`
 --
 
-DROP TABLE IF EXISTS `categories_mapobj`;
 CREATE TABLE IF NOT EXISTS `categories_mapobj` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(60) NOT NULL,
@@ -304,7 +296,6 @@ CREATE TABLE IF NOT EXISTS `categories_mapobj` (
 -- Table structure for table `categories_registry`
 --
 
-DROP TABLE IF EXISTS `categories_registry`;
 CREATE TABLE IF NOT EXISTS `categories_registry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(60) NOT NULL,
@@ -326,7 +317,6 @@ CREATE TABLE IF NOT EXISTS `categories_registry` (
 -- Table structure for table `groups`
 --
 
-DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
   `gid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -355,7 +345,6 @@ INSERT INTO `groups` (`gid`, `name`, `gtype`, `description`, `prefix`, `state`, 
 -- Table structure for table `group_applications`
 --
 
-DROP TABLE IF EXISTS `group_applications`;
 CREATE TABLE IF NOT EXISTS `group_applications` (
   `app_id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL DEFAULT '0',
@@ -371,7 +360,6 @@ CREATE TABLE IF NOT EXISTS `group_applications` (
 -- Table structure for table `group_membership`
 --
 
-DROP TABLE IF EXISTS `group_membership`;
 CREATE TABLE IF NOT EXISTS `group_membership` (
   `gid` int(11) NOT NULL DEFAULT '0',
   `uid` int(11) NOT NULL DEFAULT '0',
@@ -393,7 +381,6 @@ INSERT INTO `group_membership` (`gid`, `uid`) VALUES
 -- Table structure for table `group_perms`
 --
 
-DROP TABLE IF EXISTS `group_perms`;
 CREATE TABLE IF NOT EXISTS `group_perms` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,
   `gid` int(11) NOT NULL DEFAULT '0',
@@ -423,7 +410,6 @@ INSERT INTO `group_perms` (`pid`, `gid`, `sequence`, `realm`, `component`, `inst
 -- Table structure for table `hook_area`
 --
 
-DROP TABLE IF EXISTS `hook_area`;
 CREATE TABLE IF NOT EXISTS `hook_area` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(40) NOT NULL,
@@ -451,7 +437,6 @@ INSERT INTO `hook_area` (`id`, `owner`, `subowner`, `areatype`, `category`, `are
 -- Table structure for table `hook_binding`
 --
 
-DROP TABLE IF EXISTS `hook_binding`;
 CREATE TABLE IF NOT EXISTS `hook_binding` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sowner` varchar(40) NOT NULL,
@@ -472,7 +457,6 @@ CREATE TABLE IF NOT EXISTS `hook_binding` (
 -- Table structure for table `hook_provider`
 --
 
-DROP TABLE IF EXISTS `hook_provider`;
 CREATE TABLE IF NOT EXISTS `hook_provider` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(40) NOT NULL,
@@ -493,7 +477,6 @@ CREATE TABLE IF NOT EXISTS `hook_provider` (
 -- Table structure for table `hook_runtime`
 --
 
-DROP TABLE IF EXISTS `hook_runtime`;
 CREATE TABLE IF NOT EXISTS `hook_runtime` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sowner` varchar(40) NOT NULL,
@@ -516,7 +499,6 @@ CREATE TABLE IF NOT EXISTS `hook_runtime` (
 -- Table structure for table `hook_subscriber`
 --
 
-DROP TABLE IF EXISTS `hook_subscriber`;
 CREATE TABLE IF NOT EXISTS `hook_subscriber` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(40) NOT NULL,
@@ -561,7 +543,6 @@ INSERT INTO `hook_subscriber` (`id`, `owner`, `subowner`, `sareaid`, `hooktype`,
 -- Table structure for table `modules`
 --
 
-DROP TABLE IF EXISTS `modules`;
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
@@ -597,9 +578,7 @@ INSERT INTO `modules` (`id`, `name`, `type`, `displayname`, `url`, `description`
 (11, 'SecurityCenter', 3, 'Security Center', 'securitycenter', 'Manage site security and settings.', 'SecurityCenter', '1.4.4', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:16:"SecurityCenter::";s:2:"::";}', '', ''),
 (12, 'Settings', 3, 'General settings', 'settings', 'General site configuration interface.', 'Settings', '2.9.7', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:10:"Settings::";s:2:"::";}', '', ''),
 (13, 'Theme', 3, 'Themes', 'theme', 'Themes module to manage site layout, render and cache settings.', 'Theme', '3.4.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:7:"Theme::";s:12:"Theme name::";}', '', ''),
-(14, 'Users', 3, 'Users', 'users', 'Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.', 'Users', '2.2.0', 'a:4:{s:14:"authentication";a:1:{s:7:"version";s:3:"1.0";}s:15:"hook_subscriber";a:1:{s:7:"enabled";b:1;}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:2:{s:7:"Users::";s:14:"Uname::User ID";s:16:"Users::MailUsers";s:2:"::";}', '1.3.0', ''),
-(15, 'Legal', 2, 'Legal info manager', 'legalmod', 'Provides an interface for managing the site''s legal documents.', 'Legal', '3.0.0-dev', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:8:{s:7:"Legal::";s:2:"::";s:18:"Legal::legalnotice";s:2:"::";s:17:"Legal::termsofuse";s:2:"::";s:20:"Legal::privacypolicy";s:2:"::";s:16:"Legal::agepolicy";s:2:"::";s:29:"Legal::accessibilitystatement";s:2:"::";s:30:"Legal::cancellationrightpolicy";s:2:"::";s:22:"Legal::tradeconditions";s:2:"::";}', '1.4.0', '1.4.99'),
-(16, 'Profile', 2, 'Profile', 'profile', 'Provides a personal account control panel for each registered user, an interface to administer the personal information items displayed within it, and a registered users list functionality. Works in close unison with the ''Users'' module.', 'Profile', '2.0.0', 'a:3:{s:7:"profile";a:1:{s:7:"version";s:3:"1.0";}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 1, 'a:6:{s:9:"Profile::";s:2:"::";s:13:"Profile::view";s:2:"::";s:13:"Profile::item";s:56:"DynamicUserData PropertyName::DynamicUserData PropertyID";s:16:"Profile:Members:";s:2:"::";s:22:"Profile:Members:recent";s:2:"::";s:22:"Profile:Members:online";s:2:"::";}', '1.4.0', '1.4.99');
+(14, 'Users', 3, 'Users', 'users', 'Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.', 'Users', '2.2.0', 'a:4:{s:14:"authentication";a:1:{s:7:"version";s:3:"1.0";}s:15:"hook_subscriber";a:1:{s:7:"enabled";b:1;}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:2:{s:7:"Users::";s:14:"Uname::User ID";s:16:"Users::MailUsers";s:2:"::";}', '1.3.0', '');
 
 -- --------------------------------------------------------
 
@@ -607,7 +586,6 @@ INSERT INTO `modules` (`id`, `name`, `type`, `displayname`, `url`, `description`
 -- Table structure for table `module_deps`
 --
 
-DROP TABLE IF EXISTS `module_deps`;
 CREATE TABLE IF NOT EXISTS `module_deps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modid` int(11) NOT NULL,
@@ -624,7 +602,6 @@ CREATE TABLE IF NOT EXISTS `module_deps` (
 -- Table structure for table `module_vars`
 --
 
-DROP TABLE IF EXISTS `module_vars`;
 CREATE TABLE IF NOT EXISTS `module_vars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(64) NOT NULL,
@@ -638,7 +615,7 @@ CREATE TABLE IF NOT EXISTS `module_vars` (
 --
 
 INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
-(1, '/EventHandlers', 'Extensions', 'a:2:{i:0;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:17:"Extensions_HookUI";i:1;s:5:"hooks";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:17:"Extensions_HookUI";i:1;s:14:"moduleservices";}s:6:"weight";i:10;}}'),
+(1, '/EventHandlers', 'Extensions', 'a:2:{i:0;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:17:"Extensions\\HookUI";i:1;s:5:"hooks";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:17:"Extensions\\HookUI";i:1;s:14:"moduleservices";}s:6:"weight";i:10;}}'),
 (2, 'Extensions', 'itemsperpage', 'i:25;'),
 (3, 'ZConfig', 'debug', 's:1:"0";'),
 (4, 'ZConfig', 'sitename', 's:9:"Site name";'),
@@ -757,11 +734,11 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (117, 'Users', 'reg_Illegalusername', 's:66:"root, webmaster, admin, administrator, nobody, anonymous, username";'),
 (118, 'Users', 'reg_verifyemail', 'i:2;'),
 (119, 'Users', 'reg_uniemail', 'b:1;'),
-(120, '/EventHandlers', 'Users', 'a:4:{i:0;a:3:{s:9:"eventname";s:19:"get.pending_content";s:8:"callable";a:2:{i:0;s:29:"Users_Listener_PendingContent";i:1;s:22:"pendingContentListener";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:15:"user.login.veto";s:8:"callable";a:2:{i:0;s:35:"Users_Listener_ForcedPasswordChange";i:1;s:28:"forcedPasswordChangeListener";}s:6:"weight";i:10;}i:2;a:3:{s:9:"eventname";s:21:"user.logout.succeeded";s:8:"callable";a:2:{i:0;s:34:"Users_Listener_ClearUsersNamespace";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}i:3;a:3:{s:9:"eventname";s:25:"frontcontroller.exception";s:8:"callable";a:2:{i:0;s:34:"Users_Listener_ClearUsersNamespace";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}}'),
+(120, '/EventHandlers', 'Users', 'a:4:{i:0;a:3:{s:9:"eventname";s:19:"get.pending_content";s:8:"callable";a:2:{i:0;s:37:"Users\\Listener\\PendingContentListener";i:1;s:22:"pendingContentListener";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:15:"user.login.veto";s:8:"callable";a:2:{i:0;s:43:"Users\\Listener\\ForcedPasswordChangeListener";i:1;s:28:"forcedPasswordChangeListener";}s:6:"weight";i:10;}i:2;a:3:{s:9:"eventname";s:21:"user.logout.succeeded";s:8:"callable";a:2:{i:0;s:42:"Users\\Listener\\ClearUsersNamespaceListener";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}i:3;a:3:{s:9:"eventname";s:25:"frontcontroller.exception";s:8:"callable";a:2:{i:0;s:42:"Users\\Listener\\ClearUsersNamespaceListener";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}}'),
 (121, 'SecurityCenter', 'itemsperpage', 'i:10;'),
 (122, 'ZConfig', 'updatecheck', 'i:1;'),
 (123, 'ZConfig', 'updatefrequency', 'i:7;'),
-(124, 'ZConfig', 'updatelastchecked', 'i:1333870078;'),
+(124, 'ZConfig', 'updatelastchecked', 'i:1334488036;'),
 (125, 'ZConfig', 'updateversion', 's:9:"1.3.1-dev";'),
 (126, 'ZConfig', 'keyexpiry', 'i:0;'),
 (127, 'ZConfig', 'sessionauthkeyua', 'b:0;'),
@@ -855,7 +832,7 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (216, 'Mailer', 'smtpsecuremethod', 's:3:"ssl";'),
 (217, 'Search', 'itemsperpage', 'i:10;'),
 (218, 'Search', 'limitsummary', 'i:255;'),
-(219, '/EventHandlers', 'Search', 'a:1:{i:0;a:3:{s:9:"eventname";s:26:"installer.module.installed";s:8:"callable";a:2:{i:0;s:20:"Search_EventHandlers";i:1;s:13:"moduleInstall";}s:6:"weight";i:10;}}');
+(219, '/EventHandlers', 'Search', 'a:1:{i:0;a:3:{s:9:"eventname";s:26:"installer.module.installed";s:8:"callable";a:2:{i:0;s:29:"Search\\Listener\\EventListener";i:1;s:13:"moduleInstall";}s:6:"weight";i:10;}}');
 
 -- --------------------------------------------------------
 
@@ -863,7 +840,6 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 -- Table structure for table `objectdata_attributes`
 --
 
-DROP TABLE IF EXISTS `objectdata_attributes`;
 CREATE TABLE IF NOT EXISTS `objectdata_attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_name` varchar(80) NOT NULL,
@@ -878,26 +854,26 @@ CREATE TABLE IF NOT EXISTS `objectdata_attributes` (
   PRIMARY KEY (`id`),
   KEY `object_type` (`object_type`),
   KEY `object_id` (`object_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=66 ;
 
 --
 -- Dumping data for table `objectdata_attributes`
 --
 
 INSERT INTO `objectdata_attributes` (`id`, `attribute_name`, `object_id`, `object_type`, `value`, `obj_status`, `cr_date`, `cr_uid`, `lu_date`, `lu_uid`) VALUES
-(1, 'code', 5, 'categories_category', 'Y', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(2, 'code', 6, 'categories_category', 'N', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(3, 'code', 11, 'categories_category', 'P', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(4, 'code', 12, 'categories_category', 'C', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(5, 'code', 13, 'categories_category', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(6, 'code', 14, 'categories_category', 'O', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(7, 'code', 15, 'categories_category', 'R', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(8, 'code', 17, 'categories_category', 'M', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(9, 'code', 18, 'categories_category', 'F', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(10, 'code', 26, 'categories_category', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(11, 'code', 27, 'categories_category', 'I', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(12, 'code', 29, 'categories_category', 'P', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0),
-(13, 'code', 30, 'categories_category', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-08 09:27:50', 0);
+(53, 'code', 5, 'categories_category', 'Y', 'A', '2012-04-16 19:46:18', 2, '2012-04-16 19:46:19', 2),
+(54, 'code', 6, 'categories_category', 'N', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(55, 'code', 11, 'categories_category', 'P', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(56, 'code', 12, 'categories_category', 'C', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(57, 'code', 13, 'categories_category', 'A', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(58, 'code', 14, 'categories_category', 'O', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(59, 'code', 15, 'categories_category', 'R', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(60, 'code', 17, 'categories_category', 'M', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(61, 'code', 18, 'categories_category', 'F', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(62, 'code', 26, 'categories_category', 'A', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(63, 'code', 27, 'categories_category', 'I', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(64, 'code', 29, 'categories_category', 'P', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
+(65, 'code', 30, 'categories_category', 'A', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2);
 
 -- --------------------------------------------------------
 
@@ -905,7 +881,6 @@ INSERT INTO `objectdata_attributes` (`id`, `attribute_name`, `object_id`, `objec
 -- Table structure for table `objectdata_log`
 --
 
-DROP TABLE IF EXISTS `objectdata_log`;
 CREATE TABLE IF NOT EXISTS `objectdata_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_type` varchar(80) NOT NULL,
@@ -926,7 +901,6 @@ CREATE TABLE IF NOT EXISTS `objectdata_log` (
 -- Table structure for table `objectdata_meta`
 --
 
-DROP TABLE IF EXISTS `objectdata_meta`;
 CREATE TABLE IF NOT EXISTS `objectdata_meta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module` varchar(40) NOT NULL,
@@ -967,7 +941,6 @@ CREATE TABLE IF NOT EXISTS `objectdata_meta` (
 -- Table structure for table `sc_intrusion`
 --
 
-DROP TABLE IF EXISTS `sc_intrusion`;
 CREATE TABLE IF NOT EXISTS `sc_intrusion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -988,7 +961,6 @@ CREATE TABLE IF NOT EXISTS `sc_intrusion` (
 -- Table structure for table `search_result`
 --
 
-DROP TABLE IF EXISTS `search_result`;
 CREATE TABLE IF NOT EXISTS `search_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -1009,14 +981,20 @@ CREATE TABLE IF NOT EXISTS `search_result` (
 -- Table structure for table `search_stat`
 --
 
-DROP TABLE IF EXISTS `search_stat`;
 CREATE TABLE IF NOT EXISTS `search_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `search` varchar(50) NOT NULL,
   `scount` int(11) NOT NULL DEFAULT '0',
   `date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `search_stat`
+--
+
+INSERT INTO `search_stat` (`id`, `search`, `scount`, `date`) VALUES
+(1, 'dfgdfg', 1, '2012-04-16');
 
 -- --------------------------------------------------------
 
@@ -1024,7 +1002,6 @@ CREATE TABLE IF NOT EXISTS `search_stat` (
 -- Table structure for table `session_info`
 --
 
-DROP TABLE IF EXISTS `session_info`;
 CREATE TABLE IF NOT EXISTS `session_info` (
   `sessid` varchar(40) NOT NULL,
   `ipaddr` varchar(32) NOT NULL,
@@ -1040,8 +1017,8 @@ CREATE TABLE IF NOT EXISTS `session_info` (
 --
 
 INSERT INTO `session_info` (`sessid`, `ipaddr`, `lastused`, `uid`, `remember`, `vars`) VALUES
-('t1vom1grabj30q713ql044fhdcdv839a', '837ec5754f503cfaaee0929fd48974e7', '2012-04-11 06:45:35', 2, 0, '_sf2_attributes|a:3:{s:3:"uid";s:1:"2";s:7:"_tokens";a:4:{s:23:"4f840d00cc4415.76757011";a:2:{s:5:"token";s:92:"NGY4NDBkMDBjYzQ0MTUuNzY3NTcwMTE6NDZlZWVmZDIzNjI3MjMwZGEwODMzZGY5ZWVjOGNiMTU6MTMzNDA1NDE0NA==";s:4:"time";i:1334054144;}s:23:"4f840da7e409e3.43329845";a:2:{s:5:"token";s:92:"NGY4NDBkYTdlNDA5ZTMuNDMzMjk4NDU6OWEzMWNiZjY5ZThhZTYzZDM2YzljZDE1ZDY2ZTIyMDM6MTMzNDA1NDMxMQ==";s:4:"time";i:1334054311;}s:23:"4f840e49ebe263.41630679";a:2:{s:5:"token";s:92:"NGY4NDBlNDllYmUyNjMuNDE2MzA2Nzk6MjBlZDQyMDEyNTdmM2JmN2QxNDRmZDdiZWY1NDI3MDg6MTMzNDA1NDQ3Mw==";s:4:"time";i:1334054473;}s:23:"4f850c6f97be87.10531642";a:2:{s:5:"token";s:92:"NGY4NTBjNmY5N2JlODcuMTA1MzE2NDI6ZjM0ZmQ4MGEwMWE4ZjUxMGFiYmUxYTExZTI1NjE2MDE6MTMzNDExOTUzNQ==";s:4:"time";i:1334119535;}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334119534;s:1:"c";i:1334054141;s:1:"l";s:6:"604800";}'),
-('h0hkn0bbt7mmh87ra2b8uahmv9ptrlpm', '837ec5754f503cfaaee0929fd48974e7', '2012-04-14 06:03:52', 2, 0, '_sf2_attributes|a:3:{s:3:"uid";s:1:"2";s:7:"_tokens";a:2:{s:23:"4f88f6b18de531.14279820";a:2:{s:5:"token";s:92:"NGY4OGY2YjE4ZGU1MzEuMTQyNzk4MjA6ZDM4MmQzNGRhYjBjYmYwYjU5ZTgwMzkyOTMxMDFmMjg6MTMzNDM3NjExMw==";s:4:"time";i:1334376113;}s:23:"4f88f7265bdf87.79911291";a:2:{s:5:"token";s:92:"NGY4OGY3MjY1YmRmODcuNzk5MTEyOTE6MDJiZjM2YTNkNzNiMWM1M2EyMTg4NGI3NDJkMTc4M2Q6MTMzNDM3NjIzMA==";s:4:"time";i:1334376230;}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334376231;s:1:"c";i:1334376111;s:1:"l";s:6:"604800";}');
+('8furfefgni18g9bq17r71i7lb3ikd9mc', '837ec5754f503cfaaee0929fd48974e7', '2012-04-15 13:07:17', 2, 1, '_sf2_attributes|a:5:{s:3:"uid";s:1:"2";s:10:"rememberme";i:1;s:9:"useragent";s:40:"f3344a2f025d5337868c3f62da839797b75b1f3a";s:7:"_tokens";a:1:{s:23:"4f8aa8eb51bea2.37295370";a:2:{s:5:"token";s:92:"NGY4YWE4ZWI1MWJlYTIuMzcyOTUzNzA6YjRlYWQ4ODllODRhMDU2NTdjZTY4NzUxZGJkMTAzNmU6MTMzNDQ4NzI3NQ==";s:4:"time";i:1334487275;}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334488034;s:1:"c";i:1334487260;s:1:"l";s:6:"604800";}'),
+('hn56d5bafjct0icskjtb81ksg6htcdsu', '837ec5754f503cfaaee0929fd48974e7', '2012-04-16 20:08:30', 2, 1, '_sf2_attributes|a:12:{s:3:"uid";s:1:"2";s:7:"_tokens";a:26:{s:23:"4f8c55caa7f9b1.96553473";a:2:{s:5:"token";s:92:"NGY4YzU1Y2FhN2Y5YjEuOTY1NTM0NzM6OWIwYTQ0NTkzMjFjNTYyNDI4YzcwNzUwZjUwZjZkZTc6MTMzNDU5NzA2Ng==";s:4:"time";i:1334597066;}s:23:"4f8c57afba8667.44793839";a:2:{s:5:"token";s:92:"NGY4YzU3YWZiYTg2NjcuNDQ3OTM4Mzk6MTc5Njg1NTAwM2M5ZDQ3MDBkYzRlYTk5OTE5MGNkMzE6MTMzNDU5NzU1MQ==";s:4:"time";i:1334597551;}s:23:"4f8c5998e1e8c9.09351670";a:2:{s:5:"token";s:92:"NGY4YzU5OThlMWU4YzkuMDkzNTE2NzA6MGU1ZWYyZGI1MzBjNTJlOGI5ZGFkNzFmNDA0NjAyZWY6MTMzNDU5ODA0MA==";s:4:"time";i:1334598040;}s:23:"4f8c599f3430f0.05596185";a:2:{s:5:"token";s:92:"NGY4YzU5OWYzNDMwZjAuMDU1OTYxODU6MjdmYzlkODkzODY5OWIxYTA2MDY4NjQ2NjFjYmUxYmU6MTMzNDU5ODA0Nw==";s:4:"time";i:1334598047;}s:23:"4f8c59f8b0d539.49154546";a:2:{s:5:"token";s:92:"NGY4YzU5ZjhiMGQ1MzkuNDkxNTQ1NDY6YzhmYTUyMzU3NDAzOTUxNGU2ZTQwN2JjNzZkYzJiNTA6MTMzNDU5ODEzNg==";s:4:"time";i:1334598136;}s:23:"4f8c59fe8e5044.16111146";a:2:{s:5:"token";s:92:"NGY4YzU5ZmU4ZTUwNDQuMTYxMTExNDY6MmY5ODVjYTUzNWU4ODhjOTFlODg2NmFmZGZlMDllYTc6MTMzNDU5ODE0Mg==";s:4:"time";i:1334598142;}s:23:"4f8c5a04ae3265.78255751";a:2:{s:5:"token";s:92:"NGY4YzVhMDRhZTMyNjUuNzgyNTU3NTE6NmMxNTJlMGZhY2U2YzNlOGRmMjZjYmM1NzFlNDgwMGU6MTMzNDU5ODE0OA==";s:4:"time";i:1334598148;}s:23:"4f8c5a0869e8c4.99826522";a:2:{s:5:"token";s:92:"NGY4YzVhMDg2OWU4YzQuOTk4MjY1MjI6ZTliNmU1ZjU3OWIzYTA3NWQxN2RkOTU4Y2VkZDk0ODc6MTMzNDU5ODE1Mg==";s:4:"time";i:1334598152;}s:23:"4f8c5a0c62b112.80699281";a:2:{s:5:"token";s:92:"NGY4YzVhMGM2MmIxMTIuODA2OTkyODE6NDg5NDE0YTEyZjg3NDA5NTE3YzM0MGM4NDdhYzY5MTk6MTMzNDU5ODE1Ng==";s:4:"time";i:1334598156;}s:23:"4f8c5a11dac3f3.64157134";a:2:{s:5:"token";s:92:"NGY4YzVhMTFkYWMzZjMuNjQxNTcxMzQ6ODE2ZjQ4Y2JhNjRhMGQ4NTE2ZmQ2MzQzNjdjNTAzYzI6MTMzNDU5ODE2MQ==";s:4:"time";i:1334598161;}s:23:"4f8c5a18941e93.67221948";a:2:{s:5:"token";s:92:"NGY4YzVhMTg5NDFlOTMuNjcyMjE5NDg6MDg0NzMxNzllNDQxYmMzMDQzNzg1NGFlNjNmY2YyNDQ6MTMzNDU5ODE2OA==";s:4:"time";i:1334598168;}s:23:"4f8c5a1e80c809.00098883";a:2:{s:5:"token";s:92:"NGY4YzVhMWU4MGM4MDkuMDAwOTg4ODM6YjgxMjFiMTE3Nzg0NzdjNzIzZjJkMjhkZGRlMDBkNjY6MTMzNDU5ODE3NA==";s:4:"time";i:1334598174;}s:23:"4f8c5a24d57c37.86667231";a:2:{s:5:"token";s:92:"NGY4YzVhMjRkNTdjMzcuODY2NjcyMzE6Mjk0ZDkwMGE4YWJhOTkxYTZmZmMzMjg3MWZhNTE2ZWI6MTMzNDU5ODE4MA==";s:4:"time";i:1334598180;}s:23:"4f8c5a27bbb7f7.73733301";a:2:{s:5:"token";s:92:"NGY4YzVhMjdiYmI3ZjcuNzM3MzMzMDE6ZGU0ODU1Mjk3ZmU1YTEwYmJhNzVkNTAzNDgxYzZhZTE6MTMzNDU5ODE4Mw==";s:4:"time";i:1334598183;}s:23:"4f8c5a36065cb4.77326956";a:2:{s:5:"token";s:92:"NGY4YzVhMzYwNjVjYjQuNzczMjY5NTY6ODNjZTMwNTJiZjI3OGFlYzY1YjRhNjE4M2MzMzE4M2U6MTMzNDU5ODE5OA==";s:4:"time";i:1334598198;}s:23:"4f8c5a3acdd726.95270364";a:2:{s:5:"token";s:92:"NGY4YzVhM2FjZGQ3MjYuOTUyNzAzNjQ6NGNlZmNhNTVmZjU0ODY0MjAxNjg4ZWIwNDNlNDRjNmY6MTMzNDU5ODIwMg==";s:4:"time";i:1334598202;}s:23:"4f8c5a3f1b9352.04026561";a:2:{s:5:"token";s:92:"NGY4YzVhM2YxYjkzNTIuMDQwMjY1NjE6MDU5MGU5OWIxZDYxMDkyOGZhNTlmY2Q0YTM4MmVjYTU6MTMzNDU5ODIwNw==";s:4:"time";i:1334598207;}s:23:"4f8c5a55d6dcd3.61843415";a:2:{s:5:"token";s:92:"NGY4YzVhNTVkNmRjZDMuNjE4NDM0MTU6ZDg1MmYxNThkY2M0NDI1ODEwMmYyODRmYzY3ZThlNWU6MTMzNDU5ODIyOQ==";s:4:"time";i:1334598229;}s:23:"4f8c5aa78dab37.27471689";a:2:{s:5:"token";s:92:"NGY4YzVhYTc4ZGFiMzcuMjc0NzE2ODk6YzVjOTU1NTBiMGQ5MDVjMjYyOGM1YzUxN2Y1NmUyZjk6MTMzNDU5ODMxMQ==";s:4:"time";i:1334598311;}s:23:"4f8c5aae6fccc2.44502703";a:2:{s:5:"token";s:92:"NGY4YzVhYWU2ZmNjYzIuNDQ1MDI3MDM6OWM1MzJhNjBlOWNmYzg4OTdiNDg2YmEzYmM0ODkyMDY6MTMzNDU5ODMxOA==";s:4:"time";i:1334598318;}s:23:"4f8c5ae73f1098.15377999";a:2:{s:5:"token";s:92:"NGY4YzVhZTczZjEwOTguMTUzNzc5OTk6NmQ3NjhkMGIyODA1OTgyZjZkNGJhYzkwZDgwZjBlMjM6MTMzNDU5ODM3NQ==";s:4:"time";i:1334598375;}s:23:"4f8c5af6a02333.11271620";a:2:{s:5:"token";s:92:"NGY4YzVhZjZhMDIzMzMuMTEyNzE2MjA6N2QxNDQ1ZGQ3ODc2ZTc1OWExZmVjZGRkYmU0MDg0Yzk6MTMzNDU5ODM5MA==";s:4:"time";i:1334598390;}s:23:"4f8c5b01c5bb12.08916126";a:2:{s:5:"token";s:92:"NGY4YzViMDFjNWJiMTIuMDg5MTYxMjY6MmQ3NDAxMzNkZGM1MTczYTFlODRhNjY5M2U5NDBhODU6MTMzNDU5ODQwMQ==";s:4:"time";i:1334598401;}s:23:"4f8c5b026fc061.19438311";a:2:{s:5:"token";s:92:"NGY4YzViMDI2ZmMwNjEuMTk0MzgzMTE6OTljMTU2NjVkZTk0OWYxZGFiYWE3ZmQwNjM3NDExN2Y6MTMzNDU5ODQwMg==";s:4:"time";i:1334598402;}s:23:"4f8c6014de0e96.94497953";a:2:{s:5:"token";s:92:"NGY4YzYwMTRkZTBlOTYuOTQ0OTc5NTM6MzlhNTBiOGU1ZTNhNGFiZTA1ZTViYzliYjJlZDVkNzk6MTMzNDU5OTcwMA==";s:4:"time";i:1334599700;}s:23:"4f8c601d7f24c7.88678877";a:2:{s:5:"token";s:92:"NGY4YzYwMWQ3ZjI0YzcuODg2Nzg4Nzc6NmU1ODM1NWFmNTM4MjdjM2M2MWJkMWRiZTc0NDFhYTk6MTMzNDU5OTcwOQ==";s:4:"time";i:1334599709;}}s:12:"//searchtype";s:3:"AND";s:13:"//searchorder";s:6:"newest";s:14:"//searchactive";a:1:{s:5:"Users";s:1:"1";}s:17:"searchResultCount";s:1:"0";s:19:"searchModulesByName";a:1:{s:5:"Users";a:3:{s:5:"title";s:5:"Users";s:9:"functions";a:1:{s:5:"Users";s:6:"search";}s:4:"name";s:5:"Users";}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}s:10:"rememberme";i:1;s:5:"state";N;s:4:"sort";s:4:"name";s:7:"sortdir";s:3:"ASC";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334599708;s:1:"c";i:1334597063;s:1:"l";s:6:"604800";}');
 
 -- --------------------------------------------------------
 
@@ -1049,7 +1026,6 @@ INSERT INTO `session_info` (`sessid`, `ipaddr`, `lastused`, `uid`, `remember`, `
 -- Table structure for table `themes`
 --
 
-DROP TABLE IF EXISTS `themes`;
 CREATE TABLE IF NOT EXISTS `themes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
@@ -1084,7 +1060,6 @@ INSERT INTO `themes` (`id`, `name`, `type`, `displayname`, `description`, `direc
 -- Table structure for table `userblocks`
 --
 
-DROP TABLE IF EXISTS `userblocks`;
 CREATE TABLE IF NOT EXISTS `userblocks` (
   `uid` int(11) NOT NULL,
   `bid` int(11) NOT NULL,
@@ -1099,7 +1074,6 @@ CREATE TABLE IF NOT EXISTS `userblocks` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
   `uname` varchar(25) NOT NULL,
@@ -1127,7 +1101,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`uid`, `uname`, `email`, `pass`, `passreminder`, `activated`, `approved_date`, `approved_by`, `user_regdate`, `lastlogin`, `theme`, `ublockon`, `ublock`, `tz`, `locale`) VALUES
 (1, 'guest', '', '', '', 1, '1970-01-01 00:00:00', 0, '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, '', '', ''),
-(2, 'admin', 'drak@zikula.org', '8$GLk02$698a73cc819a22f94267b34d48bb48015ca55efc3e9f8bc3a6dd2709ec24653d', '', 1, '2012-04-08 07:27:39', 2, '2012-04-08 07:27:55', '2012-04-14 04:03:50', '', 0, '', '', '');
+(2, 'admin', 'drak@zikula.org', '8$GLk02$698a73cc819a22f94267b34d48bb48015ca55efc3e9f8bc3a6dd2709ec24653d', '', 1, '2012-04-08 07:27:39', 2, '2012-04-08 07:27:55', '2012-04-16 17:32:31', '', 0, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1135,7 +1109,6 @@ INSERT INTO `users` (`uid`, `uname`, `email`, `pass`, `passreminder`, `activated
 -- Table structure for table `users_verifychg`
 --
 
-DROP TABLE IF EXISTS `users_verifychg`;
 CREATE TABLE IF NOT EXISTS `users_verifychg` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `changetype` tinyint(4) NOT NULL DEFAULT '0',
@@ -1152,7 +1125,6 @@ CREATE TABLE IF NOT EXISTS `users_verifychg` (
 -- Table structure for table `workflows`
 --
 
-DROP TABLE IF EXISTS `workflows`;
 CREATE TABLE IF NOT EXISTS `workflows` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `metaid` int(11) NOT NULL DEFAULT '0',
