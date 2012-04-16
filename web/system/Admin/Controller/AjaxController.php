@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+namespace Admin\Controller;
+
+use ModUtil, SecurityUtil, LogUtil, DataUtil;
+use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Response_Ajax_BadData;
+
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Change the category a module belongs to by ajax.
@@ -161,7 +166,7 @@ class Admin_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($name) || $name == '') {
-            throw new Zikula_Exception_BadData($this->__('No category name or id set.'));
+            return new Zikula_Response_Ajax_BadData($this->__('No category name or id set.'));
         }
 
         $output = array();

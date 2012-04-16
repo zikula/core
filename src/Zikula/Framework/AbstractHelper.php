@@ -97,10 +97,10 @@ abstract class AbstractHelper implements TranslatableInterface
         if ($object instanceof AbstractBase || $object instanceof AbstractEventHandler || $object instanceof \Zikula\Core\Hook\AbstractHandler || $object instanceof AbstractPlugin) {
             $this->container = $object->getContainer();
             $this->dispatcher = $object->getDispatcher();
-        } else if ($object instanceof ServiceManager) {
+        } else if ($object instanceof ContainerBuilder) {
             $this->container = $object;
-            $this->dispatcher = $object->get('zikula.eventmanager');
-        } else if ($object instanceof EventManager) {
+            $this->dispatcher = $object->get('event_dispatcher');
+        } else if ($object instanceof EvenDispatcher) {
             $this->dispatcher = $object;
             $this->container = $object->getContainer();
         }

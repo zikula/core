@@ -12,12 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData;
+
+use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Users\Constants as UsersConstant;
 
 /**
  * Contains and validates the data found on the Users module's user registration form.
  */
-class Users_Controller_FormData_RegistrationForm extends Users_Controller_FormData_AbstractFormData
+class RegistrationForm extends AbstractFormData
 {
     /**
      * Create a new instance of the form data container, intializing the fields and validators.
@@ -29,109 +32,109 @@ class Users_Controller_FormData_RegistrationForm extends Users_Controller_FormDa
     {
         parent::__construct($formId, $container);
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'uname',
                 '',
                 '',
                 $this->container))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+            ->addValidator(new Validator\StringMinimumLength(
                 $this->container,
                 1,
                 $this->__('A user name is required, and cannot be left blank.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
+            ->addValidator(new Validator\StringRegularExpression(
                 $this->container,
-                '/^'. Users_Constant::UNAME_VALIDATION_PATTERN .'$/uD',
+                '/^'. UsersConstant::UNAME_VALIDATION_PATTERN .'$/uD',
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringLowercase(
+            ->addValidator(new Validator\StringLowercase(
                 $this->container,
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')));
 
-        $passwordMinimumLength = (int)$this->getVar(Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
-        $this->addField(new Users_Controller_FormData_Field(
+        $passwordMinimumLength = (int)$this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
+        $this->addField(new Field(
                 $this,
                 'pass',
                 '',
                 '',
                 $this->container))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+            ->addValidator(new Validator\StringMinimumLength(
                 $this->container,
                 $passwordMinimumLength,
                 $this->__f('Passwords must be at least %1$d characters in length.', array($passwordMinimumLength))));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'passagain',
                 '',
                 '',
                 $this->container))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'passreminder',
                 false,
                 false,
                 $this->container))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+            ->addValidator(new Validator\StringMinimumLength(
                 $this->container,
                 1,
                 $this->__('A password reminder is required, and cannot be left blank.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'email',
                 '',
                 '',
                 $this->container))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+            ->addValidator(new Validator\StringMinimumLength(
                 $this->container,
                 1,
                 $this->__('An e-mail address is required, and cannot be left blank.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
+            ->addValidator(new Validator\StringRegularExpression(
                 $this->container,
-                '/^'. Users_Constant::EMAIL_VALIDATION_PATTERN .'$/Di',
+                '/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di',
                 $this->__('The value entered does not appear to be a valid e-mail address.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'emailagain',
                 '',
                 '',
                 $this->container))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')));
 
-        $antispamQuestion = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
-        $this->addField(new Users_Controller_FormData_Field(
+        $antispamQuestion = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
+        $this->addField(new Field(
                 $this,
                 'antispamanswer',
                 '',
                 '',
                 $this->container))
             ->setNullAllowed(empty($antispamQuestion))
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->container,
                 $this->__('The value must be a string.')));
 
@@ -172,9 +175,9 @@ class Users_Controller_FormData_RegistrationForm extends Users_Controller_FormDa
             }
         }
 
-        $antispamQuestion = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
+        $antispamQuestion = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, '');
         if (!empty($antispamQuestion)) {
-            $antispamAnswer = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
+            $antispamAnswer = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
 
             $antiSpamAnswerField = $this->getField('antispamanswer');
             if ($antiSpamAnswerField->getData() != $antispamAnswer) {

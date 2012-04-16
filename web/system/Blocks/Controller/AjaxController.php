@@ -12,10 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Controller;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
+use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Exception_BadData;
+use Blocks\Entity\BlockPlacement;
+
 /**
  * Blocks_Controller_Ajax class.
  */
-class Blocks_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+class Blocks_Controller_AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Changeblockorder.
@@ -41,7 +48,7 @@ class Blocks_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         
         // add new block positions
         foreach ((array)$blockorder as $order => $bid) {
-            $placement = new Blocks\Entity\BlockPlacement();
+            $placement = new BlockPlacement();
             $placement->setPid($position);
             $placement->setBid($bid);
             $placement->setSortorder($order);

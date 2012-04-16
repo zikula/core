@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Search\Api;
+
+use LogUtil, ModUtil, DBUtil, UserUtil, DataUtil, SecurityUtil, System, FormUtil, ZLanguage;
+use Doctrine_Manager;
+
 /**
  * Search_Api_User class.
  */
-class Search_Api_UserApi extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
 
     /**

@@ -141,7 +141,7 @@ class CategoryRegistryUtil
      *
      * @param array $catregs The array of category map data objects.
      *
-     * @return true
+     * @return boolean
      */
     public static function registerModuleCategories($catregs)
     {

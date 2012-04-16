@@ -12,10 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Controller;
+
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use StringUtil;
+use Categories\DBObject\Category;
+use Zikula_Response_Ajax, Zikula_Response_Ajax_BadData;
+
 /**
  * Categories_Controller_Ajax.
  */
-class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Resequence categories
@@ -33,7 +40,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
             if (isset($data[$cid])) {
                 $cats[$k]['sort_value'] = $data[$cid]['lineno'];
                 $cats[$k]['parent_id'] = $data[$cid]['parent'];
-                $obj = new Categories_DBObject_Category($cats[$k]);
+                $obj = new Category($cats[$k]);
                 $obj->update();
             }
         }
@@ -60,7 +67,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $languages = ZLanguage::getInstalledLanguages();
 
         if ($validationErrors) {
-            $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
+            $category = new Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
             $editCat = $category->get();
             $validationErrors = $validationErrors['category'];
         } else {
@@ -69,12 +76,12 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
                 if (!$cid) {
                     return new Zikula_Response_Ajax_BadData($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
                 }
-                $category = new Categories_DBObject_Category();
+                $category = new Category();
                 $editCat = $category->select($cid);
                 $this->throwNotFoundUnless($editCat, $this->__('Sorry! No such item found.'));
             } else {
                 // someone just pressen 'new' -> populate defaults
-                $category = new Categories_DBObject_Category(); // need this for validation info
+                $category = new Category(); // need this for validation info
                 $editCat['sort_value'] = '0';
                 $editCat['parent_id'] = $parent;
             }
@@ -82,8 +89,8 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
-        Zikula_AbstractController::configureView();
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        \Zikula_AbstractController::configureView();
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('mode', $mode)
             ->assign('category', $editCat)
@@ -110,9 +117,9 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
 
-        $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        $cat = new Category(DBObject::GET_FROM_DB, $cid);
         $cat->copy($parent);
-        $copyParent = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cat->getDataField('parent_id'));
+        $copyParent = new Category(DBObject::GET_FROM_DB, $cat->getDataField('parent_id'));
 
         $categories = CategoryUtil::getSubCategories($copyParent->getDataField('id'), true, true, true, true, true);
         $options = array(
@@ -151,7 +158,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
 
         $cid = $this->request->request->get('cid');
-        $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        $cat = new Category(DBObject::GET_FROM_DB, $cid);
         $cat->delete(true);
 
         $result = array(
@@ -169,11 +176,11 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
-        $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        $cat = new Category(DBObject::GET_FROM_DB, $cid);
         $cat->deleteMoveSubcategories($parent);
         // need to re-render new parents node
 
-        $newParent = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $parent);
+        $newParent = new Category(DBObject::GET_FROM_DB, $parent);
         $categories = CategoryUtil::getSubCategories($newParent->getDataField('id'), true, true, true, true, true);
         $options = array(
             'nullParent' => $newParent->getDataField('parent_id'),
@@ -213,8 +220,8 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
 
-        Zikula_AbstractController::configureView();
-        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+        \Zikula_AbstractController::configureView();
+        $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('categorySelector', $selector);
         $result = array(
@@ -229,7 +236,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
         $cid = $this->request->request->get('cid');
-        $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        $cat = new Category(DBObject::GET_FROM_DB, $cid);
         $cat->setDataField('status', 'A');
         $cat->update();
 
@@ -247,7 +254,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
 
         $cid = $this->request->request->get('cid');
-        $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
+        $cat = new Category(DBObject::GET_FROM_DB, $cid);
         $cat->setDataField('status', 'I');
         $cat->update();
 
@@ -268,7 +275,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
 
         $result = array();
 
-        $cat = new Categories_DBObject_Category();
+        $cat = new Category();
         $cat->getDataFromInput();
 
         if (!$cat->validate()) {
@@ -293,7 +300,7 @@ class Categories_Controller_AjaxController extends Zikula_Controller_AbstractAja
         if ($mode == 'edit') {
             // retrieve old category from DB
             $category = $this->request->request->get('category');
-            $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
+            $oldCat = new Category(DBObject::GET_FROM_DB, $category['id']);
 
             // update new category data
             $cat->update();

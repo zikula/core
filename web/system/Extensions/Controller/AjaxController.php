@@ -12,7 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+namespace Extensions\Controller;
+
+use Zikula_Exception_Fatal;
+use Zikula_Response_Ajax;
+use HookUtil, ModUtil, SecurityUtil;
+
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * togglesubscriberareastatus
@@ -89,7 +95,7 @@ class Extensions_Controller_AjaxController extends Zikula_Controller_AbstractAja
      *
      * @param subscriber string     name of the subscriber
      * @param providerorder array   array of sorted provider ids
-     * @return Ajax response
+     * @return Zikula_Response_Ajax response
      */
     public function changeproviderareaorderAction()
     {

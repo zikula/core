@@ -12,7 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Controller_UserformController extends Zikula_AbstractController
+namespace Categories\Controller;
+
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use StringUtil, System, Zikula_View;
+use Categories\DBObject\Category, EventUtil;
+
+class UserformController extends \Zikula_AbstractController
 {
     /**
      * delete category
@@ -35,7 +41,7 @@ class Categories_Controller_UserformController extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! The category ID is invalid.'), null, $url);
         }
 
-        $obj = new Categories_DBObject_Category ();
+        $obj = new Category ();
         $data = $obj->get($cid);
 
         if (!$data) {
@@ -73,7 +79,7 @@ class Categories_Controller_UserformController extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! The document root is invalid.'), null, $url);
         }
 
-        $obj = new Categories_DBObject_Category ();
+        $obj = new Category();
         $data = $obj->getDataFromInput();
         $oldData = $obj->get($data['id']);
         $obj->setData($data);
@@ -144,12 +150,12 @@ class Categories_Controller_UserformController extends Zikula_AbstractController
         $cats = CategoryUtil::resequence($cats, 10);
         $ak = array_keys($cats);
         foreach ($ak as $k) {
-            $obj = new Categories_DBObject_Category($cats[$k]);
+            $obj = new Category($cats[$k]);
             $obj->update();
         }
 
         $data = array('id' => $cid);
-        $val = ObjectUtil::moveField($data, 'categories_category', $dir, 'sort_value');
+        $val = \ObjectUtil::moveField($data, 'categories_category', $dir, 'sort_value');
 
         $url = System::serverGetVar('HTTP_REFERER');
         return $this->redirect($url);
@@ -173,7 +179,7 @@ class Categories_Controller_UserformController extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! The document root is invalid.'), null, $url);
         }
 
-        $cat = new Categories_DBObject_Category ();
+        $cat = new Category ();
         $data = $cat->getDataFromInput();
 
         if (!$cat->validate()) {
@@ -211,7 +217,7 @@ class Categories_Controller_UserformController extends Zikula_AbstractController
 
         $ak = array_keys($cats);
         foreach ($ak as $k) {
-            $obj = new Categories_DBObject_Category($cats[$k]);
+            $obj = new Category($cats[$k]);
             $obj->update();
         }
 

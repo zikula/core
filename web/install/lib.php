@@ -357,7 +357,7 @@ function install(Core $core)
 function createuser($username, $password, $email)
 {
     if (!class_exists('Users_Constant')) {
-        require_once 'system/Users/Constant.php';
+        require_once 'system/Users/Constants.php';
     }
     $connection = Doctrine_Manager::connection();
 

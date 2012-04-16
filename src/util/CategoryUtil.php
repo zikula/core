@@ -54,7 +54,7 @@ class CategoryUtil
 
         $checkCat = self::getCategoryByPath("$rootPath/$name");
         if (!$checkCat) {
-            $cat = new Categories_DBObject_Category();
+            $cat = new \Categories\DBObject\Category();
             $data = array();
             $data['parent_id'] = $rootCat['id'];
             $data['name'] = $name;
@@ -759,7 +759,7 @@ class CategoryUtil
             $cat['id'] = '';
             $cat['parent_id'] = isset($oldToNewID[$cat['parent_id']]) ? $oldToNewID[$cat['parent_id']] : $newParent['id'];
             $cat['sort_value'] = null;
-            $catObj = new Categories_DBObject_Category($cat);
+            $catObj = new \Categories\DBObject\Category($cat);
             $catObj->insert();
             $oldToNewID[$oldID] = $catObj->_objData['id'];
         }

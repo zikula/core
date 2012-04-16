@@ -67,7 +67,7 @@ abstract class AbstractBase implements TranslatableInterface
     /**
      * ServiceManager.
      *
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @var \Zikula\Component\DependencyInjection\ContainerBuilder
      */
     protected $container;
 
@@ -134,7 +134,8 @@ abstract class AbstractBase implements TranslatableInterface
     {
         $this->getPath();
         $this->systemBaseDir = realpath('.');
-        $parts = explode('_', get_class($this));
+        $class = get_class($this);
+        $parts = strpos($class, '_') ? explode('_', $class) : explode('\\', $class);
         $this->name = $parts[0];
         $baseDir = \ModUtil::getModuleBaseDir($this->name);
         $this->baseDir = realpath("{$this->systemBaseDir}/$baseDir/" . $this->name);

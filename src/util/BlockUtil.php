@@ -271,7 +271,7 @@ class BlockUtil
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
 
-        $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block.'Block');
+        $serviceId = strtolower('block.' . $modinfo['name'] . '\\Block\\' . $block.'Block');
         if ($sm->has($serviceId)) {
             return $sm->get($serviceId);
         }
@@ -283,7 +283,7 @@ class BlockUtil
         ModUtil::load($modname);
 
         // get the block info
-        $className = ucwords($modinfo['name']) . '_Block_' . ucwords($block) . 'Block';
+        $className = ucwords($modinfo['name']) . '\\Block\\' . ucwords($block) . 'Block';
         $r = new ReflectionClass($className);
         $blockInstance = $r->newInstanceArgs(array($sm));
 
@@ -414,7 +414,7 @@ class BlockUtil
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine')->getEntityManager();
 
-            $entity = 'Blocks_Entity_UserBlock';
+            $entity = 'Blocks\Entity\UserBlock';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
 
             if (!$item) {

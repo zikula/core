@@ -12,10 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace SecurityCenter\Controller;
+
+use Zikula_View, LogUtil, SecurityUtil, ModUtil, System, CacheUtil;
+use DataUtil, DateUtil, UserUtil;
+use SecurityCenter\Util as SecurityCenterUtil;
+use Zikula\Core\Core;
+
 /**
  * SecurityCenter_Controller_Admin class.
  */
-class SecurityCenter_Controller_AdminController extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -73,37 +80,6 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
      * module given the information passed back by the modification form
      * @see securitycenter_admin_modifyconfig()
      *
-     * @param int enableanticracker
-     * @param int itemsperpage
-     * @param int emailhackattempt
-     * @param int loghackattempttodb
-     * @param int onlysendsummarybyemail
-     * @param int updatecheck
-     * @param int updatefrequency
-     * @param int keyexpiry
-     * @param int sessionauthkeyua
-     * @param string secure_domain
-     * @param int signcookies
-     * @param string signingkey
-     * @param string seclevel
-     * @param int secmeddays
-     * @param int secinactivemins
-     * @param int sessionstoretofile
-     * @param string sessionsavepath
-     * @param int gc_probability
-     * @param int anonymoussessions
-     * @param int sessionrandregenerate
-     * @param int sessionregenerate
-     * @param int sessionregeneratefreq
-     * @param int sessionipcheck
-     * @param string sessionname
-     * @param int filtergetvars
-     * @param int filterpostvars
-     * @param int filtercookievars
-     * @param int outputfilter
-     * @param string summarycontent
-     * @param string fullcontent
-     *
      * @return bool true if successful, false otherwise.
      */
     public function updateconfigAction()
@@ -123,7 +99,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
 
         // if update checks are disabled, reset values to force new update check if re-enabled
         if ($updatecheck == 0) {
-            System::setVar('updateversion', Zikula_Core::VERSION_NUM);
+            System::setVar('updateversion', Core::VERSION_NUM);
             System::setVar('updatelastchecked', 0);
         }
 
@@ -353,13 +329,13 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
         $this->view->assign('itemsperpage', $this->getVar('itemsperpage'));
 
         if ($reset) {
-            $purifierconfig = SecurityCenter_Util::getPurifierConfig(true);
+            $purifierconfig = SecurityCenterUtil::getPurifierConfig(true);
             LogUtil::registerStatus($this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = SecurityCenter_Util::getPurifierConfig(false);
+            $purifierconfig = SecurityCenterUtil::getPurifierConfig(false);
         }
 
-        $purifier = new HTMLPurifier($purifierconfig);
+        $purifier = new \HTMLPurifier($purifierconfig);
 
         $config = $purifier->config;
 
@@ -367,7 +343,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
             $config = $config[1];
         }
 
-        $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $config->def);
+        $allowed = \HTMLPurifier_Config::getAllowedDirectivesForForm(true, $config->def);
 
         // list of excluded directives, format is $namespace_$directive
         $excluded = array('Cache_SerializerPath');
@@ -412,17 +388,17 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
             }
             if (is_array($directiveRec['value'])) {
                 switch ($directiveRec['type']) {
-                    case HTMLPurifier_VarParser::LOOKUP:
+                    case \HTMLPurifier_VarParser::LOOKUP:
                         $value = array();
                         foreach ($directiveRec['value'] as $val => $b) {
                             $value[] = $val;
                         }
                         $directiveRec['value'] = implode(PHP_EOL, $value);
                         break;
-                    case HTMLPurifier_VarParser::ALIST:
+                    case \HTMLPurifier_VarParser::ALIST:
                         $directiveRec['value'] = implode(PHP_EOL, $value);
                         break;
-                    case HTMLPurifier_VarParser::HASH:
+                    case \HTMLPurifier_VarParser::HASH:
                         $value = '';
                         foreach ($directiveRec['value'] as $i => $v) {
                             $value .= "{$i}:{$v}" . PHP_EOL;
@@ -434,22 +410,22 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
                 }
             }
             // Editing for only these types is supported
-            $directiveRec['supported'] = (($directiveRec['type'] == HTMLPurifier_VarParser::STRING)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::ISTRING)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::TEXT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::ITEXT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::INT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::FLOAT)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::BOOL)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::LOOKUP)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::ALIST)
-                    || ($directiveRec['type'] == HTMLPurifier_VarParser::HASH));
+            $directiveRec['supported'] = (($directiveRec['type'] == \HTMLPurifier_VarParser::STRING)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::ISTRING)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::TEXT)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::ITEXT)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::INT)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::FLOAT)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::BOOL)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::LOOKUP)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::ALIST)
+                    || ($directiveRec['type'] == \HTMLPurifier_VarParser::HASH));
 
             $purifierAllowed[$namespace][$directive] = $directiveRec;
         }
 
         $this->view->assign('purifier', $purifier)
-                ->assign('purifierTypes', HTMLPurifier_VarParser::$types)
+                ->assign('purifierTypes', \HTMLPurifier_VarParser::$types)
                 ->assign('purifierAllowed', $purifierAllowed);
 
         // Return the output that has been generated by this function
@@ -471,14 +447,14 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
         }
 
         // Load HTMLPurifier Classes
-        $purifier = SecurityCenter_Util::getpurifier();
+        $purifier = SecurityCenterUtil::getpurifier();
 
         // Update module variables.
         $config = $this->request->request->get('purifierConfig', null);
-        $config = HTMLPurifier_Config::prepareArrayFromForm($config, false, true, true, $purifier->config->def);
+        $config = \HTMLPurifier_Config::prepareArrayFromForm($config, false, true, true, $purifier->config->def);
 //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n";
 
-        $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $purifier->config->def);
+        $allowed = \HTMLPurifier_Config::getAllowedDirectivesForForm(true, $purifier->config->def);
         foreach ($allowed as $allowedDirective) {
             list($namespace, $directive) = $allowedDirective;
 
@@ -503,7 +479,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
                 }
 
                 switch ($directiveType) {
-                    case HTMLPurifier_VarParser::LOOKUP:
+                    case \HTMLPurifier_VarParser::LOOKUP:
                         $value = explode(PHP_EOL, $config[$namespace][$directive]);
                         $config[$namespace][$directive] = array();
                         foreach ($value as $val) {
@@ -516,7 +492,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
                             unset($config[$namespace][$directive]);
                         }
                         break;
-                    case HTMLPurifier_VarParser::ALIST:
+                    case \HTMLPurifier_VarParser::ALIST:
                         $value = explode(PHP_EOL, $config[$namespace][$directive]);
                         $config[$namespace][$directive] = array();
                         foreach ($value as $val) {
@@ -529,7 +505,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
                             unset($config[$namespace][$directive]);
                         }
                         break;
-                    case HTMLPurifier_VarParser::HASH:
+                    case \HTMLPurifier_VarParser::HASH:
                         $value = explode(PHP_EOL, $config[$namespace][$directive]);
                         $config[$namespace][$directive] = array();
                         foreach ($value as $val) {
@@ -561,7 +537,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
         //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
         $this->setVar('htmlpurifierConfig', serialize($config));
 
-        $purifier = SecurityCenter_Util::getpurifier(true);
+        $purifier = SecurityCenterUtil::getpurifier(true);
 
         // clear all cache and compile directories
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
@@ -722,7 +698,7 @@ class SecurityCenter_Controller_AdminController extends Zikula_AbstractControlle
             }
 
             // export the csv file
-            FileUtil::exportCSV($data, $titles, $delimiter, '"', $exportFile);
+            \FileUtil::exportCSV($data, $titles, $delimiter, '"', $exportFile);
         }
 
         // fetch output from template

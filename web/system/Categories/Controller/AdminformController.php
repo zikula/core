@@ -12,10 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Controller;
+
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use StringUtil;
+use Categories\DBObject\Category;
+
 /**
  * Controller.
  */
-class Categories_Controller_AdminformController extends Zikula_AbstractController
+class AdminformController extends \Zikula_AbstractController
 {
     /**
      * update category
@@ -54,7 +60,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
             return $this->redirect(ModUtil::url('Categories', 'user', 'edit', $args));
         }
 
-        $cat = new Categories_DBObject_Category ();
+        $cat = new Category ();
         $data = $cat->getDataFromInput();
 
         if (!$cat->validate('admin')) {
@@ -74,7 +80,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
 
         // retrieve old category from DB
         $category = $this->request->request->get('category', null);
-        $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
+        $oldCat = new Category(DBObject::GET_FROM_DB, $category['id']);
 
         // update new category data
         $cat->update();
@@ -101,7 +107,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
             return LogUtil::registerPermissionError();
         }
 
-        $cat = new Categories_DBObject_Category ();
+        $cat = new Category ();
         $cat->getDataFromInput();
 
         // submit button wasn't pressed -> category was chosen from dropdown
@@ -110,7 +116,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
             $newCat = $_POST['category'];
             $pcID = $newCat['parent_id'];
 
-            $pCat = new Categories_DBObject_Category ();
+            $pCat = new Category ();
             $parentCat = $pCat->get($pcID);
 
             //$newCat['security_domain'] = $parentCat['security_domain'];
@@ -166,7 +172,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         }
 
         $cid = $this->request->request->get('cid', null);
-        $cat = new Categories_DBObject_Category ();
+        $cat = new Category ();
         $cat->get($cid);
 
         // delete subdirectories
@@ -198,7 +204,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         }
 
         $cid = $this->request->request->get('cid', null);
-        $cat = new Categories_DBObject_Category ();
+        $cat = new Category ();
         $cat->get($cid);
 
         $cat->copy($_POST['category']['parent_id']);
@@ -224,7 +230,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
         }
 
         $cid = $this->request->request->get('cid', null);
-        $cat = new Categories_DBObject_Category ();
+        $cat = new Category ();
         $cat->get($cid);
         $cat->move($_POST['category']['parent_id']);
 
@@ -236,7 +242,7 @@ class Categories_Controller_AdminformController extends Zikula_AbstractControlle
     /**
      * rebuild path structure
      */
-    public function rebuild_paths()
+    public function rebuild_pathsAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();

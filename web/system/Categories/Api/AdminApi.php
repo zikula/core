@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Api;
+
+use SecurityUtil, ModUtil;
+
 /**
  * Categories_Api_Admin class.
  */
-class Categories_Api_AdminApi extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Get available admin panel links.

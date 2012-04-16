@@ -173,7 +173,8 @@ abstract class AbstractVersion implements \ArrayAccess
         $this->getPath();
         $this->systemBaseDir = realpath('.');
         $this->reflection = new \ReflectionObject($this);
-        $p = explode('_', get_class($this));
+        $class = get_class($this);
+        $p = strpos($class, '_') ? explode('_', $class) : explode('\\', $class);
         $this->name = $p[0];
         $this->directory = $this->name; // legacy handling
         $this->type = \ModUtil::getModuleBaseDir($this->name) == 'system' ? \ModUtil::TYPE_SYSTEM : \ModUtil::TYPE_MODULE;

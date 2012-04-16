@@ -11,7 +11,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Errors_Controller_UserController extends Zikula_AbstractController
+
+namespace Errors\Controller;
+
+use System, Zikula_Session, Zikula_View, SecurityUtil, PageUtil;
+use Zikula\Core\Core;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * Display an error
@@ -25,8 +31,10 @@ class Errors_Controller_UserController extends Zikula_AbstractController
      */
     public function indexAction($args)
     {
+        /* @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->request->getSession();
         $type      = $this->request->query->get('errtype', isset($args['type']) ? $args['type'] : 500);
+        /* @var \Exception $exception */
         $exception = isset($args['exception']) ? $args['exception'] : null;
         $message   = isset($args['message']) ? $args['message'] : '';
 
@@ -50,7 +58,7 @@ class Errors_Controller_UserController extends Zikula_AbstractController
         }
 
         $trace = array();
-        if (System::isDevelopmentMode() && $exception instanceof Exception) {
+        if (System::isDevelopmentMode() && $exception instanceof \Exception) {
             $line = $exception->getLine();
             $file = $exception->getFile();
             $trace = array(0 => '#0 '.$this->__f('Exception thrown in %1$s, line %2$s.', array($file, $line)));

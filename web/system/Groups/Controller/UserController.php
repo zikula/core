@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Controller_UserController extends Zikula_AbstractController
+namespace Groups\Controller;
+
+use ModUtil, LogUtil, SecurityUtil, UserUtil, Zikula_View, DataUtil;
+use Groups\Helper\CommonHelper;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * Groups Module main user function
@@ -72,7 +77,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
         $typelabel  = array();
         $statelabel = array();
 
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
@@ -144,7 +149,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
                 return DataUtil::formatForDisplay($this->__('Error! You are already a member of this group.'));
             }
 
-            if ($group['gtype'] == Groups_Helper_Common::GTYPE_CORE) {
+            if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
                 return DataUtil::formatForDisplay($this->__('Sorry! You cannot apply for membership of that group.'));
             }
 
@@ -154,7 +159,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
                 }
             }
 
-            if ($group['state'] == Groups_Helper_Common::STATE_CLOSED) {
+            if ($group['state'] == CommonHelper::STATE_CLOSED) {
                 return DataUtil::formatForDisplay($this->__('Sorry! That group is closed.'));
             }
         }
@@ -191,7 +196,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
         }
 
         $applytext = '';
-        if ($action == 'subscribe' && $gtype == Groups_Helper_Common::GTYPE_PRIVATE) {
+        if ($action == 'subscribe' && $gtype == CommonHelper::GTYPE_PRIVATE) {
             $applytext = $this->request->request->get('applytext', null);
         }
 
@@ -240,7 +245,7 @@ class Groups_Controller_UserController extends Zikula_AbstractController
         $typelabel  = array();
         $statelabel = array();
 
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 

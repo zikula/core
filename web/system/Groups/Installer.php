@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Installer extends Zikula_AbstractInstaller
+namespace Groups;
+
+use DoctrineHelper;
+
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the groups module
@@ -31,7 +35,7 @@ class Groups_Installer extends Zikula_AbstractInstaller
         
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -68,7 +72,7 @@ class Groups_Installer extends Zikula_AbstractInstaller
         {
             case '2.1':
                 // change value of defaultgroup from name to gid
-                $gid = DBUtil::selectObjectByID('groups', $this->getVar('defaultgroup'), 'name');
+                $gid = \DBUtil::selectObjectByID('groups', $this->getVar('defaultgroup'), 'name');
                 $this->setVar('defaultgroup', $gid['gid']);
 
             case '2.2':
@@ -116,7 +120,7 @@ class Groups_Installer extends Zikula_AbstractInstaller
         );
         
         foreach ($records as $record) {
-            $item = new Groups\Entity\Group;
+            $item = new \Groups\Entity\Group;
             $item['name'] = $record['name'];
             $item['description'] = $record['description'];
             $item['prefix'] = $record['prefix'];
@@ -138,7 +142,7 @@ class Groups_Installer extends Zikula_AbstractInstaller
         );
         
         foreach ($records as $record) {
-            $item = new Groups\Entity\GroupMembership;
+            $item = new \Groups\Entity\GroupMembership;
             $item['gid'] = $record['gid'];
             $item['uid'] = $record['uid'];
             $this->entityManager->persist($item);

@@ -35,7 +35,8 @@ abstract class AbstractInstaller extends AbstractBase
     protected function _configureBase()
     {
         $this->systemBaseDir = realpath('.');
-        $parts = explode('_', $this->getReflection()->getName());
+        $class = get_class($this);
+        $parts = strpos($class, '_') ? explode('_', $class) : explode('\\', $class);
         $this->name = $parts[0];
         $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
         $this->modinfo = array(

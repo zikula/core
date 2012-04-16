@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Api_UserApi extends Zikula_AbstractApi
+namespace Categories\Api;
+
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil;
+
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * get the roor category for a user
@@ -37,7 +41,7 @@ class Categories_Api_UserApi extends Zikula_AbstractApi
             return LogUtil::registerError($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
-        $userCatName = $this->getusercategoryname ();
+        $userCatName = $this->getusercategoryname();
         $thisUserRootCatPath = $userRoot . '/' . $userCatName;
         $thisUserRootCat = CategoryUtil::getCategoryByPath ($thisUserRootCatPath);
 

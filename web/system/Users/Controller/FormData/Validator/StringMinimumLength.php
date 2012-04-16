@@ -12,13 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData\Validator;
+
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Validates a field's data, ensuring that its string value has a length that is greater than or equal to a minimum length.
  */
-class Users_Controller_FormData_Validator_StringMinimumLength extends Users_Controller_FormData_Validator_AbstractValidator {
-
+class StringMinimumLength extends AbstractValidator
+{
     /**
      * The minimum valid string length.
      *
@@ -33,14 +35,15 @@ class Users_Controller_FormData_Validator_StringMinimumLength extends Users_Cont
      * @param integer        $length         The minimum valid length for the string value.
      * @param string         $errorMessage   The error message to return if the string data's length is less than the minimum length.
      *
-     * @throws InvalidArgumentException Thrown if the minimum string length value is not an integer or is less than zero.
+     * @throws \InvalidArgumentException Thrown if the minimum string length value is not an integer or is less than
+     * zero.
      */
     public function __construct(ContainerBuilder $container, $length, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 
         if (!isset($length) || !is_int($length) || ($length < 0)) {
-            throw new InvalidArgumentException($this->__('An invalid string length was received.'));
+            throw new \InvalidArgumentException($this->__('An invalid string length was received.'));
         }
 
         $this->length = $length;

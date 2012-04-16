@@ -207,7 +207,8 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
         $this->baseDir = dirname($this->getReflection()->getFileName());
 
         // Split class name into parts - commented in if statement below.
-        $p = explode('_', $this->className);
+        $class = $this->className;
+        $p = strpos($class, '_') ? explode('_', $class) : explode('\\', $class);
 
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
             // ModulePlugin_{ModuleName}_{PluginName}_Plugin

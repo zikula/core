@@ -120,7 +120,7 @@ abstract class AbstractEventHandler
     protected function addHandlerDefinition($name, $method, $priority = 0)
     {
         if (!method_exists($this, $method)) {
-            throw new \InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
+            throw new \InvalidArgumentException(sprintf('Method %1$s does not exist in this Listener class %2$s', $method, get_class($this)));
         }
 
         $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $priority);

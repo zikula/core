@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Installer extends Zikula_AbstractInstaller
+namespace Theme;
+
+use DoctrineHelper, ModUtil, DBUtil;
+
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the theme module
@@ -27,7 +31,7 @@ class Theme_Installer extends Zikula_AbstractInstaller
         // create the table
         try {
             DoctrineHelper::createSchema($this->entityManager, array('Theme\Entity\Theme'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 

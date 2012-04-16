@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_LangBlock extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
+use PageUtil, ThemeUtil, BlockUtil;
+
+class LangBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
@@ -244,7 +249,7 @@ class Blocks_Block_LangBlock extends Zikula_Controller_AbstractBlock
         $this->view->clear_cache('blocks_block_thelang.tpl');
 
         // and clear the theme cache
-        Zikula_View_Theme::getInstance()->clear_cache();
+        \Zikula_View_Theme::getInstance()->clear_cache();
 
         return $blockinfo;
     }

@@ -12,6 +12,11 @@
  * information regarding copyright and licensing.
  */
 
+namespace Settings;
+
+use System, ModUtil, DBUtil, ZLanguage;
+use Zikula\Core\Core;
+
 /**
  * Settings_Installer class.
  *
@@ -19,7 +24,7 @@
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly
  * generated (System instead of ZConfig).
  */
-class Settings_Installer extends Zikula_AbstractInstaller
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the settings module.
@@ -47,9 +52,9 @@ class Settings_Installer extends Zikula_AbstractInstaller
         System::setVar('funtext', '1');
         System::setVar('reportlevel', '0');
         System::setVar('startpage', '');
-        System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
-        System::setVar('Version_ID', Zikula_Core::VERSION_ID);
-        System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
+        System::setVar('Version_Num', Core::VERSION_NUM);
+        System::setVar('Version_ID', Core::VERSION_ID);
+        System::setVar('Version_Sub', Core::VERSION_SUB);
         System::setVar('debug_sql', '0');
         System::setVar('multilingual', '1');
         System::setVar('useflags', '0');
@@ -115,9 +120,9 @@ class Settings_Installer extends Zikula_AbstractInstaller
     public function upgrade($oldversion)
     {
         // always ensure that the version info is upgraded
-        System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
-        System::setVar('Version_ID', Zikula_Core::VERSION_ID);
-        System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
+        System::setVar('Version_Num', Core::VERSION_NUM);
+        System::setVar('Version_ID', Core::VERSION_ID);
+        System::setVar('Version_Sub', Core::VERSION_SUB);
 
         // Upgrade dependent on old version number
         switch ($oldversion)

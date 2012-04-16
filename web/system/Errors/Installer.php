@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Errors_Installer extends Zikula_AbstractInstaller
+namespace Errors;
+
+class Errors extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the template module

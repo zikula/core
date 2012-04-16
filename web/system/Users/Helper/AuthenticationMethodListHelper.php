@@ -13,10 +13,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Helper;
+
+use ModUtil, LogUtil;
+use Zikula_Exception_Fatal;
+use Zikula_AbstractBase;
+use Zikula_Api_AbstractAuthentication;
+use Zikula_AbstractErrorHandler;
+
 /**
  * A list of authentication methods advertised by modules that have the authentication capability.
  */
-class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implements ArrayAccess, Countable, Iterator
+class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \ArrayAccess, \Countable, \Iterator
 {
     /**
      * An internally maintained list of all authentication methods as gathered from modules advertising the 'authentication' capability.
@@ -85,7 +93,8 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
 
         if (empty($this->authenticationMethods) && (($filter == Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
             LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), Zikula_AbstractErrorHandler::CRIT);
-            $this->authenticationMethods[] = new Users_Helper_AuthenticationMethod($this->name, 'uname', $this->__('User name'), $this->__('User name and password'));
+            $this->authenticationMethods[] = new AuthenticationMethodHelper($this->name, 'uname',
+                $this->__('User name'), $this->__('User name and password'));
             $this->nameIndex[$this->name] = array();
         }
 
@@ -168,7 +177,8 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
      *
      * A default is valid if there is only one enabled authentication method in the list.
      *
-     * @return Users_Helper_AuthenticationMethod|void If a default authentication method is appropriate, then that definition; otherwise null.
+     * @return AuthenticationMethodHelper|void If a default authentication method is appropriate,
+     * then that definition; otherwise null.
      *
      * @throws Zikula_Exception_Fatal Thrown if the collection is in an inconsistent state.
      */
@@ -224,7 +234,8 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
      *
      * @param integer $offset The offset position to retrieve.
      *
-     * @return Users_Helper_AuthenticationMethod $value  The authentication method definition at the specified offset.
+     * @return AuthenticationMethodHelper $value  The authentication method definition at the specified
+     * offset.
      */
     public function offsetGet($offset)
     {
@@ -241,7 +252,7 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
      * Sets the values of the record at the specified offset within the collection.
      *
      * @param integer                           $offset The offset position to set.
-     * @param Users_Helper_AuthenticationMethod $value  The new Users_Helper_AuthenticationMethod value.
+     * @param AuthenticationMethodHelper $value  The new Users_Helper_AuthenticationMethod value.
      *
      * @return void
      *
@@ -289,7 +300,7 @@ class Users_Helper_AuthenticationMethodList extends Zikula_AbstractHelper implem
     /**
      * Retrieves the record pointed to by the current iterator position.
      *
-     * @return Users_Helper_AuthenticationMethod The authentication method at the current iterator position.
+     * @return AuthenticationMethodHelper The authentication method at the current iterator position.
      */
     public function current()
     {

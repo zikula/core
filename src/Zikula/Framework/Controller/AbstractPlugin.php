@@ -64,7 +64,8 @@ abstract class AbstractPlugin extends AbstractController
     {
         $this->getPath();
         $this->systemBaseDir = realpath('.');
-        $parts = explode('_', get_class($this));
+        $class = get_class($this);
+        $parts = strpos($class, '_') ? explode('_', $class) : explode('\\', $class);
         $this->name = $parts[0];
         $this->baseDir = $this->plugin->getBaseDir();
         $this->pluginName = $this->plugin->getPluginName();

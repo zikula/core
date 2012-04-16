@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Installer extends Zikula_AbstractInstaller
+namespace Permissions;
+
+use Permissions\Entity\Permission;
+
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the permissions module
@@ -27,8 +31,8 @@ class Permissions_Installer extends Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Permissions\Entity\Permission'));
-        } catch (Exception $e) {
+            \DoctrineHelper::createSchema($this->entityManager, array('Permission'));
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -87,7 +91,7 @@ class Permissions_Installer extends Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $record = new Permissions\Entity\Permission;
+        $record = new Permission;
         $record['gid']       = 2;
         $record['sequence']  = 1;
         $record['realm']     = 0;
@@ -97,7 +101,7 @@ class Permissions_Installer extends Zikula_AbstractInstaller
         $record['bond']      = 0;
         $this->entityManager->persist($record);
         
-        $record = new Permissions\Entity\Permission;
+        $record = new Permission;
         $record['gid']       = -1;
         $record['sequence']  = 2;
         $record['realm']     = 0;
@@ -107,7 +111,7 @@ class Permissions_Installer extends Zikula_AbstractInstaller
         $record['bond']      = 0;
         $this->entityManager->persist($record);
         
-        $record = new Permissions\Entity\Permission;
+        $record = new Permission;
         $record['gid']       = 1;
         $record['sequence']  = 3;
         $record['realm']     = 0;
@@ -117,7 +121,7 @@ class Permissions_Installer extends Zikula_AbstractInstaller
         $record['bond']      = 0;
         $this->entityManager->persist($record);
         
-        $record = new Permissions\Entity\Permission;
+        $record = new Permission;
         $record['gid']       = 0;
         $record['sequence']  = 4;
         $record['realm']     = 0;
@@ -127,7 +131,7 @@ class Permissions_Installer extends Zikula_AbstractInstaller
         $record['bond']      = 0;
         $this->entityManager->persist($record);
         
-        $record = new Permissions\Entity\Permission;
+        $record = new Permission;
         $record['gid']       = 0;
         $record['sequence']  = 5;
         $record['realm']     = 0;

@@ -12,10 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Api;
+
+use ModUtil, SecurityUtil, LogUtil, DataUtil, System;
+use Blocks\Entity\Block;
+use Blocks\Entity\BlockPlacement;
+
+
 /**
  * Blocks_Api_Admin class.
  */
-class Blocks_Api_AdminApi extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Update attributes of a block.
@@ -59,7 +66,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         if (isset($args['positions']) && is_array($args['positions'])) {
             
             foreach ($args['positions'] as $position) {
-                $placement = new Blocks\Entity\BlockPlacement();
+                $placement = new BlockPlacement();
                 $placement->setPid($position);
                 $placement->setBid($args['bid']);
                 $this->entityManager->persist($placement);
@@ -125,7 +132,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
             'content' => $args['content']
         );
         
-        $item = new Blocks\Entity\Block();
+        $item = new Block();
         $item->merge($block);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -134,7 +141,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
         if (isset($args['positions']) && is_array($args['positions'])) {
             
             foreach ($args['positions'] as $position) {
-                $placement = new Blocks\Entity\BlockPlacement();
+                $placement = new BlockPlacement();
                 $placement->setPid($position);
                 $placement->setBid($item['bid']);
                 $this->entityManager->persist($placement);
@@ -278,7 +285,7 @@ class Blocks_Api_AdminApi extends Zikula_AbstractApi
             }
         }
         
-        $item = new Blocks\Entity\BlockPosition();
+        $item = new BlockPosition();
         $item->merge($args);
         $this->entityManager->persist($item);
         $this->entityManager->flush();

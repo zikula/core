@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Groups\Controller;
+
+use SecurityUtil, LogUtil, Zikula_Response_Ajax, ModUtil, Zikula_Exception_Fatal;
+use Groups\Helper\CommonHelper;
+
 /**
  * Groups_Controller_Ajax class.
  */
-class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a group in the database
@@ -72,7 +77,7 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
         }
 
         // Setting various defines
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
@@ -99,15 +104,15 @@ class Groups_Controller_AjaxController extends Zikula_Controller_AbstractAjax
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
 
-        $groupsCommon = new Groups_Helper_Common();
+        $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
         $statelabel = $groupsCommon->stateLabels();
 
         // Default values
         $obj = array(
             'name' => '',
-            'gtype' => Groups_Helper_Common::GTYPE_CORE,
-            'state' => Groups_Helper_Common::STATE_CLOSED,
+            'gtype' => CommonHelper::GTYPE_CORE,
+            'state' => CommonHelper::STATE_CLOSED,
             'nbumax' => 0,
             'description' => ''
         );

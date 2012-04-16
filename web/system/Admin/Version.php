@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Version extends Zikula_AbstractVersion
+namespace Admin;
+
+class Version extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {

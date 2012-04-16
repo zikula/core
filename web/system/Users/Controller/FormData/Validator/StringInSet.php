@@ -12,12 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependecyInjection\ContainerBuilder;
+namespace Users\Controller\FormData\Validator;
+
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Validates a field's data against a list of valid string values.
  */
-class Users_Controller_FormData_Validator_StringInSet extends Users_Controller_FormData_Validator_AbstractValidator
+class StringInSet extends AbstractValidator
 {
     /**
      * List of valid strings.
@@ -33,14 +35,15 @@ class Users_Controller_FormData_Validator_StringInSet extends Users_Controller_F
      * @param array          $validStrings   An array containing valid string values.
      * @param string         $errorMessage   The error message to return if the data is not valid.
      *
-     * @throws InvalidArgumentException Thrown if the list of valid string values is not valid, or if it contains an invalid value.
+     * @throws \InvalidArgumentException Thrown if the list of valid string values is not valid,
+     * or if it contains an invalid value.
      */
     public function __construct(ContainerBuilder $container, array $validStrings, $errorMessage = null)
     {
         parent::__construct($container, $errorMessage);
 
         if (empty($validStrings)) {
-            throw new InvalidArgumentException($this->__('An invalid list of valid strings was received.'));
+            throw new \InvalidArgumentException($this->__('An invalid list of valid strings was received.'));
         }
 
         foreach ($validStrings as $validString) {

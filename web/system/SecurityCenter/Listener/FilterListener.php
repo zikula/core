@@ -12,9 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Event\GenericEvent;
+namespace SecurityCenter\Listener;
 
-class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
+use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Core;
+use System, CacheUtil, SessionUtil, UserUtil, DateUtil, LogUtil, ModUtil;
+use Zikula_Exception_Forbidden;
+use SecurityCenter\Util as SecurityCenterUtil;
+
+class FilterListener extends \Zikula_AbstractEventHandler
 {
     /**
      * Setup this handler.
@@ -34,7 +40,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
      */
     public function idsInputFilter(GenericEvent $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_MODS && System::getVar('useids') == 1) {
+        if ($event['stage'] & Core::STAGE_MODS && System::getVar('useids') == 1) {
             // Run IDS if desired
             try {
                 // build request array defining what to scan
@@ -71,13 +77,13 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 */
 
                 // initialise configuration object
-                $init = IDS_Init::init();
+                $init = \IDS_Init::init();
 
                 // set configuration options
                 $init->config = $this->_getidsconfig();
 
                 // create new IDS instance
-                $ids = new IDS_Monitor($request, $init);
+                $ids = new \IDS_Monitor($request, $init);
 
                 // run the request check and fetch the results
                 $result = $ids->run();
@@ -89,7 +95,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 } else {
                     // no attack detected
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // sth went wrong - maybe the filter rules weren't found
                 z_exit(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
             }
@@ -171,12 +177,12 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
     /**
      * Process results from IDS scan.
      *
-     * @param IDS_Init   $init   PHPIDS init object reference.
-     * @param IDS_Report $result The result object from PHPIDS.
+     * @param \IDS_Init   $init   PHPIDS init object reference.
+     * @param \IDS_Report $result The result object from PHPIDS.
      *
      * @return void
      */
-    private function _processIdsResult(IDS_Init $init, IDS_Report $result)
+    private function _processIdsResult(\IDS_Init $init, \IDS_Report $result)
     {
         // $result contains any suspicious fields enriched with additional info
 
@@ -267,7 +273,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
 
                 // create new ZIntrusion instance
-                $obj = new SecurityCenter_DBObject_Intrusion();
+                $obj = new \SecurityCenter\DBObject\Intrusion();
                 // set data
                 $obj->setData($intrusionItem);
                 // save object to db
@@ -345,7 +351,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
 
         // prepare htmlpurifier class
         static $safecache;
-        $purifier = SecurityCenter_Util::getpurifier();
+        $purifier = SecurityCenterUtil::getpurifier();
 
         $md5 = md5($event->data);
         // check if the value is in the safecache

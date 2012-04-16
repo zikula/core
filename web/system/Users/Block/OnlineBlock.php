@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Block;
+
+use SecurityUtil, BlockUtil, ModUtil, Zikula_View, UserUtil, DataUtil, System, DBUtil;
+
 /**
  * A block that shows who is currently using the system.
  */
-class Users_Block_OnlineBlock extends Zikula_Controller_AbstractBlock
+class OnlineBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * Initialise the block.

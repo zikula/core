@@ -12,6 +12,11 @@
  * information regarding copyright and licensing.
  */
 
+
+namespace Categories\DBObject;
+
+use CategoryUtil, DataUtil, ZLanguage, DBObjectArray;
+
 /**
  * CategoryArray
  */

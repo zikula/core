@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Users\Constants as UsersConstant;
+
 /**
  * Zikula_View function to display the avatar of a user
  *
@@ -35,9 +37,9 @@ function smarty_function_useravatar($params, Zikula_View $view)
     $email           = UserUtil::getVar('email', $params['uid']);
     $avatar          = UserUtil::getVar('avatar', $params['uid']);
     $uname           = UserUtil::getVar('uname', $params['uid']);
-    $avatarpath      = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_AVATAR_IMAGE_PATH, Users_Constant::DEFAULT_AVATAR_IMAGE_PATH);
-    $allowgravatars  = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_GRAVATARS_ENABLED, Users_Constant::DEFAULT_GRAVATARS_ENABLED);
-    $gravatarimage   = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_GRAVATAR_IMAGE, Users_Constant::DEFAULT_GRAVATAR_IMAGE);
+    $avatarpath      = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_AVATAR_IMAGE_PATH, UsersConstant::DEFAULT_AVATAR_IMAGE_PATH);
+    $allowgravatars  = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_GRAVATARS_ENABLED, UsersConstant::DEFAULT_GRAVATARS_ENABLED);
+    $gravatarimage   = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_GRAVATAR_IMAGE, UsersConstant::DEFAULT_GRAVATAR_IMAGE);
 
     if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
         $avatarURL = System::getBaseUrl() . $avatarpath . '/' . $avatar;

@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_Util
+namespace SecurityCenter;
+
+use ZLanguage, ThemeUtil, UserUtil, ModUtil, CacheUtil;
+
+class Util
 {
     /**
      * Retrieves default configuration array for HTML Purifier.
@@ -21,7 +25,7 @@ class SecurityCenter_Util
      */
     private static function _getpurifierdefaultconfig()
     {
-        $purifierDefaultConfig = HTMLPurifier_Config::createDefault();
+        $purifierDefaultConfig = \HTMLPurifier_Config::createDefault();
         $purifierDefaultConfigValues = $purifierDefaultConfig->def->defaults;
 
         $config = array();
@@ -120,7 +124,7 @@ class SecurityCenter_Util
      *
      * @staticvar array $purifier The HTMLPurifier instance.
      *
-     * @return HTMLPurifier The HTMLPurifier instance, returned by reference.
+     * @return \HTMLPurifier The HTMLPurifier instance, returned by reference.
      */
     public static function getpurifier($args = null)
     {
@@ -134,7 +138,7 @@ class SecurityCenter_Util
 
             $config['Cache']['SerializerPath'] = CacheUtil::getLocalDir() . '/purifierCache';
 
-            $purifier = new HTMLPurifier($config);
+            $purifier = new \HTMLPurifier($config);
         }
 
         return $purifier;

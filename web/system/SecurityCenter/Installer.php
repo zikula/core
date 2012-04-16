@@ -11,7 +11,14 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class SecurityCenter_Installer extends Zikula_AbstractInstaller
+
+namespace SecurityCenter;
+
+use DBUtil, System, CacheUtil;
+use Zikula\Core\Core;
+use SecurityCenter\Util as SecurityCenterUtil;
+
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the SecurityCenter module
@@ -33,7 +40,7 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
         System::setVar('updatecheck', 1);
         System::setVar('updatefrequency', 7);
         System::setVar('updatelastchecked', 0);
-        System::setVar('updateversion', Zikula_Core::VERSION_NUM);
+        System::setVar('updateversion', Core::VERSION_NUM);
         System::setVar('keyexpiry', 0);
         System::setVar('sessionauthkeyua', false);
         System::setVar('secure_domain', '');
@@ -68,7 +75,7 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
         }
 
         // HTML Purifier default settings
-        $purifierDefaultConfig = SecurityCenter_Util::getpurifierconfig(array('forcedefault' => true));
+        $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(array('forcedefault' => true));
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage
@@ -282,7 +289,7 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
                                 'REQUEST.filter.value', 'POST.filter.value'));
                 System::delVar('htmlpurifierConfig');
                 // HTML Purifier default settings
-                $purifierDefaultConfig = SecurityCenter_Util::getpurifierconfig(array('forcedefault' => true));
+                $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(array('forcedefault' => true));
                 $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
                 if (!DBUtil::changeTable('sc_intrusion')) {
                     return false;

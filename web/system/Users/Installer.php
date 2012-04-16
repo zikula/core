@@ -13,10 +13,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users;
+
+use DBUtil, EventUtil, HookUtil, System, DataUtil, ModUtil;
+use DateTime, DateTimeZone, ServiceUtil;
+use Users\Constants as Constant;
+use Zikula_Exception_Fatal;
+
 /**
  * Provides module installation and upgrade services for the Users module.
  */
-class Users_Installer extends Zikula_AbstractInstaller
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the users module.
@@ -45,10 +52,14 @@ class Users_Installer extends Zikula_AbstractInstaller
         $this->setVars($this->getDefaultModvars());
 
         // Register persistent event listeners (handlers)
-        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
+            array('Users\Listener\PendingContentListener', 'pendingContentListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
+            array('Users\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
+            array('Users\Listener\ClearUsersNamespace\Listener', 'clearUsersNamespaceListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
+            array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
 
         // Register persistent hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
@@ -90,7 +101,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                 // upgrade 1.12 to 1.13
 
                 // Do modvar renames and moves here, but new modvars and modvar removals are done below for all versions
-                $this->setVar(Users_Constant::MODVAR_AVATAR_IMAGE_PATH, Users_Constant::MODVAR_AVATAR_IMAGE_PATH);
+                $this->setVar(Constant::MODVAR_AVATAR_IMAGE_PATH, Constant::MODVAR_AVATAR_IMAGE_PATH);
                 // lowercaseuname Removed in 2.0.0
                 //$this->setVar('lowercaseuname', 1);
 
@@ -105,21 +116,21 @@ class Users_Installer extends Zikula_AbstractInstaller
                 // Do modvar renames and moves here, but new modvars and modvar removals are done below for all versions
 
                 // Check if the hash method is md5. If so, it is not used any more. Change it to the new default.
-                if ($this->getVar(Users_Constant::MODVAR_HASH_METHOD, false) == 'md5') {
-                    $this->setVar(Users_Constant::MODVAR_HASH_METHOD, Users_Constant::DEFAULT_HASH_METHOD);
+                if ($this->getVar(Constant::MODVAR_HASH_METHOD, false) == 'md5') {
+                    $this->setVar(Constant::MODVAR_HASH_METHOD, Constant::DEFAULT_HASH_METHOD);
                 }
 
                 // Convert the banned user names to a comma separated list.
-                $bannedUnames = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
+                $bannedUnames = $this->getVar(Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
                 $bannedUnames = preg_split('/\s+/', $bannedUnames);
                 $bannedUnames = implode(', ', $bannedUnames);
-                $this->setVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $bannedUnames);
+                $this->setVar(Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $bannedUnames);
 
                 // System-generated passwords are deprecated since 1.3.0. Change it to
                 // User-generated passwords.
-                $regVerifyEmail = $this->getVar(Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_Constant::VERIFY_NO);
-                if ($regVerifyEmail == Users_Constant::VERIFY_SYSTEMPWD) {
-                    $this->setVar(Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Users_Constant::VERIFY_USERPWD);
+                $regVerifyEmail = $this->getVar(Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Constant::VERIFY_NO);
+                if ($regVerifyEmail == Constant::VERIFY_SYSTEMPWD) {
+                    $this->setVar(Constant::MODVAR_REGISTRATION_VERIFICATION_MODE, Constant::VERIFY_USERPWD);
                 }
 
                 // IDN domains setting moving to system settings.
@@ -132,10 +143,14 @@ class Users_Installer extends Zikula_AbstractInstaller
                     return '1.13';
                 }
 
-                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
+                    array('Users\Listener\PendingContentListener', 'pendingContentListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
+                    array('Users\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
+                    array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
+                    array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
@@ -187,41 +202,41 @@ class Users_Installer extends Zikula_AbstractInstaller
     private function getDefaultModvars()
     {
         return array(
-            Users_Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => Users_Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
-            Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => Users_Constant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
-            Users_Constant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => Users_Constant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
-            Users_Constant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => Users_Constant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
-            Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
-            Users_Constant::MODVAR_AVATAR_IMAGE_PATH                     => Users_Constant::DEFAULT_AVATAR_IMAGE_PATH,
-            Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
-            Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
-            Users_Constant::MODVAR_EXPIRE_DAYS_REGISTRATION              => Users_Constant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
-            Users_Constant::MODVAR_GRAVATARS_ENABLED                     => Users_Constant::DEFAULT_GRAVATARS_ENABLED,
-            Users_Constant::MODVAR_GRAVATAR_IMAGE                        => Users_Constant::DEFAULT_GRAVATAR_IMAGE,
-            Users_Constant::MODVAR_HASH_METHOD                           => Users_Constant::DEFAULT_HASH_METHOD,
-            Users_Constant::MODVAR_ITEMS_PER_PAGE                        => Users_Constant::DEFAULT_ITEMS_PER_PAGE,
-            Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => Users_Constant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
-            Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => Users_Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
-            Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => Users_Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
-            Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
-            Users_Constant::MODVAR_LOGIN_METHOD                          => Users_Constant::DEFAULT_LOGIN_METHOD,
-            Users_Constant::MODVAR_LOGIN_WCAG_COMPLIANT                  => Users_Constant::DEFAULT_LOGIN_WCAG_COMPLIANT,
-            Users_Constant::MODVAR_MANAGE_EMAIL_ADDRESS                  => Users_Constant::DEFAULT_MANAGE_EMAIL_ADDRESS,
-            Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH               => Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
-            Users_Constant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => Users_Constant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
-            Users_Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
-            Users_Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
-            Users_Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
-            Users_Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => Users_Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
-            Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
-            Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN               => Users_Constant::DEFAULT_REGISTRATION_AUTO_LOGIN,
-            Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
-            Users_Constant::MODVAR_REGISTRATION_ENABLED                  => Users_Constant::DEFAULT_REGISTRATION_ENABLED,
-            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
-            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
-            Users_Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
-            Users_Constant::MODVAR_REGISTRATION_VERIFICATION_MODE        => Users_Constant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
-            Users_Constant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => Users_Constant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
+            Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
+            Constant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => Constant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
+            Constant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => Constant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
+            Constant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => Constant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
+            Constant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
+            Constant::MODVAR_AVATAR_IMAGE_PATH                     => Constant::DEFAULT_AVATAR_IMAGE_PATH,
+            Constant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL              => Constant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
+            Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD           => Constant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,
+            Constant::MODVAR_EXPIRE_DAYS_REGISTRATION              => Constant::DEFAULT_EXPIRE_DAYS_REGISTRATION,
+            Constant::MODVAR_GRAVATARS_ENABLED                     => Constant::DEFAULT_GRAVATARS_ENABLED,
+            Constant::MODVAR_GRAVATAR_IMAGE                        => Constant::DEFAULT_GRAVATAR_IMAGE,
+            Constant::MODVAR_HASH_METHOD                           => Constant::DEFAULT_HASH_METHOD,
+            Constant::MODVAR_ITEMS_PER_PAGE                        => Constant::DEFAULT_ITEMS_PER_PAGE,
+            Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => Constant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
+            Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
+            Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS         => Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS,
+            Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS           => Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS,
+            Constant::MODVAR_LOGIN_METHOD                          => Constant::DEFAULT_LOGIN_METHOD,
+            Constant::MODVAR_LOGIN_WCAG_COMPLIANT                  => Constant::DEFAULT_LOGIN_WCAG_COMPLIANT,
+            Constant::MODVAR_MANAGE_EMAIL_ADDRESS                  => Constant::DEFAULT_MANAGE_EMAIL_ADDRESS,
+            Constant::MODVAR_PASSWORD_MINIMUM_LENGTH               => Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
+            Constant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED       => Constant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
+            Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
+            Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION        => '',
+            Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER          => '',
+            Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => Constant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
+            Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE        => Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE,
+            Constant::MODVAR_REGISTRATION_AUTO_LOGIN               => Constant::DEFAULT_REGISTRATION_AUTO_LOGIN,
+            Constant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
+            Constant::MODVAR_REGISTRATION_ENABLED                  => Constant::DEFAULT_REGISTRATION_ENABLED,
+            Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
+            Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
+            Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
+            Constant::MODVAR_REGISTRATION_VERIFICATION_MODE        => Constant::DEFAULT_REGISTRATION_VERIFICATION_MODE,
+            Constant::MODVAR_REQUIRE_UNIQUE_EMAIL                  => Constant::DEFAULT_REQUIRE_UNIQUE_EMAIL,
         );
     }
 
@@ -235,8 +250,8 @@ class Users_Installer extends Zikula_AbstractInstaller
      */
     private function defaultdata()
     {
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+        $nowUTCStr = $nowUTC->format(Constant::DATETIME_FORMAT);
 
         // Anonymous
         $record = array(
@@ -245,7 +260,7 @@ class Users_Installer extends Zikula_AbstractInstaller
             'email'         => '',
             'pass'          => '',
             'passreminder'  => '',
-            'activated'     => Users_Constant::ACTIVATED_ACTIVE,
+            'activated'     => Constant::ACTIVATED_ACTIVE,
             'approved_date' => '1970-01-01 00:00:00',
             'approved_by'   => 0,
             'user_regdate'  => '1970-01-01 00:00:00',
@@ -263,7 +278,7 @@ class Users_Installer extends Zikula_AbstractInstaller
             'email'         => '',
             'pass'          => '1$$dc647eb65e6711e155375218212b3964',
             'passreminder'  => '',
-            'activated'     => Users_Constant::ACTIVATED_ACTIVE,
+            'activated'     => Constant::ACTIVATED_ACTIVE,
             'approved_date' => $nowUTCStr,
             'approved_by'   => 2,
             'user_regdate'  => $nowUTCStr,
@@ -308,7 +323,7 @@ class Users_Installer extends Zikula_AbstractInstaller
         ModUtil::dbInfoLoad('Users', 'Users');
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
+        $nowUTCStr = $nowUTC->format(Constant::DATETIME_FORMAT);
 
         $container = ServiceUtil::getManager();
         $dbinfoSystem = $container['dbtables'];
@@ -470,7 +485,7 @@ class Users_Installer extends Zikula_AbstractInstaller
                         $userObj['pass'] = $userTempArray[$key]['hash_method'] . '$$' . $userTempArray[$key]['pass'];
 
                         $userObj['approved_by'] = 0;
-                        $userObj['activated'] = Users_Constant::ACTIVATED_PENDING_REG;
+                        $userObj['activated'] = Constant::ACTIVATED_PENDING_REG;
 
                         if (!empty($userTempArray[$key]['dynamics'])) {
                             $userObj['__ATTRIBUTES__'] = unserialize($userTempArray[$key]['dynamics']);
@@ -492,7 +507,8 @@ class Users_Installer extends Zikula_AbstractInstaller
                         $userObj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
 
                         if ($legalModuleActive) {
-                            $userRegDateTime = new DateTime($userArray[$key]['user_regdate'], new DateTimeZone('UTC'));
+                            $userRegDateTime = new \DateTime($userArray[$key]['user_regdate'],
+                                new \DateTimeZone('UTC'));
                             $policyDateTimeStr = $userRegDateTime->format(DATE_ISO8601);
 
                             if ($termsOfUseActive) {

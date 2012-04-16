@@ -11,7 +11,12 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Categories_Installer extends Zikula_AbstractInstaller
+
+namespace Categories;
+
+use DBUtil, DataUtil, ZLanguage;
+
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * initialise module
@@ -93,7 +98,7 @@ class Categories_Installer extends Zikula_AbstractInstaller
                 $this->upgrade_MigrateLanguageCodes();
             case '1.2':
                 // new column used in doctrine categorisable template
-                DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
+                \DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
                         'length' => 60), false);
             case '1.2.1':
             // future upgrade routines

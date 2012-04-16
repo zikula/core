@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Search\Controller;
+
+use Zikula_View, ModUtil, SecurityUtil, LogUtil;
+
 /**
  * Search_Controller_Admin class.
  */
-class Search_Controller_AdminController extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
