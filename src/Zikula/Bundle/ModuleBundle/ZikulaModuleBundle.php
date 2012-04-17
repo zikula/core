@@ -5,7 +5,7 @@ namespace Zikula\Bundle\ModuleBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Zikula\ModuleBundle\DependencyInjection\Compiler\ControllerResolverCompilerPass;
+use Zikula\Bundle\ModuleBundle\DependencyInjection\Compiler\ControllerResolverCompilerPass;
 
 class ZikulaModuleBundle extends Bundle
 {
