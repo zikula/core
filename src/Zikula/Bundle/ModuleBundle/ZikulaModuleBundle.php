@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Zikula\ModuleBundle\DependencyInjection\Compiler\ControllerResolverCompilerPass;
 
-class ZikulaModulesBundle extends Bundle
+class ZikulaModuleBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
