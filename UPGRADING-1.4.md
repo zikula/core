@@ -118,14 +118,6 @@ After:
 Please note that both the `dispatch()` and `notify()` methods return the event
 object so you can do shortcuts as before.
 
-## Hooks
-
-The API has been normalised to EventDispatchers, so `->notify($hook)` becomes
-`dispatch($eventName, $hook)`. The hook objects no longer have the `$name`
-parameter in the constructor.
-
-Hooks have moved to the `Zikula\Core\Hook` namespace.
-
 ## Dependency Injection
 
 The ServiceManager has been deprecated in favour of Symfony2 DependencyInjection.
@@ -140,9 +132,13 @@ at the following links:
   - http://richardmiller.co.uk/2012/02/15/symfony2-service-container-compiler-passes/
   - http://richardmiller.co.uk/2011/06/01/symfony2-writing-a-dependency-injection-extension-configuration/
 
-## Hook System
+## Hooks
 
-TBD
+The API has been normalised to EventDispatchers, so `->notify($hook)` becomes
+`dispatch($eventName, $hook)`. The hook objects no longer have the `$name`
+parameter in the constructor.
+
+Hooks have moved to the `Zikula\Core\Hook` namespace.
 
 ## Templating
 
