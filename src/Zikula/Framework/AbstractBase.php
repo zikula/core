@@ -173,7 +173,7 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @return string
      */
-    public static function getStaticPath()
+    public static function getPath()
     {
         if (null !== self::$path) {
             return self::$path;

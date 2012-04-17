@@ -13,7 +13,7 @@ class AppKernel extends Kernel
             new Zikula\Bundle\CoreBundle\CoreBundle(),
 //            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
 //            new Symfony\Bundle\TwigBundle\TwigBundle(),
-//            new Symfony\Bundle\MonologBundle\MonologBundle(),
+            new Symfony\Bundle\MonologBundle\MonologBundle(),
 //            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
 //            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
@@ -21,6 +21,8 @@ class AppKernel extends Kernel
 //            new JMS\AopBundle\JMSAopBundle(),
 //            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
 //            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+            new Zikula\Bundle\ModuleBundle\ZikulaModuleBundle(),
+            new Zikula\Bundle\ThemeBundle\ZikulaThemeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
