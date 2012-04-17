@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle\Form;
+namespace Zikula\Bundle\ModuleBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;

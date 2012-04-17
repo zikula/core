@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle\Entity;
+namespace Zikula\Bundle\ModuleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM; 
 

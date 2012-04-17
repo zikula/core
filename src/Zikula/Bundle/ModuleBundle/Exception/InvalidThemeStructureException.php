@@ -1,7 +1,8 @@
 <?php
 
-namespace Zikula\ModuleBundle\Exception;
+namespace Zikula\Bundle\ModuleBundle\Exception;
 
-class InvalidThemeStructureException extends \Exception {
+class InvalidThemeStructureException extends \Exception
+{
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle;
+namespace Zikula\Bundle\ModuleBundle;
 
 /**
  * A module service to install, upgrade and remove modules.

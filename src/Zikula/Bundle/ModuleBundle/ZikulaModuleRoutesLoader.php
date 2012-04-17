@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle;
+namespace Zikula\Bundle\ModuleBundle;
 
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\RouteCollection;
