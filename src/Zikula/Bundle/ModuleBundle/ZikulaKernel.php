@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle;
+namespace Zikula\Bundle\ModuleBundle;
 
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\ConfigCache;

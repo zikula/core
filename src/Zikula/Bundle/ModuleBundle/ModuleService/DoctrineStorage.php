@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle\ModuleService;
+namespace Zikula\Bundle\ModuleBundle\ModuleService;
 
 use Doctrine\ORM\EntityManager;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ThemeBundle\DependencyInjection;
+namespace Zikula\Bundle\ThemeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

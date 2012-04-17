@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle;
+namespace Zikula\Bundle\ModuleBundle;
 
 use Symfony\Bundle\FrameworkBundle\Debug\TraceableEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerInterface;

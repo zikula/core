@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ModuleBundle\DependencyInjection\Compiler;
+namespace Zikula\Bundle\ModuleBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

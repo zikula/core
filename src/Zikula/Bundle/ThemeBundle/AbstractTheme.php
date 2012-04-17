@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\ThemeBundle;
+namespace Zikula\Bundle\ThemeBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
