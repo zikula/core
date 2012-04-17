@@ -220,9 +220,6 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         // get id for first element, use api func to aviod id conflicts inside menu
         $idoffset = MenutreeUtil::getIdOffset($item['id']);
 
-        // load plugin language file
-        pnModLangLoad('menutree','externalapi_blank');
-
         $links = array();
         // build some link
         // you may use associative array keys

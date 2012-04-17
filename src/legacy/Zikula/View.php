@@ -905,6 +905,20 @@ class Zikula_View extends Smarty implements TranslatableInterface
     }
 
     /**
+     * Clears all view cache for a module.
+     *
+     * @return boolean True on success, false otherwise.
+     */
+    public function clear_cache_module($moduledir = null)
+    {
+        if (is_null($moduledir)) {
+            $moduledir = $this->modinfo['directory'];
+        }
+
+        return $this->clear_folder($this->cache_dir .'/'. $moduledir);
+    }
+
+    /**
      * Clear all compiled templates.
      *
      * Needs to clear the cache too as non cached plugins information will need regeneration too.
