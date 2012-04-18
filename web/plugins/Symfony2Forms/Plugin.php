@@ -36,6 +36,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
 
     public function initialize()
     {
+        return;
         // register symfony validation annorations
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/src');
 
@@ -62,8 +63,8 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
 
     protected function setupHandlerDefinitions()
     {
-        $this->addHandlerDefinition('view.init', 'initView');
-        $this->addHandlerDefinition('symfony.formrenderer.lookup', 'registerRenderer');
+//        $this->addHandlerDefinition('view.init', 'initView');
+//        $this->addHandlerDefinition('symfony.formrenderer.lookup', 'registerRenderer');
     }
 
     public function initView(GenericEvent $event)

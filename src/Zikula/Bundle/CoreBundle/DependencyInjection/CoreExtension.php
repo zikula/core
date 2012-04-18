@@ -20,6 +20,7 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Yaml\Yaml;
 
 class CoreExtension extends Extension
 {
@@ -37,6 +38,16 @@ class CoreExtension extends Extension
         $loader->load('web.xml');
         $loader->load('core.xml');
         $loader->load('annotations.xml');
+
+        $config = Yaml::parse(file_get_contents(ZIKULA_ROOT.'/../app/config/core_legacy.yml'));
+        foreach ($config as $key => $array) {
+            foreach ($array as $id => $value) {
+                $container->setParameter($id, $value);
+            }
+        }
+
+        // @todo temporary hack
+        $container->setParameter('_zconfig', $config);
 
         $this->addClassesToCompile(array(
 //            'Zikula\\Component\\DependencyInjection\\ContainerBuilder',

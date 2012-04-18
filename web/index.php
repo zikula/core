@@ -23,9 +23,11 @@ require_once __DIR__.'/../app/bootstrap.php';
 $kernel = new AppKernel('dev', true);
 //$kernel->loadClassCache();
 $kernel->boot();
-//$kernel = new AppCache($kernel);
 
-$core = new Zikula\Core\Core($kernel->getContainer());
+// @todo temporary hack
+$GLOBALS['ZConfig'] = $kernel->getContainer()->getParameter('_zconfig');
+
+$core = $kernel->getContainer()->get('zikula');//new Zikula\Core\Core($kernel->getContainer());
 $core->boot();
 $core->init();
 
