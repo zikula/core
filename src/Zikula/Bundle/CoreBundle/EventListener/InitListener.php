@@ -129,15 +129,17 @@ class InitListener implements EventSubscriberInterface
 //            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
 //        }
 
-        // Check that Zikula is installed before continuing
-        if (\System::getVar('installed') == 0 && !\System::isInstalling()) {
-            $response = new RedirectResponse(\System::getBaseUrl().'install.php?notinstalled');
-            $response->send();
-            \System::shutdown();
-        }
+//        // Check that Zikula is installed before continuing
+//        if (\System::getVar('installed') == 0 && !\System::isInstalling()) {
+//            $response = new RedirectResponse(\System::getBaseUrl().'install.php?notinstalled');
+//            $response->send();
+//            \System::shutdown();
+//        }
 
         if ($stage & self::STAGE_DB) {
             try {
+                $dbEvent = new GenericEvent();
+                $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent);
                 $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
                 $this->dispatcher->dispatch(CoreEvents::INIT, $dbEvent);
             } catch (\PDOException $e) {

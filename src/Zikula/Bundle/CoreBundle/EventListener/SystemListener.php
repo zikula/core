@@ -54,20 +54,19 @@ class SystemListener implements EventSubscriberInterface
             'bootstrap.getconfig' => array(
                 array('initialHandlerScan', 100),
                 ),
-            'setup.errorreporting' => array('defaultErrorReporting'),
+//            'setup.errorreporting' => array('defaultErrorReporting'),
             CoreEvents::PREINIT => array('systemCheck'),
             CoreEvents::INIT => array(
                 array('setupRequest'),
-                array('sessionLogging'),
+//                array('sessionLogging'),
                 array('systemPlugins'),
-                array('setupDebugToolbar'),
+//                array('setupDebugToolbar'),
                 array('setupAutoloaderForGeneratedCategoryModels'),
-                array('initDB'),
                 array('setupCsfrProtection'),
                 ),
-            'log' => array('errorLog'),
+//            'log' => array('errorLog'),
             'session.require' => array('requireSession'),
-            'log.sql' => array('logSqlQueries'),
+//            'log.sql' => array('logSqlQueries'),
             'installer.module.uninstalled' => array('deleteGeneratedCategoryModelsOnModuleRemove'),
             'pageutil.addvar_filter' => array('coreStylesheetOverride'),
             'theme.init' => array('clickJackProtection'),
@@ -75,10 +74,10 @@ class SystemListener implements EventSubscriberInterface
                 array('addHooksLink'),
                 array('addServiceLink'),
                 ),
-            'frontcontroller.predispatch' => array(
-                array('sessionExpired', 3),
-                array('siteOff', 7),
-            ),
+//            'frontcontroller.predispatch' => array(
+//                array('sessionExpired', 3),
+//                array('siteOff', 7),
+//            ),
         );
     }
 
@@ -226,23 +225,6 @@ class SystemListener implements EventSubscriberInterface
             header('HTTP/1.1 503 Service Unavailable');
             require_once System::getSystemErrorTemplate('sessionfailed.tpl');
             System::shutdown();
-        }
-    }
-
-    /**
-     * Initialise DB connection.
-     *
-     * Implements CoreEvents::INIT event when Core::STAGE_DB.
-     *
-     * @param GenericEvent $event The event handler.
-     *
-     * @return void
-     */
-    public function initDB(GenericEvent $event)
-    {
-        if ($event['stage'] & Core::STAGE_DB) {
-            $dbEvent = new GenericEvent();
-            $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent);
         }
     }
 

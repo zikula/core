@@ -12,7 +12,8 @@
         <parameter key="zikula.doctrine_listener.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
         <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
         <parameter key="session.class">Symfony\Component\HttpFoundation\Session\Session</parameter>
-        <parameter key="session.storage.class">Zikula\Core\SessionStorage\LegacySessionStorage</parameter>
+        <!--<parameter key="session.storage.class">Zikula\Core\SessionStorage\LegacySessionStorage</parameter>-->
+        <parameter key="session.storage.class">Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage</parameter>
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
         <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
 
@@ -79,12 +80,12 @@
         </service>
 
         <service id="zikula.system_listeners" class="%zikula.system_listener.class%">
-            <tag name="zikula.event_subscriber" />
+            <tag name="kernel.event_subscriber" />
             <argument type="service" id="service_container" />
         </service>
 
         <service id="zikula.doctrine1_listener" class="%zikula.doctrine1_listener.class%">
-            <tag name="zikula.event_subscriber" />
+            <tag name="kernel.event_subscriber" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="service_container" />
         </service>
@@ -94,11 +95,11 @@
         <!--</service>-->
 
         <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
-            <tag name="zikula.event_subscriber" />
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <service id="zikula.template_override_listener" class="%zikula.theme_listener.class%">
-            <tag name="zikula.event_subscriber" />
+            <tag name="kernel.event_subscriber" />
         </service>
     </services>
 </container>

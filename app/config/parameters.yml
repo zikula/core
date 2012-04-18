@@ -1,13 +1,12 @@
-imports:
-    - { resource: config.yml }
+#imports:
+#    - { resource: config.yml }
 
 parameters:
+    mailer_transport: smtp
+    mailer_host:      localhost
+    mailer_user:      ~
+    mailer_password:  ~
 
-#    mailer_transport:  smtp
-#    mailer_host:       localhost
-#    mailer_user:       ~
-#    mailer_password:   ~
-
-    locale:            en
-    kernel.default_locale:            en
- #   secret:            ThisTokenIsNotSoSecretChangeIt
+    locale: en
+    kernel.default_locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
