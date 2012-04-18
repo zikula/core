@@ -37,7 +37,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['name'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Setting defaults
@@ -88,7 +88,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get item
@@ -156,7 +156,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get item
@@ -212,7 +212,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if ((!isset($args['gid'])) || (!isset($args['uid']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get group
@@ -254,7 +254,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if ((!isset($args['gid'])) || (!isset($args['uid']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get group
@@ -294,7 +294,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['name'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         // create a QueryBuilder instance
@@ -373,7 +373,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getapplicationinfo($args)
     {
         if (!isset($args['gid']) || !isset($args['userid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         $appInfo = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
@@ -397,7 +397,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function pendingaction($args)
     {
         if (!isset($args['gid']) || !isset($args['userid']) || !isset($args['action'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         // delete group application

@@ -88,7 +88,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get item
@@ -171,7 +171,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         $dql = "SELECT count(m.gid) FROM Groups\Entity\GroupMembership m WHERE m.gid = {$args['gid']}";
@@ -194,7 +194,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['uid'] = UserUtil::getVar('uid');
         }
         if (!isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $items = array();
@@ -376,7 +376,7 @@ class UserApi extends \Zikula_AbstractApi
     public function saveapplication($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
@@ -420,7 +420,7 @@ class UserApi extends \Zikula_AbstractApi
     public function cancelapp($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Checking first if this user is really pending.
@@ -448,7 +448,7 @@ class UserApi extends \Zikula_AbstractApi
     public function isuserpending($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         $applications = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
@@ -472,11 +472,11 @@ class UserApi extends \Zikula_AbstractApi
     public function userupdate($args)
     {
         if (!isset($args['gid']) || !isset($args['action']) || !isset($args['gtype'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if ($args['action'] != 'subscribe' && $args['action'] != 'unsubscribe' && $args['action'] != 'cancel') {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if (!UserUtil::isLoggedIn()) {
@@ -489,7 +489,7 @@ class UserApi extends \Zikula_AbstractApi
 
             if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
-                    return LogUtil::registerArgsError();
+                    throw new \InvalidArgumentException('Missing or invalid arguments');
                 }
 
                 // We save the user in the application table
@@ -555,7 +555,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get group
@@ -606,7 +606,7 @@ class UserApi extends \Zikula_AbstractApi
     public function removeuser($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get group
@@ -671,7 +671,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         if (!isset($args['uid']) || !is_numeric($args['uid']) ||
             !isset($args['gid']) || !is_numeric($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Security check

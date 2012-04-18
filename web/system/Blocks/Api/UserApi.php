@@ -115,7 +115,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Return the item array
@@ -196,7 +196,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         // Return the item array
@@ -217,7 +217,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         $entity = $this->name . '\Entity\BlockPlacement';
@@ -236,7 +236,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         $entity = $this->name . '\Entity\BlockPlacement';
