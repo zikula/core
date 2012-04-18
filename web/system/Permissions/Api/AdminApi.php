@@ -42,7 +42,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
@@ -114,7 +114,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
@@ -197,7 +197,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             (!isset($args['component'])) ||
             (!isset($args['instance'])) ||
             (!isset($args['level']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         // get and update permission
@@ -242,7 +242,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             (!isset($args['instance'])) ||
             (!isset($args['level'])) ||
             (!isset($args['insseq']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Insert Capability
@@ -296,7 +296,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         // get and delete permission
@@ -379,7 +379,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['newseq']) || !isset($args['oldseq'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $newseq = $args['newseq'];

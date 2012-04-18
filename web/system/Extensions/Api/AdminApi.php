@@ -55,7 +55,7 @@ class AdminApi extends \Zikula_AbstractApi
             !isset($args['displayname']) ||
             !isset($args['description']) ||
             !isset($args['url'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Security check
@@ -202,7 +202,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id']) || !isset($args['state'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Security check
@@ -267,7 +267,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if (!isset($args['removedependents']) || !is_bool($args['removedependents'])) {
@@ -541,7 +541,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['filemodules']) || !is_array($args['filemodules'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $entity = 'Zikula\Core\Doctrine\Entity\Extension';
@@ -765,7 +765,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Get module information
@@ -881,7 +881,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $entity = 'Zikula\Core\Doctrine\Entity\Extension';
@@ -1203,7 +1203,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['modid']) || empty($args['modid']) || !is_numeric($args['modid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $dependencies = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependency')->findBy(array('modid' => $args['modid']));
@@ -1223,7 +1223,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['modid']) || empty($args['modid']) || !is_numeric($args['modid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $modinfo = ModUtil::getInfo($args['modid']);
@@ -1254,7 +1254,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['filemodules']) || !is_array($args['filemodules'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $filemodules = $args['filemodules'];

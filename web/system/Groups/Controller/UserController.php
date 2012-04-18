@@ -121,7 +121,7 @@ class UserController extends \Zikula_AbstractController
         $action = $this->request->query->get('action', null);
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         if ($action != 'subscribe' && $action != 'unsubscribe' && $action != 'cancel') {
@@ -188,7 +188,7 @@ class UserController extends \Zikula_AbstractController
         $tag = $this->request->request->get('tag', null);
 
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if (empty($tag)) {
@@ -225,7 +225,7 @@ class UserController extends \Zikula_AbstractController
         $startnum = (int)$this->request->query->get('startnum', 0);
 
         if (!is_numeric($startnum)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $itemsperpage = $this->getVar('itemsperpage');

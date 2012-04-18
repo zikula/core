@@ -47,7 +47,7 @@ class AdminApi extends \Zikula_AbstractApi
             !isset($args['language']) ||
             !isset($args['collapsable']) ||
             !isset($args['defaultstate'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Invalid/missing arguments');
         }
 
         // Security check
@@ -108,7 +108,7 @@ class AdminApi extends \Zikula_AbstractApi
             (!isset($args['collapsable'])) ||
             (!isset($args['defaultstate'])) ||
             (!isset($args['bkey']))) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException('Invalid/missing arguments');
         }
 
         // Security check
@@ -163,11 +163,11 @@ class AdminApi extends \Zikula_AbstractApi
     public function setActiveState($block)
     {
         if (!isset($block['bid']) || !is_numeric($block['bid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('$arg[\'bid\'] missing or not numeric');
         }
 
         if (!isset($block['active']) || !is_numeric($block['active'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('$arg[\'active\'] missing or not numeric');
         }
         
         $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $block['bid']));
@@ -231,7 +231,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('$arg[\'bid\'] missing or not numeric');
         }
 
         $block = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
@@ -268,7 +268,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Argument check
         if (!isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-                return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Security check
@@ -309,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['pid']) ||
             !isset($args['name']) ||
             !isset($args['description'])) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // Get the existing position
@@ -351,7 +351,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function deleteposition($args)
     {
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
         $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));

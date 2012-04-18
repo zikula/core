@@ -25,7 +25,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $args['variables'] = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
@@ -45,7 +45,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme']) || !isset($args['variables']) || empty($args['variables'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $dom = $this->_getthemedomain($args['theme']);
@@ -107,7 +107,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         return $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themepalettes.ini', 'sections' => true));
@@ -120,7 +120,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme']) || !isset($args['palette']) || empty($args['palette'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
@@ -135,7 +135,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
@@ -154,7 +154,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         return $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'pageconfigurations.ini', 'sections' => true));
@@ -167,10 +167,10 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         if (!isset($args['filename']) || empty($args['filename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
@@ -198,7 +198,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $themeinfo   = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
@@ -219,7 +219,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         $args['type'] = isset($args['type']) ? DataUtil::formatForOS($args['type']) : 'modules';
@@ -247,11 +247,11 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['file']) || empty($args['file'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get the theme info
@@ -282,11 +282,11 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['file']) || empty($args['file'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
         // get the theme info
