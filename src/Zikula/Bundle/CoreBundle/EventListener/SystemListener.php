@@ -135,7 +135,8 @@ class SystemListener implements EventSubscriberInterface
     public function setupRequest(GenericEvent $event)
     {
         if ($event['stage'] & Core::STAGE_DECODEURLS) {
-            $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+
+            $request = $event['request'];// \Symfony\Component\HttpFoundation\Request::createFromGlobals();
             $this->container->set('request', $request);
 
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);

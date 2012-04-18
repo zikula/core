@@ -28,10 +28,16 @@
         <parameter key="signing.key">to_be_injected_later</parameter>
 
         <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
+        <parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>
     </parameters>
 
     <services>
         <service id="zikula" class="%zikula_core.class%">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="zikula.core_init" class="%zikula.core_init_listener.class%">
+            <tag name="zikula.event_subscriber" />
             <argument type="service" id="service_container" />
         </service>
 
