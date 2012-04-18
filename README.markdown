@@ -13,3 +13,9 @@ Composer can be obtained from http://getcomposer.org/.
 
 Please use the `installation-140.sql` file to manually install the database.
 The administrative login is "Admin" and "zikula1"
+
+## License
+
+The Zikula Core package is licensed under the terms of LGPLv3 or any later
+version.
+
