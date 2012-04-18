@@ -53,7 +53,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $sfilter = $this->request->getSession()->get('blocks/filter', array());
@@ -198,7 +198,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // check the blockinfo array
@@ -420,7 +420,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters if exists
@@ -534,7 +534,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($blockinfo == false) {
@@ -580,7 +580,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $name = $this->request->get('name', '');
@@ -601,7 +601,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::position', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters
@@ -639,7 +639,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission("Blocks::$position[name]", '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign the position item
@@ -735,7 +735,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$pid", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Check for confirmation.
@@ -765,7 +765,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign all the module vars
@@ -786,7 +786,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $collapseable = $this->request->get('collapseable');

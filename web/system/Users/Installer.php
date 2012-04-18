@@ -18,7 +18,7 @@ namespace Users;
 use DBUtil, EventUtil, HookUtil, System, DataUtil, ModUtil;
 use DateTime, DateTimeZone, ServiceUtil;
 use Users\Constants as Constant;
-use Zikula_Exception_Fatal;
+use \Zikula\Framework\Exception\FatalException;
 
 /**
  * Provides module installation and upgrade services for the Users module.
@@ -524,7 +524,7 @@ class Installer extends \Zikula_AbstractInstaller
 
                         $userArray[] = $userObj;
                     } else {
-                        throw new Zikula_Exception_Fatal($this->__f('Unknown users_temp record type: %1$s', array($userTempArray[$key]['type'])));
+                        throw new \Zikula\Framework\Exception\FatalException($this->__f('Unknown users_temp record type: %1$s', array($userTempArray[$key]['type'])));
                     }
                 }
             }

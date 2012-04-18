@@ -77,7 +77,7 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
         }
 
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $view = Zikula_View_plugin::getModulePluginInstance($this->moduleName, $this->pluginName);

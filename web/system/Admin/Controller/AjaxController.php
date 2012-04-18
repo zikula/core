@@ -15,7 +15,7 @@
 namespace Admin\Controller;
 
 use ModUtil, SecurityUtil, LogUtil, DataUtil;
-use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Response_Ajax_BadData;
+use \Zikula\Framework\Exception\FatalException, Zikula_Response_Ajax, Zikula_Response_Ajax_BadData;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -37,7 +37,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $module = ModUtil::getInfo($moduleID);
         if (!$module) {
             //deal with couldnt get module info
-            throw new Zikula_Exception_Fatal($this->__('Error! Could not get module name for id %s.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not get module name for id %s.'));
         }
 
         //get the module name
@@ -48,7 +48,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         //move the module
         $result = ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('category' => $newParentCat, 'module' => $module));
         if (!$result) {
-            throw new Zikula_Exception_Fatal($this->__('Error! Could not add module to module category.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not add module to module category.'));
         }
 
         $output = array();
@@ -89,7 +89,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         foreach ($cats as $cat) {
             if ($name == $cat['name']) {
-                throw new Zikula_Exception_Fatal($this->__('Error! A category by this name already exists.'));
+                throw new \Zikula\Framework\Exception\FatalException($this->__('Error! A category by this name already exists.'));
             }
         }
 
@@ -99,7 +99,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         //create the category
         $result = ModUtil::apiFunc('Admin', 'admin', 'create', array('name' => $name, 'description' => ''));
         if (!$result) {
-            throw new Zikula_Exception_Fatal($this->__('The category could not be created.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('The category could not be created.'));
         }
 
         $output = array();
@@ -129,7 +129,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         //find the category corresponding to the cid.
         $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if (empty($item)) {
-            throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! No such category found.'));
         }
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$item[name]::$item[cid]", ACCESS_DELETE));
@@ -145,7 +145,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         //unknown error
-        throw new Zikula_Exception_Fatal($this->__('Error! Could not perform the deletion.'));
+        throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not perform the deletion.'));
     }
 
     /**
@@ -189,14 +189,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 }
 
                 //a different category has the same name, not allowed.
-                throw new Zikula_Exception_Fatal($this->__('Error! A category by this name already exists.'));
+                throw new \Zikula\Framework\Exception\FatalException($this->__('Error! A category by this name already exists.'));
             }
         }
 
         //get the category from the database
         $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if (empty($item)) {
-            throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! No such category found.'));
         }
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$item[name]::$item[cid]", ACCESS_EDIT));
@@ -209,7 +209,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         //update failed for some reason
-        throw new Zikula_Exception_Fatal($this->__('Error! Could not save your changes.'));
+        throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not save your changes.'));
     }
 
     /**
@@ -245,7 +245,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         //unknown error
-        throw new Zikula_Exception_Fatal($this->__('Error! Could not make this category default.'));
+        throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not make this category default.'));
     }
 
     public function sortCategoriesAction()

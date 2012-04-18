@@ -21,7 +21,7 @@ use Zikula_Exception_Forbidden;
 use Zikula_ValidationHook;
 use Zikula_Hook_ValidationProviders;
 use Zikula_Response_Ajax;
-use Zikula_Exception_Fatal;
+use \Zikula\Framework\Exception\FatalException;
 
 /**
  * Access to actions initiated through AJAX for the Users module.
@@ -181,7 +181,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the authentication module name or method name are not valid.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if the authentication module name or method name are not valid.
      */
     public function getLoginFormFieldsAction()
     {
@@ -192,11 +192,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
 
         if (empty($modname) || !is_string($modname)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid authentication module name was received.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid authentication module name was received.'));
         } elseif (!ModUtil::available($modname)) {
-            throw new Zikula_Exception_Fatal($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('The \'%1$s\' module is not in an available state.', array($modname)));
         } elseif (!ModUtil::isCapable($modname, 'authentication')) {
-            throw new Zikula_Exception_Fatal($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('The \'%1$s\' module is not an authentication module.', array($modname)));
         }
 
         $loginFormFields = ModUtil::func($modname, 'Authentication', 'getLoginFormFields', array(

@@ -16,7 +16,7 @@
 namespace Users\Helper;
 
 use ModUtil, LogUtil;
-use Zikula_Exception_Fatal;
+use \Zikula\Framework\Exception\FatalException;
 use Zikula_AbstractBase;
 use Zikula_Api_AbstractAuthentication;
 use Zikula_AbstractErrorHandler;
@@ -67,7 +67,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      * @param Zikula_AbstractBase $base                                 The parent base for this collection.
      * @param array               $orderedListableAuthenticationMethods Used to order and filter the list.
      *
-     * @throws Zikula_Exception_Fatal Thrown if a list of authentication modules cannot be obtained from ModUtil.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if a list of authentication modules cannot be obtained from ModUtil.
      */
     public function __construct(\Zikula\Framework\AbstractBase $base, array $orderedListableAuthenticationMethods = array(), $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE)
     {
@@ -77,7 +77,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
 
         $authenticationModules = ModUtil::getModulesCapableOf('authentication');
         if (!is_array($authenticationModules)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid list of authentication modules was returned by ModUtil::getModulesCapableOf().'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid list of authentication modules was returned by ModUtil::getModulesCapableOf().'));
         }
 
         foreach ($authenticationModules as $modinfo) {
@@ -180,7 +180,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      * @return AuthenticationMethodHelper|void If a default authentication method is appropriate,
      * then that definition; otherwise null.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the collection is in an inconsistent state.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if the collection is in an inconsistent state.
      */
     public function getAuthenticationMethodForDefault()
     {
@@ -198,7 +198,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
             if (!$authenticationMethodForDefault) {
                 // Nothing in the list at all! Because the constructor forces Users-uname if the list would otherwise be
                 // empty this should not happen.
-                throw new Zikula_Exception_Fatal($this->__('The authentication method list is in an inconsistent state. No authentication modules.'));
+                throw new \Zikula\Framework\Exception\FatalException($this->__('The authentication method list is in an inconsistent state. No authentication modules.'));
             }
         }
 
@@ -212,7 +212,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return boolean True if the offset is valid; otherwise false.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the offset is not valid.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if the offset is not valid.
      */
     public function offsetExists($offset)
     {
@@ -220,12 +220,12 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
             if ((int)$offset == $offset) {
                 return isset($this->authenticationMethods[$offset]);
             } else {
-                throw new Zikula_Exception_Fatal($this->__f('An invalid numeric offset was received (\'%1$s\').', array($offset)));
+                throw new \Zikula\Framework\Exception\FatalException($this->__f('An invalid numeric offset was received (\'%1$s\').', array($offset)));
             }
         } elseif (is_string($offset)) {
             return isset($this->nameIndex[$offset]);
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid offset was received (\'%1$s\').', array($offset)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('An invalid offset was received (\'%1$s\').', array($offset)));
         }
     }
 
@@ -256,11 +256,11 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Always thrown; this function is not valid for this collection.
+     * @throws \Zikula\Framework\Exception\FatalException Always thrown; this function is not valid for this collection.
      */
     public function offsetSet($offset, $value)
     {
-        throw new Zikula_Exception_Fatal($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
+        throw new \Zikula\Framework\Exception\FatalException($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
     }
 
     /**
@@ -270,11 +270,11 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
      *
      * @return void
      *
-     * @throws Zikula_Exception_Fatal Always thrown; this function is not valid for this collection.
+     * @throws \Zikula\Framework\Exception\FatalException Always thrown; this function is not valid for this collection.
      */
     public function offsetUnset($offset)
     {
-        throw new Zikula_Exception_Fatal($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
+        throw new \Zikula\Framework\Exception\FatalException($this->__f('Instances of $1$s are immutable.', array(__CLASS__)));
     }
 
     /**

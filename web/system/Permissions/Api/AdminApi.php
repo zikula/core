@@ -37,7 +37,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Argument check
@@ -109,7 +109,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Argument check
@@ -185,7 +185,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Argument check
@@ -232,7 +232,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Argument check
@@ -291,7 +291,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Argument check
@@ -318,7 +318,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         $dql = "SELECT MAX(p.sequence) FROM Permissions\Entity\Permission p";
@@ -335,7 +335,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "group::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         // get all permissions
@@ -374,7 +374,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Argument check
@@ -453,7 +453,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $schemas = SecurityUtil::getSchemas();

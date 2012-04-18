@@ -62,7 +62,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $this->view->assign('itemsperpage', $this->getVar('itemsperpage'));
@@ -88,7 +88,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $validates = true;
@@ -321,7 +321,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $reset = (bool)($this->request->get('reset', null) == 'default');
@@ -443,7 +443,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Load HTMLPurifier Classes
@@ -559,7 +559,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $sort = $this->request->get('sort', 'date DESC');
@@ -606,7 +606,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get input values
@@ -714,7 +714,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $confirmation = $this->request->get('confirmation');
@@ -747,7 +747,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $this->view->assign('htmltags', $this->_gethtmltags())
@@ -774,7 +774,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // update the allowed html settings

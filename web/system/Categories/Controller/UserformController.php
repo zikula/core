@@ -26,7 +26,7 @@ class UserformController extends \Zikula_AbstractController
     public function deleteAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $cid = (int)$this->request->get('cid', 0);
@@ -66,7 +66,7 @@ class UserformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $dr = (int)$this->request->request->get('dr', 0);
@@ -126,7 +126,7 @@ class UserformController extends \Zikula_AbstractController
     public function moveFieldAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $cid = (int)$this->request->query->get('cid', 0);
@@ -169,7 +169,7 @@ class UserformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $dr = (int)$this->request->request->get('dr', 0);
@@ -202,7 +202,7 @@ class UserformController extends \Zikula_AbstractController
     public function resequenceAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $dr = (int)$this->request->query->get('dr', 0);

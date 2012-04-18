@@ -16,7 +16,7 @@
 namespace Users\Api;
 
 use Users\Constants as UsersConstant;
-use Zikula_Exception_Fatal;
+use \Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Api\AbstractAuthentication;
 use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DBUtil, DataUtil, DateUtil, ObjectUtil;
 use Zikula_Session;
@@ -239,7 +239,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      *
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
      *
-     * @throws Zikula_Exception_Fatal If a required parameter is missing from $args.
+     * @throws \Zikula\Framework\Exception\FatalException If a required parameter is missing from $args.
      */
     public function getRegistrationErrors($args)
     {
@@ -253,7 +253,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $isAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!isset($args['reginfo']) || !is_array($args['reginfo'])) {
-            throw new Zikula_Exception_Fatal($this->__('Internal Error! Missing required parameter.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Internal Error! Missing required parameter.'));
         }
         $reginfo = $args['reginfo'];
 
@@ -320,7 +320,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         $verificationAndPassword = $this->getVar(UsersConstant::MODVAR_REGISTRATION_VERIFICATION_MODE, UsersConstant::VERIFY_NO);
         if ($verificationAndPassword == UsersConstant::VERIFY_SYSTEMPWD) {
-            throw new Zikula_Exception_Fatal($this->__('Internal Error! System-generated passwords are no longer supported!'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Internal Error! System-generated passwords are no longer supported!'));
         }
         if (!$isAdminOrSubAdmin || $setPassword) {
             $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(

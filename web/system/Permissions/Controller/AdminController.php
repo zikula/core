@@ -58,7 +58,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need.
@@ -244,7 +244,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters
@@ -280,7 +280,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters
@@ -312,7 +312,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need.
@@ -416,7 +416,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters
@@ -480,7 +480,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters
@@ -534,7 +534,7 @@ class AdminController extends \Zikula_AbstractController
     public function deleteAction()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters
@@ -599,7 +599,7 @@ class AdminController extends \Zikula_AbstractController
     public function viewinstanceinfoAction()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get all permissions schemas, sort and assign to the template
@@ -621,7 +621,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign the module vars
@@ -642,7 +642,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $error = false;

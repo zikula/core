@@ -27,7 +27,7 @@ class UserController extends \Zikula_AbstractController
     public function indexAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $referer = System::serverGetVar('HTTP_REFERER');
@@ -143,7 +143,7 @@ class UserController extends \Zikula_AbstractController
     public function edituserAction()
     {
         if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (!UserUtil::isLoggedIn()) {

@@ -38,7 +38,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         return $this->response($this->view->fetch('settings_admin_modifyconfig.tpl'));
@@ -55,7 +55,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get settings from form
@@ -140,7 +140,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get the server timezone and pass it to template - we should not allow to change this
@@ -161,7 +161,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $url = ModUtil::url('Settings', 'admin', 'multilingual');

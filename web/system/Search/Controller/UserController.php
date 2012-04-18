@@ -44,7 +44,7 @@ class UserController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get parameter from input
@@ -129,7 +129,7 @@ class UserController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get parameter from HTTP input
@@ -230,7 +230,7 @@ class UserController extends \Zikula_AbstractController
     {
         // security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need.

@@ -60,7 +60,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // check for duplicate display names
@@ -118,7 +118,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
         }
 
@@ -208,7 +208,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_EDIT)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
         }
 
@@ -278,7 +278,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get module information
@@ -409,7 +409,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
         }
 
@@ -535,7 +535,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
         }
 
@@ -1248,7 +1248,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         if (!System::isInstalling()) {
             if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
         }
 

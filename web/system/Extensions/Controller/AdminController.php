@@ -64,7 +64,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('Extensions::', "$obj[name]::$id", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $restore = (bool)$this->request->query->get('restore', false);
@@ -142,7 +142,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $session = $this->request->getSession();
@@ -899,7 +899,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign all the module vars and return output
@@ -918,7 +918,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Update module variables.
@@ -966,7 +966,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('Extensions::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get the module information from the files system
@@ -992,7 +992,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $state = $this->request->get('state', -1);
@@ -1191,7 +1191,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need
@@ -1227,7 +1227,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need
@@ -1263,7 +1263,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need
@@ -1299,7 +1299,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need
@@ -1335,7 +1335,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need

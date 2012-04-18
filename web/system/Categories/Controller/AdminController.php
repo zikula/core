@@ -48,11 +48,11 @@ class AdminController extends \Zikula_AbstractController
         $root_id = $this->request->get('dr', 1);
 
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$root_id", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $cats = CategoryUtil::getSubCategories($root_id, true, true, true, true, true);
@@ -68,7 +68,7 @@ class AdminController extends \Zikula_AbstractController
     public function configAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         return $this->response($this->view->fetch('categories_admin_config.tpl'));
@@ -90,7 +90,7 @@ class AdminController extends \Zikula_AbstractController
         // indicates that we're editing
         if ($mode == 'edit') {
             if (!SecurityUtil::checkPermission('Categories::category', "::", ACCESS_ADMIN)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             if (!$cid) {
@@ -105,7 +105,7 @@ class AdminController extends \Zikula_AbstractController
         } else {
             // new category creation
             if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_ADD)) {
-                return LogUtil::registerPermissionError();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             // since we inherit the domain settings from the parent, we get
@@ -164,7 +164,7 @@ class AdminController extends \Zikula_AbstractController
     public function editregistryAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $root_id = $this->request->get('dr', 1);
@@ -200,7 +200,7 @@ class AdminController extends \Zikula_AbstractController
     public function deleteregistryAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $id = $this->request->get('id', 0);
@@ -236,7 +236,7 @@ class AdminController extends \Zikula_AbstractController
         $op = $this->request->get('op', 'NOOP');
 
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$cid", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $category = new Category();
@@ -258,7 +258,7 @@ class AdminController extends \Zikula_AbstractController
     public function preferencesAction()
     {
         if (!SecurityUtil::checkPermission('Categories::preferences', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $this->view->assign('userrootcat', $this->getVar('userrootcat', '/__SYSTEM__'))

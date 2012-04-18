@@ -16,7 +16,7 @@
 namespace Users\Controller;
 
 use Zikula\Core\Event\GenericEvent;
-use Zikula_View, Zikula_Exception_Forbidden, Zikula_Exception_Fatal, Zikula_Exception_NotFound;
+use Zikula_View, Zikula_Exception_Forbidden, \Zikula\Framework\Exception\FatalException, Zikula_Exception_NotFound;
 use ModUtil, UserUtil, DataUtil, System, LogUtil, SecurityUtil, SessionUtil, Zikula_Session, ThemeUtil;
 use Users\Constants as UsersConstant;
 use Users\Helper\AuthenticationMethodListHelper;
@@ -147,7 +147,7 @@ class UserController extends \Zikula_AbstractController
                         throw new Zikula_Exception_Forbidden();
                     }
                 } else {
-                    throw new Zikula_Exception_Fatal($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
+                    throw new \Zikula\Framework\Exception\FatalException($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
                 }
 
                 $state = 'authenticate';
@@ -299,7 +299,7 @@ class UserController extends \Zikula_AbstractController
                             || !isset($selectedAuthenticationMethod['modname']) || !is_string($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                             || !isset($selectedAuthenticationMethod['method']) || !is_string($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
                             ) {
-                        throw new Zikula_Exception_Fatal($this->__('An invalid authentication method was selected.'));
+                        throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid authentication method was selected.'));
                     }
 
                     if ($selectedAuthenticationMethod['modname'] == $this->name) {
@@ -623,7 +623,7 @@ class UserController extends \Zikula_AbstractController
 
         // If we got here then we exited the above state machine with a 'stop', but there was no return statement
         // in the terminal state. We don't know what to do.
-        throw new Zikula_Exception_Fatal($this->__('The registration process has entered an unknown state.'));
+        throw new \Zikula\Framework\Exception\FatalException($this->__('The registration process has entered an unknown state.'));
     }
 
     /**
@@ -1086,7 +1086,7 @@ class UserController extends \Zikula_AbstractController
             $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
             // Coming from a function call, but bad $args
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'POST') {
             // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
             if (System::getVar('anonymoussessions', false)) {
@@ -1153,7 +1153,7 @@ class UserController extends \Zikula_AbstractController
                         || !isset($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                         || !isset($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
                         ) {
-                    throw new Zikula_Exception_Fatal($this->__('Error! Invalid authentication method information.'));
+                    throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Invalid authentication method information.'));
                 }
 
                 if (ModUtil::available($selectedAuthenticationMethod['modname'])
@@ -1307,7 +1307,7 @@ class UserController extends \Zikula_AbstractController
                     }
                 }
             } elseif (isset($authenticationInfo) && (!is_array($authenticationInfo))) {
-                throw new Zikula_Exception_Fatal($this->__('Error! Invalid authentication information received.'));
+                throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Invalid authentication information received.'));
             }
         }
 
@@ -1840,7 +1840,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!$found) {
-            throw new Zikula_Exception_Fatal();
+            throw new \Zikula\Framework\Exception\FatalException();
         }
 
         if ($this->request->getMethod() == 'POST') {
@@ -1903,7 +1903,7 @@ class UserController extends \Zikula_AbstractController
             }
         } elseif (isset($args) && !is_array($args)) {
             // Arrived via function call with bad $args
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'POST') {
             // Arrived from a form post
             $args['login'] = $this->request->request->get('login', false);
@@ -1918,7 +1918,7 @@ class UserController extends \Zikula_AbstractController
         if (!$args['login'] && !UserUtil::isLoggedIn()) {
             throw new Zikula_Exception_Forbidden();
         } elseif ($args['login'] && UserUtil::isLoggedIn()) {
-            throw new Zikula_Exception_Fatal();
+            throw new \Zikula\Framework\Exception\FatalException();
         }
 
         // If we are coming here from the login process, then there are certain things that must have been
@@ -1927,7 +1927,7 @@ class UserController extends \Zikula_AbstractController
                 || !isset($sessionVars['authentication_info']) || !is_array($sessionVars['authentication_info'])
                 || !isset($sessionVars['authentication_method']) || !is_array($sessionVars['authentication_method']))
                 ) {
-            throw new Zikula_Exception_Fatal();
+            throw new \Zikula\Framework\Exception\FatalException();
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
@@ -2007,7 +2007,7 @@ class UserController extends \Zikula_AbstractController
         if (!$login && !UserUtil::isLoggedIn()) {
             throw new Zikula_Exception_Forbidden();
         } elseif ($login && UserUtil::isLoggedIn()) {
-            throw new Zikula_Exception_Fatal();
+            throw new \Zikula\Framework\Exception\FatalException();
         }
 
         $passwordChanged    = false;
@@ -2057,7 +2057,7 @@ class UserController extends \Zikula_AbstractController
                     }
                 }
             } else {
-                throw new Zikula_Exception_Fatal($this->__('Sorry! There was a problem saving your new password.'));
+                throw new \Zikula\Framework\Exception\FatalException($this->__('Sorry! There was a problem saving your new password.'));
             }
         }
 
