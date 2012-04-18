@@ -30,7 +30,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get some use information about our environment

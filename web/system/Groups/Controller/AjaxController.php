@@ -14,7 +14,7 @@
 
 namespace Groups\Controller;
 
-use SecurityUtil, LogUtil, Zikula_Response_Ajax, ModUtil, Zikula_Exception_Fatal;
+use SecurityUtil, LogUtil, Zikula_Response_Ajax, ModUtil, \Zikula\Framework\Exception\FatalException;
 use Groups\Helper\CommonHelper;
 
 /**
@@ -71,7 +71,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             // check for sessionvar
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
-                // return with msg, but not via Zikula_Exception_Fatal
+                // return with msg, but not via \Zikula\Framework\Exception\FatalException
                 return new Zikula_Response_Ajax(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
             }
         }
@@ -120,7 +120,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group_id = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
 
         if ($group_id == false) {
-            throw new Zikula_Exception_Fatal($this->__('Error! Could not create the new group.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not create the new group.'));
         }
 
         // update group's name
@@ -158,14 +158,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $defaultgroup = $this->getVar('defaultgroup');
 
         if ($group['gid'] == $defaultgroup) {
-            throw new Zikula_Exception_Fatal($this->__('Error! You cannot delete the default user group.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! You cannot delete the default user group.'));
         }
 
         if (ModUtil::apiFunc('Groups', 'admin', 'delete', array('gid' => $gid)) == true) {
             return new Zikula_Response_Ajax(array('gid' => $gid));
         }
 
-        throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete the \'%s\' group.', $gid));
+        throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
 
     public function removeuserAction()
@@ -178,7 +178,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
         if (!ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
-            throw new Zikula_Exception_Fatal($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
         }
 
         $result = array(

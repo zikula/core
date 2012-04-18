@@ -38,7 +38,7 @@ class HookUI
 
         // check if user has admin permission on this module
         if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // create an instance of the module's version
@@ -245,7 +245,7 @@ class HookUI
 
         $moduleName = $subject->getName();
         if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $view = Zikula_View::getInstance('Extensions', false);

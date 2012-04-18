@@ -31,7 +31,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $args = array();
@@ -104,7 +104,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $cat = new Category ();
@@ -164,7 +164,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->request->get('category_cancel', null)) {
@@ -196,7 +196,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->request->get('category_cancel', null)) {
@@ -222,7 +222,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->request->get('category_cancel', null)) {
@@ -245,7 +245,7 @@ class AdminformController extends \Zikula_AbstractController
     public function rebuild_pathsAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         CategoryUtil::rebuildPaths('path', 'name');
@@ -260,7 +260,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $id = $this->request->get('id', 0);
@@ -301,7 +301,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $userrootcat = $this->request->get('userrootcat', null);

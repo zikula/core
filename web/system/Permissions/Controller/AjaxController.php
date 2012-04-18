@@ -15,7 +15,7 @@
 namespace Permissions\Controller;
 
 use SecurityUtil, ModUtil, DataUtil, UserUtil;
-use Zikula_Response_Ajax, Zikula_Exception_Fatal;
+use Zikula_Response_Ajax, \Zikula\Framework\Exception\FatalException;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -157,7 +157,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // check if this is the overall admin permssion and return if this shall be deleted
         $perm = $this->entityManager->find('Permissions\Entity\Permission', $pid);
         if ($perm['pid'] == 1 && $perm['level'] == ACCESS_ADMIN && $perm['component'] == '.*' && $perm['instance'] == '.*') {
-            throw new Zikula_Exception_Fatal($this->__('Notice: You cannot delete the main administration permission rule.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
 
         if (ModUtil::apiFunc('Permissions', 'admin', 'delete', array('pid' => $pid)) == true) {
@@ -169,7 +169,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             return new Zikula_Response_Ajax(array('pid' => $pid));
         }
 
-        throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+        throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
     }
 
     /**

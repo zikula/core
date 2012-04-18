@@ -384,7 +384,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // update the users record to an empty string - if this user var is empty then the site default is used.

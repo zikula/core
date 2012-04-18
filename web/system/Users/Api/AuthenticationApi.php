@@ -15,7 +15,7 @@
 namespace Users\Api;
 
 use Users\Constants as UsersConstant;
-use Zikula_Exception_Fatal;
+use \Zikula\Framework\Exception\FatalException;
 use Zikula_Api_AbstractAuthentication;
 use UserUtil, ModUtil, LogUtil;
 use Users\Helper\AuthenticationMethodHelper;
@@ -100,14 +100,14 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return boolean True if the indicated authentication method is supported by this module; otherwise false.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are sent in $args.
      */
     public function supportsAuthenticationMethod(array $args)
     {
         if (isset($args['method']) && is_string($args['method'])) {
             $methodName = $args['method'];
         } else {
-            throw new Zikula_Exception_Fatal($this->__('An invalid \'method\' parameter was received.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid \'method\' parameter was received.'));
         }
 
         $isSupported = (bool)isset($this->authenticationMethods[$methodName]);
@@ -126,7 +126,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return boolean True if the indicated authentication method is enabled by this module; otherwise false.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are sent in $args.
      */
     public function isEnabledForAuthentication(array $args)
     {
@@ -134,10 +134,10 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
             if (isset($this->authenticationMethods[$args['method']])) {
                 $authenticationMethod = $this->authenticationMethods[$args['method']];
             } else {
-                throw new Zikula_Exception_Fatal($this->__f('An unknown method (\'%1$s\') was received.', array($args['method'])));
+                throw new \Zikula\Framework\Exception\FatalException($this->__f('An unknown method (\'%1$s\') was received.', array($args['method'])));
             }
         } else {
-            throw new Zikula_Exception_Fatal($this->__('An invalid \'method\' parameter was received.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid \'method\' parameter was received.'));
         }
 
         return $authenticationMethod->isEnabledForAuthentication();
@@ -155,7 +155,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return array An array containing the authentication methods defined by this module, possibly filtered by only those that are enabled.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationMethods(array $args = null)
     {
@@ -168,11 +168,11 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                         $filter = $args['filter'];
                         break;
                     default:
-                        throw new Zikula_Exception_Fatal($this->__f('An unknown value for the \'filter\' parameter was received (\'%1$d\').', array($args['filter'])));
+                        throw new \Zikula\Framework\Exception\FatalException($this->__f('An unknown value for the \'filter\' parameter was received (\'%1$d\').', array($args['filter'])));
                         break;
                 }
             } else {
-                throw new Zikula_Exception_Fatal($this->__f('An invalid value for the \'filter\' parameter was received (\'%1$s\').', array($args['filter'])));
+                throw new \Zikula\Framework\Exception\FatalException($this->__f('An invalid value for the \'filter\' parameter was received (\'%1$s\').', array($args['filter'])));
             }
         } else {
             $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE;
@@ -220,11 +220,11 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      * @return boolean True if the user account or registration request was successfully associated with the authentication method and
      *                      authentication information; otherwise false.
      *
-     * @throws Zikula_Exception_Fatal Thrown in all cases by the Users module. This module handles registrations as part of the core functionality.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown in all cases by the Users module. This module handles registrations as part of the core functionality.
      */
     public function register(array $args)
     {
-        throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'Users')));
+        throw new \Zikula\Framework\Exception\FatalException($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'Users')));
     }
 
     /**
@@ -262,7 +262,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return boolean True if the authentication_info authenticates with the source; otherwise false on authentication failure.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are sent in $args.
      */
     public function checkPassword(array $args)
     {
@@ -273,11 +273,11 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         // made in the checkPassword function.
 
         if (!isset($args['authentication_info']) || !is_array($args['authentication_info']) || empty($args['authentication_info'])) {
-            throw new Zikula_Exception_Fatal($this->__f('Invalid \'%1$s\' parameter received in a call to %2$s', array('authentication_info', __METHOD__)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Invalid \'%1$s\' parameter received in a call to %2$s', array('authentication_info', __METHOD__)));
         }
 
         if (!isset($args['authentication_method']) || !is_array($args['authentication_method']) || empty($args['authentication_method'])) {
-            throw new Zikula_Exception_Fatal($this->__f('Invalid \'%1$s\' parameter received in a call to %2$s', array('authentication_method', __METHOD__)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Invalid \'%1$s\' parameter received in a call to %2$s', array('authentication_method', __METHOD__)));
         }
 
         $authenticationInfo = $args['authentication_info'];
@@ -295,7 +295,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
             if (!isset($authenticationInfo['pass']) || !is_string($authenticationInfo['pass'])
                     || empty($authenticationInfo['pass'])) {
                 // The user did not specify a password, or the one specified is invalid.
-                throw new Zikula_Exception_Fatal($this->__('Error! A password must be provided.'));
+                throw new \Zikula\Framework\Exception\FatalException($this->__('Error! A password must be provided.'));
             }
 
             // For a custom authenticationModule, we'd map the authenticationInfo to a uid above, and then execute the custom
@@ -311,7 +311,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
 
                 if (!$userObj) {
                     // Neither an account nor a pending registration request. This should really not happen since we have a uid.
-                    throw new Zikula_Exception_Fatal($this->__f('A user id was located, but the user account record could not be retrieved in a call to %1$s.', array(__METHOD__)));
+                    throw new \Zikula\Framework\Exception\FatalException($this->__f('A user id was located, but the user account record could not be retrieved in a call to %1$s.', array(__METHOD__)));
                 }
             }
 
@@ -337,7 +337,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                     if (!isset($userObj['hash_method'])) {
                         // Something is horribly wrong. The password on the user account record does not look like the
                         // new style of hashing, and yet the old-style hash method field is nowhere to be found.
-                        throw new Zikula_Exception_Fatal($this->__('Invalid account password state.'));
+                        throw new \Zikula\Framework\Exception\FatalException($this->__('Invalid account password state.'));
                     }
                     $currentPasswordHashed = $userObj['hash_method'] . '$$' . $userObj['pass'];
                 } else {
@@ -412,14 +412,14 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                  enough information--such as user name-like fields--to identify the account on the authenticating
      *                  system.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationInfoForSession(array $args)
     {
         // Validate authenticationInfo
         if (!isset($args['authentication_info']) || !is_array($args['authentication_info'])
                 || empty($args['authentication_info'])) {
-            throw new Zikula_Exception_Fatal($this->__f('Invalied \'%1$s\' parameter received in a call to %2$s', array('authentication_info', __METHOD__)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Invalied \'%1$s\' parameter received in a call to %2$s', array('authentication_info', __METHOD__)));
         }
 
         $fieldsToClean = array(
@@ -466,7 +466,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      * @return integer|boolean The integer Zikula uid uniquely associated with the given authenticationInfo;
      *                          otherwise false if user not found or error.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are sent in $args.
      */
     public function getUidForAuthenticationInfo(array $args)
     {
@@ -479,13 +479,13 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         // Validate authenticationInfo
         if (!isset($args['authentication_info']) || !is_array($args['authentication_info'])
                 || empty($args['authentication_info'])) {
-            throw new Zikula_Exception_Fatal($this->__f('Invalid \'%1$s\' parameter provided in a call to %2$s.', array('authentication_info', __METHOD__)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Invalid \'%1$s\' parameter provided in a call to %2$s.', array('authentication_info', __METHOD__)));
         }
         $authenticationInfo = $args['authentication_info'];
 
         if (!isset($args['authentication_method']) || !is_array($args['authentication_method'])
                 || empty($args['authentication_method'])) {
-            throw new Zikula_Exception_Fatal($this->__f('Invalid \'%1$s\' parameter provided in a call to %2$s.', array('authentication_method', __METHOD__)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Invalid \'%1$s\' parameter provided in a call to %2$s.', array('authentication_method', __METHOD__)));
         }
         $authenticationMethod = $args['authentication_method'];
 
@@ -500,9 +500,9 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
             } else {
                 $detailedMessage = $this->__f('A user name was not provided in a call to %1$s.', array(__METHOD__));
             }
-            throw new Zikula_Exception_Fatal($detailedMessage);
+            throw new \Zikula\Framework\Exception\FatalException($detailedMessage);
         } elseif (!is_string($loginID)) {
-            throw new Zikula_Exception_Fatal($this->__f('Invalid type for \'%1$s\' parameter in a call to %2$s.', array('login_id', __METHOD__)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Invalid type for \'%1$s\' parameter in a call to %2$s.', array('login_id', __METHOD__)));
         }
 
         // The users module expects the loginID to be lower case. Custom authenticationModules would do whatever
@@ -612,17 +612,17 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *
      * @return array of account recovery information.
      *
-     * @throws Zikula_Exception_Fatal Thrown if an invalid arguments array or an invalid user id is received by the method.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if an invalid arguments array or an invalid user id is received by the method.
      */
     public function getAccountRecoveryInfoForUid(array $args)
     {
         if (!isset($args) || empty($args)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid parameter array was received.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid parameter array was received.'));
         }
 
         $uid = isset($args['uid']) ? $args['uid'] : false;
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid user id was received.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid user id was received.'));
         }
 
         $userObj = UserUtil::getVars($uid);

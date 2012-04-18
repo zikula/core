@@ -47,7 +47,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (isset($this->container['multisites.enabled']) && $this->container['multisites.enabled'] == 1) {
@@ -150,7 +150,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get the theme info
@@ -186,7 +186,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::settings", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get the existing theme info
@@ -233,7 +233,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::variables", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($filename) {
@@ -286,7 +286,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::variables", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get the original file source
@@ -357,7 +357,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::colors", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // check that we have writable files
@@ -405,7 +405,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::palettes", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // check if we've got a new palette being created
@@ -464,7 +464,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign an array to populate the modules dropdown
@@ -542,7 +542,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // read our configuration file
@@ -654,7 +654,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // read our configuration file
@@ -743,7 +743,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign all modules
@@ -842,7 +842,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // read the list of existing page config assignments
@@ -912,7 +912,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::pageconfigurations", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Check for confirmation.
@@ -985,7 +985,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Check for confirmation.
@@ -1031,7 +1031,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', "$themename::", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Check for confirmation.
@@ -1068,7 +1068,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // assign a list of modules suitable for html_options
@@ -1111,7 +1111,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // check if the theme cache was disabled and clean it if so
@@ -1214,7 +1214,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
@@ -1242,7 +1242,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $cacheid = FormUtil::getPassedValue('cacheid');
@@ -1288,7 +1288,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
@@ -1311,7 +1311,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $theme = Zikula_View_Theme::getInstance();
@@ -1339,7 +1339,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $res = $this->view->clear_compiled();
@@ -1366,7 +1366,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $res = $this->view->clear_all_cache();
@@ -1390,7 +1390,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');

@@ -628,7 +628,7 @@ On the PHP side:
 - Possible errors (not related to data validation) in the module controller
   must be handled via exceptions. You may first register error message using LogUtil,
   then throw an exception (eg Zikula_Exception_Forbidden for no presmission or
-  Zikula_Exception_Fatal for bad authid token). You may also pass error message
+  \Zikula\Framework\Exception\FatalException for bad authid token). You may also pass error message
   directly to exception.
 - If the controller module must declare a failure because of data validation and/or
   also send some data to JS then the module should not throw an exception but instead
@@ -666,14 +666,14 @@ Process the request in the module controller:
 
     // test authid and throw an exception on failure (outside a Zikula_Base instance)
     if (!SecurityUtil::confirmAuthKey()) {
-        throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgAuthid());
+        throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgAuthid());
     }
 
     // when controller needs to return failure due to data validation:
     return new Zikula_Response_Ajax_BadData($this->__('Invalid input')); // Second param $data is optional
 
     // throw an exception from some other reason
-    throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+    throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
 
     // return response
     return new Zikula_Response_Ajax(array('pid' => $pid));

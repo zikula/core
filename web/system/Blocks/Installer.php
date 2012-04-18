@@ -16,7 +16,7 @@ namespace Blocks;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View, DBUtil;
-use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Exception_BadData;
+use \Zikula\Framework\Exception\FatalException, Zikula_Response_Ajax, Zikula_Exception_BadData;
 use Blocks\Entity\BlockPlacement;
 
 class Blocks_Installer extends Zikula_AbstractInstaller

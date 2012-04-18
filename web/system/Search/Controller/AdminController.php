@@ -61,7 +61,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get the list of available plugins
@@ -99,7 +99,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Update module variables.

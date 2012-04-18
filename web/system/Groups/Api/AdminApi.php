@@ -50,7 +50,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Add item
@@ -103,7 +103,7 @@ class AdminApi extends \Zikula_AbstractApi
         
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Special groups check
@@ -168,7 +168,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Other check
@@ -224,7 +224,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Add user to group
@@ -266,7 +266,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         // delete user from group

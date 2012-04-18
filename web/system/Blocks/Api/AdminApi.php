@@ -54,7 +54,7 @@ class AdminApi extends \Zikula_AbstractApi
         // this function is called during the init process so we have to check in _ZINSTALLVER
         // is set as alternative to the correct permission check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         // remove old placements and insert the new ones
@@ -113,7 +113,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // optional arguments
@@ -172,7 +172,7 @@ class AdminApi extends \Zikula_AbstractApi
         
         $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $block['bid']));
         if (!SecurityUtil::checkPermission('Blocks::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // set block's new state
@@ -238,7 +238,7 @@ class AdminApi extends \Zikula_AbstractApi
         
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // delete block's placements and block itself
@@ -273,7 +273,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::position', "$args[name]::", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -321,7 +321,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$item[pid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
@@ -357,7 +357,7 @@ class AdminApi extends \Zikula_AbstractApi
         $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
 
         if (!SecurityUtil::checkPermission('Blocks::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         // delete placements of the position to be deleted

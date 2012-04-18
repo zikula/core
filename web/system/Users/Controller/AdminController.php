@@ -21,7 +21,7 @@ use DateTime, DateTimeZone, Exception;
 use Zikula_Session;
 use Zikula_Exception_Forbidden;
 use Users\Constants as UsersConstant;
-use Zikula_Exception_Fatal;
+use \Zikula\Framework\Exception\FatalException;
 use Zikula_ProcessHook, Zikula_Hook_ValidationProviders, Zikula_ValidationHook;
 
 /**
@@ -496,7 +496,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Fatal     Thrown if the function enters an unknown state.
+     * @throws \Zikula\Framework\Exception\FatalException     Thrown if the function enters an unknown state.
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
      */
@@ -526,7 +526,7 @@ class AdminController extends \Zikula_AbstractController
                     'sendmail'  => $sendmail,
                 ));
             } else {
-                throw new Zikula_Exception_Fatal($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
+                throw new \Zikula\Framework\Exception\FatalException($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
             }
         } elseif (!$this->request->getMethod() == 'GET') {
             throw new Zikula_Exception_Forbidden();
@@ -541,7 +541,7 @@ class AdminController extends \Zikula_AbstractController
         } elseif ($formId == 'users_mailusers') {
             return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
         } else {
-            throw new Zikula_Exception_Fatal($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
         }
     }
 
@@ -1866,7 +1866,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string The rendered configuration settings template.
      *
-     * @throws Zikula_Exception_Fatal     Thrown if the function is accessed improperly.
+     * @throws \Zikula\Framework\Exception\FatalException     Thrown if the function is accessed improperly.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access.
      */
     public function configAction()
@@ -1899,7 +1899,7 @@ class AdminController extends \Zikula_AbstractController
                         $errorCount, array($errorCount)));
             }
         } elseif (!$this->request->getMethod() == 'GET') {
-            throw new Zikula_Exception_Fatal();
+            throw new \Zikula\Framework\Exception\FatalException();
         }
 
         return $this->response($this->view->assign_by_ref('configData', $configData)
@@ -1938,7 +1938,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return redirect user to admin main page if success and show again the forn otherwise
      *
-     * @throws Zikula_Exception_Fatal     Thrown if the $args parameter is not valid.
+     * @throws \Zikula\Framework\Exception\FatalException     Thrown if the $args parameter is not valid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
      */
     public function importAction($args)
@@ -1952,7 +1952,7 @@ class AdminController extends \Zikula_AbstractController
         if (isset($args) && is_array($args) && !empty($args)) {
             $confirmed = isset($args['confirmed']) ? $args['confirmed'] : false;
         } elseif (isset($args) && !is_array($args)) {
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'GET') {
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
@@ -2026,7 +2026,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return redirect user to the form if confirmed not 1, else export the csv file.
      *
-     * @throws Zikula_Exception_Fatal     Thrown if parameters are passed via the $args array, but $args is invalid.
+     * @throws \Zikula\Framework\Exception\FatalException     Thrown if parameters are passed via the $args array, but $args is invalid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access, or method this function was accessed is invalid.
      */
     public function exporterAction($args)
@@ -2047,7 +2047,7 @@ class AdminController extends \Zikula_AbstractController
             $regDate    = isset($args['exportRegDate']) ? $args['exportRegDate'] : null;
             $groups     = isset($args['exportGroups']) ? $args['exportGroups'] : null;
         } elseif (isset($args) && !is_array($args)) {
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'GET') {
             $confirmed = false;
         } elseif ($this->request->getMethod() == 'POST') {
@@ -2457,7 +2457,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string The rendered output from either the template for confirmation.
      *
-     * @throws Zikula_Exception_Fatal     Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
+     * @throws \Zikula\Framework\Exception\FatalException     Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access for the account record.
      */
@@ -2467,13 +2467,13 @@ class AdminController extends \Zikula_AbstractController
             $uid = $this->request->query->get('userid', false);
 
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
             }
 
             $userObj = UserUtil::getVars($uid);
 
             if (!isset($userObj) || !$userObj || !is_array($userObj) || empty($userObj)) {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
             }
 
             if (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
@@ -2492,7 +2492,7 @@ class AdminController extends \Zikula_AbstractController
             $userMustChangePassword = $this->request->request->get('user_must_change_password', false);
 
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
             }
 
             // Force reload of User object into cache.
@@ -2515,11 +2515,11 @@ class AdminController extends \Zikula_AbstractController
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
                     $this->registerStatus($this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
                 } else {
-                    throw new Zikula_Exception_Fatal();
+                    throw new \Zikula\Framework\Exception\FatalException();
                 }
             } else {
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    throw new Zikula_Exception_Fatal();
+                    throw new \Zikula\Framework\Exception\FatalException();
                 } else {
                     $this->registerStatus($this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
                 }

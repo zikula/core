@@ -16,7 +16,7 @@ namespace Blocks\Controller;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
-use Zikula_Exception_Fatal, Zikula_Response_Ajax, Zikula_Exception_BadData;
+use \Zikula\Framework\Exception\FatalException, Zikula_Response_Ajax, Zikula_Exception_BadData;
 use Blocks\Entity\BlockPlacement;
 
 /**
@@ -76,13 +76,13 @@ class Blocks_Controller_AjaxController extends \Zikula_Controller_AbstractAjax
         $bid = $this->request->request->get('bid', -1);
 
         if ($bid == -1) {
-            throw new Zikula_Exception_Fatal($this->__('No block ID passed.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('No block ID passed.'));
         }
 
         // read the block information
         $blockinfo = BlockUtil::getBlockInfo($bid);
         if ($blockinfo == false) {
-            throw new Zikula_Exception_Fatal($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not retrieve block information for block ID %s.', DataUtil::formatForDisplay($bid)));
         }
 
         if ($blockinfo['active'] == 1) {

@@ -15,7 +15,7 @@
 namespace Users\Api;
 
 use SecurityUtil, Zikula_View, System, ModUtil, DBUtil, DataUtil, LogUtil, UserUtil;
-use Zikula_Exception_Fatal, Zikula_Exception_Forbidden;
+use \Zikula\Framework\Exception\FatalException, Zikula_Exception_Forbidden;
 use Users\Constants as UsersConstant;
 
 /**
@@ -37,7 +37,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array An array of users, or false on failure.
      *
-     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
+     * @throws \Zikula\Framework\Exception\FatalException Thrown if invalid parameters are received in $args, or if the data cannot be loaded from the database.
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have overview access.
      */
@@ -55,7 +55,7 @@ class UserApi extends \Zikula_AbstractApi
             if (is_numeric($args['startnum']) && ((int)$args['startnum'] == $args['startnum'])) {
                 $limitOffset = (int)$args['startnum'] - 1;
             } else {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
             }
         }
 
@@ -66,14 +66,14 @@ class UserApi extends \Zikula_AbstractApi
             if (is_numeric($args['numitems']) && ((int)$args['numitems'] == $args['numitems']) && ($args['numitems'] >= 1)) {
                 $limitNumRows = (int)$args['numitems'];
             } else {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
             }
         }
 
         // Check validity of letter arg.
         // $args['letter'] is really an SQL LIKE filter
         if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
         }
 
         // Sort
@@ -85,7 +85,7 @@ class UserApi extends \Zikula_AbstractApi
             } elseif (is_array($args['sort'])) {
                 $sortBy = $args['sort'];
             } else {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
             }
 
             $orderBy = array();
@@ -98,11 +98,11 @@ class UserApi extends \Zikula_AbstractApi
                     $direction = $value;
                 }
                 if (!empty($direction) && ($direction != 'ASC') && ($direction != 'DESC')) {
-                    throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                    throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
                 } elseif (isset($usersColumn[$fieldName])) {
                     $orderBy[] = $usersColumn[$fieldName] . (!empty($direction) ? ' ' . $direction : '');
                 } else {
-                    throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
+                    throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
                 }
             }
 
@@ -137,7 +137,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for a DB error
         if ($objArray === false) {
-            throw new Zikula_Exception_Fatal($this->__('Error! Could not load data.'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not load data.'));
         }
 
         return $objArray;

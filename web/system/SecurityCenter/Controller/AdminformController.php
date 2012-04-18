@@ -38,7 +38,7 @@ class AdminformController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get paramters

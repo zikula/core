@@ -40,12 +40,12 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'extensions' && $subject instanceof Users_Controller_Admin)) {
+        if (!($event['method'] == 'extensions' && $subject instanceof \Users\Controller\AdminController)) {
             return;
         }
 
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Zikula Modules and Themes versions

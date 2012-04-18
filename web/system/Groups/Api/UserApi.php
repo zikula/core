@@ -386,7 +386,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Check in case the user already applied
@@ -567,7 +567,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // verify if the user is alredy a member of this group
@@ -618,7 +618,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
-            return LogUtil::registerPermissionError();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
         // delete user from group
