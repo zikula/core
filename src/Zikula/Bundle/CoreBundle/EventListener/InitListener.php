@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Users\Constants as UsersConstant;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Zikula\Core\CoreEvents;
 
 /**
  * System class.
@@ -55,8 +57,6 @@ class InitListener implements EventSubscriberInterface
     protected $stage = 0;
 
     /**
-     * ServiceManager.
-     *
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected $container;
@@ -64,7 +64,7 @@ class InitListener implements EventSubscriberInterface
     /**
      * Constructor.
      *
-     * @param string $handlerDir Directory where handlers are located.
+     * @param ContainerBuilder $container
      */
     public function __construct(ContainerBuilder $container)
     {
@@ -75,35 +75,6 @@ class InitListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => array('onInit', 500),
-            'bootstrap.getconfig' => array(
-                array('initialHandlerScan', 100),
-                array('getConfigFile')
-            ),
-            'setup.errorreporting' => array('defaultErrorReporting'),
-            CoreEvents::PREINIT => array('systemCheck'),
-            CoreEvents::INIT => array(
-                array('setupRequest'),
-                array('sessionLogging'),
-                array('systemPlugins'),
-                array('setupDebugToolbar'),
-                array('setupAutoloaderForGeneratedCategoryModels'),
-                array('initDB'),
-                array('setupCsfrProtection'),
-            ),
-            'log' => array('errorLog'),
-            'session.require' => array('requireSession'),
-            'log.sql' => array('logSqlQueries'),
-            'installer.module.uninstalled' => array('deleteGeneratedCategoryModelsOnModuleRemove'),
-            'pageutil.addvar_filter' => array('coreStylesheetOverride'),
-            'theme.init' => array('clickJackProtection'),
-            'module_dispatch.postexecute' => array(
-                array('addHooksLink'),
-                array('addServiceLink'),
-            ),
-            'frontcontroller.predispatch' => array(
-                array('sessionExpired', 3),
-                array('siteOff', 7),
-            ),
         );
     }
 
@@ -127,32 +98,36 @@ class InitListener implements EventSubscriberInterface
      *
      * @return boolean True initialisation successful false otherwise.
      */
-    public function onInit(GetResponseEvent $event)//, $stage = self::STAGE_ALL)
+    public function onInit(GetResponseEvent $event) //$stage = self::STAGE_ALL)
     {
+        if ($event->getRequestType() === HttpKernelInterface::SUB_REQUEST) {
+            return;
+        }
+
+        $this->dispatcher = $event->getDispatcher();
+
+        $this->stage = $stage = self::STAGE_ALL;
+
         $coreInitEvent = new GenericEvent($this);
+        $coreInitEvent['request'] = $event->getRequest();
 
         // store the load stages in a global so other API's can check whats loaded
-        $this->stage = $this->stage | $stage;
 
-        if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
-            \ModUtil::flushCache();
-            \System::flushCache();
-            $this->dispatcher->dispatch(CoreEvents::PREINIT, new GenericEvent($this));
-        }
+        $this->dispatcher->dispatch(CoreEvents::PREINIT, new GenericEvent($this));
 
-        // Initialise and load configuration
-        if ($stage & self::STAGE_CONFIG) {
-            // error reporting
-            if (!\System::isInstalling()) {
-                // this is here because it depends on the config.php loading.
-                $event = new GenericEvent(null, array('stage' => $stage));
-                $this->dispatcher->dispatch(CoreEvents::ERRORREPORTING, $event);
-            }
-
-            // initialise custom event listeners from config.php settings
-            $coreInitEvent->setArg('stage', self::STAGE_CONFIG);
-            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
-        }
+//        // Initialise and load configuration
+//        if ($stage & self::STAGE_CONFIG) {
+//            // error reporting
+//            if (!\System::isInstalling()) {
+//                // this is here because it depends on the config.php loading.
+//                $event = new GenericEvent(null, array('stage' => $stage));
+//                $this->dispatcher->dispatch(CoreEvents::ERRORREPORTING, $event);
+//            }
+//
+//            // initialise custom event listeners from config.php settings
+//            $coreInitEvent->setArg('stage', self::STAGE_CONFIG);
+//            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
+//        }
 
         // Check that Zikula is installed before continuing
         if (\System::getVar('installed') == 0 && !\System::isInstalling()) {
@@ -272,5 +247,7 @@ class InitListener implements EventSubscriberInterface
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
             $this->dispatcher->dispatch(CoreEvents::POSTINIT, new GenericEvent($this, array('stages' => $stage)));
         }
+
+        $this->dispatcher->dispatch('frontcontroller.predispatch', new GenericEvent());
     }
 }

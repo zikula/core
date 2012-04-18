@@ -27,14 +27,10 @@ $kernel->boot();
 // @todo temporary hack
 $GLOBALS['ZConfig'] = $kernel->getContainer()->getParameter('_zconfig');
 
-$core = $kernel->getContainer()->get('zikula');//new Zikula\Core\Core($kernel->getContainer());
+$core = $kernel->getContainer()->get('zikula');
 $core->boot();
-$core->init();
 
-$core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
-
-$request = $kernel->getContainer()->get('request');
-
+$request = Request::createFromGlobals();
 $response = $kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
 $response->send();
 $kernel->terminate($request, $response);
