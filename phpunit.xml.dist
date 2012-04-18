@@ -13,8 +13,6 @@
 >
     <testsuites>
         <testsuite name="Zikula Test Suite">
-            <directory>./tests/lib/Tests/</directory>
-            <directory>./tests/lib/Zikula/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
