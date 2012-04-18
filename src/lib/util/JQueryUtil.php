@@ -25,11 +25,7 @@ class JQueryUtil
     public static function loadTheme($name)
     {
         if (is_dir("javascript/jquery-ui/themes/$name")) {
-            if (System::isDevelopmentMode()) {
-                PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$name/jquery-ui.css");
-            } else {
-                PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$name/minified/jquery-ui.min.css");
-            }
+            PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$name/jquery-ui.css");
         }
     }
 }
