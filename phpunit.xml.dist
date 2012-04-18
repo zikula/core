@@ -9,10 +9,11 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="tests/bootstrap.php"
+         bootstrap="app/autoload.php"
 >
     <testsuites>
         <testsuite name="Zikula Test Suite">
+            <directory>./src/Zikula/Component/*/Tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
