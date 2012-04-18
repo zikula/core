@@ -190,6 +190,7 @@ class ZLoader
                 'HookUtil' => 'util',
                 'HtmlUtil' => 'util',
                 'JCSSUtil' => 'util',
+                'JQueryUtil' => 'util',
                 'LogUtil' => 'util',
                 'ModUtil' => 'util',
                 'ObjectUtil' => 'util',
