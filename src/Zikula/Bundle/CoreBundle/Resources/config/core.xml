@@ -26,9 +26,15 @@
         <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
         <parameter key="token.max_life">3600</parameter>
         <parameter key="signing.key">to_be_injected_later</parameter>
+
+        <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
     </parameters>
 
     <services>
+        <service id="zikula" class="%zikula_core.class%">
+            <argument type="service" id="service_container" />
+        </service>
+
         <service id="session" class="%session.class%">
             <argument type="service" id="session.storage" />
         </service>
@@ -77,9 +83,9 @@
             <argument type="service" id="service_container" />
         </service>
 
-        <service id="zikula.doctrine_listener" class="%zikula.doctrine_listener.class%">
-            <tag name="zikula.event_subscriber" />
-        </service>
+        <!--<service id="zikula.doctrine_listener" class="%zikula.doctrine_listener.class%">-->
+            <!--<tag name="zikula.event_subscriber" />-->
+        <!--</service>-->
 
         <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
             <tag name="zikula.event_subscriber" />

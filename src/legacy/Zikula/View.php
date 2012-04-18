@@ -176,11 +176,11 @@ class Zikula_View extends Smarty implements TranslatableInterface
     public function __construct(ContainerBuilder $container, $moduleName = '', $caching = null)
     {
         $this->container = $container;
-        $this->dispatcher = $this->container->get('zikula.eventmanager');
+        $this->dispatcher = $this->container->get('event_dispatcher');
         $this->request = $this->container->get('request');
 
         // set the error reporting level
-        $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
+        $this->error_reporting = isset($container['error_reporting']) ? $container['error_reporting'] : E_ALL;
         $this->allow_php_tag = true;
 
         // get variables from input

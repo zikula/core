@@ -127,7 +127,7 @@ abstract class AbstractErrorHandler
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->dispatcher = $this->container->get('zikula.eventmanager');
+        $this->dispatcher = $this->container->get('event_dispatcher');
         $this->event = new GenericEvent($this);
     }
 

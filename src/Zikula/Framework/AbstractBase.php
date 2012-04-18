@@ -114,7 +114,7 @@ abstract class AbstractBase implements TranslatableInterface
     public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
-        $this->dispatcher = $this->container->get('zikula.eventmanager');
+        $this->dispatcher = $this->container->get('event_dispatcher');
 
         $this->request = $this->container->get('request');
         $this->session = $this->request->getSession();

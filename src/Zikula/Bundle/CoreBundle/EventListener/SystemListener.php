@@ -15,6 +15,7 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Core;
@@ -52,7 +53,6 @@ class SystemListener implements EventSubscriberInterface
         return array(
             'bootstrap.getconfig' => array(
                 array('initialHandlerScan', 100),
-                array('getConfigFile')
                 ),
             'setup.errorreporting' => array('defaultErrorReporting'),
             CoreEvents::PREINIT => array('systemCheck'),
@@ -443,7 +443,7 @@ class SystemListener implements EventSubscriberInterface
 
             // create definitions
             $toolbar = new Definition('Zikula\Framework\DebugToolbar\DebugToolbar',
-                    array(new Reference('zikula.eventmanager')));
+                    array(new Reference('event_dispatcher')));
 
             $toolbar->addMethodCall('addPanels', array(
                 new Reference('debug.toolbar.panel.version'),
@@ -641,34 +641,6 @@ class SystemListener implements EventSubscriberInterface
                 'class' => 'z-icon-es-gears',
                 'links' => $sublinks);
         }
-    }
-
-    /**
-     * Listens for 'bootstrap.getconfig'
-     *
-     * @param GenericEvent $event Event.
-     *
-     * @return void
-     */
-    public function getConfigFile(GenericEvent $event)
-    {
-        if (is_readable(\ZIKULA_CONFIG_PATH.'/config.php')) {
-            include \ZIKULA_CONFIG_PATH.'/config.php';
-        }
-
-        if (is_readable(\ZIKULA_CONFIG_PATH.'/personal_config.php')) {
-            include \ZIKULA_CONFIG_PATH.'/personal_config.php';
-        }
-
-        if (is_readable(\ZIKULA_CONFIG_PATH.'/multisites_config.php')) {
-            include \ZIKULA_CONFIG_PATH.'/multisites_config.php';
-        }
-
-        foreach ($GLOBALS['ZConfig'] as $config) {
-            $event->getSubject()->getContainer()->loadArguments($config);
-        }
-
-        $event->stopPropagation();
     }
 
     /**

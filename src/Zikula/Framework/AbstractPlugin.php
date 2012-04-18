@@ -148,7 +148,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
     public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
-        $this->dispatcher = $this->container->get('zikula.eventmanager');
+        $this->dispatcher = $this->container->get('event_dispatcher');
         $this->_setup();
 
         $meta = $this->getMeta();
