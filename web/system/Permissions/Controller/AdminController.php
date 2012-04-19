@@ -609,7 +609,7 @@ class AdminController extends \Zikula_AbstractController
         // template i.e. we don't want this output wrapped in the theme.
         $this->view->display('permissions_admin_viewinstanceinfo.tpl');
 
-        return true;
+        return new PlainResponse();
     }
 
     /**

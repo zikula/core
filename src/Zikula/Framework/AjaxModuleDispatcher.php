@@ -35,14 +35,6 @@ class AjaxModuleDispatcher
         $type = $request->attributes->get('_controller');
         $func = $request->attributes->get('_action');
 
-        // Check for site closed
-//        if (\System::getVar('siteoff') && !\SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
-//            if (\SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()) {
-//                \UserUtil::logout();
-//            }
-//            $response = new UnavailableResponse(__('The site is currently off-line.'));
-//        }
-
         if (empty($func)) {
             $response = new NotFoundResponse(__f("Missing parameter '%s'", 'func'));
         }
@@ -61,12 +53,6 @@ class AjaxModuleDispatcher
             $response = new NotFoundResponse(__f("Error! The '%s' module is not available.", \DataUtil::formatForDisplay($module)));
         }
 
-        // Handle database transactions
-        if (\System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            $dbConn = \Doctrine_Manager::getInstance()->getCurrentConnection();
-            $dbConn->beginTransaction();
-        }
-
         // Dispatch controller.
         try {
             $response = \ModUtil::func($modinfo['name'], $type, $func);
@@ -80,15 +66,6 @@ class AjaxModuleDispatcher
             $response = new FatalResponse($e->getMessage());
         } catch (\Exception $e) {
             $response = new FatalResponse($e->getMessage());
-        }
-
-        // Handle database transactions
-        if (\System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-            if (isset($e)) {
-                $dbConn->rollback();
-            } else {
-                $dbConn->commit();
-            }
         }
 
         // Issue response.

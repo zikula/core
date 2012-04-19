@@ -18,6 +18,8 @@ class CoreBundle extends Bundle
 
 //        $container->addScope(new Scope('request'));
         $container->addCompilerPass(new RegisterCoreListenersPass(), PassConfig::TYPE_AFTER_REMOVING);
-        $container->addCompilerPass(new ControllerResolverCompilerPass(), PassConfig::TYPE_AFTER_REMOVING);
+        if (isset($_GET['type']) && $_GET['type'] == 'ajax') {
+            $container->addCompilerPass(new ControllerResolverCompilerPass(), PassConfig::TYPE_AFTER_REMOVING);
+        }
     }
 }

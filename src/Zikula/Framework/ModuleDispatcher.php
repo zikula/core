@@ -69,17 +69,19 @@ class ModuleDispatcher
         try {
             if (empty($module)) {
                 // we have a static homepage
-                $return = new Response();
+                return new Response();
             } elseif ($modinfo) {
                 // call the requested/homepage module
                 $return = \ModUtil::func($modinfo['name'], $type, $func, $arguments);
             }
 
             if (!$return) {
-                // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
+                // hack for BC since modules currently use ModUtil::func without expecting exceptions
+                // if a controller is not found the API will return false.
                 throw new \Zikula\Framework\Exception\NotFoundException(__('Page not found.'));
             }
-            $httpCode = 200;
+
+            return $return;
         } catch (\Exception $e) {
             if ($e instanceof \Zikula\Framework\Exception\NotFoundException) {
                 $httpCode = 404;
@@ -91,14 +93,6 @@ class ModuleDispatcher
                 $debug = array_merge($e->getDebug(), $e->getTrace());
             } elseif ($e instanceof \Zikula\Framework\Exception\RedirectException) {
                 return new RedirectResponse($e->getUrl(), array(), $e->getType());
-            } elseif ($e instanceof \PDOException) {
-                $httpCode = 500;
-                $message = $e->getMessage();
-                if (\System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-                    $return = __('Error! The transaction failed. Performing rollback.') . $return;
-                } else {
-                    $return = __('Error! The transaction failed.') . $return;
-                }
             } elseif ($e instanceof \Exception) {
                 // general catch all
                 $httpCode = 500;
@@ -107,17 +101,7 @@ class ModuleDispatcher
             }
         }
 
-        if ($return instanceof Response) {
-            // catches any Response and RedirectResponse
-            return $return;
-        }
-
         switch (true) {
-            case ($return === true):
-                $return = new PlainResponse();
-                // prevent rendering of the theme (BC)
-                break;
-
             case ($httpCode == 403):
                 if (!\UserUtil::isLoggedIn()) {
                     $url = \ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(\System::getCurrentUri())));
@@ -129,19 +113,13 @@ class ModuleDispatcher
                 if (!$session->getFlashBag()->has(\Zikula_Session::MESSAGE_ERROR)) {
                     \LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
                 }
-                $return = \ModUtil::func('Errors', 'user', 'index', array('message' => $message, 'exception' => $e));
+                return \ModUtil::func('Errors', 'user', 'index', array('message' => $message, 'exception' => $e));
                 break;
 
-            case ($httpCode == 200):
-                return new Response($return, $httpCode);
-                break;
-
-            default:
+             default:
                 \LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), $httpCode, null);
-                $return = \ModUtil::func('Errors', 'user', 'index', array('message' => $message, 'exception' => $e));
+                return \ModUtil::func('Errors', 'user', 'index', array('message' => $message, 'exception' => $e));
                 break;
         }
-
-        return $return;
     }
 }
