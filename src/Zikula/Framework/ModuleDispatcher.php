@@ -90,9 +90,7 @@ class ModuleDispatcher
                 $message = $e->getMessage();
                 $debug = array_merge($e->getDebug(), $e->getTrace());
             } elseif ($e instanceof \Zikula\Framework\Exception\RedirectException) {
-                $response = new RedirectResponse($e->getUrl(), array(), $e->getType());
-                $response->send();
-                \System::shutDown();
+                return new RedirectResponse($e->getUrl(), array(), $e->getType());
             } elseif ($e instanceof \PDOException) {
                 $httpCode = 500;
                 $message = $e->getMessage();
@@ -123,8 +121,7 @@ class ModuleDispatcher
             case ($httpCode == 403):
                 if (!\UserUtil::isLoggedIn()) {
                     $url = \ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(\System::getCurrentUri())));
-                    \LogUtil::registerError(\LogUtil::getErrorMsgPermission(), $httpCode, $url);
-                    \System::shutDown();
+                    return \LogUtil::registerError(\LogUtil::getErrorMsgPermission(), $httpCode, $url);
                 }
             // there is no break here deliberately.
             case ($return === false):
