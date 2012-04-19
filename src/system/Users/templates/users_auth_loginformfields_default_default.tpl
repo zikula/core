@@ -33,7 +33,7 @@
 </div>
 
 
-<script>
+<script type="text/javascript">
     function capLock(e){
 	kc = e.keyCode?e.keyCode:e.which;
 	sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
