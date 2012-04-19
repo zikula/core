@@ -15,7 +15,7 @@
 
 namespace Users\Controller;
 
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Event\GenericEvent, Zikula\Framework\Response\PlainResponse;
 use Zikula_View, Zikula_Exception_Forbidden, \Zikula\Framework\Exception\FatalException, Zikula_Exception_NotFound;
 use ModUtil, UserUtil, DataUtil, System, LogUtil, SecurityUtil, SessionUtil, Zikula_Session, ThemeUtil;
 use Users\Constants as UsersConstant;
@@ -1317,10 +1317,11 @@ class UserController extends \Zikula_AbstractController
             if ((!isset($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod))
                     && ($authenticationMethodList->countEnabledForAuthentication() <= 1)
                     ) {
+                /* @var AuthenticationMethodHelper $authenticationMethod */
                 $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();
                 $selectedAuthenticationMethod = array(
-                    'modname'   => $authenticationMethod->modname,
-                    'method'    => $authenticationMethod->method,
+                    'modname'   => $authenticationMethod->getModule(),
+                    'method'    => $authenticationMethod->getMethod(),
                 );
             }
 
@@ -1329,8 +1330,8 @@ class UserController extends \Zikula_AbstractController
             foreach ($authenticationMethodList as $authenticationMethod) {
                 if ($authenticationMethod->isEnabledForAuthentication()) {
                     $authenticationMethodDisplayOrder[] = array(
-                        'modname'   => $authenticationMethod->modname,
-                        'method'    => $authenticationMethod->method,
+                        'modname'   => $authenticationMethod->getModule(),
+                        'method'    => $authenticationMethod->getMethod(),
                     );
                 }
             }
@@ -1364,14 +1365,14 @@ class UserController extends \Zikula_AbstractController
             }
 
             // A successful login.
-            if ($this->getVar(UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT, 1) == 1) {
+//            if ($this->getVar(UsersConstant::MODVAR_LOGIN_WCAG_COMPLIANT, 1) == 1) {
                 // WCAG compliant login
                 return $this->redirect($returnPage);
-            } else {
-                // meta refresh
-                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPage);
-                return true;
-            }
+//            } else {
+//                // meta refresh
+//                $this->printRedirectPage($this->__('You are being logged-in. Please wait...'), $returnPage);
+//                return true;
+            //}
         }
     }
 
@@ -1389,27 +1390,28 @@ class UserController extends \Zikula_AbstractController
 
         // start logout event
         $uid = UserUtil::getVar('uid');
+        $userObj = UserUtil::getVars($uid);
         if (UserUtil::logout()) {
-            $event = new GenericEvent($userObj, array(
-                'authentication_method' => $authenticationMethod,
-                'uid'                   => $userObj['uid'],
-            ));
+            $event = new GenericEvent($userObj);//, array(
+//                'authentication_method' => $authenticationMethod,
+//                'uid'                   => $uid,
+//            ));
             $this->dispatcher->dispatch('module.users.ui.logout.succeeded', $event);
 
-            if ($login_redirect == 1) {
+//            if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
                 // we might no have the permission for the recent site any longer
                 return $this->redirect(System::getHomepageUrl());
-            } else {
-                // meta refresh
-                $this->printRedirectPage($this->__('Done! You have been logged out.'), System::getHomepageUrl());
-            }
+//            } else {
+//                // meta refresh
+//                $this->printRedirectPage($this->__('Done! You have been logged out.'), System::getHomepageUrl());
+//            }
         } else {
             $this->registerError($this->__('Error! You have not been logged out.'))
                     ->redirect(System::getHomepageUrl());
         }
 
-        return true;
+        return new PlainResponse();
     }
 
     /**
@@ -1697,7 +1699,7 @@ class UserController extends \Zikula_AbstractController
                 ->assign('redirectmessage', $this->__('If you are not automatically re-directed then please click here.'))
                 ->display('users_user_redirectpage.tpl');
 
-        return true;
+        return new PlainResponse();
     }
 
     /**

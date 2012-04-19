@@ -16,7 +16,7 @@ namespace Blocks\Controller;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
-use Zikula\Framework\Exception\FatalException
+use Zikula\Framework\Exception\FatalException;
 use Blocks\Entity\BlockPlacement;
 
 /**
