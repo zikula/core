@@ -20,8 +20,8 @@ use Zikula_View, SecurityUtil, ModUtil, DBUtil, DataUtil;
 use Zikula_Exception_Forbidden;
 use Zikula_ValidationHook;
 use Zikula_Hook_ValidationProviders;
-use Zikula_Response_Ajax;
-use \Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Response\Ajax\AjaxResponse;
+use Zikula\Framework\Exception\FatalException;
 
 /**
  * Access to actions initiated through AJAX for the Users module.
@@ -76,7 +76,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * string  antispamanswer The user-entered answer to the registration question.
      * string  checkmode      Either 'new' or 'modify', depending on whether the record is a new user or an existing user or registration.
      *
-     * @return array A Zikula_Response_Ajax containing error messages and message counts.
+     * @return array A AjaxResponse containing error messages and message counts.
      *
      * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
      */
@@ -168,7 +168,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $returnValue['errorMessagesCount']++;
         }
 
-        return new Zikula_Response_Ajax($returnValue);
+        return new AjaxResponse($returnValue);
     }
 
     /**
@@ -179,9 +179,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * string form_type             An indicator of the type of form the fields will appear on.
      * array  authentication_method An array containing the authentication module name ('modname') and authentication method name ('method').
      *
-     * @return Zikula_Response_Ajax An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
+     * @return AjaxResponse An AJAX response containing the form field contents, and the module name and method name of the selected authentication method.
      *
-     * @throws \Zikula\Framework\Exception\FatalException Thrown if the authentication module name or method name are not valid.
+     * @throws FatalException Thrown if the authentication module name or method name are not valid.
      */
     public function getLoginFormFieldsAction()
     {
@@ -204,7 +204,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'method'    => $method,
         ));
 
-        return new Zikula_Response_Ajax(array(
+        return new AjaxResponse(array(
             'content'   => $loginFormFields,
             'modname'   => $modname,
             'method'    => $method,

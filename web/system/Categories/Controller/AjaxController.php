@@ -17,7 +17,8 @@ namespace Categories\Controller;
 use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
 use StringUtil;
 use Categories\DBObject\Category;
-use Zikula_Response_Ajax, Zikula_Response_Ajax_BadData;
+use Zikula\Framework\Response\Ajax\AjaxResponse
+use Zikula\Framework\Response\Ajax\BadDataResponse;
 
 /**
  * Categories_Controller_Ajax.
@@ -48,7 +49,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $result = array(
             'response' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function editAction($args = array())
@@ -74,7 +75,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             // indicates that we're editing
             if ($mode == 'edit') {
                 if (!$cid) {
-                    return new Zikula_Response_Ajax_BadData($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
+                    return new BadDataResponse($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
                 }
                 $category = new Category();
                 $editCat = $category->select($cid);
@@ -104,9 +105,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'validationErrors' => $validationErrors
         );
         if ($validationErrors) {
-            return new Zikula_Response_Ajax_BadData($validationErrors, $result);
+            return new BadDataResponse($validationErrors, $result);
         }
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function copyAction()
@@ -149,7 +150,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function deleteAction()
@@ -166,7 +167,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function deleteandmovesubsAction()
@@ -208,7 +209,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function deletedialogAction()
@@ -227,7 +228,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $result = array(
             'result' => $this->view->fetch('categories_adminajax_delete.tpl'),
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function activateAction()
@@ -245,7 +246,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function deactivateAction()
@@ -263,7 +264,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
     public function saveAction()
@@ -342,7 +343,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 
 }

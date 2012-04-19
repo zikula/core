@@ -610,7 +610,7 @@ On the PHP side:
 - There has been developed a whole set of classes that support responses sent to
   ajax request. Also error handling was changed.
 - Module controller in case of success should always return as response one
-  of the two types of objects: Zikula_Response_Ajax_Base or Zikula_Response_Ajax_Plain.
+  of the two types of objects: Zikula\Framework\Response\Ajax\AjaxResponse_Base or Zikula\Framework\Response\Ajax\PlainResponse.
 - Zikula_Response_Ajax_Base has 3 arguments:
       - $data - takes as an argument any value - a single variable or array,
         which then can be read on the JS side using the getData method
@@ -622,7 +622,7 @@ On the PHP side:
   this type of response is assumed to generate a new authid token.
 - If it is necessary to send response that contains only plain text or html
   (for example, Ajax.Autocompleter from Scriptaculous requires such response)
-  the module controller must return as response Zikula_Response_Ajax_Plain object.
+  the module controller must return as response Zikula\Framework\Response\Ajax\PlainResponse object.
   This class takes plain text as its $data argument. For this type of responses
   new authid token is not generated.
 - Possible errors (not related to data validation) in the module controller
@@ -632,7 +632,7 @@ On the PHP side:
   directly to exception.
 - If the controller module must declare a failure because of data validation and/or
   also send some data to JS then the module should not throw an exception but instead
-  return object of type Zikula_Response_Ajax_BadData. This class allows to pass
+  return object of type Zikula\Framework\Response\Ajax\BadDataResponse. This class allows to pass
   arguments exactly the same as usual ajax responses.
 
 Example (taken from the Permissions module):
@@ -670,13 +670,13 @@ Process the request in the module controller:
     }
 
     // when controller needs to return failure due to data validation:
-    return new Zikula_Response_Ajax_BadData($this->__('Invalid input')); // Second param $data is optional
+    return new BadDataResponse($this->__('Invalid input')); // Second param $data is optional
 
     // throw an exception from some other reason
     throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
 
     // return response
-    return new Zikula_Response_Ajax(array('pid' => $pid));
+    return new AjaxResponse(array('pid' => $pid));
 
 Read the response in JS
     // check if request was successful
@@ -698,10 +698,10 @@ If you need to communicate with some javascript that is not part of the Zikula
 JS framework, we provide two responses of use
 
     // return a plain string
-    return new Zikula_Response_Ajax_Plain($string);
+    return new Zikula\Framework\Response\Ajax\PlainResponse($string);
 
     // return some data that must be serialized (will be serialized by the class).
-    return new Zikula_Response_Ajax_Json($mixed);
+    return new Zikula\Framework\Response\Ajax\JsonResponse($mixed);
 
 
 PAGEADDVAR CHANGES

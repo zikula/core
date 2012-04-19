@@ -14,8 +14,8 @@
 
 namespace Extensions\Controller;
 
-use \Zikula\Framework\Exception\FatalException;
-use Zikula_Response_Ajax;
+use Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Response\Ajax\AjaxResponse;
 use HookUtil, ModUtil, SecurityUtil;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
@@ -35,32 +35,32 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // get subscriberarea from POST
         $subscriberArea = $this->request->request->get('subscriberarea','');
         if (empty($subscriberArea)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__('No subscriber area passed.'));
+            throw new FatalException($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
         $subscriber = HookUtil::getOwnerByArea($subscriberArea);
         if (empty($subscriber)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
+            throw new FatalException($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
         if (!ModUtil::available($subscriber)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__f('Subscriber module "%s" is not available.', $subscriber));
+            throw new FatalException($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
         // get providerarea from POST
         $providerArea = $this->request->request->get('providerarea','');
         if (empty($providerArea)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__('No provider area passed.'));
+            throw new FatalException($this->__('No provider area passed.'));
         }
 
         // get provider module based on area and do some checks
         $provider = HookUtil::getOwnerByArea($providerArea);
         if (empty($provider)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__f('Module "%s" is not a valid provider.', $provider));
+            throw new FatalException($this->__f('Module "%s" is not a valid provider.', $provider));
         }
         if (!ModUtil::available($provider)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__f('Provider module "%s" is not available.', $provider));
+            throw new FatalException($this->__f('Provider module "%s" is not available.', $provider));
         }
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN));
 
@@ -86,7 +86,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'isSubscriberSelfCapable' => (HookUtil::isSubscriberSelfCapable($subscriber) ? true : false)
         );
 
-        return new Zikula_Response_Ajax($response);
+        return new AjaxResponse($response);
     }
 
     /**
@@ -95,7 +95,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @param subscriber string     name of the subscriber
      * @param providerorder array   array of sorted provider ids
-     * @return Zikula_Response_Ajax response
+     * @return AjaxResponse response
      */
     public function changeproviderareaorderAction()
     {
@@ -104,23 +104,23 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // get subscriberarea from POST
         $subscriberarea = $this->request->request->get('subscriberarea','');
         if (empty($subscriberarea)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__('No subscriber area passed.'));
+            throw new FatalException($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
         $subscriber = HookUtil::getOwnerByArea($subscriberarea);
         if (empty($subscriber)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
+            throw new FatalException($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
         if (!ModUtil::available($subscriber)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__f('Subscriber module "%s" is not available.', $subscriber));
+            throw new FatalException($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
 
         // get providers' areas from POST
         $providerarea = $this->request->request->get('providerarea','');
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__('Providers\' areas order is not an array.'));
+            throw new FatalException($this->__('Providers\' areas order is not an array.'));
         }
 
         // set sorting
@@ -128,6 +128,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $ol_id = $this->request->request->get('ol_id','');
 
-        return new Zikula_Response_Ajax(array('result' => true, 'ol_id' => $ol_id));
+        return new AjaxResponse(array('result' => true, 'ol_id' => $ol_id));
     }
 }

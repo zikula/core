@@ -16,6 +16,6 @@
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_BadData extends Zikula\Framework\Response\Ajax\AbstractErrorResponse
+class Zikula_Response_Ajax_BadData extends Zikula\Framework\Response\Ajax\BadDataResponse
 {
 }

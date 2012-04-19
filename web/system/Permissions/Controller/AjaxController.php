@@ -15,7 +15,9 @@
 namespace Permissions\Controller;
 
 use SecurityUtil, ModUtil, DataUtil, UserUtil;
-use Zikula_Response_Ajax, \Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Response\Ajax\AjaxResponse;
+use Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Response\Ajax\FatalResponse;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -83,7 +85,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 $permission['groupname'] = $group['name'];
         }
 
-        return new Zikula_Response_Ajax($permission);
+        return new AjaxResponse($permission);
     }
 
     /**
@@ -104,7 +106,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $this->entityManager->flush();
 
-        return new Zikula_Response_Ajax(array('result' => true));
+        return new AjaxResponse(array('result' => true));
     }
 
     /**
@@ -129,7 +131,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $newperm = ModUtil::apiFunc('Permissions', 'admin', 'create', $dummyperm);
         if ($newperm == false) {
-            return new \Zikula_Response_Ajax_Fatal($this->__('Error! Could not create new permission rule.'));
+            return new FatalResponse($this->__('Error! Could not create new permission rule.'));
         }
 
         $accesslevels = SecurityUtil::accesslevelnames();
@@ -139,7 +141,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $newperm['levelname'] = $accesslevels[$newperm['level']];
         $newperm['groupname'] = $this->__('Unregistered');
 
-        return new Zikula_Response_Ajax($newperm);
+        return new AjaxResponse($newperm);
     }
 
     /**
@@ -166,10 +168,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 $this->setVar('lockadmin', false);
             }
 
-            return new Zikula_Response_Ajax(array('pid' => $pid));
+            return new AjaxResponse(array('pid' => $pid));
         }
 
-        throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+        throw new FatalException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
     }
 
     /**
@@ -200,6 +202,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             }
         }
 
-        return new Zikula_Response_Ajax(array('testresult' => $result));
+        return new AjaxResponse(array('testresult' => $result));
     }
 }
