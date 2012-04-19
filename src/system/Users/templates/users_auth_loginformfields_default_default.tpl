@@ -32,9 +32,22 @@
     <input id="users_login_login_id" type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" />
 </div>
 
+
+<script>
+    function capLock(e){
+	kc = e.keyCode?e.keyCode:e.which;
+	sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
+	if((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)) && !Boolean(window.chrome) && !Boolean(window.webkit))
+		document.getElementById('capsLok').style.visibility = 'visible';
+	else
+		document.getElementById('capsLok').style.visibility = 'hidden';
+	}
+</script>
+
 <div class="z-formrow">
     <label for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
-    <input id="users_login_pass" type="password" name="authentication_info[pass]" maxlength="25" />
+    <input id="users_login_pass" type="password" name="authentication_info[pass]" maxlength="25" onkeypress="capLock(event)" />
+    <em class="z-formnote z-sub" id="capsLok" style="visibility:hidden">{gt text='Caps Lock is on!'}</em>
 </div>
 
 {if isset($change_password) && $change_password}
