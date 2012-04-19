@@ -15,7 +15,7 @@
 namespace PageLock\Controller;
 
 use UserUtil, ModUtil, LogUtil;
-use Zikula_Response_Ajax;
+use Zikula\Framework\Response\Ajax\AjaxResponse;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -43,7 +43,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $lockInfo['message'] = null;
         }
 
-        return new Zikula_Response_Ajax($lockInfo);
+        return new AjaxResponse($lockInfo);
     }
 
     /**
@@ -69,7 +69,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $lockInfo['message'] = null;
         }
 
-        return new Zikula_Response_Ajax($lockInfo);
+        return new AjaxResponse($lockInfo);
     }
 
 }

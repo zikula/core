@@ -14,7 +14,9 @@
 
 namespace Groups\Controller;
 
-use SecurityUtil, LogUtil, Zikula_Response_Ajax, ModUtil, \Zikula\Framework\Exception\FatalException;
+use SecurityUtil, LogUtil, ModUtil;
+use Zikula\Framework\Response\Ajax\AjaxResponse;
+use Zikula\Framework\Exception\FatalException;
 use Groups\Helper\CommonHelper;
 
 /**
@@ -32,7 +34,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param name the group name.
      * @param description the group description.
      *
-     * @return Zikula_Response_Ajax
+     * @return AjaxResponse
      */
     public function updategroupAction()
     {
@@ -48,7 +50,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
         if (empty($name)) {
-            return new Zikula_Response_Ajax(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
+            return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
         }
 
         if (preg_match("/[\n\r\t\x0B]/", $name)) {
@@ -72,7 +74,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $msgs = LogUtil::getStatusMessagesText();
             if (!empty($msgs)) {
                 // return with msg, but not via \Zikula\Framework\Exception\FatalException
-                return new Zikula_Response_Ajax(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
+                return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $msgs));
             }
         }
 
@@ -90,13 +92,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group['statelbl'] = $statelabel[$group['state']];
         $group['gtypelbl'] = $typelabel[$group['gtype']];
 
-        return new Zikula_Response_Ajax($group);
+        return new AjaxResponse($group);
     }
 
     /**
      * Create a blank group and return it.
      *
-     * @return Zikula_Response_Ajax
+     * @return AjaxResponse
      */
     public function creategroupAction()
     {
@@ -120,7 +122,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group_id = ModUtil::apiFunc('Groups', 'admin', 'create', $obj);
 
         if ($group_id == false) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Could not create the new group.'));
+            throw new FatalException($this->__('Error! Could not create the new group.'));
         }
 
         // update group's name
@@ -135,7 +137,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $group['gtypelbl'] = $typelabel[$group['gtype']];
         $group['membersurl'] = ModUtil::url('Groups', 'admin', 'groupmembership', array('gid' => $group_id));
 
-        return new Zikula_Response_Ajax($group);
+        return new AjaxResponse($group);
     }
 
     /**
@@ -143,7 +145,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @param gid the group id.
      *
-     * @return Zikula_Response_Ajax
+     * @return AjaxResponse
      */
     public function deletegroupAction()
     {
@@ -162,10 +164,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         if (ModUtil::apiFunc('Groups', 'admin', 'delete', array('gid' => $gid)) == true) {
-            return new Zikula_Response_Ajax(array('gid' => $gid));
+            return new AjaxResponse(array('gid' => $gid));
         }
 
-        throw new \Zikula\Framework\Exception\FatalException($this->__f('Error! Could not delete the \'%s\' group.', $gid));
+        throw new FatalException($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
 
     public function removeuserAction()
@@ -178,7 +180,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
         if (!ModUtil::apiFunc('Groups', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
-            throw new \Zikula\Framework\Exception\FatalException($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
+            throw new FatalException($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));
         }
 
         $result = array(
@@ -186,6 +188,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'uid' => $uid
         );
 
-        return new Zikula_Response_Ajax($result);
+        return new AjaxResponse($result);
     }
 }

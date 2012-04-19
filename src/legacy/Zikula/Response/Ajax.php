@@ -16,6 +16,6 @@
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax extends Zikula\Framework\Response\Ajax\AbstractMediatorBaseResponse
+class Zikula_Response_Ajax extends Zikula\Framework\Response\Ajax\AjaxResponse
 {
 }
