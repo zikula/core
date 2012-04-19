@@ -243,12 +243,12 @@ class AdminApi extends \Zikula_AbstractApi
 
         // delete block's placements and block itself
         $entity = $this->name . '\Entity\BlockPlacement';
-        $dql = "DELETE FROM $entity p WHERE p.bid = {$block[bid]}";
+        $dql = "DELETE FROM $entity p WHERE p.bid = {$block['bid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
         
         $entity = $this->name . '\Entity\Block';
-        $dql = "DELETE FROM $entity b WHERE b.bid = {$block[bid]}";
+        $dql = "DELETE FROM $entity b WHERE b.bid = {$block['bid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
