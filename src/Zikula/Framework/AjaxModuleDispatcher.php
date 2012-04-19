@@ -36,12 +36,12 @@ class AjaxModuleDispatcher
         $func = $request->attributes->get('_action');
 
         // Check for site closed
-        if (\System::getVar('siteoff') && !\SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
-            if (\SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()) {
-                \UserUtil::logout();
-            }
-            $response = new UnavailableResponse(__('The site is currently off-line.'));
-        }
+//        if (\System::getVar('siteoff') && !\SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
+//            if (\SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()) {
+//                \UserUtil::logout();
+//            }
+//            $response = new UnavailableResponse(__('The site is currently off-line.'));
+//        }
 
         if (empty($func)) {
             $response = new NotFoundResponse(__f("Missing parameter '%s'", 'func'));
