@@ -13,24 +13,25 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Framework\AjaxControllerResolver;
 
 include __DIR__.'/../app/bootstrap.php';
 
-$kernel = new AppKernel('prod', false);
-$kernel->loadClassCache();
+$kernel = new AppKernel('dev', true);
+//$kernel->loadClassCache();
 $kernel->boot();
 
-$core = new Zikula\Core\Core($kernel->getContainer());
+// @todo temporary hack
+$GLOBALS['ZConfig'] = $kernel->getContainer()->getParameter('_zconfig');
+
+$core = $kernel->getContainer()->get('zikula');
 $core->boot();
-$core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
+//$core->init(Zikula_Core::STAGE_ALL | Zikula_Core::STAGE_AJAX & ~Zikula_Core::STAGE_DECODEURLS);
 
-$request = $core->getContainer()->get('request');
-$resolver = new AjaxControllerResolver();
+//$resolver = new AjaxControllerResolver();
 
-$kernel = new HttpKernel($core->getDispatcher(), $resolver);
+$request = Request::createFromGlobals();
 $response = $kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
 $response->send();
 $kernel->terminate($request, $response);
