@@ -14,7 +14,7 @@
 
 namespace AtomTheme;
 
-use Zikula\ThemeBundle\AbstractTheme;
+use Zikula\Bundle\ThemeBundle\AbstractTheme;
 
 class AtomTheme extends AbstractTheme
 {

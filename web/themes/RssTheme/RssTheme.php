@@ -14,7 +14,7 @@
 
 namespace RssTheme;
 
-use Zikula\ThemeBundle\AbstractTheme;
+use Zikula\Bundle\ThemeBundle\AbstractTheme;
 
 class RssTheme extends AbstractTheme
 {
