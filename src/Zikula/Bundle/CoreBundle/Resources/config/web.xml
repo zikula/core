@@ -6,7 +6,6 @@
 
     <parameters>
         <parameter key="controller_resolver.class">Zikula\Framework\ControllerResolver</parameter>
-        <parameter key="controller_resolver_ajax.class">Zikula\Framework\AjaxControllerResolver</parameter>
 <!--        <parameter key="controller_name_converter.class">Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser</parameter>-->
 <!--        <parameter key="response_listener.class">Symfony\Component\HttpKernel\EventListener\ResponseListener</parameter>-->
 <!--        <parameter key="streamed_response_listener.class">Symfony\Component\HttpKernel\EventListener\StreamedResponseListener</parameter>-->
@@ -20,13 +19,6 @@
         </service> -->
 
         <service id="controller_resolver" class="%controller_resolver.class%">
-            <tag name="monolog.logger" channel="request" />
-            <!--<argument type="service" id="service_container" /> -->
-<!--            <argument type="service" id="controller_name_converter" />
-            <argument type="service" id="logger" on-invalid="ignore" />-->
-        </service>
-
-        <service id="controller_resolver_ajax" class="%controller_resolver_ajax.class%">
             <tag name="monolog.logger" channel="request" />
             <!--<argument type="service" id="service_container" /> -->
 <!--            <argument type="service" id="controller_name_converter" />

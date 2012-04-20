@@ -18,7 +18,7 @@ namespace Zikula\Framework\Response\Ajax;
 /**
  * Ajax class.
  */
-class BadDataResponse extends AbstractErrorResponse
+class BadDataResponse extends AbstractBaseResponse
 {
     /**
      * Response code.
