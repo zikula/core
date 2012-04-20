@@ -42,9 +42,9 @@ abstract class AbstractAjax extends AbstractController
      */
     public function checkAjaxToken($token=null)
     {
-        $headerToken = $this->request->headers->get('HTTP_X_ZIKULA_AJAX_TOKEN', null);
+        $headerToken = $this->request->headers->get('X_ZIKULA_AJAX_TOKEN', null);
 
-        if ($headerToken == session_id()) {
+        if ($headerToken == $this->request->getSession()->getId()) {
             return;
         }
 

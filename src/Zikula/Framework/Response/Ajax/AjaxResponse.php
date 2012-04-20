@@ -18,7 +18,7 @@ namespace Zikula\Framework\Response\Ajax;
 /**
  * Ajax class.
  */
-class AjaxResponse extends AbstractMediatorBaseResponse
+class AjaxResponse extends AbstractBaseResponse
 {
     /**
      * Constructor.
