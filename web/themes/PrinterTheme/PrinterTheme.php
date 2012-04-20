@@ -14,7 +14,7 @@
 
 namespace PrinterTheme;
 
-use Zikula\ThemeBundle\AbstractTheme;
+use Zikula\Bundle\ThemeBundle\AbstractTheme;
 
 class PrinterTheme extends AbstractTheme
 {

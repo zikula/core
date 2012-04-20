@@ -14,7 +14,7 @@
 
 namespace SeaBreezeTheme;
 
-use Zikula\ThemeBundle\AbstractTheme;
+use Zikula\Bundle\ThemeBundle\AbstractTheme;
 
 class SeaBreezeTheme extends AbstractTheme
 {
