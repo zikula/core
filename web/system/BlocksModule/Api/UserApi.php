@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Api;
+namespace BlocksModule\Api;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 
@@ -53,7 +53,7 @@ class UserApi extends \Zikula_AbstractApi
         
         // add select and from params 
         $qb->select('b')
-           ->from('Blocks\Entity\Block', 'b');
+           ->from('BlocksModule\Entity\Block', 'b');
         
         // add clause for filtering blockposition
         if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {

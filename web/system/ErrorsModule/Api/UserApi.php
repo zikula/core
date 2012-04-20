@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Errors\Api;
+namespace ErrorsModule\Api;
 
 use System;
 use Zikula\Core\Core;

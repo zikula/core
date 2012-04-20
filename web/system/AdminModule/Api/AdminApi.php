@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin\Api;
+namespace AdminModule\Api;
 
-use Admin\Entity\AdminCategory;
-use Admin\Entity\AdminModule;
+use AdminModule\Entity\AdminCategory;
+use AdminModule\Entity\AdminModule;
 
 class AdminApi extends \Zikula_AbstractApi
 {

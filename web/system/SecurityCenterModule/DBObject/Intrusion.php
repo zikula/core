@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter\DBObject;
+namespace SecurityCenterModule\DBObject;
 
 /**
  * Intrusion

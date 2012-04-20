@@ -12,11 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter\Controller;
+namespace SecurityCenterModule\Controller;
 
 use Zikula_View, LogUtil, SecurityUtil, ModUtil, System, CacheUtil;
 use DataUtil, DateUtil, UserUtil;
-use SecurityCenter\Util as SecurityCenterUtil;
+use SecurityCenterModule\Util as SecurityCenterUtil;
 use Zikula\Core\Core;
 
 /**

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin\Api;
+namespace AdminModule\Api;
 
 use ModUtil;
 

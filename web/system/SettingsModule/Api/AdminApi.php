@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Settings\Api;
+namespace SettingsModule\Api;
 
 use ModUtil, SecurityUtil, ZLanguage;
 

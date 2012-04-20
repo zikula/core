@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Controller;
+namespace ThemeModule\Controller;
 
 use Zikula_View, SecurityUtil, ModUtil, LogUtil, CacheUtil, DataUtil, System, ThemeUtil, ZLanguage;
 use FormUtil, BlockUtil, Zikula_View_Theme;

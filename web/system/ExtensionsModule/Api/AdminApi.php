@@ -12,13 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Extensions\Api;
+namespace ExtensionsModule\Api;
 
 use LogUtil, SecurityUtil, ModUtil, System, DataUtil, ZLoader, ZLanguage, HookUtil, EventUtil, PluginUtil;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Core;
 use Zikula\Core\Doctrine\Entity\Extension;
-use Extensions\Util;
+use ExtensionsModule\Util;
 
 /**
  * Administrative API functions for the Extensions module.

@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Block;
+namespace BlocksModule\Block;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil;
-use Blocks\MenutreeTree;
-use Blocks\MenutreeUtil;
+use BlocksModule\MenutreeTree;
+use BlocksModule\MenutreeUtil;
 
 class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {

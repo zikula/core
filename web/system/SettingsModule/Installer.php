@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Settings;
+namespace SettingsModule;
 
 use System, ModUtil, DBUtil, ZLanguage;
 use Zikula\Core\Core;

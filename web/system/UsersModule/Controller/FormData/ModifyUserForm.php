@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData;
+namespace UsersModule\Controller\FormData;
 
 use Zikula\Component\DependencyInjection\ContainerBuilder;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 
 /**
  * Contains and validates the data found on the Users module's modify user form.

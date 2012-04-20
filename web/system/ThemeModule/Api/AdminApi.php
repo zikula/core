@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Api;
+namespace ThemeModule\Api;
 
 use System, ModUtil, SecurityUtil, LogUtil, DataUtil, DBUtil, ThemeUtil, CacheUtil, FileUtil;
-use Theme\Util;
+use ThemeModule\Util;
 
 class AdminApi extends \Zikula_AbstractApi
 {
@@ -69,7 +69,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         unset($args['themeinfo']['i18n']);
 
-        $item = $this->entityManager->find('Theme\Entity\Theme', $args['themeinfo']['id']);
+        $item = $this->entityManager->find('ThemeModule\Entity\Theme', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
 
@@ -194,7 +194,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete theme
-        $dql = "DELETE FROM Theme\Entity\Theme t WHERE t.id = {$themeid}";
+        $dql = "DELETE FROM ThemeModule\Entity\Theme t WHERE t.id = {$themeid}";
         $query = $this->entityManager->createQuery($dql);
         $result = $query->getResult();
         if (!$result) {

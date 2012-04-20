@@ -12,11 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter;
+namespace SecurityCenterModule;
 
 use DBUtil, System, CacheUtil;
 use Zikula\Core\Core;
-use SecurityCenter\Util as SecurityCenterUtil;
+use SecurityCenterModule\Util as SecurityCenterUtil;
 
 class Installer extends \Zikula_AbstractInstaller
 {

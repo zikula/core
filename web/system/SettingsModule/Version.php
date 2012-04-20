@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Settings;
+namespace SettingsModule;
 
 class Version extends \Zikula_AbstractVersion
 {

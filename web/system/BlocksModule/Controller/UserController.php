@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Controller;
+namespace BlocksModule\Controller;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
 use Zikula\Framework\Exception\FatalException;
-use Blocks\Entity\BlockPlacement;
+use BlocksModule\Entity\BlockPlacement;
 
 /**
  * Blocks_Controller_User class.

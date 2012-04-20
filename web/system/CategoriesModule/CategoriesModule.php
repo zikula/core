@@ -14,7 +14,7 @@
 
 namespace AdminModule;
 
-use Zikula\ModuleBundle\AbstractModule;
+use Zikula\Bundle\ModuleBundle\AbstractModule;
 
 class AdminModule extends AbstractModule
 {

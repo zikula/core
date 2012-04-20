@@ -13,7 +13,7 @@
  */
 
 
-namespace Categories\DBObject;
+namespace CategoriesModule\DBObject;
 
 use CategoryUtil, DataUtil, ZLanguage, DBObjectArray;
 

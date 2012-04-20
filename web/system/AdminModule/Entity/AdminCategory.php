@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin\Entity;
+namespace AdminModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

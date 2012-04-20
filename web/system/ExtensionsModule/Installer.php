@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Extensions;
+namespace ExtensionsModule;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula_View, SecurityUtil, HookUtil, LogUtil, EventUtil;

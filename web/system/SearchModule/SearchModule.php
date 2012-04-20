@@ -14,7 +14,7 @@
 
 namespace SearchModule;
 
-use Zikula\ModuleBundle\AbstractModule;
+use Zikula\Bundle\ModuleBundle\AbstractModule;
 
 class SearchModule extends AbstractModule
 {

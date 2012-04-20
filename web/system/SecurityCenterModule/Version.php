@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter;
+namespace SecurityCenterModule;
 
 class Version extends \Zikula_AbstractVersion
 {

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search;
+namespace SearchModule;
 
 class Version extends \Zikula_AbstractVersion
 {

@@ -13,10 +13,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Api;
+namespace UsersModule\Api;
 
 use SecurityUtil, Zikula_View, System, ModUtil, DBUtil, DataUtil;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 
 /**
  * The search for items in the Users module.

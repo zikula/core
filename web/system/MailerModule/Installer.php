@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Mailer;
+namespace MailerModule;
 
 use ZLanguage;
 

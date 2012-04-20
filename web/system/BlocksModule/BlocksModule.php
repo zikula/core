@@ -14,7 +14,7 @@
 
 namespace CategoriesModule;
 
-use Zikula\ModuleBundle\AbstractModule;
+use Zikula\Bundle\ModuleBundle\AbstractModule;
 
 class CategoriesModule extends AbstractModule
 {

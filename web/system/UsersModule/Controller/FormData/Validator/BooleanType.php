@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData\Validator;
+namespace UsersModule\Controller\FormData\Validator;
 
 /**
  * Ensures that the field contains data compatible with a boolean type.

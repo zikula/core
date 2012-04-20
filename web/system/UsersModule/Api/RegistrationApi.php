@@ -13,14 +13,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Api;
+namespace UsersModule\Api;
 
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use \Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Api\AbstractAuthentication;
 use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DBUtil, DataUtil, DateUtil, ObjectUtil;
 use Zikula_Session;
-use Users\Helper\AuthenticationMethodHelper;
+use UsersModule\Helper\AuthenticationMethodHelper;
 use Zikula_Exception_Forbidden;
 use Zikula\Core\Event\GenericEvent;
 

@@ -12,11 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Api;
+namespace BlocksModule\Api;
 
 use ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use UserUtil;
-use Blocks\MenutreeUtil;
+use BlocksModule\MenutreeUtil;
 
 class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 {

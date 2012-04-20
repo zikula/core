@@ -14,7 +14,7 @@
 
 namespace SettingsModule;
 
-use Zikula\ModuleBundle\AbstractModule;
+use Zikula\Bundle\ModuleBundle\AbstractModule;
 
 class SettingsModule extends AbstractModule
 {

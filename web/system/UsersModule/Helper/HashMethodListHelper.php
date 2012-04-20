@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Helper;
+namespace UsersModule\Helper;
 
 /**
  * Defines the valid list of password hashing methods.

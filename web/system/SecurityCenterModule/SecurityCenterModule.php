@@ -14,7 +14,7 @@
 
 namespace SecurityCenterModule;
 
-use Zikula\ModuleBundle\AbstractModule;
+use Zikula\Bundle\ModuleBundle\AbstractModule;
 
 class SecurityCenterModule extends AbstractModule
 {

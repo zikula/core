@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search\Api;
+namespace SearchModule\Api;
 
 use SecurityUtil, ModUtil;
 

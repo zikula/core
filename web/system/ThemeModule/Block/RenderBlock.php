@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Block;
+namespace ThemeModule\Block;
 
 use Zikula_View, SecurityUtil, ModUtil, LogUtil, BlockUtil, Zikula_View_Theme;
 

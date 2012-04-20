@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search\Block;
+namespace SearchModule\Block;
 
 use SecurityUtil, BlockUtil, ModUtil;
 

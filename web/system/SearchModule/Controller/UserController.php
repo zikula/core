@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search\Controller;
+namespace SearchModule\Controller;
 
 use ModUtil, SecurityUtil, LogUtil, SessionUtil, UserUtil;
 

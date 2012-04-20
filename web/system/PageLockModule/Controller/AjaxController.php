@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace PageLock\Controller;
+namespace PageLockModule\Controller;
 
 use UserUtil, ModUtil, LogUtil;
 use Zikula\Framework\Response\Ajax\AjaxResponse;

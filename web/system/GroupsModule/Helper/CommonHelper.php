@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups\Helper;
+namespace GroupsModule\Helper;
 
 /**
  * Common helper functions and constants.

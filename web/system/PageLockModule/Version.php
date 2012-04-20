@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace PageLock;
+namespace PageLockModule;
 
 class Version extends \Zikula_AbstractVersion
 {

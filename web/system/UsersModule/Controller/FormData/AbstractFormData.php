@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData;
+namespace UsersModule\Controller\FormData;
 
 use ServiceUtil, InvalidArgumentException, Zikula_Request_Collection, Zikula_Session;
-use Users\Controller\FormData\Field;
+use UsersModule\Controller\FormData\Field;
 use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**

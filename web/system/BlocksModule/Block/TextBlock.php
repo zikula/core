@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Block;
+namespace BlocksModule\Block;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil, EventUtil;

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search\Api;
+namespace SearchModule\Api;
 
 use LogUtil, ModUtil, DBUtil, UserUtil, DataUtil, SecurityUtil, System, FormUtil, ZLanguage;
 use Doctrine_Manager;

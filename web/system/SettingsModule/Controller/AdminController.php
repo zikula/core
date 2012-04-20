@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Settings\Controller;
+namespace SettingsModule\Controller;
 
 use ModUtil, Zikula_View, LogUtil, SecurityUtil, System, DateUtil;
 

@@ -13,10 +13,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Block;
+namespace UsersModule\Block;
 
 use SecurityUtil, BlockUtil, ModUtil, Zikula_View, UserUtil, DataUtil, System;
-use Users\Helper\AuthenticationMethodListHelper;
+use UsersModule\Helper\AuthenticationMethodListHelper;
 
 /**
  * A block that allows users to log into the system.

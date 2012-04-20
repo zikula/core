@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Extensions\Controller;
+namespace ExtensionsModule\Controller;
 
 use SecurityUtil, Zikula_View, ModUtil, LogUtil, ZLanguage, System, PluginUtil;
-use Extensions\Util as ExtensionsUtil;
+use ExtensionsModule\Util as ExtensionsUtil;
 
 /**
  * Extensions_Controller_Admin class.

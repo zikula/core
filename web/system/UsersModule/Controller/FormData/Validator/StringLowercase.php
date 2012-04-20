@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData\Validator;
+namespace UsersModule\Controller\FormData\Validator;
 
 /**
  * Validates a field to ensure that it contains a string whose letters are all lowercase (or are non-letter characters).

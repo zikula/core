@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter;
+namespace SecurityCenterModule;
 
 use ZLanguage, ThemeUtil, UserUtil, ModUtil, CacheUtil;
 

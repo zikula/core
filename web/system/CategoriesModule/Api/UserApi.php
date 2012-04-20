@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Categories\Api;
+namespace CategoriesModule\Api;
 
 use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil;
 

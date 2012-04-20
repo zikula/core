@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Errors;
+namespace ErrorsModule;
 
 class Version extends \Zikula_AbstractVersion
 {

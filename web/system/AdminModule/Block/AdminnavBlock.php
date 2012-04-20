@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin\Block;
+namespace AdminModule\Block;
 
 class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 {

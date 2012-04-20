@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Controller;
+namespace ThemeModule\Controller;
 
 use System, SecurityUtil, LogUtil, ThemeUtil, ModUtil, UserUtil, DataUtil, Zikula_View;
 

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin\Controller;
+namespace AdminModule\Controller;
 
 use System;
 
@@ -364,7 +364,7 @@ class AdminController extends \Zikula_AbstractController
                 }
             }
         }
-        usort($adminlinks, 'Admin\Controller\_sortAdminModsByOrder');
+        usort($adminlinks, 'AdminModule\Controller\_sortAdminModsByOrder');
         $this->view->assign('adminlinks', $adminlinks);
 
         return $this->response($this->view->fetch('admin_admin_adminpanel.tpl'));
@@ -529,7 +529,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         foreach($adminlinks as &$item) {
-            usort($item, 'Admin\Controller\_sortAdminModsByOrder');
+            usort($item, 'AdminModule\Controller\_sortAdminModsByOrder');
         }
 
         $menuoptions = array();

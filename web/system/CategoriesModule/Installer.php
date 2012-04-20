@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Categories;
+namespace CategoriesModule;
 
 use DBUtil, DataUtil, ZLanguage;
 

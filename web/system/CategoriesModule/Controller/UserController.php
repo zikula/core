@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Categories\Controller;
+namespace CategoriesModule\Controller;
 
 use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
 use StringUtil, System, Zikula_View;
-use Categories\DBObject\Category;
-use Categories\Installer;
+use CategoriesModule\DBObject\Category;
+use CategoriesModule\Installer;
 
 class UserController extends \Zikula_AbstractController
 {

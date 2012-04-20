@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Api;
+namespace ThemeModule\Api;
 
 use LogUtil, ModUtil, ThemeUtil, FileUtil, DataUtil, CacheUtil, SecurityUtil, System, UserUtil, ZLanguage;
 

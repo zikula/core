@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Api;
+namespace ThemeModule\Api;
 
 use System, ModUtil;
 

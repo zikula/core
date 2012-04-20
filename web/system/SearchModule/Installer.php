@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search;
+namespace SearchModule;
 
 use DBUtil, EventUtil;
 
@@ -41,7 +41,7 @@ class Installer extends \Zikula_AbstractInstaller
 
         // register event handler to activate new modules in the search block
         EventUtil::registerPersistentModuleHandler('Search', 'installer.module.installed',
-            array('Search\Listener\EventListener', 'moduleInstall'));
+            array('SearchModule\Listener\EventListener', 'moduleInstall'));
 
         // Initialisation successful
         return true;
@@ -64,7 +64,7 @@ class Installer extends \Zikula_AbstractInstaller
             case '1.5.1':
                 // register event handler to activate new modules in the search block
                 EventUtil::registerPersistentModuleHandler('Search', 'installer.module.installed',
-                    array('Search\Listener\EventListener', 'moduleInstall'));
+                    array('SearchModule\Listener\EventListener', 'moduleInstall'));
 
             case '1.5.2':
             // future upgrade routines

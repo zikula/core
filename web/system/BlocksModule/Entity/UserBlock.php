@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Entity;
+namespace BlocksModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

@@ -30,5 +30,5 @@ $autoloader->registerPrefixes(array(
 ));
 
 // register event handlers
-EventUtil::attachEventHandler('SecurityCenter\Listener\FilterListener');
+EventUtil::attachEventHandler('SecurityCenterModule\Listener\FilterListener');
 
