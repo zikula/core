@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Permissions\Api;
+namespace PermissionsModule\Api;
 
 use SecurityUtil, LogUtil, ModUtil, DataUtil;
 
@@ -54,7 +54,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
         }
 
         // get info on current perm
-        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        $permission = $this->entityManager->find('PermissionsModule\Entity\Permission', $args['pid']);
         if (!$permission) {
             return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
@@ -66,7 +66,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             
             // get info on displaced perm
             $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
-            $dql = "SELECT p FROM Permissions\Entity\Permission p $where";
+            $dql = "SELECT p FROM PermissionsModule\Entity\Permission p $where";
             $query = $this->entityManager->createQuery($dql);
             $d_permission = $query->getOneOrNullResult();
             
@@ -85,10 +85,10 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
 
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('Permissions\Entity\Permission', $altpid);
+            $perm1 = $this->entityManager->find('PermissionsModule\Entity\Permission', $altpid);
             $perm1['sequence'] = $sequence;
             
-            $perm2 = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+            $perm2 = $this->entityManager->find('PermissionsModule\Entity\Permission', $args['pid']);
             $perm2['sequence'] = $altsequence;
             
             $this->entityManager->flush();
@@ -126,7 +126,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
         }
 
         // get info on current perm
-        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        $permission = $this->entityManager->find('PermissionsModule\Entity\Permission', $args['pid']);
         if (!$permission) {
             return LogUtil::registerError($this->__f('Error! Permission rule ID %s does not exist.', $args['pid']));
         }
@@ -139,7 +139,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             
             // get info on displaced perm
             $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
-            $dql = "SELECT p FROM Permissions\Entity\Permission p $where";
+            $dql = "SELECT p FROM PermissionsModule\Entity\Permission p $where";
             $query = $this->entityManager->createQuery($dql);
             $d_permission = $query->getOneOrNullResult();
             
@@ -157,10 +157,10 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             $altpid = $d_permission['pid'];
             
             // swap sequence numbers
-            $perm1 = $this->entityManager->find('Permissions\Entity\Permission', $altpid);
+            $perm1 = $this->entityManager->find('PermissionsModule\Entity\Permission', $altpid);
             $perm1['sequence'] = $sequence;
             
-            $perm2 = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+            $perm2 = $this->entityManager->find('PermissionsModule\Entity\Permission', $args['pid']);
             $perm2['sequence'] = $altsequence;
             
             $this->entityManager->flush();
@@ -201,7 +201,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
         }
         
         // get and update permission
-        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        $permission = $this->entityManager->find('PermissionsModule\Entity\Permission', $args['pid']);
         $permission['gid'] = $args['id'];
         $permission['realm'] = $args['realm'];
         $permission['component'] = $args['component'];
@@ -251,7 +251,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             $newseq = $maxseq + 1;
         } else {
             // Increase sequence numbers
-            $dql = "UPDATE Permissions\Entity\Permission p SET p.sequence = p.sequence + 1 WHERE p.sequence >= " . (int)DataUtil::formatForStore($args['insseq']);
+            $dql = "UPDATE PermissionsModule\Entity\Permission p SET p.sequence = p.sequence + 1 WHERE p.sequence >= " . (int)DataUtil::formatForStore($args['insseq']);
             $query = $this->entityManager->createQuery($dql);
             $result = $query->getResult();
             
@@ -262,7 +262,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             $newseq = $args['insseq'];
         }
         
-        $obj = new \Permissions\Entity\Permission;
+        $obj = new \PermissionsModule\Entity\Permission;
         $obj['gid'] = (int)$args['id'];
         $obj['sequence'] = $newseq;
         $obj['realm'] = (int)$args['realm'];
@@ -300,7 +300,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
         }
         
         // get and delete permission
-        $permission = $this->entityManager->find('Permissions\Entity\Permission', $args['pid']);
+        $permission = $this->entityManager->find('PermissionsModule\Entity\Permission', $args['pid']);
         $this->entityManager->remove($permission);
         $this->entityManager->flush();
 
@@ -321,7 +321,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
-        $dql = "SELECT MAX(p.sequence) FROM Permissions\Entity\Permission p";
+        $dql = "SELECT MAX(p.sequence) FROM PermissionsModule\Entity\Permission p";
         $query = $this->entityManager->createQuery($dql);
         return (int)$query->getSingleScalarResult();
     }
@@ -339,7 +339,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
         }
         
         // get all permissions
-        $permissions = $this->entityManager->getRepository('Permissions\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));
+        $permissions = $this->entityManager->getRepository('PermissionsModule\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));
         if (!$permissions) {
             return false;
         }
@@ -395,7 +395,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
                 $newseq = 1;
             }
             
-            $dql = "SELECT p FROM Permissions\Entity\Permission p WHERE p.sequence >= {$newseq} AND p.sequence <= {$oldseq} ORDER BY p.sequence DESC";
+            $dql = "SELECT p FROM PermissionsModule\Entity\Permission p WHERE p.sequence >= {$newseq} AND p.sequence <= {$oldseq} ORDER BY p.sequence DESC";
             $query = $this->entityManager->createQuery($dql);
             $permissions = $query->getResult();
             
@@ -421,7 +421,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
                 $newseq = (int)$maxseq;
             }
             
-            $dql = "SELECT p FROM Permissions\Entity\Permission p WHERE p.sequence >= {$oldseq} AND p.sequence <= {$newseq} ORDER BY p.sequence ASC";
+            $dql = "SELECT p FROM PermissionsModule\Entity\Permission p WHERE p.sequence >= {$oldseq} AND p.sequence <= {$newseq} ORDER BY p.sequence ASC";
             $query = $this->entityManager->createQuery($dql);
             $permissions = $query->getResult();
             

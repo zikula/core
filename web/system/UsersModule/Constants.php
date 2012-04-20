@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users;
+namespace UsersModule;
 
 /**
  * Users module-wide constants.

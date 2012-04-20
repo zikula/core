@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData\Validator;
+namespace UsersModule\Controller\FormData\Validator;
 
 /**
  * Validates a field's value, ensuring that is is a string value.

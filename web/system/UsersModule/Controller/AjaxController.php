@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller;
+namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\Response\Ajax\PlainResponse;

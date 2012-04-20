@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks;
+namespace BlocksModule;
 
 use PageUtil, DataUtil, ModUtil;
 

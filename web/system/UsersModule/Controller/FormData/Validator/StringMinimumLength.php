@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData\Validator;
+namespace UsersModule\Controller\FormData\Validator;
 
 use Zikula\Component\DependencyInjection\ContainerBuilder;
 

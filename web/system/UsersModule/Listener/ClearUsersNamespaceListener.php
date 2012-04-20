@@ -13,10 +13,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Listener;
+namespace UsersModule\Listener;
 
 use Zikula\Core\Event\GenericEvent;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 
 /**
  * Persistent event listener used to clean up the Users module session variables related to logging in.

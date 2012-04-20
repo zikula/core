@@ -12,13 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter\Listener;
+namespace SecurityCenterModule\Listener;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Core;
 use System, CacheUtil, SessionUtil, UserUtil, DateUtil, LogUtil, ModUtil;
 use Zikula_Exception_Forbidden;
-use SecurityCenter\Util as SecurityCenterUtil;
+use SecurityCenterModule\Util as SecurityCenterUtil;
 
 class FilterListener extends \Zikula_AbstractEventHandler
 {
@@ -273,7 +273,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
 
                 // create new ZIntrusion instance
-                $obj = new \SecurityCenter\DBObject\Intrusion();
+                $obj = new \SecurityCenterModule\DBObject\Intrusion();
                 // set data
                 $obj->setData($intrusionItem);
                 // save object to db

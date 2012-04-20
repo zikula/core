@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin;
+namespace AdminModule;
 
 class Version extends \Zikula_AbstractVersion
 {

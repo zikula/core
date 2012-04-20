@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Mailer\Controller;
+namespace MailerModule\Controller;
 
 use Zikula_View, SecurityUtil, ModUtil, DataUtil, ZLanguage, LogUtil;
 

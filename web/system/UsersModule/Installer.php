@@ -13,11 +13,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users;
+namespace UsersModule;
 
 use DBUtil, EventUtil, HookUtil, System, DataUtil, ModUtil;
 use DateTime, DateTimeZone, ServiceUtil;
-use Users\Constants as Constant;
+use UsersModule\Constants as Constant;
 use \Zikula\Framework\Exception\FatalException;
 
 /**
@@ -53,13 +53,13 @@ class Installer extends \Zikula_AbstractInstaller
 
         // Register persistent event listeners (handlers)
         EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
-            array('Users\Listener\PendingContentListener', 'pendingContentListener'));
+            array('UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
-            array('Users\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
+            array('UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-            array('Users\Listener\ClearUsersNamespace\Listener', 'clearUsersNamespaceListener'));
+            array('UsersModule\Listener\ClearUsersNamespace\Listener', 'clearUsersNamespaceListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
-            array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
+            array('UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
 
         // Register persistent hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
@@ -144,13 +144,13 @@ class Installer extends \Zikula_AbstractInstaller
                 }
 
                 EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
-                    array('Users\Listener\PendingContentListener', 'pendingContentListener'));
+                    array('UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
                 EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
-                    array('Users\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
+                    array('UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
                 EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-                    array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
+                    array('UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
                 EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
-                    array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
+                    array('UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':

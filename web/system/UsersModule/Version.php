@@ -13,9 +13,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users;
+namespace UsersModule;
 
-use Users\Constants as Constant;
+use UsersModule\Constants as Constant;
 use HookUtil;
 use Zikula\Component\HookManager\SubscriberBundle;
 

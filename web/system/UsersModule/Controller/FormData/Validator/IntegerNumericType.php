@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData\Validator;
+namespace UsersModule\Controller\FormData\Validator;
 
 /**
  * Validates that a field's data is compatible with an integer numeric type.

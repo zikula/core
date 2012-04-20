@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups\Controller;
+namespace GroupsModule\Controller;
 
 use ModUtil, LogUtil, SecurityUtil, UserUtil, Zikula_View, DataUtil;
-use Groups\Helper\CommonHelper;
+use GroupsModule\Helper\CommonHelper;
 
 class UserController extends \Zikula_AbstractController
 {

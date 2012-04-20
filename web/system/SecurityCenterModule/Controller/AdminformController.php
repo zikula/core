@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter\Controller;
+namespace SecurityCenterModule\Controller;
 
 use SecurityUtil, LogUtil, ModUtil;
 
@@ -49,7 +49,7 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
 
-        $object = new \SecurityCenter\DBObject\Intrusion();
+        $object = new \SecurityCenterModule\DBObject\Intrusion();
         $data = $object->get($id);
 
         // check for valid object

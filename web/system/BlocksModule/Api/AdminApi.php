@@ -12,11 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks\Api;
+namespace BlocksModule\Api;
 
 use ModUtil, SecurityUtil, LogUtil, DataUtil, System;
-use Blocks\Entity\Block;
-use Blocks\Entity\BlockPlacement;
+use BlocksModule\Entity\Block;
+use BlocksModule\Entity\BlockPlacement;
 
 
 /**

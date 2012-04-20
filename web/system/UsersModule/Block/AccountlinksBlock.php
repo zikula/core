@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Block;
+namespace UsersModule\Block;
 
 use SecurityUtil, BlockUtil, ModUtil, Zikula_View;
 

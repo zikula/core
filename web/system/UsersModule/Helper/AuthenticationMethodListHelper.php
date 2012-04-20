@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Helper;
+namespace UsersModule\Helper;
 
 use ModUtil, LogUtil;
 use \Zikula\Framework\Exception\FatalException;

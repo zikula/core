@@ -14,7 +14,7 @@
 
 namespace PageLockModule;
 
-use Zikula\ModuleBundle\AbstractModule;
+use Zikula\Bundle\ModuleBundle\AbstractModule;
 
 class PageLockModule extends AbstractModule
 {

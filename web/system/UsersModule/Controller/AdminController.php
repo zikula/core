@@ -13,14 +13,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller;
+namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula_View, SecurityUtil, ModUtil, UserUtil, DataUtil, DateUtil, DBUtil, LogUtil, System, FileUtil;
 use DateTime, DateTimeZone, Exception;
 use Zikula_Session;
 use Zikula_Exception_Forbidden;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use \Zikula\Framework\Exception\FatalException;
 use Zikula_ProcessHook, Zikula_Hook_ValidationProviders, Zikula_ValidationHook;
 

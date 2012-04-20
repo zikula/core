@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Extensions\Controller;
+namespace ExtensionsModule\Controller;
 
 use Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Response\Ajax\AjaxResponse;

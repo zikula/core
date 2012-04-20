@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Search\Controller;
+namespace SearchModule\Controller;
 
 use Zikula_View, ModUtil, SecurityUtil, LogUtil;
 

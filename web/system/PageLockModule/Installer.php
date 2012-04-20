@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace PageLock;
+namespace PageLockModule;
 
 use DBUtil;
 

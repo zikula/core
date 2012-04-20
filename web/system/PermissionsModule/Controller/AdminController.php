@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Permissions\Controller;
+namespace PermissionsModule\Controller;
 
 use SecurityUtil, LogUtil, ModUtil, DataUtil, Zikula_View, UserUtil;
 
@@ -126,7 +126,7 @@ class AdminController extends \Zikula_AbstractController
             $this->view->assign('permgrp', SecurityUtil::PERMS_ALL);
         }
         
-        $dql = "SELECT p FROM Permissions\Entity\Permission p $where ORDER BY p.sequence ASC";
+        $dql = "SELECT p FROM PermissionsModule\Entity\Permission p $where ORDER BY p.sequence ASC";
         $query = $this->entityManager->createQuery($dql);
         $objArray = $query->getResult();
         
@@ -210,7 +210,7 @@ class AdminController extends \Zikula_AbstractController
         $components = array(-1 => $this->__('All components'));
         
         // read all perms to extract components
-        $allperms = $this->entityManager->getRepository('Permissions\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));
+        $allperms = $this->entityManager->getRepository('PermissionsModule\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));
         foreach ($allperms as $singlePerm) {
             // extract components, we keep everything up to the first colon
             $compparts = explode(':', $singlePerm['component']);
@@ -325,7 +325,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
         
         // get all permissions
-        $allperms = $this->entityManager->getRepository('Permissions\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));    
+        $allperms = $this->entityManager->getRepository('PermissionsModule\Entity\Permission')->findBy(array(), array('sequence' => 'ASC'));
         if (!$allperms && $action != 'add') {
             LogUtil::registerError($this->__('Error! No permission rules of this kind were found. Please add some first.'));
             return $this->redirect(ModUtil::url('modules', 'admin', 'view'));
@@ -660,7 +660,7 @@ class AdminController extends \Zikula_AbstractController
 
         $adminid = (int)$this->request->request->get('adminid', 1);
         if ($adminid <> 0) {
-            $perm = $this->entityManager->find('Permissions\Entity\Permission', $adminid);
+            $perm = $this->entityManager->find('PermissionsModule\Entity\Permission', $adminid);
             if (!$perm) {
                 $adminid = 0;
                 $error = true;

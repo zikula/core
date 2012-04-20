@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Mailer;
+namespace MailerModule;
 
 class Version extends \Zikula_AbstractVersion
 {

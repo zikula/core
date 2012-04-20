@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace SecurityCenter\Api;
+namespace SecurityCenterModule\Api;
 
 use SecurityUtil, DBUtil, ModUtil, System;
 

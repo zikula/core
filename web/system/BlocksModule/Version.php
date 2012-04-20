@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks;
+namespace BlocksModule;
 
 class Version extends \Zikula_AbstractVersion
 {

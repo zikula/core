@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller;
+namespace UsersModule\Controller;
 
 use Zikula_View;
 use \Zikula\Framework\Exception\FatalException;

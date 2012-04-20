@@ -12,15 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Blocks;
+namespace BlocksModule;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View, DBUtil;
-use Zikula\Framework\Exception\FatalException
-use Zikula\Framework\Exception\BadDataException;
-use Blocks\Entity\BlockPlacement;
+use Zikula\Framework\Exception\FatalException;
+use BlocksModule\Entity\BlockPlacement;
 
-class Blocks_Installer extends Zikula_AbstractInstaller
+class Installer extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the blocks module
@@ -31,10 +30,10 @@ class Blocks_Installer extends Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Blocks\Entity\Block',
-            'Blocks\Entity\BlockPosition',
-            'Blocks\Entity\BlockPlacement',
-            'Blocks\Entity\UserBlock'
+            'BlocksModule\Entity\Block',
+            'BlocksModule\Entity\BlockPosition',
+            'BlocksModule\Entity\BlockPlacement',
+            'BlocksModule\Entity\UserBlock'
         );
         
         try {
@@ -206,10 +205,10 @@ class Blocks_Installer extends Zikula_AbstractInstaller
         // Migrate any Admin_Messages to blocks
         $messageTable = DBUtil::getLimitedTablename('message');
         $blocksTable = 'blocks';
-        $messageBlocks = DBUtil::executeSQL("SELECT * FROM $blocksTable WHERE bkey = 'messages'")->fetchAll(Doctrine::FETCH_ASSOC);
+        $messageBlocks = DBUtil::executeSQL("SELECT * FROM $blocksTable WHERE bkey = 'messages'")->fetchAll(\Doctrine::FETCH_ASSOC);
 
         $result = DBUtil::executeSQL("SELECT * FROM $messageTable");
-        $data = $result->fetchAll(Doctrine::FETCH_ASSOC);
+        $data = $result->fetchAll(\Doctrine::FETCH_ASSOC);
         if ($data) {
             foreach ($data as $key => $value) {
                 foreach ($data[$key] as $k => $v) {

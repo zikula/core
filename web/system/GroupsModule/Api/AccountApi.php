@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups\Api;
+namespace GroupsModule\Api;
 
 use ModUtil;
 

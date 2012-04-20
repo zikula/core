@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Errors\Controller;
+namespace ErrorsModule\Controller;
 
 use System, Zikula_Session, Zikula_View, SecurityUtil, PageUtil;
 use Zikula\Core\Core;

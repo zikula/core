@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin;
+namespace AdminModule;
 
 use DoctrineHelper, DBUtil;
-use Admin\Entity\AdminCategory;
+use AdminModule\Entity\AdminCategory;
 
 class Installer extends \Zikula_AbstractInstaller
 {
@@ -30,7 +30,7 @@ class Installer extends \Zikula_AbstractInstaller
     {
         // create tables
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Admin\Entity\AdminCategory', 'Admin\Entity\AdminModule'));
+            DoctrineHelper::createSchema($this->entityManager, array('AdminModule\Entity\AdminCategory', 'AdminModule\Entity\AdminModule'));
         } catch (\Exception $e) {
             return false;
         }
@@ -109,7 +109,7 @@ class Installer extends \Zikula_AbstractInstaller
     {
         // drop tables
         try {
-            DoctrineHelper::dropSchema($this->entityManager, array('Admin\Entity\AdminCategory', 'Admin\Entity\AdminModule'));
+            DoctrineHelper::dropSchema($this->entityManager, array('AdminModule\Entity\AdminCategory', 'AdminModule\Entity\AdminModule'));
         } catch (\Exception $e) {
             return false;
         }

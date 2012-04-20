@@ -13,10 +13,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Listener;
+namespace UsersModule\Listener;
 
 use Zikula\Core\Event\GenericEvent;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use ModUtil, SecurityUtil, LogUtil;
 
 /**

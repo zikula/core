@@ -12,9 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Permissions;
+namespace PermissionsModule;
 
-use Permissions\Entity\Permission;
+use PermissionsModule\Entity\Permission;
 
 class Installer extends \Zikula_AbstractInstaller
 {

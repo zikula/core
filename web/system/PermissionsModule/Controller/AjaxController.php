@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Permissions\Controller;
+namespace PermissionsModule\Controller;
 
 use SecurityUtil, ModUtil, DataUtil, UserUtil;
 use Zikula\Framework\Response\Ajax\AjaxResponse;
@@ -65,7 +65,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                       'level'     => $level));
 
         // read current settings and return them
-        $permission = $this->entityManager->find('Permissions\Entity\Permission', $pid);
+        $permission = $this->entityManager->find('PermissionsModule\Entity\Permission', $pid);
         $permission = $permission->toArray();
 
         $accesslevels = SecurityUtil::accesslevelnames();
@@ -100,7 +100,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $permorder = $this->request->request->get('permorder');
 
         for($cnt = 0 ; $cnt < count($permorder) ; $cnt++) {
-            $permission = $this->entityManager->find('Permissions\Entity\Permission', (int)DataUtil::formatForStore($permorder[$cnt]));
+            $permission = $this->entityManager->find('PermissionsModule\Entity\Permission', (int)DataUtil::formatForStore($permorder[$cnt]));
             $permission['sequence'] = $cnt;
         }
 
@@ -157,7 +157,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $pid = (int)$this->request->request->get('pid');
 
         // check if this is the overall admin permssion and return if this shall be deleted
-        $perm = $this->entityManager->find('Permissions\Entity\Permission', $pid);
+        $perm = $this->entityManager->find('PermissionsModule\Entity\Permission', $pid);
         if ($perm['pid'] == 1 && $perm['level'] == ACCESS_ADMIN && $perm['component'] == '.*' && $perm['instance'] == '.*') {
             throw new \Zikula\Framework\Exception\FatalException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }

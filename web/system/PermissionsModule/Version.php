@@ -1,6 +1,6 @@
 <?php
 
-namespace Permissions;
+namespace PermissionsModule;
 
 class Version extends \Zikula_AbstractVersion
 {

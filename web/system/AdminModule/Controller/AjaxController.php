@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Admin\Controller;
+namespace AdminModule\Controller;
 
 use ModUtil, SecurityUtil, LogUtil, DataUtil;
 use Zikula\Framework\Exception\FatalException;

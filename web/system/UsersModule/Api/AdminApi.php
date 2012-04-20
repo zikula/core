@@ -13,10 +13,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Api;
+namespace UsersModule\Api;
 
 use Zikula\Core\Event\GenericEvent;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use SecurityUtil, ModUtil, System, DBUtil, UserUtil, DataUtil, Zikula_Exception_Forbidden, Zikula_View;
 
 /**

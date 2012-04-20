@@ -12,13 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Api;
+namespace UsersModule\Api;
 
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use \Zikula\Framework\Exception\FatalException;
 use Zikula_Api_AbstractAuthentication;
 use UserUtil, ModUtil, LogUtil;
-use Users\Helper\AuthenticationMethodHelper;
+use UsersModule\Helper\AuthenticationMethodHelper;
 
 /**
  * The user authentication services for the log-in process through the core Users table.

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Mailer\Api;
+namespace MailerModule\Api;
 
 use SecurityUtil, ModUtil, System, LogUtil;
 use Zikula\Core\Event\GenericEvent;

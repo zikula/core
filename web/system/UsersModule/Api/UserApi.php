@@ -12,11 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Api;
+namespace UsersModule\Api;
 
 use SecurityUtil, Zikula_View, System, ModUtil, DBUtil, DataUtil, LogUtil, UserUtil;
 use \Zikula\Framework\Exception\FatalException, Zikula_Exception_Forbidden;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.

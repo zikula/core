@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller\FormData;
+namespace UsersModule\Controller\FormData;
 
 use ServiceUtil;
 use Zikula\Component\DependencyInjection\ContainerBuilder;

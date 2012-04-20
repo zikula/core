@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Categories\DBObject;
+namespace CategoriesModule\DBObject;
 
 use CategoryUtil, DataUtil, ZLanguage, DBObject;
 

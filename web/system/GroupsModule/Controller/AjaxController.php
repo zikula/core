@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups\Controller;
+namespace GroupsModule\Controller;
 
 use SecurityUtil, LogUtil, ModUtil;
 use Zikula\Framework\Response\Ajax\AjaxResponse;
 use Zikula\Framework\Exception\FatalException;
-use Groups\Helper\CommonHelper;
+use GroupsModule\Helper\CommonHelper;
 
 /**
  * Groups_Controller_Ajax class.
@@ -126,7 +126,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // update group's name
-        $group = $this->entityManager->find('Groups\Entity\Group', $group_id);
+        $group = $this->entityManager->find('GroupsModule\Entity\Group', $group_id);
         $group['name'] = $this->__f('Group %s', $group_id);
         $this->entityManager->flush();
 

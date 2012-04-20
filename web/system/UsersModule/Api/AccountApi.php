@@ -13,9 +13,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Api;
+namespace UsersModule\Api;
 
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use UserUtil, ModUtil, ZLanguage, System;
 
 /**

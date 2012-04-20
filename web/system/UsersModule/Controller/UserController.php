@@ -13,13 +13,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Controller;
+namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent, Zikula\Framework\Response\PlainResponse;
 use Zikula_View, Zikula_Exception_Forbidden, \Zikula\Framework\Exception\FatalException, Zikula_Exception_NotFound;
 use ModUtil, UserUtil, DataUtil, System, LogUtil, SecurityUtil, SessionUtil, Zikula_Session, ThemeUtil;
-use Users\Constants as UsersConstant;
-use Users\Helper\AuthenticationMethodListHelper;
+use UsersModule\Constants as UsersConstant;
+use UsersModule\Helper\AuthenticationMethodListHelper;
 use Zikula_Api_AbstractAuthentication;
 use Zikula_Hook_ValidationProviders;
 use Zikula_ValidationHook;

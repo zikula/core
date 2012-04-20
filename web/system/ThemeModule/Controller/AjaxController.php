@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Theme\Controller;
+namespace ThemeModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
 

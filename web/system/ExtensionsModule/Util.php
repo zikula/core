@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Extensions;
+namespace ExtensionsModule;
 
 use LogUtil, System;
 use Zikula_AbstractErrorHandler;
