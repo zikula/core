@@ -56,6 +56,26 @@ doctrine:
                 connection: default
                 class_metadata_factory_name: Doctrine\ORM\Mapping\ClassMetadataFactory
                 mappings:
+                    gedmo_translatable:
+                        type: annotation
+                        prefix: Gedmo\Translatable\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                        alias: GedmoTranslatable
+                    gedmo_translator:
+                        type: annotation
+                        prefix: Gedmo\Translator\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+                        alias: GedmoTranslator
+                    gedmo_loggable:
+                        type: annotation
+                        prefix: Gedmo\Loggable\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                        alias: GedmoLoggable
+                    gedmo_tree:
+                        type: annotation
+                        prefix: Gedmo\Tree\Entity
+                        dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                        alias: GedmoTree
                     zikula_core_entities:
                         type: annotation
                         dir: %kernel.root_dir%/../src
@@ -103,6 +123,25 @@ doctrine:
                         prefix: Security
                 metadata_cache_driver: array
                 query_cache_driver: array
+
+stof_doctrine_extensions:
+    #default_locale: en
+    orm:
+        #default: ~
+        default:
+            tree:           true
+            timestampable:  true
+            sluggable:      true
+            translatable:   true
+            loggable:       false
+            softdeleteable: false
+#    class:
+#        tree:           ~
+#        timestampable:  ~
+#        sluggable:      ~
+#        translatable:   ~
+#        loggable:       ~
+#        softdeleteable: ~
 
 # Swiftmailer Configuration
 swiftmailer:
