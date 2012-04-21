@@ -47,7 +47,7 @@ class DefaultModuleService implements ModuleServiceInterface
                 $class = $fileInfo->getFilename().'\\'.$fileInfo->getFilename().'Module';
                 $module = new $class();
 
-                if (!$module instanceof ZikulaModule) {
+                if (!$module instanceof AbstractModule) {
                     throw new Exception\InvalidModuleStructureException($fileInfo->getFilename());
                 }
 

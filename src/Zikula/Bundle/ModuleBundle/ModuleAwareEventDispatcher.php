@@ -2,11 +2,14 @@
 
 namespace Zikula\Bundle\ModuleBundle;
 
-use Symfony\Bundle\FrameworkBundle\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ModuleAwareEventDispatcher extends ContainerAwareEventDispatcher
 {
+    /**
+     * @var ZikulaKernel
+     */
     private $kernel;
 
     public function __construct(ContainerInterface $container)
@@ -26,8 +29,8 @@ class ModuleAwareEventDispatcher extends ContainerAwareEventDispatcher
 
         // skip inactive module bundles
         if (!$bundle
-            || !$bundle instanceof ZikulaModule
-            || ($bundle instanceof ZikulaModule && $this->kernel->isModuleBundleActive($bundle))) {
+            || !$bundle instanceof AbstractModule
+            || ($bundle instanceof AbstractModule && $this->kernel->isModuleBundleActive($bundle))) {
             parent::addListenerService($eventName, $callback, $priority);
         }
     }

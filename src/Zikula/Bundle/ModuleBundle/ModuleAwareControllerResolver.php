@@ -11,6 +11,10 @@ class ModuleAwareControllerResolver implements ControllerResolverInterface
      * @var ControllerResolverInterface
      */
     private $delegate;
+
+    /**
+     * @var ZikulaKernel
+     */
     private $kernel;
 
     public function __construct($delegate, $kernel)
