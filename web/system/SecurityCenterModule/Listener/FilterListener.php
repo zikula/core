@@ -309,7 +309,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $adminmail = System::getVar('adminmail');
             $mailTitle = __('Intrusion attempt detected by PHPIDS');
 
-            if (ModUtil::available('Mailer')) {
+            if (ModUtil::available('MailerModule')) {
                 $args = array();
                 $args['fromname']    = $siteName;
                 $args['fromaddress'] = $adminmail;

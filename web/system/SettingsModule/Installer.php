@@ -72,7 +72,7 @@ class Installer extends \Zikula_AbstractInstaller
         System::setVar('shorturlsseparator', '-');
         System::setVar('shorturlsstripentrypoint', false);
         System::setVar('shorturlsdefaultmodule', '');
-        System::setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
+        System::setVar('profilemodule', ModUtil::available('ProfileModule') ? 'Profile' : '');
         System::setVar('messagemodule', '');
         System::setVar('languageurl', 0);
         System::setVar('ajaxtimeout', 5000);
@@ -166,7 +166,7 @@ class Installer extends \Zikula_AbstractInstaller
                 $systemIdnSetting = System::getVar('idnnames', null);
                 if (isset($systemIdnSetting)) {
                     if (ModUtil::available('Users')) {
-                        $usersIdnSetting = ModUtil::getVar('Users', 'idnnames', null);
+                        $usersIdnSetting = ModUtil::getVar('UsersModule', 'idnnames', null);
                     }
                     System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
                 }

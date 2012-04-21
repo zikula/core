@@ -2098,7 +2098,7 @@ class AdminController extends \Zikula_AbstractController
             $colnames = array();
 
             //get all user fields
-            if (ModUtil::available('Profile')) {
+            if (ModUtil::available('ProfileModule')) {
                 $userfields = ModUtil::apiFunc('ProfileModule', 'user', 'getallactive');
 
                 foreach ($userfields as $item) {

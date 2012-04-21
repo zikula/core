@@ -65,7 +65,7 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
         $vars = \BlockUtil::varsFromContent($blockinfo['content']);
 
         // Call the modules API to get the items
-        if (!\ModUtil::available('Admin')) {
+        if (!\ModUtil::available('AdminModule')) {
             return;
         }
 
