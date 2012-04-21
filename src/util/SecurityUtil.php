@@ -208,7 +208,7 @@ class SecurityUtil
         $em = ServiceUtil::get('doctrine')->getEntityManager();
 
         // get all groups that user is in
-        $groupmembership = $em->getRepository('Groups\Entity\GroupMembership')->findBy(array('uid' => $uids));
+        $groupmembership = $em->getRepository('GroupsModule\Entity\GroupMembership')->findBy(array('uid' => $uids));
 
         if ($groupmembership === false) {
             return $groupperms;
@@ -230,7 +230,7 @@ class SecurityUtil
         $allgroups = array_merge($usergroups, $fldArray);
 
         // get all permissions for the groups that the user belongs to
-        $permissions = $em->getRepository('Permissions\Entity\Permission')->findBy(array('gid' => $allgroups), array('sequence' => 'ASC'));
+        $permissions = $em->getRepository('PermissionsModule\Entity\Permission')->findBy(array('gid' => $allgroups), array('sequence' => 'ASC'));
 
         if (!$permissions) {
             return $groupperms;

@@ -14,21 +14,21 @@
             <legend>{gt text="General settings"}</legend>
             <div class="z-formrow">
                 <label for="groups_itemsperpage">{gt text="Items per page"}</label>
-                <input id="groups_itemsperpage" type="text" name="itemsperpage" size="3" value="{$modvars.Groups.itemsperpage|safetext}" />
+                <input id="groups_itemsperpage" type="text" name="itemsperpage" size="3" value="{$modvars.GroupsModule.itemsperpage|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="groups_defaultgroup">{gt text="Initial user group"}</label>
                 <select id="groups_defaultgroup" name="defaultgroup">
-                    {html_options options=$groups selected=$modvars.Groups.defaultgroup}
+                    {html_options options=$groups selected=$modvars.GroupsModule.defaultgroup}
                 </select>
             </div>
             <div class="z-formrow">
                 <label for="groups_hideclosed">{gt text="Hide closed groups"}</label>
-                <input id="groups_hideclosed" name="hideclosed" type="checkbox"{if $modvars.Groups.hideclosed eq 1} checked="checked"{/if} />
+                <input id="groups_hideclosed" name="hideclosed" type="checkbox"{if $modvars.GroupsModule.hideclosed eq 1} checked="checked"{/if} />
             </div>
             <div class="z-formrow">
                 <label for="groups_mailwarning">{gt text="Receive e-mail alert when there are new applicants"}</label>
-                <input id="groups_mailwarning" name="mailwarning" type="checkbox"{if $modvars.Groups.mailwarning eq 1} checked="checked"{/if} />
+                <input id="groups_mailwarning" name="mailwarning" type="checkbox"{if $modvars.GroupsModule.mailwarning eq 1} checked="checked"{/if} />
             </div>
         </fieldset>
 

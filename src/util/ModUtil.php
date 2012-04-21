@@ -143,6 +143,9 @@ class ModUtil
     public static function hasVar($modname, $name)
     {
         // define input, all numbers and booleans to strings
+        if ('ZConfig' !== $modname) {
+            $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        }
         $modname = isset($modname) ? ((string)$modname) : '';
         $name = isset($name) ? ((string)$name) : '';
 
@@ -189,6 +192,10 @@ class ModUtil
             $modname = self::getName();
         }
 
+        if ('ZConfig' !== $modname) {
+            $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        }
+
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
@@ -227,6 +234,9 @@ class ModUtil
     public static function setVar($modname, $name, $value = '')
     {
         // define input, all numbers and booleans to strings
+        if ('ZConfig' !== $modname) {
+            $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        }
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
@@ -284,6 +294,9 @@ class ModUtil
     public static function delVar($modname, $name = '')
     {
         // define input, all numbers and booleans to strings
+        if ('ZConfig' !== $modname) {
+            $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        }
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
@@ -348,6 +361,8 @@ class ModUtil
     public static function getIdFromName($module)
     {
         // define input, all numbers and booleans to strings
+        $alias = (isset($module) ? strtolower((string)$module) : '');
+        $module = preg_match('/\w+Module$/i', $module) || !$module ? $module : $module.'Module';
         $module = (isset($module) ? strtolower((string)$module) : '');
 
         // validate
@@ -366,16 +381,16 @@ class ModUtil
                 return false;
             }
 
-            foreach ($modules as $mod) {
+            foreach ($modules as $id => $mod) {
                 $mName = strtolower($mod['name']);
                 self::$cache['modid'][$mName] = $mod['id'];
-                if (isset($mod['url']) && $mod['url']) {
+                if (!$id == 0) {
                     $mdName = strtolower($mod['url']);
                     self::$cache['modid'][$mdName] = $mod['id'];
                 }
             }
 
-            if (!isset(self::$cache['modid'][$module])) {
+            if (!isset(self::$cache['modid'][$module]) && !isset(self::$cache['modid'][$alias])) {
                 self::$cache['modid'][$module] = false;
                 return false;
             }
@@ -383,6 +398,10 @@ class ModUtil
 
         if (isset(self::$cache['modid'][$module])) {
             return self::$cache['modid'][$module];
+        }
+
+        if (isset(self::$cache['modid'][$alias])) {
+            return self::$cache['modid'][$alias];
         }
 
         return false;
@@ -561,7 +580,7 @@ class ModUtil
             foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
-                    || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
+                    || (preg_match('/^(extensionsmodule|adminmodule|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     self::$cache['modsarray'][$mod['name']] = $mod;
                 }
@@ -583,6 +602,7 @@ class ModUtil
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
         // define input, all numbers and booleans to strings
+        $modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
         // validate
@@ -617,7 +637,6 @@ class ModUtil
         } else {
             $modpath = is_dir(ZIKULA_ROOT."/system/$directory") ? 'system' : 'modules';
         }
-
 
         // Load the database definition if required
         $file = ZIKULA_ROOT."/$modpath/$directory/tables.php";
@@ -711,6 +730,7 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
+        $modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
         $modtype = strtolower("$modname{$type}{$osapi}");
 
@@ -725,7 +745,6 @@ class ModUtil
 
         // this is essential to call separately and not in the condition below - drak
         $available = self::available($modname, $force);
-
         // check the modules state
         if (!$force && !$available) {
             return false;
@@ -928,6 +947,7 @@ class ModUtil
         $object = self::getObject($className);
         $func = $api ? $func : $func.'Action';
         if (is_callable(array($object, $func))) {
+            $className = str_replace('\\', '_', $className);
             return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func));
         }
 
@@ -950,6 +970,7 @@ class ModUtil
     public static function exec($modname, $type = 'user', $func = 'index', $args = array(), $api = false)
     {
         // define input, all numbers and booleans to strings
+        $modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
         $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
 
@@ -964,6 +985,7 @@ class ModUtil
         $modfunc = null;
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
         $result = self::getCallable($modname, $type, $func, $api);
+
         if ($result) {
             $modfunc = $result['callable'];
             $controller = $modfunc[0];
@@ -978,7 +1000,6 @@ class ModUtil
                 $dispatcher->dispatch('module_dispatch.preexecute', $preExecuteEvent);
 
                 $modfunc[0]->preDispatch();
-
                 $postExecuteEvent->setData(call_user_func($modfunc, $args));
                 $modfunc[0]->postDispatch();
 
@@ -1072,6 +1093,7 @@ class ModUtil
     public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         // define input, all numbers and booleans to strings
+        $modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // note - when this legacy is to be removed, change method signature $type = null to $type making it a required argument.
@@ -1261,6 +1283,7 @@ class ModUtil
     public static function available($modname = null, $force = false)
     {
         // define input, all numbers and booleans to strings
+        $modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
         // validate
@@ -1284,7 +1307,7 @@ class ModUtil
         }
 
         if ((isset(self::$cache['modstate'][$modname]) &&
-                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
+                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensionsmodule|adminmodule|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $modname) &&
                 (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
             return true;
@@ -1557,7 +1580,11 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'blocks', 'categories', 'errors', 'extensions', 'groups', 'mailer', 'pagelock', 'permissions', 'search', 'securitycenter', 'settings', 'theme', 'users'))) {
+        $moduleName = preg_match('/\w+Module$/i', $moduleName) || !$moduleName ? $moduleName : $moduleName.'Module';
+        if (in_array(strtolower($moduleName), array('adminmodule', 'blocksmodule', 'categoriesmodule',
+            'errorsmodule', 'extensionsmodule', 'groupsmodule', 'mailermodule', 'pagelockmodule',
+            'permissionsmodule', 'searchmodule', 'securitycentermodule', 'settingsmodule',
+            'thememodule', 'usersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';

@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -156,12 +156,12 @@ class InitListener implements EventSubscriberInterface
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
             \ModUtil::initCoreVars();
-            \ModUtil::dbInfoLoad('Settings', 'Settings');
-            \ModUtil::dbInfoLoad('Theme', 'Theme');
-            \ModUtil::dbInfoLoad('Users', 'Users');
-            \ModUtil::dbInfoLoad('Groups', 'Groups');
-            \ModUtil::dbInfoLoad('Permissions', 'Permissions');
-            \ModUtil::dbInfoLoad('Categories', 'Categories');
+            \ModUtil::dbInfoLoad('SettingsModule', 'SettingsModule');
+            \ModUtil::dbInfoLoad('ThemeModule', 'ThemeModule');
+            \ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
+            \ModUtil::dbInfoLoad('GroupsModule', 'GroupsModule');
+            \ModUtil::dbInfoLoad('PermissionsModule', 'PermissionsModule');
+            \ModUtil::dbInfoLoad('CategoriesModule', 'CategoriesModule');
 
             if (!\System::isInstalling()) {
                 \ModUtil::registerAutoloaders();

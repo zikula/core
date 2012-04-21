@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 
 /**
  * Zikula_View function to display the login box

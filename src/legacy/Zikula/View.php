@@ -13,7 +13,7 @@
  */
 
 use Zikula\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\EventDispatcher\EventDispacter;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zikula\Common\I18n\TranslatableInterface;
 use Zikula\Core\Event\GenericEvent;
 
@@ -120,7 +120,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
     /**
      * The event manager instance.
      *
-     * @var \Symfony\Component\EventDispatcher\EventDispatcher
+     * @var EventDispatcher
      */
     protected $dispatcher;
 
@@ -240,7 +240,7 @@ class Zikula_View extends Smarty implements TranslatableInterface
         // include system/Admin/templates/plugins to the plugins_dir array
         if ($type === 'admin') {
             if (!$this instanceof Zikula_View_Theme) {
-                $this->addPluginDir('system/Admin/Resources/view/plugins');
+                $this->addPluginDir('system/AdminModule/Resources/view/plugins');
             } else {
                 $this->load_filter('output', 'admintitle');
             }
@@ -351,6 +351,8 @@ class Zikula_View extends Smarty implements TranslatableInterface
         if (is_null($module)) {
             $module = ModUtil::getName();
         }
+
+        $module = preg_match('/\w+Module$/', $module) ? $module : $module.'Module';
 
         $container = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.view.%s', $module));

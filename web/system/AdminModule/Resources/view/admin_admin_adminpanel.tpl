@@ -11,8 +11,8 @@
             {math equation="$moduleid+1" assign="moduleid"}
 
             {if $smarty.foreach.adminlink.first}<div class="z-adminiconrow z-clearfix" id="modules">{/if}
-                <div id="module_{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.Admin.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
-                    {if $modvars.Admin.admingraphic eq 1}
+                <div id="module_{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.AdminModule.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
+                    {if $modvars.AdminModule.admingraphic eq 1}
                     <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
                         <img class="z-adminfloat" src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
                     </a>
@@ -49,7 +49,7 @@
 
                     </div>
 
-                    {math equation="170-x*30" x=$modvars.Admin.modulesperrow format="%.0f" assign=trunLen}
+                    {math equation="170-x*30" x=$modvars.AdminModule.modulesperrow format="%.0f" assign=trunLen}
                     <div class="z-menutexttitle">{$adminlink.menutexttitle|safetext|truncate:$trunLen:"&hellip;":false}</div>
 
                 </div>

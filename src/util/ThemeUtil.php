@@ -122,7 +122,7 @@ class ThemeUtil
             $entityManager = $sm->get('doctrine')->getEntityManager();
 
             // get themes
-            $themes = $entityManager->getRepository('Theme\Entity\Theme')->findBy($filters, array('name' => 'ASC'));
+            $themes = $entityManager->getRepository('ThemeModule\Entity\Theme')->findBy($filters, array('name' => 'ASC'));
 
             // index themes array using directory field
             $dbthemes = array();
@@ -150,6 +150,7 @@ class ThemeUtil
     public static function getIDFromName($theme)
     {
         // define input, all numbers and booleans to strings
+        $theme = preg_match('/\w+Theme$/', $theme) || !$theme ? $theme : $theme.'Theme';
         $theme = (isset($theme) ? strtolower((string)$theme) : '');
 
         // validate
@@ -236,7 +237,7 @@ class ThemeUtil
             $entityManager = $sm->get('doctrine')->getEntityManager();
 
             // get all themes
-            $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();
+            $themes = $entityManager->getRepository('ThemeModule\Entity\Theme')->findAll();
 
             foreach ($themes as $theme) {
                 $theme = $theme->toArray();
@@ -262,6 +263,8 @@ class ThemeUtil
         if (empty($modname)) {
             $modname = ModUtil::getName();
         }
+
+        $modname = preg_match('/\w+Module$/', $modname) ? $modname : $modname.'Module';
 
         // default for the style sheet
         if (empty($stylesheet)) {

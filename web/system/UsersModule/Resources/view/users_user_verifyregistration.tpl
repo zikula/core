@@ -1,6 +1,6 @@
 {strip}
     {gt text='Enter verification code' assign='templatetitle'}
-    {if $modvars.Users.use_password_strength_meter == 1}
+    {if $modvars.UsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
@@ -9,7 +9,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('users_newpass', 'users_verifyregistration_passmeter',{
                         username:'users_uname',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.UsersModule.minpass}}'
                     });
                 });
             </script>
@@ -55,7 +55,7 @@
                 <label for="users_newpass">{gt text='Password'}</label>
                 <input id="users_newpass" type="password" name="newpass" size="25" maxlength="60" value="" />
             </div>
-            {if $modvars.Users.use_password_strength_meter == 1}
+            {if $modvars.UsersModule.use_password_strength_meter == 1}
             <div id="users_verifyregistration_passmeter">
             </div>
             {/if}

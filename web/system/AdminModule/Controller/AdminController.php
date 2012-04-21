@@ -268,7 +268,7 @@ class AdminController extends \Zikula_AbstractController
             // check if upgrade scripts exist
             if ($zrcexists == true) {
                 return $this->response($this->view->assign('zrcexists', $zrcexists)
-                                  ->assign('adminpanellink', \ModUtil::url('Admin','admin', 'adminpanel'))
+                                  ->assign('adminpanellink', \ModUtil::url('AdminModule', 'admin', 'adminpanel'))
                                   ->fetch('admin_admin_warning.tpl'));
             }
         }
@@ -293,7 +293,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Get Details on the selected category
         if ($acid > 0) {
-            $category = \ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $acid));
+            $category = \ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $acid));
         } else {
             $category = null;
         }
@@ -307,7 +307,7 @@ class AdminController extends \Zikula_AbstractController
                 return \LogUtil::registerPermissionError(System::getHomepageUrl());
             }
 
-            $category = \ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+            $category = \ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $acid));
         }
 
         // assign the category
@@ -320,9 +320,9 @@ class AdminController extends \Zikula_AbstractController
         $adminlinks = array();
         foreach ($adminmodules as $adminmodule) {
             if (\SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
-                $catid = \ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
+                $catid = \ModUtil::apiFunc('AdminModule', 'admin', 'getmodcategory',
                         array('mid' => \ModUtil::getIdFromName($adminmodule['name'])));
-                $order = \ModUtil::apiFunc('Admin', 'admin', 'getSortOrder',
+                $order = \ModUtil::apiFunc('AdminModule', 'admin', 'getSortOrder',
                         array('mid' => \ModUtil::getIdFromName($adminmodule['name'])));
                 if (($catid == $acid) || (($catid == false) && ($acid == $this->getVar('defaultcategory')))) {
                     $modinfo = \ModUtil::getInfoFromName($adminmodule['name']);
@@ -346,7 +346,7 @@ class AdminController extends \Zikula_AbstractController
                         $modpath . '/' . $osmoddir . '/images/admin.png',
                         $modpath . '/' . $osmoddir . '/images/admin.jpg',
                         $modpath . '/' . $osmoddir . '/images/admin.gif',
-                        'system/Admin/Resources/public/images/default.gif');
+                        'system/AdminModule/Resources/public/images/default.gif');
 
                     foreach ($adminicons as $adminicon) {
                         if (is_readable($adminicon)) {
