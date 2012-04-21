@@ -21,21 +21,21 @@ class DoctrineStorage implements StorageInterface
 
     public function getAll()
     {
-        return $this->em->getRepository('ZikulaModulesBundle:Module')->findAll();
+        return $this->em->getRepository('ZikulaModuleBundle:Module')->findAll();
     }
 
     public function get($id)
     {
-        return $this->em->find('ZikulaModulesBundle', $id);
+        return $this->em->find('ZikulaModuleBundle', $id);
     }
 
-    public function insert(\Zikula\ModuleBundle\Entity\Module $module)
+    public function insert(\Zikula\Bundle\ModuleBundle\Entity\Module $module)
     {
         $this->em->persist($module);
         $this->em->flush();
     }
 
-    public function update(\Zikula\ModuleBundle\Entity\Module $module)
+    public function update(\Zikula\Bundle\ModuleBundle\Entity\Module $module)
     {
         $this->em->persist($module);
         $this->em->flush();

@@ -8,12 +8,12 @@ abstract class AbstractTheme extends Bundle
 {
     protected static $staticPath;
 
-//    public function __construct()
-//    {
-//        $name = get_class($this);
-//        $posNamespaceSeperator = strrpos($name, '\\');
-//        $this->name = substr($name, $posNamespaceSeperator + 1);
-//    }
+    public function __construct()
+    {
+        $name = get_class($this);
+        $posNamespaceSeperator = strrpos($name, '\\');
+        $this->name = substr($name, $posNamespaceSeperator + 1);
+    }
 
     /**
      * Gets the base path of the module.

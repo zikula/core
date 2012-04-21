@@ -2,12 +2,15 @@
 
 namespace Zikula\Bundle\ModuleBundle;
 
-use Symfony\Bundle\FrameworkBundle\Debug\TraceableEventDispatcher;
+use Symfony\Component\HttpKernel\Debug\ContainerAwareTraceableEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
-class ModuleAwareTraceableEventDispatcher extends TraceableEventDispatcher
+class ModuleAwareTraceableEventDispatcher extends ContainerAwareTraceableEventDispatcher
 {
+    /**
+     * @var ZikulaKernel
+     */
     private $kernel;
 
     public function __construct(ContainerInterface $container, LoggerInterface $logger = null)
@@ -27,8 +30,8 @@ class ModuleAwareTraceableEventDispatcher extends TraceableEventDispatcher
 
         // skip inactive module bundles
         if (!$bundle
-            || !$bundle instanceof ZikulaModule
-            || ($bundle instanceof ZikulaModule && $this->kernel->isModuleBundleActive($bundle))) {
+            || !$bundle instanceof AbstractModule
+            || ($bundle instanceof AbstractModule && $this->kernel->isModuleBundleActive($bundle))) {
             parent::addListenerService($eventName, $callback, $priority);
         }
     }

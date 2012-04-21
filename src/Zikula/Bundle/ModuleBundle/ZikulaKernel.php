@@ -44,7 +44,7 @@ abstract class ZikulaKernel extends Kernel
     {
         foreach ($this->getBundles() as $bundle) {
             if (0 === strpos($class, $bundle->getNamespace())) {
-                return $bundle instanceof ZikulaModule;
+                return $bundle instanceof AbstractModule;
             }
         }
 
@@ -68,7 +68,7 @@ abstract class ZikulaKernel extends Kernel
         return false;
     }
 
-    public function isModuleBundleActive(ZikulaModule $bundle)
+    public function isModuleBundleActive(AbstractModule $bundle)
     {
         $modules = $this->container->get('zikula.modules')->getAllModules();
         $modules = array_filter($modules, function($m) use($bundle) {
