@@ -507,35 +507,6 @@ class DataUtil
     }
 
     /**
-     * Censor variable contents. This method is recursive array safe.
-     *
-     * @param string $var The variable to censor.
-     *
-     * @return string The censored variable.
-     */
-    public static function censor($var)
-    {
-        static $doCensor;
-        if (!isset($doCensor)) {
-            $doCensor = ModUtil::available('MultiHook');
-        }
-
-        if (!$doCensor) {
-            return $var;
-        }
-
-        if (is_array($var)) {
-            foreach ($var as $k => $v) {
-                $var[$k] = self::censor($v);
-            }
-        } else {
-            $var = ModUtil::apiFunc('MultiHookModule', 'user', 'censor', array('word' => $var)); // preg_replace($search, $replace, $var);
-        }
-
-        return $var;
-    }
-
-    /**
      * Hash function.
      *
      * Perform SHA1 or SHA256 hashing on a string using native PHP functions if available and if not uses own classes.
