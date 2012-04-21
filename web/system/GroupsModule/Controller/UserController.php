@@ -58,7 +58,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         // get groups (not core, only private and public ones)
-        $groups = ModUtil::apiFunc('Groups', 'user', 'getallgroups',
+        $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getallgroups',
                 array('startnum' => $startnum,
                       'numitems' => $itemsperpage));
 
@@ -103,7 +103,7 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('nogroups', false)
                    ->assign('items', $groupitems);
 
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countitems'),
+        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('GroupsModule', 'user', 'countitems'),
                                            'itemsperpage' => $itemsperpage));
 
         return $this->response($this->view->fetch('groups_user_view.tpl'));
@@ -135,7 +135,7 @@ class UserController extends \Zikula_AbstractController
         $uid = UserUtil::getVar('uid');
 
         // Check if the group exists
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!$group) {
             return DataUtil::formatForDisplay($this->__("Error! That group does not exist."));
@@ -143,9 +143,9 @@ class UserController extends \Zikula_AbstractController
 
         // And lastly, we must check if he didn't rewrote the url,
         // that is he applying to an open group and that the group is open
-        // $isopen = ModUtil::apiFunc('Groups', 'user', 'getginfo', array('gid' => $gid));
+        // $isopen = ModUtil::apiFunc('GroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
-            if (ModUtil::apiFunc('Groups', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
+            if (ModUtil::apiFunc('GroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
                 return DataUtil::formatForDisplay($this->__('Error! You are already a member of this group.'));
             }
 
@@ -200,7 +200,7 @@ class UserController extends \Zikula_AbstractController
             $applytext = $this->request->request->get('applytext', null);
         }
 
-        $result = ModUtil::apiFunc('Groups', 'user', 'userupdate',
+        $result = ModUtil::apiFunc('GroupsModule', 'user', 'userupdate',
                 array('gid'       => $gid,
                       'action'    => $action,
                       'gtype'     => $gtype,
@@ -232,7 +232,7 @@ class UserController extends \Zikula_AbstractController
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::memberslist', '::', ACCESS_OVERVIEW));
 
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid,
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid,
                 'numitems' => $itemsperpage,
                 'startnum' => $startnum));
 
@@ -257,7 +257,7 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('group', $group);
 
         if ($group['members']) {
-            $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline');
+            $onlines = ModUtil::apiFunc('GroupsModule', 'user', 'whosonline');
             
             $members = array();
             foreach($group['members'] as $userid) {
@@ -297,12 +297,12 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (UserUtil::isLoggedIn()) {
-            $this->view->assign('ismember', ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+            $this->view->assign('ismember', ModUtil::apiFunc('GroupsModule', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
         } else {
             $this->view->assign('ismember', false);
         }
 
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid)),
+        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('GroupsModule', 'user', 'countgroupmembers', array('gid' => $gid)),
                                            'itemsperpage' => $itemsperpage));
 
         return $this->response($this->view->fetch('groups_user_memberslist.tpl'));

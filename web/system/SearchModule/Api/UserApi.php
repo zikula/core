@@ -83,7 +83,7 @@ class UserApi extends \Zikula_AbstractApi
             DBUtil::deleteWhere('search_result', $where);
 
             // get all the search plugins
-            $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
+            $search_modules = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins');
 
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
@@ -438,7 +438,7 @@ class UserApi extends \Zikula_AbstractApi
     public function getlinks($args)
     {
         $links = array();
-        $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
+        $search_modules = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins');
 
         if (SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('Search', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');

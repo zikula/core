@@ -585,7 +585,7 @@ class Zikula_View_Theme extends Zikula_View
              ->assign('scriptpath', $this->scriptpath);
 
         // load the theme variables
-        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $this->name));
+        $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $this->name));
         $this->assign($variables['variables']);
     }
 
@@ -687,12 +687,12 @@ class Zikula_View_Theme extends Zikula_View
             }
 
             // load the page configuration
-            $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+            $this->themeconfig = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
 
             // check if we've not got a valid theme configation
             if (!$this->themeconfig['page']) {
                 $file = 'master.ini';
-                $this->themeconfig = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+                $this->themeconfig = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
             }
         }
 
@@ -735,7 +735,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the palette if set
         if (!empty($this->themeconfig['palette'])) {
-            $palette = ModUtil::apiFunc('Theme', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
+            $palette = ModUtil::apiFunc('ThemeModule', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
             $this->assign('palette', $palette);
         }
 

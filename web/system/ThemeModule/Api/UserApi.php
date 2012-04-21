@@ -123,7 +123,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
-        $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
+        $allpalettes = ModUtil::apiFunc('ThemeModule', 'user', 'getpalettes', array('theme' => $args['theme']));
 
         return isset($allpalettes[$args['palette']]) ? $allpalettes[$args['palette']] : null;
     }
@@ -138,7 +138,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
-        $allpalettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $args['theme']));
+        $allpalettes = ModUtil::apiFunc('ThemeModule', 'user', 'getpalettes', array('theme' => $args['theme']));
         $palettes = array();
         foreach (array_keys((array)$allpalettes) as $name) {
             $palettes[$name] = $name;
@@ -292,7 +292,7 @@ class UserApi extends \Zikula_AbstractApi
         // get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
 
-        $content = ModUtil::apiFunc('theme', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
+        $content = ModUtil::apiFunc('themeModule', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
 
         $ostemp  = CacheUtil::getLocalDir();
         $ostheme = DataUtil::formatForOS($themeinfo['directory']);

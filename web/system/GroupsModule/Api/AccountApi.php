@@ -28,7 +28,7 @@ class AccountApi extends \Zikula_AbstractApi
         $items = array();
 
         // Check if there is at least one group to show
-        $groups = ModUtil::apiFunc('Groups', 'user', 'getallgroups');
+        $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getallgroups');
 
         if ($groups) {
             // create an array of links to return

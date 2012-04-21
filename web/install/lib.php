@@ -435,18 +435,18 @@ function installmodules($lang = 'en')
     }
 
     // regenerate modules list
-    $filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
-    ModUtil::apiFunc('Extensions', 'admin', 'regenerate',
+    $filemodules = ModUtil::apiFunc('ExtensionsModule', 'admin', 'getfilemodules');
+    ModUtil::apiFunc('ExtensionsModule', 'admin', 'regenerate',
                     array('filemodules' => $filemodules));
 
     // set each of the core modules to active
     reset($coremodules);
     foreach ($coremodules as $coremodule) {
         $mid = ModUtil::getIdFromName($coremodule, true);
-        ModUtil::apiFunc('Extensions', 'admin', 'setstate',
+        ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate',
                         array('id' => $mid,
                                 'state' => ModUtil::STATE_INACTIVE));
-        ModUtil::apiFunc('Extensions', 'admin', 'setstate',
+        ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate',
                         array('id' => $mid,
                                 'state' => ModUtil::STATE_ACTIVE));
     }
@@ -462,14 +462,14 @@ function installmodules($lang = 'en')
             'Admin' => __('System'),
             'Settings' => __('System'));
 
-    $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
+    $categories = ModUtil::apiFunc('AdminModule', 'admin', 'getall');
     $modscat = array();
     foreach ($categories as $category) {
         $modscat[$category['name']] = $category['cid'];
     }
     foreach ($coremodules as $coremodule) {
         $category = $coremodscat[$coremodule];
-        ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
+        ModUtil::apiFunc('AdminModule', 'admin', 'addmodtocategory',
                         array('module' => $coremodule,
                                 'category' => $modscat[$category]));
     }
@@ -521,16 +521,16 @@ function installmodules($lang = 'en')
         $mid = ModUtil::getIdFromName($module['module']);
 
         // init it
-        if (ModUtil::apiFunc('Extensions', 'admin', 'initialise',
+        if (ModUtil::apiFunc('ExtensionsModule', 'admin', 'initialise',
                         array('id' => $mid)) == true) {
             // activate it
-            if (ModUtil::apiFunc('Extensions', 'admin', 'setstate',
+            if (ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate',
                             array('id' => $mid,
                                     'state' => ModUtil::STATE_ACTIVE))) {
                 $results[$module['module']] = true;
             }
             // Set category
-            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
+            ModUtil::apiFunc('AdminModule', 'admin', 'addmodtocategory',
                             array('module' => $module['module'],
                                     'category' => $modscat[$module['category']]));
         }

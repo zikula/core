@@ -113,7 +113,7 @@ class SearchBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // get all the search plugins
-        $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
+        $search_modules = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins');
 
         $searchmodules = array();
         if (is_array($search_modules)) {

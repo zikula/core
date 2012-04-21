@@ -309,7 +309,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if ($mailerArgs['body']) {
-            return ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $mailerArgs);
+            return ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', $mailerArgs);
         }
 
         return true;
@@ -369,7 +369,7 @@ class UserApi extends \Zikula_AbstractApi
 
             $subject = $this->__f('Account information for %s', $userObj['uname']);
 
-            $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+            $emailMessageSent = ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', array(
                 'toaddress' => $userObj['email'],
                 'subject'   => $subject,
                 'body'      => $htmlBody,
@@ -459,7 +459,7 @@ class UserApi extends \Zikula_AbstractApi
 
                     $subject = $this->__f('Confirmation code for %s', $user['uname']);
 
-                    $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+                    $emailMessageSent = ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', array(
                         'toaddress' => $user['email'],
                         'subject'   => $subject,
                         'body'      => $htmlBody,
@@ -656,7 +656,7 @@ class UserApi extends \Zikula_AbstractApi
         $view->assign($viewArgs);
 
         $message = $view->fetch('users_email_userverifyemail_html.tpl');
-        $sent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+        $sent = ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', array(
             'toaddress' => $args['newemail'],
             'subject'   => $subject,
             'body'      => $message,

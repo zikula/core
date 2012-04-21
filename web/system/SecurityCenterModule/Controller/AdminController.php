@@ -292,7 +292,7 @@ class AdminController extends \Zikula_AbstractController
         System::setVar('idsexceptions', $idsexceptarray);
 
         // clear all cache and compile directories
-        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
 
         // the module configuration has been updated successfuly
         if ($validates) {
@@ -540,7 +540,7 @@ class AdminController extends \Zikula_AbstractController
         $purifier = SecurityCenterUtil::getpurifier(true);
 
         // clear all cache and compile directories
-        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
 
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved HTMLPurifier configuration.'));
@@ -731,7 +731,7 @@ class AdminController extends \Zikula_AbstractController
         $redirect_url = ModUtil::url('SecurityCenter', 'admin', 'viewidslog');
 
         // delete all entries
-        if (ModUtil::apiFunc('SecurityCenter', 'admin', 'purgeidslog')) {
+        if (ModUtil::apiFunc('SecurityCenterModule', 'admin', 'purgeidslog')) {
             LogUtil::registerStatus($this->__('Done! Purged IDS Log.'));
         }
 
@@ -795,7 +795,7 @@ class AdminController extends \Zikula_AbstractController
         System::setVar('htmlentities', $htmlentities);
 
         // clear all cache and compile directories
-        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
 
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));

@@ -44,7 +44,7 @@ class BlockUtil
         $request = ServiceUtil::get('request');
         // get the block position
         if (empty($positions)) {
-            $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+            $positions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
         }
 
         if (!isset($positions[$side])) {
@@ -57,7 +57,7 @@ class BlockUtil
 
         // get all block placements
         if (empty($blockplacements)) {
-            $blockplacements = ModUtil::apiFunc('Blocks', 'user', 'getallplacements');
+            $blockplacements = ModUtil::apiFunc('BlocksModule', 'user', 'getallplacements');
         }
 
         // get variables from input
@@ -440,7 +440,7 @@ class BlockUtil
      */
     public static function getBlocksInfo()
     {
-        return ModUtil::apiFunc('Blocks', 'user', 'getall');
+        return ModUtil::apiFunc('BlocksModule', 'user', 'getall');
     }
 
     /**

@@ -61,7 +61,7 @@ class SystemPlugin_Example_Plugin extends Zikula_AbstractPlugin
             $modinfo = ModUtil::getInfoFromName('MultiHook');
             if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
                 $theme->load_filter('output', 'multihook');
-                ModUtil::apiFunc('MultiHook', 'theme', 'preparetheme');
+                ModUtil::apiFunc('MultiHookModuleModule', 'theme', 'preparetheme');
             }
         }
     }

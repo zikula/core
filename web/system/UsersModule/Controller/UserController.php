@@ -1789,7 +1789,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function usersBlockAction()
     {
-        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
+        $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getall');
         $mid = ModUtil::getIdFromName($this->name);
         $found = false;
         foreach ($blocks as $block) {
@@ -1831,7 +1831,7 @@ class UserController extends \Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
+        $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getall');
         $mid = ModUtil::getIdFromName($this->name);
         $found = false;
         foreach ($blocks as $block) {

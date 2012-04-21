@@ -120,12 +120,12 @@ class ModuleDispatcher
                 if (!$session->getFlashBag()->has(\Zikula_Session::MESSAGE_ERROR)) {
                     \LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
                 }
-                return \ModUtil::func('Errors', 'user', 'index', array('message' => $message, 'exception' => $e));
+                return \ModUtil::func('ErrorsModule', 'user', 'index', array('message' => $message, 'exception' => $e));
                 break;
 
              default:
                 \LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), $httpCode, null);
-                return \ModUtil::func('Errors', 'user', 'index', array('message' => $message, 'exception' => $e));
+                return \ModUtil::func('ErrorsModule', 'user', 'index', array('message' => $message, 'exception' => $e));
                 break;
         }
     }

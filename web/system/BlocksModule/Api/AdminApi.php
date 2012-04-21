@@ -79,7 +79,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         
         // update item
-        $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
+        $item = ModUtil::apiFunc('BlocksModule', 'user', 'get', array('bid' => $args['bid']));
         $item->merge($args);
 
         $this->entityManager->flush();
@@ -170,7 +170,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('$arg[\'active\'] missing or not numeric');
         }
         
-        $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $block['bid']));
+        $item = ModUtil::apiFunc('BlocksModule', 'user', 'get', array('bid' => $block['bid']));
         if (!SecurityUtil::checkPermission('Blocks::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
@@ -234,7 +234,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('$arg[\'bid\'] missing or not numeric');
         }
 
-        $block = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
+        $block = ModUtil::apiFunc('BlocksModule', 'user', 'get', array('bid' => $args['bid']));
         
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
@@ -276,7 +276,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        $positions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
         if (isset($positions) && is_array($positions)) {
             foreach ($positions as $position) {
                 if ($position['name'] == $args['name']) {
@@ -313,7 +313,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Get the existing position
-        $item = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
+        $item = ModUtil::apiFunc('BlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if ($item == false) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -324,7 +324,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
         
-        $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        $positions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
         if (isset($positions) && is_array($positions)) {
             foreach ($positions as $position) {
                 if ($position['name'] == $args['name'] && $position['pid'] != $args['pid']) {
@@ -354,7 +354,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
         
-        $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
+        $position = ModUtil::apiFunc('BlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
         if (!SecurityUtil::checkPermission('Blocks::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
@@ -387,7 +387,7 @@ class AdminApi extends \Zikula_AbstractApi
         $submenulinks = array();
 
         // get all possible block positions
-        $blockspositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        $blockspositions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
 
         // Create array for dropdown menu links
         foreach ($blockspositions as $blocksposition) {

@@ -69,7 +69,7 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
             return;
         }
 
-        $items = \ModUtil::apiFunc('Admin', 'admin', 'getall');
+        $items = \ModUtil::apiFunc('AdminModule', 'admin', 'getall');
 
         // Check for no items returned
         if (empty($items)) {
@@ -87,7 +87,7 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
                 $adminlinks = array();
                 foreach ($adminmodules as $adminmodule) {
                     // Get all modules in the category
-                    $catid = \ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
+                    $catid = \ModUtil::apiFunc('AdminModule', 'admin', 'getmodcategory',
                                               array('mid' => \ModUtil::getIdFromName($adminmodule['name'])));
 
                     if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == $this->getVar('defaultcategory')))) {

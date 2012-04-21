@@ -93,7 +93,7 @@ class SystemListener implements EventSubscriberInterface
         if (\SessionUtil::hasExpired()) {
             // Session has expired, display warning
             header('HTTP/1.0 403 Access Denied');
-            $return = \ModUtil::apiFunc('Users', 'user', 'expiredsession');
+            $return = \ModUtil::apiFunc('UsersModule', 'user', 'expiredsession');
             \System::shutdown();
         }
     }

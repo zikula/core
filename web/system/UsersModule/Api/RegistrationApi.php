@@ -856,7 +856,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             if (!$defaultGroup) {
                 $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
-            $groupAdded = ModUtil::apiFunc('Groups', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
+            $groupAdded = ModUtil::apiFunc('GroupsModule', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
             if (!$groupAdded) {
                 $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }

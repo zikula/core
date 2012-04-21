@@ -124,7 +124,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // clear all cache and compile directories
-        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
 
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
@@ -200,7 +200,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // clear all cache and compile directories
-        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
 
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved localisation settings.'));

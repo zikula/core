@@ -134,7 +134,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $uid = UserUtil::getVar('uid');
         if ($uid != 0) {
-            $result['status'] = ModUtil::apiFunc('Groups', 'user', 'isuserpending', array('gid' => $args['gid'], 'uid' => $uid));
+            $result['status'] = ModUtil::apiFunc('GroupsModule', 'user', 'isuserpending', array('gid' => $args['gid'], 'uid' => $uid));
         } else {
             $result['status'] = false;
         }
@@ -284,7 +284,7 @@ class UserApi extends \Zikula_AbstractApi
         $uid = UserUtil::getVar('uid');
 
         if ($uid != 0) {
-            $memberships = ModUtil::apiFunc('Groups', 'user', 'getusergroups',
+            $memberships = ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups',
                             array('uid' => $uid,
                                     'clean' => true));
         } else {
@@ -317,12 +317,12 @@ class UserApi extends \Zikula_AbstractApi
                 }
 
                 if ($uid != 0) {
-                    $status = ModUtil::apiFunc('Groups', 'user', 'isuserpending', array('gid' => $gid, 'uid' => $uid));
+                    $status = ModUtil::apiFunc('GroupsModule', 'user', 'isuserpending', array('gid' => $gid, 'uid' => $uid));
                 } else {
                     $status = false;
                 }
 
-                $nbuser = ModUtil::apiFunc('Groups', 'user', 'countgroupmembers', array('gid' => $gid));
+                $nbuser = ModUtil::apiFunc('GroupsModule', 'user', 'countgroupmembers', array('gid' => $gid));
 
                 if (SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_READ)) {
                     $canview = true;
@@ -379,7 +379,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
-        $item = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        $item = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -390,7 +390,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Check in case the user already applied
-        $pending = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
+        $pending = ModUtil::apiFunc('GroupsModule', 'user', 'isuserpending',
                         array('gid' => $args['gid'],
                               'uid' => $args['uid']));
 
@@ -424,7 +424,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Checking first if this user is really pending.
-        $ispending = ModUtil::apiFunc('Groups', 'user', 'isuserpending',
+        $ispending = ModUtil::apiFunc('GroupsModule', 'user', 'isuserpending',
                         array('gid' => $args['gid'],
                               'uid' => $args['uid']));
 
@@ -493,7 +493,7 @@ class UserApi extends \Zikula_AbstractApi
                 }
 
                 // We save the user in the application table
-                $save = ModUtil::apiFunc('Groups', 'user', 'saveapplication',
+                $save = ModUtil::apiFunc('GroupsModule', 'user', 'saveapplication',
                                 array('gid' => $args['gid'],
                                       'uid' => $userid,
                                       'applytext' => $args['applytext']));
@@ -504,7 +504,7 @@ class UserApi extends \Zikula_AbstractApi
 
                 if ($this->getVar('mailwarning')) {
                     $uname = UserUtil::getVar('uname', $userid);
-                    $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                    $send = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
                                     array('toname' => $this->__('Administrator'),
                                           'toaddress' => System::getVar('adminmail'),
                                           'subject' => $this->__('Group membership application registered'),
@@ -512,7 +512,7 @@ class UserApi extends \Zikula_AbstractApi
                 }
             } else {
                 // We save the user into the groups
-                $save = ModUtil::apiFunc('Groups', 'user', 'adduser',
+                $save = ModUtil::apiFunc('GroupsModule', 'user', 'adduser',
                                 array('gid' => $args['gid'],
                                       'uid' => $userid));
 
@@ -522,7 +522,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         } elseif ($args['action'] == 'cancel') {
 
-            $save = ModUtil::apiFunc('Groups', 'user', 'cancelapp',
+            $save = ModUtil::apiFunc('GroupsModule', 'user', 'cancelapp',
                             array('gid' => $args['gid'],
                                   'uid' => $userid));
 
@@ -531,7 +531,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         } else {
 
-            $save = ModUtil::apiFunc('Groups', 'user', 'removeuser',
+            $save = ModUtil::apiFunc('GroupsModule', 'user', 'removeuser',
                             array('gid' => $args['gid'],
                                   'uid' => $userid));
 
@@ -559,7 +559,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -571,7 +571,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // verify if the user is alredy a member of this group
-        $is_member = ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $is_member = ModUtil::apiFunc('GroupsModule', 'user', 'isgroupmember', array('gid' => $args['gid'], 'uid' => $args['uid']));
 
         // Add item
         if (!$is_member) {
@@ -610,7 +610,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -680,7 +680,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Get the group
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         // check if group exists
         if (!$group) {

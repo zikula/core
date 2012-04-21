@@ -93,7 +93,7 @@ class Util
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($filethemes[$name])) {
                 // delete a running configuration
-                ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $name));
+                ModUtil::apiFunc('ThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
 
                 // delete item from db
                 $item = $entityManager->getRepository('ThemeModule\Entity\Theme')->findOneBy(array('name' => $name));
