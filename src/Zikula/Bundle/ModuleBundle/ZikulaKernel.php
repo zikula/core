@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class ZikulaKernel extends Kernel
 {
-    const TYPE_MODUES = 'modules';
+    const TYPE_MODULES = 'modules';
     const TYPE_THEMES = 'themes';
 
     private $zikulaBundles;
@@ -143,7 +143,7 @@ abstract class ZikulaKernel extends Kernel
                 throw new Exception\InvalidModuleStructureException($dir->getFilename().' # '.$class);
             }
 
-            $this->zikulaBundles[self::TYPE_MODUES][] = new $class();
+            $this->zikulaBundles[self::TYPE_MODULES][] = new $class();
         }
     }
 

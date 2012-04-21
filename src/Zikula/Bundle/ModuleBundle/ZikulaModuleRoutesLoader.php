@@ -7,6 +7,9 @@ use Symfony\Component\Routing\RouteCollection;
 
 class ZikulaModuleRoutesLoader extends Loader
 {
+    /**
+     * @var ZikulaKernel
+     */
     private $zikulaKernel;
 
     public function __construct($zikulaKernel)
@@ -18,7 +21,7 @@ class ZikulaModuleRoutesLoader extends Loader
     {
         $collection = new RouteCollection();
 
-        foreach ($this->zikulaKernel->getZiklaBundlesOfType(ZikulaKernel::TYPE_MODUES) as $moduleBundle) {
+        foreach ($this->zikulaKernel->getZiklaBundlesOfType(ZikulaKernel::TYPE_MODULES) as $moduleBundle) {
             $resource = '@'.$moduleBundle->getName().'/Controller/';
             $subCollection = $this->resolve($resource)->load($resource, 'annotation');
             $collection->addCollection($subCollection, '/'.str_replace('Module', '', $moduleBundle->getName()).'/');
