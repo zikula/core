@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups;
+namespace GroupsModule;
 
 class Version extends \Zikula_AbstractVersion
 {
