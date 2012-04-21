@@ -48,9 +48,6 @@ RewriteRule ^/?(.*)$ %{ENV:PROTOCOL}://www.%{HTTP_HOST}/$1 [R=301,L]
 # Handle the favicon to prevent a full request to the engine
 RewriteRule ^(.*)favicon.ico - [L]
 
-# Ensure Ajax requests are routed correctly.
-RewriteRule ^(.*)/ajax.php$ ajax.php [QSA,L]
-
 # Rewrite any unknown directories and files.
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f

@@ -67,7 +67,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // validate the entry point
-        $falseEntryPoints = array('admin.php', 'ajax.php', 'install.php', 'upgrade.php', 'user.php', 'mo2json.php', 'jcss.php');
+        $falseEntryPoints = array('install.php', 'upgrade.php', 'mo2json.php', 'jcss.php');
         $entryPointExt = pathinfo($settings['entrypoint'], PATHINFO_EXTENSION);
 
         if (in_array($settings['entrypoint'], $falseEntryPoints) || !file_exists($settings['entrypoint']) || strtolower($entryPointExt) != 'php') {

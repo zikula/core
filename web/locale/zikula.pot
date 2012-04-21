@@ -443,7 +443,7 @@ msgid "Online manual"
 msgstr ""
 
 #: lib/legacy/plugins/function.moduleadminlinks.php:53
-#: lib/viewplugins/function.modulelinks.php:55 ajax.php:41 ajax.php:45
+#: lib/viewplugins/function.modulelinks.php:55 index.php:41 index.php:45
 #, php-format
 msgid "Error! The '%s' module is not available."
 msgstr ""
@@ -9855,22 +9855,22 @@ msgstr ""
 msgid "Error! Gettext 'gt' requires an attribute text."
 msgstr ""
 
-#: ajax.php:27 system/Theme/templates/system/siteoff.tpl:5
+#: index.php:27 system/Theme/templates/system/siteoff.tpl:5
 #: system/Theme/templates/system/siteoff.tpl:161
 msgid "The site is currently off-line."
 msgstr ""
 
-#: ajax.php:31
+#: index.php:31
 #, php-format
 msgid "Missing parameter '%s'"
 msgstr ""
 
-#: ajax.php:37
+#: index.php:37
 #, php-format
 msgid "Error! The '%s' module is unknown."
 msgstr ""
 
-#: ajax.php:58
+#: index.php:58
 #, php-format
 msgid "An unknown error occurred in module %s, controller %s, action %s"
 msgstr ""

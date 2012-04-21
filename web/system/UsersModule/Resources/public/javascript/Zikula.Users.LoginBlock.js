@@ -116,7 +116,7 @@ Zikula.Users.LoginBlock =
         parameterObj.form_type = 'loginblock';
 
         var r = new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + 'ajax.php?module=Users&type=Ajax&func=getLoginFormFields',
+            Zikula.Config.baseURL + 'index.php?module=Users&type=ajax&func=getLoginFormFields',
             {
                 parameters: parameterObj,
                 onSuccess: Zikula.Users.LoginBlock.getSelectAuthenticationMethodResponse,

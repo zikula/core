@@ -11,10 +11,7 @@ Disallow: /plugins
 Disallow: /system
 Disallow: /themes
 Disallow: /ztemp
-Disallow: /admin.php
-Disallow: /ajax.php
 Disallow: /install.php
 Disallow: /jcss.php
 Disallow: /mo2json.php
 Disallow: /upgrade.php
-Disallow: /user.php

@@ -101,7 +101,7 @@ function permappend()
     if (appending == false) {
         appending = true;
         new Zikula.Ajax.Request(
-            "ajax.php?module=Permissions&func=createpermission",
+            "index.php?module=Permissions&type=ajax&func=createpermission",
             {
                 onComplete: permappend_response
             });
@@ -240,7 +240,7 @@ function sortorderchanged()
     $('permission_' + adminpermission).removeClassName('z-sortable');
 
     new Zikula.Ajax.Request(
-        "ajax.php?module=Permissions&func=changeorder",
+        "index.php?module=Permissions&type=ajax&func=changeorder",
         {
             parameters: pars,
             onComplete: sortorderchanged_response
@@ -314,7 +314,7 @@ function permmodify(permid)
                level: $F('level_' + permid)
         }
         new Zikula.Ajax.Request(
-            "ajax.php?module=Permissions&func=updatepermission",
+            "index.php?module=Permissions&type=ajax&func=updatepermission",
             {
                 parameters: pars,
                 onComplete: permmodify_response
@@ -377,7 +377,7 @@ function permdelete(permid)
         // delete via ajax
         var pars = {pid: permid};
         new Zikula.Ajax.Request(
-            "ajax.php?module=Permissions&func=deletepermission",
+            "index.php?module=Permissions&func=deletepermission",
             {
                 parameters: pars,
                 onComplete: permdelete_response
@@ -582,7 +582,7 @@ function performpermissiontest()
     var pars = Form.serialize('testpermform');
     Form.disable('testpermform');
     new Zikula.Ajax.Request(
-        "ajax.php?module=Permissions&func=testpermission",
+        "index.php?module=Permissions&type=ajax&func=testpermission",
         {
             parameters: pars,
             onComplete: performpermissiontest_response

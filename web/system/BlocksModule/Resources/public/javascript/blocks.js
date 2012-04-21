@@ -57,7 +57,7 @@ function blockorderchanged()
                + "&" + Sortable.serialize('assignedblocklist', { 'name': 'blockorder' });
 
     new Zikula.Ajax.Request(
-        "ajax.php?module=Blocks&func=changeblockorder",
+        "index.php?module=Blocks&type=ajax&func=changeblockorder",
         {
             parameters: pars,
             onComplete: blockorderchanged_response
@@ -93,7 +93,7 @@ function toggleblock(bid)
     var pars = "bid=" + bid;
 
     new Zikula.Ajax.Request(
-        "ajax.php?module=Blocks&func=toggleblock",
+        "index.php?module=Blocks&type=ajax&func=toggleblock",
         {
             parameters: pars,
             onComplete: toggleblock_response
