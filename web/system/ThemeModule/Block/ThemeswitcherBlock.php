@@ -55,7 +55,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
     public function display($blockinfo)
     {
         // check if the module is available
-        if (!ModUtil::available('Theme')) {
+        if (!ModUtil::available('ThemeModule')) {
             return;
         }
 

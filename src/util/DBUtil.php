@@ -892,7 +892,7 @@ class DBUtil
                 strcmp($table, 'categories_') !== 0 &&
                 strcmp($table, 'objectdata_attributes') !== 0 &&
                 strcmp($table, 'objectdata_log') !== 0 &&
-                ModUtil::available('Categories')) {
+                ModUtil::available('CategoriesModule')) {
             ObjectUtil::storeObjectCategories($object, $table, $idfield, $update);
         }
 
@@ -1133,7 +1133,7 @@ class DBUtil
                 $table != 'categories_' &&
                 $table != 'objectdata_attributes' &&
                 $table != 'objectdata_log' &&
-                ModUtil::available('Categories')) {
+                ModUtil::available('CategoriesModule')) {
             ObjectUtil::deleteObjectCategories($object, $table, $idfield);
         }
 
@@ -2563,7 +2563,7 @@ class DBUtil
         $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('Categories')) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('CategoriesModule')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
