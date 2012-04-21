@@ -36,7 +36,7 @@ class ControllerResolver implements ControllerResolverInterface
 
     public function getController(Request $request)
     {
-        $method = isset($_GET['type']) && $_GET['type'] == 'ajax' ? 'ajaxDispatch' : 'dispatch';
+        $method = $request->isXmlHttpRequest() ? 'ajaxDispatch' : 'dispatch';
 
         return array(new ModuleDispatcher, $method);
     }
