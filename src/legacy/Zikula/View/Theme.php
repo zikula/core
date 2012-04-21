@@ -272,6 +272,8 @@ class Zikula_View_Theme extends Zikula_View
             $themeName = UserUtil::getTheme();
         }
 
+        $themeName = preg_match('/\w+Theme$/', $themeName) ? $themeName : $themeName.'Theme';
+
         $serviceId = 'zikula.theme';
         $container = ServiceUtil::getManager();
 
@@ -637,7 +639,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         if (!$this->themeconfig) {
             // load the page configurations
-            $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $this->name));
+            $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $this->name));
 
             // identify and load the correct module configuration
 

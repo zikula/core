@@ -18,7 +18,7 @@
  * define table information for the module
  *
  */
-function pagelock_tables()
+function pagelockmodule_tables()
 {
   $dbtable = array();
 

@@ -426,6 +426,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $files = array(
                 "themes/$themeinfo[name]/version.php" => 'versionfile',
+                "themes/$themeinfo[name]/$themeinfo[name].php" => 'versionfile',
                 "themes/$themeinfo[name]/Resources/locale/theme_".$themeinfo['name'].".pot" => 'potfile',
                 "themes/$themeinfo[name]/Resources/config/themepalettes.ini" => 'palettesfile',
                 "themes/$themeinfo[name]/Resources/config/themevariables.ini" => 'variablesfile',

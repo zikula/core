@@ -2922,14 +2922,9 @@ class DBUtil
             throw new Exception(__f('%s does not point to a valid table definition', $table));
         }
 
-        //try {
-        //    return Doctrine_Manager::getInstance()->getCurrentConnection()->import->listTableConstraints($tableName);
-        //} catch (Exception $e) {
-        //    return LogUtil::registerError(__('Error! Table constraints determination failed.') . ' ' . $e->getMessage());
-        //}
-
         $tablecol = $table . '_column';
         $tableopt = $table . '_constraints';
+        $constraints = '';
         $tables = self::getTables();
         if (array_key_exists($tableopt, $tables) && is_array($tables[$tableopt])) {
             foreach ($tables[$tableopt] as $fk_column => $fk_reference) {

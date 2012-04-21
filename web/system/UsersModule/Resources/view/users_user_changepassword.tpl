@@ -1,6 +1,6 @@
 {strip}
 {gt text='Password changer' assign='templatetitle'}
-{if $modvars.Users.use_password_strength_meter == 1}
+{if $modvars.UsersModule.use_password_strength_meter == 1}
 {pageaddvar name='javascript' value='prototype'}
 {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
 {pageaddvarblock}
@@ -9,7 +9,7 @@
     document.observe("dom:loaded", function() {
         passmeter = new Zikula.Users.PassMeter('newpassword', 'users_user_changepassword_passmeter',{
             username:'usernamehidden',
-            minLength: '{{$modvars.Users.minpass}}'
+            minLength: '{{$modvars.UsersModule.minpass}}'
         });
     });
 </script>
@@ -59,7 +59,7 @@
                 </div>
                 {/if}
             </div>
-            {if $modvars.Users.use_password_strength_meter == 1}
+            {if $modvars.UsersModule.use_password_strength_meter == 1}
             <div id="users_user_changepassword_passmeter">
             </div>
             {/if}

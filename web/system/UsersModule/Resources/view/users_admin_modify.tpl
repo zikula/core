@@ -2,7 +2,7 @@
     {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
-    {if $modvars.Users.use_password_strength_meter == 1}
+    {if $modvars.UsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
@@ -11,7 +11,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
                         username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.UsersModule.minpass}}'
                     });
                 });
             </script>
@@ -153,7 +153,7 @@
                 <div class="z-formrow">
                     <label for="{$formData->getFieldId($fieldName)}">{if $usersAuth}{gt text='New password'}{else}{gt text='Create a password'}{/if}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="password" name="{$fieldName}" size="30" maxlength="20" />
-                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.Users.minpass}</em>
+                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.UsersModule.minpass}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
                 <div id="{$formData->getFormId()}_passmeter">

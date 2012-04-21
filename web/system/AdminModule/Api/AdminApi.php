@@ -33,7 +33,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
-        $args['sortorder'] = \ModUtil::apiFunc('Admin', 'admin', 'countitems');
+        $args['sortorder'] = \ModUtil::apiFunc('AdminModule', 'admin', 'countitems');
 
         $item = new AdminCategory();
         $item->merge($args);
@@ -178,8 +178,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // retrieve the category object
-        $entity = $this->name . '\Entity\AdminCategory';
-        $category = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => (int)$args['cid']));
+        $category = $this->entityManager->getRepository('AdminModule\Entity\AdminCategory')->findOneBy(array('cid' => (int)$args['cid']));
 
         if (!$category) {
             return array();

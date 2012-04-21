@@ -4,5 +4,5 @@
 
 <h3>{gt text="Sorry! New user registration is currently disabled."}</h3>
 <div class="z-warningmsg">
-    {$modvars.Users.reg_noregreasons|safetext}
+    {$modvars.UsersModule.reg_noregreasons|safetext}
 </div>

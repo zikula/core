@@ -400,7 +400,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     function _getthemedomain($themename)
     {
-        if (in_array($themename, array('Andreas08', 'Atom', 'Printer', 'RSS', 'SeaBreeze'))) {
+        if (in_array($themename, array('Andreas08Theme', 'AtomTheme', 'PrinterTheme', 'RssTheme', 'SeaBreezeTheme'))) {
             return 'zikula';
         }
 

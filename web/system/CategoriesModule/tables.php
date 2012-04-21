@@ -18,7 +18,7 @@
  *
  * @return array Array of informations related to the Categories module tables.
  */
-function Categories_tables()
+function Categoriesmodule_tables()
 {
     // Initialise table array
     $dbtable = array();

@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-function Settings_tables()
+function Settingsmodule_tables()
 {
     // Initialise table array
     $dbtables = array();

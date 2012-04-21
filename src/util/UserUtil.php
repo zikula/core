@@ -13,7 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
-use Users\Constants as UsersConstant;
+use UsersModule\Constants as UsersConstant;
 
 /**
  * UserUtil
@@ -171,7 +171,7 @@ class UserUtil
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
         $em = ServiceUtil::get('doctrine')->getEntityManager();
-        $groups = $em->getRepository('Groups\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $groups = $em->getRepository('GroupsModule\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($groups as $group) {

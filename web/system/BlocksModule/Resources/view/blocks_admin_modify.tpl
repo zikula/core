@@ -101,7 +101,7 @@
             </div>
         </fieldset>
 
-        {if $modvars.Blocks.collapseable eq 1}
+        {if $modvars.BlocksModuleModule.collapseable eq 1}
         <fieldset>
             <legend>{gt text="Collapsibility"}</legend>
             <div class="z-formrow">

@@ -1,5 +1,5 @@
 ## YAML Override template
 ## original/file.tpl: override/file.tpl
 ---
-system/Search/Resources/view/search_block_search.tpl: themes/SeaBreeze/Resources/view/modules/Search/search_block_search.tpl
-system/Blocks/Resources/view/blocks_block_extmenu_topnav.tpl: themes/SeaBreeze/Resources/view/modules/Blocks/blocks_block_extmenu_topnav.tpl
+system/SearchModule/Resources/view/search_block_search.tpl: themes/SeaBreezeTheme/Resources/view/modules/Search/search_block_search.tpl
+system/BlocksModule/Resources/view/blocks_block_extmenu_topnav.tpl: themes/SeaBreezeTheme/Resources/view/modules/Blocks/blocks_block_extmenu_topnav.tpl

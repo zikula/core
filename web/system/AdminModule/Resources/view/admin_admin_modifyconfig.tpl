@@ -12,7 +12,7 @@
             <legend>{gt text="General settings"}</legend>
             <div class="z-formrow">
                 <label for="admin_ignoreinstallercheck">{gt text="Ignore check for installer"}</label>
-                {if $modvars.Admin.ignoreinstallercheck eq 1}
+                {if $modvars.AdminModuleModule.ignoreinstallercheck eq 1}
                 <input id="admin_ignoreinstallercheck" name="modvars[ignoreinstallercheck]" type="checkbox" value="1" checked="checked" />
                 {else}
                 <input id="admin_ignoreinstallercheck" name="modvars[ignoreinstallercheck]" type="checkbox" value="1" />
@@ -26,7 +26,7 @@
             <legend>{gt text="Display settings"}</legend>
             <div class="z-formrow">
                 <label for="admin_graphic">{gt text="Display icons"}</label>
-                {if $modvars.Admin.admingraphic eq 1}
+                {if $modvars.AdminModuleModule.admingraphic eq 1}
                 <input id="admin_graphic" name="modvars[admingraphic]" type="checkbox" value="1" checked="checked" />
                 {else}
                 <input id="admin_graphic" name="modvars[admingraphic]" type="checkbox" value="1" />
@@ -35,31 +35,31 @@
             <div class="z-formrow">
                 <label for="admin_displaynametype">{gt text="Form of display for module names"}</label>
                 <select id="admin_displaynametype" name="modvars[displaynametype]">
-                    <option value="1" {if $modvars.Admin.displaynametype eq 1}selected="selected"{/if}>{gt text="Display name"}</option>
-                    <option value="2" {if $modvars.Admin.displaynametype eq 2}selected="selected"{/if}>{gt text="Internal name"}</option>
-                    <option value="3" {if $modvars.Admin.displaynametype eq 3}selected="selected"{/if}>{gt text="Show both internal name and display name"}</option>
+                    <option value="1" {if $modvars.AdminModuleModule.displaynametype eq 1}selected="selected"{/if}>{gt text="Display name"}</option>
+                    <option value="2" {if $modvars.AdminModuleModule.displaynametype eq 2}selected="selected"{/if}>{gt text="Internal name"}</option>
+                    <option value="3" {if $modvars.AdminModuleModule.displaynametype eq 3}selected="selected"{/if}>{gt text="Show both internal name and display name"}</option>
                 </select>
             </div>
             <div class="z-formrow">
                 <label for="admin_itemsperpage">{gt text="Modules per page in module categories list"}</label>
-                <input id="admin_itemsperpage" name="modvars[itemsperpage]" type="text" size="3" maxlength="3" value="{$modvars.Admin.itemsperpage|safetext}" />
+                <input id="admin_itemsperpage" name="modvars[itemsperpage]" type="text" size="3" maxlength="3" value="{$modvars.AdminModuleModule.itemsperpage|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="admin_modulesperrow">{gt text="Modules per row in admin panel"}</label>
-                <input id="admin_modulesperrow" name="modvars[modulesperrow]" type="text" size="3" maxlength="3" value="{$modvars.Admin.modulesperrow|safetext}" />
+                <input id="admin_modulesperrow" name="modvars[modulesperrow]" type="text" size="3" maxlength="3" value="{$modvars.AdminModuleModule.modulesperrow|safetext}" />
             </div>
             <div class="z-formrow">
                 <label for="admintheme">{gt text="Theme to use"}</label>
                 <select id="admintheme" name="modvars[admintheme]">
                     <option value="">{gt text="Use site's theme"}</option>
-                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$modvars.Admin.admintheme}
+                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$modvars.AdminModuleModule.admintheme}
                 </select>
             </div>
             <div class="z-formrow">
                 <label for="admin_startcategory">{gt text="Category initially selected"}</label>
                 <select id="admin_startcategory" name="modvars[startcategory]">
                     {section name=category loop=$categories}
-                    {if  $modvars.Admin.startcategory eq $categories[category].cid}
+                    {if  $modvars.AdminModuleModule.startcategory eq $categories[category].cid}
                     <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].name|safetext}</option>
                     {else}
                     <option value="{$categories[category].cid|safetext}">{$categories[category].name|safetext}</option>
@@ -74,7 +74,7 @@
                 <label for="admin_defaultcategory">{gt text="Default category for newly-added modules"}</label>
                 <select id="admin_defaultcategory" name="modvars[defaultcategory]">
                     {section name=category loop=$categories}
-                    {if  $modvars.Admin.defaultcategory eq $categories[category].cid}
+                    {if  $modvars.AdminModuleModule.defaultcategory eq $categories[category].cid}
                     <option value="{$categories[category].cid|safetext}" selected="selected">{$categories[category].name|safetext}</option>
                     {else}
                     <option value="{$categories[category].cid|safetext}">{$categories[category].name|safetext}</option>
