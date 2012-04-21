@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2012 at 08:16 PM
+-- Generation Time: Apr 21, 2012 at 09:18 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -26,13 +26,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_category`
 --
 
+DROP TABLE IF EXISTS `admin_category`;
 CREATE TABLE IF NOT EXISTS `admin_category` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `description` varchar(255) NOT NULL,
   `sortorder` int(11) NOT NULL,
   PRIMARY KEY (`cid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `admin_category`
@@ -52,6 +53,7 @@ INSERT INTO `admin_category` (`cid`, `name`, `description`, `sortorder`) VALUES
 -- Table structure for table `admin_module`
 --
 
+DROP TABLE IF EXISTS `admin_module`;
 CREATE TABLE IF NOT EXISTS `admin_module` (
   `amid` int(11) NOT NULL AUTO_INCREMENT,
   `mid` int(11) NOT NULL,
@@ -59,17 +61,17 @@ CREATE TABLE IF NOT EXISTS `admin_module` (
   `sortorder` int(11) NOT NULL,
   PRIMARY KEY (`amid`),
   KEY `mid_cid` (`mid`,`cid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `admin_module`
 --
 
 INSERT INTO `admin_module` (`amid`, `mid`, `cid`, `sortorder`) VALUES
-(1, 1, 1, 0),
-(2, 12, 1, 1),
+(1, 1, 1, 1),
+(2, 12, 1, 3),
 (3, 13, 2, 0),
-(4, 2, 1, 2),
+(4, 2, 4, 3),
 (5, 9, 3, 0),
 (6, 6, 3, 1),
 (7, 3, 2, 1),
@@ -77,9 +79,12 @@ INSERT INTO `admin_module` (`amid`, `mid`, `cid`, `sortorder`) VALUES
 (9, 11, 6, 0),
 (10, 4, 4, 0),
 (11, 15, 4, 1),
-(12, 7, 1, 3),
+(12, 7, 1, 2),
 (13, 5, 1, 4),
-(14, 10, 4, 2);
+(14, 10, 4, 2),
+(15, 18, 5, 0),
+(16, 19, 5, 1),
+(17, 8, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -87,6 +92,7 @@ INSERT INTO `admin_module` (`amid`, `mid`, `cid`, `sortorder`) VALUES
 -- Table structure for table `blocks`
 --
 
+DROP TABLE IF EXISTS `blocks`;
 CREATE TABLE IF NOT EXISTS `blocks` (
   `bid` int(11) NOT NULL AUTO_INCREMENT,
   `bkey` varchar(255) NOT NULL,
@@ -123,6 +129,7 @@ INSERT INTO `blocks` (`bid`, `bkey`, `title`, `description`, `content`, `url`, `
 -- Table structure for table `block_placements`
 --
 
+DROP TABLE IF EXISTS `block_placements`;
 CREATE TABLE IF NOT EXISTS `block_placements` (
   `pid` int(11) NOT NULL,
   `bid` int(11) NOT NULL,
@@ -148,6 +155,7 @@ INSERT INTO `block_placements` (`pid`, `bid`, `sortorder`) VALUES
 -- Table structure for table `block_positions`
 --
 
+DROP TABLE IF EXISTS `block_positions`;
 CREATE TABLE IF NOT EXISTS `block_positions` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -176,6 +184,7 @@ INSERT INTO `block_positions` (`pid`, `name`, `description`) VALUES
 -- Table structure for table `categories_category`
 --
 
+DROP TABLE IF EXISTS `categories_category`;
 CREATE TABLE IF NOT EXISTS `categories_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '1',
@@ -253,6 +262,7 @@ INSERT INTO `categories_category` (`id`, `parent_id`, `is_locked`, `is_leaf`, `n
 -- Table structure for table `categories_mapmeta`
 --
 
+DROP TABLE IF EXISTS `categories_mapmeta`;
 CREATE TABLE IF NOT EXISTS `categories_mapmeta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `meta_id` int(11) NOT NULL DEFAULT '0',
@@ -272,6 +282,7 @@ CREATE TABLE IF NOT EXISTS `categories_mapmeta` (
 -- Table structure for table `categories_mapobj`
 --
 
+DROP TABLE IF EXISTS `categories_mapobj`;
 CREATE TABLE IF NOT EXISTS `categories_mapobj` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(60) NOT NULL,
@@ -296,6 +307,7 @@ CREATE TABLE IF NOT EXISTS `categories_mapobj` (
 -- Table structure for table `categories_registry`
 --
 
+DROP TABLE IF EXISTS `categories_registry`;
 CREATE TABLE IF NOT EXISTS `categories_registry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(60) NOT NULL,
@@ -317,6 +329,7 @@ CREATE TABLE IF NOT EXISTS `categories_registry` (
 -- Table structure for table `groups`
 --
 
+DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
   `gid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -345,6 +358,7 @@ INSERT INTO `groups` (`gid`, `name`, `gtype`, `description`, `prefix`, `state`, 
 -- Table structure for table `group_applications`
 --
 
+DROP TABLE IF EXISTS `group_applications`;
 CREATE TABLE IF NOT EXISTS `group_applications` (
   `app_id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL DEFAULT '0',
@@ -360,6 +374,7 @@ CREATE TABLE IF NOT EXISTS `group_applications` (
 -- Table structure for table `group_membership`
 --
 
+DROP TABLE IF EXISTS `group_membership`;
 CREATE TABLE IF NOT EXISTS `group_membership` (
   `gid` int(11) NOT NULL DEFAULT '0',
   `uid` int(11) NOT NULL DEFAULT '0',
@@ -381,6 +396,7 @@ INSERT INTO `group_membership` (`gid`, `uid`) VALUES
 -- Table structure for table `group_perms`
 --
 
+DROP TABLE IF EXISTS `group_perms`;
 CREATE TABLE IF NOT EXISTS `group_perms` (
   `pid` int(11) NOT NULL AUTO_INCREMENT,
   `gid` int(11) NOT NULL DEFAULT '0',
@@ -410,6 +426,7 @@ INSERT INTO `group_perms` (`pid`, `gid`, `sequence`, `realm`, `component`, `inst
 -- Table structure for table `hook_area`
 --
 
+DROP TABLE IF EXISTS `hook_area`;
 CREATE TABLE IF NOT EXISTS `hook_area` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(40) NOT NULL,
@@ -437,6 +454,7 @@ INSERT INTO `hook_area` (`id`, `owner`, `subowner`, `areatype`, `category`, `are
 -- Table structure for table `hook_binding`
 --
 
+DROP TABLE IF EXISTS `hook_binding`;
 CREATE TABLE IF NOT EXISTS `hook_binding` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sowner` varchar(40) NOT NULL,
@@ -457,6 +475,7 @@ CREATE TABLE IF NOT EXISTS `hook_binding` (
 -- Table structure for table `hook_provider`
 --
 
+DROP TABLE IF EXISTS `hook_provider`;
 CREATE TABLE IF NOT EXISTS `hook_provider` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(40) NOT NULL,
@@ -477,6 +496,7 @@ CREATE TABLE IF NOT EXISTS `hook_provider` (
 -- Table structure for table `hook_runtime`
 --
 
+DROP TABLE IF EXISTS `hook_runtime`;
 CREATE TABLE IF NOT EXISTS `hook_runtime` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `sowner` varchar(40) NOT NULL,
@@ -499,6 +519,7 @@ CREATE TABLE IF NOT EXISTS `hook_runtime` (
 -- Table structure for table `hook_subscriber`
 --
 
+DROP TABLE IF EXISTS `hook_subscriber`;
 CREATE TABLE IF NOT EXISTS `hook_subscriber` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner` varchar(40) NOT NULL,
@@ -543,6 +564,7 @@ INSERT INTO `hook_subscriber` (`id`, `owner`, `subowner`, `sareaid`, `hooktype`,
 -- Table structure for table `modules`
 --
 
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE IF NOT EXISTS `modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
@@ -558,27 +580,29 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `core_min` varchar(10) NOT NULL,
   `core_max` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `modules`
 --
 
 INSERT INTO `modules` (`id`, `name`, `type`, `displayname`, `url`, `description`, `directory`, `version`, `capabilities`, `state`, `securityschema`, `core_min`, `core_max`) VALUES
-(1, 'Extensions', 3, 'Extensions', 'extensions', 'Manage your modules and plugins.', 'Extensions', '3.7.10', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:12:"Extensions::";s:2:"::";}', '', ''),
-(2, 'Admin', 3, 'Administration panel', 'adminpanel', 'Backend administration interface.', 'Admin', '1.9.1', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:7:"Admin::";s:38:"Admin Category name::Admin Category ID";}', '', ''),
-(3, 'Blocks', 3, 'Blocks', 'blocks', 'Block administration module.', 'Blocks', '3.8.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:4:{s:8:"Blocks::";s:30:"Block key:Block title:Block ID";s:16:"Blocks::position";s:26:"Position name::Position ID";s:23:"Menutree:menutreeblock:";s:26:"Block ID:Link Name:Link ID";s:19:"ExtendedMenublock::";s:17:"Block ID:Link ID:";}', '', ''),
-(4, 'Categories', 3, 'Categories', 'categories', 'Category administration.', 'Categories', '1.2.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:20:"Categories::Category";s:40:"Category ID:Category Path:Category IPath";}', '', ''),
-(5, 'Errors', 3, 'Errors', 'errors', 'Error display module.', 'Errors', '1.1.1', 'a:1:{s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Errors::";s:2:"::";}', '', ''),
-(6, 'Groups', 3, 'Groups', 'groups', 'User group administration module.', 'Groups', '2.3.2', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Groups::";s:10:"Group ID::";}', '', ''),
-(7, 'Mailer', 3, 'Mailer', 'mailer', 'Mailer module, provides mail API and mail setting administration.', 'Mailer', '1.3.2', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Mailer::";s:2:"::";}', '', ''),
-(8, 'PageLock', 3, 'Page lock', 'pagelock', 'Provides the ability to lock pages when they are in use, for content and access control.', 'PageLock', '1.1.1', 'a:0:{}', 1, 'a:1:{s:10:"PageLock::";s:2:"::";}', '', ''),
-(9, 'Permissions', 3, 'Permissions', 'permissions', 'User permissions manager.', 'Permissions', '1.1.1', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:13:"Permissions::";s:2:"::";}', '', ''),
-(10, 'Search', 3, 'Site search', 'search', 'Site search module.', 'Search', '1.5.2', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Search::";s:13:"Module name::";}', '', ''),
-(11, 'SecurityCenter', 3, 'Security Center', 'securitycenter', 'Manage site security and settings.', 'SecurityCenter', '1.4.4', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:16:"SecurityCenter::";s:2:"::";}', '', ''),
-(12, 'Settings', 3, 'General settings', 'settings', 'General site configuration interface.', 'Settings', '2.9.7', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:10:"Settings::";s:2:"::";}', '', ''),
-(13, 'Theme', 3, 'Themes', 'theme', 'Themes module to manage site layout, render and cache settings.', 'Theme', '3.4.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:7:"Theme::";s:12:"Theme name::";}', '', ''),
-(14, 'Users', 3, 'Users', 'users', 'Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.', 'Users', '2.2.0', 'a:4:{s:14:"authentication";a:1:{s:7:"version";s:3:"1.0";}s:15:"hook_subscriber";a:1:{s:7:"enabled";b:1;}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:2:{s:7:"Users::";s:14:"Uname::User ID";s:16:"Users::MailUsers";s:2:"::";}', '1.3.0', '');
+(1, 'ExtensionsModule', 3, 'Extensions', 'extensions', 'Manage your modules and plugins.', 'ExtensionsModule', '3.7.10', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:12:"Extensions::";s:2:"::";}', '', ''),
+(2, 'AdminModule', 3, 'Administration panel', 'adminpanel', 'Backend administration interface.', 'AdminModule', '1.9.1', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:7:"Admin::";s:38:"Admin Category name::Admin Category ID";}', '', ''),
+(3, 'BlocksModule', 3, 'Blocks', 'blocks', 'Block administration module.', 'BlocksModule', '3.8.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:4:{s:8:"Blocks::";s:30:"Block key:Block title:Block ID";s:16:"Blocks::position";s:26:"Position name::Position ID";s:23:"Menutree:menutreeblock:";s:26:"Block ID:Link Name:Link ID";s:19:"ExtendedMenublock::";s:17:"Block ID:Link ID:";}', '', ''),
+(4, 'CategoriesModule', 3, 'Categories', 'categories', 'Category administration.', 'CategoriesModule', '1.2.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:20:"Categories::Category";s:40:"Category ID:Category Path:Category IPath";}', '', ''),
+(5, 'ErrorsModule', 3, 'Errors', 'errors', 'Error display module.', 'ErrorsModule', '1.1.1', 'a:1:{s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Errors::";s:2:"::";}', '', ''),
+(6, 'GroupsModule', 3, 'Groups', 'groups', 'User group administration module.', 'GroupsModule', '2.3.2', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Groups::";s:10:"Group ID::";}', '', ''),
+(7, 'MailerModule', 3, 'Mailer', 'mailer', 'Mailer module, provides mail API and mail setting administration.', 'MailerModule', '1.3.2', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Mailer::";s:2:"::";}', '', ''),
+(8, 'PageLockModule', 3, 'Page lock', 'pagelock', 'Provides the ability to lock pages when they are in use, for content and access control.', 'PageLockModule', '1.1.1', 'a:0:{}', 3, 'a:1:{s:10:"PageLock::";s:2:"::";}', '', ''),
+(9, 'PermissionsModule', 3, 'Permissions', 'permissions', 'User permissions manager.', 'PermissionsModule', '1.1.1', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:13:"Permissions::";s:2:"::";}', '', ''),
+(10, 'SearchModule', 3, 'Site search', 'search', 'Site search module.', 'SearchModule', '1.5.2', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:8:"Search::";s:13:"Module name::";}', '', ''),
+(11, 'SecurityCenterModule', 3, 'Security Center', 'securitycenter', 'Manage site security and settings.', 'SecurityCenterModule', '1.4.4', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:16:"SecurityCenter::";s:2:"::";}', '', ''),
+(12, 'SettingsModule', 3, 'General settings', 'settings', 'General site configuration interface.', 'SettingsModule', '2.9.7', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:10:"Settings::";s:2:"::";}', '', ''),
+(13, 'ThemeModule', 3, 'Themes', 'theme', 'Themes module to manage site layout, render and cache settings.', 'ThemeModule', '3.4.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:7:"Theme::";s:12:"Theme name::";}', '', ''),
+(14, 'UsersModule', 3, 'Users', 'users', 'Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.', 'UsersModule', '2.2.0', 'a:4:{s:14:"authentication";a:1:{s:7:"version";s:3:"1.0";}s:15:"hook_subscriber";a:1:{s:7:"enabled";b:1;}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:2:{s:7:"Users::";s:14:"Uname::User ID";s:16:"Users::MailUsers";s:2:"::";}', '1.3.0', ''),
+(17, 'LegalModule', 2, 'Legal info manager', 'legalmod', 'Provides an interface for managing the site''s legal documents.', 'LegalModule', '3.0.1', 'a:1:{s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 1, 'a:8:{s:7:"Legal::";s:2:"::";s:18:"Legal::legalnotice";s:2:"::";s:17:"Legal::termsofuse";s:2:"::";s:20:"Legal::privacypolicy";s:2:"::";s:16:"Legal::agepolicy";s:2:"::";s:29:"Legal::accessibilitystatement";s:2:"::";s:30:"Legal::cancellationrightpolicy";s:2:"::";s:22:"Legal::tradeconditions";s:2:"::";}', '1.4.0', '1.4.99'),
+(19, 'ProfileModule', 2, 'Profile', 'profile', 'Provides a personal account control panel for each registered user, an interface to administer the personal information items displayed within it, and a registered users list functionality. Works in close unison with the ''Users'' module.', 'ProfileModule', '2.0.0', 'a:3:{s:7:"profile";a:1:{s:7:"version";s:3:"1.0";}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:6:{s:9:"Profile::";s:2:"::";s:13:"Profile::view";s:2:"::";s:13:"Profile::item";s:56:"DynamicUserData PropertyName::DynamicUserData PropertyID";s:16:"Profile:Members:";s:2:"::";s:22:"Profile:Members:recent";s:2:"::";s:22:"Profile:Members:online";s:2:"::";}', '1.4.0', '1.4.99');
 
 -- --------------------------------------------------------
 
@@ -586,6 +610,7 @@ INSERT INTO `modules` (`id`, `name`, `type`, `displayname`, `url`, `description`
 -- Table structure for table `module_deps`
 --
 
+DROP TABLE IF EXISTS `module_deps`;
 CREATE TABLE IF NOT EXISTS `module_deps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modid` int(11) NOT NULL,
@@ -602,21 +627,22 @@ CREATE TABLE IF NOT EXISTS `module_deps` (
 -- Table structure for table `module_vars`
 --
 
+DROP TABLE IF EXISTS `module_vars`;
 CREATE TABLE IF NOT EXISTS `module_vars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(64) NOT NULL,
   `name` varchar(64) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=220 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=228 ;
 
 --
 -- Dumping data for table `module_vars`
 --
 
 INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
-(1, '/EventHandlers', 'Extensions', 'a:2:{i:0;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:17:"Extensions\\HookUI";i:1;s:5:"hooks";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:17:"Extensions\\HookUI";i:1;s:14:"moduleservices";}s:6:"weight";i:10;}}'),
-(2, 'Extensions', 'itemsperpage', 'i:25;'),
+(1, '/EventHandlers', 'Extensions', 'a:2:{i:0;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:23:"ExtensionsModule\\HookUI";i:1;s:5:"hooks";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:27:"controller.method_not_found";s:8:"callable";a:2:{i:0;s:23:"ExtensionsModule\\HookUI";i:1;s:14:"moduleservices";}s:6:"weight";i:10;}}'),
+(2, 'ExtensionsModule', 'itemsperpage', 'i:25;'),
 (3, 'ZConfig', 'debug', 's:1:"0";'),
 (4, 'ZConfig', 'sitename', 's:9:"Site name";'),
 (5, 'ZConfig', 'slogan', 's:16:"Site description";'),
@@ -625,7 +651,7 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (8, 'ZConfig', 'defaultmetadescription', 's:16:"Site description";'),
 (9, 'ZConfig', 'startdate', 's:7:"04/2012";'),
 (10, 'ZConfig', 'adminmail', 's:15:"drak@zikula.org";'),
-(11, 'ZConfig', 'Default_Theme', 's:9:"Andreas08";'),
+(11, 'ZConfig', 'Default_Theme', 's:14:"Andreas08Theme";'),
 (12, 'ZConfig', 'timezone_offset', 's:1:"0";'),
 (13, 'ZConfig', 'timezone_server', 's:1:"0";'),
 (14, 'ZConfig', 'funtext', 's:1:"1";'),
@@ -661,81 +687,81 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (44, 'ZConfig', 'locale', 's:2:"en";'),
 (45, 'ZConfig', 'language_i18n', 's:2:"en";'),
 (46, 'ZConfig', 'idnnames', 'i:1;'),
-(47, 'Theme', 'modulesnocache', 's:0:"";'),
-(48, 'Theme', 'enablecache', 'b:0;'),
-(49, 'Theme', 'compile_check', 'b:1;'),
-(50, 'Theme', 'cache_lifetime', 'i:1800;'),
-(51, 'Theme', 'cache_lifetime_mods', 'i:1800;'),
-(52, 'Theme', 'force_compile', 'b:0;'),
-(53, 'Theme', 'trimwhitespace', 'b:0;'),
-(54, 'Theme', 'maxsizeforlinks', 'i:30;'),
-(55, 'Theme', 'itemsperpage', 'i:25;'),
-(56, 'Theme', 'cssjscombine', 'b:0;'),
-(57, 'Theme', 'cssjscompress', 'b:0;'),
-(58, 'Theme', 'cssjsminify', 'b:0;'),
-(59, 'Theme', 'cssjscombine_lifetime', 'i:3600;'),
-(60, 'Theme', 'render_compile_check', 'b:1;'),
-(61, 'Theme', 'render_force_compile', 'b:1;'),
-(62, 'Theme', 'render_cache', 'b:0;'),
-(63, 'Theme', 'render_expose_template', 'b:0;'),
-(64, 'Theme', 'render_lifetime', 'i:3600;'),
-(65, 'Admin', 'modulesperrow', 'i:3;'),
-(66, 'Admin', 'itemsperpage', 'i:15;'),
-(67, 'Admin', 'defaultcategory', 'i:5;'),
-(68, 'Admin', 'admingraphic', 'i:1;'),
-(69, 'Admin', 'startcategory', 'i:1;'),
-(70, 'Admin', 'ignoreinstallercheck', 'i:0;'),
-(71, 'Admin', 'admintheme', 's:0:"";'),
-(72, 'Admin', 'displaynametype', 'i:1;'),
-(73, 'Permissions', 'filter', 'i:1;'),
-(74, 'Permissions', 'warnbar', 'i:1;'),
-(75, 'Permissions', 'rowview', 'i:20;'),
-(76, 'Permissions', 'rowedit', 'i:20;'),
-(77, 'Permissions', 'lockadmin', 'i:1;'),
-(78, 'Permissions', 'adminid', 'i:1;'),
-(79, 'Groups', 'itemsperpage', 'i:25;'),
-(80, 'Groups', 'defaultgroup', 'i:1;'),
-(81, 'Groups', 'mailwarning', 'i:0;'),
-(82, 'Groups', 'hideclosed', 'i:0;'),
-(83, 'Groups', 'primaryadmingroup', 'i:2;'),
-(84, 'Blocks', 'collapseable', 'i:0;'),
-(85, 'Users', 'accountdisplaygraphics', 'b:1;'),
-(86, 'Users', 'accountitemsperpage', 'i:25;'),
-(87, 'Users', 'accountitemsperrow', 'i:5;'),
-(88, 'Users', 'userimg', 's:11:"images/menu";'),
-(89, 'Users', 'anonymous', 's:5:"Guest";'),
-(90, 'Users', 'avatarpath', 's:13:"images/avatar";'),
-(91, 'Users', 'chgemail_expiredays', 'i:0;'),
-(92, 'Users', 'chgpass_expiredays', 'i:0;'),
-(93, 'Users', 'reg_expiredays', 'i:0;'),
-(94, 'Users', 'allowgravatars', 'b:1;'),
-(95, 'Users', 'gravatarimage', 's:12:"gravatar.gif";'),
-(96, 'Users', 'hash_method', 's:6:"sha256";'),
-(97, 'Users', 'itemsperpage', 'i:25;'),
-(98, 'Users', 'login_displayapproval', 'b:0;'),
-(99, 'Users', 'login_displaydelete', 'b:0;'),
-(100, 'Users', 'login_displayinactive', 'b:0;'),
-(101, 'Users', 'login_displayverify', 'b:0;'),
-(102, 'Users', 'loginviaoption', 'i:0;'),
-(103, 'Users', 'login_redirect', 'b:1;'),
-(104, 'Users', 'changeemail', 'b:1;'),
-(105, 'Users', 'minpass', 'i:5;'),
-(106, 'Users', 'use_password_strength_meter', 'b:0;'),
-(107, 'Users', 'reg_notifyemail', 's:0:"";'),
-(108, 'Users', 'reg_question', 's:0:"";'),
-(109, 'Users', 'reg_answer', 's:0:"";'),
-(110, 'Users', 'moderation', 'b:0;'),
-(111, 'Users', 'moderation_order', 'i:0;'),
-(112, 'Users', 'reg_autologin', 'b:0;'),
-(113, 'Users', 'reg_noregreasons', 's:51:"Sorry! New user registration is currently disabled.";'),
-(114, 'Users', 'reg_allowreg', 'b:1;'),
-(115, 'Users', 'reg_Illegaluseragents', 's:0:"";'),
-(116, 'Users', 'reg_Illegaldomains', 's:0:"";'),
-(117, 'Users', 'reg_Illegalusername', 's:66:"root, webmaster, admin, administrator, nobody, anonymous, username";'),
-(118, 'Users', 'reg_verifyemail', 'i:2;'),
-(119, 'Users', 'reg_uniemail', 'b:1;'),
-(120, '/EventHandlers', 'Users', 'a:4:{i:0;a:3:{s:9:"eventname";s:19:"get.pending_content";s:8:"callable";a:2:{i:0;s:37:"Users\\Listener\\PendingContentListener";i:1;s:22:"pendingContentListener";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:15:"user.login.veto";s:8:"callable";a:2:{i:0;s:43:"Users\\Listener\\ForcedPasswordChangeListener";i:1;s:28:"forcedPasswordChangeListener";}s:6:"weight";i:10;}i:2;a:3:{s:9:"eventname";s:21:"user.logout.succeeded";s:8:"callable";a:2:{i:0;s:42:"Users\\Listener\\ClearUsersNamespaceListener";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}i:3;a:3:{s:9:"eventname";s:25:"frontcontroller.exception";s:8:"callable";a:2:{i:0;s:42:"Users\\Listener\\ClearUsersNamespaceListener";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}}'),
-(121, 'SecurityCenter', 'itemsperpage', 'i:10;'),
+(47, 'ThemeModule', 'modulesnocache', 's:0:"";'),
+(48, 'ThemeModule', 'enablecache', 'b:0;'),
+(49, 'ThemeModule', 'compile_check', 'b:1;'),
+(50, 'ThemeModule', 'cache_lifetime', 'i:1800;'),
+(51, 'ThemeModule', 'cache_lifetime_mods', 'i:1800;'),
+(52, 'ThemeModule', 'force_compile', 'b:0;'),
+(53, 'ThemeModule', 'trimwhitespace', 'b:0;'),
+(54, 'ThemeModule', 'maxsizeforlinks', 'i:30;'),
+(55, 'ThemeModule', 'itemsperpage', 'i:25;'),
+(56, 'ThemeModule', 'cssjscombine', 'b:0;'),
+(57, 'ThemeModule', 'cssjscompress', 'b:0;'),
+(58, 'ThemeModule', 'cssjsminify', 'b:0;'),
+(59, 'ThemeModule', 'cssjscombine_lifetime', 'i:3600;'),
+(60, 'ThemeModule', 'render_compile_check', 'b:1;'),
+(61, 'ThemeModule', 'render_force_compile', 'b:1;'),
+(62, 'ThemeModule', 'render_cache', 'b:0;'),
+(63, 'ThemeModule', 'render_expose_template', 'b:0;'),
+(64, 'ThemeModule', 'render_lifetime', 'i:3600;'),
+(65, 'AdminModule', 'modulesperrow', 'i:3;'),
+(66, 'AdminModule', 'itemsperpage', 'i:15;'),
+(67, 'AdminModule', 'defaultcategory', 'i:5;'),
+(68, 'AdminModule', 'admingraphic', 'i:1;'),
+(69, 'AdminModule', 'startcategory', 'i:1;'),
+(70, 'AdminModule', 'ignoreinstallercheck', 'i:0;'),
+(71, 'AdminModule', 'admintheme', 's:0:"";'),
+(72, 'AdminModule', 'displaynametype', 'i:1;'),
+(73, 'PermissionsModule', 'filter', 'i:1;'),
+(74, 'PermissionsModule', 'warnbar', 'i:1;'),
+(75, 'PermissionsModule', 'rowview', 'i:20;'),
+(76, 'PermissionsModule', 'rowedit', 'i:20;'),
+(77, 'PermissionsModule', 'lockadmin', 'i:1;'),
+(78, 'PermissionsModule', 'adminid', 'i:1;'),
+(79, 'GroupsModule', 'itemsperpage', 'i:25;'),
+(80, 'GroupsModule', 'defaultgroup', 'i:1;'),
+(81, 'GroupsModule', 'mailwarning', 'i:0;'),
+(82, 'GroupsModule', 'hideclosed', 'i:0;'),
+(83, 'GroupsModule', 'primaryadmingroup', 'i:2;'),
+(84, 'BlocksModule', 'collapseable', 'i:0;'),
+(85, 'UsersModule', 'accountdisplaygraphics', 'b:1;'),
+(86, 'UsersModule', 'accountitemsperpage', 'i:25;'),
+(87, 'UsersModule', 'accountitemsperrow', 'i:5;'),
+(88, 'UsersModule', 'userimg', 's:11:"images/menu";'),
+(89, 'UsersModule', 'anonymous', 's:5:"Guest";'),
+(90, 'UsersModule', 'avatarpath', 's:13:"images/avatar";'),
+(91, 'UsersModule', 'chgemail_expiredays', 'i:0;'),
+(92, 'UsersModule', 'chgpass_expiredays', 'i:0;'),
+(93, 'UsersModule', 'reg_expiredays', 'i:0;'),
+(94, 'UsersModule', 'allowgravatars', 'b:1;'),
+(95, 'UsersModule', 'gravatarimage', 's:12:"gravatar.gif";'),
+(96, 'UsersModule', 'hash_method', 's:6:"sha256";'),
+(97, 'UsersModule', 'itemsperpage', 'i:25;'),
+(98, 'UsersModule', 'login_displayapproval', 'b:0;'),
+(99, 'UsersModule', 'login_displaydelete', 'b:0;'),
+(100, 'UsersModule', 'login_displayinactive', 'b:0;'),
+(101, 'UsersModule', 'login_displayverify', 'b:0;'),
+(102, 'UsersModule', 'loginviaoption', 'i:0;'),
+(103, 'UsersModule', 'login_redirect', 'b:1;'),
+(104, 'UsersModule', 'changeemail', 'b:1;'),
+(105, 'UsersModule', 'minpass', 'i:5;'),
+(106, 'UsersModule', 'use_password_strength_meter', 'b:0;'),
+(107, 'UsersModule', 'reg_notifyemail', 's:0:"";'),
+(108, 'UsersModule', 'reg_question', 's:0:"";'),
+(109, 'UsersModule', 'reg_answer', 's:0:"";'),
+(110, 'UsersModule', 'moderation', 'b:0;'),
+(111, 'UsersModule', 'moderation_order', 'i:0;'),
+(112, 'UsersModule', 'reg_autologin', 'b:0;'),
+(113, 'UsersModule', 'reg_noregreasons', 's:51:"Sorry! New user registration is currently disabled.";'),
+(114, 'UsersModule', 'reg_allowreg', 'b:1;'),
+(115, 'UsersModule', 'reg_Illegaluseragents', 's:0:"";'),
+(116, 'UsersModule', 'reg_Illegaldomains', 's:0:"";'),
+(117, 'UsersModule', 'reg_Illegalusername', 's:66:"root, webmaster, admin, administrator, nobody, anonymous, username";'),
+(118, 'UsersModule', 'reg_verifyemail', 'i:2;'),
+(119, 'UsersModule', 'reg_uniemail', 'b:1;'),
+(120, '/EventHandlers', 'Users', 'a:4:{i:0;a:3:{s:9:"eventname";s:19:"get.pending_content";s:8:"callable";a:2:{i:0;s:43:"UsersModule\\Listener\\PendingContentListener";i:1;s:22:"pendingContentListener";}s:6:"weight";i:10;}i:1;a:3:{s:9:"eventname";s:15:"user.login.veto";s:8:"callable";a:2:{i:0;s:49:"UsersModule\\Listener\\ForcedPasswordChangeListener";i:1;s:28:"forcedPasswordChangeListener";}s:6:"weight";i:10;}i:2;a:3:{s:9:"eventname";s:21:"user.logout.succeeded";s:8:"callable";a:2:{i:0;s:48:"UsersModule\\Listener\\ClearUsersNamespaceListener";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}i:3;a:3:{s:9:"eventname";s:25:"frontcontroller.exception";s:8:"callable";a:2:{i:0;s:48:"UsersModule\\Listener\\ClearUsersNamespaceListener";i:1;s:27:"clearUsersNamespaceListener";}s:6:"weight";i:10;}}'),
+(121, 'SecurityCenterModule', 'itemsperpage', 'i:10;'),
 (122, 'ZConfig', 'updatecheck', 'i:1;'),
 (123, 'ZConfig', 'updatefrequency', 'i:7;'),
 (124, 'ZConfig', 'updatelastchecked', 'i:1334488036;'),
@@ -763,7 +789,7 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (146, 'ZConfig', 'filtercookievars', 'i:1;'),
 (147, 'ZConfig', 'outputfilter', 'i:1;'),
 (148, 'ZConfig', 'htmlpurifierlocation', 's:46:"system/SecurityCenter/lib/vendor/htmlpurifier/";'),
-(149, 'SecurityCenter', 'htmlpurifierConfig', 's:3942:"a:10:{s:4:"Attr";a:15:{s:14:"AllowedClasses";N;s:19:"AllowedFrameTargets";a:0:{}s:10:"AllowedRel";a:3:{s:8:"nofollow";b:1;s:11:"imageviewer";b:1;s:8:"lightbox";b:1;}s:10:"AllowedRev";a:0:{}s:13:"ClassUseCDATA";N;s:15:"DefaultImageAlt";N;s:19:"DefaultInvalidImage";s:0:"";s:22:"DefaultInvalidImageAlt";s:13:"Invalid image";s:14:"DefaultTextDir";s:3:"ltr";s:8:"EnableID";b:0;s:16:"ForbiddenClasses";a:0:{}s:11:"IDBlacklist";a:0:{}s:17:"IDBlacklistRegexp";N;s:8:"IDPrefix";s:0:"";s:13:"IDPrefixLocal";s:0:"";}s:10:"AutoFormat";a:10:{s:13:"AutoParagraph";b:0;s:6:"Custom";a:0:{}s:14:"DisplayLinkURI";b:0;s:7:"Linkify";b:0;s:22:"PurifierLinkify.DocURL";s:3:"#%s";s:15:"PurifierLinkify";b:0;s:33:"RemoveEmpty.RemoveNbsp.Exceptions";a:2:{s:2:"td";b:1;s:2:"th";b:1;}s:22:"RemoveEmpty.RemoveNbsp";b:0;s:11:"RemoveEmpty";b:0;s:28:"RemoveSpansWithoutAttributes";b:0;}s:3:"CSS";a:9:{s:14:"AllowImportant";b:0;s:11:"AllowTricky";b:0;s:12:"AllowedFonts";N;s:17:"AllowedProperties";N;s:13:"DefinitionRev";i:1;s:19:"ForbiddenProperties";a:0:{}s:12:"MaxImgLength";s:6:"1200px";s:11:"Proprietary";b:0;s:7:"Trusted";b:0;}s:5:"Cache";a:3:{s:14:"DefinitionImpl";s:10:"Serializer";s:14:"SerializerPath";N;s:21:"SerializerPermissions";i:493;}s:4:"Core";a:17:{s:17:"AggressivelyFixLt";b:1;s:13:"CollectErrors";b:0;s:13:"ColorKeywords";a:17:{s:6:"maroon";s:7:"#800000";s:3:"red";s:7:"#FF0000";s:6:"orange";s:7:"#FFA500";s:6:"yellow";s:7:"#FFFF00";s:5:"olive";s:7:"#808000";s:6:"purple";s:7:"#800080";s:7:"fuchsia";s:7:"#FF00FF";s:5:"white";s:7:"#FFFFFF";s:4:"lime";s:7:"#00FF00";s:5:"green";s:7:"#008000";s:4:"navy";s:7:"#000080";s:4:"blue";s:7:"#0000FF";s:4:"aqua";s:7:"#00FFFF";s:4:"teal";s:7:"#008080";s:5:"black";s:7:"#000000";s:6:"silver";s:7:"#C0C0C0";s:4:"gray";s:7:"#808080";}s:25:"ConvertDocumentToFragment";b:1;s:31:"DirectLexLineNumberSyncInterval";i:0;s:8:"Encoding";s:5:"utf-8";s:21:"EscapeInvalidChildren";b:0;s:17:"EscapeInvalidTags";b:0;s:24:"EscapeNonASCIICharacters";b:0;s:14:"HiddenElements";a:2:{s:6:"script";b:1;s:5:"style";b:1;}s:8:"Language";s:2:"en";s:9:"LexerImpl";N;s:19:"MaintainLineNumbers";N;s:17:"NormalizeNewlines";b:1;s:16:"RemoveInvalidImg";b:1;s:28:"RemoveProcessingInstructions";b:0;s:20:"RemoveScriptContents";N;}s:6:"Filter";a:6:{s:6:"Custom";a:0:{}s:27:"ExtractStyleBlocks.Escaping";b:1;s:24:"ExtractStyleBlocks.Scope";N;s:27:"ExtractStyleBlocks.TidyImpl";N;s:18:"ExtractStyleBlocks";b:0;s:7:"YouTube";b:0;}s:4:"HTML";a:26:{s:7:"Allowed";N;s:17:"AllowedAttributes";N;s:15:"AllowedElements";N;s:14:"AllowedModules";N;s:18:"Attr.Name.UseCDATA";b:0;s:12:"BlockWrapper";s:1:"p";s:11:"CoreModules";a:7:{s:9:"Structure";b:1;s:4:"Text";b:1;s:9:"Hypertext";b:1;s:4:"List";b:1;s:22:"NonXMLCommonAttributes";b:1;s:19:"XMLCommonAttributes";b:1;s:16:"CommonAttributes";b:1;}s:13:"CustomDoctype";N;s:12:"DefinitionID";N;s:13:"DefinitionRev";i:1;s:7:"Doctype";s:22:"HTML 4.01 Transitional";s:20:"FlashAllowFullScreen";b:0;s:19:"ForbiddenAttributes";a:0:{}s:17:"ForbiddenElements";a:0:{}s:12:"MaxImgLength";i:1200;s:8:"Nofollow";b:0;s:6:"Parent";s:3:"div";s:11:"Proprietary";b:0;s:9:"SafeEmbed";b:1;s:10:"SafeObject";b:1;s:6:"Strict";b:0;s:7:"TidyAdd";a:0:{}s:9:"TidyLevel";s:6:"medium";s:10:"TidyRemove";a:0:{}s:7:"Trusted";b:0;s:5:"XHTML";b:1;}s:6:"Output";a:6:{s:21:"CommentScriptContents";b:1;s:12:"FixInnerHTML";b:1;s:11:"FlashCompat";b:1;s:7:"Newline";N;s:8:"SortAttr";b:0;s:10:"TidyFormat";b:0;}s:4:"Test";a:1:{s:12:"ForceNoIconv";b:0;}s:3:"URI";a:16:{s:14:"AllowedSchemes";a:6:{s:4:"http";b:1;s:5:"https";b:1;s:6:"mailto";b:1;s:3:"ftp";b:1;s:4:"nntp";b:1;s:4:"news";b:1;}s:4:"Base";N;s:13:"DefaultScheme";s:4:"http";s:12:"DefinitionID";N;s:13:"DefinitionRev";i:1;s:7:"Disable";b:0;s:15:"DisableExternal";b:0;s:24:"DisableExternalResources";b:0;s:16:"DisableResources";b:0;s:4:"Host";N;s:13:"HostBlacklist";a:0:{}s:12:"MakeAbsolute";b:0;s:5:"Munge";N;s:14:"MungeResources";b:0;s:14:"MungeSecretKey";N;s:22:"OverrideAllowedSchemes";b:1;}}";'),
+(149, 'SecurityCenterModule', 'htmlpurifierConfig', 's:3942:"a:10:{s:4:"Attr";a:15:{s:14:"AllowedClasses";N;s:19:"AllowedFrameTargets";a:0:{}s:10:"AllowedRel";a:3:{s:8:"nofollow";b:1;s:11:"imageviewer";b:1;s:8:"lightbox";b:1;}s:10:"AllowedRev";a:0:{}s:13:"ClassUseCDATA";N;s:15:"DefaultImageAlt";N;s:19:"DefaultInvalidImage";s:0:"";s:22:"DefaultInvalidImageAlt";s:13:"Invalid image";s:14:"DefaultTextDir";s:3:"ltr";s:8:"EnableID";b:0;s:16:"ForbiddenClasses";a:0:{}s:11:"IDBlacklist";a:0:{}s:17:"IDBlacklistRegexp";N;s:8:"IDPrefix";s:0:"";s:13:"IDPrefixLocal";s:0:"";}s:10:"AutoFormat";a:10:{s:13:"AutoParagraph";b:0;s:6:"Custom";a:0:{}s:14:"DisplayLinkURI";b:0;s:7:"Linkify";b:0;s:22:"PurifierLinkify.DocURL";s:3:"#%s";s:15:"PurifierLinkify";b:0;s:33:"RemoveEmpty.RemoveNbsp.Exceptions";a:2:{s:2:"td";b:1;s:2:"th";b:1;}s:22:"RemoveEmpty.RemoveNbsp";b:0;s:11:"RemoveEmpty";b:0;s:28:"RemoveSpansWithoutAttributes";b:0;}s:3:"CSS";a:9:{s:14:"AllowImportant";b:0;s:11:"AllowTricky";b:0;s:12:"AllowedFonts";N;s:17:"AllowedProperties";N;s:13:"DefinitionRev";i:1;s:19:"ForbiddenProperties";a:0:{}s:12:"MaxImgLength";s:6:"1200px";s:11:"Proprietary";b:0;s:7:"Trusted";b:0;}s:5:"Cache";a:3:{s:14:"DefinitionImpl";s:10:"Serializer";s:14:"SerializerPath";N;s:21:"SerializerPermissions";i:493;}s:4:"Core";a:17:{s:17:"AggressivelyFixLt";b:1;s:13:"CollectErrors";b:0;s:13:"ColorKeywords";a:17:{s:6:"maroon";s:7:"#800000";s:3:"red";s:7:"#FF0000";s:6:"orange";s:7:"#FFA500";s:6:"yellow";s:7:"#FFFF00";s:5:"olive";s:7:"#808000";s:6:"purple";s:7:"#800080";s:7:"fuchsia";s:7:"#FF00FF";s:5:"white";s:7:"#FFFFFF";s:4:"lime";s:7:"#00FF00";s:5:"green";s:7:"#008000";s:4:"navy";s:7:"#000080";s:4:"blue";s:7:"#0000FF";s:4:"aqua";s:7:"#00FFFF";s:4:"teal";s:7:"#008080";s:5:"black";s:7:"#000000";s:6:"silver";s:7:"#C0C0C0";s:4:"gray";s:7:"#808080";}s:25:"ConvertDocumentToFragment";b:1;s:31:"DirectLexLineNumberSyncInterval";i:0;s:8:"Encoding";s:5:"utf-8";s:21:"EscapeInvalidChildren";b:0;s:17:"EscapeInvalidTags";b:0;s:24:"EscapeNonASCIICharacters";b:0;s:14:"HiddenElements";a:2:{s:6:"script";b:1;s:5:"style";b:1;}s:8:"Language";s:2:"en";s:9:"LexerImpl";N;s:19:"MaintainLineNumbers";N;s:17:"NormalizeNewlines";b:1;s:16:"RemoveInvalidImg";b:1;s:28:"RemoveProcessingInstructions";b:0;s:20:"RemoveScriptContents";N;}s:6:"Filter";a:6:{s:6:"Custom";a:0:{}s:27:"ExtractStyleBlocks.Escaping";b:1;s:24:"ExtractStyleBlocks.Scope";N;s:27:"ExtractStyleBlocks.TidyImpl";N;s:18:"ExtractStyleBlocks";b:0;s:7:"YouTube";b:0;}s:4:"HTML";a:26:{s:7:"Allowed";N;s:17:"AllowedAttributes";N;s:15:"AllowedElements";N;s:14:"AllowedModules";N;s:18:"Attr.Name.UseCDATA";b:0;s:12:"BlockWrapper";s:1:"p";s:11:"CoreModules";a:7:{s:9:"Structure";b:1;s:4:"Text";b:1;s:9:"Hypertext";b:1;s:4:"List";b:1;s:22:"NonXMLCommonAttributes";b:1;s:19:"XMLCommonAttributes";b:1;s:16:"CommonAttributes";b:1;}s:13:"CustomDoctype";N;s:12:"DefinitionID";N;s:13:"DefinitionRev";i:1;s:7:"Doctype";s:22:"HTML 4.01 Transitional";s:20:"FlashAllowFullScreen";b:0;s:19:"ForbiddenAttributes";a:0:{}s:17:"ForbiddenElements";a:0:{}s:12:"MaxImgLength";i:1200;s:8:"Nofollow";b:0;s:6:"Parent";s:3:"div";s:11:"Proprietary";b:0;s:9:"SafeEmbed";b:1;s:10:"SafeObject";b:1;s:6:"Strict";b:0;s:7:"TidyAdd";a:0:{}s:9:"TidyLevel";s:6:"medium";s:10:"TidyRemove";a:0:{}s:7:"Trusted";b:0;s:5:"XHTML";b:1;}s:6:"Output";a:6:{s:21:"CommentScriptContents";b:1;s:12:"FixInnerHTML";b:1;s:11:"FlashCompat";b:1;s:7:"Newline";N;s:8:"SortAttr";b:0;s:10:"TidyFormat";b:0;}s:4:"Test";a:1:{s:12:"ForceNoIconv";b:0;}s:3:"URI";a:16:{s:14:"AllowedSchemes";a:6:{s:4:"http";b:1;s:5:"https";b:1;s:6:"mailto";b:1;s:3:"ftp";b:1;s:4:"nntp";b:1;s:4:"news";b:1;}s:4:"Base";N;s:13:"DefaultScheme";s:4:"http";s:12:"DefinitionID";N;s:13:"DefinitionRev";i:1;s:7:"Disable";b:0;s:15:"DisableExternal";b:0;s:24:"DisableExternalResources";b:0;s:16:"DisableResources";b:0;s:4:"Host";N;s:13:"HostBlacklist";a:0:{}s:12:"MakeAbsolute";b:0;s:5:"Munge";N;s:14:"MungeResources";b:0;s:14:"MungeSecretKey";N;s:22:"OverrideAllowedSchemes";b:1;}}";'),
 (150, 'ZConfig', 'useids', 'i:0;'),
 (151, 'ZConfig', 'idsmail', 'i:0;'),
 (152, 'ZConfig', 'idsrulepath', 's:32:"config/phpids_zikula_default.xml";'),
@@ -798,24 +824,24 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (181, 'ZConfig', 'filterarrays', 'i:1;'),
 (182, 'ZConfig', 'htmlentities', 's:1:"1";'),
 (183, 'ZConfig', 'AllowableHTML', 'a:110:{s:3:"!--";i:2;s:1:"a";i:2;s:4:"abbr";i:1;s:7:"acronym";i:1;s:7:"address";i:1;s:6:"applet";i:0;s:4:"area";i:0;s:7:"article";i:1;s:5:"aside";i:1;s:5:"audio";i:0;s:1:"b";i:1;s:4:"base";i:0;s:8:"basefont";i:0;s:3:"bdo";i:0;s:3:"big";i:0;s:10:"blockquote";i:2;s:2:"br";i:2;s:6:"button";i:0;s:6:"canvas";i:0;s:7:"caption";i:1;s:6:"center";i:2;s:4:"cite";i:1;s:4:"code";i:0;s:3:"col";i:1;s:8:"colgroup";i:1;s:7:"command";i:0;s:8:"datalist";i:0;s:2:"dd";i:1;s:3:"del";i:0;s:7:"details";i:1;s:3:"dfn";i:0;s:3:"dir";i:0;s:3:"div";i:2;s:2:"dl";i:1;s:2:"dt";i:1;s:2:"em";i:2;s:5:"embed";i:0;s:8:"fieldset";i:1;s:10:"figcaption";i:0;s:6:"figure";i:0;s:6:"footer";i:0;s:4:"font";i:0;s:4:"form";i:0;s:2:"h1";i:1;s:2:"h2";i:1;s:2:"h3";i:1;s:2:"h4";i:1;s:2:"h5";i:1;s:2:"h6";i:1;s:6:"header";i:0;s:6:"hgroup";i:0;s:2:"hr";i:2;s:1:"i";i:1;s:6:"iframe";i:0;s:3:"img";i:2;s:5:"input";i:0;s:3:"ins";i:0;s:6:"keygen";i:0;s:3:"kbd";i:0;s:5:"label";i:1;s:6:"legend";i:1;s:2:"li";i:2;s:3:"map";i:0;s:4:"mark";i:0;s:4:"menu";i:0;s:7:"marquee";i:0;s:5:"meter";i:0;s:3:"nav";i:0;s:4:"nobr";i:0;s:6:"object";i:0;s:2:"ol";i:2;s:8:"optgroup";i:0;s:6:"option";i:0;s:6:"output";i:0;s:1:"p";i:2;s:5:"param";i:0;s:3:"pre";i:2;s:8:"progress";i:0;s:1:"q";i:0;s:2:"rp";i:0;s:2:"rt";i:0;s:4:"ruby";i:0;s:1:"s";i:0;s:4:"samp";i:0;s:6:"script";i:0;s:7:"section";i:0;s:6:"select";i:0;s:5:"small";i:0;s:6:"source";i:0;s:4:"span";i:2;s:6:"strike";i:0;s:6:"strong";i:2;s:3:"sub";i:1;s:7:"summary";i:1;s:3:"sup";i:0;s:5:"table";i:2;s:5:"tbody";i:1;s:2:"td";i:2;s:8:"textarea";i:0;s:5:"tfoot";i:1;s:2:"th";i:2;s:5:"thead";i:0;s:4:"time";i:0;s:2:"tr";i:2;s:2:"tt";i:2;s:1:"u";i:0;s:2:"ul";i:2;s:3:"var";i:0;s:5:"video";i:0;s:3:"wbr";i:0;}'),
-(184, 'Categories', 'userrootcat', 's:17:"/__SYSTEM__/Users";'),
-(185, 'Categories', 'allowusercatedit', 'i:0;'),
-(186, 'Categories', 'autocreateusercat', 'i:0;'),
-(187, 'Categories', 'autocreateuserdefaultcat', 'i:0;'),
-(188, 'Categories', 'userdefaultcatname', 's:7:"Default";'),
-(189, 'Legal', 'legalNoticeActive', 'b:1;'),
-(190, 'Legal', 'termsOfUseActive', 'b:1;'),
-(191, 'Legal', 'privacyPolicyActive', 'b:1;'),
-(192, 'Legal', 'accessibilityStatementActive', 'b:1;'),
-(193, 'Legal', 'cancellationRightPolicyActive', 'b:0;'),
-(194, 'Legal', 'tradeConditionsActive', 'b:0;'),
-(195, 'Legal', 'legalNoticeUrl', 's:0:"";'),
-(196, 'Legal', 'termsOfUseUrl', 's:0:"";'),
-(197, 'Legal', 'privacyPolicyUrl', 's:0:"";'),
-(198, 'Legal', 'accessibilityStatementUrl', 's:0:"";'),
-(199, 'Legal', 'cancellationRightPolicyUrl', 's:0:"";'),
-(200, 'Legal', 'tradeConditionsUrl', 's:0:"";'),
-(201, 'Legal', 'minimumAge', 'i:13;'),
+(184, 'CategoriesModule', 'userrootcat', 's:17:"/__SYSTEM__/Users";'),
+(185, 'CategoriesModule', 'allowusercatedit', 'i:0;'),
+(186, 'CategoriesModule', 'autocreateusercat', 'i:0;'),
+(187, 'CategoriesModule', 'autocreateuserdefaultcat', 'i:0;'),
+(188, 'CategoriesModule', 'userdefaultcatname', 's:7:"Default";'),
+(189, 'LegalModule', 'legalNoticeActive', 'b:1;'),
+(190, 'LegalModule', 'termsOfUseActive', 'b:1;'),
+(191, 'LegalModule', 'privacyPolicyActive', 'b:1;'),
+(192, 'LegalModule', 'accessibilityStatementActive', 'b:1;'),
+(193, 'LegalModule', 'cancellationRightPolicyActive', 'b:0;'),
+(194, 'LegalModule', 'tradeConditionsActive', 'b:0;'),
+(195, 'LegalModule', 'legalNoticeUrl', 's:0:"";'),
+(196, 'LegalModule', 'termsOfUseUrl', 's:0:"";'),
+(197, 'LegalModule', 'privacyPolicyUrl', 's:0:"";'),
+(198, 'LegalModule', 'accessibilityStatementUrl', 's:0:"";'),
+(199, 'LegalModule', 'cancellationRightPolicyUrl', 's:0:"";'),
+(200, 'LegalModule', 'tradeConditionsUrl', 's:0:"";'),
+(201, 'LegalModule', 'minimumAge', 'i:13;'),
 (203, 'Mailer', 'mailertype', 'i:1;'),
 (204, 'Mailer', 'charset', 's:5:"utf-8";'),
 (205, 'Mailer', 'encoding', 's:4:"8bit";'),
@@ -832,7 +858,12 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (216, 'Mailer', 'smtpsecuremethod', 's:3:"ssl";'),
 (217, 'Search', 'itemsperpage', 'i:10;'),
 (218, 'Search', 'limitsummary', 'i:255;'),
-(219, '/EventHandlers', 'Search', 'a:1:{i:0;a:3:{s:9:"eventname";s:26:"installer.module.installed";s:8:"callable";a:2:{i:0;s:29:"Search\\Listener\\EventListener";i:1;s:13:"moduleInstall";}s:6:"weight";i:10;}}');
+(219, '/EventHandlers', 'Search', 'a:1:{i:0;a:3:{s:9:"eventname";s:26:"installer.module.installed";s:8:"callable";a:2:{i:0;s:35:"SearchModule\\Listener\\EventListener";i:1;s:13:"moduleInstall";}s:6:"weight";i:10;}}'),
+(221, 'ProfileModule', 'memberslistitemsperpage', 'i:20;'),
+(222, 'ProfileModule', 'onlinemembersitemsperpage', 'i:20;'),
+(223, 'ProfileModule', 'recentmembersitemsperpage', 'i:10;'),
+(224, 'ProfileModule', 'filterunverified', 'i:1;'),
+(225, 'ProfileModule', 'dudregshow', 'a:5:{i:0;i:1;i:1;i:3;i:2;i:4;i:3;i:10;i:4;i:11;}');
 
 -- --------------------------------------------------------
 
@@ -840,6 +871,7 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 -- Table structure for table `objectdata_attributes`
 --
 
+DROP TABLE IF EXISTS `objectdata_attributes`;
 CREATE TABLE IF NOT EXISTS `objectdata_attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_name` varchar(80) NOT NULL,
@@ -881,6 +913,7 @@ INSERT INTO `objectdata_attributes` (`id`, `attribute_name`, `object_id`, `objec
 -- Table structure for table `objectdata_log`
 --
 
+DROP TABLE IF EXISTS `objectdata_log`;
 CREATE TABLE IF NOT EXISTS `objectdata_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object_type` varchar(80) NOT NULL,
@@ -901,6 +934,7 @@ CREATE TABLE IF NOT EXISTS `objectdata_log` (
 -- Table structure for table `objectdata_meta`
 --
 
+DROP TABLE IF EXISTS `objectdata_meta`;
 CREATE TABLE IF NOT EXISTS `objectdata_meta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module` varchar(40) NOT NULL,
@@ -938,9 +972,28 @@ CREATE TABLE IF NOT EXISTS `objectdata_meta` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pagelock`
+--
+
+DROP TABLE IF EXISTS `pagelock`;
+CREATE TABLE IF NOT EXISTS `pagelock` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `cdate` datetime NOT NULL,
+  `edate` datetime NOT NULL,
+  `session` varchar(50) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `ipno` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sc_intrusion`
 --
 
+DROP TABLE IF EXISTS `sc_intrusion`;
 CREATE TABLE IF NOT EXISTS `sc_intrusion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
@@ -961,6 +1014,7 @@ CREATE TABLE IF NOT EXISTS `sc_intrusion` (
 -- Table structure for table `search_result`
 --
 
+DROP TABLE IF EXISTS `search_result`;
 CREATE TABLE IF NOT EXISTS `search_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
@@ -981,20 +1035,22 @@ CREATE TABLE IF NOT EXISTS `search_result` (
 -- Table structure for table `search_stat`
 --
 
+DROP TABLE IF EXISTS `search_stat`;
 CREATE TABLE IF NOT EXISTS `search_stat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `search` varchar(50) NOT NULL,
   `scount` int(11) NOT NULL DEFAULT '0',
   `date` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `search_stat`
 --
 
 INSERT INTO `search_stat` (`id`, `search`, `scount`, `date`) VALUES
-(1, 'dfgdfg', 1, '2012-04-16');
+(1, 'dfgdfg', 1, '2012-04-16'),
+(2, 'Search keywords', 1, '2012-04-18');
 
 -- --------------------------------------------------------
 
@@ -1002,6 +1058,7 @@ INSERT INTO `search_stat` (`id`, `search`, `scount`, `date`) VALUES
 -- Table structure for table `session_info`
 --
 
+DROP TABLE IF EXISTS `session_info`;
 CREATE TABLE IF NOT EXISTS `session_info` (
   `sessid` varchar(40) NOT NULL,
   `ipaddr` varchar(32) NOT NULL,
@@ -1018,7 +1075,7 @@ CREATE TABLE IF NOT EXISTS `session_info` (
 
 INSERT INTO `session_info` (`sessid`, `ipaddr`, `lastused`, `uid`, `remember`, `vars`) VALUES
 ('8furfefgni18g9bq17r71i7lb3ikd9mc', '837ec5754f503cfaaee0929fd48974e7', '2012-04-15 13:07:17', 2, 1, '_sf2_attributes|a:5:{s:3:"uid";s:1:"2";s:10:"rememberme";i:1;s:9:"useragent";s:40:"f3344a2f025d5337868c3f62da839797b75b1f3a";s:7:"_tokens";a:1:{s:23:"4f8aa8eb51bea2.37295370";a:2:{s:5:"token";s:92:"NGY4YWE4ZWI1MWJlYTIuMzcyOTUzNzA6YjRlYWQ4ODllODRhMDU2NTdjZTY4NzUxZGJkMTAzNmU6MTMzNDQ4NzI3NQ==";s:4:"time";i:1334487275;}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334488034;s:1:"c";i:1334487260;s:1:"l";s:6:"604800";}'),
-('hn56d5bafjct0icskjtb81ksg6htcdsu', '837ec5754f503cfaaee0929fd48974e7', '2012-04-16 20:08:30', 2, 1, '_sf2_attributes|a:12:{s:3:"uid";s:1:"2";s:7:"_tokens";a:26:{s:23:"4f8c55caa7f9b1.96553473";a:2:{s:5:"token";s:92:"NGY4YzU1Y2FhN2Y5YjEuOTY1NTM0NzM6OWIwYTQ0NTkzMjFjNTYyNDI4YzcwNzUwZjUwZjZkZTc6MTMzNDU5NzA2Ng==";s:4:"time";i:1334597066;}s:23:"4f8c57afba8667.44793839";a:2:{s:5:"token";s:92:"NGY4YzU3YWZiYTg2NjcuNDQ3OTM4Mzk6MTc5Njg1NTAwM2M5ZDQ3MDBkYzRlYTk5OTE5MGNkMzE6MTMzNDU5NzU1MQ==";s:4:"time";i:1334597551;}s:23:"4f8c5998e1e8c9.09351670";a:2:{s:5:"token";s:92:"NGY4YzU5OThlMWU4YzkuMDkzNTE2NzA6MGU1ZWYyZGI1MzBjNTJlOGI5ZGFkNzFmNDA0NjAyZWY6MTMzNDU5ODA0MA==";s:4:"time";i:1334598040;}s:23:"4f8c599f3430f0.05596185";a:2:{s:5:"token";s:92:"NGY4YzU5OWYzNDMwZjAuMDU1OTYxODU6MjdmYzlkODkzODY5OWIxYTA2MDY4NjQ2NjFjYmUxYmU6MTMzNDU5ODA0Nw==";s:4:"time";i:1334598047;}s:23:"4f8c59f8b0d539.49154546";a:2:{s:5:"token";s:92:"NGY4YzU5ZjhiMGQ1MzkuNDkxNTQ1NDY6YzhmYTUyMzU3NDAzOTUxNGU2ZTQwN2JjNzZkYzJiNTA6MTMzNDU5ODEzNg==";s:4:"time";i:1334598136;}s:23:"4f8c59fe8e5044.16111146";a:2:{s:5:"token";s:92:"NGY4YzU5ZmU4ZTUwNDQuMTYxMTExNDY6MmY5ODVjYTUzNWU4ODhjOTFlODg2NmFmZGZlMDllYTc6MTMzNDU5ODE0Mg==";s:4:"time";i:1334598142;}s:23:"4f8c5a04ae3265.78255751";a:2:{s:5:"token";s:92:"NGY4YzVhMDRhZTMyNjUuNzgyNTU3NTE6NmMxNTJlMGZhY2U2YzNlOGRmMjZjYmM1NzFlNDgwMGU6MTMzNDU5ODE0OA==";s:4:"time";i:1334598148;}s:23:"4f8c5a0869e8c4.99826522";a:2:{s:5:"token";s:92:"NGY4YzVhMDg2OWU4YzQuOTk4MjY1MjI6ZTliNmU1ZjU3OWIzYTA3NWQxN2RkOTU4Y2VkZDk0ODc6MTMzNDU5ODE1Mg==";s:4:"time";i:1334598152;}s:23:"4f8c5a0c62b112.80699281";a:2:{s:5:"token";s:92:"NGY4YzVhMGM2MmIxMTIuODA2OTkyODE6NDg5NDE0YTEyZjg3NDA5NTE3YzM0MGM4NDdhYzY5MTk6MTMzNDU5ODE1Ng==";s:4:"time";i:1334598156;}s:23:"4f8c5a11dac3f3.64157134";a:2:{s:5:"token";s:92:"NGY4YzVhMTFkYWMzZjMuNjQxNTcxMzQ6ODE2ZjQ4Y2JhNjRhMGQ4NTE2ZmQ2MzQzNjdjNTAzYzI6MTMzNDU5ODE2MQ==";s:4:"time";i:1334598161;}s:23:"4f8c5a18941e93.67221948";a:2:{s:5:"token";s:92:"NGY4YzVhMTg5NDFlOTMuNjcyMjE5NDg6MDg0NzMxNzllNDQxYmMzMDQzNzg1NGFlNjNmY2YyNDQ6MTMzNDU5ODE2OA==";s:4:"time";i:1334598168;}s:23:"4f8c5a1e80c809.00098883";a:2:{s:5:"token";s:92:"NGY4YzVhMWU4MGM4MDkuMDAwOTg4ODM6YjgxMjFiMTE3Nzg0NzdjNzIzZjJkMjhkZGRlMDBkNjY6MTMzNDU5ODE3NA==";s:4:"time";i:1334598174;}s:23:"4f8c5a24d57c37.86667231";a:2:{s:5:"token";s:92:"NGY4YzVhMjRkNTdjMzcuODY2NjcyMzE6Mjk0ZDkwMGE4YWJhOTkxYTZmZmMzMjg3MWZhNTE2ZWI6MTMzNDU5ODE4MA==";s:4:"time";i:1334598180;}s:23:"4f8c5a27bbb7f7.73733301";a:2:{s:5:"token";s:92:"NGY4YzVhMjdiYmI3ZjcuNzM3MzMzMDE6ZGU0ODU1Mjk3ZmU1YTEwYmJhNzVkNTAzNDgxYzZhZTE6MTMzNDU5ODE4Mw==";s:4:"time";i:1334598183;}s:23:"4f8c5a36065cb4.77326956";a:2:{s:5:"token";s:92:"NGY4YzVhMzYwNjVjYjQuNzczMjY5NTY6ODNjZTMwNTJiZjI3OGFlYzY1YjRhNjE4M2MzMzE4M2U6MTMzNDU5ODE5OA==";s:4:"time";i:1334598198;}s:23:"4f8c5a3acdd726.95270364";a:2:{s:5:"token";s:92:"NGY4YzVhM2FjZGQ3MjYuOTUyNzAzNjQ6NGNlZmNhNTVmZjU0ODY0MjAxNjg4ZWIwNDNlNDRjNmY6MTMzNDU5ODIwMg==";s:4:"time";i:1334598202;}s:23:"4f8c5a3f1b9352.04026561";a:2:{s:5:"token";s:92:"NGY4YzVhM2YxYjkzNTIuMDQwMjY1NjE6MDU5MGU5OWIxZDYxMDkyOGZhNTlmY2Q0YTM4MmVjYTU6MTMzNDU5ODIwNw==";s:4:"time";i:1334598207;}s:23:"4f8c5a55d6dcd3.61843415";a:2:{s:5:"token";s:92:"NGY4YzVhNTVkNmRjZDMuNjE4NDM0MTU6ZDg1MmYxNThkY2M0NDI1ODEwMmYyODRmYzY3ZThlNWU6MTMzNDU5ODIyOQ==";s:4:"time";i:1334598229;}s:23:"4f8c5aa78dab37.27471689";a:2:{s:5:"token";s:92:"NGY4YzVhYTc4ZGFiMzcuMjc0NzE2ODk6YzVjOTU1NTBiMGQ5MDVjMjYyOGM1YzUxN2Y1NmUyZjk6MTMzNDU5ODMxMQ==";s:4:"time";i:1334598311;}s:23:"4f8c5aae6fccc2.44502703";a:2:{s:5:"token";s:92:"NGY4YzVhYWU2ZmNjYzIuNDQ1MDI3MDM6OWM1MzJhNjBlOWNmYzg4OTdiNDg2YmEzYmM0ODkyMDY6MTMzNDU5ODMxOA==";s:4:"time";i:1334598318;}s:23:"4f8c5ae73f1098.15377999";a:2:{s:5:"token";s:92:"NGY4YzVhZTczZjEwOTguMTUzNzc5OTk6NmQ3NjhkMGIyODA1OTgyZjZkNGJhYzkwZDgwZjBlMjM6MTMzNDU5ODM3NQ==";s:4:"time";i:1334598375;}s:23:"4f8c5af6a02333.11271620";a:2:{s:5:"token";s:92:"NGY4YzVhZjZhMDIzMzMuMTEyNzE2MjA6N2QxNDQ1ZGQ3ODc2ZTc1OWExZmVjZGRkYmU0MDg0Yzk6MTMzNDU5ODM5MA==";s:4:"time";i:1334598390;}s:23:"4f8c5b01c5bb12.08916126";a:2:{s:5:"token";s:92:"NGY4YzViMDFjNWJiMTIuMDg5MTYxMjY6MmQ3NDAxMzNkZGM1MTczYTFlODRhNjY5M2U5NDBhODU6MTMzNDU5ODQwMQ==";s:4:"time";i:1334598401;}s:23:"4f8c5b026fc061.19438311";a:2:{s:5:"token";s:92:"NGY4YzViMDI2ZmMwNjEuMTk0MzgzMTE6OTljMTU2NjVkZTk0OWYxZGFiYWE3ZmQwNjM3NDExN2Y6MTMzNDU5ODQwMg==";s:4:"time";i:1334598402;}s:23:"4f8c6014de0e96.94497953";a:2:{s:5:"token";s:92:"NGY4YzYwMTRkZTBlOTYuOTQ0OTc5NTM6MzlhNTBiOGU1ZTNhNGFiZTA1ZTViYzliYjJlZDVkNzk6MTMzNDU5OTcwMA==";s:4:"time";i:1334599700;}s:23:"4f8c601d7f24c7.88678877";a:2:{s:5:"token";s:92:"NGY4YzYwMWQ3ZjI0YzcuODg2Nzg4Nzc6NmU1ODM1NWFmNTM4MjdjM2M2MWJkMWRiZTc0NDFhYTk6MTMzNDU5OTcwOQ==";s:4:"time";i:1334599709;}}s:12:"//searchtype";s:3:"AND";s:13:"//searchorder";s:6:"newest";s:14:"//searchactive";a:1:{s:5:"Users";s:1:"1";}s:17:"searchResultCount";s:1:"0";s:19:"searchModulesByName";a:1:{s:5:"Users";a:3:{s:5:"title";s:5:"Users";s:9:"functions";a:1:{s:5:"Users";s:6:"search";}s:4:"name";s:5:"Users";}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}s:10:"rememberme";i:1;s:5:"state";N;s:4:"sort";s:4:"name";s:7:"sortdir";s:3:"ASC";}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334599708;s:1:"c";i:1334597063;s:1:"l";s:6:"604800";}');
+('hn56d5bafjct0icskjtb81ksg6htcdsu', '837ec5754f503cfaaee0929fd48974e7', '2012-04-18 11:39:20', 2, 0, '_sf2_attributes|a:3:{s:3:"uid";s:1:"2";s:7:"_tokens";a:1:{s:23:"4f8e8b83f006b9.11116200";a:2:{s:5:"token";s:92:"NGY4ZThiODNmMDA2YjkuMTExMTYyMDA6OWM1YjA5MTAyZTE0ZTc5MGRmNzIxNGQ0OThjY2NhMGQ6MTMzNDc0MTg5MQ==";s:4:"time";i:1334741891;}}s:27:"users/authentication_method";a:2:{s:7:"modname";s:5:"Users";s:6:"method";s:5:"uname";}}_sf2_flashes|a:0:{}_sf2_meta|a:3:{s:1:"u";i:1334741959;s:1:"c";i:1334730791;s:1:"l";s:6:"604800";}');
 
 -- --------------------------------------------------------
 
@@ -1026,6 +1083,7 @@ INSERT INTO `session_info` (`sessid`, `ipaddr`, `lastused`, `uid`, `remember`, `
 -- Table structure for table `themes`
 --
 
+DROP TABLE IF EXISTS `themes`;
 CREATE TABLE IF NOT EXISTS `themes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
@@ -1048,11 +1106,11 @@ CREATE TABLE IF NOT EXISTS `themes` (
 --
 
 INSERT INTO `themes` (`id`, `name`, `type`, `displayname`, `description`, `directory`, `version`, `contact`, `admin`, `user`, `system`, `state`, `xhtml`) VALUES
-(1, 'Andreas08', 3, 'Andreas08', 'Based on the theme Andreas08 by Andreas Viklund and extended for Zikula with the CSS Framework ''fluid960gs''.', 'Andreas08', '2.0', '', 1, 1, 0, 1, 1),
-(2, 'Atom', 3, 'Atom', 'The Atom theme is an auxiliary theme specially designed for rendering pages in Atom mark-up.', 'Atom', '1.0', '', 0, 0, 1, 1, 0),
-(3, 'Printer', 3, 'Printer', 'The Printer theme is an auxiliary theme designed specially for outputting pages in a printer-friendly format.', 'Printer', '2.0', '', 0, 0, 1, 1, 1),
-(4, 'RSS', 3, 'RSS', 'The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.', 'RSS', '1.0', '', 0, 0, 1, 1, 0),
-(5, 'SeaBreeze', 3, 'SeaBreeze', 'The SeaBreeze theme is a browser-oriented theme, and was updated for the release of Zikula 1.0, with revised colours and new graphics.', 'SeaBreeze', '3.2', '', 0, 1, 0, 1, 1);
+(1, 'Andreas08Theme', 3, 'Andreas08', 'Based on the theme Andreas08 by Andreas Viklund and extended for Zikula with the CSS Framework ''fluid960gs''.', 'Andreas08Theme', '2.0', '', 1, 1, 0, 1, 1),
+(2, 'AtomTheme', 3, 'Atom', 'The Atom theme is an auxiliary theme specially designed for rendering pages in Atom mark-up.', 'AtomTheme', '1.0', '', 0, 0, 1, 1, 0),
+(3, 'PrinterTheme', 3, 'Printer', 'The Printer theme is an auxiliary theme designed specially for outputting pages in a printer-friendly format.', 'PrinterTheme', '2.0', '', 0, 0, 1, 1, 1),
+(4, 'RssTheme', 3, 'RSS', 'The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.', 'RssTheme', '1.0', '', 0, 0, 1, 1, 0),
+(5, 'SeaBreezeTheme', 3, 'SeaBreeze', 'The SeaBreeze theme is a browser-oriented theme, and was updated for the release of Zikula 1.0, with revised colours and new graphics.', 'SeaBreezeTheme', '3.2', '', 0, 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1060,6 +1118,7 @@ INSERT INTO `themes` (`id`, `name`, `type`, `displayname`, `description`, `direc
 -- Table structure for table `userblocks`
 --
 
+DROP TABLE IF EXISTS `userblocks`;
 CREATE TABLE IF NOT EXISTS `userblocks` (
   `uid` int(11) NOT NULL,
   `bid` int(11) NOT NULL,
@@ -1074,6 +1133,7 @@ CREATE TABLE IF NOT EXISTS `userblocks` (
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
   `uname` varchar(25) NOT NULL,
@@ -1101,7 +1161,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`uid`, `uname`, `email`, `pass`, `passreminder`, `activated`, `approved_date`, `approved_by`, `user_regdate`, `lastlogin`, `theme`, `ublockon`, `ublock`, `tz`, `locale`) VALUES
 (1, 'guest', '', '', '', 1, '1970-01-01 00:00:00', 0, '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, '', '', ''),
-(2, 'admin', 'drak@zikula.org', '8$GLk02$698a73cc819a22f94267b34d48bb48015ca55efc3e9f8bc3a6dd2709ec24653d', '', 1, '2012-04-08 07:27:39', 2, '2012-04-08 07:27:55', '2012-04-16 17:32:31', '', 0, '', '', '');
+(2, 'admin', 'drak@zikula.org', '8$GLk02$698a73cc819a22f94267b34d48bb48015ca55efc3e9f8bc3a6dd2709ec24653d', '', 1, '2012-04-08 07:27:39', 2, '2012-04-08 07:27:55', '2012-04-19 16:41:32', '', 0, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1109,6 +1169,7 @@ INSERT INTO `users` (`uid`, `uname`, `email`, `pass`, `passreminder`, `activated
 -- Table structure for table `users_verifychg`
 --
 
+DROP TABLE IF EXISTS `users_verifychg`;
 CREATE TABLE IF NOT EXISTS `users_verifychg` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `changetype` tinyint(4) NOT NULL DEFAULT '0',
@@ -1122,9 +1183,50 @@ CREATE TABLE IF NOT EXISTS `users_verifychg` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_property`
+--
+
+DROP TABLE IF EXISTS `user_property`;
+CREATE TABLE IF NOT EXISTS `user_property` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label` varchar(255) NOT NULL,
+  `dtype` int(11) NOT NULL DEFAULT '0',
+  `modname` varchar(64) NOT NULL,
+  `weight` int(11) NOT NULL DEFAULT '0',
+  `validation` longtext,
+  `attributename` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `prop_label` (`label`),
+  KEY `prop_attr` (`attributename`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `user_property`
+--
+
+INSERT INTO `user_property` (`id`, `label`, `dtype`, `modname`, `weight`, `validation`, `attributename`) VALUES
+(1, '_UREALNAME', 1, '', 1, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'realname'),
+(2, '_UFAKEMAIL', 1, '', 2, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'publicemail'),
+(3, '_YOURHOMEPAGE', 1, '', 3, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'url'),
+(4, '_TIMEZONEOFFSET', 1, '', 4, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:4;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'tzoffset'),
+(5, '_YOURAVATAR', 1, '', 5, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:4;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'avatar'),
+(6, '_YICQ', 1, '', 6, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'icq'),
+(7, '_YAIM', 1, '', 7, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'aim'),
+(8, '_YYIM', 1, '', 8, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'yim'),
+(9, '_YMSNM', 1, '', 9, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'msnm'),
+(10, '_YLOCATION', 1, '', 10, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'city'),
+(11, '_YOCCUPATION', 1, '', 11, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:0;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'occupation'),
+(12, '_SIGNATURE', 1, '', 12, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:1;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'signature'),
+(13, '_EXTRAINFO', 1, '', 13, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:1;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'extrainfo'),
+(14, '_YINTERESTS', 1, '', 14, 'a:5:{s:8:"required";i:0;s:6:"viewby";i:0;s:11:"displaytype";i:1;s:11:"listoptions";s:0:"";s:4:"note";s:0:"";}', 'interests');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `workflows`
 --
 
+DROP TABLE IF EXISTS `workflows`;
 CREATE TABLE IF NOT EXISTS `workflows` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `metaid` int(11) NOT NULL DEFAULT '0',
