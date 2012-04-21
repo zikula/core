@@ -24,16 +24,16 @@
     <thead>
         <tr>
             <th>
-                {sortlink __linktext='Internal name' sort='name' currentsort=$sort sortdir=$sortdir modname='Extensions' type='admin' func='view'}
+                {sortlink __linktext='Internal name' sort='name' currentsort=$sort sortdir=$sortdir modname='ExtensionsModule' type='admin' func='view'}
             </th>
             <th>
-                {sortlink __linktext='Display name' sort='displayname' currentsort=$sort sortdir=$sortdir modname='Extensions' type='admin' func='view'}
+                {sortlink __linktext='Display name' sort='displayname' currentsort=$sort sortdir=$sortdir modname='ExtensionsModule' type='admin' func='view'}
             </th>
             <th>{gt text="Module URL"}</th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
             <th class="z-nowrap">
-                <form action="{modurl modname="Extensions" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+                <form action="{modurl modname="ExtensionsModule" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <label for="modules_state">{gt text="State"}</label><br />
                         <select id="modules_state" name="state" onchange="submit()">

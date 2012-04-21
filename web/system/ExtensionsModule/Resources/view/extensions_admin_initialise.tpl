@@ -4,7 +4,7 @@
     <h3>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="ExtensionsModule" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
@@ -61,7 +61,7 @@
             {if !$fataldependency}
             {button src=button_ok.png set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
             {/if}
-            <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=ExtensionsModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

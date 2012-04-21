@@ -37,5 +37,5 @@
     <li>{gt text="Use keywords that are more general." domain='zikula'}</li>
     <li>{gt text="Use fewer words." domain='zikula'}</li>
 </ul>
-{modfunc modname='Search' func='form' titles=false}
+{modfunc modname='SearchModule' func='form' titles=false}
 {/if}

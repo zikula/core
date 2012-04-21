@@ -1,4 +1,4 @@
-{modulejavascript modname='SecurityCenter' script='securitycenter_admin_purifierconfig.js' modonly=true assign='configFormJS'}
+{modulejavascript modname='SecurityCenterModule' script='securitycenter_admin_purifierconfig.js' modonly=true assign='configFormJS'}
 {pageaddvar name='javascript' value=$configFormJS.scriptfile}
 {adminheader}
 
@@ -12,10 +12,10 @@
 <div class="z-warningmsg">
     <h4>{gt text="Warning"}</h4>
     <p>{gt text="Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier."}</p>
-    <p><a href="{modurl modname='SecurityCenter' type='admin' func='allowedhtml'}">{gt text="Allowed HTML settings"}</a> {gt text="will be applied after HTMLPurifier processing is completed."}</p>
+    <p><a href="{modurl modname='SecurityCenterModule' type='admin' func='allowedhtml'}">{gt text="Allowed HTML settings"}</a> {gt text="will be applied after HTMLPurifier processing is completed."}</p>
 </div>
 
-<form class="z-form htmlpure" action="{modurl modname='SecurityCenter' type='admin' func='updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form htmlpure" action="{modurl modname='SecurityCenterModule' type='admin' func='updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         {foreach from=$purifierAllowed key='directiveNamespace' item='directives' name='directives'}
@@ -80,8 +80,8 @@
 
             <div class="z-buttons z-formbuttons">
                 {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                <a href="{modurl modname='SecurityCenter' type='admin' func="main"}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
-                <a href="{modurl modname='SecurityCenter' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{img modname='core' src='reload.png' set='icons/extrasmall' __alt='Reset to Default Values' __title='Reset to Default Values'} {gt text="Reset to Default Values"}</a>
+                <a href="{modurl modname='SecurityCenterModule' type='admin' func="main"}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
+                <a href="{modurl modname='SecurityCenterModule' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{img modname='core' src='reload.png' set='icons/extrasmall' __alt='Reset to Default Values' __title='Reset to Default Values'} {gt text="Reset to Default Values"}</a>
             </div>
         </div>
     </form>

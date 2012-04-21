@@ -1,11 +1,11 @@
-{ajaxheader modname=Settings filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
+{ajaxheader modname=SettingsModule filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{gt text="Main settings"}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Settings" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="SettingsModule" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -173,7 +173,7 @@
 
         <div class="z-buttons z-formbuttons">
             {button src="button_ok.png" set="icons/extrasmall" __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Settings type=admin func=main}" title="{gt text="Cancel"}">{img modname=core src="button_cancel.png" set="icons/extrasmall" __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=SettingsModule type=admin func=main}" title="{gt text="Cancel"}">{img modname=core src="button_cancel.png" set="icons/extrasmall" __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

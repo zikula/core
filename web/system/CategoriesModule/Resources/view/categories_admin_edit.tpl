@@ -1,17 +1,17 @@
-{ajaxheader modname='Categories' filename='categories_admin_edit.js'}
+{ajaxheader modname='CategoriesModule' filename='categories_admin_edit.js'}
 {adminheader}
 {if $mode == "edit"}
     <div id="top" class="z-admin-content-pagetitle">
         {icon type="edit" size="small"}
         <h3>{gt text="Edit category"}</h3>
     </div>
-    <form class="z-form" action="{modurl modname="Categories" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="CategoriesModule" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
 {else}
     <div id="top" class="z-admin-content-pagetitle">
         {icon type="new" size="small"}
         <h3>{gt text="Create new category"}</h3>
     </div>
-    <form class="z-form" action="{modurl modname="Categories" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="CategoriesModule" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
 {/if}
     <fieldset>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -122,10 +122,10 @@
         {if (!$category.is_leaf && $haveSubcategories && $haveLeafSubcategories)}
         {button src=xedit.png set=icons/extrasmall name="category_user_edit" value="edit" __alt="Edit" __title="Edit" __text="Edit"}
         {/if}
-        <a class="z-btred" href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <a class="z-btred" href="{modurl modname=CategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         {else}
         {button class="z-btgreen" src=button_ok.png set=icons/extrasmall name="category_submit" value="add" __alt="Save" __title="Save" __text="Save"}
-        <a class="z-btred" href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <a class="z-btred" href="{modurl modname=CategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         {/if}
     </div>
 </form>

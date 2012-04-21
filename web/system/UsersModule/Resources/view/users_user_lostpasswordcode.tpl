@@ -1,10 +1,10 @@
 {gt text='Enter confirmation code' assign='templatetitle'}
-{modulelinks modname='Users' type='user'}
+{modulelinks modname='UsersModule' type='user'}
 {include file='users_user_menu.tpl'}
 
 <p class="z-informationmsg">{gt text="Please enter and EITHER your user name OR your e-mail address, and also enter the confirmation code you received. Once you enter this information and click the 'Submit' button you will receive a new password via e-mail."}</p>
 
-<form class="z-form" action="{modurl modname='Users' type='user' func='lostPasswordCode'}" method="post">
+<form class="z-form" action="{modurl modname='UsersModule' type='user' func='lostPasswordCode'}" method="post">
     <div>
         <input type="hidden" id="lostpasswordcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_lostpassword_setpass" name="setpass" value="0" />

@@ -38,7 +38,7 @@
     <a href="{$regactions.approveForce|safetext}">{img src='db_update.png' modname='core' set='icons/extrasmall' __title='Skip verification (approves, and creates a new user account)' __alt='Skip verification (approves, and creates a new user account)'} {gt text='Add user without verification'}</a>
     {/if}
 
-    <a href="{modurl modname='Users' type='admin' func='viewRegistrations' restoreview='true'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to registrations list" __title="Return to registrations list"} {gt text='Return to registrations'}</a>
+    <a href="{modurl modname='UsersModule' type='admin' func='viewRegistrations' restoreview='true'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to registrations list" __title="Return to registrations list"} {gt text='Return to registrations'}</a>
     {/strip}
 </div>
 {adminfooter}

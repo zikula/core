@@ -1,5 +1,5 @@
 {strip}
-{ajaxheader modname='Users' filename='Zikula.Users.LoginBlock.js'}
+{ajaxheader modname='UsersModule' filename='Zikula.Users.LoginBlock.js'}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
     {if ('Users' != $authentication_method.modname)}
         {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.LoginBlock.js'}
@@ -16,7 +16,7 @@
     {/strip}<div id="users_loginblock_waiting" class="z-center z-hide">
         {img modname='core' set='ajax' src='indicator_circle.gif'}
     </div>
-    <form id="users_loginblock_login_form" class="z-form z-linear{if !$show_login_form} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+    <form id="users_loginblock_login_form" class="z-form z-linear{if !$show_login_form} z-hide{/if}" action="{modurl modname="UsersModule" type="user" func="login"}" method="post">
         <div>
             <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage}" />
             <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -76,7 +76,7 @@
 
     <h5>{gt text="Do you need to..."}</h5>
     {if $modvars.UsersModule.reg_allowreg}
-    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='Users' type='user' func='register'}">{gt text="Create an account?"}</a>
+    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='UsersModule' type='user' func='register'}">{gt text="Create an account?"}</a>
     {/if}
-    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='Users' type='user' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
+    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='UsersModule' type='user' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
 </div>

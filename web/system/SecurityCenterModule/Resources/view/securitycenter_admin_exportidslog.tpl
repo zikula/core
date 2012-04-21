@@ -6,10 +6,10 @@
 
 <ul class="z-menulinks">
     <li><span class="z-icon-es-export">{gt text="Export IDS Log"}</span></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenterModule type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
 </ul>
 
-<form class="z-form" action="{modurl modname='SecurityCenter' type='admin' func='exportidslog'}" method="post" enctype="multipart/form-data">
+<form class="z-form" action="{modurl modname='SecurityCenterModule' type='admin' func='exportidslog'}" method="post" enctype="multipart/form-data">
     <div>
         <input type="hidden" name="confirmed" value="1" />
         <fieldset>
@@ -34,7 +34,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
-            <a href="{modurl modname='SecurityCenter' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='SecurityCenterModule' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

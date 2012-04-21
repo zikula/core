@@ -10,7 +10,7 @@
     <h3>{$templatetitle}</h3>
 </div>
 
-<form id="users_search" class="z-form" method="post" action="{modurl modname='Users' type='admin' func=$callbackFunc|default:'search'}">
+<form id="users_search" class="z-form" method="post" action="{modurl modname='UsersModule' type='admin' func=$callbackFunc|default:'search'}">
     <div>
         <input id="users_search_csrftoken" name="csrftoken" type="hidden" value="{insert name='csrftoken'}" />
         <input id="users_search_formid" name="formid" type="hidden" value="users_search" />
@@ -55,7 +55,7 @@
 
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Search' __title='Search' __text='Search'}
-            <a href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='UsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

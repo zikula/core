@@ -17,7 +17,7 @@
     {/if}
 {/strip}
             
-{modulelinks modname='Users' type='user'}
+{modulelinks modname='UsersModule' type='user'}
 {include file='users_user_menu.tpl'}
 
 {if !empty($errormessages)}
@@ -31,7 +31,7 @@
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='Users' type='user' func='verifyRegistration'}" method="post">
+<form class="z-form" action="{modurl modname='UsersModule' type='user' func='verifyRegistration'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_setpass" name="setpass" value="{$setpass}" />

@@ -1,12 +1,12 @@
 {adminheader}
-{ajaxheader modname=Theme filename=theme_admin_modifyconfig.js noscriptaculous=true effects=true}
+{ajaxheader modname=ThemeModule filename=theme_admin_modifyconfig.js noscriptaculous=true effects=true}
 
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{gt text="Settings"}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Theme" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="ThemeModule" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -29,7 +29,7 @@
             <div class="z-formrow">
                 <label for="theme_force_compile">{gt text="Force re-compilation of theme templates"}</label>
                 <input id="theme_force_compile" name="force_compile" type="checkbox" value="1" {if $force_compile eq 1}checked="checked"{/if} />
-                <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_compiled csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
+                <a class="z-indented" href="{modurl modname=ThemeModule type=admin func=clear_compiled csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
             </div>
             <div class="z-formrow">
                 <label for="render_compile_dir">{gt text="Compiled render templates directory"}</label>
@@ -42,7 +42,7 @@
             <div class="z-formrow">
                 <label for="render_force_compile">{gt text="Force re-compilation of render templates"}</label>
                 <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile}checked="checked"{/if} />
-                <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
+                <a class="z-indented" href="{modurl modname="ThemeModule" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
             </div>
         </fieldset>
         <fieldset>
@@ -50,7 +50,7 @@
             <div class="z-formrow">
                 <label for="enablecache">{gt text="Enable theme caching"}</label>
                 <input id="enablecache" name="enablecache" type="checkbox" value="1" {if $enablecache eq 1}checked="checked"{/if} />
-                <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
+                <a class="z-indented" href="{modurl modname=ThemeModule type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
             </div>
             <div id="theme_caching">
                 <div class="z-formrow">
@@ -60,7 +60,7 @@
                     <span>
                         <input type="text" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
                         {gt text="seconds"}
-                        <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                        <a class="z-indented" href="{modurl modname=ThemeModule type=admin func=clear_cache cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                     </span>
                 </div>
                 <div class="z-formrow">
@@ -78,7 +78,7 @@
                         <div class="z-formlist">
                             <input id="theme_nocache_{$modname|safetext}" type="checkbox" name="modulesnocache[]" value="{$modname|safetext}"{if isset($modulesnocache.$modname)} checked="checked"{/if} />
                             <label for="theme_nocache_{$modname|safetext}">{$moddisplayname|safetext}</label>
-                            <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                            <a class="z-indented" href="{modurl modname=ThemeModule type=admin func=clear_cache cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                         </div>
                         {/foreach}
                     </div>
@@ -91,7 +91,7 @@
             <div class="z-formrow">
                 <label for="render_cache">{gt text="Enable render caching"}</label>
                 <input id="render_cache" type="checkbox" name="render_cache" value="1"{if $render_cache}checked="checked"{/if} />
-                <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
+                <a class="z-indented" href="{modurl modname="ThemeModule" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
             </div>
             <div id="render_lifetime_container">
                 <div class="z-formrow">
@@ -110,7 +110,7 @@
             <div class="z-formrow">
                 <label for="cssjscombine">{gt text="Enable CSS/JS combination"}</label>
                 <input id="cssjscombine" name="cssjscombine" type="checkbox" value="1" {if $cssjscombine eq 1}checked="checked"{ /if } />
-                <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
+                <a class="z-indented" href="{modurl modname=ThemeModule type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
             </div>
             <div id="theme_cssjscombine">
                 <div class="z-formrow">
@@ -137,7 +137,7 @@
             <legend>{gt text="Themes configurations"}</legend>
             <p class="z-formnote z-informationmsg">{gt text="Notice: When edit the configuration of a Theme, the Theme Engine creates copies of its configuration files inside the Temporary folder when it cannot write on them directly. If you changed your mind and want to have your configuration inside your theme, make its .ini files writable and clear the temporary copies with the following link."}</p>
             <div class="z-formrow">
-                <a class="z-formnote" href="{modurl modname="Theme" type="admin" func="clear_config" csrftoken=$csrftoken}">{gt text="Delete theme configurations"}</a>
+                <a class="z-formnote" href="{modurl modname="ThemeModule" type="admin" func="clear_config" csrftoken=$csrftoken}">{gt text="Delete theme configurations"}</a>
             </div>
         </fieldset>
         <fieldset>
@@ -159,7 +159,7 @@
 
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=ThemeModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

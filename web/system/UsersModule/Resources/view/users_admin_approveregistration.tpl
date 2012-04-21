@@ -14,7 +14,7 @@
 
 {include file='users_admin_includeregistration.tpl'}
 
-<form id="users_approveregistration" class="z-form" action="{modurl modname='Users' type='admin' func='approveRegistration'}" method="post">
+<form id="users_approveregistration" class="z-form" action="{modurl modname='UsersModule' type='admin' func='approveRegistration'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uid" name="uid" value="{$reginfo.uid}" />

@@ -4,7 +4,7 @@
     <h3>{gt text="Edit module"} - {modgetinfo modid=$id info=displayname}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="ExtensionsModule" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="id" value="{$id|safetext}" />
@@ -24,13 +24,13 @@
             </div>
             <div class="z-formrow">
                 <label>{gt text="Defaults"}</label>
-                <span><a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
+                <span><a id="restore_defaults" href="{modurl modname="ExtensionsModule" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
             </div>
         </fieldset>
 
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=ExtensionsModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

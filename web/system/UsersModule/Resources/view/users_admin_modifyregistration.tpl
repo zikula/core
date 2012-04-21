@@ -36,7 +36,7 @@
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='modifyRegistration'}" method="post">
+<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='UsersModule' type='admin' func='modifyRegistration'}" method="post">
     <div>
         <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_registration" />
@@ -89,7 +89,7 @@
                 {img id=$formData->getFormId()|cat:'_ajax_indicator' class='z-hide z-center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
                 {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='z-hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                <a href="{if $restoreview == 'view'}{modurl modname='Users' type='admin' func='viewRegistrations' restoreview=true}{else}{modurl modname='Users' type='admin' func='displayRegistration' uid=$formData->getFieldData('uid')}{/if}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{if $restoreview == 'view'}{modurl modname='UsersModule' type='admin' func='viewRegistrations' restoreview=true}{else}{modurl modname='UsersModule' type='admin' func='displayRegistration' uid=$formData->getFieldData('uid')}{/if}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </fieldset>
     </div>

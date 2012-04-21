@@ -59,14 +59,14 @@
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" title=$strPreviewTheme class="tooltips"}</a>
-                <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{icon type="edit" size="extrasmall" __alt="Edit" title=$strEditTheme class="tooltips"}</a>
+                <a href="{modurl modname="ThemeModule" type="admin" func="modify" themename=$theme.name}">{icon type="edit" size="extrasmall" __alt="Edit" title=$strEditTheme class="tooltips"}</a>
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{icon type="delete" size="extrasmall" __alt="Delete" title=$strDeleteTheme class="tooltips"}</a>
+                <a href="{modurl modname="ThemeModule" type="admin" func="delete" themename=$theme.name}">{icon type="delete" size="extrasmall" __alt="Delete" title=$strDeleteTheme class="tooltips"}</a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
-                <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{icon type="ok" size="extrasmall" __alt="Set as default" title=$strSetDefaultTheme class="tooltips"}</a>
+                <a href="{modurl modname="ThemeModule" type="admin" func="setasdefault" themename=$theme.name}">{icon type="ok" size="extrasmall" __alt="Set as default" title=$strSetDefaultTheme class="tooltips"}</a>
                 {/if}
-                <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{icon type="info" size="extrasmall" __alt="Credits" title=$strCreditsTheme class="tooltips"}</a>
+                <a href="{modurl modname="ThemeModule" type="admin" func="credits" themename=$theme.name}">{icon type="info" size="extrasmall" __alt="Credits" title=$strCreditsTheme class="tooltips"}</a>
             </td>
         </tr>
         {foreachelse}

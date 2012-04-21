@@ -3,7 +3,7 @@
 
 <h4>{gt text="Settings for %s" tag1=$themename}</h4>
 
-<form class="z-form" action="{modurl modname="Theme" type="admin" func="updatesettings"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="ThemeModule" type="admin" func="updatesettings"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -37,7 +37,7 @@
         </fieldset>
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=ThemeModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

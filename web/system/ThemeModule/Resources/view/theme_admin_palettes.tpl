@@ -5,7 +5,7 @@
 
 {pageaddvar name="javascript" value="javascript/picky_color/picky_color.js"}
 {pageaddvar name="stylesheet" value="javascript/picky_color/picky_color.css"}
-<form class="z-form" id="theme_modify_palette" action="{modurl modname="Theme" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" id="theme_modify_palette" action="{modurl modname="ThemeModule" type="admin" func="updatepalettes"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -109,7 +109,7 @@
     </fieldset>
     <div class="z-buttons z-formbuttons">
         {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-        <a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img class=theme_colorpicker_image modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <a href="{modurl modname=ThemeModule type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img class=theme_colorpicker_image modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
     </div>
 </div>
 </form>

@@ -22,14 +22,14 @@
         <tr>
             {if !$systemplugins}
             <th>
-                <form action="{modurl modname="Extensions" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
+                <form action="{modurl modname="ExtensionsModule" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <input type="hidden" name="sort" value="{$sort|safetext}" />
                         <input type="hidden" name="state" value="{$state|safetext}" />
                         <input type="hidden" name="systemplugins" value="{$systemplugins|safetext}" />
                         <div>
                             <label for="bymodule">
-                                <a href="{modurl modname="Extensions" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
+                                <a href="{modurl modname="ExtensionsModule" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Module"}</a>
                             </label><br />
                             {selector_module name="bymodule" selectedValue=$module allValue="0" __allText="All" submit=true}
                         </div>
@@ -38,12 +38,12 @@
             </th>
             {/if}
 
-            <th><a class="{if empty($sort) || $sort eq 'module'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="Extensions" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
-            <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="Extensions" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
+            <th><a class="{if empty($sort) || $sort eq 'module'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="ExtensionsModule" type="admin" func="viewPlugins" sort="module" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Internal Plugin name"}</a></th>
+            <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="ExtensionsModule" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
             <th class="z-nowrap">
-                <form action="{modurl modname="Extensions" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
+                <form action="{modurl modname="ExtensionsModule" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <input type="hidden" name="sort" value="{$sort|safetext}" />
                         <input type="hidden" name="bymodule" value="{$module|safetext}" />
@@ -71,9 +71,9 @@
             {/if}
             <td>
                 {if $plugin.instance instanceof Zikula_Plugin_ConfigurableInterface and $plugin.instance->isInstalled() and $_type eq 'system'}
-                <a href="{modurl modname="Extensions" type="adminplugin" func="dispatch" _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                <a href="{modurl modname="ExtensionsModule" type="adminplugin" func="dispatch" _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                 {elseif $plugin.instance instanceof Zikula_Plugin_ConfigurableInterface and $plugin.instance->isInstalled() and $_type eq 'module'}
-                <a href="{modurl modname="Extensions" type="adminplugin" func="dispatch" _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
+                <a href="{modurl modname="ExtensionsModule" type="adminplugin" func="dispatch" _module=$plugin.instance->getModuleName() _plugin=$plugin.instance->getPluginName() _action="configure"}">{$plugin.instance->getPluginName()|safetext}</a>
                 {else}
                 {$plugin.instance->getPluginName()|safetext}
                 {/if}
