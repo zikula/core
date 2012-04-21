@@ -166,7 +166,7 @@ args gets `array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile
 
 #### `theme.ajax_request`
 Triggered by a native ajax request from a theme.  This occurs when the following call is made
-`ajax.php?module=theme&func=dispatch&.....`
+`index.php?module=theme&type=ajax&func=dispatch&.....`
 Handlers should be registered in the theme.
 
 #### `theme.preinit`

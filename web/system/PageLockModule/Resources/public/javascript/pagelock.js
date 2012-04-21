@@ -50,7 +50,7 @@ PageLock.RefreshLock = function()
     }
 
     new Zikula.Ajax.Request(
-        Zikula.Config.baseURL + "ajax.php?module=PageLock&func=refreshpagelock",
+        Zikula.Config.baseURL + "index.php?module=PageLock&type=ajax&func=refreshpagelock",
         {
             parameters: pars,
             onComplete: PageLock.RefreshLockComplete
@@ -85,7 +85,7 @@ PageLock.CheckLock = function()
     }
 
     new Zikula.Ajax.Request(
-        Zikula.Config.baseURL + "ajax.php?module=PageLock&func=checkpagelock",
+        Zikula.Config.baseURL + "index.php?module=PageLock&type=ajax&func=checkpagelock",
         {
             parameters: pars,
             onComplete: PageLock.CheckLockComplete

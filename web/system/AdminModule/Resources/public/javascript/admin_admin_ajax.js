@@ -50,7 +50,7 @@ Event.observe(window, 'load', function() {
                 var pars = Sortable.serialize("admintabs");
                 //send the new sort order to the ajax controller
                 new Zikula.Ajax.Request(
-                    "ajax.php?module=Admin&type=ajax&func=sortCategories", {
+                    "index.php?module=Admin&type=ajax&func=sortCategories", {
                         parameters: pars,
                         onComplete: function (req) {
                             if (!req.isSuccess()) {
@@ -79,7 +79,7 @@ Event.observe(window, 'load', function() {
             onUpdate: function(element){
                 var pars = Sortable.serialize("modules");
                 //send the new order to the ajax controller
-                new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=sortModules", {
+                new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=sortModules", {
                     parameters: pars,
                     onComplete: function (req) {
                         if (!req.isSuccess()) {
@@ -193,7 +193,7 @@ Admin.Editor.Add = function(nid)
 {
     var nelement = $(nid);
     var tLength = nelement.innerHTML.length;
-    var editor = new Ajax.InPlaceEditor(nid,"ajax.php?module=Admin&type=ajax&func=editCategory",{
+    var editor = new Ajax.InPlaceEditor(nid,"index.php?module=Admin&type=ajax&func=editCategory",{
         clickToEditText: lblclickToEdit,
         savingText: lblSaving,
         externalControl: "admintabs-none",
@@ -276,7 +276,7 @@ Admin.Tab.Delete = function(id)
     var pars = {
         cid: id
     }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=deleteCategory", {
+    new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=deleteCategory", {
         parameters: pars,
         onComplete : Admin.Tab.DeleteResponse
     });
@@ -312,7 +312,7 @@ Admin.Tab.setDefault = function(id)
     var pars = {
         cid: id
     }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=defaultCategory", {
+    new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=defaultCategory", {
         parameters: pars,
         onComplete : Admin.Tab.setDefaultResponse
     });
@@ -348,7 +348,7 @@ Admin.Module.Move = function(id,cid)
         modid:  id,
         cat: cid
     }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=changeModuleCategory", {
+    new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=changeModuleCategory", {
         parameters: pars,
         onComplete : Admin.Module.moveResponse
     });
@@ -422,7 +422,7 @@ Admin.Category.Add = function(cat)
     var pars = {
         name: name
     }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
+    new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=addCategory", {
         parameters: pars,
         onComplete : Admin.Category.addResponse
     });

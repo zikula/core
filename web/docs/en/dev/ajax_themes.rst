@@ -4,7 +4,7 @@ It is now possible to process ajax directly inside a theme.  To call and AJAX
 controller, simply invoke the following along with any additional parameters
 required.
 
-    ajax.php?module=theme&func=dispatch
+    index.php?module=theme&type=ajax&func=dispatch
 
 Inside the theme, you must implement a 'theme.ajax_request' event handler.  Since
 there will only be one theme instanciated at any time, only the handlers of that
