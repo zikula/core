@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="zikula.themes.listener" class="Zikula\ThemeBundle\EventListener\ThemeListener">
+        <service id="zikula.themes.listener" class="Zikula\Bundle\ThemeBundle\EventListener\ThemeListener">
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" priority="255"  />
             <argument type="service" id="templating" />
         </service>
