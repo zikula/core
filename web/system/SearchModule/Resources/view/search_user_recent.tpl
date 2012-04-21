@@ -13,7 +13,7 @@
     <tbody>
         {foreach from=$recentsearches item=recentsearch}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{modurl modname='Search' type='user' func='search' q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|safetext}</a></td>
+            <td><a href="{modurl modname='SearchModule' type='user' func='search' q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|safetext}</a></td>
             <td>{$recentsearch.count|safetext}</td>
             <td>{$recentsearch.date|date_format}</td>
         </tr>

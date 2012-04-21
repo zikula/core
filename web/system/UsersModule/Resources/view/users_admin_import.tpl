@@ -10,7 +10,7 @@
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='Users' type='admin' func='import'}" method="post" enctype="multipart/form-data">
+<form class="z-form" action="{modurl modname='UsersModule' type='admin' func='import'}" method="post" enctype="multipart/form-data">
     <div>
         <input type="hidden" name="confirmed" value="1" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -32,7 +32,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Import' __title='Import' __text='Import'}
-            <a href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='UsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

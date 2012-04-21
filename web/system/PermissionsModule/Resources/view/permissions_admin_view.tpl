@@ -40,7 +40,7 @@
 </p>
 
 {if $enablefilter eq true}
-<form class="z-form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" id="permgroupfilterform" action="{modurl modname=PermissionsModule type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -195,7 +195,7 @@
     </ol>
 </div>
 
-<form id="testpermform" class="z-form" action="{modurl modname=permissions type=admin func=view}" method="post">
+<form id="testpermform" class="z-form" action="{modurl modname=permissionsModule type=admin func=view}" method="post">
     <fieldset>
         <legend>{gt text="User permission check"}</legend>
         <div class="z-formrow">

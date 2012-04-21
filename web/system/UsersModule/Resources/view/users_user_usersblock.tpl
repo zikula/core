@@ -1,6 +1,6 @@
 <h2>{gt text="Personal custom block"}</h2>
 
-<form action="{modurl modname='Users' type='user' func='updateusersblock'}" method="post">
+<form action="{modurl modname='UsersModule' type='user' func='updateusersblock'}" method="post">
     <div>
         <p>{gt text="Block content"}</p>
         <label for="usersblock_enable">{gt text="Enable your personal custom block"}</label>

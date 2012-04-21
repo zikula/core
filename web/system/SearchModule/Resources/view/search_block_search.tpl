@@ -1,4 +1,4 @@
-<form class="z-form z-linear" method="post" action="{modurl modname="Search" type="user" func="search"}">
+<form class="z-form z-linear" method="post" action="{modurl modname="SearchModule" type="user" func="search"}">
     <div>
         <fieldset>
             <legend>{gt text="Search keyword"}</legend>

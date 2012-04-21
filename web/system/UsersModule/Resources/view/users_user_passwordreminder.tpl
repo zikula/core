@@ -1,5 +1,5 @@
 {gt text='Lost password recovery' assign='templatetitle'}
-{modulelinks modname='Users' type='user'}
+{modulelinks modname='UsersModule' type='user'}
 {include file='users_user_menu.tpl'}
 
 {if !empty($passreminder)}
@@ -15,7 +15,7 @@
         </div>
         <div class="z-formbuttons z-buttons">
             <p>{gt text="I remember my password now."}</p>
-            <a href="{modurl modname='Users' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+            <a href="{modurl modname='UsersModule' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
         </div>
     </div>
 </div>
@@ -32,7 +32,7 @@
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='Users' type='user' func='lostPasswordCode'}" method="post">
+<form class="z-form" action="{modurl modname='UsersModule' type='user' func='lostPasswordCode'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uname" name="uname" value="{$uname}" />

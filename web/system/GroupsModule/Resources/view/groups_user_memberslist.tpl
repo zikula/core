@@ -30,11 +30,11 @@
                 {/if}
             </td>
             {if $coredata.logged_in eq false}
-                {modurl modname='Groups' type='user' func='memberslist' gid=$group.gid assign='return_page'}
-                <td><a href="{modurl modname='Users' type='user' func='login' returnpage=$return_page|urlencode}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text="Log in or register"}</a></td>
+                {modurl modname='GroupsModule' type='user' func='memberslist' gid=$group.gid assign='return_page'}
+                <td><a href="{modurl modname='UsersModule' type='user' func='login' returnpage=$return_page|urlencode}" title="{gt text='Sorry! You must register for a user account on this site before you can apply for membership of a group.'}"> {gt text="Log in or register"}</a></td>
             {elseif $group.state gt 0}
                 {if $group.status eq true}
-                    <td>[ <strong>{gt text="Pending"}</strong> | <a href="{modurl modname='Groups' type='user' func='membership' action='cancel' gid=$group.gid}" title="{gt text='Cancel'}">{gt text="Cancel"}</a> ]</td>
+                    <td>[ <strong>{gt text="Pending"}</strong> | <a href="{modurl modname='GroupsModule' type='user' func='membership' action='cancel' gid=$group.gid}" title="{gt text='Cancel'}">{gt text="Cancel"}</a> ]</td>
                 {else}
                     {if $group.nbumax == 0 OR $group.nbumax gt $group.nbuser}
                         {if $ismember eq true}
@@ -44,7 +44,7 @@
                             {assign var="funcaction" value="subscribe"}
                             {gt text="Apply" assign=mbfunctitle}
                         {/if}
-                        <td><a href="{modurl modname="Groups" type="user" func="membership" action=$funcaction gid=$group.gid}" title="{$mbfunctitle}">{$mbfunctitle}</a></td>
+                        <td><a href="{modurl modname="GroupsModule" type="user" func="membership" action=$funcaction gid=$group.gid}" title="{$mbfunctitle}">{$mbfunctitle}</a></td>
                     {else}
                         <td>{gt text="Group has reached its maximum capacity"}</td>
                     {/if}

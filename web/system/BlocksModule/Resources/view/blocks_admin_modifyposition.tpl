@@ -1,4 +1,4 @@
-{ajaxheader modname=Blocks filename=blocks.js}
+{ajaxheader modname=BlocksModule filename=blocks.js}
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", blocksmodifyinit);
@@ -10,7 +10,7 @@
     <h3>{gt text="Edit block position"}</h3>
 </div>
 
-<form id="blockpositionform" class="z-form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="blockpositionform" class="z-form" action="{modurl modname="BlocksModule" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
@@ -27,7 +27,7 @@
             </div>
             <div class="z-formbuttons z-buttons">
                 {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a href="{modurl modname=BlocksModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </fieldset>
 

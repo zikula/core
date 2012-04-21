@@ -1,5 +1,5 @@
 {strip}
-{ajaxheader modname='Users' filename='Zikula.Users.Admin.Config.js' noscriptaculous=true effects=true}
+{ajaxheader modname='UsersModule' filename='Zikula.Users.Admin.Config.js' noscriptaculous=true effects=true}
 {pageaddvarblock}
 <script type="text/javascript">
     Zikula.Users.Admin.Config.setup = function() {
@@ -53,7 +53,7 @@
     <h3>{gt text="Settings"}</h3>
 </div>
 
-<form class="z-form" id="{$configData->getFormId()}" action="{modurl modname='Users' type='admin' func='config'}" method="post">
+<form class="z-form" id="{$configData->getFormId()}" action="{modurl modname='UsersModule' type='admin' func='config'}" method="post">
     <div>
         <input id="{$configData->getFormId()}_csrftoken" name="csrftoken" type="hidden" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -422,7 +422,7 @@
         <div class="z-formbuttons z-buttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
             {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
-            <a href="{modurl modname='Users' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            <a href="{modurl modname='UsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

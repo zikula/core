@@ -18,7 +18,7 @@
                     </a>
                     {/if}
                     <div class="z-adminlinkheader">
-                        {img modname='Admin' src='mouse.png' __alt='Drag and drop into a new module category' __title='Drag and drop into a new module category' id="dragicon`$adminlink.id`" class='z-dragicon'}
+                        {img modname='AdminModule' src='mouse.png' __alt='Drag and drop into a new module category' __title='Drag and drop into a new module category' id="dragicon`$adminlink.id`" class='z-dragicon'}
                         <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
 
                         {assign var="modlinks" value=false}

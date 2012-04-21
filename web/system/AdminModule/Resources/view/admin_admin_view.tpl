@@ -27,7 +27,7 @@
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_EDIT" assign="access_edit"}
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_DELETE" assign="access_delete"}
         <tr class="{cycle values="z-odd,z-even"}">
-            <td><a href="{modurl modname=Admin type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
+            <td><a href="{modurl modname=AdminModule type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
             <td>
                 {if $access_edit}
                 <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit' class='tooltips'}</a>

@@ -9,7 +9,7 @@
     {gt text="Category"}: <strong>{$category.name}</strong>
 </p>
 
-<form class="z-form" action="{modurl modname="Categories" type="adminform" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="CategoriesModule" type="adminform" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="cid" value="{$category.id}" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -36,7 +36,7 @@
             {/if}
             <div class="z-buttons z-formbuttons">
                 {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                <a class="z-btred" href="{modurl modname=Categories type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="z-btred" href="{modurl modname=CategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </fieldset>
     </div>

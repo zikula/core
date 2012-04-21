@@ -1,4 +1,4 @@
-{ajaxheader modname='Extensions' filename='hookui.js' ui=true}
+{ajaxheader modname='ExtensionsModule' filename='hookui.js' ui=true}
 {pageaddvar name='stylesheet' value='system/Extensions/Resources/public/css/hooks.css'}
 {pageaddvarblock}
 <script type="text/javascript">

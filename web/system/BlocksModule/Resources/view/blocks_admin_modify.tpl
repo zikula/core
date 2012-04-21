@@ -6,7 +6,7 @@
     <h3>{gt text="Edit block"}</h3>
 </div>
 
-<form id="blockupdateform" class="z-form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="blockupdateform" class="z-form" action="{modurl modname="BlocksModule" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="bid" value="{$bid|safetext}" />
@@ -156,7 +156,7 @@
         {if isset($redirect) && $redirect neq ''}
         {assign var="cancelurl" value=$redirect|urldecode}
         {else}
-        {modurl modname="Blocks" type="admin" func="view" assign="cancelurl"}
+        {modurl modname="BlocksModule" type="admin" func="view" assign="cancelurl"}
         {/if}
 
         <div class="z-buttons z-formbuttons">

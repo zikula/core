@@ -21,7 +21,7 @@
     <h3>{gt text="E-mail Users"}</h3>
 </div>
 
-<form id="users_mailusers" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="mailUsers"}">
+<form id="users_mailusers" class="z-form" method="post" action="{modurl modname="UsersModule" type="admin" func="mailUsers"}">
     <div>
         <input type="hidden" id="users_mailusers_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_mailusers_formid" name="formid" value="users_mailusers" />
@@ -93,7 +93,7 @@
 
             <div class="z-formbuttons z-buttons">
                 {button type='submit' src='mail_generic.png' set='icons/extrasmall' __alt="Send e-mail to selected recipients" __title="Send e-mail to selected recipients" __text="Send e-mail to selected recipients"}
-                <a href="{modurl modname='Users' type='admin' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{modurl modname='UsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </div>
     </div>

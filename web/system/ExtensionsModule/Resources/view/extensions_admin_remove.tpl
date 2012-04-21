@@ -6,7 +6,7 @@
 
 <p class="z-warningmsg">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="ExtensionsModule" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
@@ -60,7 +60,7 @@
 
             <div class="z-buttons z-formbuttons">
                 {button src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Uninstall' __title='Uninstall' __text='Uninstall'}
-                <a class="z-btred" href="{modurl modname='Extensions' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="z-btred" href="{modurl modname='ExtensionsModule' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </fieldset>
     </div>

@@ -1,4 +1,4 @@
-{ajaxheader modname='Admin' filename='admin_admin_ajax.js' ui=true}
+{ajaxheader modname='AdminModule' filename='admin_admin_ajax.js' ui=true}
 
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -12,11 +12,11 @@
 
 <div class="z-admin-breadcrumbs">
     <span class="z-sub">{gt text='You are in:'}</span>
-    <span class="z-breadcrumb"><a href="{modurl modname='Admin' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
+    <span class="z-breadcrumb"><a href="{modurl modname='AdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
 
     <span class="z-sub">&raquo;</span>
     {if $func neq 'adminpanel'}
-        <span class="z-breadcrumb"><a href="{modurl modname='Admin' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></span>
+        <span class="z-breadcrumb"><a href="{modurl modname='AdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></span>
     {else}
         <span class="z-breadcrumb">{$menuoptions.$currentcat.title|safetext}</span>
     {/if}
@@ -72,7 +72,7 @@
         </li>
         {/foreach}
         <li id="addcat">
-            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}" onclick='return Admin.Category.New(this);'>&nbsp;</a>
+            <a id="addcatlink" href="{modurl modname=AdminModule type=admin func=new}" title="{gt text='New module category'}" onclick='return Admin.Category.New(this);'>&nbsp;</a>
         </li>
     </ul>
 

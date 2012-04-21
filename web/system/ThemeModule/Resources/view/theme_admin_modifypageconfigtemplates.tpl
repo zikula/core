@@ -4,7 +4,7 @@
 
 <h4>{gt text="Edit page configuration"} - {$filename|safetext}</h4>
 
-<form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="ThemeModule" type="admin" func="updatepageconfigtemplates"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
@@ -112,7 +112,7 @@
                     {foreach name='blockpositions' from=$pageconfiguration.blockpositions key='position' item='template'}
                     {if !isset($blockpositions.$position)}
                     {assign var='undefinedblockposition' value=true}
-                    <li><a href="{modurl modname="Blocks" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
+                    <li><a href="{modurl modname="BlocksModule" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
                     {/if}
                     {/foreach}
                 </ul>
@@ -171,7 +171,7 @@
 
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=ThemeModule type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

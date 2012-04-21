@@ -1,6 +1,6 @@
 {strip}
     {gt text='New account registration' assign='templatetitle'}
-    {ajaxheader modname='Users' filename='Zikula.Users.NewUser.js'}
+    {ajaxheader modname='UsersModule' filename='Zikula.Users.NewUser.js'}
     {if $modvars.UsersModule.use_password_strength_meter && ($authentication_method.modname == 'Users')}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
@@ -65,7 +65,7 @@
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='user' func='register'}" method="post">
+<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='UsersModule' type='user' func='register'}" method="post">
     <div>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_registration" />

@@ -1,4 +1,4 @@
-{ajaxheader modname=Permissions filename=permissions.js ui=true}
+{ajaxheader modname=PermissionsModule filename=permissions.js ui=true}
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", function() {

@@ -1,4 +1,4 @@
-{ajaxheader modname=Blocks filename=blocks.js ui=true}
+{ajaxheader modname=BlocksModule filename=blocks.js ui=true}
 {pageaddvarblock}
 <script type="text/javascript">
     var msgBlockStatusActive = '{{gt text="Active"}}';
@@ -21,7 +21,7 @@
 
 <p class="z-informationmsg">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
 
-<form class="z-form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="BlocksModule" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
     {gt text="All" assign="lblAll"}
     {gt text="Filter" assign="lblFilter"}
     <fieldset>
@@ -62,26 +62,26 @@
     <thead>
         <tr>
             <th>
-                {sortlink __linktext='Block ID' sort='bid' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Block ID' sort='bid' currentsort=$sort sortdir=$sortdir modname='BlocksModule' type='admin' func='view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Title' sort='title' currentsort=$sort sortdir=$sortdir modname='BlocksModule' type='admin' func='view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Description' sort='description' currentsort=$sort sortdir=$sortdir modname='BlocksModule' type='admin' func='view' filter=$filter}
             </th>
             <th>
                 {gt text="Module"}
             </th>
             <th>
-                {sortlink __linktext='Name' sort='bkey' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Name' sort='bkey' currentsort=$sort sortdir=$sortdir modname='BlocksModule' type='admin' func='view' filter=$filter}
             </th>
             <th>{gt text="Position(s)"}</th>
             <th>
-                {sortlink __linktext='Language' sort='language' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='Language' sort='language' currentsort=$sort sortdir=$sortdir modname='BlocksModule' type='admin' func='view' filter=$filter}
             </th>
             <th>
-                {sortlink __linktext='State' sort='active' currentsort=$sort sortdir=$sortdir modname='Blocks' type='admin' func='view' filter=$filter}
+                {sortlink __linktext='State' sort='active' currentsort=$sort sortdir=$sortdir modname='BlocksModule' type='admin' func='view' filter=$filter}
             </th>
             <th class="z-right">{gt text="Actions"}</th>
         </tr>

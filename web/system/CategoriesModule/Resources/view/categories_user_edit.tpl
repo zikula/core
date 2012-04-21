@@ -8,11 +8,11 @@
 <h2 id="top">{$modinfo.displayname|safetext}</h2>
 
 {formutil_getpassedvalue key="dr" default="0" assign="dr"}
-{modurl modname="Categories" type="userform" func="resequence" assign="resq" dr=$dr}
+{modurl modname="CategoriesModule" type="userform" func="resequence" assign="resq" dr=$dr}
 
 <ul class="z-menulinks">
     {if ($referer)}
-    <li><a class="z-icon-es-view" href="{modurl modname="Categories" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="z-icon-es-view" href="{modurl modname="CategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
     <li><a class="z-icon-es-regenerate" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>
@@ -23,9 +23,9 @@
 <h3>{$templatetitle}</h3>
 
 {if ($category)}
-<form class="z-form" action="{modurl modname="Categories" type="userform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="CategoriesModule" type="userform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
     {else}
-    <form class="z-form" action="{modurl modname="Categories" type="userform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
+    <form class="z-form" action="{modurl modname="CategoriesModule" type="userform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
         {/if}
         <fieldset>
             <legend>{gt text="Category"}</legend>
@@ -125,7 +125,7 @@
         <div class="z-buttons z-formbuttons">
             {if ($category)}
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Categories type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=CategoriesModule type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             {else}
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
             {/if}

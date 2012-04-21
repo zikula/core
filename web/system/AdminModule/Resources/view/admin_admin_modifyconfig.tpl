@@ -1,11 +1,11 @@
-{ajaxheader modname=Admin filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
+{ajaxheader modname=AdminModule filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{gt text="Settings"}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Admin" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="AdminModule" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -100,8 +100,8 @@
 
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Admin type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-            <a class="z-btblue" href="{modurl modname=Admin type=admin func=help fragment=modifyconfig}" title="{gt text="Help"}">{img modname=core src=agt_support.png set=icons/extrasmall __alt="Help" __title="Help"} {gt text="Help"}</a>
+            <a href="{modurl modname=AdminModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a class="z-btblue" href="{modurl modname=AdminModule type=admin func=help fragment=modifyconfig}" title="{gt text="Help"}">{img modname=core src=agt_support.png set=icons/extrasmall __alt="Help" __title="Help"} {gt text="Help"}</a>
         </div>
     </div>
 </form>

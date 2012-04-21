@@ -31,7 +31,7 @@
     {if $login}<p>{gt text='Once you have successfully changed your password, the log-in process will continue.'}</p>{/if}
 </div>
 
-<form id="users_user_changepassword" class="z-form" action="{modurl modname="Users" type="user" func="updatePassword"}" method="post">
+<form id="users_user_changepassword" class="z-form" action="{modurl modname="UsersModule" type="user" func="updatePassword"}" method="post">
     <div>
         <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="usernamehidden" name="usernamehidden" value="{if $login}{$user_obj.uname}{else}{user}{/if}" />
@@ -94,7 +94,7 @@
             {else}
             {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
             {/if}
-            <a href="{modurl modname='Users' type='user' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='UsersModule' type='user' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

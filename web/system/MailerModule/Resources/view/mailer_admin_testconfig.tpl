@@ -1,11 +1,11 @@
-{ajaxheader modname=Mailer filename=mailer_admin_testconfig.js noscriptaculous=true effects=true}
+{ajaxheader modname=MailerModule filename=mailer_admin_testconfig.js noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="mail" size="small"}
     <h3>{gt text="Test current settings"}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Mailer" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="MailerModule" type="admin" func="sendmessage"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <input id="mailer_html" type="hidden" name="html" value="0" />
@@ -53,7 +53,7 @@
         </fieldset>
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Test settings now" __title="Test settings now" __text="Test settings now"}
-            <a href="{modurl modname=Mailer type=admin func=main}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname=MailerModule type=admin func=main}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

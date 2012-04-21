@@ -13,7 +13,7 @@
     {userloggedin assign=loggedin}
     {if $loggedin eq false}
     <h2>{gt text="Log-in"}</h2>
-    {modurl modname='Users' type='user' func='login' assign='url'}
+    {modurl modname='UsersModule' type='user' func='login' assign='url'}
     <p>{gt text='You are not logged-in. You might have access if you <a href="%s">log in</a>.' tag1=$url|safetext}</p>
     {/if}
 

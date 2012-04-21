@@ -1,12 +1,12 @@
 {* TODO - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
-{* ajaxheader modname='Users' filename='Zikula.Users.Login.js' *}
+{* ajaxheader modname='UsersModule' filename='Zikula.Users.Login.js' *}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
 {if ('Users' != $authentication_method.modname)}
     {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.Login.js'}
 {/if}
 {/foreach}
 {gt text='User log-in' assign='templatetitle'}
-{modulelinks modname='Users' type='user'}
+{modulelinks modname='UsersModule' type='user'}
 {include file='users_user_menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
 <div>
@@ -14,7 +14,7 @@
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5" class="z-hide"></h5>
     <div class="authentication_select_method_bigbutton">
-    {modurl modname='Users' type='user' func='login' assign='form_action'}
+    {modurl modname='UsersModule' type='user' func='login' assign='form_action'}
     {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
         {if $smarty.foreach.authentication_method_display_order.iteration == 6}
             </div>
@@ -29,7 +29,7 @@
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='loginscreen' authentication_method=$selected_authentication_method assign='login_form_fields'}
 {/if}
-<form id="users_login_login_form" class="z-form z-gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+<form id="users_login_login_form" class="z-form z-gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} z-hide{/if}" action="{modurl modname="UsersModule" type="user" func="login"}" method="post">
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />

@@ -1,4 +1,4 @@
-{ajaxheader modname=Groups filename=groups.js ui=true}
+{ajaxheader modname=GroupsModule filename=groups.js ui=true}
 {pageaddvarblock}
 <script type="text/javascript">
     // some defines
@@ -228,8 +228,8 @@
             <td>{$useritem.gname}</td>
             <td>{$useritem.application|safehtml}</td>
             <td>
-                <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.png modname=core set=icons/extrasmall __alt="Accept" __title="Accept" class='tooltips'}</a>&nbsp;
-                <a href="{modurl modname='Groups' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.png modname=core set=icons/extrasmall __alt="Deny" __title="Accept" class='tooltips'}</a>
+                <a href="{modurl modname='GroupsModule' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='accept'}" title="{gt text="Accept"} {$useritem.username}">{img src=add_user.png modname=core set=icons/extrasmall __alt="Accept" __title="Accept" class='tooltips'}</a>&nbsp;
+                <a href="{modurl modname='GroupsModule' type='admin' func='userpending' gid=$useritem.appgid userid=$useritem.userid action='deny'}" title="{gt text="Deny"} {$useritem.username}">{img src=delete_user.png modname=core set=icons/extrasmall __alt="Deny" __title="Accept" class='tooltips'}</a>
             </td>
         </tr>
         {foreachelse}

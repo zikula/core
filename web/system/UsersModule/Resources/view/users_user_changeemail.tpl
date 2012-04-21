@@ -6,7 +6,7 @@
     {gt text="You will receive an e-mail to your new e-mail address to confirm the change."}
 </p>
 
-<form id="changeemail" class="z-form" action="{modurl modname="Users" type="user" func="updateemail"}" method="post">
+<form id="changeemail" class="z-form" action="{modurl modname="UsersModule" type="user" func="updateemail"}" method="post">
     <div>
         <input type="hidden" id="changeemailcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -22,7 +22,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text='Save'}
-            <a href="{modurl modname='Users' type='user' func='index'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            <a href="{modurl modname='UsersModule' type='user' func='index'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

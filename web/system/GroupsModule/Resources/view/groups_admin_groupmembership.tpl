@@ -1,5 +1,5 @@
 {adminheader}
-{ajaxheader modname=Groups filename=groups.js ui=true}
+{ajaxheader modname=GroupsModule filename=groups.js ui=true}
 {include file="groups_admin_header.tpl"}
 
 <div class="z-admin-content-pagetitle">
@@ -47,7 +47,7 @@
 
 <p class="z-informationmsg">{gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}</p>
 
-<form class="z-form" action="{modurl modname="Groups" type="admin" func="adduser"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="GroupsModule" type="admin" func="adduser"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <input type="hidden" name="gid" value="{$group.gid|safetext}" />

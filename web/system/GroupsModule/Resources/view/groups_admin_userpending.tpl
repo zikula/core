@@ -7,7 +7,7 @@
     <h3>{$templatetitle}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Groups" type="admin" func="userupdate"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname="GroupsModule" type="admin" func="userupdate"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <input type="hidden" name="gid" value="{$gid|safetext}" />

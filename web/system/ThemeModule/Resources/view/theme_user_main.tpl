@@ -6,7 +6,7 @@
 <p class="z-informationmsg">
     {gt text="Themes enable you to change the visual presentation of the site when you are logged-in."} {gt text="The current theme is '%s'." tag1=$currenttheme.displayname}
     {if $currenttheme.name neq $defaulttheme.name}
-    {modurl modname='Theme' type='user' func='resettodefault' assign='resetdefaulturl'}
+    {modurl modname='ThemeModule' type='user' func='resettodefault' assign='resetdefaulturl'}
     {gt text='Your chosen theme is not the current site default. You can <a href="%1$s">reset</a> your chosen theme to site default of <a href="?theme=%2$s">%3$s</a>.' tag1=$resetdefaulturl|safetext tag2=$defaulttheme.name|safetext tag3=$defaulttheme.displayname|safetext}
     {/if}
 </p>
