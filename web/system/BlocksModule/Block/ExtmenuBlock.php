@@ -126,7 +126,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                     if (!isset($link['id'])) {
                         $link['id'] = $linkid;
                     }
-                    $link['url'] = ModUtil::apiFunc('Blocks', 'user', 'encodebracketurl', $link['url']);
+                    $link['url'] = ModUtil::apiFunc('BlocksModule', 'user', 'encodebracketurl', $link['url']);
 
                     // check for multiple options in image
                     $this->checkImage($link);

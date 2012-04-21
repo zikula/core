@@ -529,7 +529,7 @@ class DataUtil
                 $var[$k] = self::censor($v);
             }
         } else {
-            $var = ModUtil::apiFunc('MultiHook', 'user', 'censor', array('word' => $var)); // preg_replace($search, $replace, $var);
+            $var = ModUtil::apiFunc('MultiHookModule', 'user', 'censor', array('word' => $var)); // preg_replace($search, $replace, $var);
         }
 
         return $var;

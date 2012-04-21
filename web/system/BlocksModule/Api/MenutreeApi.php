@@ -93,7 +93,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 
         if ($flag['category']){
             // Get all the Categories
-            $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
+            $categories = ModUtil::apiFunc('AdminModule', 'admin', 'getall');
 
             foreach ($categories as $item) {
                 if (SecurityUtil::checkPermission('Admin::', "$item[catname]::$item[cid]", ACCESS_EDIT)) {
@@ -127,7 +127,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("$adminmodule[name]::", '::', ACCESS_EDIT)) {
-                $cid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
+                $cid = ModUtil::apiFunc('AdminModule', 'admin', 'getmodcategory',
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 $cid = (isset($catinfo[$cid])) ? $cid : $default_cid;  // make sure each module is assigned a category
 
@@ -338,7 +338,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                         'superParentId' => $extrainfo['parent']
                 )
         );
-        $pages = ModUtil::apiFunc('Content', 'page', 'getPages', $options);
+        $pages = ModUtil::apiFunc('ContentModule', 'page', 'getPages', $options);
 
         $blocked = array();
         foreach((array)$pages as $page) {

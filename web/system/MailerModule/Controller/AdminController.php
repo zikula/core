@@ -184,7 +184,7 @@ class AdminController extends \Zikula_AbstractController
         $html = (bool)$this->request->request->get('html', false);
 
         // set the email
-        $result = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+        $result = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
                     array('toname' => $toname,
                     'toaddress' => $toaddress,
                     'subject' => $subject,

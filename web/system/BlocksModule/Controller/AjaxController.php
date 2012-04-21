@@ -88,9 +88,9 @@ class Blocks_Controller_AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         if ($blockinfo['active'] == 1) {
-            ModUtil::apiFunc('Blocks', 'admin', 'deactivate', array('bid' => $bid));
+            ModUtil::apiFunc('BlocksModule', 'admin', 'deactivate', array('bid' => $bid));
         } else {
-            ModUtil::apiFunc('Blocks', 'admin', 'activate', array('bid' => $bid));
+            ModUtil::apiFunc('BlocksModule', 'admin', 'activate', array('bid' => $bid));
         }
 
         return new AjaxResponse(array('bid' => $bid));

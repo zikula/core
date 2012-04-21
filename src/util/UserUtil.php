@@ -135,7 +135,7 @@ class UserUtil
      */
     public static function getGroup($gid)
     {
-        return ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        return ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
     }
 
     /**
@@ -276,7 +276,7 @@ class UserUtil
             return array();
         }
 
-        return ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
+        return ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
     }
 
     /**
@@ -324,7 +324,7 @@ class UserUtil
             return array();
         }
 
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
 
         $members = $group['members'];
 

@@ -172,7 +172,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Other check
-        $checkname = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
+        $checkname = ModUtil::apiFunc('GroupsModule', 'admin', 'getgidbyname',
                         array('name' => $args['name'],
                               'checkgid' => $args['gid']));
 
@@ -216,7 +216,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -258,7 +258,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -344,7 +344,7 @@ class AdminApi extends \Zikula_AbstractApi
         $items = array();
         
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $obj['gid']));
+            $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $obj['gid']));
             if ($group) {
                 if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
                     $items[] = array(
@@ -406,14 +406,14 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         if ($args['action'] == 'accept') {
-            $adduser = ModUtil::apiFunc('Groups', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
+            $adduser = ModUtil::apiFunc('GroupsModule', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
         }
 
         // Send message part
         switch ($args['sendtag']) {
             case 1:
                 if (ModUtil::available('Mailer')) {
-                    $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                    $send = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
                                     array('toname' => UserUtil::getVar('uname', $args['userid']),
                                           'toaddress' => UserUtil::getVar('email', $args['userid']),
                                           'subject' => $args['reasontitle'],

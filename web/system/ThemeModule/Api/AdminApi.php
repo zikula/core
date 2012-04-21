@@ -138,24 +138,24 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get the theme settings and write them back to the running config directory
-        $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
+        $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename));
         if (is_array($variables)) {
-            ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => 'themevariables.ini'));
+            ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => 'themevariables.ini'));
         }
 
         // get the theme palettes and write them back to the running config directory
-        $palettes = ModUtil::apiFunc('Theme', 'user', 'getpalettes', array('theme' => $themename));
+        $palettes = ModUtil::apiFunc('ThemeModule', 'user', 'getpalettes', array('theme' => $themename));
         if (is_array($palettes)) {
-            ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+            ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
         }
 
         // get the theme page configurations and write them back to the running config directory
-        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
+        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         foreach ($pageconfigurations as $pageconfiguration) {
-            $fullpageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
-            ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
+            $fullpageconfiguration = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
+            ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
         }
 
         return true;
@@ -202,7 +202,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete the running config
-        ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
+        ModUtil::apiFunc('ThemeModule', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
 
         // clear the compiled and cached templates
         // Note: This actually clears ALL compiled and cached templates but there doesn't seem to be
@@ -210,12 +210,12 @@ class AdminApi extends \Zikula_AbstractApi
         // names used by that theme.
         // see http://smarty.php.net/manual/en/api.clear.cache.php
         // and http://smarty.php.net/manual/en/api.clear.compiled.tpl.php
-        ModUtil::apiFunc('Theme', 'user', 'clear_compiled');
-        ModUtil::apiFunc('Theme', 'user', 'clear_cached');
+        ModUtil::apiFunc('ThemeModule', 'user', 'clear_compiled');
+        ModUtil::apiFunc('ThemeModule', 'user', 'clear_cached');
 
         // try to delete the files
         if ($args['deletefiles'] == 1) {
-            ModUtil::apiFunc('Theme', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
+            ModUtil::apiFunc('ThemeModule', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
         }
 
         // Let the calling process know that we have finished successfully
@@ -280,7 +280,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get the theme info to identify further files to delete
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if ($themeinfo) {
-            $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
+            $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
             if (is_array($pageconfigurations)) {
                 foreach ($pageconfigurations as $pageconfiguration) {
                     $files[] = $pageconfiguration['file'];
@@ -290,7 +290,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // delete each file
         foreach ($files as $file) {
-            ModUtil::apiFunc('Theme', 'admin', 'deleteinifile', array('file' => $file, 'themename' => $themename));
+            ModUtil::apiFunc('ThemeModule', 'admin', 'deleteinifile', array('file' => $file, 'themename' => $themename));
         }
 
         return true;
@@ -350,13 +350,13 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // read the list of existing page config assignments
-        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $args['themename']));
+        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $args['themename']));
 
         // remove the requested page configuration
         unset($pageconfigurations[$args['pcname']]);
 
         // write the page configurations back to the running config
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         return true;
     }

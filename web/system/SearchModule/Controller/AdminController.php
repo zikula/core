@@ -65,7 +65,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get the list of available plugins
-        $plugins = ModUtil::apiFunc('Search', 'user', 'getallplugins', array('loadall' => true));
+        $plugins = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins', array('loadall' => true));
 
         // get the disabled status
         foreach ($plugins as $key => $plugin) {
@@ -110,7 +110,7 @@ class AdminController extends \Zikula_AbstractController
 
         $disable = $this->request->get('disable', null);
         // get the list of available plugins
-        $plugins = ModUtil::apiFunc('Search', 'user', 'getallplugins', array('loadall' => true));
+        $plugins = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins', array('loadall' => true));
         // loop round the plugins
         foreach ($plugins as $searchplugin) {
             // set the disabled flag

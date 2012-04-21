@@ -42,7 +42,7 @@ function smarty_function_html_select_modulestylesheets($params, Zikula_View $vie
         $exclude = array();
     }
 
-    $modstyleslist = ModUtil::apiFunc('Admin', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
+    $modstyleslist = ModUtil::apiFunc('AdminModule', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
 
     require_once $view->_get_plugin_filepath('function','html_options');
     $output = smarty_function_html_options(array('values'  => $modstyleslist,

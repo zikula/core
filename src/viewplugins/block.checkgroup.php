@@ -53,7 +53,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
         return;
     }
 
-    if (!ModUtil::apiFunc('Groups', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))) {
+    if (!ModUtil::apiFunc('GroupsModule', 'user', 'isgroupmember', array('uid' => $uid, 'gid' => $params['gid']))) {
         return;
     }
 

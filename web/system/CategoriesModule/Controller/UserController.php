@@ -88,7 +88,7 @@ class UserController extends \Zikula_AbstractController
                 $rootCatIPath = $rootCat['ipath'];
                 if (strpos($rootCatIPath, $userRootCatIPath) !== false) {
                     if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_ADMIN)) {
-                        $thisUserRootCategoryName = ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
+                        $thisUserRootCategoryName = ModUtil::apiFunc('CategoriesModule', 'user', 'getusercategoryname');
                         $thisUserRootCatPath = $userRootCat['path'] . '/' . $thisUserRootCategoryName;
                         $userRootCatPath = $userRootCat['path'];
                         $rootCatPath = $rootCat['path'];
@@ -242,7 +242,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function getusercategoriesAction()
     {
-        return ModUtil::apiFunc('Categories', 'user', 'getusercategories');
+        return ModUtil::apiFunc('CategoriesModule', 'user', 'getusercategories');
     }
 
     /**
@@ -250,6 +250,6 @@ class UserController extends \Zikula_AbstractController
      */
     public function getusercategorynameAction()
     {
-        return ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
+        return ModUtil::apiFunc('CategoriesModule', 'user', 'getusercategoryname');
     }
 }

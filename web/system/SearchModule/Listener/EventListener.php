@@ -56,7 +56,7 @@ class EventListener
                 $content['active'][$mod] = 1;
 
                 $block['content'] = BlockUtil::varsToContent($content);
-                ModUtil::apiFunc('Blocks', 'admin', 'update', $block);
+                ModUtil::apiFunc('BlocksModule', 'admin', 'update', $block);
             }
         }
     }

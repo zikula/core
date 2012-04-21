@@ -258,7 +258,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Incremented permission rule.'));
         }
@@ -294,7 +294,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Decremented permission rule.'));
         }
@@ -443,7 +443,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'update',
+        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'update',
                         array('pid' => $pid,
                               'seq' => $seq,
                               'oldseq' => $oldseq,
@@ -505,7 +505,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'create',
+        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'create',
                         array('realm' => $realm,
                               'id' => $id,
                               'component' => $component,
@@ -560,7 +560,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'delete', array('pid' => $pid))) {
+        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'delete', array('pid' => $pid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted permission rule.'));
         }
@@ -581,7 +581,7 @@ class AdminController extends \Zikula_AbstractController
         $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
         $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
 
-        $objArray = ModUtil::apiFunc('Groups', 'user', 'getall');
+        $objArray = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
         foreach ($objArray as $group) {
             $groups[$group['gid']] = $group['name'];
         }
@@ -603,7 +603,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get all permissions schemas, sort and assign to the template
-        $this->view->assign('schemas', ModUtil::apiFunc('Permissions', 'admin', 'getallschemas'));
+        $this->view->assign('schemas', ModUtil::apiFunc('PermissionsModule', 'admin', 'getallschemas'));
 
         // we don't return the output back to the core here since this template is a full page
         // template i.e. we don't want this output wrapped in the theme.

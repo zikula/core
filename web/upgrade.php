@@ -281,7 +281,7 @@ function _upg_upgrademodules($username, $password)
     // reset for User module
     //$GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = false;
 
-    $results = ModUtil::apiFunc('Extensions', 'admin', 'upgradeall');
+    $results = ModUtil::apiFunc('ExtensionsModule', 'admin', 'upgradeall');
     if ($results) {
         foreach ($results as $modname => $result) {
             if ($result) {
@@ -308,7 +308,7 @@ function _upg_upgrademodules($username, $password)
     DBUtil::executeSQL($sql);
 
     // regenerate the themes list
-    ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+    ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
 
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
     System::setVar('Version_Num', Zikula_Core::VERSION_NUM);

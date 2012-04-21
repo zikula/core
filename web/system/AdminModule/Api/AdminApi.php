@@ -61,7 +61,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Get the existing item
-        $item = \ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        $item = \ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $args['cid']));
 
         if (empty($item)) {
             return \LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -90,7 +90,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
 
-        $item = \ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        $item = \ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $args['cid']));
         if (empty($item)) {
             return \LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
@@ -220,7 +220,7 @@ class AdminApi extends \Zikula_AbstractApi
         $values = array();
         $values['cid'] = (int)$args['category'];
         $values['mid'] = $mid;
-        $values['sortorder'] = \ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' => $args['category']));
+        $values['sortorder'] = \ModUtil::apiFunc('AdminModule', 'admin', 'countModsInCat', array('cid' => $args['category']));
 
         $item->merge($values);
         $this->entityManager->persist($item);

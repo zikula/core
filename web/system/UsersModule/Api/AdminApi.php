@@ -290,7 +290,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $recipientlist[] = $recipient;
             }
             if (count($bcclist) == $sendmail['batchsize']) {
-                if (ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                if (ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
                                  array('fromname'       => $sendmail['from'],
                                        'fromaddress'    => $sendmail['rpemail'],
                                        'toname'         => UserUtil::getVar('uname'),
@@ -320,7 +320,7 @@ class AdminApi extends \Zikula_AbstractApi
                 'body'          => $sendmail['message'],
                 'bcc'           => $bcclist,
             );
-            if (ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $sendMessageArgs)) {
+            if (ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
                 $recipientscount += count($bcclist);
             } else {
                 $this->registerError($this->__('Error! Could not send the e-mail message.'));
@@ -485,7 +485,7 @@ class AdminApi extends \Zikula_AbstractApi
         foreach ($importValues as $value) {
             $groupsArray = explode('|', $value['groups']);
             foreach ($groupsArray as $group) {
-                $adduser = ModUtil::apiFunc('Groups', 'user', 'adduser', array('gid' => $group, 'uid' => $usersInDB[$value['uname']]['uid'], 'verbose' => false));
+                $adduser = ModUtil::apiFunc('GroupsModule', 'user', 'adduser', array('gid' => $group, 'uid' => $usersInDB[$value['uname']]['uid'], 'verbose' => false));
                 if (!$adduser) {
                     $error_membership = true;
                 }
@@ -527,7 +527,7 @@ class AdminApi extends \Zikula_AbstractApi
                         'body'      => $message,
                         'html'      => true,
                     );
-                    if (!ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $sendMessageArgs)) {
+                    if (!ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
                         $this->registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
                         break;
                     }

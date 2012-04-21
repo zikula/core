@@ -49,7 +49,7 @@ class MultiHookHandler extends Zikula_AbstractEventHandler
             $modinfo = ModUtil::getInfoFromName('MultiHook');
             if (version_compare($modinfo['version'], '5.0', '>=') == 1) {
                 $theme->load_filter('output', 'multihook');
-                ModUtil::apiFunc('MultiHook', 'theme', 'preparetheme');
+                ModUtil::apiFunc('MultiHookModule', 'theme', 'preparetheme');
             }
         }
     }
@@ -67,7 +67,7 @@ class MultiHookHandler extends Zikula_AbstractEventHandler
  */
 function smarty_outputfilter_multihook($text, $view)
 {
-    $mhhelper = ModUtil::apiFunc('MultiHook', 'theme', 'helper');
+    $mhhelper = ModUtil::apiFunc('MultiHookModule', 'theme', 'helper');
     $mhhelper = $mhhelper . '</body>';
     $text = str_replace('</body>', $mhhelper, $text);
 

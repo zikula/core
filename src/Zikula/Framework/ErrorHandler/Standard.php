@@ -61,7 +61,7 @@ class Standard extends AbstractErrorHandler
         }
 
         // if we get this far, display template
-        echo \ModUtil::func('Errors', 'user', 'system',
+        echo \ModUtil::func('ErrorsModule', 'user', 'system',
                            array('type' => $this->errno,
                                  'message' => $this->errstr,
                                  'file' => $this->errfile,

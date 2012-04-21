@@ -45,10 +45,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         //get the module name
         $displayname = DataUtil::formatForDisplay($module['displayname']);
         $module = $module['name'];
-        $oldcid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $moduleID));
+        $oldcid = ModUtil::apiFunc('AdminModule', 'admin', 'getmodcategory', array('mid' => $moduleID));
 
         //move the module
-        $result = ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('category' => $newParentCat, 'module' => $module));
+        $result = ModUtil::apiFunc('AdminModule', 'admin', 'addmodtocategory', array('category' => $newParentCat, 'module' => $module));
         if (!$result) {
             throw new FatalException($this->__('Error! Could not add module to module category.'));
         }
@@ -82,7 +82,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         //check if there exists a cat with this name.
         $cats = array();
-        $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
+        $items = ModUtil::apiFunc('AdminModule', 'admin', 'getall');
         foreach ($items as $item) {
             if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $cats[] = $item;
@@ -99,7 +99,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$name::", ACCESS_ADD));
 
         //create the category
-        $result = ModUtil::apiFunc('Admin', 'admin', 'create', array('name' => $name, 'description' => ''));
+        $result = ModUtil::apiFunc('AdminModule', 'admin', 'create', array('name' => $name, 'description' => ''));
         if (!$result) {
             throw new FatalException($this->__('The category could not be created.'));
         }
@@ -129,7 +129,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE));
 
         //find the category corresponding to the cid.
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+        $item = ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $cid));
         if (empty($item)) {
             throw new FatalException($this->__('Error! No such category found.'));
         }
@@ -139,7 +139,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $output = array();
 
         //delete the category
-        $delete = ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid));
+        $delete = ModUtil::apiFunc('AdminModule', 'admin', 'delete', array('cid' => $cid));
         if ($delete) {
             // Success
             $output['response'] = $cid;
@@ -175,7 +175,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         //check if category with same name exists
         $cats = array();
-        $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
+        $items = ModUtil::apiFunc('AdminModule', 'admin', 'getall');
         foreach ($items as $item) {
             if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $cats[] = $item;
@@ -196,7 +196,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         //get the category from the database
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+        $item = ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $cid));
         if (empty($item)) {
             throw new \Zikula\Framework\Exception\FatalException($this->__('Error! No such category found.'));
         }
@@ -204,7 +204,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$item[name]::$item[cid]", ACCESS_EDIT));
 
         // update the category using the info from the database and from the form.
-        $update = ModUtil::apiFunc('Admin', 'admin', 'update', array('cid' => $cid, 'name' => $name, 'description' => $item['description']));
+        $update = ModUtil::apiFunc('AdminModule', 'admin', 'update', array('cid' => $cid, 'name' => $name, 'description' => $item['description']));
         if ($update) {
             $output['response'] = $name;
             return new AjaxResponse($output);
@@ -231,7 +231,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cid = trim($this->request->request->get('cid'));
 
         //find the category corresponding to the cid.
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
+        $item = ModUtil::apiFunc('AdminModule', 'admin', 'get', array('cid' => $cid));
         if ($item == false) {
             return AjaxUtil::error(LogUtil::registerError($this->__('Error! No such category found.')),array(), true);
         }

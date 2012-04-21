@@ -382,7 +382,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $query->getResult();
             } else {
                 //set state as uninnitialised
-                ModUtil::apiFunc('modules', 'admin', 'setstate', array('id' => $args['id'], 'state' => ModUtil::STATE_UNINITIALISED));
+                ModUtil::apiFunc('modulesModule', 'admin', 'setstate', array('id' => $args['id'], 'state' => ModUtil::STATE_UNINITIALISED));
             }
         } else {
             $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\Extension e WHERE e.id = {$args['id']}";
@@ -857,7 +857,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!System::isInstalling()) {
             // This should become an event handler - drak
             $category = ModUtil::getVar('Admin', 'defaultcategory');
-            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
+            ModUtil::apiFunc('AdminModule', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
         }
 
         // All went ok so issue installed event
@@ -1164,11 +1164,11 @@ class AdminApi extends \Zikula_AbstractApi
                                                ));
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
-            //$filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
-            //ModUtil::apiFunc('Extensions', 'admin', 'regenerate', array('filemodules' => $filemodules));
+            //$filemodules = ModUtil::apiFunc('ExtensionsModule', 'admin', 'getfilemodules');
+            //ModUtil::apiFunc('ExtensionsModule', 'admin', 'regenerate', array('filemodules' => $filemodules));
 
             // get a list of modules needing upgrading
-            $newmods = ModUtil::apiFunc('Extensions', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
+            $newmods = ModUtil::apiFunc('ExtensionsModule', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
             if ($newmods) {
                 $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'class' => 'z-icon-es-config');
             }

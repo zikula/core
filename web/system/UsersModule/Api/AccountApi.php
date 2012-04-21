@@ -58,7 +58,7 @@ class AccountApi extends \Zikula_AbstractApi
         }
 
         // check if the users block exists
-        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getAll');
+        $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getAll');
         $usersModuleID = ModUtil::getIdFromName($this->name);
         $found = false;
         foreach ($blocks as $block) {

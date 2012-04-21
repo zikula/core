@@ -37,7 +37,7 @@ class Installer extends \Zikula_AbstractInstaller
 
         // detect all themes on install
         ModUtil::loadApi('Theme', 'admin', true);
-        ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+        ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
 
         // define defaults for module vars
         $this->setVar('modulesnocache', '');
@@ -97,7 +97,7 @@ class Installer extends \Zikula_AbstractInstaller
                 $modid = ModUtil::getIdFromName('pnRender');
 
                 // check and update blocks
-                $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('modid' => $modid));
+                $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getall', array('modid' => $modid));
                 if (!empty($blocks)) {
                     $thememodid = ModUtil::getIdFromName('Theme');
                     foreach ($blocks as $block) {
@@ -117,13 +117,13 @@ class Installer extends \Zikula_AbstractInstaller
                 }
 
                 // Set Module pnRender 'Inactive'
-                if (!ModUtil::apiFunc('Extensions', 'admin', 'setstate', array(
+                if (!ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate', array(
                 'id' => $modid,
                 'state' => ModUtil::STATE_INACTIVE))) {
                     return '3.3';
                 }
                 // Remove Module pnRender from Modulelist
-                if (!ModUtil::apiFunc('Extensions', 'admin', 'remove', array(
+                if (!ModUtil::apiFunc('ExtensionsModule', 'admin', 'remove', array(
                 'id' => $modid))) {
                     return '3.3';
                 }

@@ -54,10 +54,10 @@ class AdminController extends \Zikula_AbstractController
             // only the main site can regenerate the themes list
             if ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)) {
                 //return true but any action has been made
-                ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+                ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
             }
         } else {
-            ModUtil::apiFunc('Theme', 'admin', 'regenerate');
+            ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
         }
 
         // get our input
@@ -122,7 +122,7 @@ class AdminController extends \Zikula_AbstractController
         // check if we can edit the theme and, if not, create the running config
         if (!is_writable($tpath . '/pageconfigurations.ini')) {
             if (!file_exists($zpath) || is_writable($zpath)) {
-                ModUtil::apiFunc('Theme', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
+                ModUtil::apiFunc('ThemeModule', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
 
                 LogUtil::registerStatus($this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
             } else {
@@ -201,7 +201,7 @@ class AdminController extends \Zikula_AbstractController
         $newthemeinfo = array_merge($curthemeinfo, $themeinfo);
 
         // rewrite the variables to the running config
-        $updatesettings = ModUtil::apiFunc('Theme', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
+        $updatesettings = ModUtil::apiFunc('ThemeModule', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
         if ($updatesettings) {
             LogUtil::registerStatus($this->__('Done! Updated theme settings.'));
         }
@@ -237,10 +237,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($filename) {
-            $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-            $variables = ModUtil::apiFunc('Theme', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
+            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
         } else {
-            $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
+            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
         }
 
         // load the language file
@@ -291,11 +291,11 @@ class AdminController extends \Zikula_AbstractController
 
         // get the original file source
         if ($filename) {
-            $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
             $returnurl = ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename, 'filename' => $filename));
         } else {
             $filename = 'themevariables.ini';
-            $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename));
+            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename));
             $returnurl = ModUtil::url('Theme', 'admin', 'variables', array('themename' => $themename));
         }
 
@@ -327,7 +327,7 @@ class AdminController extends \Zikula_AbstractController
         $variables['variables'] = $newvariables;
 
         // rewrite the variables to the running config
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
+        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
@@ -364,7 +364,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkRunningConfig($themeinfo);
 
         // assign palettes, themename, themeinfo and return output
-        return $this->response($this->view->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettes',
+        return $this->response($this->view->assign('palettes', ModUtil::apiFunc('ThemeModule', 'user', 'getpalettes',
             array('theme' => $themename)))
                 ->assign('themename', $themename)
                 ->assign('themeinfo', $themeinfo)
@@ -434,7 +434,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // rewrite the settings to the running config
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
@@ -475,7 +475,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // assign the page configuration assignments
-        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
 
         // defines the default types and master
         $pagetypes = array(
@@ -502,7 +502,7 @@ class AdminController extends \Zikula_AbstractController
         ksort($pageconfigfiles);
 
         // gets the available page configurations on the theme
-        $existingconfigs = ModUtil::apiFunc('Theme', 'user', 'getconfigurations', array('theme' => $themename));
+        $existingconfigs = ModUtil::apiFunc('ThemeModule', 'user', 'getconfigurations', array('theme' => $themename));
 
         // check that we have writable files
         $this->checkRunningConfig($themeinfo);
@@ -546,13 +546,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // read our configuration file
-        $pageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+        $pageconfiguration = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
         if (empty($pageconfiguration)) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
 
         // get all block positions
-        $blockpositions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        $blockpositions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
         foreach ($blockpositions as $name => $blockposition) {
             // check the page configuration
             if (!isset($pageconfiguration['blockpositions'][$blockposition['name']])) {
@@ -574,7 +574,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // call the block API to get a list of all defined block instances
-        $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
+        $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getall');
         foreach ($blocks as $block) {
             // check the page configuration
             if (!isset($pageconfiguration['blockinstances'][$block['bid']])) {
@@ -609,9 +609,9 @@ class AdminController extends \Zikula_AbstractController
         return $this->response($this->view->assign('filename', $filename)
                 ->assign('themename', $themename)
                 ->assign('themeinfo', $themeinfo)
-                ->assign('moduletemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename)))
-                ->assign('blocktemplates', ModUtil::apiFunc('Theme', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
-                ->assign('palettes', ModUtil::apiFunc('Theme', 'user', 'getpalettenames', array('theme' => $themename)))
+                ->assign('moduletemplates', ModUtil::apiFunc('ThemeModule', 'user', 'gettemplates', array('theme' => $themename)))
+                ->assign('blocktemplates', ModUtil::apiFunc('ThemeModule', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
+                ->assign('palettes', ModUtil::apiFunc('ThemeModule', 'user', 'getpalettenames', array('theme' => $themename)))
                 ->assign('blockpositions', $blockpositions)
                 ->assign('allblocks', $allblocks)
                 ->assign('blocks', $blocks)
@@ -658,7 +658,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // read our configuration file
-        $pageconfiguration = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+        $pageconfiguration = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
         if (empty($pageconfiguration)) {
             return LogUtil::registerArgsError(ModUtil::url('Theme', 'admin', 'view'));
         }
@@ -680,7 +680,7 @@ class AdminController extends \Zikula_AbstractController
         $pageconfiguration['filters'] = $filters;
 
         // write the page configuration
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfiguration, 'has_sections' => true, 'file' => $filename));
+        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfiguration, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
@@ -754,7 +754,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get all pageconfigurations
-        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
         if (!isset($pageconfigurations[$pcname])) {
             LogUtil::registerError($this->__('Error! No such page configuration assignment found.'));
             return $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
@@ -796,7 +796,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // gets the available page configurations on the theme
-        $existingconfigs = ModUtil::apiFunc('Theme', 'user', 'getconfigurations', array('theme' => $themename));
+        $existingconfigs = ModUtil::apiFunc('ThemeModule', 'user', 'getconfigurations', array('theme' => $themename));
 
         // assign the page config assignment name, theme name and theme info
         $this->view->assign($pageconfigassignment)
@@ -846,7 +846,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // read the list of existing page config assignments
-        $pageconfigurations = ModUtil::apiFunc('Theme', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
 
         // form the new page configuration
         $newpageconfiguration = $pagemodule;
@@ -884,7 +884,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // write the page configurations back to the running config
-        ModUtil::apiFunc('Theme', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
@@ -933,7 +933,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Delete the admin message
         // The return value of the function is checked
-        if (ModUtil::apiFunc('Theme', 'admin', 'deletepageconfigurationassignment', array('themename' => $themename, 'pcname' => $pcname))) {
+        if (ModUtil::apiFunc('ThemeModule', 'admin', 'deletepageconfigurationassignment', array('themename' => $themename, 'pcname' => $pcname))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted it.'));
         }
@@ -1005,7 +1005,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Set the default theme
-        if (ModUtil::apiFunc('Theme', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
+        if (ModUtil::apiFunc('ThemeModule', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Changed default theme.'));
         }
@@ -1051,7 +1051,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Delete the admin message
         // The return value of the function is checked
-        if (ModUtil::apiFunc('Theme', 'admin', 'delete', array('themename' => $themename, 'deletefiles' => $deletefiles))) {
+        if (ModUtil::apiFunc('ThemeModule', 'admin', 'delete', array('themename' => $themename, 'deletefiles' => $deletefiles))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted it.'));
         }
@@ -1393,7 +1393,7 @@ class AdminController extends \Zikula_AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
 
         LogUtil::registerStatus($this->__('Done! Cleared all cache and compile directories.'));
         return $this->redirect(ModUtil::url('Theme', 'admin', 'modifyconfig'));

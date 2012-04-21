@@ -82,7 +82,7 @@ class  MenutreeTree extends \Zikula_Tree
                     'dynamic'   => strpos($_item['href'],'{ext:') === 0,
                 );
                 if ($this->config['parseURL']) {
-                    $item[$lang]['href'] = ModUtil::apiFunc('Blocks', 'user', 'encodebracketurl', $item[$lang]['href']);
+                    $item[$lang]['href'] = ModUtil::apiFunc('BlocksModule', 'user', 'encodebracketurl', $item[$lang]['href']);
                 }
             }
 

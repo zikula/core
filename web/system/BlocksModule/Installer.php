@@ -130,14 +130,14 @@ class Installer extends \Zikula_AbstractInstaller
         $connection->executeUpdate($platform->getTruncateTableSQL('block_placements', true));
         
         // create the default block positions - left, right and center for the traditional 3 column layout
-        $left = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'left', 'description' => $this->__('Left blocks')));
-        $right = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'right', 'description' => $this->__('Right blocks')));
-        $center = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'center', 'description' => $this->__('Center blocks')));
-        $search = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
-        $header = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'header', 'description' => $this->__('Header block')));
-        $footer = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'footer', 'description' => $this->__('Footer block')));
-        $topnav = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'topnav', 'description' => $this->__('Top navigation block')));
-        $bottomnav = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'bottomnav', 'description' => $this->__('Bottom navigation block')));
+        $left = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'left', 'description' => $this->__('Left blocks')));
+        $right = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'right', 'description' => $this->__('Right blocks')));
+        $center = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'center', 'description' => $this->__('Center blocks')));
+        $search = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
+        $header = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'header', 'description' => $this->__('Header block')));
+        $footer = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'footer', 'description' => $this->__('Footer block')));
+        $topnav = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'topnav', 'description' => $this->__('Top navigation block')));
+        $bottomnav = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'bottomnav', 'description' => $this->__('Bottom navigation block')));
 
         // define an array of the default blocks
         $blocks = array();
@@ -194,7 +194,7 @@ class Installer extends \Zikula_AbstractInstaller
         // create each block and then update the block
         // the create creates the initial block record, the update sets the block placement
         foreach ($blocks as $position => $block) {
-            ModUtil::apiFunc('Blocks', 'admin', 'create', $block);
+            ModUtil::apiFunc('BlocksModule', 'admin', 'create', $block);
         }
 
         return;
@@ -287,11 +287,11 @@ class Installer extends \Zikula_AbstractInstaller
 
     protected function newBlockPositions()
     {
-        $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+        $positions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
 
         // create the search block position if doesn't exists
         if (!isset($positions['search'])) {
-            $searchpid = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
+            $searchpid = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
         } else {
             $searchpid = $positions['search']['pid'];
         }
@@ -303,8 +303,8 @@ class Installer extends \Zikula_AbstractInstaller
 
         if (empty($searchblocks)) {
             $block = array('bkey' => 'Search', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Search'), 'title' => $this->__('Search box'), 'description' => '', 'positions' => array($searchpid));
-            $block['bid'] = ModUtil::apiFunc('Blocks', 'admin', 'create', $block);
-            ModUtil::apiFunc('Blocks', 'admin', 'update', $block);
+            $block['bid'] = ModUtil::apiFunc('BlocksModule', 'admin', 'create', $block);
+            ModUtil::apiFunc('BlocksModule', 'admin', 'update', $block);
         } else {
             // assign the block to the search position
             $blockplacement = array('bid' => $searchblocks[0]['bid'], 'pid' => $searchpid);
@@ -313,16 +313,16 @@ class Installer extends \Zikula_AbstractInstaller
 
         // create new block positions if they don't exist
         if (!isset($positions['header'])) {
-            $header = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'header', 'description' => $this->__('Header block')));
+            $header = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'header', 'description' => $this->__('Header block')));
         }
         if (!isset($positions['footer'])) {
-            $footer = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'footer', 'description' => $this->__('Footer block')));
+            $footer = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'footer', 'description' => $this->__('Footer block')));
         }
         if (!isset($positions['bottomnav'])) {
-            $bottomnav = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'bottomnav', 'description' => $this->__('Bottom navigation block')));
+            $bottomnav = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'bottomnav', 'description' => $this->__('Bottom navigation block')));
         }
         if (!isset($positions['topnav'])) {
-            $topnav = ModUtil::apiFunc('Blocks', 'admin', 'createposition', array('name' => 'topnav', 'description' => $this->__('Top navigation block')));
+            $topnav = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'topnav', 'description' => $this->__('Top navigation block')));
 
             // Build content for the top navigation menu
             $languages = ZLanguage::getInstalledLanguages();
@@ -344,8 +344,8 @@ class Installer extends \Zikula_AbstractInstaller
             ZLanguage::setLocale($saveLanguage);
             $topnavcontent = serialize($topnavcontent);
             $topnavblock = array('bkey' => 'Extmenu', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Blocks'), 'title' => $this->__('Top navigation'), 'description' => '', 'content' => $topnavcontent, 'positions' => array($topnav));
-            $topnavblock['bid'] = ModUtil::apiFunc('Blocks', 'admin', 'create', $topnavblock);
-            ModUtil::apiFunc('Blocks', 'admin', 'update', $topnavblock);
+            $topnavblock['bid'] = ModUtil::apiFunc('BlocksModule', 'admin', 'create', $topnavblock);
+            ModUtil::apiFunc('BlocksModule', 'admin', 'update', $topnavblock);
         }
     }
 }
