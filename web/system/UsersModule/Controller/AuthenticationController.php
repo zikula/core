@@ -193,7 +193,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
 
         if (!is_array($authenticationMethod) || empty($authenticationMethod) || !isset($authenticationMethod['modname'])) {
             throw new \Zikula\Framework\Exception\FatalException($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
-        } elseif ($authenticationMethod['modname'] != 'Users') {
+        } elseif ($authenticationMethod['modname'] != 'UsersModule') {
             throw new \Zikula\Framework\Exception\FatalException($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
         }
 
