@@ -91,7 +91,7 @@ abstract class AbstractController extends AbstractBase
      */
     public function dispatchHooks($name, Hook $hook)
     {
-        return $this->get('hook_manager')->dispatch($name, $hook);
+        return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
 
     /**

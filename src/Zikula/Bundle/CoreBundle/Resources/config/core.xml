@@ -17,9 +17,9 @@
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
         <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
 
-        <parameter key="hook_manager.class">Zikula\Component\HookManager\HookManager</parameter>
-        <parameter key="hook_manager.storage.class">Zikula\Component\HookManager\Storage\Doctrine</parameter>
-        <parameter key="hook_manager.servicefactory.class">Zikula\Component\HookManager\ServiceFactory</parameter>
+        <parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>
+        <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\DoctrineStorage</parameter>
+        <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
         <parameter key="token.storage.key">_tokens</parameter>
@@ -67,16 +67,16 @@
             <argument type="service" id="token.generator" />
         </service>
 
-        <service id="hook_manager.storage" class="%hook_manager.storage.class%" />
-        <service id="hook_manager.servicefactory" class="%hook_manager.servicefactory.class%">
+        <service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%" />
+        <service id="hook_dispatcher.servicefactory" class="%hook_dispatcher.servicefactory.class%">
             <argument type="service" id="service_container" />
             <argument>event_dispatcher</argument>
         </service>
 
-        <service id="hook_manager" class="%hook_manager.class%">
-            <argument type="service" id="hook_manager.storage" />
+        <service id="hook_dispatcher" class="%hook_dispatcher.class%">
+            <argument type="service" id="hook_dispatcher.storage" />
             <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="hook_manager.servicefactory" />
+            <argument type="service" id="hook_dispatcher.servicefactory" />
         </service>
 
         <service id="zikula.system_listeners" class="%zikula.system_listener.class%">
