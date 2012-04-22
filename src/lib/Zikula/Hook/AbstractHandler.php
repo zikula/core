@@ -52,7 +52,14 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
      * @var ReflectionObject
      */
     protected $reflection;
-
+    
+    /**
+     * Request.
+     *
+     * @var Zikula_Request_Http
+     */
+    protected $request;
+    
     /**
      * Constructor.
      *
@@ -63,6 +70,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     public function __construct(Zikula_EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
+        $this->request = ServiceUtil::getService('request');
         $this->setup();
     }
 
