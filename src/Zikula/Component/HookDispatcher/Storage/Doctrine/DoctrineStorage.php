@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher\Storage;
+namespace Zikula\Component\HookDispatcher\Storage\Doctrine;
 
 use Zikula\Component\HookDispatcher\StorageInterface;
 use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
@@ -244,7 +244,7 @@ class DoctrineStorage implements StorageInterface
                 ->findBy('areaname', $providerArea);
 
         if ($sa->getFirst()->get('category') != $pa->getFirst()->get('category')) {
-            throw new Zikula_HookDispatcher_Exception_LogicException('Cannot bind areas from different categories.');
+            throw new \LogicException('Cannot bind areas from different categories.');
         }
 
         $binding = new Zikula_Doctrine_Model_HookBinding();
