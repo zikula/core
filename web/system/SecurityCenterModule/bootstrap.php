@@ -13,20 +13,20 @@
  */
 
 if (!defined('HTMLPURIFIER_PREFIX')) {
-    define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'));
+    define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/vendor/htmlpurifier'));
 }
 
 if (!defined('PHPIDS_PATH_PREFIX')) {
-    define('PHPIDS_PATH_PREFIX', realpath(dirname(__FILE__) . '/lib/vendor/IDS'));
+    define('PHPIDS_PATH_PREFIX', realpath(dirname(__FILE__) . '/vendor/IDS'));
 }
 
 // include the PHPIDS and get access to the result object
-set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/lib/vendor'));
+set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/vendor'));
 $autoloader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 $autoloader->register();
 $autoloader->registerPrefixes(array(
-    'HTMLPurifier' => realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'),
-    'IDS' => realpath(dirname(__FILE__) . '/lib/vendor'),
+    'HTMLPurifier' => realpath(dirname(__FILE__) . '/vendor/htmlpurifier'),
+    'IDS' => realpath(dirname(__FILE__) . '/vendor'),
 ));
 
 // register event handlers
