@@ -162,7 +162,7 @@ class SubscriberBundle
     public function addEvent($type, $eventName)
     {
         $this->events[$type] = $eventName;
-        
+
         return $this;
     }
 }
