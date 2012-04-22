@@ -17,7 +17,7 @@ namespace UsersModule;
 
 use UsersModule\Constants as Constant;
 use HookUtil;
-use Zikula\Component\HookManager\SubscriberBundle;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 /**
  * Provides metadata for this module to the Extensions module.

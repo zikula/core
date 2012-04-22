@@ -626,11 +626,11 @@ abstract class AbstractVersion implements \ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param \Zikula\Component\HookManager\SubscriberBundle $bundle HookBundle.
+     * @param \Zikula\Component\HookDispatcher\SubscriberBundle $bundle HookBundle.
      *
      * @return AbstractVersion
      */
-    public function registerHookSubscriberBundle(\Zikula\Component\HookManager\SubscriberBundle $bundle)
+    public function registerHookSubscriberBundle(\Zikula\Component\HookDispatcher\SubscriberBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookSubscriberBundles)) {
             throw new \InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
@@ -643,11 +643,11 @@ abstract class AbstractVersion implements \ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param \Zikula\Component\HookManager\ProviderBundle $bundle HookProviderBundle.
+     * @param \Zikula\Component\HookDispatcher\ProviderBundle $bundle HookProviderBundle.
      *
      * @return AbstractVersion
      */
-    public function registerHookProviderBundle(\Zikula\Component\HookManager\ProviderBundle $bundle)
+    public function registerHookProviderBundle(\Zikula\Component\HookDispatcher\ProviderBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookProviderBundles)) {
             throw new \InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
@@ -662,7 +662,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of \Zikula\Component\HookManager\SubscriberBundle
+     * @return array Of \Zikula\Component\HookDispatcher\SubscriberBundle
      */
     public function getHookSubscriberBundles()
     {
@@ -674,7 +674,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of \Zikula\Component\HookManager\ProviderBundle
+     * @return array Of \Zikula\Component\HookDispatcher\ProviderBundle
      */
     public function getHookProviderBundles()
     {
@@ -688,7 +688,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @throws \InvalidArgumentException If the area specified is not registered.
      *
-     * @return \Zikula\Component\HookManager\SubscriberBundle
+     * @return \Zikula\Component\HookDispatcher\SubscriberBundle
      */
     public function getHookSubscriberBundle($area)
     {
@@ -706,7 +706,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @throws \InvalidArgumentException If the area specified is not registered.
      *
-     * @return \Zikula\Component\HookManager\ProviderBundle
+     * @return \Zikula\Component\HookDispatcher\ProviderBundle
      */
     public function getHookProviderBundle($area)
     {
