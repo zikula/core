@@ -15,8 +15,6 @@
 
 namespace Zikula\Core\Hook;
 
-use ArrayObject;
-
 /**
  * Hook validation collection
  */
@@ -26,9 +24,9 @@ class ValidationProviders extends \Zikula\Common\Collection\Container
      * Constructor.
      *
      * @param string      $name       The name of the collection.
-     * @param ArrayObject $collection The collection (optional).
+     * @param \ArrayObject $collection The collection (optional).
      */
-    public function __construct($name='validation', ArrayObject $collection = null)
+    public function __construct($name='validation', \ArrayObject $collection = null)
     {
         parent::__construct($name, $collection);
     }
@@ -56,6 +54,7 @@ class ValidationProviders extends \Zikula\Common\Collection\Container
      */
     public function hasErrors()
     {
+        /* @var ValidationResponse $response */
         foreach ($this->collection as $response) {
             if ($response->hasErrors()) {
                 return true;

@@ -141,7 +141,7 @@ class ProviderBundle
     /**
      * Set subOwner property.
      *
-     * @param type $subOwner
+     * @param string $subOwner
      *
      * @return ProviderBundle
      */
@@ -193,11 +193,11 @@ class ProviderBundle
     private function addHandler($hookType, $className, $method, $serviceId=null)
     {
         $this->hooks[$hookType] = array(
-                'hooktype' => $hookType,
-                'classname' => $className,
-                'method' => $method,
-                'serviceid' => $serviceId,
-                );
+            'hooktype' => $hookType,
+            'classname' => $className,
+            'method' => $method,
+            'serviceid' => $serviceId,
+        );
 
         return $this;
     }
