@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\AbstractEventHandler;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -57,9 +56,14 @@ class InitListener implements EventSubscriberInterface
     protected $stage = 0;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerBuilder
+     * @var ContainerBuilder
      */
     protected $container;
+
+    /**
+     * @var ContainerAwareEventDispatcher
+     */
+    protected $dispatcher;
 
     /**
      * Constructor.
@@ -157,10 +161,7 @@ class InitListener implements EventSubscriberInterface
             // Initialise dbtables
             \ModUtil::initCoreVars();
             \ModUtil::dbInfoLoad('SettingsModule', 'SettingsModule');
-            \ModUtil::dbInfoLoad('ThemeModule', 'ThemeModule');
             \ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
-            \ModUtil::dbInfoLoad('GroupsModule', 'GroupsModule');
-            \ModUtil::dbInfoLoad('PermissionsModule', 'PermissionsModule');
             \ModUtil::dbInfoLoad('CategoriesModule', 'CategoriesModule');
 
             if (!\System::isInstalling()) {
