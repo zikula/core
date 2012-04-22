@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
  * @ORM\Entity
- * @ORM\Table(name="group_membership",indexes={@ORM\index(name="gid_uid",columns={"uid","gid"})})
+ * @ORM\Table(name="group_membership",indexes={@ORM\Index(name="gid_uid",columns={"uid","gid"})})
  */
 class GroupMembership extends EntityAccess
 {
