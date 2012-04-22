@@ -33,15 +33,15 @@ class ServiceFactory
     /**
      * ServiceManager.
      *
-     * @var ServiceManager
+     * @var ContainerBuilder
      */
     private $container;
 
     /**
      * Constructor.
      *
-     * @param ServiceManager $container ServiceManager.
-     * @param string         $serviceId      ID of service to inject.
+     * @param ContainerBuilder $container ContainerBuilder.
+     * @param string           $serviceId ID of service to inject, (usually the event dispatcher).
      */
     public function __construct(ContainerBuilder $container, $serviceId)
     {
@@ -63,7 +63,7 @@ class ServiceFactory
      * @param string $className
      * @param string $method
      *
-     * @return ServiceHandler
+     * @return array array($id, $method)
      */
     public function buildService($id, $className, $method)
     {
