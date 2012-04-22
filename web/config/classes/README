@@ -1,4 +1,0 @@
-This override folder is now obsolete from Zikula Core 1.3.0
-If you need to add libraries, classes and so on to the system in general
-please write a SystemPlugin, you can find examples in the docs/example/plugins
-folder.

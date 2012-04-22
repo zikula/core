@@ -1,2 +1,0 @@
-system/System/templates/example.tpl: config/templates/System/example.tpl
-modules/System/templates/example.tpl: config/modules/System/example.tpl
