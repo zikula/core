@@ -148,6 +148,7 @@ class ProviderBundle
     public function setSubOwner($subOwner)
     {
         $this->subOwner = $subOwner;
+
         return $this;
     }
 
@@ -190,7 +191,7 @@ class ProviderBundle
      *
      * @return ProviderBundle
      */
-    private function addHandler($hookType, $className, $method, $serviceId=null)
+    private function addHandler($hookType, $className, $method, $serviceId = null)
     {
         $this->hooks[$hookType] = array(
             'hooktype' => $hookType,
