@@ -18,7 +18,7 @@ namespace Zikula\Framework\Exception;
 /**
  * Exception class.
  */
-class RuntimeException extends \RumtimeException
+class RuntimeException extends \RuntimeException
 {
     /**
      * Debug value.
