@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookManager;
+namespace Zikula\Component\HookDispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 

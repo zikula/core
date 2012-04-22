@@ -7,20 +7,20 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage HookManager
+ * @subpackage HookDispatcher
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookManager;
+namespace Zikula\Component\HookDispatcher;
 
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
- * HookManager class.
+ * HookDispatcher class.
  */
-class HookManager
+class HookDispatcher
 {
     /**
      * Storage.
@@ -295,7 +295,7 @@ class HookManager
     /**
      * Load runtime hook listeners.
      *
-     * @return HookManager
+     * @return HookDispatcher
      */
     public function loadRuntimeHandlers()
     {
