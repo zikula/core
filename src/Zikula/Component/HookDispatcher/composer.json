@@ -1,0 +1,15 @@
+{
+    "name": "zikula/hook-dispatcher",
+    "description": "Hook Dispatcher",
+    "type": "library",
+    "require": {
+        "symfony/event-dispatcher": "2.1.*",
+        "symfony/dependency-injection": "2.1.*"
+    },
+    "authors": [
+        {
+            "name": "Drak",
+            "email": "drak@zikula.org"
+        }
+    ]
+}
