@@ -630,7 +630,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @return AbstractVersion
      */
-    public function registerHookSubscriberBundle(\Zikula\Component\HookManager\SubscriberBundle $bundle)
+    public function registerHookSubscriberBundle(\Zikula\Component\HookDispatcher\SubscriberBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookSubscriberBundles)) {
             throw new \InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
