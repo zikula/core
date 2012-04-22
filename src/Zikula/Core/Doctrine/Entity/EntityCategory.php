@@ -13,6 +13,7 @@
  */
 
 namespace Zikula\Core\Doctrine\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,7 +41,7 @@ abstract class EntityCategory extends EntityAccess
     /**
      * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
-     * @var Zikula\Core\Doctrine\Entity\Category
+     * @var \Zikula\Core\Doctrine\Entity\Category
      */
     private $category;
 

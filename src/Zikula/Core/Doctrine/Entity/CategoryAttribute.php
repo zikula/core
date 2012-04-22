@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,9 +21,10 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @ORM\Entity
  */
-class Zikula_Doctrine2_Entity_CategoryAttribute extends Zikula_Doctrine2_Entity_AbstractAttribute {
+class CategoryAttribute extends AbstractAttribute
+{
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category", inversedBy="attributes")
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="attributes")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
      * @var integer
      */

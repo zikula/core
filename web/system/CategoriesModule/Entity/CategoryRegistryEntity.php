@@ -57,35 +57,6 @@ class CategoryRegistryEntity
     private $objStatus;
 
     /**
-     * @var datetime $crDate
-     *
-     * @ORM\Column(name="cr_date", type="datetime", nullable=false)
-     */
-    private $crDate;
-
-    /**
-     * @var integer $crUid
-     *
-     * @ORM\Column(name="cr_uid", type="integer", nullable=false)
-     */
-    private $crUid;
-
-    /**
-     * @var datetime $luDate
-     *
-     * @ORM\Column(name="lu_date", type="datetime", nullable=false)
-     */
-    private $luDate;
-
-    /**
-     * @var integer $luUid
-     *
-     * @ORM\Column(name="lu_uid", type="integer", nullable=false)
-     */
-    private $luUid;
-
-
-    /**
      * Get id
      *
      * @return integer 
@@ -99,7 +70,7 @@ class CategoryRegistryEntity
      * Set modname
      *
      * @param string $modname
-     * @return CategoriesRegistry
+     * @return CategoryRegistryEntity
      */
     public function setModname($modname)
     {
@@ -121,7 +92,7 @@ class CategoryRegistryEntity
      * Set tablename
      *
      * @param string $tablename
-     * @return CategoriesRegistry
+     * @return CategoryRegistryEntity
      */
     public function setTablename($tablename)
     {
@@ -143,7 +114,7 @@ class CategoryRegistryEntity
      * Set property
      *
      * @param string $property
-     * @return CategoriesRegistry
+     * @return CategoryRegistryEntity
      */
     public function setProperty($property)
     {
@@ -165,7 +136,7 @@ class CategoryRegistryEntity
      * Set categoryId
      *
      * @param integer $categoryId
-     * @return CategoriesRegistry
+     * @return CategoryRegistryEntity
      */
     public function setCategoryId($categoryId)
     {
@@ -187,7 +158,7 @@ class CategoryRegistryEntity
      * Set objStatus
      *
      * @param string $objStatus
-     * @return CategoriesRegistry
+     * @return CategoryRegistryEntity
      */
     public function setObjStatus($objStatus)
     {
@@ -205,91 +176,4 @@ class CategoryRegistryEntity
         return $this->objStatus;
     }
 
-    /**
-     * Set crDate
-     *
-     * @param datetime $crDate
-     * @return CategoriesRegistry
-     */
-    public function setCrDate($crDate)
-    {
-        $this->crDate = $crDate;
-        return $this;
-    }
-
-    /**
-     * Get crDate
-     *
-     * @return datetime 
-     */
-    public function getCrDate()
-    {
-        return $this->crDate;
-    }
-
-    /**
-     * Set crUid
-     *
-     * @param integer $crUid
-     * @return CategoriesRegistry
-     */
-    public function setCrUid($crUid)
-    {
-        $this->crUid = $crUid;
-        return $this;
-    }
-
-    /**
-     * Get crUid
-     *
-     * @return integer 
-     */
-    public function getCrUid()
-    {
-        return $this->crUid;
-    }
-
-    /**
-     * Set luDate
-     *
-     * @param datetime $luDate
-     * @return CategoriesRegistry
-     */
-    public function setLuDate($luDate)
-    {
-        $this->luDate = $luDate;
-        return $this;
-    }
-
-    /**
-     * Get luDate
-     *
-     * @return datetime 
-     */
-    public function getLuDate()
-    {
-        return $this->luDate;
-    }
-
-    /**
-     * Set luUid
-     *
-     * @param integer $luUid
-     * @return CategoriesRegistry
-     */
-    public function setLuUid($luUid)
-    {
-        $this->luUid = $luUid;
-        return $this;
-    }
-
-    /**
-     * Get luUid
-     *
-     * @return integer 
-     */
-    public function getLuUid()
-    {
-        return $this->luUid;
-    }
 }

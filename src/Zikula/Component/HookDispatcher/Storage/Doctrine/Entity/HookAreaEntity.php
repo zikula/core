@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HookArea
  *
- * @ORM\Table(name="hook_area")
+ * @ORM\Table(name="hook_area", indexes={@ORM\index(name="areaidx", columns={"areaname"})})
  * @ORM\Entity
  */
 class HookAreaEntity
