@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package HookManager
+ * @package HookDispatcher
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,6 +15,6 @@
 /**
  * Provider Bundle for Hook Providers
  */
-class Zikula_HookManager_ProviderBundle extends Zikula\Component\HookManager\ProviderBundle
+class Zikula_HookManager_ProviderBundle extends Zikula\Component\HookDispatcher\ProviderBundle
 {
 }

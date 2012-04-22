@@ -18,6 +18,6 @@
  *
  * Manages event handlers and invokes them for notified events.
  */
-class Zikula_HookManager extends Zikula\Component\HookManager\HookManager
+class Zikula_HookDispatcher extends Zikula\Component\HookDispatcher\HookDispatcher
 {
 }
