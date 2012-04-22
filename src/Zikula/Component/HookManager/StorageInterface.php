@@ -38,5 +38,6 @@ interface StorageInterface
     function isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
     function getOwnerByArea($areaName);
     function getBindingsBetweenOwners($subscriberOwner, $providerOwner);
+    function getAreaId($areaName);
 }
 

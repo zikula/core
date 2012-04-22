@@ -274,7 +274,7 @@ class HookManager
      * @param string $subscriberArea
      * @param string $providerArea
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     public function bindSubscriber($subscriberArea, $providerArea)
     {
