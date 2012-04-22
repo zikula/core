@@ -641,12 +641,14 @@ class AdminApi extends \Zikula_AbstractApi
                 $maxok = version_compare($filemodules[$name]['core_max'], $coreVersion);
             }
 
-            if ($minok == -1 || $maxok == -1) {
-                $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + 20;
-                $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
-            }
-            if (isset($dbmodules[$name]['state'])) {
-                $filemodules[$name]['state'] = $dbmodules[$name]['state'];
+            if (isset($dbmodules[$name])) {
+                if ($minok == -1 || $maxok == -1) {
+                    $dbmodules[$name]['state'] = $dbmodules[$name]['state'] + 20;
+                    $this->setState(array('id' => $dbmodules[$name]['id'], 'state' => $dbmodules[$name]['state']));
+                }
+                if (isset($dbmodules[$name]['state'])) {
+                    $filemodules[$name]['state'] = $dbmodules[$name]['state'];
+                }
             }
         }
 
