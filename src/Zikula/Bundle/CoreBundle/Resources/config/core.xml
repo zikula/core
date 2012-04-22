@@ -18,7 +18,7 @@
         <parameter key="session.flash_bag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
 
         <parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>
-        <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\DoctrineStorage</parameter>
+        <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>
         <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
