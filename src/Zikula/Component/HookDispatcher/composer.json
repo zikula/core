@@ -2,6 +2,8 @@
     "name": "zikula/hook-dispatcher",
     "description": "Hook Dispatcher",
     "type": "library",
+    "homepage": "http://zikula.org",
+    "license": "LPGLv3",
     "authors": [
         {
             "name": "Drak",
