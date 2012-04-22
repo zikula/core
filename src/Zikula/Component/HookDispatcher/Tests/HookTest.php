@@ -1,7 +1,7 @@
 <?php
-namespace Zikula\Component\HookManager\Tests;
+namespace Zikula\Component\HookDispatcher\Tests;
 
-use Zikula\Component\HookManager\Hook;
+use Zikula\Component\HookDispatcher\Hook;
 
 /**
  * Test class for Hook.

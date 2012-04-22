@@ -6,15 +6,15 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package HookManager
+ * @package HookDispatcher
  * @subpackage Storage
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookManager\Storage;
-use Zikula\Component\HookManager\StorageInterface;
+namespace Zikula\Component\HookDispatcher\Storage;
+use Zikula\Component\HookDispatcher\StorageInterface;
 use Doctrine_Core;
 use Doctrine_Query;
 use Zikula_Doctrine_Model_HookSubscriber;
@@ -242,7 +242,7 @@ class Doctrine implements StorageInterface
                 ->findBy('areaname', $providerArea);
 
         if ($sa->getFirst()->get('category') != $pa->getFirst()->get('category')) {
-            throw new Zikula_HookManager_Exception_LogicException('Cannot bind areas from different categories.');
+            throw new Zikula_HookDispatcher_Exception_LogicException('Cannot bind areas from different categories.');
         }
 
         $binding = new Zikula_Doctrine_Model_HookBinding();
@@ -432,7 +432,7 @@ class Doctrine implements StorageInterface
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
         if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {
-            throw new Zikula_HookManager_Exception_InvalidArgumentException('$areaType must be "p" or "s"');
+            throw new Zikula_HookDispatcher_Exception_InvalidArgumentException('$areaType must be "p" or "s"');
         }
 
         // if there is an area registered, if not, create it.
