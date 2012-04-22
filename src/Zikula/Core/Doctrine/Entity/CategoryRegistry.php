@@ -13,6 +13,7 @@
  */
 
 namespace Zikula\Core\Doctrine\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,7 +27,7 @@ class CategoryRegistry {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", type="integer", nullable=false)
      * @var integer
      */
     private $id;

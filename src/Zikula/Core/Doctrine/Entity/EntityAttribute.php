@@ -13,6 +13,7 @@
  */
 
 namespace Zikula\Core\Doctrine\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,9 +44,7 @@ abstract class EntityAttribute extends EntityAccess
      */
     private $value;
 
-    public function __construct($name,
-                                $value,
-                                $entity)
+    public function __construct($name, $value, $entity)
     {
         $this->name = $name;
         $this->value = $value;

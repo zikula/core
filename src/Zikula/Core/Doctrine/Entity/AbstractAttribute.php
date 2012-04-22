@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
+
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Attribute doctrine2 entity.
@@ -23,7 +27,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorMap({"categories_category" = "Zikula_Doctrine2_Entity_CategoryAttribute"})
  * @ORM\Table(name="objectdata_attributes")
  */
-abstract class Zikula_Doctrine2_Entity_AbstractAttribute extends Zikula_EntityAccess {
+abstract class AbstractAttribute extends EntityAccess
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

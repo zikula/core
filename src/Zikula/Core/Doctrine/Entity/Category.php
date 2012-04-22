@@ -36,7 +36,7 @@ class Category extends EntityAccess
     /**
      * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @var Zikula_Doctrine2_Entity_Category
+     * @var \Zikula\Core\Doctrine\Entity\Category
      */
     private $parent;
 
@@ -264,7 +264,7 @@ class Category extends EntityAccess
                 $this->attributes[$name]->setValue($value);
             }
         } else {
-            $this->attributes[$name] = new Zikula_Doctrine2_Entity_CategoryAttribute($this->getId(), 'A', $name, $value);
+            $this->attributes[$name] = new \Zikula\Core\Doctrine\Entity\CategoryAttribute($this->getId(), 'A', $name, $value);
         }
     }
     
