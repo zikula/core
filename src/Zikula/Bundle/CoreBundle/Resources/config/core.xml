@@ -67,7 +67,9 @@
             <argument type="service" id="token.generator" />
         </service>
 
-        <service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%" />
+        <service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%">
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
         <service id="hook_dispatcher.servicefactory" class="%hook_dispatcher.servicefactory.class%">
             <argument type="service" id="service_container" />
             <argument>event_dispatcher</argument>
