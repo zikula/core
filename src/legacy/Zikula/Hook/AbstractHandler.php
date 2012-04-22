@@ -16,6 +16,6 @@
 /**
  * Custom Hook Handler interface.
  */
-abstract class Zikula_Hook_AbstractHandler extends Zikula\Core\Hook\AbstractHandler
+abstract class Zikula_Hook_AbstractHandler extends Zikula\Core\Hook\AbstractHookListener
 {
 }

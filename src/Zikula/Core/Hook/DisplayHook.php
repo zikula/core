@@ -15,7 +15,9 @@
 
 namespace Zikula\Core\Hook;
 
-use Zikula\Component\HookManager\Hook;
+use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Core\ModUrl;
+use Zikula\Core\Hook\Response\DisplayHook as DisplayHookResponse;
 
 /**
  * DisplayHook class.
@@ -45,9 +47,11 @@ class DisplayHook extends Hook
     /**
      * Add response.
      *
+     * @param DisplayHookResponse $response
+     *
      * @return mixed Data property.
      */
-    public function setResponse(Zikula_Response_DisplayHook $response)
+    public function setResponse(DisplayHookResponse $response)
     {
         return $this->responses[$response->getArea()] = $response;
     }
@@ -55,7 +59,7 @@ class DisplayHook extends Hook
     /**
      * Set data.
      *
-     * @return DisplayHook
+     * @return array of DisplayHookResponse
      */
     public function getResponses()
     {

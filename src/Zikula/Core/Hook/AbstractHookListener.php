@@ -15,18 +15,18 @@
 
 namespace Zikula\Core\Hook;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\I18n\TranslatableInterface;
 
 /**
  * Custom Hook Handler interface.
  */
-abstract class AbstractHandler implements TranslatableInterface
+abstract class AbstractHookListener implements TranslatableInterface
 {
     /**
      * EventManager instance.
      *
-     * @var EventManager
+     * @var EventDispatcherInterface
      */
     protected $dispatcher;
 
@@ -54,18 +54,18 @@ abstract class AbstractHandler implements TranslatableInterface
     /**
      * This object's reflection.
      *
-     * @var ReflectionObject
+     * @var \ReflectionObject
      */
     protected $reflection;
 
     /**
      * Constructor.
      *
-     * @param EventManager $dispatcher ServiceManager.
+     * @param EventDispatcherInterface $dispatcher EventDispatcherInterface.
      *
      * @throws \InvalidArgumentException If $this->eventNames is invalid.
      */
-    public function __construct(EventManager $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
         $this->setup();
@@ -74,7 +74,7 @@ abstract class AbstractHandler implements TranslatableInterface
     /**
      * Get reflection of this object.
      *
-     * @return ReflectionObject
+     * @return \ReflectionObject
      */
     public function getReflection()
     {
@@ -87,7 +87,7 @@ abstract class AbstractHandler implements TranslatableInterface
     /**
      * Get dispatcher.
      *
-     * @return EventManager
+     * @return EventDispatcherInterface
      */
     public function getDispatcher()
     {

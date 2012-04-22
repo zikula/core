@@ -14,7 +14,9 @@
  */
 
 namespace Zikula\Component\HookDispatcher\Storage;
+
 use Zikula\Component\HookDispatcher\StorageInterface;
+use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
 use Doctrine_Core;
 use Doctrine_Query;
 use Zikula_Doctrine_Model_HookSubscriber;
@@ -26,7 +28,7 @@ use Zikula_Doctrine_Model_HookBinding;
 /**
  * Doctrine class.
  */
-class Doctrine implements StorageInterface
+class DoctrineStorage implements StorageInterface
 {
     const PROVIDER = 'p';
     const SUBSCRIBER = 's';
@@ -432,7 +434,7 @@ class Doctrine implements StorageInterface
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
         if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {
-            throw new Zikula_HookDispatcher_Exception_InvalidArgumentException('$areaType must be "p" or "s"');
+            throw new InvalidArgumentException('$areaType must be "p" or "s"');
         }
 
         // if there is an area registered, if not, create it.

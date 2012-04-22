@@ -16,6 +16,7 @@
 namespace Zikula\Component\HookDispatcher;
 
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Zikula\Component\HookDispatcher\Exception\LogicException;
 
 /**
  * HookDispatcher class.
@@ -274,7 +275,7 @@ class HookDispatcher
      * @param string $subscriberArea
      * @param string $providerArea
      *
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function bindSubscriber($subscriberArea, $providerArea)
     {
