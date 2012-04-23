@@ -68,6 +68,8 @@ class UserApi extends \Zikula_AbstractApi
         // Create restriction on result table (so user only sees own results)
         $userResultWhere = "$searchColumn[session] = '" . session_id() . "'";
 
+        $session = $this->request->getSession();
+
         // Do all the heavy database stuff on the first page only
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
@@ -88,7 +90,6 @@ class UserApi extends \Zikula_AbstractApi
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
 
-            $session = $this->request->getSession();
             $searchModulesByName = array();
             foreach ($search_modules as $mod) {
                 // check we've a valid search plugin

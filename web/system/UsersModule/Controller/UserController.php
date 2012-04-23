@@ -543,7 +543,7 @@ class UserController extends \Zikula_AbstractController
                         );
                         $event = new GenericEvent($registeredObj, $arguments);
                         $event = $this->dispatcher->dispatch('module.users.ui.registration.succeeded', $event);
-                        $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
+                        $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                         // Set up the next state to follow this one, along with any data needed.
                         if ($canLogIn && $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
@@ -575,7 +575,7 @@ class UserController extends \Zikula_AbstractController
                         );
                         $event = new GenericEvent(null, $arguments);
                         $event = $this->dispatcher->dispatch('module.users.ui.registration.failed', $event);
-                        $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
+                        $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                         // Set the next state to folllow this one.
                         if (!empty($redirectUrl)) {
@@ -1253,7 +1253,7 @@ class UserController extends \Zikula_AbstractController
                                     $failedEvent = new GenericEvent($user, $eventArgs);
                                     $failedEvent = $this->dispatcher->dispatch('module.users.ui.login.failed', $failedEvent);
 
-                                    $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                                    $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                                     if (!empty($redirectUrl)) {
                                         return $this->redirect($redirectUrl);
                                     }
@@ -1271,7 +1271,7 @@ class UserController extends \Zikula_AbstractController
                                 $failedEvent = new GenericEvent($user, $eventArgs);
                                 $failedEvent = $this->dispatcher->dispatch('module.users.ui.login.failed', $failedEvent);
 
-                                $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                                $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                                 if (!empty($redirectUrl)) {
                                     return $this->redirect($redirectUrl);
                                 }
@@ -1289,7 +1289,7 @@ class UserController extends \Zikula_AbstractController
                             $failedEvent = new GenericEvent(null, $eventArgs);
                             $failedEvent = $this->dispatcher->dispatch('module.users.ui.login.failed', $failedEvent);
 
-                            $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
+                            $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                             if (!empty($redirectUrl)) {
                                 return $this->redirect($redirectUrl);
                             }
@@ -1358,7 +1358,7 @@ class UserController extends \Zikula_AbstractController
             $event = new GenericEvent($user, $eventArgs);
             $event = $this->dispatcher->dispatch('module.users.ui.login.succeeded', $event);
 
-            $returnPage = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $returnPage;
+            $returnPage = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $returnPage;
 
             if (empty($returnPage)) {
                 $returnPage = System::getHomepageUrl();
@@ -1758,7 +1758,7 @@ class UserController extends \Zikula_AbstractController
                 );
                 $event = new GenericEvent($user, $eventArgs);
                 $event = $this->dispatcher->dispatch('module.users.ui.login.failed', $event);
-                $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
+                $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             } else {
                 $eventArgs = array(
                     'authentication_method' => $authenticationMethod,
@@ -1766,7 +1766,7 @@ class UserController extends \Zikula_AbstractController
                 );
                 $event = new GenericEvent($user, $eventArgs);
                 $event = $this->dispatcher->dispatch('module.users.ui.login.succeeded', $event);
-                $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : $redirectUrl;
+                $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             }
         } else {
             $eventArgs = array(
@@ -1776,7 +1776,7 @@ class UserController extends \Zikula_AbstractController
             );
             $event = new GenericEvent(null, $eventArgs);
             $event = $this->dispatcher->dispatch('module.users.ui.login.failed', $event);
-            $redirectUrl = $event->hasArg('redirecturl') ? $event->getArg('redirecturl') : '';
+            $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : '';
         }
 
         return $this->redirect($redirectUrl);
