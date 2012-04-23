@@ -1137,11 +1137,11 @@ class AdminController extends \Zikula_AbstractController
             $cache_lifetime = 3600;
         $this->setVar('cache_lifetime', $cache_lifetime);
 
-        $cache_lifetime_mods = (int)FormUtil::getPassedValue('cache_lifetime_mods', isset($args['cache_lifetime_mods']) ? $args['cache_lifetime_mods'] : 3600, 'POST');
+        $cache_lifetime_mods = (int)$this->request->request->get('cache_lifetime_mods', isset($args['cache_lifetime_mods']) ? $args['cache_lifetime_mods'] : 3600);
         if ($cache_lifetime_mods < -1) $cache_lifetime_mods = 3600;
         $this->setVar('cache_lifetime_mods', $cache_lifetime_mods);
 
-        $force_compile = (bool)FormUtil::getPassedValue('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false, 'POST');
+        $force_compile = (bool)$this->request->request->get('force_compile', isset($args['force_compile']) ? $args['force_compile'] : false);
         $this->setVar('force_compile', $force_compile);
 
         $trimwhitespace = (bool)$this->request->request->get('trimwhitespace', isset($args['trimwhitespace']) ? $args['trimwhitespace'] : false);
@@ -1245,7 +1245,7 @@ class AdminController extends \Zikula_AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        $cacheid = FormUtil::getPassedValue('cacheid');
+        $cacheid = $this->request->get('cacheid');
 
         $theme = Zikula_View_Theme::getInstance();
         $res = $theme->clear_all_cache();

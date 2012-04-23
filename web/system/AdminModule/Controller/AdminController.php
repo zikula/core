@@ -57,8 +57,7 @@ class AdminController extends \Zikula_AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        $startnum = (int)\FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 0, 
-            'GET');
+        $startnum = (int)$this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : 0);
         $itemsperpage = $this->getVar('itemsperpage');
 
         $categories = array();
