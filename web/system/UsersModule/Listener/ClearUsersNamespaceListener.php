@@ -47,13 +47,13 @@ class ClearUsersNamespaceListener
     public static function clearUsersNamespaceListener(GenericEvent $event)
     {
         $eventName = $event->getName();
-        $modinfo = $event->hasArg('modinfo') ? $event->getArgument('modinfo') : array();
+        $modinfo = $event->hasArgument('modinfo') ? $event->getArgument('modinfo') : array();
 
         $doClear = ($eventName == 'user.logout.succeeded') || (($eventName == 'frontcontroller.exception')
                 && isset($modinfo) && is_array($modinfo) && !empty($modinfo) && !isset($modinfo['name']) && ($modinfo['name'] == self::$modname));
 
         if ($doClear) {
-            $container = ServiceUtil::getManager();
+            $container = \ServiceUtil::getManager();
             $session = $container->get('session');
             $session->clearNamespace('Zikula_Users');
             //Do not setNotified. Not handling the exception, just reacting to it.
