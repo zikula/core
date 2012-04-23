@@ -69,17 +69,10 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
 
         ModUtil::dbInfoLoad($params['module']);
 
-        $classname = "{$params['module']}_DBObject_".StringUtil::camelize($params['objecttype']).'Array';
-        if (!class_exists($classname) && System::isLegacyMode()) {
-            // BC check for PNObjectArray old style.
-            // load the object class corresponding to $params['objecttype']
-            if (!($class = Loader::loadArrayClassFromModule($params['module'], $params['objecttype'], false, $params['prefix']))) {
-                z_exit(__f('Error! Cannot load module array class %1$s for module %2$s.', array(DataUtil::formatForDisplay($params['module']), DataUtil::formatForDisplay($params['objecttype']))));
-            }
-        }
+        $classname = "{$params['module']}\\DBObject\\".StringUtil::camelize($params['objecttype']).'Array';
 
         // instantiate the object-array
-        $objectArray = new $class();
+        $objectArray = new $classname();
 
         // convenience vars to make code clearer
         $where = $sort = '';

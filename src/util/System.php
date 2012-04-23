@@ -710,7 +710,7 @@ class System
                 if (ZLanguage::getLangUrlRule() && $lang) {
                     // and redirect then
                     $response = new RedirectResponse(self::getCurrentUrl()."/$lang");
-                    $respose->send();
+                    $response->send();
                     System::shutDown();
                 }
             } else {
@@ -725,7 +725,7 @@ class System
                             $args[$k] = urlencode($v);
                         }
                         $response = new RedirectResponse(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''));
-                        $respose->send();
+                        $response->send();
                         System::shutDown();
                     }
                     self::queryStringSetVar('lang', $args[0]);
@@ -900,16 +900,6 @@ class System
     public static function isUpgrading()
     {
         return array_key_exists('_ZikulaUpgrader', $GLOBALS);
-    }
-
-    /**
-     * Legacy mode enabled check.
-     *
-     * @return boolean
-     */
-    public static function isLegacyMode()
-    {
-        return false;
     }
 
     /**

@@ -94,14 +94,6 @@ function smarty_function_img($params, Zikula_View $view)
     $set   = isset($params['set']) ? $params['set'] : null;
     $osset = DataUtil::formatForOS($set);
 
-    // if the module name is 'core'
-    if ($modname == 'core') {
-        if (System::isLegacyMode() && (strpos($osset, 'icons/') !== false || strpos($osset, 'global/') !== false) && strpos($params['src'], '.gif')) {
-            LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', array($params['src'], $view->getTemplatePath())), E_DEPRECATED);
-            $params['src'] = str_replace('.gif', '.png', $params['src']);
-        }
-    }
-
     // always provide an alt attribute.
     // if none is set, assign an empty one.
     $params['alt'] = isset($params['alt']) ? $params['alt'] : '';
