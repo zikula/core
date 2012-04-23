@@ -83,7 +83,8 @@ The `Resources\public` folder contains all web assets.
 ## HttpFoundation
 
 Documentation can be found at:
-http://symfony.com/doc/master/components/http_foundation.html
+
+  - http://symfony.com/doc/master/components/http_foundation/index.html
 
 ## Event System
 
@@ -97,7 +98,8 @@ but that the main difference is the event name is now passed when dispatching
 the event, rather than by creating the event object.
 
 Documentation for the dispatcher can be found at:
-http://symfony.com/doc/master/components/event_dispatcher.html
+
+ - http://symfony.com/doc/master/components/event_dispatcher/index.html
 
 ### Refactoring event calls
 
@@ -123,7 +125,8 @@ object so you can do shortcuts as before.
 The ServiceManager has been deprecated in favour of Symfony2 DependencyInjection.
 
 Documentation can be found at:
-http://symfony.com/doc/master/components/dependency_injection.html
+
+   - http://symfony.com/doc/master/components/dependency_injection/index.html
 
 Additional information which is currently undocumented at the vendor can be found
 at the following links:
@@ -139,6 +142,20 @@ The API has been normalised to EventDispatchers, so `->notify($hook)` becomes
 parameter in the constructor.
 
 Hooks have moved to the `Zikula\Core\Hook` namespace.
+
+See refactoring examples below:
+
+before::
+
+    $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_delete', $validators);
+    $this->notifyHooks($hook);
+
+after::
+
+    use Zikula\Core\Hook\ValidationHook;
+
+    $hook = new ValidationHook($validators);
+    $this->dispatchHooks('users.ui_hooks.user.validate_delete', $hook);
 
 ## Templating
 
