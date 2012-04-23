@@ -77,7 +77,7 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // get admin capable modules
-        $adminmodules = \ModUtil::getAdminMods();
+        $adminmodules = \ModUtil::getModulesCapableOf('admin');
         $adminmodulescount = count($adminmodules);
 
         // Display each item, permissions permitting

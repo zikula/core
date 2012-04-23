@@ -1072,7 +1072,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // assign a list of modules suitable for html_options
-        $usermods = ModUtil::getUserMods();
+        $usermods = ModUtil::getModulesCapableOf('user');
         $mods = array();
         foreach ($usermods as $usermod) {
             $mods[$usermod['name']] = $usermod['displayname'];

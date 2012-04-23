@@ -137,7 +137,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // Modules
         if (!empty($vars['displaymodules'])) {
-            $newmods = ModUtil::getUserMods();
+            $newmods = ModUtil::getModulesCapableOf('user');
             $mods = array();
             foreach ($newmods as $module) {
                 if (!preg_match('#(?:error|blocks)#', strtolower($module['name']))) {

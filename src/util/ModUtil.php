@@ -444,53 +444,7 @@ class ModUtil
     }
 
     /**
-     * The getUserMods method gets a list of user modules.
-     *
-     * @deprecated see {@link ModUtil::getModulesCapableOf()}
-     *
-     * @return array An array of module information arrays.
-     */
-    public static function getUserMods()
-    {
-        return self::getTypeMods('user');
-    }
-
-    /**
-     * The getProfileMods method gets a list of profile modules.
-     *
-     * @deprecated see {@link ModUtil::getModulesCapableOf()}
-     *
-     * @return array An array of module information arrays.
-     */
-    public static function getProfileMods()
-    {
-        return self::getTypeMods('profile');
-    }
-
-    /**
-     * The getMessageMods method gets a list of message modules.
-     *
-     * @return array An array of module information arrays.
-     */
-    public static function getMessageMods()
-    {
-        return self::getTypeMods('message');
-    }
-
-    /**
-     * The getAdminMods method gets a list of administration modules.
-     *
-     * @deprecated see {@link ModUtil::getModulesCapableOf()}
-     *
-     * @return array An array of module information arrays.
-     */
-    public static function getAdminMods()
-    {
-        return self::getTypeMods('admin');
-    }
-
-    /**
-     * The getTypeMods method gets a list of modules by module type.
+     * The getModulesCapableOf method gets a list of modules by module type.
      *
      * @param string $capability The module type to get (either 'user' or 'admin') (optional) (default='user').
      *
@@ -513,20 +467,6 @@ class ModUtil
         }
 
         return self::$cache['modcache'][$capability];
-    }
-
-    /**
-     * Get mod types.
-     *
-     * @param string $type The module type, roughly equivalent, now, to a capability.
-     *
-     * @deprecated see {@link ModUtil::getModulesCapableOf()}
-     *
-     * @return array An array of module information arrays.
-     */
-    public static function getTypeMods($type = 'user')
-    {
-        return self::getModulesCapableOf($type);
     }
 
     /**

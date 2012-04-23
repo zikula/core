@@ -500,7 +500,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         if (!empty($menuVars['displaymodules'])) {
-            $mods = ModUtil::getUserMods();
+            $mods = ModUtil::getModulesCapableOf('user');
 
             if (is_array($mods) && count($mods)>0) {
                 foreach ($mods as $mod) {

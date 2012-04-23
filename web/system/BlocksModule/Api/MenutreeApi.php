@@ -120,7 +120,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         }
 
         // Now work on admin capable modules
-        $adminmodules    = ModUtil::getAdminMods();
+        $adminmodules    = ModUtil::getModulesCapableOf('admin');
         $displayNameType = ModUtil::getVar('Admin', 'displaynametype', 1);
         $default_cid     = ModUtil::getVar('Admin', 'startcategory');
         $adminlinks      = array();
@@ -418,7 +418,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         // otherwise parent id of replaced menu node
         $parentNode = $extrainfo != 'flat' ? $links['modules'][$lang]['id'] : $item['parent'];
 
-        $mods = ModUtil::getUserMods();
+        $mods = ModUtil::getModulesCapableOf('user');
 
         foreach($mods as $mod) {
             if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
