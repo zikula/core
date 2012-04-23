@@ -41,9 +41,9 @@ class DefaultModuleService implements ModuleServiceInterface
 
         $modules = array();
         foreach ($dir as $fileInfo) {
-            /* @var $fileInfo \SplFileInfo */
+            /* @var \SplFileInfo $fileInfo */
 
-            if ($fileInfo->isDir() && !$fileInfo->isDot()) {
+            if ($fileInfo->isDir() && 0 !== strpos($fileInfo->getFilename(), '.')) {
                 $class = $fileInfo->getFilename().'\\'.$fileInfo->getFilename().'Module';
                 $module = new $class();
 

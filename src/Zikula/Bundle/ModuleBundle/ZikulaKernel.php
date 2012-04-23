@@ -5,6 +5,8 @@ namespace Zikula\Bundle\ModuleBundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -43,6 +45,7 @@ abstract class ZikulaKernel extends Kernel
     public function isClassInModule($class)
     {
         foreach ($this->getBundles() as $bundle) {
+            /* @var BundleInterface $bundle */
             if (0 === strpos($class, $bundle->getNamespace())) {
                 return $bundle instanceof AbstractModule;
             }
@@ -53,12 +56,17 @@ abstract class ZikulaKernel extends Kernel
 
     public function isClassInActiveModule($class)
     {
+
         foreach ($this->getBundles() as $bundle) {
+            /* @var BundleInterface $bundle */
             if (0 === strpos($class, $bundle->getNamespace())) {
                 $modules = $this->container->get('zikula.modules')->getAllModules();
                 $modules = array_filter($modules, function($m) use($bundle) {
+                        /* @var BundleInterface $bundle */
+                        /* @var BundleInterface $m */
                         return $m->getName() == $bundle->getName();
                     });
+                /* @var DefaultModuleService $module */
                 $module = array_shift($modules);
 
                 return $module != null && $module->getState() == Entity\Module::STATE_ACTIVE;
@@ -72,8 +80,11 @@ abstract class ZikulaKernel extends Kernel
     {
         $modules = $this->container->get('zikula.modules')->getAllModules();
         $modules = array_filter($modules, function($m) use($bundle) {
+                /* @var BundleInterface $bundle */
+                /* @var BundleInterface $m */
                 return $m->getName() == $bundle->getName();
             });
+        /* @var DefaultModuleService $module */
         $module = array_shift($modules);
 
         return $module != null && $module->getState() == Entity\Module::STATE_ACTIVE;
@@ -122,6 +133,7 @@ abstract class ZikulaKernel extends Kernel
         $data = array();
 
         foreach ($this->zikulaBundles as $type => $bundles) {
+            /* @var AbstractModule $bundle */
             foreach ($bundles as $bundle) {
                 $data[$bundle->getName()] = $bundle->getServiceIds();
             }
@@ -133,10 +145,11 @@ abstract class ZikulaKernel extends Kernel
 
     private function loadModuleBundlesFromFilesystem()
     {
-        $dirs = \Symfony\Component\Finder\Finder::create()
+        $dirs = Finder::create()
                 ->directories()->in($this->rootDir.'/../modules')->depth(0);
 
         foreach ($dirs as $dir) {
+            /* @var \SplFileInfo $dir */
             $class = sprintf('%s\\%sModule', $dir->getFilename(), $dir->getFilename());
 
             if (!is_subclass_of($class, 'Zikula\ModuleBundle\ZikulaModule')) {
@@ -153,6 +166,7 @@ abstract class ZikulaKernel extends Kernel
                 ->directories()->in($this->rootDir.'/../themes')->depth(0);
 
         foreach ($dirs as $dir) {
+            /* @var \SplFileInfo $dir */
             $class = sprintf('%s\\%sTheme', $dir->getFilename(), $dir->getFilename());
 
             if (!is_subclass_of($class, 'Zikula\ThemesBundle\ZikulaTheme')) {
