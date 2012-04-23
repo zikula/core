@@ -303,7 +303,7 @@ class DataUtil
         } else {
             // Run additional filters
             if ($outputfilter > 0) {
-                $event->setData($var)->setArg('filter', $outputfilter);
+                $event->setData($var)->setArgument('filter', $outputfilter);
                 $var = EventUtil::dispatch('system.outputfilter', $event)->getData();
             }
 

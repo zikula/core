@@ -129,7 +129,7 @@ class InitListener implements EventSubscriberInterface
 //            }
 //
 //            // initialise custom event listeners from config.php settings
-//            $coreInitEvent->setArg('stage', self::STAGE_CONFIG);
+//            $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
 //            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
 //        }
 
@@ -168,13 +168,13 @@ class InitListener implements EventSubscriberInterface
                 \ModUtil::registerAutoloaders();
             }
 
-            $coreInitEvent->setArg('stage', self::STAGE_TABLES);
+            $coreInitEvent->setArgument('stage', self::STAGE_TABLES);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         if ($stage & self::STAGE_SESSIONS) {
             \SessionUtil::requireSession();
-            $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
+            $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
@@ -186,13 +186,13 @@ class InitListener implements EventSubscriberInterface
 
         if ($stage & self::STAGE_DECODEURLS) {
             \System::queryStringDecode();
-            $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
+            $coreInitEvent->setArgument('stage', self::STAGE_DECODEURLS);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         if ($stage & self::STAGE_LANGS) {
             $lang->setup();
-            $coreInitEvent->setArg('stage', self::STAGE_LANGS);
+            $coreInitEvent->setArgument('stage', self::STAGE_LANGS);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
         // end block
@@ -205,7 +205,7 @@ class InitListener implements EventSubscriberInterface
 
             \ModUtil::load('SecurityCenter');
 
-            $coreInitEvent->setArg('stage', self::STAGE_MODS);
+            $coreInitEvent->setArgument('stage', self::STAGE_MODS);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
@@ -228,7 +228,7 @@ class InitListener implements EventSubscriberInterface
             $this->container['zikula_view.metatags']['description'] = \System::getVar('defaultmetadescription');
             $this->container['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
 
-            $coreInitEvent->setArg('stage', self::STAGE_THEME);
+            $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 

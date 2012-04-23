@@ -612,7 +612,7 @@ class SystemListener implements EventSubscriberInterface
         }
 
         // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArg('modname'));
+        $args = array('modname' => $event->getArgument('modname'));
         $localevent = new GenericEvent($event->getSubject(), $args);
         $this->dispatcher->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
