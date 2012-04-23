@@ -544,7 +544,7 @@ class UserController extends \Zikula_AbstractController
                         );
                         $event = new GenericEvent($registeredObj, $arguments);
                         $event = $this->dispatcher->dispatch('module.users.ui.registration.succeeded', $event);
-                        $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
+                        $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                         // Set up the next state to follow this one, along with any data needed.
                         if ($canLogIn && $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN)) {
@@ -576,7 +576,7 @@ class UserController extends \Zikula_AbstractController
                         );
                         $event = new GenericEvent(null, $arguments);
                         $event = $this->dispatcher->dispatch('module.users.ui.registration.failed', $event);
-                        $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
+                        $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
                         // Set the next state to folllow this one.
                         if (!empty($redirectUrl)) {
@@ -1254,7 +1254,7 @@ class UserController extends \Zikula_AbstractController
                                     $failedEvent = new GenericEvent($user, $eventArgs);
                                     $failedEvent = $this->dispatcher->dispatch('module.users.ui.login.failed', $failedEvent);
 
-                                    $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
+                                    $redirectUrl = $failedEvent->hasArgument('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                                     if (!empty($redirectUrl)) {
                                         return $this->redirect($redirectUrl);
                                     }
@@ -1272,7 +1272,7 @@ class UserController extends \Zikula_AbstractController
                                 $failedEvent = new GenericEvent($user, $eventArgs);
                                 $failedEvent = $this->dispatcher->dispatch('module.users.ui.login.failed', $failedEvent);
 
-                                $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
+                                $redirectUrl = $failedEvent->hasArgument('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                                 if (!empty($redirectUrl)) {
                                     return $this->redirect($redirectUrl);
                                 }
@@ -1290,7 +1290,7 @@ class UserController extends \Zikula_AbstractController
                             $failedEvent = new GenericEvent(null, $eventArgs);
                             $failedEvent = $this->dispatcher->dispatch('module.users.ui.login.failed', $failedEvent);
 
-                            $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
+                            $redirectUrl = $failedEvent->hasArgument('redirecturl') ? $failedEvent->getArgument('redirecturl') : '';
                             if (!empty($redirectUrl)) {
                                 return $this->redirect($redirectUrl);
                             }
@@ -1359,7 +1359,7 @@ class UserController extends \Zikula_AbstractController
             $event = new GenericEvent($user, $eventArgs);
             $event = $this->dispatcher->dispatch('module.users.ui.login.succeeded', $event);
 
-            $returnPage = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $returnPage;
+            $returnPage = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $returnPage;
 
             if (empty($returnPage)) {
                 $returnPage = System::getHomepageUrl();
