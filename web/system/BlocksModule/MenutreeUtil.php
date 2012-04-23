@@ -34,8 +34,8 @@ class MenutreeUtil
                          'blocks_block_menutree_include_help.tpl');
 
         // module templates
-        $modulesTpls = FileUtil::getFiles('system/Blocks/templates/menutree', false, true, 'tpl', false);
-        $configTpls = FileUtil::getFiles('config/templates/Blocks/menutree', false, true, 'tpl', false);
+        $modulesTpls = FileUtil::getFiles('system/BlocksModule/Resources/view/menutree', false, true, 'tpl', false);
+        $configTpls = FileUtil::getFiles('config/templates/BlocksModule/menutree', false, true, 'tpl', false);
         $tpls['modules'] = array_merge($modulesTpls, $configTpls);
 
         // themes templates - get user and admin themes
@@ -43,11 +43,11 @@ class MenutreeUtil
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesTpls = array();
         foreach ($userThemes as $ut) {
-            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
+            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/Resources/view/modules/BlocksModule/menutree', false, true, 'tpl', false);
         }
         foreach ($adminThemes as $at) {
             if (!array_key_exists($at['name'], $themesTpls)) {
-                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
+                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/Resources/view/modules/BlocksModule/menutree', false, true, 'tpl', false);
             }
         }
 
@@ -88,9 +88,9 @@ class MenutreeUtil
         $styles = array();
 
         // restricted stylesheets, array for possible future changes
-        $sysStyles = array('system/Blocks/Resources/public/css/menutree/adminstyle.css',
-                           'system/Blocks/Resources/public/css/menutree/contextmenu.css',
-                           'system/Blocks/Resources/public/css/menutree/tree.css');
+        $sysStyles = array('system/BlocksModule/Resources/public/css/menutree/adminstyle.css',
+                           'system/BlocksModule/Resources/public/css/menutree/contextmenu.css',
+                           'system/BlocksModule/Resources/public/css/menutree/tree.css');
 
         // module stylesheets
         $modulesStyles = FileUtil::getFiles('system/Blocks/Resources/public/css/menutree', false, false, 'css', false);
