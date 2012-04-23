@@ -1194,7 +1194,7 @@ class ObjectUtil
         // now retrieve the full category data
         $where = 'WHERE id IN (' . implode(',', $catlist) . ')';
 
-        $catArray = new Categories_DBObject_CategoryArray();
+        $catArray = new CategoryModule\DBObject\CategoryArray();
         $data = $catArray->get($where, '', -1, -1, 'id');
 
         // use the cagtegory map created previously to build the object category array
