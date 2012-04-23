@@ -2,7 +2,7 @@
 
 namespace Zikula\Bundle\ModuleBundle\ModuleService;
 
-use Zikula\ModuleBundle\Entity\Module;
+use Zikula\Bundle\ModuleBundle\Entity\Module;
 
 /**
  * Interface of module metadata storages.

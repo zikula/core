@@ -3,6 +3,7 @@
 namespace Zikula\Bundle\ModuleBundle\ModuleService;
 
 use Doctrine\ORM\EntityManager;
+use Zikula\Bundle\ModuleBundle\Entity\Module;
 
 /**
  * Doctrine based storage.
@@ -29,13 +30,13 @@ class DoctrineStorage implements StorageInterface
         return $this->em->find('ZikulaModuleBundle', $id);
     }
 
-    public function insert(\Zikula\Bundle\ModuleBundle\Entity\Module $module)
+    public function insert(Module $module)
     {
         $this->em->persist($module);
         $this->em->flush();
     }
 
-    public function update(\Zikula\Bundle\ModuleBundle\Entity\Module $module)
+    public function update(Module $module)
     {
         $this->em->persist($module);
         $this->em->flush();
