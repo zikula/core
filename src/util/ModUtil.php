@@ -1423,8 +1423,8 @@ class ModUtil
                 'name' => 'zikula',
                 'type' => self::TYPE_CORE,
                 'directory' => '',
-                'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM,
-                'version' => Zikula_Core::VERSION_NUM,
+                'displayname' => 'Zikula Core v' . \Zikula\Core\Core::VERSION_NUM,
+                'version' => \Zikula\Core\Core::VERSION_NUM,
                 'state' => self::STATE_ACTIVE);
         }
 

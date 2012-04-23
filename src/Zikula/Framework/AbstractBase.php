@@ -7,7 +7,7 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * @subpackage Zikula_Core
+ * @subpackage \Zikula\Core\Core
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -351,7 +351,7 @@ abstract class AbstractBase implements TranslatableInterface
     protected function registerStatus($message)
     {
         if (!isset($message) || empty($message)) {
-            throw new \Zikula\Framework\ExceptionException($this->__f('Empty [%s] received.', 'message'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Empty [%s] received.', 'message'));
         }
 
         \LogUtil::addStatusPopup($message);
@@ -410,14 +410,14 @@ abstract class AbstractBase implements TranslatableInterface
      * @param integer $type    Type.
      * @param mixed   $debug   Debug.
      *
-     * @throws \Zikula\Framework\Exception If no message is set.
+     * @throws \Zikula\Framework\Exception\FatalException If no message is set.
      *
      * @return object This object.
      */
     protected function registerError($message, $type=null, $debug=null)
     {
         if (!isset($message) || empty($message)) {
-            throw new \Zikula\Framework\ExceptionException($this->__f('Empty [%s] received.', 'message'));
+            throw new \Zikula\Framework\Exception\FatalException($this->__f('Empty [%s] received.', 'message'));
         }
 
         \LogUtil::addErrorPopup($message);

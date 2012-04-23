@@ -14,6 +14,7 @@
  */
 
 namespace Zikula\Core\Hook\Response;
+
 use Zikula_View;
 
 /**
@@ -21,7 +22,7 @@ use Zikula_View;
  *
  * Hook handlers should return one of these.
  */
-class DisplayHook
+class DisplayHookResponse
 {
     /**
      * Name.

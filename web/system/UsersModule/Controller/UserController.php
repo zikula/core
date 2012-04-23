@@ -21,10 +21,11 @@ use ModUtil, UserUtil, DataUtil, System, LogUtil, SecurityUtil, SessionUtil, Zik
 use UsersModule\Constants as UsersConstant;
 use UsersModule\Helper\AuthenticationMethodListHelper;
 use Zikula_Api_AbstractAuthentication;
-use Zikula_Hook_ValidationProviders;
-use Zikula_ValidationHook;
-use Zikula_ProcessHook;
+use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Core\Hook\ValidationHook;
+use Zikula\Core\Hook\ProcessHook;
 use Zikula_Exception_Redirect;
+use Zikula_Exception_Fatal;
 
 /**
  * Access to (non-administrative) user-initiated actions for the Users module.
@@ -409,12 +410,12 @@ class UserController extends \Zikula_AbstractController
                     }
 
                     // Validate the hook-like event.
-                    $event = new GenericEvent($reginfo, array(), new Zikula_Hook_ValidationProviders());
+                    $event = new GenericEvent($reginfo, array(), new ValidationProviders());
                     $validators = $this->dispatcher->dispatch('module.users.ui.validate_edit.new_registration', $event)->getData();
 
                     // Validate the hook
-                    $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
-                    $this->dispatchHooks($hook->getName(), $hook);
+                    $hook = new ValidationHook($validators);
+                    $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
                     $validators = $hook->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
@@ -474,8 +475,8 @@ class UserController extends \Zikula_AbstractController
                         $this->dispatcher->dispatch('module.users.ui.process_edit.new_registration', $event);
 
                         // ...and hooks to process the registration.
-                        $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registeredObj['uid']);
-                        $this->dispatchHooks($hook->getName(), $hook);
+                        $hook = new ProcessHook($registeredObj['uid']);
+                        $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
 
                         // If there were errors after the main registration, then make sure they can be displayed.
                         // TODO - Would this even happen?
@@ -1207,13 +1208,13 @@ class UserController extends \Zikula_AbstractController
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
-                            $validators = new Zikula_Hook_ValidationProviders();
+                            $validators = new ValidationProviders();
                             if ($eventType) {
                                 $event = new GenericEvent($user, array(), $validators);
                                 $validators  = $this->dispatcher->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
 
-                                $hook = new Zikula_ValidationHook("users.ui_hooks.{$eventType}.validate_edit", $validators);
-                                $this->dispatchHooks($hook->getName(), $hook);
+                                $hook = new ValidationHook($validators);
+                                $this->dispatchHooks("users.ui_hooks.{$eventType}.validate_edit", $hook);
                                 $validators = $hook->getValidators();
                             }
 
@@ -1224,8 +1225,8 @@ class UserController extends \Zikula_AbstractController
                                     $event = new GenericEvent($user, array());
                                     $this->dispatcher->dispatch("module.users.ui.process_edit.{$eventType}", $event);
 
-                                    $hook = new Zikula_ProcessHook("users.ui_hooks.{$eventType}.process_edit", $user['uid']);
-                                    $this->dispatchHooks($hook->getName(), $hook);
+                                    $hook = new ProcessHook($user['uid']);
+                                    $this->dispatchHooks("users.ui_hooks.{$eventType}.process_edit", $hook);
                                 }
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
@@ -1758,7 +1759,7 @@ class UserController extends \Zikula_AbstractController
                 );
                 $event = new GenericEvent($user, $eventArgs);
                 $event = $this->dispatcher->dispatch('module.users.ui.login.failed', $event);
-                $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
+                $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             } else {
                 $eventArgs = array(
                     'authentication_method' => $authenticationMethod,
@@ -1766,7 +1767,7 @@ class UserController extends \Zikula_AbstractController
                 );
                 $event = new GenericEvent($user, $eventArgs);
                 $event = $this->dispatcher->dispatch('module.users.ui.login.succeeded', $event);
-                $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
+                $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             }
         } else {
             $eventArgs = array(
@@ -1776,7 +1777,7 @@ class UserController extends \Zikula_AbstractController
             );
             $event = new GenericEvent(null, $eventArgs);
             $event = $this->dispatcher->dispatch('module.users.ui.login.failed', $event);
-            $redirectUrl = $event->hasArg('redirecturl') ? $event->getArgument('redirecturl') : '';
+            $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
         }
 
         return $this->redirect($redirectUrl);
