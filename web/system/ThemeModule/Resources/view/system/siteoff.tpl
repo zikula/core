@@ -165,7 +165,7 @@
             <div id="cell">
                 <div id="content">
                     <h1><?php echo __('The site is currently off-line.'); ?></h1>
-                    <h2><?php echo (Zikula_Core::VERSION_NUM != System::getVar('Version_Num')) ? __('This site needs to be upgraded, please contact the system administrator.') : System::getVar('siteoffreason');?></h2>
+                    <h2><?php echo (\Zikula\Core\Core::VERSION_NUM != System::getVar('Version_Num')) ? __('This site needs to be upgraded, please contact the system administrator.') : System::getVar('siteoffreason');?></h2>
                     <p>
                         <a href="#" class="showloginbutton" onclick="toggleLoginBox();" title="<?php echo __('Administrator log-in'); ?>">
                             <strong><?php echo __('Administrator log-in'); ?></strong>

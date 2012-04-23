@@ -28,12 +28,10 @@ class ValidationHook extends Hook
     private $validators;
 
     /**
-     * @param $name
      * @param ValidationProviders $validators
      */
-    public function __construct($name, ValidationProviders $validators)
+    public function __construct(ValidationProviders $validators)
     {
-        $this->setName($name);
         $this->validators = $validators;
     }
 

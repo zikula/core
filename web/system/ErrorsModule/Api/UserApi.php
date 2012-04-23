@@ -39,7 +39,7 @@ class UserApi extends \Zikula_AbstractApi
         $headers = "ATTN: Fatal Error at $doc (" . System::serverGetVar('REDIRECT_STATUS') . ")\n";
         $headers .= "From: $sitename Error Tools $adminmail\n";
         $headers .= "X-Sender: <$notify_from>\n";
-        $headers .= "X-Mailer-Version: " . Zikula_Core::VERSION_ID . " " . Zikula_Core::VERSION_NUM . "\n";
+        $headers .= "X-Mailer-Version: " . \Zikula\Core\Core::VERSION_ID . " " . \Zikula\Core\Core::VERSION_NUM . "\n";
         $headers .= "X-Priority: 1\n";
         $body = "Webmaster, the following item was not found on your website:\n\n";
         $body .= " at " . $errortime;

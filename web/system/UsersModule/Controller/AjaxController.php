@@ -15,11 +15,11 @@
 namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
-use Zikula\Framework\Response\Ajax\PlainResponse;
+use Zikula\Framework\Response\PlainResponse;
 use Zikula_View, SecurityUtil, ModUtil, DBUtil, DataUtil;
 use Zikula_Exception_Forbidden;
-use Zikula_ValidationHook;
-use Zikula_Hook_ValidationProviders;
+use Zikula\Core\Hook\ValidationHook;
+use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Framework\Response\Ajax\AjaxResponse;
 use Zikula\Framework\Exception\FatalException;
 
@@ -136,16 +136,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             }
         }
 
-        $event = new GenericEvent($userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
+        $event = new GenericEvent($userOrRegistration, array(), new ValidationProviders());
         $this->dispatcher->dispatch("module.users.ui.validate_edit.{$eventType}", $event);
         $validators =  $event->getData();
 
+        $hook = new ValidationHook($validators);
         if (($eventType == 'new_user') || ($eventType == 'modify_user')) {
-            $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
+            $this->dispatchHooks('users.ui_hooks.user.validate_edit', $hook);
         } else {
-            $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
+            $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
         }
-        $this->dispatchHooks($hook->getName(), $hook);
         $validators = $hook->getValidators();
 
         if ($validators->hasErrors()) {
