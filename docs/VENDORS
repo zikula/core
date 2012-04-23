@@ -132,6 +132,22 @@ jQuery v1.7.2
     Location in Zikula: javascript/jquery
     Patch details: none
 
+jQuery-UI v1.8.19
+
+    Vendor website: http://jqueryui.com/
+    Downloaded from: http://jqueryui.com/
+    License: MIT and GPL (see http://jqueryui.com/about)
+    Location in Zikula: javascript/jquery-ui
+    Patch details: none
+
+jQuery-Timepicker-Addon v1.0.0
+
+    Vendor website: http://trentrichardson.com/examples/timepicker/
+    Downloaded from: https://github.com/trentrichardson/jQuery-Timepicker-Addon
+    License: MIT and GPL (see footer on website)
+    Location in Zikula: javascript/jquery-plugins/jQuery-Timepicker-Addon
+    Patch details: none
+
 DHTML Calendar 1.0
 
     Vendor website: http://www.dynarch.com/projects/calendar
