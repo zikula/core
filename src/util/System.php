@@ -413,46 +413,6 @@ class System
     }
 
     /**
-     * Send an email.
-     *
-     * E-mail messages should now be send with a ModUtil::apiFunc call to the mailer module.
-     *
-     * @param string  $to      Recipient of the email.
-     * @param string  $subject Title of the email.
-     * @param string  $message Body of the email.
-     * @param string  $headers Extra headers for the email.
-     * @param integer $html    Message is html formatted.
-     * @param integer $debug   If 1, echo mail content.
-     * @param string  $altbody Alternative body.
-     *
-     * @deprecated
-     *
-     * @return boolean True if the email was sent, false if not.
-     */
-    public static function mail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
-    {
-        if (empty($to) || !isset($subject)) {
-            return false;
-        }
-
-        $mailer = ServiceUtil::getManager()->get('mailer.simple');
-        $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
-        $failedRecipients = array();
-        if ($headers) {
-            $lines = explode("\n", $headers);
-            $headers = array();
-            foreach ($lines as $line) {
-                $pairs = explode(':', $line);
-                $headers[$pairs[0]] = $pairs[1];
-            }
-        } else {
-            $headers = array(); // change to empty array
-        }
-
-        return $mailer->send((array)$from, (array)$to, $subject, $body, 'text/plain', null, null, (array)$from, $altbody, $headers, $altBodyContentType, $failedRecipients);
-    }
-
-    /**
      * Gets a server variable.
      *
      * Returns the value of $name from $_SERVER array.

@@ -97,7 +97,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
 
         // Modules
         if (!empty($vars['displaymodules'])) {
-            $mods = ModUtil::getUserMods();
+            $mods = ModUtil::getModulesCapableOf('user');
 
             // Separate from current content, if any
             if ($vars['content'] == 1) {

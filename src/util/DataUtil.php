@@ -507,24 +507,6 @@ class DataUtil
     }
 
     /**
-     * Hash function.
-     *
-     * Perform SHA1 or SHA256 hashing on a string using native PHP functions if available and if not uses own classes.
-     *
-     * @param string $string String to be hashed.
-     * @param string $type   String element of hash_algos() (default=sha1).
-     *
-     * @deprecated
-     * @see    hash()
-     * @return string hex hash
-     */
-    public static function hash($string, $type = 'sha1')
-    {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::hash()', 'hash()')), E_USER_DEPRECATED);
-        return hash(strtolower($type), $string);
-    }
-
-    /**
      * Get boolean ini value.
      *
      * This method converts the several possible return values from
@@ -722,23 +704,6 @@ class DataUtil
     {
         $i18n = ZI18n::getInstance();
         return $i18n->transformNumberDisplay($number, $decimal_points);
-    }
-
-    /**
-     * Parse ini file.
-     *
-     * @param string  $iniFile          The file name of the ini file to parse.
-     * @param boolean $process_sections If true, a multidimensional array is returned with section names included.
-     *
-     * @deprecated since 1.3.0,  see {@link parse_ini_file()}
-     *
-     * @return array|boolean An associative array of ini file settings, or false on failure.
-     */
-    public static function parseIniFile($iniFile, $process_sections = true)
-    {
-        LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::parseIniFile()', 'parse_ini_file()')), E_USER_DEPRECATED);
-
-        return parse_ini_file($iniFile, $process_sections);
     }
 
     /**

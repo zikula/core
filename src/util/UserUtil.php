@@ -38,59 +38,6 @@ class UserUtil
     }
 
     /**
-     * Return a user object.
-     *
-     * @param integer $uid     The userID of the user to retrieve.
-     * @param boolean $getVars Obsolete, we also return the attributes.
-     *
-     * @deprecated since 1.3.0
-     * @see    self::getVars()
-     *
-     * @return array The resulting user object.
-     */
-    public static function getPNUser($uid, $getVars = false)
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVars')), E_USER_DEPRECATED);
-        return self::getVars($uid);
-    }
-
-    /**
-     * Return a field from a user object.
-     *
-     * @param integer $id    The userID of the user to retrieve.
-     * @param string  $field The field from the user object to get.
-     *
-     * @deprecated since 1.3.0
-     * @see    self::getVars()
-     *
-     * @return mixed The requested field.
-     */
-    public static function getPNUserField($id, $field)
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVar')), E_USER_DEPRECATED);
-        return self::getVar($field, $id);
-    }
-
-    /**
-     * Return a hash structure mapping uid to username.
-     *
-     * @param string  $where        The where clause to use (optional).
-     * @param string  $orderBy      The order by clause to use (optional).
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array An array mapping uid to username.
-     */
-    public static function getPNUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUsers')), E_USER_DEPRECATED);
-        return self::getUsers($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
-    }
-
-    /**
      * Return a hash structure mapping uid to username.
      *
      * @param string  $where        The where clause to use (optional).
@@ -113,22 +60,6 @@ class UserUtil
      *
      * @param integer $gid The groupID to retrieve.
      *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getGroup()
-     *
-     * @return array The resulting group object.
-     */
-    public static function getPNGroup($gid)
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroup')), E_USER_DEPRECATED);
-        return self::getGroup($gid);
-    }
-
-    /**
-     * Return a group object.
-     *
-     * @param integer $gid The groupID to retrieve.
-     *
      * @todo   Decouple UserUtil and Groups?
      *
      * @return array The resulting group object.
@@ -136,25 +67,6 @@ class UserUtil
     public static function getGroup($gid)
     {
         return ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
-    }
-
-    /**
-     * Return a hash structure mapping gid to groupname.
-     *
-     * @param string  $where        The where clause to use (optional) (default=array()).
-     * @param string  $orderBy      The order by clause to use (optional) (default=array()).
-     * @param integer $limitOffset  The select-limit offset (optional) (default=null).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=null).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
-     *
-     * @deprecated since 1.3.0
-     *
-     * @return array An array mapping gid to groupname
-     */
-    public static function getPNGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'gid')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
-        return self::getGroups($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 
     /**
@@ -188,24 +100,6 @@ class UserUtil
      * @param string $orderBy   The order by clause to use (optional).
      * @param string $separator The field separator to use (default=",") (optional).
      *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getUserIdList()
-     *
-     * @return string A string list of user ids.
-     */
-    public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
-        return self::getUserIdList($where, $orderBy, $separator);
-    }
-
-    /**
-     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
-     *
-     * @param string $where     The where clause to use (optional).
-     * @param string $orderBy   The order by clause to use (optional).
-     * @param string $separator The field separator to use (default=",") (optional).
-     *
      * @return string A string list of user ids.
      */
     public static function getUserIdList($where = '', $orderBy = '', $separator = ',')
@@ -220,24 +114,6 @@ class UserUtil
         }
 
         return $list;
-    }
-
-    /**
-     * Return a (string) list of group-ids which can then be used in a SQL 'IN (...)' clause.
-     *
-     * @param string $where     The where clause to use (optional).
-     * @param string $orderBy   The order by clause to use (optional).
-     * @param string $separator The field separator to use (default=",") (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getGroupIdList()
-     *
-     * @return string A string list of group ids
-     */
-    public static function getPNGroupIdList($where = array(), $orderBy = array(), $separator = ',')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
-        return self::getGroupIdList($where, $orderBy, $separator);
     }
 
     /**
@@ -388,47 +264,6 @@ class UserUtil
         ModUtil::dbInfoLoad($profileModule);
 
         return DBUtil::selectObjectArray('user_property');
-    }
-
-    /**
-     * Return a string list of user-ids for the specified group.
-     *
-     * @param integer $uid            The user ID for which we want the users.
-     * @param string  $assocKey       The associate Key to use.
-     * @param boolean $standardFields Whether or not to also marshall the standard user properties into the DUD array.
-     *
-     * @todo No this is not what this functions does, but what does it do? It is not used within the core
-     * @deprecated 1.3.0
-     *
-     * @return array An array of user IDs.
-     */
-    public static function getUserDynamicDataFields($uid, $assocKey = 'uda_propid', $standardFields = false)
-    {
-        if (!$uid) {
-            return array();
-        }
-
-        return self::getVars($uid, '__ATTRIBUTES__');
-    }
-
-    /**
-     * Return a PN array structure for the PN user group selector.
-     *
-     * @param mixed  $defaultValue The default value of the selector (default=0) (optional).
-     * @param string $defaultText  The text of the default value (optional).
-     * @param array  $ignore       An array of keys to ignore (optional).
-     * @param mixed  $includeAll   Whether to include an "All" choice (optional).
-     * @param string $allText      The text to display for the "All" choice (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getSelectorData_Group()
-     *
-     * @return array The array structure for the user group selector
-     */
-    public static function getSelectorData_PNGroup($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getSelectorData_Group')), E_USER_DEPRECATED);
-        return self::getSelectorData_Group($defaultValue, $defaultText, $ignore, $includeAll, $allText);
     }
 
     /**

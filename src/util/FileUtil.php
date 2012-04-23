@@ -254,28 +254,6 @@ class FileUtil
     }
 
     /**
-     * Recursiveley create a directory path.
-     *
-     * @param string  $path     The path we wish to generate.
-     * @param string  $mode     The (UNIX) mode we wish to create the files with.
-     * @param boolean $absolute Allow absolute paths (default=false) (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    http://php.net/mkdir
-     *
-     * @return boolean TRUE on success, FALSE on failure.
-     */
-    public static function mkdirs($path, $mode = null, $absolute = false)
-    {
-        if (is_dir($path)) {
-            return true;
-        }
-
-        $path = DataUtil::formatForOS($path, $absolute);
-        return mkdir($path, $mode, true);
-    }
-
-    /**
      * Recursiveley delete given directory path.
      *
      * @param string  $path     The path/folder we wish to delete.

@@ -316,7 +316,7 @@ class AdminController extends \Zikula_AbstractController
         $displayNameType = $this->getVar('displaynametype', 1);
 
         // get admin capable modules
-        $adminmodules = \ModUtil::getAdminMods();
+        $adminmodules = \ModUtil::getModulesCapableOf('admin');
         $adminlinks = array();
         foreach ($adminmodules as $adminmodule) {
             if (\SecurityUtil::checkPermission("{$adminmodule['name']}::", 'ANY', ACCESS_EDIT)) {
@@ -383,7 +383,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get admin capable mods
-        $adminmodules = \ModUtil::getAdminMods();
+        $adminmodules = \ModUtil::getModulesCapableOf('admin');
 
         // Get all categories
         $categories = array();
@@ -461,7 +461,7 @@ class AdminController extends \Zikula_AbstractController
         $this->setVars($modvars);
 
         // get admin modules
-        $adminmodules = \ModUtil::getAdminMods();
+        $adminmodules = \ModUtil::getModulesCapableOf('admin');
         $adminmods = $this->request->request->get('adminmods', null);
 
         foreach ($adminmodules as $adminmodule) {
@@ -508,7 +508,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get admin capable modules
-        $adminmodules = \ModUtil::getAdminMods();
+        $adminmodules = \ModUtil::getModulesCapableOf('admin');
         $adminlinks = array();
 
         foreach ($adminmodules as $adminmodule) {

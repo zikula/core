@@ -14,6 +14,11 @@
 use Doctrine\ORM\Tools\SchemaTool as SchemaTool;
 use Doctrine\ORM\EntityManager as EntityManager;
 
+/**
+ * Helper for Doctrine 2.
+ *
+ * Create, update and drop table schema.
+ */
 class DoctrineHelper
 {
     public static function createSchema(EntityManager $em, array $classes)

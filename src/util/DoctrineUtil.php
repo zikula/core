@@ -13,7 +13,9 @@
  */
 
 /**
- * DoctrineUtil helper class.
+ * Doctrine 1 Helper class.
+ *
+ * @deprecated
  */
 class DoctrineUtil
 {

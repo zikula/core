@@ -18,26 +18,12 @@
 class RandomUtil
 {
     /**
-     * Return a seed value for the srand() function
-     *
-     * @deprecated Since 1.3.0, as this is not required since PHP 4.2.0.
-     *
-     * @return The resulting seed value
-     */
-    public static function getSeed()
-    {
-        $factor = 95717; // prime
-        list ($usec, $sec) = explode(" ", microtime());
-        return (double)strrev(($usec) * $factor / M_PI);
-    }
-
-    /**
      * Return a random integer between $floor and $ceil (inclusive).
      *
-     * @param intiger $floor The lower bound.
-     * @param intiger $ceil  The upper bound.
+     * @param integer $floor The lower bound.
+     * @param integer $ceil  The upper bound.
      *
-     * @return The resulting random integer
+     * @return integer resulting random integer
      */
     public static function getInteger($floor, $ceil)
     {
@@ -53,9 +39,9 @@ class RandomUtil
      *
      * This function uses md5() to generate the string.
      *
-     * @param intiger $length The length of string to generate.
+     * @param integer $length The length of string to generate.
      *
-     * @return The resulting random integer.
+     * @return integer resulting random integer.
      */
     public static function getRandomString($length)
     {
@@ -71,8 +57,8 @@ class RandomUtil
     /**
      * Return a random string
      *
-     * @param intiger $minLen         The minimum string length.
-     * @param intiger $maxLen         The maximum string length.
+     * @param integer $minLen         The minimum string length.
+     * @param integer $maxLen         The maximum string length.
      * @param boolean $leadingCapital Whether or not the string should start with a capital letter (optional) (default=true).
      * @param boolean $useUpper       Whether or not to also use uppercase letters (optional) (default=true).
      * @param boolean $useLower       Whether or not to also use lowercase letters (optional) (default=true).
@@ -82,7 +68,7 @@ class RandomUtil
      * @param boolean $seed           Whether or not to seed the random number generator (unused since 1.3.0) (optional) (default=false) seeding not required for PHP>4.2.0.
      * @param array   $dontuse        Array of characters not to use (optional) (default=null) eg $dontuse=array('a', 'b', 'c');.
      *
-     * @return The resulting random string.
+     * @return string resulting random string.
      */
     public static function getString($minLen, $maxLen, $leadingCapital = true, $useUpper = true, $useLower = true, $useSpace = false, $useNumber = false, $useSpecial = false, $seed = false, $dontuse = null)
     {
@@ -167,10 +153,10 @@ class RandomUtil
     /**
      * Return a random sentence of nWords based on the dictionary
      *
-     * @param intiger $nWords    The number of words to put in the sentence.
+     * @param integer $nWords    The number of words to put in the sentence.
      * @param array   $dictArray The array of dictionary words to use.
      *
-     * @return The resulting random date string.
+     * @return string resulting random date string.
      */
     public static function getSentence($nWords, $dictArray)
     {
@@ -215,13 +201,13 @@ class RandomUtil
     /**
      * Return a nParas paragraphs of random text based on the dictionary.
      *
-     * @param intiger $nParas         The number of paragraphs to return to put in the sentence.
+     * @param integer $nParas         The number of paragraphs to return to put in the sentence.
      * @param string  $dict           The dictionary to use (a space separated list of words).
-     * @param intiger $irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated).
-     * @param intiger $irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated).
+     * @param integer $irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated).
+     * @param integer $irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated).
      * @param boolean $startCustomary Whether or not to start with the customary phrase (optional) (default=false).
      *
-     * @return The resulting random date string.
+     * @return string resulting random date string.
      */
     public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false)
     {
@@ -273,7 +259,7 @@ class RandomUtil
      * @param string $endDate   The high date bound.
      * @param string $format    The date format to use.
      *
-     * @return The resulting random date string.
+     * @return string resulting random date string.
      */
     public static function getDate($startDate, $endDate, $format = DATEFORMAT_FIXED)
     {
@@ -290,7 +276,7 @@ class RandomUtil
     /**
      * Return a random user-id.
      *
-     * @return The resulting random user-id.
+     * @return string resulting random user-id.
      */
     public static function getUserID()
     {
