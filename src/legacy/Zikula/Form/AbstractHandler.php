@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Component\HookDispatcher\Hook;
+
 /**
  * Base form handler class
  *
@@ -60,7 +62,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Request object
      *
-     * @var Zikula_Request_Http
+     * @var \Symfony\Component\HttpFoundation\Request;
      */
     protected $request;
 
@@ -149,7 +151,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Set the request.
      *
-     * @param Zikula_Request_Http $request Request to set.
+     * @param \Symfony\Component\HttpFoundation\Request $request Request to set.
      *
      * @return void
      */
@@ -269,7 +271,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      * @param string $key   Key.
      * @param mixed  $value Value, default empty.
      *
-     * @return object This.
+     * @return $this
      */
     public function setVar($key, $value='')
     {
@@ -282,7 +284,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @param array $vars Array of key => value.
      *
-     * @return object This.
+     * @return $this.
      */
     public function setVars(array $vars)
     {
@@ -318,7 +320,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @param string $key Key.
      *
-     * @return object This.
+     * @return $this
      */
     public function delVar($key)
     {
@@ -329,7 +331,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Convenience Module DelVar for all keys for this module.
      *
-     * @return object This.
+     * @return $this
      */
     public function delVars()
     {
