@@ -329,6 +329,10 @@ class JCSSUtil
                         'path' => 'javascript/jquery/jquery-1.7.2.min.js',
                         'require' => array('noconflict'),
                 ),
+                'jquery-ui' => array(
+                        'path' => 'javascript/jquery-ui/jquery-ui-1.8.19.custom.min.js',
+                        'require' => array('jquery'),
+                ),
                 'noconflict' => array(
                         'path' => 'javascript/jquery/noconflict.js',
                 ),
@@ -455,7 +459,13 @@ class JCSSUtil
                             'path' => 'javascript/jquery/noconflict.js',
                     ),
             );
-            $scripts = array_merge($jQueryUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 4));
+            $jQueryUiUncompressed = array(
+                    'jquery-ui' => array(
+                            'path' => 'javascript/jquery-ui/jquery-ui-1.8.19.custom.js',
+                            'require' => array('jquery'),
+                    ),
+            );
+            $scripts = array_merge($jQueryUncompressed, $jQueryUiUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
         }
         return $scripts;
     }
