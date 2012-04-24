@@ -69,7 +69,7 @@ class Filesystem
     /**
      * Creates empty files.
      *
-     * @param string|array|\Traversable $files A filename, an array of files, or a \Traversable instance to remove
+     * @param string|array|\Traversable $files A filename, an array of files, or a \Traversable instance to create
      */
     public function touch($files)
     {
@@ -88,7 +88,7 @@ class Filesystem
         $files = iterator_to_array($this->toIterator($files));
         $files = array_reverse($files);
         foreach ($files as $file) {
-            if (!file_exists($file)) {
+            if (!file_exists($file) && !is_link($file)) {
                 continue;
             }
 
@@ -105,20 +105,15 @@ class Filesystem
     /**
      * Change mode for an array of files or directories.
      *
-     * @param string|array|\Traversable $files A filename, an array of files, or a \Traversable instance to remove
-     * @param integer                   $mode  The new mode
+     * @param string|array|\Traversable $files A filename, an array of files, or a \Traversable instance to change mode
+     * @param integer                   $mode  The new mode (octal)
      * @param integer                   $umask The mode mask (octal)
      */
     public function chmod($files, $mode, $umask = 0000)
     {
-        $currentUmask = umask();
-        umask($umask);
-
         foreach ($this->toIterator($files) as $file) {
-            chmod($file, $mode);
+            chmod($file, $mode & ~$umask);
         }
-
-        umask($currentUmask);
     }
 
     /**
@@ -128,6 +123,7 @@ class Filesystem
      * @param string $target  The new filename
      *
      * @throws \RuntimeException When target file already exists
+     * @throws \RuntimeException When origin cannot be renamed
      */
     public function rename($origin, $target)
     {
@@ -136,7 +132,9 @@ class Filesystem
             throw new \RuntimeException(sprintf('Cannot rename because the target "%s" already exist.', $target));
         }
 
-        rename($origin, $target);
+        if (false === @rename($origin, $target)) {
+            throw new \RuntimeException(sprintf('Cannot rename "%s" to "%s".', $origin, $target));
+        }
     }
 
     /**
@@ -153,6 +151,8 @@ class Filesystem
 
             return;
         }
+
+        $this->mkdir(dirname($targetDir));
 
         $ok = false;
         if (is_link($targetDir)) {
@@ -171,21 +171,28 @@ class Filesystem
     /**
      * Given an existing path, convert it to a path relative to a given starting path
      *
-     * @var string Absolute path of target
-     * @var string Absolute path where traversal begins
+     * @param string $endPath   Absolute path of target
+     * @param string $startPath Absolute path where traversal begins
      *
      * @return string Path of target relative to starting path
      */
     public function makePathRelative($endPath, $startPath)
     {
+        // Normalize separators on windows
+        if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $endPath = strtr($endPath, '\\', '/');
+            $startPath = strtr($startPath, '\\', '/');
+        }
+
         // Find for which character the the common path stops
         $offset = 0;
-        while ($startPath[$offset] === $endPath[$offset]) {
+        while (isset($startPath[$offset]) && isset($endPath[$offset]) && $startPath[$offset] === $endPath[$offset]) {
             $offset++;
         }
 
         // Determine how deep the start path is relative to the common path (ie, "web/bundles" = 2 levels)
-        $depth = substr_count(substr($startPath, $offset), DIRECTORY_SEPARATOR) + 1;
+        $diffPath = trim(substr($startPath, $offset), '/');
+        $depth = strlen($diffPath) > 0 ? substr_count($diffPath, '/') + 1 : 0;
 
         // Repeated "../" for each level need to reach the common path
         $traverser = str_repeat('../', $depth);
@@ -228,12 +235,12 @@ class Filesystem
         }
 
         foreach ($iterator as $file) {
-            $target = $targetDir.'/'.str_replace($originDir.DIRECTORY_SEPARATOR, '', $file->getPathname());
+            $target = str_replace($originDir, $targetDir, $file->getPathname());
 
-            if (is_link($file)) {
-                $this->symlink($file, $target);
-            } elseif (is_dir($file)) {
+            if (is_dir($file)) {
                 $this->mkdir($target);
+            } elseif (!$copyOnWindows && is_link($file)) {
+                $this->symlink($file, $target);
             } elseif (is_file($file) || ($copyOnWindows && is_link($file))) {
                 $this->copy($file, $target, isset($options['override']) ? $options['override'] : false);
             } else {
@@ -264,6 +271,11 @@ class Filesystem
         return false;
     }
 
+    /**
+     * @param mixed $files
+     *
+     * @return \Traversable
+     */
     private function toIterator($files)
     {
         if (!$files instanceof \Traversable) {
