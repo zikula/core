@@ -31,5 +31,10 @@ Please see the [upgrading 1.4 guide](https://github.com/zikula/core/blob/master/
 
 ## License
 
-The Zikula Core package is licensed under the terms of LGPLv3 or any later
-version.
+The Zikula Core package is licensed under the terms of LGPLv3 (or any later version).
+
+## Contributing
+
+Zikula is an open source, community-driven project. If you'd like to contribute,
+please fork the project and submit a "pull request". More information ca be found in the
+[wiki](https://github.com/zikula/core/wiki).

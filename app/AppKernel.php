@@ -1,7 +1,6 @@
 <?php
 
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
-//use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
@@ -31,6 +30,9 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
+
+        $bundles = $this->registerModuleBundles($bundles);
+        $bundles = $this->registerModuleBundles($bundles);
 
         return $bundles;
     }
