@@ -1,6 +1,8 @@
 Zikula Core - Application Framework
 ===================================
 
+[![Build Status](https://secure.travis-ci.org/zikula/core.png)](http://travis-ci.org/zikula/core)
+
 Zikula Core is a web based application framework, fully extensible by
 Modules, plugins and themes.
 
