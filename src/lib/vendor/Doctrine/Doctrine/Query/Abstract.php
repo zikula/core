@@ -264,6 +264,13 @@ abstract class Doctrine_Query_Abstract
     protected $_preQueried = false;
 
     /**
+     * Fix for http://www.doctrine-project.org/jira/browse/DC-701
+     *
+     * @var bool Boolean variable for whether the limitSubquery method of accessing tables via a many relationship should be used.
+     */
+    protected $disableLimitSubquery = false;
+
+    /**
      * Constructor.
      *
      * @param Doctrine_Connection  The connection object the query will use.
@@ -1142,7 +1149,7 @@ abstract class Doctrine_Query_Abstract
         $copy->free();
 
         if ($componentsBefore !== $componentsAfter) {
-            return array_diff($componentsAfter, $componentsBefore);
+            return array_diff_assoc($componentsAfter, $componentsBefore);
         } else {
             return $componentsAfter;
         }
@@ -2139,5 +2146,26 @@ abstract class Doctrine_Query_Abstract
     public function __toString()
     {
         return $this->getDql();
+    }
+
+    /**
+     * Gets the disableLimitSubquery property.
+     *
+     * @return boolean
+     */
+    public function getDisableLimitSubquery()
+    {
+        return $this->disableLimitSubquery;
+    }
+
+    /**
+     * Allows you to set the disableLimitSubquery property -- setting this to true will
+     * restrict the query object from using the limit sub query method of tranversing many relationships.
+     *
+     * @param boolean $disableLimitSubquery
+     */
+    public function setDisableLimitSubquery($disableLimitSubquery)
+    {
+        $this->disableLimitSubquery = $disableLimitSubquery;
     }
 }
