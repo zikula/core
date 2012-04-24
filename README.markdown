@@ -27,7 +27,7 @@ You must specify the database credentials in `app/config/database.yml`.
 
 ## Change Guide
 
-Please see the (upgrading 1.4 guide)[https://github.com/zikula/core/blob/master/docs/UPGRADING-1.4.md]
+Please see the [upgrading 1.4 guide](https://github.com/zikula/core/blob/master/docs/UPGRADING-1.4.md)
 
 ## License
 
