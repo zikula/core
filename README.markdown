@@ -20,13 +20,16 @@ Regularly run composer also to make sure dependencies are up to date.
 
 ## Manual installation process
 
-Please use the `installation.sql` file to manually install the database.
+Please use the `docs/installation.sql` file to manually install the database.
 The administrative login is "Admin" and "zikula1"
 
 You must specify the database credentials in `app/config/database.yml`.
+
+## Change Guide
+
+Please see the (upgrading 1.4 guide)[https://github.com/zikula/core/blob/master/docs/UPGRADING-1.4.md]
 
 ## License
 
 The Zikula Core package is licensed under the terms of LGPLv3 or any later
 version.
-
