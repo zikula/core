@@ -18,12 +18,12 @@ if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
 
-define('ZLOADER_PATH', __DIR__.DIRECTORY_SEPARATOR);
-define('ZIKULA_CONFIG_PATH', realpath(__DIR__.'/../web/config'));
-define('ZIKULA_ROOT', realpath(__DIR__.'/../web'));
+define('ZLOADER_PATH', __DIR__.'/..');
+define('ZIKULA_CONFIG_PATH', realpath(__DIR__.'/../../web/config'));
+define('ZIKULA_ROOT', realpath(__DIR__.'/../../web'));
 
 // setup vendors in include path
-set_include_path(get_include_path() . PATH_SEPARATOR .realpath(__DIR__.'/../vendor/hard/'));
+set_include_path(get_include_path() . PATH_SEPARATOR .realpath(__DIR__.'/../../vendor/hard/'));
 
 /**
  * ZLoader.
@@ -150,6 +150,11 @@ class ZLoader
             $path = ZLOADER_PATH . $prefix . str_replace('\\', '/', $pearClass) . '.php';
             if (file_exists($path)) {
                 return include $path;
+            } else {
+                $path = ZLOADER_PATH . '/legacy/'. $prefix . str_replace('\\', '/', $pearClass) . '.php';
+                if (file_exists($path)) {
+                    return include $path;
+                }
             }
         }
 
@@ -167,48 +172,48 @@ class ZLoader
     public static function map()
     {
         return array(
-            'ZLanguage' => ZLOADER_PATH . 'i18n/ZLanguage.php',
-            'ZI18n' => ZLOADER_PATH . 'i18n/ZI18n.php',
-            'ZL10n' => ZLOADER_PATH . 'i18n/ZL10n.php',
-            'ZLocale' => ZLOADER_PATH . 'i18n/ZLocale.php',
-            'ZGettext' => ZLOADER_PATH . 'i18n/ZGettext.php',
-            'ZMO' => ZLOADER_PATH . 'i18n/ZMO.php',
-            'ZLanguageBrowser' => ZLOADER_PATH . 'i18n/ZLanguageBrowser.php',
-            'DBObject' => ZLOADER_PATH . 'dbobject/DBObject.php',
-            'DBObjectArray' => ZLOADER_PATH . 'dbobject/DBObjctArray.php',
-            'DBUtil' => ZLOADER_PATH . 'util/DBUtil.php',
-            'BlockUtil' => ZLOADER_PATH . 'util/BlockUtil.php',
-            'AjaxUtil' => ZLOADER_PATH . 'util/AjaxUtil.php',
-            'CacheUtil' => ZLOADER_PATH . 'util/CacheUtil.php',
-            'CategoryRegistryUtil' => ZLOADER_PATH . 'util/CategoryRegistryUtil.php',
-            'CategoryUtil' => ZLOADER_PATH . 'util/CategoryUtil.php',
-            'CookieUtil' => ZLOADER_PATH . 'util/CookieUtil.php',
-            'DataUtil' => ZLOADER_PATH . 'util/DataUtil.php',
-            'DateUtil' => ZLOADER_PATH . 'util/DateUtil.php',
-            'DoctrineHelper' => ZLOADER_PATH . 'util/DoctrineHelper.php',
-            'DoctrineUtil' => ZLOADER_PATH . 'util/DoctrineUtil.php',
-            'EventUtil' => ZLOADER_PATH . 'util/EventUtil.php',
-            'FileUtil' => ZLOADER_PATH . 'util/FileUtil.php',
-            'FilterUtil' => ZLOADER_PATH . 'util/FilterUtil.php',
-            'FormUtil' => ZLOADER_PATH . 'util/FormUtil.php',
-            'HookUtil' => ZLOADER_PATH . 'util/HookUtil.php',
-            'HtmlUtil' => ZLOADER_PATH . 'util/HtmlUtil.php',
-            'JCSSUtil' => ZLOADER_PATH . 'util/JCSSUtil.php',
-            'LogUtil' => ZLOADER_PATH . 'util/LogUtil.php',
-            'ModUtil' => ZLOADER_PATH . 'util/ModUtil.php',
-            'ObjectUtil' => ZLOADER_PATH . 'util/ObjectUtil.php',
-            'PluginUtil' => ZLOADER_PATH . 'util/PluginUtil.php',
-            'PageUtil' => ZLOADER_PATH . 'util/PageUtil.php',
-            'RandomUtil' => ZLOADER_PATH . 'util/RandomUtil.php',
-            'SecurityUtil' => ZLOADER_PATH . 'util/SecurityUtil.php',
-            'ServiceUtil' => ZLOADER_PATH . 'util/ServiceUtil.php',
-            'SessionUtil' => ZLOADER_PATH . 'util/SessionUtil.php',
-            'StringUtil' => ZLOADER_PATH . 'util/StringUtil.php',
-            'System' => ZLOADER_PATH . 'util/System.php',
-            'ThemeUtil' => ZLOADER_PATH . 'util/ThemeUtil.php',
-            'UserUtil' => ZLOADER_PATH . 'util/UserUtil.php',
-            'ValidationUtil' => ZLOADER_PATH . 'util/ValidationUtil.php',
-            'Loader' => ZLOADER_PATH . 'legacy/Loader.php',
+            'ZLanguage' => ZLOADER_PATH . '/legacy/i18n/ZLanguage.php',
+            'ZI18n' => ZLOADER_PATH . '/legacy/i18n/ZI18n.php',
+            'ZL10n' => ZLOADER_PATH . '/legacy/i18n/ZL10n.php',
+            'ZLocale' => ZLOADER_PATH . '/legacy/i18n/ZLocale.php',
+            'ZGettext' => ZLOADER_PATH . '/legacy/i18n/ZGettext.php',
+            'ZMO' => ZLOADER_PATH . '/legacy/i18n/ZMO.php',
+            'ZLanguageBrowser' => ZLOADER_PATH . '/legacy/i18n/ZLanguageBrowser.php',
+            'DBObject' => ZLOADER_PATH . '/legacy/dbobject/DBObject.php',
+            'DBObjectArray' => ZLOADER_PATH . '/legacy/dbobject/DBObjctArray.php',
+            'DBUtil' => ZLOADER_PATH . '/legacy/util/DBUtil.php',
+            'BlockUtil' => ZLOADER_PATH . '/legacy/util/BlockUtil.php',
+            'AjaxUtil' => ZLOADER_PATH . '/legacy/util/AjaxUtil.php',
+            'CacheUtil' => ZLOADER_PATH . '/legacy/util/CacheUtil.php',
+            'CategoryRegistryUtil' => ZLOADER_PATH . '/legacy/util/CategoryRegistryUtil.php',
+            'CategoryUtil' => ZLOADER_PATH . '/legacy/util/CategoryUtil.php',
+            'CookieUtil' => ZLOADER_PATH . '/legacy/util/CookieUtil.php',
+            'DataUtil' => ZLOADER_PATH . '/legacy/util/DataUtil.php',
+            'DateUtil' => ZLOADER_PATH . '/legacy/util/DateUtil.php',
+            'DoctrineHelper' => ZLOADER_PATH . '/legacy/util/DoctrineHelper.php',
+            'DoctrineUtil' => ZLOADER_PATH . '/legacy/util/DoctrineUtil.php',
+            'EventUtil' => ZLOADER_PATH . '/legacy/util/EventUtil.php',
+            'FileUtil' => ZLOADER_PATH . '/legacy/util/FileUtil.php',
+            'FilterUtil' => ZLOADER_PATH . '/legacy/util/FilterUtil.php',
+            'FormUtil' => ZLOADER_PATH . '/legacy/util/FormUtil.php',
+            'HookUtil' => ZLOADER_PATH . '/legacy/util/HookUtil.php',
+            'HtmlUtil' => ZLOADER_PATH . '/legacy/util/HtmlUtil.php',
+            'JCSSUtil' => ZLOADER_PATH . '/legacy/util/JCSSUtil.php',
+            'LogUtil' => ZLOADER_PATH . '/legacy/util/LogUtil.php',
+            'ModUtil' => ZLOADER_PATH . '/legacy/util/ModUtil.php',
+            'ObjectUtil' => ZLOADER_PATH . '/legacy/util/ObjectUtil.php',
+            'PluginUtil' => ZLOADER_PATH . '/legacy/util/PluginUtil.php',
+            'PageUtil' => ZLOADER_PATH . '/legacy/util/PageUtil.php',
+            'RandomUtil' => ZLOADER_PATH . '/legacy/util/RandomUtil.php',
+            'SecurityUtil' => ZLOADER_PATH . '/legacy/util/SecurityUtil.php',
+            'ServiceUtil' => ZLOADER_PATH . '/legacy/util/ServiceUtil.php',
+            'SessionUtil' => ZLOADER_PATH . '/legacy/util/SessionUtil.php',
+            'StringUtil' => ZLOADER_PATH . '/legacy/util/StringUtil.php',
+            'System' => ZLOADER_PATH . '/legacy/util/System.php',
+            'ThemeUtil' => ZLOADER_PATH . '/legacy/util/ThemeUtil.php',
+            'UserUtil' => ZLOADER_PATH . '/legacy/util/UserUtil.php',
+            'ValidationUtil' => ZLOADER_PATH . '/legacy/util/ValidationUtil.php',
+            'Loader' => ZLOADER_PATH . '/legacy/Loader.php',
         );
     }
 

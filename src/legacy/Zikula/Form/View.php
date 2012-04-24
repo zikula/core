@@ -100,7 +100,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Current ID count - used to assign automatic ID's to all items.
      *
-     * @var intiger
+     * @var integer
      * @internal
      */
     public $idCount;
@@ -148,18 +148,18 @@ class Zikula_Form_View extends Zikula_View
      *
      * Use FormUtil::newForm() instead of instantiating Zikula_Form_View directly.
      *
-     * @param ServiceManager $container ServiceManager.
+     * @param ContainerBuilder $container ServiceManager.
      * @param string                $module         Module name.
      * @param integer               $caching        Caching flag (not used - just for e_strict).
      */
-    public function __construct(ServiceManager $container, $module, $caching=null)
+    public function __construct(ContainerBuilder $container, $module, $caching=null)
     {
         // override behaviour of anonymous sessions
         SessionUtil::requireSession();
 
         // construct and use the available methods
         parent::__construct($container, $module, false);
-        $this->addPluginDir('lib/viewplugins/formplugins', false);
+        $this->addPluginDir(\ZLOADER_PATH.'/legacy/viewplugins/formplugins', false);
         $this->setCaching(Zikula_View::CACHE_DISABLED);
 
         // custom Form setup
