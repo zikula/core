@@ -65,7 +65,7 @@ class DoctrineListener implements EventSubscriberInterface
         \CacheUtil::createLocalDir('doctrinemodels');
 
         // setup annotations base
-        include_once \ZLOADER_PATH . '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        require_once \ZLOADER_PATH . '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
 
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();

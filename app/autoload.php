@@ -35,7 +35,7 @@ AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 //Swift::registerAutoload(__DIR__.'/../vendor/swiftmailer/swiftmailer/lib/swift_init.php');
 
 require_once __DIR__.'/../vendor/hard/Smarty/Smarty.class.php';
-require_once __DIR__.'/../src/i18n/ZGettextFunctions.php';
+require_once __DIR__.'/../src/legacy/i18n/ZGettextFunctions.php';
 
 $autoloader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
 $autoloader->register();

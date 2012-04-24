@@ -18,5 +18,5 @@ require_once $bootstrap;
 require_once __DIR__.'/AppKernel.php';
 require_once __DIR__.'/AppCache.php';
 
-require_once __DIR__.'/../src/ZLoader.php';
+require_once __DIR__.'/../src/legacy/ZLoader.php';
 ZLoader::register();
