@@ -30,22 +30,6 @@ Smarty 2.6.26
     - Removed check inside the Smarty folder except for its core 'plugins' https://gist.github.com/960158
     - Security fix on the math plugin http://tinyurl.com/3b6p6vk
 
-Doctrine 1.2.4
-
-    Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://www.doctrine-project.org/projects/orm/1.2/download/1.2.4
-    License: LGPL
-    Location in Zikula: lib/vendor/Doctrine
-    Patch details:
-    - Fix on Doctrine_Record::unlinkInDb field names causing exceptions and local unlinking https://github.com/doctrine/doctrine1/pull/35
-
-Doctrine 2.1.2
-
-    Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://www.doctrine-project.org/projects/orm/download/
-    License: LGPL
-    Location in Zikula: plugins/Doctrine/lib
-
 RC4Crypt 3.2
 
     Vendor website: http://rc4crypt.devhome.org (defunct).
@@ -60,15 +44,6 @@ PHPMailer 5.0.0
     Downloaded from: http://phpmailer.codeworxtech.com/
     License: LGPL 2.1+
     Location in Zikula: system/Mailer/vendor
-    Patch details: none
-
-Zend Framework 1.10.5 (selected components)
-
-    Zend_Exception, Zend_Loader, Zend_Log
-    Vendor website: http://framework.zend.com/).
-    Downloaded from: http://framework.zend.com/
-    License: New BSD
-    Location in Zikula: lib/vendor/Zend
     Patch details: none
 
 IDNA Convert 0.6.3
@@ -91,38 +66,6 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
 
 JAVASCRIPT LIBRARIES
 --------------------
-
-PickyColor 0.1
-
-    Vendor website: http://code.google.com/p/picky-color/
-    Downloaded from: http://code.google.com/p/picky-color/
-    License: MIT
-    Location in Zikula: javascript/picky_color
-    Patch details: none
-
-Prototype 1.7.0
-
-    Vendor website: http://www.prototypejs.org/
-    Downloaded from: http://www.prototypejs.org/
-    License: MIT
-    Location in Zikula: javascript/ajax
-    Patch details: none
-
-Scriptaculous 1.9.0
-
-    Vendor website: http://script.aculo.us/
-    Downloaded from: http://script.aculo.us/
-    License: MIT
-    Location in Zikula: javascript/ajax
-    Patch details: none
-
-Validation 1.5.4.1
-
-    Vendor website: http://tetlaw.id.au/view/javascript/really-easy-field-validation
-    Downloaded from: http://tetlaw.id.au/view/javascript/really-easy-field-validation
-    License: MIT
-    Location in Zikula: javascript/ajax/validation.min.js
-    Patch details: none
 
 jQuery v1.7.2
 
