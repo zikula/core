@@ -16,6 +16,8 @@ Composer can be obtained from http://getcomposer.org/.
 This `master` branch is undergoing heavy refactoring. If you want to
 contribute to this branch, please note manual installation is required.
 
+**If you are looking for the stable version, please see the `release-1.3` branch.**
+
 Regularly run composer also to make sure dependencies are up to date.
 
 ## Manual installation process
