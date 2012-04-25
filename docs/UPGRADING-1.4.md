@@ -35,14 +35,20 @@ ExampleModule/
         BarListener.php
     Resources/
         config/
+            foo.yml
+            service.xml
         locale/
             module_example.pot
         public/
             css/
             images/
                 admin.png
-            javascript/
+            js/
         view/
+            User/
+                foo.html.twig
+                index.html.twig
+                report.xml.twig
             plugins/
                 function.foo.php
             admin.tpl
@@ -55,9 +61,7 @@ ExampleModule/
         bootstrap.php
     Installer.php
     ExampleEvents.php
-    ExampleVersion.php
-    ExampleModule.php
-    Version.php
+    VendorExampleModule.php
     composer.json
 ```
 
@@ -78,7 +82,7 @@ The `Resources\public` folder contains all web assets.
   - All controller responses should return a `Symfony\Component\HttpFoundation\Response` object.
   - Controller responses which want to prevent the theme from being rendered
     should return a `Zikula\Framework\Response\PlainResponse`.
-  - The namespacing format is as yet undecided.
+  - Files musy be namespaced accordingly with `FooModule`.
 
 ## HttpFoundation
 
