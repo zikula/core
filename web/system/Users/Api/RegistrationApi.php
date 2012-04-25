@@ -18,7 +18,7 @@ namespace Users\Api;
 use Users\Constants as UsersConstant;
 use Zikula_Exception_Fatal;
 use Zikula\Framework\Api\AbstractAuthentication;
-use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DBUtil, DataUtil, DateUtil, ObjectUtil;
+use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DataUtil, DateUtil, ObjectUtil;
 use Zikula_Session;
 use Users\Helper\AuthenticationMethodHelper;
 use Zikula_Exception_Forbidden;
@@ -148,6 +148,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     public function getEmailErrors($args)
     {
         $reginfo = array();
+        
         if (isset($args['uid'])) {
             $reginfo['uid'] = $args['uid'];
         }
@@ -457,19 +458,15 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (!isset($obj) || !is_array($obj)) {
             return $obj;
         }
-
-        $dbinfo = DBUtil::getTables();
-        $column = $dbinfo['users_column'];
-        if (!isset($column) || empty($column)) {
-            return $obj;
-        }
+        
+        $user = new \Users\Entity\User;
 
         if (!isset($obj['__ATTRIBUTES__'])) {
             $obj['__ATTRIBUTES__'] = array();
         }
 
         if (isset($obj['isverified'])) {
-            $obj['__ATTRIBUTES__']['_Users_isVerified'] = $obj['isverified'];
+            $obj['__ATTRIBUTES__']['_Users_isVerified'] = (int)$obj['isverified'];
             unset($obj['isverified']);
         } else {
             $obj['__ATTRIBUTES__']['_Users_isVerified'] = 0;
@@ -478,7 +475,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         foreach ($obj as $field => $value) {
             if (substr($field, 0, 2) == '__') {
                 continue;
-            } elseif (!isset($column[$field])) {
+            } elseif (!isset($user[$field])) {
                 $obj['__ATTRIBUTES__'][$field] = is_array($value) ? serialize($value) : $value;
                 unset($obj[$field]);
             }
@@ -578,18 +575,32 @@ class RegistrationApi extends \Zikula_AbstractApi
             unset($userObj['verificationsent']);
         }
         $userObj = $this->cleanFieldsToAttributes($userObj);
-
+        
+        // store user's attributes to a variable.
+        // we will persist them to the database after the user record is created
+        $attributes = $userObj['__ATTRIBUTES__'];
+        unset($userObj['__ATTRIBUTES__']);
+        
         // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
         // registration, not a user, so a user account record has really not yet been "created".
         // The item-create hook will be fired when the registration becomes a "real" user
         // account record. This is so that modules that do default actions on the creation
         // of a user account do not perform those actions on a pending registration, which
         // may be deleted at any point.
-        $userObj = DBUtil::insertObject($userObj, 'users', 'uid');
-
+        $user = new \Users\Entity\User;
+        $user->merge($userObj);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        
+        // store attributes also
+        foreach ($attributes as $attr_key => $attr_value) {
+            $user->setAttribute($attr_key, $attr_value);
+        }
+       
         // TODO - Even though we are not firing an item-create hook, should we fire a special
         // registration created event?
-
+        
+        $userObj = $user->toArray();
         if ($userObj) {
             $reginfo['uid'] = $userObj['uid'];
 
@@ -598,13 +609,9 @@ class RegistrationApi extends \Zikula_AbstractApi
             if (!$createdByAdminOrSubAdmin && $reginfo['isapproved']) {
                 // moderation is off, so the user "self-approved".
                 // We could not set it earlier because we didn't know the uid.
-                // Use DBUtil here so we don't get an update event. (The create hasn't happened yet.)
-                $userUpdateObj = array(
-                    'uid'           => $userObj['uid'],
-                    'approved_by'   => $userObj['uid'],
-                    'approved_date' => $nowUTCStr,
-                );
-                DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
+                $user['approved_by'] = $userObj['uid'];
+                $user['approved_date'] = $nowUTCStr;
+                $this->entityManager->flush();
             }
 
             // Force the reload of the user in the cache.
@@ -614,7 +621,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             $this->dispatcher->dispatch('user.registration.create', $createEvent);
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
-                $siteurl   = System::getBaseUrl();
+                $siteurl = System::getBaseUrl();
 
                 $rendererArgs = array();
                 $rendererArgs['sitename'] = System::getVar('sitename');
@@ -625,10 +632,12 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
                 if (!$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
+                    
                     $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
-                        'reginfo'       => $reginfo,
-                        'rendererArgs'  => $rendererArgs,
+                        'reginfo' => $reginfo,
+                        'rendererArgs' => $rendererArgs,
                     ));
+
                     if (!$verificationSent) {
                         $regErrors[] = $this->__('Warning! The verification code for the new registration could not be sent.');
                         $loggedErrorMessages = $this->request->getSession()->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
@@ -719,7 +728,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     protected function createUser(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
-         $currentUserIsAdminOrSubadmin = $this->currentUserIsAdminOrSubAdmin();
+        $currentUserIsAdminOrSubadmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!isset($reginfo) || empty($reginfo)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
@@ -757,10 +766,10 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $hasSaltedPassword = false;
                 $hasNoUsersAuthenticationPassword = true;
             } else {
-                $hasSaltedPassord = $hasPassword && (strpos($reginfo['pass'], UsersConstant::SALT_DELIM) != strrpos($reginfo['pass'], UsersConstant::SALT_DELIM));
+                $hasSaltedPassword = $hasPassword && (strpos($reginfo['pass'], UsersConstant::SALT_DELIM) != strrpos($reginfo['pass'], UsersConstant::SALT_DELIM));
                 $hasNoUsersAuthenticationPassword = false;
             }
-            if (!$hasPassword || (!$hasSaltedPassord && !$hasNoUsersAuthenticationPassword)) {
+            if (!$hasPassword || (!$hasSaltedPassword && !$hasNoUsersAuthenticationPassword)) {
                 $this->registerError(LogUtil::getErrorMsgArgs());
                 return false;
             }
@@ -781,13 +790,14 @@ class RegistrationApi extends \Zikula_AbstractApi
             if (isset($userObj['isverified'])) {
                 unset($userObj['isverified']);
             }
-            if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
-                unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
-            }
             if (isset($userObj['verificationsent'])) {
                 unset($userObj['verificationsent']);
             }
             $userObj = $this->cleanFieldsToAttributes($userObj);
+            
+            if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
+                unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
+            }
 
             $userObj['user_regdate'] = $nowUTCStr;
 
@@ -802,20 +812,31 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
             // activated state is set properly further below.
             $userObj['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
+            
+            // store user's attributes to a variable.
+            // we will persist them to the database after the user record is created
+            $attributes = $userObj['__ATTRIBUTES__'];
+            unset($userObj['__ATTRIBUTES__']);
+            
+            $user = new \Users\Entity\User;
+            $user->merge($userObj);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
+            // store attributes also
+            foreach ($attributes as $attr_key => $attr_value) {
+                $user->setAttribute($attr_key, $attr_value);
+            }
+            
             // NOTE: See below for the firing of the item-create hook.
-            $userObj = DBUtil::insertObject($userObj, 'users', 'uid');
+            $userObj = $user->toArray();
 
             if ($userObj) {
                 if (!$createdByAdminOrSubAdmin) {
                     // Current user is not admin, so moderation is off and user "self-approved" through the registration process
                     // We couldn't do this above because we didn't know the uid.
-                    $userUpdateObj = array(
-                        'uid'           => $userObj['uid'],
-                        'approved_by'   => $userObj['uid'],
-                    );
-                    // Use DBUtil so we don't get an update event. The create hasn't happened yet.
-                    DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
+                    $user['approved_by'] = $userObj['uid'];
+                    $this->entityManager->flush();
                 }
 
                 $reginfo['uid'] = $userObj['uid'];
@@ -834,21 +855,21 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             $reginfo['isapproved'] = true;
 
-            // Use ObjectUtil so we don't get an update event. (Create hasn't happened yet.);
-            ObjectUtil::deleteObjectSingleAttribute($reginfo['uid'], 'users', '_Users_isVerified');
+            // delete attribute from user without using UserUtil::delVar
+            // so that we don't get an update event. (Create hasn't happened yet.);
+            $user = $this->entityManager->find('Users\Entity\User', $reginfo['uid']);
+            $user->delAttribute('_Users_isVerified');
 
             // NOTE: See below for the firing of the item-create hook.
         }
 
         if ($userObj) {
-            // Set appropriate activated status. Again, use DBUtil so we don't get an update event. (Create hasn't happened yet.)
+            // Set appropriate activated status. Again, use Doctrine so we don't get an update event. (Create hasn't happened yet.)
             // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where
             // $reginfo was already in the database.
-            $userUpdateObj = array(
-                'uid'       => $userObj['uid'],
-                'activated' => UsersConstant::ACTIVATED_ACTIVE,
-            );
-            DBUtil::updateObject($userUpdateObj, 'users', '', 'uid');
+            $user = $this->entityManager->find('Users\Entity\User', $userObj['uid']);
+            $user['activated'] = UsersConstant::ACTIVATED_ACTIVE;
+            
             $userObj['activated'] = UsersConstant::ACTIVATED_ACTIVE;
 
             // Add user to default group
@@ -1035,10 +1056,8 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     protected function whereFromFilter(array $filter)
     {
-        $dbinfo = DBUtil::getTables();
-        $regColumn = $dbinfo['users_column'];
-
         $where = array();
+        
         foreach ($filter as $field => $value) {
             if (!is_array($value)) {
                 $value = array(
@@ -1048,18 +1067,10 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
 
             if (preg_match('/^IS (?:NOT )?NULL/i', $value['operator'])) {
-                $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']);
+                $where[] = 'u.' . $field . ' ' . strtoupper($value['operator']);
             } elseif (preg_match('/^(?:NOT )?IN/i', $value['operator'])) {
-                if (is_null($value['operand']) || (is_array($value['operand']) && empty($value['operand']))) {
-                    $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']) . ' ()';
-                } else {
-                    if (!is_array($value['operand'])) {
-                        $value['operand'] = array($value['operand']);
-                    }
-                    foreach ($value['operand'] as $key => $operandItem) {
-                        $value['operand'][$key] = preg_replace(array('/\\\'/', '/\\\\/'), array('\\\'', '\\\\'), $operandItem);
-                    }
-                    $where[] = $regColumn[$field] . ' ' . strtoupper($value['operator']) . " ('" . implode("', '", (is_array($value['operand'] ? $value['operand'] : array($value['operand'])))) . "')";
+                if (is_array($value['operand']) && !empty($value['operand'])) {
+                    $where[] = 'u.' . $field . ' ' . strtoupper($value['operator']) . " ('" . implode("', '", $value['operand']) . "')";
                 }
             } else {
                 if (is_bool($value['operand'])) {
@@ -1070,9 +1081,10 @@ class RegistrationApi extends \Zikula_AbstractApi
                     $dbValue = "'{$value['operand']}'";
                 }
 
-                $where[] = "({$regColumn[$field]} {$value['operator']} {$dbValue})";
+                $where[] = "u.{$field} {$value['operator']} {$dbValue}";
             }
         }
+        
         $where = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
 
         return $where;
@@ -1113,18 +1125,15 @@ class RegistrationApi extends \Zikula_AbstractApi
                 && ((int)$args['limitoffset'] == $args['limitoffset']) && ($args['limitoffset'] > 0)) {
             $limitOffset = $args['limitoffset'];
         } else {
-            $limitOffset = -1;
+            $limitOffset = null;
         }
 
         if (isset($args['limitnumrows']) && is_numeric($args['limitnumrows'])
                 && ((int)$args['limitnumrows'] == $args['limitnumrows']) && ($args['limitnumrows'] > 0)) {
             $limitNumRows = $args['limitnumrows'];
         } else {
-            $limitNumRows = -1;
+            $limitNumRows = null;
         }
-
-        $dbinfo = DBUtil::getTables();
-        $regColumn = $dbinfo['users_column'];
 
         $where = '';
         if (isset($args['filter'])) {
@@ -1132,51 +1141,60 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $this->registerError(LogUtil::getErrorMsgArgs());
                 return false;
             }
+            
             $args['filter']['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
             $where = $this->whereFromFilter(array('activated' => UsersConstant::ACTIVATED_PENDING_REG));
         }
-        if ($where === false) {
-            return false;
-        }
 
         if (!isset($args['orderby'])) {
-            $args['orderby'] = array(
-                'user_regdate' => 'DESC',
-            );
+            $args['orderby'] = array('user_regdate' => 'DESC');
         }
+        
         if (!is_array($args['orderby'])) {
             $this->registerError(LogUtil::getErrorMsgArgs());
             return false;
         }
+        
         $orderBy = array();
         foreach ($args['orderby'] as $field => $value) {
-            if (is_numeric($field)) {
-                $field = $value;
-                $value = '';
-            }
             $value = strtoupper($value);
-            if (!isset($regColumn[$field]) || (!empty($value) && ($value != 'ASC') && ($value != 'DESC'))) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-                return false;
-            }
-            $orderBy[] = $regColumn[$field] . (!empty($value) ? " {$value}" : '');
+            $orderBy[] = 'u.' . $field . (!empty($value) ? " {$value}" : '');
         }
         $orderBy = !empty($orderBy) ? 'ORDER BY ' . implode(', ', $orderBy) : '';
-
+        
         $this->purgeExpired();
-        $reglist = DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows);
-
-        if ($reglist === false) {
-            $this->registerError($this->__('Error! Could not load data.'));
-        } elseif (!empty($reglist)) {
-            // Fix 'zero dates' and blank dates
-            foreach ($reglist as $key => $userObj) {
-                $reglist[$key] = UserUtil::postProcessGetRegistration($userObj);
+        
+        $dql = "SELECT u FROM Users\Entity\User u $where $orderBy";
+        $query = $this->entityManager->createQuery($dql);
+        
+        if (isset($limitNumRows) && is_numeric($limitNumRows) && $limitNumRows > 0) {
+            $query->setMaxResults($limitNumRows);
+            
+            if (isset($limitOffset) && is_numeric($limitOffset) && $limitOffset > 0) {
+                $query->setFirstResult($limitOffset);
             }
         }
+        
+        $reglist = $query->getResult();
+        
+        foreach ($reglist as $key => $userObj) {
+            $userObj = $userObj->toArray();
+            
+            $attributes = array();
+            foreach ($userObj['attributes'] as $attribute) {
+                $attributes[$attribute['name']] = $attribute['value'];
+            }
+            
+            $userObj['__ATTRIBUTES__'] = $attributes;
+            unset($userObj['attributes']);
 
+            $reglist[$key] = $userObj;
+                
+            $reglist[$key] = UserUtil::postProcessGetRegistration($userObj);
+        }
+       
         return $reglist;
     }
 
@@ -1224,27 +1242,35 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (isset($isVerifiedFilter)) {
             // TODO - Can probably do this with a constructed SQL count select and join, but we'll do it this way for now.
-            if (!is_array($isVerifiedFilter)) {
-                $isVerifiedFilter = array(
-                    'operator'  => '=',
-                    'operand'   => $isVerifiedFilter,
-                );
-            }
-            // TODO - might want to error if the operator is not =, != or <>, or if the operand is not a boolean
-            $isVerifiedValue = ($isVerifiedFilter['operator'] == '=') && (bool)$isVerifiedFilter['operand'];
-
-            $users = DBUtil::selectObjectArray('users', $where, null, null, null, null, null, null, array('uid'));
+            $dql = "SELECT u FROM Users\Entity\User u $where";
+            $query = $this->entityManager->createQuery($dql);
+            $users = $query->getResult();
+           
             $count = 0;
             if ($users) {
+                if (!is_array($isVerifiedFilter)) {
+                    $isVerifiedFilter = array(
+                        'operator'  => '=',
+                        'operand'   => $isVerifiedFilter,
+                    );
+                }
+                
+                // TODO - might want to error if the operator is not =, != or <>, or if the operand is not a boolean
+                $isVerifiedValue = ($isVerifiedFilter['operator'] == '=') && (bool)$isVerifiedFilter['operand'];
+                
                 foreach ($users as $userRec) {
-                    if ($userRec['__ATTRIBUTES__']['_Users_isVerified'] == $isVerifiedValue) {
+                    if ($userRec['__ATTRIBUTES__']['_Users_isVerified'] == (int)$isVerifiedValue) {
                         $count++;
                     }
                 }
             }
+            
             return $count;
         } else {
-            return DBUtil::selectObjectCount('users', $where);
+            $dql = "SELECT COUNT(u.uid) FROM Users\Entity\User u $where";
+            $query = $this->entityManager->createQuery($dql);
+            $count = $query->getSingleScalarResult();
+            return $count;
         }
     }
 
@@ -1291,17 +1317,17 @@ class RegistrationApi extends \Zikula_AbstractApi
         $registration = UserUtil::getVars($uid, true, 'uid', true);
 
         if (isset($registration) && $registration) {
-            $deleted = DBUtil::deleteObjectByID('users', $uid, 'uid');
+            $user = $this->entityManager->find('Users\Entity\User', $uid);
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+            
+            ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
+                'uid' => $uid,
+                'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
+            ));
 
-            if ($deleted) {
-                ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-                    'uid'        => $uid,
-                    'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-                ));
-
-                $deleteEvent = new GenericEvent($registration);
-                $this->dispatcher->dispatch('user.registration.delete', $deleteEvent);
-            }
+            $deleteEvent = new GenericEvent($registration);
+            $this->dispatcher->dispatch('user.registration.delete', $deleteEvent);
         }
 
         return $deleted;
@@ -1314,33 +1340,37 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     protected function purgeExpired()
     {
-        $dbinfo = DBUtil::getTables();
-        $verifyChgColumn = $dbinfo['users_verifychg_column'];
-
         $regExpireDays = $this->getVar('reg_expiredays', 0);
+        
         if ($regExpireDays > 0) {
             // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
             $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$regExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-
-            // The zero date is there to guard against odd DB errors
-            $where = "WHERE ({$verifyChgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL .") "
-                    . "AND ({$verifyChgColumn['created_dt']} IS NOT NULL) "
-                    . "AND ({$verifyChgColumn['created_dt']} != '0000-00-00 00:00:00') "
-                    . "AND ({$verifyChgColumn['created_dt']} < '{$staleRecordUTCStr}')";
-
-            $staleVerifyChgRecs = DBUtil::selectObjectArray('users_verifychg', $where);
+            
+            $dql = "
+            SELECT v
+            FROM Users\Entity\UserVerification v
+            WHERE v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL . "
+              AND v.created_dt IS NOT NULL 
+              AND v.created_dt <> '0000-00-00 00:00:00' 
+              AND v.created_dt < '{$staleRecordUTCStr}'";
+            
+            $query = $this->entityManager->createQuery($dql);
+            $staleVerifyChgRecs = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
             if (is_array($staleVerifyChgRecs) && !empty($staleVerifyChgRecs)) {
                 foreach ($staleVerifyChgRecs as $verifyChg) {
+                    // get user's record
                     $registration = UserUtil::getVars($verifyChg['uid'], true, 'uid', true);
 
-                    DBUtil::deleteObjectByID('users', $verifyChg['uid'], 'uid');
-                    ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-                        'uid'       => $verifyChg['uid'],
-                        'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-                    ));
+                    // delete user record
+                    $dql = "DELETE FROM Users\Entity\User u WHERE u.uid = " . $verifyChg['uid'];
+                    $query = $this->entityManager->createQuery($dql);
+                    $query->getResult();
+                    
+                    // delete verification record
+                    ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $verifyChg['uid'], 'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL));
 
                     $deleteEvent = new GenericEvent($registration);
                     $this->dispatcher->dispatch('user.registration.delete', $deleteEvent);
@@ -1433,23 +1463,18 @@ class RegistrationApi extends \Zikula_AbstractApi
         $verificationCode = UserUtil::generatePassword();
 
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-            'uid'       => $reginfo['uid'],
+            'uid' => $reginfo['uid'],
             'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ));
 
-        $verifyChgObj = array(
-            'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
-            'uid'       => $reginfo['uid'],
-            'newemail'  => $reginfo['email'],
-            'verifycode'=> UserUtil::getHashedPassword($verificationCode),
-            'created_dt'=> $nowUTC->format(UsersConstant::DATETIME_FORMAT),
-        );
-        $verifyChgObj = DBUtil::insertObject($verifyChgObj, 'users_verifychg');
-
-        if (!$verifyChgObj) {
-            $this->registerError($this->__f('Error! Unable to save the verification code for the registration for \'%1$s\'.', $reginfo['uname']));
-            return false;
-        }
+        $verifyChgObj = new \Users\Entity\UserVerification;
+        $verifyChgObj['changetype'] = UsersConstant::VERIFYCHGTYPE_REGEMAIL;
+        $verifyChgObj['uid'] = $reginfo['uid'];
+        $verifyChgObj['newemail'] = $reginfo['email'];
+        $verifyChgObj['verifycode'] = UserUtil::getHashedPassword($verificationCode);
+        $verifyChgObj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
+        $this->entityManager->persist($verifyChgObj);
+        $this->entityManager->flush();
 
         if (empty($rendererArgs)) {
             $siteurl   = System::getBaseUrl();
@@ -1471,7 +1496,8 @@ class RegistrationApi extends \Zikula_AbstractApi
         if ($codeSent) {
             return $verifyChgObj['created_dt'];
         } else {
-            DBUtil::deleteObject($verifyChgObj, 'users_verifychg');
+            $this->entityManager->remove($verifyChgObj);
+            $this->entityManager->flush();
             return false;
         }
     }
@@ -1502,20 +1528,8 @@ class RegistrationApi extends \Zikula_AbstractApi
             $this->registerError(LogUtil::getErrorMsgArgs());
             return false;
         }
-
-        $dbinfo = DBUtil::getTables();
-        $verifyChgColumn = $dbinfo['users_verifychg_column'];
-        $where = "WHERE ({$verifyChgColumn['uid']} = {$args['uid']}) AND ({$verifyChgColumn['changetype']} = "
-            . UsersConstant::VERIFYCHGTYPE_REGEMAIL . ")";
-        $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
-        if (($verifyChgList === false) || !is_array($verifyChgList)) {
-            $verifyChg = false;
-        } elseif (!empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
-            $verifyChg = $verifyChgList[0];
-        } else {
-            $verifyChg = array();
-        }
-
+        
+        $verifyChg = $this->entityManager->getRepository('Users\Entity\UserVerification')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
         return $verifyChg;
     }
 
@@ -1557,9 +1571,10 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
         }
 
-        UserUtil::setVar('_Users_isVerified', true, $reginfo['uid']);
+        UserUtil::setVar('_Users_isVerified', 1, $reginfo['uid']);
+        
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
-            'uid'       => $reginfo['uid'],
+            'uid' => $reginfo['uid'],
             'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ));
 

@@ -294,8 +294,12 @@ class RandomUtil
      */
     public static function getUserID()
     {
-        $fa = DBUtil::selectFieldArray('users', 'uid');
-        $pos = self::getInteger(0, count($fa));
-        return $fa[$pos];
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $dql = "SELECT u.uid FROM Users\Entity\User u";
+        $query = $em->createQuery($dql);
+        $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        
+        $pos = self::getInteger(0, count($users));
+        return $users[$pos];
     }
 }
