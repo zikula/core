@@ -20,14 +20,28 @@ Regularly run composer also to make sure dependencies are up to date.
 
 ## Manual installation process
 
-Please use the `docs/installation.sql` file to manually install the database.
-The administrative login is "Admin" and "zikula1"
-
-You must specify the database credentials in `app/config/database.yml`.
+  - Install the database manually from `docs/installation.sql`
+    The username and password are `admin` / `zikula1`
+  - Configuring the database settings in `app/config/database.yml`
+  - Install vendors with `php composer.phar install`
+  - Copy assets to web directory `app/console assets:install`
 
 ## Change Guide
 
 Please see the [upgrading 1.4 guide](https://github.com/zikula/core/blob/master/docs/UPGRADING-1.4.md)
+
+## Features
+
+The process of switching to Symfony2 requires some temporary refactoring of legacy code
+in order to keep things running. In some cases it means removing features because
+they will need to be rewritten or handles differently.
+
+Things which will completely change:
+
+  - Translation
+  - Templating (to Twig and assetic)
+  - Javascript framework, based on jQuery 1.7+ with no prototype support
+  - CSS (to Twitter Bootstrap 2.0.2)
 
 ## License
 
