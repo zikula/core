@@ -254,7 +254,7 @@ class AdminController extends \Zikula_AbstractController
      * @param int $args['acid'] the id of the category to be displayed
      * @return string HTML string
      */
-    public function adminpanelAction($args)
+    public function adminpanelAction()
     {
         if (!\SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.

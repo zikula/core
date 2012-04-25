@@ -16,6 +16,6 @@ namespace ExtensionsModule;
 
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 
-class ExtensionsModule extends AbstractModule
+class ZikulaExtensionsModule extends AbstractModule
 {
 }

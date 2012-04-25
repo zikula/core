@@ -14,13 +14,15 @@
  */
 
 namespace Zikula\Framework;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use \Zikula\Common\I18n\TranslatableInterface;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
  */
-abstract class AbstractBase implements TranslatableInterface
+abstract class AbstractBase implements TranslatableInterface, ContainerAwareInterface
 {
     /**
      * Base path of module.
@@ -111,7 +113,23 @@ abstract class AbstractBase implements TranslatableInterface
      *
      * @param ContainerBuilder $container ContainerBuilder instance.
      */
-    public function __construct(ContainerBuilder $container)
+    public function __construct(ContainerBuilder $container = null)
+    {
+        if (null !== $container) {
+            $this->container = $container;
+            $this->dispatcher = $this->container->get('event_dispatcher');
+
+            $this->request = $this->container->get('request');
+            $this->session = $this->request->getSession();
+            $this->entityManager = $this->container->get('doctrine')->getEntityManager();
+        }
+
+        $this->_configureBase();
+        $this->initialize();
+        $this->postInitialize();
+    }
+
+    public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
         $this->dispatcher = $this->container->get('event_dispatcher');
@@ -119,10 +137,6 @@ abstract class AbstractBase implements TranslatableInterface
         $this->request = $this->container->get('request');
         $this->session = $this->request->getSession();
         $this->entityManager = $this->container->get('doctrine')->getEntityManager();
-
-        $this->_configureBase();
-        $this->initialize();
-        $this->postInitialize();
     }
 
     /**

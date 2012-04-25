@@ -143,7 +143,10 @@ class SystemListener implements EventSubscriberInterface
             $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
             $request->attributes->set('_module', $module);
-            $request->attributes->set('_controller', $controller);
+            if (isset($GLOBALS['__z_old_frontcontroller__'])) {
+                //$request->attributes->set('_controller', $controller);
+            }
+
             $request->attributes->set('_action', $action);
             $request->setLocale(ZLanguage::getLanguageCode());
 

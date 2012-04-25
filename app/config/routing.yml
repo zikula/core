@@ -1,4 +1,35 @@
 # Internal routing configuration to handle ESI
 _internal:
-   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-   prefix:   /_internal
+    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+    prefix:   /_internal
+
+_welcome:
+    pattern:  /welcome
+    defaults: { _controller: ZikulaThemeBundle:Default:welcome }
+
+_foo:
+    pattern:  /foo
+    defaults: { _controller: ZikulaSettingsModule:Admin:index }
+
+# routes of zikula themes bundle
+ZikulaThemeBundle:
+    resource: "@ZikulaThemeBundle/Controller/DefaultController.php"
+    type:     annotation
+    prefix:   /
+
+# routes of zikula modules bundle
+ZikulaModuleBundle:
+    resource: "@ZikulaModuleBundle/Controller/DefaultController.php"
+    type:     annotation
+    prefix:   /
+
+# standard wildcard routing
+Zk13CatchAll:
+    pattern: /{module}/{type}/{action}
+    defaults: {_controller: ZikulaModuleBundle:Legacy:reroute}
+
+# meta route to trigger inclusion of module routes
+#ZikulaModuleRoutes:
+#    resource: "@ZikulaModuleBundle"
+#    type:     zikulaModules
+#    prefix:   /

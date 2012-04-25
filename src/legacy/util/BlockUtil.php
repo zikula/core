@@ -70,7 +70,7 @@ class BlockUtil
 
         if (!isset($customargs)) {
             $customargs = array();
-            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid', 'csrftoken');
+            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'csrftoken');
             foreach ($_GET as $var => $value) {
                 if (is_array($value)) {
                     $arguments = explode('&', urldecode(http_build_query(array($var => $value))));

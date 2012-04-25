@@ -1,5 +1,5 @@
 <?php
-
+/* @var Composer\Autoload\ClassLoader $loader */
 if (!$loader = include __DIR__.'/../vendor/autoload.php') {
     $nl = PHP_SAPI === 'cli' ? PHP_EOL : '<br />';
     echo "$nl$nl";
@@ -37,12 +37,26 @@ AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 require_once __DIR__.'/../vendor/hard/Smarty/Smarty.class.php';
 require_once __DIR__.'/../src/legacy/i18n/ZGettextFunctions.php';
 
-$autoloader = new \Symfony\Component\ClassLoader\UniversalClassLoader();
-$autoloader->register();
-$autoloader->registerNamespace('Zikula', __DIR__.'/../src');
-$autoloader->registerPrefix('Zikula_', __DIR__.'/../src/legacy');
-$autoloader->registerPrefix('Categories_', __DIR__.'/../web/system/Categories/lib');
-$autoloader->registerPrefix('Zend_', __DIR__. '/../vendor/hard');
+$loader->add('Zikula_', __DIR__.'/../src/legacy');
+$loader->add('Zikula', __DIR__.'/../src');
+$loader->add('Zend_', __DIR__. '/../vendor/hard');
+$loader->add('AdminModule', __DIR__. '/../web/system');
+$loader->add('BlocksModule', __DIR__. '/../web/system');
+$loader->add('CategoriesModule', __DIR__. '/../web/system');
+$loader->add('ErrorsModule', __DIR__. '/../web/system');
+$loader->add('ExtensionsModule', __DIR__. '/../web/system');
+$loader->add('GroupsModule', __DIR__. '/../web/system');
+$loader->add('MailerModule', __DIR__. '/../web/system');
+$loader->add('PageLockModule', __DIR__. '/../web/system');
+$loader->add('PermissionsModule', __DIR__. '/../web/system');
+$loader->add('SearchModule', __DIR__. '/../web/system');
+$loader->add('SecurityCenterModule', __DIR__. '/../web/system');
+$loader->add('SettingsModule', __DIR__. '/../web/system');
+$loader->add('ThemeModule', __DIR__. '/../web/system');
+$loader->add('UsersModule', __DIR__. '/../web/system');
+
+require_once __DIR__.'/../src/Zikula/Bundle/CoreBundle/Resources/stubs/ZikulaAutoload.php';
+ZikulaAutoload::initialize($loader);
 
 if (file_exists(__DIR__.'bootstrap.php.cache')) {
     include __DIR__.'bootstrap.php.cache';

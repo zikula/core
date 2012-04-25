@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace PageLockModule;
+namespace CategoriesModule;
 
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 
-class PageLockModule extends AbstractModule
+class ZikulaCategoriesModule extends AbstractModule
 {
 }

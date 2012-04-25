@@ -35,7 +35,7 @@ class CoreExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
 //        $loader->load('services.xml');
-        $loader->load('web.xml');
+//        $loader->load('web.xml');
         $loader->load('core.xml');
 //        $loader->load('annotations.xml');
 

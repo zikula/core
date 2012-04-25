@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace SearchModule;
+namespace BlocksModule;
 
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 
-class SearchModule extends AbstractModule
+class ZikulaBlocksModule extends AbstractModule
 {
 }

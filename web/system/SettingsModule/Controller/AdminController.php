@@ -25,6 +25,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function indexAction()
     {
+        return $this->response('helloo85948753984759345');
         // Security check will be done in modifyconfig()
         return $this->redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'));
     }

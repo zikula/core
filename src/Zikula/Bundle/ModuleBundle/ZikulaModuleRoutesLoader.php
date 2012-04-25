@@ -22,7 +22,7 @@ class ZikulaModuleRoutesLoader extends Loader
         $collection = new RouteCollection();
 
         /* @var AbstractModule $moduleBundle */
-        foreach ($this->zikulaKernel->getZiklaBundlesOfType(ZikulaKernel::TYPE_MODULES) as $moduleBundle) {
+        foreach ($this->zikulaKernel->getZikulaBundlesOfType(ZikulaKernel::TYPE_MODULES) as $moduleBundle) {
             $resource = '@'.$moduleBundle->getName().'/Controller/';
             $subCollection = $this->resolve($resource)->load($resource, 'annotation');
             $collection->addCollection($subCollection, '/'.str_replace('Module', '', $moduleBundle->getName()).'/');

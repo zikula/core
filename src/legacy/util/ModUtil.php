@@ -584,6 +584,7 @@ class ModUtil
         if (file_exists($file) && include $file) {
             // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
+            $data = array();
             if (function_exists($tablefunc)) {
                 $data = call_user_func($tablefunc);
             }
@@ -1058,8 +1059,12 @@ class ModUtil
         if (isset($modinfo['url']) && !empty($modinfo['url'])) {
             $modname = rawurlencode($modinfo['url']);
         }
-
         $entrypoint = System::getVar('entrypoint');
+
+        $request = ServiceUtil::getManager()->get('request');
+        /* @var \Symfony\Component\HttpFoundation\Request $request */
+        $basePath = $request->getBasePath();
+
         $host = System::serverGetVar('HTTP_HOST');
 
         if (empty($host)) {
@@ -1166,14 +1171,17 @@ class ModUtil
             }
         } else {
             // Regular stuff
-            $urlargs = "module=$modname&type=$type&func=$func";
+//            $urlargs = "module=$modname&type=$type&func=$func";
+            $urlargs = "/$modname/$type/$func?";
 
             // add lang param to URL
             if (ZLanguage::isRequiredLangParam() || $forcelang) {
-                $urlargs .= "&lang=$language";
+//                $urlargs .= "&lang=$language";
+                $urlargs .= "lang=$language";
             }
 
-            $url = "$entrypoint?$urlargs";
+//            $url = "$entrypoint?$urlargs";
+            $url = "{$basePath}$urlargs";
 
             if (!is_array($args)) {
                 return false;

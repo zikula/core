@@ -24,6 +24,21 @@ class AppKernel extends Kernel
 //            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Zikula\Bundle\ModuleBundle\ZikulaModuleBundle(),
             new Zikula\Bundle\ThemeBundle\ZikulaThemeBundle(),
+            new AdminModule\ZikulaAdminModule(),
+            new BlocksModule\ZikulaBlocksModule(),
+            new CategoriesModule\ZikulaCategoriesModule(),
+            new ErrorsModule\ZikulaErrorsModule(),
+            new ExtensionsModule\ZikulaExtensionsModule(),
+            new GroupsModule\ZikulaGroupsModule(),
+            new MailerModule\ZikulaMailerModule(),
+            new PageLockModule\ZikulaPageLockModule(),
+            new PermissionsModule\ZikulaPermissionsModule(),
+            new SearchModule\ZikulaSearchModule(),
+            new SecurityCenterModule\ZikulaSecurityCenterModule(),
+            new SettingsModule\ZikulaSettingsModule(),
+            new ThemeModule\ZikulaThemeModule(),
+            new UsersModule\ZikulaUsersModule(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

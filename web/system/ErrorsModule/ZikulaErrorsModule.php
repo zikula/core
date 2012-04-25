@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace AdminModule;
+namespace ErrorsModule;
 
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 
-class AdminModule extends AbstractModule
+class ZikulaErrorsModule extends AbstractModule
 {
 }

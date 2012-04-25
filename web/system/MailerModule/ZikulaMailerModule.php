@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace PermissionsModule;
+namespace MailerModule;
 
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 
-class PermissionsModule extends AbstractModule
+class ZikulaMailerModule extends AbstractModule
 {
 }

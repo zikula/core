@@ -37,7 +37,7 @@ abstract class ZikulaKernel extends Kernel
         }
     }
 
-    public function getZiklaBundlesOfType($type)
+    public function getZikulaBundlesOfType($type)
     {
         return $this->zikulaBundles[$type];
     }

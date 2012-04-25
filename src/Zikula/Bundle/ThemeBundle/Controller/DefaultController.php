@@ -10,6 +10,6 @@ class DefaultController extends Controller
 {
     public function welcomeAction()
     {
-        return $this->render('ZikulaThemesBundle:Default:welcome.html.twig');
+        return $this->render('ZikulaThemeBundle:Default:welcome.html.twig');
     }
 }

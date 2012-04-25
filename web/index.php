@@ -12,6 +12,7 @@
  * information regarding copyright and licensing.
  */
 
+//$GLOBALS['__z_old_frontcontroller__'] = true;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 

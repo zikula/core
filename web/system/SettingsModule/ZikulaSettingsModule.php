@@ -12,10 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-namespace ThemeModule;
+namespace SettingsModule;
 
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 
-class ThemeModule extends AbstractModule
+class ZikulaSettingsModule extends AbstractModule
 {
 }
