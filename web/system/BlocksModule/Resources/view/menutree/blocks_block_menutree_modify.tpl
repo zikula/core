@@ -1,6 +1,6 @@
 {ajaxheader modname="blocksModule" ui=true}
-{pageaddvar name="javascript" value="system/Blocks/Resources/public/javascript/functions.js"}
-{pageaddvar name="javascript" value="system/Blocks/Resources/public/javascript/contextmenu.js"}
+{pageaddvar name="javascript" value="system/Blocks/Resources/public/js/functions.js"}
+{pageaddvar name="javascript" value="system/Blocks/Resources/public/js/contextmenu.js"}
 {pageaddvar name="stylesheet" value="system/Blocks/Resources/public/css/menutree/adminstyle.css"}
 {pageaddvar name="stylesheet" value="system/Blocks/Resources/public/css/menutree/contextmenu.css"}
 

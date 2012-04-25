@@ -31,9 +31,6 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
 
-        $bundles = $this->registerModuleBundles($bundles);
-        $bundles = $this->registerModuleBundles($bundles);
-
         return $bundles;
     }
 

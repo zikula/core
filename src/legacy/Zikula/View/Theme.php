@@ -571,7 +571,7 @@ class Zikula_View_Theme extends Zikula_View
         $this->imagepath     = $this->themepath . '/Resources/public/images';
         $this->imagelangpath = $this->themepath . '/Resources/public/images/' . $this->language;
         $this->stylepath     = $this->themepath . '/Resources/public/css';
-        $this->scriptpath    = $this->themepath . '/Resources/public/javascript';
+        $this->scriptpath    = $this->themepath . '/Resources/public/js';
 
         // make the base vars available to all templates
         $this->assign('module', $this->toplevelmodule)
