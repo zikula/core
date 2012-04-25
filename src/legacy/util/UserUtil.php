@@ -53,7 +53,7 @@ class UserUtil
     public static function getUsers($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
         $em = \ServiceUtil::get('doctrine')->getManager();
-        $users = $em->getRepository('Users\Entity\User')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $users = $em->getRepository('UsersModule\Entity\User')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($users as $user) {
@@ -959,7 +959,7 @@ class UserUtil
         $em = \ServiceUtil::get('doctrine')->getManager();
         
         // count of uname appearances in users table
-        $dql = "SELECT count(u.uid) FROM Users\Entity\User u WHERE u.uname = '{$uname}'";
+        $dql = "SELECT count(u.uid) FROM UsersModule\Entity\User u WHERE u.uname = '{$uname}'";
         if ($excludeUid > 1) {
             $dql .= " AND u.uid <> {$excludeUid}";
         }
@@ -990,7 +990,7 @@ class UserUtil
         $em = \ServiceUtil::get('doctrine')->getManager();
 
         // count of email appearances in users table
-        $dql = "SELECT COUNT(u.uid) FROM Users\Entity\User u WHERE u.email = '{$emailAddress}'";
+        $dql = "SELECT COUNT(u.uid) FROM UsersModule\Entity\User u WHERE u.email = '{$emailAddress}'";
         if ($excludeUid > 1) {
             $dql .= " AND u.uid <> {$excludeUid}";
         }
@@ -999,7 +999,7 @@ class UserUtil
         $ucount = (int)$query->getSingleScalarResult();
 
         // count of email appearances in users verification table
-        $dql = "SELECT COUNT(v.id) FROM Users\Entity\UserVerification v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $dql = "SELECT COUNT(v.id) FROM UsersModule\Entity\UserVerification v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
         if ($excludeUid > 1) {
             $dql .= " AND v.uid <> {$excludeUid}";
         }
@@ -1031,7 +1031,7 @@ class UserUtil
 
             // Get verificationsent from the users_verifychg table
             $em = \ServiceUtil::get('doctrine')->getManager();
-            $dql = "SELECT v FROM Users\Entity\UserVerification v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
+            $dql = "SELECT v FROM UsersModule\Entity\UserVerification v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
             $query = $em->createQuery($dql);
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
@@ -1110,7 +1110,7 @@ class UserUtil
 
         if (!isset($user) || $force) {
             $em = \ServiceUtil::get('doctrine')->getManager();
-            $user = $em->getRepository('Users\Entity\User')->findOneBy(array($idfield => $id));
+            $user = $em->getRepository('UsersModule\Entity\User')->findOneBy(array($idfield => $id));
 
             if ($user) {
                 $user = $user->toArray();
@@ -1333,7 +1333,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine')->getManager();
-            $user = $em->getRepository('Users\Entity\User')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('UsersModule\Entity\User')->findOneBy(array('uid' => $uid));
 
             // check if var to set belongs to table or it's an attribute
             if (self::fieldAlias($name)) {
@@ -1683,7 +1683,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine')->getManager();
-            $user = $em->getRepository('Users\Entity\User')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('UsersModule\Entity\User')->findOneBy(array('uid' => $uid));
             
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
@@ -1861,7 +1861,7 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
-        $user = new \Users\Entity\User;
+        $user = new \UsersModule\Entity\User;
         
         if (empty($where)) {
             $whereFragments = array();
@@ -1894,7 +1894,7 @@ class UserUtil
         }
         
         $em = \ServiceUtil::get('doctrine')->getManager();
-        $dql = "SELECT u FROM Users\Entity\User u $where $orderby $limit_clause";
+        $dql = "SELECT u FROM UsersModule\Entity\User u $where $orderby $limit_clause";
         $query = $em->createQuery($dql);
         
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -1960,7 +1960,7 @@ class UserUtil
 
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
-            $userObj = new \Users\Entity\User;
+            $userObj = new \UsersModule\Entity\User;
             $isFieldAlias = isset($userObj[$label]) ? true : false;
         }
 

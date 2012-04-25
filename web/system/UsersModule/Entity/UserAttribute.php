@@ -12,7 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Entity;
+namespace UsersModule\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -59,7 +60,7 @@ class UserAttribute extends EntityAccess
     /**
      * get the user item
      *
-     * @return Users\Entity\User the user item
+     * @return UsersModule\Entity\User the user item
      */
     public function getUser()
     {
@@ -69,7 +70,7 @@ class UserAttribute extends EntityAccess
     /**
      * set the user item
      *
-     * @param Users\Entity\User $user the user item
+     * @param UsersModule\Entity\User $user the user item
      */
     public function setUser($user)
     {

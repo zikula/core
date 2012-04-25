@@ -50,7 +50,7 @@ class UserApi extends \Zikula_AbstractApi
         
         // add select and from params 
         $qb->select('u')
-           ->from('Users\Entity\User', 'u');
+           ->from('UsersModule\Entity\User', 'u');
         
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
@@ -155,7 +155,7 @@ class UserApi extends \Zikula_AbstractApi
         
         // add select and from params 
         $qb->select('count(u.uid)')
-           ->from('Users\Entity\User', 'u');
+           ->from('UsersModule\Entity\User', 'u');
         
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
@@ -287,7 +287,7 @@ class UserApi extends \Zikula_AbstractApi
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         if ($args['idfield'] == 'email') {
-            $dql = "SELECT count(u.uid) FROM Users\Entity\User u WHERE u.email = '{$args['id']}'";
+            $dql = "SELECT count(u.uid) FROM UsersModule\Entity\User u WHERE u.email = '{$args['id']}'";
             $query = $this->entityManager->createQuery($dql);
             $ucount = (int)$query->getSingleScalarResult();
 
@@ -372,13 +372,13 @@ class UserApi extends \Zikula_AbstractApi
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($hashedConfirmationCode !== false) {
-                $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
 
                 $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
-                $codeSaved = new \Users\Entity\UserVerification;
+                $codeSaved = new \UsersModule\Entity\UserVerification;
                 $codeSaved['changetype'] = UsersConstant::VERIFYCHGTYPE_PWD;
                 $codeSaved['uid'] = $user['uid'];
                 $codeSaved['newemail'] = '';
@@ -465,12 +465,12 @@ class UserApi extends \Zikula_AbstractApi
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
                 
-                $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
             }
             
-            $verifychgObj = $this->entityManager->getRepository('Users\Entity\UserVerification')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
+            $verifychgObj = $this->entityManager->getRepository('UsersModule\Entity\UserVerification')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
             } else {
@@ -568,11 +568,11 @@ class UserApi extends \Zikula_AbstractApi
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
         
-        $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.uid = " . $uid . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.uid = " . $uid . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
-        $obj = new \Users\Entity\UserVerification;
+        $obj = new \UsersModule\Entity\UserVerification;
         $obj['changetype'] = UsersConstant::VERIFYCHGTYPE_EMAIL;
         $obj['uid'] = $uid;
         $obj['newemail'] = DataUtil::formatForStore($args['newemail']);
@@ -629,14 +629,14 @@ class UserApi extends \Zikula_AbstractApi
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
             
-            $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+            $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
             $query = $this->entityManager->createQuery($dql);
             $query->getResult();
         }
 
         $uid = UserUtil::getVar('uid');
         
-        $item = $this->entityManager->getRepository('Users\Entity\UserVerification')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
+        $item = $this->entityManager->getRepository('UsersModule\Entity\UserVerification')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
 
         return $item;
     }
@@ -687,7 +687,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.uid = " . $uid;
+        $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.uid = " . $uid;
         if (isset($changeType)) {
             $dql .= " AND v.changetype IN (" . implode(', ', $changeType) . ")";
         }
