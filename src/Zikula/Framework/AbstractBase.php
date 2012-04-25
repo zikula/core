@@ -116,17 +116,8 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
     public function __construct(ContainerBuilder $container = null)
     {
         if (null !== $container) {
-            $this->container = $container;
-            $this->dispatcher = $this->container->get('event_dispatcher');
-
-            $this->request = $this->container->get('request');
-            $this->session = $this->request->getSession();
-            $this->entityManager = $this->container->get('doctrine')->getEntityManager();
+            $this->setContainer($container);
         }
-
-        $this->_configureBase();
-        $this->initialize();
-        $this->postInitialize();
     }
 
     public function setContainer(ContainerInterface $container = null)
@@ -137,6 +128,9 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
         $this->request = $this->container->get('request');
         $this->session = $this->request->getSession();
         $this->entityManager = $this->container->get('doctrine')->getEntityManager();
+        $this->_configureBase();
+        $this->initialize();
+        $this->postInitialize();
     }
 
     /**
