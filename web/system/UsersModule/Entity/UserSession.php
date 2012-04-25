@@ -12,7 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Entity;
+namespace UsersModule\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 

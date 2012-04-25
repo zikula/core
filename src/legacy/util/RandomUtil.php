@@ -281,7 +281,7 @@ class RandomUtil
     public static function getUserID()
     {
         $em = \ServiceUtil::get('doctrine')->getManager();
-        $dql = "SELECT u.uid FROM Users\Entity\User u";
+        $dql = "SELECT u.uid FROM UsersModule\Entity\User u";
         $query = $em->createQuery($dql);
         $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         

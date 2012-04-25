@@ -113,7 +113,7 @@ class AdminApi extends \Zikula_AbstractApi
         
         $where = 'WHERE ' . implode(' AND ', $where);
 
-        $dql = "SELECT u FROM Users\Entity\User u $where ORDER BY u.uname ASC";
+        $dql = "SELECT u FROM UsersModule\Entity\User u $where ORDER BY u.uname ASC";
         $query = $this->entityManager->createQuery($dql);
         $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
@@ -193,12 +193,12 @@ class AdminApi extends \Zikula_AbstractApi
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
                 
                 // delete session
-                $dql = "DELETE FROM Users\Entity\User u WHERE u.uid = {$userObj['uid']}";
+                $dql = "DELETE FROM UsersModule\Entity\User u WHERE u.uid = {$userObj['uid']}";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
                 
                 // delete user
-                $user = $this->entityManager->find('Users\Entity\User', $userObj['uid']);
+                $user = $this->entityManager->find('UsersModule\Entity\User', $userObj['uid']);
                 $this->entityManager->remove($user);
                 $this->entityManager->flush();
 
@@ -408,7 +408,7 @@ class AdminApi extends \Zikula_AbstractApi
         $valuesArray = $args['valuesarray'];
         $key = $args['key'];
         
-        $dql = "SELECT u FROM Users\Entity\User u WHERE u.$key IN ('" . implode("', '", $valuesArray) . "')";
+        $dql = "SELECT u FROM UsersModule\Entity\User u WHERE u.$key IN ('" . implode("', '", $valuesArray) . "')";
         $query = $this->entityManager->createQuery($dql);
         $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         
@@ -462,7 +462,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // create users
         foreach ($importValuesDB as $importValueDB) {
-            $user = new Users\Entity\User;
+            $user = new UsersModule\Entity\User;
             $user->merge($importValueDB);
             $this->entityManager->persist($user);
         }

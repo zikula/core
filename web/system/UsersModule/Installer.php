@@ -37,10 +37,10 @@ class Installer extends \Zikula_AbstractInstaller
     {
         // create the tables
         $classes = array(
-            'Users\Entity\User',
-            'Users\Entity\UserAttribute',
-            'Users\Entity\UserSession',
-            'Users\Entity\UserVerification'
+            'UsersModule\Entity\User',
+            'UsersModule\Entity\UserAttribute',
+            'UsersModule\Entity\UserSession',
+            'UsersModule\Entity\UserVerification'
         );
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
@@ -155,7 +155,7 @@ class Installer extends \Zikula_AbstractInstaller
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
-                DoctrineHelper::createSchema($this->entityManager, array('Users\Entity\UserAttribute'));
+                DoctrineHelper::createSchema($this->entityManager, array('UsersModule\Entity\UserAttribute'));
             case '2.2.1':
                 // This is the current version: add 2.2.1 --> next when appropriate
         }
@@ -272,7 +272,7 @@ class Installer extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        $user = new \Users\Entity\User;
+        $user = new \UsersModule\Entity\User;
         $user->merge($record);
         $this->entityManager->persist($user);
 
@@ -292,7 +292,7 @@ class Installer extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        $user = new \Users\Entity\User;
+        $user = new \UsersModule\Entity\User;
         $user->merge($record);
         $this->entityManager->persist($user);
         

@@ -318,7 +318,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     public function read($sessionId)
     {
         $em = \ServiceUtil::get('doctrine')->getManager();
-        $session = $em->find('Users\Entity\UserSession', $sessionId);
+        $session = $em->find('UsersModule\Entity\UserSession', $sessionId);
         
         if ($session) {
             $session = $session->toArray();
@@ -351,17 +351,17 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         $em = \ServiceUtil::get('doctrine')->getManager();
 
         if ($this->isNew) {
-            $session = new \Users\Entity\UserSession;
+            $session = new \UsersModule\Entity\UserSession;
             $session->merge($obj);
             $em->persist($session);
             $this->isNew = false;
         } else {
             // check for regenerated session and update ID in database
             if ($this->isRegenerated) {
-                $session = $em->find('Users\Entity\UserSession', $this->previousId);
+                $session = $em->find('UsersModule\Entity\UserSession', $this->previousId);
                 $session->merge($obj);
             } else {
-                $session = $em->find('Users\Entity\UserSession', $sessionId);
+                $session = $em->find('UsersModule\Entity\UserSession', $sessionId);
                 $session->merge($obj);
             }
         }
@@ -377,7 +377,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     public function destroy($sessionId)
     {
         $em = \ServiceUtil::get('doctrine')->getManager();
-        $dql = "DELETE FROM Users\Entity\UserSession s WHERE s.sessid = '{$sessionId}'";
+        $dql = "DELETE FROM UsersModule\Entity\UserSession s WHERE s.sessid = '{$sessionId}'";
         $query = $em->createQuery($dql);
         $query->getResult();
         return true;
@@ -428,7 +428,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         }
         
         $em = \ServiceUtil::get('doctrine')->getManager();
-        $dql = "DELETE FROM Users\Entity\UserSession s $where";
+        $dql = "DELETE FROM UsersModule\Entity\UserSession s $where";
         $query = $em->createQuery($dql);
         $query->getResult();
 

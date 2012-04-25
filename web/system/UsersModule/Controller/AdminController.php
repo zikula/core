@@ -621,7 +621,7 @@ class AdminController extends \Zikula_AbstractController
                 if ($originalUser['uname'] != $user['uname']) {
                     // UserUtil::setVar does not allow uname to be changed.
                     // UserUtil::setVar('uname', $user['uname'], $originalUser['uid']);
-                    $updatedUserObj = $this->entityManager->find('Users\Entity\User', $originalUser['uid']);
+                    $updatedUserObj = $this->entityManager->find('UsersModule\Entity\User', $originalUser['uid']);
                     $updatedUserObj['uname'] = $user['uname'];
                     $this->entityManager->flush();
                     
@@ -1393,7 +1393,7 @@ class AdminController extends \Zikula_AbstractController
                 if ($originalRegistration['uname'] != $registration['uname']) {
                     // UserUtil::setVar does not allow uname to be changed.
                     // UserUtil::setVar('uname', $registration['uname'], $originalRegistration['uid']);
-                    $updatedRegistrationObj = $this->entityManager->find('Users\Entity\User', $originalRegistration['uid']);
+                    $updatedRegistrationObj = $this->entityManager->find('UsersModule\Entity\User', $originalRegistration['uid']);
                     $updatedRegistrationObj['uname'] = $registration['uname'];
                     $this->entityManager->flush();
                     

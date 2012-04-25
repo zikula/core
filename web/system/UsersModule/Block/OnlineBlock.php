@@ -87,11 +87,11 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
 
         $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));
 
-        $dql = "SELECT count(DISTINCT(s.uid)) FROM Users\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid > 0";
+        $dql = "SELECT count(DISTINCT(s.uid)) FROM UsersModule\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid > 0";
         $query = $this->entityManager->createQuery($dql);
         $numusers = (int)$query->getSingleScalarResult();
         
-        $dql = "SELECT count(DISTINCT(s.ipaddr)) FROM Users\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid = 0";
+        $dql = "SELECT count(DISTINCT(s.ipaddr)) FROM UsersModule\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid = 0";
         $query = $this->entityManager->createQuery($dql);
         $numguests = (int)$query->getSingleScalarResult();
 
