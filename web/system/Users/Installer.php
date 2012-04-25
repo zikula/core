@@ -35,15 +35,16 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        if (!DBUtil::createTable('session_info')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('users')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('users_verifychg')) {
+        // create the tables
+        $classes = array(
+            'Users\Entity\User',
+            'Users\Entity\UserAttribute',
+            'Users\Entity\UserSession',
+            'Users\Entity\UserVerification'
+        );
+        try {
+            DoctrineHelper::createSchema($this->entityManager, $classes);
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -154,7 +155,9 @@ class Installer extends \Zikula_AbstractInstaller
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
-                // This s the current version: add 2.2.0 --> next when appropriate
+                DoctrineHelper::createSchema($this->entityManager, array('Users\Entity\UserAttribute'));
+            case '2.2.1':
+                // This is the current version: add 2.2.1 --> next when appropriate
         }
 
         $currentModVars = $this->getVars();
@@ -269,7 +272,9 @@ class Installer extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        DBUtil::insertObject($record, 'users', 'uid', true);
+        $user = new \Users\Entity\User;
+        $user->merge($record);
+        $this->entityManager->persist($user);
 
         // Admin
         $record = array(
@@ -287,7 +292,11 @@ class Installer extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        DBUtil::insertObject($record, 'users', 'uid', true);
+        $user = new \Users\Entity\User;
+        $user->merge($record);
+        $this->entityManager->persist($user);
+        
+        $this->entityManager->flush();
     }
 
     /**

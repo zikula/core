@@ -44,7 +44,7 @@ class DBUtil
         if (!self::$cache_enabled) {
             self::$cache_enabled = ServiceUtil::getManager()->getParameter('dbcache.enable');
         }
-        return ($tablename != 'session_info' && !System::isInstalling() && self::$cache_enabled);
+        return (!System::isInstalling() && self::$cache_enabled);
     }
 
     /**

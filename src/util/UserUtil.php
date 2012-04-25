@@ -93,19 +93,27 @@ class UserUtil
     /**
      * Return a hash structure mapping uid to username.
      *
-     * @param string  $where        The where clause to use (optional).
-     * @param string  $orderBy      The order by clause to use (optional).
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
+     * @param string  $where        The where clause to use (optional, default=array()).
+     * @param string  $orderBy      The order by clause to use (optional, default=array()).
+     * @param integer $limitOffset  The select-limit offset (optional, default=null).
+     * @param integer $limitNumRows The number of rows to fetch (optional, default=null).
+     * @param string  $assocKey     The associative key to apply (optional) (default='uid').
      *
      * @deprecated since 1.3.0
      *
      * @return array An array mapping uid to username.
      */
-    public static function getUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
+    public static function getUsers($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
-        return DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $users = $em->getRepository('Users\Entity\User')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+
+        $items = array();
+        foreach ($users as $user) {
+            $items[$user[$assocKey]] = $user->toArray();
+        }
+
+        return $items;
     }
 
     /**
@@ -170,7 +178,7 @@ class UserUtil
      */
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
-        $em = ServiceUtil::get('doctrine')->getEntityManager();
+        $em = \ServiceUtil::get('doctrine')->getManager();
         $groups = $em->getRepository('Groups\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
@@ -1111,17 +1119,20 @@ class UserUtil
         }
 
         $uname = DataUtil::formatForStore(mb_strtolower($uname));
-
+        
+        // get doctrine manager
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        // count of uname appearances in users table
+        $dql = "SELECT count(u.uid) FROM Users\Entity\User u WHERE u.uname = '{$uname}'";
         if ($excludeUid > 1) {
-            $dbinfo = DBUtil::getTables();
-            $usersColumn = $dbinfo['users_column'];
-            $where = "({$usersColumn['uname']} = '{$uname}') AND ({$usersColumn['uid']} != {$excludeUid})";
-            $ucount = DBUtil::selectObjectCount('users', $where);
-        } else {
-            $ucount = DBUtil::selectObjectCountByID('users', $uname, 'uname');
+            $dql .= " AND u.uid <> {$excludeUid}";
         }
+        
+        $query = $em->createQuery($dql);
+        $ucount = $query->getSingleScalarResult();
 
-        return $ucount;
+        return (int)$ucount;
     }
 
     /**
@@ -1130,7 +1141,7 @@ class UserUtil
      * @param string $emailAddress The e-mail address in question (required).
      * @param int    $excludeUid   The uid to exclude from the check, used when checking modifications.
      *
-     * @return integer|boolean The count, or false on error.
+     * @return integer|boolean the count, or false on error.
      */
     public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
     {
@@ -1140,27 +1151,28 @@ class UserUtil
 
         $emailAddress = DataUtil::formatForStore(mb_strtolower($emailAddress));
 
-        $dbinfo = DBUtil::getTables();
-        $usersColumn = $dbinfo['users_column'];
-        $where = "({$usersColumn['email']} = '{$emailAddress}')";
-        if ($excludeUid > 1) {
-            $where .= " AND ({$usersColumn['uid']} != {$excludeUid})";
-        }
-        $ucount = DBUtil::selectObjectCount('users', $where);
+        // get doctrine manager
+        $em = \ServiceUtil::get('doctrine')->getManager();
 
-        $verifyChgColumn = $dbinfo['users_verifychg_column'];
-        $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = "
-                . UsersConstant::VERIFYCHGTYPE_EMAIL . ")";
+        // count of email appearances in users table
+        $dql = "SELECT COUNT(u.uid) FROM Users\Entity\User u WHERE u.email = '{$emailAddress}'";
         if ($excludeUid > 1) {
-            $where .= " AND ({$verifyChgColumn['uid']} != {$excludeUid})";
+            $dql .= " AND u.uid <> {$excludeUid}";
         }
-        $vcount = DBUtil::selectObjectCount('users_verifychg', $where);
 
-        if (($ucount === false) || ($vcount === false)) {
-            return false;
-        } else {
-            return ($ucount + $vcount);
+        $query = $em->createQuery($dql);
+        $ucount = (int)$query->getSingleScalarResult();
+
+        // count of email appearances in users verification table
+        $dql = "SELECT COUNT(v.id) FROM Users\Entity\UserVerification v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        if ($excludeUid > 1) {
+            $dql .= " AND v.uid <> {$excludeUid}";
         }
+
+        $query = $em->createQuery($dql);
+        $vcount = (int)$query->getSingleScalarResult();
+
+        return ($ucount + $vcount);
     }
 
     /**
@@ -1177,16 +1189,17 @@ class UserUtil
             // Get isverified from the attributes.
             if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
                 $userObj['isverified'] = $userObj['__ATTRIBUTES__']['_Users_isVerified'];
-                unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
+                //unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
             } else {
                 $userObj['isverified'] = false;
             }
 
             // Get verificationsent from the users_verifychg table
-            $dbinfo = DBUtil::getTables();
-            $verifyChgColumn = $dbinfo['users_verifychg_column'];
-            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL . ")";
-            $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
+            $em = \ServiceUtil::get('doctrine')->getManager();
+            $dql = "SELECT v FROM Users\Entity\UserVerification v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
+            $query = $em->createQuery($dql);
+            $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
             if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
                 $userObj['verificationsent'] = $verifyChgList[0]['created_dt'];
             } else {
@@ -1196,6 +1209,7 @@ class UserUtil
             // Calculate isapproved from approved_by
             $userObj['isapproved'] = isset($userObj['approved_by']) && !empty($userObj['approved_by']);
         }
+
         return $userObj;
     }
 
@@ -1260,27 +1274,31 @@ class UserUtil
         }
 
         if (!isset($user) || $force) {
-            // load the Users database information
-            ModUtil::dbInfoLoad('Users', 'Users');
+            $em = \ServiceUtil::get('doctrine')->getManager();
+            $user = $em->getRepository('Users\Entity\User')->findOneBy(array($idfield => $id));
 
-            // get user info, don't cache as this information must be up-to-date
-            // NOTE: Do not use a permission filter, or you will enter an infinite nesting loop where getVars calls checkPermission (from within
-            // DBUtil), which will call getVars to find out who you are, which will call checkPermission, etc., etc.
-            // Do your permission check in the API that is using UserUtil.
-            $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
+            if ($user) {
+                $user = $user->toArray();
+
+                $attributes = array();
+                foreach ($user['attributes'] as $attribute) {
+                    $attributes[$attribute['name']] = $attribute['value'];
+                }
+                
+                $user['__ATTRIBUTES__'] = $attributes;
+                unset($user['attributes']);
+            }
 
             // If $idfield is email, make sure that we are getting a unique record.
             if ($user && ($idfield == 'email')) {
                 $emailCount = self::getEmailUsageCount($id);
-
                 if (($emailCount > 1) || ($emailCount === false)) {
                     $user = false;
                 }
             }
 
             // update cache
-            // user can be false (error) or empty array (no such user)
-            if ($user === false || empty($user)) {
+            if (!$user) {
                 switch ($idfield) {
                     case 'uid':
                         $cache[$id] = false;
@@ -1291,9 +1309,6 @@ class UserUtil
                     case 'email':
                         $emails[$id] = false;
                         break;
-                }
-                if ($user === false) {
-                    return LogUtil::registerError(__('Error! Could not load data.'));
                 }
 
                 return false;
@@ -1454,11 +1469,10 @@ class UserUtil
      */
     public static function setVar($name, $value, $uid = -1)
     {
-        $dbtable = DBUtil::getTables();
-
         if (empty($name)) {
             return false;
         }
+        
         if (!isset($value)) {
             return false;
         }
@@ -1466,10 +1480,11 @@ class UserUtil
         if ($uid == -1) {
             $uid =ServiceUtil::get('request')->getSession()->get('uid');
         }
+        
         if (empty($uid)) {
             return false;
         }
-
+        
         $isRegistration = self::isRegistration($uid);
         $origUserObj = self::getVars($uid, false, 'uid', $isRegistration);
         if (!$origUserObj) {
@@ -1478,16 +1493,22 @@ class UserUtil
         }
 
         $varIsSet = false;
+        
         // Cannot setVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
+            // get user given a uid
+            $em = \ServiceUtil::get('doctrine')->getManager();
+            $user = $em->getRepository('Users\Entity\User')->findOneBy(array('uid' => $uid));
+
+            // check if var to set belongs to table or it's an attribute
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
-                $obj = array(
-                    'uid' => $uid,
-                    $name => $value
-                );
                 $oldValue = isset($origUserObj[$name]) ? $origUserObj[$name] : null;
-                $varIsSet = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
+                
+                $user[$name] = $value;
+                $em->flush();
+                
+                $varIsSet = true;
             } else {
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
                 $dudAttributeName = self::convertOldDynamicUserDataAlias($name);
@@ -1501,15 +1522,11 @@ class UserUtil
                     $attributeName = $name;
                 }
 
-                $obj = array(
-                    'uid' => $uid,
-                    '__ATTRIBUTES__' => array(
-                        $attributeName => $value
-                    )
-                );
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
-                $varIsSet = (bool)ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
+                $user->setAttribute($attributeName, $value);
+                
+                $varIsSet = true;
             }
 
             // force loading of attributes from db
@@ -1533,6 +1550,7 @@ class UserUtil
                     'old_value' => $oldValue,
                     'new_value' => $value,
                 );
+
                 $updateEvent = new GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
                 EventUtil::dispatch($eventName, $updateEvent);
             }
@@ -1807,6 +1825,7 @@ class UserUtil
         if ($uid == -1) {
             $uid = ServiceUtil::get('request')->getSession()->get('uid');
         }
+        
         if (empty($uid)) {
             return false;
         }
@@ -1824,16 +1843,21 @@ class UserUtil
         }
 
         $varIsDeleted = false;
+        
         // Cannot delVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
+            // get user given a uid
+            $em = \ServiceUtil::get('doctrine')->getManager();
+            $user = $em->getRepository('Users\Entity\User')->findOneBy(array('uid' => $uid));
+            
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
-                $obj = array(
-                    'uid' => $uid,
-                    $name => '',
-                );
                 $oldValue = isset($origUserObj[$name]) ? $origUserObj[$name] : null;
-                $varIsDeleted = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
+                
+                $user[$name] = '';
+                $em->flush();
+                
+                $varIsDeleted = true;
             } else {
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
                 $dudAttributeName = self::convertOldDynamicUserDataAlias($name);
@@ -1846,9 +1870,12 @@ class UserUtil
                     // forbidden names, let's make an attribute out of it
                     $attributeName = $name;
                 }
+
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
-                $varIsDeleted = (bool)ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $attributeName);
+                $user->delAttribute($attributeName);
+                
+                $varIsDeleted = true;
             }
 
             // force loading of attributes from db
@@ -1989,54 +2016,68 @@ class UserUtil
      * @param string  $sortbyfield   Sort by field.
      * @param string  $sortorder     Sort by order.
      * @param integer $limit         Select limit.
-     * @param integer $startnum      Select offset.
+     * @param integer $offset      Select offset.
      * @param string  $activated     Activated value.
-     * @param string  $regexpfield   Field for regexfilter.
-     * @param string  $regexpression Regex expression.
+     * @param string  $field         Field for filter.
+     * @param string  $expression    Like expression.
      * @param string  $where         Where clause.
      *
      * @return array Array of users.
      */
-    public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
+    public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
-        $dbtable = DBUtil::getTables();
-        $userscolumn = $dbtable['users_column'];
-
+        $user = new \Users\Entity\User;
+        
         if (empty($where)) {
-            $sqlFragments = array();
-            if (!empty($regexpfield) && (array_key_exists($regexpfield, $userscolumn)) && !empty($regexpression)) {
-                $sqlFragments[] = '(' . $userscolumn[$regexpfield] . ' REGEXP "' . DataUtil::formatForStore($regexpression) . '")';
+            $whereFragments = array();
+            
+            if (!empty($field) && isset($user[$field]) && !empty($expression)) {
+                $whereFragments[] = 'u.' . $field . ' LIKE \'' . DataUtil::formatForStore($expression) . '\'';
             }
-            if (!empty($activated) && is_numeric($activated) && array_key_exists('activated', $userscolumn)) {
-                $sqlFragments[] = "({$userscolumn['activated']} != '" . DataUtil::formatForStore($activated) . "')";
+            
+            if (!empty($activated) && is_numeric($activated) && isset($user['activated'])) {
+                $whereFragments[] = 'u.activated <> "' . DataUtil::formatForStore($activated) . '"';
             }
 
-            if (!empty($sqlFragments)) {
-                $where = 'WHERE ' . implode(' AND ', $sqlFragments);
+            if (!empty($whereFragments)) {
+                $where = 'WHERE ' . implode(' AND ', $whereFragments);
             }
         }
 
-        $sortby = '';
         if (!empty($sortbyfield)) {
-            // Do not skip the following line, it might still have $where stuff in there!
-            $sqlFragments = array();
-            if (array_key_exists($sortbyfield, $userscolumn)) {
-                $sqlFragments[] = $userscolumn[$sortbyfield] . ' ' . DataUtil::formatForStore($sortorder);
-            } else {
-                $sqlFragments[] = DataUtil::formatForStore($sortbyfield) . ' ' . DataUtil::formatForStore($sortorder); //sort by dynamic.....
-            }
+            $sortFragments = array();
+            
+            $sortFragments[] = 'u.'. $sortbyfield . ' ' . DataUtil::formatForStore($sortorder);
+            
             if ($sortbyfield != 'uname') {
-                $sqlFragments[] = $userscolumn['uname'] . ' ASC ';
+                $sortFragments[] = 'u.uname ASC';
             }
 
-            if (!empty($sqlFragments)) {
-                $sortby = 'ORDER BY ' . implode(', ', $sqlFragments);
+            if (!empty($sortFragments)) {
+                $orderby = 'ORDER BY ' . implode(', ', $sortFragments);
             }
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $dql = "SELECT u FROM Users\Entity\User u $where $orderby $limit_clause";
+        $query = $em->createQuery($dql);
+        
+        if (isset($limit) && is_numeric($limit) && $limit > 0) {
+            $query->setMaxResults($limit);
+            
+            if (isset($offset) && is_numeric($offset) && $offset > 0) {
+                $query->setFirstResult($offset);
+            }
+        }
+        
+        $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        
+        $usersObj = array();
+        foreach ($users as $user) {
+            $usersObj[$user['uid']] = $user;
+        }
 
-        // NOTE: DO NOT use a permission filter here to avoid potential infinite loops (DBUtil calls SecurityUtil
-        // which calls back to UserUtil. Do your permission check in the API that uses UserUtil.
-        return DBUtil::selectObjectArray('users', $where, $sortby, $startnum, $limit, 'uid');
+        return $usersObj;
     }
 
     /**
@@ -2084,15 +2125,8 @@ class UserUtil
 
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
-            // Only need to retrieve users table columns once.
-            static $usersColumns;
-
-            if (!isset($usersColumns)) {
-                $dbtables = DBUtil::getTables();
-                $usersColumns = $dbtables['users_column'];
-            }
-
-            $isFieldAlias = array_key_exists($label, $usersColumns);
+            $userObj = new \Users\Entity\User;
+            $isFieldAlias = isset($userObj[$label]) ? true : false;
         }
 
         return $isFieldAlias;
@@ -2119,9 +2153,7 @@ class UserUtil
      */
     public static function isRegistration($uid)
     {
-        if (!isset($uid) || !is_numeric($uid)
-                || (!is_int($uid) && ((string)((int)$uid) != $uid))
-                ) {
+        if (!isset($uid) || !is_numeric($uid) || (!is_int($uid) && ((string)((int)$uid) != $uid))) {
             throw new InvalidArgumentException(__('An invalid uid was provided.'));
         }
 

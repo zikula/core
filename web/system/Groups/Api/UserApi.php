@@ -643,18 +643,11 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function whosonline()
     {
-        $dbtable = \DBUtil::getTables();
-        $col = $dbtable['session_info_column'];
         $activetime = time() - (\System::getVar('secinactivemins') * 60);
-
-        $where = "WHERE {$col['uid']} != 0 AND {$col['lastused']} > {$activetime} GROUP BY {$col['uid']}";
-        $fa = \DBUtil::selectFieldArray('session_info', 'uid', $where, '', true);
         
-        $items = array();
-        
-        foreach ($fa as $f) {
-            $items[] = array('uid' => $f);
-        }
+        $dql = "SELECT DISTINCT(s.uid) FROM Users\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
+        $query = $this->entityManager->createQuery($dql);
+        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         
         return $items;
     }
