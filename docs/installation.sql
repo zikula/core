@@ -1166,6 +1166,19 @@ INSERT INTO `users` (`uid`, `uname`, `email`, `pass`, `passreminder`, `activated
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `users_attributes`
+--
+
+DROP TABLE IF EXISTS `users_attributes`;
+CREATE TABLE IF NOT EXISTS `users_attributes` (
+  `user_id` int(11) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `value` longtext NOT NULL,
+  PRIMARY KEY (`user_id`,`name`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Table structure for table `users_verifychg`
 --
 
