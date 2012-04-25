@@ -16,7 +16,7 @@
 namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
-use Zikula_View, SecurityUtil, ModUtil, UserUtil, DataUtil, DateUtil, DBUtil, LogUtil, System, FileUtil;
+use Zikula_View, SecurityUtil, ModUtil, UserUtil, DataUtil, DateUtil, LogUtil, System, FileUtil;
 use DateTime, DateTimeZone, Exception;
 use Zikula_Session;
 use Zikula_Exception_Forbidden;
@@ -97,11 +97,6 @@ class AdminController extends \Zikula_AbstractController
         // we need this value multiple times, so we keep it
         $itemsPerPage = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE);
 
-        // Get parameters from whatever input we need.
-        if (!$this->request->getMethod() == 'GET') {
-            throw new Zikula_Exception_Forbidden();
-        }
-
         $sort = $this->request->query->get('sort', isset($args['sort']) ? $args['sort'] : 'uname');
         $sortDirection = $this->request->query->get('sortdir', isset($args['sortdir']) ? $args['sortdir'] : 'ASC');
         $sortArgs = array(
@@ -112,10 +107,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $getAllArgs = array(
-            'startnum'  => $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null),
-            'numitems'  => $itemsPerPage,
-            'letter'    => $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null),
-            'sort'      => $sortArgs,
+            'startnum' => $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null),
+            'numitems' => $itemsPerPage,
+            'letter' => $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null),
+            'sort' => $sortArgs,
         );
 
         // Get all users as specified by the arguments.
@@ -145,48 +140,52 @@ class AdminController extends \Zikula_AbstractController
         $currentUserHasEditAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_EDIT);
         $currentUserHasDeleteAccess = SecurityUtil::checkPermission($this->name . '::', 'ANY', ACCESS_DELETE);
         $availableOptions = array(
-            'lostUsername'  => $currentUserHasModerateAccess,
-            'lostPassword'  => $currentUserHasModerateAccess,
+            'lostUsername' => $currentUserHasModerateAccess,
+            'lostPassword' => $currentUserHasModerateAccess,
             'toggleForcedPasswordChange' => $currentUserHasEditAccess,
-            'modify'        => $currentUserHasEditAccess,
-            'deleteUsers'   => $currentUserHasDeleteAccess,
+            'modify' => $currentUserHasEditAccess,
+            'deleteUsers' => $currentUserHasDeleteAccess,
         );
 
         // Loop through each returned item adding in the options that the user has over
         // each item based on the permissions the user has.
         foreach ($userList as $key => $userObj) {
-            $isCurrentUser      = ($userObj['uid'] == $currentUid);
-            $isGuestAccount     = ($userObj['uid'] == 1);
-            $isAdminAccount     = ($userObj['uid'] == 2);
-            $hasUsersPassword   = (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION));
-            $currentUserHasReadAccess       = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_READ);
-            $currentUserHasModerateAccess   = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_MODERATE);
-            $currentUserHasEditAccess       = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_EDIT);
-            $currentUserHasDeleteAccess     = !$isGuestAccount && !$isAdminAccount && !$isCurrentUser && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE);
+            $isCurrentUser = ($userObj['uid'] == $currentUid);
+            $isGuestAccount = ($userObj['uid'] == 1);
+            $isAdminAccount = ($userObj['uid'] == 2);
+            $hasUsersPassword = (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION));
+            $currentUserHasReadAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_READ);
+            $currentUserHasModerateAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_MODERATE);
+            $currentUserHasEditAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_EDIT);
+            $currentUserHasDeleteAccess = !$isGuestAccount && !$isAdminAccount && !$isCurrentUser && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE);
 
             $userList[$key]['options'] = array(
-                'lostUsername'              => $currentUserHasModerateAccess,
-                'lostPassword'              => $currentUserHasModerateAccess,
+                'lostUsername' => $currentUserHasModerateAccess,
+                'lostPassword' => $currentUserHasModerateAccess,
                 'toggleForcedPasswordChange'=> $hasUsersPassword && $currentUserHasEditAccess,
-                'modify'                    => $currentUserHasEditAccess,
-                'deleteUsers'               => $currentUserHasDeleteAccess,
+                'modify' => $currentUserHasEditAccess,
+                'deleteUsers' => $currentUserHasDeleteAccess,
             );
 
             if ($isGuestAccount) {
                 $userList[$key]['userGroupsView'] = array();
             } else {
                 // get user groups
+
                 $userGroups = ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups', array(
-                    'uid'   => $userObj['uid'],
+                    'uid' => $userObj['uid'],
                     'clean' => 1
                 ));
+                
                 // we need an associative array by the key to compare with the groups that the user can see
                 $userGroupsByKey = array();
                 foreach ($userGroups as $userGroup) {
                     $userGroupsByKey[$userGroup['gid']] = array('gid' => $userGroup['gid']);
                 }
+                
                 $userList[$key]['userGroupsView'] = array_intersect_key($userGroupsAccess, $userGroupsByKey);
             }
+            
             // format the dates
             if (!empty($userObj['user_regdate']) && ($userObj['user_regdate'] != '0000-00-00 00:00:00') && ($userObj['user_regdate'] != '1970-01-01 00:00:00')) {
                 $userList[$key]['user_regdate'] = DateUtil::formatDatetime($userObj['user_regdate'], $this->__('%m-%d-%Y'));
@@ -204,7 +203,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $pager = array(
-            'numitems'     => ModUtil::apiFunc($this->name, 'user', 'countItems', array('letter' => $getAllArgs['letter'])),
+            'numitems' => ModUtil::apiFunc($this->name, 'user', 'countItems', array('letter' => $getAllArgs['letter'])),
             'itemsperpage' => $itemsPerPage,
         );
 
@@ -254,7 +253,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $proceedToForm = true;
-        $formData = new Users_Controller_FormData_NewUserForm('users_newuser', $this->container);
+        $formData = new \Users\Controller\FormData\NewUserForm('users_newuser', $this->container);
         $errorFields = array();
         $errorMessages = array();
 
@@ -622,11 +621,10 @@ class AdminController extends \Zikula_AbstractController
                 if ($originalUser['uname'] != $user['uname']) {
                     // UserUtil::setVar does not allow uname to be changed.
                     // UserUtil::setVar('uname', $user['uname'], $originalUser['uid']);
-                    $updatedUserObj = array(
-                        'uid'   => $originalUser['uid'],
-                        'uname' => $user['uname'],
-                    );
-                    DBUtil::updateObject($updatedUserObj, 'users', '', 'uid');
+                    $updatedUserObj = $this->entityManager->find('Users\Entity\User', $originalUser['uid']);
+                    $updatedUserObj['uname'] = $user['uname'];
+                    $this->entityManager->flush();
+                    
                     $eventArgs = array(
                         'action'    => 'setVar',
                         'field'     => 'uname',
@@ -822,7 +820,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
             $this->registerError(LogUtil::getErrorMsgArgs())
-                ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+                 ->redirect(ModUtil::url($this->name, 'admin', 'view'));
         }
 
         $user = UserUtil::getVars($uid);
@@ -843,10 +841,10 @@ class AdminController extends \Zikula_AbstractController
 
         if ($userNameSent) {
             $this->registerStatus($this->__f('Done! The user name for \'%s\' has been sent via e-mail.', $user['uname']))
-                    ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+                 ->redirect(ModUtil::url($this->name, 'admin', 'view'));
         } elseif (!$this->request->getSession()->getFlashBag()->has(Zikula_Session::MESSAGE_ERROR)) {
             $this->registerError($this->__f('Sorry! There was an unknown error while trying to send the user name for \'%s\'.', $user['uname']))
-                    ->redirect(ModUtil::url($this->name, 'admin', 'view'));
+                 ->redirect(ModUtil::url($this->name, 'admin', 'view'));
         }
     }
 
@@ -1395,11 +1393,10 @@ class AdminController extends \Zikula_AbstractController
                 if ($originalRegistration['uname'] != $registration['uname']) {
                     // UserUtil::setVar does not allow uname to be changed.
                     // UserUtil::setVar('uname', $registration['uname'], $originalRegistration['uid']);
-                    $updatedRegistrationObj = array(
-                        'uid'   => $originalRegistration['uid'],
-                        'uname' => $registration['uname'],
-                    );
-                    DBUtil::updateObject($updatedRegistrationObj, 'users', '', 'uid');
+                    $updatedRegistrationObj = $this->entityManager->find('Users\Entity\User', $originalRegistration['uid']);
+                    $updatedRegistrationObj['uname'] = $registration['uname'];
+                    $this->entityManager->flush();
+                    
                     $eventArgs = array(
                         'action'    => 'setVar',
                         'field'     => 'uname',

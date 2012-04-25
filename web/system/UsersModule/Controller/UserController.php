@@ -201,7 +201,7 @@ class UserController extends \Zikula_AbstractController
                 case 'start':
                     // Initial starting point for registration - a GET request without a reentrant token
                     // Check for illegal user agents trying to register.
-                    $userAgent = $this->request->getServer()->get('HTTP_USER_AGENT', '');
+                    $userAgent = $this->request->server->get('HTTP_USER_AGENT');
                     $illegalUserAgents = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
                     // Convert the comma-separated list into a regexp pattern.
                     $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');

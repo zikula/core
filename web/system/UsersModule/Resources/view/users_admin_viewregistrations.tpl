@@ -42,7 +42,8 @@
                 {if $reginfo.isverified}
                 {img modname='core' set='icons/extrasmall' src='greenled.png' __title='Verified' __alt='Verified' class='tooltips'}
                 {elseif !$reginfo.verificationsent}
-                {if ($modvars.UsersModule.moderation_order != 'Users_Constant::APPROVAL_BEFORE'|const) || (($modvars.UsersModule.moderation_order == 'Users_Constant::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}
+
+                {if ($modvars.UsersModule.moderation_order != 'UsersConstant::APPROVAL_BEFORE'|const) || (($modvars.UsersModule.moderation_order == 'UsersConstant::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}
                 {img modname='core' set='icons/extrasmall' src='flag.png' __title='E-mail verification not sent; must be resent' __alt='E-mail verification not sent; must be resent' class='tooltips'}
                 {else}
                 {img modname='core' set='icons/extrasmall' src='mail_delete.png' __title='E-mail verification not sent' __alt='E-mail verification not sent' class='tooltips'}
@@ -77,7 +78,7 @@
             {if isset($regactions.approve)}
             <td class="users_action">
                 {if $regactions.approve && !$reginfo.isverified}
-                {if isset($modvars.UsersModule.moderation_order) && ($modvars.UsersModule.moderation_order == 'Users_Constant::APPROVAL_AFTER'|const)}
+                {if isset($modvars.UsersModule.moderation_order) && ($modvars.UsersModule.moderation_order == 'UsersConstant::APPROVAL_AFTER'|const)}
                 <a href="{$regactions.approve|safetext}">{img src='button_ok.png' modname='core' set='icons/extrasmall' __title='Pre-approve (verification still required)' __alt='Pre-approve (verification still required)' class='tooltips'}</a>
                 {else}
                 <a href="{$regactions.approve|safetext}">{img src='button_ok.png' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve' class='tooltips'}</a>
@@ -164,7 +165,7 @@
         </tr>
         <tr>
             <td class="z-w45">
-                <div title="{gt text='Verification e-mail message not yet sent'}" class="z-sub user-icon-mail_delete">{gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $modvars.UsersModule.moderation_order == 'Users_Constant::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}</div>
+                <div title="{gt text='Verification e-mail message not yet sent'}" class="z-sub user-icon-mail_delete">{gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $modvars.UsersModule.moderation_order == 'UsersConstant::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}</div>
             </td>
             <td class="z-w45">
                 <div title="{gt text='E-mail verification not sent; must be resent'}" class="z-sub user-icon-status_unknown">{gt text='A verification e-mail has not been sent to the registered e-mail address, but the registration is in a state where one should already have been sent.'}</div>

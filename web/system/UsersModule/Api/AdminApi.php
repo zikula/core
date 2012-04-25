@@ -17,7 +17,7 @@ namespace UsersModule\Api;
 
 use Zikula\Core\Event\GenericEvent;
 use UsersModule\Constants as UsersConstant;
-use SecurityUtil, ModUtil, System, DBUtil, UserUtil, DataUtil, Zikula_Exception_Forbidden, Zikula_View;
+use SecurityUtil, ModUtil, System, UserUtil, DataUtil, Zikula_Exception_Forbidden, Zikula_View;
 
 /**
  * The administrative system-level and database-level functions for the Users module.
@@ -62,70 +62,60 @@ class AdminApi extends \Zikula_AbstractApi
         $profileModule = System::getVar('profilemodule', '');
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
-        $dbtable     = DBUtil::getTables();
-        $userstable  = $dbtable['users'];
-        $userscolumn = $dbtable['users_column'];
-
         // Set query conditions (unless some one else sends a hardcoded one)
         $where = array();
+        
         if (!isset($args['condition']) || !$args['condition']) {
             // Do not include anonymous user
-            $where[] = "({$userscolumn['uid']} != 1)";
+            $where[] = "u.uid <> 1";
 
             foreach ($args as $arg => $value) {
                 if ($value) {
                     switch($arg) {
                         case 'uname':
-                            // Fall through to next on purpose--no break
                         case 'email':
-                            $where[] = "({$userscolumn[$arg]} LIKE '%".DataUtil::formatForStore($value)."%')";
+                            $where[] = "u.$arg LIKE '%" . DataUtil::formatForStore($value) . "%'";
                             break;
+                        
                         case 'ugroup':
                             $uidList = UserUtil::getUsersForGroup($value);
                             if (is_array($uidList) && !empty($uidList)) {
-                                $where[] = "({$userscolumn['uid']} IN (" . implode(', ', $uidList) . "))";
+                                $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
                             }
                             break;
+                            
                         case 'regdateafter':
-                            $where[] = "({$userscolumn['user_regdate']} > '"
-                                . DataUtil::formatForStore($value) . "')";
+                            $where[] = "u.user_regdate > '" . DataUtil::formatForStore($value) . "'";
                             break;
+                        
                         case 'regdatebefore':
-                            $where[] = "({$userscolumn['user_regdate']} < '"
-                                . DataUtil::formatForStore($value) . "')";
+                            $where[] = "u.user_regdate < '" . DataUtil::formatForStore($value) . "'";
                             break;
+                        
                         case 'dynadata':
                             if ($useProfileMod) {
-                                $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array(
-                                    'dynadata' => $value
-                                ));
+                                $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => $value));
                                 if (is_array($uidList) && !empty($uidList)) {
-                                    $where[] = "({$userscolumn['uid']} IN (" . implode(', ', $uidList) . "))";
+                                    $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
                                 }
                             }
                             break;
+                            
                         default:
                             // Skip unknown values--do nothing, and no error--might be other legitimate arguments.
                     }
                 }
             }
         }
+        
         // TODO - Should this exclude pending delete too?
-        $where[] = "({$userscolumn['activated']} != " . UsersConstant::ACTIVATED_PENDING_REG . ")";
+        $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
+        
         $where = 'WHERE ' . implode(' AND ', $where);
 
-        $permFilter = array();
-        $permFilter[] = array(
-            'realm'             => 0,
-            'component_left'    => $this->name,
-            'component_middle'  => '',
-            'component_right'   => '',
-            'instance_left'     => 'uname',
-            'instance_middle'   => '',
-            'instance_right'    => 'uid',
-            'level'             => ACCESS_READ,
-        );
-        $objArray = DBUtil::selectObjectArray('users', $where, 'uname', null, null, null, $permFilter);
+        $dql = "SELECT u FROM Users\Entity\User u $where ORDER BY u.uname ASC";
+        $query = $this->entityManager->createQuery($dql);
+        $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         return $objArray;
     }
@@ -176,7 +166,9 @@ class AdminApi extends \Zikula_AbstractApi
             if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid == $curUserUid)) {
                 return false;
             }
+            
             $userObj = UserUtil::getVars($uid);
+            
             if (!$userObj) {
                 return false;
             } elseif (!SecurityUtil::checkPermission("{$this->name}::", "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
@@ -196,13 +188,19 @@ class AdminApi extends \Zikula_AbstractApi
                 $dql = "DELETE FROM Groups\Entity\GroupMembership m WHERE m.uid = {$userObj['uid']}";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
-
+                
+                // delete verification records for this user
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
-                DBUtil::deleteObjectByID('session_info', $userObj['uid'], 'uid');
-
-                if (!DBUtil::deleteObject($userObj, 'users', '', 'uid')) {
-                    return false;
-                }
+                
+                // delete session
+                $dql = "DELETE FROM Users\Entity\User u WHERE u.uid = {$userObj['uid']}";
+                $query = $this->entityManager->createQuery($dql);
+                $query->getResult();
+                
+                // delete user
+                $user = $this->entityManager->find('Users\Entity\User', $userObj['uid']);
+                $this->entityManager->remove($user);
+                $this->entityManager->flush();
 
                 // Let other modules know we have deleted an item
                 $deleteEvent = new GenericEvent($userObj);
@@ -406,21 +404,20 @@ class AdminApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_READ)) {
             return false;
         }
-
-        $dbtable = DBUtil::getTables();
-        $userscolumn = $dbtable['users_column'];
-
+        
         $valuesArray = $args['valuesarray'];
         $key = $args['key'];
-
-        $where = "WHERE ({$userscolumn[$key]} IN ('" . implode("', '", $valuesArray) . "'))";
-        $items = DBUtil::selectObjectArray ('users', $where, '', '-1', '-1', 'uname');
-
-        if ($items === false) {
-            return false;
+        
+        $dql = "SELECT u FROM Users\Entity\User u WHERE u.$key IN ('" . implode("', '", $valuesArray) . "')";
+        $query = $this->entityManager->createQuery($dql);
+        $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        
+        $userArr = array();
+        foreach ($users as $user) {
+            $userArr[$user['uname']] = $user;
         }
 
-        return $items;
+        return $userArr;
     }
 
     /**
@@ -463,11 +460,13 @@ class AdminApi extends \Zikula_AbstractApi
             $importValuesDB[$key]['pass'] = UserUtil::getHashedPassword($importValuesDB[$key]['pass']);
         }
 
-        // execute sql to create users
-        $result = DBUtil::insertObjectArray($importValuesDB, 'users', 'uid');
-        if (!$result) {
-            return false;
+        // create users
+        foreach ($importValuesDB as $importValueDB) {
+            $user = new Users\Entity\User;
+            $user->merge($importValueDB);
+            $this->entityManager->persist($user);
         }
+        $this->entityManager->flush();
 
         // get users. We need the users identities set them into their groups
         $usersInDB = ModUtil::apiFunc($this->name, 'admin', 'checkMultipleExistence',

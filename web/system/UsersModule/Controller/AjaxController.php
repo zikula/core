@@ -16,7 +16,7 @@ namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\Response\PlainResponse;
-use Zikula_View, SecurityUtil, ModUtil, DBUtil, DataUtil;
+use Zikula_View, SecurityUtil, ModUtil, DataUtil;
 use Zikula_Exception_Forbidden;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
@@ -44,14 +44,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
-
-            ModUtil::dbInfoLoad($this->name);
-            $tables = DBUtil::getTables();
-
-            $usersColumn = $tables['users_column'];
-
-            $where = 'WHERE ' . $usersColumn['uname'] . ' REGEXP \'(' . DataUtil::formatForStore($fragment) . ')\'';
-            $results = DBUtil::selectObjectArray('users', $where);
+            
+            $dql = "SELECT u FROM Users\Entity\User u WHERE u.uname LIKE '% " . DataUtil::formatForStore($fragment) . "%'";
+            $query = $this->entityManager->createQuery($dql);
+            $results = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
             $view->assign('results', $results);
         }
@@ -111,7 +107,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'validatorErrorsCount'  => 0,
             'validatorErrors'       => array(),
         );
-
+        
         $emailAgain         = $this->request->request->get('emailagain', '');
         $setPassword        = $this->request->request->get('setpass', false);
         $passwordAgain      = $this->request->request->get('passagain', '');
@@ -126,9 +122,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'antispamanswer'    => $antiSpamUserAnswer
         ));
 
-        $errorMessages = array();
-        $errorFields = array();
-        $fields = array();
         if ($registrationErrors) {
             foreach ($registrationErrors as $field => $message) {
                 $returnValue['errorFields'][$field] = $message;
