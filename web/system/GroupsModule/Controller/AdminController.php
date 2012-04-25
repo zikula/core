@@ -471,22 +471,18 @@ class AdminController extends \Zikula_AbstractController
         }
 
         switch($letter) {
-            case '?':
-                // read usernames beginning with special chars or numbers
-                $regexpfield = 'uname';
-                $regexpression = '^[[:punct:][:digit:]]';
-                break;
             case '*':
                 // read allusers
-                $regexpfield = '';
-                $regexpression = '';
+                $field = '';
+                $expression = '';
                 break;
+            
             default:
-                $regexpfield = 'uname';
-                $regexpression = '^' . $letter;
+                $field = 'uname';
+                $expression = $letter . '%';
         }
 
-        $users = UserUtil::getAll('uname', 'ASC', -1, -1, '', $regexpfield, $regexpression);
+        $users = UserUtil::getAll('uname', 'ASC', null, null, '', $field, $expression);
 
         $allusers = array();
         foreach ($users as $user) {

@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
 use \SessionUtil;
 use \System;
 use \DataUtil;
-use \DBUtil;
 
 /**
  * Legacy session storage class.
@@ -46,6 +45,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     public function __construct(array $options = array())
     {
         $this->setMetadataBag();
+        
         // create IP finger print
         $current_ipaddr = '';
         $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
@@ -114,6 +114,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         }
 
         ini_set('session.name', SessionUtil::getCookieName()); // Name of our cookie
+
         // Set lifetime of session cookie
         $seclevel = System::getVar('seclevel');
         switch ($seclevel) {
@@ -152,6 +153,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         // start session check expiry and ip fingerprint if required
         if (session_start() && !$this->isNew) {
             $this->loadSession();
+            
             // check if session has expired or not
             $now = time();
             $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
@@ -170,7 +172,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
                     // Medium security - delete session info if session cookie has
                     // expired or user decided not to remember themself and inactivity timeout
                     // OR max number of days have elapsed without logging back in
-                    if ((!$rememberme && $lastused < $inactive) || ($lastused < $daysold) || ($uid == '0' && $lastused < $inactive)) {
+                    if ((!$rememberme && $lastused < $inactive) || ($lastused < $daysold) || ($lastused < $inactive)) {
                         //$this->expire();
                     }
 
@@ -233,6 +235,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
             $this->createNew(session_id(), $this->object['ipaddr']);
+            
             // session is not new, remove flag
             $this->isNew = false;
             $this->regenerate(true);
@@ -265,6 +268,8 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     public function regenerate($destroy = false, $lifetime = null)
     {
         return;
+        
+        /*
         // only regenerate if set in admin
         if ($destroy == false) {
             if (!System::getVar('sessionregenerate') || System::getVar('sessionregenerate') == 0) {
@@ -288,6 +293,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
 
         $this->object['sessid'] = session_id(); // commit new sessid
         $this->isRegenerated = true; // flag regeneration
+        */
     }
 
     /**
@@ -311,16 +317,22 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
      */
     public function read($sessionId)
     {
-        $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
-        if (!$result) {
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $session = $em->find('Users\Entity\UserSession', $sessionId);
+        
+        if ($session) {
+            $session = $session->toArray();
+        }
+        
+        if (!$session) {
             $this->isNew = true;
             return '';
         }
 
-        $this->object = $result;
+        $this->object = $session;
         $this->isNew = false;
 
-        return (isset($result['vars']) ? $result['vars'] : '');
+        return (isset($session['vars']) ? $session['vars'] : '');
     }
 
     /**
@@ -335,24 +347,28 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
 
         $obj = $this->object;
         $obj['sessid'] = $sessionId;
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
 
         if ($this->isNew) {
-            $res = DBUtil::insertObject($obj, 'session_info', 'sessid', true);
+            $session = new \Users\Entity\UserSession;
+            $session->merge($obj);
+            $em->persist($session);
             $this->isNew = false;
         } else {
             // check for regenerated session and update ID in database
             if ($this->isRegenerated) {
-                $sessiontable = DBUtil::getTables();
-                $columns = $sessiontable['session_info_column'];
-                $where = "WHERE $columns[sessid] = '" . DataUtil::formatForStore($this->previousId) . "'";
-                $res = DBUtil::updateObject($obj, 'session_info', $where, 'sessid', true, true);
+                $session = $em->find('Users\Entity\UserSession', $this->previousId);
+                $session->merge($obj);
             } else {
-                $res = DBUtil::updateObject($obj, 'session_info', '', 'sessid', true);
+                $session = $em->find('Users\Entity\UserSession', $sessionId);
+                $session->merge($obj);
             }
         }
+        
+        $em->flush();
 
-
-        return (bool)$res;
+        return true;
     }
 
     /**
@@ -360,8 +376,11 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
      */
     public function destroy($sessionId)
     {
-        $res = DBUtil::deleteObjectByID('session_info', $sessionId, 'sessid');
-        return (bool)$res;
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $dql = "DELETE FROM Users\Entity\UserSession s WHERE s.sessid = '{$sessionId}'";
+        $query = $em->createQuery($dql);
+        $query->getResult();
+        return true;
     }
 
     /**
@@ -380,37 +399,39 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         } else {
             $sessionlength = 40;
         }
-
-        // DB based GC
-        $dbtable = DBUtil::getTables();
-        $sessioninfocolumn = $dbtable['session_info_column'];
+        
         $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
         $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
-
+        
+        // DB based GC
         switch (System::getVar('seclevel')) {
             case 'Low':
                 // Low security - delete session info if user decided not to
-                //                remember themself and inactivity timeout
-                $where = "WHERE $sessioninfocolumn[remember] = 0
-                          AND $sessioninfocolumn[lastused] < '$inactive'";
+                // remember themself and inactivity timeout
+                $where = "WHERE s.remember = 0 AND s.lastused < '$inactive'";
                 break;
+            
             case 'Medium':
                 // Medium security - delete session info if session cookie has
                 // expired or user decided not to remember themself and inactivity timeout
                 // OR max number of days have elapsed without logging back in
-                $where = "WHERE ($sessioninfocolumn[remember] = 0
-                          AND $sessioninfocolumn[lastused] < '$inactive')
-                          OR ($sessioninfocolumn[lastused] < '$daysold')
-                          OR ($sessioninfocolumn[uid] = 0 AND $sessioninfocolumn[lastused] < '$inactive')";
+                $where = "WHERE (s.remember = 0 AND s.lastused < '$inactive')
+                          OR (s.lastused < '$daysold')
+                          OR (s.uid = 0 AND s.lastused < '$inactive')";
                 break;
+            
             case 'High':
             default:
                 // High security - delete session info if user is inactive
-                $where = "WHERE $sessioninfocolumn[lastused] < '$inactive'";
+                $where = "WHERE s.lastused < '$inactive'";
                 break;
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $dql = "DELETE FROM Users\Entity\UserSession s $where";
+        $query = $em->createQuery($dql);
+        $query->getResult();
 
-        $res = DBUtil::deleteWhere('session_info', $where);
-        return (bool)$res;
+        return true;
     }
 }
