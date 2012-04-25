@@ -22,6 +22,8 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 //            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
 //            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
+//            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
+//            new JMS\TranslationBundle\JMSTranslationBundle(),
             new Zikula\Bundle\ModuleBundle\ZikulaModuleBundle(),
             new Zikula\Bundle\ThemeBundle\ZikulaThemeBundle(),
             new AdminModule\ZikulaAdminModule(),
@@ -45,6 +47,7 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new JMS\CommandBundle\JMSCommandBundle();
         }
 
         return $bundles;
