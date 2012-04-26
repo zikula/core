@@ -156,3 +156,8 @@ swiftmailer:
 #    default_locale: en
 #    locales: [en, de]
 #    strategy: prefix
+
+twig:
+    # ...
+    globals:
+        title: "Default title"

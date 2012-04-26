@@ -1,0 +1,61 @@
+{#{pageaddvar name="javascript" value="system/Search/javascript/search_user_form.js"}#}
+{{ pageaddvar('javascript', 'system/Search/javascript/search_user_form.js') }}
+{#{gt text='Site search' assign='templatetitle' domain='zikula'}#}
+<!-- not required as it's set in the menu template include -->
+{#{include file='search_user_menu.tpl'}#}
+{% include 'ZikulaSearchModule:User:menu.html.twig' %}
+
+<form class="z-form" id="search_form" method="post" action="{modurl modname='SearchModule' type='user' func='search'}">
+    <fieldset>
+        <div class="z-formrow">
+            {#<label for="search_q" id="search_q_label">{gt text='Search keywords' domain='zikula'}</label>#}
+            <label for="search_q" id="search_q_label">{{ __('Search keywords') }}</label>
+            {#<input type="text" id="search_q" name="q" size="20" maxlength="255" value="{$q|saftext}" />#}
+            <input type="text" id="search_q" name="q" size="20" maxlength="255" value="{{ q }}" />
+        </div>
+        <div class="z-formrow">
+            <label for="searchtype">{{ __('Keyword settings') }}</label>
+            <select name="searchtype" id="searchtype" size="1">
+                {#<option value="AND"{if $searchtype eq 'AND'} selected="selected"{/if}>{gt text='All words' domain='zikula'}</option>#}
+                <option value="AND"{% if searchtype == 'AND' %} selected="selected"{% endif %}>{{ __('All words') }}</option>
+                {#<option value="OR"{if $searchtype eq 'OR'}selected="selected""{/if}>{gt text='Any words' domain='zikula'}</option>#}
+                <option value="OR"{% if searchtype == 'OR' %}selected="selected""{% endif %}>{{ __('Any words') }}</option>
+                {#<option value="EXACT"{if $searchtype eq 'EXACT'}selected="selected""{/if}>{gt text='Exact phrase' domain='zikula'}</option>#}
+                <option value="EXACT"{% if searchtype == 'EXACT' %}selected="selected""{% endif %}>{{ __('Exact phrase') }}</option>
+            </select>
+        </div>
+        <div class="z-formrow">
+            {#<label for="searchorder">{gt text='Order of results' domain='zikula'}</label>#}
+            <label for="searchorder">{{ __('Order of results') }}</label>
+            <select name="searchorder" id="searchorder" size="1">
+                {#<option value="newest"{if $searchtype eq 'newest'} selected="selected"{/if}>{gt text="Newest first" domain='zikula'}</option>#}
+                <option value="newest"{% if searchtype == 'newest' %} selected="selected"{% endif %}>{{ __('Newest first') }}</option>
+                {#<option value="oldest"{if $searchtype eq 'oldest'} selected="selected"{/if}>{gt text="Oldest first" domain='zikula'}</option>#}
+                <option value="oldest"{% if searchtype == 'oldest' %} selected="selected"{% endif %}>{{ __("Oldest first") }}</option>
+                {#<option value="alphabetical"{if $searchtype eq 'alphabetical'} selected="selected"{/if}>{gt text="Alphabetical" domain='zikula'}</option>#}
+                <option value="alphabetical"{% if searchtype == 'alphabetical' %} selected="selected"{% endif %}>{{ __("Alphabetical") }}</option>
+            </select>
+        </div>
+        <div class="z-buttons z-formbuttons">
+            {#{button src=button_ok.png set=icons/extrasmall __alt="Search now" __title="Search now" __text="Search now"}#}
+        </div>
+    </fieldset>
+    {#{if $plugin_options}#}
+    {% if plugin_options %}
+    <fieldset class="z-linear">
+        {#<legend>{gt text='Filter search by type' domain='zikula'}</legend>#}
+        <legend>{{ __('Filter search by type') }}</legend>
+        <div class="search_toogle">
+            <input type="checkbox" name="togglebox" id="togglebox" checked="checked" tabindex="0" onclick="toggleboxes(this);" />
+            {#<label for="togglebox">{gt text='De/Select all' domain='zikula'}</label>#}
+            <label for="togglebox">{{ __('De/Select all') }}</label>
+        </div>
+        {#{foreach from=$plugin_options key='plugin' item='plugin_option'}#}
+        {% for plugin, plugin_option in plugin_options %}
+            {#{$plugin_option}#}
+            {{ plugin_option|raw }}
+        {#{/foreach}#}
+        {% endfor %}
+    </fieldset>
+    {% endif %}
+</form>

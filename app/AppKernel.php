@@ -3,6 +3,13 @@
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
+
+
+function xxx($foo)
+{
+    return $foo;
+}
+
 class AppKernel extends Kernel
 {
     public function registerBundles()
@@ -10,6 +17,8 @@ class AppKernel extends Kernel
         $bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Zikula\Bundle\CoreBundle\CoreBundle(),
+            new Zikula\Bundle\ModuleBundle\ZikulaModuleBundle(),
+            new Zikula\Bundle\ThemeBundle\ZikulaThemeBundle(),
 //            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
@@ -24,8 +33,7 @@ class AppKernel extends Kernel
 //            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
 //            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
 //            new JMS\TranslationBundle\JMSTranslationBundle(),
-            new Zikula\Bundle\ModuleBundle\ZikulaModuleBundle(),
-            new Zikula\Bundle\ThemeBundle\ZikulaThemeBundle(),
+
             new AdminModule\ZikulaAdminModule(),
             new BlocksModule\ZikulaBlocksModule(),
             new CategoriesModule\ZikulaCategoriesModule(),
