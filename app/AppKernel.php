@@ -3,13 +3,6 @@
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
-
-
-function xxx($foo)
-{
-    return $foo;
-}
-
 class AppKernel extends Kernel
 {
     public function registerBundles()

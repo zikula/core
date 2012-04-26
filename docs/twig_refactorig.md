@@ -8,7 +8,7 @@ Markup
 
 There are two kinds of markup, `{{ ... }}`` and tags as `{% ... %}`.
 Variables are specified as `{{ name }}` and within `{% ... %}`, they are as in the next example.
-Command blocks, e.g. {% if name == 'drak' %}Hello Drak{% endif %}
+Command blocks, e.g. `{% if name == 'drak' %}Hello Drak{% endif %}`
 Functions are called like this: `{{ strtolower(var) }}`
 
 Escaping
@@ -17,7 +17,7 @@ Escaping
 Please note that all output is escaped automatically but for reference it would be done
 using `{{ foo|e }}`
 
-To **not** escape, use {{ foo|raw }}
+To **not** escape, use `{{ foo|raw }}`
 
 Template File Structure
 -----------------------
