@@ -1,9 +1,6 @@
 {#{insert name="getstatusmsg"}#}
-{#{gt text="Site search" assign=title domain='zikula'}#}
 {% set title %}{{ __('Site search') }}{% endset %}
-{#<h2>{$title|safetext}</h2>#}
-<h2>{{ title|e }}</h2>
-{#{pagesetvar name=title value=$templatetitle}#}
+<h2>{{ title }}</h2>
 {#{modulelinks modname='SearchModule' type='user'}#}
 
 
