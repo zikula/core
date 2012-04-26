@@ -23,7 +23,6 @@
         "jms/security-extra-bundle": "1.1.0",
         "jms/di-extra-bundle": "1.0.1",
         "gedmo/doctrine-extensions": "dev-master",
-        "twig/extensions": "dev-master",
         "drak/doctrine1": "dev-master",
         "imagine/Imagine": "dev-master",
         "swiftmailer/swiftmailer": "4.1.6",
@@ -31,7 +30,9 @@
         "pagerfanta/pagerfanta": "dev-master",
         "white-october/pagerfanta-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "stof/doctrine-extensions-bundle": "dev-master"
+        "stof/doctrine-extensions-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "dev-master",
+        "friendsofsymfony/user-bundle": "dev-master"
     },
     "config": {
         "bin-dir": "bin"
