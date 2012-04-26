@@ -148,7 +148,7 @@
             </div>
             <div id="{$formData->getFormId()}_password_not_set_wrap" class="z-formrow z-hide">
 
-                {if $modvars.UsersModule.reg_verifyemail == 'UsersModule\Constants::::VERIFY_NO'|constant}
+                {if $modvars.UsersModule.reg_verifyemail == 'UsersModule\Constants::VERIFY_NO'|constant}
                 <p class="z-formnote z-warningmsg">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
                 {else}
                 <p class="z-formnote z-informationmsg">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
