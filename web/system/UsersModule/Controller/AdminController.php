@@ -253,7 +253,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $proceedToForm = true;
-        $formData = new \Users\Controller\FormData\NewUserForm('users_newuser', $this->container);
+        $formData = new FormData\NewUserForm('users_newuser', $this->container);
         $errorFields = array();
         $errorMessages = array();
 

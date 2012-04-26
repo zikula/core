@@ -8,7 +8,7 @@
 
 <p>{gt text="If you did request a new user account, then your request is waiting for you to verify your e-mail address with us."}
 {if !$reginfo.isapproved}{gt text="Your request is also waiting for administrator approval."}
-{if $approvalorder == 'UsersModule\Constants::::APPROVAL_AFTER'|constant}{gt text="We will not be able to approve your request until after you have completed this verification step."}{/if}
+{if $approvalorder == 'UsersModule\Constants::APPROVAL_AFTER'|constant}{gt text="We will not be able to approve your request until after you have completed this verification step."}{/if}
 {gt text="Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name."}{/if}</p>
 
 <p>{gt text="Please click on the following link to complete the e-mail address check: "}<a href="{$verificationurl|safetext}">{gt text="Verify my e-mail address"}</a></p>
