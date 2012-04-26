@@ -103,7 +103,7 @@ class AdminController extends \Zikula_AbstractController
      * @param string $args['description'] the description of the category to be created
      * @return mixed category id if create successful, false otherwise
      */
-    public function createAction($args)
+    public function createAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -133,7 +133,7 @@ class AdminController extends \Zikula_AbstractController
      * @param int $args['objectid'] generic object id maps to cid if present
      * @return string HTML string
      */
-    public function modifyAction($args)
+    public function modifyAction(array $args = array())
     {
         $cid = $this->request->query->get('cid', isset($args['cid']) ? $args['cid'] : null);
         $objectid = $this->request->query->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
@@ -166,7 +166,7 @@ class AdminController extends \Zikula_AbstractController
      * @param string $args['description'] the description of the item to be updated
      * @return bool true if update successful, false otherwise
      */
-    public function updateAction($args)
+    public function updateAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -209,7 +209,7 @@ class AdminController extends \Zikula_AbstractController
      * @param bool $args['confirmation'] confirmation that this item can be deleted
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise
      */
-    public function deleteAction($args)
+    public function deleteAction(array $args = array())
     {
         $cid = $this->request->get('cid', isset($args['cid']) ? $args['cid'] : null);
         $objectid = $this->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);
@@ -492,7 +492,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function categorymenuAction($args)
+    public function categorymenuAction(array $args = array())
     {
         // get the current category
         $acid = $this->request->query->get('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'));

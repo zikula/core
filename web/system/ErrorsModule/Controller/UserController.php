@@ -29,7 +29,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function indexAction($args)
+    public function indexAction(array $args = array())
     {
         /* @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->request->getSession();
@@ -81,7 +81,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * Display a system error
      */
-    public function systemAction($args)
+    public function systemAction(array $args = array())
     {
         return $this->response($this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)

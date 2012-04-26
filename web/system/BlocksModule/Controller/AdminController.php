@@ -254,7 +254,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Block-specific
         $blockoutput = '';
-        if ($blockObj instanceof Zikula_Controller_AbstractBlock) {
+        if ($blockObj instanceof \Zikula_Controller_AbstractBlock) {
             $blockoutput = call_user_func(array($blockObj, 'modify'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);
@@ -719,7 +719,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise.
      */
-    public function deletepositionAction($args)
+    public function deletepositionAction(array $args = array())
     {
         $pid = $this->request->get('pid', isset($args['pid']) ? $args['pid'] : null);
         $objectid = $this->request->get('objectid', isset($args['objectid']) ? $args['objectid'] : null);

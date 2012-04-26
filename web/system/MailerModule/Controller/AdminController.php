@@ -169,7 +169,7 @@ class AdminController extends \Zikula_AbstractController
      * @param int args['html'] HTML flag
      * @return bool true
      */
-    public function sendmessageAction($args)
+    public function sendmessageAction(array $args = array())
     {
         $this->checkCsrfToken();
 

@@ -782,7 +782,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string html output.
      */
-    public function allowedhtmlAction($args)
+    public function allowedhtmlAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
@@ -807,7 +807,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return mixed true if successful, false if unsuccessful, error string otherwise.
      */
-    public function updateallowedhtmlAction($args)
+    public function updateallowedhtmlAction(array $args = array())
     {
         $this->checkCsrfToken();
 

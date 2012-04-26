@@ -1940,7 +1940,7 @@ class AdminController extends \Zikula_AbstractController
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if the $args parameter is not valid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
      */
-    public function importAction($args)
+    public function importAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
@@ -2028,7 +2028,7 @@ class AdminController extends \Zikula_AbstractController
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if parameters are passed via the $args array, but $args is invalid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access, or method this function was accessed is invalid.
      */
-    public function exporterAction($args)
+    public function exporterAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {

@@ -210,7 +210,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return bool true If group created succesfully, false otherwise.
      */
-    public function createAction($args)
+    public function createAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -257,7 +257,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function modifyAction($args)
+    public function modifyAction(array $args = array())
     {
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
@@ -297,7 +297,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return bool true If group updated successfully, false otherwise.
      */
-    public function updateAction($args)
+    public function updateAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -344,7 +344,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return mixed HTML output string if no confirmation, true if group deleted succesfully, false otherwise.
      */
-    public function deleteAction($args)
+    public function deleteAction(array $args = array())
     {
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
@@ -403,7 +403,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function groupmembershipAction($args)
+    public function groupmembershipAction(array $args = array())
     {
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
@@ -529,7 +529,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean True is user added succesfully, false otherwise.
      */
-    public function adduserAction($args)
+    public function adduserAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -577,7 +577,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return boolean true is user added succesfully, false otherwise.
      */
-    public function removeuserAction($args)
+    public function removeuserAction(array $args = array())
     {
         // Get parameters from whatever input we need.
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);

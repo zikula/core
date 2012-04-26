@@ -1064,7 +1064,7 @@ class UserController extends \Zikula_AbstractController
      * @throws Zikula_Exception_Redirect If the user is already logged in, or upon successful login with the redirect
      *                                   option set to send the user to the appropriate page, or...
      */
-    public function loginAction($args)
+    public function loginAction(array $args = array())
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
@@ -1623,7 +1623,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function activationAction($args)
+    public function activationAction(array $args = array())
     {
         if ($this->request->query->has('code')) {
             $code = $this->request->query->get('code');
@@ -1890,7 +1890,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function changePasswordAction($args)
+    public function changePasswordAction(array $args = array())
     {
         // Retrieve and delete any session variables being sent in before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
@@ -2205,7 +2205,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function confirmChEmailAction($args)
+    public function confirmChEmailAction(array $args = array())
     {
         $confirmcode = $this->request->query->get('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null);
 
@@ -2242,7 +2242,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @deprecated
      */
-    public function loginScreenAction($args)
+    public function loginScreenAction(array $args = array())
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
 

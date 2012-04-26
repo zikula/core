@@ -138,7 +138,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * modify theme
      */
-    public function modifyAction($args)
+    public function modifyAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -170,7 +170,7 @@ class AdminController extends \Zikula_AbstractController
      * update the theme variables
      *
      */
-    public function updatesettingsAction($args)
+    public function updatesettingsAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -214,7 +214,7 @@ class AdminController extends \Zikula_AbstractController
      * display the theme variables
      *
      */
-    public function variablesAction($args)
+    public function variablesAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -261,7 +261,7 @@ class AdminController extends \Zikula_AbstractController
      * update the theme variables
      *
      */
-    public function updatevariablesAction($args)
+    public function updatevariablesAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -340,7 +340,7 @@ class AdminController extends \Zikula_AbstractController
      * display the themes palettes
      *
      */
-    public function palettesAction($args)
+    public function palettesAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -375,7 +375,7 @@ class AdminController extends \Zikula_AbstractController
      * update the theme palettes
      *
      */
-    public function updatepalettesAction($args)
+    public function updatepalettesAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -447,7 +447,7 @@ class AdminController extends \Zikula_AbstractController
      * display the content wrappers for the theme
      *
      */
-    public function pageconfigurationsAction($args)
+    public function pageconfigurationsAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -524,7 +524,7 @@ class AdminController extends \Zikula_AbstractController
      * modify a theme page configuration
      *
      */
-    public function modifypageconfigtemplatesAction($args)
+    public function modifypageconfigtemplatesAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -623,7 +623,7 @@ class AdminController extends \Zikula_AbstractController
      * modify a theme page configuration
      *
      */
-    public function updatepageconfigtemplatesAction($args)
+    public function updatepageconfigtemplatesAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -725,7 +725,7 @@ class AdminController extends \Zikula_AbstractController
      * Modify a theme page configuration
      *
      */
-    public function modifypageconfigurationassignmentAction($args)
+    public function modifypageconfigurationassignmentAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -816,7 +816,7 @@ class AdminController extends \Zikula_AbstractController
      * modify a theme page configuration
      *
      */
-    public function updatepageconfigurationassignmentAction($args)
+    public function updatepageconfigurationassignmentAction(array $args = array())
     {
         $this->checkCsrfToken();
 
@@ -897,7 +897,7 @@ class AdminController extends \Zikula_AbstractController
      * delete a theme page configuration assignment
      *
      */
-    public function deletepageconfigurationassignmentAction($args)
+    public function deletepageconfigurationassignmentAction(array $args = array())
     {
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
         $pcname = $this->request->query->get('pcname', isset($args['pcname']) ? $args['pcname'] : null);
@@ -947,7 +947,7 @@ class AdminController extends \Zikula_AbstractController
      *
      *
      */
-    public function creditsAction($args)
+    public function creditsAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -971,7 +971,7 @@ class AdminController extends \Zikula_AbstractController
      * set theme as default for site
      *
      */
-    public function setasdefaultAction($args)
+    public function setasdefaultAction(array $args = array())
     {
         // get our input
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
@@ -1017,7 +1017,7 @@ class AdminController extends \Zikula_AbstractController
      * delete a theme
      *
      */
-    public function deleteAction($args)
+    public function deleteAction(array $args = array())
     {
         $themename = $this->request->query->get('themename', isset($args['themename']) ? $args['themename'] : null);
         $confirmation = $this->request->request->get('confirmation', null);
@@ -1105,7 +1105,7 @@ class AdminController extends \Zikula_AbstractController
      * Update configuration
      *
      */
-    public function updateconfigAction($args)
+    public function updateconfigAction(array $args = array())
     {
         $this->checkCsrfToken();
 
