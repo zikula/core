@@ -132,7 +132,7 @@ class Zikula_View_Plugin extends Zikula_View
         switch ($modinfo['type'])
         {
             case ModUtil::TYPE_MODULE :
-                $mpluginPath = "modules/" . $modinfo['directory'] . "/plugins/$plugin/Resources/view/plugins";
+                $mpluginPath = "modules/" . $modinfo['directory'] . "/plugins/$plugin/Resources/views/plugins";
                 if (!is_dir($mpluginPath)) {
                     $mpluginPath = "modules/" . $modinfo['directory'] . "/plugins/$plugin/templates/plugins";
                 }
@@ -144,7 +144,7 @@ class Zikula_View_Plugin extends Zikula_View
                 }
                 break;
             case ModUtil::TYPE_CORE:
-                $mpluginPath = "plugins/$plugin/Resources/view/plugins";
+                $mpluginPath = "plugins/$plugin/Resources/views/plugins";
                 if (!is_dir($mpluginPath)) {
                     $mpluginPath = "plugins/$plugin/templates/plugins";
                 }

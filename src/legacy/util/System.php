@@ -894,7 +894,7 @@ class System
      */
     public static function getSystemErrorTemplate($templateFile)
     {
-        $templatePath = ZIKULA_ROOT."/system/Theme/Resources/view/system/$templateFile";
+        $templatePath = ZIKULA_ROOT."/system/Theme/Resources/views/system/$templateFile";
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;

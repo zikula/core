@@ -406,8 +406,8 @@ class Zikula_View_Theme extends Zikula_View
         $themeDir = DataUtil::formatForOS($this->directory);
         $osTemplate = DataUtil::formatForOS($template);
 
-        if (is_dir("themes/$themeDir/Resources/view")) {
-            $relativePath = "themes/$themeDir/Resources/view";
+        if (is_dir("themes/$themeDir/Resources/views")) {
+            $relativePath = "themes/$themeDir/Resources/views";
         }
 
         $templateFile = "$relativePath/$osTemplate";
@@ -439,7 +439,7 @@ class Zikula_View_Theme extends Zikula_View
     private function _plugin_dirs()
     {
         // add theme specific plugins directories, if they exist
-        $this->addPluginDir('themes/' . $this->directory . '/Resources/view/plugins');
+        $this->addPluginDir('themes/' . $this->directory . '/Resources/views/plugins');
     }
 
     /**
