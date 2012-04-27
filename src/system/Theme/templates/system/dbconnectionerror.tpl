@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Website temporarily unavailable</title>
+        <title><?php echo __('Website temporarily unavailable'); ?></title>
         <style type="text/css">
             html {
                 background: #eaeaea; /*non-CSS3 browsers*/
@@ -78,17 +78,17 @@
         <div id="container">
             <div id="cell">
                 <div id="content">
-                    <h1>Zikula Application Framework</h1>
-                    <h2>Problem in database connection</h2>
+                    <h1><?php echo __('Zikula Application Framework'); ?></h1>
+                    <h2><?php echo __('Problem in database connection'); ?></h2>
                     <p>
-                        This website is experiencing temporary technical difficulties, possibly due to high traffic.  If you can, please inform the website administrator of this problem, stating the time you saw this page.
+                        <?php echo __('This website is experiencing temporary technical difficulties, possibly due to high traffic.  If you can, please inform the website administrator of this problem, stating the time you saw this page.'); ?>
                     </p>
                     <p>
-                        This website is powered by the Zikula Application Framework, although run independantly by the website administrator. Please do not contact the Zikula team about this error, as it is specfic to this website.
+                        <?php echo __('This website is powered by the Zikula Application Framework, although run independantly by the website administrator. Please do not contact the Zikula team about this error, as it is specfic to this website.'); ?>
                     </p>
                     <p>
-                    <strong>If you are the website administrator...</strong><br/>
-                    Zikula is unable to connect to your database. Please ensure your database access details are correct. Also, check to make sure your database is running correctly.<br />
+                    <strong><?php echo __('If you are the website administrator:'); ?></strong><br/>
+                    <?php echo __('Zikula is unable to connect to your database. Please ensure your database access details are correct. Also, check to make sure your database is running correctly.'); ?><br />
                         <?php
                         if (System::getVar('development')) {
                             echo('Error: ' . $e->getMessage());
@@ -96,11 +96,10 @@
                         ?>
                     </p>
                     <p>
-                        Zikula is free software released under GPL license.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.
+                        <?php echo __('Zikula is free software released under GPL license.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.'); ?>
                     </p>
                     <p>
-                        <a href="http://zikula.org/"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>
-                        <a href="http://www.php.net/"><img src="images/powered/small/php_powered.png" alt="PHP Language" width="80" height="15" /></a>
+                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>                        
                     </p>
                 </div>
             </div>
