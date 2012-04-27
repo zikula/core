@@ -32,16 +32,15 @@
     <input id="users_login_login_id" type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" />
 </div>
 
-
 <script type="text/javascript">
-    function capLock(e){
-	kc = e.keyCode?e.keyCode:e.which;
-	sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
-	if((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)) && !Boolean(window.chrome) && !Boolean(window.webkit))
-		document.getElementById('capsLok').style.visibility = 'visible';
-	else
-		document.getElementById('capsLok').style.visibility = 'hidden';
-	}
+    function capLock(e) {
+        kc = e.keyCode?e.keyCode:e.which;
+        sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
+        if ((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)) && !Boolean(window.chrome) && !Boolean(window.webkit))
+    	    document.getElementById('capsLok').style.visibility = 'visible';
+        else
+    	    document.getElementById('capsLok').style.visibility = 'hidden';
+        }
 </script>
 
 <div class="z-formrow">
