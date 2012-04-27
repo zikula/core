@@ -51,10 +51,24 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         }
         
         // remove old placements and insert the new ones
-        $entity = $this->name . '_Entity_BlockPlacement';
-        $dql = "DELETE FROM $entity p WHERE p.bid = {$args['bid']}";
-        $query = $this->entityManager->createQuery($dql);
-        $query->getResult();
+        $items = $this->entityManager->getRepository($this->name . '_Entity_BlockPlacement')
+                                     ->findBy(array('bid'=>$args['bid']));
+        
+        // refactor position array (keys=values)
+        $positions = $args['positions'];
+        $args['positions'] = array();
+        foreach ($positions as $value) {
+            $args['positions'][$value] = $value;
+        }     
+                                   
+        foreach ($items as $item) {
+            $pid = $item->getPid();
+            if (!in_array($pid,$args['positions'])) {
+                $this->entityManager->remove($item);
+            } else {
+                unset($args['positions'][$pid]);
+            }
+        }
         
         if (isset($args['positions']) && is_array($args['positions'])) {
             
