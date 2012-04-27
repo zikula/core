@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Unable to start session</title>
+        <title><?php echo __('Unable to start session'); ?></title>
         <style type="text/css">
             html {
                 background: #eaeaea; /*non-CSS3 browsers*/
@@ -78,23 +78,23 @@
         <div id="container">
             <div id="cell">
                 <div id="content">
-                    <h1>Zikula Application Framework</h1>
-                    <h2>Unable to start session</h2>
+                    <h1><?php echo __('Zikula Application Framework'); ?></h1>
+                    <h2><?php echo __('Unable to start session'); ?></h2>
                     <p>
-                        This website is experiencing temporary technical difficulties, refreshing the page may help.  If this problem persists please inform this website's owner about this problem.
+                        <?php echo __('This website is experiencing temporary technical difficulties, refreshing the page may help.  If this problem persists please inform this website's owner about this problem.'); ?>
                     </p>
                     <p>
-                        Please <em>do not contact</em> the Zikula team about this error, as it is specific to this website because although this website is powered by the Zikula Application Framework, it is owned and managed independently by this website's administrator.
+                        <?php echo __('Please <em>do not contact</em> the Zikula team about this error, as it is specific to this website because although this website is powered by the Zikula Application Framework, it is owned and managed independently by this website's administrator.'); ?>
                     </p>
                     <p>
-                        <strong>If you are the website administrator...</strong><br/>
-                        Zikula is unable to correctly start sessions. This is because sessions cannot be written to the database which is usually caused by either your site being out of disk space or disk quota, or that the sessions table has become corrupted.  Running a repair on the sessions table may fix the problem. For further help please visit the Zikula website.
+                        <strong><?php echo __('If you are the website administrator:'); ?></strong><br/>
+                        <?php echo __('Zikula is unable to correctly start sessions. This is because sessions cannot be written to the database which is usually caused by either your site being out of disk space or disk quota, or that the sessions table has become corrupted.  Running a repair on the sessions table may fix the problem. For further help please visit the Zikula website.'); ?>
                     </p>
                     <p>
-                        Zikula is free software released under the GPL license.  For more information, please visit <a href="http://zikula.org/" title="Zikula Homepage">http://zikula.org</a>.
+                        <?php echo __('Zikula is free software released under the GPL license.  For more information, please visit'); ?> <a href="http://zikula.org/" title="<?php echo __('Zikula Homepage'); ?>">http://zikula.org</a>.
                     </p>
                     <p>
-                        <a href="http://zikula.org"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>
+                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>                        
                     </p>
                 </div>
             </div>
