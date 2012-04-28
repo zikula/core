@@ -683,7 +683,7 @@ class ModUtil
         // update the loaded status
         $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
 
-        return true;//isset($data) ? $data : $loaded[$modname];
+        return isset($data) ? $data : $loaded[$modname] :? true;
     }
 
     /**
