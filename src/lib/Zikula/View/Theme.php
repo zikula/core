@@ -574,8 +574,11 @@ class Zikula_View_Theme extends Zikula_View
         $this->pagetype = 'module';
         if ((stristr(System::serverGetVar('PHP_SELF'), 'admin.php') || strtolower($this->type) == 'admin')) {
             $this->pagetype = 'admin';
-        } elseif (empty($module)) {
-            $this->pagetype = 'home';
+        } else {
+            $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
+            if (empty($module)) {
+                $this->pagetype = 'home';
+            }
         }
 
         // set some basic class variables from Zikula
