@@ -192,8 +192,7 @@
                         </div>
                     </form>
                     <p>
-                        <a href="http://zikula.org"><img src="images/powered/small/cms_zikula.png" alt="Proudly powered by Zikula" width="80" height="15" /></a>
-                        <a href="http://www.php.net"><img src="images/powered/small/php_powered.png" alt="PHP Language" width="80" height="15" /></a>
+                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>                        
                     </p>
                 </div>
             </div>
