@@ -136,6 +136,15 @@ class ThemeUtil
                 return false;
             }
         }
+        
+        foreach ($themesarray[$key] as $theme => $values) {
+            if (file_exists('themes/'.$theme.'/Resources/view/master.tpl')) {
+                $themesarray[$key][$theme]['structure'] = true;
+            } else {
+                LogUtil::registerError(__f('The structure of the theme %s is not valid!', $values['name']));
+                $themesarray[$key][$theme]['structure'] = false;
+            }
+        }
 
         return $themesarray[$key];
     }
