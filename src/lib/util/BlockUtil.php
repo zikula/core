@@ -122,7 +122,21 @@ class BlockUtil
                     $rule1 = $filter['module'] == $modname;
                     $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
                     $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
-                    $rule4 = empty($filter['fargs']) ? true : array_search($filter['fargs'], $customargs);
+                                        
+                    if (empty($filter['fargs'])) {
+                        $rule4 = true;
+                    } else {
+                        $testargs = explode('&',$filter['fargs']);
+                        foreach ($testargs as $test) {
+                            $key = array_search($test, $customargs);
+                            if ($key === false){
+                                $rule4 = false;
+                                break;
+                            } else {
+                                $rule4 = true;
+                            }
+                        }
+                    }
 
                     if ($rule1 == true && $rule2 == true && $rule3 == true && $rule4 !== false) {
                         $showblock = true;
