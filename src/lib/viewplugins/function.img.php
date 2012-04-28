@@ -137,13 +137,21 @@ function smarty_function_img($params, Zikula_View $view)
             $paths = array($modpluglangpath, $modplugpath);
 
         } else {
+            $paths = array();
+            
             // theme directory
-            $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
-            $osmodname     = DataUtil::formatForOS($modname);
-            $themelangpath = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
-            $themepath     = "themes/$ostheme/templates/modules/$osmodname/images";
-            $corethemepath = "themes/$ostheme/images";
-
+            if ($params['src'] != 'admin.png') {
+                $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
+                $osmodname     = DataUtil::formatForOS($modname);
+                $themelangpath = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
+                $themepath     = "themes/$ostheme/templates/modules/$osmodname/images";
+                $corethemepath = "themes/$ostheme/images";
+                if ($modname != 'core') {
+                    $paths[] = $themelangpath;
+                }
+                $paths[] = $themepath;
+            }
+            
             if ($modname == 'core') {
                 $modpath        = "images";
             } else {
@@ -155,9 +163,9 @@ function smarty_function_img($params, Zikula_View $view)
 
             // form the array of paths
             if ($modname == 'core') {
-                $paths = array($themepath, $corethemepath, $modpath);
+                $paths = array_merge($paths, array($corethemepath, $modpath));
             } else {
-                $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld);
+                $paths = array_merge($paths, array($corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld));
             }
         }
     }
