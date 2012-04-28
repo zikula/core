@@ -1267,7 +1267,18 @@ class ModUtil
             self::$cache['modgetname'] = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
             if (empty(self::$cache['modgetname'])) {
-                self::$cache['modgetname'] = System::getVar('startpage');
+                if (!System::getVar('startpage')) {
+                    self::$cache['modgetname'] = System::getVar('startpage');
+                } else {
+                    $baseUriLenght = strlen(System::getBaseUri());
+                    $shortUrlPath = substr(System::getCurrentUri(),$baseUriLenght+1);
+                    if (!empty($shortUrlPath) == 0) {
+                        self::$cache['modgetname'] = System::getVar('startpage');
+                    } else {
+                        $args = explode('/', $shortUrlPath);
+                        self::$cache['modgetname'] = $args[0];
+                    }
+                }
             }
 
             // the parameters may provide the module alias so lets get
