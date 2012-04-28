@@ -16,8 +16,19 @@
 /**
  * Zikula_View function to display the avatar of a user
  *
- * Example
+ * Available parameters:
+ *   - uid            User uid
+ *   - width, height  Width and heigt of the image (optional)
+ *   - assign         The results are assigned to the corresponding variable instead of printed out (optional).
+ * Gravatar parameters
+ *   - size           Size of the gravtar (optional)
+ *   - rating         Gravatar allows users to self-rate their images so that they can indicate if an image is appropriate for a certain audience.
+ *                    [g|pg|r|x] see: http://en.gravatar.com/site/implement/images/ (optional)
+ *
+ * Examples:
  * {useravatar uid="2"}
+ * {useravatar uid="2" width=80 height=80} 
+ * {useravatar uid="2" size=80 rating=g} 
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -42,12 +53,25 @@ function smarty_function_useravatar($params, Zikula_View $view)
     if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
         $avatarURL = System::getBaseUrl() . $avatarpath . '/' . $avatar;
     } else if (($avatar == $gravatarimage) && ($allowgravatars == 1)) {
-        if (!isset($params['rating'])) $params['rating'] = false;
-        if (!isset($params['size'])) $params['size'] = 80;
+        if (!isset($params['rating'])) {
+            $params['rating'] = false;
+        }
+        if (!isset($params['size'])) {
+            if (isset($params['width'])) {
+                $params['size'] = $params['width'];
+            }
+            $params['size'] = 80;
+        }
+        $params['width']  = $params['size'];
+        $params['height'] = $params['size'];
 
         $avatarURL = 'http://www.gravatar.com/avatar.php?gravatar_id=' . md5($email);
-        if (isset($params['rating']) && !empty($params['rating'])) $avatarURL .= "&rating=".$params['rating'];
-        if (isset($params['size']) && !empty($params['size'])) $avatarURL .="&size=".$params['size'];
+        if (isset($params['rating']) && !empty($params['rating'])) {
+            $avatarURL .= "&rating=".$params['rating'];
+        }
+        if (isset($params['size']) && !empty($params['size'])) {
+            $avatarURL .="&size=".$params['size'];
+        }
         $avatarURL .= "&default=".urlencode(System::getBaseUrl() . $avatarpath . '/' . $gravatarimage);
     } else {
         // e.g. blank.gif or empty avatars
@@ -59,7 +83,14 @@ function smarty_function_useravatar($params, Zikula_View $view)
         $classString = "class=\"$params[class]\" ";
     }
 
-    $html = '<img ' . $classString . ' src="' . DataUtil::formatForDisplay($avatarURL) . '" title="' . DataUtil::formatForDisplay($uname) . '" alt="' . DataUtil::formatForDisplay($uname) . '" />';
+    $html = '<img ' . $classString . ' src="' . DataUtil::formatForDisplay($avatarURL) . '" title="' . DataUtil::formatForDisplay($uname) . '" alt="' . DataUtil::formatForDisplay($uname) . 
+    if (isset($params['width'])) {
+        $html .= ' width="'.$params['width'].'"';
+    }
+    if (isset($params['height'])) {
+        $html .= ' height="'.$params['height'].'"';
+    }
+    $html .= '" />';
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $avatarURL);
