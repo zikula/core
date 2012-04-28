@@ -769,7 +769,8 @@ class ZLanguage
     public static function getCountryName($country)
     {
         $country = strtolower($country);
-        $map = self::countryMap();
+        $sort = false;
+        $map = self::countryMap($sort);
         if (isset($map[$country])) {
             return $map[$country];
         }
@@ -997,9 +998,9 @@ class ZLanguage
      *
      * @return array
      */
-    public static function countryMap()
+    public static function countryMap($sort = true)
     {
-        return array(
+        $countryMap = array(
                 'ad' => __('Andorra'),
                 'ae' => __('United Arab Emirates'),
                 'af' => __('Afghanistan'),
@@ -1241,7 +1242,12 @@ class ZLanguage
                 'zm' => __('Zambia'),
                 'zr' => __('Zaire'),
                 'zw' => __('Zimbabwe'),
-                'zz' => __('Unknown or unspecified country'));
+                'zz' => __('Unknown or unspecified country')
+        );
+        if ($sort) {
+            asort($countryMap);
+        }
+        return $countryMap;
     }
 
     /**
