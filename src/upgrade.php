@@ -87,6 +87,24 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
     }
 }
 
+// check if the default theme is compatible with Zikula >= 1.3
+$themeName = System::getVar('Default_Theme');
+$themeId   = ThemeUtil::getIDFromName($themeName);
+$theme     = ThemeUtil::getInfo($themeId);
+$directory = $theme['directory'];
+if (!file_exists('themes/'.$directory.'/templates/master.tpl')) {
+    if (ThemeUtil::getIDFromName('Andreas08')  && file_exists('themes/Andreas08/templates/master.tpl')) {
+        System::setVar('Default_Theme', 'Andreas08');
+    } elseif (ThemeUtil::getIDFromName('SeaBreeze') && file_exists('themes/SeaBreeze/templates/master.tpl')) {
+        System::setVar('Default_Theme', 'SeaBreeze');
+    } else {
+        _upg_header();
+        echo '<p class="z-errormsg">' . __('Theme is not valid!') . '</p>' . "\n";
+        _upg_footer();
+        die();
+    }    
+}
+
 switch ($action) {
     case 'upgradeinit':
         _upg_upgradeinit();
