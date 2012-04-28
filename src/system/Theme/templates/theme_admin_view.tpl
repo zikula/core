@@ -41,7 +41,9 @@
         <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
             <td>
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">
+                    {if !$theme.structure}<strike>{/if}
                     <span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span>
+                    {if !$theme.structure}</strike>{/if}
                 </a>
                 {if $theme.name|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips z-form-mandatory-flag">*</span>{/if}
                 <div id="title_{$theme.name}" class="theme_preview z-center" style="display: none;">
@@ -51,19 +53,24 @@
                     {/if}
                 </div>
             </td>
-            <td>{$theme.description|default:$theme.displayname}</td>
+            <td>
+                {if !$theme.structure}<strike>{/if}
+                {$theme.description|default:$theme.displayname}</td>
+                {if !$theme.structure}</strike>{/if}
             <td class="z-right z-nowrap">
                 {gt text='Preview: %s' tag1=$theme.displayname assign=strPreviewTheme}
                 {gt text='Edit: %s' tag1=$theme.displayname assign=strEditTheme}
                 {gt text='Delete: %s' tag1=$theme.displayname assign=strDeleteTheme}
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
+                {if $theme.structure}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}">{icon type="preview" size="extrasmall" __alt="Preview" title=$strPreviewTheme class="tooltips"}</a>
                 <a href="{modurl modname="Theme" type="admin" func="modify" themename=$theme.name}">{icon type="edit" size="extrasmall" __alt="Edit" title=$strEditTheme class="tooltips"}</a>
+                {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
                 <a href="{modurl modname="Theme" type="admin" func="delete" themename=$theme.name}">{icon type="delete" size="extrasmall" __alt="Delete" title=$strDeleteTheme class="tooltips"}</a>
                 {/if}
-                {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2}
+                {if $theme.name neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
                 <a href="{modurl modname="Theme" type="admin" func="setasdefault" themename=$theme.name}">{icon type="ok" size="extrasmall" __alt="Set as default" title=$strSetDefaultTheme class="tooltips"}</a>
                 {/if}
                 <a href="{modurl modname="Theme" type="admin" func="credits" themename=$theme.name}">{icon type="info" size="extrasmall" __alt="Credits" title=$strCreditsTheme class="tooltips"}</a>
