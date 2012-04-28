@@ -15,7 +15,6 @@
 <h3>{gt text="Themes list"}</h3>
 <div id="themes_list" class="z-clearfix">
     {foreach from=$themes item=theme}
-    {if $theme.name neq $currenttheme.name and $theme.structure}
     <dl class="theme_item">
         <dt><strong>{$theme.displayname}</strong></dt>
         <dt>
@@ -34,8 +33,9 @@
         <dd><a class="z-icon-es-preview" href="{$themeurl|safetext}">{gt text="Preview theme"}</a></dd>
         <dd><a class="z-icon-es-ok" href="?newtheme={$theme.name}">{gt text="Use theme"}</a></dd>
     </dl>
-    {/if}
     {/foreach}
 </div>
+
+<br />{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 
 
