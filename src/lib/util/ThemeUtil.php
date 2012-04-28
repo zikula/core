@@ -129,7 +129,9 @@ class ThemeUtil
             if (file_exists('themes/'.$theme.'/templates/master.tpl')) {
                 $themesarray[$key][$theme]['structure'] = true;
             } else {
-                LogUtil::registerError(__f('The structure of the theme %s is not valid!', $values['name']));
+                if (FormUtil::getPassedValue('type', 'POST') == 'admin') {
+                    LogUtil::registerError(__f('The structure of the theme %s is not valid!', $values['name']));
+                }
                 $themesarray[$key][$theme]['structure'] = false;
             }
         }
