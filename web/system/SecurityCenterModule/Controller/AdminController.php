@@ -561,23 +561,52 @@ class AdminController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-
+        
+        // sorting
         $sort = $this->request->get('sort', 'date DESC');
-        $filterdefault = array('uid' => null, 'name' => null, 'tag' => null, 'value' => null, 'page' => null, 'ip' => null, 'impact' => null);
-
+        $sort_exp = explode(" ", $sort);
+        $sorting = array($sort_exp[0] => (isset($sort_exp[1]) ? $sort_exp[1] : 'ASC'));
+        
+        // filtering
+        $filterdefault = array(
+            'uid' => 0, 
+            'name' => null, 
+            'tag' => null, 
+            'value' => null, 
+            'page' => null, 
+            'ip' => null, 
+            'impact' => null
+        );
         $filter = $this->request->get('filter', $filterdefault);
+        $where = array();
+        foreach ($filter as $flt_key => $flt_value) {
+            if (isset($flt_value) && !empty($flt_value)) {
+                $where[$flt_key] = $flt_value;
+            }
+        }
+        
+        // offset
         $startnum = (int)$this->request->get('startnum', 0);
+        
+        // number of items to show
         $pagesize = (int)$this->getVar('pagesize', 25);
+        
+        // get data
+        $item_params = array(
+            'where' => $where,
+            'sorting' => $sorting,
+            'limit' => $pagesize,
+            'offset' => $startnum
+        );
+        $items = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
 
-        // instantiate object, generate where clause and select
-        $class = 'SecurityCenter_DBObject_IntrusionArray';
-        $objArray = new $class();
-        $where = $objArray->genFilter($filter);
-        $data = $objArray->get($where, $sort, $startnum, $pagesize);
-
-        // unserialize filters data
-        foreach ($data as $key => $idsdata) {
-            $data[$key]['filters'] = unserialize($data[$key]['filters']);
+        $data = array();
+        foreach ($items as $item) {
+            $dta = $item->toArray();
+            $dta['username'] = $dta['user']['uname'];
+            $dta['filters'] = unserialize($dta['filters']);
+            unset($dta['user']);
+            $data[] = $dta;
         }
 
         // Create output object
@@ -587,11 +616,14 @@ class AdminController extends \Zikula_AbstractController
 
         // Assign the values for the smarty plugin to produce a pager.
         $pager = array();
-        $pager['numitems'] = $objArray->getCount($where);
+        $pager['numitems'] = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'countAllIntrusions', $item_params);
         $pager['itemsperpage'] = $pagesize;
 
         $this->view->assign('startnum', $startnum)
-                ->assign('pager', $pager);
+                   ->assign('pager', $pager);
+        
+        $csrftoken = SecurityUtil::generateCsrfToken($this->container, true);
+        $this->view->assign('csrftoken', $csrftoken);
 
         // fetch output from template
         return $this->response($this->view->fetch('securitycenter_admin_viewidslog.tpl'));
@@ -663,35 +695,42 @@ class AdminController extends \Zikula_AbstractController
                 $titles = array();
             }
 
-
-            // actual data
-            $sort = 'ids_date DESC';
-            $class = 'SecurityCenter_DBObject_IntrusionArray';
-            $objArray = new $class();
-            $objData = $objArray->get('', $sort);
+            // get data
+            $item_params = array(
+                'sorting' => array('date' => 'DESC')
+            );
+            $items = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
+            
+            $objData = array();
+            foreach ($items as $item) {
+                $dta = $item->toArray();
+                $dta['username'] = $dta['user']['uname'];
+                $dta['filters'] = unserialize($dta['filters']);
+                $dta['date'] = $dta['date']->format('Y-m-d H:i:s');
+                unset($dta['user']);
+                $objData[] = $dta;
+            }
 
             $data = array();
             $find = array("\r\n", "\n");
             $replace = array("", "");
 
             foreach ($objData as $key => $idsdata) {
-                $objData[$key]['filters'] = unserialize($objData[$key]['filters']);
-
                 $filtersused = '';
                 foreach ($objData[$key]['filters'] as $filter) {
                     $filtersused .= $filter['id'] . " ";
                 }
 
                 $datarow = array(
-                        $objData[$key]['name'],
-                        $objData[$key]['tag'],
-                        htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF-8', false),
-                        htmlspecialchars($objData[$key]['page'], ENT_COMPAT, 'UTF-8', false),
-                        $objData[$key]['username'],
-                        $objData[$key]['ip'],
-                        $objData[$key]['impact'],
-                        $filtersused,
-                        $objData[$key]['date']
+                    $objData[$key]['name'],
+                    $objData[$key]['tag'],
+                    htmlspecialchars(str_replace($find, $replace, $objData[$key]['value']), ENT_COMPAT, 'UTF-8', false),
+                    htmlspecialchars($objData[$key]['page'], ENT_COMPAT, 'UTF-8', false),
+                    $objData[$key]['username'],
+                    $objData[$key]['ip'],
+                    $objData[$key]['impact'],
+                    $filtersused,
+                    $objData[$key]['date']
                 );
 
                 array_push($data, $datarow);
