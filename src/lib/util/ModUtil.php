@@ -676,14 +676,14 @@ class ModUtil
             $dbtables = $serviceManager['dbtables'];
             $serviceManager['dbtables'] = array_merge($dbtables, (array)$data);
         } else {
-            // marks the module as tableless
-            $loaded[$modname] = false;
+            // the module is tableless (Doctrine or doesn't use tables at all)
+            return true;
         }
 
         // update the loaded status
         $serviceManager['modutil.dbinfoload.loaded'] = $loaded;
 
-        return isset($data) ? $data : $loaded[$modname] ?: true;
+        return isset($data) ? $data : $loaded[$modname];
     }
 
     /**
