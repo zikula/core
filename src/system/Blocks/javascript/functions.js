@@ -102,8 +102,8 @@ function menutree_stylehelper_onload()
 
 function menutree_stylehelper(event)
 {
-    //stop if it's onload run and stylesheet is selected
-    if (event == undefined && $('menutree_stylesheet').value != 'null') {
+    //stop if it's onload run
+    if (event == undefined) {
         return;
     }
     //pattern for tpl name
