@@ -28,8 +28,10 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        // create ids intrusions table
-        if (!DBUtil::createTable('sc_intrusion')) {
+        // create the table
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array('SecurityCenterModule\Entity\Intrusion'));
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -66,7 +68,7 @@ class Installer extends \Zikula_AbstractInstaller
         System::setVar('outputfilter', 1);
 
         // Location of HTML Purifier
-        System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
+        System::setVar('htmlpurifierlocation', 'system/SecurityCenterModule/vendor/htmlpurifier/');
 
         // HTML Purifier cache dir
         $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -101,9 +103,9 @@ class Installer extends \Zikula_AbstractInstaller
 
         // now lets set the default mail message contents
         // file is read from includes directory
-        $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/summary.txt'));
+        $summarycontent = implode('', file(getcwd() . '/system/SecurityCenterModule/vendor/summary.txt'));
         System::setVar('summarycontent', $summarycontent);
-        $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/full.txt'));
+        $fullcontent = implode('', file(getcwd() . '/system/SecurityCenterModule/vendor/full.txt'));
         System::setVar('fullcontent', $fullcontent);
 
         // cci vars, see pndocs/ccisecuritystrings.txt
@@ -127,116 +129,118 @@ class Installer extends \Zikula_AbstractInstaller
         System::setVar('htmlentities', '1');
 
         // default values for AllowableHTML
-        $defhtml = array('!--' => 2,
-                'a' => 2,
-                'abbr' => 1,
-                'acronym' => 1,
-                'address' => 1,
-                'applet' => 0,
-                'area' => 0,
-                'article' => 1,
-                'aside' => 1,
-                'audio' => 0,
-                'b' => 1,
-                'base' => 0,
-                'basefont' => 0,
-                'bdo' => 0,
-                'big' => 0,
-                'blockquote' => 2,
-                'br' => 2,
-                'button' => 0,
-                'canvas' => 0,
-                'caption' => 1,
-                'center' => 2,
-                'cite' => 1,
-                'code' => 0,
-                'col' => 1,
-                'colgroup' => 1,
-                'command' => 0,
-                'datalist' => 0,
-                'dd' => 1,
-                'del' => 0,
-                'details' => 1,
-                'dfn' => 0,
-                'dir' => 0,
-                'div' => 2,
-                'dl' => 1,
-                'dt' => 1,
-                'em' => 2,
-                'embed' => 0,
-                'fieldset' => 1,
-                'figcaption' => 0,
-                'figure' => 0,
-                'footer' => 0,
-                'font' => 0,
-                'form' => 0,
-                'h1' => 1,
-                'h2' => 1,
-                'h3' => 1,
-                'h4' => 1,
-                'h5' => 1,
-                'h6' => 1,
-                'header' => 0,
-                'hgroup' => 0,
-                'hr' => 2,
-                'i' => 1,
-                'iframe' => 0,
-                'img' => 2,
-                'input' => 0,
-                'ins' => 0,
-                'keygen' => 0,
-                'kbd' => 0,
-                'label' => 1,
-                'legend' => 1,
-                'li' => 2,
-                'map' => 0,
-                'mark' => 0,
-                'menu' => 0,
-                'marquee' => 0,
-                'meter' => 0,
-                'nav' => 0,
-                'nobr' => 0,
-                'object' => 0,
-                'ol' => 2,
-                'optgroup' => 0,
-                'option' => 0,
-                'output' => 0,
-                'p' => 2,
-                'param' => 0,
-                'pre' => 2,
-                'progress' => 0,
-                'q' => 0,
-                'rp' => 0,
-                'rt' => 0,
-                'ruby' => 0,
-                's' => 0,
-                'samp' => 0,
-                'script' => 0,
-                'section' => 0,
-                'select' => 0,
-                'small' => 0,
-                'source' => 0,
-                'span' => 2,
-                'strike' => 0,
-                'strong' => 2,
-                'sub' => 1,
-                'summary' => 1,
-                'sup' => 0,
-                'table' => 2,
-                'tbody' => 1,
-                'td' => 2,
-                'textarea' => 0,
-                'tfoot' => 1,
-                'th' => 2,
-                'thead' => 0,
-                'time' => 0,
-                'tr' => 2,
-                'tt' => 2,
-                'u' => 0,
-                'ul' => 2,
-                'var' => 0,
-                'video' => 0,
-                'wbr' => 0);
+        $defhtml = array(
+            '!--' => 2,
+            'a' => 2,
+            'abbr' => 1,
+            'acronym' => 1,
+            'address' => 1,
+            'applet' => 0,
+            'area' => 0,
+            'article' => 1,
+            'aside' => 1,
+            'audio' => 0,
+            'b' => 1,
+            'base' => 0,
+            'basefont' => 0,
+            'bdo' => 0,
+            'big' => 0,
+            'blockquote' => 2,
+            'br' => 2,
+            'button' => 0,
+            'canvas' => 0,
+            'caption' => 1,
+            'center' => 2,
+            'cite' => 1,
+            'code' => 0,
+            'col' => 1,
+            'colgroup' => 1,
+            'command' => 0,
+            'datalist' => 0,
+            'dd' => 1,
+            'del' => 0,
+            'details' => 1,
+            'dfn' => 0,
+            'dir' => 0,
+            'div' => 2,
+            'dl' => 1,
+            'dt' => 1,
+            'em' => 2,
+            'embed' => 0,
+            'fieldset' => 1,
+            'figcaption' => 0,
+            'figure' => 0,
+            'footer' => 0,
+            'font' => 0,
+            'form' => 0,
+            'h1' => 1,
+            'h2' => 1,
+            'h3' => 1,
+            'h4' => 1,
+            'h5' => 1,
+            'h6' => 1,
+            'header' => 0,
+            'hgroup' => 0,
+            'hr' => 2,
+            'i' => 1,
+            'iframe' => 0,
+            'img' => 2,
+            'input' => 0,
+            'ins' => 0,
+            'keygen' => 0,
+            'kbd' => 0,
+            'label' => 1,
+            'legend' => 1,
+            'li' => 2,
+            'map' => 0,
+            'mark' => 0,
+            'menu' => 0,
+            'marquee' => 0,
+            'meter' => 0,
+            'nav' => 0,
+            'nobr' => 0,
+            'object' => 0,
+            'ol' => 2,
+            'optgroup' => 0,
+            'option' => 0,
+            'output' => 0,
+            'p' => 2,
+            'param' => 0,
+            'pre' => 2,
+            'progress' => 0,
+            'q' => 0,
+            'rp' => 0,
+            'rt' => 0,
+            'ruby' => 0,
+            's' => 0,
+            'samp' => 0,
+            'script' => 0,
+            'section' => 0,
+            'select' => 0,
+            'small' => 0,
+            'source' => 0,
+            'span' => 2,
+            'strike' => 0,
+            'strong' => 2,
+            'sub' => 1,
+            'summary' => 1,
+            'sup' => 0,
+            'table' => 2,
+            'tbody' => 1,
+            'td' => 2,
+            'textarea' => 0,
+            'tfoot' => 1,
+            'th' => 2,
+            'thead' => 0,
+            'time' => 0,
+            'tr' => 2,
+            'tt' => 2,
+            'u' => 0,
+            'ul' => 2,
+            'var' => 0,
+            'video' => 0,
+            'wbr' => 0
+        );
         System::setVar('AllowableHTML', $defhtml);
 
         // Initialisation successful
@@ -312,7 +316,7 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        // Deletion fail - we dont want users disabling this module!
+        // this module can't be uninstalled
         return false;
     }
 

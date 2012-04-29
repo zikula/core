@@ -86,17 +86,15 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
         // theme directory
         $theme         = DataUtil::formatForOS(UserUtil::getTheme());
         $osmodname     = DataUtil::formatForOS($params['modname']);
-        $themepath     = "themes/$theme/javascript/$osmodname";
+        $themepath     = "themes/$theme/Resources/public/js/$osmodname";
 
         // module directory
         $modinfo       = ModUtil::getInfoFromName($params['modname']);
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
-        $modpath       = "modules/$osmoddir/javascript";
-        $syspath       = "system/$osmoddir/javascript";
-        $modpathOld       = "modules/$osmoddir/pnjavascript";
-        $syspathOld       = "system/$osmoddir/pnjavascript";
-
-        $searchpaths = array( $themepath, $modpath, $syspath, $modpathOld, $syspathOld);
+        $modpath       = "modules/$osmoddir/Resources/public/js";
+        $syspath       = "system/$osmoddir/Resources/public/js";
+        
+        $searchpaths = array($themepath, $modpath, $syspath);
     }
     $osscript = DataUtil::formatForOS($params['script']);
 
