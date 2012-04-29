@@ -51,7 +51,7 @@
                             <span class="z-itemcell z-w25">{gt text="Module"}</span>
                             <span class="z-itemcell z-w15">{gt text="Function type"}</span>
                             <span class="z-itemcell z-w25">{gt text="Function name"}</span>
-                            <span class="z-itemcell z-w25">{gt text="Function arguments"}</span>
+                            <span class="z-itemcell z-w25">{gt text="Function arguments (delimiter=&)"}</span>
                             <span class="z-itemcell z-w10">{gt text="Delete"}</span>
                         </li>
 
