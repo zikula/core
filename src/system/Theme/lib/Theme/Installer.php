@@ -101,9 +101,9 @@ class Theme_Installer extends Zikula_AbstractInstaller
                 if (!empty($blocks)) {
                     $thememodid = ModUtil::getIdFromName('Theme');
                     foreach ($blocks as $block) {
-                        $block['bkey'] = 'render';
-                        $block['mid'] = $thememodid;
-                        DBUtil::updateObject($block, 'blocks', '', 'bid');
+                        $block->setBkey('render');
+                        $block->setMid($thememodid);
+                        $this->entityManager->flush();
                     }
                 }
 
