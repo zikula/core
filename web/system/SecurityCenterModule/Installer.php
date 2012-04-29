@@ -68,7 +68,7 @@ class Installer extends \Zikula_AbstractInstaller
         System::setVar('outputfilter', 1);
 
         // Location of HTML Purifier
-        System::setVar('htmlpurifierlocation', 'system/SecurityCenterModule/vendor/htmlpurifier/');
+        System::setVar('htmlpurifierlocation', __DIR__.'/vendor/htmlpurifier/');
 
         // HTML Purifier cache dir
         $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -83,7 +83,7 @@ class Installer extends \Zikula_AbstractInstaller
         // create vars for phpids usage
         System::setVar('useids', 0);
         System::setVar('idsmail', 0);
-        System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
+        System::setVar('idsrulepath', __DIR__.'/Resources/config/phpids_zikula_default.xml');
         System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
         System::setVar('idsfilter', 'xml');               // filter type
         System::setVar('idsimpactthresholdone', 1);       // db logging
@@ -103,9 +103,9 @@ class Installer extends \Zikula_AbstractInstaller
 
         // now lets set the default mail message contents
         // file is read from includes directory
-        $summarycontent = implode('', file(getcwd() . '/system/SecurityCenterModule/vendor/summary.txt'));
+        $summarycontent = implode('', __DIR__.'/vendor/summary.txt'));
         System::setVar('summarycontent', $summarycontent);
-        $fullcontent = implode('', file(getcwd() . '/system/SecurityCenterModule/vendor/full.txt'));
+        $fullcontent = implode('', __DIR__.'/vendor/full.txt'));
         System::setVar('fullcontent', $fullcontent);
 
         // cci vars, see pndocs/ccisecuritystrings.txt
@@ -271,7 +271,7 @@ class Installer extends \Zikula_AbstractInstaller
                 // create vars for phpids usage
                 System::setVar('useids', 0);
                 System::setVar('idsmail', 0);
-                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
+                System::setVar('idsrulepath', __DIR__.'/Resources/config/phpids_zikula_default.xml');
                 System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
                 System::setVar('idsfilter', 'xml');               // filter type
                 System::setVar('idsimpactthresholdone', 1);       // db logging
@@ -283,7 +283,7 @@ class Installer extends \Zikula_AbstractInstaller
                 System::setVar('idsjsonfields', array('POST.__jsondata'));
 
                 // Location of HTML Purifier
-                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
+                System::setVar('idsrulepath', __DIR__.'/Resources/config/phpids_zikula_default.xml');
                 System::setVar('idsexceptions', array('GET.__utmz',
                                 'GET.__utmc',
                                 'REQUEST.linksorder', 'POST.linksorder',
