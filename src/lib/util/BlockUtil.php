@@ -126,7 +126,7 @@ class BlockUtil
                     if (empty($filter['fargs'])) {
                         $rule4 = true;
                     } else {
-                        $testargs = explode('&',$filter['fargs']);
+                        $testargs = explode('&', $filter['fargs']);
                         foreach ($testargs as $test) {
                             $key = array_search($test, $customargs);
                             if ($key === false){
