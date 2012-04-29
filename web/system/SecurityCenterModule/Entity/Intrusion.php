@@ -2,6 +2,7 @@
 
 namespace SecurityCenterModule\Entity;
 
+use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="sc_intrusion")
  * @ORM\Entity
  */
-class ScIntrusionEntity
+class Intrusion extends EntityAccess
 {
     /**
      * @var integer $id
@@ -48,13 +49,12 @@ class ScIntrusionEntity
      * @ORM\Column(name="page", type="text", nullable=false)
      */
     private $page;
-
+    
     /**
-     * @var integer $uid
-     *
-     * @ORM\Column(name="uid", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="\UsersModule\Entity\User")
+     * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
      */
-    private $uid;
+    private $user;
 
     /**
      * @var string $ip
@@ -184,25 +184,25 @@ class ScIntrusionEntity
     }
 
     /**
-     * Set uid
+     * Set user
      *
-     * @param integer $uid
+     * @param \UsersModule\Entity\User $user
      * @return ScIntrusion
      */
-    public function setUid($uid)
+    public function setUser($user)
     {
-        $this->uid = $uid;
+        $this->user = $user;
         return $this;
     }
 
     /**
-     * Get uid
+     * Get user
      *
-     * @return integer 
+     * @return \UsersModule\Entity\User 
      */
-    public function getUid()
+    public function getUser()
     {
-        return $this->uid;
+        return $this->user;
     }
 
     /**

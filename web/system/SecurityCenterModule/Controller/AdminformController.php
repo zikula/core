@@ -34,7 +34,8 @@ class AdminformController extends \Zikula_AbstractController
     public function deleteidsentryAction()
     {
         // verify auth-key
-        $this->checkCsrfToken();
+        $csrftoken = $this->request->get('csrftoken');
+        $this->checkCsrfToken($csrftoken);
 
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
@@ -48,16 +49,16 @@ class AdminformController extends \Zikula_AbstractController
         if (!is_numeric($id)) {
             return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
-
-        $object = new \SecurityCenterModule\DBObject\Intrusion();
-        $data = $object->get($id);
+        
+        $intrusion = $this->entityManager->find('SecurityCenterModule\Entity\Intrusion', $id);
 
         // check for valid object
-        if (!$data) {
+        if (!$intrusion) {
             return LogUtil::registerError($this->__f('Error! Invalid %s received.', "object ID [$id]"));
         } else {
             // delete object
-            $object->delete();
+            $this->entityManager->remove($intrusion);
+            $this->entityManager->flush();
         }
 
         // redirect back to view function
