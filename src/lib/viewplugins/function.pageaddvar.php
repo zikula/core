@@ -40,8 +40,10 @@
  * to the page output by the page variable output filter.)
  *
  * Examples
+ *   {pageaddvar name='javascript' value='jquery'}
  *   {pageaddvar name='javascript' value='path/to/myscript.js'}
  *   {pageaddvar name='javascript' value='path/to/myscript.js,path/to/another/script.js'}
+ *   {pageaddvar name="jsgettext" value="module_news_js:News"}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
