@@ -15,7 +15,7 @@
 <h3>{gt text="Themes list"}</h3>
 <div id="themes_list" class="z-clearfix">
     {foreach from=$themes item=theme}
-    {if $theme.name neq $currenttheme.name}
+    {if $theme.name neq $currenttheme.name and $theme.structure}
     <dl class="theme_item">
         <dt><strong>{$theme.displayname}</strong></dt>
         <dt>

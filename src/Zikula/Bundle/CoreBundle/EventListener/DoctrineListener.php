@@ -23,8 +23,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class DoctrineListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
-    {
-        return array(
+    {        return array(
             'core.preinit' => array('initialize'),
             );
     }
