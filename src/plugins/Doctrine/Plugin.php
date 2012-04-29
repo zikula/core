@@ -16,6 +16,37 @@
  */
 class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
 {
+    public function __construct(Zikula_ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->_setup();
+
+        $meta = $this->getMeta();
+        if (!isset($meta['displayname']) && !isset($meta['description']) && !isset($meta['version'])) {
+            throw new InvalidArgumentException(sprintf('%s->getMeta() must be implemented according to the abstract.  See docblock in Zikula_AbstractPlugin for details', get_class($this)));
+        }
+
+        // Load any handlers if they exist
+        if ($this->getReflection()->hasMethod('setupHandlerDefinitions')) {
+            $this->setupHandlerDefinitions();
+        }
+    }
+
+    private function _setup()
+    {
+        $this->className = get_class($this);
+        $this->serviceId = PluginUtil::getServiceId($this->className);
+        $this->baseDir = dirname($this->getReflection()->getFileName());
+
+        $this->moduleName = 'zikula';
+        $this->pluginName = 'Doctrine';
+        $this->pluginType = self::TYPE_SYSTEM;
+        $this->domain = 'systemplugin_doctrine';
+
+        $this->meta = $this->getMeta();
+    }
+
     /**
      * Get plugin meta data.
      *

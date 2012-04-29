@@ -106,10 +106,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         $this->eventManager = $this->getService('zikula.eventmanager');
 
         $this->request = $this->getService('request');
-        if ($this->hasService('doctrine.entitymanager')) {
-            // todo: remove this check post 1.3.0 release - drak
-            $this->entityManager = $this->getService('doctrine.entitymanager');
-        }
+        $this->entityManager = $this->getService('doctrine.entitymanager');
         $this->_configureBase();
         $this->initialize();
         $this->postInitialize();
