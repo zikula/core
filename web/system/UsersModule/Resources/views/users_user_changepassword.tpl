@@ -58,6 +58,13 @@
                     {/foreach}
                 </div>
                 {/if}
+                {if isset($password_errors.pass) && !empty($password_errors.pass)}
+                <div class="z-formnote z-errormsg">
+                    {foreach from=$password_errors.pass item='message' name='messages'}
+                    <p>{$message}</p>
+                    {/foreach}
+                </div>
+                {/if}
             </div>
             {if $modvars.UsersModule.use_password_strength_meter == 1}
             <div id="users_user_changepassword_passmeter">
