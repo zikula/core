@@ -185,17 +185,13 @@ class Zikula_Workflow_Util
         if (!isset($module)) {
             $module = ModUtil::getName();
         }
-        //This is a static function, so we have to user ServiceUtil to get the manager
-        $sm = ServiceUtil::getManager();
-        $entityManager = $sm->get('doctrine')->getEntityManager();
-        $workflow = $entityManager->findBy('Workflow\Entity\Workflow', array('module' => $module));
-        $entityManager->remove($workflow);
-        $entityManager->flush();
-        //Not sure what to return here. Or if there is some error checking that needs to be done.        
-        return true;
-        //TODO: Delete this old code once you have debugged the above.
-        // this is a cheat to delete all items in table with value $module
-        //return (bool)DBUtil::deleteObjectByID('workflows', $module, 'module');
+        //This is a static function, so we have to user ServiceUtil to get the entity manager
+        $em = ServiceUtil::getManager()->get('doctrine')->getEntityManager();
+        //crete the dql query.
+        $dql = "DELETE  Zikula\Core\Doctrine\Entity\Workflows  w WHERE w.module = '$module'";
+        $query = $em->createQuery($dql);
+        $result = $query->execute();        
+        return $result;
     }
 
     /**
@@ -209,20 +205,13 @@ class Zikula_Workflow_Util
     {
         $workflow = $obj['__WORKFLOW__'];
         $idcolumn = $workflow['obj_idcolumn'];
-        //This is a static function, so we have to user ServiceUtil to get the manager
-        $sm = ServiceUtil::getManager();
-        $entityManager = $sm->get('doctrine')->getEntityManager();
-        //I need to add code to replicate this line
-        if (!DBUtil::deleteObjectByID($workflow['obj_table'], $obj[$idcolumn], $idcolumn)) {
-            return false;
-        }
-        
-        $workflow = $entityManager->findBy('Workflow\Entity\Workflow', array('id' => $workflow['id']));
-        $entityManager->remove($workflow);
-        $entityManager->flush();
-        //Not sure what to return here. Or if there is some error checking that needs to be done.        
-        return true;
-        //return (bool)DBUtil::deleteObjectByID('workflows', $workflow['id']);
+        //This is a static function, so we have to user ServiceUtil to get the entity manager
+        $em = ServiceUtil::getManager()->get('doctrine')->getEntityManager();
+        //crete the dql query.
+        $dql = "DELETE  Zikula\Core\Doctrine\Entity\Workflows i WHERE i.objIdcolumn = '$idcolumn'";
+        $query = $em->createQuery($dql);
+        $result = $query->execute();        
+        return $result;
     }
 
     /**
