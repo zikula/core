@@ -185,9 +185,17 @@ class Zikula_Workflow_Util
         if (!isset($module)) {
             $module = ModUtil::getName();
         }
-
+        //This is a static function, so we have to user ServiceUtil to get the manager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->get('doctrine')->getEntityManager();
+        $workflow = $entityManager->findBy('Workflow\Entity\Workflow', array('module' => $module));
+        $entityManager->remove($workflow);
+        $entityManager->flush();
+        //Not sure what to return here. Or if there is some error checking that needs to be done.        
+        return true;
+        //TODO: Delete this old code once you have debugged the above.
         // this is a cheat to delete all items in table with value $module
-        return (bool)DBUtil::deleteObjectByID('workflows', $module, 'module');
+        //return (bool)DBUtil::deleteObjectByID('workflows', $module, 'module');
     }
 
     /**
@@ -201,11 +209,20 @@ class Zikula_Workflow_Util
     {
         $workflow = $obj['__WORKFLOW__'];
         $idcolumn = $workflow['obj_idcolumn'];
+        //This is a static function, so we have to user ServiceUtil to get the manager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->get('doctrine')->getEntityManager();
+        //I need to add code to replicate this line
         if (!DBUtil::deleteObjectByID($workflow['obj_table'], $obj[$idcolumn], $idcolumn)) {
             return false;
         }
-
-        return (bool)DBUtil::deleteObjectByID('workflows', $workflow['id']);
+        
+        $workflow = $entityManager->findBy('Workflow\Entity\Workflow', array('id' => $workflow['id']));
+        $entityManager->remove($workflow);
+        $entityManager->flush();
+        //Not sure what to return here. Or if there is some error checking that needs to be done.        
+        return true;
+        //return (bool)DBUtil::deleteObjectByID('workflows', $workflow['id']);
     }
 
     /**
@@ -349,14 +366,21 @@ class Zikula_Workflow_Util
 
         if (!empty($obj[$idcolumn])) {
             // get workflow data from DB
-            $dbtables = DBUtil::getTables();
+            $dbtables = ServiceUtil::getManager()->getParameter('dbtables');
             $workflows_column = $dbtables['workflows_column'];
-            $where = "WHERE $workflows_column[module] = '" . DataUtil::formatForStore($module) . "'
-                        AND $workflows_column[obj_table] = '" . DataUtil::formatForStore($dbTable) . "'
-                        AND $workflows_column[obj_idcolumn] = '" . DataUtil::formatForStore($idcolumn) . "'
-                        AND $workflows_column[obj_id] = '" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
-
-            $workflow = DBUtil::selectObject('workflows', $where);
+            //This is a static function, so we have to user ServiceUtil to get the manager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->get('doctrine')->getEntityManager();
+            //prep the date for the table 
+            $module = DataUtil::formatForStore($module);
+            $obj_table = DataUtil::formatForStore($dbTable);
+            $obj_idcolumn =  DataUtil::formatForStore($idcolumn);
+            $obj_id = DataUtil::formatForStore($obj[$idcolumn]);
+            $workflow = $entityManager->findBy('Workflow\Entity\Workflow', 
+                    array('module' => $module, 
+                            'obj_table' => $obj_table,
+                            'obj_idcolumn' => $obj_idcolumn,
+                            'obj_id' => $obj_id));
         }
 
         if (!$workflow) {
@@ -367,6 +391,7 @@ class Zikula_Workflow_Util
         }
 
         // attach workflow to object
+        //I should be able to dump this since I am using doctrine
         if ($obj instanceof Doctrine_Record) {
             $obj->mapValue('__WORKFLOW__', $workflow);
         } else {
