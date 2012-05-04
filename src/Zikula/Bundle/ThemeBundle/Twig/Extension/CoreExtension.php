@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Bundle\ThemeBundle\TwigExtension;
+namespace Zikula\Bundle\ThemeBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,7 +23,25 @@ class CoreExtension extends \Twig_Extension
         return array(
             'pagesetvar' => new \Twig_Function_Method($this, 'pageSetVar'),
             'pageaddvar' => new \Twig_Function_Method($this, 'pageAddVar'),
+            'button' => new \Twig_Function_Method($this, 'button'),
+            'img' => new \Twig_Function_Method($this, 'img'),
+            'icon' => new \Twig_Function_Method($this, 'icon'),
         );
+    }
+
+    public function button()
+    {
+
+    }
+
+    public function img()
+    {
+
+    }
+
+    public function icon()
+    {
+
     }
 
     public function pageSetVar($name, $value = null)
