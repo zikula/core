@@ -5,7 +5,7 @@
         <title><?php echo __('Unable to start session'); ?></title>
         <style type="text/css">
             html {
-                background: #eaeaea; /*non-CSS3 browsers*/
+				background: #eaeaea; /*non-CSS3 browsers*/
 				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
 				background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ) fixed; /*webkit*/
 				background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*gecko*/
