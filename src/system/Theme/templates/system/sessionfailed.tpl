@@ -1,16 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<html xml:lang="<?php echo ZLanguage::getLanguageCode(); ?>" dir="<?php echo ZLanguage::getDirection(); ?>">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php echo __('Unable to start session'); ?></title>
         <style type="text/css">
             html {
                 background: #eaeaea; /*non-CSS3 browsers*/
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
-                background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ); /*webkit*/
-                background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*gecko*/
-                background: linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*CSS3*/
-                height: 100%;
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#eaeaea'); /*IE*/
+				background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#eaeaea) ) fixed; /*webkit*/
+				background: -moz-linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*gecko*/
+				background: linear-gradient(center top , #FAFAFA, #eaeaea) no-repeat scroll 0 0 #eaeaea; /*CSS3*/
+				height: 100%;
             }
             body {
                 font-family: Verdana, Arial, Helvetica, Sans-serif;
