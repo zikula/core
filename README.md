@@ -20,6 +20,10 @@ contribute to this branch, please note manual installation is required.
 
 Regularly run composer also to make sure dependencies are up to date.
 
+## PHP Requirements
+
+Zikula requires PHP 5.3.3 and above.
+
 ## Manual installation process
 
   - Install the database manually from `docs/installation.sql`
