@@ -91,6 +91,9 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $ORMConfig = new \Doctrine\ORM\Configuration;
         $serviceManager->attachService('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
+        
+        // create proxy cache dir
+        CacheUtil::createLocalDir('doctrinemodels');
 
         // create proxy cache dir
         CacheUtil::createLocalDir('doctrinemodels');
