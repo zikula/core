@@ -498,6 +498,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         Zikula_View_Resource::register($this, 'function', 'pageaddvar', $delayed_load, $cacheable, array('name', 'value'));
         // pagegetvar
         Zikula_View_Resource::register($this, 'function', 'pagegetvar', $delayed_load, $cacheable, array('name', 'html', 'assign'));
+        // pager
+        Zikula_View_Resource::register($this, 'function', 'pager', $delayed_load, $cacheable, array('modname', 'type', 'func', 'rowcount', 'limit', 'posvar', 'owner', 'template', 'includeStylesheet', 'anchorText', 'maxpages', 'display', 'class', 'processDetailLinks', 'processUrls', 'optimize'));
         // pageregistervar
         Zikula_View_Resource::register($this, 'function', 'pageregistervar', $delayed_load, $cacheable, array('name'));
         // pagesetvar
