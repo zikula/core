@@ -26,3 +26,10 @@ composer.phar
 /web/ztemp/Theme_Config/!\.index.html
 /web/ztemp/doctrinemodels/!\.index.html
 
+/web/nbproject/private/
+/nbproject/
+/app/config/core_legacy.yml
+/app/config/database.yml
+/app/console
+/web/.htaccess
+.DS_Store
