@@ -218,11 +218,11 @@ class DebugToolbar
 
         $data['http_request'] = array(
             'method' => $request->getMethod(),
-            'get' => (array)$request->getGet()->getCollection(),
-            'post' => (array)$request->getPost()->getCollection(),
-            'files' => (array)$request->getFiles()->getCollection(),
+            'get' => (array)$request->query->getCollection(),
+            'post' => (array)$request->request->getCollection(),
+            'files' => (array)$request->files->getCollection(),
             'cookie' => (array)$request->getCookie()->getCollection(),
-            'server' => (array)$request->getServer()->getCollection(),
+            'server' => (array)$request->server->getCollection(),
             'env' => (array)$request->getEnv()->getCollection(),
         );
 

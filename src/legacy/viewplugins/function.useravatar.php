@@ -85,7 +85,7 @@ function smarty_function_useravatar($params, Zikula_View $view)
         $classString = "class=\"$params[class]\" ";
     }
 
-    $html = '<img ' . $classString . ' src="' . DataUtil::formatForDisplay($avatarURL) . '" title="' . DataUtil::formatForDisplay($uname) . '" alt="' . DataUtil::formatForDisplay($uname) . 
+    $html = '<img ' . $classString . ' src="' . DataUtil::formatForDisplay($avatarURL) . '" title="' . DataUtil::formatForDisplay($uname) . '" alt="' . DataUtil::formatForDisplay($uname);
     if (isset($params['width'])) {
         $html .= ' width="'.$params['width'].'"';
     }

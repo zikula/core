@@ -249,12 +249,12 @@ class Zikula_Form_View extends Zikula_View
         $this->eventHandler->preInitialize();
 
         if ($this->isPostBack()) {
-            if (!SecurityUtil::validateCsrfToken($this->request->getPost()->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->container)) {
+            if (!SecurityUtil::validateCsrfToken($this->request->request->filter('csrftoken', '', FILTER_SANITIZE_STRING), $this->container)) {
                 return LogUtil::registerAuthidError();
             }
 
             // retrieve form id
-            $formId = $this->request->getPost()->filter("__formid", '', FILTER_SANITIZE_STRING);
+            $formId = $this->request->request->filter("__formid", '', FILTER_SANITIZE_STRING);
             $this->setFormId($formId);
 
             $this->decodeIncludes();
@@ -1259,8 +1259,8 @@ class Zikula_Form_View extends Zikula_View
      */
     public function decodePostBackEvent()
     {
-        $eventTarget = $this->request->getPost()->get('FormEventTarget', 1);
-        $eventArgument = $this->request->getPost()->get('FormEventArgument', 1);
+        $eventTarget = $this->request->request->get('FormEventTarget', 1);
+        $eventArgument = $this->request->request->get('FormEventArgument', 1);
 
         if ($eventTarget != '') {
             $targetPlugin = $this->getPluginById($eventTarget);

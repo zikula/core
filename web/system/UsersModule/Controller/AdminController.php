@@ -1353,7 +1353,7 @@ class AdminController extends \Zikula_AbstractController
         if ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
 
-            $formData->setFromRequestCollection($this->request->getPost());
+            $formData->setFromRequestCollection($this->request->request);
 
             $restoreView = $this->request->request->get('restoreview', 'view');
 
@@ -1881,7 +1881,7 @@ class AdminController extends \Zikula_AbstractController
         if ($this->request->getMethod() == 'POST') {
             $this->checkCsrfToken();
 
-            $modVars = $this->request->getPost();
+            $modVars = $this->request->request;
             $configData->setFromRequestCollection($modVars);
 
             if ($configData->isValid()) {

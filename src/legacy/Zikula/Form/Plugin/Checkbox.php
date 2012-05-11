@@ -204,7 +204,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
-            $this->checked = ($this->request->getPost()->get($this->inputName, null) == null ? false : true);
+            $this->checked = ($this->request->request->get($this->inputName, null) == null ? false : true);
         }
     }
 

@@ -193,7 +193,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *        return $view->setErrorMsg('No access');
      *     }
      *
-     *     $id = $this->request->getPost()->get('id');
+     *     $id = $this->request->request->get('id');
      *     $data = ModUtil::apiFunc('MyModuleModule', 'user', 'get', array('id' => $id));
      *     if (count($data) == 0) {
      *         return $view->setErrorMsg('Unknown data');
