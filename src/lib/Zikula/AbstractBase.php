@@ -706,7 +706,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function checkCsrfToken($token=null)
     {
         if (is_null($token)) {
-            $token = $this->request->getPost()->get('csrftoken', false);
+            $token = $this->request->request->get('csrftoken', false);
         }
 
         $tokenValidator = $this->serviceManager->getService('token.validator');
