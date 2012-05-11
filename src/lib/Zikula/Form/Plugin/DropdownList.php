@@ -348,7 +348,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
-            $value = $this->request->getPost()->get($this->inputName, null);
+            $value = $this->request->request->get($this->inputName, null);
             $value = ($value == null) ? array() : (array)$value;
 
             for ($i = 0, $count = count($value); $i < $count; ++$i) {

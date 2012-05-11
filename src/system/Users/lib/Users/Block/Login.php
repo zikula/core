@@ -85,7 +85,7 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
                 $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
 
                 if ($authenticationMethodList->countEnabledForAuthentication() > 1) {
-                    $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
+                    $selectedAuthenticationMethod = $this->request->request->get('authentication_method', false);
                 } else {
                     // There is only one (or there is none), so auto-select it.
                     $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();

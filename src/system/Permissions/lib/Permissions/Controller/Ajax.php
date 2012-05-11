@@ -30,12 +30,12 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $pid       = (int)$this->request->getPost()->get('pid');
-        $gid       = (int)$this->request->getPost()->get('gid');
-        $seq       = (int)$this->request->getPost()->get('seq', 9999);
-        $component = $this->request->getPost()->get('comp', '.*');
-        $instance  = $this->request->getPost()->get('inst', '.*');
-        $level     = (int)$this->request->getPost()->get('level', 0);
+        $pid       = (int)$this->request->request->get('pid');
+        $gid       = (int)$this->request->request->get('gid');
+        $seq       = (int)$this->request->request->get('seq', 9999);
+        $component = $this->request->request->get('comp', '.*');
+        $instance  = $this->request->request->get('inst', '.*');
+        $level     = (int)$this->request->request->get('level', 0);
 
         if (preg_match("/[\n\r\t\x0B]/", $component)) {
             $component = trim(preg_replace("/[\n\r\t\x0B]/", "", $component));
@@ -87,7 +87,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $permorder = $this->request->getPost()->get('permorder');
+        $permorder = $this->request->request->get('permorder');
 
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
@@ -144,7 +144,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $pid = (int)$this->request->getPost()->get('pid');
+        $pid = (int)$this->request->request->get('pid');
 
         // check if this is the overall admin permssion and return if this shall be deleted
         $perm = DBUtil::selectObjectByID('group_perms', $pid, 'pid');
@@ -177,10 +177,10 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
 
-        $uname = $this->request->getPost()->get('test_user', '');
-        $comp  = $this->request->getPost()->get('test_component', '.*');
-        $inst  = $this->request->getPost()->get('test_instance', '.*');
-        $level = $this->request->getPost()->get('test_level', ACCESS_READ);
+        $uname = $this->request->request->get('test_user', '');
+        $comp  = $this->request->request->get('test_component', '.*');
+        $inst  = $this->request->request->get('test_instance', '.*');
+        $level = $this->request->request->get('test_level', ACCESS_READ);
 
         $result = $this->__('Permission check result:') . ' ';
         $uid = UserUtil::getIdFromName($uname);

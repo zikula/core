@@ -262,7 +262,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         // Do not read new value if readonly (evil submiter might have forged it)
         // Besides that, a disabled checkbox returns nothing at all, so old values are good to keep
         if (!$this->readOnly) {
-            $value = $this->request->getPost()->get($this->inputName, null);
+            $value = $this->request->request->get($this->inputName, null);
             if ($value == null) {
                 $value = array();
             }

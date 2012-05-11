@@ -561,7 +561,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                       ->fetch('extensions_admin_initialise.tpl');
                 }
             } else {
-                $dependencies = (array)$this->request->getPost()->get('dependencies', array());
+                $dependencies = (array)$this->request->request->get('dependencies', array());
             }
         }
 
@@ -1363,7 +1363,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function deactivatePlugin()
     {
-        $csrftoken = $this->request->getGet()->get('csrftoken', false);
+        $csrftoken = $this->request->query->get('csrftoken', false);
         $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks
@@ -1399,7 +1399,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      */
     public function activatePlugin()
     {
-        $csrftoken = $this->request->getGet()->get('csrftoken', false);
+        $csrftoken = $this->request->query->get('csrftoken', false);
         $this->checkCsrfToken($csrftoken);
 
         // Security and sanity checks

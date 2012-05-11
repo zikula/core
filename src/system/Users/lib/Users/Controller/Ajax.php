@@ -32,7 +32,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $view = Zikula_View::getInstance($this->name);
 
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            $fragment = $this->request->getGet()->get('fragment', $this->request->getPost()->get('fragment'));
+            $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
             ModUtil::dbInfoLoad($this->name);
             $tables = DBUtil::getTables();
@@ -73,14 +73,14 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
         $userOrRegistration = array(
-            'uid'           => $this->request->getPost()->get('uid', null),
-            'uname'         => $this->request->getPost()->get('uname', null),
-            'pass'          => $this->request->getPost()->get('pass', null),
-            'passreminder'  => $this->request->getPost()->get('passreminder', null),
-            'email'         => $this->request->getPost()->get('email', null),
+            'uid'           => $this->request->request->get('uid', null),
+            'uname'         => $this->request->request->get('uname', null),
+            'pass'          => $this->request->request->get('pass', null),
+            'passreminder'  => $this->request->request->get('passreminder', null),
+            'email'         => $this->request->request->get('email', null),
         );
 
-        $eventType = $this->request->getPost()->get('event_type', 'new_registration');
+        $eventType = $this->request->request->get('event_type', 'new_registration');
         if (($eventType == 'new_registration') || ($eventType == 'new_user')) {
             $checkMode = 'new';
         } else {
@@ -101,10 +101,10 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'validatorErrors'       => array(),
         );
 
-        $emailAgain         = $this->request->getPost()->get('emailagain', '');
-        $setPassword        = $this->request->getPost()->get('setpass', false);
-        $passwordAgain      = $this->request->getPost()->get('passagain', '');
-        $antiSpamUserAnswer = $this->request->getPost()->get('antispamanswer', '');
+        $emailAgain         = $this->request->request->get('emailagain', '');
+        $setPassword        = $this->request->request->get('setpass', false);
+        $passwordAgain      = $this->request->request->get('passagain', '');
+        $antiSpamUserAnswer = $this->request->request->get('antispamanswer', '');
 
         $registrationErrors = ModUtil::apiFunc($this->name, 'registration', 'getRegistrationErrors', array(
             'checkmode'         => $checkMode,
@@ -174,8 +174,8 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
     public function getLoginFormFields()
     {
         $this->checkAjaxToken();
-        $formType = $this->request->getPost()->get('form_type', false);
-        $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
+        $formType = $this->request->request->get('form_type', false);
+        $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
         $modname = (isset($selectedAuthenticationMethod['modname']) && !empty($selectedAuthenticationMethod['modname']) ? $selectedAuthenticationMethod['modname'] : false);
         $method = (isset($selectedAuthenticationMethod['method']) && !empty($selectedAuthenticationMethod['method']) ? $selectedAuthenticationMethod['method'] : false);
 

@@ -278,7 +278,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * The request variables should be named the same as the field names. Request variables within the namespace that
      * do not represent known fields are ignored. The validation status of the form data container is reset by this function.
      *
-     * @param Zikula_Request_Collection $requestCollection The request collection (e.g. $this->request->getPost()) from which to set field data.
+     * @param Zikula_Request_Collection $requestCollection The request collection (e.g. $this->request->request) from which to set field data.
      * 
      * @return void
      */

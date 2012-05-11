@@ -33,12 +33,12 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $gid = $this->request->getPost()->get('gid');
-        $gtype = $this->request->getPost()->get('gtype', 9999);
-        $state = $this->request->getPost()->get('state');
-        $nbumax = $this->request->getPost()->get('nbumax', 9999);
-        $name = $this->request->getPost()->get('name');
-        $description = $this->request->getPost()->get('description');
+        $gid = $this->request->request->get('gid');
+        $gtype = $this->request->request->get('gtype', 9999);
+        $state = $this->request->request->get('state');
+        $nbumax = $this->request->request->get('nbumax', 9999);
+        $name = $this->request->request->get('name');
+        $description = $this->request->request->get('description');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 
@@ -149,7 +149,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $gid = $this->request->getPost()->get('gid');
+        $gid = $this->request->request->get('gid');
         $group = DBUtil::selectObjectByID('groups', $gid, 'gid');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE));
@@ -172,8 +172,8 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $gid = (int)$this->request->getPost()->get('gid');
-        $uid = (int)$this->request->getPost()->get('uid');
+        $gid = (int)$this->request->request->get('gid');
+        $uid = (int)$this->request->request->get('uid');
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
 

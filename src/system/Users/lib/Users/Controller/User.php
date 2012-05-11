@@ -121,7 +121,7 @@ class Users_Controller_User extends Zikula_AbstractController
         if ($this->request->isGet()) {
             // An HTTP GET, meaning either we are reentering the function from an external authenticator,
             // or we are entering the function for the very first time.
-            $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', false);
+            $reentrantTokenReceived = $this->request->query->get('reentranttoken', false);
             if ($reentrantTokenReceived) {
                 // We got here by reentering from an external authenticator. Grab the data we stored in session variables.
                 $sessionVars = $this->request->getSession()->get('Users_Controller_User_register', false, 'Zikula_Users');
@@ -153,26 +153,26 @@ class Users_Controller_User extends Zikula_AbstractController
 
             $this->checkCsrfToken();
 
-            if ($this->request->getPost()->get('authentication_method_selector', false)) {
+            if ($this->request->request->get('authentication_method_selector', false)) {
                 // The user selected an authentication method, so we need to switch to it.
-                $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', false);
+                $selectedAuthenticationMethod = $this->request->request->get('authentication_method', false);
                 $authenticationInfo = array();
 
                 $state = 'authentication_method_selector';
-            } elseif ($this->request->getPost()->get('registration_authentication_info', false)) {
+            } elseif ($this->request->request->get('registration_authentication_info', false)) {
                 // The user submitted authentication information that needs to be processed by the authentication module.
-                $authenticationInfo           = $this->request->getPost()->get('authentication_info', array());
-                $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
+                $authenticationInfo           = $this->request->request->get('authentication_info', array());
+                $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
 
                 $reentrantToken = substr(SecurityUtil::generateCsrfToken(), 0, 10);
 
                 $state = 'authenticate';
-            } elseif ($this->request->getPost()->get('registration_info', false)) {
+            } elseif ($this->request->request->get('registration_info', false)) {
                 // The user submitted the acutal registration form, so we need to validate the entries and register him.
                 $formData = new Users_Controller_FormData_RegistrationForm('users_register', $this->serviceManager);
-                $formData->setFromRequestCollection($this->request->getPost());
-                $selectedAuthenticationMethod = unserialize($this->request->getPost()->get('authentication_method_ser', false));
-                $authenticationInfo = unserialize($this->request->getPost()->get('authentication_info_ser', false));
+                $formData->setFromRequestCollection($this->request->request);
+                $selectedAuthenticationMethod = unserialize($this->request->request->get('authentication_method_ser', false));
+                $authenticationInfo = unserialize($this->request->request->get('authentication_info_ser', false));
 
                 $state = 'validate';
             }
@@ -187,7 +187,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 case 'start':
                     // Initial starting point for registration - a GET request without a reentrant token
                     // Check for illegal user agents trying to register.
-                    $userAgent = $this->request->getServer()->get('HTTP_USER_AGENT', '');
+                    $userAgent = $this->request->server->get('HTTP_USER_AGENT', '');
                     $illegalUserAgents = $this->getVar(Users_Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
                     // Convert the comma-separated list into a regexp pattern.
                     $pattern = array('/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D');
@@ -655,7 +655,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
             $this->checkCsrfToken();
 
-            $email = $this->request->getPost()->get('email', null);
+            $email = $this->request->request->get('email', null);
 
             if (empty($email)) {
                 $this->registerError($this->__('Error! E-mail address field is empty.'));
@@ -717,8 +717,8 @@ class Users_Controller_User extends Zikula_AbstractController
 
             $this->checkCsrfToken();
 
-            $uname = $this->request->getPost()->get('uname', '');
-            $email = $this->request->getPost()->get('email', '');
+            $uname = $this->request->request->get('uname', '');
+            $email = $this->request->request->get('email', '');
 
             if (empty($uname) && empty($email)) {
                 $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
@@ -868,13 +868,13 @@ class Users_Controller_User extends Zikula_AbstractController
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
 
-            $setPass = $this->request->getPost()->get('setpass', false);
+            $setPass = $this->request->request->get('setpass', false);
 
             if (!$setPass) {
                 // lostpasswordcode form
-                $uname = $this->request->getPost()->get('uname', '');
-                $email = $this->request->getPost()->get('email', '');
-                $code  = $this->request->getPost()->get('code',  '');
+                $uname = $this->request->request->get('uname', '');
+                $email = $this->request->request->get('email', '');
+                $code  = $this->request->request->get('code',  '');
 
                 $newpass = '';
                 $newpassagain = '';
@@ -882,18 +882,18 @@ class Users_Controller_User extends Zikula_AbstractController
                 $passreminder = '';
             } else {
                 // Reset password (passwordreminder) form
-                $uname          = $this->request->getPost()->get('uname', '');
-                $newpass        = $this->request->getPost()->get('newpass', '');
-                $newpassagain   = $this->request->getPost()->get('newpassagain', '');
-                $newpassreminder= $this->request->getPost()->get('newpassreminder', '');
+                $uname          = $this->request->request->get('uname', '');
+                $newpass        = $this->request->request->get('newpass', '');
+                $newpassagain   = $this->request->request->get('newpassagain', '');
+                $newpassreminder= $this->request->request->get('newpassreminder', '');
 
                 $formStage = 'setpass';
             }
         } elseif ($this->request->isGet()) {
             $setpass = false;
-            $uname = $this->request->getGet()->get('uname', '');
-            $email = $this->request->getGet()->get('email', '');
-            $code = $this->request->getGet()->get('code', '');
+            $uname = $this->request->query->get('uname', '');
+            $email = $this->request->query->get('email', '');
+            $code = $this->request->query->get('code', '');
 
             $newpass = '';
             $newpassagain = '';
@@ -1066,7 +1066,7 @@ class Users_Controller_User extends Zikula_AbstractController
             $authenticationInfo = isset($args['authentication_info']) ? $args['authentication_info'] : array();
             $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
             $rememberMe         = isset($args['rememberme']) ? $args['rememberme'] : false;
-            $returnPage         = isset($args['returnpage']) ? $args['returnpage'] : $this->request->getGet()->get('returnpage', '');
+            $returnPage         = isset($args['returnpage']) ? $args['returnpage'] : $this->request->query->get('returnpage', '');
             $eventType          = isset($args['event_type']) ? $args['event_type'] : false;
 
             $isFunctionCall = true;
@@ -1079,18 +1079,18 @@ class Users_Controller_User extends Zikula_AbstractController
                 $this->checkCsrfToken();
             }
 
-            $authenticationInfo = $this->request->getPost()->get('authentication_info', array());
-            $selectedAuthenticationMethod = $this->request->getPost()->get('authentication_method', array());
-            $rememberMe         = $this->request->getPost()->get('rememberme', false);
-            $returnPage         = $this->request->getPost()->get('returnpage', urldecode($this->request->getGet()->get('returnpage', '')));
+            $authenticationInfo = $this->request->request->get('authentication_info', array());
+            $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
+            $rememberMe         = $this->request->request->get('rememberme', false);
+            $returnPage         = $this->request->request->get('returnpage', urldecode($this->request->query->get('returnpage', '')));
             if (empty($returnPage)) {
                 // Check if returnurl was set instead of returnpage
-                $returnPage     = $this->request->getPost()->get('returnurl', urldecode($this->request->getGet()->get('returnurl', '')));
+                $returnPage     = $this->request->request->get('returnurl', urldecode($this->request->query->get('returnurl', '')));
             }
-            $eventType          = $this->request->getPost()->get('event_type', false);
+            $eventType          = $this->request->request->get('event_type', false);
         } elseif ($this->request->isGet()) {
             $reentry = false;
-            $reentrantTokenReceived = $this->request->getGet()->get('reentranttoken', '');
+            $reentrantTokenReceived = $this->request->query->get('reentranttoken', '');
 
             $sessionVars = $this->request->getSession()->get('Users_Controller_User_login', array(), 'Zikula_Users');
             $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
@@ -1103,7 +1103,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
                 $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
                 $rememberMe         = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
-                $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->getGet()->get('returnpage', '');
+                $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->query->get('returnpage', '');
                 $eventType          = isset($sessionVars['event_type']) ? $sessionVars['event_type'] : false;
                 $user               = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
 
@@ -1112,7 +1112,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $authenticationInfo = array();
                 $selectedAuthenticationMethod = array();
                 $rememberMe         = false;
-                $returnPage         = urldecode($this->request->getGet()->get('returnpage', $this->request->getGet()->get('returnurl', '')));
+                $returnPage         = urldecode($this->request->query->get('returnpage', $this->request->query->get('returnurl', '')));
                 $eventType          = 'login_screen';
                 $user               = array();
 
@@ -1438,15 +1438,15 @@ class Users_Controller_User extends Zikula_AbstractController
         }
 
         if ($this->request->isGet()) {
-            $uname      = $this->request->getGet()->get('uname', '');
-            $verifycode = $this->request->getGet()->get('verifycode', '');
+            $uname      = $this->request->query->get('uname', '');
+            $verifycode = $this->request->query->get('verifycode', '');
         } elseif ($this->request->isPost()) {
             $this->checkCsrfToken();
-            $uname          = $this->request->getPost()->get('uname', '');
-            $verifycode     = $this->request->getPost()->get('verifycode', '');
-            $newpass        = $this->request->getPost()->get('newpass', '');
-            $newpassagain   = $this->request->getPost()->get('newpassagain', '');
-            $newpassreminder= $this->request->getPost()->get('newpassreminder', '');
+            $uname          = $this->request->request->get('uname', '');
+            $verifycode     = $this->request->request->get('verifycode', '');
+            $newpass        = $this->request->request->get('newpass', '');
+            $newpassagain   = $this->request->request->get('newpassagain', '');
+            $newpassreminder= $this->request->request->get('newpassreminder', '');
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1609,10 +1609,10 @@ class Users_Controller_User extends Zikula_AbstractController
      */
     public function activation($args)
     {
-        if ($this->request->getGet()->has('code')) {
-            $code = $this->request->getGet()->get('code');
-        } elseif ($this->request->getPost()->has('code')) {
-            $code = $this->request->getPost()->get('code');
+        if ($this->request->query->has('code')) {
+            $code = $this->request->query->get('code');
+        } elseif ($this->request->request->has('code')) {
+            $code = $this->request->request->get('code');
         } else {
             $code = isset($args['code']) ? $args['code'] : null;
         }
@@ -1714,9 +1714,9 @@ class Users_Controller_User extends Zikula_AbstractController
         $this->redirectIf(!System::getVar('siteoff', false), System::getHomepageUrl());
 
         if ($this->request->isPost()) {
-            $user = $this->request->getPost()->get('user', null);
-            $pass = $this->request->getPost()->get('pass', null);
-            $rememberme = $this->request->getPost()->get('rememberme', false);
+            $user = $this->request->request->get('user', null);
+            $pass = $this->request->request->get('pass', null);
+            $rememberme = $this->request->request->get('rememberme', false);
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1831,8 +1831,8 @@ class Users_Controller_User extends Zikula_AbstractController
         }
 
         if ($this->request->isPost()) {
-            $ublockon = (bool)$this->request->getPost()->get('ublockon', false);
-            $ublock = (string)$this->request->getPost()->get('ublock', '');
+            $ublockon = (bool)$this->request->request->get('ublockon', false);
+            $ublock = (string)$this->request->request->get('ublock', '');
         } else {
             throw new Zikula_Exception_Forbidden();
         }
@@ -1893,10 +1893,10 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->isPost()) {
             // Arrived from a form post
-            $args['login'] = $this->request->getPost()->get('login', false);
+            $args['login'] = $this->request->request->get('login', false);
         } elseif ($this->request->isGet()) {
             // Arrived from a simple URL
-            $args['login'] = $this->request->getGet()->get('login', false);
+            $args['login'] = $this->request->query->get('login', false);
         }
 
         // In order to change one's password, the user either must be logged in already, or specifically
@@ -1998,10 +1998,10 @@ class Users_Controller_User extends Zikula_AbstractController
         }
 
         $passwordChanged    = false;
-        $currentPassword    = $this->request->getPost()->get('oldpassword', '');
-        $newPassword        = $this->request->getPost()->get('newpassword', '');
-        $newPasswordAgain   = $this->request->getPost()->get('newpasswordconfirm', '');
-        $newPasswordReminder= $this->request->getPost()->get('passreminder', '');
+        $currentPassword    = $this->request->request->get('oldpassword', '');
+        $newPassword        = $this->request->request->get('newpassword', '');
+        $newPasswordAgain   = $this->request->request->get('newpasswordconfirm', '');
+        $newPasswordReminder= $this->request->request->get('passreminder', '');
         $passwordErrors     = array();
 
         if (empty($currentPassword) || !UserUtil::passwordsMatch($currentPassword, $userObj['pass'])) {
@@ -2115,8 +2115,8 @@ class Users_Controller_User extends Zikula_AbstractController
             $this->redirect(ModUtil::url($this->name, 'user', 'main'));
         }
 
-        $newemail = $this->request->getPost()->get('newemail', '');
-        $newemailagain = $this->request->getPost()->get('newemailagain', '');
+        $newemail = $this->request->request->get('newemail', '');
+        $newemailagain = $this->request->request->get('newemailagain', '');
 
         $emailErrors = ModUtil::apiFunc($this->name, 'registration', 'getEmailErrors', array(
             'uid'           => $uservars['uid'],
@@ -2191,7 +2191,7 @@ class Users_Controller_User extends Zikula_AbstractController
      */
     public function confirmChEmail($args)
     {
-        $confirmcode = $this->request->getGet()->get('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null);
+        $confirmcode = $this->request->query->get('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null);
 
         if (!UserUtil::isLoggedIn()) {
             $this->registerError($this->__('Please log into your account in order to confirm your change of e-mail address.'))

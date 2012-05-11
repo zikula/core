@@ -383,7 +383,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
-            $this->text = $this->request->getPost()->get($this->inputName, null);
+            $this->text = $this->request->request->get($this->inputName, null);
             if (get_magic_quotes_gpc()) {
                 $this->text = stripslashes($this->text);
             }
