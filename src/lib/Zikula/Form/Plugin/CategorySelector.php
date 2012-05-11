@@ -236,7 +236,6 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
 
             // load category from db
             $em = ServiceUtil::getService('doctrine.entitymanager');
-            $category = $em->find('Zikula_Doctrine2_Entity_Category', $this->getSelectedValue());
 
             $collection = $em->getClassMetadata(get_class($entity))
                              ->getFieldValue($entity, $this->dataField);
@@ -247,11 +246,28 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                    ->setFieldValue($entity, $this->dataField, $collection);
             }
 
-            if ($collection->containsKey($this->registryId)) {
-                $collection->get($this->registryId)->setCategory($category);
+            
+            if(is_array($this->getSelectedValue())) {
+                $selectedValues = $this->getSelectedValue();
             } else {
+                $selectedValues[] = $this->getSelectedValue();
+            }
+                
+           foreach ($collection->getKeys() as $key) {
+               $categoryId = $collection->get($key)->getCategoryRegistryId();
+               if ($categoryId == $this->registryId) {
+                    $collection->remove($key);
+               }
+            }
+                
+            $em->flush();
+                
+                
+            foreach ($selectedValues as $selectedValue) {
+
+                $category = $em->find('Zikula_Doctrine2_Entity_Category', $selectedValue);
                 $class = $em->getClassMetadata(get_class($entity))->getAssociationTargetClass($this->dataField);
-                $collection->set($this->registryId, new $class($this->registryId, $category, $entity));
+                $collection->add(new $class($this->registryId, $category, $entity));
             }
         } else {
             parent::saveValue($view, $data);
@@ -334,9 +350,17 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {
                     $collection = $entity[$this->dataField];
-                    if (isset($collection[$this->registryId])) {
-                        $value = $collection[$this->registryId]->getCategory()->getId();
-                        $this->setSelectedValue($value);
+                    $selectedValues = array();
+                    foreach($collection as $c) {
+                        $categoryId = $c->getCategoryRegistryId();
+                        if ($categoryId == $this->registryId) {
+                            $selectedValues[] = $c->getCategory()->getId();
+                        }
+                    }
+                    if ($this->selectionMode == 'single') {
+                        $this->setSelectedValue($selectedValues[0]);
+                    } else {
+                        $this->setSelectedValue($selectedValues);
                     }
                 }
             }
