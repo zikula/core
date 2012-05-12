@@ -2,9 +2,9 @@ parameters:
     database_driver:   pdo_mysql
     database_host:     localhost
     database_port:     ~
-    database_name:     z140
-    database_user:     root
-    database_password: ~
+    database_name:     zikula_1_4
+    database_user:     zikula_1_4
+    database_password: Micro04$#@!
 
 #    mailer_transport:  smtp
 #    mailer_host:       localhost

@@ -17,7 +17,7 @@ System:
     dbcache.cache_result: 0
     dbcache.cache_result_ttl: 30
 DBInfo:
-    databases: { default: { host: localhost, user: root, password: '', dbname: z140, dbdriver: mysql, dbtabletype: myisam, charset: utf8, collate: utf8_general_ci } }
+    databases: { default: { host: localhost, user: ziklua_1_4, password: 'Micro04$#@!', dbname: zikula_1_4, dbdriver: mysql, dbtabletype: myisam, charset: utf8, collate: utf8_general_ci } }
 Debug:
     error_reporting_development: 30719
     error_reporting_production: 30709

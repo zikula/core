@@ -29,8 +29,8 @@ Regularly run composer also to make sure dependencies are up to date.
   - Also configure the database settings in app/config/core_legacy.yml
   - Install vendors with `php composer.phar install` 
         If you are using MAMP on a mac, you will need the full path to php
-        /Applications/MAMP/bin/php/php5.3.6/bin/php install-composer.php
-        /Applications/MAMP/bin/php/php5.3.6/bin/php composer.phar install
+        /path/to/php install-composer.php
+        /path/to/php composer.phar install
   - Copy assets to web directory `app/console assets:install`
         You have to edit the console file to use the path to the php for MAMP. Make the top line...
         #!/usr/bin/env /Applications/MAMP/bin/php/php5.3.6/bin/php
