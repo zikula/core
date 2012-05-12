@@ -3,8 +3,8 @@ parameters:
     database_host:     localhost
     database_port:     ~
     database_name:     zikula_1_4
-    database_user:     zikula_1_4
-    database_password: Micro04$#@!
+    database_user:     root
+    database_password: root
 
 #    mailer_transport:  smtp
 #    mailer_host:       localhost
@@ -12,4 +12,4 @@ parameters:
 #    mailer_password:   ~
 
     locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    secret:            pizza
