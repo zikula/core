@@ -148,7 +148,7 @@ function smarty_function_img($params, Zikula_View $view)
                 $paths = array($themepath, $corethemepath, $modpath);
             } elseif (preg_match('/^admin.(png|gif|jpg)$/', $params['src'])) {
                 // special processing for modules' admin icon
-                $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld);
+                $paths = array($modlangpath, $modpath);
             } else {
                 $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath);
             }

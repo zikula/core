@@ -26,11 +26,19 @@ Zikula requires PHP 5.3.3 and above.
 
 ## Manual installation process
 
-  - Install the database manually from `docs/installation.sql`
-    The username and password are `admin` / `zikula1`
+  - Install the database manually from `docs/installation.sql`. 
+        If you are using phpmyadmin, you can copy and paste into an SQL field and just hit go. Make sure you
+        have created the database and you are in the correct database.
   - Configuring the database settings in `app/config/database.yml`
-  - Install vendors with `php composer.phar install`
+  - Also configure the database settings in app/config/core_legacy.yml
+  - Install vendors with `php composer.phar install` 
+        If you are using MAMP on a mac, you will need the full path to php
+        /path/to/php install-composer.php
+        /path/to/php composer.phar install
   - Copy assets to web directory `app/console assets:install`
+        You have to edit the console file to use the path to the php for MAMP. Make the top line...
+        #!/usr/bin/env /Applications/MAMP/bin/php/php5.3.6/bin/php
+  - Once you have everything installed and you can access your zikula site, The username and password are `admin` / `zikula1`
 
 ## Change Guide
 
