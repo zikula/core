@@ -8,8 +8,14 @@ Modules, plugins and themes.
 
 For more information visit http://zikula.org/
 
-You must run `php composer.phar install` to get the required dependencies.
+You must run `php composer.phar --dev install` to get the required dependencies.
 Composer can be obtained from http://getcomposer.org/.
+
+.. note::
+
+If your PHP binary is not in your command path, please specify the full path to PHP
+as in `/path/to/php composer.phar --dev install` or as appropriate for your
+environment.
 
 ## WARNING
 
