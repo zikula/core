@@ -17,6 +17,10 @@ class Zikula_FileSystem_FtpTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        if (!extension_loaded('ftp')) {
+            $this->markTestIncomplete('FTP extension is not loaded');
+        }
+
         parent::setUp();
         $config = new Zikula_FileSystem_Configuration_Ftp();
         $this->Zikula_FileSystem_Ftp = new Zikula_FileSystem_Ftp($config);
