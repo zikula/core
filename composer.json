@@ -1,7 +1,7 @@
 {
     "name": "zikula/core",
     "homepage": "http://zikula.org/",
-    "license": "LGPLv3",
+    "license": "LGPL-3.0+",
     "autoload": {
         "psr-0": { "Zikula": "src/" }
     },
