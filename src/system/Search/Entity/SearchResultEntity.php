@@ -64,11 +64,11 @@ class SearchResultEntity
     private $found;
 
     /**
-     * @var string $sesid
+     * @var string $sessid
      *
-     * @ORM\Column(name="sesid", type="string", length=50, nullable=true)
+     * @ORM\Column(name="sessid", type="string", length=50, nullable=true)
      */
-    private $sesid;
+    private $sessid;
 
 
     /**
@@ -90,6 +90,7 @@ class SearchResultEntity
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -112,6 +113,7 @@ class SearchResultEntity
     public function setText($text)
     {
         $this->text = $text;
+
         return $this;
     }
 
@@ -134,6 +136,7 @@ class SearchResultEntity
     public function setModule($module)
     {
         $this->module = $module;
+
         return $this;
     }
 
@@ -156,6 +159,7 @@ class SearchResultEntity
     public function setExtra($extra)
     {
         $this->extra = $extra;
+
         return $this;
     }
 
@@ -178,6 +182,7 @@ class SearchResultEntity
     public function setCreated($created)
     {
         $this->created = $created;
+
         return $this;
     }
 
@@ -200,6 +205,7 @@ class SearchResultEntity
     public function setFound($found)
     {
         $this->found = $found;
+
         return $this;
     }
 
@@ -219,9 +225,10 @@ class SearchResultEntity
      * @param string $sesid
      * @return SearchResultEntity
      */
-    public function setSesid($sesid)
+    public function setSessid($sessid)
     {
-        $this->sesid = $sesid;
+        $this->sessid = $sessid;
+
         return $this;
     }
 
