@@ -25,13 +25,13 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        // Creating the table
-        if (!DBUtil::createTable('search_stat')) {
-            return false;
-        }
-
-        // Creating the table
-        if (!DBUtil::createTable('search_result')) {
+        // create the table
+        try {
+            \DoctrineHelper::createSchema($this->entityManager, array(
+                'SearchModule\Entity\SearchResultEntity',
+                'SearchModule\Entity\SearchStatEntity',
+            ));
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -81,11 +81,12 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        if (DBUtil::dropTable('search_stat') != 2) {
-            return false;
-        }
-
-        if (DBUtil::dropTable('search_result') != 2) {
+        try {
+            \DoctrineHelper::dropSchema($this->entityManager, array(
+                'SearchModule\Entity\SearchResultEntity',
+                'SearchModule\Entity\SearchStatEntity',
+            ));
+        } catch (\Exception $e) {
             return false;
         }
 
