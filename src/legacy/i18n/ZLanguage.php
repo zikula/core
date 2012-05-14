@@ -659,7 +659,7 @@ class ZLanguage
      */
     private function setDBCharset()
     {
-        $this->dbCharset = (System::isInstalling() ? 'utf8' : strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getCharset()));
+        $this->dbCharset = 'utf8';
     }
 
     /**

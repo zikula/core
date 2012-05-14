@@ -15,7 +15,6 @@
 namespace SearchModule\Api;
 
 use LogUtil, ModUtil, DBUtil, UserUtil, DataUtil, SecurityUtil, System, FormUtil, ZLanguage;
-use Doctrine_Manager;
 
 /**
  * Search_Api_User class.

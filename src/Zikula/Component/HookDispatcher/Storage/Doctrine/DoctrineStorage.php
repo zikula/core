@@ -18,13 +18,6 @@ namespace Zikula\Component\HookDispatcher\Storage\Doctrine;
 use Zikula\Component\HookDispatcher\StorageInterface;
 use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
 use\Doctrine\ORM\EntityManager;
-use Doctrine_Core;
-use Doctrine_Query;
-use Zikula_Doctrine_Model_HookSubscriber;
-use Zikula_Doctrine_Model_HookProvider;
-use Zikula_Doctrine_Model_HookArea;
-use Zikula_Doctrine_Model_HookRuntime;
-use Zikula_Doctrine_Model_HookBinding;
 
 /**
  * Doctrine class.

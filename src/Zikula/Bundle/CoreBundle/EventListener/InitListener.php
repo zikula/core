@@ -160,9 +160,6 @@ class InitListener implements EventSubscriberInterface
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
             \ModUtil::initCoreVars();
-            \ModUtil::dbInfoLoad('SettingsModule', 'SettingsModule');
-            \ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
-            \ModUtil::dbInfoLoad('CategoriesModule', 'CategoriesModule');
 
             if (!\System::isInstalling()) {
                 \ModUtil::registerAutoloaders();
