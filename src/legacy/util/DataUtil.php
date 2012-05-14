@@ -354,6 +354,8 @@ class DataUtil
      *
      * @param string $var The variable to format.
      *
+     * @deprecated
+     *
      * @return The formatted variable.
      */
     public static function formatForStore($var)
@@ -363,12 +365,12 @@ class DataUtil
                 $var[$k] = self::formatForStore($v);
             }
         } else {
-            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-            if ($dbDriverName == 'mssql' || $dbDriverName == 'oracle') {
-                $var = str_replace("'", "''", $var);
-            } else {
+//            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+//            if ($dbDriverName == 'mssql' || $dbDriverName == 'oracle') {
+//                $var = str_replace("'", "''", $var);
+//            } else {
                 $var = addslashes($var);
-            }
+//            }
         }
 
         return $var;
