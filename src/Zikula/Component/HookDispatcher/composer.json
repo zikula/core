@@ -3,7 +3,7 @@
     "description": "Hook Dispatcher",
     "type": "library",
     "homepage": "http://zikula.org",
-    "license": "LPGLv3",
+    "license": "LPGL-3.0",
     "authors": [
         {
             "name": "Drak",
