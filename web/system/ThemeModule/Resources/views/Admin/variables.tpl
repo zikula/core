@@ -1,5 +1,5 @@
 {adminheader}
-{include file="theme_admin_modifymenu.tpl"}
+{include file="Admin/modifymenu.tpl"}
 
 <h4>{gt text="Variables"}{if $filename} &raquo; {$filename}{/if}</h4>
 

@@ -177,7 +177,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // generate the output
         return $this->view->assign($vars)
                           ->assign('warnings', $warnings)
-                          ->fetch('theme_block_render_modify.tpl');
+                          ->fetch('Block/render_modify.tpl');
     }
 
     /**
