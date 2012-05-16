@@ -1,5 +1,5 @@
 {gt text="Memberships" assign=templatetitle}
-{include file="groups_user_menu.tpl"}
+{include file="User/menu.tpl"}
 
 <table class="z-datatable">
     <thead>

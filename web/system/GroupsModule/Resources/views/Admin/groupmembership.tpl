@@ -1,6 +1,6 @@
 {adminheader}
 {ajaxheader modname=GroupsModule filename=groups.js ui=true}
-{include file="groups_admin_header.tpl"}
+{include file="Admin/header.tpl"}
 
 <div class="z-admin-content-pagetitle">
     {icon type="group" size="small"}

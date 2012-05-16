@@ -1,6 +1,6 @@
 {gt text="Membership application" assign=templatetitle}
 {adminheader}
-{include file="groups_admin_header.tpl"}
+{include file="Admin/header.tpl"}
 
 <div class="z-admin-content-pagetitle">
     {icon type="new" size="small"}

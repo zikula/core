@@ -6,7 +6,7 @@
     {gt text="Membership application cancellation" assign="templatetitle"}
 {/if}
 
-{include file="groups_user_menu.tpl"}
+{include file="User/menu.tpl"}
 
 <form class="z-form" action="{modurl modname="GroupsModule" type="user" func="userupdate" action=$action}" method="post" enctype="application/x-www-form-urlencoded">
     
