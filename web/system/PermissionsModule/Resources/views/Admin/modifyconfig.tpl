@@ -1,7 +1,7 @@
 {gt text="Settings" assign=templatetitle}
 
 {adminheader}
-{include file="permissions_admin_header.tpl"}
+{include file="Admin/header.tpl"}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{$templatetitle}</h3>

@@ -24,7 +24,7 @@
 {/pageaddvarblock}
 
 {adminheader}
-{include file="permissions_admin_header.tpl"}
+{include file="Admin/header.tpl"}
 <div class="z-admin-content-pagetitle">
     {icon type="view" size="small"}
     <h3>{gt text="Permission rules list"}</h3>

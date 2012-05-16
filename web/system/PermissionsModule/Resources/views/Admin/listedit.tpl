@@ -1,5 +1,5 @@
 {adminheader}
-{include file="permissions_admin_header.tpl"}
+{include file="Admin/header.tpl"}
 
 {if $action eq "add"}
 <div class="z-admin-content-pagetitle">
