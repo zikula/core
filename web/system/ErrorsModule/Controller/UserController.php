@@ -71,10 +71,10 @@ class UserController extends \Zikula_AbstractController
                    ->assign('trace', $trace);
 
         // return the template output
-        if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
+        if ($this->view->template_exists($template = "User/{$type}.tpl")) {
             return $this->response($this->view->fetch($template), $type);
         } else {
-            return $this->response($this->view->fetch('errors_user_main.tpl'), $type);
+            return $this->response($this->view->fetch('User/main.tpl'), $type);
         }
     }
 
@@ -85,6 +85,6 @@ class UserController extends \Zikula_AbstractController
     {
         return $this->response($this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)
-                          ->fetch('errors_user_system.tpl'), 500);
+                          ->fetch('User/system.tpl'), 500);
     }
 }
