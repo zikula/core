@@ -1,4 +1,4 @@
-{pageaddvar name="javascript" value="system/Search/javascript/search_user_form.js"}
+{pageaddvar name="javascript" value="system/Search/Resources/js/search_user_form.js"}
 {gt text='Site search' assign='templatetitle' domain='zikula'}
 {include file='User/menu.tpl'}
 

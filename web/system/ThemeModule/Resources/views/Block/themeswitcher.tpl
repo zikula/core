@@ -1,6 +1,6 @@
 {if $format eq 1}
 {ajaxheader modname='ThemeModule' noscriptaculous=true}
-{pageaddvar name="javascript" value="system/Theme/javascript/themeswitcher.js"}
+{pageaddvar name="javascript" value="system/Theme/Resources/public/js/themeswitcher.js"}
 <img src="{$currentthemepic}" id="preview" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" />
 <form id="themeform" action="" method="post" enctype="application/x-www-form-urlencoded">
     <div>

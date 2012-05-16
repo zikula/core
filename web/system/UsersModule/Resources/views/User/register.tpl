@@ -3,7 +3,7 @@
     {ajaxheader modname='UsersModule' filename='Zikula.Users.NewUser.js'}
     {if $modvars.UsersModule.use_password_strength_meter && ($authentication_method.modname == 'Users')}
         {pageaddvar name='javascript' value='prototype'}
-        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 var passmeter = null;

@@ -1,6 +1,6 @@
 {adminheader}
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
-{pageaddvar name="javascript" value="system/SecurityCenter/javascript/securitycenter_admin_modifyconfig.js"}
+{pageaddvar name="javascript" value="system/SecurityCenter/Resources/public/js/securitycenter_admin_modifyconfig.js"}
 {pageaddvarblock}
 <script type="text/javascript">
     // <![CDATA[
