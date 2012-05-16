@@ -383,7 +383,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function adminheader()
     {
         $view = \Zikula_View::getInstance('Admin');
-        return $view->fetch('admin_admin_header.tpl');
+        return $view->fetch('Admin/header.tpl');
     }
 
     /**
@@ -392,6 +392,6 @@ class AdminApi extends \Zikula_AbstractApi
     public function adminfooter()
     {
         $view = \Zikula_View::getInstance('Admin');
-        return $view->fetch('admin_admin_footer.tpl');
+        return $view->fetch('Admin/footer.tpl');
     }
 }

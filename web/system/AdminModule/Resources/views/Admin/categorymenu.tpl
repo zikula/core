@@ -1,4 +1,4 @@
-{ajaxheader modname='AdminModule' filename='admin_admin_ajax.js' ui=true}
+{ajaxheader modname='AdminModule' filename='Admin/ajax.js' ui=true}
 
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -38,9 +38,9 @@
 </div>
 
 <div id="admin-systemnotices">
-{include file='admin_admin_securityanalyzer.tpl'}
-{include file='admin_admin_developernotices.tpl'}
-{include file='admin_admin_updatechecker.tpl'}
+{include file='Admin/securityanalyzer.tpl'}
+{include file='Admin/developernotices.tpl'}
+{include file='Admin/updatechecker.tpl'}
 </div>
 
 {insert name="getstatusmsg"}
@@ -77,7 +77,7 @@
     </ul>
 
     {helplink}
-    {include file='admin_admin_ajaxAddCategory.tpl'}
+    {include file='Admin/ajaxAddCategory.tpl'}
 </div>
 
 <div class="z-hide" id="admintabs-none"></div>
