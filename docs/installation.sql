@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 21, 2012 at 09:18 AM
+-- Generation Time: May 16, 2012 at 10:05 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `admin_category` (
   `description` varchar(255) NOT NULL,
   `sortorder` int(11) NOT NULL,
   PRIMARY KEY (`cid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `admin_category`
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `admin_module` (
   `sortorder` int(11) NOT NULL,
   PRIMARY KEY (`amid`),
   KEY `mid_cid` (`mid`,`cid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `admin_module`
@@ -69,22 +69,23 @@ CREATE TABLE IF NOT EXISTS `admin_module` (
 
 INSERT INTO `admin_module` (`amid`, `mid`, `cid`, `sortorder`) VALUES
 (1, 1, 1, 1),
-(2, 12, 1, 3),
-(3, 13, 2, 0),
+(2, 12, 1, 2),
+(3, 13, 2, 1),
 (4, 2, 4, 3),
 (5, 9, 3, 0),
 (6, 6, 3, 1),
-(7, 3, 2, 1),
+(7, 3, 2, 0),
 (8, 14, 3, 2),
 (9, 11, 6, 0),
 (10, 4, 4, 0),
 (11, 15, 4, 1),
-(12, 7, 1, 2),
+(12, 7, 1, 0),
 (13, 5, 1, 4),
 (14, 10, 4, 2),
 (15, 18, 5, 0),
 (16, 19, 5, 1),
-(17, 8, 5, 2);
+(17, 8, 5, 2),
+(18, 17, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -117,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `blocks` (
 --
 
 INSERT INTO `blocks` (`bid`, `bkey`, `title`, `description`, `content`, `url`, `mid`, `filter`, `active`, `collapsable`, `defaultstate`, `refresh`, `last_update`, `language`) VALUES
-(1, 'Extmenu', 'Main menu', 'Main menu', 'a:5:{s:14:"displaymodules";s:1:"0";s:10:"stylesheet";s:11:"extmenu.css";s:8:"template";s:24:"blocks_block_extmenu.tpl";s:11:"blocktitles";a:2:{s:2:"de";s:9:"Main menu";s:2:"en";s:9:"Main menu";}s:5:"links";a:2:{s:2:"de";a:5:{i:0;a:7:{s:4:"name";s:4:"Home";s:3:"url";s:10:"{homepage}";s:5:"title";s:19:"Go to the home page";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:1;a:7:{s:4:"name";s:14:"Administration";s:3:"url";s:24:"{Admin:admin:adminpanel}";s:5:"title";s:29:"Go to the site administration";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:2;a:7:{s:4:"name";s:10:"My Account";s:3:"url";s:7:"{Users}";s:5:"title";s:24:"Go to your account panel";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:3;a:7:{s:4:"name";s:7:"Log out";s:3:"url";s:19:"{Users:user:logout}";s:5:"title";s:20:"Log out of this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:4;a:7:{s:4:"name";s:11:"Site search";s:3:"url";s:8:"{Search}";s:5:"title";s:16:"Search this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}}s:2:"en";a:5:{i:0;a:7:{s:4:"name";s:4:"Home";s:3:"url";s:10:"{homepage}";s:5:"title";s:19:"Go to the home page";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:1;a:7:{s:4:"name";s:14:"Administration";s:3:"url";s:24:"{Admin:admin:adminpanel}";s:5:"title";s:29:"Go to the site administration";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:2;a:7:{s:4:"name";s:10:"My Account";s:3:"url";s:7:"{Users}";s:5:"title";s:24:"Go to your account panel";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:3;a:7:{s:4:"name";s:7:"Log out";s:3:"url";s:19:"{Users:user:logout}";s:5:"title";s:20:"Log out of this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:4;a:7:{s:4:"name";s:11:"Site search";s:3:"url";s:8:"{Search}";s:5:"title";s:16:"Search this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}}}}', '', 3, 'a:0:{}', 1, 1, 1, 3600, '2012-04-08 09:27:46', ''),
+(1, 'Extmenu', 'Main menu', 'Main menu', 'a:5:{s:14:"displaymodules";s:1:"0";s:10:"stylesheet";s:11:"extmenu.css";s:8:"template";s:17:"Block/extmenu.tpl";s:11:"blocktitles";a:2:{s:2:"de";s:9:"Main menu";s:2:"en";s:9:"Main menu";}s:5:"links";a:2:{s:2:"de";a:5:{i:0;a:7:{s:4:"name";s:4:"Home";s:3:"url";s:10:"{homepage}";s:5:"title";s:19:"Go to the home page";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:1;a:7:{s:4:"name";s:14:"Administration";s:3:"url";s:24:"{Admin:admin:adminpanel}";s:5:"title";s:29:"Go to the site administration";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:2;a:7:{s:4:"name";s:10:"My Account";s:3:"url";s:7:"{Users}";s:5:"title";s:24:"Go to your account panel";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:3;a:7:{s:4:"name";s:7:"Log out";s:3:"url";s:19:"{Users:user:logout}";s:5:"title";s:20:"Log out of this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:4;a:7:{s:4:"name";s:11:"Site search";s:3:"url";s:8:"{Search}";s:5:"title";s:16:"Search this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}}s:2:"en";a:5:{i:0;a:7:{s:4:"name";s:4:"Home";s:3:"url";s:10:"{homepage}";s:5:"title";s:19:"Go to the home page";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:1;a:7:{s:4:"name";s:14:"Administration";s:3:"url";s:24:"{Admin:admin:adminpanel}";s:5:"title";s:29:"Go to the site administration";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:2;a:7:{s:4:"name";s:10:"My Account";s:3:"url";s:7:"{Users}";s:5:"title";s:24:"Go to your account panel";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:3;a:7:{s:4:"name";s:7:"Log out";s:3:"url";s:19:"{Users:user:logout}";s:5:"title";s:20:"Log out of this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}i:4;a:7:{s:4:"name";s:11:"Site search";s:3:"url";s:8:"{Search}";s:5:"title";s:16:"Search this site";s:5:"level";i:0;s:8:"parentid";N;s:5:"image";s:0:"";s:6:"active";s:1:"1";}}}}', '', 3, 'a:0:{}', 1, 1, 1, 3600, '2012-04-08 09:27:46', ''),
 (2, 'Search', 'Search box', 'Search block', 'a:2:{s:16:"displaySearchBtn";i:1;s:6:"active";a:1:{s:5:"Users";i:1;}}', '', 10, 'a:0:{}', 1, 1, 1, 3600, '2012-04-08 09:27:46', ''),
 (3, 'Html', 'This site is powered by Zikula!', 'HTML block', '<p><a href="http://zikula.org/">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site''s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula''s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site''s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href="http://www.zikula.org">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>', '', 3, 'a:0:{}', 1, 1, 1, 3600, '2012-04-08 09:27:46', ''),
 (4, 'Login', 'User log-in', 'Login block', '', '', 14, 'a:0:{}', 1, 1, 1, 3600, '2012-04-08 09:27:46', ''),
@@ -376,19 +377,21 @@ CREATE TABLE IF NOT EXISTS `group_applications` (
 
 DROP TABLE IF EXISTS `group_membership`;
 CREATE TABLE IF NOT EXISTS `group_membership` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `gid` int(11) NOT NULL DEFAULT '0',
   `uid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
   KEY `gid_uid` (`uid`,`gid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `group_membership`
 --
 
-INSERT INTO `group_membership` (`gid`, `uid`) VALUES
-(1, 1),
-(1, 2),
-(2, 2);
+INSERT INTO `group_membership` (`id`, `gid`, `uid`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -580,7 +583,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `core_min` varchar(10) NOT NULL,
   `core_max` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `modules`
@@ -600,9 +603,9 @@ INSERT INTO `modules` (`id`, `name`, `type`, `displayname`, `url`, `description`
 (11, 'SecurityCenterModule', 3, 'Security Center', 'securitycenter', 'Manage site security and settings.', 'SecurityCenterModule', '1.4.4', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:16:"SecurityCenter::";s:2:"::";}', '', ''),
 (12, 'SettingsModule', 3, 'General settings', 'settings', 'General site configuration interface.', 'SettingsModule', '2.9.7', 'a:1:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:10:"Settings::";s:2:"::";}', '', ''),
 (13, 'ThemeModule', 3, 'Themes', 'theme', 'Themes module to manage site layout, render and cache settings.', 'ThemeModule', '3.4.1', 'a:2:{s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:1:{s:7:"Theme::";s:12:"Theme name::";}', '', ''),
-(14, 'UsersModule', 3, 'Users', 'users', 'Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.', 'UsersModule', '2.2.0', 'a:4:{s:14:"authentication";a:1:{s:7:"version";s:3:"1.0";}s:15:"hook_subscriber";a:1:{s:7:"enabled";b:1;}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:2:{s:7:"Users::";s:14:"Uname::User ID";s:16:"Users::MailUsers";s:2:"::";}', '1.3.0', ''),
-(17, 'LegalModule', 2, 'Legal info manager', 'legalmod', 'Provides an interface for managing the site''s legal documents.', 'LegalModule', '3.0.1', 'a:1:{s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 1, 'a:8:{s:7:"Legal::";s:2:"::";s:18:"Legal::legalnotice";s:2:"::";s:17:"Legal::termsofuse";s:2:"::";s:20:"Legal::privacypolicy";s:2:"::";s:16:"Legal::agepolicy";s:2:"::";s:29:"Legal::accessibilitystatement";s:2:"::";s:30:"Legal::cancellationrightpolicy";s:2:"::";s:22:"Legal::tradeconditions";s:2:"::";}', '1.4.0', '1.4.99'),
-(19, 'ProfileModule', 2, 'Profile', 'profile', 'Provides a personal account control panel for each registered user, an interface to administer the personal information items displayed within it, and a registered users list functionality. Works in close unison with the ''Users'' module.', 'ProfileModule', '2.0.0', 'a:3:{s:7:"profile";a:1:{s:7:"version";s:3:"1.0";}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:6:{s:9:"Profile::";s:2:"::";s:13:"Profile::view";s:2:"::";s:13:"Profile::item";s:56:"DynamicUserData PropertyName::DynamicUserData PropertyID";s:16:"Profile:Members:";s:2:"::";s:22:"Profile:Members:recent";s:2:"::";s:22:"Profile:Members:online";s:2:"::";}', '1.4.0', '1.4.99');
+(14, 'UsersModule', 3, 'Users', 'users', 'Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.', 'UsersModule', '2.2.0', 'a:4:{s:14:"authentication";a:1:{s:7:"version";s:3:"1.0";}s:15:"hook_subscriber";a:1:{s:7:"enabled";b:1;}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 5, 'a:2:{s:7:"Users::";s:14:"Uname::User ID";s:16:"Users::MailUsers";s:2:"::";}', '1.3.0', ''),
+(17, 'LegalModule', 2, 'Legal info manager', 'legalmod', 'Provides an interface for managing the site''s legal documents.', 'LegalModule', '3.0.1', 'a:1:{s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:8:{s:13:"LegalModule::";s:2:"::";s:24:"LegalModule::legalnotice";s:2:"::";s:23:"LegalModule::termsofuse";s:2:"::";s:26:"LegalModule::privacypolicy";s:2:"::";s:22:"LegalModule::agepolicy";s:2:"::";s:35:"LegalModule::accessibilitystatement";s:2:"::";s:36:"LegalModule::cancellationrightpolicy";s:2:"::";s:28:"LegalModule::tradeconditions";s:2:"::";}', '1.4.0', '1.4.99'),
+(19, 'ProfileModule', 2, 'Profile', 'profile', 'Provides a personal account control panel for each registered user, an interface to administer the personal information items displayed within it, and a registered users list functionality. Works in close unison with the ''Users'' module.', 'ProfileModule', '2.0.0', 'a:3:{s:7:"profile";a:1:{s:7:"version";s:3:"1.0";}s:5:"admin";a:1:{s:7:"version";s:3:"1.0";}s:4:"user";a:1:{s:7:"version";s:3:"1.0";}}', 3, 'a:6:{s:9:"Profile::";s:2:"::";s:13:"Profile::view";s:2:"::";s:13:"Profile::item";s:56:"DynamicUserData PropertyName::DynamicUserData PropertyID";s:16:"Profile:Members:";s:2:"::";s:22:"Profile:Members:recent";s:2:"::";s:22:"Profile:Members:online";s:2:"::";}', '1.4.0', '1.4.99'),
 
 -- --------------------------------------------------------
 
@@ -619,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `module_deps` (
   `maxversion` varchar(10) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -634,7 +637,7 @@ CREATE TABLE IF NOT EXISTS `module_vars` (
   `name` varchar(64) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=228 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=229 ;
 
 --
 -- Dumping data for table `module_vars`
@@ -764,8 +767,8 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (121, 'SecurityCenterModule', 'itemsperpage', 'i:10;'),
 (122, 'ZConfig', 'updatecheck', 'i:1;'),
 (123, 'ZConfig', 'updatefrequency', 'i:7;'),
-(124, 'ZConfig', 'updatelastchecked', 'i:1334488036;'),
-(125, 'ZConfig', 'updateversion', 's:9:"1.3.1-dev";'),
+(124, 'ZConfig', 'updatelastchecked', 'i:1336997630;'),
+(125, 'ZConfig', 'updateversion', 's:5:"1.3.3";'),
 (126, 'ZConfig', 'keyexpiry', 'i:0;'),
 (127, 'ZConfig', 'sessionauthkeyua', 'b:0;'),
 (128, 'ZConfig', 'secure_domain', 's:0:"";'),
@@ -863,7 +866,7 @@ INSERT INTO `module_vars` (`id`, `modname`, `name`, `value`) VALUES
 (222, 'ProfileModule', 'onlinemembersitemsperpage', 'i:20;'),
 (223, 'ProfileModule', 'recentmembersitemsperpage', 'i:10;'),
 (224, 'ProfileModule', 'filterunverified', 'i:1;'),
-(225, 'ProfileModule', 'dudregshow', 'a:5:{i:0;i:1;i:1;i:3;i:2;i:4;i:3;i:10;i:4;i:11;}');
+(225, 'ProfileModule', 'dudregshow', 'a:5:{i:0;i:1;i:1;i:3;i:2;i:4;i:3;i:10;i:4;i:11;}'),
 
 -- --------------------------------------------------------
 
@@ -1161,7 +1164,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`uid`, `uname`, `email`, `pass`, `passreminder`, `activated`, `approved_date`, `approved_by`, `user_regdate`, `lastlogin`, `theme`, `ublockon`, `ublock`, `tz`, `locale`) VALUES
 (1, 'guest', '', '', '', 1, '1970-01-01 00:00:00', 0, '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, '', '', ''),
-(2, 'admin', 'drak@zikula.org', '8$GLk02$698a73cc819a22f94267b34d48bb48015ca55efc3e9f8bc3a6dd2709ec24653d', '', 1, '2012-04-08 07:27:39', 2, '2012-04-08 07:27:55', '2012-04-19 16:41:32', '', 0, '', '', '');
+(2, 'admin', 'drak@zikula.org', '8$GLk02$698a73cc819a22f94267b34d48bb48015ca55efc3e9f8bc3a6dd2709ec24653d', '', 1, '2012-04-08 07:27:39', 2, '2012-04-08 07:27:55', '2012-05-16 02:57:46', '', 0, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -1175,8 +1178,10 @@ CREATE TABLE IF NOT EXISTS `users_attributes` (
   `name` varchar(80) NOT NULL,
   `value` longtext NOT NULL,
   PRIMARY KEY (`user_id`,`name`),
-  KEY `user_id` (`user_id`)
+  KEY `IDX_E6F031E4A76ED395` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `users_verifychg`
