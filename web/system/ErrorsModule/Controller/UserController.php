@@ -39,7 +39,7 @@ class UserController extends \Zikula_AbstractController
         $message   = isset($args['message']) ? $args['message'] : '';
 
         // load the stylesheet
-        PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
+        PageUtil::addVar('stylesheet', 'system/ErrorsModule/Resources/public/css/style.css');
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
