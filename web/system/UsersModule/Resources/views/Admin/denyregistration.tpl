@@ -6,7 +6,7 @@
 
 <p class="z-warningmsg">{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>
 
-{include file='users_admin_includeregistration.tpl'}
+{include file='Admin/includeregistration.tpl'}
 
 <form id="users_denyregistration" class="z-form" action="{modurl modname='UsersModule' type='admin' func='denyRegistration'}" method="post">
     <div>

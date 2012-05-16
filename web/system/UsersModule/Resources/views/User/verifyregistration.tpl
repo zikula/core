@@ -18,7 +18,7 @@
 {/strip}
             
 {modulelinks modname='UsersModule' type='user'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 {if !empty($errormessages)}
 <div id="users_errormessages_div" class="z-errormsg">

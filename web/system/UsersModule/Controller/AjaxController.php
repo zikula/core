@@ -52,7 +52,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $view->assign('results', $results);
         }
 
-        $output = $view->fetch('users_ajax_getusers.tpl');
+        $output = $view->fetch('Ajax/getusers.tpl');
 
         return new PlainResponse($output);
     }

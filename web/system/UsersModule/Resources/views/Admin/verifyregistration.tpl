@@ -4,7 +4,7 @@
     <h3>{gt text='Confirm verification code is to be sent to \'%1$s\'' tag1=$reginfo.uname}</h3>
 </div>
 
-{include file='users_admin_includeregistration.tpl'}
+{include file='Admin/includeregistration.tpl'}
 
 <form id="users_verifyregistration" class="z-form" action="{modurl modname='UsersModule' type='admin' func='verifyRegistration'}" method="post">
     <div>

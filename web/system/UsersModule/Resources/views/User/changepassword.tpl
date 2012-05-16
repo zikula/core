@@ -16,7 +16,7 @@
 {/pageaddvarblock}
 {/if}
 {/strip}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 {if $login}
 <div class="z-warningmsg">

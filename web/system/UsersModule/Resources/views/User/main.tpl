@@ -1,5 +1,5 @@
 {gt text='My account' assign='templatetitle'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 {foreach item='accountLink' from=$accountLinks}
 <div class="z-accountlink" style="width:{math equation='100/x' x=$modvars.UsersModule.accountitemsperrow format='%.0d'}%;">

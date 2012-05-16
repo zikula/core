@@ -12,7 +12,7 @@
 {/if}
 {/if}
 
-{include file='users_admin_includeregistration.tpl'}
+{include file='Admin/includeregistration.tpl'}
 
 <form id="users_approveregistration" class="z-form" action="{modurl modname='UsersModule' type='admin' func='approveRegistration'}" method="post">
     <div>

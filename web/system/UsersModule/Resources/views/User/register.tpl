@@ -35,7 +35,7 @@
     {/pageaddvarblock}
 {/strip}
 
-{include file="users_user_menu.tpl"}
+{include file="User/menu.tpl"}
 
 <p id="users_formtop">
     {gt text='Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.'}
