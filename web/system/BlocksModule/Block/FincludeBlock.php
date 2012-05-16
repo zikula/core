@@ -121,7 +121,7 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
         $this->view->assign($vars);
 
         // return the output
-        return $this->view->fetch('blocks_block_finclude_modify.tpl');
+        return $this->view->fetch('Block/finclude_modify.tpl');
     }
 
     /**

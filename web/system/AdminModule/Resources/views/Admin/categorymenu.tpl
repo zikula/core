@@ -1,4 +1,4 @@
-{ajaxheader modname='AdminModule' filename='Admin/ajax.js' ui=true}
+{ajaxheader modname='AdminModule' filename='ajax.js' ui=true}
 
 <script type="text/javascript">
     /* <![CDATA[ */

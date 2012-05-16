@@ -154,7 +154,7 @@ class Installer extends \Zikula_AbstractInstaller
             
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
-            $menucontent['template'] = 'blocks_block_extmenu.tpl';
+            $menucontent['template'] = 'Block/extmenu.tpl';
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
             
             // insert the links
@@ -166,7 +166,7 @@ class Installer extends \Zikula_AbstractInstaller
 
             $topnavcontent['displaymodules'] = '0';
             $topnavcontent['stylesheet'] = 'extmenu.css';
-            $topnavcontent['template'] = 'blocks_block_extmenu_topnav.tpl';
+            $topnavcontent['template'] = 'Block/extmenu_topnav.tpl';
             $topnavcontent['blocktitles'][$lang] = $this->__('Top navigation');
             
             // insert the links
@@ -246,7 +246,7 @@ class Installer extends \Zikula_AbstractInstaller
         foreach ($blocks as $block) {
             if ($block['bkey'] == 'Extmenu') {
                 $content = unserialize($block['content']);
-                $content['template'] = str_replace('blocks_block_extmenu.htm', 'blocks_block_extmenu.tpl', $content['template']);
+                $content['template'] = str_replace('Block/extmenu.htm', 'Block/extmenu.tpl', $content['template']);
 
                 // Update {} style links to new parameter order
                 // Module:type:func instead of Module:func:type
@@ -334,7 +334,7 @@ class Installer extends \Zikula_AbstractInstaller
                 $topnavcontent = array();
                 $topnavcontent['displaymodules'] = '0';
                 $topnavcontent['stylesheet'] = 'extmenu.css';
-                $topnavcontent['template'] = 'blocks_block_extmenu_topnav.tpl';
+                $topnavcontent['template'] = 'Block/extmenu_topnav.tpl';
                 $topnavcontent['blocktitles'][$lang] = $this->__('Top navigation');
                 $topnavcontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
                 $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');

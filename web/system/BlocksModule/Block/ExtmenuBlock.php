@@ -62,7 +62,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // template to use
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.tpl';
+            $vars['template'] = 'Block/extmenu.tpl';
         }
         // stylesheet to use
         if (empty($vars['stylesheet'])) {
@@ -234,7 +234,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 
         // template to use
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.tpl';
+            $vars['template'] = 'Block/extmenu.tpl';
         }
 
         // create default block variables
@@ -340,7 +340,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                    ->assign('blockinfo', $blockinfo);
 
         // return the output
-        return $this->view->fetch('blocks_block_extmenu_modify.tpl');
+        return $this->view->fetch('Block/extmenu_modify.tpl');
     }
 
     /**
@@ -362,7 +362,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         if (empty($vars['template'])) {
-            $vars['template'] = 'blocks_block_extmenu.tpl';
+            $vars['template'] = 'Block/extmenu.tpl';
         }
 
         if (empty($vars['stylesheet'])) {
