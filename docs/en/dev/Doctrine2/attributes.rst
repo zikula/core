@@ -1,6 +1,6 @@
-================================
- Attributes Doctrine2 extension
-================================
+===========================================
+ Adding attributes to your Doctrine2 module
+===========================================
 
 Getting started
 ===============
@@ -8,16 +8,19 @@ Getting started
 Preconditions
 -------------
 
-You need a existing doctrine2 entity to which you would like add attributes support to.
+You need an existing Doctrine 2 entity to which you would like to add attributes support to.
 In this guide we will use a *User* entity::
 
+    namespace YourModule\Entity;
+    
+    use Zikula\Core\Doctrine\EntityAccess;
     use Doctrine\ORM\Mapping as ORM;
 
     /**
      * @ORM\Entity
      * @ORM\Table(name="yourmodule_user")
      */
-    class YourModule_Entity_User extends Zikula_EntityAccess
+    class User extends EntityAccess
     {
         /**
          * @ORM\Id
@@ -42,49 +45,93 @@ In this guide we will use a *User* entity::
 
 Entities
 --------
-The attributes extension provides a new abstract class: *Zikula_Doctrine2_Entity_EntityAttribute*.
-You need to create a subclass of that class specific to the entity you would like
-to add attributes support to. In this guide we create a *UserAttribute* class.
-**User** is the name of the entity and **Attribute** is our attribues specific suffix::
+Apart from the Doctrine 2 entity of your module, you will need another entity that will hold the attributes.
+In this guide we will create a *UserAttribute* class.
+**User** is the name of the entity and **Attribute** is our attributes specific suffix::
 
+    namespace YourModule\Entity;
+
+    use Zikula\Core\Doctrine\EntityAccess;
     use Doctrine\ORM\Mapping as ORM;
 
     /**
      * @ORM\Entity
-     * @ORM\Table(name="yourmodule_user_attribute",
-     *            uniqueConstraints={@ORM\UniqueConstraint(name="cat_unq",columns={"name", "entityId"})})
+     * @ORM\Table(name="yourmodule_user_attribute")
      */
-    class YourModule_Entity_UserAttribute extends Zikula_Doctrine2_Entity_EntityAttribute
+    class UserAttribute extends EntityAccess
     {
         /**
-         * @ORM\ManyToOne(targetEntity="YourModule_Entity_User", inversedBy="attributes")
-         * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
-         * @var YourModule_Entity_User
-         */
-        private $entity;
+        * @ORM\Id
+        * @ORM\ManyToOne(targetEntity="User", inversedBy="attributes")
+        * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+        */
+        private $user;
 
-        public function getEntity()
+        /**
+        * @ORM\Id
+        * @ORM\Column(type="string", length=80)
+        */
+        private $name;
+
+        /**
+        * @ORM\Column(type="text")
+        */
+        private $value;
+
+        public function __construct($user, $name, $value)
         {
-            return $this->entity;
+            $this->setUser($user);
+            $this->setAttribute($name, $value);
         }
 
-        public function setEntity($entity)
+        public function getUser()
         {
-            $this->entity = $entity;
+            return $this->user;
+        }
+
+        public function setUser($user)
+        {
+            $this->user = $user;
+        }
+
+        public function getName()
+        {
+            return $this->name;
+        }
+
+        public function setName($name)
+        {
+            $this->name = $name;
+        }
+
+        public function getValue()
+        {
+            return $this->value;
+        }
+
+        public function setValue($value)
+        {
+            $this->value = $value;
+        }
+
+        public function setAttribute($name, $value)
+        {
+            $this->setName($name);
+            $this->setValue($value);
         }
     }
 
-The abstract class forces you to implement the **getEntity** & **setEntity** methods.
-These methods forece you to create an new class attribute. 
-This attribute becomes a ManyToOne assocation to the original (*User*) entity. 
-The column name "entityId" in @JoinColumn and @UniqueConstraint must match.
+In the above example, the attribute 'user' becomes a ManyToOne association to the original (*User*) entity. 
+The referencedColumnName (in this case "id") must match the joined column name on the target Entity.
 
-We need to add a inverse side of the assocation to the original (*User*) entity::
+We also need to add an inverse side of the association to the original (*User*) entity::
   
     /**
-     * @ORM\OneToMany(targetEntity="YourModule_Entity_UserAttribute", 
-     *                mappedBy="entity", cascade={"all"}, 
-     *                orphanRemoval=true, indexBy="name")
+     * @ORM\OneToMany(targetEntity="UserAttribute", 
+     *                mappedBy="user", 
+     *                cascade={"all"},
+     *                orphanRemoval=true,
+     *                indexBy="name")
      */
     private $attributes;
 
@@ -98,22 +145,29 @@ We need to add a inverse side of the assocation to the original (*User*) entity:
         return $this->attributes;
     }
     
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+    
     public function setAttribute($name, $value)
     {
-        if(isset($this->attributes[$name])) {
-            if($value == null) {
-                $this->attributes->remove($name);
-            } else {
-                $this->attributes[$name]->setValue($value);
-            }
+        if (isset($this->attributes[$name])) {
+            $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new YourModule_Entity_UserAttribute($name, $value, $this);
+            $this->attributes[$name] = new UserAttribute($this, $name, $value);
+        }
+    }
+    
+    public function delAttribute($name)
+    {
+        if (isset($this->attributes[$name])) {
+            $this->attributes->remove($name);
         }
     }
 
-The inversedBy attribute of the @ManyToOne annotation must match with this new class attribute name.
-The mappedBy attribute of the @OneToMany annotation must match with the the class attribute in 
-the *EntityAttribute* subclass.
+The inversedBy attribute of the @ManyToOne annotation (in this case "attributes") must match with this new class attribute name.
+Also the mappedBy attribute of the @OneToMany annotation must match with the the class attribute in the *UserAttribute* subclass.
 
 
 Install code
@@ -135,7 +189,7 @@ Set/change an attribute
 remove an attribute
 
     $user = // ...
-    $user->setAttribute('url', null);
+    $user->delAttribute('url');
     
     $entityManager->persist($user);
   
@@ -146,8 +200,6 @@ Access all attributes
 
 Database Tables
 ===============
-
-DBUtil based attributes uses a single table to store every attribute of every row of every table.
 
 In Doctrine2 based attributes every entity gets its own table.
 
@@ -162,5 +214,4 @@ Do not forgot to delete old data in the objectdata_attributes table!
 
 Example
 =======
-The ExampleDoctrine module located in /src/docs/examples/modules/ExampleDoctrine/ 
-uses this doctrine extension in one of his entities.
+The Users and Categories modules are good examples of the implementation of attributes.
