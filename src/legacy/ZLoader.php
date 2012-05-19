@@ -180,7 +180,6 @@ class ZLoader
             'ZMO' => ZLOADER_PATH . '/legacy/i18n/ZMO.php',
             'ZLanguageBrowser' => ZLOADER_PATH . '/legacy/i18n/ZLanguageBrowser.php',
             'BlockUtil' => ZLOADER_PATH . '/legacy/util/BlockUtil.php',
-            'AjaxUtil' => ZLOADER_PATH . '/legacy/util/AjaxUtil.php',
             'CacheUtil' => ZLOADER_PATH . '/legacy/util/CacheUtil.php',
             'CategoryRegistryUtil' => ZLOADER_PATH . '/legacy/util/CategoryRegistryUtil.php',
             'CategoryUtil' => ZLOADER_PATH . '/legacy/util/CategoryUtil.php',
