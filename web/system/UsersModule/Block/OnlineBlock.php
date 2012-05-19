@@ -79,8 +79,8 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
 
             // check out if the contents are cached.
             // If this is the case, we do not need to make DB queries.
-            if ($this->view->is_cached('users_block_online.tpl')) {
-                $blockinfo['content'] = $this->view->fetch('users_block_online.tpl');
+            if ($this->view->is_cached('Block/online.tpl')) {
+                $blockinfo['content'] = $this->view->fetch('Block/online.tpl');
                 return BlockUtil::themeBlock($blockinfo);
             }
         }
@@ -111,7 +111,7 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
                    ->assign('guestcount', $numguests)
                    ->assign('msgmodule', $msgmodule);
 
-        $blockinfo['content'] = $this->view->fetch('users_block_online.tpl');
+        $blockinfo['content'] = $this->view->fetch('Block/online.tpl');
 
         return BlockUtil::themeBlock($blockinfo);
     }

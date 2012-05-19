@@ -122,11 +122,11 @@ class LoginBlock extends \Zikula_Controller_AbstractBlock
                     $this->view->assign('returnpage', '');
                 }
 
-                $tplName = mb_strtolower("users_block_login_{$blockInfo['position']}.tpl");
+                $tplName = mb_strtolower("Block/login_{$blockInfo['position']}.tpl");
                 if ($this->view->template_exists($tplName)) {
                     $blockInfo['content'] = $this->view->fetch($tplName);
                 } else {
-                    $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
+                    $blockInfo['content'] = $this->view->fetch('Block/login.tpl');
                 }
 
                 $renderedOutput = BlockUtil::themeBlock($blockInfo);
