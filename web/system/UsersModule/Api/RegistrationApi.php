@@ -18,7 +18,7 @@ namespace UsersModule\Api;
 use UsersModule\Constants as UsersConstant;
 use \Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Api\AbstractAuthentication;
-use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DataUtil, DateUtil, ObjectUtil;
+use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DataUtil, DateUtil;
 use Zikula_Session;
 use UsersModule\Helper\AuthenticationMethodHelper;
 use Zikula_Exception_Forbidden;
