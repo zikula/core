@@ -15,7 +15,7 @@
 
 namespace UsersModule\Api;
 
-use SecurityUtil, Zikula_View, System, ModUtil, DBUtil, DataUtil;
+use SecurityUtil, Zikula_View, System, ModUtil, DataUtil;
 use UsersModule\Constants as UsersConstant;
 
 /**
@@ -98,7 +98,7 @@ class SearchApi extends \Zikula_AbstractApi
         $where   = array();
         $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
 
-        $unameClause = \Search\Api\UserApi::construct_where($args, array('u.uname'));
+        $unameClause = \SearchModule\Api\UserApi::construct_where($args, array('u.uname'));
 
         // invoke the current profilemodule search query
         if ($useProfileMod) {

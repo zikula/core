@@ -14,7 +14,7 @@
 
 namespace SearchModule;
 
-use DBUtil, EventUtil;
+use EventUtil;
 
 class Installer extends \Zikula_AbstractInstaller
 {

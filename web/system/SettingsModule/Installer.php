@@ -14,7 +14,7 @@
 
 namespace SettingsModule;
 
-use System, ModUtil, DBUtil, ZLanguage;
+use System, ModUtil, ZLanguage;
 use Zikula\Core\Core;
 
 /**
@@ -87,22 +87,6 @@ class Installer extends \Zikula_AbstractInstaller
 
         System::setVar('idnnames', 1);
 
-        if (!DBUtil::createTable('workflows')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_attributes')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_log')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('objectdata_meta')) {
-            return false;
-        }
-
         // Initialisation successful
         return true;
     }
@@ -127,57 +111,7 @@ class Installer extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '2.5':
-                System::delVar('jsquicktags');
-                System::delVar('backend_title');
-                System::delVar('refereronprint');
-                System::delVar('storyorder');
-                System::delVar('backend_language');
-                System::delVar('site_logo');
-
-            case '2.6':
-                System::setVar('updatelastchecked', 0);
-                System::setVar('updatefrequency', 7);
-                System::setVar('updatecheck', true);
-
-            case '2.7':
-                System::setVar('language_i18n', 'en');
-                System::setVar('language_bc', 1);
-                System::setVar('languageurl', 0);
-                System::setVar('ajaxtimeout', 5000);
-                //! this is a comma-separated list of special characters to search for in permalinks
-                System::setVar('permasearch',  $this->$this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
-                //! this is a comma-separated list of special characters to replace in permalinks
-                System::setVar('permareplace', $this->$this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
-
-            case '2.8':
-                System::delVar('dyn_keywords');
-            case '2.9':
-            case '2.9.1':
-                System::delVar('timezone_info');
-            case '2.9.2':
-                $tables = DBUtil::getTables();
-                $modulesTable = $tables['modules'];
-                $name = $tables['modules_column']['name'];
-                $sql = "DELETE FROM $modulesTable WHERE $name = 'ObjectData' OR $name = 'Workflow'";
-                DBUtil::executeSQL($sql);
-            case '2.9.3':
-                // This may have been set by the Users module upgrade already, so only set it if it does not exist.
-                $systemIdnSetting = System::getVar('idnnames', null);
-                if (isset($systemIdnSetting)) {
-                    if (ModUtil::available('Users')) {
-                        $usersIdnSetting = ModUtil::getVar('UsersModule', 'idnnames', null);
-                    }
-                    System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
-                }
-                System::delVar('language_bc');
-            case '2.9.4':
-                System::setVar('defaultpagetitle', $this->__('Site name'));
-                System::setVar('defaultmetadescription', $this->__('Site description'));
-            case '2.9.5':
-                System::delVar('shorturlsext');
-            case '2.9.6':
-                DBUtil::changeTable('objectdata_attributes');
+            case '2.9.7':
                 // future upgrade routines
         }
 

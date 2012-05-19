@@ -72,36 +72,6 @@ class Installer extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '3.6':
-            case '3.7':
-                // legacy is no longer supported
-                \System::delVar('loadlegacy');
-                \DBUtil::changeTable('modules');
-            case '3.7.4':
-            case '3.7.5':
-            case '3.7.6':
-            case '3.7.8':
-                // create the new hooks tables
-                \Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea',
-                    'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-                EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
-                EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
-            case '3.7.9':
-                // increase length of some hook table fields from 60 to 100
-                $commands = array();
-                $commands[] = "ALTER TABLE hook_area CHANGE areaname areaname VARCHAR(100) NOT NULL";
-                $commands[] = "ALTER TABLE hook_runtime CHANGE eventname eventname VARCHAR(100) NOT NULL";
-                $commands[] = "ALTER TABLE hook_subscriber CHANGE eventname eventname VARCHAR(100) NOT NULL";
-
-                // Load DB connection
-                $dbEvent = new GenericEvent();
-                $connection = $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent)->getData();
-
-                foreach ($commands as $sql) {
-                    $stmt = $connection->prepare($sql);
-                    $stmt->execute();
-                }
-
             case '3.7.10':
                 // future upgrade routines
 

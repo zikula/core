@@ -105,16 +105,8 @@ class Zikula_Workflow
                            'schemaname'   => $this->id,
                            'state'        => $stateID);
 
-        if (!DBUtil::insertObject($insertObj, 'workflows')) {
-            return false;
-        }
-
         $this->workflowData = $insertObj;
-        if ($obj instanceof Doctrine_Record) {
-            $obj->mapValue('__WORKFLOW__', $insertObj);
-        } else {
-            $obj['__WORKFLOW__'] = $insertObj;
-        }
+        $obj['__WORKFLOW__'] = $insertObj;
 
         return true;
     }

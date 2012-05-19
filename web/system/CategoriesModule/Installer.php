@@ -14,7 +14,7 @@
 
 namespace CategoriesModule;
 
-use DBUtil, DataUtil, ZLanguage;
+use DataUtil, ZLanguage;
 
 class Installer extends \Zikula_AbstractInstaller
 {
@@ -685,62 +685,4 @@ class Installer extends \Zikula_AbstractInstaller
     {
         return array(ZLanguage::getLanguageCode() => '');
     }
-
-    public function upgrade_fixSerializedData()
-    {
-        // fix serialised data in categories
-        $objArray = DBUtil::selectObjectArray('categories_category');
-        DBUtil::truncateTable('categories_category');
-
-        foreach ($objArray as $category) {
-            $data = DataUtil::mb_unserialize($category['display_name']);
-            $category['display_name'] = serialize($data);
-            $data = DataUtil::mb_unserialize($category['display_desc']);
-            $category['display_desc'] = serialize($data);
-            DBUtil::insertObject($category, 'categories_category', 'id', true, true);
-        }
-
-        return;
-    }
-
-    public function upgrade_MigrateLanguageCodes()
-    {
-        $objArray = DBUtil::selectObjectArray('categories_category');
-        DBUtil::truncateTable('categories_category');
-
-        $newObjArray = array();
-        foreach ($objArray as $category) {
-            // translate display_name l3 -> l2
-            $data = unserialize($category['display_name']);
-            if (is_array($data)) {
-                $array = array();
-                foreach ($data as $l3 => $v) {
-                    $l2 = ZLanguage::translateLegacyCode($l3);
-                    if ($l2) {
-                        $array[$l2] = $v;
-                    }
-                }
-                $category['display_name'] = serialize($array);
-            }
-
-            // translate display_desc l3 -> l2
-            $data = unserialize($category['display_desc']);
-            if (is_array($data)) {
-                $array = array();
-                foreach ($data as $l3 => $v) {
-                    $l2 = ZLanguage::translateLegacyCode($l3);
-                    if ($l2) {
-                        $array[$l2] = $v;
-                    }
-                }
-                $category['display_desc'] = serialize($array);
-            }
-
-            // commit
-            DBUtil::insertObject($category, 'categories_category', 'id', true);
-        }
-
-        return;
-    }
-
 }

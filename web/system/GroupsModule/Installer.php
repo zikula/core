@@ -70,14 +70,6 @@ class Installer extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '2.1':
-                // change value of defaultgroup from name to gid
-                $gid = \DBUtil::selectObjectByID('groups', $this->getVar('defaultgroup'), 'name');
-                $this->setVar('defaultgroup', $gid['gid']);
-
-            case '2.2':
-            case '2.3':
-            case '2.3.0':
             case '2.3.1':
                 // Set read-only primaryadmingroup so it is accessible by other modules.
                 $this->setVar('primaryadmingroup', 2);

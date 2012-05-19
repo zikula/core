@@ -14,7 +14,7 @@
 
 namespace ThemeModule;
 
-use DoctrineHelper, ModUtil, DBUtil;
+use DoctrineHelper, ModUtil;
 
 class Installer extends \Zikula_AbstractInstaller
 {
@@ -79,63 +79,6 @@ class Installer extends \Zikula_AbstractInstaller
     {
         switch ($oldversion)
         {
-            case '3.1':
-                $this->setVar('cssjscombine', false);
-                $this->setVar('cssjscompress', false);
-                $this->setVar('cssjsminify', false);
-                $this->setVar('cssjscombine_lifetime', 3600);
-
-            case '3.3':
-            // convert pnRender modvars
-                $pnrendervars = ModUtil::getVar('pnRender');
-                foreach ($pnrendervars as $k => $v) {
-                    $this->setVar('render_' . $k, $v);
-                }
-                // delete pnRender modvars
-                ModUtil::delVar('pnRender');
-
-                $modid = ModUtil::getIdFromName('pnRender');
-
-                // check and update blocks
-                $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getall', array('modid' => $modid));
-                if (!empty($blocks)) {
-                    $thememodid = ModUtil::getIdFromName('Theme');
-                    foreach ($blocks as $block) {
-                        $block->setBkey('render');
-                        $block->setMid($thememodid);
-                        $this->entityManager->flush();
-                    }
-                }
-
-                // check and fix permissions
-                $perms = $this->entityManager->getRepository('Permissions\Entity\Permission')->findBy(array('component' => 'pnRender:pnRenderblock:'));
-                if ($perms) {
-                    foreach ($perms as $perm) {
-                        $perm['component'] = 'Theme:Renderblock:';
-                    }
-                    $this->entityManager->flush();
-                }
-
-                // Set Module pnRender 'Inactive'
-                if (!ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate', array(
-                'id' => $modid,
-                'state' => ModUtil::STATE_INACTIVE))) {
-                    return '3.3';
-                }
-                // Remove Module pnRender from Modulelist
-                if (!ModUtil::apiFunc('ExtensionsModule', 'admin', 'remove', array(
-                'id' => $modid))) {
-                    return '3.3';
-                }
-
-            case '3.4':
-                if (!DBUtil::changeTable('themes')) {
-                    return '3.4';
-                }
-            case '3.4.1':
-                if (!DBUtil::changeTable('themes')) {
-                    return '3.4.1';
-                }
             case '3.4.2':
                 // future upgrade
         }

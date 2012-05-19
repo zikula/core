@@ -269,8 +269,6 @@ class UserUtil
             return array();
         }
 
-        ModUtil::dbInfoLoad($profileModule);
-
         return DBUtil::selectObjectArray('user_property');
     }
 

@@ -14,7 +14,7 @@
 
 namespace AdminModule;
 
-use DoctrineHelper, DBUtil;
+use DoctrineHelper;
 use AdminModule\Entity\AdminCategory;
 
 class Installer extends \Zikula_AbstractInstaller
@@ -66,28 +66,6 @@ class Installer extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '1.5':
-                if (!DBUtil::changeTable('admin_module')) {
-                    return '1.5';
-                }
-
-            case '1.6':
-                $this->setVar('modulesperrow', 3);
-                $this->setVar('itemsperpage', 15);
-                $this->setVar('moduledescription', 1);
-
-            case '1.7':
-            case '1.8':
-                $this->delVar('moduledescription');
-
-            case '1.8.1':
-                if (!DBUtil::changeTable('admin_category')) {
-                    return '1.8.1';
-                }
-                if (!DBUtil::changeTable('admin_module')) {
-                    return '1.8.1';
-                }
-
             case '1.9.0':
                 $this->delVar('modulestylesheet');
 

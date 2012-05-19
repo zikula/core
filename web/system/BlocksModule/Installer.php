@@ -15,7 +15,7 @@
 namespace BlocksModule;
 
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
-use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View, DBUtil;
+use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
 use Zikula\Framework\Exception\FatalException;
 use BlocksModule\Entity\BlockPlacement;
 
@@ -63,27 +63,6 @@ class Installer extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion)
         {
-            case '3.6':
-                // Rename 'thelang' block.
-                $table = 'blocks';
-                $sql = "UPDATE $table SET bkey = 'lang' WHERE bkey = 'thelang'";
-                \DBUtil::executeSQL($sql);
-                // Optional upgrade
-                if (in_array(\DBUtil::getLimitedTablename('message'), \DBUtil::metaTables())) {
-                    $this->migrateMessages();
-                }
-                $this->migrateBlockNames();
-                $this->migrateExtMenu();
-
-            case '3.7':
-            case '3.7.0':
-                if (!\DBUtil::changeTable('blocks')) {
-                    return false;
-                }
-
-            case '3.7.1':
-                $this->newBlockPositions();
-
             case '3.8.0':
                 // update empty filter fields to an empty array
                 $entity = $this->name . '\Entity\Block';
@@ -198,154 +177,5 @@ class Installer extends \Zikula_AbstractInstaller
         }
 
         return;
-    }
-
-    protected function migrateMessages()
-    {
-        // Migrate any Admin_Messages to blocks
-        $messageTable = DBUtil::getLimitedTablename('message');
-        $blocksTable = 'blocks';
-        $messageBlocks = DBUtil::executeSQL("SELECT * FROM $blocksTable WHERE bkey = 'messages'")->fetchAll(\Doctrine::FETCH_ASSOC);
-
-        $result = DBUtil::executeSQL("SELECT * FROM $messageTable");
-        $data = $result->fetchAll(\Doctrine::FETCH_ASSOC);
-        if ($data) {
-            foreach ($data as $key => $value) {
-                foreach ($data[$key] as $k => $v) {
-                    unset($data[$key][$k]);
-                    $newKey = str_replace('z_', '', $k);
-                    $data[$key][$newKey] = $v;
-                }
-                unset($data[$key]['date']);
-                unset($data[$key]['expire']);
-                unset($data[$key]['view']);
-                unset($data[$key]['mid']);
-                if (!$messageBlocks) {
-                    $data[$key]['active'] = '0';
-                }
-                $data[$key]['bkey'] = 'html';
-                $data[$key]['position'] = 'center';
-                $data[$key]['refresh'] = '3600';
-                $data[$key]['mid'] = ModUtil::getIdFromName('Blocks');
-                $data[$key] = DBUtil::insertObject($data[$key], 'blocks', 'bid');
-                $placement = array('pid' => 3, 'bid' => $data[$key]['bid']);
-                DBUtil::insertObject($placement, 'block_placements', 'pid', true);
-            }
-        }
-
-        // Remove Admin_Message table.
-        DBUtil::executeSQL("DROP TABLE $messageTable");
-        // Remove any Admin_Message blocks
-        $sql = "DELETE FROM $blocksTable WHERE bkey = 'messages'";
-        DBUtil::executeSQL($sql);
-    }
-
-    protected function migrateExtMenu()
-    {
-        $blocks = DBUtil::selectObjectArray('blocks');
-        foreach ($blocks as $block) {
-            if ($block['bkey'] == 'Extmenu') {
-                $content = unserialize($block['content']);
-                $content['template'] = str_replace('Block/extmenu.htm', 'Block/extmenu.tpl', $content['template']);
-
-                // Update {} style links to new parameter order
-                // Module:type:func instead of Module:func:type
-                foreach ($content['links'] as &$lang) {    // Loop through all languages
-                    foreach ($lang as &$item) {             // And each item in each language
-                        if ( preg_match('#\{(.*)\}#', $item['url'], $matches) ) {
-                            $parts = explode(':', $matches[1]);
-                            $c = count($parts);
-                            if ($c > 1) {           // Need to fix if more than a module is given
-                                if ($c == 2) {      // Add type if it was left out
-                                    $tmp = 'user';
-                                } else {
-                                    $tmp = $parts[2];
-                                }
-                                $parts[2] = $parts[1];
-                                $parts[1] = $tmp;
-                                $item['url'] = '{' . implode(':', $parts) . '}';    // And put it back together
-                            }
-
-                        }
-                    }
-                }
-
-                $block['content'] = serialize($content);
-                DBUtil::updateObject($block, 'blocks', '', 'bid');
-            }
-        }
-    }
-
-    protected function migrateBlockNames()
-    {
-        $blocks = DBUtil::selectObjectArray('blocks');
-        foreach ($blocks as $block) {
-            $block['bkey'] = ucfirst($block['bkey']);
-            DBUtil::updateObject($block, 'blocks', '', 'bid');
-        }
-    }
-
-    protected function newBlockPositions()
-    {
-        $positions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
-
-        // create the search block position if doesn't exists
-        if (!isset($positions['search'])) {
-            $searchpid = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'search', 'description' => $this->__('Search block')));
-        } else {
-            $searchpid = $positions['search']['pid'];
-        }
-
-        // restores the search block if not present
-        $dbtable      = DBUtil::getTables();
-        $blockscolumn = $dbtable['blocks_column'];
-        $searchblocks = DBUtil::selectObjectArray('blocks', "$blockscolumn[bkey] = 'Search'");
-
-        if (empty($searchblocks)) {
-            $block = array('bkey' => 'Search', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Search'), 'title' => $this->__('Search box'), 'description' => '', 'positions' => array($searchpid));
-            $block['bid'] = ModUtil::apiFunc('BlocksModule', 'admin', 'create', $block);
-            ModUtil::apiFunc('BlocksModule', 'admin', 'update', $block);
-        } else {
-            // assign the block to the search position
-            $blockplacement = array('bid' => $searchblocks[0]['bid'], 'pid' => $searchpid);
-            DBUtil::insertObject($blockplacement, 'block_placements');
-        }
-
-        // create new block positions if they don't exist
-        if (!isset($positions['header'])) {
-            $header = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'header', 'description' => $this->__('Header block')));
-        }
-        if (!isset($positions['footer'])) {
-            $footer = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'footer', 'description' => $this->__('Footer block')));
-        }
-        if (!isset($positions['bottomnav'])) {
-            $bottomnav = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'bottomnav', 'description' => $this->__('Bottom navigation block')));
-        }
-        if (!isset($positions['topnav'])) {
-            $topnav = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'topnav', 'description' => $this->__('Top navigation block')));
-
-            // Build content for the top navigation menu
-            $languages = ZLanguage::getInstalledLanguages();
-            $saveLanguage = ZLanguage::getLanguageCode();
-            foreach ($languages as $lang)
-            {
-                ZLanguage::setLocale($lang);
-                ZLanguage::bindCoreDomain();
-                $topnavcontent = array();
-                $topnavcontent['displaymodules'] = '0';
-                $topnavcontent['stylesheet'] = 'extmenu.css';
-                $topnavcontent['template'] = 'Block/extmenu_topnav.tpl';
-                $topnavcontent['blocktitles'][$lang] = $this->__('Top navigation');
-                $topnavcontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-                $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-                $topnavcontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{Search}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            }
-
-            ZLanguage::setLocale($saveLanguage);
-            $topnavcontent = serialize($topnavcontent);
-            $topnavblock = array('bkey' => 'Extmenu', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('Blocks'), 'title' => $this->__('Top navigation'), 'description' => '', 'content' => $topnavcontent, 'positions' => array($topnav));
-            $topnavblock['bid'] = ModUtil::apiFunc('BlocksModule', 'admin', 'create', $topnavblock);
-            ModUtil::apiFunc('BlocksModule', 'admin', 'update', $topnavblock);
-        }
     }
 }

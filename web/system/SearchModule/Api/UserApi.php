@@ -14,7 +14,7 @@
 
 namespace SearchModule\Api;
 
-use LogUtil, ModUtil, DBUtil, UserUtil, DataUtil, SecurityUtil, System, FormUtil, ZLanguage;
+use LogUtil, ModUtil, UserUtil, DataUtil, SecurityUtil, System, FormUtil, ZLanguage;
 
 /**
  * Search_Api_User class.
