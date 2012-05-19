@@ -37,7 +37,7 @@ class UserController extends \Zikula_AbstractController
         $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
-        return $this->response($this->view->fetch('categories_user_editcategories.tpl'));
+        return $this->response($this->view->fetch('User/editcategories.tpl'));
     }
 
     /**
@@ -132,7 +132,7 @@ class UserController extends \Zikula_AbstractController
                    ->assign('userlanguage', ZLanguage::getLanguageCode())
                    ->assign('referer', \SessionUtil::getVar('categories_referer'));
         
-        return $this->response($this->view->fetch('categories_user_edit.tpl'));
+        return $this->response($this->view->fetch('User/edit.tpl'));
     }
 
     /**

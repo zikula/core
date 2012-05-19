@@ -18,7 +18,7 @@
 </ul>
 
 {insert name="getstatusmsg"}
-{include file="categories_user_list.tpl"}
+{include file="User/list.tpl"}
 
 <h3>{$templatetitle}</h3>
 
@@ -87,7 +87,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text="Attributes"}</legend>
-            {include file=categories_include_editattributes.tpl}
+            {include file=editattributes.tpl}
         </fieldset>
         {if $catID}
         <fieldset>

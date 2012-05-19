@@ -57,7 +57,7 @@ class AdminController extends \Zikula_AbstractController
         $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
 
         $this->view->assign('menuTxt', $menuTxt);
-        return $this->response($this->view->fetch('categories_admin_view.tpl'));
+        return $this->response($this->view->fetch('Admin/view.tpl'));
     }
 
     /**
@@ -69,7 +69,7 @@ class AdminController extends \Zikula_AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        return $this->response($this->view->fetch('categories_admin_config.tpl'));
+        return $this->response($this->view->fetch('Admin/config.tpl'));
     }
 
     /**
@@ -160,7 +160,7 @@ class AdminController extends \Zikula_AbstractController
                        ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories($cid, false, true));
         }
 
-        return $this->response($this->view->fetch('categories_admin_edit.tpl'));
+        return $this->response($this->view->fetch('Admin/edit.tpl'));
     }
 
     public function editregistryAction()
@@ -187,7 +187,7 @@ class AdminController extends \Zikula_AbstractController
                    ->assign('root_id', $root_id)
                    ->assign('id', $id);
 
-        return $this->response($this->view->fetch('categories_admin_registry_edit.tpl'));
+        return $this->response($this->view->fetch('Admin/registry_edit.tpl'));
     }
 
     public function deleteregistryAction()
@@ -204,7 +204,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('data', $data)
                    ->assign('id', $id);
 
-        return $this->response($this->view->fetch('categories_admin_registry_delete.tpl'));
+        return $this->response($this->view->fetch('Admin/registry_delete.tpl'));
     }
 
     /**
@@ -238,7 +238,7 @@ class AdminController extends \Zikula_AbstractController
                    ->assign('numSubcats', count($subCats))
                    ->assign('categorySelector', $selector);
 
-        return $this->response($this->view->fetch("categories_admin_{$op}.tpl"));
+        return $this->response($this->view->fetch("Admin/{$op}.tpl"));
     }
 
     /**
@@ -257,6 +257,6 @@ class AdminController extends \Zikula_AbstractController
                    ->assign('userdefaultcatname', $this->getVar('userdefaultcatname', 0))
                    ->assign('permissionsall', $this->getVar('permissionsall', 0));
 
-        return $this->response($this->view->fetch('categories_admin_preferences.tpl'));
+        return $this->response($this->view->fetch('Admin/preferences.tpl'));
     }
 }
