@@ -208,7 +208,6 @@ class ZLoader
             'System' => ZLOADER_PATH . '/legacy/util/System.php',
             'ThemeUtil' => ZLOADER_PATH . '/legacy/util/ThemeUtil.php',
             'UserUtil' => ZLOADER_PATH . '/legacy/util/UserUtil.php',
-            'ValidationUtil' => ZLOADER_PATH . '/legacy/util/ValidationUtil.php',
             'Loader' => ZLOADER_PATH . '/legacy/Loader.php',
         );
     }
