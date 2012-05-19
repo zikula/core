@@ -20,11 +20,11 @@ if (!defined('LC_MESSAGES')) {
     define('LC_MESSAGES', 5);
 }
 
-include __DIR__.'/../src/StreamReader/Abstract.php';
-include __DIR__.'/../src/StreamReader/String.php';
-include __DIR__.'/../src/StreamReader/CachedFile.php';
-include __DIR__.'/../src/i18n/ZGettext.php';
-include __DIR__.'/../src/i18n/ZMO.php';
+include __DIR__.'/../src/legacy/StreamReader/Abstract.php';
+include __DIR__.'/../src/legacy/StreamReader/String.php';
+include __DIR__.'/../src/legacy/StreamReader/CachedFile.php';
+include __DIR__.'/../src/legacy/i18n/ZGettext.php';
+include __DIR__.'/../src/legacy/i18n/ZMO.php';
 
 if (!isset($_GET['lang']) || count($_GET) < 2) {
     badRequest();
