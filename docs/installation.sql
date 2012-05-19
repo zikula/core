@@ -184,8 +184,8 @@ INSERT INTO `block_positions` (`pid`, `name`, `description`) VALUES
 -- Table structure for table `categories_category`
 --
 
-DROP TABLE IF EXISTS `categories_category`;
-CREATE TABLE IF NOT EXISTS `categories_category` (
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) NOT NULL DEFAULT '1',
   `is_locked` tinyint(4) NOT NULL DEFAULT '0',
@@ -198,11 +198,6 @@ CREATE TABLE IF NOT EXISTS `categories_category` (
   `path` longtext NOT NULL,
   `ipath` varchar(255) NOT NULL,
   `status` varchar(1) NOT NULL DEFAULT 'A',
-  `obj_status` varchar(1) NOT NULL DEFAULT 'A',
-  `cr_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `cr_uid` int(11) NOT NULL DEFAULT '0',
-  `lu_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `lu_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_categories_parent` (`parent_id`),
   KEY `idx_categories_is_leaf` (`is_leaf`),
@@ -216,92 +211,78 @@ CREATE TABLE IF NOT EXISTS `categories_category` (
 -- Dumping data for table `categories_category`
 --
 
-INSERT INTO `categories_category` (`id`, `parent_id`, `is_locked`, `is_leaf`, `name`, `value`, `sort_value`, `display_name`, `display_desc`, `path`, `ipath`, `status`, `obj_status`, `cr_date`, `cr_uid`, `lu_date`, `lu_uid`) VALUES
-(1, 0, 1, 0, '__SYSTEM__', '', 1, 's:0:"";', 's:0:"";', '/__SYSTEM__', '/1', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
-(2, 1, 0, 0, 'Modules', '', 2, 'a:1:{s:2:"en";s:7:"Modules";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules', '/1/2', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
-(3, 1, 0, 0, 'General', '', 3, 'a:1:{s:2:"en";s:7:"General";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General', '/1/3', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
-(4, 3, 0, 0, 'YesNo', '', 4, 'a:1:{s:2:"en";s:6:"Yes/No";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/YesNo', '/1/3/4', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
-(5, 4, 0, 1, '1 - Yes', 'Y', 5, 's:0:"";', 's:0:"";', '/__SYSTEM__/General/YesNo/1 - Yes', '/1/3/4/5', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:18', 2),
-(6, 4, 0, 1, '2 - No', 'N', 6, 's:0:"";', 's:0:"";', '/__SYSTEM__/General/YesNo/2 - No', '/1/3/4/6', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(10, 3, 0, 0, 'Publication Status (extended)', '', 10, 'a:1:{s:2:"en";s:29:"Publication status (extended)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)', '/1/3/10', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(11, 10, 0, 1, 'Pending', 'P', 11, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Pending', '/1/3/10/11', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(12, 10, 0, 1, 'Checked', 'C', 12, 'a:1:{s:2:"en";s:7:"Checked";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Checked', '/1/3/10/12', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(13, 10, 0, 1, 'Approved', 'A', 13, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Approved', '/1/3/10/13', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(14, 10, 0, 1, 'On-line', 'O', 14, 'a:1:{s:2:"en";s:7:"On-line";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/On-line', '/1/3/10/14', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(15, 10, 0, 1, 'Rejected', 'R', 15, 'a:1:{s:2:"en";s:8:"Rejected";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Rejected', '/1/3/10/15', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(16, 3, 0, 0, 'Gender', '', 16, 'a:1:{s:2:"en";s:6:"Gender";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender', '/1/3/16', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(17, 16, 0, 1, 'Male', 'M', 17, 'a:1:{s:2:"en";s:4:"Male";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Male', '/1/3/16/17', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(18, 16, 0, 1, 'Female', 'F', 18, 'a:1:{s:2:"en";s:6:"Female";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Female', '/1/3/16/18', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(19, 3, 0, 0, 'Title', '', 19, 'a:1:{s:2:"en";s:5:"Title";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title', '/1/3/19', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(20, 19, 0, 1, 'Mr', 'Mr', 20, 'a:1:{s:2:"en";s:3:"Mr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mr', '/1/3/19/20', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(21, 19, 0, 1, 'Mrs', 'Mrs', 21, 'a:1:{s:2:"en";s:4:"Mrs.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mrs', '/1/3/19/21', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(22, 19, 0, 1, 'Ms', 'Ms', 22, 'a:1:{s:2:"en";s:3:"Ms.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Ms', '/1/3/19/22', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(23, 19, 0, 1, 'Miss', 'Miss', 23, 'a:1:{s:2:"en";s:4:"Miss";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Miss', '/1/3/19/23', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(24, 19, 0, 1, 'Dr', 'Dr', 24, 'a:1:{s:2:"en";s:3:"Dr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Dr', '/1/3/19/24', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(25, 3, 0, 0, 'ActiveStatus', '', 25, 'a:1:{s:2:"en";s:15:"Activity status";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus', '/1/3/25', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(26, 25, 0, 1, 'Active', 'A', 26, 'a:1:{s:2:"en";s:6:"Active";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Active', '/1/3/25/26', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(27, 25, 0, 1, 'Inactive', 'I', 27, 'a:1:{s:2:"en";s:8:"Inactive";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Inactive', '/1/3/25/27', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(28, 3, 0, 0, 'Publication status (basic)', '', 28, 'a:1:{s:2:"en";s:26:"Publication status (basic)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)', '/1/3/28', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(29, 28, 0, 1, 'Pending', 'P', 29, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)/Pending', '/1/3/28/29', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(30, 28, 0, 1, 'Approved', 'A', 30, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)/Approved', '/1/3/28/30', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(31, 1, 0, 0, 'Users', '', 31, 'a:1:{s:2:"en";s:5:"Users";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Users', '/1/31', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(32, 2, 0, 0, 'Global', '', 32, 'a:1:{s:2:"en";s:6:"Global";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global', '/1/2/32', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(33, 32, 0, 1, 'Blogging', '', 33, 'a:1:{s:2:"en";s:8:"Blogging";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Blogging', '/1/2/32/33', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(34, 32, 0, 1, 'Music and audio', '', 34, 'a:1:{s:2:"en";s:15:"Music and audio";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Music and audio', '/1/2/32/34', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(35, 32, 0, 1, 'Art and photography', '', 35, 'a:1:{s:2:"en";s:19:"Art and photography";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Art and photography', '/1/2/32/35', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(36, 32, 0, 1, 'Writing and thinking', '', 36, 'a:1:{s:2:"en";s:20:"Writing and thinking";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Writing and thinking', '/1/2/32/36', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(37, 32, 0, 1, 'Communications and media', '', 37, 'a:1:{s:2:"en";s:24:"Communications and media";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Communications and media', '/1/2/32/37', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(38, 32, 0, 1, 'Travel and culture', '', 38, 'a:1:{s:2:"en";s:18:"Travel and culture";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Travel and culture', '/1/2/32/38', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(39, 32, 0, 1, 'Science and technology', '', 39, 'a:1:{s:2:"en";s:22:"Science and technology";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Science and technology', '/1/2/32/39', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(40, 32, 0, 1, 'Sport and activities', '', 40, 'a:1:{s:2:"en";s:20:"Sport and activities";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Sport and activities', '/1/2/32/40', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2),
-(41, 32, 0, 1, 'Business and work', '', 41, 'a:1:{s:2:"en";s:17:"Business and work";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Business and work', '/1/2/32/41', 'A', 'A', '2012-04-08 09:27:50', 0, '2012-04-16 19:46:19', 2);
+INSERT INTO `categories` (`id`, `parent_id`, `is_locked`, `is_leaf`, `name`, `value`, `sort_value`, `display_name`, `display_desc`, `path`, `ipath`, `status`) VALUES
+(1, 0, 1, 0, '__SYSTEM__', '', 1, 's:0:"";', 's:0:"";', '/__SYSTEM__', '/1', 'A'),
+(2, 1, 0, 0, 'Modules', '', 2, 'a:1:{s:2:"en";s:7:"Modules";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules', '/1/2', 'A'),
+(3, 1, 0, 0, 'General', '', 3, 'a:1:{s:2:"en";s:7:"General";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General', '/1/3', 'A'),
+(4, 3, 0, 0, 'YesNo', '', 4, 'a:1:{s:2:"en";s:6:"Yes/No";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/YesNo', '/1/3/4', 'A'),
+(5, 4, 0, 1, '1 - Yes', 'Y', 5, 's:0:"";', 's:0:"";', '/__SYSTEM__/General/YesNo/1 - Yes', '/1/3/4/5', 'A'),
+(6, 4, 0, 1, '2 - No', 'N', 6, 's:0:"";', 's:0:"";', '/__SYSTEM__/General/YesNo/2 - No', '/1/3/4/6', 'A'),
+(10, 3, 0, 0, 'Publication Status (extended)', '', 10, 'a:1:{s:2:"en";s:29:"Publication status (extended)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)', '/1/3/10', 'A'),
+(11, 10, 0, 1, 'Pending', 'P', 11, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Pending', '/1/3/10/11', 'A'),
+(12, 10, 0, 1, 'Checked', 'C', 12, 'a:1:{s:2:"en";s:7:"Checked";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Checked', '/1/3/10/12', 'A'),
+(13, 10, 0, 1, 'Approved', 'A', 13, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Approved', '/1/3/10/13', 'A'),
+(14, 10, 0, 1, 'On-line', 'O', 14, 'a:1:{s:2:"en";s:7:"On-line";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/On-line', '/1/3/10/14', 'A'),
+(15, 10, 0, 1, 'Rejected', 'R', 15, 'a:1:{s:2:"en";s:8:"Rejected";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication Status (extended)/Rejected', '/1/3/10/15', 'A'),
+(16, 3, 0, 0, 'Gender', '', 16, 'a:1:{s:2:"en";s:6:"Gender";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender', '/1/3/16', 'A'),
+(17, 16, 0, 1, 'Male', 'M', 17, 'a:1:{s:2:"en";s:4:"Male";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Male', '/1/3/16/17', 'A'),
+(18, 16, 0, 1, 'Female', 'F', 18, 'a:1:{s:2:"en";s:6:"Female";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Gender/Female', '/1/3/16/18', 'A'),
+(19, 3, 0, 0, 'Title', '', 19, 'a:1:{s:2:"en";s:5:"Title";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title', '/1/3/19', 'A'),
+(20, 19, 0, 1, 'Mr', 'Mr', 20, 'a:1:{s:2:"en";s:3:"Mr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mr', '/1/3/19/20', 'A'),
+(21, 19, 0, 1, 'Mrs', 'Mrs', 21, 'a:1:{s:2:"en";s:4:"Mrs.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Mrs', '/1/3/19/21', 'A'),
+(22, 19, 0, 1, 'Ms', 'Ms', 22, 'a:1:{s:2:"en";s:3:"Ms.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Ms', '/1/3/19/22', 'A'),
+(23, 19, 0, 1, 'Miss', 'Miss', 23, 'a:1:{s:2:"en";s:4:"Miss";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Miss', '/1/3/19/23', 'A'),
+(24, 19, 0, 1, 'Dr', 'Dr', 24, 'a:1:{s:2:"en";s:3:"Dr.";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Title/Dr', '/1/3/19/24', 'A'),
+(25, 3, 0, 0, 'ActiveStatus', '', 25, 'a:1:{s:2:"en";s:15:"Activity status";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus', '/1/3/25', 'A'),
+(26, 25, 0, 1, 'Active', 'A', 26, 'a:1:{s:2:"en";s:6:"Active";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Active', '/1/3/25/26', 'A'),
+(27, 25, 0, 1, 'Inactive', 'I', 27, 'a:1:{s:2:"en";s:8:"Inactive";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/ActiveStatus/Inactive', '/1/3/25/27', 'A'),
+(28, 3, 0, 0, 'Publication status (basic)', '', 28, 'a:1:{s:2:"en";s:26:"Publication status (basic)";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)', '/1/3/28', 'A'),
+(29, 28, 0, 1, 'Pending', 'P', 29, 'a:1:{s:2:"en";s:7:"Pending";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)/Pending', '/1/3/28/29', 'A'),
+(30, 28, 0, 1, 'Approved', 'A', 30, 'a:1:{s:2:"en";s:8:"Approved";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/General/Publication status (basic)/Approved', '/1/3/28/30', 'A'),
+(31, 1, 0, 0, 'Users', '', 31, 'a:1:{s:2:"en";s:5:"Users";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Users', '/1/31', 'A'),
+(32, 2, 0, 0, 'Global', '', 32, 'a:1:{s:2:"en";s:6:"Global";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global', '/1/2/32', 'A'),
+(33, 32, 0, 1, 'Blogging', '', 33, 'a:1:{s:2:"en";s:8:"Blogging";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Blogging', '/1/2/32/33', 'A'),
+(34, 32, 0, 1, 'Music and audio', '', 34, 'a:1:{s:2:"en";s:15:"Music and audio";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Music and audio', '/1/2/32/34', 'A'),
+(35, 32, 0, 1, 'Art and photography', '', 35, 'a:1:{s:2:"en";s:19:"Art and photography";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Art and photography', '/1/2/32/35', 'A'),
+(36, 32, 0, 1, 'Writing and thinking', '', 36, 'a:1:{s:2:"en";s:20:"Writing and thinking";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Writing and thinking', '/1/2/32/36', 'A'),
+(37, 32, 0, 1, 'Communications and media', '', 37, 'a:1:{s:2:"en";s:24:"Communications and media";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Communications and media', '/1/2/32/37', 'A'),
+(38, 32, 0, 1, 'Travel and culture', '', 38, 'a:1:{s:2:"en";s:18:"Travel and culture";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Travel and culture', '/1/2/32/38', 'A'),
+(39, 32, 0, 1, 'Science and technology', '', 39, 'a:1:{s:2:"en";s:22:"Science and technology";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Science and technology', '/1/2/32/39', 'A'),
+(40, 32, 0, 1, 'Sport and activities', '', 40, 'a:1:{s:2:"en";s:20:"Sport and activities";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Sport and activities', '/1/2/32/40', 'A'),
+(41, 32, 0, 1, 'Business and work', '', 41, 'a:1:{s:2:"en";s:17:"Business and work";}', 'a:1:{s:2:"en";s:0:"";}', '/__SYSTEM__/Modules/Global/Business and work', '/1/2/32/41', 'A');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories_mapmeta`
+-- Table structure for table `categories_attributes`
 --
 
-DROP TABLE IF EXISTS `categories_mapmeta`;
-CREATE TABLE IF NOT EXISTS `categories_mapmeta` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `meta_id` int(11) NOT NULL DEFAULT '0',
-  `category_id` int(11) NOT NULL DEFAULT '0',
-  `obj_status` varchar(1) NOT NULL DEFAULT 'A',
-  `cr_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `cr_uid` int(11) NOT NULL DEFAULT '0',
-  `lu_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `lu_uid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_categories_mapmeta` (`meta_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `categories_attributes` (
+  `category_id` int(11) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `value` longtext NOT NULL,
+  PRIMARY KEY (`category_id`,`name`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Table structure for table `categories_mapobj`
+-- Dumping data for table `categories_attributes`
 --
 
-DROP TABLE IF EXISTS `categories_mapobj`;
-CREATE TABLE IF NOT EXISTS `categories_mapobj` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `modname` varchar(60) NOT NULL,
-  `tablename` varchar(60) NOT NULL,
-  `obj_id` int(11) NOT NULL DEFAULT '0',
-  `obj_idcolumn` varchar(60) NOT NULL DEFAULT 'id',
-  `reg_id` int(11) NOT NULL DEFAULT '0',
-  `reg_property` varchar(60) NOT NULL,
-  `category_id` int(11) NOT NULL DEFAULT '0',
-  `obj_status` varchar(1) NOT NULL DEFAULT 'A',
-  `cr_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `cr_uid` int(11) NOT NULL DEFAULT '0',
-  `lu_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `lu_uid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_categories_mapobj` (`modname`,`tablename`,`obj_id`,`obj_idcolumn`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+INSERT INTO `categories_attributes` (`category_id`, `name`, `value`) VALUES
+(5, 'code', 'Y'),
+(6, 'code', 'N'),
+(11, 'code', 'P'),
+(12, 'code', 'C'),
+(13, 'code', 'A'),
+(14, 'code', 'O'),
+(15, 'code', 'R'),
+(17, 'code', 'M'),
+(18, 'code', 'F'),
+(26, 'code', 'A'),
+(27, 'code', 'I'),
+(29, 'code', 'P'),
+(30, 'code', 'A');
 
 --
 -- Table structure for table `categories_registry`
@@ -311,17 +292,13 @@ DROP TABLE IF EXISTS `categories_registry`;
 CREATE TABLE IF NOT EXISTS `categories_registry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `modname` varchar(60) NOT NULL,
-  `tablename` varchar(60) NOT NULL,
+  `entityname` varchar(60) NOT NULL,
   `property` varchar(60) NOT NULL,
   `category_id` int(11) NOT NULL DEFAULT '0',
-  `obj_status` varchar(1) NOT NULL DEFAULT 'A',
-  `cr_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `cr_uid` int(11) NOT NULL DEFAULT '0',
-  `lu_date` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `lu_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idx_categories_registry` (`modname`,`tablename`,`property`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  KEY `idx_categories_registry` (`modname`,`entityname`,`property`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 
@@ -886,26 +863,11 @@ CREATE TABLE IF NOT EXISTS `objectdata_attributes` (
   PRIMARY KEY (`id`),
   KEY `object_type` (`object_type`),
   KEY `object_id` (`object_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=66 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `objectdata_attributes`
 --
-
-INSERT INTO `objectdata_attributes` (`id`, `attribute_name`, `object_id`, `object_type`, `value`, `obj_status`, `cr_date`, `cr_uid`, `lu_date`, `lu_uid`) VALUES
-(53, 'code', 5, 'categories_category', 'Y', 'A', '2012-04-16 19:46:18', 2, '2012-04-16 19:46:19', 2),
-(54, 'code', 6, 'categories_category', 'N', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(55, 'code', 11, 'categories_category', 'P', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(56, 'code', 12, 'categories_category', 'C', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(57, 'code', 13, 'categories_category', 'A', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(58, 'code', 14, 'categories_category', 'O', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(59, 'code', 15, 'categories_category', 'R', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(60, 'code', 17, 'categories_category', 'M', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(61, 'code', 18, 'categories_category', 'F', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(62, 'code', 26, 'categories_category', 'A', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(63, 'code', 27, 'categories_category', 'I', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(64, 'code', 29, 'categories_category', 'P', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2),
-(65, 'code', 30, 'categories_category', 'A', 'A', '2012-04-16 19:46:19', 2, '2012-04-16 19:46:19', 2);
 
 -- --------------------------------------------------------
 

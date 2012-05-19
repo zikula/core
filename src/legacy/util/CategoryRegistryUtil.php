@@ -30,28 +30,34 @@ class CategoryRegistryUtil
         if (!isset($modname) || !$modname) {
             return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
-
-        $where = "modname='$modname'";
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $params = array('modname' => $modname);
         if ($entryID) {
-            $where .= " AND id=$entryID";
+            $params = array('id' => $entryID);
         }
+        
+        $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findOneBy($params);
+        $em->remove($entity);
+        $em->flush();
 
-        return (boolean)DBUtil::deleteWhere('categories_registry', $where);
+        return true;
     }
 
     /**
      * Create a category registry entry
      *
      * @param string  $modname    The module to create a property for.
-     * @param string  $table      The module table to create a property for.
+     * @param string  $entityname The module entity to create a property for.
      * @param string  $property   The property name.
      * @param integer $categoryID The category-id to bind this property to.
      *
      * @return boolean The DB insert operation result code cast to a boolean
      */
-    public static function insertEntry($modname, $table, $property, $categoryID)
+    public static function insertEntry($modname, $entityname, $property, $categoryID)
     {
-        return self::_processEntry($modname, $table, $property, $categoryID);
+        return self::_processEntry($modname, $entityname, $property, $categoryID);
     }
 
     /**
@@ -59,39 +65,39 @@ class CategoryRegistryUtil
      *
      * @param integer $entryID    The id of the existing entry we wish to update.
      * @param string  $modname    The module to create a property for.
-     * @param string  $table      The module table to create a property for.
+     * @param string  $entityname The module entity to create a property for.
      * @param string  $property   The property name.
      * @param integer $categoryID The category-id to bind this property to.
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    public static function updateEntry($entryID, $modname, $table, $property, $categoryID)
+    public static function updateEntry($entryID, $modname, $entityname, $property, $categoryID)
     {
         if (!isset($entryID) || !$entryID) {
             return z_exit(__f("Error! Received invalid parameter '%s'", 'entryID'));
         }
 
-        return self::_processEntry($modname, $table, $property, $categoryID, $entryID);
+        return self::_processEntry($modname, $entityname, $property, $categoryID, $entryID);
     }
 
     /**
      * Create or update a category registry entry.
      *
      * @param string  $modname    The module to create a property for.
-     * @param string  $table      The module table to create a property for.
+     * @param string  $entityname The module entity to create a property for.
      * @param string  $property   The property name.
      * @param integer $categoryID The category-id to bind this property to.
      * @param integer $entryID    The id of the existing entry we wish to update (optional) (default=null).
      *
      * @return boolean The DB insert operation result code cast to a boolean.
      */
-    private static function _processEntry($modname, $table, $property, $categoryID, $entryID=null)
+    private static function _processEntry($modname, $entityname, $property, $categoryID, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
             return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
-        if (!isset($table) || !$table) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'table'));
+        if (!isset($entityname) || !$entityname) {
+            return z_exit(__f("Error! Received invalid parameter '%s'", 'entityname'));
         }
         if (!isset($property) || !$property) {
             return z_exit(__f("Error! Received invalid parameter '%s'", 'property'));
@@ -106,10 +112,10 @@ class CategoryRegistryUtil
 
         $data = array();
         $data['modname'] = $modname;
-        $data['table'] = $table;
+        $data['entityname'] = $entityname;
         $data['property'] = $property;
         $data['category_id'] = $categoryID;
-        $data['id'] = $entryID ? $entryID : false;
+        $data['id'] = $entryID ? $entryID : null;
 
         return self::registerModuleCategory($data);
     }
@@ -126,14 +132,20 @@ class CategoryRegistryUtil
         if (!$catreg) {
             return false;
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
 
-        if ($catreg['id']) {
-            $res = DBUtil::updateObject($catreg, 'categories_registry');
+        if (isset($catreg['id']) && is_numeric($catreg['id'])) {
+            $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->find($catreg['id']);
         } else {
-            $res = DBUtil::insertObject($catreg, 'categories_registry');
+            $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
         }
+        
+        $entity->merge($catreg);
+        $em->persist($entity);
+        $em->flush();
 
-        return (boolean)$res;
+        return true;
     }
 
     /**
@@ -148,14 +160,21 @@ class CategoryRegistryUtil
         if (!$catregs) {
             return false;
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
 
         foreach ($catregs as $catreg) {
             if ($catreg['id']) {
-                $res = DBUtil::updateObject($catreg, 'categories_registry');
+                $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->find($catreg['id']);
             } else {
-                $res = DBUtil::insertObject($catreg, 'categories_registry');
+                $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
             }
+            
+            $entity->merge($catreg);
+            $em->persist($entity);
         }
+        
+        $em->flush();
 
         return true;
     }
@@ -163,52 +182,54 @@ class CategoryRegistryUtil
     /**
      * Get registered Categories for a module.
      *
-     * @param string $modname   The module name.
-     * @param string $tablename The tablename for which we wish to get the property for.
+     * @param string $modname       The module name.
+     * @param string $entityname    The entity name for which we wish to get the property for.
      *
      * @return array The associative field array of registered categories for the specified module.
      */
-    public static function getRegisteredModuleCategories($modname, $tablename, $arraykey='property')
+    public static function getRegisteredModuleCategories($modname, $entityname, $arraykey='property')
     {
-        if (!$modname || !$tablename) {
-            return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
+        if (!$modname || !$entityname) {
+            return z_exit(__f("Error! Received invalid specifications %1$s, %2$s.", array($modname, $entityname)));
         }
 
         static $cache = array();
-        if (isset($cache[$modname][$tablename])) {
-            return $cache[$modname][$tablename];
+        if (isset($cache[$modname][$entityname])) {
+            return $cache[$modname][$entityname];
+        }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
+        
+        $fArr = array();
+        
+        foreach ($rCategories as $rCategory) {
+            $rCategory = $rCategory->toArray();
+            $fArr[$rCategory[$arraykey]] = $rCategory;
         }
 
-        $wheres = array();
-        $dbtables = DBUtil::getTables();
-        $col = $dbtables['categories_registry_column'];
-        $wheres[] = "$col[modname]='" . DataUtil::formatForStore($modname) . "'";
-        $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";
-        $where = implode(' AND ', $wheres);
-        $sort = "$col[id] ASC";
-        $fArr = DBUtil::selectFieldArray('categories_registry', 'category_id', $where, $sort, false, $arraykey);
-
-        $cache[$modname][$tablename] = $fArr;
+        $cache[$modname][$entityname] = $fArr;
         return $fArr;
     }
 
     /**
      * Get registered category for module property.
      *
-     * @param string $modname   The module we wish to get the property for.
-     * @param string $tablename The tablename for which we wish to get the property for.
-     * @param string $property  The property name.
-     * @param string $default   The default value to return if the requested value is not set (optional) (default=null).
+     * @param string $modname       The module we wish to get the property for.
+     * @param string $entityname    The entity name for which we wish to get the property for.
+     * @param string $property      The property name.
+     * @param string $default       The default value to return if the requested value is not set (optional) (default=null).
      *
      * @return array The associative field array of registered categories for the specified module.
      */
-    public static function getRegisteredModuleCategory($modname, $tablename, $property, $default = null)
+    public static function getRegisteredModuleCategory($modname, $entityname, $property, $default = null)
     {
         if (!$modname || !$property) {
             return $default;
         }
 
-        $fArr = self::getRegisteredModuleCategories($modname, $tablename);
+        $fArr = self::getRegisteredModuleCategories($modname, $entityname);
 
         if ($fArr && isset($fArr[$property]) && $fArr[$property]) {
             return $fArr[$property];
@@ -228,26 +249,27 @@ class CategoryRegistryUtil
     /**
      * Get the IDs of the property registers.
      *
-     * @param string $modname   The module name.
-     * @param string $tablename The tablename for which we wish to get the property for.
+     * @param string $modname       The module name.
+     * @param string $entityname    The entity name for which we wish to get the property for.
      *
      * @return array The associative field array of register ids for the specified module.
      */
-    public static function getRegisteredModuleCategoriesIds($modname, $tablename)
+    public static function getRegisteredModuleCategoriesIds($modname, $entityname)
     {
-        if (!$modname || !$tablename) {
-            return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
+        if (!$modname || !$entityname) {
+            return z_exit(__f("Error! Received invalid specifications %1$s, %2$s.", array($modname, $entityname)));
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array('modname' => $modname, 'entityname' => $entityname));
 
-        $wheres = array();
-        $dbtables = DBUtil::getTables();
-        $col = $dbtables['categories_registry_column'];
-        $wheres[] = "$col[modname]='" . DataUtil::formatForStore($modname) . "'";
-        $wheres[] = "$col[table]='" . DataUtil::formatForStore($tablename) . "'";
-        $where = implode(' AND ', $wheres);
-        $fArr = DBUtil::selectFieldArray('categories_registry', 'id', $where, '', false, 'property');
+        $fArr = array();
+        
+        foreach ($rCategories as $rCategory) {
+            $fArr[$rCategory['property']] = $rCategory['id'];
+        }
 
         return $fArr;
     }
-
 }

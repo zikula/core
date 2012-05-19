@@ -18,12 +18,13 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Category registry doctrine2 entity.
+ * Category registry entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="categories_registry")
+ * @ORM\Table(name="categories_registry",indexes={@ORM\index(name="idx_categories_registry",columns={"modname","entityname","property"})})
  */
-class CategoryRegistry {
+class CategoryRegistry extends EntityAccess
+{
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -31,7 +32,19 @@ class CategoryRegistry {
      * @var integer
      */
     private $id;
-
+    
+    /**
+     * @ORM\Column(type="string", length=60)
+     * @var string 
+     */
+    private $modname;
+    
+    /**
+     * @ORM\Column(type="string", length=60)
+     * @var string 
+     */
+    private $entityname;
+    
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
@@ -39,21 +52,12 @@ class CategoryRegistry {
     private $property;
 
     /**
-     * @ORM\Column(type="integer", name="category_id")
+     * @ORM\Column(type="integer")
      * @var integer
      */
-    private $categoryId;
-    /**
-     * @ORM\Column(type="string", length=60)
-     * @var string 
-     */
-    private $modname;
-    /**
-     * @ORM\Column(type="string", length=60)
-     * @var string 
-     */
-    private $tablename;
-
+    private $category_id;
+    
+ 
     public function getId()
     {
         return $this->id;
@@ -61,7 +65,27 @@ class CategoryRegistry {
 
     public function setId($id)
     {
-        $this->id;
+        $this->id = $id;
+    }
+    
+    public function getModname()
+    {
+        return $this->modname;
+    }
+
+    public function setModname($modname)
+    {
+        $this->modname = $modname;
+    }
+    
+    public function getEntityname()
+    {
+        return $this->entityname;
+    }
+
+    public function setEntityname($entityname)
+    {
+        $this->entityname = $entityname;
     }
 
     public function getProperty()
@@ -74,35 +98,13 @@ class CategoryRegistry {
         $this->property = $property;
     }
 
-    public function getCategoryId()
+    public function getCategory_Id()
     {
-        return $this->categoryId;
+        return $this->category_id;
     }
 
-    public function setCategoryId($categoryId)
+    public function setCategory_Id($category_id)
     {
-        $this->categoryId = $categoryId;
+        $this->category_id = $category_id;
     }
-    
-    public function getModname()
-    {
-        return $this->modname;
-    }
-
-    public function setModname($modname)
-    {
-        $this->modname = $modname;
-    }
-
-    public function getTablename()
-    {
-        return $this->tablename;
-    }
-
-    public function setTablename($tablename)
-    {
-        $this->tablename = $tablename;
-    }
-
-
 }

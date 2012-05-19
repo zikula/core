@@ -90,26 +90,26 @@ class CategoryUtil
         if (!$cid) {
             return false;
         }
+        
+        // get entity manager
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        // get category
+        $category = $em->find('Zikula\Core\Doctrine\Entity\Category', $cid);
 
-        $permFilter = array();
-        $permFilter[] = array(
-            'realm' => 0,
-            'component_left' => 'Categories',
-            'component_middle' => '',
-            'component_right' => 'Category',
-            'instance_left' => 'id',
-            'instance_middle' => 'path',
-            'instance_right' => 'ipath',
-            'level' => ACCESS_OVERVIEW);
-
-        $result = DBUtil::selectObjectByID('categories_category', (int)$cid, 'id', null, $permFilter);
-
-        if ($result) {
-            $result['display_name'] = DataUtil::formatForDisplayHTML(unserialize($result['display_name']));
-            $result['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($result['display_desc']));
+        // convert to array
+        $category = $category->toArray();
+        
+        // assign parent_id
+        $category['parent_id'] = $category['parent']->getId();
+        
+        // get attributes
+        $category['__ATTRIBUTES__'] = array();
+        foreach ($category['attributes'] as $attribute) {
+            $category['__ATTRIBUTES__'][$attribute['name']] = $attribute['value'];
         }
 
-        return $result;
+        return $category;
     }
 
     /**
@@ -118,47 +118,47 @@ class CategoryUtil
      * @param string  $where                  The where clause to use in the select (optional) (default='').
      * @param string  $sort                   The order-by clause to use in the select (optional) (default='').
      * @param string  $assocKey               The field to use as the associated array key (optional) (default='').
-     * @param boolean $enablePermissionFilter Whether or not to enable the permission filter(optional) (default=false).
      * @param array   $columnArray            Array of columns to select (optional) (default=null).
      *
      * @return The resulting folder object array.
      */
-    public static function getCategories($where = '', $sort = '', $assocKey = '', $enablePermissionFilter = true, $columnArray = null)
+    public static function getCategories($where = '', $sort = '', $assocKey = '', $columnArray = null)
     {
-        ModUtil::dbInfoLoad('Categories');
+        if (!empty($where)) {
+            $where = 'WHERE ' . $where;
+        }
+        
         if (!$sort) {
-            $dbtables = DBUtil::getTables();
-            $category_column = $dbtables['categories_category_column'];
-            $sort = "ORDER BY $category_column[sort_value], $category_column[path]";
+            $sort = "ORDER BY c.sort_value, c.path";
         }
-
-        $permFilter = array();
-        if ($enablePermissionFilter) {
-            $permFilter[] = array(
-                'realm' => 0,
-                'component_left' => 'Categories',
-                'component_middle' => '',
-                'component_right' => 'Category',
-                'instance_left' => 'id',
-                'instance_middle' => 'path',
-                'instance_right' => 'ipath',
-                'level' => ACCESS_OVERVIEW);
+        
+        if (!empty($columnArray)) {
+            $columns = array();
+            foreach ($columnArray as $column) {
+                $columns[] = 'c.' . $column;
+            }
+            $columns = implode(', ', $columns);
+        } else {
+            $columns = 'c';
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $dql = "SELECT $columns FROM Zikula\Core\Doctrine\Entity\Category c $where $sort";
+        $query = $em->createQuery($dql);
+        $categories = $query->getResult();
 
-        $cats = DBUtil::selectObjectArray('categories_category', $where, $sort, -1, -1, $assocKey, $permFilter, null, $columnArray);
-
-        $arraykeys = array_keys($cats);
-        foreach ($arraykeys as $arraykey) {
-            if ($cats[$arraykey]['display_name']) {
-                $cats[$arraykey]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($cats[$arraykey]['display_name']));
-            }
-
-            if (isset($cats[$arraykey]['display_desc']) && $cats[$arraykey]['display_desc']) {
-                $cats[$arraykey]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($cats[$arraykey]['display_desc']));
-            }
-
-            if (!$enablePermissionFilter) {
-                $cats[$arraykey]['accessible'] = SecurityUtil::checkPermission('Categories::Category', $cats[$arraykey]['id'] . ':' . $cats[$arraykey]['path'] . ':' . $cats[$arraykey]['ipath'], ACCESS_OVERVIEW);
+        $cats = array();
+        foreach ($categories as $category) {
+            $category = $category->toArray();
+            
+            $category['parent_id'] = $category['parent']->getId();
+            $category['accessible'] = SecurityUtil::checkPermission('Categories::Category', $category['id'] . ':' . $category['path'] . ':' . $category['ipath'], ACCESS_OVERVIEW);
+            
+            if (!empty($assocKey)) {
+                $cats[$category[$assocKey]] = $category;
+            } else {
+                $cats[] = $category;
             }
         }
 
@@ -175,15 +175,12 @@ class CategoryUtil
      */
     public static function getCategoryByPath($apath, $field = 'path')
     {
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_column = $dbtables['categories_category_column'];
         if (!is_array($apath)) {
-            $where = "$category_column[$field]='" . DataUtil::formatForStore($apath) . "'";
+            $where = "c.$field = '" . DataUtil::formatForStore($apath) . "'";
         } else {
             $where = array();
             foreach ($apath as $path) {
-                $where[] = "$category_column[$field]='" . DataUtil::formatForStore($path) . "'";
+                $where[] = "c.$field = '" . DataUtil::formatForStore($path) . "'";
             }
             $where = implode(' OR ', $where);
         }
@@ -207,13 +204,9 @@ class CategoryUtil
     {
         if (!$registry || !is_array($registry)) return false;
 
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_column = $dbtables['categories_category_column'];
-
         $where = array();
         foreach ($registry as $property => $catID) {
-            $where[] = "$category_column[id]='" . DataUtil::formatForStore($catID) . "'";
+            $where[] = "c.id = '" . DataUtil::formatForStore($catID) . "'";
         }
         $where = implode(' OR ', $where);
         $cats = self::getCategories($where, '', 'id');
@@ -248,23 +241,20 @@ class CategoryUtil
             return false;
         }
 
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_column = $dbtables['categories_category_column'];
-
         $id = (int)$id;
-        $where = "$category_column[parent_id]='" . DataUtil::formatForStore($id) . "'";
+        $where = "c.parent ='" . DataUtil::formatForStore($id) . "'";
 
         if (!$all) {
-            $where .= " AND $category_column[status]='A'";
+            $where .= " AND c.status = 'A'";
         }
-
-        //if ($attributes && is_array($attributes)) {
-        //    foreach ($attributes as $k=>$v) {
-        //        $where .= " AND $category_column[$k]='$v' ";
-        //    }
-        //}
-
+        
+        /*
+        if ($attributes && is_array($attributes)) {
+            foreach ($attributes as $k=>$v) {
+                $where .= " AND $k = '$v' ";
+            }
+        }
+        */
 
         $cats = self::getCategories($where, $sort, $assocKey);
 
@@ -283,7 +273,7 @@ class CategoryUtil
      * Return all parent categories starting from id.
      *
      * @param integer        $id       The (leaf) folder id to retrieve.
-     * @param string|boolean $assocKey Whether or not to return an assocKeyiative array (optional) (default='id').
+     * @param string|boolean $assocKey Whether or not to return an associative array (optional) (default='id').
      *
      * @return The resulting folder object array
      */
@@ -293,23 +283,18 @@ class CategoryUtil
             return false;
         }
 
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_column = $dbtables['categories_category_column'];
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        $cat = $em->find('Zikula\Core\Doctrine\Entity\Category', $id);
 
-        $cat = self::getCategoryByID($id);
         $cats = array();
-
-        if (!$cat || !$cat['parent_id']) {
+        if (!$cat) {
             return $cats;
         }
-
+        
         do {
-            $cat = self::getCategoryByID($cat['parent_id']);
-            if ($cat) {
-                $cats[$cat[$assocKey]] = $cat;
-            }
-        } while ($cat && $cat['parent_id']);
+            $cat = $cat['parent'];
+            $cats[$cat[$assocKey]] = $cat->toArray();
+        } while ($cat['parent']->getId() > 0);
 
         return $cats;
     }
@@ -331,35 +316,35 @@ class CategoryUtil
      */
     public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_column = $dbtables['categories_category_column'];
-
-        $where = "($category_column[$field] = '" . DataUtil::formatForStore($apath) . "' OR $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "/%')";
+        $where = "(c.$field = '" . DataUtil::formatForStore($apath) . "' OR c.$field LIKE '" . DataUtil::formatForStore($apath) . "/%')";
 
         if ($exclPath) {
-            $where .= " AND $category_column[$field] NOT LIKE '" . DataUtil::formatForStore($exclPath) . "%'";
+            $where .= " AND c.$field NOT LIKE '" . DataUtil::formatForStore($exclPath) . "%'";
         }
 
         if (!$includeLeaf) {
-            $where .= " AND $category_column[is_leaf] = 0";
+            $where .= " AND c.is_leaf = 0";
         }
 
         if (!$all) {
-            $where .= " AND $category_column[status] = 'A'";
+            $where .= " AND c.status = 'A'";
         }
-
-        //if ($attributes && is_array($attributes)) {
-        //    foreach ($attributes as $k=>$v) {
-        //        $where .= " AND $category_column[$k]='$v' ";
-        //    }
-        //}
+        
+        /*
+        if ($attributes && is_array($attributes)) {
+            foreach ($attributes as $k => $v) {
+                $where .= " AND $k = '$v' ";
+            }
+        }
+        */
 
         if (!$sort) {
-            $sort = "ORDER BY $category_column[sort_value], $category_column[path]";
+            $sort = "ORDER BY c.sort_value, c.path";
+        } else {
+            $sort = "ORDER BY c." . $sort;
         }
 
-        $cats = self::getCategories($where, $sort, $assocKey, null, $columnArray);
+        $cats = self::getCategories($where, $sort, $assocKey, $columnArray);
         return $cats;
     }
 
@@ -385,7 +370,7 @@ class CategoryUtil
         if (!$cid) {
             return false;
         }
-
+        
         $rootCat = self::getCategoryByID($cid);
         if (!$rootCat) {
             return false;
@@ -504,16 +489,17 @@ class CategoryUtil
      */
     public static function deleteCategoryByID($cid)
     {
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_table = $dbtables['categories_category'];
-        $category_column = $dbtables['categories_category_column'];
-
-        $cid = (int)$cid;
-        $sql = "DELETE FROM $category_table WHERE $category_column[id] = '" . DataUtil::formatForStore($cid) . "'";
-        $res = DBUtil::executeSQL($sql);
-
-        return $res;
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $cid = (int)DataUtil::formatForStore($cid);
+        
+        $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\Category c WHERE c.id = " . $cid;
+        $query = $em->createQuery($dql);
+        $query->getResult();
+        
+        $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\CategoryAttribute a WHERE a.category = " . $cid;
+        $query = $em->createQuery($dql);
+        $query->getResult();
     }
 
     /**
@@ -529,16 +515,16 @@ class CategoryUtil
         if (!$apath) {
             return false;
         }
-
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_table = $dbtables['categories_category'];
-        $category_column = $dbtables['categories_category_column'];
-
-        $sql = "DELETE FROM $category_table WHERE $category_column[$field] LIKE '" . DataUtil::formatForStore($apath) . "%'";
-        $res = DBUtil::executeSQL($sql);
-
-        return $res;
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $dql = "SELECT c.id FROM Zikula\Core\Doctrine\Entity\Category c WHERE c.$field LIKE '" . DataUtil::formatForStore($apath) . "%'";
+        $query = $em->createQuery($dql);
+        $categories = $query->getResult();
+        
+        foreach ($categories as $category) {
+            self::deleteCategoryByID($category['id']);
+        }
     }
 
     /**
@@ -594,13 +580,12 @@ class CategoryUtil
         if (!$apath) {
             return false;
         }
-
+        
         $cats = self::getCategoriesByPath($apath, 'path', $field);
         $newParent = self::getCategoryByID($newparent_id);
 
         if (!$newParent || !$cats) {
-            $false = false;
-            return $false;
+            return false;
         }
 
         $newParentIPath = $newParent['ipath'] . '/';
@@ -610,28 +595,40 @@ class CategoryUtil
         $oldParentIPath = $oldParent['ipath'] . '/';
         $oldParentPath = $oldParent['path'] . '/';
 
-        ModUtil::dbInfoLoad('Categories');
-        $dbtables = DBUtil::getTables();
-        $category_table = $dbtables['categories_category'];
-        $category_column = $dbtables['categories_category_column'];
-
-        $pathField = $category_column[$field];
-        $fpath = $category_column['path'];
-        $fipath = $category_column['ipath'];
-
-        $sql = "UPDATE $category_table SET
-                $fpath = REPLACE($fpath, '$oldParentPath', '$newParentPath'),
-                $fipath = REPLACE($fipath, '$oldParentIPath', '$newParentIPath')
-                WHERE $pathField = '" . DataUtil::formatForStore($apath) . "' OR $pathField LIKE '" . DataUtil::formatForStore($apath) . "/%'";
-        DBUtil::executeSQL($sql);
-
+        $pathField = $field;
+        $fpath = 'path';
+        $fipath = 'ipath';
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
+        
+        $dql = "
+        SELECT c 
+        FROM Zikula\Core\Doctrine\Entity\Category c 
+        WHERE c.$pathField = '" . DataUtil::formatForStore($apath) . "' OR c.$pathField LIKE '" . DataUtil::formatForStore($apath) . "/%'";
+        $query = $em->createQuery($dql);
+        $categories = $query->getResult();
+         
+        foreach ($categories as $category) {
+            $category[$fpath] = mb_ereg_replace($oldParentPath, $newParentPath, $category[$fpath]);
+            $category[$fipath] = mb_ereg_replace($oldParentIPath, $newParentIPath, $category[$fipath]);
+        }
+        
+        $em->flush();
+        
         $pid = $cats[0]['id'];
         if ($includeRoot) {
-            $sql = "UPDATE $category_table SET $category_column[parent_id] = '" . DataUtil::formatForStore($newparent_id) . "' WHERE $category_column[id] = '" . DataUtil::formatForStore($pid) . "'";
+            $dql = "
+            UPDATE Zikula\Core\Doctrine\Entity\Category c 
+            SET c.parent = " . DataUtil::formatForStore($newparent_id) . " 
+            WHERE c.id = " . DataUtil::formatForStore($pid);
         } else {
-            $sql = "UPDATE $category_table SET $category_column[parent_id] = '" . DataUtil::formatForStore($newparent_id) . "' WHERE $category_column[parent_id] = '" . DataUtil::formatForStore($pid) . "'";
+            $dql = "
+            UPDATE Zikula\Core\Doctrine\Entity\Category c 
+            SET c.parent = " . DataUtil::formatForStore($newparent_id) . " 
+            WHERE c.parent = " . DataUtil::formatForStore($pid);
         }
-        DBUtil::executeSQL($sql);
+        $query = $em->createQuery($dql);
+        $query->getResult();
 
         return true;
     }
@@ -670,7 +667,7 @@ class CategoryUtil
     }
 
     /**
-     * Copy Categories by Path (recurisve copy).
+     * Copy Categories by Path (recursive copy).
      *
      * @param string  $apath        The path to copy from.
      * @param integer $newparent_id The categoryID of the new parent category.
@@ -705,7 +702,7 @@ class CategoryUtil
                 // subnodes will inherit it's name in paths
                 $catBasePath = $newParent['path_relative'] . '/';
                 if ($k === 0 && in_array($catBasePath . $cats[0]['name'], $currentPaths)) {
-                    // path is not unique - add arbitrary " Copy" sufix to category name
+                    // path is not unique - add arbitrary " Copy" suffix to category name
                     $cats[0]['name'] .= ' ' . __('Copy');
                     if (in_array($catBasePath . $cats[0]['name'], $currentPaths)) {
                         // if there is already such name
@@ -738,9 +735,11 @@ class CategoryUtil
                 }
             }
         }
+        
+        $em = \ServiceUtil::get('doctrine')->getManager();
 
         $oldToNewID = array();
-        $oldToNewID[$cats[0]['parent_id']] = $newParent['id'];
+        $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('Zikula\Core\Doctrine\Entity\Category', $newParent['id']);
 
         // since array_shift() resets numeric array indexes, we remove the leading element like this
         if (!$includeRoot) {
@@ -754,19 +753,31 @@ class CategoryUtil
         $ak = array_keys($cats);
         foreach ($ak as $v) {
             $cat = $cats[$v];
-
+            
+            // unset some variables
+            unset($cat['parent_id']);
+            unset($cat['accessible']);
+            unset($cat['path_relative']);
+            unset($cat['ipath_relative']);
+            
             $oldID = $cat['id'];
             $cat['id'] = '';
-            $cat['parent_id'] = isset($oldToNewID[$cat['parent_id']]) ? $oldToNewID[$cat['parent_id']] : $newParent['id'];
-            $cat['sort_value'] = null;
-            $catObj = new \CategoriesModule\DBObject\Category($cat);
-            $catObj->insert();
-            $oldToNewID[$oldID] = $catObj->_objData['id'];
+            $cat['parent'] = isset($oldToNewID[$cat['parent']['id']]) ? $oldToNewID[$cat['parent']['id']] : $em->getReference('Zikula\Core\Doctrine\Entity\Category', $newParent['id']);            
+            
+            $catObj = new Zikula\Core\Doctrine\Entity\Category;
+            $catObj->merge($cat);
+            $em->persist($catObj);
+            $em->flush();
+            
+            $oldToNewID[$oldID] = $em->getReference('Zikula\Core\Doctrine\Entity\Category', $catObj['id']);
         }
-
+        
+        $em->flush();
+        
         // rebuild iPath since now we have all new PathIDs
         self::rebuildPaths('ipath', 'id');
-        // rebuild also Pahts since names could be changed
+        
+        // rebuild also paths since names could be changed
         self::rebuildPaths();
 
         return true;
@@ -1450,12 +1461,12 @@ class CategoryUtil
 
         foreach ($cats as $k => $v) {
             $path = $v[$field];
-            $pid = $v['parent_id'];
+            $pid = $v['parent']->getId();
 
-            while ($pid) {
+            while ($pid > 0) {
                 $pcat = $cats[$pid];
                 $path = $pcat[$field] . '/' . $path;
-                $pid = $pcat['parent_id'];
+                $pid = $pcat['parent']->getId();
             }
 
             $paths[$k] = '/' . $path;
@@ -1477,23 +1488,22 @@ class CategoryUtil
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
-        ModUtil::dbInfoLoad('Categories');
+        if ($leaf_id > 0) {
+            $cats = self::getParentCategories($leaf_id, 'id');
+        } else {
+            $cats = self::getCategories('', '', 'id');
+        }
 
-        //if ($leaf_id)
-        //$cats  = self::getParentCategories ($leaf_id, 'id');
-        //else
-        $cats = self::getCategories('', '', 'id');
         $paths = self::buildPaths($cats, $sourceField);
 
         if ($cats && $paths) {
+            $em = \ServiceUtil::get('doctrine')->getManager();
+            
             foreach ($cats as $k => $v) {
                 if ($v[$field] != $paths[$k][$field]) {
-                    $v[$field] = $paths[$k];
-                    // since we're not going through the object layer for this, we must manually serialize the locale fields
-                    $v['display_name'] = serialize($v['display_name']);
-                    $v['display_desc'] = serialize($v['display_desc']);
-
-                    $res = DBUtil::updateObject($v, 'categories_category');
+                    $dql = "UPDATE Zikula\Core\Doctrine\Entity\Category c SET c.$field = '" . $paths[$k] . "' WHERE c.id = $k";
+                    $query = $em->createQuery($dql);
+                    $query->getResult();
                 }
             }
         }
@@ -1505,7 +1515,7 @@ class CategoryUtil
      * For each category property in the list, check if we have access to that category in that property.
      * Check is done as "Categories:Property:$propertyName", "$cat[id]::"
      *
-     * @param array   $categories Array of category data (as returned from ObjectUtil::expandObjectWithCategories).
+     * @param array   $categories Array of category data
      * @param string  $module     Not Used!.
      * @param integer $permLevel  Required permision level.
      *

@@ -14,9 +14,8 @@
 
 namespace CategoriesModule\Controller;
 
-use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil;
 use StringUtil, System, Zikula_View;
-use CategoriesModule\DBObject\Category;
 use CategoriesModule\Installer;
 
 class UserController extends \Zikula_AbstractController
@@ -29,7 +28,7 @@ class UserController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-
+        
         $referer = System::serverGetVar('HTTP_REFERER');
         if (strpos($referer, 'module=Categories') === false) {
             $this->request->getSession()->set('categories_referer', $referer);
@@ -88,8 +87,6 @@ class UserController extends \Zikula_AbstractController
                 $rootCatIPath = $rootCat['ipath'];
                 if (strpos($rootCatIPath, $userRootCatIPath) !== false) {
                     if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_ADMIN)) {
-                        $thisUserRootCategoryName = ModUtil::apiFunc('CategoriesModule', 'user', 'getusercategoryname');
-                        $thisUserRootCatPath = $userRootCat['path'] . '/' . $thisUserRootCategoryName;
                         $userRootCatPath = $userRootCat['path'];
                         $rootCatPath = $rootCat['path'];
                         if (strpos($rootCatPath, $userRootCatPath) === false) {
@@ -126,15 +123,16 @@ class UserController extends \Zikula_AbstractController
         $languages = ZLanguage::getInstalledLanguages();
 
         $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
-
-        return $this->response($this->view->assign('rootCat', $rootCat)
-                    ->assign('category', $editCat)
-                    ->assign('attributes', $attributes)
-                    ->assign('allCats', $allCats)
-                    ->assign('languages', $languages)
-                    ->assign('userlanguage', ZLanguage::getLanguageCode())
-                    ->assign('referer', \SessionUtil::getVar('categories_referer'))
-                    ->fetch('categories_user_edit.tpl'));
+        
+        $this->view->assign('rootCat', $rootCat)
+                   ->assign('category', $editCat)
+                   ->assign('attributes', $attributes)
+                   ->assign('allCats', $allCats)
+                   ->assign('languages', $languages)
+                   ->assign('userlanguage', ZLanguage::getLanguageCode())
+                   ->assign('referer', \SessionUtil::getVar('categories_referer'));
+        
+        return $this->response($this->view->fetch('categories_user_edit.tpl'));
     }
 
     /**
@@ -169,7 +167,7 @@ class UserController extends \Zikula_AbstractController
             return LogUtil::registerError($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
-        $userCatName = $this->getusercategoryname();
+        $userCatName = $this->getusercategorynameAction();
         if (!$userCatName) {
             return LogUtil::registerError($this->__('Error! Cannot determine user category root node name.'));
         }
@@ -184,40 +182,54 @@ class UserController extends \Zikula_AbstractController
                 return LogUtil::registerError($this->__("Error! The user root category node for this user does not exist, and the automatic creation flag (autocreate) has not been set."));
             }
 
-            $installer = new Installer($this->getContainer);
-            $cat = array('id' => '',
-                    'parent_id' => $userRootCat['id'],
-                    'name' => $userCatName,
-                    'display_name' => unserialize($installer->makeDisplayName($userCatName)),
-                    'display_desc' => unserialize($installer->makeDisplayDesc()),
-                    'security_domain' => 'Categories::',
-                    'path' => $thisUserRootCatPath,
-                    'status' => 'A');
-
-            $obj = new Category();
-            $obj->setData($cat);
-            $obj->insert();
+            $installer = new Installer($this->getContainer());
+            
+            $cat = array(
+                'id' => '',
+                'parent' => $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\Category', $userRootCat['id']),
+                'name' => $userCatName,
+                'display_name' => unserialize($installer->makeDisplayName($userCatName)),
+                'display_desc' => unserialize($installer->makeDisplayDesc()),
+                'path' => $thisUserRootCatPath,
+                'status' => 'A'
+            );
+            
+            $obj = new \Zikula\Core\Doctrine\Entity\Category;
+            $obj->merge($cat);
+            $this->entityManager->persist($obj);
+            $this->entityManager->flush();
+            
             // since the original insert can't construct the ipath (since
             // the insert id is not known yet) we update the object here
-            $obj->update();
+            $obj->setIPath($userRootCat['ipath'] . '/' . $obj['id']);
+            $this->entityManager->flush();
+            
             $dr = $obj->getID();
 
             $autoCreateDefaultUserCat = $this->getVar('autocreateuserdefaultcat', 0);
             if ($autoCreateDefaultUserCat) {
                 $userdefaultcatname = $this->getVar('userdefaultcatname', $this->__('Default'));
-                $cat = array('id' => '',
-                        'parent_id' => $dr,
-                        'name' => $userdefaultcatname,
-                        'display_name' => unserialize($installer->makeDisplayName($userdefaultcatname)),
-                        'display_desc' => unserialize($installer->makeDisplayDesc()),
-                        'security_domain' => 'Categories::',
-                        'path' => $thisUserRootCatPath . '/' . $userdefaultcatname,
-                        'status' => 'A');
-                $obj->setData($cat);
-                $obj->insert();
+                $cat = array(
+                    'id' => '',
+                    'parent' => $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\Category', $dr),
+                    'is_leaf' => 1,
+                    'name' => $userdefaultcatname,
+                    'sort_value' => 0,
+                    'display_name' => unserialize($installer->makeDisplayName($userdefaultcatname)),
+                    'display_desc' => unserialize($installer->makeDisplayDesc()),
+                    'path' => $thisUserRootCatPath . '/' . $userdefaultcatname,
+                    'status' => 'A'
+                );
+                
+                $obj2 = new \Zikula\Core\Doctrine\Entity\Category;
+                $obj2->merge($cat);
+                $this->entityManager->persist($obj2);
+                $this->entityManager->flush();
+            
                 // since the original insert can't construct the ipath (since
                 // the insert id is not known yet) we update the object here
-                $obj->update();
+                $obj2->setIPath($obj['ipath'] . '/' . $obj2['id']);
+                $this->entityManager->flush();
             }
         } else {
             $dr = $thisUserRootCat['id'];

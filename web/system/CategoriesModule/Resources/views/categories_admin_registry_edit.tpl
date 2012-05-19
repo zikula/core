@@ -15,7 +15,7 @@
 
 {gt text="Choose category" assign=chooseCategory}
 {gt text="Choose module" assign=chooseModule}
-{gt text="Choose table" assign=chooseTable}
+{gt text="Choose entity" assign=chooseEntity}
 <form class="z-form" action="{modurl modname="CategoriesModule" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -23,7 +23,7 @@
             <thead>
                 <tr>
                     <th>{gt text="Module"}</th>
-                    <th>{gt text="Table"}</th>
+                    <th>{gt text="Entity"}</th>
                     <th>{gt text="Property name"}</th>
                     <th>{gt text="Category"}</th>
                     <th class="z-right">{gt text="Actions"}</th>
@@ -34,15 +34,15 @@
                 <tr class="{cycle values=z-odd,z-even}">
                     {if ($obj.id == $id)}
                     <input id="category_registry_id" name="category_registry[id]" value="{$obj.id}" type="hidden" />
-                    <td>{formutil_getfieldmarker objectType="category_registry" field="modname" validation=$validation}{selector_module name="category_registry[modname]" selectedValue=$obj.modname defaultValue="" defaultText="$chooseModule" submit="1"}{formutil_getvalidationerror objectType="category_registry" field="modname"}</td>
-                    <td>{if $obj.modname}{formutil_getfieldmarker objectType="category_registry" field="table" validation=$validation}{selector_module_tables modname=$obj.modname name="category_registry[table]" selectedValue=$obj.table defaultValue="0" defaultText=$chooseTable}{formutil_getvalidationerror objectType="category_registry" field="table"}{else}----------{/if}</td>
-                    <td>{formutil_getfieldmarker objectType="category_registry" field="property" validation=$validation}<input id="category_registry_property" name="category_registry[property]" value="{$obj.property}" type="text" size="20" maxlength="32" />{formutil_getvalidationerror objectType="category_registry" field="property"}</td>
-                    <td>{formutil_getfieldmarker objectType="category_registry" field="category_id" validation=$validation}{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=$obj.category_id editLink=0}{formutil_getvalidationerror objectType="category_registry" field="category_id"}</td>
+                    <td>{selector_module name="category_registry[modname]" selectedValue=$obj.modname defaultValue="" defaultText="$chooseModule" submit="1"}</td>
+                    <td>{if $obj.modname}{selector_module_tables modname=$obj.modname name="category_registry[entityname]" selectedValue=$obj.entityname defaultValue="" defaultText=$chooseEntity}{else}----------{/if}</td>
+                    <td><input id="category_registry_property" name="category_registry[property]" value="{$obj.property}" type="text" size="20" maxlength="32" /></td>
+                    <td>{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=$obj.category_id editLink=0}</td>
                     <td>&nbsp;</td>
                     {else}
                     {modgetinfo assign="dModname" info=displayname modname=$obj.modname default=$obj.modname}
                     <td>{$dModname}</td>
-                    <td>{$obj.table}</td>
+                    <td>{$obj.entityname}</td>
                     <td>{$obj.property}</td>
                     <td>{category_path id=$obj.category_id html=true}</td>
                     <td class="z-right">
@@ -55,13 +55,10 @@
 
                 {if (!$id)}
                 <tr class="{cycle values=z-odd,z-even}" valign="middle">
-                    {array_field assign='newModname' array='newobj' field='modname'}
-                    <td>{formutil_getfieldmarker objectType="category_registry" field="modname" validation=$validation}{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newModname submit="1"}{formutil_getvalidationerror objectType="category_registry" field="modname"}</td>
-                    {array_field assign='newTable' array='newobj' field='table'}
-                    <td>{if $newModname}{formutil_getfieldmarker objectType="category_registry" field="table" validation=$validation}{selector_module_tables modname=$newobj.modname name="category_registry[table]" displayField="name" selectedValue=$newTable defaultValue="0" defaultText=$chooseTable}{formutil_getvalidationerror objectType="category_registry" field="table"}{else}----------{/if}</td>
-                    {array_field assign='newProperty' array='newobj' field='property'}
-                    <td>{formutil_getfieldmarker objectType="category_registry" field="property" validation=$validation}<input id="category_registry_property" name="category_registry[property]" value="{$newProperty|default:'Main'}" type="text" size="20" maxlength="32" />{formutil_getvalidationerror objectType="category_registry" field="property"}</td>
-                    <td>{formutil_getfieldmarker objectType="category_registry" field="category_id" validation=$validation}{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=newobj.category_id defaultValue=0 defaultText=$chooseCategory editLink=0}{formutil_getvalidationerror objectType="category_registry" field="category_id"}</td>
+                    <td><span class="z-form-mandatory-flag">*</span>{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newobj.modname submit="1"}</td>
+                    <td>{if $newobj.modname}<span class="z-form-mandatory-flag">*</span>{selector_module_tables modname=$newobj.modname name="category_registry[entityname]" displayField="name" selectedValue=$newobj.entityname defaultValue="" defaultText=$chooseEntity}{else}----------{/if}</td>
+                    <td><span class="z-form-mandatory-flag">*</span><input id="category_registry_property" name="category_registry[property]" value="{$newobj.property|default:'Main'}" type="text" size="20" maxlength="32" /></td>
+                    <td><span class="z-form-mandatory-flag">*</span>{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=newobj.category_id defaultValue=0 defaultText=$chooseCategory editLink=0}</td>
                     <td>&nbsp;</td>
                 </tr>
                 {/if}

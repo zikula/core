@@ -24,7 +24,6 @@ use Zikula\Core\Doctrine\EntityAccess;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
- * @ORM\DiscriminatorMap({"categories_category" = "Zikula\Doctrine\Entity\CategoryAttribute"})
  * @ORM\Table(name="objectdata_attributes")
  */
 abstract class AbstractAttribute extends EntityAccess

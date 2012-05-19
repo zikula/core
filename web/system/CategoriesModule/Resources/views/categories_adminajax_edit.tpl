@@ -1,3 +1,4 @@
+{insert name='getstatusmsg'}
 {if $mode == "edit"}
     {gt text="Edit category" assign="windowtitle"}
 {else}
@@ -13,10 +14,9 @@
             <input type="hidden" id="category_id" name="category[id]" value="{$category.id}" />
             {/if}
             <div class="z-formrow">
-                <label for="category_name">{gt text="Name"}{formutil_getfieldmarker objectType="category" field="name" validation=$validation}</label>
+                <label for="category_name">{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
                 {array_field assign='catName' array='category' field='name'}
                 <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
-                {formutil_getvalidationerror objectType="category" field="name"}
             </div>
             <div class="z-formrow">
                 <span class="z-label">{gt text="Parent"}</span>
@@ -91,14 +91,6 @@
                     <span class="z-label">{gt text="I-path"}</span>
                     <span id="category_ipath">{$category.ipath|safetext}</span>
                 </div>
-                {usergetvar name='uname' uid=$category.cr_uid assign='crusername'}
-                {usergetvar name='uname' uid=$category.lu_uid assign='luusername'}
-                <ul class="z-formnote">
-                    <li>{gt text='Created by %s.' domain='zikula' tag1=$crusername}</li>
-                    <li>{gt text='Created on %s.' domain='zikula' tag1=$category.cr_date|date_format}</li>
-                    <li>{gt text='Last edited by %s.' domain='zikula' tag1=$luusername}</li>
-                    <li>{gt text='Updated on %s.' domain='zikula' tag1=$category.lu_date|date_format}</li>
-                </ul>
             </div>
         </fieldset>
         {/if}
