@@ -16,14 +16,5 @@ web/modules/
 web/modules/!\.htaccess
 web/userdata/
 web/userdata/!\.htaccess
-web/ztemp/
-web/ztemp/errors_log/!\.index.html
-web/ztemp/purifierCache/!\.index.html
-web/ztemp/idsTmp/!\.index.html
-web/ztemp/view_cache/!\.index.html
-web/ztemp/view_compiled/!\.index.html
-web/ztemp/Theme_cache/!\.index.html
-web/ztemp/Theme_compiled/!\.index.html
-web/ztemp/Theme_Config/!\.index.html
-web/ztemp/doctrinemodels/!\.index.html
+
 

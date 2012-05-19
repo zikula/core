@@ -54,7 +54,6 @@ class SystemListener implements EventSubscriberInterface
             'bootstrap.getconfig' => array(
                 array('initialHandlerScan', 100),
                 ),
-            CoreEvents::PREINIT => array('systemCheck'),
             CoreEvents::INIT => array(
                 array('setupRequest'),
                 array('systemPlugins'),
@@ -371,101 +370,6 @@ class SystemListener implements EventSubscriberInterface
                 'text' => __('Services'),
                 'class' => 'z-icon-es-gears',
                 'links' => $sublinks);
-        }
-    }
-
-    /**
-     * Perform some checks that might result in a die() upon failure.
-     *
-     * Listens on the CoreEvents::PREINIT event.
-     *
-     * @param GenericEvent $event Event.
-     *
-     * @return void
-     */
-    public function systemCheck(GenericEvent $event)
-    {
-        $die = false;
-
-        if (get_magic_quotes_runtime()) {
-            echo __('Error! Zikula does not support PHP magic_quotes_runtime - please disable this feature in php.ini.');
-            $die = true;
-        }
-
-        if (ini_get('magic_quotes_gpc')) {
-            echo __('Error! Zikula does not support PHP magic_quotes_gpc = On - please disable this feature in your php.ini file.');
-            $die = true;
-        }
-
-        if (ini_get('register_globals')) {
-            echo __('Error! Zikula does not support PHP register_globals = On - please disable this feature in your php.ini or .htaccess file.');
-            $die = true;
-        }
-
-        // check PHP version, shouldn't be necessary, but....
-        $x = explode('.', str_replace('-', '.', phpversion()));
-        $phpVersion = "$x[0].$x[1].$x[2]";
-        if (version_compare($phpVersion, Core::PHP_MINIMUM_VERSION, '>=') == false) {
-            echo __f('Error! Zikula requires PHP version %1$s or greater. Your server seems to be using version %2$s.', array(Core::PHP_MINIMUM_VERSION, $phpVersion));
-            $die = true;
-        }
-
-        // token_get_all needed for Smarty
-        if (!function_exists('token_get_all')) {
-            echo __("Error! PHP 'token_get_all()' is required but unavailable.");
-            $die = true;
-        }
-
-        // mb_string is needed too
-        if (!function_exists('mb_get_info')) {
-            echo __("Error! PHP must have the mbstring extension loaded.");
-            $die = true;
-        }
-
-        if (!function_exists('fsockopen')) {
-            echo __("Error! The PHP function 'fsockopen()' is needed within the Zikula mailer module, but is not available.");
-            $die = true;
-        }
-
-        if ($die) {
-            echo __("Please configure your server to meet the Zikula system requirements.");
-            exit;
-        }
-
-        if (\System::isDevelopmentMode() || \System::isInstalling()) {
-            $temp = $this->container->getParameter('temp');
-            if (!is_dir($temp) || !is_writable($temp)) {
-                echo __f('The temporary directory "%s" and its subfolders must be writable.', $temp).'<br />';
-                die(__('Please ensure that the permissions are set correctly on your server.'));
-            }
-
-            $folders = array(
-                $temp,
-                "$temp/error_logs",
-                "$temp/view_compiled",
-                "$temp/view_cache",
-                "$temp/Theme_compiled",
-                "$temp/Theme_cache",
-                "$temp/Theme_Config",
-                "$temp/Theme_cache",
-                "$temp/purifierCache",
-                "$temp/idsTmp"
-            );
-
-            foreach ($folders as $folder) {
-                if (!is_dir($folder)) {
-                    mkdir($folder, $this->container->getParameter('system.chmod_dir'), true);
-                }
-                if (!is_writable($folder)) {
-                    echo __f("System error! Folder '%s' was not found or is not writable.", $folder).'<br />';
-                    $die = true;
-                }
-            }
-        }
-
-        if ($die) {
-            echo __('Please ensure that the permissions are set correctly for the mentioned folders.');
-            exit;
         }
     }
 

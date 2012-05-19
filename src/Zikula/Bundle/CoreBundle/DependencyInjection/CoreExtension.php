@@ -52,6 +52,17 @@ class CoreExtension extends Extension
         $this->addClassesToCompile(array(
 //            'Zikula\\Component\\DependencyInjection\\ContainerBuilder',
         ));
+
+        // todo - temporary - remove when Smarty is removed, also need to redeligate some
+        // of this to other's responsibility
+        $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
+        $dirs = array('doctrinemodels', 'idsTmp', 'purifierCache', 'doctrinemodels',
+        'Theme_cache', 'Theme_compiled', 'Theme_Config', 'view_cache', 'view_compiled');
+        foreach ($dirs as $dir) {
+            if (!is_dir($cacheDir.'/'.$dir)) {
+                mkdir($cacheDir.'/'.$dir, 0777, true);
+            }
+        }
     }
 
     public function getNamespace()
