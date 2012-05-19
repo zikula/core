@@ -4,7 +4,7 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+#    translator:      { fallback: %locale% }
     secret:          %secret%
     charset:         UTF-8
     router:          { resource: "%kernel.root_dir%/config/routing.yml" }
@@ -150,3 +150,14 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+# JMS I18n Routing http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration
+#jms_i18n_routing:
+#    default_locale: en
+#    locales: [en, de]
+#    strategy: prefix
+
+twig:
+    # ...
+    globals:
+        title: "Default title"

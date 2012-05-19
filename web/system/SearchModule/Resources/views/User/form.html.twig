@@ -1,0 +1,41 @@
+{{ pageaddvar('javascript', 'system/Search/Resources/js/User/form.js') }}
+{% include 'ZikulaSearchModule:User:menu.html.twig' %}
+
+<form class="z-form" id="search_form" method="post" action="{modurl modname='SearchModule' type='user' func='search'}">
+    <fieldset>
+        <div class="z-formrow">
+            <label for="search_q" id="search_q_label">{{ __('Search keywords') }}</label>
+            <input type="text" id="search_q" name="q" size="20" maxlength="255" value="{{ q }}" />
+        </div>
+        <div class="z-formrow">
+            <label for="searchtype">{{ __('Keyword settings') }}</label>
+            <select name="searchtype" id="searchtype" size="1">
+                <option value="AND"{% if searchtype == 'AND' %} selected="selected"{% endif %}>{{ __('All words') }}</option>
+                <option value="OR"{% if searchtype == 'OR' %}selected="selected""{% endif %}>{{ __('Any words') }}</option>
+                <option value="EXACT"{% if searchtype == 'EXACT' %}selected="selected""{% endif %}>{{ __('Exact phrase') }}</option>
+            </select>
+        </div>
+        <div class="z-formrow">
+            <label for="searchorder">{{ __('Order of results') }}</label>
+            <select name="searchorder" id="searchorder" size="1">
+                <option value="newest"{% if searchtype == 'newest' %} selected="selected"{% endif %}>{{ __('Newest first') }}</option>
+                <option value="oldest"{% if searchtype == 'oldest' %} selected="selected"{% endif %}>{{ __("Oldest first") }}</option>
+                <option value="alphabetical"{% if searchtype == 'alphabetical' %} selected="selected"{% endif %}>{{ __("Alphabetical") }}</option>
+            </select>
+        </div>
+        <div class="z-buttons z-formbuttons">
+        </div>
+    </fieldset>
+    {% if plugin_options %}
+    <fieldset class="z-linear">
+        <legend>{{ __('Filter search by type') }}</legend>
+        <div class="search_toogle">
+            <input type="checkbox" name="togglebox" id="togglebox" checked="checked" tabindex="0" onclick="toggleboxes(this);" />
+            <label for="togglebox">{{ __('De/Select all') }}</label>
+        </div>
+        {% for plugin, plugin_option in plugin_options %}
+            {{ plugin_option|raw }}
+        {% endfor %}
+    </fieldset>
+    {% endif %}
+</form>

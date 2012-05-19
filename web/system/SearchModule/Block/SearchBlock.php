@@ -87,7 +87,7 @@ class SearchBlock extends \Zikula_Controller_AbstractBlock
                    ->assign('plugin_options', $plugin_options);
 
         // return the rendered block
-        $blockinfo['content'] = $this->view->fetch('search_block_search.tpl');
+        $blockinfo['content'] = $this->view->fetch('Block/search.tpl');
 
         return BlockUtil::themeBlock($blockinfo);
     }
@@ -128,7 +128,7 @@ class SearchBlock extends \Zikula_Controller_AbstractBlock
         $this->view->assign('searchvars', $vars)
                    ->assign('searchmodules', $searchmodules);
 
-        return $this->view->fetch('search_block_search_modify.tpl');
+        return $this->view->fetch('Block/search_modify.tpl');
     }
 
     /**
@@ -157,7 +157,7 @@ class SearchBlock extends \Zikula_Controller_AbstractBlock
         $blockinfo['content'] = BlockUtil::varsToContent($vars);
 
         // clear the block cache
-        $this->view->clear_cache('search_block_search.tpl');
+        $this->view->clear_cache('Block/search.tpl');
 
         // and clear the theme cache
         \Zikula_View_Theme::getInstance()->clear_cache();

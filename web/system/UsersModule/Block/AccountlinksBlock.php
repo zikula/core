@@ -75,7 +75,7 @@ class AccountlinksBlock extends\ Zikula_Controller_AbstractBlock
                                ->assign('accountlinks', $accountlinks);
 
                     // Populate block info and pass to theme
-                    $blockInfo['content'] = $this->view->fetch('users_block_accountlinks.tpl');
+                    $blockInfo['content'] = $this->view->fetch('Block/accountlinks.tpl');
 
                     $renderedOutput = BlockUtil::themeBlock($blockInfo);
                 }

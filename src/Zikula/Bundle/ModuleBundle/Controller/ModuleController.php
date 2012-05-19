@@ -40,7 +40,7 @@ class ModuleController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('ZikulaModulesBundle:Module')->find($id);
+        $entity = $em->getRepository('ZikulaModuleBundle:Module')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Module entity.');
@@ -63,7 +63,7 @@ class ModuleController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('ZikulaModulesBundle:Module')->find($id);
+        $entity = $em->getRepository('ZikulaModuleBundle:Module')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Module entity.');
@@ -84,13 +84,13 @@ class ModuleController extends Controller
      *
      * @Route("/{id}/update", name="module_update")
      * @Method("post")
-     * @Template("ZikulaModulesBundle:Module:edit.html.twig")
+     * @Template("ZikulaModuleBundle:Module:edit.html.twig")
      */
     public function updateAction($id)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $entity = $em->getRepository('ZikulaModulesBundle:Module')->find($id);
+        $entity = $em->getRepository('ZikulaModuleBundle:Module')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Module entity.');
@@ -131,7 +131,7 @@ class ModuleController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $entity = $em->getRepository('ZikulaModulesBundle:Module')->find($id);
+            $entity = $em->getRepository('ZikulaModuleBundle:Module')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Module entity.');

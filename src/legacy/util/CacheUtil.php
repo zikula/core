@@ -26,8 +26,10 @@ class CacheUtil
      */
     public static function getLocalDir($dir = null)
     {
+        $sm = ServiceUtil::getManager();
+        $base = $sm['kernel.cache_dir'];
         $array = array();
-        $array[] = DataUtil::formatForOS(System::getVar('temp'), true);
+        $array[] = $base;
 
         if (!is_null($dir)) {
             $array[] = DataUtil::formatForOS($dir);
@@ -49,7 +51,9 @@ class CacheUtil
      */
     public static function createLocalDir($dir, $mode = null, $absolute = true)
     {
-        $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
+        $sm = ServiceUtil::getManager();
+        $base = $sm['kernel.cache_dir'];
+        $path = $base . '/' . $dir;
         
         $mode = isset($mode) ? (int)$mode : System::getVar('system.chmod_dir');
 
@@ -70,7 +74,9 @@ class CacheUtil
      */
     public static function removeLocalDir($dir, $absolute = false)
     {
-        $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
+        $sm = ServiceUtil::getManager();
+        $base = $sm['kernel.cache_dir'];
+        $path = $base . '/' . $dir;
 
         return FileUtil::deldir($path, $absolute);
     }

@@ -231,7 +231,7 @@ class HookUI
             $view->assign('total_available_provider_areas', $total_available_provider_areas);
         }
 
-        $event->setData($view->fetch('extensions_hookui_hooks.tpl'));
+        $event->setData($view->fetch('HookUi/hooks.tpl'));
         $event->stopPropagation();
     }
 
@@ -257,7 +257,7 @@ class HookUI
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);
 
-        $event->setData($view->fetch('extensions_hookui_moduleservices.tpl'));
+        $event->setData($view->fetch('HookUi/moduleservices.tpl'));
         $event->stopPropagation();
     }
 }

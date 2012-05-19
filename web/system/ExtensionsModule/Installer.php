@@ -31,7 +31,12 @@ class Installer extends \Zikula_AbstractInstaller
         $tables = array(
             'Zikula\Core\Doctrine\Entity\Extension',
             'Zikula\Core\Doctrine\Entity\ExtensionDependency',
-            'Zikula\Core\Doctrine\Entity\ExtensionVar'
+            'Zikula\Core\Doctrine\Entity\ExtensionVar',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
         
         try {
@@ -41,10 +46,8 @@ class Installer extends \Zikula_AbstractInstaller
         }
 
         // create hook provider table.
-        \Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea',
-            'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
+        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('ExtensionsModule\HookUI', 'hooks'));
+        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('ExtensionsModule\HookUI', 'moduleservices'));
 
         // populate default data
         $this->defaultdata();

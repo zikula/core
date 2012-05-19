@@ -28,11 +28,15 @@ class JCSSUtil
      */
     public static function getJSConfig()
     {
+        /* @var \Symfony\Component\HttpFoundation\Request $request */
+        $request = ServiceUtil::getManager()->get('request');
+        $basePath = $request->getBasePath();
+        $baseUrl = $request->getBaseUrl();
         $return = '';
         $config = array(
                 'entrypoint' => System::getVar('entrypoint', 'index.php'),
-                'baseURL' => System::getBaseUrl(),
-                'baseURI' => System::getBaseUri() . '/',
+                'baseURL' => $baseUrl,//System::getBaseUrl(),
+                'baseURI' => $basePath,//System::getBaseUri() . '/',
                 'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
                 'lang' => ZLanguage::getLanguageCode(),
                 'sessionName' => session_name(),
@@ -75,15 +79,27 @@ class JCSSUtil
             $javascripts = (array)self::save($javascripts, 'js', $cache_dir);
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
         }
+
+        /* @var \Symfony\Component\HttpFoundation\Request $request */
+        $request = ServiceUtil::getManager()->get('request');
+        $basePath = $request->getBasePath();
+        foreach ($stylesheets as $key => $value) {
+            $stylesheets[$key] = $basePath.'/'.$value;
+        }
+        foreach ($javascripts as $key => $value) {
+            $javascripts[$key] = $basePath.'/'.$value;
+        }
+
         $jcss = array(
                 'stylesheets' => $stylesheets,
-                'javascripts' => $javascripts
+                'javascripts' => $javascripts,
         );
         // some core js libs require js gettext - ensure that it will be loaded
         $jsgettext = self::getJSGettext();
         if (!empty($jsgettext)) {
             array_unshift($jcss['javascripts'], $jsgettext);
         }
+
         return $jcss;
     }
 
@@ -216,7 +232,6 @@ class JCSSUtil
      * Checks the given script name (alias or path).
      *
      * If this is the core script is returning it's alias.
-     * This method also hanldes all legacy for script paths.
      *
      * @param string $script Script path or alias to verify.
      *
@@ -224,7 +239,6 @@ class JCSSUtil
      */
     public static function getScriptName($script)
     {
-        $script = self::handleLegacy($script);
         $coreScripts = self::scriptsMap();
         $_script = strtolower($script);
         if (array_key_exists($_script, $coreScripts)) {
@@ -237,44 +251,6 @@ class JCSSUtil
                 return $name;
             }
         }
-        return $script;
-    }
-
-    /**
-     * Internal procedure for managing legacy script paths.
-     *
-     * @param string $script Script path to check.
-     *
-     * @return string Verified script path
-     */
-    private static function handleLegacy($script)
-    {
-        // Handle legacy references to non-minimised scripts.
-        if (strpos($script, 'javascript/livepipe/') === 0) {
-            $script = 'livepipe';
-        } else if (strpos($script, 'javascript/ajax/') === 0) {
-            switch ($script) {
-                case 'javascript/ajax/validation.js':
-                    $script = 'validation';
-                    break;
-                case 'javascript/ajax/unittest.js':
-                    $script = 'javascript/ajax/unittest.min.js';
-                    break;
-                case 'javascript/ajax/prototype.js':
-                case 'javascript/ajax/builder.js':
-                case 'javascript/ajax/controls.js':
-                case 'javascript/ajax/dragdrop.js':
-                case 'javascript/ajax/effects.js':
-                case 'javascript/ajax/slider.js':
-                case 'javascript/ajax/sound.js':
-                    $script = 'prototype';
-                    break;
-            }
-            if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
-                $script = 'prototype';
-            }
-        }
-
         return $script;
     }
 
@@ -438,6 +414,7 @@ class JCSSUtil
             );
             $scripts = array_merge($jQueryUncompressed, $jQueryUiUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
         }
+
         return $scripts;
     }
 

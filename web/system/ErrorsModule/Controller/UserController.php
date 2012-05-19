@@ -29,7 +29,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function indexAction($args)
+    public function indexAction(array $args = array())
     {
         /* @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->request->getSession();
@@ -39,7 +39,7 @@ class UserController extends \Zikula_AbstractController
         $message   = isset($args['message']) ? $args['message'] : '';
 
         // load the stylesheet
-        PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
+        PageUtil::addVar('stylesheet', 'system/ErrorsModule/Resources/public/css/style.css');
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
@@ -71,20 +71,20 @@ class UserController extends \Zikula_AbstractController
                    ->assign('trace', $trace);
 
         // return the template output
-        if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
+        if ($this->view->template_exists($template = "User/{$type}.tpl")) {
             return $this->response($this->view->fetch($template), $type);
         } else {
-            return $this->response($this->view->fetch('errors_user_main.tpl'), $type);
+            return $this->response($this->view->fetch('User/main.tpl'), $type);
         }
     }
 
     /**
      * Display a system error
      */
-    public function systemAction($args)
+    public function systemAction(array $args = array())
     {
         return $this->response($this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)
-                          ->fetch('errors_user_system.tpl'), 500);
+                          ->fetch('User/system.tpl'), 500);
     }
 }

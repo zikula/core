@@ -531,91 +531,6 @@ class ModUtil
     }
 
     /**
-     * Loads database definition for a module.
-     *
-     * @param string  $modname   The name of the module to load database definition for.
-     * @param string  $directory Directory that module is in (if known).
-     * @param boolean $force     Force table information to be reloaded.
-     *
-     * @return boolean True if successful, false otherwise.
-     */
-    public static function dbInfoLoad($modname, $directory = '', $force = false)
-    {
-        // define input, all numbers and booleans to strings
-        $modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
-        $modname = (isset($modname) ? strtolower((string)$modname) : '');
-
-        // validate
-        if (!System::varValidate($modname, 'mod')) {
-            return false;
-        }
-
-        $container = ServiceUtil::getManager();
-
-        if (!isset($container['modutil.dbinfoload.loaded'])) {
-            $container['modutil.dbinfoload.loaded'] = array();
-        }
-
-        $loaded = $container['modutil.dbinfoload.loaded'];
-
-        // check to ensure we aren't doing this twice
-        if (isset($loaded[$modname]) && !$force) {
-            return $loaded[$modname];
-        }
-
-        // from here the module dbinfo will be loaded no doubt
-        $loaded[$modname] = true;
-        $container['modutil.dbinfoload.loaded'] = $loaded;
-
-        // get the directory if we don't already have it
-        if (empty($directory)) {
-            // get the module info
-            $modinfo = self::getInfo(self::getIdFromName($modname));
-            $directory = $modinfo['directory'];
-
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        } else {
-            $modpath = is_dir(ZIKULA_ROOT."/system/$directory") ? 'system' : 'modules';
-        }
-
-        // Load the database definition if required
-        $file = ZIKULA_ROOT."/$modpath/$directory/tables.php";
-
-        if (file_exists($file) && include $file) {
-            // If not gets here, the module has no tables to load
-            $tablefunc = $modname . '_tables';
-            if (function_exists($tablefunc)) {
-                $data = call_user_func($tablefunc);
-            }
-
-            // Generate _column automatically from _column_def if it is not present.
-            foreach ($data as $key => $value) {
-                $table_col = substr($key, 0, -4);
-                if (substr($key, -11) == "_column_def" && !isset($data[$table_col])) {
-                    foreach ($value as $fieldname => $def) {
-                        $data[$table_col][$fieldname] = $fieldname;
-                    }
-                }
-            }
-
-            if (!isset($container['dbtables'])) {
-                $container['dbtables'] = array();
-            }
-
-            $dbtables = $container['dbtables'];
-            $container['dbtables'] = array_merge($dbtables, (array)$data);
-        } else {
-            // the module is tableless (Doctrine or doesn't use tables at all)
-            return true;
-        }
-
-        // update the loaded status
-        $container['modutil.dbinfoload.loaded'] = $loaded;
-
-        return isset($data) ? $data : $loaded[$modname];
-    }
-
-    /**
      * Loads a module.
      *
      * @param string  $modname The name of the module.
@@ -711,9 +626,6 @@ class ModUtil
         if ($modinfo['type'] == self::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modname);
         }
-
-        // Load database info
-        self::dbInfoLoad($modname, $modinfo['directory']);
 
         self::_loadStyleSheets($modname, $api, $type);
 
@@ -1058,8 +970,12 @@ class ModUtil
         if (isset($modinfo['url']) && !empty($modinfo['url'])) {
             $modname = rawurlencode($modinfo['url']);
         }
-
         $entrypoint = System::getVar('entrypoint');
+
+        $request = ServiceUtil::getManager()->get('request');
+        /* @var \Symfony\Component\HttpFoundation\Request $request */
+        $basePath = $request->getBasePath();
+
         $host = System::serverGetVar('HTTP_HOST');
 
         if (empty($host)) {
@@ -1166,14 +1082,17 @@ class ModUtil
             }
         } else {
             // Regular stuff
-            $urlargs = "module=$modname&type=$type&func=$func";
+//            $urlargs = "module=$modname&type=$type&func=$func";
+            $urlargs = "/$modname/$type/$func?";
 
             // add lang param to URL
             if (ZLanguage::isRequiredLangParam() || $forcelang) {
-                $urlargs .= "&lang=$language";
+//                $urlargs .= "&lang=$language";
+                $urlargs .= "lang=$language";
             }
 
-            $url = "$entrypoint?$urlargs";
+//            $url = "$entrypoint?$urlargs";
+            $url = "{$basePath}$urlargs";
 
             if (!is_array($args)) {
                 return false;

@@ -18,6 +18,7 @@
         "sensio/framework-extra-bundle": "dev-master",
         "sensio/generator-bundle": "dev-master",
         "jms/security-extra-bundle": "1.1.0",
+        "jms/command-bundle": "dev-master",
         "jms/di-extra-bundle": "1.0.1",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
@@ -27,6 +28,7 @@
         "white-october/pagerfanta-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master",
+        "jms/i18n-routing-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "dev-master",
         "friendsofsymfony/user-bundle": "dev-master"
     },

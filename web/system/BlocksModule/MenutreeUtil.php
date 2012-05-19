@@ -30,12 +30,12 @@ class MenutreeUtil
         $tpls = array();
 
         // restricted templates, array for possible future changes
-        $sysTpls = array('blocks_block_menutree_modify.tpl',
-                         'blocks_block_menutree_include_help.tpl');
+        $sysTpls = array('Block/menutree/modify.tpl',
+                         'Block/menutree/include_help.tpl');
 
         // module templates
-        $modulesTpls = FileUtil::getFiles('system/BlocksModule/Resources/view/menutree', false, true, 'tpl', false);
-        $configTpls = FileUtil::getFiles('config/templates/BlocksModule/menutree', false, true, 'tpl', false);
+        $modulesTpls = FileUtil::getFiles('system/BlocksModule/Resources/view/Block/menutree', false, true, 'tpl', false);
+        $configTpls = FileUtil::getFiles('config/templates/BlocksModule/Block/menutree', false, true, 'tpl', false);
         $tpls['modules'] = array_merge($modulesTpls, $configTpls);
 
         // themes templates - get user and admin themes

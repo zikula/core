@@ -84,7 +84,7 @@ class PendingContentBlock extends \Zikula_Controller_AbstractBlock
 
         if (!empty($content)) {
             $this->view->assign('content', $content);
-            $blockinfo['content'] = $this->view->fetch('blocks_block_pendingcontent.tpl');
+            $blockinfo['content'] = $this->view->fetch('Block/pendingcontent.tpl');
         } else {
             $blockinfo['content'] = '';
         }

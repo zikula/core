@@ -41,7 +41,7 @@ class AdminController extends \Zikula_AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        return $this->response($this->view->fetch('settings_admin_modifyconfig.tpl'));
+        return $this->response($this->view->fetch('Admin/modifyconfig.tpl'));
     }
 
     /**
@@ -147,7 +147,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('timezone_server', DateUtil::getTimezone());
         $this->view->assign('timezone_server_abbr', DateUtil::getTimezoneAbbr());
 
-        return $this->response($this->view->fetch('settings_admin_multilingual.tpl'));
+        return $this->response($this->view->fetch('Admin/multilingual.tpl'));
     }
 
     /**

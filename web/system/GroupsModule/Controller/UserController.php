@@ -70,7 +70,7 @@ class UserController extends \Zikula_AbstractController
         // failed then an appropriate message is posted.
         if (!$groups) {
             $this->view->assign('nogroups', true);
-            return $this->response($this->view->fetch('groups_user_view.tpl'));
+            return $this->response($this->view->fetch('User/view.tpl'));
         }
 
         $groupitems = array();
@@ -92,10 +92,10 @@ class UserController extends \Zikula_AbstractController
 
                 if ($islogged == true && SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_READ)) {
                     // The right to apply
-                    $groupitems[] = $this->view->fetch('groups_user_grouprow_read.tpl', $group['gid']);
+                    $groupitems[] = $this->view->fetch('User/grouprow_read.tpl', $group['gid']);
                 } else {
                     // No right to apply
-                    $groupitems[] = $this->view->fetch('groups_user_grouprow_overview.tpl', $group['gid']);
+                    $groupitems[] = $this->view->fetch('User/grouprow_overview.tpl', $group['gid']);
                 }
             }
         }
@@ -106,7 +106,7 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('GroupsModule', 'user', 'countitems'),
                                            'itemsperpage' => $itemsperpage));
 
-        return $this->response($this->view->fetch('groups_user_view.tpl'));
+        return $this->response($this->view->fetch('User/view.tpl'));
     }
 
     /**
@@ -171,7 +171,7 @@ class UserController extends \Zikula_AbstractController
                    ->assign('action',       $action)
                    ->assign('description',  $group['description']);
 
-        return $this->response($this->view->fetch('groups_user_membership.tpl'));
+        return $this->response($this->view->fetch('User/membership.tpl'));
     }
 
     /*
@@ -210,7 +210,7 @@ class UserController extends \Zikula_AbstractController
             LogUtil::registerStatus($this->__('Done! Saved the action.'));
         }
 
-        $this->view->clear_cache('groups_user_memberslist.tpl');
+        $this->view->clear_cache('User/memberslist.tpl');
 
         return $this->redirect(ModUtil::url('Groups', 'user', 'view'));
     }
@@ -305,6 +305,6 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('GroupsModule', 'user', 'countgroupmembers', array('gid' => $gid)),
                                            'itemsperpage' => $itemsperpage));
 
-        return $this->response($this->view->fetch('groups_user_memberslist.tpl'));
+        return $this->response($this->view->fetch('User/memberslist.tpl'));
     }
 }
