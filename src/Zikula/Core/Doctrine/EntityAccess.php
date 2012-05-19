@@ -62,12 +62,19 @@ class EntityAccess implements \ArrayAccess
     {
         $r = $this->getReflection();
         $array = array();
+        $excluded = array(
+            'reflection',
+            '_entityPersister',
+            '_identifier',
+            '__isInitialized__'
+        );
 
         while($r !== false) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
+
             foreach ($properties as $property) {
-                if ($property->name == 'reflection') {
+                if (in_array($property->name, $excluded)) {
                     continue;
                 }
 

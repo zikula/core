@@ -251,6 +251,7 @@ class Zikula_Tree
             if (!isset($item[$objid])) {
                 continue;
             }
+
             // process nested sets
             if ($this->config['nestedSet']) {
                 if ((string)$item['level'] == 0) {
@@ -285,7 +286,11 @@ class Zikula_Tree
                 'name'      => isset($item['name']) ? $item['name'] : null,
                 'href'      => isset($item['href']) ? $item['href'] : '#'
             );
-            $node = array('item' => $item, 'nodes' => $nodes);
+            
+            $node = array(
+                'item' => $item, 
+                'nodes' => $nodes
+            );
 
             if ((string)$item['parent_id'] == (string)$this->config['nullParent']) {
                 $this->tree[$item['id']] = $node;

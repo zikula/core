@@ -23,51 +23,31 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        if (!DBUtil::createTable('categories_category')) {
+        // create tables
+        $classes = array(
+            'Zikula\Core\Doctrine\Entity\Category',
+            'Zikula\Core\Doctrine\Entity\CategoryAttribute',
+            'Zikula\Core\Doctrine\Entity\CategoryRegistry'
+        );
+        
+        try {
+            \DoctrineHelper::createSchema($this->entityManager, $classes);
+        } catch (\Exception $e) {
             return false;
         }
-
-        // Create the index
-        if (!DBUtil::createIndex('idx_categories_parent', 'categories_category', 'parent_id') || !DBUtil::createIndex('idx_categories_is_leaf', 'categories_category', 'is_leaf') || !DBUtil::createIndex('idx_categories_name', 'categories_category', 'name') || !DBUtil::createIndex('idx_categories_ipath', 'categories_category', array(
-                'ipath',
-                'is_leaf',
-                'status')) || !DBUtil::createIndex('idx_categories_status', 'categories_category', 'status') || !DBUtil::createIndex('idx_categories_ipath_status', 'categories_category', array('ipath', 'status'))) {
-            return false;
-        }
-
+        
+        // insert some default data
         $this->insertData_10();
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
+        $cat = new \Zikula\Core\Doctrine\Entity\Category;
+        $cat['id'] = 9999;
+        $this->entityManager->persist($cat);
+        $this->entityManager->flush();
+        $this->entityManager->remove($cat);
+        $this->entityManager->flush();
 
-        $cat = array('id' => 9999,
-            'parent_id' => 1,
-            'is_locked' => 0,
-            'is_leaf' => 0,
-            'name' => '',
-            'value' => '',
-            'sort_value' => 0,
-            'display_name' => '',
-            'display_desc' => '',
-            'path' => '',
-            'ipath' => '',
-            'status' => '');
-        DBUtil::insertObject($cat, 'categories_category', 'id', true);
-
-        // for postgres, we need to explicitly set the sequence value to reflect the inserted data
-        $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-        if ($dbDriverName == 'pgsql') {
-            $dbtables = DBUtil::getTables();
-            $tab = $dbtables['categories_category'];
-            $col = $dbtables['categories_category_column'];
-            $seq = $tab . '_cat_id_seq';
-            $sql = "SELECT setval('$seq', (SELECT MAX($col[id]) + 1 FROM $tab))";
-            DBUtil::executeSQL($sql);
-        }
-
-        DBUtil::deleteObjectByID('categories_category', 9999, 'id');
-
-        $this->createTables_101();
-
+        // set module vars
         $this->setVar('userrootcat', '/__SYSTEM__/Users');
         $this->setVar('allowusercatedit', 0);
         $this->setVar('autocreateusercat', 0);
@@ -112,54 +92,8 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        DBUtil::dropTable('categories_category');
-        DBUtil::dropTable('categories_mapobj');
-        DBUtil::dropTable('categories_mapmeta');
-        DBUtil::dropTable('categories_registry');
-
-        $this->delVars();
-
-        // delete other modules use of categories flag
-        $dbtable = DBUtil::getTables();
-        $cols = $dbtable['module_vars_column'];
-        $name = DataUtil::formatForStore('enablecategorization');
-        $where = "$cols[name]='$name'";
-        $res = (bool)DBUtil::deleteWhere('module_vars', $where);
-
-        // Deletion successful
-        return true;
-    }
-
-    /**
-     * create tables
-     */
-    public function createTables_101()
-    {
-        if (!DBUtil::createTable('categories_registry')) {
-            return false;
-        }
-
-        if (!DBUtil::createIndex('idx_categories_registry', 'categories_registry', array('modname', 'table', 'property'))) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('categories_mapmeta')) {
-            return false;
-        }
-
-        if (!DBUtil::createIndex('idx_categories_mapmeta', 'categories_mapmeta', 'meta_id')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('categories_mapobj')) {
-            return false;
-        }
-
-        if (!DBUtil::createIndex('idx_categories_mapobj', 'categories_mapobj', array('modname', 'table', 'obj_id', 'obj_idcolumn'))) {
-            return false;
-        }
-
-        return true;
+        // Not allowed to delete
+        return false;
     }
 
     /**
@@ -176,8 +110,8 @@ class Installer extends \Zikula_AbstractInstaller
             'value' => '',
             'sort_value' => 1,
             'name' => '__SYSTEM__',
-            'display_name' => 'b:0;',
-            'display_desc' => 'b:0;',
+            'display_name' => '',
+            'display_desc' => '',
             'path' => '/__SYSTEM__',
             'ipath' => '/1',
             'status' => 'A'
@@ -231,8 +165,8 @@ class Installer extends \Zikula_AbstractInstaller
             'value' => 'Y',
             'sort_value' => 5,
             'name' => '1 - Yes',
-            'display_name' => 'b:0;',
-            'display_desc' => 'b:0;',
+            'display_name' => '',
+            'display_desc' => '',
             'path' => '/__SYSTEM__/General/YesNo/1 - Yes',
             'ipath' => '/1/3/4/5',
             'status' => 'A',
@@ -246,8 +180,8 @@ class Installer extends \Zikula_AbstractInstaller
             'value' => 'N',
             'sort_value' => 6,
             'name' => '2 - No',
-            'display_name' => 'b:0;',
-            'display_desc' => 'b:0;',
+            'display_name' => '',
+            'display_desc' => '',
             'path' => '/__SYSTEM__/General/YesNo/2 - No',
             'ipath' => '/1/3/4/6',
             'status' => 'A',
@@ -712,47 +646,44 @@ class Installer extends \Zikula_AbstractInstaller
             'ipath' => '/1/2/32/41',
             'status' => 'A'
         );
-
-        DBUtil::insertObjectArray($objArray, 'categories_category', 'id', true);
-    }
-
-    /**
-     * update the value addons tables
-     */
-    public function updateValueAddons_104()
-    {
-        // Array of the modules to update
-        $mods = array('News' => array('stories' => 'Main'), 'Pages' => array('pages' => 'Main'), 'FAQ' => array('faqanswer' => 'Main'), 'Feeds' => array('feeds' => 'Main'), 'Reviews' => array('reviews' => 'Main'), 'Content' => array('page' => 'primary'));
-
-        $dbtables = DBUtil::getTables();
-        $regcol = $dbtables['categories_registry_column'];
-        $mapcol = $dbtables['categories_mapobj_column'];
-
-        // Update all the items mapped if there's a Register of the module
-        foreach ($mods as $module => $data) {
-            foreach ($data as $table => $property) {
-                $where = "$regcol[modname]='$module' AND $regcol[table]='$table' AND $regcol[property]='$property'";
-                $reg_id = DBUtil::selectObject('categories_registry', $where, array('id'));
-                if ($reg_id !== false) {
-                    $obj = array('reg_id' => $reg_id['id']);
-                    $where = "$mapcol[modname]='$module' AND $mapcol[table]='$table'";
-                    DBUtil::updateObject($obj, 'categories_mapobj', $where, 'sid');
+        
+        foreach ($objArray as $obj) {
+            $category = new \Zikula\Core\Doctrine\Entity\Category;
+            
+            if ($obj['parent_id'] == 0) {
+                $obj['parent'] = null;
+            } else {
+                $obj['parent'] = $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\Category', $obj['parent_id']);
+            }
+            unset($obj['parent_id']);
+            
+            if (isset($obj['__ATTRIBUTES__'])) {
+                $attributes = $obj['__ATTRIBUTES__'];
+                unset($obj['__ATTRIBUTES__']);
+            }
+            
+            $category->merge($obj);
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
+            
+            if (isset($attributes)) {
+                foreach ($attributes as $attrib_key => $attrib_name) {
+                    $category->setAttribute($attrib_name, $attrib_key);
                 }
             }
         }
-
-        return true;
+        
+        $this->entityManager->flush();
     }
 
     public function makeDisplayName($name)
     {
-
-        return serialize(array(ZLanguage::getLanguageCode() => $name));
+        return array(ZLanguage::getLanguageCode() => $name);
     }
 
     public function makeDisplayDesc()
     {
-        return serialize(array('en' => ''));
+        return array(ZLanguage::getLanguageCode() => '');
     }
 
     public function upgrade_fixSerializedData()

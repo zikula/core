@@ -415,96 +415,40 @@ class HtmlUtil
         if (!$modname) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
         }
-
-        $tables = ModUtil::dbInfoLoad($modname, '', true);
-        $data = array();
-        if (is_array($tables) && $tables) {
-            foreach ($tables as $k => $v) {
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    $checkColumns = $k . '_column';
-                    if (!isset($tables[$checkColumns])) {
-                        continue;
-                    }
-                }
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    if (strpos($k, 'z_') === 0) {
-                        $k = substr($k, 4);
-                    }
-
-                    if ($remove) {
-                        $k2 = str_replace($remove, '', $k);
-                    } else {
-                        $k2 = $k;
-                    }
-
-                    if ($nStripChars) {
-                        $k2 = ucfirst(substr($k2, $nStripChars));
-                    }
-
-                    // Use $k2 for display also (instead of showing the internal table name)
-                    $data[$k2] = $k2;
-                }
-            }
-        }
-
-        // Doctrine models
-        DoctrineUtil::loadModels($modname);
-        $records = Doctrine::getLoadedModels();
-
-        foreach ($records as $recordClass) {
-            // remove records from other modules
-            if (substr($recordClass, 0, strlen($modname)) != $modname) {
-                continue;
-            }
-
-            // get table name of remove table prefix
-            $tableNameRaw = Doctrine::getTable($recordClass)->getTableName();
-            sscanf($tableNameRaw, Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
-
-            if ($remove) {
-                $tableName = str_replace($remove, '', $tableName);
-            }
-
-            if ($nStripChars) {
-                $tableName = ucfirst(substr($tableName, $nStripChars));
-            }
-
-            $data[$tableName] = $tableName;
-        }
         
-        // Doctrine2 models
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        $entityDir = "$modpath/$osdir/lib/$osdir/Entity/";
+        $entityDir = "$modpath/$osdir/Entity/";
         
         $entities = array();
-        if(file_exists($entityDir)) {
-            $entities = scandir($entityDir);
-        }
-
-        foreach ($entities as $entity) {
-            if(!($entity[0] != '.' && substr($entity, -4) === '.php')) {
-                continue;
+        if (file_exists($entityDir)) {
+            $files = scandir($entityDir);
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..' && substr($file, -4) === '.php') {
+                    $entities[] = $file;
+                }
             }
-            
-            $class = $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4);
-            if(class_exists($class) && !in_array('Doctrine_Record', class_parents($class))) {
-                $tableName = substr($entity, 0, strlen($entity) - 4);
+        }
+        
+        $data = array();
+        foreach ($entities as $entity) {
+            $class = $modname . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4);
+                
+            if (class_exists($class)) {
+                $entityName = substr($entity, 0, strlen($entity) - 4);
 
                 if ($remove) {
-                    $tableName = str_replace($remove, '', $tableName);
+                    $entityName = str_replace($remove, '', $entityName);
                 }
 
                 if ($nStripChars) {
-                    $tableName = ucfirst(substr($tableName, $nStripChars));
+                    $entityName = ucfirst(substr($entityName, $nStripChars));
                 }
 
-                $data[$tableName] = $tableName;
+                $data[$entityName] = $entityName;
             }
         }
-
-
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
     }

@@ -14,9 +14,8 @@
 
 namespace CategoriesModule\Controller;
 
-use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil, DBObject;
+use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil;
 use StringUtil, System, Zikula_View;
-use CategoriesModule\DBObject\Category, EventUtil;
 
 class UserformController extends \Zikula_AbstractController
 {
@@ -40,18 +39,17 @@ class UserformController extends \Zikula_AbstractController
         if (!$cid) {
             return LogUtil::registerError($this->__('Error! The category ID is invalid.'), null, $url);
         }
+        
+        $category = \CategoryUtil::getCategoryByID($cid);
 
-        $obj = new Category ();
-        $data = $obj->get($cid);
-
-        if (!$data) {
+        if (!$category) {
             $msg = $this->__f('Error! Cannot retrieve category with ID %s.', $cid);
             return LogUtil::registerError($msg, null, $url);
         }
 
-        if ($data['is_locked']) {
+        if ($category['is_locked']) {
             //! %1$s is the id, %2$s is the name
-            return LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $data['name'])), null, $url);
+            return LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($cid, $category['name'])), null, $url);
         }
 
         CategoryUtil::deleteCategoryByID($cid);
@@ -79,43 +77,59 @@ class UserformController extends \Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! The document root is invalid.'), null, $url);
         }
 
-        $obj = new Category();
-        $data = $obj->getDataFromInput();
-        $oldData = $obj->get($data['id']);
-        $obj->setData($data);
-
-        if (!$oldData) {
+        // get data from post
+        $data = $this->request->request->get('category', null);
+        
+        $valid = \CategoriesModule\GenericUtil::validateCategoryData($data);
+        if (!$valid) {
+            return $this->redirect($url);
+        }
+        
+        // process name
+        $data['name'] = \CategoriesModule\GenericUtil::processCategoryName($data['name']);
+        
+        // process parent
+        $data['parent'] = \CategoriesModule\GenericUtil::processCategoryParent($data['parent_id']);
+        unset($data['parent_id']);
+        
+        // process display names
+        $data['display_name'] = \CategoriesModule\GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        
+        // get existing category
+        $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $data['id']);
+        
+        if (!$category) {
             $msg = $this->__f('Error! Cannot retrieve category with ID %s.', $data['id']);
             return LogUtil::registerError($msg, null, $url);
         }
+        
+        if ($category['is_locked']) {
+            return LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $category['name'])), null, $url);
+        }
+        
+        $category_old_name = $category['name'];
+        
+        // save category
+        $category->merge($data);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+        
+        // process path and ipath
+        $category['path'] = \CategoriesModule\GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = \CategoriesModule\GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        
+        // process category attributes
+        $attrib_names = $this->request->request->get('attribute_name', array());
+        $attrib_values = $this->request->request->get('attribute_value', array());
+        \CategoriesModule\GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        
+        $this->entityManager->flush();
 
-        if ($oldData['is_locked']) {
-            //! %1$s is the id, %2$s is the name
-            return LogUtil::registerError($this->__f('Notice: The administrator has locked the category \'%2$s\' (ID \'%$1s\'). You cannot edit or delete it.', array($data['id'], $oldData['name'])), null, $url);
+        if ($category_old_name != $category['name']) {
+            CategoryUtil::rebuildPaths('path', 'name', $category['id']);
         }
 
-        if (!$obj->validate()) {
-            $_POST['cid'] = (int)$_POST['category']['id'];
-            return $this->redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
-        }
-
-        $attributes = array();
-        $values = $this->request->request->get('attribute_value');
-        foreach ($this->request->request->get('attribute_name') as $index => $name) {
-            if (!empty($name)) $attributes[$name] = $values[$index];
-        }
-
-        $obj->setDataField('__ATTRIBUTES__', $attributes);
-
-        // update new category data
-        $obj->update();
-
-        // since a name change will change the object path, we must rebuild it here
-        if ($oldData['name'] != $data['name']) {
-            CategoryUtil::rebuildPaths('path', 'name', $data['id']);
-        }
-
-        $msg = $this->__f('Done! Saved the %s category.', $oldData['name']);
+        $msg = $this->__f('Done! Saved the %s category.', $category_old_name);
         LogUtil::registerStatus($msg);
         return $this->redirect($url);
     }
@@ -145,17 +159,38 @@ class UserformController extends \Zikula_AbstractController
         if (!$dir) {
             return LogUtil::registerError($this->__f('Error! Invalid [%s] received.', 'direction'), null, $url);
         }
-
-        $cats = CategoryUtil::getSubCategories($dr, false, false, false, false);
-        $cats = CategoryUtil::resequence($cats, 10);
-        $ak = array_keys($cats);
+        
+        $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
+        $cats2 = CategoryUtil::resequence($cats1, 10);
+        
+        $sort_values = array();
+        
+        $ak = array_keys($cats1);
         foreach ($ak as $k) {
-            $obj = new Category($cats[$k]);
-            $obj->update();
+            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $cats1[$k]['id']);
+            $obj['sort_value'] = $cats2[$k]['sort_value'];
+            $sort_values[] = array('id' => $obj['id'], 'sort_value' => $obj['sort_value']);
         }
-
-        $data = array('id' => $cid);
-        $val = \ObjectUtil::moveField($data, 'categories_category', $dir, 'sort_value');
+        
+        $this->entityManager->flush();
+        
+        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $cid);
+        
+        for ($i=0 ; $i < count($sort_values) ; $i++) {
+            if ($sort_values[$i]['id'] == $cid) {
+                if ($dir == 'up') {
+                    if ($sort_values[$i-1]['sort_value']) {
+                        $obj['sort_value'] = $sort_values[$i-1]['sort_value'] - 1;
+                    }
+                } else {
+                    if ($sort_values[$i+1]['sort_value']) {
+                        $obj['sort_value'] = $sort_values[$i+1]['sort_value'] + 1;
+                    }
+                }
+            }
+        }
+        
+        $this->entityManager->flush();
 
         $url = System::serverGetVar('HTTP_REFERER');
         return $this->redirect($url);
@@ -178,18 +213,44 @@ class UserformController extends \Zikula_AbstractController
         if (!$dr) {
             return LogUtil::registerError($this->__('Error! The document root is invalid.'), null, $url);
         }
-
-        $cat = new Category ();
-        $data = $cat->getDataFromInput();
-
-        if (!$cat->validate()) {
-            return $this->redirect(ModUtil::url('Categories', 'user', 'edit', $_POST) . '#top');
+        
+        // get data from post
+        $data = $this->request->request->get('category', null);
+        
+        $valid = \CategoriesModule\GenericUtil::validateCategoryData($data);
+        if (!$valid) {
+            return $this->redirect(ModUtil::url('Categories', 'user', 'edit', array('dr' => $dr)));
         }
-
-        $cat->insert();
-        // since the original insert can't construct the ipath (since
-        // the insert id is not known yet) we update the object here.
-        $cat->update();
+        
+        // process name
+        $data['name'] = \CategoriesModule\GenericUtil::processCategoryName($data['name']);
+        
+        // process parent
+        $data['parent'] = \CategoriesModule\GenericUtil::processCategoryParent($data['parent_id']);
+        unset($data['parent_id']);
+        
+        // process display names
+        $data['display_name'] = \CategoriesModule\GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
+        
+        // process sort value
+        $data['sort_value'] = 0;
+        
+        // save category
+        $category = new \Zikula\Core\Doctrine\Entity\Category;
+        $category->merge($data);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+        
+        // process path and ipath
+        $category['path'] = \CategoriesModule\GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = \CategoriesModule\GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+        
+        // process category attributes
+        $attrib_names = $this->request->request->get('attribute_name', array());
+        $attrib_values = $this->request->request->get('attribute_value', array());
+        \CategoriesModule\GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+        
+        $this->entityManager->flush();
 
         $msg = $this->__f('Done! Inserted the %s category.', $data['name']);
         LogUtil::registerStatus($msg);
@@ -212,16 +273,18 @@ class UserformController extends \Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! The document root is invalid.'), null, $url);
         }
 
-        $cats = CategoryUtil::getSubCategories($dr, false, false, false, false);
-        $cats = CategoryUtil::resequence($cats, 10);
+        $cats1 = CategoryUtil::getSubCategories($dr, false, false, false, false);
+        $cats2 = CategoryUtil::resequence($cats1, 10);
 
-        $ak = array_keys($cats);
+        $ak = array_keys($cats1);
         foreach ($ak as $k) {
-            $obj = new Category($cats[$k]);
-            $obj->update();
+            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $cats1[$k]['id']);
+            $obj['sort_value'] = $cats2[$k]['sort_value'];
         }
+        
+        $this->entityManager->flush();
 
-        return $this->redirect(System::serverGetVar('HTTP_REFERER'));
+        return $this->redirect($url);
     }
 
 }

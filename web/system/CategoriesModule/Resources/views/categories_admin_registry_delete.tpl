@@ -7,7 +7,7 @@
 <p class="z-warningmsg">
     {gt text='Do you really want to delete this registry entry?'}<br />
     {gt text='Module'}: <strong>{$data.modname}</strong><br />
-    {gt text='Table'}: <strong>{$data.table}</strong><br />
+    {gt text='Entity'}: <strong>{$data.entityname}</strong><br />
     {gt text='Property name'}: <strong>{$data.property}</strong>
 </p>
 

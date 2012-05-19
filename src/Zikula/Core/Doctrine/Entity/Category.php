@@ -13,15 +13,20 @@
  */
 
 namespace Zikula\Core\Doctrine\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Category doctrine2 entity.
+ * Category entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="categories_category")
+ * @ORM\Table(name="categories",indexes={@ORM\index(name="idx_categories_is_leaf",columns={"is_leaf"}),
+ *                                       @ORM\index(name="idx_categories_name",columns={"name"}),
+ *                                       @ORM\index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),
+ *                                       @ORM\index(name="idx_categories_status",columns={"status"}),
+ *                                       @ORM\index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
 class Category extends EntityAccess
 {
@@ -50,13 +55,13 @@ class Category extends EntityAccess
      * @ORM\Column(type="boolean", name="is_locked")
      * @var boolean
      */
-    private $locked;
+    private $is_locked;
 
     /**
      * @ORM\Column(type="boolean", name="is_leaf")
      * @var boolean
      */
-    private $leaf;
+    private $is_leaf;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -74,19 +79,19 @@ class Category extends EntityAccess
      * @ORM\Column(type="integer", name="sort_value")
      * @var integer
      */
-    private $sortValue;
+    private $sort_value;
 
     /**
      * @ORM\Column(type="array", name="display_name")
      * @var array
      */
-    private $displayName;
+    private $display_name;
 
     /**
      * @ORM\Column(type="array", name="display_desc")
      * @var array
      */
-    private $displayDesc;
+    private $display_desc;
 
     /**
      * @ORM\Column(type="text")
@@ -101,22 +106,39 @@ class Category extends EntityAccess
     private $ipath;
 
     /**
-     * @ORM\Column(type="smallint")
-     * @var integer
+     * @ORM\Column(type="string", length=1)
+     * @var string
      */
     private $status;
     
     /**
-     * @ORM\OneToMany(targetEntity="Zikula_Doctrine2_Entity_CategoryAttribute", 
-     *                mappedBy="objectId", cascade={"all"}, 
-     *                orphanRemoval=true, indexBy="name")
-     * 
-     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttribute", 
+     *                mappedBy="category", 
+     *                cascade={"all"},
+     *                orphanRemoval=true,
+     *                indexBy="name")
      */
     private $attributes;
     
+    
+    /**
+     * constructor
+     */
     public function __construct()
     {
+        $this->parent = null;
+        $this->children = null;
+        $this->is_locked = 0;
+        $this->is_leaf = 0;
+        $this->name = '';
+        $this->value = '';
+        $this->sort_value = 2147483647;
+        $this->display_name = array();
+        $this->display_desc = array();
+        $this->path = '';
+        $this->ipath = '';
+        $this->status = 'I';
+        
         $this->attributes = new ArrayCollection();
     }
     
@@ -127,7 +149,7 @@ class Category extends EntityAccess
 
     public function setId($id)
     {
-        $this->id;
+        $this->id = $id;
     }
 
     public function getParent()
@@ -150,24 +172,24 @@ class Category extends EntityAccess
         $this->children = $children;
     }
 
-    public function getLocked()
+    public function getIs_locked()
     {
-        return $this->locked;
+        return $this->is_locked;
     }
 
-    public function setLocked($locked)
+    public function setIs_locked($is_locked)
     {
-        $this->locked = $locked;
+        $this->is_locked = $is_locked;
     }
 
-    public function getLeaf()
+    public function getIs_leaf()
     {
-        return $this->leaf;
+        return $this->is_leaf;
     }
 
-    public function setLeaf($leaf)
+    public function setIs_leaf($is_leaf)
     {
-        $this->leaf = $leaf;
+        $this->is_leaf = $is_leaf;
     }
 
     public function getName()
@@ -190,34 +212,34 @@ class Category extends EntityAccess
         $this->value = $value;
     }
 
-    public function getSortValue()
+    public function getSort_value()
     {
-        return $this->sortValue;
+        return $this->sort_value;
     }
 
-    public function setSortValue($sortValue)
+    public function setSort_value($sort_value)
     {
-        $this->sortValue = $sortValue;
+        $this->sort_value = $sort_value;
     }
 
-    public function getDisplayName()
+    public function getDisplay_name()
     {
-        return $this->displayName;
+        return $this->display_name;
     }
 
-    public function setDisplayName($displayName)
+    public function setDisplay_name($display_name)
     {
-        $this->displayName = $displayName;
+        $this->display_name = $display_name;
     }
 
-    public function getDisplayDesc()
+    public function getDisplay_desc()
     {
-        return $this->displayDesc;
+        return $this->display_desc;
     }
 
-    public function setDisplayDesc($displayDesc)
+    public function setDisplay_desc($display_desc)
     {
-        $this->displayDesc = $displayDesc;
+        $this->display_desc = $display_desc;
     }
 
     public function getPath()
@@ -250,21 +272,50 @@ class Category extends EntityAccess
         $this->status = $status;
     }
 
+    /**
+     * get the attributes of the category
+     *
+     * @return Zikula\Core\Doctrine\Entity\CategoryAttribute the category's attributes
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
     
+    /**
+     * set the attributes for the category
+     *
+     * @param Zikula\Core\Doctrine\Entity\CategoryAttribute $attributes the attributes for the category
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+    
+    /**
+     * set a single attribute for the category
+     *
+     * @param $name string attribute name
+     * @param $value string attribute value
+     */
     public function setAttribute($name, $value)
     {
-        if(isset($this->attributes[$name])) {
-            if($value == null) {
-                $this->attributes->remove($name);
-            } else {
-                $this->attributes[$name]->setValue($value);
-            }
+        if (isset($this->attributes[$name])) {
+            $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new \Zikula\Core\Doctrine\Entity\CategoryAttribute($this->getId(), 'A', $name, $value);
+            $this->attributes[$name] = new CategoryAttribute($this, $name, $value);
+        }
+    }
+    
+    /**
+     * delete a single attribute of the category
+     *
+     * @param $name string attribute name
+     */
+    public function delAttribute($name)
+    {
+        if (isset($this->attributes[$name])) {
+            $this->attributes->remove($name);
         }
     }
     
