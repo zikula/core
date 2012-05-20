@@ -8,7 +8,6 @@
         <parameter key="zikula.theme_listener.class">Zikula\Core\Listener\ThemeListener</parameter>
 
         <parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>
-        <parameter key="zikula.doctrine_listener.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
         <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
         <parameter key="session.class">Symfony\Component\HttpFoundation\Session\Session</parameter>
         <!--<parameter key="session.storage.class">Zikula\Core\SessionStorage\LegacySessionStorage</parameter>-->
@@ -84,10 +83,6 @@
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="service_container" />
         </service>
-
-        <!--<service id="zikula.doctrine_listener" class="%zikula.doctrine_listener.class%">-->
-            <!--<tag name="zikula.event_subscriber" />-->
-        <!--</service>-->
 
         <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
             <tag name="kernel.event_subscriber" />
