@@ -190,7 +190,7 @@ class BlockUtil
         $blockInstance = self::load($modname, $blockname);
 
         if (!$blockInstance instanceof \Zikula\Framework\Controller\AbstractBlock) {
-            throw new \RuntimeException(sprintf('BlockInstance %s::%s must an instance of AbstractBlock', $modname, $block));
+            throw new \RuntimeException(sprintf('BlockInstance %s::%s must an instance of AbstractBlock', $modname, $blockname));
         }
 
         $displayfunc = array($blockInstance, 'display');
@@ -201,8 +201,8 @@ class BlockUtil
             }
         } else {
             if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                $blockinfo['title'] = __f("Block type '%s' not found", $block);
-                $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $block);
+                $blockinfo['title'] = __f("Block type '%s' not found", $blockname);
+                $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $blockname);
                 return self::themeBlock($blockinfo);
             }
         }
@@ -267,7 +267,7 @@ class BlockUtil
         } else {
             $blockinfo['minbox'] = '';
         }
-
+return 'BlockUtil-line 270';//todo this needs to be refactored - drak
         return Zikula_View_Theme::getInstance()->themesidebox($blockinfo);
     }
 

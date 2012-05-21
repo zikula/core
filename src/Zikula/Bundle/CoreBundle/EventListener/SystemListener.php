@@ -55,15 +55,15 @@ class SystemListener implements EventSubscriberInterface
                 array('initialHandlerScan', 100),
                 ),
             CoreEvents::INIT => array(
-                array('setupRequest'),
+                //array('setupRequest'),
                 array('systemPlugins'),
                 array('setupAutoloaderForGeneratedCategoryModels'),
                 array('setupCsfrProtection'),
                 ),
-            'session.require' => array('requireSession'),
+            //'session.require' => array('requireSession'),
             'installer.module.uninstalled' => array('deleteGeneratedCategoryModelsOnModuleRemove'),
             'pageutil.addvar_filter' => array('coreStylesheetOverride'),
-            'theme.init' => array('clickJackProtection'),
+//            'theme.init' => array('clickJackProtection'),
             'module_dispatch.postexecute' => array(
                 array('addHooksLink'),
                 array('addServiceLink'),

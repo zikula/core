@@ -140,22 +140,22 @@ class InitListener implements EventSubscriberInterface
 //            \System::shutdown();
 //        }
 
-        if ($stage & self::STAGE_DB) {
-            try {
-                $dbEvent = new GenericEvent();
-                $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent);
-                $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
-                $this->dispatcher->dispatch(CoreEvents::INIT, $dbEvent);
-            } catch (\PDOException $e) {
-                if (!\System::isInstalling()) {
-                    header('HTTP/1.1 503 Service Unavailable');
-                    require_once \System::getSystemErrorTemplate('dbconnectionerror.tpl');
-                    \System::shutDown();
-                } else {
-                    return false;
-                }
-            }
-        }
+//        if ($stage & self::STAGE_DB) {
+//            try {
+//                $dbEvent = new GenericEvent();
+//                $this->dispatcher->dispatch('doctrine.init_connection', $dbEvent);
+//                $dbEvent = new GenericEvent($this, array('stage' => self::STAGE_DB));
+//                $this->dispatcher->dispatch(CoreEvents::INIT, $dbEvent);
+//            } catch (\PDOException $e) {
+//                if (!\System::isInstalling()) {
+//                    header('HTTP/1.1 503 Service Unavailable');
+//                    require_once \System::getSystemErrorTemplate('dbconnectionerror.tpl');
+//                    \System::shutDown();
+//                } else {
+//                    return false;
+//                }
+//            }
+//        }
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
@@ -168,43 +168,38 @@ class InitListener implements EventSubscriberInterface
             $coreInitEvent->setArgument('stage', self::STAGE_TABLES);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
-
-        if ($stage & self::STAGE_SESSIONS) {
-            \SessionUtil::requireSession();
-            $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
-            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
-        }
-
-        // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
-        // start block
-        if ($stage & self::STAGE_LANGS) {
-            $lang = \ZLanguage::getInstance();
-        }
-
-        if ($stage & self::STAGE_DECODEURLS) {
-            \System::queryStringDecode();
-            $coreInitEvent->setArgument('stage', self::STAGE_DECODEURLS);
-            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
-        }
-
-        if ($stage & self::STAGE_LANGS) {
-            $lang->setup();
-            $coreInitEvent->setArgument('stage', self::STAGE_LANGS);
-            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
-        }
-        // end block
-
-        if ($stage & self::STAGE_MODS) {
-            // Set compression on if desired
-            if (\System::getVar('UseCompression') == 1) {
-                //ob_start("ob_gzhandler");
-            }
-
-            \ModUtil::load('SecurityCenter');
-
-            $coreInitEvent->setArgument('stage', self::STAGE_MODS);
-            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
-        }
+//
+//        if ($stage & self::STAGE_SESSIONS) {
+////            \SessionUtil::requireSession();
+//            $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
+//            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
+//        }
+//
+//        // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
+//        // start block
+//        if ($stage & self::STAGE_LANGS) {
+////            $lang = \ZLanguage::getInstance();
+//        }
+//
+//        if ($stage & self::STAGE_DECODEURLS) {
+////            \System::queryStringDecode();
+//            $coreInitEvent->setArgument('stage', self::STAGE_DECODEURLS);
+//            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
+//        }
+//
+//        if ($stage & self::STAGE_LANGS) {
+////            $lang->setup();
+//            $coreInitEvent->setArgument('stage', self::STAGE_LANGS);
+//            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
+//        }
+//        // end block
+//
+//        if ($stage & self::STAGE_MODS) {
+////            \ModUtil::load('SecurityCenter');
+//
+//            $coreInitEvent->setArgument('stage', self::STAGE_MODS);
+//            $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
+//        }
 
         if ($stage & self::STAGE_THEME) {
             // register default page vars
@@ -218,36 +213,36 @@ class InitListener implements EventSubscriberInterface
             \PageUtil::registerVar('header', true);
             \PageUtil::registerVar('footer', true);
 
-            $theme = \Zikula_View_Theme::getInstance();
+//            $theme = \Zikula_View_Theme::getInstance();
 
             // set some defaults
             // Metadata for SEO
-            $this->container['zikula_view.metatags']['description'] = \System::getVar('defaultmetadescription');
-            $this->container['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
+//            $this->container['zikula_view.metatags']['description'] = \System::getVar('defaultmetadescription');
+//            $this->container['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
 
             $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
-        if (\UserUtil::isLoggedIn()) {
-            $userstatus = \UserUtil::getVar('activated');
-            if ($userstatus != UsersConstant::ACTIVATED_ACTIVE) {
-                \UserUtil::logout();
-                // TODO - When getting logged out this way, the existing session is destroyed and
-                //        then a new one is created on the reentry into index.php. The message
-                //        set by the registerStatus call below gets lost.
-                \LogUtil::registerStatus(__('You have been logged out.'));
-                $response = new RedirectResponse(\ModUtil::url('Users', 'user', 'login'));
-                $response->send();
-                exit;
-            }
-        }
+//        if (\UserUtil::isLoggedIn()) {
+//            $userstatus = \UserUtil::getVar('activated');
+//            if ($userstatus != UsersConstant::ACTIVATED_ACTIVE) {
+//                \UserUtil::logout();
+//                // TODO - When getting logged out this way, the existing session is destroyed and
+//                //        then a new one is created on the reentry into index.php. The message
+//                //        set by the registerStatus call below gets lost.
+//                \LogUtil::registerStatus(__('You have been logged out.'));
+//                $response = new RedirectResponse(\ModUtil::url('Users', 'user', 'login'));
+//                $response->send();
+//                exit;
+//            }
+//        }
 
-        if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->dispatcher->dispatch(CoreEvents::POSTINIT, new GenericEvent($this, array('stages' => $stage)));
-        }
-
-        $this->dispatcher->dispatch('frontcontroller.predispatch', new GenericEvent());
+//        if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
+//            $this->dispatcher->dispatch(CoreEvents::POSTINIT, new GenericEvent($this, array('stages' => $stage)));
+//        }
+//
+//        $this->dispatcher->dispatch('frontcontroller.predispatch', new GenericEvent());
     }
 }

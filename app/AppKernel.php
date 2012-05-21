@@ -41,6 +41,7 @@ class AppKernel extends Kernel
             new SettingsModule\ZikulaSettingsModule(),
             new ThemeModule\ZikulaThemeModule(),
             new UsersModule\ZikulaUsersModule(),
+            new Andreas08Theme\Andreas08Theme(),
 
         );
 

@@ -689,7 +689,7 @@ class ZLanguage
      */
     public static function getDirection()
     {
-        return self::getInstance()->i18n->locale['language_direction'];
+        return 'ltr';//return self::getInstance()->i18n->locale['language_direction'];
     }
 
     /**

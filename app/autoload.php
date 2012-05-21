@@ -54,6 +54,7 @@ $loader->add('SecurityCenterModule', __DIR__. '/../web/system');
 $loader->add('SettingsModule', __DIR__. '/../web/system');
 $loader->add('ThemeModule', __DIR__. '/../web/system');
 $loader->add('UsersModule', __DIR__. '/../web/system');
+$loader->add('Andreas08Theme', __DIR__. '/../web/themes');
 
 require_once __DIR__.'/../src/Zikula/Bundle/CoreBundle/Resources/stubs/ZikulaAutoload.php';
 ZikulaAutoload::initialize($loader);

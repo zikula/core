@@ -1,5 +1,5 @@
 ## YAML Override template
-## original/file.tpl: override/file.tpl
+## original/file.html.twig: override/file.html.twig
 ---
-system/SearchModule/Resources/views/Block/search.tpl: themes/Andreas08Theme/Resources/views/modules/Search/Block/search.tpl
-system/BlocksModule/Resources/views/Block/extmenu_topnav.tpl: themes/Andreas08Theme/Resources/views/modules/Blocks/Block/extmenu_topnav.tpl
+system/SearchModule/Resources/views/Block/search.html.twig: themes/Andreas08Theme/Resources/views/modules/Search/Block/search.html.twig
+system/BlocksModule/Resources/views/Block/extmenu_topnav.html.twig: themes/Andreas08Theme/Resources/views/modules/Blocks/Block/extmenu_topnav  .html.twig

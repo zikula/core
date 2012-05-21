@@ -1,0 +1,18 @@
+{% extends 'Andreas08Theme::base.html.twig' %}
+<div id="theme_navigation_bar">
+    <ul class="z-clearfix">
+        <li><a href="{{ homepage() }}">{{ __('Home') }}</a></li>
+        <li><a href="{{ path('zikulasettings_admin_index') }}">{{ __("Settings") }}</a></li>
+        <li><a href="{{ path('zikulaextensions_admin_index') }}">{{ __("Extensions") }}</a></li>
+        <li><a href="{{ path('zikulablocks_admin_index') }}">{{ __("Blocks") }}</a></li>
+        <li><a href="{{ path('zikulausers_admin_index') }}">{{ __("Users") }}</a></li>
+        <li><a href="{{ path('zikulagroups_admin_index') }}">{{ __("Groups") }}</a></li>
+        <li><a href="{{ path('zikulapermissions_admin_index') }}">{{ __("Permission rules") }}</a></li>
+        <li><a href="{{ path('zikulatheme_admin_index') }}">{{ __("Themes") }}</a></li>
+    </ul>
+</div>
+
+{% block content %}
+{% include "Andreas08Theme::$admin.html.twig" %}
+{% endblock %}
+
