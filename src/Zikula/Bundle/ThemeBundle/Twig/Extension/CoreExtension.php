@@ -29,13 +29,13 @@ class CoreExtension extends \Twig_Extension
             'icon' => new \Twig_Function_Method($this, 'icon'),
             'lang' => new \Twig_Function_Method($this, 'lang'),
             'langdirection' => new \Twig_Function_Method($this, 'langDirection'),
-            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPostition'),
+            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition'),
             'showblock' => new \Twig_Function_Method($this, 'showBlock'),
             'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
         );
     }
 
-    public function showBlockPostition($name, $implode = true)
+    public function showBlockPosition($name, $implode = true)
     {
         return \BlockUtil::displayPosition($name, false, $implode);
     }
