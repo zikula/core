@@ -136,10 +136,19 @@ class MenutreeUtil
     protected static function normalize($array)
     {
         $normalizedArray = array();
+
         foreach ($array as $k => $v) {
-            $k = str_replace('\\', '/', $k);
-            $v = str_replace('\\', '/', $v);
-            $normalizedArray[$k] = $v;
+            if (is_array($v)) {
+                foreach ($v as $k2 => $v2) {
+                    $k2 = str_replace('\\', '/', $k2);
+                    $v2 = str_replace('\\', '/', $v2);
+                    $normalizedArray[$k][$k2] = $v2;
+                }
+            } else {
+                $k = str_replace('\\', '/', $k);
+                $v = str_replace('\\', '/', $v);
+                $normalizedArray[$k] = $v;
+            }
         }
 
         return $normalizedArray;
