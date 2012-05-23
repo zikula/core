@@ -584,7 +584,6 @@ class UserUtil
             if (!$userObj) {
                 // Need to make sure the Users module stuff is loaded and available, especially if we are authenticating during
                 // an upgrade or install.
-                ModUtil::dbInfoLoad('Users', 'Users');
                 ModUtil::loadApi('Users', 'user', true);
 
                 // The user's credentials have authenticated with the authentication module's method, but

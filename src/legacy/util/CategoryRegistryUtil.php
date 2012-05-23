@@ -106,10 +106,6 @@ class CategoryRegistryUtil
             return z_exit(__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
-        if (!ModUtil::dbInfoLoad($modname)) {
-            return z_exit(__f("Error! Unable to load table information for module '%s'", $modname));
-        }
-
         $data = array();
         $data['modname'] = $modname;
         $data['entityname'] = $entityname;

@@ -67,8 +67,6 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
             $view->trigger_error(__f('Invalid %1$s passed to %2$s.', array('module', 'selectmodobjectarray')));
         }
 
-        ModUtil::dbInfoLoad($params['module']);
-
         $classname = "{$params['module']}\\DBObject\\".StringUtil::camelize($params['objecttype']).'Array';
 
         // instantiate the object-array
