@@ -24,6 +24,7 @@ class ThemeListener implements EventSubscriberInterface
 
     public function onKernelResponse(FilterResponseEvent $event)
     {
+        return; // disabled theming for the time being while it gets refactored.
         if ($event->getRequestType() == HttpKernelInterface::MASTER_REQUEST) {
             $response = $event->getResponse();
             $request = $event->getRequest();
