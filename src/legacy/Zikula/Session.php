@@ -193,6 +193,7 @@ class Zikula_Session
         if ($namespace == '_zikula_messages') {
             throw new InvalidArgumentException('You cannot access _zikula_messages directly');
         }
+
         return $this->has($key, $namespace) ? $_SESSION[$namespace][$key] : $default;
     }
 
@@ -272,13 +273,13 @@ class Zikula_Session
         if ($namespace == '_zikula_messages') {
             throw new InvalidArgumentException('You cannot access _zikula_messages directly.');
         }
-        
+
         $contents = array();
 
         if (isset($_SESSION[$namespace]) && !empty($_SESSION[$namespace]) && is_array($_SESSION[$namespace])) {
             $contents = $_SESSION[$namespace];
         }
-        
+
         return $contents;
     }
 

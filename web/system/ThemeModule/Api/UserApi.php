@@ -243,7 +243,7 @@ class UserApi extends \Zikula_AbstractApi
      * read an ini file from either the master theme config or running config
      *
      */
-    function _readinifile($args)
+    public function _readinifile($args)
     {
         // check our input
         if (!isset($args['file']) || empty($args['file'])) {
@@ -324,9 +324,11 @@ class UserApi extends \Zikula_AbstractApi
         } else {
             if (fwrite($handle, $content) === false) {
                 fclose($handle);
+
                 return LogUtil::registerError($this->__f('Error! Could not write to file: %s', $osfile));
             }
             fclose($handle);
+
             return true;
         }
     }
@@ -398,7 +400,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @param string $themename Name of the theme to parse
      */
-    function _getthemedomain($themename)
+    public function _getthemedomain($themename)
     {
         if (in_array($themename, array('Andreas08Theme', 'AtomTheme', 'PrinterTheme', 'RssTheme', 'SeaBreezeTheme'))) {
             return 'zikula';

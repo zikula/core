@@ -112,6 +112,7 @@ class ZLocale implements ArrayAccess
     {
         if (count($this->localeData) == 0) {
             $this->registerError(__f('Error! The locale file %s contains invalid data.', array($file)));
+
             return;
         }
         $validationArray = array('language_direction' => '#^(ltr|rtl)$#');

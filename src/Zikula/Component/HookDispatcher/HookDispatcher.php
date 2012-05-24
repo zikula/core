@@ -222,7 +222,7 @@ class HookDispatcher
      * area name.
      *
      * @param string $subscriberAreaName
-     * @param array $providerAreas Array of provider area names.
+     * @param array  $providerAreas      Array of provider area names.
      */
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {
@@ -314,6 +314,7 @@ class HookDispatcher
                 }
             }
         }
+
 
         return $this;
     }

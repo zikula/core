@@ -71,28 +71,28 @@ class Version extends \Zikula_AbstractVersion
 
         $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.user', 'ui_hooks', $this->__('User management hooks'));
         $bundle->addEvent('display_view',    'users.ui_hooks.user.display_view');
-        
+
         $bundle->addEvent('form_edit',       'users.ui_hooks.user.form_edit');
         $bundle->addEvent('validate_edit',   'users.ui_hooks.user.validate_edit');
         $bundle->addEvent('process_edit',    'users.ui_hooks.user.process_edit');
-        
+
         $bundle->addEvent('form_delete',     'users.ui_hooks.user.form_delete');
         $bundle->addEvent('validate_delete', 'users.ui_hooks.user.validate_delete');
         $bundle->addEvent('process_delete',  'users.ui_hooks.user.process_delete');
         $this->registerHookSubscriberBundle($bundle);
-        
+
         $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.registration', 'ui_hooks', $this->__('Registration management hooks'));
         $bundle->addEvent('display_view',    'users.ui_hooks.registration.display_view');
-        
+
         $bundle->addEvent('form_edit',       'users.ui_hooks.registration.form_edit');
         $bundle->addEvent('validate_edit',   'users.ui_hooks.registration.validate_edit');
         $bundle->addEvent('process_edit',    'users.ui_hooks.registration.process_edit');
-        
+
         $bundle->addEvent('form_delete',     'users.ui_hooks.registration.form_delete');
         $bundle->addEvent('validate_delete', 'users.ui_hooks.registration.validate_delete');
         $bundle->addEvent('process_delete',  'users.ui_hooks.registration.process_delete');
         $this->registerHookSubscriberBundle($bundle);
-        
+
         // Bundle for the login form
         $bundle = new SubscriberBundle($this->name, 'subscriber.users.ui_hooks.login_screen', 'ui_hooks', $this->__('Login form and block hooks'));
         $bundle->addEvent('form_edit',     'users.ui_hooks.login_screen.form_edit');

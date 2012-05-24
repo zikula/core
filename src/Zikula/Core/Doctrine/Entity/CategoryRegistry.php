@@ -32,16 +32,16 @@ class CategoryRegistry extends EntityAccess
      * @var integer
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=60)
-     * @var string 
+     * @var string
      */
     private $modname;
-    
+
     /**
      * @ORM\Column(type="string", length=60)
-     * @var string 
+     * @var string
      */
     private $entityname;
     
@@ -67,7 +67,7 @@ class CategoryRegistry extends EntityAccess
     {
         $this->id = $id;
     }
-    
+
     public function getModname()
     {
         return $this->modname;
@@ -77,7 +77,7 @@ class CategoryRegistry extends EntityAccess
     {
         $this->modname = $modname;
     }
-    
+
     public function getEntityname()
     {
         return $this->entityname;

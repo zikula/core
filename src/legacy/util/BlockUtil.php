@@ -124,14 +124,14 @@ class BlockUtil
                     $rule1 = $filter['module'] == $modname;
                     $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
                     $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
-                                        
+
                     if (empty($filter['fargs'])) {
                         $rule4 = true;
                     } else {
                         $testargs = explode('&', $filter['fargs']);
                         foreach ($testargs as $test) {
                             $key = array_search($test, $customargs);
-                            if ($key === false){
+                            if ($key === false) {
                                 $rule4 = false;
                                 break;
                             } else {
@@ -278,7 +278,7 @@ return 'BlockUtil-line 270';//todo this needs to be refactored - drak
      * @param string $block   Name of the block.
      *
      * @throws LogicException Uf OO-Block is not a Zikula_Controller_AbstractBlock object.
-     * @return bool True on successful load, false otherwise.
+     * @return bool           True on successful load, false otherwise.
      */
     public static function load($modname, $block)
     {
@@ -379,6 +379,7 @@ return 'BlockUtil-line 270';//todo this needs to be refactored - drak
         if (preg_match('/;}*$/', $content)) {
             // Serialised content
             $vars = unserialize($content);
+
             return $vars;
         }
 

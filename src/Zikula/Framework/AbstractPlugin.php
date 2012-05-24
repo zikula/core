@@ -190,6 +190,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
         }
 
         $this->reflection = new \ReflectionObject($this);
+
         return $this->reflection;
     }
 
@@ -291,6 +292,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
             // this is deliberate lazy load for dependency.
             $this->modinfo = \ModUtil::getInfoFromName($this->moduleName);
         }
+
         return $this->modinfo;
     }
 
@@ -486,6 +488,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
         }
 
         $plugin = \PluginUtil::getState($this->serviceId, \PluginUtil::getDefaultState());
+
         return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
     }
 
@@ -501,6 +504,7 @@ abstract class AbstractPlugin extends AbstractEventHandler implements Translatab
         }
 
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
+
         return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
     }
 

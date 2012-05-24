@@ -12,6 +12,7 @@ class Version extends \Zikula_AbstractVersion
         $meta['url']            = $this->__('permissions');
         $meta['version']        = '1.1.1';
         $meta['securityschema'] = array('Permissions::' => '::');
+
         return $meta;
     }
 }

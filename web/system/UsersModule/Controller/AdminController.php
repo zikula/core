@@ -885,6 +885,7 @@ class AdminController extends \Zikula_AbstractController
         $user = UserUtil::getVars($uid);
         if (!$user) {
             $this->registerError($this->__('Sorry! Unable to retrieve information for that user id.'));
+
             return false;
         }
 
@@ -1291,6 +1292,7 @@ class AdminController extends \Zikula_AbstractController
             // record, no permission to read an existing record, or a database error
             $this->registerError($this->__('Unable to retrieve registration record. '
                 . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
+
             return false;
         }
 
@@ -1542,6 +1544,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -1549,6 +1552,7 @@ class AdminController extends \Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+
             return false;
         }
 
@@ -1652,6 +1656,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -1659,6 +1664,7 @@ class AdminController extends \Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+
             return false;
         }
 
@@ -1780,6 +1786,7 @@ class AdminController extends \Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -1787,6 +1794,7 @@ class AdminController extends \Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+
             return false;
         }
 
@@ -2210,10 +2218,10 @@ class AdminController extends \Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @param array   $importFile Information about the file to import. Used as the default
+     * @param array $importFile Information about the file to import. Used as the default
      *                            if $_FILES['importFile'] is not set. Allows this function to be called internally,
      *                            rather than as a result of a form post.
-     * @param integer $delimiter  A code indicating the delimiter used in the file. Used as the
+     * @param integer $delimiter A code indicating the delimiter used in the file. Used as the
      *                            default if $_POST['delimiter'] is not set. Allows this function to be called internally,
      *                            rather than as a result of a form post.
      *

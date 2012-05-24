@@ -197,6 +197,7 @@ class PageUtil
     {
         global $_pageVars;
 
+
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();
@@ -232,6 +233,7 @@ class PageUtil
     public static function addVar($varname, $value)
     {
         global $_pageVars;
+
 
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {

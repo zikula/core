@@ -46,6 +46,7 @@ function smarty_function_pagerendertime($params, Zikula_View $view)
         } else {
             // load language files
             $message = '<div class="z-pagerendertime" style="text-align:center;">' . __f('Page generated in %s seconds.', $dbg_totaltime) . '</div>';
+
             return $message;
         }
     }

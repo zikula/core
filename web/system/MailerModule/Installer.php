@@ -55,14 +55,13 @@ class Installer extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param  string $oldVersion version number string to upgrade from
+     * @return mixed  true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '1.3.1':
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':

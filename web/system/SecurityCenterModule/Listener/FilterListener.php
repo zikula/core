@@ -245,7 +245,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 $malVar = explode(".", $eventName, 2);
 
                 $filters = array();
-                foreach($event as $filter) {
+                foreach ($event as $filter) {
                     array_push($filters, array(
                                             'id' => $filter->getId(),
                                             'description' => $filter->getDescription(),

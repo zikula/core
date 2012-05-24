@@ -54,7 +54,7 @@ class CacheUtil
         $sm = ServiceUtil::getManager();
         $base = $sm['kernel.cache_dir'].'/ztemp';
         $path = $base . '/' . $dir;
-        
+
         $mode = isset($mode) ? (int)$mode : System::getVar('system.chmod_dir');
 
         if (!FileUtil::mkdirs($path, $mode, $absolute)) {

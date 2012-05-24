@@ -43,17 +43,19 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
     if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
         if (!isset($params['categories'])) {
             $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'categories')));
+
             return false;
         }
-    } else if (!isset($params['item'])) {
+    } elseif (!isset($params['item'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assignedcategorieslist', 'item')));
+
         return false;
     }
 
     $lang = ZLanguage::getLanguageCode();
-    
+
     $result = "<ul>\n";
-    
+
     if (isset($params['doctrine2']) && (boolean)$params['doctrine2'] == true) {
         if (count($params['categories']) > 0) {
             foreach ($params['categories'] as $category) {
@@ -63,7 +65,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 $result .= "<li>\n";
                 if (isset($display_name[$lang]) && !empty($display_name[$lang])) {
                     $result .= $display_name[$lang];
-                } else if (isset($name) && !empty($name)) {
+                } elseif (isset($name) && !empty($name)) {
                     $result .= $name;
                 }
                 $result .= "</li>\n";
@@ -79,7 +81,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
         } else {
             $categories = array();
         }
-        
+
         if (!empty($categories)) {
             foreach ($categories as $property => $category) {
                 if (isset($category['Category'])) {
@@ -88,7 +90,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 $result .= "<li>\n";
                 if (isset($category['display_name'][$lang])) {
                     $result .= $category['display_name'][$lang];
-                } else if (isset($category['name'])) {
+                } elseif (isset($category['name'])) {
                     $result .= $category['name'];
                 }
                 $result .= "</li>\n";
@@ -97,7 +99,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
         }
     }
-    
+
     $result .= "</ul>\n";
 
     return $result;

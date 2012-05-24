@@ -29,7 +29,7 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {

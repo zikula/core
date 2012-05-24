@@ -53,6 +53,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         // check our module name
         if (!ModUtil::available($params['modname'])) {
             $view->trigger_error('modulelinks: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($params['modname'])));
+
             return false;
         }
 
@@ -71,7 +72,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         }
     }
 
-    
+
     $html = '';
 
     if (!empty($menuLinks)) {

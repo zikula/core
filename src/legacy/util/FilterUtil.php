@@ -473,6 +473,7 @@ class FilterUtil extends FilterUtil_AbstractBase
             $obj['value'] = DataUtil::formatForStore($obj['value']);
             $res = $this->_plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
             $res['join'] = & $this->join;
+
             return $res;
         } else {
             $where = '';
@@ -544,6 +545,7 @@ class FilterUtil extends FilterUtil_AbstractBase
         if (isset($obj['field']) && !empty($obj['field'])) {
             $obj['value'] = DataUtil::formatForStore($obj['value']);
             $res = $this->_plugin->getDql($obj['field'], $obj['op'], $obj['value']);
+
             return $res;
         } else {
             $where = '';

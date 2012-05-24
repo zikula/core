@@ -81,6 +81,7 @@ abstract class AbstractHookListener implements TranslatableInterface
         if (!$this->reflection) {
             $this->reflection = new \ReflectionObject($this);
         }
+
         return $this->reflection;
     }
 

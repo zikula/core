@@ -206,6 +206,7 @@ class CategoryRegistryUtil
         }
 
         $cache[$modname][$entityname] = $fArr;
+
         return $fArr;
     }
 

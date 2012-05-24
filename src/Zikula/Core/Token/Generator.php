@@ -134,6 +134,7 @@ class Generator
         $this->timestamp = is_null($timestamp) ? time() : $timestamp;
         $this->hash = md5($this->id . $this->secret . $this->timestamp);
         $this->token = base64_encode("{$this->id}:{$this->hash}:{$this->timestamp}");
+
         return $this;
     }
 

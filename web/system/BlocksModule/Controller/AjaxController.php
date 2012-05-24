@@ -47,7 +47,7 @@ class Blocks_Controller_AjaxController extends \Zikula_Controller_AbstractAjax
         $dql = "DELETE FROM $entity p WHERE p.pid = {$position}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
-        
+
         // add new block positions
         foreach ((array)$blockorder as $order => $bid) {
             $placement = new BlockPlacement();

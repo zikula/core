@@ -341,7 +341,7 @@ class DateUtil
      * @param string $datetime The field number to return.
      * @param string $field    The date to parse (default=='', reverts to now).
      *
-     * @return string   The requested datetime field
+     * @return string The requested datetime field
      */
     public static function getDatetime_Field($datetime, $field)
     {
@@ -494,7 +494,7 @@ class DateUtil
      * @param integer $month The (human) month number to check.
      * @param integer $year  The year number to check.
      *
-     * @return integer  The number of days in the given month/year
+     * @return integer The number of days in the given month/year
      */
     public static function getDaysInMonth($month, $year)
     {

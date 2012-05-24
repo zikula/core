@@ -53,14 +53,13 @@ class Installer extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param  string $oldVersion version number string to upgrade from
+     * @return mixed  true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '1.5.1':
                 // register event handler to activate new modules in the search block
                 EventUtil::registerPersistentModuleHandler('Search', 'installer.module.installed',

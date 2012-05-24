@@ -131,6 +131,6 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
             $objectData = $query->fetchArray();
         }
     }
-    
+
     $view->assign($params['assign'], $objectData);
 }

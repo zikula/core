@@ -305,6 +305,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
     public function current()
     {
         $copy = $this->authenticationMethods[$this->orderedListableAuthenticationMethods[$this->iteratorPosition]];
+
         return $copy;
     }
 

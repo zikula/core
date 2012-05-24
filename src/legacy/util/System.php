@@ -26,7 +26,7 @@ class System
      *
      * @var array
      */
-    static protected $cache = array();
+    protected static $cache = array();
 
     /**
      * Flush this static class' cache.
@@ -92,6 +92,7 @@ class System
         if (ModUtil::setVar(ModUtil::CONFIG_MODULE, $name, $value)) {
             // Update my vars
             $GLOBALS['ZConfig']['System'][$name] = $value;
+
             return true;
         }
 
@@ -882,6 +883,7 @@ class System
         if (!isset($GLOBALS['ZConfig']['System']['development'])) {
             return false;
         }
+
         return (bool)$GLOBALS['ZConfig']['System']['development'];
     }
 

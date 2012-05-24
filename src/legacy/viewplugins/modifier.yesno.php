@@ -39,6 +39,7 @@ function smarty_modifier_yesno($string, $images = false)
         if ($images) {
             $params['src'] = 'button_ok.png';
             $params['alt'] = $params['title'] = __('Yes');
+
             return smarty_function_img($params, $view);
         } else {
             return __('Yes');
@@ -47,6 +48,7 @@ function smarty_modifier_yesno($string, $images = false)
         if ($images) {
             $params['src'] = 'button_cancel.png';
             $params['alt'] = $params['title'] = __('No');
+
             return smarty_function_img($params, $view);
         } else {
             return __('No');

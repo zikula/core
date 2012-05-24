@@ -136,7 +136,7 @@ class Zikula_Workflow
      *
      * @param string $actionID Action Id.
      * @param array  &$obj     Data object.
-     * @param string $stateID  State Id.
+     * @param string $stateID State Id.
      *
      * @return mixed Array or false.
      */
@@ -207,7 +207,7 @@ class Zikula_Workflow
     /**
      * Execute workflow operation within action.
      *
-     * @param string $operation  Operation name.
+     * @param string $operation Operation name.
      * @param array  &$obj       Data object.
      * @param string &$nextState Next state.
      *

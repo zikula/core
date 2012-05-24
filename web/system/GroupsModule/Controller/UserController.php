@@ -260,12 +260,12 @@ class UserController extends \Zikula_AbstractController
             $onlines = ModUtil::apiFunc('GroupsModule', 'user', 'whosonline');
             
             $members = array();
-            foreach($group['members'] as $userid) {
+            foreach ($group['members'] as $userid) {
                 $userinfo = UserUtil::getVars($userid['uid']);
 
                 $isonline = false;
                 if (is_array($onlines)) {
-                    foreach($onlines as $online) {
+                    foreach ($onlines as $online) {
                         if ($online['uid'] == $userid['uid']) {
                             $isonline = true;
                         }

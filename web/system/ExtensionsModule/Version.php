@@ -27,6 +27,7 @@ class Version extends \Zikula_AbstractVersion
         $meta['url']  = $this->__('extensions');
         $meta['version'] = '3.7.10';
         $meta['securityschema'] = array('Extensions::' => '::');
+
         return $meta;
     }
 }

@@ -75,6 +75,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             // check out if the contents are cached
             if ($this->view->is_cached($vars['menutree_tpl'])) {
                 $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
+
                 return BlockUtil::themeBlock($blockinfo);
             }
         }
@@ -444,8 +445,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $userlanguage = ZLanguage::getLanguageCode();
 
         $menuType = strtolower($menu['bkey']);
-        switch ($menuType)
-        {
+        switch ($menuType) {
             case 'menutree':
                 $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : array();
                 break;
@@ -558,6 +558,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                 }
             }
         }
+
         return true;
     }
 
@@ -578,6 +579,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         if ($aLineNo == $bLineNo) {
             return 0;
         }
+
         return ($aLineNo < $bLineNo) ? -1 : 1;
     }
 }

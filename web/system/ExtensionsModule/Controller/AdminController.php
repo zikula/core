@@ -1023,7 +1023,7 @@ class AdminController extends \Zikula_AbstractController
             }
 
             // module filter
-            if(!empty($module) && $instance->getModuleName() != $module) {
+            if (!empty($module) && $instance->getModuleName() != $module) {
                 continue;
             }
 
@@ -1165,7 +1165,7 @@ class AdminController extends \Zikula_AbstractController
         // sort plugins array
         if (empty($sort) || $sort == 'module') {
             usort($plugins, array($this, 'viewPluginsSorter_byModule'));
-        } else if ($sort == 'name') {
+        } elseif ($sort == 'name') {
             usort($plugins, array($this, 'viewPluginsSorter_byName'));
         }
 
@@ -1181,7 +1181,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Initialise a plugin
+     * viewPlugins sorter: Sorting by module name
      * @return bool true
      */
     public function initialisePluginAction()
@@ -1345,7 +1345,7 @@ class AdminController extends \Zikula_AbstractController
         $module = $this->request->get('bymodule', null);
         $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
-        if(empty($plugin)) {
+        if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));
         }
 

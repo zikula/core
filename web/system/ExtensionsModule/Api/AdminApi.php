@@ -287,8 +287,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        switch ($modinfo['state'])
-        {
+        switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
                 break;
@@ -349,6 +348,7 @@ class AdminApi extends \Zikula_AbstractApi
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('upgrade')) {
                     $this->request->getSession()->set('interactive_remove', true);
+
                     return call_user_func($interactive_func);
                 }
             }
@@ -776,8 +776,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        switch ($modinfo['state'])
-        {
+        switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 return LogUtil::registerError($this->__f('Error! No permission to install %s.', $modinfo['name']));
                 break;
@@ -840,6 +839,7 @@ class AdminApi extends \Zikula_AbstractApi
             // so we must check if the method actually exists by reflection - drak
             if ($reflectionInteractive->hasMethod('install')) {
                 $this->request->getSession()->set('interactive_init', true);
+
                 return call_user_func($interactive_func);
             }
         }
@@ -894,8 +894,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        switch ($modinfo['state'])
-        {
+        switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
                 break;
@@ -955,6 +954,7 @@ class AdminApi extends \Zikula_AbstractApi
             // so we must check if the method actually exists by reflection - drak
             if ($reflectionInteractive->hasMethod('upgrade')) {
                 $this->request->getSession()->set('interactive_upgrade', true);
+
                 return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
             }
         }
@@ -969,6 +969,7 @@ class AdminApi extends \Zikula_AbstractApi
                     $item['version'] = $result;
                     $this->entityManager->flush();
                 }
+
                 return false;
             } elseif ($result != true) {
                 return false;

@@ -25,7 +25,7 @@ class Installer extends \Zikula_AbstractInstaller
      * module instance.
      * This function MUST exist in the pninit file for a module
      *
-     * @return       bool       true on success, false otherwise
+     * @return bool true on success, false otherwise
      */
     public function install()
     {
@@ -49,14 +49,13 @@ class Installer extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param  string $oldVersion version number string to upgrade from
+     * @return mixed  true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '1.1':
             // future upgrade routines
         }
@@ -73,7 +72,7 @@ class Installer extends \Zikula_AbstractInstaller
      *
      * Since the permissions module should never be deleted we'all always return false here
      *
-     * @return       bool       false
+     * @return bool false
      */
     public function uninstall()
     {
@@ -87,7 +86,7 @@ class Installer extends \Zikula_AbstractInstaller
      * This function is only ever called once during the lifetime of a particular
      * module instance
      *
-     * @return       bool       false
+     * @return bool false
      */
     public function defaultdata()
     {

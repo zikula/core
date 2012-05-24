@@ -22,7 +22,7 @@ class Zikula_View_Resource
      *
      * @var array
      */
-    static $cache = array();
+    public static $cache = array();
 
     /**
      * Dynamic loader of plugins under cache.
@@ -37,8 +37,7 @@ class Zikula_View_Resource
             $name = $matches[2];
             $func = "smarty_{$type}_{$name}";
 
-            switch ($type)
-            {
+            switch ($type) {
                 case 'function':
                     if (self::load($arguments[1], $type, $name)) {
                         return $func($arguments[0], $arguments[1]);
@@ -78,9 +77,9 @@ class Zikula_View_Resource
      *
      * For more information about parameters see http://smarty.php.net/manual/en/template.resources.php.
      *
-     * @param string      $resource    Template name.
+     * @param string $resource Template name.
      * @param string      &$tpl_source Template source.
-     * @param Zikula_View $view        Reference to Smarty instance.
+     * @param Zikula_View $view Reference to Smarty instance.
      *
      * @access private
      * @return boolean
@@ -98,6 +97,7 @@ class Zikula_View_Resource
 
         if ($tpl_path !== false) {
             $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $resource));
+
             return true;
         }
 
@@ -108,9 +108,9 @@ class Zikula_View_Resource
     /**
      * Get the timestamp of the last change of the $tpl_name file.
      *
-     * @param string      $tpl_name       Template name.
+     * @param string $tpl_name Template name.
      * @param string      &$tpl_timestamp Template timestamp.
-     * @param Zikula_View $view           Reference to Smarty instance.
+     * @param Zikula_View $view Reference to Smarty instance.
      *
      * @return boolean
      */
@@ -121,6 +121,7 @@ class Zikula_View_Resource
 
         if ($tpl_path !== false) {
             $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
+
             return true;
         }
 
@@ -175,9 +176,9 @@ class Zikula_View_Resource
     /**
      * Resource function to determine correct path for insert inclusion.
      *
-     * @param string      $insert      Template name.
+     * @param string $insert Template name.
      * @param string      &$tpl_source Template source.
-     * @param Zikula_View $view        Reference to Smarty instance.
+     * @param Zikula_View $view Reference to Smarty instance.
      *
      * @access private
      * @return boolean
@@ -217,6 +218,7 @@ class Zikula_View_Resource
             $callable = ($type != 'insert') ? array(self::getInstance(), "load_{$type}_{$name}") : "smarty_{$type}_{$name}";
 
             $view->_plugins[$type][$name] = array($callable, null, null, $delayed_load, $cacheable, $cache_attrs);
+
             return true;
         }
 
@@ -249,6 +251,7 @@ class Zikula_View_Resource
 
                 if (!function_exists("smarty_{$type}_{$name}")) {
                     $view->_trigger_fatal_error(__f('[View %1$s] \'%2$s\' is not implemented', array($type, $name)), null, null, __FILE__, __LINE__);
+
                     return false;
                 }
 

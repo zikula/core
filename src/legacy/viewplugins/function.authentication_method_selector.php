@@ -82,7 +82,7 @@ function smarty_function_authentication_method_selector($params, $view)
             throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', array('assign', 'authentication_method_selector'), 'Zikula'));
         }
     }
-    
+
     $getSelectorArgs = array(
         'form_type'   => $params['form_type'],
         'form_action' => $params['form_action'],

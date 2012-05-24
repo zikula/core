@@ -57,6 +57,7 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
     // assign results, this plugin does not return any display
     if ($assign) {
         $view->assign($assign, $responses);
+
         return;
     }
 

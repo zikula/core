@@ -82,7 +82,7 @@ class EventUtil
      *
      * @return void
      */
-    static public function attachCustomHandlers($dir)
+    public static function attachCustomHandlers($dir)
     {
         self::$dispatcher->getContainer()->get('zikula')->attachHandlers($dir);
     }

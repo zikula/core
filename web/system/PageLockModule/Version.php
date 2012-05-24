@@ -26,6 +26,7 @@ class Version extends \Zikula_AbstractVersion
         $meta['version']        = '1.1.1';
 
         $meta['securityschema'] = array('PageLock::' => '::');
+
         return $meta;
     }
 }

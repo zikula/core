@@ -86,8 +86,10 @@ class SecurityUtil
                 $tokenGenerator->generate($tokenGenerator->uniqueId(), time());
                 $tokenGenerator->save();
                 $session->set('sessioncsrftokenid', $tokenGenerator->getId());
+
                 return $tokenGenerator->getToken();
             }
+
             return $data['token'];
         }
 
@@ -174,6 +176,7 @@ class SecurityUtil
         }
 
         self::$schemas[$component] = $schema;
+
         return true;
     }
 
@@ -292,6 +295,7 @@ class SecurityUtil
                     $level = $perm['level'];
                 }
             }
+
             return $level;
         }
 
@@ -315,6 +319,7 @@ class SecurityUtil
 
             // select the highest level among found
             $level = max($levels);
+
             return $level;
         }
 
@@ -340,6 +345,7 @@ class SecurityUtil
                 $level = $perm['level'];
                 break;
             }
+
             return $level;
         }
 
@@ -386,6 +392,7 @@ class SecurityUtil
         if (strrpos($string, ':') === strlen($string) - 1) {
             $string = $string . '.*';
         }
+
         return $string;
     }
 
@@ -434,7 +441,7 @@ class SecurityUtil
      * @param array  $hashMethodNameToCode An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
      *                                         name and include it on the salted hash string; optional, if not specified, then the
      *                                         algorithm name is included in the string returned (which could be considered less than secure!).
-     * @param string $saltDelimeter        The delimiter between the salt and the hash, must be a single character.
+     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character.
      *
      * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
      *                      false if an error occured.
@@ -468,8 +475,8 @@ class SecurityUtil
      * @param array  $hashMethodNameToCode An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
      *                                         name and include it on the salted hash string; optional, if not specified, then the
      *                                         algorithm name is included in the string returned (which could be considered less than secure!).
-     * @param int    $saltLength           The number of random characters to use in the salt.
-     * @param string $saltDelimeter        The delimiter between the salt and the hash, must be a single character.
+     * @param int    $saltLength    The number of random characters to use in the salt.
+     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character.
      *
      * @return string|bool The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter;
      *                      false if an error occured.
@@ -478,6 +485,7 @@ class SecurityUtil
     {
         $saltedHash = false;
         $saltStr = RandomUtil::getString($saltLength, $saltLength, false, true, true, true, true, true, false, array($saltDelimeter));
+
         return self::buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimeter);
     }
 
@@ -489,7 +497,7 @@ class SecurityUtil
      * @param array  $hashMethodCodeToName An array indexed by algorithm names (from hash_algos()) used to encode the hashing algorithm
      *                                         name and include it on the salted hash string; optional, if not specified, then the
      *                                         algorithm name is included in the string returned (which could be considered less than secure!).
-     * @param string $saltDelimeter        The delimiter between the salt and the hash, must be a single character.
+     * @param string $saltDelimeter The delimiter between the salt and the hash, must be a single character.
      *
      * @return integer|bool If the data matches the salted hash, then 1; If the data does not match, then 0; false if an error occured (Note:
      *                      both 0 and false evaluate to false in boolean expressions--use strict comparisons to differentiate).
@@ -538,6 +546,7 @@ class SecurityUtil
     public static function accesslevelname($level)
     {
         $accessnames = self::accesslevelnames();
+
         return $accessnames[$level];
     }
 

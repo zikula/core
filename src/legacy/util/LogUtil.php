@@ -147,6 +147,7 @@ class LogUtil
             }
             $code = null;
         }
+
         return self::registerError(self::getErrorMsgPermission(), $code, $url);
     }
 

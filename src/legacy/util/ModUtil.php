@@ -178,7 +178,7 @@ class ModUtil
      * @param string  $name    The name of the variable.
      * @param boolean $default The value to return if the requested modvar is not set.
      *
-     * @return  string|array If the name parameter is included then method returns
+     * @return string|array If the name parameter is included then method returns
      *          string - module variable value
      *          if the name parameter is ommitted then method returns
      *          array - multi dimentional array of the keys
@@ -277,6 +277,7 @@ class ModUtil
         foreach ($vars as $var => $value) {
             $ok = $ok && self::setVar($modname, $var, $value);
         }
+
         return $ok;
     }
 
@@ -392,6 +393,7 @@ class ModUtil
 
             if (!isset(self::$cache['modid'][$module]) && !isset(self::$cache['modid'][$alias])) {
                 self::$cache['modid'][$module] = false;
+
                 return false;
             }
         }
@@ -432,6 +434,7 @@ class ModUtil
 
             if (!isset(self::$modinfo[$modid])) {
                 self::$modinfo[$modid] = false;
+
                 return self::$modinfo[$modid];
             }
         }
@@ -544,6 +547,7 @@ class ModUtil
         if (strtolower(substr($type, -3)) == 'api') {
             return false;
         }
+
         return self::loadGeneric($modname, $type, $force);
     }
 
@@ -615,6 +619,7 @@ class ModUtil
         // if class is loadable or has been loaded exit here.
         if (self::isInitialized($modname)) {
             self::_loadStyleSheets($modname, $api, $type);
+
             return $modname;
         }
 
@@ -756,7 +761,7 @@ class ModUtil
      * @param string $className Class name.
      *
      * @throws LogicException If $className is neither a Zikula_AbstractApi nor a Zikula_AbstractController.
-     * @return object Module object.
+     * @return object         Module object.
      */
     public static function getObject($className)
     {
@@ -858,6 +863,7 @@ class ModUtil
                 return $dispatcher->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
             }
 
+
             // try to load plugin
             // This kind of eventhandler should
             // 1. Check $event['modfunc'] to see if it should run else exit silently.
@@ -929,11 +935,11 @@ class ModUtil
      * a) $func is ignored.
      * b) $type=admin will generate admin.php?module=... and $type=user will generate index.php?name=...
      *
-     * @param string         $modname      The name of the module.
-     * @param string         $type         The type of function to run.
-     * @param string         $func         The specific function to run.
-     * @param array          $args         The array of arguments to put on the URL.
-     * @param boolean|null   $ssl          Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
+     * @param string       $modname The name of the module.
+     * @param string       $type    The type of function to run.
+     * @param string       $func    The specific function to run.
+     * @param array        $args    The array of arguments to put on the URL.
+     * @param boolean|null $ssl     Set to constant null,true,false $ssl = true not $ssl = 'true'  null - leave the current status untouched,
      *                                     true - create a ssl url, false - create a non-ssl url.
      * @param string         $fragment     The framgment to target within the URL.
      * @param boolean|null   $fqurl        Fully Qualified URL. True to get full URL, eg for Redirect, else gets root-relative path unless SSL.
@@ -1169,6 +1175,7 @@ class ModUtil
                 self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensionsmodule|adminmodule|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $modname) &&
                 (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
+
             return true;
         }
 
@@ -1380,6 +1387,7 @@ class ModUtil
         PluginUtil::loadPlugins(ZIKULA_ROOT."$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
 
         self::$ooModules[$moduleName]['initialized'] = true;
+
         return true;
     }
 

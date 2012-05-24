@@ -33,6 +33,7 @@ class EntityAccess implements \ArrayAccess
         }
 
         $this->reflection = new \ReflectionObject($this);
+
         return $this->reflection;
     }
 
@@ -44,6 +45,7 @@ class EntityAccess implements \ArrayAccess
     public function offsetGet($key)
     {
         $method = "get" . ucfirst($key);
+
         return $this->$method();
     }
 

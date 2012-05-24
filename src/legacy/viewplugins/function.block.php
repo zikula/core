@@ -72,6 +72,7 @@ function smarty_function_block($params, Zikula_View $view)
 
     if (!$bid) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnblock', 'bid')));
+
         return false;
     }
 

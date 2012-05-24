@@ -84,10 +84,12 @@ function smarty_function_button($params, Zikula_View $view)
 
     if (!isset($params['src'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'src')));
+
         return false;
     }
     if (!isset($params['set'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
+
         return false;
     }
     $type = isset($params['type'])    ? $params['type'] : 'submit';

@@ -33,7 +33,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     /**
      * The name of the defined authentication method.
      *
-     * @var type 
+     * @var type
      */
     protected $method;
 
@@ -46,10 +46,10 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Indicates whether this method can be enabled for use as an authentication method for registration.
-     * 
+     *
      * This flag indicates the method's basic capability, and should not be changed through configuration.
-     * 
-     * NOTE: The two core authentication methods, user name and email address should NOT set this flag! 
+     *
+     * NOTE: The two core authentication methods, user name and email address should NOT set this flag!
      * This is for other modules that define authentication methods that can be used in the registration
      * process. THE TWO CORE METHODS ARE HANDLED DIFFERENTLY.
      *
@@ -59,11 +59,11 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Indicates whether this method can be used as an authentication method for registration.
-     * 
+     *
      * This flag is controlled by configuration. To indicate whether the method is capable of being
      * used for registration in the first place, see $capableOfRegistration.
-     * 
-     * NOTE: The two core authentication methods, user name and email address should NOT set this flag! 
+     *
+     * NOTE: The two core authentication methods, user name and email address should NOT set this flag!
      * This is for other modules that define authentication methods that can be used in the registration
      * process. THE TWO CORE METHODS ARE HANDLED DIFFERENTLY.
      *
@@ -120,9 +120,9 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * Sets the authentication module name for this method.
      *
      * @param string $modname The name of the authentication module that defines this method.
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the module name is not valid.
      */
     private function setModule($modname)
@@ -154,9 +154,9 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * Set the name of the defined authentication method.
      *
      * @param string $method The name of the authentication method.
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the name is not valid.
      */
     private function setMethod($method)
@@ -186,9 +186,9 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * Set the brief description for the defined authentication method.
      *
      * @param string $shortDescription The method's brief descrption.
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the description is invalid.
      */
     private function setShortDescription($shortDescription)
@@ -218,9 +218,9 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * Set the more complete description for the defined authentication method.
      *
      * @param string $longDescription The method's more complete descrption.
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the description is invalid.
      */
     private function setLongDescription($longDescription)
@@ -248,7 +248,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Enable this authentication method for use.
-     * 
+     *
      * @return void
      */
     public function enableForAuthentication()
@@ -258,7 +258,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Disable this authentication method for use.
-     * 
+     *
      * @return void
      */
     public function disableForAuthentication()
@@ -288,7 +288,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Enable this authentication method for use in the registration process as an external registration method.
-     * 
+     *
      * @return void
      */
     public function enableForRegistration()
@@ -302,7 +302,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Disable this authentication method for use in the registration process as an external registration method.
-     * 
+     *
      * @return void
      */
     public function disableForRegistration()
@@ -312,18 +312,18 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Provides internal attribute access for protected and private properties that have defined accessors.
-     * 
+     *
      * Some aliases are also recognized for certain properties.
      *
      * @param string $name The property name.
-     * 
+     *
      * @return mixed The value of the specified property.
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the name is not valid.
      */
     public function __get($name)
     {
-        switch($name) {
+        switch ($name) {
             case 'modname':
             case 'module':
                 return $this->getModule();
@@ -367,18 +367,18 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Enable internal isset attribute access for a subset of properties.
-     * 
+     *
      * Certain aliases are also recognized.
      *
      * @param string $name The name of the property.
-     * 
+     *
      * @return boolean True if the field is not null; otherwise false.
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the name is not valid.
      */
     public function __isset($name)
     {
-        switch($name) {
+        switch ($name) {
             case 'capableOfRegistration':
             case 'capable_of_registration':
             case 'enabledForRegistration':
@@ -410,19 +410,19 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Enable internal attribute setter access for a subset of properties.
-     * 
+     *
      * Certain aliases are also recognized.
      *
      * @param string $name  The name of the property.
      * @param mixed  $value The value to set.
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
      */
     public function __set($name, $value)
     {
-        switch($name) {
+        switch ($name) {
             case 'enabledForAuthentication':
             case 'enabled_for_authentication':
                 if ($value) {
@@ -472,19 +472,19 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
 
     /**
      * Enable internal attribute setter access for a subset of properties.
-     * 
+     *
      * Certain aliases are also recognized.
      *
      * @param string $name The name of the property.
-     * 
+     *
      * @return void
-     * 
+     *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if the name is not valid, the property does not have a defined setter, or the property is not granted property setter access.
      */
     public function __unset($name)
     {
         $trace = debug_backtrace();
-        switch($name) {
+        switch ($name) {
             case 'enabledForAuthentication':
             case 'enabled_for_authentication':
             case 'enabledForRegistration':

@@ -72,6 +72,7 @@ class CategoryUtil
             }
             $cat->insert();
             $cat->update();
+
             return $cat->getDataField('id');
         }
 
@@ -345,6 +346,7 @@ class CategoryUtil
         }
 
         $cats = self::getCategories($where, $sort, $assocKey, $columnArray);
+
         return $cats;
     }
 
@@ -382,6 +384,7 @@ class CategoryUtil
         }
 
         $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField, $columnArray);
+
         return $cats;
     }
 
@@ -419,6 +422,7 @@ class CategoryUtil
         }
 
         $cats = self::getSubCategoriesForCategory($rootCat, $recurse, $relative, $includeRoot, $includeLeaf, $all, $exclCat, $assocKey, $attributes, $sortField);
+
         return $cats;
     }
 
@@ -545,6 +549,7 @@ class CategoryUtil
 
         if (!$cat) {
             $false = false;
+
             return $false;
         }
 
@@ -922,6 +927,7 @@ class CategoryUtil
             $tree->setOptionArray($options);
         }
         $tree->loadArrayData($cats);
+
         return $tree->getHTML();
     }
 
@@ -1013,6 +1019,7 @@ class CategoryUtil
         }
         if (count($pathlist) == 1) {
             $tree[$root]['_/_'] = $entry;
+
             return $tree;
         } else {
             unset($pathlist[0]);
@@ -1023,7 +1030,7 @@ class CategoryUtil
     /**
      * make a list, sorted on each level, from a tree.
      *
-     * @param array $tree  Nested array from _tree_insert.
+     * @param array $tree Nested array from _tree_insert.
      * @param array &$cats List of categories (initially empty array).
      *
      * @return void
@@ -1074,6 +1081,7 @@ class CategoryUtil
         if (!is_numeric($a) || !is_numeric($b)) {
             return strcmp($a, $b);
         }
+
         return ($a < $b) ? -1 : 1;
     }
 
@@ -1320,13 +1328,14 @@ class CategoryUtil
      *  The resulting sorted category array $cats updated by reference nothing is returned.
      *
      * @param array  &$cats The categories array.
-     * @param string $func  Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
+     * @param string $func Which compare function to use (determines field to be used for comparison) (optional) (defaylt='cmpName').
      *
      * @return void
      */
     public static function sortByLocale(&$cats, $func = 'cmpName')
     {
         usort($cats, $func);
+
         return;
     }
 
@@ -1361,7 +1370,7 @@ class CategoryUtil
      * with the Property-Names too), return an (identically indexed) array
      * of category-paths based on the given field (name or id make sense).
      *
-     * @param array   $rootCatIDs  The root/parent categories ID.
+     * @param array $rootCatIDs The root/parent categories ID.
      * @param array   &$cats       The associative categories object array.
      * @param boolean $includeRoot If true, the root portion of the path is preserved.
      *
@@ -1391,7 +1400,7 @@ class CategoryUtil
      *
      * @param integer|array $rootCategory The root/parent category.
      * @param array         &$cat         The category to process.
-     * @param boolean       $includeRoot  If true, the root portion of the path is preserved.
+     * @param boolean $includeRoot If true, the root portion of the path is preserved.
      *
      * @return The resulting folder path array (which is also altered in place).
      */
@@ -1532,11 +1541,13 @@ class CategoryUtil
             foreach ($categories as $propertyName => $cat) {
                 $ok = $ok && SecurityUtil::checkPermission("Categories:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
             }
+
             return $ok;
         } else {
             // Access is required for at least one category
             foreach ($categories as $propertyName => $cat) {
                 if (SecurityUtil::checkPermission("Categories:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel))
+
                         return true;
             }
 

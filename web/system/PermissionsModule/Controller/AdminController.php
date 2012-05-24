@@ -105,7 +105,7 @@ class AdminController extends \Zikula_AbstractController
                 } else {
                     $permgrp = SecurityUtil::PERMS_ALL;
                 }
-            } else if ($permgrpparts[0] == 'c') {
+            } elseif ($permgrpparts[0] == 'c') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
                     $where = "WHERE (p.component = '.*' OR p.component LIKE '" . DataUtil::formatForStore($permgrpparts[1]) . "%')";
                     $permgrp = $permgrpparts[1];
@@ -350,7 +350,7 @@ class AdminController extends \Zikula_AbstractController
             $this->view->assign('realm', 0)
                        ->assign('insseq', $chgpid)
                        ->assign('submit', $this->__('Edit permission rule'));
-        } else if ($action == 'insert') {
+        } elseif ($action == 'insert') {
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
                        ->assign('permgrp', $permgrp)
                        ->assign('insseq', $insseq);
@@ -358,7 +358,7 @@ class AdminController extends \Zikula_AbstractController
             // Realms hard-coded - jgm
             $this->view->assign('realm', 0)
                        ->assign('submit', $this->__('Create new permission rule'));
-        } else if ($action == 'add') {
+        } elseif ($action == 'add') {
             // Form-start
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
                        ->assign('permgrp', $permgrp)
@@ -575,7 +575,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return array groups array
      */
-    function getGroupsInfo()
+    public function getGroupsInfo()
     {
         $groups = array();
         $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');

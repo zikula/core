@@ -68,7 +68,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
         $category = CategoryUtil::getCategoryByPath ($category, $pathfield);
     }
 
-    static $catCache;
+    public static $catCache;
     if (!$catCache) {
         $catCache = array();
     }

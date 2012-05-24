@@ -71,7 +71,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             foreach ($args as $arg => $value) {
                 if ($value) {
-                    switch($arg) {
+                    switch ($arg) {
                         case 'uname':
                         case 'email':
                             $where[] = "u.$arg LIKE '%" . DataUtil::formatForStore($value) . "%'";
@@ -146,6 +146,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (!isset($args['uid']) || (!is_numeric($args['uid']) && !is_array($args['uid']))) {
             $this->registerError("Error! Illegal argument were passed to 'deleteuser'");
+
             return false;
         }
 
@@ -245,6 +246,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
         } else {
             $this->registerError(__('Error! No users selected to receive e-mail, or invalid uid list.'));
+
             return false;
         }
 
@@ -252,6 +254,7 @@ class AdminApi extends \Zikula_AbstractApi
             $sendmail = $args['sendmail'];
         } else {
             $this->registerError(__('Error! E-mail message to be sent not specified or invalid.'));
+
             return false;
         }
 
@@ -274,6 +277,7 @@ class AdminApi extends \Zikula_AbstractApi
                     'Error! %1$d required fields were blank or missing: \'%2$s\'.',
                     $count, array($count, implode("', '", $missingFields)));
             $this->registerError($msg);
+
             return false;
         }
         unset($missingFields);
@@ -302,6 +306,7 @@ class AdminApi extends \Zikula_AbstractApi
                     $bcclist = array();
                 } else {
                     $this->registerError($this->__('Error! Could not send the e-mail message.'));
+
                     return false;
                 }
             }
@@ -322,6 +327,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $recipientscount += count($bcclist);
             } else {
                 $this->registerError($this->__('Error! Could not send the e-mail message.'));
+
                 return false;
             }
         }
@@ -333,6 +339,7 @@ class AdminApi extends \Zikula_AbstractApi
                 array($recipientscount)
             ));
         }
+
         return true;
     }
 
@@ -476,6 +483,7 @@ class AdminApi extends \Zikula_AbstractApi
             $this->registerError($this->__(
                 'Error! The users have been created but something has failed trying to get them from the database. '
                 . 'Now all these users do not have group.'));
+
             return false;
         }
         
@@ -493,6 +501,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         if ($error_membership) {
             $this->registerError($this->__('Error! The users have been created but something has failed while trying to add the users to their groups. These users are not assigned to a group.'));
+
             return false;
         }
 

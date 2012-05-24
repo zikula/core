@@ -73,6 +73,7 @@ class StreamReader_String extends StreamReader_Abstract
         if (strlen($this->_stream) < $this->_pos) {
             $this->_pos = strlen($this->_stream);
         }
+
         return $this->_pos;
     }
 

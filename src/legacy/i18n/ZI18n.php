@@ -19,21 +19,21 @@ class ZI18n
 {
     /**
      * Singleton instance.
-     * 
+     *
      * @var ZI18n
      */
     private static $instance;
 
     /**
      * Locale.
-     * 
+     *
      * @var ZLocale
      */
     public $locale;
 
     /**
      * Sign.
-     * 
+     *
      * @var string
      */
     private $sign;
@@ -47,21 +47,21 @@ class ZI18n
 
     /**
      * Whether or not to seperate currency symbol and number by space.
-     * 
+     *
      * @var boolean
      */
     private $sep_by_space;
 
     /**
      * Whether or not the currency symbol precedes.
-     * 
+     *
      * @var boolean
      */
     private $cs_precedes;
 
     /**
      * Constructor.
-     * 
+     *
      * @param ZLocale $locale Locale.
      */
     public function __construct(ZLocale $locale)
@@ -71,9 +71,9 @@ class ZI18n
 
     /**
      * Get Singleton instance.
-     * 
+     *
      * @param string $locale Locale.
-     * 
+     *
      * @return ZI18n object instance.
      */
     public static function getInstance($locale=null)
@@ -84,6 +84,7 @@ class ZI18n
         if (!isset(self::$instance[$locale])) {
             self::$instance[$locale] = new self(new ZLocale($locale));
         }
+
         return self::$instance[$locale];
     }
 
@@ -101,6 +102,7 @@ class ZI18n
         $number = str_replace($this->locale['currency_symbol'], '', $number);
         $number = str_replace($this->locale['mon_thousands_sep'], '', $number);
         $number = str_replace($this->locale['Mon_decimal_point'], '.', $number);
+
         return (float)$number;
     }
 
@@ -117,6 +119,7 @@ class ZI18n
         $number = str_replace(' ', '', $number);
         $number = str_replace($this->locale['thousands_sep'], '', $number);
         $number = str_replace($this->locale['decimal_point'], '.', $number);
+
         return (float)$number;
     }
 
@@ -125,7 +128,7 @@ class ZI18n
      *
      * @param mixed $number         Number.
      * @param mixed $decimal_points Null=default locale, false=precision, int=precision.
-     * 
+     *
      * @return string
      */
     public function transformNumberDisplay($number, $decimal_points=null)

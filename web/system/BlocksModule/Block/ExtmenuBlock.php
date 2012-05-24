@@ -30,7 +30,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -47,8 +47,8 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the rendered bock
      */
     public function display($blockinfo)
     {
@@ -80,6 +80,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
             // check out if the contents are cached
             if ($this->view->is_cached($vars['template'])) {
                 $blockinfo['content'] = $this->view->fetch($vars['template']);
+
                 return BlockUtil::themeBlock($blockinfo);
             }
         }
@@ -164,7 +165,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 }
             }
 
-            foreach($mods as $mod) {
+            foreach ($mods as $mod) {
                 // prepare image
 
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
@@ -204,7 +205,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
      * @param none
      * @return boolean
      */
-    function is_recent_page($url)
+    public function is_recent_page($url)
     {
         if (!empty($url)) {
             $uri = System::getCurrentUri();
@@ -212,14 +213,15 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * modify block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the bock form
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the bock form
      */
     public function modify($blockinfo)
     {
@@ -346,7 +348,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
+     * @param  array $blockinfo a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
@@ -411,6 +413,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 $link['imagedata'] = false;
             }
         }
+
         return;
     }
 }

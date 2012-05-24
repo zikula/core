@@ -161,7 +161,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
     {
         if (isset($args) && isset($args['filter'])) {
             if (is_numeric($args['filter']) && ((int)$args['filter'] == $args['filter'])) {
-                switch($args['filter']) {
+                switch ($args['filter']) {
                     case Zikula_Api_AbstractAuthentication::FILTER_NONE:
                     case Zikula_Api_AbstractAuthentication::FILTER_ENABLED:
                     case Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED:

@@ -612,6 +612,7 @@ class UserController extends \Zikula_AbstractController
                         'rememberme'            => false,
                         'returnpage'            => $redirectUrl,
                     );
+
                     return ModUtil::func($this->name, 'user', 'login', $arguments);
                     break;
 
@@ -1570,9 +1571,11 @@ class UserController extends \Zikula_AbstractController
                         }
                     } elseif ($verifyChg === false) {
                         $this->registerError($this->__('Error! There was a problem retrieving the verification code for comparison.'));
+
                         return false;
                     } else {
                         $this->registerError($this->__f('Error! There is no pending verification code for \'%1$s\'. Please contact the site administrator.', array($reginfo['uname'])));
+
                         return false;
                     }
                 }
@@ -1637,6 +1640,7 @@ class UserController extends \Zikula_AbstractController
 
         if (!isset($code[0]) || !isset($code[1])) {
             $this->registerError($this->__('Error! Could not activate your account. Please contact the site administrator.'));
+
             return false;
         }
         $uid = $code[0];
@@ -1659,12 +1663,14 @@ class UserController extends \Zikula_AbstractController
 
             if (!$returncode) {
                 $this->registerError($this->__('Error! Could not activate your account. Please contact the site administrator.'));
+
                 return false;
             }
             $this->registerStatus($this->__('Done! Account activated.'))
                     ->redirect(ModUtil::url($this->name, 'user', 'login'));
         } else {
             $this->registerError($this->__('Sorry! You entered an invalid confirmation code. Please correct your entry and try again.'));
+
             return false;
         }
     }
@@ -2070,6 +2076,7 @@ class UserController extends \Zikula_AbstractController
                 $loginArgs['authentication_method'] = $sessionVars['authentication_method'];
                 $loginArgs['authentication_info']   = $sessionVars['authentication_info'];
                 $loginArgs['rememberme']            = $sessionVars['rememberme'];
+
                 return ModUtil::func($this->name, 'user', 'login', $loginArgs);
             } else {
                 return $this->redirect(ModUtil::url($this->name, 'user', 'index'));

@@ -24,7 +24,7 @@ class UserController extends \Zikula_AbstractController
      * This function displays a generic error form
      * The template used is based on the error type passed
      *
-     * @param string $args['type'] error type '404' or 'module'
+     * @param string $args['type']    error type '404' or 'module'
      * @param string $args['message'] custom error message
      *
      * @return string HTML string

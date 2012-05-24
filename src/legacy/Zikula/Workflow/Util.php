@@ -102,7 +102,7 @@ class Zikula_Workflow_Util
         if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
             // system module
             $modulepath = "system/$moduledir";
-        } else if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
+        } elseif ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             // non system module
             $modulepath = "modules/$moduledir";
         } else {
@@ -122,9 +122,9 @@ class Zikula_Workflow_Util
         // find the file in themes or config (for overrides), else module dir
         if (is_readable($themepath)) {
             return $themepath;
-        } else if (is_readable($configpath)) {
+        } elseif (is_readable($configpath)) {
             return $configpath;
-        } else if (is_readable($modulepath)) {
+        } elseif (is_readable($modulepath)) {
             return $modulepath;
         } else {
             return false;
@@ -134,7 +134,7 @@ class Zikula_Workflow_Util
     /**
      * Execute action.
      *
-     * @param string $schema   Name of workflow schema.
+     * @param string $schema Name of workflow schema.
      * @param array  &$obj     Data object.
      * @param string $actionID Action to perform.
      * @param string $table    Table where data will be stored (default = null).

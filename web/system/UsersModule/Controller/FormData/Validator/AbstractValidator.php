@@ -36,7 +36,8 @@ abstract class AbstractValidator extends \Zikula_AbstractBase
      *
      * @throws InvalidArgumentException Thrown if the error message is not a string or is empty.
      */
-    public function __construct(ContainerBuilder $container, $errorMessage = null) {
+    public function __construct(ContainerBuilder $container, $errorMessage = null) 
+    {
         parent::__construct($container);
 
         if (isset($errorMessage)) {

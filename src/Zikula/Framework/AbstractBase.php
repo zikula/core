@@ -268,6 +268,7 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
         if (!$this->modinfo) {
             $this->modinfo = \ModUtil::getInfoFromName($this->name);
         }
+
         return $this->modinfo;
     }
 
@@ -490,6 +491,7 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
     public function setVar($key, $value='')
     {
         \ModUtil::setVar($this->name, $key, $value);
+
         return $this;
     }
 
@@ -503,6 +505,7 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
     public function setVars(array $vars)
     {
         \ModUtil::setVars($this->name, $vars);
+
         return $this;
     }
 
@@ -539,6 +542,7 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
     public function delVar($key)
     {
         \ModUtil::delVar($this->name, $key);
+
         return $this;
     }
 
@@ -550,6 +554,7 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
     public function delVars()
     {
         \ModUtil::delVar($this->name);
+
         return $this;
     }
 

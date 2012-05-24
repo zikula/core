@@ -45,14 +45,17 @@ function smarty_function_calendarinput($params, Zikula_View $view)
 {
     if (!isset($params['objectname'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'objectname')));
+
         return false;
     }
     if (!isset($params['htmlname'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'htmlname')));
+
         return false;
     }
     if (!isset($params['dateformat'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pncalendarinput', 'dateformat')));
+
         return false;
     }
     $ifformat = isset($params['ifformat']) ? $params['ifformat'] : $params['dateformat'];
@@ -66,7 +69,7 @@ function smarty_function_calendarinput($params, Zikula_View $view)
     // start of old pncalendarinit
     // pagevars make an extra pncalendarinit obsolete, they take care about the fact
     // that the styles/jsvascript do not get loaded multiple times
-    static $firstTime = true;
+    public static $firstTime = true;
 
     if ($firstTime) {
         $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());

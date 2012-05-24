@@ -28,7 +28,7 @@ class Version extends \Zikula_AbstractVersion
             'Blocks::position' => 'Position name::Position ID',
             'Menutree:menutreeblock:' => 'Block ID:Link Name:Link ID',
             'ExtendedMenublock::' => 'Block ID:Link ID:');
-        
+
         return $meta;
     }
 

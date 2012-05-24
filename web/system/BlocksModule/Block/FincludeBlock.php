@@ -30,7 +30,7 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -47,8 +47,8 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the rendered bock
      */
     public function display($blockinfo)
     {
@@ -70,6 +70,7 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
         if (!file_exists($vars['filo'])) {
             if (SecurityUtil::checkPermission('fincludeblock::', "$blockinfo[title]::", ACCESS_EDIT)) {
                 $blockinfo['content'] = $this->__f("Error! The file '%s' was not found.", $vars['filo']);
+
                 return BlockUtil::themeBlock($blockinfo);
             } else {
                 return;
@@ -99,8 +100,8 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the bock form
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the bock form
      */
     public function modify($blockinfo)
     {
@@ -127,7 +128,7 @@ class FincludeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
+     * @param  array $blockinfo a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)

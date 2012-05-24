@@ -30,7 +30,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -47,8 +47,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the rendered bock
      */
     public function display($blockinfo)
     {
@@ -73,6 +73,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             // check out if the contents are cached
             if ($this->view->is_cached('Block/menu.tpl')) {
                 $blockinfo['content'] = $this->view->fetch('Block/menu.tpl');
+
                 return BlockUtil::themeBlock($blockinfo);
             }
         }
@@ -202,8 +203,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the bock form
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the bock form
      */
     public function modify($blockinfo)
     {
@@ -248,7 +249,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
+     * @param  array $blockinfo a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)

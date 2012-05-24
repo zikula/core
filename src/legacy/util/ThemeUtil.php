@@ -136,7 +136,7 @@ class ThemeUtil
                 return false;
             }
         }
-        
+
         foreach ($themesarray[$key] as $theme => $values) {
             if (file_exists('themes/'.$theme.'/Resources/view/master.tpl')) {
                 $themesarray[$key][$theme]['structure'] = true;
@@ -191,6 +191,7 @@ class ThemeUtil
 
             if (!isset($themeid[$theme])) {
                 $themeid[$theme] = false;
+
                 return false;
             }
         }
@@ -226,6 +227,7 @@ class ThemeUtil
 
             if (!isset($themeinfo[$themeid])) {
                 $themeinfo[$themeid] = false;
+
                 return $themeinfo[$themeid];
             }
         }
@@ -312,6 +314,7 @@ class ThemeUtil
                 break;
             }
         }
+
         return $csssrc;
     }
 

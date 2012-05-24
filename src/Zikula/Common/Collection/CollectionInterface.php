@@ -24,7 +24,7 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
      *
      * @return mixed
      */
-    function add($value);
+    public function add($value);
 
     /**
      * Add an item to the collection with a key.
@@ -34,7 +34,7 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
      *
      * @return mixed
      */
-    function set($key, $value);
+    public function set($key, $value);
 
     /**
      * Retrieve an item from the collection by its key.
@@ -43,7 +43,7 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
      *
      * @return mixed
      */
-    function get($key);
+    public function get($key);
 
     /**
      * Remove an item from the collection.
@@ -52,7 +52,7 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
      *
      * @return mixed
      */
-    function del($key);
+    public function del($key);
 
     /**
      * Indicates whether the specified key is set within the collection.
@@ -61,19 +61,19 @@ interface CollectionInterface extends \ArrayAccess, \Countable, \IteratorAggrega
      *
      * @return boolean True if the item with the specified key is set, otherwise false.
      */
-    function has($key);
+    public function has($key);
 
     /**
      * Indicates whether the collection is set.
      *
      * @return boolean True if set, otherwise false.
      */
-    function hasCollection();
+    public function hasCollection();
 
     /**
      * Retrieve the internal collection container.
      *
      * @return mixed The collection.
      */
-    function getCollection();
+    public function getCollection();
 }

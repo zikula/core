@@ -24,6 +24,7 @@ class Version extends \Zikula_AbstractVersion
         $meta['url']            = $this->__('groups');
         $meta['version']        = '2.3.2';
         $meta['securityschema'] = array('Groups::' => 'Group ID::');
+
         return $meta;
     }
 }

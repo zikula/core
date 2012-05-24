@@ -49,11 +49,13 @@ function smarty_function_array_field($params, Zikula_View $view)
 {
     if (!isset($params['array'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'var')));
+
         return false;
     }
 
     if (!isset($params['field'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'value')));
+
         return false;
     }
 

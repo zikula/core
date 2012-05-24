@@ -121,6 +121,7 @@ class StringUtil
         if ($len > $left) {
             $string = mb_substr($string, 0, $left);
         }
+
         return $string;
     }
 
@@ -140,6 +141,7 @@ class StringUtil
         if ($len > $right) {
             $string = mb_substr($string, $len - $right, $right);
         }
+
         return $string;
     }
 
@@ -210,6 +212,7 @@ class StringUtil
                 ++$i;
             }
         }
+
         return $section;
     }
 

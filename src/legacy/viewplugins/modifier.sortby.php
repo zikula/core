@@ -27,7 +27,7 @@
  */
 function array_sort_by_fields(&$data, $sortby)
 {
-    static $sort_funcs = array();
+    public static $sort_funcs = array();
 
     if (empty($sort_funcs[$sortby])) {
         $code = "\$c=0;";
@@ -65,5 +65,6 @@ function array_sort_by_fields(&$data, $sortby)
 function smarty_modifier_sortby($arrData,$sortfields)
 {
     array_sort_by_fields($arrData, $sortfields);
+
     return $arrData;
 }

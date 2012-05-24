@@ -367,6 +367,7 @@ abstract class AbstractErrorHandler
                 $type = self::INFO;
                 break;
         }
+
         return $type;
     }
 
@@ -389,6 +390,7 @@ abstract class AbstractErrorHandler
                 $errfile = basename($errfile);
             }
         }
+
         return $errfile;
     }
 
@@ -457,6 +459,7 @@ abstract class AbstractErrorHandler
                 return $code;
                 break;
         }
+
         return $word;
     }
 

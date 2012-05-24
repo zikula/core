@@ -68,6 +68,7 @@ abstract class AbstractController extends AbstractBase
         }
 
         $this->view = $view;
+
         return $this;
     }
 

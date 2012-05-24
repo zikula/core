@@ -87,6 +87,7 @@ function smarty_function_notifyevent($params, Zikula_View $view)
     // assign results, this plugin does not return any display
     if ($assign) {
         $view->assign($assign, $event->getData());
+
         return;
     }
 

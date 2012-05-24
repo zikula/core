@@ -260,9 +260,9 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Get Theme instance.
      *
-     * @param string       $themeName  Theme name.
-     * @param integer|null $caching  Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
-     * @param string       $cache_id Cache Id.
+     * @param string       $themeName Theme name.
+     * @param integer|null $caching   Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
+     * @param string       $cache_id  Cache Id.
      *
      * @return Zikula_Theme This instance.
      */
@@ -423,9 +423,11 @@ class Zikula_View_Theme extends Zikula_View
             if (is_readable($override)) {
                 $path = substr($override, 0, strrpos($override, $osTemplate));
                 $this->templateCache[$template] = $path;
+
                 return $path;
             }
         }
+
 
         // when we arrive here, no path was found
         return false;
@@ -445,8 +447,8 @@ class Zikula_View_Theme extends Zikula_View
     /**
      * Clears the cache for a specific cache_id's in all active themes.
      *
-     * @param string $cache_ids   Array of given cache ID's for which to clear theme cache.
-     * @param string $themes   Array of theme objects for which to clear theme cache, defaults to all active themes.
+     * @param string $cache_ids Array of given cache ID's for which to clear theme cache.
+     * @param string $themes    Array of theme objects for which to clear theme cache, defaults to all active themes.
      *
      * @return boolean True on success.
      */
@@ -482,7 +484,7 @@ class Zikula_View_Theme extends Zikula_View
      *
      * @return string The concrete path and file name to the content.
      */
-    function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
+    public function _get_auto_filename($path, $auto_source = null, $auto_id = null, $themedir = null)
     {
         // enables a flags to detect when is treating compiled templates
         $tocompile = ($path == $this->compile_dir) ? true : false;
@@ -662,7 +664,7 @@ class Zikula_View_Theme extends Zikula_View
                 $file = $pageconfigurations['*'.$this->type]['file'];
 
             // identify an admin-like type
-            } else if (strpos($this->type, 'admin') === 0 && isset($pageconfigurations['*admin'])) {
+            } elseif (strpos($this->type, 'admin') === 0 && isset($pageconfigurations['*admin'])) {
                 $file = $pageconfigurations['*admin']['file'];
 
             // search for arguments match

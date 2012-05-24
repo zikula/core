@@ -136,6 +136,7 @@ class ZMO
         // If there isn't a StreamReader, turn on short circuit mode.
         if ($reader->getError()) {
             $this->short_circuit = true;
+
             return;
         }
 
@@ -154,6 +155,7 @@ class ZMO
         } else {
             // not MO file
             $this->error = 1;
+
             return false;
         }
 
@@ -279,6 +281,7 @@ class ZMO
             // big endian
             $data = unpack('N', $this->stream->read(4));
         }
+
         return array_shift($data);
     }
 
@@ -350,6 +353,7 @@ class ZMO
         }
         $this->stream->seekto($offset);
         $data = $this->stream->read($length);
+
         return (string)$data;
     }
 
@@ -370,6 +374,7 @@ class ZMO
         $this->stream->seekto($offset);
         $data = $this->stream->read($length);
         $data = $this->encode($data);
+
         return (string)$data;
     }
 
@@ -397,7 +402,7 @@ class ZMO
             } else {
                 return -1;
             }
-        } else if ($start > $end) {
+        } elseif ($start > $end) {
             // start > end -> turn around and start over
             return $this->find_string($string, $end, $start);
         } else {
@@ -407,7 +412,7 @@ class ZMO
             if ($cmp == 0) {
                 // string is exactly in the middle => return it
                 return $half;
-            } else if ($cmp < 0) {
+            } elseif ($cmp < 0) {
                 // The string is in the upper half
                 return $this->find_string($string, $start, $half);
             } else {
@@ -474,6 +479,7 @@ class ZMO
             }
             $this->pluralheader = $expr .';';
         }
+
         return $this->pluralheader;
     }
 
@@ -498,6 +504,7 @@ class ZMO
         if ($plural >= $total) {
             $plural = $total - 1;
         }
+
         return $plural;
     }
 
@@ -532,6 +539,7 @@ class ZMO
             } else {
                 $result = $this->cache_translations[$key];
                 $list = explode(chr(0), $result);
+
                 return $list[$select];
             }
         } else {
@@ -541,6 +549,7 @@ class ZMO
             } else {
                 $result = $this->get_translation_string($num);
                 $list = explode(chr(0), $result);
+
                 return $list[$select];
             }
         }

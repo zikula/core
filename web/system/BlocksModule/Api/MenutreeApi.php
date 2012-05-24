@@ -30,10 +30,10 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
      * 'category' additionally groups the admin links by their category.
      * You can combine 'flat' and 'category' to have the category links added in the current menu.
      *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params - if 'flat' then return links ungrouped. if 'category' module links grouped by category
-     * @return mixed array of links if successful, false otherwise
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped. if 'category' module links grouped by category
+     * @return mixed  array of links if successful, false otherwise
      */
     public function adminlinks($args)
     {
@@ -41,7 +41,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
         // $item ang lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
 
@@ -91,7 +91,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $catinfo  = array(); // used to store menu information for the categories
         $catlinks = array();
 
-        if ($flag['category']){
+        if ($flag['category']) {
             // Get all the Categories
             $categories = ModUtil::apiFunc('AdminModule', 'admin', 'getall');
 
@@ -172,10 +172,10 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
     /**
      * "Blank", sample plugin
      *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
-     * @return mixed array of links if successful, false otherwise
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     * @return mixed  array of links if successful, false otherwise
      */
     public function blank($args)
     {
@@ -209,11 +209,11 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
 
         // $item ang lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
         // is there is extrainfo - convert it into array, parse_str is quite handy
-        if($extrainfo) {
+        if ($extrainfo) {
             parse_str($extrainfo, $extrainfo);
         }
 
@@ -282,10 +282,10 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
      *      parent - id of parent node - this allows to get specified node of Content pages
      *
      *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params
-     * @return mixed array of links if successful, false otherwise
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params
+     * @return mixed  array of links if successful, false otherwise
      */
     public function Content($args)
     {
@@ -293,12 +293,12 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
         // $item ang lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
 
         // is there is extrainfo - convert it into array, parse_str is quite handy
-        if($extrainfo) {
+        if ($extrainfo) {
             parse_str($extrainfo, $extrainfo);
         }
         $extrainfo['parent'] = isset($extrainfo['parent']) ? (int)$extrainfo['parent'] : 0;
@@ -311,7 +311,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $links = array();
 
         // if $extrainfo['group'] if false - don't group pages
-        if($extrainfo['groupby'] == 'menuitem') {
+        if ($extrainfo['groupby'] == 'menuitem') {
             $links['content'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -341,14 +341,14 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $pages = ModUtil::apiFunc('ContentModule', 'page', 'getPages', $options);
 
         $blocked = array();
-        foreach((array)$pages as $page) {
+        foreach ((array)$pages as $page) {
             // grouping - skip first page if pages are filtered by parent id
             // and grouping is not set to page
-            if($extrainfo['parent'] == $page['id'] && $extrainfo['groupby'] != 'page') {
+            if ($extrainfo['parent'] == $page['id'] && $extrainfo['groupby'] != 'page') {
                 continue;
             }
             // skip pages which are disabled for display in menu
-            if(in_array($page['parentPageId'], $blocked) || !$page['isInMenu']) {
+            if (in_array($page['parentPageId'], $blocked) || !$page['isInMenu']) {
                 $blocked[] = $page['id'];
                 continue;
             }
@@ -378,10 +378,10 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
      * {ext:Blocks:modules:[flat]}
      * Last param is optional
      *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
-     * @return mixed array of links if successful, false otherwise
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     * @return mixed  array of links if successful, false otherwise
      */
     public function modules($args)
     {
@@ -389,7 +389,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
         // $item ang lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
 
@@ -399,7 +399,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 
         $links = array();
         // if $extrainfo if 'flat' - don't group links
-        if($extrainfo != 'flat') {
+        if ($extrainfo != 'flat') {
             $links['modules'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -420,7 +420,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 
         $mods = ModUtil::getModulesCapableOf('user');
 
-        foreach($mods as $mod) {
+        foreach ($mods as $mod) {
             if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
                 $links[] = array(
                         $lang => array(
@@ -455,10 +455,10 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
      *          - arch - link to News archive
      *          Items are displayed in order provided in menutree
      *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params
-     * @return mixed array of links if successful, false otherwise
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params
+     * @return mixed  array of links if successful, false otherwise
      */
     public function news($args)
     {
@@ -469,11 +469,11 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
 
         // $item ang lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
         // is there is extrainfo - convert it into array, parse_str is quite handy
-        if($extrainfo) {
+        if ($extrainfo) {
             parse_str($extrainfo, $extrainfo);
         }
         $extrainfo['flat'] = isset($extrainfo['flat'])? (bool)$extrainfo['flat'] : false;
@@ -489,7 +489,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $links = array();
         // build some link
         // you may use associative array keys
-        if(!$extrainfo['flat']) {
+        if (!$extrainfo['flat']) {
             $links['news'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -506,7 +506,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         }
         $parentNode = !$extrainfo['flat'] ? $links['news'][$lang]['id'] : $item['parent'];
 
-        if(in_array('all',$extrainfo['links']) || in_array('view',$extrainfo['links'])) {
+        if (in_array('all',$extrainfo['links']) || in_array('view',$extrainfo['links'])) {
             $links['view'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -521,7 +521,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                     )
             );
         }
-        if(in_array('all',$extrainfo['links']) || in_array('arch',$extrainfo['links'])) {
+        if (in_array('all',$extrainfo['links']) || in_array('arch',$extrainfo['links'])) {
             $links['arch'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -536,7 +536,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                     )
             );
         }
-        if(in_array('all',$extrainfo['links']) || in_array('add',$extrainfo['links'])) {
+        if (in_array('all',$extrainfo['links']) || in_array('add',$extrainfo['links'])) {
             $links['add'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -551,8 +551,8 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                     )
             );
         }
-        if(in_array('all',$extrainfo['links']) || in_array('cat',$extrainfo['links'])) {
-            if(!$extrainfo['flat']) {
+        if (in_array('all',$extrainfo['links']) || in_array('cat',$extrainfo['links'])) {
+            if (!$extrainfo['flat']) {
                 $links['cat'] = array(
                         $lang => array(
                                 'id' => $idoffset++,
@@ -570,11 +570,11 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
             $catParentNode = !$extrainfo['flat'] ? $links['cat'][$lang]['id'] : $item['parent'];
 
             $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories ('News', 'stories');
-            if(!empty($catregistry)) {
+            if (!empty($catregistry)) {
                 $multicategory = count($catregistry) > 1;
                 $catLinks = array();
-                foreach($catregistry as $prop => $catid) {
-                    if($multicategory && !$extrainfo['flat']) {
+                foreach ($catregistry as $prop => $catid) {
+                    if ($multicategory && !$extrainfo['flat']) {
                         $parentCategory = CategoryUtil::getCategoryByID ($catid);
                         $catLinks[$catid] =  array(
                                 $lang => array(
@@ -591,7 +591,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                         );
                     }
                     $categories = CategoryUtil::getSubCategories($catid);
-                    foreach($categories as $cat) {
+                    foreach ($categories as $cat) {
                         $catLinks[$cat['id']] = array(
                                 $lang => array(
                                         'id' => $idoffset++,
@@ -607,22 +607,22 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                         );
                     }
                 }
-            } elseif(!$extrainfo['flat']) {
+            } elseif (!$extrainfo['flat']) {
                 unset($links['cat']);
             }
         }
 
         // sort links in order provided in menutree
-        if(!in_array('all',$extrainfo['links'])) {
+        if (!in_array('all',$extrainfo['links'])) {
             $sortedLinks = array();
-            if(!$extrainfo['flat']) {
+            if (!$extrainfo['flat']) {
                 $sortedLinks[] = $links['news'];
             }
-            foreach($extrainfo['links'] as $l) {
-                if(isset($links[$l]) && !empty($links[$l])) {
+            foreach ($extrainfo['links'] as $l) {
+                if (isset($links[$l]) && !empty($links[$l])) {
                     $sortedLinks[] = $links[$l];
                 }
-                if($l == 'cat') {
+                if ($l == 'cat') {
                     $sortedLinks = array_merge((array)$sortedLinks, (array)$catLinks);
                 }
             }
@@ -655,10 +655,10 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
      * If you provide an additional param extrainfo = flat, then the links are not grouped within
      * Your Accont element
      *
-     * @param array $args['item'] menu node to be replaced
-     * @param string $args['lang'] current menu language
-     * @param string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
-     * @return mixed array of links if successful, false otherwise
+     * @param  array  $args['item']      menu node to be replaced
+     * @param  string $args['lang']      current menu language
+     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     * @return mixed  array of links if successful, false otherwise
      */
     public function userlinks($args)
     {
@@ -667,7 +667,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
         $extrainfo  = isset($args['extrainfo']) && !empty($args['extrainfo']) ? $args['extrainfo'] : null;
         // $item ang lang params are required
-        if(!$item || !$lang) {
+        if (!$item || !$lang) {
             return false;
         }
 
@@ -684,7 +684,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
 
         $links = array();
         // if $extrainfo if 'flat' - don't group links in your_account node
-        if($extrainfo != 'flat') {
+        if ($extrainfo != 'flat') {
             $links['your_account'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -703,7 +703,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
         // otherwise parent id of replaced menu node
         $parentNode = $extrainfo != 'flat' ? $links['your_account'][$lang]['id'] : $item['parent'];
 
-        if(UserUtil::isLoggedIn()) {
+        if (UserUtil::isLoggedIn()) {
             $links['profile'] = array(
                     $lang => array(
                             'id' => $idoffset++,
@@ -717,7 +717,7 @@ class Blocks_Api_MenutreeApi extends Zikula_AbstractApi
                             'parent' => $parentNode
                     )
             );
-            if(!is_null($messageModule)) {
+            if (!is_null($messageModule)) {
                 $links['messages'] = array(
                         $lang => array(
                                 'id' => $idoffset++,

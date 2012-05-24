@@ -250,10 +250,12 @@ class AdminApi extends \Zikula_AbstractApi
             if ($res == true) {
                 return LogUtil::registerStatus(__('Done! Removed theme files from the file system.'));
             }
+
             return LogUtil::registerError(__('Error! Could not delete theme files from the file system. Please remove them by another means (FTP, SSH, ...).'));
         }
 
         LogUtil::registerStatus(__f('Notice: Theme files cannot be deleted because Zikula does not have write permissions for the themes folder and/or themes/%s folder.', DataUtil::formatForDisplay($args['themedirectory'])));
+
         return false;
     }
 
@@ -369,6 +371,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Argument check
         if (!isset($args['themeinfo']) || !isset($args['themeinfo']['name']) || empty($args['themeinfo']) || empty($args['themeinfo']['name'])) {
             $url = ModUtil::url('Theme', 'admin', 'new');
+
             return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
         }
 
@@ -445,6 +448,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
             if (!fwrite($handle, $$filevar)) {
                 fclose($handle);
+
                 return LogUtil::registerError(__f('Error! could not write to file: %s', $filename));
             }
             fclose($handle);

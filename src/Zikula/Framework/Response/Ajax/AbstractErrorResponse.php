@@ -46,7 +46,7 @@ abstract class AbstractErrorResponse extends AbstractBaseResponse
     protected function generateCoreData()
     {
         $core = parent::generateCoreData();
-        if(!isset($core['statusmsg']) || empty($core['statusmsg'])) {
+        if (!isset($core['statusmsg']) || empty($core['statusmsg'])) {
             $core['statusmsg'] = __('An unknown error occurred');
         }
 

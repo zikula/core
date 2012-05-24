@@ -195,6 +195,7 @@ class RandomUtil
         }
 
         $txt .= substr($t, 0, -1) . '. ';
+
         return $txt;
     }
 
@@ -270,6 +271,7 @@ class RandomUtil
         $inc = self::getInteger(0, $diff);
 
         $tRand = $t1 + $inc;
+
         return DateUtil::getDatetime($tRand, $format);
     }
 

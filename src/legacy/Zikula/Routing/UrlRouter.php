@@ -21,14 +21,14 @@ class Zikula_Routing_UrlRouter
     /**
      * The list of managed routes (Zikula_Routing_UrlRoute instances).
      *
-     * @var array 
+     * @var array
      */
     protected $routes;
 
     /**
      * Constructor.
      */
-    function __construct()
+    public function __construct()
     {
         $this->routes = array();
     }

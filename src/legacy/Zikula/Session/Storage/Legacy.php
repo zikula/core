@@ -88,7 +88,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
         if (System::getVar('sessionstoretofile')) {
             ini_set('session.save_path', System::getVar('sessionsavepath'));
         }
-        
+
         session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
 
         // create IP finger print
@@ -118,6 +118,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
             if (System::getVar('sessionipcheck', false)) {
                 if ($ipaddr !== $current_ipaddr) {
                     session_destroy();
+
                     return false;
                 }
             }
@@ -287,9 +288,11 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
 
         if (System::getVar('sessionstoretofile')) {
             $path = DataUtil::formatForOS(session_save_path(), true);
+
             return unlink("$path/$sessionId");
         } else {
             $res = DBUtil::deleteObjectByID('session_info', $sessionId, 'sessid');
+
             return (bool)$res;
         }
     }
@@ -355,7 +358,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
                         $session = unserialize(file_get_contents($name));
                         if ($lastused < $inactive && !isset($session['rememberme'])) {
                             unlink($name);
-                        } else if (($lastused < $daysold)) {
+                        } elseif (($lastused < $daysold)) {
                             unlink($name);
                         }
                     }
@@ -371,6 +374,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
                     }
                     break;
             }
+
             return true;
         } else {
             // DB based GC
@@ -403,6 +407,7 @@ class Zikula_Session_Storage_Legacy implements Zikula_Session_StorageInterface
             }
 
             $res = DBUtil::deleteWhere('session_info', $where);
+
             return (bool)$res;
         }
     }

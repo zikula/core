@@ -283,12 +283,12 @@ class Zikula_Routing_UrlRoute
                 $this->variables[] = $name;
 
                 $pattern = substr($pattern, strlen($match[0]));
-            } else if (preg_match('#^(?:/|\.|\-)#', $pattern, $match)) {
+            } elseif (preg_match('#^(?:/|\.|\-)#', $pattern, $match)) {
                 // separator
                 $this->tokens[] = array('separator', $match[0]);
 
                 $pattern = substr($pattern, strlen($match[0]));
-            } else if (preg_match('#^(.+?)(?:(?:/|\.|\-)|$)#', $pattern, $match)) {
+            } elseif (preg_match('#^(.+?)(?:(?:/|\.|\-)|$)#', $pattern, $match)) {
                 // text
                 $text = $match[1];
                 $this->tokens[] = array('text', $text);
@@ -308,7 +308,7 @@ class Zikula_Routing_UrlRoute
                     $this->requirements[$token[1]] = '[^/\.\-]+';
                 }
                 $regex .= '(?P<'.$token[1].'>'.$this->requirements[$token[1]].')';
-            } else if ($token[0] == 'text' || $token[0] == 'separator') {
+            } elseif ($token[0] == 'text' || $token[0] == 'separator') {
                 if ($token[1] == '*') {
                     if ($this->tokens[$i - 1] && $this->tokens[$i - 1][0] == 'separator') {
                         $sep_regex = $this->tokens[$i - 1][1];
@@ -332,6 +332,7 @@ class Zikula_Routing_UrlRoute
 
         // activate compiled flag
         $this->compiled = true;
+
         return true;
     }
 }

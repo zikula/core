@@ -30,8 +30,7 @@ class Util
 
         $config = array();
 
-        foreach($purifierDefaultConfigValues as $key => $val)
-        {
+        foreach ($purifierDefaultConfigValues as $key => $val) {
             $keys = explode(".", $key, 2);
 
             $config[$keys[0]][$keys[1]] = $val;
@@ -72,7 +71,7 @@ class Util
         // allow nofollow and imageviewer to be used as document relationships in the rel attribute
         // see http://htmlpurifier.org/live/configdoc/plain.html#Attr.AllowedRel
         $config['Attr']['AllowedRel'] = array('nofollow' => true, 'imageviewer' => true, 'lightbox' => true);
-        
+
         // allow Youtube by default
         $config['Filter']['YouTube'] = false; // technically deprecated in favour of HTML.SafeEmbed and HTML.Object
 
@@ -80,7 +79,7 @@ class Util
         $config['HTML']['SafeObject'] = true;
         $config['Output']['FlashCompat'] = true;
         $config['HTML']['SafeEmbed'] = true;
-                
+
         return $config;
     }
 

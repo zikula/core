@@ -41,9 +41,9 @@ class EventListener
             $blocks = BlockUtil::getBlocksInfo();
 
             foreach ($blocks as $block) {
-                
+
                 $block = $block->toArray();
-                
+
                 if ($block['bkey'] != 'Search') {
                     continue;
                 }

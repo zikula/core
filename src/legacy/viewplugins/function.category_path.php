@@ -91,10 +91,12 @@ function smarty_function_category_path($params, Zikula_View $view)
             $result = $cat[$field];
         } else {
             $view->trigger_error(__f('Error! Category [%1$s] does not have the field [%2$s] set.', array($id, $field)));
+
             return;
         }
     } else {
         $view->trigger_error(__f('Error! Cannot retrieve category with ID %s.', DataUtil::formatForDisplay($id)));
+
         return;
     }
 

@@ -48,7 +48,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * View all admin categories
      *
-     * @param int $startnum the starting id to view from - optional
+     * @param  int    $startnum the starting id to view from - optional
      * @return string HTML string
      */
     public function viewAction($args = array())
@@ -99,9 +99,9 @@ class AdminController extends \Zikula_AbstractController
      * This is a standard function that is called with the results of the
      * form supplied by admin_admin_new() to create a new category
      * @see Admin_admin_new()
-     * @param string $args['name'] the name of the category to be created
-     * @param string $args['description'] the description of the category to be created
-     * @return mixed category id if create successful, false otherwise
+     * @param  string $args['name']        the name of the category to be created
+     * @param  string $args['description'] the description of the category to be created
+     * @return mixed  category id if create successful, false otherwise
      */
     public function createAction(array $args = array())
     {
@@ -129,8 +129,8 @@ class AdminController extends \Zikula_AbstractController
      * Modify a category
      * This is a standard function that is called whenever an administrator
      * wishes to modify an admin category
-     * @param int $args['cid'] category id
-     * @param int $args['objectid'] generic object id maps to cid if present
+     * @param  int    $args['cid']      category id
+     * @param  int    $args['objectid'] generic object id maps to cid if present
      * @return string HTML string
      */
     public function modifyAction(array $args = array())
@@ -160,11 +160,11 @@ class AdminController extends \Zikula_AbstractController
      * This is a standard function that is called with the results of the
      * form supplied by template_admin_modify() to update a current item
      * @see Admin_admin_modify()
-     * @param int $args['cid'] the id of the item to be updated
-     * @param int $args['objectid'] generic object id maps to cid if present
-     * @param string $args['name'] the name of the category to be updated
-     * @param string $args['description'] the description of the item to be updated
-     * @return bool true if update successful, false otherwise
+     * @param  int    $args['cid']         the id of the item to be updated
+     * @param  int    $args['objectid']    generic object id maps to cid if present
+     * @param  string $args['name']        the name of the category to be updated
+     * @param  string $args['description'] the description of the item to be updated
+     * @return bool   true if update successful, false otherwise
      */
     public function updateAction(array $args = array())
     {
@@ -204,9 +204,9 @@ class AdminController extends \Zikula_AbstractController
      * other, so either or both can be used as seen appropriate by the module
      * developer.
      *
-     * @param int $args['cid'] the id of the category to be deleted
-     * @param int $args['objectid'] generic object id maps to cid if present
-     * @param bool $args['confirmation'] confirmation that this item can be deleted
+     * @param  int   $args['cid']          the id of the category to be deleted
+     * @param  int   $args['objectid']     generic object id maps to cid if present
+     * @param  bool  $args['confirmation'] confirmation that this item can be deleted
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise
      */
     public function deleteAction(array $args = array())
@@ -251,7 +251,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display main admin panel for a category
      *
-     * @param int $args['acid'] the id of the category to be displayed
+     * @param  int    $args['acid'] the id of the category to be displayed
      * @return string HTML string
      */
     public function adminpanelAction()
@@ -392,8 +392,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('categories', $categories);
 
         $modulecategories = array();
-        foreach ($adminmodules as $adminmodule)
-        {
+        foreach ($adminmodules as $adminmodule) {
             // Get the category assigned to this module
             $category = \ModUtil::apiFunc('AdminModule', 'admin', 'getmodcategory',
                     array('mid' => \ModUtil::getIdFromName($adminmodule['name'])));
@@ -419,9 +418,9 @@ class AdminController extends \Zikula_AbstractController
      * module given the information passed back by the modification form.
      *
      * @see Admin_admin_modifyconfig()
-     * @param int $modulesperrow the number of modules to display per row in the admin panel
-     * @param int $admingraphic switch for display of admin icons
-     * @param int $modulename,... the id of the category to set for each module
+     * @param  int    $modulesperrow  the number of modules to display per row in the admin panel
+     * @param  int    $admingraphic   switch for display of admin icons
+     * @param  int    $modulename,... the id of the category to set for each module
      * @return string HTML string
      */
     public function updateconfigAction()
@@ -524,7 +523,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        foreach($adminlinks as &$item) {
+        foreach ($adminlinks as &$item) {
             usort($item, 'AdminModule\Controller\_sortAdminModsByOrder');
         }
 
@@ -533,7 +532,7 @@ class AdminController extends \Zikula_AbstractController
         $permission = false;
 
         if (isset($categories) && is_array($categories)) {
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 // only categories containing modules where the current user has permissions will
                 // be shown, all others will be hidden
                 // admin will see all categories
@@ -735,8 +734,8 @@ class AdminController extends \Zikula_AbstractController
      * This function is internal for the time being and may be extended to be a proper library
      * or find an alternative solution later.
      *
-     * @param string $url
-     * @param ing $timeout default=5
+     * @param  string $url
+     * @param  ing    $timeout default=5
      * @return mixed, false or string
      */
     private function _zcurl($url, $timeout=5)
@@ -791,6 +790,7 @@ class AdminController extends \Zikula_AbstractController
             }
             //$headers = curl_getinfo($ch);
             curl_close($ch);
+
             return $data;
         } else {
             return false;
@@ -798,8 +798,9 @@ class AdminController extends \Zikula_AbstractController
     }
 }
 
-function _sortAdminModsByOrder($a,$b) {
-    if((int)$a['order'] == (int)$b['order']) {
+function _sortAdminModsByOrder($a,$b)
+{
+    if ((int)$a['order'] == (int)$b['order']) {
         return strcmp($a['modname'], $b['modname']);
     }
     if((int)$a['order']  > (int)$b['order']) return 1;

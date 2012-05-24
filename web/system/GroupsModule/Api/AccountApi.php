@@ -21,7 +21,7 @@ class AccountApi extends \Zikula_AbstractApi
     /**
      * Return an array of items to show in the your account panel
      *
-     * @return   array   indexed array of items
+     * @return array indexed array of items
      */
     function getall()
     {

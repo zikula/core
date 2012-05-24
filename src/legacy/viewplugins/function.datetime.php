@@ -44,7 +44,7 @@
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @see    function.datetime.php::smarty_function_datetime()
- * 
+ *
  * @return string
  */
 function smarty_function_datetime($params, Zikula_View $view)

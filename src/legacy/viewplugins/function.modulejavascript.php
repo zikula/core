@@ -60,6 +60,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
     // check if script is set (mandatory)
     if (!isset($params['script'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modulejavascript', 'script')));
+
         return false;
     }
 
@@ -68,6 +69,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
         if (isset($params['modonly'])) {
             // error - we want $modonly only with $modname
             $view->trigger_error(__f('Error! in %1$s: parameter \'%2$s\' only supported together with \'%3$s\' set.', array('modulejavascript', 'modonly', 'modname')));
+
             return;
         }
         // we use the current module name

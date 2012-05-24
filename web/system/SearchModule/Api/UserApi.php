@@ -25,16 +25,16 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Perform the search.
      *
-     * @param    string $args['g']              query string to search
-     * @param    bool   $args['firstPage']      is this first search attempt? is so - basic search is performed
-     * @param    string $args['searchtype']     (optional) search type (default='AND')
-     * @param    string $args['searchorder']    (optional) search order (default='newest')
-     * @param    int    $args['numlimit']       (optional) number of items to return (default value based on Search settings, -1 for no limit)
-     * @param    int    $args['page']           (optional) page number (default=1)
-     * @param    array  $args['active']         (optional) array of search plugins to search (if empty all plugins are used)
-     * @param    array  $args['modvar']         (optional) array with extrainfo for search plugins
+     * @param string $args['g']           query string to search
+     * @param bool   $args['firstPage']   is this first search attempt? is so - basic search is performed
+     * @param string $args['searchtype']  (optional) search type (default='AND')
+     * @param string $args['searchorder'] (optional) search order (default='newest')
+     * @param int    $args['numlimit']    (optional) number of items to return (default value based on Search settings, -1 for no limit)
+     * @param int    $args['page']        (optional) page number (default=1)
+     * @param array  $args['active']      (optional) array of search plugins to search (if empty all plugins are used)
+     * @param array  $args['modvar']      (optional) array with extrainfo for search plugins
      *
-     * @return   array  array of items array and result count, or false on failure
+     * @return array array of items array and result count, or false on failure
      */
     public function search($args)
     {
@@ -159,10 +159,10 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all previous search queries.
      *
-     * @param    int     $args['starnum']    (optional) first item to return.
-     * @param    int     $args['numitems']   (optional) number if items to return.
+     * @param int $args['starnum']  (optional) first item to return.
+     * @param int $args['numitems'] (optional) number if items to return.
      *
-     * @return   array   array of items, or false on failure.
+     * @return array array of items, or false on failure.
      */
     public function getall($args)
     {
@@ -198,7 +198,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Utility function to count the number of previous search queries.
      *
-     * @return   integer   number of items held by this module.
+     * @return integer number of items held by this module.
      */
     public function countitems()
     {
@@ -208,7 +208,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all search plugins.
      *
-     * @return   array   array of items, or false on failure.
+     * @return array array of items, or false on failure.
      */
     public function getallplugins($args)
     {
@@ -361,7 +361,7 @@ class UserApi extends \Zikula_AbstractApi
      * This function is ported 'as is' from the old, nonAPI, module
      * it is called from each plugin so we can't delete it or change it's name
      *
-     * @param string $q the string to parse and split.
+     * @param string $q          the string to parse and split.
      * @param string $dbwildcard wrap each word in a DB wildcard character (%).
      *
      * @return array an array of words optionally surrounded by '%'

@@ -184,10 +184,10 @@ class ProviderBundle
     /**
      * Add a hook handler with this bundle.
      *
-     * @param string  $hookType  Hook type.
-     * @param string  $className Class.
-     * @param string  $method    Method name.
-     * @param string  $serviceId Service ID if this is NOT a static class method.
+     * @param string $hookType  Hook type.
+     * @param string $className Class.
+     * @param string $method    Method name.
+     * @param string $serviceId Service ID if this is NOT a static class method.
      *
      * @return ProviderBundle
      */

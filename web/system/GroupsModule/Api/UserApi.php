@@ -463,8 +463,8 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Update user.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gtype'].
+     * @param int    $args['uid']     user id.
+     * @param int    $args['gtype'].
      * @param string $args['action'].
      *
      * @return boolean
@@ -588,6 +588,7 @@ class UserApi extends \Zikula_AbstractApi
             if (isset($args['verbose']) && !$args['verbose']) {
                 return false;
             }
+
             return LogUtil::registerError($this->__('Error! You are already a member of this group.'));
         }
 
@@ -649,6 +650,7 @@ class UserApi extends \Zikula_AbstractApi
         $query = $this->entityManager->createQuery($dql);
         $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         
+
         return $items;
     }
 

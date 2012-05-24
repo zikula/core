@@ -29,8 +29,8 @@ use UsersModule\Constants as UsersConstant;
  *
  * Examples:
  * {useravatar uid="2"}
- * {useravatar uid="2" width=80 height=80} 
- * {useravatar uid="2" size=80 rating=g} 
+ * {useravatar uid="2" width=80 height=80}
+ * {useravatar uid="2" size=80 rating=g}
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.
@@ -42,6 +42,7 @@ function smarty_function_useravatar($params, Zikula_View $view)
 {
     if (!isset($params['uid'])) {
         $view->trigger_error("Error! Missing 'uid' attribute for useravatar.");
+
         return false;
     }
 
@@ -54,7 +55,7 @@ function smarty_function_useravatar($params, Zikula_View $view)
 
     if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
         $avatarURL = System::getBaseUrl() . $avatarpath . '/' . $avatar;
-    } else if (($avatar == $gravatarimage) && ($allowgravatars == 1)) {
+    } elseif (($avatar == $gravatarimage) && ($allowgravatars == 1)) {
         if (!isset($params['rating'])) {
             $params['rating'] = false;
         }

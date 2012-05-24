@@ -76,11 +76,11 @@ class AdminController extends \Zikula_AbstractController
         $filter['module_id'] = isset($filter['module_id']) ? $filter['module_id'] : 0;
         $filter['language'] = isset($filter['language']) ? $filter['language'] : '';
         $filter['active_status'] = isset($filter['active_status']) ? $filter['active_status'] : 0;
-        
+
         $this->view->assign('filter', $filter)
                    ->assign('sort', $filter['sort'])
                    ->assign('sortdir', $filter['sortdir']);
-        
+
         // generate an authorisation key for the links
         $csrftoken = SecurityUtil::generateCsrfToken($this->container, true);
         $this->view->assign('csrftoken', $csrftoken);
@@ -97,7 +97,7 @@ class AdminController extends \Zikula_AbstractController
         // loop round each item calculating the additional information
         $blocksitems = array();
         foreach ($blocks as $key => $block) {
-            
+
             $block = $block->toArray();
 
             // set the module that holds the block
@@ -110,7 +110,7 @@ class AdminController extends \Zikula_AbstractController
             } else {
                 $block['language'] = ZLanguage::getLanguageName($block['language']);
             }
-            
+
             // set the block's position(s)
             $bposarray = array();
             $thisblockspositions = ModUtil::apiFunc('BlocksModule', 'user', 'getallblockspositions', array('bid' => $block['bid']));
@@ -119,7 +119,7 @@ class AdminController extends \Zikula_AbstractController
             }
             $block['positions'] = implode(', ', $bposarray);
             unset($bposarray);
-            
+
             // push block to array
             $blocksitems[] = $block;
         }
@@ -205,7 +205,7 @@ class AdminController extends \Zikula_AbstractController
         if (empty($blockinfo)) {
             return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
         }
-        
+
         // get the block's placements
         $placements = ModUtil::apiFunc('BlocksModule', 'user', 'getallblockspositions', array('bid' => $bid));
         $placements_pids = array();
@@ -220,7 +220,7 @@ class AdminController extends \Zikula_AbstractController
         if (!$blockObj) {
             return LogUtil::registerError($this->__('Sorry! No such block found.'), 404);
         }
-        
+
         // Title - putting a title ad the head of each page reminds the user what
         // they are doing
         if (!empty($modinfo['name'])) {
@@ -229,7 +229,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Add hidden block id to form
         $this->view->assign('bid', $bid);
-        
+
         // assign the block values to the template
         $this->view->assign($blockinfo);
 
@@ -308,14 +308,14 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Update a block.
      *
-     * @param int $bid block id to update.
-     * @param string $title the new title of the block.
+     * @param int    $bid         block id to update.
+     * @param string $title       the new title of the block.
      * @param string $description the new description of the block.
-     * @param array $positions the new position(s) of the block.
-     * @param array $modules the modules to display the block on.
-     * @param string $url the new URL of the block.
-     * @param string $language the new language of the block.
-     * @param string $content the new content of the block.
+     * @param array  $positions   the new position(s) of the block.
+     * @param array  $modules     the modules to display the block on.
+     * @param string $url         the new URL of the block.
+     * @param string $language    the new language of the block.
+     * @param string $content     the new content of the block.
      *
      * @see blocks_admin_modify()
      *
@@ -324,7 +324,7 @@ class AdminController extends \Zikula_AbstractController
     public function updateAction()
     {
         $this->checkCsrfToken();
-        
+
         // Get parameters
         $bid = $this->request->get('bid');
         $title = $this->request->get('title');
@@ -357,8 +357,8 @@ class AdminController extends \Zikula_AbstractController
 
         // Get and update block info
         $blockinfo = BlockUtil::getBlockInfo($bid);
-        
-        
+
+
         $blockinfo['title'] = $title;
         $blockinfo['description'] = $description;
         $blockinfo['bid'] = $bid;
@@ -467,11 +467,11 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Create a new block.
      *
-     * @param string $title the new title of the block.
+     * @param string $title       the new title of the block.
      * @param string $description the new description of the block.
-     * @param int $blockid block id to create.
-     * @param string $language the language to assign to the block.
-     * @param string $position the position of the block.
+     * @param int    $blockid     block id to create.
+     * @param string $language    the language to assign to the block.
+     * @param string $position    the position of the block.
      *
      * @see blocks_admin_new()
      *
@@ -633,7 +633,7 @@ class AdminController extends \Zikula_AbstractController
     {
         // get our input
         $pid = $this->request->get('pid');
-        
+
         // get the block position
         $position = ModUtil::apiFunc('BlocksModule', 'user', 'getposition', array('pid' => $pid));
 
@@ -703,7 +703,7 @@ class AdminController extends \Zikula_AbstractController
                         array('pid' => $position['pid'], 'name' => $position['name'], 'description' => $position['description']))) {
             // all done
             LogUtil::registerStatus($this->__('Done! Block position saved.'));
-            
+
             $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
         }
 
@@ -713,8 +713,8 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Delete a block position.
      *
-     * @param int $args['pid'] the id of the position to be deleted.
-     * @param int $args['objectid'] generic object id maps to pid if present.
+     * @param int  $args['pid']          the id of the position to be deleted.
+     * @param int  $args['objectid']     generic object id maps to pid if present.
      * @param bool $args['confirmation'] confirmation that this item can be deleted.
      *
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise.

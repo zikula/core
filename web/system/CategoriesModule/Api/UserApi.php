@@ -70,6 +70,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         $relative = (isset($args['relative']) ? $args['relative'] : false);
+
         return CategoryUtil::getCategoriesByParentID ($userRootCat['id'], '', $relative);
     }
 

@@ -415,12 +415,12 @@ class HtmlUtil
         if (!$modname) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
         }
-        
+
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
         $entityDir = "$modpath/$osdir/Entity/";
-        
+
         $entities = array();
         if (file_exists($entityDir)) {
             $files = scandir($entityDir);
@@ -953,6 +953,7 @@ class HtmlUtil
         }
 
         $output .= '</select>';
+
         return $output;
     }
 

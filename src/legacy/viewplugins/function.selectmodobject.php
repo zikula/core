@@ -61,7 +61,7 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
     if (!isset($params['assign']) || empty($params['assign'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('selectmodobject', 'assign')));
     }
-    
+
     // load object depending on mode: doctrine or dbobject
     if (!$doctrineMode) {
         if (!ModUtil::available($params['module'])) {

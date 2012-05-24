@@ -174,6 +174,7 @@ class ZLanguage
         if (!isset(self::$instance)) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -209,6 +210,7 @@ class ZLanguage
                 }
             }
             $this->languageCode = $this->langSystemDefault;
+
             return;
         }
 
@@ -381,6 +383,7 @@ class ZLanguage
         ZGettext::getInstance()->bindTextDomain($domain, $path);
         ZGettext::getInstance()->bindTextDomainCodeset($domain, $_this->encoding);
         $_this->domainCache[$locale][$domain] = true;
+
         return $_this->domainCache[$locale][$domain];
     }
 
@@ -396,6 +399,7 @@ class ZLanguage
         $_this  = self::getInstance();
         $domain = self::getThemeDomain($modName);
         $path = $_this->searchOverrides($domain, "themes/$modName/locale");
+
         return self::bindDomain($domain, $path);
     }
 
@@ -423,6 +427,7 @@ class ZLanguage
         $domain = self::getModuleDomain($modName);
         $dir = is_dir("modules/$modName/Resources/locale") ? "modules/$modName/Resources/locale" : "modules/$modName/locale";
         $path = $_this->searchOverrides($domain, $dir);
+
         return self::bindDomain($domain, $path);
     }
 
@@ -446,6 +451,7 @@ class ZLanguage
         $domain = self::getModulePluginDomain($moduleName, $pluginName);
         $dir = is_dir("modules/$moduleName/plugins/$pluginName/Resources/locale") ? "modules/$moduleName/plugins/$pluginName/Resources/locale" : "modules/$moduleName/plugins/$pluginName/locale";
         $path = $_this->searchOverrides($domain, $dir);
+
         return self::bindDomain($domain, $path);
     }
 
@@ -462,6 +468,7 @@ class ZLanguage
         $domain = self::getSystemPluginDomain($pluginName);
         $dir = is_dir("plugins/$pluginName/Resources/locale") ? "plugins/$pluginName/Resources/locale" : "plugins/$pluginName/locale";
         $path = $_this->searchOverrides($domain, $dir);
+
         return self::bindDomain($domain, $path);
     }
 
@@ -491,6 +498,7 @@ class ZLanguage
         $lang = self::transformFS($this->languageCode);
         //$basedir = realpath('.') . DIRECTORY_SEPARATOR;
         $override = realpath(/*$basedir.*/"config/locale/$lang/LC_MESSAGES/$domain.mo");
+
         return $override ? realpath(/*$basedir.*/'config/locale') : realpath($path);
     }
 
@@ -582,6 +590,7 @@ class ZLanguage
         $available = $this->getInstalledLanguages();
         $detector = new ZLanguageBrowser($available);
         $this->browserLanguagePref = $detector->discover();
+
         return $this->browserLanguagePref;
     }
 
@@ -629,6 +638,7 @@ class ZLanguage
                 $languagesArray[$locale] = $name;
             }
         }
+
         return $languagesArray;
     }
 
@@ -641,9 +651,11 @@ class ZLanguage
     {
         if (preg_match('#utf([-]{0,1})8#', $this->dbCharset)) {
             $this->encoding = 'utf-8';
+
             return;
         } elseif (preg_match('#^latin([0-9]{1,2})#', $this->dbCharset)) {
             $this->encoding = preg_replace('#latin([0-9]{1,2})#', 'iso-8859-$1', $this->dbCharset);
+
             return;
         } elseif (System::isInstalling()) {
             $this->encoding = 'utf-8';
@@ -679,6 +691,7 @@ class ZLanguage
                 return true;
             }
         }
+
         return false;
     }
 
@@ -702,6 +715,7 @@ class ZLanguage
     public static function lookupLegacyCode($lookup)
     {
         $map = self::_cnvlanguagelist();
+
         return (isset($map[$lookup]) ? $map[$lookup] : 'eng');
     }
 
@@ -717,6 +731,7 @@ class ZLanguage
     public static function translateLegacyCode($code)
     {
         $map = self::legacyCodeMap();
+
         return (isset($map[$code]) ? $map[$code] : false);
     }
 
@@ -743,6 +758,7 @@ class ZLanguage
     {
         $lang = substr($m, 0, (strpos($m, '-') ? strpos($m, '-') : strlen($m)));
         $country = ($lang != $m ? strtoupper(str_replace("$lang-", '', $m)) : false);
+
         return ($country ? "{$lang}_{$country}" : $lang);
     }
 
@@ -1252,6 +1268,7 @@ class ZLanguage
         if ($sort) {
             asort($countryMap);
         }
+
         return $countryMap;
     }
 

@@ -90,6 +90,7 @@ class Validator
         $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['time'])->getToken();
         if ($stored['token'] !== $duplicateToken) {
             $this->storage->delete($decoded['id']);
+
             return false;
         }
 
@@ -98,6 +99,7 @@ class Validator
             $timeDiff = ((int)$decoded['time'] + $this->tokenGenerator->getMaxLifetime()) - time();
             if ($timeDiff < 0) {
                 $this->storage->delete($decoded['id']);
+
                 return false;
             }
         }

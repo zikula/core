@@ -105,6 +105,7 @@ class UserApi extends \Zikula_AbstractApi
         if (isset($args['uid'])) {
             if (!is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
                 $this->registerError(LogUtil::getErrorMsgArgs());
+
                 return false;
             } else {
                 $key = (int)$args['uid'];
@@ -112,6 +113,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         } else {
             $key = $args['uname'];
@@ -123,6 +125,7 @@ class UserApi extends \Zikula_AbstractApi
         // Check for a DB error
         if ($obj === false) {
             $this->registerError($this->__('Error! Could not load data.'));
+
             return false;
         }
 
@@ -281,6 +284,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -352,6 +356,7 @@ class UserApi extends \Zikula_AbstractApi
                 || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
                 ) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -448,6 +453,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) || !isset($args['code'])
                 || empty($args['code']) || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email'))) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -455,6 +461,7 @@ class UserApi extends \Zikula_AbstractApi
 
         if (!$user) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         } else {
             // delete all the records for password reset confirmation that have expired
@@ -489,6 +496,7 @@ class UserApi extends \Zikula_AbstractApi
     public function expiredSession()
     {
         $view = Zikula_View::getInstance($this->name, false);
+
         return $view->fetch('users_userapi_expiredsession.tpl');
     }
 
@@ -660,6 +668,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         if (!isset($args['uid'])) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
         
@@ -667,6 +676,7 @@ class UserApi extends \Zikula_AbstractApi
         
         if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -682,6 +692,7 @@ class UserApi extends \Zikula_AbstractApi
             foreach ($changeType as $theType) {
                 if (!is_numeric($theType) || ((int)$theType != $theType) || ($theType < 0)) {
                     $this->registerError(LogUtil::getErrorMsgArgs());
+
                     return false;
                 }
             }

@@ -122,7 +122,7 @@ class PluginUtil
      *
      * @param string $className Class name.
      *
-     * @throws LogicException If Plugin class is not a Zikula_AbstractPlugin.
+     * @throws LogicException        If Plugin class is not a Zikula_AbstractPlugin.
      * @return Zikula_AbstractPlugin Plugin class.
      */
     public static function loadPlugin($className)
@@ -369,6 +369,7 @@ class PluginUtil
         if ($result) {
             $state['version'] = ($result == true) ? $plugin->getMetaVersion() : $result;
             self::setState($plugin->getServiceId(), $state);
+
             return true;
         }
 
@@ -394,6 +395,7 @@ class PluginUtil
 
         if ($plugin->uninstall()) {
             self::delState($plugin->getServiceId());
+
             return true;
         }
 
@@ -419,6 +421,7 @@ class PluginUtil
         $state['state'] = self::DISABLED;
         self::setState($plugin->getServiceId(), $state);
         $plugin->postDisable();
+
         return true;
     }
 
@@ -441,6 +444,7 @@ class PluginUtil
         $state['state'] = self::ENABLED;
         self::setState($plugin->getServiceId(), $state);
         $plugin->postEnable();
+
         return true;
     }
 
@@ -481,6 +485,7 @@ class PluginUtil
         } elseif (count($p) == 4) {
             $className = "{$p[0]}_{$p[1]}_{$p[2]}";
         }
+
         return strtolower(str_replace('_', '.', $className));
     }
 }

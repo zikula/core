@@ -382,6 +382,7 @@ class Zikula_Workflow_Parser
     {
         $value  = &$this->workflow['value'];
         $value .= $data;
+
         return true;
     }
 

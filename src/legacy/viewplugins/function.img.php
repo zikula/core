@@ -79,6 +79,7 @@ function smarty_function_img($params, Zikula_View $view)
     if (!isset($params['src']) || !$params['src']) {
         if (!$nostoponerror) {
             $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('img', 'src')));
+
             return;
         } else {
             return false;
@@ -178,11 +179,13 @@ function smarty_function_img($params, Zikula_View $view)
         if ($optional) {
             if (!$nostoponerror) {
                 $view->trigger_error(__f("%s: Image '%s' not found", array('img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src']))));
+
                 return;
             } else {
                 return false;
             }
         }
+
         return;
     }
 
@@ -193,6 +196,7 @@ function smarty_function_img($params, Zikula_View $view)
         if (!($_image_data = @getimagesize($imgsrc))) {
             if (!$nostoponerror) {
                 $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src']))));
+
                 return;
             } else {
                 return false;
@@ -234,7 +238,7 @@ function smarty_function_img($params, Zikula_View $view)
     if (!empty($retval) && isset($params[$retval])) {
         return $params[$retval];
 
-    } else if (!empty($assign)) {
+    } elseif (!empty($assign)) {
         $params['imgtag'] = $imgtag;
         $view->assign($assign, $params);
 

@@ -26,7 +26,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @param subscriberarea string area to be attached/detached
      * @param providerarea   string area to attach/detach
-     * @return mixed         Ajax response
+     * @return mixed Ajax response
      */
     public function togglesubscriberareastatusAction()
     {

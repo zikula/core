@@ -101,7 +101,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
      * Decrement sequence number of a permission.
      *
      * @param string $args ['type'] the type of the permission to decrement (user or group).
-     * @param int $args ['pid'] the ID of the permission to decrement.
+     * @param int    $args ['pid'] the ID of the permission to decrement.
      *
      * @return boolean true on success, false on failure.
      */
@@ -151,6 +151,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
                 } else {
                     LogUtil::registerError($this->__('Error! No permission rule directly below that one.'));
                 }
+
                 return false;
             }
             
@@ -172,13 +173,13 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
     /**
      * Update attributes of a permission.
      *
-     * @param int $args ['pid'] the ID of the permission to update.
+     * @param int    $args ['pid'] the ID of the permission to update.
      * @param string $args ['realm'] the new realm of the permission.
-     * @param int $args ['id'] the new group/user id of the permission.
+     * @param int    $args ['id'] the new group/user id of the permission.
      * @param string $args ['component'] the new component of the permission.
      * @param string $args ['instance'] the new instance of the permission.
-     * @param int $args ['level'] the new level of the permission.
-     * 
+     * @param int    $args ['level'] the new level of the permission.
+     *
      * @return bool true on success, false on failure.
      */
     public function update($args)
@@ -221,10 +222,10 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
      * Create a new perm.
      *
      * @param string $args ['realm'] the new realm of the permission.
-     * @param int $args ['id'] the new group/user id of the permission.
+     * @param int    $args ['id'] the new group/user id of the permission.
      * @param string $args ['component'] the new component of the permission.
      * @param string $args ['instance'] the new instance of the permission.
-     * @param int $args ['level'] the new level of the permission.
+     * @param int    $args ['level'] the new level of the permission.
      *
      * @return boolean true on success, false on failure.
      */
@@ -283,7 +284,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
      * Delete a perm.
      *
      * @param string $args ['type'] the type of the permission to update (user or group).
-     * @param int $args ['pid'] the ID of the permission to delete.
+     * @param int    $args ['pid'] the ID of the permission to delete.
      *
      * @return boolean true on success, false on failure.
      */
@@ -466,6 +467,7 @@ class Permissions_Api_AdminApi extends \Zikula_AbstractApi
         }
         uksort($schemas, 'strnatcasecmp');
         SecurityUtil::setSchemas($schemas);
+
         return $schemas;
     }
 

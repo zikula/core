@@ -43,7 +43,7 @@ class CommonHelper extends \Zikula_AbstractHelper
      * Constant value for groups in the Open state (accepting members).
      */
     const STATE_OPEN = 1;
-    
+
     /**
      * Constructs an instance of this helper class.
      */

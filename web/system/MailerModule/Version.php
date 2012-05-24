@@ -26,6 +26,7 @@ class Version extends \Zikula_AbstractVersion
         $meta['version']        = '1.3.2';
 
         $meta['securityschema'] = array('Mailer::' => '::');
+
         return $meta;
     }
 }

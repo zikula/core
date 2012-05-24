@@ -458,7 +458,7 @@ class AdminController extends \Zikula_AbstractController
 
         // sort alphabetically.
         $sortAarr = array();
-        foreach($groupmembers as $res) {
+        foreach ($groupmembers as $res) {
             $sortAarr[] = strtolower($res['uname']);
         }
         array_multisort($sortAarr, SORT_ASC, $groupmembers);
@@ -470,7 +470,7 @@ class AdminController extends \Zikula_AbstractController
             $letter = '*';
         }
 
-        switch($letter) {
+        switch ($letter) {
             case '*':
                 // read allusers
                 $field = '';

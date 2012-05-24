@@ -137,9 +137,11 @@ class FilterUtil_Config
     {
         if (ModUtil::available($module)) {
             $this->_module = $module;
+
             return true;
         } elseif (strtolower($module) == 'core') {
             $this->_module = 'core';
+
             return true;
         }
 
@@ -467,7 +469,7 @@ class FilterUtil_Config
      * Defined to be a join with an ExternalTable:field.
      *
      * @param array &$joins Empty array to store the result in.
-     * @param array $obj    Filter object to be processed to enrich the Query.
+     * @param array $obj Filter object to be processed to enrich the Query.
      *
      * @return array Columns defined as join with an external table.
      */
@@ -484,6 +486,7 @@ class FilterUtil_Config
                     $joins[$obj['field']] = $column;
                 }
             }
+
             return;
 
         } else {
@@ -591,6 +594,7 @@ class FilterUtil_Config
                     }
                 }
             }
+
             return array_combine($aliasses, $tables);
         }
 

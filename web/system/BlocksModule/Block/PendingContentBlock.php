@@ -53,7 +53,7 @@ class PendingContentBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display block.
      *
-     * @param  array  $blockinfo Blockinfo structure.
+     * @param array $blockinfo Blockinfo structure.
      *
      * @return output Rendered block.
      */

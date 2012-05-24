@@ -37,6 +37,7 @@ function smarty_function_html_select_languages($params, Zikula_View $view)
 {
     if (!isset($params['name']) || empty($params['name'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('html_select_languages', 'name')));
+
         return false;
     }
 
