@@ -174,7 +174,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      *
      * @return array SQL code array.
      */
-    function getSQL($field, $op, $value)
+    public function getSQL($field, $op, $value)
     {
         if (array_search($op, $this->availableOperators()) === false || array_search($field, $this->fields) === false) {
             return '';

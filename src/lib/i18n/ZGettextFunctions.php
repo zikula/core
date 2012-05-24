@@ -43,6 +43,7 @@ function __f($msgid, $params, $domain=null)
     }
     $msgstr = (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
     $params = (is_array($params) ? $params : array($params));
+
     return vsprintf($msgstr, $params);
 }
 
@@ -74,6 +75,7 @@ function _fn($sin, $plu, $n, $params, $domain=null)
     }
     $msgstr = (isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n));
     $params = (is_array($params) ? $params : array($params));
+
     return vsprintf($msgstr, $params);
 }
 
@@ -90,6 +92,7 @@ function __($msgid, $domain=null)
     if (is_array($domain)) {
         throw new Exception(__('$domain cannot be an array.'));
     }
+
     return (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
 }
 
@@ -109,6 +112,7 @@ function _n($singular, $plural, $count, $domain=null)
     if (is_array($domain)) {
         throw new Exception(__('$domain cannot be an array.'));
     }
+
     return (isset($domain) ? _dngettext($domain, $singular, $plural, (int)$count) : _ngettext($singular, $plural, (int)$count));
 }
 

@@ -127,8 +127,7 @@ class Zikula_View_Plugin extends Zikula_View
             return;
         }
 
-        switch ($modinfo['type'])
-        {
+        switch ($modinfo['type']) {
             case ModUtil::TYPE_SYSTEM:
                 $pluginsDir = "system/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
                 break;
@@ -183,6 +182,7 @@ class Zikula_View_Plugin extends Zikula_View
             foreach ($search_path as $path) {
                 if (is_readable("$path/$ostemplate")) {
                     $cache[$template] = $path;
+
                     return $path;
                 }
             }

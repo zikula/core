@@ -25,7 +25,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -188,8 +188,8 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the bock form
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the bock form
      */
     public function modify($blockinfo)
     {
@@ -220,7 +220,7 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
+     * @param  array $blockinfo a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)

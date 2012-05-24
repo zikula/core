@@ -20,6 +20,7 @@ class PageLock_Installer extends Zikula_AbstractInstaller
     public function install()
     {
         if (!DBUtil::createTable('pagelock'))
+
             return false;
 
         return true;
@@ -30,8 +31,8 @@ class PageLock_Installer extends Zikula_AbstractInstaller
      *
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param  string $oldVersion version number string to upgrade from
+     * @return mixed  true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {

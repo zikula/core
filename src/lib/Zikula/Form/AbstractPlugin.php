@@ -237,7 +237,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
     /**
      * Constructor.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      */
     public function __construct(Zikula_Form_View $view, &$params)
@@ -377,7 +377,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * or attributes (all unknown parameters go into the "attribues" array).
      * You can override this for special situations.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
@@ -410,7 +410,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      * This fires once, immediately <i>after</i> member variables have been populated from Smarty parameters
      * (in {@link readParameters()}). Default action is to do nothing.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_View::registerPlugin()
@@ -426,7 +426,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * This fires once, immediately <i>after</i> the create event. Default action is to do nothing.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_View::registerPlugin()
@@ -504,7 +504,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      *
      * Default action is to call onDataBound handler in form event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void

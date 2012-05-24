@@ -1,13 +1,13 @@
 <?php
 /**
  * Copyright 2011 Zikula Foundation.
- * 
+ *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
- * 
+ *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- * 
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -58,17 +58,17 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * @var mixed
      */
     protected $data;
-    
+
     /**
      * Indicates whether isValid() been called.
      *
      * @var boolean
      */
     protected $hasBeenValidated;
-    
+
     /**
      * An array of Users_Controller_FormData_Validator_AbstractValidator instancess to apply during isValid().
-     * 
+     *
      * @var array
      */
     protected $validators;
@@ -88,8 +88,8 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * @param mixed                                      $initialValue   The initial value of the field.
      * @param mixed                                      $defaultValue   The defaule value for the field.
      * @param Zikula_ServiceManager                      $serviceManager The current service manager instance.
-     * 
-     * @throws InvalidArgumentException Thrown if any of the parameters are not valid. 
+     *
+     * @throws InvalidArgumentException Thrown if any of the parameters are not valid.
      */
     public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, Zikula_ServiceManager $serviceManager = null)
     {
@@ -135,9 +135,9 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * Provides attribute access to protected properties, if accessors are defined for those properites.
      *
      * @param string $name The name of the property to retrieve.
-     * 
+     *
      * @return mixed The value of the specified property.
-     * 
+     *
      * @throws OutOfBoundsException Thrown if the specified name does not exist, the corresponding property does not have an accessor, or the specified name is invalid.
      */
     public function __get($name)
@@ -167,9 +167,9 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * Provides property isset access for protected properties that have an accessor defined.
      *
      * @param string $name The name of the property to query.
-     * 
+     *
      * @return boolean True if the property exists, provides an accessor, and is not null.
-     * 
+     *
      * @throws OutOfBoundsException Thrown if the specified name does not exist, the corresponding property does not have an accessor, or the specified name is invalid.
      */
     public function __isset($name)
@@ -234,9 +234,9 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      * Allows or disallows the field to contain a null as a valid value.
      *
      * @param boolean $isNullAllowed True if null values are valid for this field, otherwise false.
-     * 
+     *
      * @return Users_Controller_FormData_Field Returns $this to allow for function chaining.
-     * 
+     *
      * @throws InvalidArgumentException Thrown if the value of the parameter is not a boolean value.
      */
     public function setNullAllowed($isNullAllowed)
@@ -252,30 +252,30 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
 
     /**
      * Indicates whether this field allows null values as valid values or not.
-     * 
+     *
      * @return boolean True if null is a valid value for this field; otherwise false.
      */
     public function isNullAllowed()
     {
         return $this->nullAllowed;
     }
-    
+
     /**
      * Add a validator to this field, defining what values are valid.
-     * 
+     *
      * This can be called multiple times to add a chain of several validators.
      *
      * @param Users_Controller_FormData_Validator_AbstractValidator $validator The validator to be attached to this field for validation of its data.
-     * 
+     *
      * @return Users_Controller_FormData_Field Returns $this to allow function chaining.
      */
     public function addValidator(Users_Controller_FormData_Validator_AbstractValidator $validator)
     {
         $this->validators[] = $validator;
-        
+
         return $this;
     }
-    
+
     /**
      * Validates the field data based on whether nulls are valid values or not.
      *
@@ -284,14 +284,14 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
     protected function isValidNullAllowed()
     {
         $valid = true;
-        
+
         if (!$this->nullAllowed) {
             if (!isset($this->data)) {
                 $valid = false;
                 $this->setErrorMessage($this->__('The value for this field cannot be null.'));
             }
         }
-        
+
         return $valid;
     }
 
@@ -303,7 +303,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
     public function isValid()
     {
         $valid = $this->isValidNullAllowed();
-        
+
         if ($valid && isset($this->data)) {
             foreach ($this->validators as $validator) {
                 if (!$validator->isValid($this->data)) {
@@ -313,7 +313,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
                 }
             }
         }
-        
+
         $this->hasBeenValidated = true;
 
         return $valid;
@@ -330,10 +330,10 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
         if ($this->hasErrorMessage()) {
             $error =  $this->errorMessage;
         }
-        
+
         return $error;
     }
-    
+
     /**
      * Indicates whether the field has an error message to report or not.
      *
@@ -363,10 +363,10 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
         unset($this->errorMessage);
         $this->hasBeenValidated = false;
     }
-    
+
     /**
      * Sets the field's data value.
-     * 
+     *
      * The field's data is not validated at this point, and any value can be specified.
      *
      * @param mixed $data The field's data.

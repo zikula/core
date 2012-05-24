@@ -43,6 +43,7 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
         }
 
         $this->view = $view;
+
         return $this;
     }
 
@@ -57,7 +58,7 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
     /**
      * Get information on block
      *
-     * @return    array    blockinfo array
+     * @return array blockinfo array
      */
     public function info()
     {
@@ -73,8 +74,8 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
     /**
      * Display the block
      *
-     * @param     $blockinfo     blockinfo array
-     * @return    string   HTML output string
+     * @param         $blockinfo blockinfo array
+     * @return string HTML output string
      */
     public function display($blockinfo)
     {
@@ -99,6 +100,7 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
             if ($showerror) {
                 LogUtil::registerError($this->__f('Misconfigured block. ID: %s', $blockinfo['bid']));
             }
+
             return;
         }
 
@@ -110,6 +112,7 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
             if ($showerror) {
                 LogUtil::registerError($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', array($vars['module'], $blockinfo['bid'])));
             }
+
             return;
         }
 
@@ -134,8 +137,8 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
     /**
      * Modify the block
      *
-     * @param     $blockinfo     blockinfo array
-     * @return    string   HTML output string
+     * @param         $blockinfo blockinfo array
+     * @return string HTML output string
      */
     public function modify($blockinfo)
     {
@@ -179,10 +182,10 @@ class Theme_Block_Render extends Zikula_Controller_AbstractBlock
     /**
      * Update the block
      *
-     * @param     $blockinfo     old blockinfo array
-     * @return    array    new blockinfo array
+     * @param        $blockinfo old blockinfo array
+     * @return array new blockinfo array
      */
-    function update($blockinfo)
+    public function update($blockinfo)
     {
         if (!SecurityUtil::checkPermission('Theme:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN)) {
             return false;

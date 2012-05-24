@@ -42,13 +42,13 @@ class Blocks_Controller_User extends Zikula_AbstractController
 
         $entity = $this->name . '_Entity_UserBlock';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $bid));
-        
+
         if ($item['active'] == 1) {
             $item['active'] = 0;
         } else {
             $item['active'] = 1;
         }
-        
+
         $this->entityManager->flush();
 
         // now lets get back to where we came from

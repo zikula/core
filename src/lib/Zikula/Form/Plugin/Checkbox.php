@@ -86,7 +86,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      * @internal
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -94,13 +94,13 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         // Load all special and non-string parameters
         // - the rest are fetched automatically
@@ -116,12 +116,12 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View render object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View render object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         $this->loadValue($view, $view->get_template_vars());
     }
@@ -132,12 +132,12 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_View::setValues.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_Viewr object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_Viewr object.
      * @param array            &$values Values to load.
      *
      * @return void
      */
-    function loadValue(Zikula_Form_View $view, &$values)
+    public function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -173,7 +173,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -200,7 +200,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function decode(Zikula_Form_View $view)
+    public function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -214,12 +214,12 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue(Zikula_Form_View $view, &$data)
+    public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

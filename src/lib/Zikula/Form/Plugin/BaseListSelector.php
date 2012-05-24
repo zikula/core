@@ -129,7 +129,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -137,13 +137,13 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         $this->inputName = $this->id;
 
@@ -164,7 +164,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return void
      */
-    function initialize(Zikula_Form_View $view)
+    public function initialize(Zikula_Form_View $view)
     {
         $view->addValidator($this);
     }
@@ -172,12 +172,12 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
@@ -192,7 +192,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return void
      */
-    function setError($msg)
+    public function setError($msg)
     {
         $this->isValid = false;
         $this->errorMessage = $msg;
@@ -205,7 +205,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return void
      */
-    function clearValidation(Zikula_Form_View $view)
+    public function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -217,12 +217,12 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue(Zikula_Form_View $view, &$data)
+    public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {
@@ -242,12 +242,12 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_View::setValues.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$values Values to load.
      *
      * @return void
      */
-    function loadValue(Zikula_Form_View $view, &$values)
+    public function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $items = null;
@@ -287,7 +287,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return boolean
      */
-    function setSelectedValue($value)
+    public function setSelectedValue($value)
     {
         return true;
     }
@@ -299,7 +299,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return mixed The selected value.
      */
-    function getSelectedValue()
+    public function getSelectedValue()
     {
         return null;
     }
@@ -312,7 +312,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return void
      */
-    function addItem($text, $value)
+    public function addItem($text, $value)
     {
         $item = array(
             'text' => $text,
@@ -332,7 +332,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      *
      * @return void
      */
-    function setItems($items)
+    public function setItems($items)
     {
         $this->items = $items;
     }

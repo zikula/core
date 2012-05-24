@@ -24,6 +24,7 @@ class Search_Version extends Zikula_AbstractVersion
         $meta['version']        = '1.5.2';
 
         $meta['securityschema'] = array('Search::' => 'Module name::');
+
         return $meta;
     }
 }

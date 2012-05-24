@@ -67,7 +67,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
         foreach ($this->attributes as $name => $value) {
             if ($name == 'style') {
                 $style = $value;
-            } else if (in_array($name, $styleElements)) {
+            } elseif (in_array($name, $styleElements)) {
                 $this->styleAttributes[$name] = $value;
             } else {
                 $attr .= " {$name}=\"{$value}\"";

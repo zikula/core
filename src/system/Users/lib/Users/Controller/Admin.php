@@ -277,7 +277,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             $event = new Zikula_Event('module.users.ui.validate_edit.new_user', $registrationInfo, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
-            
+
             $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
             $this->notifyHooks($hook);
             $validators = $hook->getValidators();
@@ -298,7 +298,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 if (isset($registeredObj) && $registeredObj) {
                     $event = new Zikula_Event('module.users.ui.process_edit.new_user', $registeredObj);
                     $this->eventManager->notify($event);
-                    
+
                     $hook = new Zikula_ProcessHook('users.ui_hooks.user.process_edit', $registeredObj['uid']);
                     $this->notifyHooks($hook);
 
@@ -483,7 +483,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Fatal     Thrown if the function enters an unknown state.
+     * @throws Zikula_Exception_Fatal Thrown if the function enters an unknown state.
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
      */
@@ -597,7 +597,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             $event = new Zikula_Event('module.users.ui.validate_edit.modify_user', $user, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
-            
+
             $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
             $this->notifyHooks($hook);
             $validators = $hook->getValidators();
@@ -680,7 +680,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
                 $hook = new Zikula_ProcessHook('users.ui_hooks.user.process_edit', $user['uid']);
                 $this->notifyHooks($hook);
-                
+
                 $this->registerStatus($this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
@@ -759,6 +759,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             if (!isset($userAttributes['realname'])) {
                 $userAttributes['realname'] = '';
             }
+
             return $this->view->assign_by_ref('formData', $formData)
                 ->assign('user_attributes', $userAttributes)
                 ->assign('defaultGroupId', ModUtil::getVar('Groups', 'defaultgroup', 1))
@@ -871,6 +872,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $user = UserUtil::getVars($uid);
         if (!$user) {
             $this->registerError($this->__('Sorry! Unable to retrieve information for that user id.'));
+
             return false;
         }
 
@@ -907,7 +909,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * Parameters passed via SESSION:
      * ------------------------------
      * None.
-     * 
+     *
      * @return string HTML string containing the rendered template.
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
@@ -980,11 +982,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             foreach ($userid as $uid) {
                 $event = new Zikula_Event('module.users.ui.validate_delete', null, array('id' => $uid), new Zikula_Hook_ValidationProviders());
                 $validators = $this->eventManager->notify($event)->getData();
-                
+
                 $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_delete', $validators);
                 $this->notifyHooks($hook);
                 $validators = $hook->getValidators();
-                
+
                 if ($validators->hasErrors()) {
                     $valid = false;
                 }
@@ -998,7 +1000,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     foreach ($userid as $uid) {
                         $event = new Zikula_Event('module.users.ui.process_delete', null, array('id' => $uid));
                         $this->eventManager->notify($event);
-                
+
                         $hook = new Zikula_ProcessHook('users.ui_hooks.user.process_delete', $uid);
                         $this->notifyHooks($hook);
                     }
@@ -1277,6 +1279,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             // record, no permission to read an existing record, or a database error
             $this->registerError($this->__('Unable to retrieve registration record. '
                 . 'The record with the specified id might not exist, or you might not have permission to access that record.'));
+
             return false;
         }
 
@@ -1368,7 +1371,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             $event = new Zikula_Event('module.users.ui.validate_edit.modify_registration', $registration, array(), new Zikula_Hook_ValidationProviders());
             $validators = $this->eventManager->notify($event)->getData();
-            
+
             $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
             $this->notifyHooks($hook);
             $validators = $hook->getValidators();
@@ -1419,7 +1422,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
                 $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registration['uid']);
                 $this->notifyHooks($hook);
-                
+
                 $this->registerStatus($this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
@@ -1528,6 +1531,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -1535,6 +1539,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+
             return false;
         }
 
@@ -1638,6 +1643,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -1645,6 +1651,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+
             return false;
         }
 
@@ -1766,6 +1773,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
+
             return false;
         }
 
@@ -1773,6 +1781,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $uid));
         if (!$reginfo) {
             $this->registerError($this->__f('Error! Unable to retrieve registration record with uid \'%1$s\'', $uid));
+
             return false;
         }
 
@@ -2196,10 +2205,10 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * ------------------------------
      * None.
      *
-     * @param array   $importFile Information about the file to import. Used as the default
+     * @param array $importFile Information about the file to import. Used as the default
      *                            if $_FILES['importFile'] is not set. Allows this function to be called internally,
      *                            rather than as a result of a form post.
-     * @param integer $delimiter  A code indicating the delimiter used in the file. Used as the
+     * @param integer $delimiter A code indicating the delimiter used in the file. Used as the
      *                            default if $_POST['delimiter'] is not set. Allows this function to be called internally,
      *                            rather than as a result of a form post.
      *
@@ -2442,7 +2451,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @return string The rendered output from either the template for confirmation.
      *
-     * @throws Zikula_Exception_Fatal     Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
+     * @throws Zikula_Exception_Fatal Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access for the account record.
      */

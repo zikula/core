@@ -30,7 +30,7 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
      * @return boolean
      */
     public function handler($errno, $errstr, $errfile='', $errline=0, $errcontext=null)
-    {        
+    {
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
         // Notify all loggers
@@ -38,12 +38,14 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
         if ($this->isPHPError() && System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
             // allow PHP to return error
             $this->resetHandler();
+
             return false;
         }
 
         if (!$this->isDisplayErrorTemplate()) {
             // prevent PHP from handling the event after we return
             $this->resetHandler();
+
             return true;
         }
 

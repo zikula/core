@@ -52,6 +52,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         $menuTxt = CategoryUtil::getCategoryTreeJS($cats, true, true);
 
         $this->view->assign('menuTxt', $menuTxt);
+
         return $this->view->fetch('categories_admin_view.tpl');
     }
 
@@ -216,6 +217,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     public function newcat()
     {
         $_POST['mode'] = 'new';
+
         return $this->edit();
     }
 

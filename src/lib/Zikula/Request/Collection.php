@@ -63,10 +63,10 @@ class Zikula_Request_Collection implements ArrayAccess
 
     /**
      * Get.
-     * 
+     *
      * @param string $key     Key.
      * @param mixed  $default Default value if not set.
-     * 
+     *
      * @return mixed
      */
     public function get($key, $default = null)
@@ -101,7 +101,7 @@ class Zikula_Request_Collection implements ArrayAccess
 
     /**
      * Filter key.
-     * 
+     *
      * @param string  $key     Key.
      * @param mixed   $default Default = null.
      * @param integer $filter  FILTER_* constant.

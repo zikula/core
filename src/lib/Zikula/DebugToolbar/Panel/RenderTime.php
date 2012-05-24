@@ -69,12 +69,13 @@ class Zikula_DebugToolbar_Panel_RenderTime implements Zikula_DebugToolbar_PanelI
         $end =  microtime(true);
 
         $diff = $end - $start;
+
         return $diff;
     }
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return number
      */
     public function getPanelData()

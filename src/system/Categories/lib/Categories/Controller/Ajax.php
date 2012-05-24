@@ -41,6 +41,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $result = array(
             'response' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -99,6 +100,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         if ($validationErrors) {
             return new Zikula_Response_Ajax_BadData($validationErrors, $result);
         }
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -142,6 +144,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -159,6 +162,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -201,6 +205,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -220,6 +225,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $result = array(
             'result' => $this->view->fetch('categories_adminajax_delete.tpl'),
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -238,6 +244,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -256,6 +263,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'cid' => $cid,
             'result' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 
@@ -277,6 +285,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
                 'parent' => $cat->getDataField('parent_id'),
                 'mode' => $mode
             );
+
             return $this->edit($args);
         }
 
@@ -335,6 +344,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
+
         return new Zikula_Response_Ajax($result);
     }
 

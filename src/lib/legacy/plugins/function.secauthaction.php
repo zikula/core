@@ -35,16 +35,19 @@ function smarty_function_secauthaction($params, &$smarty)
 
     if (!$comp) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'comp')));
+
         return false;
     }
 
     if (!$inst) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'inst')));
+
         return false;
     }
 
     if (!$level) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_secauthaction', 'level')));
+
         return false;
     }
 

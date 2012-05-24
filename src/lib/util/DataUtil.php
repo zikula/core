@@ -472,7 +472,7 @@ class DataUtil
             $var = mb_ereg_replace($value, $permareplace[$key], $var);
         }
 
-        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var)); 
+        $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var));
 
         // final clean
         $permalinksseparator = System::getVar('shorturlsseparator');
@@ -548,6 +548,7 @@ class DataUtil
     public static function hash($string, $type = 'sha1')
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('DataUtil::hash()', 'hash()')), E_USER_DEPRECATED);
+
         return hash(strtolower($type), $string);
     }
 
@@ -640,6 +641,7 @@ class DataUtil
     public static function _mb_unserialize_callback($match)
     {
         $length = strlen($match[2]);
+
         return "s:$length:\"$match[2]\";";
     }
 
@@ -659,6 +661,7 @@ class DataUtil
             foreach ($input as $key => $value) {
                 $return[$key] = self::convertToUTF8($value);
             }
+
             return $return;
         } elseif (is_string($input)) {
             if (function_exists('mb_convert_encoding')) {
@@ -685,6 +688,7 @@ class DataUtil
             foreach ($input as $key => $value) {
                 $return[$key] = self::convertFromUTF8($value);
             }
+
             return $return;
         } elseif (is_string($input)) {
             if (function_exists('mb_convert_encoding')) {
@@ -708,6 +712,7 @@ class DataUtil
     public static function transformNumberInternal($number)
     {
         $i18n = ZI18n::getInstance();
+
         return $i18n->transformNumberInternal($number);
     }
 
@@ -721,6 +726,7 @@ class DataUtil
     public static function transformCurrencyInternal($number)
     {
         $i18n = ZI18n::getInstance();
+
         return $i18n->transformCurrencyInternal($number);
     }
 
@@ -734,6 +740,7 @@ class DataUtil
     public static function formatCurrency($number)
     {
         $i18n = ZI18n::getInstance();
+
         return $i18n->transformCurrencyDisplay($number);
     }
 
@@ -748,6 +755,7 @@ class DataUtil
     public static function formatNumber($number, $decimal_points=null)
     {
         $i18n = ZI18n::getInstance();
+
         return $i18n->transformNumberDisplay($number, $decimal_points);
     }
 

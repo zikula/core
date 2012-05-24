@@ -20,9 +20,9 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
 {
     /**
      * The class name of a doctrine record.
-     * 
+     *
      * Required in doctrine mode only.
-     * 
+     *
      * @var string
      */
     public $recordClass;
@@ -119,7 +119,7 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -127,13 +127,13 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         $hasModule = isset($params['module']) && !empty($params['module']);
         $hasObjecttype = isset($params['objecttype']) && !empty($params['objecttype']);
@@ -232,12 +232,12 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         if ($this->showEmptyValue != 0) {
             $this->addItem('- - -', 0);

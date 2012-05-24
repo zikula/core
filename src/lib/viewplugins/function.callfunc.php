@@ -41,11 +41,11 @@
 function smarty_function_callfunc($params, Zikula_View $view)
 {
     $assign = (isset($params['x_assign']) && !empty($params['x_assign'])) ? $params['x_assign'] : '';
-    
+
     if (array_key_exists('x_class', $params)) {
         $class = $params['x_class'];
         $method = $params['x_method'];
-    } else if (array_key_exists('x_function', $params)) {
+    } elseif (array_key_exists('x_function', $params)) {
         $function = $params['x_function'];
     } else {
         $view->trigger_error(__f('Error! in %1$s: the "class" and "method" parameter must be specified together or just "function" by itself.', array('calluserfunc', 'modname')));

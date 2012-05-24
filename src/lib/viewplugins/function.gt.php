@@ -54,6 +54,7 @@ function smarty_function_gt($params, Zikula_View $view)
 
     if (!isset($params['text'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_gt', 'text')));
+
         return false;
     }
     $text = $params['text'];
@@ -61,6 +62,7 @@ function smarty_function_gt($params, Zikula_View $view)
     // validate plural settings if applicable
     if ((!isset($params['count']) && isset($params['plural'])) || (isset($params['count']) && !isset($params['plural']))) {
         $view->trigger_error(__('Error! If you use a plural or count in gettext, you must use both parameters together.'));
+
         return false;
     }
 

@@ -51,9 +51,11 @@ function smarty_function_modgetinfo($params, Zikula_View $view)
         if (!ModUtil::available($modname)) {
             if ($assign) {
                 $view->assign($assign, $default);
+
                 return false;
             }
             $view->assign($assign, $default);
+
             return;
         }
         $modid = ModUtil::getIdFromName($modname);
@@ -63,6 +65,7 @@ function smarty_function_modgetinfo($params, Zikula_View $view)
     $info = strtolower($info);
     if ($info != 'all' && !isset($modinfo[$info])) {
         $view->trigger_error(__f('Invalid %1$s [%2$s] passed to %3$s.', array('info', $info, 'modgetinfo')));
+
         return false;
     }
 

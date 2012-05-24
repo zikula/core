@@ -42,7 +42,7 @@
 function smarty_insert_getstatusmsg($params, $view)
 {
     // NOTE: assign parameter is handled by the smarty_core_run_insert_handler(...) function in lib/vendor/Smarty/internals/core.run_insert_handler.php
-    
+
     $class  = isset($params['class'])   ? $params['class']   : null;
     $style  = isset($params['style'])   ? $params['style']   : null;
     $tag    = isset($params['tag'])     ? $params['tag']     : null;

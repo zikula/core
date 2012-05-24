@@ -59,6 +59,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
         $_attrs = $compiler->_parse_attrs($_match[1] . $_match[3]);
     } else {
         $compiler->_syntax_error(__f("Missing or invalid '%s' parameter.", 'var'), E_USER_WARNING, __FILE__, __LINE__);
+
         return;
     }
 
@@ -94,6 +95,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
         if (isset($_attrs['keys'])) {
             if (substr_count($_attrs['keys'], $_delim) != substr_count($_attrs['values'], $_delim)) {
                 $compiler->_syntax_error(__("Keys and values size doesn't match."), E_USER_WARNING, __FILE__, __LINE__);
+
                 return;
             }
 
@@ -108,6 +110,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
 
     } else {
         $compiler->_syntax_error(__f("Missing '%s' parameter.", 'value'), E_USER_WARNING, __FILE__, __LINE__);
+
         return;
     }
 

@@ -62,7 +62,7 @@ class Zikula_Form_Block_Volatile extends Zikula_Form_AbstractPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -70,13 +70,13 @@ class Zikula_Form_Block_Volatile extends Zikula_Form_AbstractPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
     }
 }

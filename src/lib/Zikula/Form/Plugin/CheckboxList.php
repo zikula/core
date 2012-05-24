@@ -122,7 +122,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -130,13 +130,13 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         parent::create($view, $params);
     }
@@ -144,12 +144,12 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         parent::load($view, $params);
 
@@ -165,7 +165,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
 
@@ -257,7 +257,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function decode(Zikula_Form_View $view)
+    public function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         // Besides that, a disabled checkbox returns nothing at all, so old values are good to keep
@@ -281,7 +281,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function validate(Zikula_Form_View $view)
+    public function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -297,7 +297,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function setError($msg)
+    public function setError($msg)
     {
         $this->isValid = false;
         $this->errorMessage = $msg;
@@ -310,7 +310,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function clearValidation(Zikula_Form_View $view)
+    public function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -322,12 +322,12 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * Called by the render when doing $view->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue(Zikula_Form_View $view, &$data)
+    public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {
@@ -347,12 +347,12 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_ViewetValues.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$values Values to load.
      *
      * @return void
      */
-    function loadValue(Zikula_Form_View $view, &$values)
+    public function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $items = null;
@@ -392,11 +392,11 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function setSelectedValue($value)
+    public function setSelectedValue($value)
     {
         if (is_string($value)) {
             $value = explode(':', $value);
-        } else if (!is_array($value)) {
+        } elseif (!is_array($value)) {
             $value = array($value);
         }
 
@@ -408,13 +408,14 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return mixed The selected value.
      */
-    function getSelectedValue()
+    public function getSelectedValue()
     {
         if ($this->saveAsString) {
             $s = '';
             for ($i = 0, $count = count($this->selectedValue); $i < $count; ++$i) {
                 $s .= (empty($s) ? '' : ':') . $this->selectedValue[$i];
             }
+
             return ":{$s}:";
         }
 

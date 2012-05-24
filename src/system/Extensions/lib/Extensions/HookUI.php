@@ -72,14 +72,14 @@ class Extensions_HookUI
                 $subscriberAreasToTitles[$subscriberArea] = $view->__($moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle());
             }
             $view->assign('subscriberAreasToTitles', $subscriberAreasToTitles);
-            
+
             $subscriberAreasToCategories = array();
             foreach ($subscriberAreas as $subscriberArea) {
                 $category = $view->__($moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
                 $subscriberAreasToCategories[$subscriberArea] = $category;
             }
             $view->assign('subscriberAreasToCategories', $subscriberAreasToCategories);
-            
+
             $subscriberAreasAndCategories = array();
             foreach ($subscriberAreas as $subscriberArea) {
                 $category = $view->__($moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
@@ -121,7 +121,7 @@ class Extensions_HookUI
                     $hooksubscriberAreasToTitles[$hooksubscriberArea] = $view->__($hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
                 }
                 $hooksubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
-                
+
                 // and get the categories
                 $hooksubscriberAreasToCategories = array();
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
@@ -134,7 +134,7 @@ class Extensions_HookUI
             $view->assign('total_available_subscriber_areas', $total_available_subscriber_areas);
         }
 
-        // get providers that are already attached to the subscriber 
+        // get providers that are already attached to the subscriber
         // and providers that can attach to the subscriber
         if ($isSubscriber && !empty($subscriberAreas)) {
             // get current sorting
@@ -160,11 +160,11 @@ class Extensions_HookUI
 
                     // get hook provider from it's area
                     $sbaProviderModule = HookUtil::getOwnerByArea($areaname);
-                    
+
                     // create an instance of the provider's version
                     $sbaProviderModuleVersion = $sbaProviderModule.'_Version';
                     $sbaProviderModuleVersionObj = new $sbaProviderModuleVersion;
-                    
+
                     // get the bundle title
                     $currentSortingTitles[$areaname] = $view->__($sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle());
                 }
@@ -172,7 +172,7 @@ class Extensions_HookUI
             $view->assign('areasSorting', $currentSorting);
             $view->assign('areasSortingTitles', $currentSortingTitles);
             $view->assign('total_attached_provider_areas', $total_attached_provider_areas);
-            
+
             // get available providers
             $hookproviders = HookUtil::getHookProviders();
             $total_hookproviders = count($hookproviders);
@@ -184,13 +184,13 @@ class Extensions_HookUI
                     unset($hookproviders[$i]);
                     continue;
                 }
-                
+
                 // does the user have admin permissions on the provider module?
                 if (!SecurityUtil::checkPermission($hookproviders[$i]['name']."::", '::', ACCESS_ADMIN)) {
                     unset($hookproviders[$i]);
                     continue;
                 }
-                
+
                 // create an instance of the provider's version
                 $hookproviderVersion = $hookproviders[$i]['name'].'_Version';
                 $hookproviderVersionObj = new $hookproviderVersion;
@@ -206,14 +206,14 @@ class Extensions_HookUI
                     $hookproviderAreasToTitles[$hookproviderArea] = $view->__($hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getTitle());
                 }
                 $hookproviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
-                
+
                 // and get the categories
                 $hookproviderAreasToCategories = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {
                     $hookproviderAreasToCategories[$hookproviderArea] = $view->__($hookproviderVersionObj->getHookProviderBundle($hookproviderArea)->getCategory());
                 }
                 $hookproviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
-                
+
                 // and build array with category => areas
                 $hookproviderAreasAndCategories = array();
                 foreach ($hookproviderAreas as $hookproviderArea) {

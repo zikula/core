@@ -17,6 +17,7 @@ class Blocks_MenutreeUtil
     public static function getIdOffset($id = null)
     {
         $item = !is_null($id) && !empty($id) ? $id : 1;
+
         return $item*10000;
     }
 

@@ -36,5 +36,6 @@ function smarty_function_modulestylesheet($params, &$smarty)
         PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
         PageUtil::addVar('header', '<script type="text/javascript">/* <![CDATA[ */ Event.observe(window, "load", function() { alert("'.__('You can safely remove the modulestylesheet plugin from your theme. It is obsolete since Zikula 1.1.0. The adding of stylesheet files has been automated and does not need user interference. This note is shown to Administrators only.').'");}); /* ]]> */</script>');
     }
+
     return;
 }

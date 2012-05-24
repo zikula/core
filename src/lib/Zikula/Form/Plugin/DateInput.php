@@ -83,7 +83,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -91,13 +91,13 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         $this->includeTime = (array_key_exists('includeTime', $params) ? $params['includeTime'] : 0);
         $this->daFormat = (array_key_exists('daFormat', $params) ? $params['daFormat'] : ($this->includeTime ? __('%A, %B %d, %Y - %I:%M %p') : __('%A, %B %d, %Y')));
@@ -121,7 +121,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         static $firstTime = true;
 
@@ -134,18 +134,18 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
 
             if ($d == 'now') {
                 $date = time();
-            } else if ($d == 'today') {
+            } elseif ($d == 'today') {
                 $date = mktime(0, 0, 0, $now['mon'], $now['mday'], $now['year']);
-            } else if ($d == 'monthstart') {
+            } elseif ($d == 'monthstart') {
                 $date = mktime(0, 0, 0, $now['mon'], 1, $now['year']);
-            } else if ($d == 'monthend') {
+            } elseif ($d == 'monthend') {
                 $daysInMonth = date('t');
                 $date = mktime(0, 0, 0, $now['mon'], $daysInMonth, $now['year']);
-            } else if ($d == 'yearstart') {
+            } elseif ($d == 'yearstart') {
                 $date = mktime(0, 0, 0, 1, 1, $now['year']);
-            } else if ($d == 'yearend') {
+            } elseif ($d == 'yearend') {
                 $date = mktime(0, 0, 0, 12, 31, $now['year']);
-            } else if ($d == 'custom') {
+            } elseif ($d == 'custom') {
                 $date = strtotime($this->initDate);
             }
 
@@ -275,7 +275,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Parsed Text.
      */
-    function parseValue(Zikula_Form_View $view, $text)
+    public function parseValue(Zikula_Form_View $view, $text)
     {
         if (empty($text)) {
             return null;
@@ -291,7 +291,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function validate(Zikula_Form_View $view)
+    public function validate(Zikula_Form_View $view)
     {
         parent::validate($view);
 
@@ -323,7 +323,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Formatted value.
      */
-    function formatValue(Zikula_Form_View $view, $value)
+    public function formatValue(Zikula_Form_View $view, $value)
     {
         return DateUtil::formatDatetime($value, $this->ifFormat, false);
     }

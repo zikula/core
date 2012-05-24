@@ -169,8 +169,7 @@ function smarty_function_pager($params, Zikula_View $view)
     $allVars = array_merge($_POST, $_GET);
     foreach ($allVars as $k => $v) {
         if ($k != $pager['posvar'] && !is_null($v)) {
-            switch ($k)
-            {
+            switch ($k) {
                 case 'module':
                     if (!isset($params['modname'])) {
                         $pager['module'] = $v;

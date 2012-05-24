@@ -146,6 +146,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         if ($this->getVar('hideclosed')) {
             $where .= " AND {$grpcol['state']} != " . Groups_Helper_Common::STATE_CLOSED;
         }
+
         return DBUtil::selectObjectCount('groups', $where);
     }
 
@@ -169,6 +170,7 @@ class Groups_Api_User extends Zikula_AbstractApi
 
         // Get item
         $where = "WHERE $groupmembershipcolumn[gid] = '" . (int)DataUtil::formatForStore($args['gid']) . "'";
+
         return DBUtil::selectObjectCount('group_membership', $where);
     }
 
@@ -452,8 +454,8 @@ class Groups_Api_User extends Zikula_AbstractApi
     /**
      * Update user.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gtype'].
+     * @param int    $args['uid']     user id.
+     * @param int    $args['gtype'].
      * @param string $args['action'].
      *
      * @return boolean
@@ -571,6 +573,7 @@ class Groups_Api_User extends Zikula_AbstractApi
             if (isset($args['verbose']) && !$args['verbose']) {
                 return false;
             }
+
             return LogUtil::registerError($this->__('Error! You are already a member of this group.'));
         }
 
@@ -656,6 +659,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         foreach ($fa as $f) {
             $items[] = array('uid' => $f);
         }
+
         return $items;
     }
 

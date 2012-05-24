@@ -33,7 +33,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      * shows the module menu and returns or calls whatever the module
      * designer feels should be the default function (often this is the
      * view() function)
-     * 
+     *
      * @return string HTML output string
      */
     public function main()
@@ -208,7 +208,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $nbumax = FormUtil::getPassedValue('nbumax', isset($args['nbumax']) ? $args['nbumax'] : null, 'POST');
         $description = FormUtil::getPassedValue('description', isset($args['description']) ? $args['description'] : null, 'POST');
 
-        
+
         // The API function is called.
         $check = ModUtil::apiFunc('Groups', 'admin', 'getgidbyname',
                 array('name' => $name));
@@ -486,7 +486,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
 
         // sort alphabetically.
         $sortAarr = array();
-        foreach($groupmembers as $res) {
+        foreach ($groupmembers as $res) {
             $sortAarr[] = strtolower($res['uname']);
         }
         array_multisort($sortAarr, SORT_ASC, $groupmembers);
@@ -500,7 +500,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         // Number of items to display per page
         $row = array();
 
-        switch($letter) {
+        switch ($letter) {
             case '?':
             // read usernames beginning with special chars or numbers
                 $regexpfield = 'uname';
@@ -519,7 +519,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
 
         $allusers = array();
         foreach ($users as $user) {
-            if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'  
+            if ($user['uid'] == 0 || strtolower($user['uname']) == 'anonymous' || strtolower($user['uname']) == 'guest'
                     || $user['uname'] == $this->getVar(Users_Constant::MODVAR_ANONYMOUS_DISPLAY_NAME)
                     ) {
                 continue;
@@ -573,7 +573,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
 
         // The API function is called.
         if (is_array($uid)) {
-            foreach($uid as $id) {
+            foreach ($uid as $id) {
                 if (!ModUtil::apiFunc('Groups', 'admin', 'adduser',
                 array('gid' => $gid,
                 'uid' => $id))) {
@@ -807,8 +807,9 @@ class Groups_Controller_Admin extends Zikula_AbstractController
         $defaultgroupid = (int)FormUtil::getPassedValue('defaultgroupid', 1, 'POST');
         // convert id to name
         $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $defaultgroupid));
-        if($group == false) {
+        if ($group == false) {
             LogUtil::registerError($this->__('Error! Could not save the module configuration.'));
+
             return System::redirect(ModUtil::url('Groups', 'admin', 'view'));
         }
         $this->setVar('defaultgroup', $group['gid']);

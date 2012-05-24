@@ -41,5 +41,6 @@ function smarty_modifier_modcallhooks($string, $modname = '')
     }
 
     list($string) = ModUtil::callHooks('item', 'transform', '', $extrainfo);
+
     return $string;
 }

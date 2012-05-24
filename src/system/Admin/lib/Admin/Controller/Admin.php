@@ -39,11 +39,11 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
-    
+
     /**
      * View all admin categories
      *
-     * @param int $startnum the starting id to view from - optional
+     * @param  int    $startnum the starting id to view from - optional
      * @return string HTML string
      */
     public function view($args = array())
@@ -54,7 +54,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
 
         $startnum = (int)FormUtil::getPassedValue('startnum', isset($args['startnum']) ? $args['startnum'] : 0, 'GET');
         $itemsperpage = $this->getVar('itemsperpage');
-        
+
         $categories = array();
         $items = ModUtil::apiFunc('Admin', 'admin', 'getall',
                                           array('startnum' => $startnum,
@@ -65,7 +65,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             }
         }
         $this->view->assign('categories', $categories);
-        
+
         $numitems = ModUtil::apiFunc('Admin', 'admin', 'countitems');
         $this->view->assign('pager', array('numitems' => $numitems,
                                            'itemsperpage' => $itemsperpage));
@@ -94,29 +94,29 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * This is a standard function that is called with the results of the
      * form supplied by admin_admin_new() to create a new category
      * @see Admin_admin_new()
-     * @param string $args['name'] the name of the category to be created
-     * @param string $args['description'] the description of the category to be created
-     * @return mixed category id if create successful, false otherwise
+     * @param  string $args['name']        the name of the category to be created
+     * @param  string $args['description'] the description of the category to be created
+     * @return mixed  category id if create successful, false otherwise
      */
     public function create($args)
     {
         $this->checkCsrfToken();
 
         $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
-        
+
         // Security check
         if (!SecurityUtil::checkPermission('Admin::Category', "$category[name]::", ACCESS_ADD)) {
             return LogUtil::registerPermissionError ();
         }
-        
+
         $cid = ModUtil::apiFunc('Admin', 'admin', 'create',
                     array('name' => $category['name'],
                           'description' => $category['description']));
-        
+
         if (is_numeric($cid)) {
             LogUtil::registerStatus($this->__('Done! Created new category.'));
         }
-     
+
         $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
 
@@ -124,8 +124,8 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * Modify a category
      * This is a standard function that is called whenever an administrator
      * wishes to modify an admin category
-     * @param int $args['cid'] category id
-     * @param int $args['objectid'] generic object id maps to cid if present
+     * @param  int    $args['cid']      category id
+     * @param  int    $args['objectid'] generic object id maps to cid if present
      * @return string HTML string
      */
     public function modify($args)
@@ -136,7 +136,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         if (!empty($objectid)) {
             $cid = $objectid;
         }
-        
+
         $category = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
         if (empty($category)) {
             return LogUtil::registerError($this->__('Error! No such category found.'), 404);
@@ -155,11 +155,11 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * This is a standard function that is called with the results of the
      * form supplied by template_admin_modify() to update a current item
      * @see Admin_admin_modify()
-     * @param int $args['cid'] the id of the item to be updated
-     * @param int $args['objectid'] generic object id maps to cid if present
-     * @param string $args['name'] the name of the category to be updated
-     * @param string $args['description'] the description of the item to be updated
-     * @return bool true if update successful, false otherwise
+     * @param  int    $args['cid']         the id of the item to be updated
+     * @param  int    $args['objectid']    generic object id maps to cid if present
+     * @param  string $args['name']        the name of the category to be updated
+     * @param  string $args['description'] the description of the item to be updated
+     * @return bool   true if update successful, false otherwise
      */
     public function update($args)
     {
@@ -169,20 +169,20 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         if (!empty($category['objectid'])) {
             $category['cid'] = $category['objectid'];
         }
-        
+
         if (!SecurityUtil::checkPermission('Admin::Category', "$category[name]:$category[cid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError ();
         }
-        
+
         $update = ModUtil::apiFunc('Admin', 'admin', 'update',
                     array('cid' => $category['cid'],
                           'name' => $category['name'],
                           'description' => $category['description']));
-                
+
         if ($update) {
             // Success
             LogUtil::registerStatus($this->__('Done! Saved category.'));
-        }  
+        }
 
         $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
     }
@@ -199,9 +199,9 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * other, so either or both can be used as seen appropriate by the module
      * developer.
      *
-     * @param int $args['cid'] the id of the category to be deleted
-     * @param int $args['objectid'] generic object id maps to cid if present
-     * @param bool $args['confirmation'] confirmation that this item can be deleted
+     * @param  int   $args['cid']          the id of the category to be deleted
+     * @param  int   $args['objectid']     generic object id maps to cid if present
+     * @param  bool  $args['confirmation'] confirmation that this item can be deleted
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise
      */
     public function delete($args)
@@ -231,10 +231,10 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         }
 
         $this->checkCsrfToken();
-        
+
         // delete category
         $delete = ModUtil::apiFunc('Admin', 'admin', 'delete', array('cid' => $cid));
-        
+
         // Success
         if ($delete) {
             LogUtil::registerStatus($this->__('Done! Category deleted.'));
@@ -246,7 +246,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     /**
      * Display main admin panel for a category
      *
-     * @param int $args['acid'] the id of the category to be displayed
+     * @param  int    $args['acid'] the id of the category to be displayed
      * @return string HTML string
      */
     public function adminpanel($args)
@@ -291,7 +291,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         } else {
             $category = null;
         }
-        
+
         if (!$category) {
             // get the default category
             $acid = $this->getVar('startcategory');
@@ -390,8 +390,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('categories', $categories);
 
         $modulecategories = array();
-        foreach ($adminmodules as $adminmodule)
-        {
+        foreach ($adminmodules as $adminmodule) {
             // Get the category assigned to this module
             $category = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
                     array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
@@ -417,9 +416,9 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * module given the information passed back by the modification form.
      *
      * @see Admin_admin_modifyconfig()
-     * @param int $modulesperrow the number of modules to display per row in the admin panel
-     * @param int $admingraphic switch for display of admin icons
-     * @param int $modulename,... the id of the category to set for each module
+     * @param  int    $modulesperrow  the number of modules to display per row in the admin panel
+     * @param  int    $admingraphic   switch for display of admin icons
+     * @param  int    $modulename,... the id of the category to set for each module
      * @return string HTML string
      */
     public function updateconfig()
@@ -466,7 +465,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                 $result = ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
                             array('module' => $adminmodule['name'],
                                   'category' => $category));
-                
+
                 if ($result == false) {
                     LogUtil::registerError($this->__('Error! Could not add module to module category.'));
                     $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
@@ -491,7 +490,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         // get the current category
         $acid = FormUtil::getPassedValue('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'), 'GET');
-        
+
         // Get all categories
         $categories = array();
         $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
@@ -522,7 +521,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             }
         }
 
-        foreach($adminlinks as &$item) {
+        foreach ($adminlinks as &$item) {
             usort($item, '_sortAdminModsByOrder');
         }
 
@@ -531,7 +530,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $permission = false;
 
         if (isset($categories) && is_array($categories)) {
-            foreach($categories as $category) {
+            foreach ($categories as $category) {
                 // only categories containing modules where the current user has permissions will
                 // be shown, all others will be hidden
                 // admin will see all categories
@@ -603,7 +602,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
-        
+
         return $this->view->fetch('admin_admin_help.tpl');
     }
 
@@ -750,8 +749,8 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * This function is internal for the time being and may be extended to be a proper library
      * or find an alternative solution later.
      *
-     * @param string $url
-     * @param ing $timeout default=5
+     * @param  string $url
+     * @param  ing    $timeout default=5
      * @return mixed, false or string
      */
     private function _zcurl($url, $timeout=5)
@@ -806,6 +805,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             }
             //$headers = curl_getinfo($ch);
             curl_close($ch);
+
             return $data;
         } else {
             return false;
@@ -813,8 +813,9 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     }
 }
 
-function _sortAdminModsByOrder($a,$b) {
-    if((int)$a['order'] == (int)$b['order']) {
+function _sortAdminModsByOrder($a,$b)
+{
+    if ((int)$a['order'] == (int)$b['order']) {
         return strcmp($a['modname'], $b['modname']);
     }
     if((int)$a['order']  > (int)$b['order']) return 1;

@@ -225,6 +225,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         $meta['securityschema'] = $this->securityschema;
         $meta['core_min'] = $this->core_min;
         $meta['core_max'] = $this->core_max;
+
         return $meta;
     }
 
@@ -667,6 +668,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         }
 
         $this->hookSubscriberBundles[$bundle->getArea()] = $bundle;
+
         return $this;
     }
 
@@ -684,6 +686,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         }
 
         $this->hookProviderBundles[$bundle->getArea()] = $bundle;
+
         return $this;
     }
 

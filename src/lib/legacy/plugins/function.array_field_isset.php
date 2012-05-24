@@ -66,11 +66,13 @@ function smarty_function_array_field_isset($params, Zikula_View $view)
 
     if ($array === null) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_isset', 'array')));
+
         return false;
     }
 
     if ($field === null) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_isset', 'field')));
+
         return false;
     }
 

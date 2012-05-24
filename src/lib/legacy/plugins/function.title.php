@@ -26,7 +26,7 @@
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @see    function.title.php::smarty_function_title()
- * 
+ *
  * @return string The title.
  */
 function smarty_function_title($params, $view)
@@ -34,7 +34,7 @@ function smarty_function_title($params, $view)
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('title', "pagegetvar name='title'")), E_USER_DEPRECATED);
 
     $title = PageUtil::getVar('title');
-    
+
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $title);
     } else {

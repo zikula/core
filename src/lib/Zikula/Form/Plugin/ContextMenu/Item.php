@@ -91,7 +91,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -99,13 +99,13 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
     }
 
@@ -116,7 +116,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $contextMenu = $this->getParentContextMenu();
 
@@ -132,11 +132,11 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
         if (!empty($this->commandName)) {
             $click = 'javascript:' . $this->renderConfirm($view, $view->getPostBackEventReference($this, $this->commandName));
 
-        } else if (!empty($this->commandScript)) {
+        } elseif (!empty($this->commandScript)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $click = 'javascript:' . $this->renderConfirm($view, "Form.contextMenu.commandScript('{$hiddenName}', function(commandArgument){{$this->commandScript}})");
 
-        } else if (!empty($this->commandRedirect)) {
+        } elseif (!empty($this->commandRedirect)) {
             $hiddenName = "contentMenuArgument" . $contextMenu->id;
             $url = urlencode($this->commandRedirect);
             $click = 'javascript:' . $this->renderConfirm($view, "Form.contextMenu.redirect('{$hiddenName}','{$url}')");
@@ -166,10 +166,11 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      *
      * @return string The rendered output.
      */
-    function renderConfirm(Zikula_Form_View $view, $script)
+    public function renderConfirm(Zikula_Form_View $view, $script)
     {
         if (!empty($this->confirmMessage)) {
             $msg = $view->translateForDisplay($this->confirmMessage) . '?';
+
             return "if (confirm('{$msg}')) { {$script} }";
         } else {
             return $script;
@@ -184,7 +185,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      *
      * @return void
      */
-    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
+    public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $contextMenu = $this->getParentContextMenu();
 
@@ -201,7 +202,7 @@ class Zikula_Form_Plugin_ContextMenu_Item extends Zikula_Form_AbstractPlugin
      *
      * @return Zikula_Form_Block_ContextMenu Parent context menu.
      */
-    function getParentContextMenu()
+    public function getParentContextMenu()
     {
         // Locate parent context menu
         $contextMenu = $this->parentPlugin;

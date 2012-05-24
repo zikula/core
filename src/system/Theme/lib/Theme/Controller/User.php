@@ -48,8 +48,7 @@ class Theme_Controller_User extends Zikula_AbstractController
             if (file_exists($themepic = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_medium.png')) {
                 $themeinfo['previewImage'] = $themepic;
                 $themeinfo['largeImage'] = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/images/preview_large.png';
-            }
-            else {
+            } else {
                 $themeinfo['previewImage'] = 'system/Theme/images/preview_medium.png';
                 $themeinfo['largeImage'] = 'system/Theme/images/preview_large.png';
             }

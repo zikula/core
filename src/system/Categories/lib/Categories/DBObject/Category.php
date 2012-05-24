@@ -68,6 +68,7 @@ class Categories_DBObject_Category extends DBObject
         }
 
         $this->_objData = $data;
+
         return $data;
     }
 
@@ -85,6 +86,7 @@ class Categories_DBObject_Category extends DBObject
         $data['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($data['display_desc']));
 
         $this->_objData = $data;
+
         return $data;
     }
 
@@ -107,6 +109,7 @@ class Categories_DBObject_Category extends DBObject
         $data['name'] = str_replace('/', '&#47;', $data['name']);
 
         $this->_objData = $data;
+
         return $data;
     }
 
@@ -129,6 +132,7 @@ class Categories_DBObject_Category extends DBObject
         }
 
         $this->_objData = $data;
+
         return $data;
     }
 
@@ -154,6 +158,7 @@ class Categories_DBObject_Category extends DBObject
         $data['name'] = str_replace('/', '&#47;', $data['name']);
 
         $this->_objData = $data;
+
         return $data;
     }
 
@@ -176,6 +181,7 @@ class Categories_DBObject_Category extends DBObject
         }
 
         $this->_objData = $data;
+
         return $data;
     }
 
@@ -196,6 +202,7 @@ class Categories_DBObject_Category extends DBObject
         if (isset($cats[$name]) && $cats[$name] && $cats[$name]['id'] != (isset($data['id']) ? $data['id'] : null)) {
             $_SESSION['validationErrors'][$this->_objPath]['name'] = __f(/*!%s is category name*/'Category %s must be unique under parent', $name);
             $_SESSION['validationFailedObjects'][$this->_objPath] = $data;
+
             return false;
         }
 

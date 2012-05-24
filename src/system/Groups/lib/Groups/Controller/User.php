@@ -69,6 +69,7 @@ class Groups_Controller_User extends Zikula_AbstractController
         // failed then an appropriate message is posted.
         if ($groups == false) {
             $this->view->assign('nogroups', true);
+
             return $this->view->fetch('groups_user_view.tpl');
         }
 
@@ -252,12 +253,12 @@ class Groups_Controller_User extends Zikula_AbstractController
         if ($group['members']) {
             $onlines = ModUtil::apiFunc('Groups', 'user', 'whosonline', array());
             $members = array();
-            foreach($group['members'] as $userid) {
+            foreach ($group['members'] as $userid) {
                 $userinfo = UserUtil::getVars($userid['uid']);
 
                 $isonline = false;
                 if (is_array($onlines)) {
-                    foreach($onlines as $online) {
+                    foreach ($onlines as $online) {
                         if ($online['uid'] == $userid['uid']) {
                             $isonline = true;
                         }
@@ -277,7 +278,7 @@ class Groups_Controller_User extends Zikula_AbstractController
 
             // test of sorting data
             if (!empty($members)) {
-                foreach($members as $res) {
+                foreach ($members as $res) {
                     $sortAarr[] = strtolower($res['uname']);
                 }
                 array_multisort($sortAarr, SORT_ASC, $members);

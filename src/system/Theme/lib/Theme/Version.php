@@ -23,6 +23,7 @@ class Theme_Version extends Zikula_AbstractVersion
         $meta['url']            = $this->__('theme');
         $meta['version']        = '3.4.1';
         $meta['securityschema'] = array('Theme::' => 'Theme name::');
+
         return $meta;
     }
 }

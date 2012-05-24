@@ -58,7 +58,7 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
             if ($record->state() == Doctrine_Record::STATE_CLEAN) {
                 $record->state(Doctrine_Record::STATE_DIRTY);
             }
-            
+
             return $value;
         } else {
             throw new Doctrine_Record_UnknownPropertyException(sprintf('Unknown record property / related component "%s" on "%s"', $name, get_class($record)));

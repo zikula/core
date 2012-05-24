@@ -66,7 +66,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         if ($restore) {
             // load the version array
             $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            
+
             // load gettext domain for 3rd party modules
             if ($baseDir == 'modules' && is_dir("modules/$obj[directory]/locale")) {
                 // This is required here since including pnversion automatically executes the pnversion code
@@ -74,7 +74,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 // since loading is self contained in each zOO application.
                 ZLanguage::bindModuleDomain($obj['directory']);
             }
-            
+
             $modversion = Extensions_Util::getVersionMeta($obj['directory'], $baseDir);
 
             // load defaults
@@ -250,8 +250,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 if (SecurityUtil::checkPermission('Extensions::', "$mod[name]::$mod[id]", ACCESS_ADMIN)) {
                     switch ($mod['state']) {
                         case ModUtil::STATE_ACTIVE:
-                            if (!ModUtil::apiFunc('Extensions', 'admin', 'iscoremodule', array('modulename' => $mod['name'])))
-                            {
+                            if (!ModUtil::apiFunc('Extensions', 'admin', 'iscoremodule', array('modulename' => $mod['name']))) {
                                 $actions[] = array(
                                         'url' => ModUtil::url('Extensions', 'admin', 'deactivate', array(
                                         'id' => $mod['id'],
@@ -481,7 +480,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
 
     /**
      * Initialise a module.
-     * 
+     *
      * @param int 'id' module id
      * @return bool true
      */
@@ -1150,7 +1149,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             }
 
             // module filter
-            if(!empty($module) && $instance->getModuleName() != $module) {
+            if (!empty($module) && $instance->getModuleName() != $module) {
                 continue;
             }
 
@@ -1292,7 +1291,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         // sort plugins array
         if (empty($sort) || $sort == 'module') {
             usort($plugins, array($this, 'viewPluginsSorter_byModule'));
-        } else if ($sort == 'name') {
+        } elseif ($sort == 'name') {
             usort($plugins, array($this, 'viewPluginsSorter_byName'));
         }
 
@@ -1310,14 +1309,16 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     /**
      * viewPlugins sorter: Sorting by module name
      */
-    private function viewPluginsSorter_byModule($a, $b) {
+    private function viewPluginsSorter_byModule($a, $b)
+    {
         return strcmp($a['instance']->getModuleName(), $b['instance']->getModuleName());
     }
 
     /**
      * viewPlugins sorter: Sorting by plugin internal name
      */
-    private function viewPluginsSorter_byName($a, $b) {
+    private function viewPluginsSorter_byName($a, $b)
+    {
         return strcmp($a['instance']->getPluginName(), $b['instance']->getPluginName());
     }
 
@@ -1486,7 +1487,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
         $module = FormUtil::getPassedValue('bymodule', null);
         $systemplugins = FormUtil::getPassedValue('systemplugins', false)? true : null;
 
-        if(empty($plugin)) {
+        if (empty($plugin)) {
             return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('Extensions', 'admin', 'viewPlugins'));
         }
 

@@ -67,6 +67,7 @@ class SessionUtil
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
         $session = ServiceUtil::getManager()->getService('session');
+
         return $session->get($name, $default, $path);
     }
 
@@ -153,6 +154,7 @@ class SessionUtil
                     $parent = & $parent[$pFixed];
                 } else {
                     $false = false;
+
                     return $false;
                 }
             } else {
@@ -161,6 +163,7 @@ class SessionUtil
                         $parent[$pFixed] = array();
                     } else {
                         $false = false;
+
                         return $false;
                     }
                 }
@@ -204,6 +207,7 @@ class SessionUtil
             // session is not new, remove flag
             unset($GLOBALS['_ZSession']['new']);
             self::regenerate(true);
+
             return;
         }
 
@@ -221,6 +225,7 @@ class SessionUtil
     {
         if (isset($GLOBALS['_ZSession']['expired']) && $GLOBALS['_ZSession']['expired']) {
             unset($GLOBALS['_ZSession']);
+
             return true;
         }
 
@@ -243,6 +248,7 @@ class SessionUtil
                 if (isset($GLOBALS['_ZSession']['new']) && $GLOBALS['_ZSession']['new'] == true) {
                     return;
                 }
+
                 return;
             }
         }
@@ -258,6 +264,7 @@ class SessionUtil
 
         $GLOBALS['_ZSession']['obj']['sessid'] = session_id(); // commit new sessid
         $GLOBALS['_ZSession']['regenerated'] = true; // flag regeneration
+
         return;
     }
 
@@ -292,6 +299,7 @@ class SessionUtil
         // www.domain.xx and domain.xx. Otherwise we run into problems with both cookies for
         // www.domain.xx as well as domain.xx being sent to www.domain.xx simultaneously!
         $hostNameDotCount = substr_count(System::getHost(), '.');
+
         return System::getVar('sessionname') . $hostNameDotCount;
     }
 }

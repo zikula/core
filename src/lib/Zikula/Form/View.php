@@ -325,9 +325,9 @@ class Zikula_Form_View extends Zikula_View
      *
      * See also all the function.formXXX.php plugins for examples.
      *
-     * @param string  $pluginName Full class name of the plugin to register.
+     * @param string $pluginName Full class name of the plugin to register.
      * @param array   &$params    Parameters passed from the Smarty plugin function.
-     * @param boolean $isBlock    Indicates whether the plugin is a Smarty block or a Smarty function (internal).
+     * @param boolean $isBlock Indicates whether the plugin is a Smarty block or a Smarty function (internal).
      *
      * @return string Returns what the render() method of the plugin returns.
      *
@@ -458,7 +458,7 @@ class Zikula_Form_View extends Zikula_View
      *
      * @param string $pluginName Full class name of the plugin to register.
      * @param array  &$params    Parameters passed from the block function.
-     * @param string $content    The block content.
+     * @param string $content The block content.
      *
      * @internal
      * @return string The rendered content.
@@ -515,6 +515,7 @@ class Zikula_Form_View extends Zikula_View
         }
 
         $null = null;
+
         return $null;
     }
 
@@ -542,6 +543,7 @@ class Zikula_Form_View extends Zikula_View
         }
 
         $null = null;
+
         return $null;
     }
 
@@ -663,8 +665,8 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Sets a state.
      *
-     * @param string $region    State region.
-     * @param string $varName   State variable name.
+     * @param string $region  State region.
+     * @param string $varName State variable name.
      * @param mixed  &$varValue State variable value.
      *
      * @return void
@@ -761,6 +763,7 @@ class Zikula_Form_View extends Zikula_View
         if ($this->errorMsgSet) {
             include_once ('lib/viewplugins/insert.getstatusmsg.php');
             $args = array();
+
             return smarty_insert_getstatusmsg($args, $this);
         } else {
             return '';
@@ -923,6 +926,7 @@ class Zikula_Form_View extends Zikula_View
     public function getIncludesHTML()
     {
         $_SESSION['__forms'][$this->formId]['includes'] = $this->getIncludesText();
+
         return '';
     }
 
@@ -958,6 +962,7 @@ class Zikula_Form_View extends Zikula_View
     {
         $key = SecurityUtil::generateCsrfToken($this->serviceManager);
         $html = "<input type=\"hidden\" name=\"csrftoken\" value=\"{$key}\" id=\"FormCsrfToken_{$this->formId}\" />";
+
         return $html;
     }
 
@@ -1014,6 +1019,7 @@ class Zikula_Form_View extends Zikula_View
     public function getStateDataHTML()
     {
         $_SESSION['__forms'][$this->formId]['data'] = $this->getStateData();
+
         return '';
     }
 
@@ -1064,6 +1070,7 @@ class Zikula_Form_View extends Zikula_View
     {
         //$this->dumpPlugins("Encode state", $this->plugins);
         $state = $this->getPluginState_rec($this->plugins);
+
         return $state;
     }
 
@@ -1232,6 +1239,7 @@ class Zikula_Form_View extends Zikula_View
     public function decodePlugins()
     {
         $this->decodePlugins_rec($this->plugins);
+
         return true;
     }
 
@@ -1385,13 +1393,14 @@ class Zikula_Form_View extends Zikula_View
      * Sets values.
      *
      * @param array  &$values Values to set.
-     * @param string $group   Group name.
+     * @param string $group Group name.
      *
      * @return boolean
      */
     public function setValues(&$values, $group = null)
     {
         $empty = null;
+
         return $this->setValues2($values, $group, $empty);
     }
 

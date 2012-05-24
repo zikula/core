@@ -20,7 +20,7 @@ class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
 {
     /**
      * Session.
-     * 
+     *
      * @var Zikula_Session
      */
     protected $session;

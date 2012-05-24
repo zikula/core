@@ -76,6 +76,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
         if (!$this->reflection) {
             $this->reflection = new ReflectionObject($this);
         }
+
         return $this->reflection;
     }
 

@@ -43,9 +43,9 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1){
+        if (isset($this->serviceManager['multisites.enabled']) && $this->serviceManager['multisites.enabled'] == 1) {
             // only the main site can regenerate the themes list
-            if($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET')){
+            if ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET')) {
                 //return true but any action has been made
                 ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
@@ -94,7 +94,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         $startlet = strtolower($startlet);
 
-        foreach($allthemes as $key => $theme) {
+        foreach ($allthemes as $key => $theme) {
             if (strtolower($key[0]) == $startlet) {
                 $themes[$key] = $theme;
             }
@@ -423,6 +423,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
                     'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover) ;
         } else {
             LogUtil::registerError($this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
+
             return System::redirect(ModUtil::url('Theme', 'admin', 'view'));
         }
 
@@ -1082,7 +1083,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
         $this->view->register_object('render', $this->view);
 
         // check for a .htaccess file
-        if (file_exists('.htaccess')){
+        if (file_exists('.htaccess')) {
             $this->view->assign('htaccess', 1);
         } else {
             $this->view->assign('htaccess', 0);

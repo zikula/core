@@ -80,7 +80,7 @@ class Search_Controller_User extends Zikula_AbstractController
 
         if (count($search_modules) > 0) {
             $plugin_options = array();
-            foreach($search_modules as $mods) {
+            foreach ($search_modules as $mods) {
                 // if active array is empty, we need to set defaults
                 if ($setActiveDefaults) {
                     $vars['active'][$mods['name']] = '1';

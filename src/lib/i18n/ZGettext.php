@@ -78,6 +78,7 @@ class ZGettext
         if (!self::$instance) {
             self::$instance = new ZGettext();
         }
+
         return self::$instance;
     }
 
@@ -96,6 +97,7 @@ class ZGettext
         // The following is a hack because LC_* constants appear to have different
         // values on different systems #2952
         $this->category = LC_MESSAGES;//$this->translateCategory($category);
+
         return $locale;
     }
 

@@ -145,6 +145,7 @@ class Zikula_HookManager_SubscriberBundle
     public function setSubOwner($subOwner)
     {
         $this->subOwner = $subOwner;
+
         return $this;
     }
 
@@ -159,6 +160,7 @@ class Zikula_HookManager_SubscriberBundle
     public function addEvent($type, $eventName)
     {
         $this->events[$type] = $eventName;
+
         return $this;
     }
 }

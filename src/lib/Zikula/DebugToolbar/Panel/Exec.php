@@ -145,7 +145,8 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
      *
      * @return string
      */
-    protected function buildArgumentsPreview($args) {
+    protected function buildArgumentsPreview($args)
+    {
         $preview = '';
         $inArray = false;
 
@@ -166,15 +167,15 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
             if (is_numeric($value) || is_bool($value)) {
                 $preview .= $valuePrefix . $value;
-            } else if (is_string($value)) {
+            } elseif (is_string($value)) {
                 $preview .= $valuePrefix . '"' . DataUtil::formatForDisplay($value) . '"';
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 $preview .= $valuePrefix . 'array(...)';
-            } else if (is_object($value)) {
+            } elseif (is_object($value)) {
                 $preview .= $valuePrefix . get_class($value) . '{...}';
-            } else if (is_null($value)) {
+            } elseif (is_null($value)) {
                 $preview .= $valuePrefix . 'NULL';
-            } else if (is_nan($value)) {
+            } elseif (is_nan($value)) {
                 $preview .= $valuePrefix . 'NAN';
             } else {
                 $preview .= $valuePrefix . '?';
@@ -202,7 +203,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
         $html = '';
         if ($level > self::RECURSIVE_LIMIT) {
             return '...';
-        } else if (is_object($var)) {
+        } elseif (is_object($var)) {
             $html =  "<strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
                        get_class($var).')</span>: <ul>';
 
@@ -221,7 +222,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             }
 
             $html .= '</ul>';
-        } else if (is_array($var)) {
+        } elseif (is_array($var)) {
             $html =  '<code>' . $key . '</code> <span style="color:#666666;font-style:italic;">(array)</span>: <ul>';
 
             if (!empty($var) && (count($var) > 0)) {
@@ -308,7 +309,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()

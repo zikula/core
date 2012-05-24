@@ -108,7 +108,7 @@ class Settings_Installer extends Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string   $oldVersion   version number string to upgrade from.
+     * @param string $oldVersion version number string to upgrade from.
      *
      * @return boolean|string True on success, last valid version string or false if fails.
      */
@@ -120,8 +120,7 @@ class Settings_Installer extends Zikula_AbstractInstaller
         System::setVar('Version_Sub', Zikula_Core::VERSION_SUB);
 
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '2.5':
                 System::delVar('jsquicktags');
                 System::delVar('backend_title');

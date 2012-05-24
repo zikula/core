@@ -51,10 +51,10 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      * @var boolean
      */
     protected $stopped = false;
-    
+
     /**
      * EventManager instance.
-     * 
+     *
      * @var Zikula_EventManagerInterface
      */
     protected $eventManager;
@@ -79,6 +79,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     public function setCaller($caller)
     {
         $this->caller = $caller;
+
         return $this;
     }
 
@@ -112,6 +113,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     public function setAreaId($areaId)
     {
         $this->areaId = $areaId;
+
         return $this;
     }
 
@@ -123,6 +125,7 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     public function stop()
     {
         $this->stopped = true;
+
         return $this;
     }
 
@@ -156,24 +159,25 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
-    
+
     /**
      * Sets the EventManager property.
-     * 
+     *
      * @param Zikula_EventManagerInterface $eventManager
-     * 
+     *
      * @return void
      */
     public function setEventManager(Zikula_EventManagerInterface $eventManager)
     {
         $this->eventManager = $eventManager;
     }
-    
+
     /**
      * Gets the EventManager.
-     * 
+     *
      * @return Zikula_EventManager
      */
     public function getEventManager()

@@ -41,7 +41,7 @@ class Zikula_Token_Validate
 
     /**
      * Storage driver.
-     * 
+     *
      * @var Zikula_Token_Storage
      */
     protected $storage;
@@ -78,7 +78,7 @@ class Zikula_Token_Validate
         if (!$token) {
             return false;
         }
-        
+
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = array('id' => $id, 'timestamp' => $timestamp);
 
@@ -92,6 +92,7 @@ class Zikula_Token_Validate
         $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['timestamp'])->getToken();
         if ($stored['token'] !== $duplicateToken) {
             $this->storage->delete($decoded['id']);
+
             return false;
         }
 
@@ -100,6 +101,7 @@ class Zikula_Token_Validate
             $timeDiff = ((int)$decoded['timestamp'] + $this->maxlifetime) - time();
             if ($timeDiff < 0) {
                 $this->storage->delete($decoded['id']);
+
                 return false;
             }
         }

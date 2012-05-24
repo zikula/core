@@ -30,20 +30,20 @@ class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $pid;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $description;
-    
+
 
     /**
-     * constructor 
+     * constructor
      */
     public function __construct()
     {
@@ -53,8 +53,8 @@ class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
 
     /**
      * get the id of the position
-     * 
-     * @return integer the position's id 
+     *
+     * @return integer the position's id
      */
     public function getPid()
     {
@@ -63,18 +63,18 @@ class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
 
     /**
      * set the id for the position
-     * 
+     *
      * @param integer $pid the position's id
      */
     public function setPid($pid)
     {
         $this->pid = $pid;
     }
-    
+
     /**
      * get the name of the position
-     * 
-     * @return string the position's name 
+     *
+     * @return string the position's name
      */
     public function getName()
     {
@@ -83,18 +83,18 @@ class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
 
     /**
      * set the name for the position
-     * 
+     *
      * @param string $name the position's name
      */
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     /**
      * get the description of the position
-     * 
-     * @return string the position's description 
+     *
+     * @return string the position's description
      */
     public function getDescription()
     {
@@ -103,7 +103,7 @@ class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
 
     /**
      * set the description for the position
-     * 
+     *
      * @param string $description the position's description
      */
     public function setDescription($description)

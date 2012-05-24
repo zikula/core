@@ -36,6 +36,7 @@ function smarty_function_lang($params, Zikula_View $view)
 
     if ($assign) {
         $view->assign($assign, $result);
+
         return;
     }
 

@@ -21,10 +21,10 @@ class System
 {
     /**
      * Internals cache.
-     * 
+     *
      * @var array
      */
-    static protected $cache = array();
+    protected static $cache = array();
 
     /**
      * Flush this static class' cache.
@@ -90,6 +90,7 @@ class System
         if (ModUtil::setVar(ModUtil::CONFIG_MODULE, $name, $value)) {
             // Update my vars
             $GLOBALS['ZConfig']['System'][$name] = $value;
+
             return true;
         }
 
@@ -664,7 +665,7 @@ class System
             $customentrypoint = self::getVar('entrypoint');
             $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
-            
+
             // check if we hit baseurl, e.g. domain.com/ and if we require the language URL
             // then we should redirect to the language URL.
             if (ZLanguage::isRequiredLangParam() && self::getCurrentUrl() == self::getBaseUrl()) {
@@ -672,7 +673,7 @@ class System
                 self::redirect(self::getBaseUrl() . $uri);
                 self::shutDown();
             }
-            
+
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
             if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
@@ -681,12 +682,12 @@ class System
                 echo __('The requested URL cannot be found');
                 system::shutDown();
             }
-            
+
             if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
                 self::redirect(self::getHomepageUrl());
                 self::shutDown();
             }
-            
+
             if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
                 $protocol = System::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
@@ -834,7 +835,7 @@ class System
         if ($res != 0) {
             // possibly an array entry in the form a[0] or a[0][1] or a[0][1][2]
             parse_str($match[0], $data);
-            
+
             foreach ($data as $k => $v) {
                 if (is_array($v)) {
                     foreach ($v as $kk => $vv) {
@@ -946,6 +947,7 @@ class System
         if (!isset($GLOBALS['ZConfig']['System']['development'])) {
             return false;
         }
+
         return (bool)$GLOBALS['ZConfig']['System']['development'];
     }
 
@@ -962,7 +964,7 @@ class System
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;
-        } else if (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
+        } elseif (self::isLegacyMode() && file_exists("config/templates/$templateFile")) {
             return "config/templates/$templateFile";
         } else {
             return $templatePath;

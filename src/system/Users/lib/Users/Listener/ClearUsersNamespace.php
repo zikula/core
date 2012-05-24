@@ -36,7 +36,7 @@ class Users_Listener_ClearUsersNamespace
      * that a re-attempt is in progress.
      *
      * @param Zikula_Event $event The event that triggered this handler.
-     * 
+     *
      * @return void
      */
     public static function clearUsersNamespaceListener(Zikula_Event $event)

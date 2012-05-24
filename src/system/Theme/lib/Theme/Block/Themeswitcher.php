@@ -25,7 +25,7 @@ class Theme_Block_Themeswitcher extends Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -130,7 +130,7 @@ class Theme_Block_Themeswitcher extends Zikula_Controller_AbstractBlock
         return $this->view->fetch('theme_block_themeswitcher_modify.tpl');
     }
 
-    function update($blockinfo)
+    public function update($blockinfo)
     {
         // Get current content
         $vars = BlockUtil::varsFromContent($blockinfo['content']);

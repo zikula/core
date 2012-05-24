@@ -41,7 +41,7 @@
  * <li>header</li>
  * <li>footer</li>
  * </ul>
- * 
+ *
  * In addition, if your system is operating in legacy compatibility mode, then
  * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
  * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
@@ -64,7 +64,7 @@ class PageUtil
      * <li>header</li>
      * <li>footer</li>
      * </ul>
-     * 
+     *
      * In addition, if your system is operating in legacy compatibility mode, then
      * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
      * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
@@ -242,10 +242,12 @@ class PageUtil
             switch ($varname) {
                 case 'description':
                     $sm['zikula_view.metatags']['description'] = $value;
+
                     return true;
                     break;
                 case 'keywords':
                     $sm['zikula_view.metatags']['keywords'] = $value;
+
                     return true;
                     break;
                 case 'rawtext':
@@ -299,7 +301,7 @@ class PageUtil
                     break;
             }
         }
-        
+
         // check for $_pageVars sanity
         if (!isset($_pageVars)) {
             $_pageVars = array();

@@ -18,9 +18,9 @@ class Theme_Api_Account extends Zikula_AbstractApi
      *
      * @param array $array The arguments to pass to the function.
      *
-     * @return   array   indexed array of items
+     * @return array indexed array of items
      */
-    function getall($args)
+    public function getall($args)
     {
         $items = array();
 

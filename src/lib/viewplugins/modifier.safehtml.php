@@ -37,7 +37,7 @@
  * @param mixed $string The contents to transform.
  *
  * @see    modifier.safehtml.php::smarty_modifier_DataUtil::formatForDisplay()
- * 
+ *
  * @return string The modified output.
  */
 function smarty_modifier_safehtml ($string)

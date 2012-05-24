@@ -229,6 +229,7 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
         if (!$this->serviceManager) {
             throw new RuntimeException('No ServiceManager was registered with this EventManager at construction.');
         }
+
         return $this->serviceManager;
     }
 

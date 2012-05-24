@@ -60,7 +60,7 @@ function smarty_block_gettext($params, $content, Zikula_View $view)
 
         // perform gettext
         $output = (isset($tags) ? __f($content, $tags, $domain) : __($content, $domain));
-        
+
         if (isset($params['assign'])) {
             $render->assign($params['assign'], $output);
         } else {

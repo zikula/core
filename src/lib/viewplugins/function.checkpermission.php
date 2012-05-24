@@ -30,7 +30,7 @@ function smarty_function_checkpermission($params, Zikula_View $view)
 {
     $assign = isset($params['assign']) ? $params['assign'] : null;
     $level  = isset($params['level'])  ? $params['level']  : null;
-    
+
     if (isset($params['component'])) {
         $comp = $params['component'];
     } elseif (isset($params['comp'])) {
@@ -50,16 +50,19 @@ function smarty_function_checkpermission($params, Zikula_View $view)
 
     if (!isset($comp)) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_checkpermission', 'comp')));
+
         return false;
     }
 
     if (!isset($inst)) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_checkpermission', 'inst')));
+
         return false;
     }
 
     if (!$level) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_checkpermission', 'level')));
+
         return false;
     }
 

@@ -19,7 +19,7 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
 {
     /**
      * Associative array.
-     * 
+     *
      * Maps template path to overriden path.
      *
      * @var array

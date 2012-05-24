@@ -40,6 +40,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
 
         if (!$data) {
             $msg = $this->__f('Error! Cannot retrieve category with ID %s.', $cid);
+
             return LogUtil::registerError($msg, null, $url);
         }
 
@@ -80,6 +81,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
 
         if (!$oldData) {
             $msg = $this->__f('Error! Cannot retrieve category with ID %s.', $data['id']);
+
             return LogUtil::registerError($msg, null, $url);
         }
 

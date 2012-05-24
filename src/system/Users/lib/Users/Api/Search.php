@@ -39,7 +39,7 @@ class Users_Api_Search extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * boolean 'active' Indicates that the Users module is an active part of the search(?).
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return string The rendered template for the Users search component.
@@ -66,7 +66,7 @@ class Users_Api_Search extends Zikula_AbstractApi
      * -------------------------------------
      * ? $args['q'] ?.
      * ? $args[?]   ?.
-     * 
+     *
      * @param array $args All parameters passed to this function.
      *
      * @return bool True on success or null result, false on error.
@@ -139,10 +139,12 @@ class Users_Api_Search extends Zikula_AbstractApi
                 $insertResult = DBUtil::insertObject($items, 'search_result');
                 if (!$insertResult) {
                     $this->registerError($this->__("Error! Could not load the results of the user's search."));
+
                     return false;
                 }
             }
         }
+
         return true;
     }
 
@@ -155,7 +157,7 @@ class Users_Api_Search extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * array $args['datarow'] ?.
-     * 
+     *
      * @param array $args The search results.
      *
      * @return bool True.

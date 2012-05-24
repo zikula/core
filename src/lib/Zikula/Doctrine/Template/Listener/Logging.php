@@ -26,7 +26,8 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
      *
      * @return void
      */
-    private function _createOperationLog(Doctrine_Event $event, $opType = 'I') {
+    private function _createOperationLog(Doctrine_Event $event, $opType = 'I')
+    {
         $data = $event->getInvoker();
         $tableName = $this->getTableNameFromEvent($event);
         $idColumn = $this->getIdColumnFromEvent($event);
@@ -43,9 +44,9 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
             foreach ($oldValues as $column => $oldValue) {
                 if (empty($oldValue) && isset($data[$column]) && !empty($data[$column])) {
                     $diff[$column] = 'I: '.$data[$column];
-                } else if (!empty($oldValue) && isset($data[$column]) && !empty($data[$column])) {
+                } elseif (!empty($oldValue) && isset($data[$column]) && !empty($data[$column])) {
                     $diff[$column] = 'U: '.$data[$column];
-                } else if (!empty($oldValue) && empty($data[$column])) {
+                } elseif (!empty($oldValue) && empty($data[$column])) {
                     $diff[$column] = 'D: '.$oldValue;
                 }
             }
@@ -53,7 +54,7 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
             $log['diff'] = serialize($diff);
         } else {
             // Convert object to array (otherwise we serialize the record object)
-            $log['diff'] = serialize($data->toArray()); 
+            $log['diff'] = serialize($data->toArray());
         }
 
         DBUtil::insertObject($log, 'objectdata_log');

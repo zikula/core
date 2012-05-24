@@ -20,7 +20,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
     /**
      * Update attributes of a block.
      *
-     * @param int $args ['bid'] the ID of the block to update.
+     * @param int    $args ['bid'] the ID of the block to update.
      * @param string $args ['title'] the new title of the block.
      * @param string $args ['description'] the new description of the block.
      * @param string $args ['positions'] the new positions of the block.
@@ -49,18 +49,18 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-        
+
         // remove old placements and insert the new ones
         $items = $this->entityManager->getRepository($this->name . '_Entity_BlockPlacement')
                                      ->findBy(array('bid'=>$args['bid']));
-        
+
         // refactor position array (keys=values)
         $positions = $args['positions'];
         $args['positions'] = array();
         foreach ($positions as $value) {
             $args['positions'][$value] = $value;
-        }     
-                                   
+        }
+
         foreach ($items as $item) {
             $pid = $item->getPid();
             if (!in_array($pid,$args['positions'])) {
@@ -69,9 +69,9 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 unset($args['positions'][$pid]);
             }
         }
-        
+
         if (isset($args['positions']) && is_array($args['positions'])) {
-            
+
             foreach ($args['positions'] as $position) {
                 $placement = new Blocks_Entity_BlockPlacement();
                 $placement->setPid($position);
@@ -79,12 +79,12 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 $this->entityManager->persist($placement);
             }
         }
-        
+
         // unset positions
         if (isset($args['positions'])) {
             unset($args['positions']);
         }
-        
+
         // update item
         $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
         $item->merge($args);
@@ -99,9 +99,9 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
      *
      * @param string $block ['title'] the title of the block.
      * @param string $block ['description'] the description of the block.
-     * @param int $block ['mid'] the module ID of the block.
+     * @param int    $block ['mid'] the module ID of the block.
      * @param string $block ['language'] the language of the block.
-     * @param int $block ['bkey'] the key of the block.
+     * @param int    $block ['bkey'] the key of the block.
      *
      * @return mixed block Id on success, false on failure.
      */
@@ -138,22 +138,22 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
             'bkey' => $args['bkey'],
             'content' => $args['content']
         );
-        
+
         $item = new Blocks_Entity_Block();
         $item->merge($block);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
-        
+
         // insert block positions for this block
         if (isset($args['positions']) && is_array($args['positions'])) {
-            
+
             foreach ($args['positions'] as $position) {
                 $placement = new Blocks_Entity_BlockPlacement();
                 $placement->setPid($position);
                 $placement->setBid($item['bid']);
                 $this->entityManager->persist($placement);
             }
-            
+
             $this->entityManager->flush();
         }
 
@@ -176,7 +176,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!isset($block['active']) || !is_numeric($block['active'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         $item = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $block['bid']));
         if (!SecurityUtil::checkPermission('Blocks::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -242,7 +242,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         }
 
         $block = ModUtil::apiFunc('Blocks', 'user', 'get', array('bid' => $args['bid']));
-        
+
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
@@ -253,7 +253,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         $dql = "DELETE FROM $entity p WHERE p.bid = {$block['bid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
-        
+
         $entity = $this->name . '_Entity_Block';
         $dql = "DELETE FROM $entity b WHERE b.bid = {$block['bid']}";
         $query = $this->entityManager->createQuery($dql);
@@ -265,7 +265,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
     /**
      * Create a block position.
      *
-     * @param string $args['name'] name of the position.
+     * @param string $args['name']        name of the position.
      * @param string $args['description'] description of the position.
      *
      * @return mixed position ID on success, false on failure.
@@ -291,7 +291,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 }
             }
         }
-        
+
         $item = new Blocks_Entity_BlockPosition();
         $item->merge($args);
         $this->entityManager->persist($item);
@@ -304,8 +304,8 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
     /**
      * Update a block position item.
      *
-     * @param int $args['pid'] the ID of the item.
-     * @param sting $args['name'] name of the block position.
+     * @param int    $args['pid']         the ID of the item.
+     * @param sting  $args['name']        name of the block position.
      * @param string $args['description'] description of the block position.
      *
      * @return bool true if successful, false otherwise.
@@ -330,7 +330,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$item[pid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
-        
+
         $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
         if (isset($positions) && is_array($positions)) {
             foreach ($positions as $position) {
@@ -339,7 +339,7 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
                 }
             }
         }
-        
+
         // update item
         $item->merge($args);
         $this->entityManager->flush();
@@ -360,13 +360,13 @@ class Blocks_Api_Admin extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         $position = ModUtil::apiFunc('Blocks', 'user', 'getposition', array('pid' => $args['pid']));
 
         if (!SecurityUtil::checkPermission('Blocks::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
-        
+
         // delete placements of the position to be deleted
         $entity = $this->name . '_Entity_BlockPlacement';
         $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";

@@ -59,6 +59,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         }
 
         $this->view = $view;
+
         return $this;
     }
 

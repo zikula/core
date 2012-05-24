@@ -39,7 +39,9 @@ function smarty_function_usergetlang($params, $smarty)
 
     if ($assign) {
         $smarty->assign($assign, $result);
+
         return;
     }
+
     return $result;
 }

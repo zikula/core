@@ -48,11 +48,13 @@ function smarty_function_modishooked($params, $view)
 
     if (!$tmodname) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'tmodname')));
+
         return false;
     }
 
     if (!$smodname) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modishooked', 'smodname')));
+
         return false;
     }
 

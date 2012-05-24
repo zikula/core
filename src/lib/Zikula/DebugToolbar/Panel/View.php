@@ -116,7 +116,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
             }
 
             $html .= '</ul></li>';
-        } else if (is_array($var)) {
+        } elseif (is_array($var)) {
             if (!$isFirstLevel) {
                 $html =  '<li><code>{$' . $key . '}</code> <span style="color:#666666;font-style:italic;">(array)</span>: <ul>';
             } else {
@@ -137,11 +137,12 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
             } else {
                 $html .= '</ul>';
             }
+
             return $html;
         } else {
             return '<li><code>{$' . $key . '}</code> <span style="color:#666666;font-style:italic;">('.
                      gettype($var).')</span>: <pre class="DebugToolbarVarDump">' . DataUtil::formatForDisplay($var) . '</pre></li>';
-        } 
+        }
     }
 
     /**
@@ -229,7 +230,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()
@@ -241,6 +242,7 @@ class Zikula_DebugToolbar_Panel_View implements Zikula_DebugToolbar_PanelInterfa
             }
             $data[$k] = $v;
         }
+
         return $data;
     }
 }

@@ -20,7 +20,7 @@ class Search_EventHandlers
     /**
      * Handle module install event "installer.module.installed".
      * Receives $modinfo as $args
-     * 
+     *
      * @param Zikula_Event $event
      *
      * @return void
@@ -36,9 +36,9 @@ class Search_EventHandlers
             $blocks = BlockUtil::getBlocksInfo();
 
             foreach ($blocks as $block) {
-                
+
                 $block = $block->toArray();
-                
+
                 if ($block['bkey'] != 'Search') {
                     continue;
                 }

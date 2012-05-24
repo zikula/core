@@ -77,6 +77,7 @@ class Users_Block_Online extends Zikula_Controller_AbstractBlock
             // If this is the case, we do not need to make DB queries.
             if ($this->view->is_cached('users_block_online.tpl')) {
                 $blockinfo['content'] = $this->view->fetch('users_block_online.tpl');
+
                 return BlockUtil::themeBlock($blockinfo);
             }
         }

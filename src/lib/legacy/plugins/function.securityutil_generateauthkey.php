@@ -40,6 +40,7 @@ function smarty_function_securityutil_generateauthkey($params, $smarty)
 
     if (!isset($params['module'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_generateauthkey', 'module')));
+
         return false;
     }
 

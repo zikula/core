@@ -40,6 +40,6 @@ function smarty_insert_generateauthkey($params, $view)
     $result = SecurityUtil::generateAuthKey($module);
 
     // NOTE: assign parameter is handled by the smarty_core_run_insert_handler(...) function in lib/vendor/Smarty/internals/core.run_insert_handler.php
-    
+
     return $result;
 }

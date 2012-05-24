@@ -30,25 +30,25 @@ class Admin_Entity_AdminModule extends Zikula_EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $amid;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $mid;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $cid;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $sortorder;
-    
+
 
     /**
-     * constructor 
+     * constructor
      */
     public function __construct()
     {
@@ -59,77 +59,77 @@ class Admin_Entity_AdminModule extends Zikula_EntityAccess
 
     /**
      * get the id of the module/category association
-     * 
-     * @return integer the module/category association id 
+     *
+     * @return integer the module/category association id
      */
     public function getAmid()
     {
         return $this->amid;
     }
-    
+
     /**
      * set the id for the module/category association
-     * 
+     *
      * @param integer $amid the module/category association id
      */
     public function setAmid($amid)
     {
         $this->amid = $amid;
     }
-    
+
     /**
      * get the id of the module
-     * 
-     * @return integer the module id 
+     *
+     * @return integer the module id
      */
     public function getMid()
     {
         return $this->mid;
     }
-    
+
     /**
      * set the id for the module
-     * 
+     *
      * @param integer $mid the module id
      */
     public function setMid($mid)
     {
         $this->mid = $mid;
     }
-    
+
     /**
      * get the id of the category
-     * 
-     * @return integer the category id 
+     *
+     * @return integer the category id
      */
     public function getCid()
     {
         return $this->cid;
     }
-    
+
     /**
      * set the id for the category
-     * 
+     *
      * @param integer $cid the category id
      */
     public function setCid($cid)
     {
         $this->cid = $cid;
     }
-    
+
     /**
      * get the sortorder of the module/category association
-     * 
+     *
      * @return integer the module/category association sortorder
      */
     public function getSortorder()
     {
         return $this->sortorder;
     }
-    
+
     /**
      * set the sortorder for the module/category association
-     * 
+     *
      * @param integer $sortorder the module/category association sortorder
      */
     public function setSortorder($sortorder)

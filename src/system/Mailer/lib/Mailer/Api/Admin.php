@@ -22,7 +22,7 @@ class Mailer_Api_Admin extends Zikula_AbstractApi
      *
      * @return array array of admin links
      */
-    function getlinks()
+    public function getlinks()
     {
         $links = array();
 

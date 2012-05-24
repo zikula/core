@@ -20,9 +20,9 @@ interface Zikula_DebugToolbar_PanelInterface
 {
     /**
      * Returns the id of this panel.
-     * 
+     *
      * The id will be used to create html ids and thus allow panel acces via javascript.
-     * 
+     *
      * @return string
      */
     public function getId();
@@ -54,7 +54,7 @@ interface Zikula_DebugToolbar_PanelInterface
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return mixed
      */
     public function getPanelData();

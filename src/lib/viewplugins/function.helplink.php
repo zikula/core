@@ -16,7 +16,7 @@
  * Zikula_View function to create help link.
  *
  * This function creates a help link.
- * 
+ *
  * To make the link appear as a button, wrap it in a div or span with a class
  * of z-buttons.
  *
@@ -29,21 +29,21 @@
  *   - title:        name of the new window if new window is set, default is 'Help'.
  *   - link_contents the text for the link (between the <a> and </a> tags); optional, if not specified, then the title is used.
  *   - icon_type      an optional icon type to include in the link, separated from the link_contents (or title) by a non-breaking space; equivalent to the type parameter from the {icon} template function
- *   - icon_size      the size of the icon (e.g., extrasmall); optional if link_icon_type is specified, defaults to 'extrasmall', otherwise ignored; 
+ *   - icon_size      the size of the icon (e.g., extrasmall); optional if link_icon_type is specified, defaults to 'extrasmall', otherwise ignored;
  *                      equivalent to the size parameter of the {icon} template function
- *   - icon_width    the width of the icon in pixels; optional if link_icon_type is specified, if not specified, then obtained from size, otherwise ignored; 
+ *   - icon_width    the width of the icon in pixels; optional if link_icon_type is specified, if not specified, then obtained from size, otherwise ignored;
  *                      equivalent to the width parameter of the {icon} template function
- *   - icon_height   the height of the icon in pixels; optional if link_icon_type is specified, if not specified, then obtained from size, otherwise ignored; 
+ *   - icon_height   the height of the icon in pixels; optional if link_icon_type is specified, if not specified, then obtained from size, otherwise ignored;
  *                      equivalent to the height parameter of the {icon} template function
- *   - icon_alt      the alternate text for the icon, used for the alt param of the {icon} template function; optional if link_icon_type is specified, 
+ *   - icon_alt      the alternate text for the icon, used for the alt param of the {icon} template function; optional if link_icon_type is specified,
  *                      defaults to an empty string, otherwise ignored
- *   - icon_title    the title text for the icon, used for the title param of the {icon} template function; optional if link_icon_type is specified, 
+ *   - icon_title    the title text for the icon, used for the title param of the {icon} template function; optional if link_icon_type is specified,
  *                      defaults to an empty string, otherwise ignored
- *   - icon_optional if true and the icon image is not found then an error will not be returned, used for the optinal param of the {icon} template 
+ *   - icon_optional if true and the icon image is not found then an error will not be returned, used for the optinal param of the {icon} template
  *                      function; optional if link_icon_type is specified, defaults to false, otherwise ignored
- *   - icon_default  the full path to an image file to use if the icon is not found, used for the default param of the {icon} template 
+ *   - icon_default  the full path to an image file to use if the icon is not found, used for the default param of the {icon} template
  *                      function; optional if link_icon_type is specified, defaults to an empty string, otherwise ignored
- *   - icon_right    if true, then the icon is placed on the right side of the link text (the text from either link_contents or title); optional, 
+ *   - icon_right    if true, then the icon is placed on the right side of the link text (the text from either link_contents or title); optional,
  *                      defaults to false (placing the icon on the left side of the text)
  *   - icon_*        all remaining parameters with a "icon_" prefix are passed to the {icon} function and subsequently to the <img> tag, except for
  *                      'icon_assign' which is completely ignored; optional if link_icon_type is specified, otherwise ignored
@@ -73,7 +73,7 @@ function smarty_function_helplink($params, Zikula_View $view)
 {
     $userLang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
     $systemLang = System::getVar('language_i18n');
-    
+
     $iconParams = array();
     if (!empty($params) && is_array($params)) {
         foreach ($params as $key => $value) {
@@ -83,17 +83,17 @@ function smarty_function_helplink($params, Zikula_View $view)
             }
         }
     }
-    
+
     if (!empty($iconParams) && isset($iconParams['type'])) {
         // We need to make sure the icon template function is available so we can call it.
         require_once $view->_get_plugin_filepath('function', 'icon');
-        
+
         $iconRightSide = false;
         if (isset($iconParams['right'])) {
             $iconRightSide = (bool)$iconParams['right'];
             unset($iconParams['right']);
         }
-        
+
         if (isset($iconParams['assign'])) {
             // We cannot use the assign parameter with the icon function in this context.
             unset($iconParams['assign']);
@@ -135,11 +135,11 @@ function smarty_function_helplink($params, Zikula_View $view)
         //$view->trigger_error(__f('Helpfile %s not found', $fileName));
         return;
     }
-    
+
     $linkContents = DataUtil::formatForDisplayHTML($linkContents);
     if ($iconParams) {
         $iconContents = smarty_function_icon($iconParams, $view);
-        
+
         if (isset($iconContents) && is_string($iconContents) && !empty($iconContents)) {
             if ($iconRightSide) {
                 $linkContents = $linkContents . '&nbsp;' . $iconContents;
@@ -168,6 +168,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     if (isset($params['assign'])) {
         $ret = array('url' => $url, 'link' => $link);
         $view->assign($params['assign'], $ret);
+
         return;
     } else {
         return $link;

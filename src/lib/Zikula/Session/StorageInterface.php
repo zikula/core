@@ -24,14 +24,14 @@ interface Zikula_Session_StorageInterface
      * @return void
      */
     public function start();
-    
+
     /**
      * Expire this session gracefully.
      *
      * @return void
      */
     public function expire();
-    
+
     /**
      * Regenerate session.
      *

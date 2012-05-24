@@ -84,7 +84,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -92,13 +92,13 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         $this->styleAttributes['display'] = 'none';
         $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
@@ -107,13 +107,13 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     /**
      * DataBound event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Zikula_View plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function dataBound(Zikula_Form_View $view, &$params)
+    public function dataBound(Zikula_Form_View $view, &$params)
     {
         PageUtil::AddVar('javascript', 'system/Theme/javascript/form/form.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
@@ -126,13 +126,14 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function renderBegin(Zikula_Form_View $view)
+    public function renderBegin(Zikula_Form_View $view)
     {
         if ($this->firstTime(false)) {
             $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
             $attributes = $this->renderAttributes($view);
             $hiddenName = "contentMenuArgument" . $this->id;
             $html = "<div id=\"{$this->id}\" class=\"{$cssClass}\"{$attributes}><input type=\"hidden\" name=\"{$hiddenName}\" id=\"{$hiddenName}\" /><ul>";
+
             return $html;
         } else {
             return '';
@@ -146,12 +147,14 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function renderEnd(Zikula_Form_View $view)
+    public function renderEnd(Zikula_Form_View $view)
     {
         if ($this->firstTime(true)) {
             $html = '</ul></div>';
+
             return $html;
         } else
+
             return '';
     }
 
@@ -162,7 +165,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
      *
      * @return boolean
      */
-    function firstTime($doSet = false)
+    public function firstTime($doSet = false)
     {
         static $createdMenus = array();
         if (isset($createdMenus[$this->id])) {
@@ -171,6 +174,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
         if ($doSet) {
             $createdMenus[$this->id] = true;
         }
+
         return true;
     }
 }

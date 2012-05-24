@@ -77,6 +77,7 @@ function smarty_function_getstatusmsg($params, Zikula_View $view)
 
     if ($assign) {
         $view->assign($assign, $msgStatus);
+
         return;
     }
 

@@ -62,13 +62,12 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      *
      * @param string $oldVersion Version number string to upgrade from.
      *
-     * @return  boolean|string True on success, last valid version string or false if fails.
+     * @return boolean|string True on success, last valid version string or false if fails.
      */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '3.6':
             case '3.7':
                 // legacy is no longer supported

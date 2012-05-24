@@ -52,6 +52,7 @@ function smarty_function_configgetvar($params, $view)
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('configgetvar', 'name')));
+
         return false;
     }
 

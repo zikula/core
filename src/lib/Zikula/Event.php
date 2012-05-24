@@ -62,10 +62,10 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      * @var Exception
      */
     protected $exception;
-    
+
     /**
      * EventManager instance.
-     * 
+     *
      * @var Zikula_EventManagerInterface
      */
     protected $eventManager;
@@ -123,6 +123,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public function setData($data)
     {
         $this->data = $data;
+
         return $this;
     }
 
@@ -137,6 +138,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public function setArg($key, $value)
     {
         $this->args[$key] = $value;
+
         return $this;
     }
 
@@ -150,6 +152,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public function setArgs(array $args = array())
     {
         $this->args = $args;
+
         return $this;
     }
 
@@ -211,6 +214,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -248,6 +252,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
         if (!$this->hasException()) {
             throw new RuntimeException('No exception was set during this event notification.');
         }
+
         return $this->exception;
     }
 
@@ -276,22 +281,22 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
     {
         return (bool)$this->exception;
     }
-    
+
     /**
      * Sets the EventManager property.
-     * 
+     *
      * @param Zikula_EventManagerInterface $eventManager
-     * 
+     *
      * @return void
      */
     public function setEventManager(Zikula_EventManagerInterface $eventManager)
     {
         $this->eventManager = $eventManager;
     }
-    
+
     /**
      * Gets the EventManager.
-     * 
+     *
      * @return Zikula_EventManager
      */
     public function getEventManager()

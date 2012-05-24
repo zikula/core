@@ -372,7 +372,7 @@ class DoctrineUtil
      * @param boolean $dropColumns Drops unused columns (default=false).
      *
      * @throws InvalidArgumentException If $className does not exist.
-     * 
+     *
      * @return boolean
      */
     public static function changeTable($className, $dropColumns=false)

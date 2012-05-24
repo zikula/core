@@ -81,6 +81,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
                     if (($this->_dir = $this->driver->realpath($this->_resource, $this->configuration->getDir())) !== false) {
                         //changed dir
                         $this->errorHandler->stop();
+
                         return true;
                     }
                     //could not enter dir
@@ -91,6 +92,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         }
         //Could not connect to host/port
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -111,9 +113,11 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->scpSend($this->_resource, $local, $remote)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -136,9 +140,11 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         if (($bytes = $this->driver->putContents($this->_resource, $remote, $stream)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
+
             return $bytes;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -159,9 +165,11 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->scpRecv($this->_resource, $remote, $local)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -183,9 +191,11 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         if (($handle = $this->driver->sftpFopen($this->_resource, $remote, 'r+')) !== false) {
             rewind($handle);
             $this->errorHandler->stop();
+
             return $handle;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -206,12 +216,14 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         //make sure that $perm is numeric, this also stops injection
         if (!is_numeric($perm)) {
             $this->errorHandler->register('permission "' . $perm . '" must be numeric.');
+
             return false;
         }
         $perm = intval($perm);
 
         if (($file = $this->driver->realpath($this->_resource, $file)) === false) {
             $this->errorHandler->stop(); //source file not found.
+
             return false;
         }
         if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
@@ -233,18 +245,22 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
                 case 1:
                     $this->errorHandler->register('Chmod returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
+
                     return false;
                 case 0:
                     $this->errorHandler->stop();
+
                     return $perm;
                 default:
                     $this->errorHandler->stop();
+
                     return false;
             }
         }
         //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
         $this->errorHandler->register('Did not get acknowledgment from host, chmod may or may not have succeeded.', 0);
+
         return false;
     }
 
@@ -275,9 +291,11 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         //if IsDir fails that means its either not a directory or doesnt exist
         if (!$this->driver->sftpFileExists($this->_resource, $dir)) {
             $this->errorHandler->register("$dir does not exist.", 0);
+
             return false;
         }
         $this->errorHandler->register("$dir is not a directory", 0);
+
         return false;
     }
 
@@ -298,9 +316,11 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         if (($dir = $this->driver->realpath($this->_resource, $dir)) !== false) {
             $this->_dir = $dir;
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -326,10 +346,12 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) !== false) {
             if (($this->driver->sftpRename($this->_resource, $sourcepath, $destpath)) !== false) {
                 $this->errorHandler->stop(); //renamed file
+
                 return true;
             }//could not rename file
         }//Could not get reapath of sourcefile, it does not exist
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -354,6 +376,7 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
         }
         if (($sourcepath = $this->driver->realpath($this->_resource, $sourcepath)) === false) {
             $this->errorHandler->stop(); //source file not found.
+
             return false;
         }
         if (($shell = $this->driver->sshShell($this->_ssh_resource, $this->_terminal)) == false) {
@@ -375,17 +398,21 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
                 case 1:
                     $this->errorHandler->register('cp returned with Code 1: failure.', 0);
                     $this->errorHandler->stop();
+
                     return false;
                 case 0:
                     $this->errorHandler->stop();
+
                     return true;
                 default:
                     $this->errorHandler->stop();
+
                     return false;
             }
         } //size of matches less then 1, there is no readable response
         $this->errorHandler->stop();
         $this->errorHandler->register('Did not get acknowledgment from host, cp may or may not have succeeded.', 0);
+
         return false;
     }
 
@@ -409,11 +436,13 @@ class Zikula_FileSystem_Sftp extends Zikula_FileSystem_AbstractDriver
             if ($this->driver->sftpDelete($this->_resource, $sourcepath)) {
                 //file deleted
                 $this->errorHandler->stop();
+
                 return true;
             } //file not deleted
         } //file does not exist.
         $this->errorHandler->stop();
         $this->errorHandler->register("Could not delete: $sourcepath", 0);
+
         return false;
     }
 

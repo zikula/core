@@ -17,7 +17,7 @@
 /**
  * Inject a jQuery Timepicker plugin to the template.
  * @see https://github.com/trentrichardson/jQuery-Timepicker-Addon
- * 
+ *
  * NOTE: This plugin is NOT configured to integrate the datepicker and timepicker
  *     together as one. It only displays the timepicker.
  *
@@ -52,7 +52,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     /**
      * displayelement
      * string (do not include the '#' character)
-     * (required) The id text of the html element where the timepicker displays the selection 
+     * (required) The id text of the html element where the timepicker displays the selection
      */
     $displayElement = (isset($params['displayelement'])) ? $params['displayelement'] : '';
     unset($params['displayelement']);
@@ -67,14 +67,14 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     /**
      * readonly
      * boolean
-     * (optional) whether the display field is readonly of active (default: (boolean)true - IS readonly) 
+     * (optional) whether the display field is readonly of active (default: (boolean)true - IS readonly)
      */
     $readOnly = (isset($params['readonly'])) ? $params['readonly'] : true;
     unset($params['readonly']);
     /**
      * object
      * string
-     * (optional) object name for html element names. e.g. name='myObjectName[myVariable]' (default: null) 
+     * (optional) object name for html element names. e.g. name='myObjectName[myVariable]' (default: null)
      */
     $object = (isset($params['object'])) ? $params['object'] : null;
     unset($params['object']);
@@ -88,7 +88,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     /**
      * onclosecallback
      * string
-     * (optional) javascript to perform onClose event (default: null) 
+     * (optional) javascript to perform onClose event (default: null)
      */
     $onCloseCallback = (isset($params['onclosecallback'])) ? $params['onclosecallback'] : null;
     unset($params['onclosecallback']);
@@ -109,7 +109,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     /**
      * use24hour
      * boolean
-     * (optional) use 24 hour time display or 12 hour am/pm (default: false) 
+     * (optional) use 24 hour time display or 12 hour am/pm (default: false)
      */
     $use24hour = (isset($params['use24hour'])) ? $params['use24hour'] : false;
     unset($params['use24hour']);
@@ -177,7 +177,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
 }
 
 /**
- * add required JS function to page 
+ * add required JS function to page
  */
 function addTimepickerFormatTime()
 {
@@ -190,6 +190,7 @@ function addTimepickerFormatTime()
             h = h + ''; // convert to string
             m = m.length == 1 ? '0' + m : m;
             h = h.length == 1 ? '0' + h : h;
+
             return h + ':' + m;
         }";
     PageUtil::addVar("footer", "<script type='text/javascript'>$javascript</script>");

@@ -47,11 +47,13 @@ function smarty_function_modgetvar($params, Zikula_View $view)
 
     if (!$module) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modgetvar', 'module')));
+
         return false;
     }
 
     if (!$name && !$assign) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modgetvar', 'name')));
+
         return false;
     }
 

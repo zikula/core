@@ -48,7 +48,7 @@ class BlockUtil
         if (!isset($positions[$side])) {
             return;
         }
-        
+
         if (!isset($modname)) {
             $modname = FormUtil::getPassedValue('module', '_homepage_', 'GETPOST', FILTER_SANITIZE_STRING);
         }
@@ -98,7 +98,7 @@ class BlockUtil
             if ($blockplacement['pid'] != $positions[$side]['pid']) {
                 continue;
             }
-            
+
             // get the full block info
             $blockinfo = self::getBlockInfo($blockplacement['bid']);
 
@@ -122,14 +122,14 @@ class BlockUtil
                     $rule1 = $filter['module'] == $modname;
                     $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
                     $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
-                                        
+
                     if (empty($filter['fargs'])) {
                         $rule4 = true;
                     } else {
                         $testargs = explode('&', $filter['fargs']);
                         foreach ($testargs as $test) {
                             $key = array_search($test, $customargs);
-                            if ($key === false){
+                            if ($key === false) {
                                 $rule4 = false;
                                 break;
                             } else {
@@ -207,6 +207,7 @@ class BlockUtil
                 if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
                     $blockinfo['title'] = __f("Block type '%s' not found", $blockname);
                     $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $blockname);
+
                     return self::themeBlock($blockinfo);
                 }
             }
@@ -283,7 +284,7 @@ class BlockUtil
      * @param string $block   Name of the block.
      *
      * @throws LogicException Uf OO-Block is not a Zikula_Controller_AbstractBlock object.
-     * @return bool True on successful load, false otherwise.
+     * @return bool           True on successful load, false otherwise.
      */
     public static function load($modname, $block)
     {
@@ -331,6 +332,7 @@ class BlockUtil
                     throw $e;
                 } else {
                     LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
+
                     return false;
                 }
             }
@@ -426,6 +428,7 @@ class BlockUtil
         if (preg_match('/;}*$/', $content)) {
             // Serialised content
             $vars = unserialize($content);
+
             return $vars;
         }
 
@@ -471,19 +474,19 @@ class BlockUtil
     {
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
-            
+
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->getService('doctrine.entitymanager');
-            
+
             $entity = 'Blocks_Entity_UserBlock';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
-            
+
             if (!$item) {
                 $item = new $entity;
                 $item['uid'] = (int)$uid;
                 $item['bid'] = $blockinfo['bid'];
                 $item['active'] = $blockinfo['defaultstate'];
-                
+
                 $entityManager->persist($item);
                 $entityManager->flush();
             }

@@ -397,25 +397,25 @@ class HtmlUtil
 
             $data[$tableName] = $tableName;
         }
-        
+
         // Doctrine2 models
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
         $entityDir = "$modpath/$osdir/lib/$osdir/Entity/";
-        
+
         $entities = array();
-        if(file_exists($entityDir)) {
+        if (file_exists($entityDir)) {
             $entities = scandir($entityDir);
         }
 
         foreach ($entities as $entity) {
-            if(!($entity[0] != '.' && substr($entity, -4) === '.php')) {
+            if (!($entity[0] != '.' && substr($entity, -4) === '.php')) {
                 continue;
             }
-            
+
             $class = $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4);
-            if(class_exists($class) && !in_array('Doctrine_Record', class_parents($class))) {
+            if (class_exists($class) && !in_array('Doctrine_Record', class_parents($class))) {
                 $tableName = substr($entity, 0, strlen($entity) - 4);
 
                 if ($remove) {
@@ -636,6 +636,7 @@ class HtmlUtil
     public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNGroup', 'getSelector_Group')), E_USER_DEPRECATED);
+
         return self::getSelector_Group($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit, $disabled);
     }
 
@@ -692,6 +693,7 @@ class HtmlUtil
     public static function getSelector_PNUser($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
+
         return self::getSelector_User($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit);
     }
 
@@ -757,6 +759,7 @@ class HtmlUtil
     public static function getSelector_PNModule($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
     {
         LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
+
         return self::getSelector_Module($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
     }
 
@@ -1008,6 +1011,7 @@ class HtmlUtil
         }
 
         $output .= '</select>';
+
         return $output;
     }
 

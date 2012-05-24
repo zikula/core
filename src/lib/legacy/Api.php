@@ -109,6 +109,7 @@ define('PN_CORE_ALL', 4095);
 function pnConfigGetVar($name, $default = null)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getVar')), E_USER_DEPRECATED);
+
     return System::getVar($name, $default);
 }
 
@@ -125,6 +126,7 @@ function pnConfigGetVar($name, $default = null)
 function pnConfigSetVar($name, $value = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::setVar')), E_USER_DEPRECATED);
+
     return System::setVar($name, $value);
 }
 
@@ -140,6 +142,7 @@ function pnConfigSetVar($name, $value = '')
 function pnConfigDelVar($name)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::delVar')), E_USER_DEPRECATED);
+
     return System::delVar($name);
 }
 
@@ -156,6 +159,7 @@ function pnConfigDelVar($name)
 function pnInit($stages = PN_CORE_ALL)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::init')), E_USER_DEPRECATED);
+
     return System::init($stages);
 }
 
@@ -172,6 +176,7 @@ function pnInit($stages = PN_CORE_ALL)
 function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_NONE)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'Doctrine_Manager::getInstance()->getCurrentConnection();')), E_USER_DEPRECATED);
+
     return Doctrine_Manager::getInstance()->getCurrentConnection();
 }
 
@@ -186,6 +191,7 @@ function pnDBGetConn($pass_by_reference = false, $fetchmode = Doctrine::HYDRATE_
 function pnDBGetTables()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBUtil::getTables')), E_USER_DEPRECATED);
+
     return DBUtil::getTables();
 }
 
@@ -210,6 +216,7 @@ function pnDBGetTables()
 function pnDBGetTablePrefix($table)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'DBUtil::getTablePrefix')), E_USER_DEPRECATED);
+
     return DBUtil::getTablePrefix($table);
 }
 
@@ -244,6 +251,7 @@ function pnStripslashes(&$value)
 function pnVarValidate($var, $type, $args = 0)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::varValidate')), E_USER_DEPRECATED);
+
     return System::varValidate($var, $type, $args);
 }
 
@@ -258,6 +266,7 @@ function pnVarValidate($var, $type, $args = 0)
 function pnGetBaseURI()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getBaseUri')), E_USER_DEPRECATED);
+
     return System::getBaseUri();
 }
 
@@ -272,6 +281,7 @@ function pnGetBaseURI()
 function pnGetBaseURL()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getBaseUrl')), E_USER_DEPRECATED);
+
     return System::getBaseUrl();
 }
 
@@ -286,6 +296,7 @@ function pnGetBaseURL()
 function pnGetHomepageURL()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getHomepageUrl')), E_USER_DEPRECATED);
+
     return System::getHomepageUrl();
 }
 
@@ -302,6 +313,7 @@ function pnGetHomepageURL()
 function pnRedirect($redirecturl, $additionalheaders = array())
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::redirect')), E_USER_DEPRECATED);
+
     return System::redirect($redirecturl, $additionalheaders);
 }
 
@@ -317,6 +329,7 @@ function pnRedirect($redirecturl, $additionalheaders = array())
 function pnLocalReferer($strict = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::localReferer')), E_USER_DEPRECATED);
+
     return System::localReferer($strict);
 }
 
@@ -339,6 +352,7 @@ function pnLocalReferer($strict = false)
 function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug = 0, $altbody = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::mail')), E_USER_DEPRECATED);
+
     return System::mail($to, $subject, $message, $headers, $html, $debug, $altbody);
 }
 
@@ -360,6 +374,7 @@ function pnMail($to, $subject, $message = '', $headers = '', $html = 0, $debug =
 function pnServerGetVar($name, $default = null)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::serverGetVar')), E_USER_DEPRECATED);
+
     return System::serverGetVar($name, $default);
 }
 
@@ -377,6 +392,7 @@ function pnServerGetVar($name, $default = null)
 function pnGetHost()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getHost')), E_USER_DEPRECATED);
+
     return System::getHost();
 }
 
@@ -393,6 +409,7 @@ function pnGetHost()
 function pnGetCurrentURI($args = array())
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getCurrentUri')), E_USER_DEPRECATED);
+
     return System::getCurrentUri($args);
 }
 
@@ -409,6 +426,7 @@ function pnGetCurrentURI($args = array())
 function pnServerGetProtocol()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::serverGetProtocol')), E_USER_DEPRECATED);
+
     return System::serverGetProtocol();
 }
 
@@ -426,6 +444,7 @@ function pnServerGetProtocol()
 function pnGetCurrentURL($args = array())
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::getCurrentUrl')), E_USER_DEPRECATED);
+
     return System::getCurrentUrl($args);
 }
 
@@ -444,6 +463,7 @@ function pnGetCurrentURL($args = array())
 function pnQueryStringDecode()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::queryStringDecode')), E_USER_DEPRECATED);
+
     return System::queryStringDecode();
 }
 
@@ -460,6 +480,7 @@ function pnQueryStringDecode()
 function pnQueryStringSetVar($name, $value)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::queryStringSetVar')), E_USER_DEPRECATED);
+
     return System::queryStringSetVar($name, $value);
 }
 
@@ -471,6 +492,7 @@ function pnQueryStringSetVar($name, $value)
 function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::errorHandler')), E_USER_DEPRECATED);
+
     return System::errorHandler($errno, $errstr, $errfile, $errline, $errcontext);
 }
 
@@ -487,5 +509,6 @@ function pnErrorHandler($errno, $errstr, $errfile, $errline, $errcontext)
 function pnShutDown($exit_param = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'System::shutDown')), E_USER_DEPRECATED);
+
     return System::shutDown($exit_param);
 }

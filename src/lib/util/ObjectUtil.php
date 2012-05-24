@@ -115,6 +115,7 @@ class ObjectUtil
     {
         if (!is_array($obj)) {
             z_exit(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectCreate'));
+
             return;
         }
 
@@ -146,6 +147,7 @@ class ObjectUtil
     {
         if (!is_array($obj)) {
             z_exit(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectUpdate'));
+
             return;
         }
 
@@ -290,9 +292,9 @@ class ObjectUtil
                 if ($recurse) {
                     $res[$k] = self::diff($v, $a2[$k], $detail);
                 }
-            } else if (!isset($a2[$k])) {
+            } elseif (!isset($a2[$k])) {
                 $res[$k] = 'I: ' . $v;
-            } else if ($v !== $a2[$k]) {
+            } elseif ($v !== $a2[$k]) {
                 if ($detail) {
                     $res[$k] = array();
                     $res[$k]['old'] = $v;
@@ -367,7 +369,7 @@ class ObjectUtil
                     FROM $table
                     WHERE $column[$field] < '" . DataUtil::formatForStore($seq) . "' $where2
                     ORDER BY $column[$field] DESC LIMIT 0,1";
-        } else if ($direction == 'down') {
+        } elseif ($direction == 'down') {
             $sql = "SELECT $column[$idcolumn], $column[$field]
                     FROM $table
                     WHERE $column[$field] > '" . DataUtil::formatForStore($seq) . "' $where2
@@ -714,7 +716,7 @@ class ObjectUtil
 
     /**
      * Delete all instances of the specified attribute for the given object type.
-     * 
+     *
      * This can be used to remove an attribute from the object attributes table when it is no longer defined by the object type.
      *
      * @param string $type          The type/tablename that defines the given attribute.
@@ -759,6 +761,7 @@ class ObjectUtil
         }
 
         $atrs = DBUtil::selectFieldArray('objectdata_attributes', 'attribute_name', '', 'attribute_name', true);
+
         return $atrs;
     }
 
@@ -775,6 +778,7 @@ class ObjectUtil
         $column = $dbtables['objectdata_attributes_column'];
 
         $where = "$column[attribute_name]='" . DataUtil::formatForStore($atrName) . "'";
+
         return DBUtil::selectObjectCount('objectdata_attributes', $where);
     }
 
@@ -823,6 +827,7 @@ class ObjectUtil
         if ($meta['obj_id'] > 0) {
             $result = DBUtil::insertObject($meta, 'objectdata_meta');
             $obj['__META__']['metaid'] = $meta['id'];
+
             return $meta['id'];
         }
 
@@ -946,6 +951,7 @@ class ObjectUtil
         }
 
         $obj['__META__'] = $meta;
+
         return $obj;
     }
 
@@ -1093,6 +1099,7 @@ class ObjectUtil
         $joinInfo[] = array('join_table' => 'categories_registry', 'join_field' => 'property', 'object_field_name' => 'property', 'compare_field_table' => 'reg_id', 'compare_field_join' => 'id');
 
         $cache[$key] = DBUtil::selectExpandedFieldArray('categories_mapobj', $joinInfo, 'category_id', $where, $orderby, false, 'property');
+
         return $cache[$key];
     }
 

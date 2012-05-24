@@ -55,14 +55,14 @@ class Zikula_Token_Generator
 
     /**
      * Timestamp of generated token.
-     * 
+     *
      * @var integer
      */
     protected $timestamp;
 
     /**
      * Constructor.
-     * 
+     *
      * @param Zikula_Token_StorageInterface $storage Storage driver.
      * @param string                        $secret  Secret to sign tokens with.
      */
@@ -109,10 +109,10 @@ class Zikula_Token_Generator
      * time.  They are validated with delete=true.  If the are per-session, then
      * they should be generated with the same unique ID and validated with
      * delete = false leaving storage expire/GC to remove the token.
-     * 
+     *
      * @param string  $id        Token ID.
      * @param integer $timestamp Create with this timestamp.
-     * 
+     *
      * @return Zikula_Security_TokenGenerator
      */
     public function generate($id, $timestamp)
@@ -121,6 +121,7 @@ class Zikula_Token_Generator
         $this->timestamp = $timestamp;
         $this->hash = md5($this->id . $this->secret . $this->timestamp);
         $this->token = base64_encode("{$this->id}:{$this->hash}:{$this->timestamp}");
+
         return $this;
     }
 
@@ -188,7 +189,7 @@ class Zikula_Token_Generator
 
     /**
      * Get timestamp of token creation.
-     * 
+     *
      * @return integer
      */
     public function getTimestamp()

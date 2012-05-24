@@ -72,6 +72,7 @@ function smarty_function_manuallink($params, Zikula_View $view)
     if (isset($params['assign'])) {
         $ret = array('url' => $url, 'link' => $link);
         $view->assign($params['assign'], $ret);
+
         return;
     } else {
         return $link;

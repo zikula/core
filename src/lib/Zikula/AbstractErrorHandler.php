@@ -360,6 +360,7 @@ abstract class Zikula_AbstractErrorHandler
                 $type = self::INFO;
                 break;
         }
+
         return $type;
     }
 
@@ -382,6 +383,7 @@ abstract class Zikula_AbstractErrorHandler
                 $errfile = basename($errfile);
             }
         }
+
         return $errfile;
     }
 
@@ -389,7 +391,7 @@ abstract class Zikula_AbstractErrorHandler
      * Translate the error number/type into a human-readable string.
      *
      * @param integer $code The error number/type.
-     * 
+     *
      * @return string The human-readable string corresponding to that number/type.
      */
     public static function translateErrorCode($code)
@@ -450,6 +452,7 @@ abstract class Zikula_AbstractErrorHandler
                 return $code;
                 break;
         }
+
         return $word;
     }
 

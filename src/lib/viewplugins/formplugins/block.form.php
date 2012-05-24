@@ -52,8 +52,7 @@ function smarty_block_form($params, $content, $view)
             function FormDoPostBack(eventTarget, eventArgument)
             {
                 var f = document.getElementById('{$formId}');
-                if (!f.onsubmit || f.onsubmit())
-                {
+                if (!f.onsubmit || f.onsubmit()) {
                     f.FormEventTarget.value = eventTarget;
                     f.FormEventArgument.value = eventArgument;
                     f.submit();
@@ -64,6 +63,7 @@ function smarty_block_form($params, $content, $view)
     </div>
 </form>
 ";
+
         return $out;
     }
 }

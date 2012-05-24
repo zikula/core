@@ -47,7 +47,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
      * @todo Loading of language file based on Zikula language
      * @return bool true if successful, false otherwise
      */
-    function sendmessage($args)
+    public function sendmessage($args)
     {
         // Check for installed advanced Mailer module
         $event = new Zikula_Event('module.mailer.api.sendmessage', $this, $args);
@@ -78,9 +78,9 @@ class Mailer_Api_User extends Zikula_AbstractApi
             $mail->IsSMTP();  // set mailer to use SMTP
             $mail->Host = $this->getVar('smtpserver');  // specify server
             $mail->Port = $this->getVar('smtpport');    // specify port
-        } else if ($this->getVar('mailertype') == 3) {
+        } elseif ($this->getVar('mailertype') == 3) {
             $mail->IsQMail();  // set mailer to use QMail
-        } else if ($this->getVar('mailertype') == 2) {
+        } elseif ($this->getVar('mailertype') == 2) {
             ini_set("sendmail_from", $args['fromaddress']);
             $mail->IsSendMail();  // set mailer to use SendMail
             $mail->Sendmail = $this->getVar('sendmailpath'); // specify Sendmail path
@@ -178,7 +178,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
 
         // add attachments
         if (isset($args['attachments']) && !empty($args['attachments'])) {
-            foreach($args['attachments'] as $attachment) {
+            foreach ($args['attachments'] as $attachment) {
                 if (is_array($attachment)) {
                     if (count($attachment) != 4) {
                         // skip invalid arrays
@@ -193,7 +193,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
 
         // add string attachments.
         if (isset($args['stringattachments']) && !empty($args['stringattachments'])) {
-            foreach($args['stringattachments'] as $attachment) {
+            foreach ($args['stringattachments'] as $attachment) {
                 if (is_array($attachment) && count($attachment) == 4) {
                     $mail->AddStringAttachment($attachment[0], $attachment[1], $attachment[2], $attachment[3]);
                 }
@@ -202,7 +202,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
 
         // add embedded images
         if (isset($args['embeddedimages']) && !empty($args['embeddedimages'])) {
-            foreach($args['embeddedimages'] as $embeddedimage) {
+            foreach ($args['embeddedimages'] as $embeddedimage) {
                 $ret = $mail->AddEmbeddedImage($embeddedimage['path'],
                         $embeddedimage['cid'],
                         $embeddedimage['name'],
@@ -222,6 +222,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
                 return LogUtil::registerError(__('Error! A problem occurred while sending the e-mail message.'));
             }
         }
+
         return true; // message sent
     }
 }

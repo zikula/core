@@ -45,6 +45,7 @@ function smarty_block_checkgroup($params, $content, Zikula_View $view)
     // check our input
     if (!isset($params['gid'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkgroup', 'component')));
+
         return false;
     }
 

@@ -64,14 +64,17 @@ function smarty_block_checkpermissionblock($params, $content, Zikula_View $view)
     // check our input
     if (!isset($comp)) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'component')));
+
         return false;
     }
     if (!isset($inst)) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'instance')));
+
         return false;
     }
     if (!isset($params['level'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_checkpermissionblock', 'level')));
+
         return false;
     }
 

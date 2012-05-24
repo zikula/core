@@ -36,7 +36,7 @@ class Users_Listener_ForcedPasswordChange
      * will not trigger a change of password.
      *
      * @param Zikula_Event $event The event that triggered this handler.
-     * 
+     *
      * @return void
      */
     public static function forcedPasswordChangeListener(Zikula_Event $event)

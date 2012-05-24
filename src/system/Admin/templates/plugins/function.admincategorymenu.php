@@ -28,6 +28,6 @@ function smarty_function_admincategorymenu($params, $view)
     $modinfo = ModUtil::getInfoFromName($view->getTplVar('toplevelmodule'));
 
     $acid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
-    
+
     return ModUtil::func('Admin', 'admin', 'categorymenu', array('acid' => $acid));
 }

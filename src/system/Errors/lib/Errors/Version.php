@@ -23,6 +23,7 @@ class Errors_Version extends Zikula_AbstractVersion
         $meta['url']            = $this->__('errors');
         $meta['version']        = '1.1.1';
         $meta['securityschema'] = array('Errors::' => '::');
+
         return $meta;
     }
 }

@@ -33,6 +33,7 @@ function smarty_function_tree($params, Zikula_View $view)
 
     if (!isset($menuString) && !isset($menuArray) && !isset($treeArray)) {
         $view->trigger_error(__f('Error! in %1$s: %2$s, %3$s or %4$s parameter must be specified.', array('smarty_function_tree', 'menustring', 'menuarray','treearray')));
+
         return false;
     }
     unset($params['menustring']);

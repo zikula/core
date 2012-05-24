@@ -27,10 +27,12 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
 {
     if (!isset($params['from'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_menu', 'from')));
+
         return false;
     }
     if (!isset($params['item'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_menu', 'item')));
+
         return false;
     }
 
@@ -55,13 +57,13 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
     try {
         $iterator->seek($index);
         $currentKey = $iterator->key();
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $currentKey = null;
     }
     try {
         $iterator->seek($index-1);
         $lastKey = $iterator->key();
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $lastKey = null;
     }
 
@@ -120,8 +122,7 @@ function _smarty_block_menu_parsemenu($params)
     $tree = array();
     $map  = array();
 
-    foreach ($params['from'] as $i => $item)
-    {
+    foreach ($params['from'] as $i => $item) {
         if (isset($reflang)) {
             $item = $item[$reflang];
         }

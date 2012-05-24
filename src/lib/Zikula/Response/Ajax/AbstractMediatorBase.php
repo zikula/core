@@ -63,6 +63,7 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
         $payload = json_encode($this->generatePayload());
         header($this->createHttpResponseHeader());
         header('Content-type: application/json');
+
         return $payload;
     }
 

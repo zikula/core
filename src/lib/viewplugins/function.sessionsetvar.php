@@ -45,11 +45,13 @@ function smarty_function_sessionsetvar($params, Zikula_View $view)
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'name')));
+
         return false;
     }
 
     if (!$value) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('sessionsetvar', 'value')));
+
         return false;
     }
 

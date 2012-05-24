@@ -37,7 +37,7 @@
  * @param Zikula_View $view   Reference to the Zikula_View object.
  *
  * @see    function.modcallhooks.php::smarty_function_modcallhooks()
- * 
+ *
  * @return string The results of the module function.
  */
 function smarty_function_modcallhooks($params, $view)
@@ -59,16 +59,18 @@ function smarty_function_modcallhooks($params, $view)
 
     if (!$hookobject) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookobject')));
+
         return false;
     }
     if (!$hookaction) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modcallhooks', 'hookaction')));
+
         return false;
     }
     if (!$hookid) {
         $hookid = '';
     }
-    
+
     // create returnurl if not supplied (= this page)
     if (!isset($params['returnurl']) || empty($params['returnurl'])) {
         $params['returnurl'] = str_replace('&amp;', '&', 'http://' . System::getHost() . System::getCurrentUri());

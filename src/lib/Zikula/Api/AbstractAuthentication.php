@@ -24,7 +24,7 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
 
     /**
      * Informs the calling function whether this authentication module is reentrant or not.
-     * 
+     *
      * A reentrant authentication module is one that may need to redirect the user's browser to an external server in
      * order to check the user's password, authenticate the user, log the user in, or log the user out.
      *
@@ -36,56 +36,56 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
 
     /**
      * Indicate whether this module supports the indicated authentication method.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * string 'method' The name of the authentication method for which support is enquired.
      *
      * @param array $args All arguments passed to this function, see above.
-     * 
+     *
      * @return boolean True if the indicated authentication method is supported by this module; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     abstract public function supportsAuthenticationMethod(array $args);
 
     /**
      * Indicates whether a specified authentication method that is supported by this module is enabled for use.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * string 'method' The name of the authentication method for which support is enquired.
      *
      * @param array $args All arguments passed to this function, see above.
-     * 
+     *
      * @return boolean True if the indicated authentication method is enabled by this module; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     abstract public function isEnabledForAuthentication(array $args);
 
     /**
      * Retrieves an array of authentication methods defined by this module, possibly filtered by only those that are enabled.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * integer 'filter' Either {@link FILTER_ENABLED} (value 1), {@link FILTER_NONE} (value 0), or not present; allows the result to be filtered.
      *                      If this argument is FILTER_ENABLED, then only those authentication methods that are also enabled are returned.
      *
      * @param array $args All arguments passed to this function.
-     * 
+     *
      * @return array An array containing the authentication methods defined by this module, possibly filtered by only those that are enabled.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     abstract public function getAuthenticationMethods(array $args = null);
-    
+
     /**
      * Registers a user account record or a user registration request with the authentication method.
-     * 
+     *
      * This is called during the user registration process to associate an authentication method provided by this authentication module
      * with a user (either a full user account, or a user's registration request).
-     * 
+     *
      * Parameters passed in the $args array:
      * -------------------------------------
      * array   'authentication_method' An array identifying the authentication method to associate with the user account or registration
@@ -98,10 +98,10 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      *                                      authentication information.
      *
      * @param array $args All parameters passed to this function.
-     * 
-     * @return boolean True if the user account or registration request was successfully associated with the authentication method and 
+     *
+     * @return boolean True if the user account or registration request was successfully associated with the authentication method and
      *                      authentication information; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if the arguments array is invalid, or the user id, authentication method, or authentication information
      *                                      is invalid.
      */
@@ -168,19 +168,20 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      * Parameters passed in the $args array:
      * -------------------------------------
      * array authentication_info The authentication info needed for this authmodule, including any user-entered password.
-     * 
+     *
      * @param array $args All arguments passed to this function.
      *
      * @return array|boolean If the authentication info authenticates with the source, then an array is returned containing the user's authentication
      *                          information and any additional optional registration information that is passed back by the authentication method.
      *                          The optional registration information can be used to pre-fill the registration form.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if the authentication method does not support registration, or if the arguments array or any of the
      *                                  arguments are invalid.
      */
     public function checkPasswordForRegistration(array $args)
     {
         throw new Zikula_Exception_Fatal($this->__('Registration authentication is not supported by this authentication method.'));
+
         return false;
     }
 
@@ -224,22 +225,22 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
 
     /**
      * Retrieve the account recovery information for the specified user.
-     * 
+     *
      * The array returned by this function should be an empty array (not null) if the specified user does not have any
      * authentication methods registered with the authentication module that are enabled for log-in.
-     * 
+     *
      * If the specified user does have one or more authentication methods, then the array should contain one or more elements
      * indexed numerically. Each element should be an associative array containing the following:
-     * 
+     *
      * - 'modname' The authentication module name.
      * - 'short_description' A brief (a few words) description or name of the authentication method.
      * - 'long_description' A longer description or name of the authentication method.
      * - 'uname' The user name _equivalent_ for the authentication method (e.g., the claimed OpenID).
      * - 'link' If the authentication method is for an external service, then a link to the user's account on that service, or a general link to the service,
      *            otherwise, an empty string (not null).
-     * 
+     *
      * For example:
-     * 
+     *
      * <code>
      * $accountRecoveryInfo[] = array(
      *     'modname'           => $this->name,
@@ -249,13 +250,13 @@ abstract class Zikula_Api_AbstractAuthentication extends Zikula_AbstractApi
      *     'link'              => '',
      * )
      * </code>
-     * 
+     *
      * Parameters passed in the $arg array:
      * ------------------------------------
      * numeric 'uid' The user id of the user for which account recovery information should be retrieved.
-     * 
+     *
      * @param array $args All parameters passed to this function.
-     * 
+     *
      * @return An array of account recovery information.
      */
     abstract public function getAccountRecoveryInfoForUid(array $args);

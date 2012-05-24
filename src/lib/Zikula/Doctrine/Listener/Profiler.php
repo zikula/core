@@ -29,7 +29,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      *
      * @return void
      */
-    public function preQuery(Doctrine_Event $event) {
+    public function preQuery(Doctrine_Event $event)
+    {
         $event->start();
     }
 
@@ -40,7 +41,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      *
      * @return void
      */
-    public function postQuery(Doctrine_Event $event) {
+    public function postQuery(Doctrine_Event $event)
+    {
         $event->end();
         $zevent = new Zikula_Event('log.sql', null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
@@ -54,10 +56,11 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      *
      * @return void
      */
-    public function preExec(Doctrine_Event $event) {
+    public function preExec(Doctrine_Event $event)
+    {
         $event->start();
     }
-    
+
     /**
      * Executed following a Doctrine exec query.
      *
@@ -65,7 +68,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      *
      * @return void
      */
-    public function postExec(Doctrine_Event $event) {
+    public function postExec(Doctrine_Event $event)
+    {
         $event->end();
         $zevent = new Zikula_Event('log.sql', null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
@@ -79,7 +83,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      *
      * @return void
      */
-    public function preStmtExecute(Doctrine_Event $event) {
+    public function preStmtExecute(Doctrine_Event $event)
+    {
         $event->start();
     }
 
@@ -90,7 +95,8 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
      *
      * @return void
      */
-    public function postStmtExecute(Doctrine_Event $event) {
+    public function postStmtExecute(Doctrine_Event $event)
+    {
         $event->end();
         $zevent = new Zikula_Event('log.sql', null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));

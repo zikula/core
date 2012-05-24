@@ -33,7 +33,7 @@
  * <li>header</li>
  * <li>footer</li>
  * </ul>
- * 
+ *
  * In addition, if your system is operating in legacy compatibility mode, then
  * the variable 'rawtext' is reserved, and maps to 'header'. (When not operating in
  * legacy compatibility mode, 'rawtext' is not reserved and will not be rendered
@@ -55,9 +55,11 @@ function smarty_function_pageregistervar($params, Zikula_View $view)
 
     if (!$name) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('pnpageregistervar', 'name')));
+
         return false;
     }
 
     PageUtil::registerVar($name, $multivalue, $default);
+
     return;
 }

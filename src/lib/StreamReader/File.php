@@ -82,6 +82,7 @@ class StreamReader_File extends StreamReader_Abstract
 
             return $data;
         } else
+
             return '';
     }
 
@@ -96,6 +97,7 @@ class StreamReader_File extends StreamReader_Abstract
     {
         fseek($this->_fd, $pos);
         $this->_pos = ftell($this->_fd);
+
         return $this->_pos;
     }
 

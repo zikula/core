@@ -138,7 +138,7 @@ class Loader
      * @param exitOnError  whether or not exit upon error (optional) (default=true)
      *
      * @deprecated since 1.3.0
-     * 
+     *
      * @return string The file name which was loaded
      */
     public static function loadClass($className, $classPath = 'lib', $exitOnError = true)
@@ -172,7 +172,7 @@ class Loader
      * @param prefix        Override parameter for the default PN prefix (default=PN)
      *
      * @deprecated since 1.3.0
-     * 
+     *
      * @return string The ClassName which was loaded from the file
      */
     public static function loadClassFromModule($module, $base_obj_type, $array = false, $exitOnError = false, $prefix = 'PN')
@@ -247,6 +247,7 @@ class Loader
     public static function loadArrayClassFromModule($module, $base_obj_type, $exitOnError = false, $prefix = 'PN')
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), E_USER_DEPRECATED));
+
         return self::loadClassFromModule($module, $base_obj_type, true, $exitOnError, $prefix);
     }
 
@@ -262,6 +263,7 @@ class Loader
         if (strpos($file, 'includes/') === 0) {
             return true;
         }
+
         return include_once ($file);
     }
 
@@ -269,7 +271,7 @@ class Loader
      * Internal require_once
      *
      * @deprecated since 1.3.0
-     * @param string $file
+     * @param  string $file
      * @return bool
      */
     public static function requireOnce($file)
@@ -278,6 +280,7 @@ class Loader
         if (strpos($file, 'includes/') === 0) {
             return true;
         }
+
         return require_once ($file);
     }
 }

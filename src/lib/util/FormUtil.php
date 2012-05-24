@@ -107,6 +107,7 @@ class FormUtil
                     static $valid = array('R', 'REQUEST', 'G', 'GET', 'P', 'POST', 'C', 'COOKIE', 'F', 'FILES', 'GP', 'GETPOST');
                     if (!in_array($source, $valid)) {
                         z_exit(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
+
                         return $default;
                     }
                 }
@@ -222,6 +223,7 @@ class FormUtil
                 $ve = array();
             }
         }
+
         return $ve;
     }
 
@@ -333,7 +335,7 @@ class FormUtil
     {
         if (self::hasValidationErrors($objectType, $field)) {
             return HtmlUtil::VALIDATION_MARKER;
-        } else if (self::isRequiredField($validationInfo, $field)) {
+        } elseif (self::isRequiredField($validationInfo, $field)) {
             return HtmlUtil::REQUIRED_MARKER;
         }
 

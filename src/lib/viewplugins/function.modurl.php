@@ -62,6 +62,7 @@ function smarty_function_modurl($params, Zikula_View $view)
             LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)), E_USER_DEPRECATED);
         } else {
             $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('func', $view->template)));
+
             return false;
         }
     }
@@ -74,6 +75,7 @@ function smarty_function_modurl($params, Zikula_View $view)
             LogUtil::log(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)), E_USER_DEPRECATED);
         } else {
             $view->trigger_error(__f('{modurl} - %1$s is a required argument, you must specify it explicitly in %2$s', array('type', $view->template)));
+
             return false;
         }
     }
@@ -97,6 +99,7 @@ function smarty_function_modurl($params, Zikula_View $view)
 
     if (!$modname) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('modurl', 'modname')));
+
         return false;
     }
 

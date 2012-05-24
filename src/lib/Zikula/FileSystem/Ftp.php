@@ -62,12 +62,14 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
                     if ($this->driver->chdir($this->_resource, $this->configuration->getDir())) {
                         $this->_dir = ftp_pwd($this->_resource);
                         $this->errorHandler->stop();
+
                         return true;
                     }
                 }
             }
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -89,9 +91,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->put($this->_resource, $remote, $local, FTP_BINARY)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -103,7 +107,7 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
      * @param stream|resource $stream The resource to put remotely, probably the resource returned from a fget.
      * @param string          $remote The pathname to the desired remote pathname.
      *
-     * @return integer|boolean  number of bytes written on success, false on failure.
+     * @return integer|boolean number of bytes written on success, false on failure.
      */
     public function fput($stream, $remote)
     {
@@ -111,9 +115,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->fput($this->_resource, $remote, $stream, FTP_BINARY)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -135,9 +141,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->get($this->_resource, $local, $remote, FTP_BINARY)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -158,9 +166,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         if ($this->driver->fget($this->_resource, $handle, $remote, FTP_BINARY)) {
             rewind($handle);
             $this->errorHandler->stop();
+
             return $handle;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -180,9 +190,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         if (($perm = $this->driver->chmod($this->_resource, $perm, $file)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
+
             return $perm;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -191,7 +203,7 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
      *
      * @param string $dir The directory to get the contents of, blank for current directory, start with / for absolute path.
      *
-     * @return array|boolean  An array of the contents of $dir or false if fail.
+     * @return array|boolean An array of the contents of $dir or false if fail.
      */
     public function ls($dir = '')
     {
@@ -200,9 +212,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $dir = ($dir == '' ? ftp_pwd($this->_resource) : $dir);
         if (($ls = $this->driver->nlist($this->_resource, $dir)) !== false) {
             $this->errorHandler->stop();
+
             return $ls;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -219,9 +233,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->chdir($this->_resource, $dir)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -233,7 +249,7 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
      * @param string $sourcepath The path to the original source file.
      * @param string $destpath   The path to where you want to move the source file.
      *
-     * @return boolean  True if file moved, false if failed.
+     * @return boolean True if file moved, false if failed.
      */
     public function mv($sourcepath, $destpath)
     {
@@ -241,9 +257,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->rename($this->_resource, $sourcepath, $destpath)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -264,10 +282,12 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         if (($handle = $this->fget($sourcepath)) !== false) {
             if ($this->fput($handle, $destpath)) {
                 $this->errorHandler->stop();
+
                 return true;
             };
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -276,7 +296,7 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
      *
      * @param string $sourcepath The path to the remote file to remove.
      *
-     * @return  boolean True on success, false on failure.
+     * @return boolean True on success, false on failure.
      */
     public function rm($sourcepath)
     {
@@ -284,9 +304,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if (($this->driver->delete($this->_resource, $sourcepath)) !== false) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -307,8 +329,10 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
             if ($reconnect) {
                 return $this->connect();
             }
+
             return false;
         }
+
         return true;
     }
 }

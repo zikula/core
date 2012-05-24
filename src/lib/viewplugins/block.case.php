@@ -59,12 +59,14 @@ function smarty_block_case($params, $content, Zikula_View $view, &$repeat)
         if ($i < 0) {
             // switch block not found
             $view->tigger_error(__('smarty_block_case: case not inside a switch block'));
+
             return;
         }
 
         if (isset($tag_params['_done']) && $tag_params['_done']) {
             // another case was already found
             $repeat = false;
+
             return;
         }
 
@@ -74,11 +76,13 @@ function smarty_block_case($params, $content, Zikula_View $view, &$repeat)
         if (isset($params['expr']) && ($params['expr'] != $tag_params['expr'])) {
             // page doesn't match
             $repeat = false;
+
             return;
         }
 
         // page found
         $view->_tag_stack[$i][1]['_done'] = true;
+
         return;
 
     } else {

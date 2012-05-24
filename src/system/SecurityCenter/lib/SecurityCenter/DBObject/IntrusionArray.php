@@ -21,7 +21,7 @@
  */
 class SecurityCenter_DBObject_IntrusionArray extends DBObjectArray
 {
-    function __construct($init = null, $where = '')
+    public function __construct($init = null, $where = '')
     {
         parent::__construct();
 
@@ -39,18 +39,19 @@ class SecurityCenter_DBObject_IntrusionArray extends DBObjectArray
     }
 
 
-    function genFilter($filter = array())
+    public function genFilter($filter = array())
     {
         $wheres = array();
         $filterFields = array('name', 'tag', 'value', 'page', 'uid', 'username', 'ip', 'impact', 'date');
 
-        foreach($filterFields as $fieldName) {
+        foreach ($filterFields as $fieldName) {
             if (isset($filter[$fieldName]) && $filter[$fieldName]) {
                 $wheres[] = "ids_" . $fieldName . " = '" . DataUtil::formatForStore($filter[$fieldName]) . "'";
             }
         }
 
         $where = implode (' AND ', $wheres);
+
         return $where;
     }
 }

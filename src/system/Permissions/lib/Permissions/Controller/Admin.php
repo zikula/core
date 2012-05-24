@@ -110,7 +110,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
                     $permgrp = SecurityUtil::PERMS_ALL;
                     $where = '';
                 }
-            } else if ($permgrpparts[0] == 'c') {
+            } elseif ($permgrpparts[0] == 'c') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
                     $where = "WHERE (" . $permcolumn['component'] . "='.*' OR " . $permcolumn['component'] . " LIKE '" . DataUtil::formatForStore($permgrpparts[1]) . "%')";
                     $permgrp = $permgrpparts[1];
@@ -363,7 +363,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('realm', 0)
                     ->assign('insseq', $chgpid)
                     ->assign('submit', $this->__('Edit permission rule'));
-        } else if ($action == 'insert') {
+        } elseif ($action == 'insert') {
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
                     ->assign('permgrp', $permgrp)
                     ->assign('insseq', $insseq);
@@ -371,7 +371,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             // Realms hard-coded - jgm
             $this->view->assign('realm', 0)
                     ->assign('submit', $this->__('Create new permission rule'));
-        } else if ($action == 'add') {
+        } elseif ($action == 'add') {
             // Form-start
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
                     ->assign('permgrp', $permgrp)
@@ -583,7 +583,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return array groups array
      */
-    function getGroupsInfo()
+    public function getGroupsInfo()
     {
         $dbtable = DBUtil::getTables();
 
@@ -607,7 +607,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      * showInstanceInformation.
      *
      * Show instance information gathered from blocks and modules.
-     * 
+     *
      * @return boolean
      */
     public function viewinstanceinfo()

@@ -37,7 +37,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
 
     /**
      * Number of decimal places to display.
-     * 
+     *
      * @var integer
      */
     public $precision;
@@ -47,7 +47,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -55,13 +55,13 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         // Check if precision is provided, is a number, is an integer (even if its data type is a string), and is non-negative.
         if (isset($params['precision']) && is_numeric($params['precision']) && ((int)$params['precision'] == $params['precision'])
@@ -88,6 +88,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
     protected function getStyleClass()
     {
         $class = parent::getStyleClass();
+
         return str_replace('z-form-text', 'z-form-float', $class);
     }
 
@@ -98,7 +99,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return void
      */
-    function validate(Zikula_Form_View $view)
+    public function validate(Zikula_Form_View $view)
     {
         parent::validate($view);
 
@@ -117,9 +118,9 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
                 if ($this->minValue !== null && $this->maxValue !== null) {
                     $this->setError(__f('Error! Range error. Value must be between %1$s and %2$s.',
                                         array($this->minValue, $this->maxValue)));
-                } else if ($this->minValue !== null) {
+                } elseif ($this->minValue !== null) {
                     $this->setError(__f('Error! The value must be %s or more.', $this->minValue));
-                } else if ($this->maxValue !== null) {
+                } elseif ($this->maxValue !== null) {
                     $this->setError(__f('Error! The value must be %s or less.', $this->maxValue));
                 }
             }
@@ -134,7 +135,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Parsed Text.
      */
-    function parseValue(Zikula_Form_View $view, $text)
+    public function parseValue(Zikula_Form_View $view, $text)
     {
         if ($text === '') {
             return null;
@@ -154,7 +155,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      *
      * @return string Formatted value.
      */
-    function formatValue(Zikula_Form_View $view, $value)
+    public function formatValue(Zikula_Form_View $view, $value)
     {
         return DataUtil::formatNumber($value, $this->precision);
     }

@@ -49,8 +49,10 @@ class Zikula_FileSystem_Error
 
         if ($clear) {
             $error = array_shift($this->errors);
+
             return $error;
         }
+
         return $this->errors[0];
     }
 
@@ -79,8 +81,10 @@ class Zikula_FileSystem_Error
         if ($clear) {
             $errors = $this->errors;
             $this->clearAll();
+
             return $errors;
         }
+
         return $this->errors;
     }
 

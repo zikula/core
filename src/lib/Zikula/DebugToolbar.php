@@ -28,7 +28,7 @@
  *     {
  *         return "mypan";
  *     }
- * 
+ *
  *     public function getTitle()
  *     {
  *         return "MyPan';
@@ -117,7 +117,7 @@ class Zikula_DebugToolbar
 
     /**
      * Returns the HTML code for this debug toolbar.
-     * 
+     *
      * @return string
      */
     public function getContent()
@@ -140,7 +140,7 @@ class Zikula_DebugToolbar
     }
     /**
      * Returns the HTML code for this debug toolbar.
-     * 
+     *
      * @return string
      */
     public function asHTML()
@@ -187,7 +187,7 @@ class Zikula_DebugToolbar
 
     /**
      * Returns the toolbar data in json format
-     * 
+     *
      * @return string
      */
     public function asJSON()
@@ -234,12 +234,13 @@ class Zikula_DebugToolbar
         $data = @json_encode($data);
 
         $html = "<script type=\"text/javascript\">Zikula.DebugToolbarData = {$data}</script>";
+
         return $html;
     }
 
     /**
      * Parse data and prepare objects for json encode.
-     * 
+     *
      * This method loops through data and prepares php objects for json encode.
      * First each object is converted to array with additional entry:
      * '__phpClassName', which contains object name.
@@ -293,7 +294,7 @@ class Zikula_DebugToolbar
                         if (method_exists($property, 'setAccessible')) {
                             $property->setAccessible(true);
                             $obj[$name] = self::prepareData($property->getValue($data), $maxLvl, $lvl + 1);
-                        } elseif($property->isPublic()) {
+                        } elseif ($property->isPublic()) {
                             $obj[$name] = self::prepareData($property->getValue($data), $maxLvl, $lvl + 1);
                         }
                     }

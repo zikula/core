@@ -68,6 +68,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
             // check out if the contents are cached
             if ($this->view->is_cached($vars['menutree_tpl'])) {
                 $blockinfo['content'] = $this->view->fetch($vars['menutree_tpl']);
+
                 return BlockUtil::themeBlock($blockinfo);
             }
         }
@@ -437,8 +438,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         $userlanguage = ZLanguage::getLanguageCode();
 
         $menuType = strtolower($menu['bkey']);
-        switch ($menuType)
-        {
+        switch ($menuType) {
             case 'menutree':
                 $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : array();
                 break;
@@ -551,6 +551,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
                 }
             }
         }
+
         return true;
     }
 
@@ -559,7 +560,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
      *
      * @param array $a The first element to be compared, an array containing a MenuTree item definition (indexed by language).
      * @param array $b The second element to be compared, an array containing a MenuTree item definition (indexed by language).
-     * 
+     *
      * @return int 0 if the two operands are equal, -1 if $a's line number is less than $b's, 1 if $a's line number is greater than $b's.
      */
     private function sort_menu($a, $b)
@@ -571,6 +572,7 @@ class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
         if ($aLineNo == $bLineNo) {
             return 0;
         }
+
         return ($aLineNo < $bLineNo) ? -1 : 1;
     }
 }

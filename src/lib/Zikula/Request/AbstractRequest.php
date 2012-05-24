@@ -20,7 +20,7 @@ abstract class Zikula_Request_AbstractRequest
 {
     /**
      * Requests array (ArrayIterator).
-     * 
+     *
      * @var ArrayIterator
      */
     protected $requests;
@@ -62,6 +62,7 @@ abstract class Zikula_Request_AbstractRequest
     public function getModuleName()
     {
         $array = $this->requests->current();
+
         return $array['module'];
     }
 
@@ -73,6 +74,7 @@ abstract class Zikula_Request_AbstractRequest
     public function getControllerName()
     {
         $array = $this->requests->current();
+
         return $array['controller'];
     }
 
@@ -84,6 +86,7 @@ abstract class Zikula_Request_AbstractRequest
     public function getActionName()
     {
         $array = $this->requests->current();
+
         return $array['action'];
     }
 
@@ -113,7 +116,7 @@ abstract class Zikula_Request_AbstractRequest
 
     /**
      * Getter for args property.
-     * 
+     *
      * @return array
      */
     public function getArgs()

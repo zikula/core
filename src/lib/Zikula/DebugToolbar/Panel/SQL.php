@@ -156,7 +156,7 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_PanelInterfac
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()

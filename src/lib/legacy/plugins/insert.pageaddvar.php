@@ -60,10 +60,12 @@ function smarty_insert_pageaddvar($params, $view)
 
     if (!$var) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('insert.pageaddvar', 'var')));
+
         return false;
     }
     if (!$value) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('insert.pageaddvar', 'value')));
+
         return false;
     }
 
@@ -72,5 +74,6 @@ function smarty_insert_pageaddvar($params, $view)
     }
 
     PageUtil::addVar($var, $value);
+
     return;
 }

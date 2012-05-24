@@ -51,6 +51,7 @@ function smarty_function_moduleadminlinks($params, $view)
     // check our module name
     if (!ModUtil::available($modname)) {
         $view->trigger_error('moduleadminlinks: '.__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($modname)));
+
         return false;
     }
 

@@ -37,6 +37,7 @@ class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_AbstractBase
     {
         header($this->createHttpResponseHeader());
         header('Content-type: text/html');
+
         return $this->payload;
     }
 

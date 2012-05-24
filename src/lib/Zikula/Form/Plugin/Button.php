@@ -98,7 +98,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -110,7 +110,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -140,7 +140,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
      *
      * @return boolean
      */
-    function decodePostBackEvent(Zikula_Form_View $view)
+    public function decodePostBackEvent(Zikula_Form_View $view)
     {
         $fullName = $this->id . '_' . $this->commandName;
 

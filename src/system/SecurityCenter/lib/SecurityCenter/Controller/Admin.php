@@ -338,7 +338,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
 
     /**
      * HTMLPurifier configuration.
-     * 
+     *
      * @return void
      */
     public function purifierconfig()

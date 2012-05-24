@@ -27,7 +27,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
     public function setUp()
     {
         $record = $this->getInvoker();
-        
+
         $recordClass  = get_class($record);
         $subclassName = 'GeneratedDoctrineModel_'.  $recordClass.'_EntityCategory';
         $module       = substr($recordClass, 0, strpos($recordClass, '_'));
@@ -108,7 +108,8 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
      * @return void
      * @throws Exception If this table has not the property $prop.
      */
-    public function setCategory($prop, $category) {
+    public function setCategory($prop, $category)
+    {
         $rec = $this->getInvoker();
         sscanf($rec->getTable()->getTableName(), Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
 
@@ -137,7 +138,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             } else {
                 $mapobjFound['category_id'] = (int)$category;
             }
-            
+
             // create new object
         } else {
             $rec['Categories'][]['Registry'] = $registry;

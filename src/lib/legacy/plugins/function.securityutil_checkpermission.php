@@ -30,16 +30,19 @@ function smarty_function_securityutil_checkpermission($params, $smarty)
 
     if (!isset($params['component'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_checkpermission', 'component')));
+
         return false;
     }
 
     if (!isset($params['instance'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_checkpermission', 'instance')));
+
         return false;
     }
 
     if (!isset($params['level'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('securityutil_checkpermission', 'level')));
+
         return false;
     }
 

@@ -31,6 +31,7 @@ class Categories_Controller_User extends Zikula_AbstractController
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
         $this->view->assign('allowusercatedit', $this->getVar('allowusercatedit', 0));
+
         return $this->view->fetch('categories_user_editcategories.tpl');
     }
 

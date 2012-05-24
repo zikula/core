@@ -1,23 +1,23 @@
 <?php
 /**
  * Copyright 2011 Zikula Foundation.
- * 
+ *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
- * 
+ *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
  * @subpackage Users
- * 
+ *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 /**
  * Users module-wide constants.
- * 
+ *
  * Add only constants here. No variables, functions, or other elements.
- * 
+ *
  * Constants used for specific classes can be defined in those classes. The constants in this class are module-wide
  * constants.
  */
@@ -386,13 +386,13 @@ class Users_Constant
      * Default value for the code indicating the approval/verification sequencing when both are enabled.
      */
     const DEFAULT_REGISTRATION_APPROVAL_SEQUENCE = Users_Constant::APPROVAL_BEFORE;
-    
+
     /**
-     * Module variable key for the flag indicating when a new user registers, should the user be automatically logged in 
+     * Module variable key for the flag indicating when a new user registers, should the user be automatically logged in
      * if admin approval (moderation) and e-mail verification are not required?
      */
     const MODVAR_REGISTRATION_AUTO_LOGIN = 'reg_autologin';
-    
+
     /**
      * Default value for MODVAR_REGISTRATION_AUTO_LOGIN; false == no auto log-in
      */
@@ -457,22 +457,22 @@ class Users_Constant
      * Default value for the flag indicating whether newly registered e-mail addresses must be unique within the system or not.
      */
     const DEFAULT_REQUIRE_UNIQUE_EMAIL = true;
-    
+
     /**
      * The PCRE regular expression fragment used to validate user names.
      */
     const UNAME_VALIDATION_PATTERN = '[\p{L}\p{N}_\.\-]+';
-    
+
     /**
      * The maximum length of a user name, used for validation.
      */
     const UNAME_VALIDATION_MAX_LENGTH = 25;
-    
+
     /**
      * The PCRE regular expression fragment used to validate e-mail addresses.
      */
     const EMAIL_VALIDATION_PATTERN = '(?:[^\s\000-\037\177\(\)<>@,;:\\"\[\]]\.?)+@(?:[^\s\000-\037\177\(\)<>@,;:\\\"\[\]]\.?)+\.[a-z]{2,6}';
-    
+
     /**
      * The PCRE regular expression fragment used to validate e-mail address domains.
      */

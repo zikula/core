@@ -220,6 +220,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         $this->runtimeHandlers = Doctrine_Query::create()->select()
                 ->from('Zikula_Doctrine_Model_HookRuntime')
                 ->fetchArray();
+
         return $this->runtimeHandlers;
     }
 
@@ -289,7 +290,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         if ($area['areatype'] == self::PROVIDER) {
             $table = 'Zikula_Doctrine_Model_HookProvider';
             $areaIdField = 'pareaid';
-        } else if ($area['areatype'] == self::SUBSCRIBER) {
+        } elseif ($area['areatype'] == self::SUBSCRIBER) {
             $table = 'Zikula_Doctrine_Model_HookSubscriber';
             $areaIdField = 'sareaid';
         }
@@ -448,6 +449,7 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula_HookManager_StorageI
         if (!$id->count()) {
             return false;
         }
+
         return $id->getFirst()->get('id');
     }
 

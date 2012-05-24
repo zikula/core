@@ -25,7 +25,7 @@ class Blocks_Block_Html extends Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -41,8 +41,8 @@ class Blocks_Block_Html extends Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the rendered bock
      */
     public function display($blockinfo)
     {

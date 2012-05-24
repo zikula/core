@@ -214,7 +214,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      * @internal
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -224,7 +224,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return boolean
      */
-    function isEmpty()
+    public function isEmpty()
     {
         return $this->text == '';
     }
@@ -232,13 +232,13 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         // All member variables are fetched automatically before create (as strings)
         // Here we afterwards load all special and non-string parameters
@@ -250,7 +250,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
-        } else if ($this->maxLength == null && !in_array(strtolower($this->textMode), array('multiline', 'hidden'))) {
+        } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), array('multiline', 'hidden'))) {
             $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
     }
@@ -258,12 +258,12 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         // The load function expects the plugin to read values from the render.
         // This can be done with the loadValue function (which can be called in other situations than
@@ -278,7 +278,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function initialize(Zikula_Form_View $view)
+    public function initialize(Zikula_Form_View $view)
     {
         $view->addValidator($this);
     }
@@ -290,7 +290,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
@@ -379,7 +379,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function decode(Zikula_Form_View $view)
+    public function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -403,15 +403,15 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function validate(Zikula_Form_View $view)
+    public function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
         if ($this->mandatory && $this->isEmpty()) {
             $this->setError(__('Error! An entry in this field is mandatory.'));
-        } else if (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
+        } elseif (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
             $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.', $this->maxLength)));
-        } else if ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
+        } elseif ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
             $this->setError($view->translateForDisplay($this->regexValidationMessage));
         }
     }
@@ -423,7 +423,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function setError($msg)
+    public function setError($msg)
     {
         $this->isValid = false;
         $this->errorMessage = $msg;
@@ -437,7 +437,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function clearValidation(Zikula_Form_View $view)
+    public function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -450,12 +450,12 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      * Called by the render when doing $view->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Zikula_Form_View object.
+     * @param Zikula_Form_View $view Zikula_Form_View object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue(Zikula_Form_View $view, &$data)
+    public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             $value = $this->parseValue($view, $this->text);
@@ -481,7 +481,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string Parsed Text.
      */
-    function parseValue(Zikula_Form_View $view, $text)
+    public function parseValue(Zikula_Form_View $view, $text)
     {
         return $text;
     }
@@ -492,12 +492,12 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_ViewetValues.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$values Values to load.
      *
      * @return void
      */
-    function loadValue(Zikula_Form_View $view, &$values)
+    public function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->dataBased) {
             $value = null;
@@ -528,7 +528,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string Formatted value.
      */
-    function formatValue(Zikula_Form_View $view, $value)
+    public function formatValue(Zikula_Form_View $view, $value)
     {
         return $value;
     }

@@ -180,6 +180,7 @@ class Zikula_FileSystem_Facade_Sftp
     {
         //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
+
         return file_exists($dir2);
         //@codeCoverageIgnoreEnd
     }
@@ -196,6 +197,7 @@ class Zikula_FileSystem_Facade_Sftp
     {
         //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
+
         return is_dir($dir2);
         //@codeCoverageIgnoreEnd
     }
@@ -212,6 +214,7 @@ class Zikula_FileSystem_Facade_Sftp
     {
         //@codeCoverageIgnoreStart
         $dir2 = "ssh2.sftp://$resource/$dir";
+
         return opendir($dir2);
         //@codeCoverageIgnoreEnd
     }

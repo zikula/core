@@ -26,7 +26,7 @@ class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_AbstractPlugi
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -38,7 +38,7 @@ class Zikula_Form_Plugin_ContextMenu_Separator extends Zikula_Form_AbstractPlugi
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $contextMenu = $this->getParentContextMenu();
 

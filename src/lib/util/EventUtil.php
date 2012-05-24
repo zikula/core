@@ -44,7 +44,7 @@ class EventUtil
      *
      * @return Zikula_EventManager
      */
-    static public function getManager(Zikula_Core $core = null)
+    public static function getManager(Zikula_Core $core = null)
     {
         if (self::$eventManager) {
             return self::$eventManager;
@@ -62,7 +62,7 @@ class EventUtil
      *
      * @return Zikula_Event
      */
-    static public function notify(Zikula_Event $event)
+    public static function notify(Zikula_Event $event)
     {
         return self::getManager()->notify($event);
     }
@@ -75,7 +75,7 @@ class EventUtil
      *
      * @return void
      */
-    static public function attach($name, $handler)
+    public static function attach($name, $handler)
     {
         self::getManager()->attach($name, $handler);
     }
@@ -88,7 +88,7 @@ class EventUtil
      *
      * @return void
      */
-    static public function detach($name, $handler)
+    public static function detach($name, $handler)
     {
         self::getManager()->detach($name, $handler);
     }
@@ -100,7 +100,7 @@ class EventUtil
      *
      * @return void
      */
-    static public function attachCustomHandlers($dir)
+    public static function attachCustomHandlers($dir)
     {
         self::$eventManager->getServiceManager()->getService('zikula')->attachHandlers($dir);
     }

@@ -38,7 +38,7 @@ class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $dql = "DELETE FROM $entity p WHERE p.pid = {$position}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
-        
+
         // add new block positions
         foreach ((array)$blockorder as $order => $bid) {
             $placement = new Blocks_Entity_BlockPlacement();
@@ -58,7 +58,7 @@ class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * This function toggles active/inactive.
      *
      * @param bid int  id of block to toggle.
-     * 
+     *
      * @return mixed true or Ajax error
      */
     public function toggleblock()

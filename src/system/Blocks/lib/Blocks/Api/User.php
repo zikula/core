@@ -26,7 +26,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
      * @param 'language'            language to filter block selection for.
      * @param 'active_status'       filter by active status (0=all, 1=active, 2=inactive).
      *
-     * @return   array   array of items, or false on failure.
+     * @return array array of items, or false on failure.
      */
     public function getall($args)
     {
@@ -37,42 +37,42 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
-        
+
         // backwards compatibility
         if (isset($args['modid']) && !isset($args['module_id'])) {
             $args['module_id'] = $args['modid'];
         }
-        
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('b')
            ->from('Blocks_Entity_Block', 'b');
-        
+
         // add clause for filtering blockposition
         if (isset($args['blockposition_id']) && is_numeric($args['blockposition_id']) && $args['blockposition_id']) {
             $entity = $this->name . '_Entity_BlockPlacement';
             $blockitems = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['blockposition_id']));
-            
+
             $bidList = array(0);
             foreach ($blockitems as $blockitem) {
                 $bidList[] = $blockitem['bid'];
             }
-            
+
             $qb->andWhere($qb->expr()->in('b.bid', $bidList));
         }
-        
+
         // add clause for filtering module
         if (isset($args['module_id']) && is_numeric($args['module_id']) && $args['module_id']) {
             $qb->andWhere($qb->expr()->eq('b.mid', $qb->expr()->literal($args['module_id'])));
         }
-        
+
         // add clause for filtering language
         if (isset($args['language']) && $args['language']) {
             $qb->andWhere($qb->expr()->eq('b.language', $qb->expr()->literal($args['language'])));
         }
-        
+
         // add clause for filtering status
         if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) {
             if ($args['active_status'] == 1) {
@@ -80,18 +80,18 @@ class Blocks_Api_User extends Zikula_AbstractApi
             } else {
                  $active = 0;
             }
-            
+
             $qb->andWhere($qb->expr()->eq('b.active', $qb->expr()->literal($active)));
         }
-        
+
         // add clause for ordering
         $sort = (isset($args['sort']) && $args['sort']) ? 'b.' . $args['sort'] : 'b.title';
         $sortdir = (isset($args['sortdir']) && $args['sortdir']) ? $args['sortdir'] : 'ASC';
         $qb->addOrderBy($sort, $sortdir);
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         //echo $query->getSQL();
 
         // execute query
@@ -103,8 +103,8 @@ class Blocks_Api_User extends Zikula_AbstractApi
     /**
      * get a specific block
      *
-     * @param    $args['bid']  id of block to get
-     * @return   array         item array, or false on failure
+     * @param        $args['bid'] id of block to get
+     * @return array item array, or false on failure
      */
     public function get($args)
     {
@@ -123,7 +123,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
     /**
      * utility function to count the number of items held by this module
      *
-     * @return   integer   number of items held by this module
+     * @return integer number of items held by this module
      */
     public function countitems()
     {
@@ -131,7 +131,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
         $dql = "SELECT count(b.bid) FROM $entity b";
         $query = $this->entityManager->createQuery($dql);
         $numitems = $query->getSingleScalarResult();
-        
+
         return $numitems;
     }
 
@@ -140,7 +140,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
      *
      * This function gets all block position entries from the database.
      *
-     * @return   array   array of items, or false on failure.
+     * @return array array of items, or false on failure.
      */
     public function getallpositions()
     {
@@ -151,9 +151,9 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_OVERVIEW)) {
             return $block_positions;
         }
-        
+
         if (empty($block_positions)) {
-            
+
             $entity = $this->name . '_Entity_BlockPosition';
             $items = $this->entityManager->getRepository($entity)->findBy(array(), array('name' => 'ASC'));
 
@@ -164,13 +164,13 @@ class Blocks_Api_User extends Zikula_AbstractApi
 
         return $block_positions;
     }
-    
+
     /**
      * Get all block placements.
      *
      * This function gets all block placements entries from the database.
      *
-     * @return   array   array of items, or false on failure.
+     * @return array array of items, or false on failure.
      */
     public function getallplacements()
     {
@@ -193,7 +193,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         // Return the item array
         $entity = $this->name . '_Entity_BlockPosition';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('pid' => $args['pid']));
@@ -214,9 +214,10 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         $entity = $this->name . '_Entity_BlockPlacement';
         $items = $this->entityManager->getRepository($entity)->findBy(array('pid' => $args['pid']), array('sortorder' => 'ASC'));
+
         return $items;
     }
 
@@ -233,9 +234,10 @@ class Blocks_Api_User extends Zikula_AbstractApi
         if (!isset($args['bid']) || !is_numeric($args['bid'])) {
             return LogUtil::registerArgsError();
         }
-        
+
         $entity = $this->name . '_Entity_BlockPlacement';
         $items = $this->entityManager->getRepository($entity)->findBy(array('bid' => $args['bid']), array('sortorder' => 'ASC'));
+
         return $items;
     }
 
@@ -282,6 +284,7 @@ class Blocks_Api_User extends Zikula_AbstractApi
                 $params[trim($part[0])] = trim($part[1]);
             }
         }
+
         return ModUtil::url($modname, $type, $func, $params);
     }
 }

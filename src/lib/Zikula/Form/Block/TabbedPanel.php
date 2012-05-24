@@ -53,7 +53,7 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -61,13 +61,13 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         $this->selected = false;
     }
@@ -79,7 +79,7 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
      *
      * @return string The rendered output.
      */
-    function renderBegin(Zikula_Form_View $view)
+    public function renderBegin(Zikula_Form_View $view)
     {
         // Locate parent panelset and register with it
         $panelSet = $this->parentPlugin;
@@ -94,6 +94,7 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
 
         $class = ($this->selected ? '' : 'class="tabsToHide"');
         $html = "<div id=\"{$this->panelSetId}_{$this->index}\"{$class}>\n";
+
         return $html;
     }
 
@@ -104,9 +105,10 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
      *
      * @return string The rendered output.
      */
-    function renderEnd(Zikula_Form_View $view)
+    public function renderEnd(Zikula_Form_View $view)
     {
         $html = "</div>\n";
+
         return $html;
     }
 }

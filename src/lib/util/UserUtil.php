@@ -48,6 +48,7 @@ class UserUtil
     public static function getPNUser($uid, $getVars = false)
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVars')), E_USER_DEPRECATED);
+
         return self::getVars($uid);
     }
 
@@ -65,6 +66,7 @@ class UserUtil
     public static function getPNUserField($id, $field)
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getVar')), E_USER_DEPRECATED);
+
         return self::getVar($field, $id);
     }
 
@@ -84,6 +86,7 @@ class UserUtil
     public static function getPNUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUsers')), E_USER_DEPRECATED);
+
         return self::getUsers($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 
@@ -118,6 +121,7 @@ class UserUtil
     public static function getPNGroup($gid)
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroup')), E_USER_DEPRECATED);
+
         return self::getGroup($gid);
     }
 
@@ -151,6 +155,7 @@ class UserUtil
     public static function getPNGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
+
         return self::getGroups();
     }
 
@@ -185,6 +190,7 @@ class UserUtil
     public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
+
         return self::getUserIdList($where, $orderBy, $separator);
     }
 
@@ -226,6 +232,7 @@ class UserUtil
     public static function getPNGroupIdList($where = '', $orderBy = '', $separator = ',')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
+
         return self::getGroupIdList($where, $orderBy, $separator);
     }
 
@@ -414,6 +421,7 @@ class UserUtil
     public static function getSelectorData_PNGroup($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '')
     {
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getSelectorData_Group')), E_USER_DEPRECATED);
+
         return self::getSelectorData_Group($defaultValue, $defaultText, $ignore, $includeAll, $allText);
     }
 
@@ -664,6 +672,7 @@ class UserUtil
                 'authentication_method' => $authenticationMethod,
                 'reentrant_url'         => $reentrantURL,
             );
+
             return ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'checkPassword', $checkPasswordArgs, 'Zikula_Api_AbstractAuthentication');
 
         } else {
@@ -812,16 +821,16 @@ class UserUtil
      * reentrant URL pointing to a function that will handle reentry into the login process silently, and must clear
      * any save user state immediately following the return of this function.
      *
-     * @param array   $authenticationMethod The name of the authentication module to use for authentication and the method name as defined by that module.
-     * @param array   $authenticationInfo   The information needed by the authentication module for authentication, typically a loginID and pass.
-     * @param string  $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
+     * @param array  $authenticationMethod The name of the authentication module to use for authentication and the method name as defined by that module.
+     * @param array  $authenticationInfo   The information needed by the authentication module for authentication, typically a loginID and pass.
+     * @param string $reentrantURL         If the authentication module needs to redirect to an external authentication server (e.g., OpenID), then
      *                                          this is the URL to return to in order to re-enter the log-in process. The pertinent user
      *                                          state must have already been saved by the function calling authenticateUserUsing(), and the URL must
      *                                          point to a Zikula_AbstractController function that is equipped to detect reentry, restore the
      *                                          saved user state, and get the user back to the point where loginUsing is re-executed. This
      *                                          is only optional if the authentication module identified by $authenticationMethod reports that it is not
      *                                          reentrant (e.g., Users is guaranteed to not be reentrant).
-     * @param boolean $reportErrors         If true, then when validation of the account's ability to log in is performed, if errors are detected then
+     * @param boolean $reportErrors If true, then when validation of the account's ability to log in is performed, if errors are detected then
      *                                          they will be reported through registering errors with Zikula's logging and error reporting system. If
      *                                          false, then error reporting is supressed, and only the return value will indicate success or failure.
      *
@@ -998,10 +1007,10 @@ class UserUtil
      *
      * No events are fired from this function. To receive events, use {@link loginUsing()}.
      *
-     * @param numeric $uid                  The user id of the user who should be logged into the system; required.
-     * @param boolean $rememberMe           If the user's login should be maintained on the computer from which the user is logging in, set this to true;
+     * @param numeric $uid        The user id of the user who should be logged into the system; required.
+     * @param boolean $rememberMe If the user's login should be maintained on the computer from which the user is logging in, set this to true;
      *                                          optional, defaults to false.
-     * @param array   $authenticationMethod An array containing the authentication method used to log the user in; optional,
+     * @param array $authenticationMethod An array containing the authentication method used to log the user in; optional,
      *                                          defaults to the 'Users' module 'uname' method.
      *
      * @return void
@@ -1178,6 +1187,7 @@ class UserUtil
             // Calculate isapproved from approved_by
             $userObj['isapproved'] = isset($userObj['approved_by']) && !empty($userObj['approved_by']);
         }
+
         return $userObj;
     }
 
@@ -1643,7 +1653,7 @@ class UserUtil
      *
      * @param string $unhashedPassword An unhashed password, as might be entered by a user or generated by the system, that meets
      *                                  all of the constraints of a valid password for a user account.
-     * @param int    $hashMethodCode   An internal code identifying one of the valid user password hashing methods; optional, leave this
+     * @param int $hashMethodCode An internal code identifying one of the valid user password hashing methods; optional, leave this
      *                                  unset (null) when creating a new password for a user to get the currently configured system
      *                                  hashing method, otherwise to hash a password for comparison, specify the method used to hash
      *                                  the original password.
@@ -1876,7 +1886,7 @@ class UserUtil
      *
      * @param boolean $force True to ignore the cache.
      *
-     * @return string the name of the user's theme
+     * @return string           the name of the user's theme
      * @throws RuntimeException If this function was unable to calculate theme name.
      */
     public static function getTheme($force = false)
@@ -1919,6 +1929,7 @@ class UserUtil
                 } else {
                     SessionUtil::setVar('theme', $newtheme);
                 }
+
                 return self::_getThemeFilterEvent($themeinfo['name'], 'new-theme');
             }
         }
@@ -1959,6 +1970,7 @@ class UserUtil
     private static function _getThemeFilterEvent($themeName, $type)
     {
         $event = new Zikula_Event('user.gettheme', null, array('type' => $type), $themeName);
+
         return EventUtil::notify($event)->getData();
     }
 

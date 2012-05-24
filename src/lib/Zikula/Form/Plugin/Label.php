@@ -68,7 +68,7 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -76,13 +76,13 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
     }
 
@@ -93,7 +93,7 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -125,7 +125,7 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function postRender(Zikula_Form_View $view)
+    public function postRender(Zikula_Form_View $view)
     {
         $plugin = $view->getPluginById($this->for);
 

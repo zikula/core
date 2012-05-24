@@ -91,6 +91,7 @@ class Zikula_HookManager
         }
 
         $this->eventManager->notify($hook);
+
         return $hook;
     }
 
@@ -211,7 +212,7 @@ class Zikula_HookManager
      * area name.
      *
      * @param string $subscriberAreaName
-     * @param array $providerAreas Array of provider area names.
+     * @param array  $providerAreas      Array of provider area names.
      */
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {
@@ -303,6 +304,7 @@ class Zikula_HookManager
                 throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
             }
         }
+
         return $this;
     }
 

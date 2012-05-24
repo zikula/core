@@ -135,7 +135,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
     /**
      * Update a group item.
      *
-     * @param int $args['gid'] the ID of the item.
+     * @param int    $args['gid']  the ID of the item.
      * @param string $args['name'] the new name of the item.
      *
      * @todo add missing 'name' to modargs check.
@@ -419,8 +419,8 @@ class Groups_Api_Admin extends Zikula_AbstractApi
     /**
      * Pending action.
      *
-     * @param int $args['gid']
-     * @param int $args['userid']
+     * @param int    $args['gid']
+     * @param int    $args['userid']
      * @param string $args['action']
      *
      * @return boolean

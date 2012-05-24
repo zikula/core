@@ -228,6 +228,7 @@ function z_exit($msg, $html = true)
     }
     LogUtil::registerError($msg);
     trigger_error($msg, E_USER_ERROR);
+
     return false;
     //throw new Zikula_Exception_Fatal($msg);
 }

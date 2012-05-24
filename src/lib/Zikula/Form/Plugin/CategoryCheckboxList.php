@@ -35,7 +35,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      * @var mixed
      */
     public $category;
-    
+
     /**
      * Enable save/load of values in separate __CATEGORIES_ field for use in DBUtil.
      *
@@ -61,18 +61,18 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      * @var boolean (default false)
      */
     public $enableDoctrine;
-    
+
     public $doctrine2;
-    
+
     public $registryId;
-    
-    
+
+
     /**
      * Get filename of this file.
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -80,12 +80,12 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         Zikula_Form_Plugin_CategorySelector::loadParameters($this, false, $params);
 
@@ -99,7 +99,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $result = parent::render($view);
 
@@ -110,37 +110,37 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
 
         return $result;
     }
-    
-    
+
+
     /**
      * Saves value in data object.
      *
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue(Zikula_Form_View $view, &$data)
+    public function saveValue(Zikula_Form_View $view, &$data)
     {
         Zikula_Form_Plugin_CategorySelector::saveValue($view, $data);
     }
-    
-    
+
+
     /**
      * Load values.
      *
      * Called internally by the plugin itself to load values from the render.
      * Can also by called when some one is calling the render object's Zikula_Form_View::setValues.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View render object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View render object.
      * @param array            &$values Values to load.
      *
      * @return void
      */
-    function loadValue(Zikula_Form_View $view, &$values)
+    public function loadValue(Zikula_Form_View $view, &$values)
     {
         if ($this->enableDBUtil && $this->dataBased) {
             $items = null;
@@ -171,7 +171,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
 
             $this->setSelectedValue($value);
 
-        } else if ($this->enableDoctrine && $this->dataBased) {
+        } elseif ($this->enableDoctrine && $this->dataBased) {
             $items = null;
             $value = null;
 
@@ -193,24 +193,24 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
                     }
                 }
             }
-            
+
             if ($items != null) {
                 $this->setItems($items);
             }
 
             $this->setSelectedValue($value);
 
-        } else if ($this->doctrine2) {
+        } elseif ($this->doctrine2) {
 
             if (isset($values[$this->group])) {
                 $entity = $values[$this->group];
                 if (isset($entity[$this->dataField])) {
                     $collection = $entity[$this->dataField];
                     $selectedValues = array();
-                    foreach($collection as $c) {
+                    foreach ($collection as $c) {
                         $categoryId = $c->getCategoryRegistryId();
                         if ($categoryId == $this->registryId) {
-                            $selectedValues[$c->getCategory()->getId()] = $c->getCategory()->getId(); 
+                            $selectedValues[$c->getCategory()->getId()] = $c->getCategory()->getId();
                         }
                     }
                     $this->setSelectedValue($selectedValues);

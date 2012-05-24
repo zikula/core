@@ -31,7 +31,7 @@ class Users_Block_Accountlinks extends Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -56,7 +56,7 @@ class Users_Block_Accountlinks extends Zikula_Controller_AbstractBlock
     public function display($blockInfo)
     {
         $renderedOutput = '';
-        
+
         if (SecurityUtil::checkPermission('Accountlinks::', $blockInfo['title']."::", ACCESS_READ)) {
             // Get variables from content block
             $vars = BlockUtil::varsFromContent($blockInfo['content']);
@@ -77,7 +77,7 @@ class Users_Block_Accountlinks extends Zikula_Controller_AbstractBlock
                 }
             }
         }
-        
+
         return $renderedOutput;
     }
 }

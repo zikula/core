@@ -75,7 +75,7 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
     public function display($blockInfo)
     {
         $renderedOutput = '';
-        
+
         if (SecurityUtil::checkPermission('Loginblock::', $blockInfo['title'].'::', ACCESS_READ)) {
             if (!UserUtil::isLoggedIn()) {
                 if (empty($blockInfo['title'])) {
@@ -105,10 +105,10 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
                         );
                     }
                 }
-                
+
                 $this->view->assign('authentication_method_display_order', $authenticationMethodDisplayOrder)
                            ->assign('selected_authentication_method', $selectedAuthenticationMethod);
-                
+
                 // If the current page was reached via a POST or FILES then we don't want to return here.
                 // Only return if the current page was reached via a regular GET
                 if ($this->request->isGet()) {
@@ -127,7 +127,7 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
                 $renderedOutput = BlockUtil::themeBlock($blockInfo);
             }
         }
-        
+
         return $renderedOutput;
     }
 

@@ -23,7 +23,7 @@
  * @param string $string The contents to transform.
  *
  * @see    modifier.safetext.php::smarty_modifier_safetext
- * 
+ *
  * @return string The modified output.
  */
 function smarty_modifier_const($string)

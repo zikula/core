@@ -17,52 +17,53 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Hook area doctrine2 entity.
- * 
+ *
  * @ORM\Entity
  * @ORM\Table(name="hook_area",indexes={@ORM\index(name="areaidx", columns={"areaname"})})
  */
-class Zikula_Doctrine2_Entity_HookArea {
+class Zikula_Doctrine2_Entity_HookArea
+{
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer 
+     * @var integer
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=40)
-     * @var string 
+     * @var string
      */
     private $owner;
-    
+
     /**
      * @ORM\Column(type="string", length=40, nullable=true)
-     * @var integer 
+     * @var integer
      */
     private $subowner;
-    
+
     /**
      * @ORM\Column(type="string", length=1)
-     * @var string 
+     * @var string
      */
     private $areatype;
-    
+
     /**
      * @ORM\Column(type="string", length=20)
-     * @var string 
+     * @var string
      */
     private $category;
-    
+
     /**
      * @ORM\Column(type="string", length=100)
-     * @var string 
-     */    
+     * @var string
+     */
     private $areaname;
-    
+
     /**
      * Get Row Id
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +72,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Set Row Id
-     * @param integer $id 
+     * @param integer $id
      */
     public function setId($id)
     {
@@ -80,7 +81,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Get Hook Area Owner
-     * @return string 
+     * @return string
      */
     public function getOwner()
     {
@@ -89,7 +90,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Set Hook Area Owner
-     * @param string $owner 
+     * @param string $owner
      */
     public function setOwner($owner)
     {
@@ -107,7 +108,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Set Hook Area SubOwner
-     * @param string $subowner 
+     * @param string $subowner
      */
     public function setSubowner($subowner)
     {
@@ -116,7 +117,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Get Hook Area type
-     * @return string 
+     * @return string
      */
     public function getAreatype()
     {
@@ -125,7 +126,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Set Hook Area type
-     * @param string $areatype 
+     * @param string $areatype
      */
     public function setAreatype($areatype)
     {
@@ -143,7 +144,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Set Hook Area cetgory
-     * @param type $category 
+     * @param type $category
      */
     public function setCategory($category)
     {
@@ -152,7 +153,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Get Hook AreaName
-     * @return string 
+     * @return string
      */
     public function getAreaname()
     {
@@ -161,7 +162,7 @@ class Zikula_Doctrine2_Entity_HookArea {
 
     /**
      * Set Hook AreaName
-     * @param string $areaname 
+     * @param string $areaname
      */
     public function setAreaname($areaname)
     {

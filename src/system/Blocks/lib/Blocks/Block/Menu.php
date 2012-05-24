@@ -25,7 +25,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
     /**
      * get information on block
      *
-     * @return       array       The block information
+     * @return array The block information
      */
     public function info()
     {
@@ -42,8 +42,8 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the rendered bock
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the rendered bock
      */
     public function display($blockinfo)
     {
@@ -68,6 +68,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
             // check out if the contents are cached
             if ($this->view->is_cached('blocks_block_menu.tpl')) {
                 $blockinfo['content'] = $this->view->fetch('blocks_block_menu.tpl');
+
                 return BlockUtil::themeBlock($blockinfo);
             }
         }
@@ -155,16 +156,16 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
         } elseif (!empty($url)) {
             if ($url[0] == '{') {
                 $url = explode(':', substr($url, 1, - 1));
-                
+
                 // url[0] should be the module name
                 if (isset($url[0]) && !empty($url[0])) {
                     $modname = $url[0];
-                    
+
                     // default values
                     $type = 'user';
                     $func = 'main';
                     $params = array();
-                    
+
                     // url[1] can be a function or function&param=value
                     if (isset($url[1]) && !empty($url[1])) {
                         $urlparts = explode('&', $url[1]);
@@ -179,7 +180,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
                         // addon: url[2] can be the type parameter, default 'user'
                         $type = (isset($url[2]) && !empty($url[2])) ? $url[2] : 'user';
                     }
-                    
+
                     //  build the url
                     $url = ModUtil::url($modname, $type, $func, $params);
                 }
@@ -197,8 +198,8 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
-     * @return       output      the bock form
+     * @param  array  $blockinfo a blockinfo structure
+     * @return output the bock form
      */
     public function modify($blockinfo)
     {
@@ -243,7 +244,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param        array       $blockinfo     a blockinfo structure
+     * @param  array $blockinfo a blockinfo structure
      * @return       $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
@@ -284,7 +285,7 @@ class Blocks_Block_Menu extends Zikula_Controller_AbstractBlock
                 $c++;
             }
         }
-        
+
         $new_linkname = FormUtil::getPassedValue('new_linkname');
         $new_linkurl  = FormUtil::getPassedValue('new_linkurl');
         $new_linkdesc = FormUtil::getPassedValue('new_linkdesc');

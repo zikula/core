@@ -78,6 +78,7 @@ abstract class Zikula_AbstractEventHandler
         if (!$this->reflection) {
             $this->reflection = new ReflectionObject($this);
         }
+
         return $this->reflection;
     }
 
@@ -110,7 +111,7 @@ abstract class Zikula_AbstractEventHandler
         if (!method_exists($this, $method)) {
             throw new InvalidArgumentException(sprintf('Method %1$s does not exist in this EventHandler class %2$s', $method, get_class($this)));
         }
-        
+
         $this->eventNames[] = array('name' => $name, 'method' => $method, 'weight' => $weight);
     }
 

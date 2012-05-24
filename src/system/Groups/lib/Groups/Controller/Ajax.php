@@ -185,6 +185,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
             'gid' => $gid,
             'uid' => $uid
         );
+
         return new Zikula_Response_Ajax($result);
     }
 }

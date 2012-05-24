@@ -183,7 +183,7 @@ class ValidationUtil
 
     /**
      * Validate a specific field using the supplied plain validation array.
-     * 
+     *
      * This function converts the plain validation array into a structured
      * validation array and then calls ValidationUtil::validateObject().
      *

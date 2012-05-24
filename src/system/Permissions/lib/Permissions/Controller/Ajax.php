@@ -62,7 +62,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $perm = DBUtil::selectObjectByID('group_perms', $pid, 'pid');
         $accesslevels = SecurityUtil::accesslevelnames();
         $perm['levelname'] = $accesslevels[$perm['level']];
-        switch($perm['gid']) {
+        switch ($perm['gid']) {
             case -1:
                 $perm['groupname'] = $this->__('All groups');
                 break;
@@ -92,11 +92,12 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
 
-        for($cnt=0; $cnt<count($permorder); $cnt++) {
+        for ($cnt=0; $cnt<count($permorder); $cnt++) {
             $where = "WHERE $permcolumn[pid] = '" . (int)DataUtil::formatForStore($permorder[$cnt]) . "'";
             $obj = array('sequence' => $cnt);
             DBUtil::updateObject($obj, 'group_perms', $where, 'pid');
         }
+
         return new Zikula_Response_Ajax(array('result' => true));
     }
 
@@ -157,6 +158,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
                 $this->setVar('adminid', 0);
                 $this->setVar('lockadmin', false);
             }
+
             return new Zikula_Response_Ajax(array('pid' => $pid));
         }
 

@@ -20,7 +20,7 @@ class Users_Api_Account extends Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the the user's account panel.
-     * 
+     *
      * @param mixed $args Not used.
      *
      * @return array Indexed array of items.

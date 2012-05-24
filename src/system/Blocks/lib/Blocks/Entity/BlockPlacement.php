@@ -29,21 +29,21 @@ class Blocks_Entity_BlockPlacement extends Zikula_EntityAccess
      * @ORM\Column(type="integer")
      */
     private $pid;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
     private $bid;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $sortorder;
-    
+
 
     /**
-     * constructor 
+     * constructor
      */
     public function __construct()
     {
@@ -54,7 +54,7 @@ class Blocks_Entity_BlockPlacement extends Zikula_EntityAccess
 
     /**
      * get the id of the placement in the placement/block association
-     * 
+     *
      * @return integer the placement's id in the placement/block association
      */
     public function getPid()
@@ -64,17 +64,17 @@ class Blocks_Entity_BlockPlacement extends Zikula_EntityAccess
 
     /**
      * set the id for the placement in the placement/block association
-     * 
+     *
      * @param integer $pid the placement's id in the placement/block association
      */
     public function setPid($pid)
     {
         $this->pid = $pid;
     }
-    
+
     /**
      * get the id of the block in the placement/block association
-     * 
+     *
      * @return integer the block's id in the placement/block association
      */
     public function getBid()
@@ -84,17 +84,17 @@ class Blocks_Entity_BlockPlacement extends Zikula_EntityAccess
 
     /**
      * set the id for the block in the placement/block association
-     * 
+     *
      * @param integer $bid the block's id in the placement/block association
      */
     public function setBid($bid)
     {
         $this->bid = $bid;
     }
-    
+
     /**
      * get the sortorder of the placement/block association
-     * 
+     *
      * @return integer the placement/block association sortorder
      */
     public function getSortorder()
@@ -104,7 +104,7 @@ class Blocks_Entity_BlockPlacement extends Zikula_EntityAccess
 
     /**
      * set the sortorder for the placement/block association
-     * 
+     *
      * @param integer $sortorder the placement/block association sortorder
      */
     public function setSortorder($sortorder)

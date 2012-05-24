@@ -29,10 +29,11 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
     /**
      * Initialize the API instance with the list of valid authentication methods supported.
-     * 
+     *
      * @return void
      */
-    protected function  postInitialize() {
+    protected function  postInitialize()
+    {
         parent::postInitialize();
 
         $loginViaOption = $this->getVar(Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME);
@@ -82,15 +83,15 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
     /**
      * Indicate whether this module supports the indicated authentication method.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * string 'method' The name of the authentication method for which support is enquired.
      *
      * @param array $args All arguments passed to this function, see above.
-     * 
+     *
      * @return boolean True if the indicated authentication method is supported by this module; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     public function supportsAuthenticationMethod(array $args)
@@ -108,15 +109,15 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
     /**
      * Indicates whether a specified authentication method that is supported by this module is enabled for use.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * string 'method' The name of the authentication method for which support is enquired.
      *
      * @param array $args All arguments passed to this function, see above.
-     * 
+     *
      * @return boolean True if the indicated authentication method is enabled by this module; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     public function isEnabledForAuthentication(array $args)
@@ -136,23 +137,23 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
     /**
      * Retrieves an array of authentication methods defined by this module, possibly filtered by only those that are enabled.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * integer 'filter' Either {@link FILTER_ENABLED} (value 1), {@link FILTER_NONE} (value 0), or not present; allows the result to be filtered.
      *                      If this argument is FILTER_ENABLED, then only those authentication methods that are also enabled are returned.
      *
      * @param array $args All arguments passed to this function.
-     * 
+     *
      * @return array An array containing the authentication methods defined by this module, possibly filtered by only those that are enabled.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationMethods(array $args = null)
     {
         if (isset($args) && isset($args['filter'])) {
             if (is_numeric($args['filter']) && ((int)$args['filter'] == $args['filter'])) {
-                switch($args['filter']) {
+                switch ($args['filter']) {
                     case Zikula_Api_AbstractAuthentication::FILTER_NONE:
                     case Zikula_Api_AbstractAuthentication::FILTER_ENABLED:
                     case Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED:
@@ -196,10 +197,10 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
     /**
      * Registers a user account record or a user registration request with the authentication method.
-     * 
+     *
      * This is called during the user registration process to associate an authentication method provided by this authentication module
      * with a user (either a full user account, or a user's registration request).
-     * 
+     *
      * Parameters passed in the $args array:
      * -------------------------------------
      * array   'authentication_method' Not used by the Users module.
@@ -207,15 +208,16 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * numeric 'uid'                   Not used by the Users module.
      *
      * @param array $args All parameters passed to this function.
-     * 
-     * @return boolean True if the user account or registration request was successfully associated with the authentication method and 
+     *
+     * @return boolean True if the user account or registration request was successfully associated with the authentication method and
      *                      authentication information; otherwise false.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown in all cases by the Users module. This module handles registrations as part of the core functionality.
      */
     public function register(array $args)
     {
         throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'Users')));
+
         return false;
     }
 
@@ -244,12 +246,12 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * array $args['authentication_info']   The information needed for this authenticationModule, including any user-entered
      *                                              information. For the Users module, this contains the elements 'login_id' and 'pass'.
      *                                              The 'login_id' element contains either the user name or the e-mail address of the
-     *                                              user logging in, depending on the authentication_method. The 'pass' contains the 
+     *                                              user logging in, depending on the authentication_method. The 'pass' contains the
      *                                              password entered by the user.
-     * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this 
+     * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                              module's module name), and the 'method' method name. For the Users module, 'modname' would
      *                                              be 'Users' and 'method' would contain either 'email' or 'uname'.
-     * 
+     *
      * @param array $args All arguments passed to this function.
      *
      * @return boolean True if the authentication_info authenticates with the source; otherwise false on authentication failure.
@@ -370,7 +372,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 }
             }
         }
-        
+
         if (!$passwordAuthenticates && !$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
             if ($authenticationMethod['method'] == 'email') {
                 $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
@@ -378,7 +380,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 $this->registerError($this->__('Sorry! The user name or password you entered was incorrect.'));
             }
         }
-            
+
         return $passwordAuthenticates;
     }
 
@@ -394,15 +396,15 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * array $args['authentication_info'] The information needed for this authenticationModule, including any user-entered
      *                                          information. For the Users module, this contains the elements 'login_id' and 'pass'.
      *                                          The 'login_id' element contains either the user name or the e-mail address of the
-     *                                          user logging in, depending on the authentication_method. The 'pass' contains the 
+     *                                          user logging in, depending on the authentication_method. The 'pass' contains the
      *                                          password entered by the user.
-     * 
+     *
      * @param array $args All arguments passed to this function.
      *
      * @return array A "clean" version of the authenticationInfo passed in, devoid of any password-like fields, but retaining
      *                  enough information--such as user name-like fields--to identify the account on the authenticating
      *                  system.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
      */
     public function getAuthenticationInfoForSession(array $args)
@@ -438,18 +440,18 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      *
      * Note: (Specific to Zikula Users module authentication) This function uses mb_strtolower, and assumes that
      * locale == charset.
-     * 
+     *
      * Parameters passed in $args:
      * ---------------------------
      * array $args['authentication_info'] The information needed for this authenticationModule, including any user-entered
      *                                          information. For the Users module, this contains the elements 'login_id' and 'pass'.
      *                                          The 'login_id' element contains either the user name or the e-mail address of the
-     *                                          user logging in, depending on the authentication_method. The 'pass' contains the 
+     *                                          user logging in, depending on the authentication_method. The 'pass' contains the
      *                                          password entered by the user.
-     * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this 
+     * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                          module's module name), and the 'method' method name. For the Users module, 'modname' would
      *                                          be 'Users' and 'method' would contain either 'email' or 'uname'.
-     * 
+     *
      * @param array $args All arguments passed to this function.
      *                      array   authenticationInfo  The authentication information uniquely associated with a user.
      *
@@ -463,7 +465,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
         // authenticationInfo can contain anything necessary for the authentication method, but most of the time will contain
         // a login ID of some sort, and a password. Set up authenticationInfo in templates as name="authenticationInfo[fieldname]" to
         // gather what is needed. In this case, we don't care about any password that might be in authenticationInfo.
-        
+
         $authenticatedUid = false;
 
         // Validate authenticationInfo
@@ -481,7 +483,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
         // Custom authenticationModules can expect whatever they need in authentication_info. The authentication_method
         // parameter will contain the module name (which is a bit redundant) and the specific method name.
-        
+
         $loginID = $authenticationInfo['login_id'];
 
         if (!isset($loginID) || (is_string($loginID) && empty($loginID))) {
@@ -535,12 +537,12 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      * array $args['authentication_info'] The information needed for this authenticationModule, including any user-entered
      *                                          information. For the Users module, this contains the elements 'login_id' and 'pass'.
      *                                          The 'login_id' element contains either the user name or the e-mail address of the
-     *                                          user logging in, depending on the authentication_method. The 'pass' contains the 
+     *                                          user logging in, depending on the authentication_method. The 'pass' contains the
      *                                          password entered by the user.
-     * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this 
+     * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                          module's module name), and the 'method' method name. For the Users module, 'modname' would
      *                                          be 'Users' and 'method' would contain either 'email' or 'uname'.
-     * 
+     *
      * @param array $args All arguments passed to this function.
      *
      * @return integer|boolean If the authenticationInfo authenticates with the source, then the Zikula uid associated with that login ID;
@@ -553,7 +555,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
         $checkPassword = ModUtil::apiFunc($this->name, 'Authentication', 'checkPassword', $args, 'Zikula_Api_AbstractAuthentication');
         if ($checkPassword) {
             $authenticatedUid = ModUtil::apiFunc($this->name, 'Authentication', 'getUidForAuthenticationInfo', $args, 'Zikula_Api_AbstractAuthentication');
-            
+
             if (!$authenticatedUid) {
                 if ($args['authentication_method']['method'] == 'email') {
                     $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
@@ -565,25 +567,25 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
 
         return $authenticatedUid;
     }
-    
+
     /**
      * Retrieve the account recovery information for the specified user.
-     * 
+     *
      * The array returned by this function should be an empty array (not null) if the specified user does not have any
      * authentication methods registered with the authentication module that are enabled for log-in.
-     * 
+     *
      * If the specified user does have one or more authentication methods, then the array should contain one or more elements
      * indexed numerically. Each element should be an associative array containing the following:
-     * 
+     *
      * - 'modname' The authentication module name.
      * - 'short_description' A brief (a few words) description or name of the authentication method.
      * - 'long_description' A longer description or name of the authentication method.
      * - 'uname' The user name _equivalent_ for the authentication method (e.g., the claimed OpenID).
      * - 'link' If the authentication method is for an external service, then a link to the user's account on that service, or a general link to the service,
      *            otherwise, an empty string (not null).
-     * 
+     *
      * For example:
-     * 
+     *
      * <code>
      * $accountRecoveryInfo[] = array(
      *     'modname'           => $this->name,
@@ -593,15 +595,15 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
      *     'link'              => '',
      * )
      * </code>
-     * 
+     *
      * Parameters passed in the $arg array:
      * ------------------------------------
      * numeric 'uid' The user id of the user for which account recovery information should be retrieved.
-     * 
+     *
      * @param array $args All parameters passed to this function.
-     * 
+     *
      * @return An array of account recovery information.
-     * 
+     *
      * @throws Zikula_Exception_Fatal Thrown if an invalid arguments array or an invalid user id is received by the method.
      */
     public function getAccountRecoveryInfoForUid(array $args)
@@ -609,14 +611,14 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
         if (!isset($args) || empty($args)) {
             throw new Zikula_Exception_Fatal($this->__('An invalid parameter array was received.'));
         }
-        
+
         $uid = isset($args['uid']) ? $args['uid'] : false;
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid)) {
             throw new Zikula_Exception_Fatal($this->__('An invalid user id was received.'));
         }
 
         $userObj = UserUtil::getVars($uid);
-        
+
         $lostUserNames = array();
         if ($userObj) {
             if (!empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
@@ -643,7 +645,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
                 }
             }
         }
-        
+
         return $lostUserNames;
     }
 }

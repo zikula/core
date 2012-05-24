@@ -23,6 +23,7 @@ class SecurityCenter_Version extends Zikula_AbstractVersion
         $meta['url']            = $this->__('securitycenter');
         $meta['version']        = '1.4.4';
         $meta['securityschema'] = array('SecurityCenter::' => '::');
+
         return $meta;
     }
 }

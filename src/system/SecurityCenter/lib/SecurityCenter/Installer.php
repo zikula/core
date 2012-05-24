@@ -239,8 +239,8 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
     /**
      * upgrade the SecurityCenter module from an old version
      *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
+     * @param  string $oldVersion version number string to upgrade from
+     * @return mixed  true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {

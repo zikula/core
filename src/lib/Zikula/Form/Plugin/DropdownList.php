@@ -187,7 +187,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -195,13 +195,13 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         parent::create($view, $params);
 
@@ -211,12 +211,12 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
     /**
      * Load event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @return void
      */
-    function load(Zikula_Form_View $view, &$params)
+    public function load(Zikula_Form_View $view, &$params)
     {
         parent::load($view, $params);
 
@@ -238,7 +238,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -300,7 +300,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
 
             if ($this->selectionMode == 'single' && $value == $this->selectedValue) {
                 $selected = ' selected="selected"';
-            } else if ($this->selectionMode == 'multiple' && in_array($value, (array)$this->selectedValue)) {
+            } elseif ($this->selectionMode == 'multiple' && in_array($value, (array)$this->selectedValue)) {
                 $selected = ' selected="selected"';
             } else {
                 $selected = '';
@@ -326,7 +326,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
+    public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $args = array(
             'commandName' => null,
@@ -344,7 +344,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function decode(Zikula_Form_View $view)
+    public function decode(Zikula_Form_View $view)
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
@@ -375,7 +375,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function validate(Zikula_Form_View $view)
+    public function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -393,7 +393,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function setSelectedValue($value)
+    public function setSelectedValue($value)
     {
         if ($this->selectionMode == 'single') {
             // Check for exiting value in list (avoid tampering with post values)
@@ -437,13 +437,14 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return mixed The selected value.
      */
-    function getSelectedValue()
+    public function getSelectedValue()
     {
         if ($this->saveAsString) {
             $s = '';
             for ($i = 0, $count = count($this->selectedValue); $i < $count; ++$i) {
                 $s .= (empty($s) ? '' : ':') . $this->selectedValue[$i];
             }
+
             return $s;
         }
 
@@ -457,7 +458,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return void
      */
-    function setSelectedIndex($index)
+    public function setSelectedIndex($index)
     {
         if ($index >= 0 && $index < count($this->items)) {
             $this->selectedValue = $this->items[$index]['value'];
@@ -470,7 +471,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      *
      * @return integer The selected index.
      */
-    function getSelectedIndex()
+    public function getSelectedIndex()
     {
         return $this->selectedIndex;
     }

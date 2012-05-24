@@ -20,7 +20,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 {
     /**
      * Returns the id of this panel.
-     * 
+     *
      * @return string
      */
     public function getId()
@@ -30,7 +30,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the link name.
-     * 
+     *
      * @return string
      */
     public function getTitle()
@@ -40,7 +40,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the content panel title.
-     * 
+     *
      * @return string
      */
     public function getPanelTitle()
@@ -50,7 +50,7 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
 
     /**
      * Returns the the HTML code of the content panel.
-     * 
+     *
      * @return string HTML
      */
     public function getPanelContent()
@@ -114,19 +114,20 @@ class Zikula_DebugToolbar_Panel_Config implements Zikula_DebugToolbar_PanelInter
             }
 
             $html .= "</ul></li>";
+
             return $html;
         }
     }
 
     /**
      * Returns the panel data in raw format.
-     * 
+     *
      * @return array
      */
     public function getPanelData()
     {
         $data = array();
-        
+
         // zikula config
         $data['global'] = array(
             'title' => __('Zikula configuration'),

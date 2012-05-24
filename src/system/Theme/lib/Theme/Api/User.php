@@ -170,7 +170,7 @@ class Theme_Api_User extends Zikula_AbstractApi
         }
 
         $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
-        
+
         $default = array(
                        'page' => '',
                        'block' => '',
@@ -239,7 +239,7 @@ class Theme_Api_User extends Zikula_AbstractApi
      * read an ini file from either the master theme config or running config
      *
      */
-    function _readinifile($args)
+    public function _readinifile($args)
     {
         // check our input
         if (!isset($args['file']) || empty($args['file'])) {
@@ -264,7 +264,7 @@ class Theme_Api_User extends Zikula_AbstractApi
 
         if (file_exists($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile)) {
             return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile, $args['sections']);
-        } else if (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
+        } elseif (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
             return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
         }
     }
@@ -317,9 +317,11 @@ class Theme_Api_User extends Zikula_AbstractApi
         } else {
             if (fwrite($handle, $content) === false) {
                 fclose($handle);
+
                 return LogUtil::registerError($this->__f('Error! Could not write to file: %s', $osfile));
             }
             fclose($handle);
+
             return true;
         }
     }
@@ -391,7 +393,7 @@ class Theme_Api_User extends Zikula_AbstractApi
      *
      * @param string $themename Name of the theme to parse
      */
-    function _getthemedomain($themename)
+    public function _getthemedomain($themename)
     {
         if (in_array($themename, array('Andreas08', 'Atom', 'Printer', 'RSS', 'SeaBreeze'))) {
             return 'zikula';

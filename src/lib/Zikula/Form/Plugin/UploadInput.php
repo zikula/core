@@ -100,7 +100,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -110,7 +110,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return boolean
      */
-    function isEmpty()
+    public function isEmpty()
     {
         return $this->result == null || $this->result['name'] == '';
     }
@@ -118,13 +118,13 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
     /**
      * Create event handler.
      *
-     * @param Zikula_Form_View $view    Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$params Parameters passed from the Smarty plugin function.
      *
      * @see    Zikula_Form_AbstractPlugin
      * @return void
      */
-    function create(Zikula_Form_View $view, &$params)
+    public function create(Zikula_Form_View $view, &$params)
     {
         $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
         $this->readOnly = (array_key_exists('readOnly', $params) ? $params['readOnly'] : false);
@@ -145,7 +145,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function initialize(Zikula_Form_View $view)
+    public function initialize(Zikula_Form_View $view)
     {
         $view->addValidator($this);
     }
@@ -157,7 +157,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
         $nameHtml = " name=\"{$this->inputName}\"";
@@ -188,7 +188,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function decode(Zikula_Form_View $view)
+    public function decode(Zikula_Form_View $view)
     {
         if (isset($_FILES[$this->inputName])) {
             $this->result = $_FILES[$this->inputName];
@@ -202,7 +202,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function validate(Zikula_Form_View $view)
+    public function validate(Zikula_Form_View $view)
     {
         $this->clearValidation($view);
 
@@ -222,7 +222,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function setError($msg)
+    public function setError($msg)
     {
         $this->isValid = false;
         $this->errorMessage = $msg;
@@ -236,7 +236,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function clearValidation(Zikula_Form_View $view)
+    public function clearValidation(Zikula_Form_View $view)
     {
         $this->isValid = true;
         $this->errorMessage = null;
@@ -248,12 +248,12 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      * Called by the render when doing $render->getValues()
      * Uses the group parameter to decide where to store data.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$data Data object.
      *
      * @return void
      */
-    function saveValue(Zikula_Form_View $view, &$data)
+    public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
             if ($this->group == null) {

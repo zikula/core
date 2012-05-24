@@ -102,7 +102,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -114,7 +114,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $idHtml = $this->getIdHtml();
 
@@ -170,7 +170,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
      *
      * @return void
      */
-    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
+    public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $carg = unserialize($eventArgument);
         $args = array(

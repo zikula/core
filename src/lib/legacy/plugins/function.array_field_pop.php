@@ -56,16 +56,19 @@ function smarty_function_array_field_pop($params, Zikula_View $view)
 
     if (!$array) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_pop', 'array')));
+
         return false;
     }
 
     if (!is_array($view->_tpl_vars[$params['array']])) {
         $view->trigger_error(__f('Non-array passed to %s.', 'array_field_pop'));
+
         return false;
     }
 
     if ($field === null) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('array_field_pop', 'field')));
+
         return false;
     }
 
@@ -81,6 +84,7 @@ function smarty_function_array_field_pop($params, Zikula_View $view)
         $view->assign($assign, $result);
     } else {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified to get the required field.', array('array_field_pop', 'assign')));
+
         return false;
     }
 }

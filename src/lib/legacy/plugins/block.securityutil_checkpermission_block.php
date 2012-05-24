@@ -46,14 +46,17 @@ function smarty_block_securityutil_checkpermission_block($params, $content, &$sm
     // check our input
     if (!isset($params['component'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_securityutil_checkpermission_block', 'component')));
+
         return false;
     }
     if (!isset($params['instance'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_securityutil_checkpermission_block', 'instance')));
+
         return false;
     }
     if (!isset($params['level'])) {
         $smarty->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_block_securityutil_checkpermission_block', 'level')));
+
         return false;
     }
 

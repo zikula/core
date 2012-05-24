@@ -285,8 +285,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        switch ($modinfo['state'])
-        {
+        switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
                 break;
@@ -364,11 +363,13 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     // so we must check if the method actually exists by reflection - drak
                     if ($reflectionInteractive->hasMethod('upgrade')) {
                         SessionUtil::setVar('interactive_remove', true);
+
                         return call_user_func($interactive_func);
                     }
                 } else {
                     // tnis is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
                     SessionUtil::setVar('interactive_remove', true);
+
                     return call_user_func($interactive_func);
                 }
             }
@@ -802,8 +803,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        switch ($modinfo['state'])
-        {
+        switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 return LogUtil::registerError($this->__f('Error! No permission to install %s.', $modinfo['name']));
                 break;
@@ -877,11 +877,13 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('install')) {
                     SessionUtil::setVar('interactive_init', true);
+
                     return call_user_func($interactive_func);
                 }
             } else {
                 // tnis is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
                 SessionUtil::setVar('interactive_init', true);
+
                 return call_user_func($interactive_func);
             }
         }
@@ -934,8 +936,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! No such module ID exists.'));
         }
 
-        switch ($modinfo['state'])
-        {
+        switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 return LogUtil::registerError($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
                 break;
@@ -1007,11 +1008,13 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('upgrade')) {
                     SessionUtil::setVar('interactive_upgrade', true);
+
                     return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
                 }
             } else {
                 // this is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
                 SessionUtil::setVar('interactive_upgrade', true);
+
                 return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
             }
         }
@@ -1025,6 +1028,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     $modinfo['version'] = $result;
                     $obj = DBUtil::updateObject($modinfo, 'modules', '', 'id', true);
                 }
+
                 return false;
             } elseif ($result != true) {
                 return false;

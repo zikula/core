@@ -146,7 +146,7 @@ class DBConnectionStack
      *
      * @deprecated
      *
-     * @throws PDOException If database connection failed.
+     * @throws PDOException        If database connection failed.
      * @return Doctrine_Connection Desired database connection reference.
      */
     public static function init($name = 'default', $lazyConnect = false)
@@ -176,9 +176,9 @@ class DBConnectionStack
      * @param string $name  The name of the connection info to get. Passing null returns the current (ie: top) connection (optional) (default=null).
      * @param string $field The field of the connection info record to return.
      *
-     * @throws Exception If no connection is available.
-     * @throws Exception If the given connection does not exist.
-     * @throws Exception If the given field does not exist.
+     * @throws Exception  If no connection is available.
+     * @throws Exception  If the given connection does not exist.
+     * @throws Exception  If the given field does not exist.
      * @return void|mixed The connection info array or the specified field value.
      */
     public static function getConnectionInfo($name = null, $field = null)
@@ -224,6 +224,7 @@ class DBConnectionStack
             if (!isset($connectionInfo[$field])) {
                 throw new Exception(__f('Unknown field [%s] requested', $field));
             }
+
             return $connectionInfo[$field];
         }
 
@@ -239,6 +240,7 @@ class DBConnectionStack
     public static function getConnectionName()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'alias');
     }
 
@@ -250,6 +252,7 @@ class DBConnectionStack
     public static function getConnectionDBName()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'dbname');
     }
 
@@ -261,6 +264,7 @@ class DBConnectionStack
     public static function getConnectionDBHost()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'dbhost');
     }
 
@@ -272,6 +276,7 @@ class DBConnectionStack
     public static function getConnectionDBType()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return strtolower(self::getConnectionInfo(null, 'dbdriver')); // this is a duplicate of DBDriver
     }
 
@@ -286,6 +291,7 @@ class DBConnectionStack
     public static function getConnectionDBDriver()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return strtolower(self::getConnectionInfo(null, 'dbdriver'));
     }
 
@@ -297,6 +303,7 @@ class DBConnectionStack
     public static function getConnectionDBCharset()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'dbcharset');
     }
 
@@ -308,6 +315,7 @@ class DBConnectionStack
     public static function getConnectionDBCollate()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'dbcollate');
     }
 
@@ -319,6 +327,7 @@ class DBConnectionStack
     public static function getConnectionDBTableType()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'dbtabletype');
     }
 
@@ -330,6 +339,7 @@ class DBConnectionStack
     public static function getConnectionDSN()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return self::getConnectionInfo(null, 'dsn');
     }
 
@@ -341,6 +351,7 @@ class DBConnectionStack
     public static function isDefaultConnection()
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
+
         return (self::getConnectionName() == 'default');
     }
 
@@ -365,6 +376,7 @@ class DBConnectionStack
             throw new Exception(__('Attempted to get connection from empty connection stack'));
         }
         $connection = self::$manager->getCurrentConnection();
+
         return $connection;
     }
 
@@ -390,7 +402,7 @@ class DBConnectionStack
      *
      * @param boolean $close Whether or not to close the connection (optional) (default=false).
      *
-     * @throws Exception If no connection is available.
+     * @throws Exception           If no connection is available.
      * @return Doctrine_Connection The newly active connection.
      */
     public static function popConnection($close = false)
@@ -434,9 +446,9 @@ class PNObject extends DBObject
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
-     * @param object|string $init   Initialization value (see {@link DBObject::_init()} for details).
-     * @param mixed         $key    The DB key to use to retrieve the object (optional) (default=null)
-     * @param string        $field  The field containing the key value (optional) (default=null)
+     * @param object|string $init  Initialization value (see {@link DBObject::_init()} for details).
+     * @param mixed         $key   The DB key to use to retrieve the object (optional) (default=null)
+     * @param string        $field The field containing the key value (optional) (default=null)
      */
     public function PNObject($init = null, $key = null, $field = null)
     {
@@ -455,6 +467,7 @@ class PNObject extends DBObject
         if (is_string($init) && array_key_exists($init, $initTypes)) {
             $init = $initTypes[$init];
         }
+
         return parent::_init($init, $key, $field);
     }
 }
@@ -477,8 +490,8 @@ class PNObjectArray extends DBObjectArray
     /**
      * Constructor, init everything to sane defaults and handle parameters.
      *
-     * @param object|string $init   Initialization value (see _init() for details)
-     * @param string        $where  The where clause to apply to the DB get/select (optional) (default='')
+     * @param object|string $init  Initialization value (see _init() for details)
+     * @param string        $where The where clause to apply to the DB get/select (optional) (default='')
      */
     public function PNObjectArray($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
@@ -498,6 +511,7 @@ class PNObjectArray extends DBObjectArray
         if (is_string($init) && array_key_exists($init, $initTypes)) {
             $init = $initTypes[$init];
         }
+
         return parent::_init($init, $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
     }
 }
@@ -666,6 +680,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormExecute($template, &$eventHandler)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::execute')), E_USER_DEPRECATED);
+
         return $this->execute($template, $eventHandler);
     }
 
@@ -695,15 +710,16 @@ class pnFormRender extends Zikula_Form_View
      * @deprecated
      * @see Zikula_Form_View::registerPlugin
      *
-     * @param string  $pluginName Full class name of the plugin to register.
+     * @param string $pluginName Full class name of the plugin to register.
      * @param array   &$params    Parameters passed from the Smarty plugin function.
-     * @param boolean $isBlock    Indicates whether the plugin is a Smarty block or a Smarty function (internal).
+     * @param boolean $isBlock Indicates whether the plugin is a Smarty block or a Smarty function (internal).
      *
      * @return string Returns what the render() method of the plugin returns.
      */
     public function pnFormRegisterPlugin($pluginName, &$params, $isBlock = false)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerPlugin')), E_USER_DEPRECATED);
+
         return $this->registerPlugin($pluginName, $params, $isBlock = false);
     }
 
@@ -720,6 +736,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormRegisterBlock($pluginName, &$params, &$content)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerBlock')), E_USER_DEPRECATED);
+
         return $this->registerBlock($pluginName, $params, $content);
     }
 
@@ -755,6 +772,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormRegisterBlockEnd($pluginName, &$params, $content)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerBlockEnd')), E_USER_DEPRECATED);
+
         return $this->registerBlockEnd($pluginName, $params, $content);
     }
 
@@ -772,6 +790,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetPluginId(&$params)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginId')), E_USER_DEPRECATED);
+
         return $this->getPluginId($params);
     }
 
@@ -786,6 +805,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormIsPostBack()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::isPostBack')), E_USER_DEPRECATED);
+
         return $this->isPostBack();
     }
 
@@ -817,6 +837,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormTranslateForDisplay($txt, $doEncode = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::translateForDisplay')), E_USER_DEPRECATED);
+
         return $this->translateForDisplay($txt, $doEncode = true);
     }
 
@@ -845,6 +866,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormIsValid()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::isValid')), E_USER_DEPRECATED);
+
         return $this->isValid();
     }
 
@@ -893,6 +915,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormSetErrorMsg($msg)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setErrorMsg')), E_USER_DEPRECATED);
+
         return $this->setErrorMsg($msg);
     }
 
@@ -905,6 +928,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetErrorMsg()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getErrorMsg')), E_USER_DEPRECATED);
+
         return $this->getErrorMsg();
     }
 
@@ -917,6 +941,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormHasError()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::hasError')), E_USER_DEPRECATED);
+
         return $this->hasError();
     }
 
@@ -929,6 +954,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormRegisterError($dummy)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::registerError')), E_USER_DEPRECATED);
+
         return $this->registerError($dummy);
     }
 
@@ -953,6 +979,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetPostBackEventReference($plugin, $commandName)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPostBackEventReference')), E_USER_DEPRECATED);
+
         return $this->getPostBackEventReference($plugin, $commandName);
     }
 
@@ -965,6 +992,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormRaiseEvent($eventHandlerName, $args)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::raiseEvent')), E_USER_DEPRECATED);
+
         return $this->raiseEvent($eventHandlerName, $args);
     }
 
@@ -989,6 +1017,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetIncludesText()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getIncludesText')), E_USER_DEPRECATED);
+
         return $this->getIncludesText();
     }
 
@@ -1001,6 +1030,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetIncludesHTML()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getIncludesHTML')), E_USER_DEPRECATED);
+
         return $this->getIncludesHTML();
     }
 
@@ -1013,6 +1043,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormDecodeIncludes()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodeIncludes')), E_USER_DEPRECATED);
+
         return $this->decodeIncludes();
     }
 
@@ -1025,6 +1056,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetAuthKeyHTML()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getAuthKeyHTML')), E_USER_DEPRECATED);
+
         return $this->getAuthKeyHTML();
     }
 
@@ -1061,6 +1093,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetPluginState()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginState')), E_USER_DEPRECATED);
+
         return $this->getPluginState();
     }
 
@@ -1073,6 +1106,7 @@ class pnFormRender extends Zikula_Form_View
     function &pnFormGetPluginById($id)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginById')), E_USER_DEPRECATED);
+
         return $this->getPluginById($id);
     }
 
@@ -1085,6 +1119,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetPluginState_rec($plugins)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getPluginState_rec')), E_USER_DEPRECATED);
+
         return $this->getPluginState_rec($plugins);
     }
 
@@ -1097,6 +1132,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetStateHTML()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getStateHTML')), E_USER_DEPRECATED);
+
         return $this->getStateHTML();
     }
 
@@ -1132,6 +1168,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormInitializePlugins()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::initializePlugins')), E_USER_DEPRECATED);
+
         return $this->initializePlugins();
     }
 
@@ -1156,6 +1193,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormDecodePlugins()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodePlugins')), E_USER_DEPRECATED);
+
         return $this->decodePlugins();
     }
 
@@ -1192,6 +1230,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormDecodePostBackEvent_rec($plugins)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::decodePostBackEvent_rec')), E_USER_DEPRECATED);
+
         return $this->decodePostBackEvent_rec($plugins);
     }
 
@@ -1204,6 +1243,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormPostRender()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::postRender')), E_USER_DEPRECATED);
+
         return $this->postRender();
     }
 
@@ -1228,6 +1268,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormGetValues()
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::getValues')), E_USER_DEPRECATED);
+
         return $this->getValues();
     }
 
@@ -1252,6 +1293,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormSetValues(&$values, $group = null)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setValues')), E_USER_DEPRECATED);
+
         return $this->setValues($values, $group);
     }
 
@@ -1264,6 +1306,7 @@ class pnFormRender extends Zikula_Form_View
     public function pnFormSetValues2(&$values, $group = null, $plugins)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'Zikula_Form_View::setValues2')), E_USER_DEPRECATED);
+
         return $this->setValues2($values, $group, $plugins);
     }
 
@@ -2273,6 +2316,7 @@ function authorised($testrealm, $testcomponent, $testinstance, $testlevel)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
         'pnSecAuthAction()',
         'SecurityUtil::checkPermission()')), E_USER_DEPRECATED);
+
     return pnSecAuthAction($testrealm, $testcomponent, $testinstance, $testlevel);
 }
 
@@ -2323,6 +2367,7 @@ function accesslevelname($level)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
         'accesslevelname()',
         'SecurityUtil::accesslevelname()')), E_USER_DEPRECATED);
+
     return SecurityUtil::accesslevelname($level);
 }
 
@@ -2338,6 +2383,7 @@ function accesslevelnames()
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
         'accesslevelnames()',
         'SecurityUtil::accesslevelnames()')), E_USER_DEPRECATED);
+
     return SecurityUtil::accesslevelnames();
 }
 
@@ -2537,7 +2583,7 @@ function pnVarPrepForStore()
  * @param html        whether or not to generate HTML (can be turned off for command line execution)
  */
 if (!function_exists('pn_exit')) {
-    function pn_exit($msg, $html = true)
+    public function pn_exit($msg, $html = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
             'pn_exit()',
@@ -2555,9 +2601,10 @@ if (!function_exists('pn_exit')) {
  * @param assert_trigger   The assert trigger (passed from assertion handler)
  */
 if (!function_exists('pn_assert_callback_function')) {
-    function pn_assert_callback_function($file, $line, $assert_trigger)
+    public function pn_assert_callback_function($file, $line, $assert_trigger)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated.', 'pn_assert_callback_function()', E_USER_DEPRECATED));
+
         return pn_exit(__('Assertion failed'));
     }
 }
@@ -2578,6 +2625,7 @@ function pnSessionGetVar($name, $default = false)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
         'pnSessionGetVar()',
         'SessionUtil::getVar()')), E_USER_DEPRECATED);
+
     return SessionUtil::getVar($name, $default);
 }
 
@@ -2595,6 +2643,7 @@ function pnSessionSetVar($name, $value)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
         'pnSessionsetVar()',
         'SessionUtil::setVar()')), E_USER_DEPRECATED);
+
     return SessionUtil::setVar($name, $value);
 }
 
@@ -2611,6 +2660,7 @@ function pnSessionDelVar($name)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
         'pnSessionDelVar()',
         'SessionUtil::delVar()')), E_USER_DEPRECATED);
+
     return SessionUtil::delVar($name);
 }
 
@@ -2653,6 +2703,7 @@ function theme_userapi_clear_compiled()
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_compiled', 'Theme::clear_compiled()')), E_USER_DEPRECATED);
     $Theme = Theme::getInstance('Theme');
     $res   = $Theme->clear_compiled();
+
     return $res;
 }
 
@@ -2673,6 +2724,7 @@ function theme_userapi_clear_cache()
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_cache', 'Theme::clear_all_cache()')), E_USER_DEPRECATED);
     $Theme = Theme::getInstance('Theme');
     $res   = $Theme->clear_all_cache();
+
     return $res;
 }
 
@@ -2693,6 +2745,7 @@ function theme_userapi_render_clear_compiled()
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_compiled', 'Zikula_View::clear_compiled()')), E_USER_DEPRECATED);
     $view = Zikula_View::getInstance();
     $res      = $view->clear_compiled();
+
     return $res;
 }
 
@@ -2713,7 +2766,7 @@ function theme_userapi_render_clear_cache($args)
     }
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_render_clear_cache', 'Zikula_View::clear_cache()')), E_USER_DEPRECATED);
-    if(isset($args['module']) && !empty($args['module']) && pnModAvailable($args['module'])) {
+    if (isset($args['module']) && !empty($args['module']) && pnModAvailable($args['module'])) {
         $view = Zikula_View::getInstance($args['module']);
         $res      = $view->clear_cache();
     } else {
@@ -2743,6 +2796,7 @@ function pnModInitCoreVars()
 function pnModVarExists($modname, $name)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::hasVar()')), E_USER_DEPRECATED);
+
     return ModUtil::hasVar($modname, $name);
 }
 
@@ -2770,6 +2824,7 @@ function pnModVarExists($modname, $name)
 function pnModGetVar($modname, $name = '', $default = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getVar()')), E_USER_DEPRECATED);
+
     return ModUtil::getVar($modname, $name, $default);
 }
 
@@ -2789,6 +2844,7 @@ function pnModGetVar($modname, $name = '', $default = false)
 function pnModSetVar($modname, $name, $value = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::setVar()')), E_USER_DEPRECATED);
+
     return ModUtil::setVar($modname, $name, $value);
 }
 
@@ -2806,6 +2862,7 @@ function pnModSetVar($modname, $name, $value = '')
 function pnModSetVars($modname, $vars)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::setVars()')), E_USER_DEPRECATED);
+
     return ModUtil::setVars($modname, $vars);
 }
 
@@ -2826,6 +2883,7 @@ function pnModSetVars($modname, $vars)
 function pnModDelVar($modname, $name = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::delVar()')), E_USER_DEPRECATED);
+
     return ModUtil::delVar($modname, $name);
 }
 
@@ -2842,6 +2900,7 @@ function pnModDelVar($modname, $name = '')
 function pnModGetIDFromName($module)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getIdFromName()')), E_USER_DEPRECATED);
+
     return ModUtil::getIdFromName($module);
 }
 
@@ -2860,6 +2919,7 @@ function pnModGetIDFromName($module)
 function pnModGetInfo($modid = 0)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getInfo()')), E_USER_DEPRECATED);
+
     return ModUtil::getInfo($modid);
 }
 
@@ -2874,6 +2934,7 @@ function pnModGetInfo($modid = 0)
 function pnModGetUserMods()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getUserMods()')), E_USER_DEPRECATED);
+
     return ModUtil::getUserMods();
 }
 
@@ -2888,6 +2949,7 @@ function pnModGetUserMods()
 function pnModGetProfileMods()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getProfileMods()')), E_USER_DEPRECATED);
+
     return ModUtil::getProfileMods();
 }
 
@@ -2902,6 +2964,7 @@ function pnModGetProfileMods()
 function pnModGetMessageMods()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getMessageMods()')), E_USER_DEPRECATED);
+
     return ModUtil::getMessageMods();
 }
 
@@ -2916,6 +2979,7 @@ function pnModGetMessageMods()
 function pnModGetAdminMods()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getAdminMods()')), E_USER_DEPRECATED);
+
     return ModUtil::getAdminMods();
 }
 
@@ -2932,6 +2996,7 @@ function pnModGetAdminMods()
 function pnModGetTypeMods($type = 'user')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getTypeMods()')), E_USER_DEPRECATED);
+
     return ModUtil::getTypeMods($type);
 }
 
@@ -2946,6 +3011,7 @@ function pnModGetTypeMods($type = 'user')
 function pnModGetAllMods()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getAllMods()')), E_USER_DEPRECATED);
+
     return ModUtil::getAllMods();
 }
 
@@ -2964,6 +3030,7 @@ function pnModGetAllMods()
 function pnModDBInfoLoad($modname, $directory = '', $force = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::dbInfoLoad()')), E_USER_DEPRECATED);
+
     return ModUtil::dbInfoLoad($modname, $directory, $force);
 }
 
@@ -2982,6 +3049,7 @@ function pnModDBInfoLoad($modname, $directory = '', $force = false)
 function pnModLoad($modname, $type = 'user', $force = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::load()')), E_USER_DEPRECATED);
+
     return ModUtil::load($modname, $type, $force);
 }
 
@@ -3000,6 +3068,7 @@ function pnModLoad($modname, $type = 'user', $force = false)
 function pnModAPILoad($modname, $type = 'user', $force = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::loadApi()')), E_USER_DEPRECATED);
+
     return ModUtil::loadApi($modname, $type, $force);
 }
 
@@ -3019,6 +3088,7 @@ function pnModAPILoad($modname, $type = 'user', $force = false)
 function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::loadGeneric()')), E_USER_DEPRECATED);
+
     return ModUtil::loadGeneric($modname, $type, $force, $api);
 }
 
@@ -3038,6 +3108,7 @@ function pnModLoadGeneric($modname, $type = 'user', $force = false, $api = false
 function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::func()')), E_USER_DEPRECATED);
+
     return ModUtil::func($modname, $type, $func, $args);
 }
 
@@ -3057,6 +3128,7 @@ function pnModFunc($modname, $type = 'user', $func = 'main', $args = array())
 function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::apiFunc()')), E_USER_DEPRECATED);
+
     return ModUtil::apiFunc($modname, $type, $func, $args);
 }
 
@@ -3077,6 +3149,7 @@ function pnModAPIFunc($modname, $type = 'user', $func = 'main', $args = array())
 function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array(), $api = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::exec()')), E_USER_DEPRECATED);
+
     return ModUtil::exec($modname, $type, $func, $args);
 }
 
@@ -3106,6 +3179,7 @@ function pnModFuncExec($modname, $type = 'user', $func = 'main', $args = array()
 function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::url()')), E_USER_DEPRECATED);
+
     return ModUtil::url($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelongurl, $forcelang);
 }
 
@@ -3123,6 +3197,7 @@ function pnModURL($modname, $type = 'user', $func = 'main', $args = array(), $ss
 function pnModAvailable($modname = null, $force = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::available()')), E_USER_DEPRECATED);
+
     return ModUtil::available($modname, $force);
 }
 
@@ -3137,6 +3212,7 @@ function pnModAvailable($modname = null, $force = false)
 function pnModGetName()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getName()')), E_USER_DEPRECATED);
+
     return ModUtil::getName();
 }
 
@@ -3158,6 +3234,7 @@ function pnModGetName()
 function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::registerHook()')), E_USER_DEPRECATED);
+
     return ModUtil::registerHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc);
 }
 
@@ -3180,6 +3257,7 @@ function pnModRegisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $ho
 function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::unregisterHook()')), E_USER_DEPRECATED);
+
     return ModUtil::unregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $hooktype, $hookfunc);
 }
 
@@ -3200,6 +3278,7 @@ function pnModUnregisterHook($hookobject, $hookaction, $hookarea, $hookmodule, $
 function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(), $implode = true)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::callHooks()')), E_USER_DEPRECATED);
+
     return ModUtil::callHooks($hookobject, $hookaction, $hookid, $extrainfo, $implode);
 }
 
@@ -3217,6 +3296,7 @@ function pnModCallHooks($hookobject, $hookaction, $hookid, $extrainfo = array(),
 function pnModIsHooked($tmodule, $smodule)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::isHooked()')), E_USER_DEPRECATED);
+
     return ModUtil::isHooked($tmodule, $smodule);
 }
 
@@ -3262,6 +3342,7 @@ function pnModLangLoad($modname, $type = 'user', $api = false)
 function pnModGetBaseDir($modname = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getBaseDir()')), E_USER_DEPRECATED);
+
     return ModUtil::getBaseDir($modname);
 }
 
@@ -3278,6 +3359,7 @@ function pnModGetBaseDir($modname = '')
 function pnModGetModsTable()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ModUtil::getModsTable()')), E_USER_DEPRECATED);
+
     return ModUtil::getModsTable();
 }
 
@@ -3299,6 +3381,7 @@ class ModuleUtil
     public static function getModules ($where='', $sort='displayname')
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'ModUtil::getModules()')), E_USER_DEPRECATED);
+
         return ModUtil::getModules($where, $sort);
     }
 
@@ -3319,6 +3402,7 @@ class ModuleUtil
     public static function getModulesByState($state=3, $sort='displayname')
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'ModUtil::getModulesByState()')), E_USER_DEPRECATED);
+
         return ModUtil::getModulesByState($state, $sort);
     }
 }
@@ -3336,6 +3420,7 @@ class ModuleUtil
 function pnBlockDisplayPosition($side, $echo = true, $implode = true)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::displayPosition()')), E_USER_DEPRECATED);
+
     return BlockUtil::displayPosition($side, $echo, $implode);
 }
 
@@ -3353,6 +3438,7 @@ function pnBlockDisplayPosition($side, $echo = true, $implode = true)
 function pnBlockShow($modname, $block, $blockinfo = array())
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::show()')), E_USER_DEPRECATED);
+
     return BlockUtil::show($modname, $block, $blockinfo);
 }
 
@@ -3365,6 +3451,7 @@ function pnBlockShow($modname, $block, $blockinfo = array())
 function pnBlockThemeBlock($row)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::themeBlock()')), E_USER_DEPRECATED);
+
     return BlockUtil::themeBlock($row);
 }
 
@@ -3381,6 +3468,7 @@ function pnBlockThemeBlock($row)
 function pnBlockLoad($modname, $block)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::load()')), E_USER_DEPRECATED);
+
     return BlockUtil::load($modname, $block);
 }
 
@@ -3395,6 +3483,7 @@ function pnBlockLoad($modname, $block)
 function pnBlockLoadAll()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::loadAll()')), E_USER_DEPRECATED);
+
     return BlockUtil::loadAll();
 }
 
@@ -3410,6 +3499,7 @@ function pnBlockLoadAll()
 function pnBlockVarsFromContent($content)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::varsFromContent()')), E_USER_DEPRECATED);
+
     return BlockUtil::varsFromContent($content);
 }
 
@@ -3424,6 +3514,7 @@ function pnBlockVarsFromContent($content)
 function pnBlockVarsToContent($vars)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::varsToContent()')), E_USER_DEPRECATED);
+
     return BlockUtil::varsToContent($vars);
 }
 
@@ -3441,6 +3532,7 @@ function pnBlockVarsToContent($vars)
 function pnCheckUserBlock($row)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::checkUserBlock()')), E_USER_DEPRECATED);
+
     return BlockUtil::checkUserBlock($row);
 }
 
@@ -3457,6 +3549,7 @@ function pnCheckUserBlock($row)
 function pnBlocksGetInfo()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::getBlocksInfo()')), E_USER_DEPRECATED);
+
     return BlockUtil::getBlocksInfo();
 }
 
@@ -3473,6 +3566,7 @@ function pnBlocksGetInfo()
 function pnBlockGetInfo($value, $assocKey = 'bid')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::getBlockInfo()')), E_USER_DEPRECATED);
+
     return BlockUtil::getBlockInfo($value, $assocKey);
 }
 
@@ -3495,6 +3589,7 @@ function pnBlockGetInfoByTitle($title)
 function blocks($side)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::displayPosition()')), E_USER_DEPRECATED);
+
     return BlockUtil::displayPosition($side);
 }
 
@@ -3507,6 +3602,7 @@ function blocks($side)
 function themesideblock($row)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'BlockUtil::themesideblock()')), E_USER_DEPRECATED);
+
     return BlockUtil::themesideblock($row);
 }
 
@@ -3553,6 +3649,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
 function pnUserLogInHTTP()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginHttp()')), E_USER_DEPRECATED);
+
     return UserUtil::loginHttp();
 }
 
@@ -3568,6 +3665,7 @@ function pnUserLogInHTTP()
 function pnUserLogOut()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::logout()')), E_USER_DEPRECATED);
+
     return UserUtil::logout();
 }
 
@@ -3583,6 +3681,7 @@ function pnUserLogOut()
 function pnUserLoggedIn()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::isLoggedIn()')), E_USER_DEPRECATED);
+
     return UserUtil::isLoggedIn();
 }
 
@@ -3598,6 +3697,7 @@ function pnUserLoggedIn()
 function pnUserGetVars($id, $force = false, $idfield = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getVars()')), E_USER_DEPRECATED);
+
     return UserUtil::getVars($id, $force, $idfield);
 }
 
@@ -3615,6 +3715,7 @@ function pnUserGetVars($id, $force = false, $idfield = '')
 function pnUserGetVar($name, $uid = -1, $default = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getVar()')), E_USER_DEPRECATED);
+
     return UserUtil::getVar($name, $uid, $default);
 }
 
@@ -3645,6 +3746,7 @@ function pnUserGetVar($name, $uid = -1, $default = false)
 function pnUserSetVar($name, $value, $uid = -1)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::setVar()')), E_USER_DEPRECATED);
+
     return UserUtil::setVar($name, $value, $uid);
 }
 
@@ -3660,6 +3762,7 @@ function pnUserSetVar($name, $value, $uid = -1)
 function pnUserSetPassword($pass)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::setPassword()')), E_USER_DEPRECATED);
+
     return UserUtil::setPassword($pass);
 }
 
@@ -3687,6 +3790,7 @@ function pnUserSetPassword($pass)
 function pnUserDelVar($name, $uid = -1)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::delVar()')), E_USER_DEPRECATED);
+
     return UserUtil::delVar($name, $uid);
 }
 
@@ -3708,6 +3812,7 @@ function pnUserDelVar($name, $uid = -1)
 function pnUserGetTheme($force = false)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getTheme()')), E_USER_DEPRECATED);
+
     return UserUtil::getTheme($force);
 }
 
@@ -3724,6 +3829,7 @@ function pnUserGetTheme($force = false)
 function pnUserGetLang()
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'ZLanguage::getLanguageCode()')), E_USER_DEPRECATED);
+
     return ZLanguage::getLanguageCodeLegacy();
 }
 
@@ -3739,6 +3845,7 @@ function pnUserGetLang()
 function pnUserGetAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getAll()')), E_USER_DEPRECATED);
+
     return UserUtil::getAll($sortbyfield, $sortorder, $limit, $startnum, $activated, $regexpfield, $regexpression, $where);
 }
 
@@ -3754,6 +3861,7 @@ function pnUserGetAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $
 function pnUserGetIDFromName($uname)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getIdFromName()')), E_USER_DEPRECATED);
+
     return UserUtil::getIdFromName($uname);
 }
 
@@ -3769,6 +3877,7 @@ function pnUserGetIDFromName($uname)
 function pnUserGetIDFromEmail($email)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::getIdFromEmail()')), E_USER_DEPRECATED);
+
     return UserUtil::getIdFromEmail($email);
 }
 
@@ -3786,6 +3895,7 @@ function pnUserGetIDFromEmail($email)
 function pnUserFieldAlias($label)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::fieldAlias()')), E_USER_DEPRECATED);
+
     return UserUtil::fieldAlias($label);
 }
 
@@ -3847,6 +3957,7 @@ function pnThemeLangLoad($script = 'global', $theme = null)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('pnThemeLangLoad()', 'ThemeUtil::loadLanguage()')), E_USER_DEPRECATED);
 
     ThemeUtil::loadLanguage($script, $theme);
+
     return;
 }
 
@@ -3900,6 +4011,7 @@ function pnThemeGetThemesTable()
 function search_construct_where($args, $fields, $mlfield = null)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('search_construct_where()', 'Search_Api_User::construct_where()')), E_USER_DEPRECATED);
+
     return Search_Api_User::construct_where($args, $fields, $mlfield);
 
 }
@@ -3907,6 +4019,7 @@ function search_construct_where($args, $fields, $mlfield = null)
 function search_split_query($q, $dbwildcard = true)
 {
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('search_split_query()', 'Search_Api_User::split_query()')), E_USER_DEPRECATED);
+
     return Search_Api_User::split_query($q, $dbwildcard);
 }
 

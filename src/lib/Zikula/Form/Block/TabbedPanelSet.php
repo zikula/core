@@ -73,7 +73,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__; // FIXME: may be found in smarty's data???
     }
@@ -86,7 +86,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * @return string The (optionally) modified content.
      */
-    function renderContent(Zikula_Form_View $view, $content)
+    public function renderContent(Zikula_Form_View $view, $content)
     {
         // Beware - working on 1-based offset!
 
@@ -132,13 +132,13 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * Called by child panels to register themselves.
      *
-     * @param Zikula_Form_View               $view   Reference to Zikula_Form_View object.
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
      * @param Zikula_Form_Plugin_TabbedPanel &$panel Panel object.
-     * @param string                         $title  Panel title.
+     * @param string $title Panel title.
      *
      * @return void
      */
-    function registerTabbedPanel(Zikula_Form_View $view, &$panel, $title)
+    public function registerTabbedPanel(Zikula_Form_View $view, &$panel, $title)
     {
         $panel->panelSetId = $this->id;
 
@@ -157,7 +157,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
      *
      * @return void
      */
-    function decode(Zikula_Form_View $view)
+    public function decode(Zikula_Form_View $view)
     {
         $this->selectedIndex = (int)$this->request->request->get("{$this->id}SelectedIndex", 1);
     }

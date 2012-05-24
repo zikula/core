@@ -46,6 +46,7 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         if ($this->driver->chdir($this->configuration->getDir()) == true) {
             return true;
         }
+
         return false;
     }
 
@@ -81,9 +82,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         if (($bytes = $this->driver->putContents($remote, $stream, 0, $this->_resource)) !== false) {
             fclose($stream);
             $this->errorHandler->stop();
+
             return $bytes;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -129,9 +132,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         if (($handle = $this->driver->fileOpen($remote, 'r+', false, $this->_resource)) !== false) {
             rewind($handle);
             $this->errorHandler->stop();
+
             return $handle;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -150,9 +155,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         if (($perm = $this->driver->chmod($file, $perm)) !== false) {
             $perm = (int) decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
             $this->errorHandler->stop();
+
             return $perm;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -171,6 +178,7 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
             return $files;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -186,9 +194,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->chdir($dir)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -207,9 +217,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->rename($sourcepath, $destpath, $this->_resource)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -228,9 +240,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->copy($sourcepath, $destpath, $this->_resource)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 
@@ -246,9 +260,11 @@ class Zikula_FileSystem_Local extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if ($this->driver->delete($sourcepath, $this->_resource)) {
             $this->errorHandler->stop();
+
             return true;
         }
         $this->errorHandler->stop();
+
         return false;
     }
 

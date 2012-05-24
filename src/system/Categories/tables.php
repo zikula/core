@@ -121,5 +121,6 @@ function Categories_tables()
                       'category_id' => 'I4 NOTNULL DEFAULT 0');
     ObjectUtil::addStandardFieldsToTableDataDefinition ($tabledef);
     $dbtable['categories_registry_column_def'] = $tabledef;
+
     return $dbtable;
 }

@@ -62,6 +62,7 @@ class Zikula_ServiceManager implements ArrayAccess
 
         $this->services[$id] = new Zikula_ServiceManager_Service($id, null, $shared);
         $this->services[$id]->setService($service);
+
         return $service;
     }
 
@@ -237,8 +238,7 @@ class Zikula_ServiceManager implements ArrayAccess
     {
         $compiledArguments = array();
         foreach ($arguments as $argument) {
-            switch (true)
-            {
+            switch (true) {
                 case (!is_object($argument)):
                     $compiledArguments[] = $argument;
                     break;
@@ -321,6 +321,7 @@ class Zikula_ServiceManager implements ArrayAccess
         if (!$this->hasArgument($id)) {
             throw new InvalidArgumentException(sprintf('No argument "%s" is registered with Zikula_ServiceManager', $id));
         }
+
         return $this->arguments[$id];
     }
 

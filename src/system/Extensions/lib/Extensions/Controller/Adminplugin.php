@@ -65,13 +65,13 @@ class Extensions_Controller_Adminplugin extends Zikula_AbstractController
             $type = 'ModulePlugin';
             PluginUtil::loadAllModulePlugins();
         }
-        
+
         if ($moduleName) {
             $serviceId = PluginUtil::getServiceId("{$type}_{$moduleName}_{$pluginName}_Plugin");
         } else {
             $serviceId = PluginUtil::getServiceId("{$type}_{$pluginName}_Plugin");
         }
-        
+
         $this->throwNotFoundUnless($this->serviceManager->hasService($serviceId));
 
         $this->plugin = $this->serviceManager->getService($serviceId);

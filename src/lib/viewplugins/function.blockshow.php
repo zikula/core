@@ -39,21 +39,25 @@ function smarty_function_blockshow($params, Zikula_View $view)
 
     if (!$module) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'module')));
+
         return;
     }
 
     if (!$blockname) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'blockname')));
+
         return;
     }
 
     if (!$block) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'id/info')));
+
         return;
     }
 
     if (!$position) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('blockshow', 'position')));
+
         return;
     }
 

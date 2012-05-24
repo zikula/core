@@ -37,10 +37,10 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
     protected $statement;
 
     // adodb adapter interface
-    
+
     /**
      * EOF.
-     * 
+     *
      * @var boolean
      */
     public $EOF = false;
@@ -54,7 +54,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
 
     /**
      * Constructor.
-     * 
+     *
      * @param Doctrine_Connection_Statement $statement Doctrine connection statement.
      */
     public function __construct(Doctrine_Connection_Statement $statement)
@@ -99,11 +99,11 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      *
      * Bind a column to a PHP variable.
      *
-     * @param mixed   $column Number of the column (1-indexed) or name of the column in the result set.
+     * @param mixed $column Number of the column (1-indexed) or name of the column in the result set.
      *                        If using the column name, be aware that the name should match
      *                        the case of the column, as returned by the driver.
-     * @param string  $param  Name of the PHP variable to which the column will be bound.
-     * @param integer $type   Data type of the parameter, specified by the Doctrine_Core::PARAM_* constants.
+     * @param string  $param Name of the PHP variable to which the column will be bound.
+     * @param integer $type  Data type of the parameter, specified by the Doctrine_Core::PARAM_* constants.
      *
      * @return boolean Returns TRUE on success or FALSE on failure
      */
@@ -123,7 +123,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      *
      * Placeholder in the SQL statement that was use to prepare the statement.
      *
-     * @param mixed   $param Parameter identifier. For a prepared statement using named placeholders,
+     * @param mixed $param Parameter identifier. For a prepared statement using named placeholders,
      *                       this will be a parameter name of the form :name. For a prepared statement
      *                       using question mark placeholders, this will be the 1-indexed position of the parameter.
      * @param mixed   $value The value to bind to the parameter.
@@ -153,16 +153,16 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      * of stored procedures that return data as output parameters, and some also as input/output
      * parameters that both send in data and are updated to receive it.
      *
-     * @param mixed   $column        Parameter identifier. For a prepared statement using named placeholders,
+     * @param mixed $column Parameter identifier. For a prepared statement using named placeholders,
      *                               this will be a parameter name of the form :name. For a prepared statement
      *                               using question mark placeholders, this will be the 1-indexed position of the parameter.
      * @param mixed   &$variable     Name of the PHP variable to bind to the SQL statement parameter.
-     * @param integer $type          Explicit data type for the parameter using the Doctrine_Core::PARAM_* constants. To return
+     * @param integer $type Explicit data type for the parameter using the Doctrine_Core::PARAM_* constants. To return
      *                               an INOUT parameter from a stored procedure, use the bitwise OR operator to set the
      *                               Doctrine_Core::PARAM_INPUT_OUTPUT bits for the data_type parameter.
-     * @param integer $length        Length of the data type. To indicate that a parameter is an OUT parameter
+     * @param integer $length Length of the data type. To indicate that a parameter is an OUT parameter
      *                               from a stored procedure, you must explicitly set the length.
-     * @param mixed   $driverOptions Driver options.
+     * @param mixed $driverOptions Driver options.
      *
      * @return boolean Returns TRUE on success or FALSE on failure.
      */
@@ -189,7 +189,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
 
     /**
      * Column Count.
-     * 
+     *
      * Returns the number of columns in the result set.
      *
      * @return integer Returns the number of columns in the result set represented
@@ -203,7 +203,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
 
     /**
      * Error Code.
-     * 
+     *
      * Fetch the SQLSTATE associated with the last operation on the statement handle.
      *
      * @see    Doctrine_Adapter_Interface::errorCode().
@@ -241,7 +241,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      * @param array $params An array of values with as many elements as there are
      *                      bound parameters in the SQL statement being executed.
      *
-     * @return boolean      Returns TRUE on success or FALSE on failure.
+     * @return boolean Returns TRUE on success or FALSE on failure.
      */
     public function execute($params = null)
     {
@@ -251,6 +251,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
             //It's empty.
         } catch (Doctrine_Adapter_Exception $e) {
             $this->statement->getConnection()->rethrowException($e, $this);
+
             return false;
         }
     }
@@ -258,7 +259,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
     /**
      * Fetch.
      *
-     * @param integer $fetchMode         Controls how the next row will be returned to the caller.
+     * @param integer $fetchMode Controls how the next row will be returned to the caller.
      *                                   This value must be one of the Doctrine_Core::FETCH_* constants,
      *                                   defaulting to Doctrine_Core::FETCH_BOTH.
      * @param integer $cursorOrientation For a PDOStatement object representing a scrollable cursor,
@@ -268,7 +269,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      *                                   Doctrine_Adapter_Statement_Interface object,
      *                                   you must set the Doctrine_Core::ATTR_CURSOR attribute to Doctrine_Core::CURSOR_SCROLL when you
      *                                   prepare the SQL statement with Doctrine_Adapter_Interface->prepare().
-     * @param integer $cursorOffset      For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for which the
+     * @param integer $cursorOffset For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for which the
      *                                   $cursorOrientation parameter is set to Doctrine_Core::FETCH_ORI_ABS, this value specifies
      *                                   the absolute number of the row in the result set that shall be fetched.
      *                                   For a Doctrine_Adapter_Statement_Interface object representing a scrollable cursor for
@@ -277,7 +278,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      *                                   Doctrine_Adapter_Statement_Interface->fetch() was called.
      *
      * @see    Doctrine_Core::FETCH_* constants.
-     * 
+     *
      * @return mixed
      */
     public function fetch($fetchMode = Doctrine_Core::FETCH_BOTH,
@@ -290,7 +291,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
     /**
      * Returns an array containing all of the result set rows.
      *
-     * @param integer $fetchMode   Controls how the next row will be returned to the caller.
+     * @param integer $fetchMode Controls how the next row will be returned to the caller.
      *                             This value must be one of the Doctrine_Core::FETCH_* constants,
      *                             defaulting to Doctrine_Core::FETCH_BOTH.
      * @param integer $columnIndex Returns the indicated 0-indexed column when the value of $fetchStyle is
@@ -354,7 +355,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      *
      * @param integer $column The 0-indexed column in the result set.
      *
-     * @return array  Associative meta data array with the following structure.
+     * @return array Associative meta data array with the following structure.
      *<samp>
      *          native_type                 The PHP native type used to represent the column value.
      *          driver:decl_                type The SQL type used to represent the column value in the database. If the column in the result set is the result of a function, this value is not returned by PDOStatement->getColumnMeta().
@@ -406,7 +407,7 @@ class Zikula_Adapter_AdodbStatement implements Doctrine_Adapter_Statement_Interf
      * @param integer $attribute Attribute name.
      * @param mixed   $value     The value of given attribute.
      *
-     * @return boolean                      Returns TRUE on success or FALSE on failure.
+     * @return boolean Returns TRUE on success or FALSE on failure.
      */
     public function setAttribute($attribute, $value)
     {

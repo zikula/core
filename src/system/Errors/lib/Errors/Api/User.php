@@ -20,7 +20,7 @@ class Errors_Api_User extends Zikula_AbstractApi
     /**
      * This function e-mails the site administrator with an error.
      */
-    function send_email()
+    public function send_email()
     {
         /* send error reporting email to admin */
         $adminmail = System::getVar('adminmail');

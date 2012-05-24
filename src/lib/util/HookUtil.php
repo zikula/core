@@ -89,7 +89,7 @@ class HookUtil
     public static function isSubscriberSelfCapable($module)
     {
         $capabilities = ModUtil::getCapabilitiesOf($module);
-        
+
         if (isset($capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN])) {
             return $capabilities[self::SUBSCRIBER_CAPABLE][self::SUBSCRIBE_OWN];
         } else {
@@ -178,48 +178,56 @@ class HookUtil
     public static function getProviderAreasByOwner($moduleName)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->getProviderAreasByOwner($moduleName);
     }
 
     public static function getSubscriberAreasByOwner($moduleName)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->getSubscriberAreasByOwner($moduleName);
     }
 
     public static function getOwnerByArea($areaName)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->getOwnerByArea($areaName);
     }
 
     public static function getBindingsFor($areaName)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->getBindingsFor($areaName);
     }
 
     public static function setBindOrder($subscriberAreaName, array $providerAreas)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->setBindOrder($subscriberAreaName, $providerAreas);
     }
 
     public static function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->getBindingBetweenAreas($subscriberArea, $providerArea);
     }
 
     public static function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
     }
 
     public static function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
         $hookManager = ServiceUtil::getManager()->getService('zikula.hookmanager');
+
         return $hookManager->getBindingsBetweenOwners($subscriberOwner, $providerOwner);
     }
 }

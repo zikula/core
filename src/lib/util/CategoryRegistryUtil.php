@@ -189,6 +189,7 @@ class CategoryRegistryUtil
         $fArr = DBUtil::selectFieldArray('categories_registry', 'category_id', $where, $sort, false, $arraykey);
 
         $cache[$modname][$tablename] = $fArr;
+
         return $fArr;
     }
 

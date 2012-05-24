@@ -46,6 +46,7 @@ class Settings_Api_Admin extends Zikula_AbstractApi
         Zikula_View_Theme::getInstance()->clear_cssjscombinecache();
         Zikula_View::getInstance()->clear_all_cache();
         Zikula_View::getInstance()->clear_compiled();
+
         return true;
     }
 }

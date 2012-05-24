@@ -36,6 +36,7 @@ class Categories_DBObject_Registry extends DBObject
         // After delete, it should delete the references to this registry
         // in the categories mapobj table
         $where = "WHERE reg_id = '{$this->_objData[$this->_objField]}'";
+
         return DBUtil::deleteWhere('categories_mapobj', $where);
     }
 
@@ -60,9 +61,11 @@ class Categories_DBObject_Registry extends DBObject
             if ($row) {
                 $_SESSION['validationErrors'][$this->_objPath]['property'] = __('Error! There is already a property with this name in the specified module and table.');
                 $_SESSION['validationFailedObjects'][$this->_objPath] = $this->_objData;
+
                 return false;
             }
         }
+
         return true;
     }
 }

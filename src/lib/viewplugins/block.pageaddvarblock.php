@@ -16,14 +16,14 @@
 /**
  * Zikula_View function to add the contents of a block to either the header or footer multicontent page variable
  *
- * This function adds the content of the block to either the end of the <head> portion of the page (using 'header') or to 
+ * This function adds the content of the block to either the end of the <head> portion of the page (using 'header') or to
  * a position just prior to the closing </body> tag (using 'footer').
  *
  * Available parameters:
  *   - name:     The name of the page variable to set, either 'header' or 'footer'; optional, default is 'header'
  *
  * Examples:
- * 
+ *
  *  This inline stylesheet will appear in the page's <head> section just before the closing </head>:
  * <code>
  *   {pageaddvarblock name='header'}
@@ -32,7 +32,7 @@
  *   </style>
  *   {/pageaddvarblock}
  * </code>
- * 
+ *
  *  This inline script will appear in the page's <body> section just before the closing </body>:
  * <code>
  *   {pageaddvarblock name='footer'}
@@ -41,7 +41,7 @@
  *   </style>
  *   {/pageaddvarblock}
  * </code>
- * 
+ *
  * @param array       $params  All attributes passed to this function from the template.
  * @param string      $content The content of the block.
  * @param Zikula_View $view    Reference to the Zikula_View object.

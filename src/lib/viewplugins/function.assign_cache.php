@@ -40,11 +40,13 @@ function smarty_function_assign_cache($params, Zikula_View $view)
 {
     if (!isset($params['var'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'var')));
+
         return false;
     }
 
     if (!isset($params['value'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('assign_cache', 'value')));
+
         return false;
     }
 

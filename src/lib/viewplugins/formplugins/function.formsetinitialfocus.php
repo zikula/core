@@ -32,6 +32,7 @@ function smarty_function_formsetinitialfocus($params, $view)
 {
     if (!isset($params['inputId'])) {
         $view->trigger_error('initialFocus: inputId parameter required');
+
         return false;
     }
 
@@ -50,8 +51,7 @@ function smarty_function_formsetinitialfocus($params, $view)
 var bodyElement = document.getElementsByTagName('body')[0];
 var f = function() {
   var inp = document.getElementById('$id');
-  if (inp != null)
-  {
+  if (inp != null) {
     inp.focus();
     $selectHtml
   }

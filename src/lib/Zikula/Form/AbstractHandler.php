@@ -42,7 +42,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
-    
+
     /**
      * Translation domain.
      *
@@ -240,7 +240,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      * value indicating the name of the command. The command name is normally specified by the plugin
      * that initiated the command.
      *
-     * @param Zikula_Form_View $view  Reference to Form render object.
+     * @param Zikula_Form_View $view Reference to Form render object.
      * @param array            &$args Arguments of the command.
      *
      * @see    Zikula_Form_Plugin_Button, Zikula_Form_Plugin_ImageButton
@@ -273,6 +273,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     public function setVar($key, $value='')
     {
         ModUtil::setVar($this->name, $key, $value);
+
         return $this;
     }
 
@@ -286,6 +287,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     public function setVars(array $vars)
     {
         ModUtil::setVars($this->name, $vars);
+
         return $this;
     }
 
@@ -322,6 +324,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     public function delVar($key)
     {
         ModUtil::delVar($this->name, $key);
+
         return $this;
     }
 
@@ -333,6 +336,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     public function delVars()
     {
         ModUtil::delVar($this->name);
+
         return $this;
     }
 

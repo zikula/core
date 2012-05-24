@@ -164,6 +164,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         if (!$this->reflection) {
             $this->reflection = new ReflectionObject($this);
         }
+
         return $this->reflection;
     }
 
@@ -228,6 +229,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
         if (!$this->modinfo) {
             $this->modinfo = ModUtil::getInfoFromName($this->name);
         }
+
         return $this->modinfo;
     }
 
@@ -631,6 +633,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function setVar($key, $value='')
     {
         ModUtil::setVar($this->name, $key, $value);
+
         return $this;
     }
 
@@ -644,6 +647,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function setVars(array $vars)
     {
         ModUtil::setVars($this->name, $vars);
+
         return $this;
     }
 
@@ -680,6 +684,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function delVar($key)
     {
         ModUtil::delVar($this->name, $key);
+
         return $this;
     }
 
@@ -691,6 +696,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function delVars()
     {
         ModUtil::delVar($this->name);
+
         return $this;
     }
 

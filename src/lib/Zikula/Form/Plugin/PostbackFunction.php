@@ -64,7 +64,7 @@ class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_AbstractPlugin
      *
      * @return string
      */
-    function getFilename()
+    public function getFilename()
     {
         return __FILE__;
     }
@@ -76,7 +76,7 @@ class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_AbstractPlugin
      *
      * @return string The rendered output
      */
-    function render(Zikula_Form_View $view)
+    public function render(Zikula_Form_View $view)
     {
         $html = '';
 
@@ -95,7 +95,7 @@ class Zikula_Form_Plugin_PostBackFunction extends Zikula_Form_AbstractPlugin
      *
      * @return void
      */
-    function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
+    public function raisePostBackEvent(Zikula_Form_View $view, $eventArgument)
     {
         $args = array(
             'commandName' => $eventArgument,

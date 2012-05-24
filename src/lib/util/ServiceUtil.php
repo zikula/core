@@ -53,6 +53,7 @@ class ServiceUtil
         }
 
         self::$serviceManager = $core->getServiceManager();
+
         return self::$serviceManager;
     }
 
@@ -76,7 +77,7 @@ class ServiceUtil
      * @param string                           $id         Service ID.
      * @param Zikula_ServiceManager_Definition $definition Class definition.
      * @param boolean                          $shared     Shared service or not.
-     * 
+     *
      * @return void
      */
     public static function registerPersistentService($id, Zikula_ServiceManager_Definition $definition, $shared=true)

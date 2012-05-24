@@ -153,14 +153,14 @@ class FileUtil
     /**
      * Generate a file/directory listing (can be recusive).
      *
-     * @param string  $rootPath                  The root-path we wish to start at.
-     * @param boolean $recurse                   Whether or not to recurse directories (optional) (default=true).
-     * @param boolean $relativePath              Whether or not to list relative (vs abolute) paths (optional) (default=true).
-     * @param string  $extensions                The file extension or array of extensions to scan for (optional) (default=null).
-     * @param string  $type                      The type of object (file or directory or both) to return (optional) (default=null).
-     * @param boolean $nestedData                Whether or not to return a nested data set (optional) (default=false).
-     * @param boolean $regexpMatch               The regular expression matching test to apply to filenames (optional) (default=null).
-     * @param boolean $regexpMatchCaseSensitive  Wether or not the $regexpMatch is to be applied case sensitive (optional) (default=true)
+     * @param string  $rootPath                 The root-path we wish to start at.
+     * @param boolean $recurse                  Whether or not to recurse directories (optional) (default=true).
+     * @param boolean $relativePath             Whether or not to list relative (vs abolute) paths (optional) (default=true).
+     * @param string  $extensions               The file extension or array of extensions to scan for (optional) (default=null).
+     * @param string  $type                     The type of object (file or directory or both) to return (optional) (default=null).
+     * @param boolean $nestedData               Whether or not to return a nested data set (optional) (default=false).
+     * @param boolean $regexpMatch              The regular expression matching test to apply to filenames (optional) (default=null).
+     * @param boolean $regexpMatchCaseSensitive Wether or not the $regexpMatch is to be applied case sensitive (optional) (default=true)
      *
      * @return array The array of files in the given path.
      */
@@ -250,6 +250,7 @@ class FileUtil
         if (!$nestedData) {
             sort($files);
         }
+
         return $files;
     }
 
@@ -272,6 +273,7 @@ class FileUtil
         }
 
         $path = DataUtil::formatForOS($path, $absolute);
+
         return mkdir($path, $mode, true);
     }
 
@@ -291,7 +293,7 @@ class FileUtil
             while (($file = readdir($dh)) !== false) {
                 if (is_dir("$path/$file") && ($file != '.' && $file != '..')) {
                     self::deldir("$path/$file", $absolute);
-                } else if ($file != '.' && $file != '..') {
+                } elseif ($file != '.' && $file != '..') {
                     unlink("$path/$file");
                 }
             }
@@ -316,6 +318,7 @@ class FileUtil
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
+
         return file_get_contents($fName);
     }
 
@@ -333,6 +336,7 @@ class FileUtil
         if ($data = self::readFile($filename, $absolute)) {
             $lines = explode("\n", $data);
         }
+
         return $lines;
     }
 
@@ -364,7 +368,7 @@ class FileUtil
 
         if (!$filename) {
             $filename = self::generateRandomFilename(10, 15, true, true);
-        } else if (strrchr($filename, '.') !== false) {
+        } elseif (strrchr($filename, '.') !== false) {
             // do we have an extension?
             $ext = self::getExtension($filename);
             $filename = self::stripExtension($filename);
@@ -401,6 +405,7 @@ class FileUtil
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
+
         return file_put_contents($fName, $data);
     }
 
@@ -478,8 +483,7 @@ class FileUtil
     {
         $msg = '';
 
-        switch ($code)
-        {
+        switch ($code) {
             case 1:
                 $msg = __('The uploaded file exceeds the upload_max_filesize directive in php.ini.');
                 break;

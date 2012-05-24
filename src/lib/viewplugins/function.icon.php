@@ -60,6 +60,7 @@ function smarty_function_icon($params, Zikula_View $view)
 {
     if (!isset($params['type'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_icon', 'type')));
+
         return false;
     }
 
@@ -74,7 +75,7 @@ function smarty_function_icon($params, Zikula_View $view)
 
     $iconpath = 'images/icons/';
 
-    static $icons;
+    public static $icons;
     // Include icon config file
     if (!isset($icons) && file_exists("$iconpath/config.php")) {
         include_once "$iconpath/config.php";
@@ -98,6 +99,7 @@ function smarty_function_icon($params, Zikula_View $view)
         if (!isset($optional)) {
             $view->trigger_error(__f("%s: Image '%s' not found", array('icon', DataUtil::formatForDisplay($params['type']))));
         }
+
         return;
     }
 
@@ -107,6 +109,7 @@ function smarty_function_icon($params, Zikula_View $view)
     if (!isset($params['width']) && !isset($params['height'])) {
         if (!($_image_data = @getimagesize($imgsrc))) {
             $view->trigger_error(__f("%s: Image '%s' is not a valid image file", array('icon', DataUtil::formatForDisplay($params['type']))));
+
             return false;
         }
         $params['width'] = $_image_data[0];

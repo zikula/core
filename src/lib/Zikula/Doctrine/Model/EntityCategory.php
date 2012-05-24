@@ -26,7 +26,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
     public function setTableDefinition()
     {
         $this->setTableName('categories_mapobj');
-        
+
         $this->hasColumn('tablename as table', 'string', 60, array('primary' => true));
         $this->hasColumn('obj_id as obj_id', 'integer', 4, array('primary' => true));
         $this->hasColumn('category_id as category_id', 'integer', 4, array('primary' => true));
@@ -34,7 +34,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
 
         $this->hasColumn('reg_property as reg_property', 'string', 60);
         $this->hasColumn('modname as module', 'string', 60);
-        
+
         $this->setSubclasses(ModUtil::getVar('Categories', 'EntityCategorySubclasses', array()));
     }
 

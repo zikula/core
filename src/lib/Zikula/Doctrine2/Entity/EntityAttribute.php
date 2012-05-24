@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Base class of many-to-many assocation between any entity and attribute.
- * 
+ *
  * @ORM\MappedSuperclass
  */
 abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAccess
@@ -28,19 +28,19 @@ abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAcce
      * @var integer
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string 
+     * @var string
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="array")
-     * @var string 
+     * @var string
      */
     private $value;
-    
+
     public function __construct($name,
                                 $value,
                                 $entity)
@@ -49,40 +49,40 @@ abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAcce
         $this->value = $value;
         $this->setEntity($entity);
     }
-    
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
     }
-    
+
     public function getName()
     {
         return $this->name;
     }
-    
+
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     public function getValue()
     {
         return $this->value;
     }
-    
+
     public function setValue($value)
     {
         $this->value = $value;
     }
-    
-    
-    public abstract function getEntity();
-    
-    public abstract function setEntity($entity);
+
+
+    abstract public function getEntity();
+
+    abstract public function setEntity($entity);
 }
 

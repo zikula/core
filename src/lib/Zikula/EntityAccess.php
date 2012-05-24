@@ -18,7 +18,7 @@ class Zikula_EntityAccess implements ArrayAccess
      * @var ReflectionObject
      */
     protected $reflection;
-    
+
     /**
      * Get this reflection.
      *
@@ -31,9 +31,10 @@ class Zikula_EntityAccess implements ArrayAccess
         }
 
         $this->reflection = new ReflectionObject($this);
+
         return $this->reflection;
     }
-    
+
     public function offsetExists($key)
     {
         return method_exists($this, "get" . ucfirst($key));
@@ -42,6 +43,7 @@ class Zikula_EntityAccess implements ArrayAccess
     public function offsetGet($key)
     {
         $method = "get" . ucfirst($key);
+
         return $this->$method();
     }
 
@@ -60,21 +62,21 @@ class Zikula_EntityAccess implements ArrayAccess
     {
         $r = $this->getReflection();
         $array = array();
-        
-        while($r !== false) {
+
+        while ($r !== false) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
-                        
+
             foreach ($properties as $property) {
                 if ($property->name == 'reflection') {
                     continue;
                 }
-                
+
                 $method = "get" . ucfirst($property->name);
                 $array[$property->name] = $this->$method();
             }
         }
-        
+
         return $array;
     }
 

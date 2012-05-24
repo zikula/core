@@ -33,24 +33,28 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         if (FormUtil::getPassedValue('category_copy', null, 'POST')) {
             $args['op'] = 'copy';
             $args['cid'] = $_POST['category']['id'];
+
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if (FormUtil::getPassedValue('category_move', null, 'POST')) {
             $args['op'] = 'move';
             $args['cid'] = $_POST['category']['id'];
+
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if (FormUtil::getPassedValue('category_delete', null, 'POST')) {
             $args['op'] = 'delete';
             $args['cid'] = $_POST['category']['id'];
+
             return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
         if (FormUtil::getPassedValue('category_user_edit', null, 'POST')) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
             $args['dr'] = $_POST['category']['id'];
+
             return System::redirect(ModUtil::url('Categories', 'user', 'edit', $args));
         }
 
@@ -61,6 +65,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             $category = FormUtil::getPassedValue('category', null, 'POST');
             $args['cid'] = $category['id'];
             $args['mode'] = 'edit';
+
             return System::redirect(ModUtil::url('Categories', 'admin', 'edit', $args));
         }
 
@@ -267,6 +272,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             $obj->delete($id);
 
             LogUtil::registerStatus(__('Done! Deleted the category registry entry.'));
+
             return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
         }
 
@@ -275,6 +281,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
             $obj = new $class();
             $data = $obj->getDataFromInput($id);
             $args['category_registry'] = $data;
+
             return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
 

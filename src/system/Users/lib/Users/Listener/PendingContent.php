@@ -48,7 +48,7 @@ class Users_Listener_PendingContent
      * subject's collection.
      *
      * @param Zikula_Event $event The event that was fired, a 'get_pending_content' event.
-     * 
+     *
      * @return void
      */
     public static function pendingContentListener(Zikula_Event $event)

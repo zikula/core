@@ -93,7 +93,7 @@ class Zikula_Collection_Container implements Zikula_CollectionInterface
      *
      * @param mixed $key   The index of the item for which the value should be set.
      * @param mixed $value The value of the item.
-     * 
+     *
      * @return void
      */
     public function set($key, $value)

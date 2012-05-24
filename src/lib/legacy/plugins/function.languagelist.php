@@ -29,5 +29,6 @@ function smarty_function_languagelist($params, $smarty)
     LogUtil::log(__f('Warning! Template plugin {%1$s} is deprecated, please use {%2$s} instead.', array('languagelist', 'html_select_languages')), E_USER_DEPRECATED);
 
     require_once $smarty->_get_plugin_filepath('function','html_select_languages');
+
     return smarty_function_html_select_languages($params, $smarty);
 }

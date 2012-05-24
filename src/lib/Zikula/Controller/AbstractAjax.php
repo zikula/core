@@ -25,7 +25,7 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
     {
         // View is generally not required so override this.
     }
-    
+
     /**
      * Check the CSFR token.
      *
