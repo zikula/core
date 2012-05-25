@@ -38,7 +38,7 @@ class Installer extends \Zikula_AbstractInstaller
 
         // Create any default for this module
         $this->defaultdata();
-        
+
         // Initialisation successful
         return true;
     }
@@ -99,7 +99,7 @@ class Installer extends \Zikula_AbstractInstaller
         $record['level']     = 800;
         $record['bond']      = 0;
         $this->entityManager->persist($record);
-        
+
         $record = new Permission;
         $record['gid']       = -1;
         $record['sequence']  = 2;
@@ -109,7 +109,7 @@ class Installer extends \Zikula_AbstractInstaller
         $record['level']     = 0;
         $record['bond']      = 0;
         $this->entityManager->persist($record);
-        
+
         $record = new Permission;
         $record['gid']       = 1;
         $record['sequence']  = 3;
@@ -119,7 +119,7 @@ class Installer extends \Zikula_AbstractInstaller
         $record['level']     = 300;
         $record['bond']      = 0;
         $this->entityManager->persist($record);
-        
+
         $record = new Permission;
         $record['gid']       = 0;
         $record['sequence']  = 4;
@@ -129,7 +129,7 @@ class Installer extends \Zikula_AbstractInstaller
         $record['level']     = 0;
         $record['bond']      = 0;
         $this->entityManager->persist($record);
-        
+
         $record = new Permission;
         $record['gid']       = 0;
         $record['sequence']  = 5;
@@ -139,7 +139,7 @@ class Installer extends \Zikula_AbstractInstaller
         $record['level']     = 200;
         $record['bond']      = 0;
         $this->entityManager->persist($record);
-        
+
         $this->entityManager->flush();
 
         $this->setVar('filter', 1);

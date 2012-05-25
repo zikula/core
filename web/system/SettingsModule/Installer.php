@@ -109,8 +109,7 @@ class Installer extends \Zikula_AbstractInstaller
         System::setVar('Version_Sub', Core::VERSION_SUB);
 
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '2.9.7':
                 // future upgrade routines
         }

@@ -287,9 +287,9 @@ class Zikula_Tree
                 'name'      => isset($item['name']) ? $item['name'] : null,
                 'href'      => isset($item['href']) ? $item['href'] : '#'
             );
-            
+
             $node = array(
-                'item' => $item, 
+                'item' => $item,
                 'nodes' => $nodes
             );
 

@@ -67,7 +67,7 @@ class HookSubscriberEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -89,7 +89,7 @@ class HookSubscriberEntity
     /**
      * Get owner
      *
-     * @return string 
+     * @return string
      */
     public function getOwner()
     {
@@ -111,7 +111,7 @@ class HookSubscriberEntity
     /**
      * Get subowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubowner()
     {
@@ -133,7 +133,7 @@ class HookSubscriberEntity
     /**
      * Get sareaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getSareaid()
     {
@@ -155,7 +155,7 @@ class HookSubscriberEntity
     /**
      * Get hooktype
      *
-     * @return string 
+     * @return string
      */
     public function getHooktype()
     {
@@ -177,7 +177,7 @@ class HookSubscriberEntity
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -199,7 +199,7 @@ class HookSubscriberEntity
     /**
      * Get eventname
      *
-     * @return string 
+     * @return string
      */
     public function getEventname()
     {

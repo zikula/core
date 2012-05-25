@@ -15,17 +15,17 @@ class FieldRest implements RendererInterface
     {
         return 'field_rest';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         $html = '';
-        
+
         foreach ($form as $child) {
             if (!$child->isRendered()) {
                 $html .= $renderer->renderRow(array('form' => $child));
             }
         }
-        
+
         return $html;
     }
 }

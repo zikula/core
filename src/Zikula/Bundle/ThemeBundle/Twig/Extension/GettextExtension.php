@@ -47,7 +47,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @throws \Exception If $domain is an array.
      */
-    function __(\Twig_Environment $env, $msgid, $domain = null)
+    public function __(\Twig_Environment $env, $msgid, $domain = null)
     {
         return (isset($domain) ? $this->_dgettext($domain, $msgid) : $this->_gettext($msgid));
     }
@@ -73,7 +73,7 @@ class GettextExtension extends \Twig_Extension
      * @throws \Exception If $domain is an array.
      * @return string
      */
-    function __f(\Twig_Environment $env, $msgid, $params, $domain = null)
+    public function __f(\Twig_Environment $env, $msgid, $params, $domain = null)
     {
         $msgstr = (isset($domain) ? $this->_dgettext($domain, $msgid) : $this->_gettext($msgid));
         $params = (is_array($params) ? $params : array($params));
@@ -103,7 +103,7 @@ class GettextExtension extends \Twig_Extension
      * @throws \Exception If $domain is an array.
      * @return string
      */
-    function _fn(\Twig_Environment $env, $sin, $plu, $n, $params, $domain = null)
+    public function _fn(\Twig_Environment $env, $sin, $plu, $n, $params, $domain = null)
     {
         $msgstr = (isset($domain) ? $this->_dngettext($domain, $sin, $plu, (int)$n) : $this->_ngettext($sin, $plu, (int)$n));
         $params = (is_array($params) ? $params : array($params));
@@ -123,7 +123,7 @@ class GettextExtension extends \Twig_Extension
      * @throws \Exception If $domain is an array.
      * @return string
      */
-    function _n(Twig_Environment $env, $singular, $plural, $count, $domain = null)
+    public function _n(Twig_Environment $env, $singular, $plural, $count, $domain = null)
     {
         return (isset($domain) ? $this->_dngettext($domain, $singular, $plural, (int)$count) : _ngettext($singular, $plural, (int)$count));
     }
@@ -135,7 +135,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function no__($msgid)
+    public function no__($msgid)
     {
         return $msgid;
     }
@@ -147,7 +147,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function _gettext($msgid)
+    public function _gettext($msgid)
     {
         return \ZGettext::getReader()->translate($msgid);
     }
@@ -161,7 +161,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function _ngettext($single, $plural, $number)
+    public function _ngettext($single, $plural, $number)
     {
         return \ZGettext::getReader()->ngettext($single, $plural, $number);
     }
@@ -174,7 +174,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function _dgettext($domain, $msgid)
+    public function _dgettext($domain, $msgid)
     {
         return \ZGettext::getReader($domain)->translate($msgid);
     }
@@ -189,7 +189,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function _dngettext($domain, $single, $plural, $number)
+    public function _dngettext($domain, $single, $plural, $number)
     {
         return \ZGettext::getReader($domain)->ngettext($single, $plural, $number);
     }
@@ -203,7 +203,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function _dcgettext($domain, $msgid, $category)
+    public function _dcgettext($domain, $msgid, $category)
     {
         return \ZGettext::getReader($domain, $category)->translate($msgid);
     }
@@ -219,7 +219,7 @@ class GettextExtension extends \Twig_Extension
      *
      * @return string
      */
-    function _dcngettext($domain, $single, $plural, $number, $category)
+    public function _dcngettext($domain, $single, $plural, $number, $category)
     {
         return \ZGettext::getReader($domain, $category)->ngettext($single, $plural, $number);
     }

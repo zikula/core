@@ -23,7 +23,7 @@ class AccountApi extends \Zikula_AbstractApi
      *
      * @return array indexed array of items
      */
-    function getall()
+    public function getall()
     {
         $items = array();
 

@@ -17,5 +17,5 @@
  */
 class Zikula_EntityAccess extends Zikula\Core\Doctrine\EntityAccess
 {
-    
+
 }

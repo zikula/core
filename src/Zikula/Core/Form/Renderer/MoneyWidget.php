@@ -15,11 +15,11 @@ class MoneyWidget implements RendererInterface
     {
         return 'money_widget';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
-        return str_replace('{{ widget }}', 
-                           $renderer->getRender('field_widget')->render($form, $variables, $renderer), 
+        return str_replace('{{ widget }}',
+                           $renderer->getRender('field_widget')->render($form, $variables, $renderer),
                            $variables['money_pattern']);
     }
 }

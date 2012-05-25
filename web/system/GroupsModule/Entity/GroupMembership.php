@@ -31,13 +31,13 @@ class GroupMembership extends EntityAccess
      * @ORM\Column(type="integer")
      */
     private $gid;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
     private $uid;
-    
+
 
     /**
      * constructor
@@ -67,7 +67,7 @@ class GroupMembership extends EntityAccess
     {
         $this->gid = $gid;
     }
-    
+
     /**
      * get the uid of the group membership
      *

@@ -26,37 +26,37 @@ class GenericUtil
     public static function validateCategoryData($data)
     {
         $view = \Zikula_View::getInstance();
-        
+
         if (empty($data['name'])) {
             $msg = $view->__('Error! You did not enter a name for the category.');
             \LogUtil::registerError($msg);
             return false;
         }
-        
+
         if (empty($data['parent_id'])) {
             $msg = $view->__('Error! You did not provide a parent for the category.');
             \LogUtil::registerError($msg);
             return false;
         }
-        
+
         // get entity manager
         $em = \ServiceUtil::get('doctrine')->getManager();
-        
+
         // process name
         $data['name'] = self::processCategoryName($data['name']);
-        
+
         // check that we don't have another category with the same name
         // on the same level
         $dql = "
-        SELECT count(c.id) 
-        FROM Zikula\Core\Doctrine\Entity\Category c 
-        WHERE c.name = '" . $data['name'] . "' 
+        SELECT count(c.id)
+        FROM Zikula\Core\Doctrine\Entity\Category c
+        WHERE c.name = '" . $data['name'] . "'
           AND c.parent = " . $data['parent_id'];
 
         if (isset($data['id']) && is_numeric($data['id'])) {
             $dql .= " AND c.id <> " . $data['id'];
         }
-          
+
         $query = $em->createQuery($dql);
         $exists = (int)$query->getSingleScalarResult();
         if ($exists > 0) {
@@ -64,10 +64,10 @@ class GenericUtil
             \LogUtil::registerError($msg);
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Process the name of a category
      *
@@ -80,7 +80,7 @@ class GenericUtil
         // encode slash in name
         return $name = str_replace('/', '&#47;', $name);
     }
-    
+
     /**
      * Process the parent of a category
      *
@@ -93,7 +93,7 @@ class GenericUtil
         $em = \ServiceUtil::get('doctrine')->getManager();
         return $em->getReference('Zikula\Core\Doctrine\Entity\Category', $parent_id);
     }
-    
+
     /**
      * Process the display name of a category
      *
@@ -110,10 +110,10 @@ class GenericUtil
                 $displayname[$lang] = $name;
             }
         }
-        
+
         return $displayname;
     }
-    
+
     /**
      * Process the path of a category
      *
@@ -126,7 +126,7 @@ class GenericUtil
     {
         return $parent_path . '/' . $category_name;
     }
-    
+
     /**
      * Process the ipath of a category
      *
@@ -139,7 +139,7 @@ class GenericUtil
     {
         return $parent_ipath . '/' . $category_id;
     }
-    
+
     /**
      * Process the attributes of a category
      *
@@ -159,7 +159,7 @@ class GenericUtil
                 }
             }
         }
-        
+
         // add/update attributes
         foreach ($attrib_names as $attrib_key => $attrib_name) {
             if (!empty($attrib_name)) {

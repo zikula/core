@@ -45,7 +45,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     public function __construct(array $options = array())
     {
         $this->setMetadataBag();
-        
+
         // create IP finger print
         $current_ipaddr = '';
         $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
@@ -153,7 +153,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         // start session check expiry and ip fingerprint if required
         if (session_start() && !$this->isNew) {
             $this->loadSession();
-            
+
             // check if session has expired or not
             $now = time();
             $inactive = ($now - (int)(System::getVar('secinactivemins') * 60));
@@ -235,7 +235,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
             $this->createNew(session_id(), $this->object['ipaddr']);
-            
+
             // session is not new, remove flag
             $this->isNew = false;
             $this->regenerate(true);
@@ -268,7 +268,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     public function regenerate($destroy = false, $lifetime = null)
     {
         return;
-        
+
         /*
         // only regenerate if set in admin
         if ($destroy == false) {
@@ -319,11 +319,11 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
     {
         $em = \ServiceUtil::get('doctrine')->getManager();
         $session = $em->find('UsersModule\Entity\UserSession', $sessionId);
-        
+
         if ($session) {
             $session = $session->toArray();
         }
-        
+
         if (!$session) {
             $this->isNew = true;
             return '';
@@ -347,7 +347,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
 
         $obj = $this->object;
         $obj['sessid'] = $sessionId;
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
 
         if ($this->isNew) {
@@ -365,7 +365,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
                 $session->merge($obj);
             }
         }
-        
+
         $em->flush();
 
         return true;
@@ -399,10 +399,10 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
         } else {
             $sessionlength = 40;
         }
-        
+
         $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
         $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
-        
+
         // DB based GC
         switch (System::getVar('seclevel')) {
             case 'Low':
@@ -410,7 +410,7 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
                 // remember themself and inactivity timeout
                 $where = "WHERE s.remember = 0 AND s.lastused < '$inactive'";
                 break;
-            
+
             case 'Medium':
                 // Medium security - delete session info if session cookie has
                 // expired or user decided not to remember themself and inactivity timeout
@@ -419,14 +419,14 @@ class LegacySessionStorage extends NativeSessionStorage implements \SessionHandl
                           OR (s.lastused < '$daysold')
                           OR (s.uid = 0 AND s.lastused < '$inactive')";
                 break;
-            
+
             case 'High':
             default:
                 // High security - delete session info if user is inactive
                 $where = "WHERE s.lastused < '$inactive'";
                 break;
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
         $dql = "DELETE FROM UsersModule\Entity\UserSession s $where";
         $query = $em->createQuery($dql);

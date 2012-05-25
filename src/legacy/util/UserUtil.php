@@ -952,16 +952,16 @@ class UserUtil
         }
 
         $uname = DataUtil::formatForStore(mb_strtolower($uname));
-        
+
         // get doctrine manager
         $em = \ServiceUtil::get('doctrine')->getManager();
-        
+
         // count of uname appearances in users table
         $dql = "SELECT count(u.uid) FROM UsersModule\Entity\User u WHERE u.uname = '{$uname}'";
         if ($excludeUid > 1) {
             $dql .= " AND u.uid <> {$excludeUid}";
         }
-        
+
         $query = $em->createQuery($dql);
         $ucount = $query->getSingleScalarResult();
 
@@ -1117,7 +1117,7 @@ class UserUtil
                 foreach ($user['attributes'] as $attribute) {
                     $attributes[$attribute['name']] = $attribute['value'];
                 }
-                
+
                 $user['__ATTRIBUTES__'] = $attributes;
                 unset($user['attributes']);
             }
@@ -1305,7 +1305,7 @@ class UserUtil
         if (empty($name)) {
             return false;
         }
-        
+
         if (!isset($value)) {
             return false;
         }
@@ -1313,11 +1313,11 @@ class UserUtil
         if ($uid == -1) {
             $uid =ServiceUtil::get('request')->getSession()->get('uid');
         }
-        
+
         if (empty($uid)) {
             return false;
         }
-        
+
         $isRegistration = self::isRegistration($uid);
         $origUserObj = self::getVars($uid, false, 'uid', $isRegistration);
         if (!$origUserObj) {
@@ -1326,7 +1326,7 @@ class UserUtil
         }
 
         $varIsSet = false;
-        
+
         // Cannot setVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
@@ -1337,10 +1337,10 @@ class UserUtil
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
                 $oldValue = isset($origUserObj[$name]) ? $origUserObj[$name] : null;
-                
+
                 $user[$name] = $value;
                 $em->flush();
-                
+
                 $varIsSet = true;
             } else {
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
@@ -1358,7 +1358,7 @@ class UserUtil
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
                 $user->setAttribute($attributeName, $value);
-                
+
                 $varIsSet = true;
             }
 
@@ -1658,7 +1658,7 @@ class UserUtil
         if ($uid == -1) {
             $uid = ServiceUtil::get('request')->getSession()->get('uid');
         }
-        
+
         if (empty($uid)) {
             return false;
         }
@@ -1676,20 +1676,20 @@ class UserUtil
         }
 
         $varIsDeleted = false;
-        
+
         // Cannot delVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine')->getManager();
             $user = $em->getRepository('UsersModule\Entity\User')->findOneBy(array('uid' => $uid));
-            
+
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
                 $oldValue = isset($origUserObj[$name]) ? $origUserObj[$name] : null;
-                
+
                 $user[$name] = '';
                 $em->flush();
-                
+
                 $varIsDeleted = true;
             } else {
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
@@ -1707,7 +1707,7 @@ class UserUtil
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
                 $user->delAttribute($attributeName);
-                
+
                 $varIsDeleted = true;
             }
 
@@ -1861,14 +1861,14 @@ class UserUtil
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
         $user = new \UsersModule\Entity\User;
-        
+
         if (empty($where)) {
             $whereFragments = array();
-            
+
             if (!empty($field) && isset($user[$field]) && !empty($expression)) {
                 $whereFragments[] = 'u.' . $field . ' LIKE \'' . DataUtil::formatForStore($expression) . '\'';
             }
-            
+
             if (!empty($activated) && is_numeric($activated) && isset($user['activated'])) {
                 $whereFragments[] = 'u.activated <> "' . DataUtil::formatForStore($activated) . '"';
             }
@@ -1880,9 +1880,9 @@ class UserUtil
 
         if (!empty($sortbyfield)) {
             $sortFragments = array();
-            
+
             $sortFragments[] = 'u.'. $sortbyfield . ' ' . DataUtil::formatForStore($sortorder);
-            
+
             if ($sortbyfield != 'uname') {
                 $sortFragments[] = 'u.uname ASC';
             }
@@ -1891,21 +1891,21 @@ class UserUtil
                 $orderby = 'ORDER BY ' . implode(', ', $sortFragments);
             }
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
         $dql = "SELECT u FROM UsersModule\Entity\User u $where $orderby $limit_clause";
         $query = $em->createQuery($dql);
-        
+
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
             $query->setMaxResults($limit);
-            
+
             if (isset($offset) && is_numeric($offset) && $offset > 0) {
                 $query->setFirstResult($offset);
             }
         }
-        
+
         $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        
+
         $usersObj = array();
         foreach ($users as $user) {
             $usersObj[$user['uid']] = $user;

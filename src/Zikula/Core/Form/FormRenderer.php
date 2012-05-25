@@ -120,7 +120,8 @@ class FormRenderer
         return $html;
     }
 
-    private function collectErrors(FormView $form, &$errors) {
+    private function collectErrors(FormView $form, &$errors)
+    {
         if($form->get('errors')) {
             $errors[] = $form;
         }

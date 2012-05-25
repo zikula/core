@@ -47,7 +47,7 @@ class EventUtil
      *
      * @return EventDispatcherInterface
      */
-    static public function getManager(EventDispatcherInterface $dispatcher = null)
+    public static function getManager(EventDispatcherInterface $dispatcher = null)
     {
         if (self::$dispatcher) {
             return self::$dispatcher;
@@ -70,7 +70,7 @@ class EventUtil
      *
      * @return Event
      */
-    static public function dispatch($name, Event $event = null)
+    public static function dispatch($name, Event $event = null)
     {
         return self::getManager()->dispatch($name, $event);
     }

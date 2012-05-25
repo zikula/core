@@ -15,13 +15,13 @@ class UrlWidget implements RendererInterface
     {
         return 'url_widget';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         if(!isset($variables['type'])) {
             $variables['type'] = 'url';
         }
-        
+
         return $renderer->getRender('field_widget')->render($form, $variables, $renderer);
     }
 }

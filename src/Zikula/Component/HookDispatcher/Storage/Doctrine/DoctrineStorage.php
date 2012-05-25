@@ -324,7 +324,7 @@ class DoctrineStorage implements StorageInterface
         if ($area->getAreatype() == self::PROVIDER) {
             $table = 'Zikula_Doctrine_Model_HookProvider';
             $areaIdField = 'pareaid';
-        } else if ($area->getAreatype() == self::SUBSCRIBER) {
+        } elseif ($area->getAreatype() == self::SUBSCRIBER) {
             $table = 'Zikula_Doctrine_Model_HookSubscriber';
             $areaIdField = 'sareaid';
         }

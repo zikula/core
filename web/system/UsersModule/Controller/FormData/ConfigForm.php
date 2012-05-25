@@ -17,7 +17,7 @@ namespace UsersModule\Controller\FormData;
 use Zikula\Component\DependencyInjection\ContainerBuilder;
 use UsersModule\Constants as UsersConstant;
 use UsersModule\Helper\HashMethodListHelper;
-    
+
 /**
  * Contains and validates the data found on the Users module's configration form.
  */

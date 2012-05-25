@@ -32,7 +32,7 @@ class Installer extends \Zikula_AbstractInstaller
             'GroupsModule\Entity\GroupMembership',
             'GroupsModule\Entity\GroupApplication'
         );
-        
+
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
         } catch (\Exception $e) {
@@ -44,7 +44,7 @@ class Installer extends \Zikula_AbstractInstaller
         $this->setVar('defaultgroup', 1);
         $this->setVar('mailwarning', 0);
         $this->setVar('hideclosed', 0);
-        
+
         // Set the primary admin group gid as a module var so it is accessible by other modules,
         // but it should not be editable at this time. For now it is read-only.
         $this->setVar('primaryadmingroup', 2);
@@ -75,7 +75,7 @@ class Installer extends \Zikula_AbstractInstaller
             case '2.3.2':
             // future upgrade routines
         }
-        
+
         // Update successful
         return true;
     }
@@ -109,7 +109,7 @@ class Installer extends \Zikula_AbstractInstaller
                     'description' => $this->__('Group of administrators of this site.'),
                     'prefix'      => $this->__('adm'))
         );
-        
+
         foreach ($records as $record) {
             $item = new \GroupsModule\Entity\Group;
             $item['name'] = $record['name'];
@@ -131,7 +131,7 @@ class Installer extends \Zikula_AbstractInstaller
             array('gid' => '2',
                   'uid' => '2')
         );
-        
+
         foreach ($records as $record) {
             $item = new \GroupsModule\Entity\GroupMembership;
             $item['gid'] = $record['gid'];

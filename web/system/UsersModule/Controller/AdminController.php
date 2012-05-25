@@ -176,16 +176,16 @@ class AdminController extends \Zikula_AbstractController
                     'uid' => $userObj['uid'],
                     'clean' => 1
                 ));
-                
+
                 // we need an associative array by the key to compare with the groups that the user can see
                 $userGroupsByKey = array();
                 foreach ($userGroups as $userGroup) {
                     $userGroupsByKey[$userGroup['gid']] = array('gid' => $userGroup['gid']);
                 }
-                
+
                 $userList[$key]['userGroupsView'] = array_intersect_key($userGroupsAccess, $userGroupsByKey);
             }
-            
+
             // format the dates
             if (!empty($userObj['user_regdate']) && ($userObj['user_regdate'] != '0000-00-00 00:00:00') && ($userObj['user_regdate'] != '1970-01-01 00:00:00')) {
                 $userList[$key]['user_regdate'] = DateUtil::formatDatetime($userObj['user_regdate'], $this->__('%m-%d-%Y'));
@@ -624,7 +624,7 @@ class AdminController extends \Zikula_AbstractController
                     $updatedUserObj = $this->entityManager->find('UsersModule\Entity\User', $originalUser['uid']);
                     $updatedUserObj['uname'] = $user['uname'];
                     $this->entityManager->flush();
-                    
+
                     $eventArgs = array(
                         'action'    => 'setVar',
                         'field'     => 'uname',
@@ -1398,7 +1398,7 @@ class AdminController extends \Zikula_AbstractController
                     $updatedRegistrationObj = $this->entityManager->find('UsersModule\Entity\User', $originalRegistration['uid']);
                     $updatedRegistrationObj['uname'] = $registration['uname'];
                     $this->entityManager->flush();
-                    
+
                     $eventArgs = array(
                         'action'    => 'setVar',
                         'field'     => 'uname',

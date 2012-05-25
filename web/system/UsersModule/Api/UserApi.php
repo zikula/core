@@ -47,11 +47,11 @@ class UserApi extends \Zikula_AbstractApi
 
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('u')
            ->from('UsersModule\Entity\User', 'u');
-        
+
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_DELETE)));
@@ -69,7 +69,7 @@ class UserApi extends \Zikula_AbstractApi
         } else {
             $qb->addOrderBy('u.uname', 'ASC');
         }
-        
+
         // add limit and offset
         $startnum = (!isset($args['startnum']) || empty($args['startnum']) || $args['startnum'] < 0) ? 0 : (int)$args['startnum'];
         $numitems = (!isset($args['numitems']) || empty($args['numitems']) || $args['numitems'] < 0) ? 0 : (int)$args['numitems'];
@@ -77,10 +77,10 @@ class UserApi extends \Zikula_AbstractApi
             $qb->setFirstResult($startnum)
                ->setMaxResults($numitems);
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         // execute query
         $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
@@ -155,11 +155,11 @@ class UserApi extends \Zikula_AbstractApi
 
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('count(u.uid)')
            ->from('UsersModule\Entity\User', 'u');
-        
+
         // add clauses for filtering activation states
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
         $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_DELETE)));
@@ -168,10 +168,10 @@ class UserApi extends \Zikula_AbstractApi
         if (isset($args['letter']) && !empty($args['letter'])) {
             $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         // execute query
         $count = $query->getSingleScalarResult();
 
@@ -471,12 +471,12 @@ class UserApi extends \Zikula_AbstractApi
                 $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-                
+
                 $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
             }
-            
+
             $verifychgObj = $this->entityManager->getRepository('UsersModule\Entity\UserVerification')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
@@ -575,7 +575,7 @@ class UserApi extends \Zikula_AbstractApi
         // generate a randomize value of 7 characters needed to confirm the e-mail change
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
-        
+
         $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.uid = " . $uid . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
@@ -636,14 +636,14 @@ class UserApi extends \Zikula_AbstractApi
             $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-            
+
             $dql = "DELETE FROM UsersModule\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
             $query = $this->entityManager->createQuery($dql);
             $query->getResult();
         }
 
         $uid = UserUtil::getVar('uid');
-        
+
         $item = $this->entityManager->getRepository('UsersModule\Entity\UserVerification')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
 
         return $item;
@@ -671,9 +671,9 @@ class UserApi extends \Zikula_AbstractApi
 
             return false;
         }
-        
+
         $uid = $args['uid'];
-        
+
         if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
 

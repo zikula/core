@@ -35,7 +35,7 @@ class Installer extends \Zikula_AbstractInstaller
             'BlocksModule\Entity\BlockPlacement',
             'BlocksModule\Entity\UserBlock'
         );
-        
+
         try {
             \DoctrineHelper::createSchema($this->entityManager, $classes);
         } catch (\Exception $e) {
@@ -61,15 +61,14 @@ class Installer extends \Zikula_AbstractInstaller
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '3.8.0':
                 // update empty filter fields to an empty array
                 $entity = $this->name . '\Entity\Block';
                 $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = '' OR p.filter = 's:0:\"\";'";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
-                
+
             case '3.8.1':
                 // future upgrade routines
         }
@@ -101,13 +100,13 @@ class Installer extends \Zikula_AbstractInstaller
         // load block api
         ModUtil::loadApi('Blocks', 'admin', true);
 
-        // sanity check - truncate existing tables to ensure a clean blocks setup 
+        // sanity check - truncate existing tables to ensure a clean blocks setup
         $connection = $this->entityManager->getConnection();
         $platform = $connection->getDatabasePlatform();
         $connection->executeUpdate($platform->getTruncateTableSQL('blocks', true));
         $connection->executeUpdate($platform->getTruncateTableSQL('block_positions', true));
         $connection->executeUpdate($platform->getTruncateTableSQL('block_placements', true));
-        
+
         // create the default block positions - left, right and center for the traditional 3 column layout
         $left = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'left', 'description' => $this->__('Left blocks')));
         $right = ModUtil::apiFunc('BlocksModule', 'admin', 'createposition', array('name' => 'right', 'description' => $this->__('Right blocks')));
@@ -120,22 +119,21 @@ class Installer extends \Zikula_AbstractInstaller
 
         // define an array of the default blocks
         $blocks = array();
-        
+
         // build the menu content
         $languages = ZLanguage::getInstalledLanguages();
         $saveLanguage = ZLanguage::getLanguageCode();
         $menucontent = array();
         $topnavcontent = array();
-        foreach ($languages as $lang)
-        {
+        foreach ($languages as $lang) {
             ZLanguage::setLocale($lang);
             ZLanguage::bindCoreDomain();
-            
+
             $menucontent['displaymodules'] = '0';
             $menucontent['stylesheet'] = 'extmenu.css';
             $menucontent['template'] = 'Block/extmenu.tpl';
             $menucontent['blocktitles'][$lang] = $this->__('Main menu');
-            
+
             // insert the links
             $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:admin:adminpanel}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
@@ -147,7 +145,7 @@ class Installer extends \Zikula_AbstractInstaller
             $topnavcontent['stylesheet'] = 'extmenu.css';
             $topnavcontent['template'] = 'Block/extmenu_topnav.tpl';
             $topnavcontent['blocktitles'][$lang] = $this->__('Top navigation');
-            
+
             // insert the links
             $topnavcontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
             $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');

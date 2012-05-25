@@ -223,7 +223,7 @@ class Installer extends \Zikula_AbstractInstaller
         $user = new \UsersModule\Entity\User;
         $user->merge($record);
         $this->entityManager->persist($user);
-        
+
         $this->entityManager->flush();
     }
 }

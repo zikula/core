@@ -14,13 +14,13 @@ class CategoriesType extends AbstractType
     {
         $builder->prependClientTransformer(new CategoriesCollectionTransformer($options['entityCategoryClass']))
                 ->addEventSubscriber(new CategoriesMergeCollectionListener());
-        
+
         $registries = \CategoryRegistryUtil::getRegisteredModuleCategories($options['module'], $options['entity'], 'id');
-        
+
         foreach($registries as $registryId => $categoryId) {
             $builder->add(
-                    'registry_' . $registryId, 
-                    'entity', 
+                    'registry_' . $registryId,
+                    'entity',
                     array(
                         'class' => 'Zikula\Core\Doctrine\Entity\Category',
                         'property' => 'name',
@@ -38,8 +38,9 @@ class CategoriesType extends AbstractType
     {
         return 'categories';
     }
-    
-    public function getDefaultOptions(array $options) {
+
+    public function getDefaultOptions(array $options)
+    {
         return array('module' => $options['module'],
                      'entity' => $options['entity'],
                      'entityCategoryClass' => $options['entityCategoryClass']);

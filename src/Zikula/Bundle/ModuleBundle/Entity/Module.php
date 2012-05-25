@@ -2,7 +2,7 @@
 
 namespace Zikula\Bundle\ModuleBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM; 
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Zikula\ModuleBundle\Entity\Module

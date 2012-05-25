@@ -91,7 +91,7 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
         $dql = "SELECT count(DISTINCT(s.uid)) FROM UsersModule\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid > 0";
         $query = $this->entityManager->createQuery($dql);
         $numusers = (int)$query->getSingleScalarResult();
-        
+
         $dql = "SELECT count(DISTINCT(s.ipaddr)) FROM UsersModule\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid = 0";
         $query = $this->entityManager->createQuery($dql);
         $numguests = (int)$query->getSingleScalarResult();

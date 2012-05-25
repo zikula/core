@@ -36,18 +36,18 @@ class CategoryAttribute extends EntityAccess
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="text")
      */
     private $value;
-    
+
     /**
      * constructor
      */
@@ -56,7 +56,7 @@ class CategoryAttribute extends EntityAccess
         $this->setCategory($category);
         $this->setAttribute($name, $value);
     }
-    
+
     /**
      * get the category item
      *
@@ -76,7 +76,7 @@ class CategoryAttribute extends EntityAccess
     {
         $this->category = $category;
     }
-    
+
     /**
      * get the name of the attribute
      *
@@ -96,7 +96,7 @@ class CategoryAttribute extends EntityAccess
     {
         $this->name = $name;
     }
-    
+
     /**
      * get the value of the attribute
      *
@@ -116,7 +116,7 @@ class CategoryAttribute extends EntityAccess
     {
         $this->value = $value;
     }
-    
+
     /**
      * set the attribute
      *

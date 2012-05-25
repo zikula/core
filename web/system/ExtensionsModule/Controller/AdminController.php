@@ -213,8 +213,7 @@ class AdminController extends \Zikula_AbstractController
                 if (SecurityUtil::checkPermission('Extensions::', "$mod[name]::$mod[id]", ACCESS_ADMIN)) {
                     switch ($mod['state']) {
                         case ModUtil::STATE_ACTIVE:
-                            if (!ModUtil::apiFunc('ExtensionsModule', 'admin', 'iscoremodule', array('modulename' => $mod['name'])))
-                            {
+                            if (!ModUtil::apiFunc('ExtensionsModule', 'admin', 'iscoremodule', array('modulename' => $mod['name']))) {
                                 $actions[] = array(
                                         'url' => ModUtil::url('Extensions', 'admin', 'deactivate', array(
                                         'id' => $mod['id'],

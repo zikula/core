@@ -32,52 +32,52 @@ class Group extends EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $gid;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $gtype;
-    
+
     /**
      * @ORM\Column(type="string", length=200)
      */
     private $description;
-    
+
     /**
      * @ORM\Column(type="string", length=25)
      */
     private $prefix;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $state;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $nbuser;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $nbumax;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $link;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $uidmaster;
-    
+
 
     /**
      * constructor
@@ -114,7 +114,7 @@ class Group extends EntityAccess
     {
         $this->gid = $gid;
     }
-    
+
     /**
      * get the name of the group
      *
@@ -134,7 +134,7 @@ class Group extends EntityAccess
     {
         $this->name = $name;
     }
-    
+
     /**
      * get the gtype of the group
      *
@@ -154,7 +154,7 @@ class Group extends EntityAccess
     {
         $this->gtype = $gtype;
     }
-    
+
     /**
      * get the description of the group
      *
@@ -174,7 +174,7 @@ class Group extends EntityAccess
     {
         $this->description = $description;
     }
-    
+
     /**
      * get the prefix of the group
      *
@@ -194,7 +194,7 @@ class Group extends EntityAccess
     {
         $this->prefix = $prefix;
     }
-    
+
     /**
      * get the state of the group
      *
@@ -214,7 +214,7 @@ class Group extends EntityAccess
     {
         $this->state = $state;
     }
-    
+
     /**
      * get the nbuser of the group
      *
@@ -234,7 +234,7 @@ class Group extends EntityAccess
     {
         $this->nbuser = $nbuser;
     }
-    
+
     /**
      * get the nbumax of the group
      *
@@ -254,7 +254,7 @@ class Group extends EntityAccess
     {
         $this->nbumax = $nbumax;
     }
-    
+
     /**
      * get the link of the group
      *
@@ -274,7 +274,7 @@ class Group extends EntityAccess
     {
         $this->link = $link;
     }
-    
+
     /**
      * get the uidmaster of the group
      *

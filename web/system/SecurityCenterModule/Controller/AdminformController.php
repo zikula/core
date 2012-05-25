@@ -49,7 +49,7 @@ class AdminformController extends \Zikula_AbstractController
         if (!is_numeric($id)) {
             return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
-        
+
         $intrusion = $this->entityManager->find('SecurityCenterModule\Entity\Intrusion', $id);
 
         // check for valid object

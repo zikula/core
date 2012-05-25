@@ -81,7 +81,7 @@ class HookBindingEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -103,7 +103,7 @@ class HookBindingEntity
     /**
      * Get sowner
      *
-     * @return string 
+     * @return string
      */
     public function getSowner()
     {
@@ -125,7 +125,7 @@ class HookBindingEntity
     /**
      * Get subsowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubsowner()
     {
@@ -147,7 +147,7 @@ class HookBindingEntity
     /**
      * Get powner
      *
-     * @return string 
+     * @return string
      */
     public function getPowner()
     {
@@ -169,7 +169,7 @@ class HookBindingEntity
     /**
      * Get subpowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubpowner()
     {
@@ -191,7 +191,7 @@ class HookBindingEntity
     /**
      * Get sareaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getSareaid()
     {
@@ -213,7 +213,7 @@ class HookBindingEntity
     /**
      * Get pareaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getPareaid()
     {
@@ -235,7 +235,7 @@ class HookBindingEntity
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -257,7 +257,7 @@ class HookBindingEntity
     /**
      * Get sortorder
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getSortorder()
     {

@@ -96,7 +96,7 @@ class Hook extends Event
     public function setAreaId($areaId)
     {
         $this->areaId = $areaId;
-        
+
         return $this;
     }
 }

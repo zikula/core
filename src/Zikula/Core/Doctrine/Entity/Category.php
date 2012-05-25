@@ -110,17 +110,17 @@ class Category extends EntityAccess
      * @var string
      */
     private $status;
-    
+
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttribute", 
-     *                mappedBy="category", 
+     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttribute",
+     *                mappedBy="category",
      *                cascade={"all"},
      *                orphanRemoval=true,
      *                indexBy="name")
      */
     private $attributes;
-    
-    
+
+
     /**
      * constructor
      */
@@ -138,11 +138,11 @@ class Category extends EntityAccess
         $this->path = '';
         $this->ipath = '';
         $this->status = 'I';
-        
+
         $this->attributes = new ArrayCollection();
     }
-    
-    public function getId() 
+
+    public function getId()
     {
         return $this->id;
     }
@@ -281,7 +281,7 @@ class Category extends EntityAccess
     {
         return $this->attributes;
     }
-    
+
     /**
      * set the attributes for the category
      *
@@ -291,7 +291,7 @@ class Category extends EntityAccess
     {
         $this->attributes = $attributes;
     }
-    
+
     /**
      * set a single attribute for the category
      *
@@ -306,7 +306,7 @@ class Category extends EntityAccess
             $this->attributes[$name] = new CategoryAttribute($this, $name, $value);
         }
     }
-    
+
     /**
      * delete a single attribute of the category
      *
@@ -318,5 +318,5 @@ class Category extends EntityAccess
             $this->attributes->remove($name);
         }
     }
-    
+
 }

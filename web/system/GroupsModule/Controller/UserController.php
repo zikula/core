@@ -123,7 +123,7 @@ class UserController extends \Zikula_AbstractController
         if (empty($gid) || !is_numeric($gid) || empty($action)) {
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
-        
+
         if ($action != 'subscribe' && $action != 'unsubscribe' && $action != 'cancel') {
             return LogUtil::registerArgsError(ModUtil::url('Groups', 'user', 'view'));
         }
@@ -258,7 +258,7 @@ class UserController extends \Zikula_AbstractController
 
         if ($group['members']) {
             $onlines = ModUtil::apiFunc('GroupsModule', 'user', 'whosonline');
-            
+
             $members = array();
             foreach ($group['members'] as $userid) {
                 $userinfo = UserUtil::getVars($userid['uid']);

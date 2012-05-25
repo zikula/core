@@ -84,8 +84,8 @@ abstract class EntityCategory extends EntityAccess
         $this->category = $category;
     }
 
-    public abstract function getEntity();
+    abstract public function getEntity();
 
-    public abstract function setEntity($entity);
+    abstract public function setEntity($entity);
 }
 

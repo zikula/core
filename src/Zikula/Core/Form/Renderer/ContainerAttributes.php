@@ -15,15 +15,15 @@ class ContainerAttributes implements RendererInterface
     {
         return 'container_attributes';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         $html = 'id="' . $variables['id'] . '" ';
 
-        foreach($variables['attr'] as $k => $v) { 
+        foreach($variables['attr'] as $k => $v) {
             $html .= $k . '="' . $v . '" ';
         }
-        
+
         return $html;
     }
 }

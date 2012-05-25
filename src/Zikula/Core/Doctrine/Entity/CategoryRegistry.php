@@ -44,7 +44,7 @@ class CategoryRegistry extends EntityAccess
      * @var string
      */
     private $entityname;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
@@ -56,8 +56,8 @@ class CategoryRegistry extends EntityAccess
      * @var integer
      */
     private $category_id;
-    
- 
+
+
     public function getId()
     {
         return $this->id;

@@ -14,16 +14,16 @@
             <tag name="routing.loader" />
             <argument type="service" id="kernel" />
         </service>
-        
+
         <service id="zikula.modules.storage" class="Zikula\Bundle\ModuleBundle\ModuleService\DoctrineStorage" public="false">
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
-        
+
         <service id="zikula.modules" class="Zikula\Bundle\ModuleBundle\DefaultModuleService">
             <argument type="service" id="zikula.modules.storage" />
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
-        
+
         <service id="zikula.controller.resolver" class="Zikula\Bundle\ModuleBundle\ModuleAwareControllerResolver" public="false">
             <argument type="service" id="controller_resolver" />
             <argument type="service" id="kernel" />

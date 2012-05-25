@@ -169,10 +169,10 @@ class User extends EntityAccess
      * Optional, if blank then the system default locale should be used. [FUTURE USE]
      */
     private $locale;
-    
+
     /**
-     * @ORM\OneToMany(targetEntity="UserAttribute", 
-     *                mappedBy="user", 
+     * @ORM\OneToMany(targetEntity="UserAttribute",
+     *                mappedBy="user",
      *                cascade={"all"},
      *                orphanRemoval=true,
      *                indexBy="name")
@@ -199,7 +199,7 @@ class User extends EntityAccess
         $this->ublock = '';
         $this->tz = '';
         $this->locale = '';
-        
+
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -502,7 +502,7 @@ class User extends EntityAccess
     {
         $this->locale = $locale;
     }
-    
+
     /**
      * get the attributes of the user
      *
@@ -512,7 +512,7 @@ class User extends EntityAccess
     {
         return $this->attributes;
     }
-    
+
     /**
      * set the attributes for the user
      *
@@ -522,7 +522,7 @@ class User extends EntityAccess
     {
         $this->attributes = $attributes;
     }
-    
+
     /**
      * set a single attribute for the user
      *
@@ -537,7 +537,7 @@ class User extends EntityAccess
             $this->attributes[$name] = new UserAttribute($this, $name, $value);
         }
     }
-    
+
     /**
      * delete a single attribute of the user
      *

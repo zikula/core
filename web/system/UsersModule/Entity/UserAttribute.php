@@ -36,18 +36,18 @@ class UserAttribute extends EntityAccess
      * @ORM\JoinColumn(name="user_id", referencedColumnName="uid")
      */
     private $user;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="text")
      */
     private $value;
-    
+
     /**
      * constructor
      */
@@ -56,7 +56,7 @@ class UserAttribute extends EntityAccess
         $this->setUser($user);
         $this->setAttribute($name, $value);
     }
-    
+
     /**
      * get the user item
      *
@@ -76,7 +76,7 @@ class UserAttribute extends EntityAccess
     {
         $this->user = $user;
     }
-    
+
     /**
      * get the name of the attribute
      *
@@ -96,7 +96,7 @@ class UserAttribute extends EntityAccess
     {
         $this->name = $name;
     }
-    
+
     /**
      * get the value of the attribute
      *
@@ -116,7 +116,7 @@ class UserAttribute extends EntityAccess
     {
         $this->value = $value;
     }
-    
+
     /**
      * set the attribute
      *

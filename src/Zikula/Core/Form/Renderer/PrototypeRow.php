@@ -15,13 +15,13 @@ class PrototypeRow implements RendererInterface
     {
         return 'prototyp_row';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         $html = '<script type="text/html" id="' . $variables['proto_id'] . '">'
               . $renderer->renderRow(array('form' => $form))
               . '</script>';
-        
+
         return $html;
     }
 }

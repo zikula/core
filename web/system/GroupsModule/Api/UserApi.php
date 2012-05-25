@@ -41,17 +41,17 @@ class UserApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
             return $items;
         }
-        
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('g')
            ->from('GroupsModule\Entity\Group', 'g');
-        
+
          // add clause for ordering
         $qb->addOrderBy('g.name', 'ASC');
-        
+
         // add limit and offset
         $startnum = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
         $numitems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
@@ -59,10 +59,10 @@ class UserApi extends \Zikula_AbstractApi
             $qb->setFirstResult($startnum)
                ->setMaxResults($numitems);
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         // execute query
         $objArray = $query->getResult();
 
@@ -97,7 +97,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!$result) {
             return false;
         }
-        
+
         // convert to array
         $result = $result->toArray();
 
@@ -109,14 +109,14 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['numitems']) || !is_numeric($args['numitems'])) {
             $args['numitems'] = null;
         }
-        
+
         $groupmembership = $this->entityManager->getRepository('GroupsModule\Entity\GroupMembership')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
 
         // Check for an error with the database code
         if ($groupmembership === false) {
             return false;
         }
-        
+
         $uidsArray = array();
         foreach ($groupmembership as $gm) {
             $gm = $gm->toArray();
@@ -151,11 +151,11 @@ class UserApi extends \Zikula_AbstractApi
     public function countitems()
     {
         $dql = "SELECT count(g.gid) FROM GroupsModule\Entity\Group g WHERE g.gtype <> " . CommonHelper::GTYPE_CORE;
-        
+
         if ($this->getVar('hideclosed')) {
             $dql .= " AND g.state <> " . CommonHelper::STATE_CLOSED;
         }
-        
+
         $query = $this->entityManager->createQuery($dql);
         return (int)$query->getSingleScalarResult();
     }
@@ -173,7 +173,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['gid'])) {
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
-        
+
         $dql = "SELECT count(m.gid) FROM GroupsModule\Entity\GroupMembership m WHERE m.gid = {$args['gid']}";
         $query = $this->entityManager->createQuery($dql);
         return (int)$query->getSingleScalarResult();
@@ -203,14 +203,14 @@ class UserApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
             return $items;
         }
-        
+
         $groupmembership = $this->entityManager->getRepository('GroupsModule\Entity\GroupMembership')->findBy(array('uid' => $args['uid']));
 
         // Check for an error with the database code
         if ($groupmembership === false) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
-        
+
         $objArray = array();
         foreach ($groupmembership as $gm) {
             $objArray[] = $gm->toArray();
@@ -218,11 +218,11 @@ class UserApi extends \Zikula_AbstractApi
 
         if (isset($args['clean']) && $args['clean']) {
             $newArray = array();
-            
+
             foreach ($objArray as $obj) {
                 $newArray[] = $obj['gid'];
             }
-            
+
             $objArray = $newArray;
         }
 
@@ -244,25 +244,25 @@ class UserApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', 'ANY', ACCESS_OVERVIEW)) {
             return $items;
         }
-        
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('g')
            ->from('GroupsModule\Entity\Group', 'g');
-        
+
         // add clause for filtering type
         $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(CommonHelper::GTYPE_CORE)));
-        
+
         // add clause for filtering state
         if ($this->getVar('hideclosed')) {
             $qb->andWhere($qb->expr()->neq('g.state', $qb->expr()->literal(CommonHelper::STATE_CLOSED)));
         }
-        
+
         // add clause for ordering
         $qb->addOrderBy('g.name', 'ASC');
-        
+
         // add limit and offset
         $startnum = (!isset($args['startnum']) || !is_numeric($args['startnum'])) ? 0 : (int)$args['startnum'];
         $numitems = (!isset($args['numitems']) || !is_numeric($args['numitems'])) ? 0 : (int)$args['numitems'];
@@ -270,13 +270,13 @@ class UserApi extends \Zikula_AbstractApi
             $qb->setFirstResult($startnum)
                ->setMaxResults($numitems);
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
 
         // execute query
         $objArray = $query->getResult();
-        
+
         if ($objArray === false) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
@@ -295,7 +295,7 @@ class UserApi extends \Zikula_AbstractApi
 
         foreach ($objArray as $obj) {
             $obj = $obj->toArray();
-            
+
             $gid = $obj['gid'];
             $name = $obj['name'];
             $gtype = $obj['gtype'];
@@ -403,7 +403,7 @@ class UserApi extends \Zikula_AbstractApi
         $application['gid'] = $args['gid'];
         $application['application'] = $args['applytext'];
         $application['status'] = 1;
-        
+
         $this->entityManager->persist($application);
         $this->entityManager->flush();
 
@@ -450,7 +450,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['gid']) || !isset($args['uid'])) {
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
-        
+
         $applications = $this->entityManager->getRepository('GroupsModule\Entity\GroupApplication')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
 
         if (count($applications) >= 1) {
@@ -580,7 +580,7 @@ class UserApi extends \Zikula_AbstractApi
             $membership['uid'] = $args['uid'];
             $this->entityManager->persist($membership);
             $this->entityManager->flush();
-            
+
             // Let other modules know that we have updated a group.
             $adduserEvent = new GenericEvent($membership);
             $this->dispatcher->dispatch('group.adduser', $adduserEvent);
@@ -621,7 +621,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-        
+
         // delete user from group
         $membership = $this->entityManager->getRepository('GroupsModule\Entity\GroupMembership')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
@@ -645,11 +645,11 @@ class UserApi extends \Zikula_AbstractApi
     public function whosonline()
     {
         $activetime = time() - (\System::getVar('secinactivemins') * 60);
-        
+
         $dql = "SELECT DISTINCT(s.uid) FROM Users\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
         $query = $this->entityManager->createQuery($dql);
         $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        
+
 
         return $items;
     }

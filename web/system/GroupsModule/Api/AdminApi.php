@@ -60,10 +60,10 @@ class AdminApi extends \Zikula_AbstractApi
         $obj['state'] = $args['state'];
         $obj['nbumax'] = $args['nbumax'];
         $obj['description'] = $args['description'];
-        
+
         $this->entityManager->persist($obj);
         $this->entityManager->flush();
-        
+
         // Get the ID of the item that we inserted.
         $gid = $obj['gid'];
 
@@ -97,10 +97,10 @@ class AdminApi extends \Zikula_AbstractApi
         if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
-        
+
         // keep item to pass it to dispatcher later
         $deletedItem = $item->toArray();
-        
+
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_DELETE)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
@@ -268,7 +268,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-        
+
         // delete user from group
         $membership = $this->entityManager->getRepository('GroupsModule\Entity\GroupMembership')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
@@ -296,26 +296,26 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['name'])) {
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
-        
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('g')
            ->from('GroupsModule\Entity\Group', 'g');
-        
+
         // add clause for filtering name
         $qb->andWhere($qb->expr()->eq('g.name', $qb->expr()->literal($args['name'])));
-        
+
         // Optional Where to use when modifying a group to check if there is
         // already another group by that name.
         if (isset($args['checkgid']) && is_numeric($args['checkgid'])) {
             $qb->andWhere($qb->expr()->neq('g.gid', $qb->expr()->literal($args['checkgid'])));
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         // execute query
         $result = $query->getOneOrNullResult();
 
@@ -342,7 +342,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         $items = array();
-        
+
         foreach ($objArray as $obj) {
             $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $obj['gid']));
             if ($group) {
@@ -375,9 +375,9 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['gid']) || !isset($args['userid'])) {
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
-        
+
         $appInfo = $this->entityManager->getRepository('GroupsModule\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
-        
+
         if (!$appInfo) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
@@ -399,7 +399,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['gid']) || !isset($args['userid']) || !isset($args['action'])) {
             throw new \InvalidArgumentException('Missing or invalid arguments');
         }
-        
+
         // delete group application
         $application = $this->entityManager->getRepository('GroupsModule\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
         $this->entityManager->remove($application);

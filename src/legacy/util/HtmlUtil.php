@@ -195,7 +195,7 @@ class HtmlUtil
 
         return self::getSelector_Generic($name, $data2, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
     }
-    
+
     /**
      * Creates an entity array selector.
      *
@@ -223,13 +223,13 @@ class HtmlUtil
         if (!$entity) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('entity', 'HtmlUtil::getSelector_EntityArray')));
         }
-        
+
         if (!$field) {
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('field', 'HtmlUtil::getSelector_EntityArray')));
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
-        
+
         $filters = array();
         if (!empty($where)) {
             $where = explode("=", $where);
@@ -241,9 +241,9 @@ class HtmlUtil
             $sort = explode(" ", $sort);
             $ordering[$sort[0]] = $sort[1];
         }
-        
+
         $dataArray = $em->getRepository($entity)->findBy($filters, $ordering);
-        
+
         $data2 = array();
         foreach ($dataArray as $object) {
             if (strpos($field, '->') !== false) {
@@ -252,14 +252,14 @@ class HtmlUtil
             } else {
                 $val = $object[$field];
             }
-            
+
             if (strpos($displayField, '->') !== false) {
                 $displayField_exp = explode('->', $displayField);
                 $disp = $object[$displayField_exp[0]][$displayField_exp[1]];
             } else {
                 $disp = $object[$displayField];
             }
-            
+
             if ($displayField2) {
                 if (strpos($displayField2, '->') !== false) {
                     $displayField2_exp = explode('->', $displayField2);
@@ -267,7 +267,7 @@ class HtmlUtil
                 } else {
                     $disp2 = $object[$displayField2];
                 }
-                
+
                 $disp .= $fieldSeparator . $disp2;
             }
 
@@ -430,11 +430,11 @@ class HtmlUtil
                 }
             }
         }
-        
+
         $data = array();
         foreach ($entities as $entity) {
             $class = $modname . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4);
-                
+
             if (class_exists($class)) {
                 $entityName = substr($entity, 0, strlen($entity) - 4);
 

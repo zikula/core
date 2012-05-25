@@ -13,7 +13,7 @@ class FormErrors extends FieldErrors
     {
         return 'form_errors';
     }
-    
+
     protected function getDivClassName()
     {
         return 'z-form-validationSummary';

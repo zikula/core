@@ -15,7 +15,7 @@ class RepeatedRow implements RendererInterface
     {
         return 'repeated_row';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         return $renderer->getRender('field_rows')->render($form, $variables, $renderer);

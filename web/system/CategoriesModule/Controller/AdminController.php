@@ -94,7 +94,7 @@ class AdminController extends \Zikula_AbstractController
             if (!$cid) {
                 return LogUtil::registerError($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'Categories_admin_edit\'.'));
             }
-            
+
             $editCat = CategoryUtil::getCategoryByID($cid);
             if (!$editCat) {
                 return LogUtil::registerError($this->__('Sorry! No such item found.'), 404);
@@ -171,9 +171,9 @@ class AdminController extends \Zikula_AbstractController
 
         $root_id = $this->request->get('dr', 1);
         $id = $this->request->get('id', 0);
-        
+
         $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
-        
+
         $category_registry = $this->request->query->get('category_registry', null);
         if ($category_registry) {
             $obj->merge($category_registry);
@@ -197,10 +197,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $id = $this->request->get('id', 0);
-        
+
         $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $id);
         $data = $obj->toArray();
-        
+
         $this->view->assign('data', $data)
                    ->assign('id', $id);
 
@@ -228,12 +228,12 @@ class AdminController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Categories::category', "ID::$cid", ACCESS_DELETE)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-        
+
         $category = CategoryUtil::getCategoryByID($cid);
         $subCats = CategoryUtil::getSubCategories($cid, false, false);
         $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
-        
+
         $this->view->assign('category', $category)
                    ->assign('numSubcats', count($subCats))
                    ->assign('categorySelector', $selector);

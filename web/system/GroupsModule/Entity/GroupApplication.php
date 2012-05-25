@@ -32,27 +32,27 @@ class GroupApplication extends EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $app_id;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $uid;
-    
+
     /**
      * @ORM\Column(type="integer")
      */
     private $gid;
-    
+
     /**
      * @ORM\Column(type="text")
      */
     private $application;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $status;
-    
+
 
     /**
      * constructor
@@ -84,7 +84,7 @@ class GroupApplication extends EntityAccess
     {
         $this->app_id = $app_id;
     }
-    
+
     /**
      * get the uid of the group's application
      *
@@ -104,7 +104,7 @@ class GroupApplication extends EntityAccess
     {
         $this->uid = $uid;
     }
-    
+
     /**
      * get the gid of the group's application
      *
@@ -124,7 +124,7 @@ class GroupApplication extends EntityAccess
     {
         $this->gid = $gid;
     }
-    
+
     /**
      * get the application of the group's application
      *
@@ -144,7 +144,7 @@ class GroupApplication extends EntityAccess
     {
         $this->application = $application;
     }
-    
+
     /**
      * get the status of the group's application
      *

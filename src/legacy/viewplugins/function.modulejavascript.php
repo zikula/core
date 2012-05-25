@@ -95,7 +95,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
         $modpath       = "modules/$osmoddir/Resources/public/js";
         $syspath       = "system/$osmoddir/Resources/public/js";
-        
+
         $searchpaths = array($themepath, $modpath, $syspath);
     }
     $osscript = DataUtil::formatForOS($params['script']);

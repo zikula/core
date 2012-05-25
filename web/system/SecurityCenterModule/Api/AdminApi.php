@@ -33,39 +33,39 @@ class AdminApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_OVERVIEW)) {
             return array();
         }
-        
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('i')
            ->from('SecurityCenterModule\Entity\Intrusion', 'i');
-        
+
         // add clause for user
         if (isset($args['where']['uid'])) {
             $uid = $args['where']['uid'];
             unset($args['where']['uid']);
-            
+
             if ($uid > 0) {
                 $qb->from('UsersModule\Entity\User', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
                 $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
             }
         }
-        
+
         // add clauses for where
         if (isset($args['where'])) {
             foreach ($args['where'] as $w_key => $w_value) {
                 $qb->andWhere($qb->expr()->eq('i.' . $w_key, $qb->expr()->literal($w_value)));
             }
         }
-        
+
         // add clause for ordering
         if (isset($args['sorting'])) {
             if (isset($args['sorting']['username'])) {
                 $sortdir = $args['sorting']['username'];
                 unset($args['sorting']['username']);
-                
+
                 $qb->from('UsersModule\Entity\User', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
                 $qb->addOrderBy('u.uname', $sortdir);
@@ -75,7 +75,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $qb->addOrderBy('i.' . $sort, $sortdir);
             }
         }
-        
+
         // add limit and offset
         if (isset($args['limit']) && $args['limit'] > 0) {
             $qb->setMaxResults($args['limit']);
@@ -83,16 +83,16 @@ class AdminApi extends \Zikula_AbstractApi
                 $qb->setFirstResult($args['offset']);
             }
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         // execute query
         $items = $query->getResult();
 
         return $items;
     }
-    
+
     /**
      * Count all intrusions.
      *
@@ -108,42 +108,42 @@ class AdminApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_OVERVIEW)) {
             return 0;
         }
-        
+
         // create a QueryBuilder instance
         $qb = $this->entityManager->createQueryBuilder();
-        
-        // add select and from params 
+
+        // add select and from params
         $qb->select('count(i.id)')
            ->from('SecurityCenterModule\Entity\Intrusion', 'i');
-        
+
         // add clause for user
         if (isset($args['where']['uid'])) {
             $uid = $args['where']['uid'];
             unset($args['where']['uid']);
-            
+
             if ($uid > 0) {
                 $qb->from('UsersModule\Entity\User', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
                 $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
             }
         }
-        
+
         // add clauses for where
         if (isset($args['where'])) {
             foreach ($args['where'] as $w_key => $w_value) {
                 $qb->andWhere($qb->expr()->eq('i.' . $w_key, $qb->expr()->literal($w_value)));
             }
         }
-        
+
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
-        
+
         // execute query
         $count = (int)$query->getSingleScalarResult();
 
         return $count;
     }
-    
+
     /**
      * Purge IDS Log.
      *
@@ -156,7 +156,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
             return false;
         }
-        
+
         // truncate sc_intrusion table
         $connection = $this->entityManager->getConnection();
         $platform = $connection->getDatabasePlatform();
@@ -177,7 +177,7 @@ class AdminApi extends \Zikula_AbstractApi
             $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
             $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'allowedhtml'), 'text' => $this->__('Allowed HTML settings'), 'class' => 'z-icon-es-options');
             $links[] = array('url' => ModUtil::url('SecurityCenter', 'admin', 'viewidslog'),
-                             'text' => $this->__('View IDS Log'), 
+                             'text' => $this->__('View IDS Log'),
                              'class' => 'z-icon-es-log',
                              'links' => array(
                                              array('url' => ModUtil::url('SecurityCenter', 'admin', 'viewidslog'),

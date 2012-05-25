@@ -23,14 +23,14 @@ interface Zikula_Session_StorageInterface
      *
      * @return void
      */
-    function start();
+    public function start();
 
     /**
      * Expire this session gracefully.
      *
      * @return void
      */
-    function expire();
+    public function expire();
 
     /**
      * Regenerate session.
@@ -39,7 +39,7 @@ interface Zikula_Session_StorageInterface
      *
      * @return boolean
      */
-    function regenerate($delete = false);
+    public function regenerate($delete = false);
 
     /**
      * Open session.
@@ -49,14 +49,14 @@ interface Zikula_Session_StorageInterface
      *
      * @return boolean
      */
-    function open($savePath, $sessionName);
+    public function open($savePath, $sessionName);
 
     /**
      * Close session.
      *
      * @return boolean
      */
-    function close();
+    public function close();
 
     /**
      * Read session.
@@ -65,7 +65,7 @@ interface Zikula_Session_StorageInterface
      *
      * @return boolean
      */
-    function read($sessionId);
+    public function read($sessionId);
 
     /**
      * Commit session to storage.
@@ -75,7 +75,7 @@ interface Zikula_Session_StorageInterface
      *
      * @return boolean
      */
-    function write($sessionId, $vars);
+    public function write($sessionId, $vars);
 
     /**
      * Destroy this session.
@@ -84,7 +84,7 @@ interface Zikula_Session_StorageInterface
      *
      * @return void
      */
-    function destroy($sessionId);
+    public function destroy($sessionId);
 
     /**
      * Garbage collection for storage.
@@ -93,5 +93,5 @@ interface Zikula_Session_StorageInterface
      *
      * @return boolean
      */
-    function gc($lifetime);
+    public function gc($lifetime);
 }

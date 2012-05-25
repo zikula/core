@@ -25,40 +25,40 @@ class DoctrineRegistryImpl extends \Symfony\Bridge\Doctrine\ManagerRegistry impl
         }
     }
 
-    function getAliasNamespace($alias)
+    public function getAliasNamespace($alias)
     {
     }
 
-    function getDefaultEntityManagerName()
+    public function getDefaultEntityManagerName()
     {
         return $this->getDefaultManagerName();
     }
 
-    function getEntityManager($name = null)
+    public function getEntityManager($name = null)
     {
         return $this->getManager($name);
     }
 
-    function getEntityManagers()
+    public function getEntityManagers()
     {
         return $this->getManagers();
     }
 
-    function resetEntityManager($name = null)
+    public function resetEntityManager($name = null)
     {
         $this->resetEntityManager($name);
     }
 
-    function getEntityNamespace($alias)
+    public function getEntityNamespace($alias)
     {
     }
 
-    function getEntityManagerNames()
+    public function getEntityManagerNames()
     {
         return $this->getManagerNames();
     }
 
-    function getEntityManagerForClass($class)
+    public function getEntityManagerForClass($class)
     {
         return $this->getManagerForClass($class);
     }

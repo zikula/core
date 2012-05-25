@@ -74,7 +74,7 @@ class SearchResultEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -96,7 +96,7 @@ class SearchResultEntity
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -118,7 +118,7 @@ class SearchResultEntity
     /**
      * Get text
      *
-     * @return text 
+     * @return text
      */
     public function getText()
     {
@@ -140,7 +140,7 @@ class SearchResultEntity
     /**
      * Get module
      *
-     * @return string 
+     * @return string
      */
     public function getModule()
     {
@@ -162,7 +162,7 @@ class SearchResultEntity
     /**
      * Get extra
      *
-     * @return string 
+     * @return string
      */
     public function getExtra()
     {
@@ -184,7 +184,7 @@ class SearchResultEntity
     /**
      * Get created
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getCreated()
     {
@@ -206,7 +206,7 @@ class SearchResultEntity
     /**
      * Get found
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getFound()
     {
@@ -228,7 +228,7 @@ class SearchResultEntity
     /**
      * Get sesid
      *
-     * @return string 
+     * @return string
      */
     public function getSesid()
     {

@@ -29,7 +29,7 @@ abstract class AbstractBase implements TranslatableInterface, ContainerAwareInte
      *
      * @var string
      */
-    static protected $path;
+    protected static $path;
 
     /**
      * Name.

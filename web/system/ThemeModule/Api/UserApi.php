@@ -268,7 +268,7 @@ class UserApi extends \Zikula_AbstractApi
 
         if (file_exists($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile)) {
             return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile, $args['sections']);
-        } else if (file_exists(ZIKULA_ROOT.'/themes/'.$ostheme.'/Resources/config/'.$osfile)) {
+        } elseif (file_exists(ZIKULA_ROOT.'/themes/'.$ostheme.'/Resources/config/'.$osfile)) {
             return parse_ini_file(ZIKULA_ROOT.'/themes/'.$ostheme.'/Resources/config/'.$osfile, $args['sections']);
         }
     }

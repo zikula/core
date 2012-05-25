@@ -29,13 +29,13 @@ class Installer extends \Zikula_AbstractInstaller
             'Zikula\Core\Doctrine\Entity\CategoryAttribute',
             'Zikula\Core\Doctrine\Entity\CategoryRegistry'
         );
-        
+
         try {
             \DoctrineHelper::createSchema($this->entityManager, $classes);
         } catch (\Exception $e) {
             return false;
         }
-        
+
         // insert some default data
         $this->insertData_10();
 
@@ -646,33 +646,33 @@ class Installer extends \Zikula_AbstractInstaller
             'ipath' => '/1/2/32/41',
             'status' => 'A'
         );
-        
+
         foreach ($objArray as $obj) {
             $category = new \Zikula\Core\Doctrine\Entity\Category;
-            
+
             if ($obj['parent_id'] == 0) {
                 $obj['parent'] = null;
             } else {
                 $obj['parent'] = $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\Category', $obj['parent_id']);
             }
             unset($obj['parent_id']);
-            
+
             if (isset($obj['__ATTRIBUTES__'])) {
                 $attributes = $obj['__ATTRIBUTES__'];
                 unset($obj['__ATTRIBUTES__']);
             }
-            
+
             $category->merge($obj);
             $this->entityManager->persist($category);
             $this->entityManager->flush();
-            
+
             if (isset($attributes)) {
                 foreach ($attributes as $attrib_key => $attrib_name) {
                     $category->setAttribute($attrib_name, $attrib_key);
                 }
             }
         }
-        
+
         $this->entityManager->flush();
     }
 

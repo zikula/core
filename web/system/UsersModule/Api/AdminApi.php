@@ -64,7 +64,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Set query conditions (unless some one else sends a hardcoded one)
         $where = array();
-        
+
         if (!isset($args['condition']) || !$args['condition']) {
             // Do not include anonymous user
             $where[] = "u.uid <> 1";
@@ -76,22 +76,22 @@ class AdminApi extends \Zikula_AbstractApi
                         case 'email':
                             $where[] = "u.$arg LIKE '%" . DataUtil::formatForStore($value) . "%'";
                             break;
-                        
+
                         case 'ugroup':
                             $uidList = UserUtil::getUsersForGroup($value);
                             if (is_array($uidList) && !empty($uidList)) {
                                 $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
                             }
                             break;
-                            
+
                         case 'regdateafter':
                             $where[] = "u.user_regdate > '" . DataUtil::formatForStore($value) . "'";
                             break;
-                        
+
                         case 'regdatebefore':
                             $where[] = "u.user_regdate < '" . DataUtil::formatForStore($value) . "'";
                             break;
-                        
+
                         case 'dynadata':
                             if ($useProfileMod) {
                                 $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => $value));
@@ -100,17 +100,17 @@ class AdminApi extends \Zikula_AbstractApi
                                 }
                             }
                             break;
-                            
+
                         default:
                             // Skip unknown values--do nothing, and no error--might be other legitimate arguments.
                     }
                 }
             }
         }
-        
+
         // TODO - Should this exclude pending delete too?
         $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
-        
+
         $where = 'WHERE ' . implode(' AND ', $where);
 
         $dql = "SELECT u FROM UsersModule\Entity\User u $where ORDER BY u.uname ASC";
@@ -167,9 +167,9 @@ class AdminApi extends \Zikula_AbstractApi
             if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid == $curUserUid)) {
                 return false;
             }
-            
+
             $userObj = UserUtil::getVars($uid);
-            
+
             if (!$userObj) {
                 return false;
             } elseif (!SecurityUtil::checkPermission("{$this->name}::", "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE)) {
@@ -189,15 +189,15 @@ class AdminApi extends \Zikula_AbstractApi
                 $dql = "DELETE FROM Groups\Entity\GroupMembership m WHERE m.uid = {$userObj['uid']}";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
-                
+
                 // delete verification records for this user
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
-                
+
                 // delete session
                 $dql = "DELETE FROM UsersModule\Entity\User u WHERE u.uid = {$userObj['uid']}";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
-                
+
                 // delete user
                 $user = $this->entityManager->find('UsersModule\Entity\User', $userObj['uid']);
                 $this->entityManager->remove($user);
@@ -411,14 +411,14 @@ class AdminApi extends \Zikula_AbstractApi
         if (!SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_READ)) {
             return false;
         }
-        
+
         $valuesArray = $args['valuesarray'];
         $key = $args['key'];
-        
+
         $dql = "SELECT u FROM UsersModule\Entity\User u WHERE u.$key IN ('" . implode("', '", $valuesArray) . "')";
         $query = $this->entityManager->createQuery($dql);
         $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        
+
         $userArr = array();
         foreach ($users as $user) {
             $userArr[$user['uname']] = $user;
@@ -486,7 +486,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             return false;
         }
-        
+
         // add user to groups
         $error_membership = false;
         foreach ($importValues as $value) {

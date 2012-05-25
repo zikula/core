@@ -67,7 +67,7 @@ class PageLockEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -89,7 +89,7 @@ class PageLockEntity
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -111,7 +111,7 @@ class PageLockEntity
     /**
      * Get cdate
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getCdate()
     {
@@ -133,7 +133,7 @@ class PageLockEntity
     /**
      * Get edate
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getEdate()
     {
@@ -155,7 +155,7 @@ class PageLockEntity
     /**
      * Get session
      *
-     * @return string 
+     * @return string
      */
     public function getSession()
     {
@@ -177,7 +177,7 @@ class PageLockEntity
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -199,7 +199,7 @@ class PageLockEntity
     /**
      * Get ipno
      *
-     * @return string 
+     * @return string
      */
     public function getIpno()
     {

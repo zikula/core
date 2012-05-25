@@ -25,7 +25,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @var string
      */
-    static protected $path;
+    protected static $path;
 
     /**
      * The module name, computed from the implementing class name.
@@ -192,7 +192,7 @@ abstract class AbstractVersion implements \ArrayAccess
      *
      * @return string
      */
-    static public function getPath()
+    public static function getPath()
     {
         if (null !== self::$path) {
             return self::$path;

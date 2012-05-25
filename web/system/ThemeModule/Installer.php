@@ -77,8 +77,7 @@ class Installer extends \Zikula_AbstractInstaller
      */
     public function upgrade($oldversion)
     {
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '3.4.2':
                 // future upgrade
         }

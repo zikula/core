@@ -102,7 +102,7 @@ class HookRuntimeEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -124,7 +124,7 @@ class HookRuntimeEntity
     /**
      * Get sowner
      *
-     * @return string 
+     * @return string
      */
     public function getSowner()
     {
@@ -146,7 +146,7 @@ class HookRuntimeEntity
     /**
      * Get subsowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubsowner()
     {
@@ -168,7 +168,7 @@ class HookRuntimeEntity
     /**
      * Get powner
      *
-     * @return string 
+     * @return string
      */
     public function getPowner()
     {
@@ -190,7 +190,7 @@ class HookRuntimeEntity
     /**
      * Get subpowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubpowner()
     {
@@ -212,7 +212,7 @@ class HookRuntimeEntity
     /**
      * Get sareaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getSareaid()
     {
@@ -234,7 +234,7 @@ class HookRuntimeEntity
     /**
      * Get pareaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getPareaid()
     {
@@ -256,7 +256,7 @@ class HookRuntimeEntity
     /**
      * Get eventname
      *
-     * @return string 
+     * @return string
      */
     public function getEventname()
     {
@@ -278,7 +278,7 @@ class HookRuntimeEntity
     /**
      * Get classname
      *
-     * @return string 
+     * @return string
      */
     public function getClassname()
     {
@@ -300,7 +300,7 @@ class HookRuntimeEntity
     /**
      * Get method
      *
-     * @return string 
+     * @return string
      */
     public function getMethod()
     {
@@ -322,7 +322,7 @@ class HookRuntimeEntity
     /**
      * Get serviceid
      *
-     * @return string 
+     * @return string
      */
     public function getServiceid()
     {
@@ -344,7 +344,7 @@ class HookRuntimeEntity
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {

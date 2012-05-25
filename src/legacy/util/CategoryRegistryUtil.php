@@ -30,14 +30,14 @@ class CategoryRegistryUtil
         if (!isset($modname) || !$modname) {
             return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
-        
+
         $params = array('modname' => $modname);
         if ($entryID) {
             $params = array('id' => $entryID);
         }
-        
+
         $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findOneBy($params);
         $em->remove($entity);
         $em->flush();
@@ -128,7 +128,7 @@ class CategoryRegistryUtil
         if (!$catreg) {
             return false;
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
 
         if (isset($catreg['id']) && is_numeric($catreg['id'])) {
@@ -136,7 +136,7 @@ class CategoryRegistryUtil
         } else {
             $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
         }
-        
+
         $entity->merge($catreg);
         $em->persist($entity);
         $em->flush();
@@ -156,7 +156,7 @@ class CategoryRegistryUtil
         if (!$catregs) {
             return false;
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
 
         foreach ($catregs as $catreg) {
@@ -165,11 +165,11 @@ class CategoryRegistryUtil
             } else {
                 $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
             }
-            
+
             $entity->merge($catreg);
             $em->persist($entity);
         }
-        
+
         $em->flush();
 
         return true;
@@ -193,13 +193,13 @@ class CategoryRegistryUtil
         if (isset($cache[$modname][$entityname])) {
             return $cache[$modname][$entityname];
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
-        
+
         $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
-        
+
         $fArr = array();
-        
+
         foreach ($rCategories as $rCategory) {
             $rCategory = $rCategory->toArray();
             $fArr[$rCategory[$arraykey]] = $rCategory;
@@ -256,13 +256,13 @@ class CategoryRegistryUtil
         if (!$modname || !$entityname) {
             return z_exit(__f("Error! Received invalid specifications %1$s, %2$s.", array($modname, $entityname)));
         }
-        
+
         $em = \ServiceUtil::get('doctrine')->getManager();
-        
+
         $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array('modname' => $modname, 'entityname' => $entityname));
 
         $fArr = array();
-        
+
         foreach ($rCategories as $rCategory) {
             $fArr[$rCategory['property']] = $rCategory['id'];
         }

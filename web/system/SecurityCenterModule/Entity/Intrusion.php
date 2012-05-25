@@ -49,7 +49,7 @@ class Intrusion extends EntityAccess
      * @ORM\Column(name="page", type="text", nullable=false)
      */
     private $page;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="\UsersModule\Entity\User")
      * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
@@ -88,7 +88,7 @@ class Intrusion extends EntityAccess
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -110,7 +110,7 @@ class Intrusion extends EntityAccess
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -132,7 +132,7 @@ class Intrusion extends EntityAccess
     /**
      * Get tag
      *
-     * @return string 
+     * @return string
      */
     public function getTag()
     {
@@ -154,7 +154,7 @@ class Intrusion extends EntityAccess
     /**
      * Get value
      *
-     * @return text 
+     * @return text
      */
     public function getValue()
     {
@@ -176,7 +176,7 @@ class Intrusion extends EntityAccess
     /**
      * Get page
      *
-     * @return text 
+     * @return text
      */
     public function getPage()
     {
@@ -198,7 +198,7 @@ class Intrusion extends EntityAccess
     /**
      * Get user
      *
-     * @return \UsersModule\Entity\User 
+     * @return \UsersModule\Entity\User
      */
     public function getUser()
     {
@@ -220,7 +220,7 @@ class Intrusion extends EntityAccess
     /**
      * Get ip
      *
-     * @return string 
+     * @return string
      */
     public function getIp()
     {
@@ -242,7 +242,7 @@ class Intrusion extends EntityAccess
     /**
      * Get impact
      *
-     * @return integer 
+     * @return integer
      */
     public function getImpact()
     {
@@ -264,7 +264,7 @@ class Intrusion extends EntityAccess
     /**
      * Get filters
      *
-     * @return text 
+     * @return text
      */
     public function getFilters()
     {
@@ -286,7 +286,7 @@ class Intrusion extends EntityAccess
     /**
      * Get date
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDate()
     {

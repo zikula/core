@@ -218,7 +218,7 @@ class UserController extends \Zikula_AbstractController
 
                     // Get a list of authentication methods available for registration
                     // NOTE: The Users module methods should NOT appear on this list!
-                    $authenticationMethodList = new AuthenticationMethodListHelper($this, array(), 
+                    $authenticationMethodList = new AuthenticationMethodListHelper($this, array(),
                         \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
 
                     if ($authenticationMethodList->countEnabledForRegistration() <= 0) {

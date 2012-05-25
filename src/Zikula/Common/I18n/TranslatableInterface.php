@@ -26,7 +26,7 @@ interface TranslatableInterface
      *
      * @return string
      */
-    function __($msg);
+    public function __($msg);
 
     /**
      * Plural translations for modules.
@@ -37,7 +37,7 @@ interface TranslatableInterface
      *
      * @return string
      */
-    function _n($m1, $m2, $n);
+    public function _n($m1, $m2, $n);
 
     /**
      * Format translations for modules.
@@ -47,7 +47,7 @@ interface TranslatableInterface
      *
      * @return string
      */
-    function __f($msg, $param);
+    public function __f($msg, $param);
 
     /**
      * Format pural translations for modules.
@@ -59,5 +59,5 @@ interface TranslatableInterface
      *
      * @return string
      */
-    function _fn($m1, $m2, $n, $param);
+    public function _fn($m1, $m2, $n, $param);
 }

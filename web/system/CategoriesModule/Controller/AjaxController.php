@@ -42,7 +42,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 $category['parent'] = $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\Category', $data[$cid]['parent']);
             }
         }
-        
+
         $this->entityManager->flush();
 
         $result = array(
@@ -78,9 +78,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $editCat['sort_value'] = '0';
             $editCat['parent_id'] = $parent;
         }
-        
+
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
-        
+
         $this->setView();
         $this->view->setCaching(\Zikula_View::CACHE_DISABLED);
 
@@ -108,10 +108,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
-        
+
         $cat = CategoryUtil::getCategoryByID($cid);
         CategoryUtil::copyCategoriesByPath($cat['ipath'], $parent);
-        
+
         $copyParent = CategoryUtil::getCategoryByID($cat['parent_id']);
 
         $categories = CategoryUtil::getSubCategories($copyParent['id'], true, true, true, true, true);
@@ -154,7 +154,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cat = CategoryUtil::getCategoryByID($cid);
 
         CategoryUtil::deleteCategoriesByPath($cat['ipath']);
-        
+
         $result = array(
             'action' => 'delete',
             'cid' => $cid,
@@ -170,15 +170,15 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
-        
+
         $cat = CategoryUtil::getCategoryByID($cid);
-        
+
         CategoryUtil::moveSubCategoriesByPath($cat['ipath'], $parent);
         CategoryUtil::deleteCategoryByID($cat['id']);
-        
+
         // need to re-render new parents node
         $newParent = CategoryUtil::getCategoryByID($parent);
-        
+
         $categories = CategoryUtil::getSubCategories($newParent['id'], true, true, true, true, true);
         $options = array(
             'nullParent' => $newParent['parent_id'],
@@ -215,7 +215,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
 
         $cid = $this->request->request->get('cid');
-        
+
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
 
@@ -239,7 +239,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $cat = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $cid);
         $cat['status'] = 'A';
         $this->entityManager->flush();
-        
+
         $result = array(
             'action' => 'activate',
             'cid' => $cid,
@@ -269,14 +269,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function saveAction()
     {
         $this->checkAjaxToken();
-        
+
         $mode = $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
-        
+
         // get data from post
         $data = $this->request->request->get('category', null);
-        
+
         if (!isset($data['is_locked'])) {
             $data['is_locked'] = 0;
         }
@@ -286,7 +286,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (!isset($data['status'])) {
             $data['status'] = 'I';
         }
-        
+
         $valid = \CategoriesModule\GenericUtil::validateCategoryData($data);
         if (!$valid) {
             $args = array(
@@ -296,17 +296,17 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             );
             return $this->editAction($args);
         }
-        
+
         // process name
         $data['name'] = \CategoriesModule\GenericUtil::processCategoryName($data['name']);
-        
+
         // process parent
         $data['parent'] = \CategoriesModule\GenericUtil::processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
-        
+
         // process display names
         $data['display_name'] = \CategoriesModule\GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
-        
+
         // save category
         if ($mode == 'edit') {
             $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $data['id']);
@@ -317,23 +317,23 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $category->merge($data);
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-        
+
         // process path and ipath
         $category['path'] = \CategoriesModule\GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
         $category['ipath'] = \CategoriesModule\GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
-        
+
         // process category attributes
         $attrib_names = $this->request->request->get('attribute_name', array());
         $attrib_values = $this->request->request->get('attribute_value', array());
         \CategoriesModule\GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
 
         $this->entityManager->flush();
-        
+
         // since a name change will change the object path, we must rebuild it here
         if ($prevCategoryName != $category['name']) {
             CategoryUtil::rebuildPaths('path', 'name', $category['id']);
         }
-        
+
         $categories = CategoryUtil::getSubCategories($category['id'], true, true, true, true, true);
         $options = array(
             'nullParent' => $category['parent']->getId(),
@@ -361,7 +361,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'leafstatus' => $leafStatus,
             'result' => true
         );
-        
+
         return new AjaxResponse($result);
     }
 }

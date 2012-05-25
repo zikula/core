@@ -15,13 +15,13 @@ class SearchWidget implements RendererInterface
     {
         return 'search_widget';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         if(!isset($variables['type'])) {
             $variables['type'] = 'search';
         }
-        
+
         return $renderer->getRender('field_widget')->render($form, $variables, $renderer);
     }
 }

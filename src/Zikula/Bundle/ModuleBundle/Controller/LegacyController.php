@@ -13,5 +13,5 @@ class LegacyController extends Controller
         return $this->forward('Zikula'.ucfirst($module)."Module:".$type.":".$action);
     }
 
-    
+
 }

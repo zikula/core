@@ -32,62 +32,62 @@ class Theme extends EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @ORM\Column(type="string", length=64)
      */
     private $name;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $type;
-    
+
     /**
      * @ORM\Column(type="string", length=64)
      */
     private $displayname;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $description;
-    
+
     /**
      * @ORM\Column(type="string", length=64)
      */
     private $directory;
-    
+
     /**
      * @ORM\Column(type="string", length=10)
      */
     private $version;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $contact;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $admin;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $user;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $system;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
     private $state;
-    
+
     /**
      * @ORM\Column(type="smallint")
      */
@@ -95,7 +95,7 @@ class Theme extends EntityAccess
 
 
     /**
-     * constructor 
+     * constructor
      */
     public function __construct()
     {
@@ -132,7 +132,7 @@ class Theme extends EntityAccess
     {
         $this->id = $id;
     }
-    
+
     /**
      * get the name of the theme
      *
@@ -152,7 +152,7 @@ class Theme extends EntityAccess
     {
         $this->name = $name;
     }
-    
+
     /**
      * get the type of the theme
      *
@@ -172,7 +172,7 @@ class Theme extends EntityAccess
     {
         $this->type = $type;
     }
-    
+
     /**
      * get the displayname of the theme
      *
@@ -192,7 +192,7 @@ class Theme extends EntityAccess
     {
         $this->displayname = $displayname;
     }
-    
+
     /**
      * get the description of the theme
      *
@@ -212,7 +212,7 @@ class Theme extends EntityAccess
     {
         $this->description = $description;
     }
-    
+
     /**
      * get the directory of the theme
      *
@@ -232,7 +232,7 @@ class Theme extends EntityAccess
     {
         $this->directory = $directory;
     }
-    
+
     /**
      * get the version of the theme
      *
@@ -252,7 +252,7 @@ class Theme extends EntityAccess
     {
         $this->version = $version;
     }
-    
+
     /**
      * get the contact of the theme
      *
@@ -272,7 +272,7 @@ class Theme extends EntityAccess
     {
         $this->contact = $contact;
     }
-    
+
     /**
      * get the admin of the theme
      *
@@ -292,7 +292,7 @@ class Theme extends EntityAccess
     {
         $this->admin = $admin;
     }
-    
+
     /**
      * get the user of the theme
      *
@@ -312,7 +312,7 @@ class Theme extends EntityAccess
     {
         $this->user = $user;
     }
-    
+
     /**
      * get the system of the theme
      *
@@ -332,7 +332,7 @@ class Theme extends EntityAccess
     {
         $this->system = $system;
     }
-    
+
     /**
      * get the state of the theme
      *
@@ -352,7 +352,7 @@ class Theme extends EntityAccess
     {
         $this->state = $state;
     }
-    
+
     /**
      * get the xhtml of the theme
      *

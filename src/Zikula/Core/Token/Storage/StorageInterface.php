@@ -27,7 +27,7 @@ interface StorageInterface
      *
      * @return string
      */
-    function get($id);
+    public function get($id);
 
     /**
      * Save token.
@@ -38,7 +38,7 @@ interface StorageInterface
      *
      * @return void
      */
-    function save($id, $token, $timestamp);
+    public function save($id, $token, $timestamp);
 
     /**
      * Delete token by ID.
@@ -47,7 +47,7 @@ interface StorageInterface
      *
      * @return void
      */
-    function delete($id);
+    public function delete($id);
 
     /**
      * Initiate garbage collection.
@@ -55,5 +55,5 @@ interface StorageInterface
      * @param integer $lifetime
      * @return void
      */
-    function gc($lifetime);
+    public function gc($lifetime);
 }

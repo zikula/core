@@ -561,20 +561,20 @@ class AdminController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-        
+
         // sorting
         $sort = $this->request->get('sort', 'date DESC');
         $sort_exp = explode(" ", $sort);
         $sorting = array($sort_exp[0] => (isset($sort_exp[1]) ? $sort_exp[1] : 'ASC'));
-        
+
         // filtering
         $filterdefault = array(
-            'uid' => 0, 
-            'name' => null, 
-            'tag' => null, 
-            'value' => null, 
-            'page' => null, 
-            'ip' => null, 
+            'uid' => 0,
+            'name' => null,
+            'tag' => null,
+            'value' => null,
+            'page' => null,
+            'ip' => null,
             'impact' => null
         );
         $filter = $this->request->get('filter', $filterdefault);
@@ -584,13 +584,13 @@ class AdminController extends \Zikula_AbstractController
                 $where[$flt_key] = $flt_value;
             }
         }
-        
+
         // offset
         $startnum = (int)$this->request->get('startnum', 0);
-        
+
         // number of items to show
         $pagesize = (int)$this->getVar('pagesize', 25);
-        
+
         // get data
         $item_params = array(
             'where' => $where,
@@ -621,7 +621,7 @@ class AdminController extends \Zikula_AbstractController
 
         $this->view->assign('startnum', $startnum)
                    ->assign('pager', $pager);
-        
+
         $csrftoken = SecurityUtil::generateCsrfToken($this->container, true);
         $this->view->assign('csrftoken', $csrftoken);
 
@@ -700,7 +700,7 @@ class AdminController extends \Zikula_AbstractController
                 'sorting' => array('date' => 'DESC')
             );
             $items = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
-            
+
             $objData = array();
             foreach ($items as $item) {
                 $dta = $item->toArray();

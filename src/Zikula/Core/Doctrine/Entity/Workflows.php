@@ -96,7 +96,7 @@ class Workflows
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -118,7 +118,7 @@ class Workflows
     /**
      * Get metaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getMetaid()
     {
@@ -140,7 +140,7 @@ class Workflows
     /**
      * Get module
      *
-     * @return string 
+     * @return string
      */
     public function getModule()
     {
@@ -162,7 +162,7 @@ class Workflows
     /**
      * Get schemaname
      *
-     * @return string 
+     * @return string
      */
     public function getSchemaname()
     {
@@ -184,7 +184,7 @@ class Workflows
     /**
      * Get state
      *
-     * @return string 
+     * @return string
      */
     public function getState()
     {
@@ -206,7 +206,7 @@ class Workflows
     /**
      * Get type
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getType()
     {
@@ -228,7 +228,7 @@ class Workflows
     /**
      * Get objTable
      *
-     * @return string 
+     * @return string
      */
     public function getObjTable()
     {
@@ -250,7 +250,7 @@ class Workflows
     /**
      * Get objIdcolumn
      *
-     * @return string 
+     * @return string
      */
     public function getObjIdcolumn()
     {
@@ -272,7 +272,7 @@ class Workflows
     /**
      * Get objId
      *
-     * @return integer 
+     * @return integer
      */
     public function getObjId()
     {
@@ -294,7 +294,7 @@ class Workflows
     /**
      * Get busy
      *
-     * @return integer 
+     * @return integer
      */
     public function getBusy()
     {
@@ -316,7 +316,7 @@ class Workflows
     /**
      * Get debug
      *
-     * @return text 
+     * @return text
      */
     public function getDebug()
     {

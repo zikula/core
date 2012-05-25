@@ -68,7 +68,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 }
                 // while i think that REQUEST_URI is unnecessary,
                 // the REFERER would be important, but results in way too many false positives
-                /* 
+                /*
                 if (isset($_SERVER['REQUEST_URI'])) {
                     $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
                 }
@@ -233,12 +233,12 @@ class FilterListener extends \Zikula_AbstractEventHandler
             if (!$currentUid) {
                 $currentUid = 1;
             }
-            
+
             // get entity manager
             $em = \ServiceUtil::get('doctrine')->getManager();
 
-            $intrusionItems = array();            
-            
+            $intrusionItems = array();
+
             foreach ($result as $event) {
 
                 $eventName = $event->getName();
@@ -278,12 +278,12 @@ class FilterListener extends \Zikula_AbstractEventHandler
             // log details to database
             foreach ($intrusionItems as $tag => $intrusionItem) {
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
-                
+
                 $obj = new \SecurityCenterModule\Entity\Intrusion;
                 $obj->merge($intrusionItem);
                 $em->persist($obj);
             }
-            
+
             $em->flush();
         }
 

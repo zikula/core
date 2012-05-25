@@ -148,7 +148,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     public function getEmailErrors($args)
     {
         $reginfo = array();
-        
+
         if (isset($args['uid'])) {
             $reginfo['uid'] = $args['uid'];
         }
@@ -460,7 +460,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (!isset($obj) || !is_array($obj)) {
             return $obj;
         }
-        
+
         $user = new \UsersModule\Entity\User;
 
         if (!isset($obj['__ATTRIBUTES__'])) {
@@ -581,12 +581,12 @@ class RegistrationApi extends \Zikula_AbstractApi
             unset($userObj['verificationsent']);
         }
         $userObj = $this->cleanFieldsToAttributes($userObj);
-        
+
         // store user's attributes to a variable.
         // we will persist them to the database after the user record is created
         $attributes = $userObj['__ATTRIBUTES__'];
         unset($userObj['__ATTRIBUTES__']);
-        
+
         // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
         // registration, not a user, so a user account record has really not yet been "created".
         // The item-create hook will be fired when the registration becomes a "real" user
@@ -597,15 +597,15 @@ class RegistrationApi extends \Zikula_AbstractApi
         $user->merge($userObj);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        
+
         // store attributes also
         foreach ($attributes as $attr_key => $attr_value) {
             $user->setAttribute($attr_key, $attr_value);
         }
-       
+
         // TODO - Even though we are not firing an item-create hook, should we fire a special
         // registration created event?
-        
+
         $userObj = $user->toArray();
         if ($userObj) {
             $reginfo['uid'] = $userObj['uid'];
@@ -638,7 +638,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $rendererArgs['approvalorder'] = $approvalOrder;
 
                 if (!$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved'])) {
-                    
+
                     $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                         'reginfo' => $reginfo,
                         'rendererArgs' => $rendererArgs,
@@ -805,7 +805,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 unset($userObj['verificationsent']);
             }
             $userObj = $this->cleanFieldsToAttributes($userObj);
-            
+
             if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
                 unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
             }
@@ -823,12 +823,12 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Set activated state as pending registration for now to prevent firing of update hooks after the insert until the
             // activated state is set properly further below.
             $userObj['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
-            
+
             // store user's attributes to a variable.
             // we will persist them to the database after the user record is created
             $attributes = $userObj['__ATTRIBUTES__'];
             unset($userObj['__ATTRIBUTES__']);
-            
+
             $user = new \UsersModule\Entity\User;
             $user->merge($userObj);
             $this->entityManager->persist($user);
@@ -838,7 +838,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             foreach ($attributes as $attr_key => $attr_value) {
                 $user->setAttribute($attr_key, $attr_value);
             }
-            
+
             // NOTE: See below for the firing of the item-create hook.
             $userObj = $user->toArray();
 
@@ -1074,7 +1074,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     protected function whereFromFilter(array $filter)
     {
         $where = array();
-        
+
         foreach ($filter as $field => $value) {
             if (!is_array($value)) {
                 $value = array(
@@ -1101,7 +1101,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $where[] = "u.{$field} {$value['operator']} {$dbValue}";
             }
         }
-        
+
         $where = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
 
         return $where;
@@ -1159,7 +1159,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
                 return false;
             }
-            
+
             $args['filter']['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
             $where = $this->whereFromFilter($args['filter']);
         } else {
@@ -1169,51 +1169,51 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (!isset($args['orderby'])) {
             $args['orderby'] = array('user_regdate' => 'DESC');
         }
-        
+
         if (!is_array($args['orderby'])) {
             $this->registerError(LogUtil::getErrorMsgArgs());
 
             return false;
         }
-        
+
         $orderBy = array();
         foreach ($args['orderby'] as $field => $value) {
             $value = strtoupper($value);
             $orderBy[] = 'u.' . $field . (!empty($value) ? " {$value}" : '');
         }
         $orderBy = !empty($orderBy) ? 'ORDER BY ' . implode(', ', $orderBy) : '';
-        
+
         $this->purgeExpired();
-        
+
         $dql = "SELECT u FROM UsersModule\Entity\User u $where $orderBy";
         $query = $this->entityManager->createQuery($dql);
-        
+
         if (isset($limitNumRows) && is_numeric($limitNumRows) && $limitNumRows > 0) {
             $query->setMaxResults($limitNumRows);
-            
+
             if (isset($limitOffset) && is_numeric($limitOffset) && $limitOffset > 0) {
                 $query->setFirstResult($limitOffset);
             }
         }
-        
+
         $reglist = $query->getResult();
-        
+
         foreach ($reglist as $key => $userObj) {
             $userObj = $userObj->toArray();
-            
+
             $attributes = array();
             foreach ($userObj['attributes'] as $attribute) {
                 $attributes[$attribute['name']] = $attribute['value'];
             }
-            
+
             $userObj['__ATTRIBUTES__'] = $attributes;
             unset($userObj['attributes']);
 
             $reglist[$key] = $userObj;
-                
+
             $reglist[$key] = UserUtil::postProcessGetRegistration($userObj);
         }
-       
+
         return $reglist;
     }
 
@@ -1265,7 +1265,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             $dql = "SELECT u FROM UsersModule\Entity\User u $where";
             $query = $this->entityManager->createQuery($dql);
             $users = $query->getResult();
-           
+
             $count = 0;
             if ($users) {
                 if (!is_array($isVerifiedFilter)) {
@@ -1274,17 +1274,17 @@ class RegistrationApi extends \Zikula_AbstractApi
                         'operand'   => $isVerifiedFilter,
                     );
                 }
-                
+
                 // TODO - might want to error if the operator is not =, != or <>, or if the operand is not a boolean
                 $isVerifiedValue = ($isVerifiedFilter['operator'] == '=') && (bool)$isVerifiedFilter['operand'];
-                
+
                 foreach ($users as $userRec) {
                     if ($userRec['__ATTRIBUTES__']['_Users_isVerified'] == (int)$isVerifiedValue) {
                         $count++;
                     }
                 }
             }
-            
+
             return $count;
         } else {
             $dql = "SELECT COUNT(u.uid) FROM UsersModule\Entity\User u $where";
@@ -1342,7 +1342,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             $user = $this->entityManager->find('UsersModule\Entity\User', $uid);
             $this->entityManager->remove($user);
             $this->entityManager->flush();
-            
+
             ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
                 'uid' => $uid,
                 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL,
@@ -1364,21 +1364,21 @@ class RegistrationApi extends \Zikula_AbstractApi
     protected function purgeExpired()
     {
         $regExpireDays = $this->getVar('reg_expiredays', 0);
-        
+
         if ($regExpireDays > 0) {
             // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
             $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$regExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-            
+
             $dql = "
             SELECT v
             FROM UsersModule\Entity\UserVerification v
             WHERE v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL . "
-              AND v.created_dt IS NOT NULL 
-              AND v.created_dt <> '0000-00-00 00:00:00' 
+              AND v.created_dt IS NOT NULL
+              AND v.created_dt <> '0000-00-00 00:00:00'
               AND v.created_dt < '{$staleRecordUTCStr}'";
-            
+
             $query = $this->entityManager->createQuery($dql);
             $staleVerifyChgRecs = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
@@ -1391,7 +1391,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                     $dql = "DELETE FROM UsersModule\Entity\User u WHERE u.uid = " . $verifyChg['uid'];
                     $query = $this->entityManager->createQuery($dql);
                     $query->getResult();
-                    
+
                     // delete verification record
                     ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $verifyChg['uid'], 'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL));
 
@@ -1561,7 +1561,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             return false;
         }
-        
+
         $verifyChg = $this->entityManager->getRepository('UsersModule\Entity\UserVerification')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
         return $verifyChg;
     }
@@ -1610,7 +1610,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
 
         UserUtil::setVar('_Users_isVerified', 1, $reginfo['uid']);
-        
+
         ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array(
             'uid' => $reginfo['uid'],
             'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,

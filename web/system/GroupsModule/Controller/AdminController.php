@@ -476,7 +476,7 @@ class AdminController extends \Zikula_AbstractController
                 $field = '';
                 $expression = '';
                 break;
-            
+
             default:
                 $field = 'uname';
                 $expression = $letter . '%';

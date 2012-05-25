@@ -31,10 +31,10 @@ class AdminformController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-        
+
         // get data from post
         $data = $this->request->request->get('category', null);
-        
+
         if (!isset($data['is_locked'])) {
             $data['is_locked'] = 0;
         }
@@ -70,40 +70,40 @@ class AdminformController extends \Zikula_AbstractController
             $args['dr'] = (int)$data['id'];
             return $this->redirect(ModUtil::url('Categories', 'user', 'edit', $args));
         }
-        
+
         $valid = \CategoriesModule\GenericUtil::validateCategoryData($data);
         if (!$valid) {
             return $this->redirect(ModUtil::url('Categories', 'admin', 'edit', array('mode' => 'edit', 'cid' => (int)$data['id'])));
         }
-        
+
         // process name
         $data['name'] = \CategoriesModule\GenericUtil::processCategoryName($data['name']);
-        
+
         // process parent
         $data['parent'] = \CategoriesModule\GenericUtil::processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
-        
+
         // process display names
         $data['display_name'] = \CategoriesModule\GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
         $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $data['id']);
-        
+
         $prevCategoryName = $category['name'];
-        
+
         // save category
         $category->merge($data);
         $this->entityManager->flush();
-        
+
         // process path and ipath
         $category['path'] = \CategoriesModule\GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
         $category['ipath'] = \CategoriesModule\GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
-        
+
         // process category attributes
         $attrib_names = $this->request->request->get('attribute_name', array());
         $attrib_values = $this->request->request->get('attribute_value', array());
         \CategoriesModule\GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
-        
+
         $this->entityManager->flush();
 
         // since a name change will change the object path, we must rebuild it here
@@ -126,40 +126,40 @@ class AdminformController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
-        
+
         // get data from post
         $data = $this->request->request->get('category', null);
-        
+
         $valid = \CategoriesModule\GenericUtil::validateCategoryData($data);
         if (!$valid) {
             return $this->redirect(ModUtil::url('Categories', 'admin', 'newcat'));
         }
-        
+
         // process name
         $data['name'] = \CategoriesModule\GenericUtil::processCategoryName($data['name']);
-        
+
         // process parent
         $data['parent'] = \CategoriesModule\GenericUtil::processCategoryParent($data['parent_id']);
         unset($data['parent_id']);
-        
+
         // process display names
         $data['display_name'] = \CategoriesModule\GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
-        
+
         // save category
         $category = new \Zikula\Core\Doctrine\Entity\Category;
         $category->merge($data);
         $this->entityManager->persist($category);
         $this->entityManager->flush();
-        
+
         // process path and ipath
         $category['path'] = \CategoriesModule\GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
         $category['ipath'] = \CategoriesModule\GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
-        
+
         // process category attributes
         $attrib_names = $this->request->request->get('attribute_name', array());
         $attrib_values = $this->request->request->get('attribute_value', array());
         \CategoriesModule\GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
-        
+
         $this->entityManager->flush();
 
         $msg = __f('Done! Inserted the %s category.', $category['name']);
@@ -183,7 +183,7 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         $cid = $this->request->request->get('cid', null);
-        
+
         $cat = CategoryUtil::getCategoryByID($cid);
 
         // delete subdirectories
@@ -220,9 +220,9 @@ class AdminformController extends \Zikula_AbstractController
 
         $cid = $this->request->request->get('cid', null);
         $cat = CategoryUtil::getCategoryByID($cid);
-        
+
         $data = $this->request->request->get('category', null);
-        
+
         CategoryUtil::copyCategoriesByPath($cat['ipath'], $data['parent_id']);
 
         $msg = __f('Done! Copied the %s category.', $cat['name']);
@@ -247,9 +247,9 @@ class AdminformController extends \Zikula_AbstractController
 
         $cid = $this->request->request->get('cid', null);
         $cat = CategoryUtil::getCategoryByID($cid);
-        
+
         $data = $this->request->request->get('category', null);
-        
+
         CategoryUtil::moveCategoriesByPath($cat['ipath'], $data['parent_id']);
 
         $msg = __f('Done! Moved the %s category.', $cat['name']);
@@ -293,17 +293,17 @@ class AdminformController extends \Zikula_AbstractController
         }
 
         $args = array();
-        
+
         if (!$this->request->request->get('category_submit', null)) {
             // got here through selector auto-submit
             $data = $this->request->request->get('category_registry', null);
             $args['category_registry'] = $data;
             return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
-        
+
         // get data from post
         $data = $this->request->request->get('category_registry', null);
-        
+
         // do some validation
         if (empty($data['modname'])) {
             $args['category_registry'] = $data;
@@ -325,7 +325,7 @@ class AdminformController extends \Zikula_AbstractController
             LogUtil::registerError(__('Error! You did not select a category.'));
             return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
-        
+
         if (isset($data['id']) && (int)$data['id'] > 0) {
             // update existing registry
             $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $data['id']);

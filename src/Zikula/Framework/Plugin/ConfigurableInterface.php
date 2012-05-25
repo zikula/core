@@ -29,5 +29,5 @@ interface ConfigurableInterface
      *
      * @return \Zikula\Framework\Controller\AbstractPlugin
      */
-    function getConfigurationController();
+    public function getConfigurationController();
 }

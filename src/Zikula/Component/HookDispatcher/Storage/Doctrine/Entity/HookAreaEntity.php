@@ -60,7 +60,7 @@ class HookAreaEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -82,7 +82,7 @@ class HookAreaEntity
     /**
      * Get owner
      *
-     * @return string 
+     * @return string
      */
     public function getOwner()
     {
@@ -104,7 +104,7 @@ class HookAreaEntity
     /**
      * Get subowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubowner()
     {
@@ -126,7 +126,7 @@ class HookAreaEntity
     /**
      * Get areatype
      *
-     * @return string 
+     * @return string
      */
     public function getAreatype()
     {
@@ -148,7 +148,7 @@ class HookAreaEntity
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -170,7 +170,7 @@ class HookAreaEntity
     /**
      * Get areaname
      *
-     * @return string 
+     * @return string
      */
     public function getAreaname()
     {

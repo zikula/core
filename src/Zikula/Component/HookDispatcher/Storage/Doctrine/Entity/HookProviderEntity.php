@@ -81,7 +81,7 @@ class HookProviderEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -103,7 +103,7 @@ class HookProviderEntity
     /**
      * Get owner
      *
-     * @return string 
+     * @return string
      */
     public function getOwner()
     {
@@ -125,7 +125,7 @@ class HookProviderEntity
     /**
      * Get subowner
      *
-     * @return string 
+     * @return string
      */
     public function getSubowner()
     {
@@ -147,7 +147,7 @@ class HookProviderEntity
     /**
      * Get pareaid
      *
-     * @return integer 
+     * @return integer
      */
     public function getPareaid()
     {
@@ -169,7 +169,7 @@ class HookProviderEntity
     /**
      * Get hooktype
      *
-     * @return string 
+     * @return string
      */
     public function getHooktype()
     {
@@ -191,7 +191,7 @@ class HookProviderEntity
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -213,7 +213,7 @@ class HookProviderEntity
     /**
      * Get classname
      *
-     * @return string 
+     * @return string
      */
     public function getClassname()
     {
@@ -235,7 +235,7 @@ class HookProviderEntity
     /**
      * Get method
      *
-     * @return string 
+     * @return string
      */
     public function getMethod()
     {
@@ -257,7 +257,7 @@ class HookProviderEntity
     /**
      * Get serviceid
      *
-     * @return string 
+     * @return string
      */
     public function getServiceid()
     {

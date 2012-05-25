@@ -46,7 +46,7 @@ class SearchStatEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,7 +68,7 @@ class SearchStatEntity
     /**
      * Get search
      *
-     * @return string 
+     * @return string
      */
     public function getSearch()
     {
@@ -90,7 +90,7 @@ class SearchStatEntity
     /**
      * Get scount
      *
-     * @return integer 
+     * @return integer
      */
     public function getScount()
     {
@@ -112,7 +112,7 @@ class SearchStatEntity
     /**
      * Get date
      *
-     * @return date 
+     * @return date
      */
     public function getDate()
     {

@@ -190,7 +190,7 @@ class Zikula_Workflow_Util
         //crete the dql query.
         $dql = "DELETE  Zikula\Core\Doctrine\Entity\Workflows  w WHERE w.module = '$module'";
         $query = $em->createQuery($dql);
-        $result = $query->execute();        
+        $result = $query->execute();
         return $result;
     }
 
@@ -210,7 +210,7 @@ class Zikula_Workflow_Util
         //crete the dql query.
         $dql = "DELETE  Zikula\Core\Doctrine\Entity\Workflows i WHERE i.objIdcolumn = '$idcolumn'";
         $query = $em->createQuery($dql);
-        $result = $query->execute();        
+        $result = $query->execute();
         return $result;
     }
 
@@ -355,7 +355,7 @@ class Zikula_Workflow_Util
 
         if (!empty($obj[$idcolumn])) {
             //This is a static function, so we have to user ServiceUtil to get the manager
-            //prep the date for the table 
+            //prep the date for the table
             $module = DataUtil::formatForStore($module);
             $obj_table = DataUtil::formatForStore($dbTable);
             $obj_idcolumn =  DataUtil::formatForStore($idcolumn);

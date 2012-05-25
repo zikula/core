@@ -38,7 +38,7 @@ class Installer extends \Zikula_AbstractInstaller
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
             'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
-        
+
         try {
             \DoctrineHelper::createSchema($this->entityManager, $tables);
         } catch (Exception $e) {
@@ -70,8 +70,7 @@ class Installer extends \Zikula_AbstractInstaller
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
-        switch ($oldversion)
-        {
+        switch ($oldversion) {
             case '3.7.10':
                 // future upgrade routines
 
@@ -106,12 +105,12 @@ class Installer extends \Zikula_AbstractInstaller
         $version = new Version();
         $meta = $version->toArray();
         $meta['state'] = \ModUtil::STATE_ACTIVE;
-        
+
         unset($meta['dependencies']);
-        
+
         $item = new \Zikula\Core\Doctrine\Entity\Extension();
         $item->merge($meta);
-        
+
         $this->entityManager->persist($item);
         $this->entityManager->flush();
     }

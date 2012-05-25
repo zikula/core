@@ -15,7 +15,7 @@ class HiddenRow implements RendererInterface
     {
         return 'hidden_row';
     }
-    
+
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
         return $renderer->renderWidget(array('form' => $form));

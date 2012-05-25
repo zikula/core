@@ -108,7 +108,7 @@ class SearchApi extends \Zikula_AbstractApi
             if (is_array($uids) && !empty($uids)) {
                 $tmp .= " OR u.uid IN (" . implode(', ', $uids) . ')';
             }
-            
+
             $where[] = "{$tmp} ";
         } else {
             $where[] = $unameClause;
@@ -119,7 +119,7 @@ class SearchApi extends \Zikula_AbstractApi
         $dql = "SELECT u FROM UsersModule\Entity\User u $where";
         $query = $this->entityManager->createQuery($dql);
         $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        
+
         $users = array();
         foreach ($items as $item) {
             $users[$item['uid']] = $item;

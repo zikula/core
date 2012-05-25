@@ -72,7 +72,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
     if (!$catCache) {
         $catCache = array();
     }
-    
+
     $cacheKey = "$category[id]||$recurse|$relative|$includeRoot|$includeLeaf|$all|||$attributes|$sortField";
     if (!isset($catCache[$cacheKey])) {
         $catCache[$cacheKey] = CategoryUtil::getSubCategoriesForCategory ($category, $recurse, $relative, $includeRoot,
