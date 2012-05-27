@@ -75,7 +75,7 @@ function smarty_function_icon($params, Zikula_View $view)
 
     $iconpath = 'images/icons/';
 
-    public static $icons;
+    static $icons;
     // Include icon config file
     if (!isset($icons) && file_exists("$iconpath/config.php")) {
         include_once "$iconpath/config.php";

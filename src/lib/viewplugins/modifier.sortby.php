@@ -27,7 +27,7 @@
  */
 function array_sort_by_fields(&$data, $sortby)
 {
-    public static $sort_funcs = array();
+    static $sort_funcs = array();
 
     if (empty($sort_funcs[$sortby])) {
         $code = "\$c=0;";
@@ -51,6 +51,7 @@ function array_sort_by_fields(&$data, $sortby)
     } else {
         $sort_func = $sort_funcs[$sortby];
     }
+    
     uasort($data, $sort_func);
 }
 
