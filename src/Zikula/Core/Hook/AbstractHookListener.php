@@ -40,7 +40,7 @@ abstract class AbstractHookListener implements TranslatableInterface
     /**
      * Display hook response object.
      *
-     * @var Response\DisplayHook
+     * @var Response\DisplayHookResponse
      */
     protected $display;
 
