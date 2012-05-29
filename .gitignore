@@ -1,4 +1,3 @@
-# /
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*
@@ -10,10 +9,9 @@ composer.lock
 composer.phar
 
 web/bundles/
-web/config/personal_config.php
-web/config/multisites_config.php
 web/modules/
 web/modules/!\.htaccess
+web/modules/!\ExampleModule
 web/userdata/
 web/userdata/!\.htaccess
 
