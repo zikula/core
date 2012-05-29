@@ -47,7 +47,6 @@ class SystemPlugin_DoctrineExtensions_Plugin extends AbstractPlugin implements A
         $autoloader = new UniversalClassLoader();
         $autoloader->register();
         $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
-        $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib');
 
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', dirname(__DIR__) . '/../vendor/gedmo/doctrine-extensions/lib');
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
