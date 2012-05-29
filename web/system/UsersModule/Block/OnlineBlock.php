@@ -20,7 +20,7 @@ use SecurityUtil, BlockUtil, ModUtil, Zikula_View, UserUtil, DataUtil, System;
 /**
  * A block that shows who is currently using the system.
  */
-class OnlineBlock extends \Zikula_Controller_AbstractBlock
+class OnlineBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * Initialise the block.

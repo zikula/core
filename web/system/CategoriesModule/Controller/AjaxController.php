@@ -21,7 +21,7 @@ use Zikula\Framework\Response\Ajax\BadDataResponse;
 /**
  * Categories_Controller_Ajax.
  */
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     /**
      * Resequence categories

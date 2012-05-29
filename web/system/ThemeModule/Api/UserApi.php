@@ -16,7 +16,7 @@ namespace ThemeModule\Api;
 
 use LogUtil, ModUtil, ThemeUtil, FileUtil, DataUtil, CacheUtil, SecurityUtil, System, UserUtil, ZLanguage;
 
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get all settings for a theme

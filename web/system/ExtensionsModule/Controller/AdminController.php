@@ -20,7 +20,7 @@ use ExtensionsModule\Util as ExtensionsUtil;
 /**
  * Extensions_Controller_Admin class.
  */
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

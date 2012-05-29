@@ -23,7 +23,7 @@ use GroupsModule\Helper\CommonHelper;
 /**
  * Groups_Api_Admin class.
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
 
     /**

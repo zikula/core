@@ -20,7 +20,7 @@ use UsersModule\Constants as UsersConstant;
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get all users (for which the current user has permission to read).

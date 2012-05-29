@@ -18,7 +18,7 @@ namespace ThemeModule\Controller;
 use Zikula_View, SecurityUtil, ModUtil, LogUtil, CacheUtil, DataUtil, System, ThemeUtil, ZLanguage;
 use FormUtil, BlockUtil, Zikula_View_Theme;
 
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

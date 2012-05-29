@@ -20,7 +20,7 @@ use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
 /**
  * Blocks_Controller_Admin class.
  */
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.
@@ -254,7 +254,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Block-specific
         $blockoutput = '';
-        if ($blockObj instanceof \Zikula_Controller_AbstractBlock) {
+        if ($blockObj instanceof \Zikula\Framework\Controller\AbstractBlock) {
             $blockoutput = call_user_func(array($blockObj, 'modify'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);
@@ -378,7 +378,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Do block-specific update
-        if ($blockObj instanceof \Zikula_Controller_AbstractBlock) {
+        if ($blockObj instanceof \Zikula\Framework\Controller\AbstractBlock) {
             $blockinfo = call_user_func(array($blockObj, 'update'), $blockinfo);
         } else {
             $usname = preg_replace('/ /', '_', $modinfo['name']);

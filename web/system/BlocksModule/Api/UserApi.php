@@ -19,7 +19,7 @@ use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, Categ
 /**
  * Blocks_Api_User class.
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get all blocks.

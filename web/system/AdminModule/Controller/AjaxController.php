@@ -19,13 +19,13 @@ use Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Response\Ajax\AjaxResponse;
 use Zikula\Framework\Response\Ajax\BadDataResponse;
 
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     /**
      * Change the category a module belongs to by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string moduleid on sucess.
+     * @return AjaxResponse Output to the calling ajax request is returned.
+     *                      response is a string moduleid on sucess.
      */
     public function changeModuleCategoryAction()
     {
@@ -66,9 +66,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Add a new admin category by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string the new cid on sucess.
-     *                          url is a formatted url to the new category on success.
+     * @return AjaxResponse Output to the calling ajax request is returned.
+     *                      response is a string the new cid on sucess.
+     *                     url is a formatted url to the new category on success.
      */
     public function addCategoryAction()
     {
@@ -115,8 +115,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete an admin category by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string cid on success.
+     * @return AjaxResponse Output to the calling ajax request is returned.
+     *                      response is a string cid on success.
      */
     public function deleteCategoryAction()
     {
@@ -153,7 +153,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Edit an admin category by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
+     * @return AjaxResponse Output to the calling ajax request is returned.
      */
     public function editCategoryAction()
     {
@@ -217,7 +217,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Make a category the initially selected one (by ajax).
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
+     * @return AjaxResponse Output to the calling ajax request is returned.
      *                          response is a string message on success.
      */
     public function defaultCategoryAction()

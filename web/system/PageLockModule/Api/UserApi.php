@@ -22,7 +22,7 @@ use UserUtil, PageUtil, Zikula_View, ModUtil, ThemeUtil, DBUtil, DataUtil, DateU
  */
 define('PageLockLifetime', 30);
 
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     public function pageLock($args)
     {

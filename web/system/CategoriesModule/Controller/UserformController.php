@@ -17,7 +17,7 @@ namespace CategoriesModule\Controller;
 use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil;
 use StringUtil, System, Zikula_View;
 
-class UserformController extends \Zikula_AbstractController
+class UserformController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * delete category

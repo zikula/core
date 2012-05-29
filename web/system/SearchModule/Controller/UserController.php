@@ -16,7 +16,7 @@ namespace SearchModule\Controller;
 
 use ModUtil, SecurityUtil, LogUtil, SessionUtil, UserUtil;
 
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
 
     /**

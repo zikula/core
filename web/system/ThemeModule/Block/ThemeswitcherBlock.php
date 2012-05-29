@@ -16,7 +16,7 @@ namespace ThemeModule\Block;
 
 use Zikula_View, SecurityUtil, ModUtil, LogUtil, BlockUtil, Zikula_View_Theme, System, ThemeUtil, UserUtil, DataUtil;
 
-class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
+class ThemeswitcherBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * initialise block

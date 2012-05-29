@@ -19,7 +19,7 @@ use SecurityUtil, BlockUtil, ModUtil;
 /**
  * Search_Block_Search class.
  */
-class SearchBlock extends \Zikula_Controller_AbstractBlock
+class SearchBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * initialise block

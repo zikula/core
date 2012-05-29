@@ -17,7 +17,7 @@ namespace BlocksModule\Block;
 use UserUtil, ModUtil, SecurityUtil, LogUtil, DataUtil, System, ZLanguage, CategoryRegistryUtil, CategoryUtil;
 use PageUtil, ThemeUtil, BlockUtil;
 
-class FincludeBlock extends \Zikula_Controller_AbstractBlock
+class FincludeBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * initialise block

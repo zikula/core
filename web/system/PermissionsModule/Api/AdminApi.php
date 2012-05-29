@@ -19,7 +19,7 @@ use SecurityUtil, LogUtil, ModUtil, DataUtil;
 /**
  * Permissions_Api_Admin class.
  */
-class Permissions_Api_AdminApi extends \Zikula_AbstractApi
+class Permissions_Api_AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
 
     /**

@@ -24,7 +24,7 @@ use BlocksModule\Entity\BlockPlacement;
 /**
  * Blocks_Controller_Ajax class.
  */
-class Blocks_Controller_AjaxController extends \Zikula_Controller_AbstractAjax
+class Blocks_Controller_AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     /**
      * Changeblockorder.

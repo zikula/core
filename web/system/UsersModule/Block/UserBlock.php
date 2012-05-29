@@ -20,7 +20,7 @@ use SecurityUtil, BlockUtil, UserUtil;
 /**
  * A user-customizable block.
  */
-class UserBlock extends \Zikula_Controller_AbstractBlock
+class UserBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * Initialise block.

@@ -21,7 +21,7 @@ use UsersModule\Constants as UsersConstant;
 /**
  * The search for items in the Users module.
  */
-class SearchApi extends \Zikula_AbstractApi
+class SearchApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Return search plugin info.

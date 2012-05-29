@@ -21,7 +21,7 @@ use UserUtil, ModUtil, ZLanguage, System;
 /**
  * The Account API provides links for modules on the "user account page"; this class provides them for the Users module.
  */
-class AccountApi extends \Zikula_AbstractApi
+class AccountApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Return an array of items to show in the the user's account panel.

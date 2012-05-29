@@ -16,7 +16,7 @@ namespace SecurityCenterModule\Controller;
 
 use SecurityUtil, LogUtil, ModUtil;
 
-class AdminformController extends \Zikula_AbstractController
+class AdminformController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Initialise.

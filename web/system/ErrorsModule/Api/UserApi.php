@@ -20,7 +20,7 @@ use Zikula\Core\Core;
 /**
  * Errors_Api_User class.
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * This function e-mails the site administrator with an error.

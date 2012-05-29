@@ -23,7 +23,7 @@ use GroupsModule\Entity\GroupMembership;
 /**
  * Groups_Api_User class.
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get all group items.

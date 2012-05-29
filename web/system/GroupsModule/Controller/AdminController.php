@@ -17,7 +17,7 @@ namespace GroupsModule\Controller;
 use SecurityUtil, LogUtil, ModUtil, Zikula_View, UserUtil;
 use GroupsModule\Helper\CommonHelper;
 
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

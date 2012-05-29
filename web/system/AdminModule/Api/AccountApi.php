@@ -16,7 +16,7 @@ namespace AdminModule\Api;
 
 use ModUtil;
 
-class Api extends \Zikula_AbstractApi
+class Api extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.

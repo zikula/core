@@ -16,7 +16,7 @@ namespace ThemeModule\Controller;
 
 use Zikula\Core\Event\GenericEvent;
 
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     public function dispatchAction()
     {

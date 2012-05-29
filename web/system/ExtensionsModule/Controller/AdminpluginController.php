@@ -23,7 +23,7 @@ use Zikula_Plugin_ConfigurableInterface;
 /**
  * Extensions_Plugin controller.
  */
-class AdminpluginController extends \Zikula_AbstractController
+class AdminpluginController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Plugin instance.

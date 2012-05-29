@@ -19,7 +19,7 @@ use PageUtil, ThemeUtil, BlockUtil;
 use BlocksModule\MenutreeTree;
 use BlocksModule\MenutreeUtil;
 
-class MenutreeBlock extends \Zikula_Controller_AbstractBlock
+class MenutreeBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * initialise block

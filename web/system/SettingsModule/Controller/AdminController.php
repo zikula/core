@@ -16,7 +16,7 @@ namespace SettingsModule\Controller;
 
 use ModUtil, Zikula_View, LogUtil, SecurityUtil, System, DateUtil;
 
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * entry point for the module

@@ -27,7 +27,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * The system-level and database-level functions for user-initiated actions related to new account registrations.
  */
-class RegistrationApi extends \Zikula_AbstractApi
+class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Determines if the user currently logged in has administrative access for the Users module.

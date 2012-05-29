@@ -29,7 +29,7 @@ use Zikula\Core\Hook\ValidationHook;
 /**
  * Administrator-initiated actions for the Users module.
  */
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

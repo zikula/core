@@ -17,7 +17,7 @@ namespace AdminModule\Api;
 use AdminModule\Entity\AdminCategory;
 use AdminModule\Entity\AdminModule;
 
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * create a admin category

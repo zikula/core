@@ -16,7 +16,7 @@ namespace AdminModule\Controller;
 
 use System;
 
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

@@ -26,7 +26,7 @@ use Zikula\Framework\Exception\FatalException;
 /**
  * Access to actions initiated through AJAX for the Users module.
  */
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     /**
      * Performs a user search based on the user name fragment entered so far.

@@ -17,7 +17,7 @@ namespace MailerModule\Api;
 use SecurityUtil, ModUtil, System, LogUtil;
 use Zikula\Core\Event\GenericEvent;
 
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * API function to send e-mail message

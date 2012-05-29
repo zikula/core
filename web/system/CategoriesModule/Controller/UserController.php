@@ -18,7 +18,7 @@ use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil;
 use StringUtil, System, Zikula_View;
 use CategoriesModule\Installer;
 
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * main user function

@@ -19,7 +19,7 @@ use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil, ZLanguage, FormUtil,
 /**
  * Controller.
  */
-class AdminformController extends \Zikula_AbstractController
+class AdminformController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * update category

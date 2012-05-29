@@ -18,7 +18,7 @@ use Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Response\Ajax\AjaxResponse;
 use HookUtil, ModUtil, SecurityUtil;
 
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     /**
      * togglesubscriberareastatus

@@ -16,14 +16,13 @@ namespace UsersModule\Api;
 
 use UsersModule\Constants as UsersConstant;
 use \Zikula\Framework\Exception\FatalException;
-use Zikula_Api_AbstractAuthentication;
 use UserUtil, ModUtil, LogUtil;
 use UsersModule\Helper\AuthenticationMethodHelper;
 
 /**
  * The user authentication services for the log-in process through the core Users table.
  */
-class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
+class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
 {
     /**
      * The list of valid authentication methods that this module supports.

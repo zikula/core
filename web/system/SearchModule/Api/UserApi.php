@@ -19,7 +19,7 @@ use LogUtil, ModUtil, UserUtil, DataUtil, SecurityUtil, System, FormUtil, ZLangu
 /**
  * Search_Api_User class.
  */
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
 
     /**

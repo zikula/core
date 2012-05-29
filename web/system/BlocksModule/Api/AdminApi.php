@@ -22,7 +22,7 @@ use BlocksModule\Entity\BlockPlacement;
 /**
  * Blocks_Api_Admin class.
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Update attributes of a block.

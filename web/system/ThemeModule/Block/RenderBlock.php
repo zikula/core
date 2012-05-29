@@ -16,7 +16,7 @@ namespace ThemeModule\Block;
 
 use Zikula_View, SecurityUtil, ModUtil, LogUtil, BlockUtil, Zikula_View_Theme;
 
-class RenderBlock extends \Zikula_Controller_AbstractBlock
+class RenderBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * Module to render.

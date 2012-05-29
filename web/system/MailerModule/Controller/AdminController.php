@@ -16,7 +16,7 @@ namespace MailerModule\Controller;
 
 use Zikula_View, SecurityUtil, ModUtil, DataUtil, ZLanguage, LogUtil;
 
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

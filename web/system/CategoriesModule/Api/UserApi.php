@@ -16,7 +16,7 @@ namespace CategoriesModule\Api;
 
 use SecurityUtil, ModUtil, LogUtil, CategoryUtil, UserUtil;
 
-class UserApi extends \Zikula_AbstractApi
+class UserApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * get the roor category for a user

@@ -19,7 +19,7 @@ use Zikula\Framework\Response\Ajax\AjaxResponse;
 use Zikula\Framework\Exception\FatalException;
 use Zikula\Framework\Response\Ajax\FatalResponse;
 
-class AjaxController extends \Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 {
     /**
      * Updates a permission rule in the database

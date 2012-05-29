@@ -17,7 +17,7 @@ namespace ThemeModule\Api;
 use System, ModUtil, SecurityUtil, LogUtil, DataUtil, ThemeUtil, CacheUtil, FileUtil;
 use ThemeModule\Util;
 
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Regenerate themes list.

@@ -17,7 +17,7 @@ namespace ErrorsModule\Controller;
 use System, Zikula_Session, Zikula_View, SecurityUtil, PageUtil;
 use Zikula\Core\Core;
 
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Display an error

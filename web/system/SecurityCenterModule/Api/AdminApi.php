@@ -16,7 +16,7 @@ namespace SecurityCenterModule\Api;
 
 use SecurityUtil, ModUtil, System;
 
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get all intrusions.

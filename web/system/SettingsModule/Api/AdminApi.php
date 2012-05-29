@@ -16,7 +16,7 @@ namespace SettingsModule\Api;
 
 use ModUtil, SecurityUtil, ZLanguage;
 
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get available admin panel links.

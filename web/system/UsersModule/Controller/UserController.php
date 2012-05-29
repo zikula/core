@@ -34,7 +34,7 @@ use Zikula_Exception_Fatal;
  * exception actually happened. (The exception thrown in the superclass is recorded
  * as the file and line were the exception occurred.
  */
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.
@@ -219,7 +219,7 @@ class UserController extends \Zikula_AbstractController
                     // Get a list of authentication methods available for registration
                     // NOTE: The Users module methods should NOT appear on this list!
                     $authenticationMethodList = new AuthenticationMethodListHelper($this, array(),
-                        \Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
+                        \Zikula\Framework\Api\AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
 
                     if ($authenticationMethodList->countEnabledForRegistration() <= 0) {
                         // There are no (non-Users module) methods available for registration, so just default to Users.

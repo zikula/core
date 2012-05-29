@@ -22,7 +22,7 @@ use Zikula_Collection_Container;
 /**
  * Pending Content block
  */
-class PendingContentBlock extends \Zikula_Controller_AbstractBlock
+class PendingContentBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * Initialise block.

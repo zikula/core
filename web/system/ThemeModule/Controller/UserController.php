@@ -16,7 +16,7 @@ namespace ThemeModule\Controller;
 
 use System, SecurityUtil, LogUtil, ThemeUtil, ModUtil, UserUtil, DataUtil, Zikula_View;
 
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * display theme changing user interface

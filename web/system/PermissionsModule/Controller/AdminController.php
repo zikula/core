@@ -19,7 +19,7 @@ use SecurityUtil, LogUtil, ModUtil, DataUtil, Zikula_View, UserUtil;
 /**
  * Permissions_Controller_Admin class.
  */
-class AdminController extends \Zikula_AbstractController
+class AdminController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Post initialise.

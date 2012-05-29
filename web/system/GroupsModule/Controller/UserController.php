@@ -17,7 +17,7 @@ namespace GroupsModule\Controller;
 use ModUtil, LogUtil, SecurityUtil, UserUtil, Zikula_View, DataUtil;
 use GroupsModule\Helper\CommonHelper;
 
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * Groups Module main user function

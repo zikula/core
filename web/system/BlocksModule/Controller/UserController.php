@@ -22,7 +22,7 @@ use BlocksModule\Entity\BlockPlacement;
 /**
  * Blocks_Controller_User class.
  */
-class UserController extends \Zikula_AbstractController
+class UserController extends \Zikula\Framework\Controller\AbstractController
 {
     /**
      * The main blocks user function.

@@ -14,7 +14,7 @@
 
 namespace AdminModule\Block;
 
-class AdminnavBlock extends \Zikula_Controller_AbstractBlock
+class AdminnavBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
     /**
      * Post initialise.

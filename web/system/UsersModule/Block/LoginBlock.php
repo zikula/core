@@ -26,7 +26,7 @@ use UsersModule\Helper\AuthenticationMethodListHelper;
  *          set the blocktitle and method descriptions for different languages. See extmenu
  *          for an example.
  */
-class LoginBlock extends \Zikula_Controller_AbstractBlock
+class LoginBlock extends \Zikula\Framework\Controller\AbstractBlock
 {
 
     /**

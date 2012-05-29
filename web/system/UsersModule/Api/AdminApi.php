@@ -22,7 +22,7 @@ use SecurityUtil, ModUtil, System, UserUtil, DataUtil, Zikula_Exception_Forbidde
 /**
  * The administrative system-level and database-level functions for the Users module.
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Find users.

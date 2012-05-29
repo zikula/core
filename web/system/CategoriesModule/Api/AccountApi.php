@@ -16,7 +16,7 @@ namespace CategoriesModule\Api;
 
 use SecurityUtil, System, ModUtil;
 
-class AccountApi extends \Zikula_AbstractApi
+class AccountApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.

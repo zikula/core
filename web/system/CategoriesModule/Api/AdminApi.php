@@ -19,7 +19,7 @@ use SecurityUtil, ModUtil;
 /**
  * Categories_Api_Admin class.
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Get available admin panel links.

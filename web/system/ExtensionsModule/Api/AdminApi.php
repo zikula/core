@@ -23,7 +23,7 @@ use ExtensionsModule\Util;
 /**
  * Administrative API functions for the Extensions module.
  */
-class AdminApi extends \Zikula_AbstractApi
+class AdminApi extends \Zikula\Framework\Api\AbstractApi
 {
     /**
      * Update module information.
