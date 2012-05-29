@@ -69,7 +69,7 @@ function smarty_function_calendarinput($params, Zikula_View $view)
     // start of old pncalendarinit
     // pagevars make an extra pncalendarinit obsolete, they take care about the fact
     // that the styles/jsvascript do not get loaded multiple times
-    public static $firstTime = true;
+    static $firstTime = true;
 
     if ($firstTime) {
         $lang = ZLanguage::transformFS(ZLanguage::getLanguageCode());
