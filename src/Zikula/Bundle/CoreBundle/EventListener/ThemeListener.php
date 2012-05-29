@@ -27,11 +27,19 @@ class ThemeListener implements EventSubscriberInterface
         return; // disabled theming for the time being while it gets refactored.
         if ($event->getRequestType() == HttpKernelInterface::MASTER_REQUEST) {
             $response = $event->getResponse();
-            $request = $event->getRequest();
 
             if ($request->isXmlHttpRequest()) {
                 return;
             }
+
+            if ($response instanceof RedirectResponse ||
+               $response instanceof PlainResponse ||
+                $response instanceof AbstractBaseResponse) {
+                // dont theme redirects, plain responses or Ajax responses
+                return;
+            }
+
+            $request = $event->getRequest();
 
 //            if (!$request->isXmlHttpRequest()
 //                && strpos($response->getContent(), '</body>') === false
