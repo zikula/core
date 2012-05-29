@@ -11,7 +11,7 @@ use Zikula\Core\Event\GenericEvent;
 /**
  * Symfony2 FormView Renderer.
  *
- * Code of class Symfony\Bridge\Twig\Extension\FormExtension converted to zikula.
+ * Code of class \Symfony\Bridge\Twig\Extension\FormExtension converted to zikula.
  */
 class FormRenderer
 {
@@ -57,7 +57,7 @@ class FormRenderer
         return $this->render($params['form'], 'errors');
     }
 
-    public function renderFormTag($params, $content, Zikula_View $view)
+    public function renderFormTag($params, $content, \Zikula_View $view)
     {
         if($content) {
             if(isset($params['attr']['class'])) {
@@ -217,8 +217,10 @@ class FormRenderer
 
     /**
      * Returns a renderer by name
-     * @param staring $name name of a renderer, e.g. field_label
-     * @return SystemPlugin_Symfony2Forms_RendererInterface
+     *
+     * @param string $name name of a renderer, e.g. field_label
+     *
+     * @return RendererInterface
      */
     public function getRender($name)
     {

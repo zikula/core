@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Forms\Renderer;
+use Zikula\Core\Form\Renderer;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
@@ -38,7 +38,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     {
         return;
         // register symfony validation annorations
-        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/src');
+        \Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/src');
 
         // register validator service
         $fileLocator = new FileLocator(array(__DIR__ . '/Resources/config/validator.xml'));
@@ -46,18 +46,18 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $xmlFileLoader->load(__DIR__ . '/Resources/config/validator.xml');
 
         // setup symfony forms
-        $registry = new \Zikula\Core\Forms\DoctrineRegistryImpl();
-        $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \Zikula\Core\Forms\ZikulaCsrfProvider());
+        $registry = new \Zikula\Core\Form\DoctrineRegistryImpl();
+        $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \Zikula\Core\Form\ZikulaCsrfProvider());
         $core = new \Symfony\Component\Form\Extension\Core\CoreExtension();
         $validator = new \Symfony\Component\Form\Extension\Validator\ValidatorExtension($this->container->get("validator"));
-        $zk = new \Zikula\Core\Forms\ZikulaExtension();
+        $zk = new \Zikula\Core\Form\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
 
         $this->container->set('symfony.formfactory', $formFactory);
 
 
-        $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->dispatcher);
+        $formRenderer = new \Zikula\Core\Form\FormRenderer($this->dispatcher);
         $this->container->set('symfony.formrenderer', $formRenderer);
     }
 
