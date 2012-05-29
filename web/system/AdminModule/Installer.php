@@ -17,7 +17,7 @@ namespace AdminModule;
 use DoctrineHelper;
 use AdminModule\Entity\AdminCategory;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * Initialise the Admin module.

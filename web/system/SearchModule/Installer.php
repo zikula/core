@@ -16,7 +16,7 @@ namespace SearchModule;
 
 use EventUtil;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the Search module

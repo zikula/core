@@ -18,7 +18,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula_View, SecurityUtil, HookUtil, LogUtil, EventUtil;
 use Zikula\Core\Event\GenericEvent;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * Install the Extensions module.

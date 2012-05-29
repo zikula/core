@@ -14,7 +14,7 @@
 
 namespace ErrorsModule;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the template module

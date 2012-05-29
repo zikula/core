@@ -19,7 +19,7 @@ use ZLanguage;
 /**
  * Mailer_Installer class.
  */
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
 
     /**

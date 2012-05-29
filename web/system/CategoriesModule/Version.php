@@ -14,7 +14,7 @@
 
 namespace CategoriesModule;
 
-class Version extends \Zikula_AbstractVersion
+class Version extends \Zikula\Framework\AbstractVersion
 {
     public function getMetaData()
     {

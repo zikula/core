@@ -24,7 +24,7 @@ use Zikula\Core\Core;
  * we cannot use $this->get/set/delVar() because the keys will be incorrectly
  * generated (System instead of ZConfig).
  */
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * Initialise the settings module.

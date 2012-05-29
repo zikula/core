@@ -19,7 +19,7 @@ use PageUtil, ThemeUtil, BlockUtil, EventUtil, Zikula_View;
 use Zikula\Framework\Exception\FatalException;
 use BlocksModule\Entity\BlockPlacement;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the blocks module

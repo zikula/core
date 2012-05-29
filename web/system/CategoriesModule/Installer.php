@@ -16,7 +16,7 @@ namespace CategoriesModule;
 
 use DataUtil, ZLanguage;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise module

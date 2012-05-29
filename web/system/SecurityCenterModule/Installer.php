@@ -18,7 +18,7 @@ use  System, CacheUtil, DoctrineHelper;
 use Zikula\Core\Core;
 use SecurityCenterModule\Util as SecurityCenterUtil;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the SecurityCenter module

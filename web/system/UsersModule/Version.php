@@ -22,7 +22,7 @@ use Zikula\Component\HookDispatcher\SubscriberBundle;
 /**
  * Provides metadata for this module to the Extensions module.
  */
-class Version extends \Zikula_AbstractVersion
+class Version extends \Zikula\Framework\AbstractVersion
 {
     /**
      * Assemble and return module metadata.

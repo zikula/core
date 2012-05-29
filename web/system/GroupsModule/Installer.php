@@ -16,7 +16,7 @@ namespace Groups;
 
 use DoctrineHelper;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the groups module

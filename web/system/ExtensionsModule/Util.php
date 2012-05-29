@@ -40,7 +40,7 @@ class Util
                 throw new \InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class,
                     $e->getMessage())), 0, $e);
             }
-            if (!$modversion instanceof \Zikula_AbstractVersion) {
+            if (!$modversion instanceof \Zikula\Framework\AbstractVersion) {
                 LogUtil::registerError(__f('%s is not an instance of Zikula\Framework\AbstractVersion',
                     get_class($modversion)));
             }

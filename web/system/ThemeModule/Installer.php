@@ -16,7 +16,7 @@ namespace ThemeModule;
 
 use DoctrineHelper, ModUtil;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the theme module

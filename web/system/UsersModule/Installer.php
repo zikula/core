@@ -23,7 +23,7 @@ use \Zikula\Framework\Exception\FatalException;
 /**
  * Provides module installation and upgrade services for the Users module.
  */
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * Initialise the users module.

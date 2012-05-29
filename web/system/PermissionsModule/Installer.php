@@ -16,7 +16,7 @@ namespace PermissionsModule;
 
 use PermissionsModule\Entity\Permission;
 
-class Installer extends \Zikula_AbstractInstaller
+class Installer extends \Zikula\Framework\AbstractInstaller
 {
     /**
      * initialise the permissions module
