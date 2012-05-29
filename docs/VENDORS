@@ -9,7 +9,7 @@ PHPIDS 0.7.0
     Vendor website: http://php-ids.org/
     Downloaded from: http://php-ids.org/downloads/
     License: LGPL
-    Location in Zikula: system/SecurityCenter/vendor/IDS
+    Location in Zikula: web/SecurityCenterModule/vendor/IDS
     Patch details: none
 
 HTMLPurifier 4.3.0
@@ -17,7 +17,7 @@ HTMLPurifier 4.3.0
     Vendor website: http://htmlpurifier.org/
     Downloaded from: http://htmlpurifier.org/download
     License: LGPL 2.1+
-    Location in Zikula: system/SecurityCenter/vendor/htmlpurifier
+    Location in Zikula: web/SecurityCenterModule/vendor/htmlpurifier
     Patch details: none
 
 Smarty 2.6.26
@@ -25,41 +25,17 @@ Smarty 2.6.26
     Vendor website: http://www.smarty.net/
     Downloaded from: http://www.smarty.net/download.php
     License: LGPL 2.1+
-    Location in Zikula: lib/vendor/Smarty
+    Location in Zikula: vendor/hard/Smarty
     Patch details:
     - Removed check inside the Smarty folder except for its core 'plugins' https://gist.github.com/960158
     - Security fix on the math plugin http://tinyurl.com/3b6p6vk
-
-RC4Crypt 3.2
-
-    Vendor website: http://rc4crypt.devhome.org (defunct).
-    Downloaded from: (unknown)
-    License: GPL
-    Location in Zikula: lib/vendor/encryption
-    Patch details: none
-
-PHPMailer 5.0.0
-
-    Vendor website: http://phpmailer.codeworxtech.com/).
-    Downloaded from: http://phpmailer.codeworxtech.com/
-    License: LGPL 2.1+
-    Location in Zikula: system/Mailer/vendor
-    Patch details: none
-
-IDNA Convert 0.6.3
-
-    Vendor website: http://idnaconv.phlymail.de/
-    Downloaded from: http://idnaconv.phlymail.de/
-    License: LGPL 2.1+
-    Location in Zikula: lib/vendor/idn
-    Patch details: none
 
 Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
 
     Vendor website: http://michelf.com/
     Downloaded from: http://michelf.com/
     License: New BSD
-    Location in Zikula: lib/vendor/Markdown
+    Location in Zikula: vendor/hard/Markdown
     Patch details:
     - Removed all helper functions and calltime pass by reference.
 
@@ -72,7 +48,7 @@ jQuery v1.7.2
     Vendor website: http://jquery.com/
     Downloaded from: http://jquery.com/
     License: MIT
-    Location in Zikula: javascript/jquery
+    Location in Zikula: web/js/jquery
     Patch details: none
 
 jQuery-UI v1.8.19
@@ -80,7 +56,7 @@ jQuery-UI v1.8.19
     Vendor website: http://jqueryui.com/
     Downloaded from: http://jqueryui.com/
     License: MIT and GPL (see http://jqueryui.com/about)
-    Location in Zikula: javascript/jquery-ui
+    Location in Zikula: web/js/jquery-ui
     Patch details: none
 
 jQuery-Timepicker-Addon v1.0.0
@@ -88,25 +64,8 @@ jQuery-Timepicker-Addon v1.0.0
     Vendor website: http://trentrichardson.com/examples/timepicker/
     Downloaded from: https://github.com/trentrichardson/jQuery-Timepicker-Addon
     License: MIT and GPL (see footer on website)
-    Location in Zikula: javascript/jquery-plugins/jQuery-Timepicker-Addon
+    Location in Zikula: web/js/jquery-plugins/jQuery-Timepicker-Addon
     Patch details: none
-
-DHTML Calendar 1.0
-
-    Vendor website: http://www.dynarch.com/projects/calendar
-    Downloaded from: http://www.dynarch.com/projects/calendar
-    License: LGPL
-    Location in Zikula: javascript/jscalendar
-    Patch details: none
-
-LivePipe
-
-    Vendor website: http://livepipe.net/core
-    Downloaded from: http://livepipe.net/core
-    License: MIT
-    Location in Zikula: javascript/livepipe
-    Patch details: none
-
 
 ICON LIBRARIES
 --------------
@@ -116,11 +75,11 @@ Crystal Clear icon set
     Vendor website: http://www.everaldo.com/
     Downloaded from: http://www.everaldo.com/
     License: LGPL
-    Location in Zikula: images/icons
+    Location in Zikula: web/images/icons
 
 Crystal Project Icons (only a few)
 
     Vendor website: http://www.everaldo.com/
     Downloaded from: http://www.everaldo.com/
     License: LGPL
-    Location in Zikula: images/icons
+    Location in Zikula: web/images/icons
