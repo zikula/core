@@ -2583,7 +2583,7 @@ function pnVarPrepForStore()
  * @param html        whether or not to generate HTML (can be turned off for command line execution)
  */
 if (!function_exists('pn_exit')) {
-    public function pn_exit($msg, $html = true)
+    function pn_exit($msg, $html = true)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
             'pn_exit()',
@@ -2601,7 +2601,7 @@ if (!function_exists('pn_exit')) {
  * @param assert_trigger   The assert trigger (passed from assertion handler)
  */
 if (!function_exists('pn_assert_callback_function')) {
-    public function pn_assert_callback_function($file, $line, $assert_trigger)
+    function pn_assert_callback_function($file, $line, $assert_trigger)
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated.', 'pn_assert_callback_function()', E_USER_DEPRECATED));
 
