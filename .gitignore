@@ -1,18 +1,13 @@
 app/bootstrap.php.cache
-app/cache/*
-app/logs/*
+app/cache/
+app/logs/
 build/
 vendor/
-vendor/!\.htaccess
 !/vendor/hard/
-composer.lock
-composer.phar
+/composer.lock
+/composer.phar
 
 web/bundles/
 web/modules/
-web/modules/!\.htaccess
-web/modules/!\ExampleModule
+!web/modules/ExampleModule/
 web/userdata/
-web/userdata/!\.htaccess
-
-

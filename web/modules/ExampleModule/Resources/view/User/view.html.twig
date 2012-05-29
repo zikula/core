@@ -1,0 +1,36 @@
+<h3>{{ __('List of users and their passwords :-P') }}</h3>
+
+{insert name="getstatusmsg"}
+
+<a href="{modurl modname="ExampleDoctrine" type="user" func="edit"}">{{ __('New user') }}</a>
+
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <td>{{ __('Username') }}</td>
+            <td>{{ __('Password') }}</td>
+            <td>{{ __('Categories') }}</td>
+            <td>{{ __('Attributes: Field1') }}</td>
+            <td>{{ __('Attributes: Field2') }}</td>
+            <td>{{ __('Metadata: Comment') }}</td>
+            <td>{{ __('Options') }}</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+            <tr class="{cycle values="z-odd,z-even"}">
+                <td>{{ u->getUsername() }}</td>
+                <td>{{ u->getPassword() }}</td>
+                <td>
+                    {% for c in u.categories) %}
+                        {{ c.category.name }},
+                    {% endfor %}
+                </td>
+                <td>{{ u.attributes.field1.value|default:'' }}</td>
+                <td>{{ u.attributes.field2.value|default:'' }}</td>
+                <td>{{ u.metadata.comment|default:'' }}</td>
+                <td><a href="{modurl modname="ExampleDoctrine" type="user" func="edit" id=$u->getId()}">{{ __('Edit') }}</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
