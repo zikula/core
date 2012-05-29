@@ -20,4 +20,4 @@ RewriteCond %{REQUEST_FILENAME} -d [OR]
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -l
 RewriteRule ^(.*)$ - [NC,L]
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^(.*)$ app.php [QSA,L]

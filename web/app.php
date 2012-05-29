@@ -12,7 +12,6 @@
  * information regarding copyright and licensing.
  */
 
-//$GLOBALS['__z_old_frontcontroller__'] = true;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -32,3 +31,4 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, false);
 $response->send();
 $kernel->terminate($request, $response);
+

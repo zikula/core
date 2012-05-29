@@ -1,17 +1,1 @@
 User-agent: *
-Disallow: /config
-Disallow: /docs
-Disallow: /images
-Disallow: /install
-Disallow: /javascript
-Disallow: /lib
-Disallow: /locale
-Disallow: /modules
-Disallow: /plugins
-Disallow: /system
-Disallow: /themes
-Disallow: /ztemp
-Disallow: /install.php
-Disallow: /jcss.php
-Disallow: /mo2json.php
-Disallow: /upgrade.php
