@@ -101,9 +101,9 @@ class DataUtil
             $iv = mcrypt_create_iv(mcrypt_get_iv_size($alg, MCRYPT_MODE_ECB), crc32($key));
             $res = mcrypt_decrypt($alg, $key, $val, MCRYPT_MODE_CBC);
         } else {
-            require_once ZLOADER.'/vendor/encryption/rc4crypt.class.php';
-            $res = rc4crypt::decrypt($key, $val);
+            throw new \RuntimeException('Mcrypt library not available');
         }
+
 
         return $res;
     }
@@ -188,8 +188,7 @@ class DataUtil
             $iv = mcrypt_create_iv(mcrypt_get_iv_size($alg, MCRYPT_MODE_ECB), crc32($key));
             $res = mcrypt_encrypt($alg, $key, $value, MCRYPT_MODE_CBC);
         } else {
-            require_once ZLOADER.'/vendor/encryption/rc4crypt.class.php';
-            $res = rc4crypt::encrypt($key, $value);
+            throw new \RuntimeException('Mcrypt library not available');
         }
 
         return ($encoded && $res ? self::encode($res) : $res);
