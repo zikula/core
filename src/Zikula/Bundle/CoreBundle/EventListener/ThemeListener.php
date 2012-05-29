@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Bundle\ThemeBundle\EventListener;
+namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;

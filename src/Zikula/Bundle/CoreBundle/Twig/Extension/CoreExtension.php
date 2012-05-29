@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Bundle\ThemeBundle\Twig\Extension;
+namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

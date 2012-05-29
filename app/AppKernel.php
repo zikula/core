@@ -11,7 +11,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Zikula\Bundle\CoreBundle\CoreBundle(),
             new Zikula\Bundle\ModuleBundle\ZikulaModuleBundle(),
-            new Zikula\Bundle\ThemeBundle\ZikulaThemeBundle(),
 //            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),

@@ -36,6 +36,7 @@ class CoreExtension extends Extension
 
 //        $loader->load('web.xml');
         $loader->load('core.xml');
+        $loader->load('twig.xml');
 
         $config = Yaml::parse(file_get_contents(ZIKULA_ROOT.'/../app/config/core_legacy.yml'));
         foreach ($config as $key => $array) {
