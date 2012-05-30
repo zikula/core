@@ -14,7 +14,7 @@
 
 namespace UsersModule\Api;
 use SecurityUtil, Zikula_View, System, ModUtil, DataUtil, LogUtil, UserUtil;
-use \Zikula\Framework\Exception\FatalException, Zikula_Exception_Forbidden;
+use \Zikula\Framework\Exception\FatalException, \Zikula\Framework\Exception\ForbiddenException;
 use UsersModule\Constants as UsersConstant;
 
 /**
@@ -36,13 +36,13 @@ class UserApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return array An array of users, or false on failure.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have overview access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have overview access.
      */
     public function getAll($args)
     {
         // Security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // create a QueryBuilder instance
@@ -150,7 +150,7 @@ class UserApi extends \Zikula\Framework\Api\AbstractApi
     {
         // Security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // create a QueryBuilder instance
@@ -559,12 +559,12 @@ class UserApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return bool True if success and false otherwise.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user is logged in.
      */
     public function savePreEmail($args)
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -622,12 +622,12 @@ class UserApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return string The e-mail address waiting for confirmation for the current user.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user is logged in.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user is logged in.
      */
     public function getUserPreEmail()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // delete all the records from e-mail confirmation that have expired

@@ -17,10 +17,10 @@ namespace SecurityCenterModule\Listener;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Core;
 use System, CacheUtil, SessionUtil, UserUtil, DateUtil, LogUtil, ModUtil;
-use Zikula_Exception_Forbidden;
+use Zikula\Framework\AbstractEventHandler;
 use SecurityCenterModule\Util as SecurityCenterUtil;
 
-class FilterListener extends \Zikula_AbstractEventHandler
+class FilterListener extends AbstractEventHandler
 {
     /**
      * Setup this handler.
@@ -339,7 +339,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 // warn only for debugging the ruleset
                 LogUtil::registerError(__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             } else {
-                throw new Zikula_Exception_Forbidden(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+                throw new \Zikula\Framework\Exception\ForbiddenException(__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
             }
         }
 

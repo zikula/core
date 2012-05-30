@@ -21,7 +21,7 @@ use Zikula\Framework\Api\AbstractAuthentication;
 use UserUtil, ModUtil, LogUtil, SecurityUtil, System, ThemeUtil, DataUtil, DateUtil;
 use Zikula_Session;
 use UsersModule\Helper\AuthenticationMethodHelper;
-use Zikula_Exception_Forbidden;
+use \Zikula\Framework\Exception\ForbiddenException;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -238,7 +238,7 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return array An array containing errors organized by field.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user does not have read access.
      *
      * @throws \Zikula\Framework\Exception\FatalException If a required parameter is missing from $args.
      */
@@ -247,7 +247,7 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
         $registrationErrors = array();
 
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
@@ -384,12 +384,12 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *                      created or a pending registration record was created in the users table), then the array containing
      *                      the information saved is returned; false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have read access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user does not have read access.
      */
     public function registerNewUser($args)
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $isAdmin = $this->currentUserIsAdmin();
@@ -994,14 +994,14 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return array|boolean An array containing the record, or false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function get($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $uniqueEmails = $this->getVar('reg_uniemail', false);
@@ -1128,14 +1128,14 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return array|bool Array of registration requests, or false on failure.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function getAll($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (isset($args['limitoffset']) && is_numeric($args['limitoffset'])
@@ -1308,14 +1308,14 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function remove($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (isset($args['uid'])) {
@@ -1419,7 +1419,7 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function sendVerificationCode($args)
@@ -1429,7 +1429,7 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
         // registration record, so allow not-logged-in plus READ, as well as moderator.
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (isset($args['reginfo'])) {
@@ -1546,14 +1546,14 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      * @return array|bool An array containing the object from the users_verifychg table; an empty array if not found;
      *                      false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user is not logged in and does not have read access, or if the user is logged in
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user is not logged in and does not have read access, or if the user is logged in
      *                                      and does not have moderate access.
      */
     public function getVerificationCode($args)
     {
         if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
                 || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid']) || ($args['uid'] <= 1)) {
@@ -1645,12 +1645,12 @@ class RegistrationApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return bool True on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have add access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user does not have add access.
      */
     public function approve($args)
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (isset($args['reginfo'])) {

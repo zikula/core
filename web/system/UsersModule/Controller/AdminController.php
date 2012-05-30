@@ -19,7 +19,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula_View, SecurityUtil, ModUtil, UserUtil, DataUtil, DateUtil, LogUtil, System, FileUtil;
 use DateTime, DateTimeZone, Exception;
 use Zikula_Session;
-use Zikula_Exception_Forbidden;
+use \Zikula\Framework\Exception\ForbiddenException;
 use UsersModule\Constants as UsersConstant;
 use Zikula\Framework\Exception\FatalException;
 use Zikula\Core\Hook\ProcessHook;
@@ -86,12 +86,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function viewAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // we need this value multiple times, so we keep it
@@ -235,13 +235,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have add access, or if the method of accessing this function is improper.
      */
     public function newUserAction()
     {
         // The user must have ADD access to submit a new user record.
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
@@ -329,7 +329,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
                 }
             }
         } elseif (!$this->request->getMethod() == 'GET') {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($proceedToForm) {
@@ -428,12 +428,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function searchAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->getMethod() == 'POST') {
@@ -474,7 +474,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
         ($usersList) || !$usersList))) {
             return $this->renderSearchForm('search');
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
     }
 
@@ -499,12 +499,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if the function enters an unknown state.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
      */
     public function mailUsersAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->getMethod() == 'POST') {
@@ -530,7 +530,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
                 throw new \Zikula\Framework\Exception\FatalException($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
             }
         } elseif (!$this->request->getMethod() == 'GET') {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->getMethod() == 'GET' || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
@@ -566,13 +566,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
      */
     public function modifyAction()
     {
         // security check for generic edit access
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $proceedToForm = true;
@@ -590,7 +590,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
 
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             if ($formData->isValid()) {
@@ -734,13 +734,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             $accessPermissions = array();
             $errorFields = array();
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($proceedToForm) {
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalUser['uname']}::{$originalUser['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             // groups
@@ -802,7 +802,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return void
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access.
      *
      * @todo The link on the view page should be a mini form, and should post.
      *
@@ -830,7 +830,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
         }
 
         if (!SecurityUtil::checkPermission('Users::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $userNameSent = ModUtil::apiFunc($this->name, 'user', 'mailUname', array(
@@ -865,7 +865,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return bool True on success and redirect; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access.
      *
      * @todo The link on the view page should be a mini form, and should post.
      *
@@ -890,7 +890,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
         }
 
         if (!SecurityUtil::checkPermission('Users::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $confirmationCodeSent = ModUtil::apiFunc($this->name, 'user', 'mailConfirmationCode', array(
@@ -925,13 +925,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
      */
     public function deleteUsersAction()
     {
         // check permissions
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $proceedToForm = false;
@@ -952,7 +952,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
 
             $proceedToForm = true;
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (empty($userid)) {
@@ -1149,13 +1149,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access.
      */
     public function viewRegistrationsAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $regCount = ModUtil::apiFunc($this->name, 'registration', 'countAll');
@@ -1264,12 +1264,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string HTML string containing the rendered template.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function displayRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // Get parameters from whatever input we need.
@@ -1278,7 +1278,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
         if ($this->request->getMethod() == 'GET') {
             $uid = $this->request->query->get('uid', null);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (empty($uid) || !is_numeric($uid)) {
@@ -1338,12 +1338,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string|bool The rendered template; false on error.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
      */
     public function modifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $proceedToForm = true;
@@ -1365,7 +1365,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
 
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$originalRegistration['uname']}::{$originalRegistration['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             if ($formData->isValid()) {
@@ -1463,13 +1463,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
 
             $restoreView = $this->request->query->get('restoreview', 'view');
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($proceedToForm) {
             // security check for this record
             if (!SecurityUtil::checkPermission('Users::', "{$registration['uname']}::{$registration['uid']}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             $rendererArgs = array(
@@ -1519,12 +1519,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string|bool The rendered template; true on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function verifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1539,7 +1539,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             $restoreView = $this->request->request->get('restoreview', 'view');
             $confirmed = $this->request->request->get('confirmed', false);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
@@ -1634,12 +1634,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string|bool The rendered template; true on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
     public function approveRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1651,7 +1651,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
             $restoreView = $this->request->request->get('restoreview', 'view');
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
@@ -1761,12 +1761,12 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string|bool The rendered template; true on success; otherwise false.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the user does not have delete access, or if the method used to access this function is improper.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the user does not have delete access, or if the method used to access this function is improper.
      */
     public function denyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($this->request->getMethod() == 'GET') {
@@ -1781,7 +1781,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             $reason = $this->request->request->get('reason', '');
             $confirmed = $this->request->request->get('confirmed', false);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (!isset($uid) || !is_numeric($uid) || ((int)$uid != $uid)) {
@@ -1874,13 +1874,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      * @return string The rendered configuration settings template.
      *
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if the function is accessed improperly.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have admin access.
      */
     public function configAction()
     {
         // Security check
         if (!(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN))) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         $configData = new FormData\ConfigForm('users_config', $this->container);
@@ -1946,13 +1946,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      * @return redirect user to admin main page if success and show again the forn otherwise
      *
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if the $args parameter is not valid.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have add access.
      */
     public function importAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
@@ -2034,13 +2034,13 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      * @return redirect user to the form if confirmed not 1, else export the csv file.
      *
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if parameters are passed via the $args array, but $args is invalid.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access, or method this function was accessed is invalid.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have admin access, or method this function was accessed is invalid.
      */
     public function exporterAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         // get input values. Check for direct function call first because calling function might be either get or post
@@ -2068,7 +2068,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             $regDate    = $this->request->request->get('exportRegDate', null);
             $groups     = $this->request->request->get('exportGroups', null);
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if ($confirmed) {
@@ -2466,7 +2466,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
      *
      * @throws \Zikula\Framework\Exception\FatalException     Thrown if a user id is not specified, is invalid, or does not point to a valid account record,
      *                                      or the account record is not in a consistent state.
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access for the account record.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have edit access for the account record.
      */
     public function toggleForcedPasswordChangeAction()
     {
@@ -2484,7 +2484,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             }
 
             if (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $uid, false);
@@ -2506,7 +2506,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             $userObj = UserUtil::getVars($uid);
 
             if (!SecurityUtil::checkPermission('Users::', "{$userObj['uname']}::{$uid}", ACCESS_EDIT)) {
-                throw new Zikula_Exception_Forbidden();
+                throw new \Zikula\Framework\Exception\ForbiddenException();
             }
 
             if ($userMustChangePassword) {
@@ -2534,7 +2534,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
 
             return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
         } else {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
     }
 }

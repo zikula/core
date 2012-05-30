@@ -15,11 +15,12 @@ use Zikula\Core\Form\Renderer;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
-
+use Zikula\Framework\AbstractPlugin;
+use Zikula\Framework\Plugin\AlwaysOnInterface;
 /**
  * Symfony2 forms plugin definition.
  */
-class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface
+class SystemPlugin_Symfony2Forms_Plugin extends AbstractPlugin implements AlwaysOnInterface
 {
     /**
      * Get plugin meta data.

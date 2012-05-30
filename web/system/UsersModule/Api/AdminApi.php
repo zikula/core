@@ -17,7 +17,7 @@ namespace UsersModule\Api;
 
 use Zikula\Core\Event\GenericEvent;
 use UsersModule\Constants as UsersConstant;
-use SecurityUtil, ModUtil, System, UserUtil, DataUtil, Zikula_Exception_Forbidden, Zikula_View;
+use SecurityUtil, ModUtil, System, UserUtil, DataUtil, \Zikula\Framework\Exception\ForbiddenException, Zikula_View;
 
 /**
  * The administrative system-level and database-level functions for the Users module.
@@ -230,12 +230,12 @@ class AdminApi extends \Zikula\Framework\Api\AbstractApi
      *
      * @return bool True on success; otherwise false
      *
-     * @throws Zikula_Exception_Forbidden Thrown if the current user does not have sufficient access to send mail.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if the current user does not have sufficient access to send mail.
      */
     public function sendmail($args)
     {
         if (!SecurityUtil::checkPermission("{$this->name}::MailUsers", '::', ACCESS_COMMENT)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
         if (isset($args['uid']) && !empty($args['uid'])) {

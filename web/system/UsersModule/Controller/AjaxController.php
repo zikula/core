@@ -17,7 +17,7 @@ namespace UsersModule\Controller;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Framework\Response\PlainResponse;
 use Zikula_View, SecurityUtil, ModUtil, DataUtil;
-use Zikula_Exception_Forbidden;
+use \Zikula\Framework\Exception\ForbiddenException;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Framework\Response\Ajax\AjaxResponse;
@@ -74,7 +74,7 @@ class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
      *
      * @return array A AjaxResponse containing error messages and message counts.
      *
-     * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
+     * @throws \Zikula\Framework\Exception\ForbiddenException Thrown if registration is disbled.
      */
     public function getRegistrationErrorsAction()
     {
@@ -96,7 +96,7 @@ class AjaxController extends \Zikula\Framework\Controller\AbstractAjax
 
         // Check if registration is disabled and the user is not an admin.
         if (($eventType == 'new_registration') && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden($this->__('Sorry! New user registration is currently disabled.'));
+            throw new \Zikula\Framework\Exception\ForbiddenException($this->__('Sorry! New user registration is currently disabled.'));
         }
 
         $returnValue = array(

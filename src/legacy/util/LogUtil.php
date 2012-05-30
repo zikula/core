@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class LogUtil
 {
-
     /**
      * check if errors.
      *
@@ -65,7 +64,7 @@ class LogUtil
     public static function addStatusPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, Zikula_AbstractErrorHandler::INFO);
+        self::_addPopup($message, \Zikula\Framework\AbstractErrorHandler::INFO);
     }
 
     /**
@@ -95,10 +94,10 @@ class LogUtil
      */
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
-        self::log($message, Zikula_AbstractErrorHandler::DEBUG);
+        self::log($message, \Zikula\Framework\AbstractErrorHandler::DEBUG);
         $session = ServiceUtil::getManager()->get('session');
 
-        if ($type === Zikula_AbstractErrorHandler::INFO) {
+        if ($type === \Zikula\Framework\AbstractErrorHandler::INFO) {
             $session->getFlashBag()->add(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
             $session->getFlashBag()->add(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
@@ -235,7 +234,7 @@ class LogUtil
      *
      * @return void
      */
-    public static function log($msg, $level = Zikula_AbstractErrorHandler::DEBUG)
+    public static function log($msg, $level = \Zikula\Framework\AbstractErrorHandler::DEBUG)
     {
         if (System::isInstalling()) {
             return;
