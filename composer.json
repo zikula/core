@@ -28,7 +28,7 @@
         "white-october/pagerfanta-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "stof/doctrine-extensions-bundle": "dev-master",
-        "beberlei/doctrine-extensions": "dev-master",
+        "beberlei/DoctrineExtensions": "dev-master",
         "jms/i18n-routing-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "dev-master",
         "friendsofsymfony/user-bundle": "dev-master"
