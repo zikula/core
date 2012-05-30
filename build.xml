@@ -51,7 +51,7 @@
         <mkdir dir="${builddir}/tmp" />
         <mkdir dir="${builddir}/jsdoc" />
         <echo msg="Downloading vendors..." />
-        <exec command="chmod 755 ${workspace}/source/composer.phar;${workspace}/source/composer.phar --dev install" />
+        <exec command="curl -s http://getcomposer.org/composer.phar > ${workspace}/source/composer.phar| php;chmod 755 ${workspace}/source/composer.phar;${workspace}/source/composer.phar --dev install" />
     </target>
 
     <!-- Build archives -->
