@@ -59,29 +59,29 @@
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
-        <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
+        <!--<delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />-->
 
-        <exec command="svn export https://github.com/zikula-modules/Legal.git/branches/release-2.0 ${builddir}/tmp/Legal" />
-        <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
+        <!--<exec command="svn export https://github.com/zikula-modules/Legal.git/branches/release-2.0 ${builddir}/tmp/Legal" />-->
+        <!--<exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />-->
 
-        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/release-1.6 ${builddir}/tmp/Profile" />
-        <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
+        <!--<exec command="svn export https://github.com/zikula-modules/Profile.git/branches/release-1.6 ${builddir}/tmp/Profile" />-->
+        <!--<exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />-->
 
         <!-- compress JS -->
-        <foreach list="${ownjslist}" param="filename" target="compressownjs" />
+        <!--<foreach list="${ownjslist}" param="filename" target="compressownjs" />-->
 
         <echo msg="Prepare permissions..." />
-        <chmod file="${packagepath}/config/config.php" mode="0666" />
-        <chmod file="${packagepath}/userdata" mode="0777" />
-        <chmod file="${packagepath}/ztemp" mode="0777" />
-        <chmod file="${packagepath}/ztemp/error_logs" mode="0777" />
-        <chmod file="${packagepath}/ztemp/view_cache" mode="0777" />
-        <chmod file="${packagepath}/ztemp/view_compiled" mode="0777" />
-        <chmod file="${packagepath}/ztemp/Theme_cache" mode="0777" />
-        <chmod file="${packagepath}/ztemp/Theme_compiled" mode="0777" />
-        <chmod file="${packagepath}/ztemp/Theme_Config" mode="0777" />
-        <chmod file="${packagepath}/ztemp/idsTmp" mode="0777" />
-        <chmod file="${packagepath}/ztemp/purifierCache" mode="0777" />
+        <!--<chmod file="${packagepath}/config/config.php" mode="0666" />-->
+        <!--<chmod file="${packagepath}/userdata" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/error_logs" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/view_cache" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/view_compiled" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/Theme_cache" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/Theme_compiled" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/Theme_Config" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/idsTmp" mode="0777" />-->
+        <!--<chmod file="${packagepath}/ztemp/purifierCache" mode="0777" />-->
 
         <echo msg="Creating archive..." />
         <!-- zip's don't play nicely in Phing - using direct command -->
