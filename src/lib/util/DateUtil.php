@@ -61,6 +61,10 @@ class DateUtil
                 //! datetimelong
                 $format = __('%A, %B %d, %Y - %I:%M %p');
                 break;
+            case 'datefeed':
+                //! RFC 822 date format for RSS feeds
+                $format = __('%a, %d %b %Y %H:%M:%S %Z');
+                break;
             case 'timebrief':
                 //! timebrief
                 $format = __('%I:%M %p');
