@@ -132,7 +132,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
             $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
             $attributes = $this->renderAttributes($view);
             $hiddenName = "contentMenuArgument" . $this->id;
-            $html = "<div id=\"{$this->id}\" class=\"{$cssClass}\"{$attributes}><input type=\"hidden\" name=\"{$hiddenName}\" id=\"{$hiddenName}\" /><ul>";
+            $html = "<input type=\"hidden\" name=\"{$hiddenName}\" id=\"{$hiddenName}\" /><div id=\"{$this->id}\" class=\"{$cssClass}\"{$attributes}><ul>";
 
             return $html;
         } else {
