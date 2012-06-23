@@ -16,6 +16,8 @@ div#menuTreeContainer ul.tree li.z-tree-dynamic a {
 
 div#menuTreeContainer ul.tree a {
     cursor: pointer;
+    display: inline-block;
+    min-width: 100px;
 }
 
 a.activelang {
