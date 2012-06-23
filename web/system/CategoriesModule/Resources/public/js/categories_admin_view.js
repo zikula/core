@@ -71,7 +71,7 @@ Zikula.Categories.AttachMenu = function () {
     Zikula.Categories.ContextMenu.addItem({
         label: Zikula.__('Add subcategory (into selected)'),
         condition: function() {
-            return !Zikula.Categories.ContextMenu.lastClick.findElement('a').up('li').hasClassName(Zikula.TreeSortable.trees.categoriesTree.config.nodeLeaf);
+            return !Zikula.Categories.ContextMenu.lastClick.findElement('a').up('li').hasClassName('leaf');
         },
         callback: function(node){
             Zikula.Categories.MenuAction(node, 'addchild');

@@ -389,6 +389,7 @@ class Zikula_Tree
         $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
         $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
+        $liClass[] = isset($item['class']) ? $item['class'] : '';
         $liClass = trim(implode(' ', array_filter($liClass)));
         $liClass = ' class="'.$liClass.'"';
 
