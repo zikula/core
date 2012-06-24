@@ -9,8 +9,8 @@ Symfony2 and other 3rd party extensions.
 Vendor dependencies are managed by Composer. See http://getcomposer.com/
 
 If you work with the core git repository directly, you must run
-`php composer.phar install` to get the vendors, and periodically
-`php composer.phar update` as necessary to update vendors.
+`php composer.phar install --dev` to get the vendors, and periodically
+`php composer.phar update --dev` as necessary to update vendors.
 
 ## Module structure
 
@@ -131,13 +131,6 @@ The ServiceManager has been deprecated in favour of Symfony2 DependencyInjection
 Documentation can be found at:
 
    - http://symfony.com/doc/master/components/dependency_injection/index.html
-
-Additional information which is currently undocumented at the vendor can be found
-at the following links:
-
-  - http://richardmiller.co.uk/2012/02/22/symfony2-manipulating-service-parameters-and-definitions/
-  - http://richardmiller.co.uk/2012/02/15/symfony2-service-container-compiler-passes/
-  - http://richardmiller.co.uk/2011/06/01/symfony2-writing-a-dependency-injection-extension-configuration/
 
 ## Hooks
 
