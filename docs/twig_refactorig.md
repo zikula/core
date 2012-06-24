@@ -95,7 +95,7 @@ becomes:
 
     {foreach from=$plugin_options key='plugin' item='plugin_option'}
         {$plugin_option}
-    {/foreach}#}
+    {/foreach}
 
 becomes:
 
