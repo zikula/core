@@ -15,6 +15,7 @@
 namespace BlocksModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * BlockPlacement entity class.
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="block_placements",indexes={@ORM\index(name="bid_pid_idx",columns={"bid","pid"})})
  */
-class BlockPlacement extends \Zikula_EntityAccess
+class BlockPlacement extends EntityAccess
 {
     /**
      * @ORM\Id

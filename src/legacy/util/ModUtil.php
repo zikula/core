@@ -820,7 +820,7 @@ class ModUtil
      * @param array   $args       The arguments to pass to the function.
      * @param boolean $api        Whether or not to execute an API (or regular) function.
      *
-     * @throws Zikula_Exception_NotFound If method was not found.
+     * @throws \Zikula\Framework\Exception\NotFoundException If method was not found.
      *
      * @return mixed.
      */

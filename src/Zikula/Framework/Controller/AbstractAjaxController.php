@@ -19,7 +19,7 @@ use Zikula\Framework\Exception\ForbiddenException;
 /**
  * Abstract AJAX controller.
  */
-abstract class AbstractAjax extends AbstractController
+abstract class AbstractAjaxController extends AbstractController
 {
     /**
      * {@inheritdoc}

@@ -15,6 +15,7 @@
 namespace AdminModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * AdminCategory entity class.
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="admin_category")
  */
-class AdminCategory extends \Zikula_EntityAccess
+class AdminCategory extends EntityAccess
 {
     /**
      * @ORM\Id

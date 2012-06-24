@@ -14,6 +14,9 @@
 
 use Zikula\Core\Event\GenericEvent;
 use UsersModule\Constants as UsersConstant;
+use Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Exception\RedirectException;
+use Zikula\Framework\Exception\ForbiddenException;
 
 /**
  * UserUtil
@@ -368,19 +371,19 @@ class UserUtil
      *
      * @return array An array of account recovery information.
      *
-     * @throws Zikula_Exception_Fatal If the $uid parameter is not valid.
+     * @throws FatalException If the $uid parameter is not valid.
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
     {
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid) || (($uid < -1) || ($uid == 0) || ($uid == 1))) {
-            throw new Zikula_Exception_Fatal('Attempt to get authentication information for an invalid user id.');
+            throw new FatalException('Attempt to get authentication information for an invalid user id.');
         }
 
         if ($uid == -1) {
             if (self::isLoggedIn()) {
                 $uid = self::getVar('uid');
             } else {
-                throw new Zikula_Exception_Fatal('Attempt to get authentication information for an invalid user id.');
+                throw new FatalException('Attempt to get authentication information for an invalid user id.');
             }
         }
 
@@ -439,34 +442,34 @@ class UserUtil
      * @param array  $authenticationMethod Auth method.
      * @param string $reentrantURL         Reentrant URL (optional).
      *
-     * @throws Zikula_Exception_Fatal
+     * @throws FatalException
      *
      * @return true
      */
     private static function preAuthenticationValidation(array $authenticationMethod, $reentrantURL = null)
     {
         if (empty($authenticationMethod) || (count($authenticationMethod) != 2)) {
-            throw new Zikula_Exception_Fatal(__f('An invalid %1$s parameter was received.', array('authenticationMethod')));
+            throw new FatalException(__f('An invalid %1$s parameter was received.', array('authenticationMethod')));
         }
 
         if (!isset($authenticationMethod['modname']) || !is_string($authenticationMethod['modname']) || empty($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal(__f('An invalid %1$s parameter was received.', array('modname')));
+            throw new FatalException(__f('An invalid %1$s parameter was received.', array('modname')));
         } elseif (!ModUtil::getInfoFromName($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' could not be found.', array($authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication module \'%1$s\' could not be found.', array($authenticationMethod['modname'])));
         } elseif (!ModUtil::available($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' is not available.', array($authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication module \'%1$s\' is not available.', array($authenticationMethod['modname'])));
         } elseif (!ModUtil::loadApi($authenticationMethod['modname'], 'Authentication')) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' could not be loaded.', array($authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication module \'%1$s\' could not be loaded.', array($authenticationMethod['modname'])));
         }
 
         if (!isset($authenticationMethod['method']) || !is_string($authenticationMethod['method']) || empty($authenticationMethod['method'])) {
-            throw new Zikula_Exception_Fatal(__f('An invalid %1$s parameter was received.', array('method')));
+            throw new FatalException(__f('An invalid %1$s parameter was received.', array('method')));
         } elseif (!ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'supportsAuthenticationMethod', array('method' => $authenticationMethod['method']), 'Zikula_Api_AbstractAuthentication')) {
-            throw new Zikula_Exception_Fatal(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', array($authenticationMethod['method'], $authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', array($authenticationMethod['method'], $authenticationMethod['modname'])));
         }
 
         if (ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', array($authenticationMethod['modname'], 'reentrantURL')));
+            throw new FatalException(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', array($authenticationMethod['modname'], 'reentrantURL')));
         }
 
         return true;
@@ -601,7 +604,7 @@ class UserUtil
             if (!$userObj || !is_array($userObj)) {
                 // Note that we have not actually logged into anything yet, just authenticated.
 
-                throw new Zikula_Exception_Fatal(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', array('uid', $uid)));
+                throw new FatalException(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', array('uid', $uid)));
             }
 
             if (!isset($userObj['activated'])) {
@@ -750,7 +753,7 @@ class UserUtil
                     $authenticatedUid = $preauthenticatedUser['uid'];
                     $userObj = $preauthenticatedUser;
                 } else {
-                    throw new Zikula_Exception_Fatal();
+                    throw new FatalException();
                 }
             } else {
                 $authArgs = array(
@@ -807,9 +810,9 @@ class UserUtil
                             $session->set("$sessionNamespace/$sessionVarName", $sessionVars);
                         }
                         $userObj = false;
-                        throw new Zikula_Exception_Redirect($redirectURL);
+                        throw new RedirectException($redirectURL);
                     } else {
-                        throw new Zikula_Exception_Forbidden();
+                        throw new ForbiddenException();
                     }
                 } else {
                     // The login has not been vetoed
@@ -836,7 +839,7 @@ class UserUtil
     public static function setUserByUname($uname, $rememberMe = false)
     {
         if (!isset($uname) || !is_string($uname) || empty($uname)) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uname.'));
+            throw new FatalException(__('Attempt to set the current user with an invalid uname.'));
         }
 
         $uid = self::getIdFromName($uname);
@@ -865,12 +868,12 @@ class UserUtil
     public static function setUserByUid($uid, $rememberMe = false, array $authenticationMethod = null)
     {
         if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uid.'));
+            throw new FatalException(__('Attempt to set the current user with an invalid uid.'));
         }
 
         $userObj = self::getVars($uid);
         if (!isset($userObj) || !is_array($userObj) || empty($userObj)) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an unknown uid.'));
+            throw new FatalException(__('Attempt to set the current user with an unknown uid.'));
         }
 
         if (!isset($authenticationMethod)) {
@@ -881,7 +884,7 @@ class UserUtil
         } elseif (empty($authenticationMethod) || !isset($authenticationMethod['modname']) || empty($authenticationMethod['modname'])
                 || !isset($authenticationMethod['method']) || empty($authenticationMethod['method'])
                 ) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid authentication method.'));
+            throw new FatalException(__('Attempt to set the current user with an invalid authentication method.'));
         }
 
         // Storing Last Login date -- store it in UTC! Do not use date() function!

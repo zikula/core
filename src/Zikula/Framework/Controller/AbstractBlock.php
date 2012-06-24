@@ -14,7 +14,7 @@
  */
 
 namespace Zikula\Framework\Controller;
-use Zikula\Framework\Exception\Forbidden;
+use Zikula\Framework\Exception\ForbiddenException;
 use \Zikula\Core\Event\GenericEvent;
 
 /**
@@ -75,7 +75,7 @@ abstract class AbstractBlock extends AbstractController
      * @param string $method Method invoked.
      * @param array  $args   Arguments.
      *
-     * @throws BadMethodCallException If no event responds.
+     * @throws \BadMethodCallException If no event responds.
      *
      * @return string Data.
      */

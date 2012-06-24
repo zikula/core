@@ -16,16 +16,19 @@
 namespace UsersModule\Controller;
 
 use Zikula\Core\Event\GenericEvent, Zikula\Framework\Response\PlainResponse;
-use Zikula_View, \Zikula\Framework\Exception\ForbiddenException, \Zikula\Framework\Exception\FatalException, Zikula_Exception_NotFound;
+use Zikula_View;
 use ModUtil, UserUtil, DataUtil, System, LogUtil, SecurityUtil, SessionUtil, Zikula_Session, ThemeUtil;
 use UsersModule\Constants as UsersConstant;
 use UsersModule\Helper\AuthenticationMethodListHelper;
-use Zikula_Api_AbstractAuthentication;
+use UsersModule\Helper\AuthenticationMethodHelper;
+use Zikula\Framework\Api\AbstractAuthenticationApi;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ProcessHook;
-use Zikula_Exception_Redirect;
-use Zikula_Exception_Fatal;
+use Zikula\Framework\Exception\RedirectException;
+use Zikula\Framework\Exception\ForbiddenException;
+use Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Exception\NotFoundException;
 
 /**
  * Access to (non-administrative) user-initiated actions for the Users module.
@@ -54,7 +57,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
      *
      * @return string The rendered template.
      *
-     * @throws \Zikula\Framework\Exception\ForbiddenException if the current user does not have adequate permissions to perform
+     * @throws ForbiddenException if the current user does not have adequate permissions to perform
      *          this function.
      */
     public function indexAction()
@@ -63,14 +66,14 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'index')))));
 
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         // The API function is called.
         $accountLinks = ModUtil::apiFunc($this->name, 'user', 'accountLinks');
 
         if ($accountLinks == false) {
-            throw new Zikula_Exception_NotFound($this->__('Error! No account links available.'));
+            throw new NotFoundException($this->__('Error! No account links available.'));
         }
 
         return $this->response($this->view->assign('accountLinks', $accountLinks)
@@ -121,7 +124,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
 
         // check permisisons
         if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         // Check if registration is enabled
@@ -145,10 +148,10 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                     $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
 
                     if ($reentrantToken != $reentrantTokenReceived) {
-                        throw new \Zikula\Framework\Exception\ForbiddenException();
+                        throw new ForbiddenException();
                     }
                 } else {
-                    throw new \Zikula\Framework\Exception\FatalException($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
+                    throw new FatalException($this->__('An internal error occurred. Failed to retrieve stored registration state.'));
                 }
 
                 $state = 'authenticate';
@@ -192,7 +195,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             }
         } else {
             // Neither a POST nor a GET, so a fatal error.
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         // The state machine that handles the processing of the data from the initialization above.
@@ -209,7 +212,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                     $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
                     // Check for emptiness here, in case there were just spaces and commas in the original string.
                     if (!empty($illegalUserAgents) && preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
-                        throw new \Zikula\Framework\Exception\ForbiddenException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
+                        throw new ForbiddenException($this->__('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
                     }
 
                     // Notify that we are beginning a registration session.
@@ -219,7 +222,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                     // Get a list of authentication methods available for registration
                     // NOTE: The Users module methods should NOT appear on this list!
                     $authenticationMethodList = new AuthenticationMethodListHelper($this, array(),
-                        \Zikula\Framework\Api\AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
+                        AbstractAuthenticationApi::FILTER_REGISTRATION_ENABLED);
 
                     if ($authenticationMethodList->countEnabledForRegistration() <= 0) {
                         // There are no (non-Users module) methods available for registration, so just default to Users.
@@ -263,7 +266,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                 case 'display_method_selector':
                     // An authentication method to use with the user's registration has not been selected.
                     // Present the choices to the user.
-                    $authenticationMethodList = new AuthenticationMethodListHelper($this, array(), Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED);
+                    $authenticationMethodList = new AuthenticationMethodListHelper($this, array(), AbstractAuthenticationApi::FILTER_REGISTRATION_ENABLED);
 
                     // TODO - The order and availability should be set by configuration
                     $authenticationMethodDisplayOrder = array();
@@ -300,7 +303,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                             || !isset($selectedAuthenticationMethod['modname']) || !is_string($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                             || !isset($selectedAuthenticationMethod['method']) || !is_string($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
                             ) {
-                        throw new \Zikula\Framework\Exception\FatalException($this->__('An invalid authentication method was selected.'));
+                        throw new FatalException($this->__('An invalid authentication method was selected.'));
                     }
 
                     if ($selectedAuthenticationMethod['modname'] == $this->name) {
@@ -625,7 +628,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
 
         // If we got here then we exited the above state machine with a 'stop', but there was no return statement
         // in the terminal state. We don't know what to do.
-        throw new \Zikula\Framework\Exception\FatalException($this->__('The registration process has entered an unknown state.'));
+        throw new FatalException($this->__('The registration process has entered an unknown state.'));
     }
 
     /**
@@ -692,7 +695,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         } elseif ($this->request->getMethod() == 'GET') {
             $email = '';
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         if ($proceedToForm) {
@@ -824,7 +827,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             $uname = '';
             $email = '';
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         if ($formStage == 'request') {
@@ -916,7 +919,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             $newpassreminder = '';
             $passreminder = '';
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         if (($formStage == 'code') && ($this->request->getMethod() == 'POST' || !empty($uname) || !empty($email) || !empty($code))) {
@@ -1062,7 +1065,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
      * @return boolean|string True on successful authentication and login, the rendered output of the appropriate
      *                        template to display the log-in form.
      *
-     * @throws Zikula_Exception_Redirect If the user is already logged in, or upon successful login with the redirect
+     * @throws RedirectException If the user is already logged in, or upon successful login with the redirect
      *                                   option set to send the user to the appropriate page, or...
      */
     public function loginAction(array $args = array())
@@ -1088,7 +1091,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             $isFunctionCall = true;
         } elseif (isset($args) && !is_array($args)) {
             // Coming from a function call, but bad $args
-            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
+            throw new FatalException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'POST') {
             // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
             if (System::getVar('anonymoussessions', false)) {
@@ -1135,7 +1138,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                 $this->dispatcher->dispatch('module.users.ui.login.started', new GenericEvent());
             }
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         if (!isset($reentrantToken)) {
@@ -1155,7 +1158,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                         || !isset($selectedAuthenticationMethod['modname']) || empty($selectedAuthenticationMethod['modname'])
                         || !isset($selectedAuthenticationMethod['method']) || empty($selectedAuthenticationMethod['method'])
                         ) {
-                    throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Invalid authentication method information.'));
+                    throw new FatalException($this->__('Error! Invalid authentication method information.'));
                 }
 
                 if (ModUtil::available($selectedAuthenticationMethod['modname'])
@@ -1309,7 +1312,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                     }
                 }
             } elseif (isset($authenticationInfo) && (!is_array($authenticationInfo))) {
-                throw new \Zikula\Framework\Exception\FatalException($this->__('Error! Invalid authentication information received.'));
+                throw new FatalException($this->__('Error! Invalid authentication information received.'));
             }
         }
 
@@ -1465,7 +1468,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             $newpassagain   = $this->request->request->get('newpassagain', '');
             $newpassreminder= $this->request->request->get('newpassreminder', '');
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         if ($uname) {
@@ -1740,7 +1743,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             $pass = $this->request->request->get('pass', null);
             $rememberme = $this->request->request->get('rememberme', false);
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         $redirectUrl = System::getHomepageUrl();
@@ -1807,7 +1810,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         }
 
         if (!$found) {
-            throw new Zikual_Exception_Fatal();
+            throw new FatalException();
         }
 
         return $this->response($this->view->assign(UserUtil::getVars(UserUtil::getVar('uid')))
@@ -1835,7 +1838,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
     public function updateUsersBlockAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         $blocks = ModUtil::apiFunc('BlocksModule', 'user', 'getall');
@@ -1849,14 +1852,14 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         }
 
         if (!$found) {
-            throw new \Zikula\Framework\Exception\FatalException();
+            throw new FatalException();
         }
 
         if ($this->request->getMethod() == 'POST') {
             $ublockon = (bool)$this->request->request->get('ublockon', false);
             $ublock = (string)$this->request->request->get('ublock', '');
         } else {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         $uid = UserUtil::getVar('uid');
@@ -1912,7 +1915,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
             }
         } elseif (isset($args) && !is_array($args)) {
             // Arrived via function call with bad $args
-            throw new \Zikula\Framework\Exception\FatalException(LogUtil::getErrorMsgArgs());
+            throw new FatalException(LogUtil::getErrorMsgArgs());
         } elseif ($this->request->getMethod() == 'POST') {
             // Arrived from a form post
             $args['login'] = $this->request->request->get('login', false);
@@ -1925,9 +1928,9 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         // must be coming from the login process. This is an exclusive-or. It is an error if neither is set,
         // and likewise if both are set. One or the other, please!
         if (!$args['login'] && !UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         } elseif ($args['login'] && UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\FatalException();
+            throw new FatalException();
         }
 
         // If we are coming here from the login process, then there are certain things that must have been
@@ -1936,7 +1939,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                 || !isset($sessionVars['authentication_info']) || !is_array($sessionVars['authentication_info'])
                 || !isset($sessionVars['authentication_method']) || !is_array($sessionVars['authentication_method']))
                 ) {
-            throw new \Zikula\Framework\Exception\FatalException();
+            throw new FatalException();
         }
 
         if ($this->getVar('changepassword', 1) != 1) {
@@ -1999,7 +2002,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         $this->request->getSession()->remove('User_updatePassword', 'Zikula_Users');
 
         if (!$this->request->getMethod() == 'POST') {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         $this->checkCsrfToken();
@@ -2014,9 +2017,9 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         $uid = $userObj['uid'];
 
         if (!$login && !UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         } elseif ($login && UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\FatalException();
+            throw new FatalException();
         }
 
         $passwordChanged    = false;
@@ -2066,7 +2069,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
                     }
                 }
             } else {
-                throw new \Zikula\Framework\Exception\FatalException($this->__('Sorry! There was a problem saving your new password.'));
+                throw new FatalException($this->__('Sorry! There was a problem saving your new password.'));
             }
         }
 
@@ -2097,7 +2100,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
     public function changeEmailAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         if ($this->getVar('changeemail', 1) != 1) {
@@ -2128,7 +2131,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
     public function updateEmailAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         $this->checkCsrfToken();
@@ -2177,12 +2180,12 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
     public function changeLangAction()
     {
         if (!UserUtil::isLoggedIn()) {
-            throw new \Zikula\Framework\Exception\ForbiddenException();
+            throw new ForbiddenException();
         }
 
         // Assign the languages
-        return $this->response($this->view->assign('languages', ZLanguage::getInstalledLanguageNames())
-                ->assign('usrlang', ZLanguage::getLanguageCode())
+        return $this->response($this->view->assign('languages', \ZLanguage::getInstalledLanguageNames())
+                ->assign('usrlang', \ZLanguage::getLanguageCode())
                 ->fetch('User/changelang.tpl'));
     }
 
@@ -2242,17 +2245,5 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
 
         $this->registerStatus($this->__('Done! Changed your e-mail address.'))
                 ->redirect(ModUtil::url($this->name, 'user', 'index'));
-    }
-
-    /**
-     * @see User::login
-     *
-     * @deprecated
-     */
-    public function loginScreenAction(array $args = array())
-    {
-        LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
-
-        return $this->redirect(ModUtil::url('Users', 'user', 'login'), 301);
     }
 }

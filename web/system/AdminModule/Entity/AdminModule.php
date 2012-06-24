@@ -15,6 +15,7 @@
 namespace AdminModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * AdminModule entity class.
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="admin_module",indexes={@ORM\index(name="mid_cid",columns={"mid","cid"})})
  */
-class AdminModule extends \Zikula_EntityAccess
+class AdminModule extends EntityAccess
 {
     /**
      * @ORM\Id

@@ -15,6 +15,7 @@
 namespace BlocksModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * BlockPosition entity class.
@@ -24,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="block_positions",indexes={@ORM\index(name="name_idx",columns={"name"})})
  */
-class BlockPosition extends \Zikula_EntityAccess
+class BlockPosition extends EntityAccess
 {
     /**
      * @ORM\Id

@@ -344,7 +344,7 @@ class AdminApi extends \Zikula\Framework\Api\AbstractApi
             }
 
             if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && is_callable($interactive_func)) {
-                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
+                // Because interactive installers extend the AbstractController, is_callable will always return true because of the __call()
                 // so we must check if the method actually exists by reflection - drak
                 if ($reflectionInteractive->hasMethod('upgrade')) {
                     $this->request->getSession()->set('interactive_remove', true);
@@ -950,7 +950,7 @@ class AdminApi extends \Zikula\Framework\Api\AbstractApi
         }
 
         if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && is_callable($interactive_func)) {
-            // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
+            // Because interactive installers extend the AbstractController, is_callable will always return true because of the __call()
             // so we must check if the method actually exists by reflection - drak
             if ($reflectionInteractive->hasMethod('upgrade')) {
                 $this->request->getSession()->set('interactive_upgrade', true);
