@@ -20,7 +20,7 @@ use Zikula\Component\DependencyInjection\ContainerBuilder;
 /**
  * One field in a form data container.
  */
-class Field extends \Zikula_AbstractBase
+class Field extends AbstractBase
 {
     /**
      * A reference back to the parent form data container.

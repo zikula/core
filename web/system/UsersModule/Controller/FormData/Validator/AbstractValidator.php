@@ -19,7 +19,7 @@ use Zikula\Component\DependencyInjection\ContainerBuilder;
 /**
  * Validates a field's data against specified criteria.
  */
-abstract class AbstractValidator extends \Zikula_AbstractBase
+abstract class AbstractValidator extends AbstractBase
 {
     /**
      * An error message that describes why the data is not valid.
@@ -34,7 +34,7 @@ abstract class AbstractValidator extends \Zikula_AbstractBase
      * @param ContainerBuilder $container The current service manager instance.
      * @param string         $errorMessage   The error message to report if the field's data does not validate.
      *
-     * @throws InvalidArgumentException Thrown if the error message is not a string or is empty.
+     *  Thrown if the error message is not a string or is empty.
      */
     public function __construct(ContainerBuilder $container, $errorMessage = null)
     {

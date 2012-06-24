@@ -17,11 +17,12 @@ namespace UsersModule\Controller\FormData;
 use ServiceUtil, InvalidArgumentException, Zikula_Request_Collection, Zikula_Session;
 use UsersModule\Controller\FormData\Field;
 use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Framework\AbstractBase;
 
 /**
  * A form data container and validator.
  */
-abstract class AbstractFormData extends \Zikula_AbstractBase
+abstract class AbstractFormData extends AbstractBase
 {
     /**
      * The value for the form's id attribute, and used in creating the id attribute for each field.
@@ -79,7 +80,7 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
      *
      * @return Field A reference to the field just added, to allow for function chaining to configure the field.
      *
-     * @throws InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
+     * @throws \InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
      */
     public function addField(Field $field)
     {
@@ -118,7 +119,7 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
      *
      * @return Field The field definition for the specified name.
      *
-     * @throws InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
+     * @throws \InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
      */
     public function getField($fieldName)
     {
