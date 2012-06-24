@@ -48,7 +48,7 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
      */
     public function initialize()
     {
-        define('SWIFT_REQUIRED_LOADED', true);
+        //define('SWIFT_REQUIRED_LOADED', true);
         define('SWIFT_INIT_LOADED', true);
 
         // register namespace
