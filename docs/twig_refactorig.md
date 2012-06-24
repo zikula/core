@@ -6,7 +6,7 @@ Documentation can be found at http://twig.sensiolabs.org/documentation
 Markup
 ------
 
-There are two kinds of markup, `{{ ... }}`` and tags as `{% ... %}`.
+There are two kinds of markup, `{{ ... }}` and tags as `{% ... %}`.
 Variables are specified as `{{ name }}` and within `{% ... %}`, they are as in the next example.
 Command blocks, e.g. `{% if name == 'drak' %}Hello Drak{% endif %}`
 Functions are called like this: `{{ strtolower(var) }}`
