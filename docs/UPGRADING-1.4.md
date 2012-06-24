@@ -44,15 +44,15 @@ ExampleModule/
             images/
                 admin.png
             js/
-        view/
+        views/
             User/
                 foo.html.twig
                 index.html.twig
                 report.xml.twig
             plugins/
                 function.foo.php
-            admin.tpl
-            user.tpl
+            admin.html.twig
+            user.html.twig
     Tests/
         Api/
             AdminApiTest.php
@@ -66,7 +66,7 @@ ExampleModule/
 ```
 
 The `Resources\public` folder contains all web assets.
-`Resources\view` is reserved for templates.
+`Resources\views` is reserved for templates.
 
   - It is no longer mandatory to use the AbstractController or AbstractApi base
     classes.
@@ -203,17 +203,17 @@ ExampleTheme/
             images/
                 example.png
             javascript/
-        view/
+        views/
             blocks/
-                lsblock.tpl
-                rsblock.tpl
+                lsblock.html.twig
+                rsblock.html.twig
             modules/
                 Search/
-                    admin.tpl
+                    admin.html.twig
             plugins/
                 function.foo.php
-            admin.tpl
-            user.tpl
+            admin.html.twig
+            user.html.twig
     ExampleTheme.php
     version.php
 ```
