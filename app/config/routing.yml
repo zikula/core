@@ -23,6 +23,10 @@ _foo:
 #    type:     annotation
 #    prefix:   /
 
+homepage:
+    pattern: /
+    defaults: { _controller:  CoreBundle:Default:homepage }
+
 # standard wildcard routing
 Zk13CatchAll:
     pattern: /{module}/{type}/{action}
