@@ -16,12 +16,13 @@
 namespace UsersModule\Controller;
 
 use Zikula_View;
-use \Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Controller\AbstractAuthenticationController;
 
 /**
  * Access to user-initiated authentication actions for the Users module.
  */
-class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
+class AuthenticationController extends AbstractAuthenticationController
 {
     /**
      * Post initialise.

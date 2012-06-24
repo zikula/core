@@ -18,7 +18,7 @@ namespace Zikula\Framework\Controller;
 /**
  * Abstract authentication module controller.
  */
-abstract class AbstractAuthentication extends AbstractController
+abstract class AbstractAuthenticationController extends AbstractController
 {
     /**
      * Indicates whether the authentication method is supported by this authentication module or not.

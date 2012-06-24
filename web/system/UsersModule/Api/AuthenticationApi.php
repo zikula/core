@@ -18,11 +18,12 @@ use UsersModule\Constants as UsersConstant;
 use \Zikula\Framework\Exception\FatalException;
 use UserUtil, ModUtil, LogUtil;
 use UsersModule\Helper\AuthenticationMethodHelper;
+use Zikula\Framework\Api\AbstractAuthenticationApi;
 
 /**
  * The user authentication services for the log-in process through the core Users table.
  */
-class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
+class AuthenticationApi extends AbstractAuthenticationApi
 {
     /**
      * The list of valid authentication methods that this module supports.
@@ -161,9 +162,9 @@ class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
         if (isset($args) && isset($args['filter'])) {
             if (is_numeric($args['filter']) && ((int)$args['filter'] == $args['filter'])) {
                 switch ($args['filter']) {
-                    case Zikula_Api_AbstractAuthentication::FILTER_NONE:
-                    case Zikula_Api_AbstractAuthentication::FILTER_ENABLED:
-                    case Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED:
+                    case AbstractAuthenticationApi::FILTER_NONE:
+                    case AbstractAuthenticationApi::FILTER_ENABLED:
+                    case AbstractAuthenticationApi::FILTER_REGISTRATION_ENABLED:
                         $filter = $args['filter'];
                         break;
                     default:
@@ -174,11 +175,11 @@ class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
                 throw new \Zikula\Framework\Exception\FatalException($this->__f('An invalid value for the \'filter\' parameter was received (\'%1$s\').', array($args['filter'])));
             }
         } else {
-            $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE;
+            $filter = AbstractAuthenticationApi::FILTER_NONE;
         }
 
         switch ($filter) {
-            case Zikula_Api_AbstractAuthentication::FILTER_ENABLED:
+            case AbstractAuthenticationApi::FILTER_ENABLED:
                 $authenticationMethods = array();
                 foreach ($this->authenticationMethods as $index => $authenticationMethod) {
                     if ($authenticationMethod->isEnabledForAuthentication()) {
@@ -186,7 +187,7 @@ class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
                     }
                 }
                 break;
-            case Zikula_Api_AbstractAuthentication::FILTER_REGISTRATION_ENABLED:
+            case AbstractAuthenticationApi::FILTER_REGISTRATION_ENABLED:
                 $authenticationMethods = array();
                 foreach ($this->authenticationMethods as $index => $authenticationMethod) {
                     if ($authenticationMethod->isEnabledForRegistration()) {
@@ -288,7 +289,7 @@ class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
             'authentication_info'   => $authenticationInfo,
             'authentication_method' => $authenticationMethod,
         );
-        $uid = ModUtil::apiFunc($this->name, 'Authentication', 'getUidForAuthenticationInfo', $getUidArgs, 'Zikula_Api_AbstractAuthentication');
+        $uid = ModUtil::apiFunc($this->name, 'Authentication', 'getUidForAuthenticationInfo', $getUidArgs, 'AbstractAuthenticationApi');
 
         if ($uid) {
             if (!isset($authenticationInfo['pass']) || !is_string($authenticationInfo['pass'])
@@ -559,9 +560,9 @@ class AuthenticationApi extends \Zikula\Framework\Api\AbstractAuthentication
     {
         $authenticatedUid = false;
 
-        $checkPassword = ModUtil::apiFunc($this->name, 'Authentication', 'checkPassword', $args, 'Zikula_Api_AbstractAuthentication');
+        $checkPassword = ModUtil::apiFunc($this->name, 'Authentication', 'checkPassword', $args, 'AbstractAuthenticationApi');
         if ($checkPassword) {
-            $authenticatedUid = ModUtil::apiFunc($this->name, 'Authentication', 'getUidForAuthenticationInfo', $args, 'Zikula_Api_AbstractAuthentication');
+            $authenticatedUid = ModUtil::apiFunc($this->name, 'Authentication', 'getUidForAuthenticationInfo', $args, 'AbstractAuthenticationApi');
 
             if (!$authenticatedUid) {
                 if ($args['authentication_method']['method'] == 'email') {

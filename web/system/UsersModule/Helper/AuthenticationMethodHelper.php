@@ -15,13 +15,14 @@
 
 namespace UsersModule\Helper;
 
-use \Zikula\Framework\Exception\FatalException;
+use Zikula\Framework\Exception\FatalException;
 use ModUtil, System;
+use Zikula\Framework\AbstractHelper;
 
 /**
  * Defines one valid authentication method.
  */
-class AuthenticationMethodHelper extends \Zikula_AbstractHelper
+class AuthenticationMethodHelper extends AbstractHelper
 {
     /**
      * The authentication module name that defines the method.
@@ -33,7 +34,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     /**
      * The name of the defined authentication method.
      *
-     * @var type
+     * @var string
      */
     protected $method;
 

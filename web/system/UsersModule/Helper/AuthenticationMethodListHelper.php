@@ -17,14 +17,15 @@ namespace UsersModule\Helper;
 
 use ModUtil, LogUtil;
 use \Zikula\Framework\Exception\FatalException;
-use Zikula_AbstractBase;
-use Zikula_Api_AbstractAuthentication;
-use Zikula_AbstractErrorHandler;
+use Zikula\Framework\AbstractBase;
+use Zikula\Framework\Api\AbstractAuthenticationApi;
+use Zikula\Framework\AbstractErrorHandler;
+use Zikula\Framework\AbstractHelper;
 
 /**
  * A list of authentication methods advertised by modules that have the authentication capability.
  */
-class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \ArrayAccess, \Countable, \Iterator
+class AuthenticationMethodListHelper extends AbstractHelper implements \ArrayAccess, \Countable, \Iterator
 {
     /**
      * An internally maintained list of all authentication methods as gathered from modules advertising the 'authentication' capability.
@@ -64,12 +65,12 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
     /**
      * Creates an instance of this collection, initializeing the list.
      *
-     * @param Zikula_AbstractBase $base                                 The parent base for this collection.
+     * @param AbstractBase $base                                 The parent base for this collection.
      * @param array               $orderedListableAuthenticationMethods Used to order and filter the list.
      *
      * @throws \Zikula\Framework\Exception\FatalException Thrown if a list of authentication modules cannot be obtained from ModUtil.
      */
-    public function __construct(\Zikula\Framework\AbstractBase $base, array $orderedListableAuthenticationMethods = array(), $filter = Zikula_Api_AbstractAuthentication::FILTER_NONE)
+    public function __construct(AbstractBase $base, array $orderedListableAuthenticationMethods = array(), $filter = AbstractAuthenticationApi::FILTER_NONE)
     {
         parent::__construct($base);
 
@@ -84,22 +85,22 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
             $getAuthenticationMethodsArgs = array(
                 'filter' => $filter,
             );
-            $moduleAuthenticationMethods = ModUtil::apiFunc($modinfo['name'], 'Authentication', 'getAuthenticationMethods', $getAuthenticationMethodsArgs, 'Zikula_Api_AbstractAuthentication');
+            $moduleAuthenticationMethods = ModUtil::apiFunc($modinfo['name'], 'Authentication', 'getAuthenticationMethods', $getAuthenticationMethodsArgs, 'Zikula_Api_AbstractAuthenticationApi');
             if (is_array($moduleAuthenticationMethods) && !empty($moduleAuthenticationMethods)) {
                 $this->authenticationMethods = array_merge($this->authenticationMethods, array_values($moduleAuthenticationMethods));
                 $this->nameIndex[$modinfo['name']] = array();
             }
         }
 
-        if (empty($this->authenticationMethods) && (($filter == Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
-            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), Zikula_AbstractErrorHandler::CRIT);
+        if (empty($this->authenticationMethods) && (($filter == AbstractAuthenticationApi::FILTER_NONE) || ($filter == AbstractAuthenticationApi::FILTER_ENABLED))) {
+            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), AbstractErrorHandler::CRIT);
             $this->authenticationMethods[] = new AuthenticationMethodHelper($this->name, 'uname',
                 $this->__('User name'), $this->__('User name and password'));
             $this->nameIndex[$this->name] = array();
         }
 
         foreach ($this->authenticationMethods as $index => $authenticationMethod) {
-            $this->nameIndex[$authenticationMethod->modname][$authenticationMethod->method] = &$this->authenticationMethods[$index];
+            $this->nameIndex[$authenticationMethod->modname][$authenticationMethod->method] = $this->authenticationMethods[$index];
         }
 
         if (!empty($orderedListableAuthenticationMethods)) {
@@ -108,10 +109,10 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
                     if (isset($this->nameIndex[$authenticationMethodId['modname']][$authenticationMethodId['method']])) {
                         $this->orderedListableAuthenticationMethods[] = $this->nameIndex[$authenticationMethodId['modname']][$authenticationMethodId['method']];
                     } else {
-                        LogUtil::log($this->__f('The authentication method \'%2$s\' is not a listable method for the module \'%1$s\'. It will be ignored.', array($authenticationMethod['modname'], $authenticationMethod['method'])), Zikula_AbstractErrorHandler::WARN);
+                        LogUtil::log($this->__f('The authentication method \'%2$s\' is not a listable method for the module \'%1$s\'. It will be ignored.', array($authenticationMethod['modname'], $authenticationMethod['method'])), AbstractErrorHandler::WARN);
                     }
                 } else {
-                    LogUtil::log($this->__f('The module \'%1$s\' is not a listable authentication module. All methods specified for it will be ignored.', array($authenticationMethod['modname'])), Zikula_AbstractErrorHandler::WARN);
+                    LogUtil::log($this->__f('The module \'%1$s\' is not a listable authentication module. All methods specified for it will be ignored.', array($authenticationMethod['modname'])), AbstractErrorHandler::WARN);
                 }
             }
 
