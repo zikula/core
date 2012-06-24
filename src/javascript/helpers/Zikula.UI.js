@@ -1840,3 +1840,44 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
         });
     }
 });
+Zikula.UI.ContextMenu = Class.create(Control.ContextMenu,/** @lends Zikula.UI.ContextMenu.prototype */{
+    /**
+     * Custom extension for Livepipe ContextMenu
+     * Inherit all of the methods, options and events from
+     * <a href="http://livepipe.net/control/contextmenu">Livepipe ContextMenu</a>.
+     * Overwrites parents constructor to fix issue with Opera. Usage stay as it was with Control.ContextMenu.
+     *
+     * @class Zikula.UI.ContextMenu
+     * @constructs
+     *
+     * @param {ContextMenu} $super Reference to super class, this is private param, do not use it.
+     * @param {HTMLElement} container Element that the ContextMenu is attached to
+     * @param {Object} [options] Config object
+     *
+     * @return {Zikula.UI.ContextMenu} New Zikula.UI.ContextMenu instance
+     */
+    initialize: function($super, container, options){
+        Control.ContextMenu.load();
+        this.options = Object.extend({
+            leftClick: false,
+            disableOnShiftKey: true,
+            disableOnAltKey: true,
+            selectedClassName: 'selected',
+            activatedClassName: 'activated',
+            animation: true,
+            animationCycles: 2,
+            animationLength: 300,
+            delayCallback: true
+        },options || {});
+        this.activated = false;
+        this.items = this.options.items || [];
+        this.container = $(container);
+        var eventName = this.options.leftClick ? 'click' : (Prototype.Browser.Opera ? 'click' : 'contextmenu');
+        this.container.observe(eventName, function(event){
+            if(!Control.ContextMenu.enabled || (!this.options.leftClick && Prototype.Browser.Opera && !event.ctrlKey)) {
+                return;
+            }
+            this.open(event);
+        }.bindAsEventListener(this));
+    }
+});

@@ -30,7 +30,7 @@
                         <script type="text/javascript">
                         /* <![CDATA[ */
                         {{if $modlinks}}
-                            var context_mcontext{{$moduleid}} = new Control.ContextMenu('mcontext{{$moduleid}}',{
+                            var context_mcontext{{$moduleid}} = new Zikula.UI.ContextMenu('mcontext{{$moduleid}}',{
                                 leftClick: true,
                                 animation: false
                             });

@@ -54,7 +54,7 @@
 
             <script type="text/javascript">
             /* <![CDATA[ */
-                var context_catcontext{{$menuoption.cid}} = new Control.ContextMenu('catcontext{{$menuoption.cid}}',{
+                var context_catcontext{{$menuoption.cid}} = new Zikula.UI.ContextMenu('catcontext{{$menuoption.cid}}',{
                     leftClick: true,
                     animation: false
                 });
