@@ -139,7 +139,7 @@ function _smarty_function_modulelinks($id, $links)
     $html .= '<span id="modcontext' .$id .'" class="z-drop">&nbsp;</span>';
     $html .= "<script type='text/javascript'>
             /* <![CDATA[ */
-                var context_modcontext{$id} = new Control.ContextMenu('modcontext{$id}',{
+                var context_modcontext{$id} = new Zikula.UI.ContextMenu('modcontext{$id}',{
                     leftClick: true,
                     animation: false
                 });";

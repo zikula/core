@@ -151,7 +151,7 @@ Admin.Module = {};
  */
 Admin.Context.Add = function(nid)
 {
-    context_menu.push(new Control.ContextMenu(nid, {animation: false}));
+    context_menu.push(new Zikula.UI.ContextMenu(nid, {animation: false}));
     context_menu[context_menu.length - 1].addItem( {
         label : lblEdit,
         callback : function(nid) {
@@ -464,7 +464,7 @@ Admin.Category.addResponse = function(req)
         + data.response + '" class="z-admindrop">&nbsp;</span>';
     newcat.setAttribute("class","admintab");
     newcat.setAttribute("id", "admintab_" + data.response);
-    window['context_catcontext' + data.response] =  new Control.ContextMenu('catcontext' + data.response,{leftClick: true,animation: false });
+    window['context_catcontext' + data.response] =  new Zikula.UI.ContextMenu('catcontext' + data.response,{leftClick: true,animation: false });
 
     var newelement = document.createElement('li');
     newelement.innerHTML = old;

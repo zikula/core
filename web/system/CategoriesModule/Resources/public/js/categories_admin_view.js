@@ -17,7 +17,7 @@ Event.observe(window, 'load', function() {
 });
 
 Zikula.Categories.AttachMenu = function () {
-    Zikula.Categories.ContextMenu = new Control.ContextMenu(Zikula.TreeSortable.trees.categoriesTree.tree, {
+    Zikula.Categories.ContextMenu = new Zikula.UI.ContextMenu(Zikula.TreeSortable.trees.categoriesTree.tree, {
         animation: false,
         beforeOpen: function(event) {
             Zikula.Categories.ContextMenu.lastClick = event;
