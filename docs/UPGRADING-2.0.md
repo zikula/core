@@ -1,4 +1,4 @@
-UPGRADING MODULES TO CORE 1.4
+UPGRADING MODULES TO CORE 2.0
 =============================
 
 This version of Zikula is about migrating previously core technologies out to

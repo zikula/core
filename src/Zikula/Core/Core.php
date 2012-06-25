@@ -49,7 +49,7 @@ class Core
     /**
      * The core Zikula version number.
      */
-    const VERSION_NUM = '1.4.0-dev';
+    const VERSION_NUM = '2.0.0-dev';
 
     /**
      * The version ID.
@@ -64,7 +64,7 @@ class Core
     /**
      * The minimum required PHP version for this release of core.
      */
-    const PHP_MINIMUM_VERSION = '5.3.2';
+    const PHP_MINIMUM_VERSION = '5.3.3';
 
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;
