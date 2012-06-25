@@ -27,7 +27,7 @@
  *
  * Zikula offers a set of API functions to manipulate page variables.
  *
- * A module can register a new page variable by providing its metadata using the pnPageRegisterVar
+ * A module can register a new page variable by providing its metadata using the RegisterVar
  * function.
  *
  * Zikula doesn't impose any restriction on the page variable's name except for duplicate
