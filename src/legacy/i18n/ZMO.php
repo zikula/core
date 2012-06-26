@@ -136,7 +136,6 @@ class ZMO
         // If there isn't a StreamReader, turn on short circuit mode.
         if ($reader->getError()) {
             $this->short_circuit = true;
-
             return;
         }
 
@@ -351,10 +350,11 @@ class ZMO
         if (!$length) {
             return '';
         }
+
         $this->stream->seekto($offset);
         $data = $this->stream->read($length);
 
-        return (string)$data;
+        return (string) $data;
     }
 
     /**
@@ -371,11 +371,12 @@ class ZMO
         if (!$length) {
             return '';
         }
+
         $this->stream->seekto($offset);
         $data = $this->stream->read($length);
         $data = $this->encode($data);
 
-        return (string)$data;
+        return (string) $data;
     }
 
     /**
