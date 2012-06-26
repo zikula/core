@@ -20,7 +20,6 @@ class ZGettext
      * Singleton instance.
      *
      * @var ZGettext
-     * @static
      */
     private static $instance;
 
@@ -34,7 +33,7 @@ class ZGettext
     /**
      * Locale category.
      *
-     * @var constant
+     * @var integer
      */
     public $category = LC_MESSAGES;
 
@@ -114,9 +113,9 @@ class ZGettext
 
 
     /**
-     * get LC_CATEGORY.
+     * Get LC_CATEGORY.
      *
-     * @return constant
+     * @return integer
      */
     public function getCategory()
     {
@@ -127,7 +126,7 @@ class ZGettext
     /**
      * Translate LC_CONSTANTS to internal form.
      *
-     * @param constant $lc LC_CONSTANT.
+     * @param integer $lc LC_CONSTANT.
      *
      * @return string LC_CONSTANT
      */
@@ -184,9 +183,9 @@ class ZGettext
     /**
      * Get reader for translation
      *
-     * @param string   $domain   Domain.
-     * @param constant $category A LC_CONSTANT.
-     * @param boolean  $cache    Whether or not to cache the reader.
+     * @param string  $domain   Domain.
+     * @param integer $category A LC_CONSTANT.
+     * @param boolean $cache    Whether or not to cache the reader.
      *
      * @return ZMO Reader object.
      */
