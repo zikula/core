@@ -301,7 +301,7 @@ class Zikula_HookManager
             try {
                 $this->eventManager->attach($handler['eventname'], $callable);
             } catch (InvalidArgumentException $e) {
-                throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because " . $e->getMessage());
             }
         }
 
