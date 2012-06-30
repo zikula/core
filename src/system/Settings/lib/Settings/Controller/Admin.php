@@ -15,6 +15,17 @@
 class Settings_Controller_Admin extends Zikula_AbstractController
 {
     /**
+     * Post initialise.
+     *
+     * @return void
+     */
+    protected function postInitialize()
+    {
+        // In this controller we do not want caching.
+        $this->view->setCaching(Zikula_View::CACHE_DISABLED);
+    }
+
+    /**
      * entry point for the module
      *
      * @return string html output
