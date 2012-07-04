@@ -26,7 +26,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
         $moduleID = $this->request->request->get('modid');
-        $newParentCat = $this->request->request->get('cat');
+        $newParentCat = (int)$this->request->request->get('cat');
 
         //get info on the module
         $module = ModUtil::getInfo($moduleID);
@@ -46,12 +46,13 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('Error! Could not add module to module category.'));
         }
 
-        $output = array();
-        $output['response'] = $moduleID;
-        $output['newParentCat'] = $newParentCat;
-        $output['oldcid'] = $oldcid;
-        $output['modulename'] = $displayname;
-        $output['url'] = ModUtil::url($module, 'admin', 'main');
+        $output = array(
+            'id' => $moduleID,
+            'name' => $displayname,
+            'url' => ModUtil::url($module, 'admin', 'main'),
+            'parentCategory' => $newParentCat,
+            'oldCategory' => $oldcid,
+        );
 
         return new Zikula_Response_Ajax($output);
     }
@@ -97,10 +98,11 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('The category could not be created.'));
         }
 
-        $output = array();
-        $output['response'] = $result;
-        $url = ModUtil::url('Admin', 'admin', 'adminpanel', array('acid' => $result));
-        $output['url'] = $url;
+        $output = array(
+            'id' => $result,
+            'name' => $name,
+            'url' => ModUtil::url('Admin', 'admin', 'adminpanel', array('acid' => $result))
+        );
 
         return new Zikula_Response_Ajax($output);
     }

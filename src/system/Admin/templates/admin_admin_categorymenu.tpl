@@ -1,15 +1,5 @@
 {ajaxheader modname='Admin' filename='admin_admin_ajax.js' ui=true}
 
-<script type="text/javascript">
-    /* <![CDATA[ */
-    var lblclickToEdit = "{{gt text='Right-click down arrows to edit tab name'}}";
-    var lblEdit = "{{gt text='Edit category'}}";
-    var lblDelete = "{{gt text='Delete category'}}";
-    var lblMakeDefault = "{{gt text='Make default category'}}";
-    var lblSaving = "{{gt text='Saving'}}";
-    /* ]]> */
-</script>
-
 <div class="z-admin-breadcrumbs">
     <span class="z-sub">{gt text='You are in:'}</span>
     <span class="z-breadcrumb"><a href="{modurl modname='Admin' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
@@ -44,40 +34,22 @@
 </div>
 
 {insert name="getstatusmsg"}
-
+<input type="hidden" name="admintabs-menuoptions" id="admintabs-menuoptions" value="{$menuoptions|@json_encode|escape}" />
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="z-clearfix">
         {foreach from=$menuoptions name='menuoption' item='menuoption'}
         <li id="admintab_{$menuoption.cid}" class="admintab {if $currentcat eq $menuoption.cid} active{/if}" style="z-index:0;">
-            <a id="C{$menuoption.cid}" href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
-            <span id="catcontext{$menuoption.cid}" class="z-admindrop">&nbsp;</span>
-
-            <script type="text/javascript">
-            /* <![CDATA[ */
-                var context_catcontext{{$menuoption.cid}} = new Zikula.UI.ContextMenu('catcontext{{$menuoption.cid}}',{
-                    leftClick: true,
-                    animation: false
-                });
-
-                {{foreach from=$menuoption.items item=item}}
-                    context_catcontext{{$menuoption.cid}}.addItem({
-                        label: '{{$item.menutext|safetext}}',
-                        callback: function(){window.location = '{{$item.menutexturl}}';}
-                    });
-                {{/foreach}}
-
-            /* ]]> */
-            </script>
-
+            <a href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
+            <span class="z-admindrop">&nbsp;</span>
         </li>
         {/foreach}
         <li id="addcat">
-            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}" onclick='return Admin.Category.New(this);'>&nbsp;</a>
+            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
+            {include file='admin_admin_ajaxAddCategory.tpl'}
         </li>
     </ul>
 
     {helplink}
-    {include file='admin_admin_ajaxAddCategory.tpl'}
 </div>
 
 <div class="z-hide" id="admintabs-none"></div>

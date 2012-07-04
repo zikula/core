@@ -1,483 +1,427 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
 /**
- * Onload function adds droppable locations to all the tabs as well as context
- * menus and inplace editors.
+ * Zikula AdminPanel namespace
+ *
+ * @name Zikula.AdminPanel
+ * @namespace Zikula AdminPanel namespace
  */
-document.observe('dom:loaded', function() {
-    // make the system checks a Panel
+Zikula.define('AdminPanel');
+
+Zikula.AdminPanel.labels = {
+    clickToEdit: Zikula.__('Right-click down arrows to edit tab name'),
+    edit: Zikula.__('Edit category'),
+    remove: Zikula.__('Delete category'),
+    makeDefault: Zikula.__('Make default category'),
+    saving: Zikula.__('Saving')
+};
+
+Zikula.AdminPanel.setupNotices = function() {
     var options = {
-        headerSelector: 'strong',
-        headerClassName: 'z-systemnoticeheader z-panel-indicator',
-        effectDuration: 0.5
-    };
+            headerSelector: 'strong',
+            headerClassName: 'z-systemnoticeheader z-panel-indicator',
+            effectDuration: 0.5
+        },
+        ul_first = $$('#z-developernotices ul:first');
     if ($('z-securityanalyzer')) {
         options.active = [0];
     }
-    new Zikula.UI.Panels('admin-systemnotices', options);
-    var ul_first = $$('#z-developernotices ul:first');
+    Zikula.AdminPanel.noticesPanels = new Zikula.UI.Panels('admin-systemnotices', options);
     if (ul_first[0]) {
         ul_first[0].removeClassName('z-hide');
     }
-});
+};
 
-Event.observe(window, 'load', function() {
-    context_menu = Array();
-    editors = Array();
-    droppables = Array();
+Zikula.AdminPanel.Tab = Class.create(/** @lends Zikula.AdminPanel.Tab.prototype */{
+    initialize: function(tab, create) {
+        if (create) {
+            this.tab = this.createTab(create);
+        } else {
+            this.tab = $(tab);
+        }
+        this.id = /admintab_(\d+)/.exec(this.tab.identify())[1];
+        this.attachActionsMenu();
+        this.attachModulesMenu();
+        this.attachEditor();
+        Droppables.add(this.tab.down('a'), {
+            accept: 'draggable',
+            hoverclass: 'ajaxhover',
+            onDrop: function(module, tab) {
+                Zikula.AdminPanel.Module.getModule(module).move(tab);
+            }
+        });
+        this.tab.store('tab', this);
+    },
+    createTab: function(data) {
+        var link = new Element('a', {
+                href: data.url
+            }).update(data.name),
+            menu = new Element('span', {
+                'class': 'z-admindrop'
+            }).update('&nbsp;'),
+            tab = new Element('li', {
+                id: 'admintab_' + data.id,
+                'class': 'admintab',
+                style: 'z-index: 0'
+            }).insert(link).insert(menu);
 
-    //make the admin tabs (categories) sortable
-    make_tabs_sortable = function() {
-        Sortable.create('admintabs',{
-            tag:'li',
-            constraint: 'horizontal',
-            onChange: function(element) {
-                //stops the default link action (change curent category) when dropping sortable
-                $$("#"+element.id + " a").each(function(item) {
-                    Event.observe(item.id, 'click', function(event) {
-                        event.preventDefault();
-                    });
+        $('addcat').insert({
+            before: tab
+        });
+        return tab;
+    },
+    attachActionsMenu: function() {
+        var menuContainer = this.tab.down('span'),
+            menu = new Zikula.UI.ContextMenu(menuContainer, {animation: false}),
+            tabKlass = this;
+        menu.addItem({
+            label: Zikula.AdminPanel.labels.edit,
+            callback: function(item) {
+                tabKlass.editor.enterEditMode();
+            }
+        });
+        menu.addItem({
+            label: Zikula.AdminPanel.labels.remove,
+            callback: function(item) {
+                tabKlass.deleteTab();
+            }
+        });
+        menu.addItem({
+            label: Zikula.AdminPanel.labels.makeDefault,
+            callback: function(item) {
+                tabKlass.setTabDefault();
+            }
+        });
+        this.actionsMenu = menu;
+    },
+    attachModulesMenu: function() {
+        var menuContainer = this.tab.down('span'),
+            modules = Zikula.AdminPanel.Tab.menusData[this.id] ? Zikula.AdminPanel.Tab.menusData[this.id].items : [],
+            menu = new Zikula.UI.ContextMenu(menuContainer, {
+                leftClick: true,
+                animation: false
+            });
+        modules.each(function(item) {
+            menu.addItem({
+                label: item.menutext,
+                moduleId: item.id,
+                callback: function() {window.location = item.menutexturl;}
+            });
+        });
+        this.modulesMenu = menu;
+    },
+    attachEditor: function() {
+        var link = this.tab.down('a'),
+            tabKlass = this;
+        this.editor = new Ajax.InPlaceEditor(link, 'ajax.php?module=Admin&type=ajax&func=editCategory', {
+            clickToEditText: Zikula.AdminPanel.labels.clickToEdit,
+            savingText: Zikula.AdminPanel.labels.saving,
+            externalControl: 'admintabs-none',
+            externalControlOnly: true,
+            rows: 1,
+            cols: link.innerHTML.length,
+            submitOnBlur: true,
+            okControl: false,
+            cancelControl: false,
+            ajaxOptions: Zikula.Ajax.Request.defaultOptions(),
+            // in webkit browsers , when submitOnBlur is true
+            // enter press causes form submission twice so catch this event, stop it and call blur on input
+            onFormCustomization: function(editor, form) {
+                $(form).observe('keypress', function(event) {
+                    if (event.keyCode === Event.KEY_RETURN) {
+                        event.stop();
+                        event.element().blur();
+                    }
                 });
             },
-            onUpdate: function(element){
-                //reset the default action after drop has been completed
-                Event.observe(element.id, 'mousemove', function(event) {  
-                    $$("#"+element.id + " a").each(function(item) {
-                        Event.stopObserving(item.id, 'click');
-                    });
-                    Event.stopObserving(element.id, 'mousemove');
-                });
-                var pars = Sortable.serialize("admintabs");
+            onEnterEditMode: function(form, value) {
+                tabKlass.originalText = link.innerHTML;
+            },
+            callback: function(form, value) {
+                return {
+                    name: value,
+                    cid: tabKlass.id
+                };
+            },
+            onComplete: function(transport, element) {
+                transport = Zikula.Ajax.Response.extend(transport);
+                if (!transport.isSuccess()) {
+                    link.update(tabKlass.originalText);
+                    Zikula.showajaxerror(transport.getMessage());
+                    return;
+                }
+                var data = transport.getData();
+                link.update(data.response);
+            }
+        });
+    },
+    deleteTab: function() {
+        var pars = {
+            cid: this.id
+        };
+        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=deleteCategory", {
+            parameters: pars,
+            onComplete: this.deleteTabResponse.bind(this)
+        });
+    },
+    deleteTabResponse: function(response) {
+        if (!response.isSuccess()) {
+            Zikula.showajaxerror(response.getMessage());
+            return;
+        }
+        this.tab.remove();
+        Zikula.AdminPanel.Tab.removeTab(this.id);
+    },
+    setTabDefault: function() {
+        var pars = {
+            cid: this.id
+        };
+        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=defaultCategory", {
+            parameters: pars,
+            onComplete: this.setTabDefaultResponse.bind(this)
+        });
+    },
+    setTabDefaultResponse: function(response) {
+        if (!response.isSuccess()) {
+            Zikula.showajaxerror(response.getMessage());
+        }
+    }
+});
+
+Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
+    tabs: {},
+    menusData: {},
+    getTab: function(element) {
+        element = $(element);
+        var tab;
+        if (element.nodeName === 'LI' && element.hasClassName('admintab')) {
+            tab = element;
+        } else {
+            tab = element.up('li.admintab');
+        }
+        return tab ? $(tab).retrieve('tab') : null;
+    },
+    removeTab: function(tabId) {
+        delete this.tabs[tabId];
+        this.setupSortable();
+    },
+    init: function() {
+        this.menusData = $('admintabs-menuoptions').getValue().unescapeHTML().evalJSON();
+        this.setupSortable();
+        // prevent clicks on links during dragging tabs
+        var preventDefault = function(event) {
+            event.preventDefault();
+            event.element().stopObserving('click', preventDefault);
+        };
+        Draggables.addObserver({
+            onStart: function(name, draggable, event) {
+                draggable.element.down('a').stopObserving('click', preventDefault);
+                setTimeout(function() {
+                    draggable.element.down('a').observe('click', preventDefault);
+                }, 200);
+            }
+        });
+        $('admintabs').select('li.admintab').each(function(tab) {
+            var klass = new Zikula.AdminPanel.Tab(tab);
+            this.tabs[klass.id] = klass;
+        }.bind(this));
+        this.setupForm();
+    },
+    setupSortable: function() {
+        Sortable.destroy('admintabs');
+        Sortable.create('admintabs', {
+            tag: 'li',
+            constraint: 'horizontal',
+            onUpdate: function(sortable) {
+                var pars = Sortable.serialize('admintabs');
                 //send the new sort order to the ajax controller
                 new Zikula.Ajax.Request(
-                    "ajax.php?module=Admin&type=ajax&func=sortCategories", {
+                    'ajax.php?module=Admin&type=ajax&func=sortCategories', {
                         parameters: pars,
-                        onComplete: function (req) {
-                            if (!req.isSuccess()) {
-                                Zikula.showajaxerror(req.getMessage());
-                                return;
+                        onComplete: function(response) {
+                            if (!response.isSuccess()) {
+                                Zikula.showajaxerror(response.getMessage());
                             }
-                            return;
                         }
                     }
                 );
-                return;
             },
             //prevents sorting of the "add new category" link
-            only: Array("admintab","active")
+            only: ['admintab', 'active']
         });
-    };
-    make_tabs_sortable();
-
-    //make the modules sortable
-    make_modules_sortable = function() {
-        Sortable.create('modules',{
-            tag: 'div',
-            constraint: "",
-            only: Array("z-adminiconcontainer"),
-            handle: 'z-dragicon',
-            onUpdate: function(element){
-                var pars = Sortable.serialize("modules");
-                //send the new order to the ajax controller
-                new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=sortModules", {
-                    parameters: pars,
-                    onComplete: function (req) {
-                        if (!req.isSuccess()) {
-                            Zikula.showajaxerror(req.getMessage());
-                            return;
-                        }
-                        return;
-                    }
-                });
-            return;
-            }
+    },
+    setupForm: function() {
+        this.addTabLink = $('addcatlink');
+        this.addTabForm = $('ajaxNewCatHidden').removeClassName('z-hide').hide();
+        this.addTabLink.observe('click', this.addTabShowForm.bindAsEventListener(this));
+        this.addTabForm.down('form').observe('submit', this.addTabSave.bindAsEventListener(this));
+        this.addTabForm.down('a.cancel').observe('click', this.addTabHideForm.bindAsEventListener(this));
+        this.addTabForm.down('a.save').observe('click', this.addTabSave.bindAsEventListener(this));
+        return this;
+    },
+    addTabShowForm: function(event) {
+        if (event) {
+            event.stop();
+        }
+        this.addTabLink.hide();
+        this.addTabForm.show();
+        return this;
+    },
+    addTabHideForm: function(event) {
+        if (event) {
+            event.stop();
+        }
+        this.addTabLink.show();
+        this.addTabForm.hide().down('form').reset();
+        return this;
+    },
+    addTabSave: function(event) {
+        event.stop();
+        var name = this.addTabForm.down('[name=name]').getValue();
+        if (name === '') {
+            Zikula.showajaxerror(Zikula.__('You must enter a name for the new category'));
+            return this;
+        }
+        this.addTabHideForm();
+        var pars = {
+            name: name
+        };
+        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
+            parameters: pars,
+            onComplete: this.addTabResponse.bind(this)
         });
-    }
-    if ( $$("#modules div").size() > 0) {
-        make_modules_sortable();
-    }
+        return this;
+    },
+    addTabResponse: function(response) {
+        if (!response.isSuccess()) {
+            Zikula.showajaxerror(response.getMessage());
+            this.addTabHideForm();
+            return this;
+        }
+        var data = response.getData(),
+            tabKlass = new Zikula.AdminPanel.Tab(null, data);
+        this.tabs[tabKlass.id] = tabKlass;
+        Zikula.AdminPanel.Tab.setupSortable();
 
-    //add context menus to tabs, as well as make them droppable
-    var list = $('admintabs');
-    if (list.hasChildNodes) {
-        var nodes = list.getElementsByTagName("a");
-        for ( var i = 0; i < nodes.length; i++) {
-            var nid = nodes[i].getAttribute('id');
-            Admin.Editor.Add(nid);
-            var droppable = Droppables.add(nid, {
-                    accept : 'draggable',
-                    hoverclass : 'ajaxhover',
-                    onDrop : function(drag, drop) {
-                        Admin.Module.Move(drag.id, drop.id);
-                }
-            });
-        }
-        droppables.push(droppable);
-        
-        var nodes = list.getElementsByTagName("span");
-        for ( var i = 0; i < nodes.length; i++) {
-            var nid = nodes[i].getAttribute('id');
-            if (nid != null && nodes[i].id != 'addcatlink') {
-                Admin.Context.Add(nid);
-                if ($(nodes[i]).up('li').hasClassName('active'))
-                    continue;
-            }
-        }
+        return this;
     }
-    //this isn't really needed because sortable makes it dragable as well.
-    /*
-    $$("#modules div").each(function(item) {
-            alert("dragicon"+item.id.substr(7)); 
-            new Draggable(item.id, {
-                    revert: true,
-                    handle: "dragicon"+item.id.substr(7),
-                    zindex: 2200 // must be higher than the active minitab and all other admin icons
-            });
-    });*/
 });
 
-
-var Admin = {};
-Admin.Context = {};
-Admin.Tab = {};
-Admin.Category = {};
-Admin.Editor = {};
-Admin.Module = {};
-
-/**
- * Add context menu to element nid.
- * @param nid the id of the element
- * @return void
+// modules
+/*
+ to review:
+ - moving module to other tab
  */
-Admin.Context.Add = function(nid)
-{
-    context_menu.push(new Zikula.UI.ContextMenu(nid, {animation: false}));
-    context_menu[context_menu.length - 1].addItem( {
-        label : lblEdit,
-        callback : function(nid) {
-            var cid = nid.id.match(/catcontext(\d+)/)[1];
-            if (cid) {
-                Admin.Editor.Get("C" + cid).enterEditMode();
-            }
-            return;
-        }
-    });
-    context_menu[context_menu.length - 1].addItem( {
-        label : lblDelete,
-        callback : function(nid) {
-            var cid = nid.id.match(/catcontext(\d+)/)[1];
-            if (cid) {
-                Admin.Tab.Delete(cid);
-            }
-            return;
-        }
-    });
-    context_menu[context_menu.length - 1].addItem( {
-        label : lblMakeDefault,
-        callback : function(nid) {
-            var cid = nid.id.match(/catcontext(\d+)/)[1];
-            if (cid) {
-                Admin.Tab.setDefault(cid);
-            }
-            return;
-        }
-    });
-}
 
-/**
- * Add an inplace editor to element nid.
- * @param nid id of element.
- * @return void
- */
-Admin.Editor.Add = function(nid)
-{
-    var nelement = $(nid);
-    var tLength = nelement.innerHTML.length;
-    var editor = new Ajax.InPlaceEditor(nid,"ajax.php?module=Admin&type=ajax&func=editCategory",{
-        clickToEditText: lblclickToEdit,
-        savingText: lblSaving,
-        externalControl: "admintabs-none",
-        externalControlOnly: true,
-        rows:1,cols: tLength,
-        submitOnBlur: true,
-        okControl: false,
-        cancelControl: false,
-        ajaxOptions: Zikula.Ajax.Request.defaultOptions(),
-        // in webkit browsers , when submitOnBlur is true
-        // enter press causes form submission twice so catch this event, stop it and call blur on input
-        onFormCustomization: function(obj, form) {
-            $(form).observe('keypress',function(e) {
-                if(e.keyCode == Event.KEY_RETURN) {
-                    e.stop();
-                    e.element().blur();
-                }
+Zikula.AdminPanel.Module = Class.create(/** @lends Zikula.AdminPanel.Module.prototype */{
+    initialize: function(module) {
+        this.module = $(module);
+        this.id = (/module_(\d+)/).exec($(this.module).identify())[1];
+        this.attachMenu();
+        this.module.store('module', this);
+    },
+    attachMenu: function() {
+        var modLinks = this.module.down('input.modlinks').getValue().unescapeHTML().evalJSON() || [],
+            menu;
+        if (modLinks.size() > 0) {
+            menu = new Zikula.UI.ContextMenu(this.module.down('.module-context'), {
+                leftClick: true,
+                animation: false
             });
-        },
-        callback: function(form, value) {
-            var cid = form.id.substring(1,form.id.indexOf('-inplaceeditor'));
-            return {
-                name: value,
-                cid: cid
-            };
-        },
-        onComplete: function(transport, element) {
-            transport = Zikula.Ajax.Response.extend(transport);
-            if (!transport.isSuccess()) {
-                this.element.innerHTML = Admin.Editor.getOrig(element.id);
-                Zikula.showajaxerror(transport.getMessage());
-                return;
+            modLinks.each(function(item) {
+                menu.addItem({
+                    label: item.text,
+                    callback: function() {window.location = item.url;}
+                });
+            });
+            this.menu = menu;
+        }
+    },
+    move: function(tab) {
+        var pars = {
+            modid: this.id,
+            cat: Zikula.AdminPanel.Tab.getTab(tab).id
+        };
+        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=changeModuleCategory", {
+            parameters: pars,
+            onComplete: this.moveResponse.bind(this)
+        });
+    },
+    moveResponse: function(response) {
+        if (!response.isSuccess()) {
+            Zikula.showajaxerror(response.getMessage());
+            return;
+        }
+        var data = response.getData();
+        if (data.parentCategory == data.oldCategory) {
+            return this;
+        }
+        // add module to new tab menu
+        Zikula.AdminPanel.Tab.tabs[data.parentCategory].modulesMenu.addItem({
+            label: data.name,
+            moduleId: data.id,
+            callback: function() {window.location = data.url;}
+        });
+        // remove from old tab
+        var oldTabMenu = Zikula.AdminPanel.Tab.tabs[data.oldCategory].modulesMenu.items;
+        oldTabMenu.each(function(item, index) {
+            if (item.moduleId == data.id) {
+                oldTabMenu.splice(index, 1);
             }
-            var data = transport.getData();
-            this.element.innerHTML = data.response;
+        });
+        // remove from this panel
+        this.module.remove();
+        Zikula.AdminPanel.Module.removeModule(this.id);
+    }
+
+});
+Object.extend(Zikula.AdminPanel.Module, /** @lends Zikula.AdminPanel.Module */{
+    modules: {},
+    getModule: function(module) {
+        return $(module).retrieve('module');
+    },
+    removeModule: function(moduleId) {
+        delete this.modules[moduleId];
+        this.setupSortable();
+    },
+    init: function() {
+        this.setupSortable();
+        // Zikula.AdminPanel.Module.modules[this.id] = this;
+        $$('.z-adminiconcontainer').each(function(module) {
+            var klass = new Zikula.AdminPanel.Module(module);
+            this.modules[klass.id] = klass;
+        }.bind(this));
+    },
+    setupSortable: function() {
+        if ($$('.z-adminiconcontainer').size() === 0) {
+            return;
         }
-    });
-    editors.push(Array(nid, editor, nelement.innerHTML));
-}
-
-
-/**
- * Gets a specific editor belonging to element nid.
- * @param nid element to get editor for.
- * @return editor
- */
-Admin.Editor.Get = function(nid)
-{
-    for (var row = 0; row < editors.length; row++) {
-        if (editors[row][0] == nid) {
-            return editors[row][1];
-        }
+        Sortable.destroy('modules');
+        Sortable.create('modules', {
+            tag: 'div',
+            constraint: '',
+            only: ['z-adminiconcontainer'],
+            handle: 'z-dragicon',
+            onUpdate: function(element) {
+                var pars = Sortable.serialize('modules');
+                //send the new order to the ajax controller
+                new Zikula.Ajax.Request('ajax.php?module=Admin&type=ajax&func=sortModules', {
+                    parameters: pars,
+                    onComplete: function(response) {
+                        if (!response.isSuccess()) {
+                            Zikula.showajaxerror(response.getMessage());
+                        }
+                    }
+                });
+            }
+        });
     }
-}
+});
 
-/**	 	
- * Gets the original content of tab nid.
- * @param nid element to get original content for.
- * @return content
- */
-Admin.Editor.getOrig = function(nid)
-{
-    for (var row = 0; row < editors.length; row++) {
-        if (editors[row][0] == nid) {
-            return editors[row][2];
-        }
-    }
-}
+Zikula.AdminPanel.init = function() {
+    Zikula.AdminPanel.setupNotices();
+    Zikula.AdminPanel.Tab.init();
+    Zikula.AdminPanel.Module.init();
+};
+document.observe('dom:loaded', Zikula.AdminPanel.init);
 
-
-//-----------------------Deleting Tabs----------------------------------------
-/**
- * Makes ajax request to delete category specified by id.
- *
- * @param id the cid of the category to be deleted
- * @return void
- */
-Admin.Tab.Delete = function(id)
-{
-    var pars = {
-        cid: id
-    }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=deleteCategory", {
-        parameters: pars,
-        onComplete : Admin.Tab.DeleteResponse
-    });
-}
-
-/**
- * Gets the response of a deleteTab request.
- *
- * @param  req     The request handle.
- * @return Boolean False always, removes tab from dom on success.
- */
-Admin.Tab.DeleteResponse = function(req)
-{
-    if (!req.isSuccess()) {
-    	Zikula.showajaxerror(req.getMessage());
-        return;
-    }
-    var data = req.getData();
-    var element = $("C" + data.response);
-    element.up('li').remove();
-    return;
-}
-
-//-----------------------Make Default Tabs----------------------------------------
-/**
- * Makes ajax request to make the category specified by id, the initially selected one.
- *
- * @param id the cid of the category to be made default
- * @return void
- */
-Admin.Tab.setDefault = function(id)
-{
-    var pars = {
-        cid: id
-    }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=defaultCategory", {
-        parameters: pars,
-        onComplete : Admin.Tab.setDefaultResponse
-    });
-}
-
-/**
- * Gets the response of a defaultTab request.
- *
- * @param  req     The request handle.
- * @return Boolean False always, removes tab from dom on success.
- */
-Admin.Tab.setDefaultResponse = function(req)
-{
-    if (!req.isSuccess()) {
-    	Zikula.showajaxerror(req.getMessage());
-        return;
-    }
-    return;
-}
-
-//----------------------Moving Modules----------------------------------------
-/**
- * makes an ajax request to move a module to a new category.
- *
- * @param id  Integer The id of the module to move.
- * @param cid Integer The cid of the category to move to.
- */
-Admin.Module.Move = function(id,cid)
-{
-    var id = id.substr(7);
-    var cid = cid.substr(1);
-    var pars = {
-        modid:  id,
-        cat: cid
-    }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=changeModuleCategory", {
-        parameters: pars,
-        onComplete : Admin.Module.moveResponse
-    });
-}
-
-/**
- * Response handler for moveModule.
- *
- * @param req Ajax request.
- * @return void, module is removed from dom on success.
- */
-Admin.Module.moveResponse = function(req)
-{
-    if (!req.isSuccess()) {
-    	Zikula.showajaxerror(req.getMessage());
-        return;
-    }
-    var data = req.getData();
-    $('z-admincontainer').highlight({ startcolor: '#c0c0c0'});
-    var element = $('module_' + data.response);
-    if(data.newParentCat != element.parentNode.id) {}
-    //add module to new category submenu 
-    window['context_catcontext' + data.newParentCat].addItem({
-        label: data.modulename,
-        callback: function(){window.location = data.url;}
-    });
-    //remove from old category submenu
-    var oldmenuitems = window['context_catcontext'+data.oldcid]['items'];
-    for (var j in oldmenuitems) {
-        if (oldmenuitems[j].label.indexOf(data.modulename) != -1) {
-            window['context_catcontext'+data.oldcid]['items'].splice(j,1);
-        	break;
-        }
-    }
-    //remove moved module from page
-    element.parentNode.removeChild(element);
-    return;
-}
-//--------------------Creating Categories-------------------------------------
-/**
- * Presents user with the new category form.
- *
- * @param cat The calling element. (EG call like: newCategory(this); from html)
- * @return Boolean False.
- */
-Admin.Category.New = function(cat)
-{
-    var parent = cat.parentNode;
-    old = parent.innerHTML;
-    var innerhtml = $('ajaxNewCatHidden').innerHTML;
-    parent.innerHTML = innerhtml;
-    parent.addClassName("newCat");
-    return false;
-}
-
-/**
- * Creates the AJAX request to create the new category.
- *
- * @param cat The calling element. (see above)
- * @return Boolean false.
- */
-Admin.Category.Add = function(cat)
-{
-    var oldcat = $('ajaxCatImage');
-    name = $('ajaxNewCatForm').elements['catName'].value;
-    if (name == '') {
-        Zikula.showajaxerror(Zikula.__('You must enter a name for the new category'));
-        Admin.Category.Cancel(oldcat);
-        return false;
-    }
-    var pars = {
-        name: name
-    }
-    new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
-        parameters: pars,
-        onComplete : Admin.Category.addResponse
-    });
-    return false;
-}
-
-/**
- * Cancel the addition of a new category, puts widget back to normal.
- *
- * @param cat the current element
- * (EG cancelCategory must be called: cancelCategory(this) from html)
- * @return Boolean False.
- */
-Admin.Category.Cancel = function()
-{
-    var parent = $('addcat');
-    parent.innerHTML = old;
-    parent.removeClassName("newCat");
-    return false;
-}
-
-/**
- * Ajax response handler for addCategory.
- *
- * @param req Ajax request.
- * @return False, new tab is added on success.
- */
-Admin.Category.addResponse = function(req)
-{
-    if (!req.isSuccess()) {
-    	Zikula.showajaxerror(req.getMessage());
-    	Admin.Category.Cancel();
-        return false;
-    }
-    var data = req.getData();
-    newcat = $('addcat');
-    newcat.innerHTML = '<a id="C' + data.response + '" href="'
-        + data.url + '">' + name + '</a><span id="catcontext' 
-        + data.response + '" class="z-admindrop">&nbsp;</span>';
-    newcat.setAttribute("class","admintab");
-    newcat.setAttribute("id", "admintab_" + data.response);
-    window['context_catcontext' + data.response] =  new Zikula.UI.ContextMenu('catcontext' + data.response,{leftClick: true,animation: false });
-
-    var newelement = document.createElement('li');
-    newelement.innerHTML = old;
-    newelement.setAttribute('id', 'addcat');
-    $('admintabs').appendChild(newelement);
-    Admin.Context.Add('C'+data.response);
-    Admin.Editor.Add('C'+data.response);
-    Droppables.add('C'+data.response, {
-        accept: 'draggable',
-        hoverclass: 'ajaxhover',
-        onDrop: function(drag, drop) {Admin.Module.Move(drag.id, drop.id);}
-    });  
-    Sortable.destroy('admintabs');
-    make_tabs_sortable();
-    return false;
-}
