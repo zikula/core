@@ -146,7 +146,7 @@ class AdminApi extends \Zikula\Framework\Api\AbstractApi
         }
 
         $entity = $this->name . '\Entity\AdminCategory';
-        $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'DESC'), $args['numitems'], $args['startnum']);
+        $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'), $args['numitems'], $args['startnum']);
 
         return $items;
     }

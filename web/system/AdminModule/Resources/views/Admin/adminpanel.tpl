@@ -24,28 +24,9 @@
                         {assign var="modlinks" value=false}
                         {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
                         {if $modlinks}
-                        <span id="mcontext{$moduleid}" class="z-pointericon" title='Functions'>&nbsp;</span>
+                        <span class="z-pointericon module-context" title="Functions">&nbsp;</span>
                         {/if}
-
-                        <script type="text/javascript">
-                        /* <![CDATA[ */
-                        {{if $modlinks}}
-                            var context_mcontext{{$moduleid}} = new Zikula.UI.ContextMenu('mcontext{{$moduleid}}',{
-                                leftClick: true,
-                                animation: false
-                            });
-
-                            {{foreach from=$modlinks item=modlink}}
-                                context_mcontext{{$moduleid}}.addItem({
-                                    label: '{{$modlink.text|safetext}}',
-                                    callback: function(){window.location = '{{$modlink.url}}';}
-                                });
-                            {{/foreach}}
-
-                        {{/if}}
-                        /* ]]> */
-                        </script>
-
+                        <input type="hidden" name="modlinks-{$adminlink.id}" class="modlinks" id="modlinks-{$adminlink.id}" value="{$modlinks|@json_encode|escape}" />
 
                     </div>
 

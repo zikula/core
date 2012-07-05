@@ -518,7 +518,8 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
                         'menutext' => $menutext,
                         'menutexttitle' => $menutexttitle,
                         'modname' => $adminmodule['name'],
-                        'order' => $order
+                        'order' => $order,
+                        'id' => $adminmodule['id']
                 );
             }
         }
