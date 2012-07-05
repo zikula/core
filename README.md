@@ -40,7 +40,7 @@ Zikula requires PHP 5.3.3 and above.
 
 ## Change Guide
 
-Please see the [upgrading 1.4 guide](https://github.com/zikula/core/blob/master/docs/UPGRADING-1.4.md)
+Please see the [upgrading 2.0 guide](https://github.com/zikula/core/blob/master/docs/UPGRADING-2.0.md)
 
 ## Features
 
