@@ -22,7 +22,6 @@
         "jms/di-extra-bundle": "1.0.1",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
-        "swiftmailer/swiftmailer": "4.1.8",
         "twig/twig": "1.8.0",
         "pagerfanta/pagerfanta": "dev-master",
         "white-october/pagerfanta-bundle": "dev-master",

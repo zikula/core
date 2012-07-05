@@ -36,7 +36,7 @@ Zikula requires PHP 5.3.3 and above.
     The username and password are `admin` / `zikula1`
   - Configuring the database settings in `app/config/database.yml`
   - Install vendors with `php composer.phar install`
-  - Copy assets to web directory `app/console assets:install`
+  - Copy assets to web directory `app/console assets:install web`
 
 ## Change Guide
 
