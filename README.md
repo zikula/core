@@ -3,64 +3,49 @@ Zikula Core - Application Framework
 
 [![Build Status](https://secure.travis-ci.org/zikula/core.png?branch=master)](http://travis-ci.org/zikula/core)
 
-Zikula Core is a web based application framework, fully extensible by
-Modules, plugins and themes.
+## Zikula? What's that?
 
-For more information visit http://zikula.org/
+Zikula Core is an open-source PHP web application framework, fully extensible by modules, plugins and themes. Currently under development on the `master` branch is Zikula Core 2.0, which uses components from Symfony2 and will be an evolutionary step forward for anyone wanting to run a high-performance and quality website.
 
-You must run `php composer.phar --dev install` to get the required dependencies.
-Composer can be obtained from http://getcomposer.org/.
+**The current stable version of Zikula is available on the `release-1.3` branch.**  
+Zikula Core 1.3 is appropriate for use in production environments, while Zikula Core 2.0 is **not** production-ready (at all).
 
-.. note::
+Please visit [Zikula.org](http://zikula.org) for more information about Zikula.
 
-If your PHP binary is not in your command path, please specify the full path to PHP
-as in `/path/to/php composer.phar --dev install` or as appropriate for your
-environment.
+## PHP Requirements and License
 
-## WARNING
+  - Zikula requires PHP 5.3.3 or greater.
+  - Zikula is licensed under the terms of the LGPLv3 license (or any later version).
 
-This `master` branch is undergoing heavy refactoring. If you want to
-contribute to this branch, please note manual installation is required.
+## Manual Installation Required for the `master` Branch
 
-**If you are looking for the stable version, please see the `release-1.3` branch.**
+Due to heavy refactoring and development work currently underway on the `master` branch, no installer is available and you will need to follow these steps to install Zikula from the `master` branch:
 
-Regularly run composer also to make sure dependencies are up to date.
+  - Install the database manually from `docs/installation.sql`. The admin account username and password are `admin` / `zikula1`.
+  - Configure the database settings in `app/config/database.yml`
+  - In the `core` directory of your checkout:
+    - Install the necessary vendors by [installing Composer](http://getcomposer.org/) and running `php composer.phar --dev install`
+    - Create the needed asset bundles by running `php app/console assets:install web`
 
-## PHP Requirements
+If your PHP binary is not in your command path, specify the full path to it in the above commands in place of just using `php`. Example: `/path/to/php composer.phar --dev install`
 
-Zikula requires PHP 5.3.3 and above.
+Remember to run Composer periodically to keep the dependencies up to date.
 
-## Manual installation process
+## What's Changing in Zikula Core 2.0?
 
-  - Install the database manually from `docs/installation.sql`
-    The username and password are `admin` / `zikula1`
-  - Configuring the database settings in `app/config/database.yml`
-  - Install vendors with `php composer.phar install`
-  - Copy assets to web directory `app/console assets:install web`
+For complete upgrading instructions, please see the [upgrading guide](https://github.com/zikula/core/blob/master/docs/UPGRADING-2.0.md).
 
-## Change Guide
+Changing the core compoents to Symfony2 will impact all areas of the project and thus there will be some temporary changes to keep things running while development is in progress. Some features may need to be removed temporarily in order to rewrite them.
 
-Please see the [upgrading 2.0 guide](https://github.com/zikula/core/blob/master/docs/UPGRADING-2.0.md)
-
-## Features
-
-The process of switching to Symfony2 requires some temporary refactoring of legacy code
-in order to keep things running. In some cases it means removing features because
-they will need to be rewritten or handles differently.
-
-Things which will completely change:
+Besides major changes to the file structure and modules, the following areas are going to be completely changed from the previous model:
 
   - Translation
-  - Templating (to Twig and assetic)
-  - Javascript framework, based on jQuery 1.7+ with no prototype support
-  - CSS (to Twitter Bootstrap 2.0.2)
+  - Templating (replacing smarty with Twig and implementing Assetic)
+  - Javascript (removing prototype, changing everything to jQuery)
+  - CSS (adopting Twitter Bootstrap)
 
-## License
-
-The Zikula Core package is licensed under the terms of LGPLv3 (or any later version).
+To monitor developer discussion on these issues, please check out the [zikula-dev mailing list](https://groups.google.com/group/zikula-dev).
 
 ## Contributing
 
-Zikula is an open source, community-driven project. If you'd like to contribute,
-please fork the project and submit a "pull request". More information ca be found in the
-[wiki](https://github.com/zikula/core/wiki).
+Zikula relies on community contributions. If you'd like to contribute, please follow the directions on the [Contributing](https://github.com/zikula/core/wiki/Contributing) page of the wiki. Thank you!

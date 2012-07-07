@@ -48,8 +48,9 @@ class SystemPlugin_SwiftMailer_Plugin extends AbstractPlugin implements Configur
      */
     public function initialize()
     {
+        // @todo - remove these defines?
         //define('SWIFT_REQUIRED_LOADED', true);
-        define('SWIFT_INIT_LOADED', true);
+        //define('SWIFT_INIT_LOADED', true);
 
         // register namespace
         \ZLoader::addAutoloader('Swift', __DIR__.'/../../../vendor/swiftmailer/swiftmailer/lib/classes', '_');
