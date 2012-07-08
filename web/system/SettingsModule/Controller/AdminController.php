@@ -52,7 +52,7 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
-        return $this->response($this->view->fetch('Admin/modifyconfig.tpl'));
+        return $this->get('templating')->renderResponse('ZikulaSettingsModule:Admin:modifyconfig.html.twig');
     }
 
     /**
