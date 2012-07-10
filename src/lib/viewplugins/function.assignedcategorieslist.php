@@ -62,13 +62,11 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 $name = $category->getCategory()->getName();
                 $display_name = $category->getCategory()->getDisplayName();
 
-                $result .= "<li>\n";
                 if (isset($display_name[$lang]) && !empty($display_name[$lang])) {
-                    $result .= $display_name[$lang];
+                    $result .= "<li>\n" . $display_name[$lang] . "</li>\n";
                 } elseif (isset($name) && !empty($name)) {
-                    $result .= $name;
+                    $result .= "<li>\n" . $name . "</li>\n";
                 }
-                $result .= "</li>\n";
             }
         } else {
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
@@ -87,13 +85,13 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 if (isset($category['Category'])) {
                     $category = $category['Category'];
                 }
-                $result .= "<li>\n";
+
                 if (isset($category['display_name'][$lang])) {
-                    $result .= $category['display_name'][$lang];
+                    $result .= "<li>\n" . $category['display_name'][$lang] . "</li>\n";
                 } elseif (isset($category['name'])) {
-                    $result .= $category['name'];
+                    $result .= "<li>\n" . $category['name'] . "</li>\n";
                 }
-                $result .= "</li>\n";
+
             }
         } else {
             $result .= '<li>' . DataUtil::formatForDisplay(__('No assigned categories.')) . '</li>';
