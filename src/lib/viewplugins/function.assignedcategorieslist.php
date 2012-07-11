@@ -86,7 +86,7 @@ function smarty_function_assignedcategorieslist($params, Zikula_View $view)
                 if (isset($category['Category'])) {
                     $category = $category['Category'];
                 }
-                $result .= ;
+                
                 if (isset($category['display_name'][$lang])) {
                     $result .= "<li>\n" . $category['display_name'][$lang] . "</li>\n";
                 } elseif (isset($category['name'])) {
