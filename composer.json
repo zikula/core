@@ -7,7 +7,7 @@
         "psr-0": { "Zikula": "src/" }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.4",
         "symfony/symfony": "2.1.*",
         "doctrine/orm": "2.2.*",
         "doctrine/doctrine-bundle": "dev-master",
@@ -23,7 +23,6 @@
         "jms/di-extra-bundle": "1.0.1",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
-        "twig/twig": "1.8.0",
         "pagerfanta/pagerfanta": "dev-master",
         "white-october/pagerfanta-bundle": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
