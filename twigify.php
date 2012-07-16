@@ -20,12 +20,12 @@ Usage: php twigify.php <filename>
 
     $string = file_get_contents($fileName);
 } else {
-    $string = file_get_contents(__DIR__.'/web/system/SettingsModule/Resources/views/Admin/modifyconfig.tpl');
+    $string = file_get_contents(__DIR__.'/web/system/SearchModule/Resources/views/User/form.tpl');
 }
 
 $string = str_replace('{/else}', '{% else %}', $string);
 $string = str_replace('{/if}', '{% endif %}', $string);
-$string = str_replace('{/for}', '{% endfor %}', $string);
+$string = str_replace('{/foreach}', '{% endfor %}', $string);
 
 $res = preg_match_all('/\{\s{0,}(.+?)\s{0,}\}/', $string, $matches);
 $twig = new Twiggifier($string, $matches);

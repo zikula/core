@@ -100,7 +100,7 @@ class Twiggifier
 
     public function convertPagesetvar($match, $key, $command = 'pagesetvar')
     {
-        preg_match('/^pagesetvar (.+?)\s{0,}$/', $match, $matches);
+        preg_match('/^'.$command.' (.+?)\s{0,}$/', $match, $matches);
 
         $name = '';
         if (preg_match('/name=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})\s|$/', $matches[1], $nameMatches)) {
