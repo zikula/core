@@ -26,6 +26,7 @@ Usage: php twigify.php <filename>
 $string = str_replace('{/else}', '{% else %}', $string);
 $string = str_replace('{/if}', '{% endif %}', $string);
 $string = str_replace('{/foreach}', '{% endfor %}', $string);
+$string = str_replace('{/foreachelse}', '{% else %}', $string);
 
 $res = preg_match_all('/\{\s{0,}(.+?)\s{0,}\}/', $string, $matches);
 $twig = new Twiggifier($string, $matches);

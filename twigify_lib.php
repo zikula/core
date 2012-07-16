@@ -27,6 +27,43 @@ class Twiggifier
         }
     }
 
+    public function convertForeach($match, $key)
+    {
+        preg_match('/^foreach (.+?)\s{0,}$/', $match, $matches);
+
+        $name = '';
+        if (preg_match('/name=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})\s|$/', $matches[1], $nameMatches)) {
+            $name = isset($nameMatches[1]) ? $nameMatches[1] : $nameMatches[0];
+        }
+
+        $from = ''; // data
+        if (preg_match('/from=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})(?:\s|$)/', $matches[1], $fromMatches)) {
+            $from = $fromMatches[1];
+        }
+
+        $item = ''; // value
+        if (preg_match('/item=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})(?:\s|$)/', $matches[1], $itemMatches)) {
+            $item = $itemMatches[1];
+        }
+
+        $skey = ''; // key
+        if (preg_match('/key=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})(?:\s|$)/', $matches[1], $skeyMatches)) {
+            $skey = $skeyMatches[1];
+        }
+
+        if ($skey) {
+            $string = "{% for $skey, $item in $from %}";
+        } elseif ($name) {
+            $string = "{% for $name, $item in $from %}"; // todo - check this, is 'name' really 'key'?
+        } else {
+            $string = "{% for $item in $from %}";
+        }
+
+        $string = str_replace("'", '', $string);
+
+        $this->template = str_replace($this->matches[0][$key], $string, $this->template);
+    }
+
     public function convertIf($match, $key, $command = 'if')
     {
         // {if ....}
