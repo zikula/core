@@ -47,7 +47,7 @@ install Zikula from the `master` branch:
   - Configure the database settings in `app/config/database.yml`
   - In the `core` directory of your checkout:
     - Install the necessary vendors by [installing Composer](http://getcomposer.org/)
-      and running `php composer.phar --dev install`
+      and running `php composer.phar install`
     - Create the needed asset bundles by running `php app/console assets:install web`
 
 If your PHP binary is not in your command path, specify the full path to it in the
