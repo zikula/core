@@ -27,6 +27,51 @@ class Twiggifier
         }
     }
 
+    private function comment($match, $key)
+    {
+        $string = "{# $match #}";
+        $this->template = str_replace($this->matches[0][$key], $string, $this->template);
+    }
+
+//    public function __call($method, $args)
+//    {
+//        $this->comment($args[0], $args[1]);
+//    }
+
+    public function convertAjaxheader($match, $key)
+    {
+        $this->comment($match, $key);
+    }
+
+    public function convertMath($match, $key)
+    {
+        $this->comment($match, $key);
+    }
+
+    public function convertButton($match, $key)
+    {
+        $this->comment($match, $key);
+    }
+
+    public function convertImg($match, $key)
+    {
+        $this->comment($match, $key);
+    }
+
+    public function convertIcon($match, $key)
+    {
+        $this->comment($match, $key);
+    }
+
+    public function convertInclude($match, $key)
+    {
+        preg_match('/^include file=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})\s{0,}$/', $match, $matches);
+
+        $fileName = str_replace('"', '', str_replace("'", '', $matches[1]));
+        $string = "{% include '!!!$fileName' %}";
+        $this->template = str_replace($this->matches[0][$key], $string, $this->template);
+    }
+
     public function convertForeach($match, $key)
     {
         preg_match('/^foreach (.+?)\s{0,}$/', $match, $matches);
@@ -60,6 +105,29 @@ class Twiggifier
         }
 
         $string = str_replace("'", '', $string);
+
+        $this->template = str_replace($this->matches[0][$key], $string, $this->template);
+    }
+
+    public function convertCycle($match, $key)
+    {
+        preg_match('/^cycle (.+?)\s{0,}$/', $match, $matches);
+
+        $values = ''; // value
+        if (preg_match('/values=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})(?:\s|$)/', $matches[1], $itemMatches)) {
+            $values = $itemMatches[1];
+        }
+        $values = str_replace("'", '', $values);
+
+        $parts = explode(',', $values);
+        $string = '[';
+        foreach ($parts as $skey => $value) {
+            $string .= "$value";
+            if ($skey < count($parts)-1) {
+                $string .= ',';
+            }
+        }
+        $string = "{{ cycle($string]), i }}";
 
         $this->template = str_replace($this->matches[0][$key], $string, $this->template);
     }
