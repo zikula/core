@@ -329,7 +329,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
         $language = FormUtil::getPassedValue('language');
         $collapsable = FormUtil::getPassedValue('collapsable', 0);
         $defaultstate = FormUtil::getPassedValue('defaultstate', 1);
-        $content = FormUtil::getPassedValue('content');
+        $content = FormUtil::getPassedValue('content', '');
         $refresh = FormUtil::getPassedValue('refresh');
         $positions = FormUtil::getPassedValue('positions');
         $filter = FormUtil::getPassedValue('filters', array());
