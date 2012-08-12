@@ -68,7 +68,7 @@ class Twiggifier
         preg_match('/^include file=(?:"{0,1}|\'{0,1})(.+?)(?:"{0,1}|\'{0,1})\s{0,}$/', $match, $matches);
 
         $fileName = str_replace('"', '', str_replace("'", '', $matches[1]));
-        $string = "{% include '!!!$fileName' %}";
+        $string = "{% include 'module:controller:$fileName' %}{# should be in the form 'module:controller:template.html.twig' #}";
         $this->template = str_replace($this->matches[0][$key], $string, $this->template);
     }
 
