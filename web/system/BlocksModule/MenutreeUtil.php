@@ -32,7 +32,8 @@ class MenutreeUtil
 
         // restricted templates, array for possible future changes
         $sysTpls = array('Block/menutree/modify.tpl',
-                         'Block/menutree/include_help.tpl');
+                         'Block/menutree/include_help.tpl'
+        );
 
         // module templates
         $modulesTpls = FileUtil::getFiles('system/BlocksModule/Resources/view/Block/menutree', false, true, 'tpl', false);
@@ -53,7 +54,11 @@ class MenutreeUtil
         }
 
         // get tpls which exist in every theme
-        $tpls['themes']['all'] = call_user_func_array('array_intersect', $themesTpls);
+        if (count($themesTpls) > 1) {
+            $tpls['themes']['all'] = call_user_func_array('array_intersect', $themesTpls);
+        } else {
+            $tpls['themes']['all'] = $themesTpls;
+        }
 
         // get tpls which exist in some themes
         $tpls['themes']['some'] = array_unique(call_user_func_array('array_merge', $themesTpls));
@@ -91,7 +96,8 @@ class MenutreeUtil
         // restricted stylesheets, array for possible future changes
         $sysStyles = array('system/BlocksModule/Resources/public/css/menutree/adminstyle.css',
                            'system/BlocksModule/Resources/public/css/menutree/contextmenu.css',
-                           'system/BlocksModule/Resources/public/css/menutree/tree.css');
+                           'system/BlocksModule/Resources/public/css/menutree/tree.css',
+        );
 
         // module stylesheets
         $modulesStyles = FileUtil::getFiles('system/Blocks/Resources/public/css/menutree', false, false, 'css', false);
@@ -112,8 +118,11 @@ class MenutreeUtil
         }
 
         // get stylesheets which exist in every theme
-        $styles['themes']['all'] = call_user_func_array('array_intersect', $themesStyles);
-
+        if (count($themesStyles) > 1) {
+            $styles['themes']['all'] = call_user_func_array('array_intersect', $themesStyles);
+        } else {
+            $styles['themes']['all'] = $themesStyles;
+        }
         // get stylesheets which exist in some themes
         $styles['themes']['some'] = array_unique(call_user_func_array('array_merge', $themesStyles));
         $styles['themes']['some'] = array_diff($styles['themes']['some'], $styles['themes']['all'], $styles['modules'], $sysStyles);
