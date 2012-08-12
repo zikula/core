@@ -1,8 +1,8 @@
 {% extends 'Andreas08Theme::base.html.twig' %}
 {% block contents %}
     <div id="theme_navigation_bar" class="z-clearfix">
-        {% set topavblock %}{{ showblockposition('topnav') }}{% endset %}
-        {% if topavblock is empty %}
+        {% set topnavblock %}{{ showblockposition('topnav') }}{% endset %}
+        {% if topnavblock is empty %}
             <ul class="z-floatleft">
                 <li><a href="{#{ homepage() }#}" title="{{ __("Go to the site's home page") }}">{{ __('Home') }}</a></li>
                 <li><a href="{{ path('zikulausersmodule_user_index') }}" title="{{ __('Go to your account panel') }}">{{ __("My Account") }}</a></li>
