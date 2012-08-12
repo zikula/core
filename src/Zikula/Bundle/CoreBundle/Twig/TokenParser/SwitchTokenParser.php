@@ -24,11 +24,12 @@ class SwitchTokenParser extends \Twig_TokenParser
     {
         $lineno = $token->getLine();
 
-        $value = $this->parser->getExpressionParser()->parseExpression();
+        $expression = $this->parser->getExpressionParser()->parseExpression();
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
         $this->parser->subparse(array($this, 'decideCaseFork'));
-        $cases = array();
+        $cases = new \Twig_Node();
+        $default = null;
 
         $end = false;
         $i = 0;
@@ -40,10 +41,10 @@ class SwitchTokenParser extends \Twig_TokenParser
                     $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
                     $body = $this->parser->subparse(array($this, 'decideCaseFork'));
 
-                    $cases[$i] = array(
+                    $cases->setNode($i, new \Twig_Node(array(
                         'expression' => $expr,
                         'body' => $body,
-                    );
+                    )));
 
                     break;
 
@@ -52,24 +53,18 @@ class SwitchTokenParser extends \Twig_TokenParser
                     $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
                     $body = $this->parser->subparse(array($this, 'decideCaseFork'));
 
-                    $cases['default'] = array(
-                        'body' => $body,
-                    );
+                    $default = $body;
 
                     break;
 
                 case 'break':
                     $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
                     $this->parser->subparse(array($this, 'decideCaseFork'));
-                    if (!is_null($i)) {
-                        $cases[$i]['break'] = true;
-                    }
-                    break;
 
-                case 'endcase':
-                case 'enddefault':
-                    $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-                    $this->parser->subparse(array($this, 'decideCaseFork'));
+                    if ($cases->hasNode($i)) {
+                        $cases->getNode($i)->setAttribute('break', true);
+                    }
+
                     break;
 
                 case 'endswitch':
@@ -83,12 +78,12 @@ class SwitchTokenParser extends \Twig_TokenParser
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new Twig\Node\SwitchNode($cases, $value, $lineno, $this->getTag());
+        return new Twig\Node\SwitchNode($cases, $default, $expression, $lineno, $this->getTag());
     }
 
     public function decideCaseFork(\Twig_Token $token)
     {
-        return $token->test(array('case', 'endcase', 'default', 'enddefault', 'break', 'endswitch'));
+        return $token->test(array('case', 'default', 'break', 'endswitch'));
     }
 
     public function getTag()

@@ -2,13 +2,16 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Node;
 
-use Zikula\Bundle\CoreBundle\Twig;
-
 class SwitchNode extends \Twig_Node
 {
-    public function __construct($cases, \Twig_Node_Expression $value, $lineno, $tag = null)
+    public function __construct(\Twig_NodeInterface $cases, \Twig_NodeInterface $default, \Twig_Node_Expression $expression, $lineno, $tag = null)
     {
-        parent::__construct(array('value' => $value), array('cases' => $cases), $lineno, $tag);
+        $nodes = array(
+            'cases' => $cases,
+            'default' => $default,
+            'expression' => $expression
+        );
+        parent::__construct($nodes, array(), $lineno, $tag);
     }
 
     public function compile(\Twig_Compiler $compiler)
@@ -16,31 +19,37 @@ class SwitchNode extends \Twig_Node
         $compiler->addDebugInfo($this);
         $compiler
             ->write('switch (')
-            ->subcompile($this->getNode('value'))
+            ->subcompile($this->getNode('expression'))
             ->raw(") {\n")
             ->indent();
 
-        foreach ((array)$this->getAttribute('cases') as $key => $case) {
-            if ($key === 'default') {
-                $compiler
-                    ->write('default');
-            } else {
-                $compiler
-                    ->write('case ')
-                    ->subcompile($case['expression']);
-            }
+        /* @var $case \Twig_Node */
+        foreach ($this->getNode('cases')->getIterator() as $key => $case) {
             $compiler
+                ->write('case ')
+                ->subcompile($case->getNode('expression'))
                 ->raw(":\n")
                 ->indent()
-                ->subcompile($case['body']);
-            if (isset($case['break'])) {
+                ->subcompile($case->getNode('body'));
+
+            if ($case->hasAttribute('break') && $case->getAttribute('break') == true) {
                 $compiler
                     ->write("break;\n");
             }
             $compiler->outdent();
         }
+
+        if ($this->hasNode('default') && $this->getNode('default') !== null) {
+            $compiler
+                ->write('default')
+                ->raw(":\n")
+                ->indent()
+                ->subcompile($this->getNode('default'))
+                ->outdent();
+        }
+
         $compiler
             ->outdent()
-            ->raw("}\n");
+            ->write("}\n");
     }
 }
