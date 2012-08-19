@@ -2,32 +2,12 @@
 namespace Zikula\Bundle\CoreBundle\Tests\Twig\Node;
 
 use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;
+use Zikula\Bundle\CoreBundle\Twig\Test\NodeTestCase;
 
-class SwitchNodeTest extends \PHPUnit_Framework_TestCase
+class SwitchNodeTest extends NodeTestCase
 {
-    /**
-     * @var SwitchNode
-     */
-    protected $object;
-
-    protected function setUp()
+    public function getTests()
     {
-        //$this->object = new SwitchNode;
-    }
-
-    protected function tearDown()
-    {
-    }
-
-    /**
-     * @covers Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode::compile
-     * @todo   Implement testCompile().
-     */
-    public function testCompile()
-    {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        return array();
     }
 }
