@@ -19,6 +19,10 @@
                 <label for="theme_change">{gt text="Allow users to change themes"}</label>
                 <input id="theme_change" name="theme_change" type="checkbox" value="1" {if $theme_change}checked="checked"{/if} />
             </div>
+            <div class="z-formrow">
+                <label for="enable_mobile_theme">{gt text="Enable mobile theme"}</label>
+                <input id="enable_mobile_theme" name="enable_mobile_theme" type="checkbox" value="1" {if $enable_mobile_theme}checked="checked"{/if} />
+            </div>
         </fieldset>
         <fieldset>
             <legend>{gt text="Compilation"}</legend>

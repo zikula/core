@@ -1,0 +1,9 @@
+## YAML Override template
+## original/file.tpl: override/file.tpl
+---
+system/Blocks/templates/blocks_block_extmenu.tpl: themes/Mobile/templates/modules/Blocks/blocks_block_extmenu.tpl
+system/Users/templates/users_user_main.tpl: themes/Mobile/templates/modules/Users/users_user_main.tpl
+system/Admin/templates/admin_admin_adminpanel.tpl: themes/Mobile/templates/modules/Admin/admin_admin_adminpanel.tpl
+system/Admin/templates/admin_admin_categorymenu.tpl: themes/Mobile/templates/modules/Admin/admin_admin_categorymenu.tpl
+system/Admin/templates/admin_admin_footer.tpl: themes/Mobile/templates/modules/Admin/admin_admin_footer.tpl
+system/Admin/templates/admin_admin_header.tpl: themes/Mobile/templates/modules/Admin/admin_admin_header.tpl
