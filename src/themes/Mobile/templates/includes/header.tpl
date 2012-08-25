@@ -9,8 +9,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
     	{pageaddvar name='stylesheet' value="$themepath/javascript/jquerymobile/jquery.mobile-1.1.1.min.css"}
     	{pageaddvar name='javascript' value='jquery'}
-    	{pageaddvar name="javascript" value="$themepath/javascript/jquerymobile/jquery.mobile-1.1.1.min.js"}
     	{pageaddvar name='javascript' value="$themepath/javascript/zikulaMobile.js"}
+    	{pageaddvar name="javascript" value="$themepath/javascript/jquerymobile/jquery.mobile-1.1.1.min.js"}
     </head>
     <body>            
             <div data-role="page">

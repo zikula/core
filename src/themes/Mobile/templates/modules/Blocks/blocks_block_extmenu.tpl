@@ -10,7 +10,7 @@
     {/if}
     {/foreach}
 
-    <li><a href="{modurl modname='Theme' type='User' func='disableMobileTheme'}" data-ajax="false">{gt text="Leave mobile version"}</a></li>
+    <li><a href="{modurl modname='Theme' type='User' func='disableMobileTheme'}">{gt text="Leave mobile version"}</a></li>
     
 </ul>
 
