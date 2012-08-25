@@ -1896,9 +1896,20 @@ class UserUtil
         if (isset($theme) && !$force) {
             return $theme;
         }
+            
+        if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', false)) {
+           $pagetheme = 'Mobile';
+        } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && getVar('Theme', 'enable_mobile_theme', false)) {
+            include_once("system/Theme/lib/vendor/Mobile_Detect.php");
+            $detect = new Mobile_Detect();
+            if ($detect->isMobile()) {
+                $pagetheme = 'Mobile';
+            }
+        } else {
+             $pagetheme = FormUtil::getPassedValue('theme', null, 'GETPOST');
+        }
 
         // Page-specific theme
-        $pagetheme = FormUtil::getPassedValue('theme', null, 'GETPOST');
         $type = FormUtil::getPassedValue('type', null, 'GETPOST');
         $qstring = System::serverGetVar('QUERY_STRING');
         if (!empty($pagetheme)) {

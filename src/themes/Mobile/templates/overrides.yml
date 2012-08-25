@@ -1,0 +1,5 @@
+## YAML Override template
+## original/file.tpl: override/file.tpl
+---
+system/Blocks/templates/blocks_block_extmenu.tpl: themes/Mobile/templates/modules/Blocks/blocks_block_extmenu.tpl
+system/Users/templates/users_user_main.tpl: themes/Mobile/templates/modules/Users/users_user_main.tpl
