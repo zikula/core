@@ -90,7 +90,7 @@
                 </div>
                 <div class="z-formrow">
                     <label for="mailer_smtppassword">{gt text="SMTP password"}</label>
-                    <input id="mailer_smtppassword" name="smtppassword" type="password" size="30" maxlength="30" value="{$smtppassword|safetext}" />
+                    <input id="mailer_smtppassword" name="smtppassword" type="password" size="30" maxlength="50" value="{$smtppassword|safetext}" />
                 </div>
             </div>
         </fieldset>
