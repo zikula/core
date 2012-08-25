@@ -13,18 +13,16 @@ class SwitchNodeTest extends NodeTestCase
     {
         $expression = new \Twig_Node_Expression_Name('foo', 0);
         $default = null;
-        $cases_array = array();
-        $cases_array[] = new \Twig_Node(array(
+        $cases = new \Twig_Node();
+        $cases->setNode(0, new \Twig_Node(array(
             'expression' => new \Twig_Node_Expression_Constant(0, 0),
             'body' => new \Twig_Node_Text('case 0', 0)
-        ));
-        $cases_array[] = new \Twig_Node(array(
+        )));
+        $cases->setNode(1, new \Twig_Node(array(
             'expression' => new \Twig_Node_Expression_Constant(1, 0),
             'body' => new \Twig_Node_Text('case 1', 0)
-        ));
-        $cases_array[1] ->setAttribute('break', true);
-
-        $cases = new \Twig_Node($cases_array);
+        )));
+        $cases->getNode(1)->setAttribute('break', true);
 
         $node = new SwitchNode($cases, $default, $expression, 0);
 
@@ -41,17 +39,14 @@ class SwitchNodeTest extends NodeTestCase
     {
         $tests = array();
 
-        // switch with one case, without break
+        // #1 switch with one case, without break
         $expression = new \Twig_Node_Expression_Name('foo', 0);
         $default = null;
-        $cases_array = array();
-        $cases_array[0] = new \Twig_Node(array(
+        $cases = new \Twig_Node();
+        $cases->setNode(0, new \Twig_Node(array(
             'expression' => new \Twig_Node_Expression_Constant(0, 0),
             'body' => new \Twig_Node_Text('case 0', 0)
-        ));
-
-        $cases = new \Twig_Node($cases_array);
-
+        )));
         $node = new SwitchNode($cases, $default, $expression, 0);
 
         $tests[] = array($node, <<<EOF
@@ -62,15 +57,19 @@ switch ({$this->getVariableGetter('foo')}) {
 EOF
         );
 
-        // switch with two cases, second with break
-        $cases_array[1] = new \Twig_Node(array(
+        // #2 switch with two cases, second with break
+        $expression = new \Twig_Node_Expression_Name('foo', 0);
+        $default = null;
+        $cases = new \Twig_Node();
+        $cases->setNode(0, new \Twig_Node(array(
+            'expression' => new \Twig_Node_Expression_Constant(0, 0),
+            'body' => new \Twig_Node_Text('case 0', 0)
+        )));
+        $cases->setNode(1, new \Twig_Node(array(
             'expression' => new \Twig_Node_Expression_Constant(1, 0),
             'body' => new \Twig_Node_Text('case 1', 0)
-        ));
-        $cases_array[1] ->setAttribute('break', true);
-
-        $cases = new \Twig_Node($cases_array);
-
+        )));
+        $cases->getNode(1)->setAttribute('break', true);
         $node = new SwitchNode($cases, $default, $expression, 0);
 
         $tests[] = array($node, <<<EOF
@@ -84,15 +83,52 @@ switch ({$this->getVariableGetter('foo')}) {
 EOF
         );
 
-        // switch with two cases (second with break) and default
+        // #3 switch with two cases (second with break) and default
+        $expression = new \Twig_Node_Expression_Name('foo', 0);
         $default = new \Twig_Node_Text('default case', 0);
-
+        $cases = new \Twig_Node();
+        $cases->setNode(0, new \Twig_Node(array(
+            'expression' => new \Twig_Node_Expression_Constant(0, 0),
+            'body' => new \Twig_Node_Text('case 0', 0)
+        )));
+        $cases->setNode(1, new \Twig_Node(array(
+            'expression' => new \Twig_Node_Expression_Constant(1, 0),
+            'body' => new \Twig_Node_Text('case 1', 0)
+        )));
+        $cases->getNode(1)->setAttribute('break', true);
         $node = new SwitchNode($cases, $default, $expression, 0);
 
         $tests[] = array($node, <<<EOF
 switch ({$this->getVariableGetter('foo')}) {
     case 0:
         echo "case 0";
+    case 1:
+        echo "case 1";
+        break;
+    default:
+        echo "default case";
+}
+EOF
+        );
+
+        // #4 switch with two cases (first without body, second with break) and default
+        $expression = new \Twig_Node_Expression_Name('foo', 0);
+        $default = new \Twig_Node_Text('default case', 0);
+        $cases = new \Twig_Node();
+        $cases->setNode(0, new \Twig_Node(array(
+            'expression' => new \Twig_Node_Expression_Constant(0, 0),
+            'body' => new \Twig_Node()
+        )));
+        $cases->setNode(1, new \Twig_Node(array(
+            'expression' => new \Twig_Node_Expression_Constant(1, 0),
+            'body' => new \Twig_Node_Text('case 1', 0)
+        )));
+        $cases->getNode(1)->setAttribute('break', true);
+        $node = new SwitchNode($cases, $default, $expression, 0);
+
+        $tests[] = array($node, <<<EOF
+switch ({$this->getVariableGetter('foo')}) {
+    case 0:
     case 1:
         echo "case 1";
         break;
