@@ -18,6 +18,7 @@
  */
 abstract class Zikula_Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
 {
+    abstract public function getExtensions();
     abstract public function getTests();
     abstract public function testIntegration($file, $message, $condition, $templates, $exception, $outputs);
 
@@ -86,6 +87,9 @@ abstract class Zikula_Twig_Test_IntegrationTestCase extends PHPUnit_Framework_Te
             $policy = new Twig_Sandbox_SecurityPolicy(array(), array(), array(), array(), array());
             $twig->addExtension(new Twig_Extension_Sandbox($policy, false));
             $twig->addGlobal('global', 'global');
+            foreach ($this->getExtensions() as $extension) {
+                $twig->addExtension($extension);
+            }
 
             try {
                 $template = $twig->loadTemplate('index.twig');
