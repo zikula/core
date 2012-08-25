@@ -28,10 +28,12 @@ class SwitchNode extends \Twig_Node
             $compiler
                 ->write('case ')
                 ->subcompile($case->getNode('expression'))
-                ->raw(":\n")
-                ->indent()
-                ->subcompile($case->getNode('body'));
-
+                ->raw(":\n");
+            if ($case->hasNode('body')) {
+                $compiler
+                    ->indent()
+                    ->subcompile($case->getNode('body'));
+            }
             if ($case->hasAttribute('break') && $case->getAttribute('break') == true) {
                 $compiler
                     ->write("break;\n");
