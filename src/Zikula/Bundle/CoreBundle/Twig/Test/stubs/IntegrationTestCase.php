@@ -43,16 +43,16 @@ abstract class Zikula_Twig_Test_IntegrationTestCase extends PHPUnit_Framework_Te
             $test = file_get_contents($file->getRealpath());
 
             if (preg_match('/
-                    --TEST--\s*(.*?)\s*(?:--CONDITION--\s*(.*))?\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*))+)\s*--EXCEPTION--\s*(.*)/sx', $test, $match)) {
+                    --TEST--\s*(.*?)\s*(?:--CONDITION--\s*(.*))?\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*?))+)\s*(?:--DATA--\s*(.*))?\s*--EXCEPTION--\s*(.*)/sx', $test, $match)) {
                 $message = $match[1];
                 $condition = $match[2];
-                $templates = self::parseTemplates($match[3]);
-                $exception = $match[4];
-                $outputs = array(null, array(), null, '');
+                $templates = $this->parseTemplates($match[3]);
+                $exception = $match[5];
+                $outputs = array(array(null, $match[4], null, ''));
             } elseif (preg_match('/--TEST--\s*(.*?)\s*(?:--CONDITION--\s*(.*))?\s*((?:--TEMPLATE(?:\(.*?\))?--(?:.*?))+)--DATA--.*?--EXPECT--.*/s', $test, $match)) {
                 $message = $match[1];
                 $condition = $match[2];
-                $templates = self::parseTemplates($match[3]);
+                $templates = $this->parseTemplates($match[3]);
                 $exception = false;
                 preg_match_all('/--DATA--(.*?)(?:--CONFIG--(.*?))?--EXPECT--(.*?)(?=\-\-DATA\-\-|$)/s', $test, $outputs, PREG_SET_ORDER);
             } else {
@@ -82,7 +82,6 @@ abstract class Zikula_Twig_Test_IntegrationTestCase extends PHPUnit_Framework_Te
                 'strict_variables' => true,
             ), $match[2] ? eval($match[2].';') : array());
             $twig = new Twig_Environment($loader, $config);
-            $twig->addExtension(new Zikula_Twig_Test_TestExtension());
             $twig->addExtension(new Twig_Extension_Debug());
             $policy = new Twig_Sandbox_SecurityPolicy(array(), array(), array(), array(), array());
             $twig->addExtension(new Twig_Extension_Sandbox($policy, false));
@@ -150,112 +149,5 @@ abstract class Zikula_Twig_Test_IntegrationTestCase extends PHPUnit_Framework_Te
         }
 
         return $templates;
-    }
-}
-
-class Zikula_Twig_Test_TestExtension extends Twig_Extension
-{
-    public function getTokenParsers()
-    {
-        return array(
-            new Zikula_Twig_Test_TestTokenParser_☃(),
-        );
-    }
-
-    public function getFilters()
-    {
-        return array(
-            '☃'                => new Twig_Filter_Method($this, '☃Filter'),
-            'escape_and_nl2br' => new Twig_Filter_Method($this, 'escape_and_nl2br', array('needs_environment' => true, 'is_safe' => array('html'))),
-            'nl2br'            => new Twig_Filter_Method($this, 'nl2br', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'escape_something' => new Twig_Filter_Method($this, 'escape_something', array('is_safe' => array('something'))),
-            'preserves_safety' => new Twig_Filter_Method($this, 'preserves_safety', array('preserves_safety' => array('html'))),
-            '*_path'           => new Twig_Filter_Method($this, 'dynamic_path'),
-            '*_foo_*_bar'      => new Twig_Filter_Method($this, 'dynamic_foo'),
-        );
-    }
-
-    public function getFunctions()
-    {
-        return array(
-            '☃'           => new Twig_Function_Method($this, '☃Function'),
-            'safe_br'     => new Twig_Function_Method($this, 'br', array('is_safe' => array('html'))),
-            'unsafe_br'   => new Twig_Function_Method($this, 'br'),
-            '*_path'      => new Twig_Function_Method($this, 'dynamic_path'),
-            '*_foo_*_bar' => new Twig_Function_Method($this, 'dynamic_foo'),
-        );
-    }
-
-    public function ☃Filter($value)
-    {
-        return "☃{$value}☃";
-    }
-
-    public function ☃Function($value)
-    {
-        return "☃{$value}☃";
-    }
-
-    /**
-     * nl2br which also escapes, for testing escaper filters
-     */
-    public function escape_and_nl2br($env, $value, $sep = '<br />')
-    {
-        return $this->nl2br(twig_escape_filter($env, $value, 'html'), $sep);
-    }
-
-    /**
-     * nl2br only, for testing filters with pre_escape
-     */
-    public function nl2br($value, $sep = '<br />')
-    {
-        // not secure if $value contains html tags (not only entities)
-        // don't use
-        return str_replace("\n", "$sep\n", $value);
-    }
-
-    public function dynamic_path($element, $item)
-    {
-        return $element.'/'.$item;
-    }
-
-    public function dynamic_foo($foo, $bar, $item)
-    {
-        return $foo.'/'.$bar.'/'.$item;
-    }
-
-    public function escape_something($value)
-    {
-        return strtoupper($value);
-    }
-
-    public function preserves_safety($value)
-    {
-        return strtoupper($value);
-    }
-
-    public function br()
-    {
-        return '<br />';
-    }
-
-    public function getName()
-    {
-        return 'test';
-    }
-}
-
-class Zikula_Twig_Test_TestTokenParser_☃ extends Twig_TokenParser
-{
-    public function parse(Twig_Token $token)
-    {
-        $this->parser->getStream()->expect(Twig_Token::BLOCK_END_TYPE);
-
-        return new Twig_Node_Print(new Twig_Node_Expression_Constant('☃', -1), -1);
-    }
-
-    public function getTag()
-    {
-        return '☃';
     }
 }

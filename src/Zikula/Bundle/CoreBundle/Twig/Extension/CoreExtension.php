@@ -3,17 +3,9 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Zikula\Bundle\CoreBundle\Twig;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CoreExtension extends \Twig_Extension
 {
-    private $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
     public function getTokenParsers()
     {
         return array(
