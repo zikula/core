@@ -1,0 +1,17 @@
+Copyright Zikula Foundation 2009 - Zikula Application Framework
+License: GNU/GPLv3 (or at your option, any later version).
+
+Authors:
+    * Fabian Wuertz
+
+Parts of the following 3 party programs are included:
+
+
+wpTouch
+Copyright: 2004 Geoffrey T. Dairiki <dairiki@dairiki.org>
+Copyright: 2004-2009 The Horde Project (http://www.horde.org/)
+License:   GPLv2
+Homepage:  http://getharvest.com
+    * images/low_contrast_linen.png
+    * images/post-arrow.png
+    * style/style.css

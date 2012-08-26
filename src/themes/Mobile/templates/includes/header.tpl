@@ -6,11 +6,19 @@
         <meta name="description" content="{$metatags.description}" />
         <meta name="keywords" content="{$metatags.keywords}" />
         <meta name="robots" content="noindex,follow,noarchive" />
-        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {pageaddvar name='javascript' value='jquery'}
+
     	{pageaddvar name='stylesheet' value="$themepath/javascript/jquerymobile/jquery.mobile-1.1.1.min.css"}
-    	{pageaddvar name='javascript' value='jquery'}
+
     	{pageaddvar name='javascript' value="$themepath/javascript/zikulaMobile.js"}
     	{pageaddvar name="javascript" value="$themepath/javascript/jquerymobile/jquery.mobile-1.1.1.min.js"}
+        {pageaddvar name="stylesheet" value="$stylepath/style.css"}
+
+
+
+
     </head>
-    <body>            
+    <body>
             <div data-role="page">
