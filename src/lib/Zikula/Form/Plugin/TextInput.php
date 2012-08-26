@@ -173,6 +173,13 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      * @var integer
      */
     public $size;
+    
+    /**
+     * Minimum number of characters allowed in the text input.
+     *
+     * @var integer
+     */
+    public $minLength;
 
     /**
      * Maximum number of characters allowed in the text input.
@@ -252,6 +259,11 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
             $this->maxLength = $params['maxLength'];
         } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), array('multiline', 'hidden'))) {
             $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
+        }
+        if (array_key_exists('minLength', $params)) {
+            $this->minLength = $params['minLength'];
+        } else {
+            $this->minLength = 0;
         }
     }
 
@@ -411,6 +423,8 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
             $this->setError(__('Error! An entry in this field is mandatory.'));
         } elseif (strlen($this->text) > $this->maxLength && $this->maxLength > 0) {
             $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.', $this->maxLength)));
+        } elseif (strlen($this->text) < $this->minLength && $this->minLength >= 0) {
+            $this->setError(sprintf(__f('Error! Input text must be longer than %s characters.', $this->minLength)));
         } elseif ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
             $this->setError($view->translateForDisplay($this->regexValidationMessage));
         }
