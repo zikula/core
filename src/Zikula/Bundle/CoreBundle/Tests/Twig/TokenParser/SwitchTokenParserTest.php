@@ -8,7 +8,7 @@ class SwitchTokenParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @var SwitchTokenParser
      */
-    protected $object;
+    protected $tokenParser;
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -16,11 +16,13 @@ class SwitchTokenParserTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        //$this->object = new SwitchTokenParser;
+        $this->tokenParser = new SwitchTokenParser();
+        $this->tokenParser->setParser(new \Twig_Parser(new \Twig_Environment()));
     }
 
     protected function tearDown()
     {
+        $this->tokenParser = null;
     }
 
     /**
@@ -36,14 +38,28 @@ class SwitchTokenParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser::decideCaseFork
-     * @todo   Implement testDecideCaseFork().
+     * @dataProvider getDecideCaseFork
      */
-    public function testDecideCaseFork()
+    public function testDecideCaseFork($type, $value, $lineno, $boolean)
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        if (true === $boolean) {
+            $this->assertTrue($this->tokenParser->decideCaseFork(new \Twig_Token($type, $value, $lineno)));
+        } else {
+            $this->assertFalse($this->tokenParser->decideCaseFork(new \Twig_Token($type, $value, $lineno)));
+        }
+    }
+
+    public function getDecideCaseFork()
+    {
+        return array(
+            array(\Twig_Token::NAME_TYPE, 'case', 1, true),
+            array(\Twig_Token::NAME_TYPE, 'default', 1, true),
+            array(\Twig_Token::NAME_TYPE, 'break', 1, true),
+            array(\Twig_Token::NAME_TYPE, 'endswitch', 1, true),
+            array(\Twig_Token::NAME_TYPE, 'casefoo', 1, false),
+            array(\Twig_Token::NAME_TYPE, 'defaultfoo', 1, false),
+            array(\Twig_Token::NAME_TYPE, 'breakfoo', 1, false),
+            array(\Twig_Token::NAME_TYPE, 'endswithfoo', 1, false),
         );
     }
 
@@ -53,9 +69,6 @@ class SwitchTokenParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTag()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals('switch', $this->tokenParser->getTag());
     }
 }
