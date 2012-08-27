@@ -2,7 +2,7 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\TokenParser;
 
-use Zikula\Bundle\CoreBundle\Twig;
+use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;
 
 /**
  * @example
@@ -78,7 +78,7 @@ class SwitchTokenParser extends \Twig_TokenParser
 
         $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new Twig\Node\SwitchNode($cases, $default, $expression, $lineno, $this->getTag());
+        return new SwitchNode($cases, $default, $expression, $lineno, $this->getTag());
     }
 
     public function decideCaseFork(\Twig_Token $token)
