@@ -37,6 +37,62 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     public $readOnly;
 
     /**
+     * Enable or disable mandatory check.
+     *
+     * By enabling mandatory checking you force the user to enter something in the text input.
+     *
+     * @var boolean
+     */
+    public $mandatory;
+
+    /**
+     * Enable or disable mandatory asterisk.
+     *
+     * @var boolean
+     */
+    public $mandatorysym;
+
+    /**
+     * Error message to display when input does not validate.
+     *
+     * Use {@link Zikula_Form_Plugin_Checkbox::setError()} and {@link Zikula_Form_Plugin_Checkbox::clearValidation()}
+     * to change the value.
+     *
+     * @var string
+     */
+    public $errorMessage;
+
+    /**
+     * Text label for this plugin.
+     *
+     * This variable contains the label text for the input. The {@link Zikula_Form_Plugin_Label} plugin will set
+     * this text automatically when it is a label for this input.
+     *
+     * @var string
+     */
+    public $myLabel;
+
+    /**
+     * Text to show as tool tip for the input.
+     *
+     * @var string
+     */
+    public $toolTip;
+
+    /**
+     * Validation indicator used by the framework.
+     *
+     * The true/false value of this variable indicates whether or not the text input is valid
+     * (a valid input satisfies the mandatory requirement and regex validation pattern).
+     * Use {@link Zikula_Form_Plugin_TextInput::setError()} and {@link Zikula_Form_Plugin_TextInput::clearValidation()}
+     * to change the value.
+     *
+     * @var boolean
+     */
+    public $isValid = true;
+
+
+    /**
      * CSS class to use.
      *
      * @var string
@@ -127,6 +183,18 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     }
 
     /**
+     * Initialize event handler.
+     *
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     *
+     * @return void
+     */
+    public function initialize(Zikula_Form_View $view)
+    {
+        $view->addValidator($this);
+    }
+
+    /**
      * Load values.
      *
      * Called internally by the plugin itself to load values from the render.
@@ -178,17 +246,22 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
         $idHtml = $this->getIdHtml();
 
         $nameHtml = " name=\"{$this->inputName}\"";
+        $titleHtml = ($this->toolTip != null ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
         $checkedHtml = ($this->checked ? " checked=\"checked\"" : '');
 
-        $class = 'z-form-checkbox';
+        $class = $this->getStyleClass();
         if ($this->cssClass != null) {
             $class .= ' ' . $this->cssClass;
         }
 
         $attributes = $this->renderAttributes($view);
 
-        $result = "<input{$idHtml}{$nameHtml} type=\"checkbox\" value=\"1\" class=\"{$class}\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
+        $result = "<input{$idHtml}{$nameHtml}{$titleHtml} type=\"checkbox\" value=\"1\" class=\"{$class}\"{$readOnlyHtml}{$checkedHtml}{$attributes} />";
+
+        if ($this->mandatory && $this->mandatorysym) {
+            $result .= '<span class="z-form-mandatory-flag">*</span>';
+        }
 
         return $result;
     }
@@ -231,5 +304,77 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
                 $data[$this->group][$this->dataField] = $this->checked;
             }
         }
+    }
+
+    /**
+     * Validates the input.
+     *
+     * @param Zikula_Form_View $view Zikula_Form_View object.
+     *
+     * @return void
+     */
+    public function validate(Zikula_Form_View $view)
+    {
+        $this->clearValidation($view);
+
+        if ($this->mandatory && !$this->checked) {
+            $this->setError(__('Error! You must check this checkbox.'));
+        }
+    }
+
+    /**
+     * Sets an error message.
+     *
+     * @param string $msg Error message.
+     *
+     * @return void
+     */
+    public function setError($msg)
+    {
+        $this->isValid = false;
+        $this->errorMessage = $msg;
+        $this->toolTip = $msg;
+    }
+
+    /**
+     * Clears the validation data.
+     *
+     * @param Zikula_Form_View $view Zikula_Form_View object.
+     *
+     * @return void
+     */
+    public function clearValidation(Zikula_Form_View $view)
+    {
+        $this->isValid = true;
+        $this->errorMessage = null;
+        $this->toolTip = null;
+    }
+
+    /**
+     * Helper method to determine css class.
+     *
+     * Can be overridden by subclasses like Zikula_Form_Plugin_IntInput and Zikula_Form_Plugin_FloatInput.
+     *
+     * @todo Customize styles for checkboxes
+     *
+     * @return string the list of css classes to apply
+     */
+    protected function getStyleClass()
+    {
+        $class = 'z-form-checkbox';
+        if (!$this->isValid) {
+            $class .= ' z-form-error';
+        }
+        if ($this->mandatory && $this->mandatorysym) {
+            $class .= ' z-form-mandatory';
+        }
+        if ($this->readOnly) {
+            $class .= ' z-form-readonly';
+        }
+        if ($this->cssClass != null) {
+            $class .= ' ' . $this->cssClass;
+        }
+
+        return $class;
     }
 }
