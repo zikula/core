@@ -412,9 +412,16 @@ class DataUtil
                 if ($current == '.') {
                     // current path element is a dot, so we don't do anything
                 } elseif ($current == '..') {
-                    // current path element is .., so we remove the last path in case of relative paths
+                    // current path element is .. and path is relative
                     if (!$absolutepathused) {
-                        array_pop($clean_array);
+                        // if the array isn't empty
+                        if (!empty($clean_array)) {
+                            // we remove the last path
+                            array_pop($clean_array);
+                        } else {
+                            // if it is empty, we allow the path to begin with '../'
+                            $clean_array[] = $current;
+                        }
                     }
                 } else {
                     // current path element is valid, so we add it to the path
