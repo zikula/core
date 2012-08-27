@@ -2,25 +2,29 @@ jQuery(document).ready(function() {
     jQuery('.z-formbuttons').children().each(
          function(){
              jQuery(this).attr('data-role','button');
-             
-             // add icons
-             // TODO: This just works with lang = en
-             if (jQuery(this).attr('title') == 'Cancel') {
-                  jQuery(this).attr('data-icon','delete');
-             } else if (jQuery(this).attr('title') == 'Save') {
-                  jQuery(this).attr('data-icon','check');
-             } else if (jQuery(this).attr('title') == 'Search now') {
-                  jQuery(this).attr('data-icon','search');
-             }                                        
              // remove img
              jQuery(this).children().each(
                 function(){
                     jQuery(this).remove();
                 }
              );
+
              
          }
     );
+
+
+    jQuery('.z-bt-ok').attr('data-icon','check');
+    jQuery('.z-bt-cancel').attr('data-icon','delete');
+    //jQuery('.z-bt-preview').attr('data-icon','check');
+    //jQuery('.z-bt-new').attr('data-icon','check');
+    jQuery('.z-bt-save').attr('data-icon','check');
+    //jQuery('.z-bt-edit').attr('data-icon','check');
+    jQuery('.z-bt-archive').attr('data-icon','gear');
+    jQuery('.z-bt-delete').attr('data-icon','delete');
+    //jQuery('.z-bt-filter').attr('data-icon','check');
+
+
      
     jQuery('.z-menulinks').attr('data-role','controlgroup');
     jQuery('.z-menulinks').attr('data-type','horizontal');
