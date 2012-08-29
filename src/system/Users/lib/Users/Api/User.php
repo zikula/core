@@ -545,7 +545,7 @@ class Users_Api_User extends Zikula_AbstractApi
     public function expiredSession()
     {
         $view = Zikula_View::getInstance($this->name, false);
-
+        $view->assign('returnpage', urlencode(System::getCurrentUri()));
         return $view->fetch('users_userapi_expiredsession.tpl');
     }
 
