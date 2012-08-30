@@ -436,7 +436,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public static function getModulePluginInstance($modName, $pluginName, $caching = null, $cache_id = null)
     {
-        return Zikula_View_Plugin::getInstance($modName, $pluginName, $caching, $cache_id);
+        return Zikula_View_Plugin::getPluginInstance($modName, $pluginName, $caching, $cache_id);
     }
 
     /**
