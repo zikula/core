@@ -7,8 +7,3 @@ system/Admin/templates/admin_admin_adminpanel.tpl: themes/Mobile/templates/modul
 system/Admin/templates/admin_admin_categorymenu.tpl: themes/Mobile/templates/modules/Admin/admin_admin_categorymenu.tpl
 system/Admin/templates/admin_admin_footer.tpl: themes/Mobile/templates/modules/Admin/admin_admin_footer.tpl
 system/Admin/templates/admin_admin_header.tpl: themes/Mobile/templates/modules/Admin/admin_admin_header.tpl
-modules/News/templates/user/index.tpl: themes/Mobile/templates/modules/News/user/index.tpl
-modules/News/templates/user/menu.tpl: themes/Mobile/templates/modules/News/user/menu.tpl
-modules/News/templates/user/view.tpl: themes/Mobile/templates/modules/News/user/view.tpl
-modules/News/templates/user/article.tpl: themes/Mobile/templates/modules/News/user/article.tpl
-modules/News/templates/user/articlecontent.tpl: themes/Mobile/templates/modules/News/user/articlecontent.tpl
