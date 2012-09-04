@@ -70,7 +70,11 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
         return $this->url;
     }
     
-    
+    /**
+     * Parameter getter.
+     *
+     * @return string|boolean
+     */
     public function getParameter($key)
     {   
         if (array_key_exists($key, $this->parameters)) {
