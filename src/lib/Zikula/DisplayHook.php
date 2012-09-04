@@ -31,6 +31,13 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
      * @var Zikula_ModUrl
      */
     private $url;
+    
+    /**
+     * Additional parameters.
+     *
+     * @var array
+     */
+    private $parameters;
 
     public function __construct($name, $id, Zikula_ModUrl $url = null, $parameters = array())
     {
