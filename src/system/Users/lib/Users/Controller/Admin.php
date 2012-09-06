@@ -169,8 +169,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 ));
                 // we need an associative array by the key to compare with the groups that the user can see
                 $userGroupsByKey = array();
-                foreach ($userGroups as $userGroup) {
-                    $userGroupsByKey[$userGroup['gid']] = array('gid' => $userGroup['gid']);
+                foreach ($userGroups as $gid) {
+                    $userGroupsByKey[$gid] = array('gid' => $gid);
                 }
                 $userList[$key]['userGroupsView'] = array_intersect_key($userGroupsAccess, $userGroupsByKey);
             }
