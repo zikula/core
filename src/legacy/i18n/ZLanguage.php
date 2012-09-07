@@ -370,6 +370,13 @@ class ZLanguage
         $_this = self::getInstance();
         $locale = $_this->getLocale();
 
+        if (!$locale) {
+            // fallback solution to be replaced by proper routing, see #79
+            $defaultLocale = System::getVar('language_i18n', 'en');
+            $_this->setLocale($defaultLocale);
+            $locale = $_this->getLocale();
+        }
+
         // exit if the language system hasnt yet fully initialised
         if (!$locale) {
             return false;
