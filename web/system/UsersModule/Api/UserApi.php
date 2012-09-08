@@ -466,7 +466,6 @@ class UserApi extends \Zikula\Framework\Api\AbstractApi
         } else {
             // delete all the records for password reset confirmation that have expired
             $chgPassExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
-
             if ($chgPassExpireDays > 0) {
                 $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
