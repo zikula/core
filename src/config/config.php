@@ -42,7 +42,7 @@ $ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_general_ci';
 // This level of reporting only affect PHP's own native handlers (if you enable them).
 // These settings have no effect on Zikula's error handling and reporting.
 $ZConfig['Debug']['error_reporting_development'] = E_ALL; // preconfigured level
-$ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING; // preconfigured level
+$ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT; // preconfigured level
 $ZConfig['Debug']['debug_key'] = ($ZConfig['System']['development'] ? 'error_reporting_development' : 'error_reporting_production');
 error_reporting($ZConfig['Debug'][$ZConfig['Debug']['debug_key']]); // now set the appropriate level
 
