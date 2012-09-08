@@ -15,9 +15,13 @@ jQuery(document).ready(function() {
 
     jQuery('.z-bt-ok').attr('data-icon','check');
     jQuery('.z-bt-cancel').attr('data-icon','delete');
+    jQuery('.z-bt-preview').attr('data-icon','eye-open');
+    jQuery('.z-bt-new').attr('data-icon','faplus');
     jQuery('.z-bt-save').attr('data-icon','check');
+    jQuery('.z-bt-edit').attr('data-icon','pencil');
     jQuery('.z-bt-archive').attr('data-icon','gear');
     jQuery('.z-bt-delete').attr('data-icon','delete');
+    jQuery('.z-bt-filter').attr('data-icon','filter');
      
     jQuery('.z-menulinks').attr('data-role','controlgroup');
     jQuery('.z-menulinks').attr('data-type','horizontal');
