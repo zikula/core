@@ -1898,7 +1898,7 @@ class UserUtil
         }
             
         if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', false)) {
-           $pagetheme = 'Mobile';
+            $pagetheme = 'Mobile';
         } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('Theme', 'enable_mobile_theme', false)) {
             include_once("system/Theme/lib/vendor/Mobile_Detect.php");
             $detect = new Mobile_Detect();

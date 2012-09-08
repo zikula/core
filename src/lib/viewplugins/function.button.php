@@ -82,10 +82,6 @@ function smarty_function_button($params, Zikula_View $view)
     // we're going to make use of pnimg for path searching
     require_once $view->_get_plugin_filepath('function', 'img');
 
-    //if (!isset($params['src'])) {
-    //    $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'src')));
-    //    return false;
-    //}
     if (isset($params['src']) && !isset($params['set'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
         return false;
