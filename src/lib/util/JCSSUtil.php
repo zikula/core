@@ -118,9 +118,15 @@ class JCSSUtil
      * @return array List of stylesheets
      */
     public static function prepareStylesheets($stylesheets)
-    {
+    {                    
+        if (ThemeUtil::getVar('noCoreCss', false)) {
+            $initStyle = null;
+        } else {
+            $initStyle = array('style/core.css');
+        }
+        
         // Add generic stylesheet as the first stylesheet.
-        $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), array('style/core.css'));
+        $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), $initStyle);
         $coreStyle = EventUtil::getManager()->notify($event)->getData();
         if (is_array($stylesheets)) {
             array_unshift($stylesheets, $coreStyle[0]);
@@ -329,7 +335,7 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.7.2.min.js',
+                        'path' => 'javascript/jquery/jquery-1.8.1.min.js',
                         'require' => array('noconflict'),
                 ),
                 'jquery-ui' => array(
@@ -455,7 +461,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.7.2.js',
+                            'path' => 'javascript/jquery/jquery-1.8.1.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(
