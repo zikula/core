@@ -25,12 +25,13 @@ class DateUtil
     /**
      * Return a formatted datetime for the given timestamp (or for now).
      *
-     * @param string $time   The timestamp (string) which we wish to format (default==now).
-     * @param string $format The format to use when formatting the date (optional).
+     * @param string  $time            The timestamp (string) which we wish to format (default==now).
+     * @param string  $format          The format to use when formatting the date (optional).
+     * @param boolean $translateFormat Whether the formatting should be translated or not (default = true).
      *
      * @return datetime The datetime formatted according to the specified format.
      */
-    public static function getDatetime($time=null, $format=null)
+    public static function getDatetime($time=null, $format=null, $translateFormat = true)
     {
         if (is_null($format)) {
             $format = DATEFORMAT_FIXED;
@@ -39,42 +40,42 @@ class DateUtil
         switch (trim(strtolower($format))) {
             case 'datelong':
                 //! datelong
-                $format = __('%A, %B %d, %Y');
+                $format = $translateFormat ? __('%A, %B %d, %Y') : '%A, %B %d, %Y';
                 break;
             case 'datebrief':
                 //! datebrief
-                $format = __('%b %d, %Y');
+                $format = $translateFormat ? __('%b %d, %Y') : '%b %d, %Y';
                 break;
             case 'datestring':
                 //! datestring
-                $format = __('%A, %B %d @ %H:%M:%S');
+                $format = $translateFormat ? __('%A, %B %d @ %H:%M:%S') : '%A, %B %d @ %H:%M:%S';
                 break;
             case 'datestring2':
                 //! datestring2
-                $format = __('%A, %B %d');
+                $format = $translateFormat ? __('%A, %B %d') : '%A, %B %d';
                 break;
             case 'datetimebrief':
                 //! datetimebrief
-                $format = __('%b %d, %Y - %I:%M %p');
+                $format = $translateFormat ? __('%b %d, %Y - %I:%M %p') : '%b %d, %Y - %I:%M %p';
                 break;
             case 'datetimelong':
                 //! datetimelong
-                $format = __('%A, %B %d, %Y - %I:%M %p');
+                $format = $translateFormat ? __('%A, %B %d, %Y - %I:%M %p') : '%A, %B %d, %Y - %I:%M %p';
                 break;
             case 'datefeed':
                 //! RFC 822 date format for RSS feeds
-                $format = __('%a, %d %b %Y %H:%M:%S %Z');
+                $format = $translateFormat ? __('%a, %d %b %Y %H:%M:%S %Z') : '%a, %d %b %Y %H:%M:%S %Z';
                 break;
             case 'timebrief':
                 //! timebrief
-                $format = __('%I:%M %p');
+                $format = $translateFormat ? __('%I:%M %p') : '%I:%M %p';
                 break;
             case 'timelong':
                 //! timelong
-                $format = __('%T %p');
+                $format = $translateFormat ? __('%T %p') : '%T %p';
                 break;
             default:
-                $format = __($format);
+                $format = $translateFormat ? __($format) : $format;
                 break;
         } // switch
 
