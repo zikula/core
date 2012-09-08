@@ -513,6 +513,8 @@ class Users_Api_User extends Zikula_AbstractApi
             return false;
         } else {
             // delete all the records for password reset confirmation that have expired
+            $tables = DBUtil::getTables();
+            $verifychgColumn = $tables['users_verifychg_column'];
             $chgPassExpireDays = $this->getVar(Users_Constant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, Users_Constant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
             if ($chgPassExpireDays > 0) {
                 $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
@@ -521,12 +523,8 @@ class Users_Api_User extends Zikula_AbstractApi
                 $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_PWD . ")";
                 DBUtil::deleteWhere ('users_verifychg', $where);
             }
-
-            $tables = DBUtil::getTables();
-            $verifychgColumn = $tables['users_verifychg_column'];
             $verifychgObj = DBUtil::selectObject('users_verifychg',
                 "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_PWD . ")");
-
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
             } else {
