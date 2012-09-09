@@ -357,7 +357,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                             $selectedValues[] = $c->getCategory()->getId();
                         }
                     }
-                    if ($this->selectionMode == 'single') {
+                    if ($this->selectionMode == 'single' && isset($selectedValues[0])) {
                         $this->setSelectedValue($selectedValues[0]);
                     } else {
                         $this->setSelectedValue($selectedValues);
