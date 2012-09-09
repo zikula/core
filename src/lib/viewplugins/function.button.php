@@ -82,14 +82,8 @@ function smarty_function_button($params, Zikula_View $view)
     // we're going to make use of pnimg for path searching
     require_once $view->_get_plugin_filepath('function', 'img');
 
-    if (!isset($params['src'])) {
-        $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'src')));
-
-        return false;
-    }
-    if (!isset($params['set'])) {
+    if (isset($params['src']) && !isset($params['set'])) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', array('smarty_function_button', 'set')));
-
         return false;
     }
     $type = isset($params['type'])    ? $params['type'] : 'submit';
@@ -124,16 +118,17 @@ function smarty_function_button($params, Zikula_View $view)
     $alt = (isset($params['alt']) ? $params['alt'] : '');
 
     // call the pnimg plugin and work out the src from the assigned template vars
-    smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $view);
-    $imgvars = $view->get_template_vars('buttonsrc');
-    $imgsrc = $imgvars['src'];
+    if (isset($params['src'])) {
+        smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $view);
+        $imgvars = $view->get_template_vars('buttonsrc');
+        $imgsrc = $imgvars['src'];
+        $img = '<img src="'.DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).'" />';
+    }
 
     // form the button html
     if ($mode == 'button') {
         $return = '<button'.$id.$class.' type="'.DataUtil::formatForDisplay($type).
-        '"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'"><img src="'.
-        DataUtil::formatForDisplay($imgsrc).'" alt="'.DataUtil::formatForDisplay($alt).
-        '" />'.$text.'</button>';
+        '"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'">'.$img.$text.'</button>';
     } else {
         $return = '<input'.$id.$class.' type="image"'.$name.$value.' title="'.
         DataUtil::formatForDisplay($title).'" src="'.DataUtil::formatForDisplay($imgsrc).

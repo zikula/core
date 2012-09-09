@@ -118,9 +118,15 @@ class JCSSUtil
      * @return array List of stylesheets
      */
     public static function prepareStylesheets($stylesheets)
-    {
+    {                    
+        if (ThemeUtil::getVar('noCoreCss', false)) {
+            $initStyle = null;
+        } else {
+            $initStyle = array('style/core.css');
+        }
+        
         // Add generic stylesheet as the first stylesheet.
-        $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), array('style/core.css'));
+        $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), $initStyle);
         $coreStyle = EventUtil::getManager()->notify($event)->getData();
         if (is_array($stylesheets)) {
             array_unshift($stylesheets, $coreStyle[0]);
