@@ -333,7 +333,7 @@ class JCSSUtil
                         'require' => array('noconflict'),
                 ),
                 'jquery-ui' => array(
-                        'path' => 'javascript/jquery-ui/jquery-ui.min.js',
+                        'path' => 'javascript/jquery-ui/jquery-ui-1.8.23.custom.min.js',
                         'require' => array('jquery'),
                 ),
                 'noconflict' => array(
@@ -464,7 +464,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                     'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui.js',
+                            'path' => 'javascript/jquery-ui/jquery-ui-1.8.23.custom.js',
                             'require' => array('jquery'),
                     ),
             );
