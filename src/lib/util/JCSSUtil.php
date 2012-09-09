@@ -464,7 +464,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                     'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui-1.8.23.custom.js',
+                            'path' => 'javascript/jquery-ui/jquery-ui-1.8.23.custom.js', // the 'custom' designation is meaningless
                             'require' => array('jquery'),
                     ),
             );
