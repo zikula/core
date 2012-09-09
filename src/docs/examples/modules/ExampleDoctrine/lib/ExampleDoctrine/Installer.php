@@ -38,6 +38,7 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
             return false;
         }
 
+        $this->defaultcategories();
         $this->defaultdata();
 
         // Initialisation successful
@@ -87,10 +88,34 @@ class ExampleDoctrine_Installer extends Zikula_AbstractInstaller
 
         // remove all module vars
         $this->delVars();
+        
+        // delete categories
+        CategoryRegistryUtil::deleteEntry('ExampleDoctrine');
+        CategoryUtil::deleteCategoriesByPath('/__SYSTEM__/Modules/ExampleDoctrine', 'path');
 
         // Deletion successful
         return true;
     }
+    
+    
+    /**
+     * Provide default categories.
+     *
+     * @return void
+     */
+    protected function defaultcategories()
+    {
+
+        if (!$cat = CategoryUtil::createCategory('/__SYSTEM__/Modules', 'ExampleDoctrine', null, $this->__('ExampleDoctrine'), $this->__('ExampleDoctrine categories'))) {
+            return false;
+        }
+        
+        $rootcat = CategoryUtil::getCategoryByPath('/__SYSTEM__/Modules/ExampleDoctrine');
+        CategoryRegistryUtil::insertEntry('ExampleDoctrine', 'User', 'Main', $rootcat['id']);
+
+        CategoryUtil::createCategory('/__SYSTEM__/Modules/ExampleDoctrine', 'category1', null, $this->__('Category 1'), $this->__('Category 1'));
+    }
+
 
     /**
      * Provide default data.
