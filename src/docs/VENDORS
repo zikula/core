@@ -132,15 +132,20 @@ jQuery v1.7.2
     Location in Zikula: javascript/jquery
     Patch details: none
 
-jQuery-UI v1.8.19
+jQuery-UI v1.8.23
 
     Vendor website: http://jqueryui.com/
-    Downloaded from: http://jqueryui.com/
+    Downloaded from: http://jqueryui.com/download
     License: MIT and GPL (see http://jqueryui.com/about)
     Location in Zikula: javascript/jquery-ui
-    Patch details: none
+    Patch details: included themes:
+        base
+        cupertino
+        overcast
+        vader
+        (all theme css files direct download from http://jqueryui.com/download#stable-themes) 
 
-jQuery-Timepicker-Addon v1.0.0
+jQuery-Timepicker-Addon v1.0.2
 
     Vendor website: http://trentrichardson.com/examples/timepicker/
     Downloaded from: https://github.com/trentrichardson/jQuery-Timepicker-Addon
