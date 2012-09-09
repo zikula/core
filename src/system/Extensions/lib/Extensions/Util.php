@@ -37,6 +37,12 @@ class Extensions_Util
             if (!$modversion instanceof Zikula_AbstractVersion) {
                 LogUtil::registerError(__f('%s is not an instance of Zikula_AbstractVersion', get_class($modversion)));
             }
+        } elseif (!is_dir("$rootdir/$moduleName")) {
+            $modversion = array(
+                    'name' => $moduleName,
+                    'description' => '',
+                    'version' => 0
+                );
         } elseif (is_dir("$rootdir/$moduleName/lib")) {
             LogUtil::registerError(__f('Could not find %1$s for module %2$s', array("{$moduleName}_Version", $moduleName)));
         } else {
