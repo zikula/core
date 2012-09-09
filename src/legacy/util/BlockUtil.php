@@ -110,7 +110,7 @@ class BlockUtil
             }
 
             // block filtering
-            if (!empty($blockinfo['filter'])) {
+            if (!empty($blockinfo['filter']) && is_array($blockinfo['filter']) && count($blockinfo['filter'])) {
 
                 $showblock = false;
 

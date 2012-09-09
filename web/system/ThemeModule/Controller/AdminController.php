@@ -1152,6 +1152,9 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
 
         $theme_change = (bool)$this->request->request->get('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false);
         System::setVar('theme_change', $theme_change);
+        
+        $enable_mobile_theme = (bool)FormUtil::getPassedValue('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false, 'POST');
+        $this->setVar('enable_mobile_theme', $enable_mobile_theme);
 
         $itemsperpage = (int)$this->request->request->get('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25);
         if ($itemsperpage < 1)

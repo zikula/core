@@ -111,9 +111,15 @@ class JCSSUtil
      * @return array List of stylesheets
      */
     public static function prepareStylesheets($stylesheets)
-    {
+    {                    
+        if (ThemeUtil::getVar('noCoreCss', false)) {
+            $initStyle = null;
+        } else {
+            $initStyle = array('style/core.css');
+        }
+        
         // Add generic stylesheet as the first stylesheet.
-        $event = new GenericEvent('stylesheet', array(), array('style/core.css'));
+        $event = new GenericEvent('stylesheet', array(), array('style/core.css'), $initStyle);
         $coreStyle = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event);
         $coreStyle = $event->getData();
 
@@ -281,7 +287,7 @@ class JCSSUtil
                         'require' => array('noconflict'),
                 ),
                 'jquery-ui' => array(
-                        'path' => 'javascript/jquery-ui/jquery-ui.min.js',
+                        'path' => 'javascript/jquery-ui/jquery-ui-1.8.23.custom.min.js',
                         'require' => array('jquery'),
                 ),
                 'noconflict' => array(
@@ -412,7 +418,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                     'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui.js',
+                            'path' => 'javascript/jquery-ui/jquery-ui-1.8.23.custom.js', // the 'custom' designation is meaningless
                             'require' => array('jquery'),
                     ),
             );
