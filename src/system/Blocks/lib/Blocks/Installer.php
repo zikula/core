@@ -79,7 +79,7 @@ class Blocks_Installer extends Zikula_AbstractInstaller
             case '3.8.0':
                 // update empty filter fields to an empty array
                 $entity = $this->name . '_Entity_Block';
-                $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = '' OR p.filter = 's:0:\"\";'";
+                $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = '' OR p.filter = 's:0:\"\";' OR p.filter = 'a:3:{s:4:\"type\";s:0:\"\";s:9:\"functions\";s:0:\"\";s:10:\"customargs\";s:0:\"\";}'";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
 
