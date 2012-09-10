@@ -31,12 +31,20 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
      * @var Zikula_ModUrl
      */
     private $url;
+    
+    /**
+     * Additional parameters.
+     *
+     * @var array
+     */
+    private $parameters;
 
-    public function __construct($name, $id, Zikula_ModUrl $url = null)
+    public function __construct($name, $id, Zikula_ModUrl $url = null, $parameters = array())
     {
         $this->name = $name;
         $this->id = $id;
         $this->url = $url;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -67,5 +75,18 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
     public function getUrl()
     {
         return $this->url;
+    }
+    
+    /**
+     * Parameter getter.
+     *
+     * @return string|boolean
+     */
+    public function getParameter($key)
+    {   
+        if (array_key_exists($key, $this->parameters)) {
+            return $this->parameters[$key];
+        }
+        return false;
     }
 }
