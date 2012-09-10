@@ -5,6 +5,60 @@ CHANGELOG - ZIKULA 1.3.4
 
 - Update jQuery to 1.8.1
 
+- Fixed invalid URL send in Password recovery (issue #443)
+
+- Fixed users module failing to send password recovery (admin) (issue #459)
+
+- Fixed checks in DateUtil::getDateFormatData (issue #198)
+
+- Added message about clearing the database when re-install is needed (issue #200)
+
+- Updated config.php for PHP 5.4 compatibility with explicit E_STRICT excluding in production (issue #451)
+
+- Fixed php warning with array usage in Users_Controller_Admin (issue #440)
+
+- Added a param minLength to the Textinput form plugin (issue #445)
+
+- Added mandatory Param for checkboxes to the Checkbox form plugin (issue #456, #457))
+
+- Adjusted form contextmenu to work again in IE browsers for submitting from a hidden div (module Content uses this a lot) (issue #423)
+
+- Fixed access to admin in IE8 (issue #420)
+
+- Fixed no redirect from session expired page (issue #416)
+
+- Fixed JS error in IE8 when clicking a submit button (issue #451)
+
+- Fixed normalized paths in Menutree, especially for custom templates/styles (issue #414)
+
+- Fixed formcategorycheckboxlist plugin to enable multiple category selection with Doctrine2 (issue #403, #404)
+
+- Fixed creating a category via right click (issue #316)
+
+- Added ability to edit empty menuitems (with a space char) in Menutree, although using stylesheets is the recommmended way (issue #264)
+
+- Fixed Contextmenu in admin area to work in Opera browser (issue #258)
+
+- Fixed error message when uninstalling a module (issue #231)
+
+- Fixed incoherent permissions in Users_Controller_Admin (issue #167)
+
+- Added ability to generate an overrides.yml file (issue #136)
+
+- Extended DateUtil::getdatetime with an option for not translating dates, backwards compatible (issue #81)
+
+- Fixed theme locale sporadically not available with fallback option (issue #79)
+
+- Fixed mailer smtp password being stored too short (issue #441)
+
+- Added correct Categories in the ExampleDoctrine module (issue #401)
+
+- Fixed using setSelectedValue in CategorySelector if there is no selected category (issue #479)
+
+- Added option that a theme can avoid the loading of core.css, e.g. Mobile themes (issue #453)
+
+- Fixed typo causing interactive installers not being recognised (issue #448)
+
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
