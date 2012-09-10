@@ -329,7 +329,7 @@ class ZLanguage
      *
      * @return string
      */
-    public function getLanguageCodeLegacy()
+    public static function getLanguageCodeLegacy()
     {
         return self::getInstance()->languageCodeLegacy;
     }
