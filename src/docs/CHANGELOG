@@ -9,6 +9,8 @@ CHANGELOG - ZIKULA 1.3.4
 
 - Fixed users module failing to send password recovery (admin) (issue #459)
 
+- Fixed category management migration 1.2.6 -> 1.3. The display_name and display_desc are updated fine during upgrade from Zikula 12x to Zikula 134 (issue #69)
+
 - Fixed checks in DateUtil::getDateFormatData (issue #198)
 
 - Added message about clearing the database when re-install is needed (issue #200)
