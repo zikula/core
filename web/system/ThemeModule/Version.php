@@ -22,7 +22,7 @@ class Version extends \Zikula\Framework\AbstractVersion
         $meta['displayname']    = $this->__('Themes');
         $meta['description']    = $this->__('Themes module to manage site layout, render and cache settings.');
         $meta['url']            = $this->__('theme');
-        $meta['version']        = '3.4.1';
+        $meta['version']        = '3.4.2';
         $meta['securityschema'] = array('Theme::' => 'Theme name::');
 
         return $meta;

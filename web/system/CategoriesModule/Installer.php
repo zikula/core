@@ -73,9 +73,7 @@ class Installer extends \Zikula\Framework\AbstractInstaller
             case '1.04':
                 $this->upgrade_fixSerializedData();
                 $this->upgrade_MigrateLanguageCodes();
-
             case '1.1':
-                $this->upgrade_MigrateLanguageCodes();
             case '1.2':
                 // new column used in doctrine categorisable template
                 \DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
