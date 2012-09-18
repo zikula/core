@@ -6,12 +6,6 @@
     "autoload": {
         "psr-0": { "Zikula": "src/" }
     },
-    "repositories": [
-        {
-	    "type": "git",
-	    "url": "http://github.com/drak/Twig"
-        }
-    ],
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
