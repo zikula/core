@@ -380,8 +380,8 @@ class DBObject
                 }
             }
 
-            $this->_key = $where;
-            $this->_field = 'WHERE';
+            $this->_objKey = $where;
+            $this->_objField = 'WHERE';
         } else {
             // generic key=>value lookup
             if ($this->_objJoin) {
@@ -390,8 +390,8 @@ class DBObject
                 $this->_objData = DBUtil::selectObjectById($this->_objType, $key, $field, $this->_objColumnArray, $this->_objPermissionFilter, $this->_objCategoryFilter);
             }
 
-            $this->_key = $key;
-            $this->_field = $field;
+            $this->_objKey = $key;
+            $this->_objField = $field;
         }
 
         $this->selectPostProcess();
