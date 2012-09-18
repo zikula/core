@@ -2,26 +2,17 @@
 
 namespace Zikula\Bundle\CoreBundle\Tests\Twig;
 
-use Zikula\Bundle\CoreBundle\Twig\Test\IntegrationTestCase;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 
-class IntegrationTest extends IntegrationTestCase
+class IntegrationTest extends \Twig_Test_IntegrationTestCase
 {
     public function getExtensions()
     {
         return array(new CoreExtension());
     }
 
-    public function getTests()
+    public function getFixturesDir()
     {
-        return $this->getFixtures(dirname(__FILE__).'/Fixtures/');
-    }
-
-    /**
-     * @dataProvider getTests
-     */
-    public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
-    {
-        $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs);
+        return dirname(__FILE__).'/Fixtures/';
     }
 }
