@@ -855,25 +855,25 @@ class DateUtil
             $dateformat = __('%Y-%m-%d');
         }
 
-        // 10 = __('%Y-%m-%d');
-        // 16 = __('%Y-%m-%d %H:%M');
-        // 19 = __('%Y-%m-%d %H:%M:%S');
+        // 8 = __('%Y-%m-%d');
+        // 14 = __('%Y-%m-%d %H:%M');
+        // 17 = __('%Y-%m-%d %h:%M:%S');
         $length = strlen($dateformat);
         switch ($length) {
-            case 10:
+            case 8:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)#';
                 $type = 'date';
                 break;
-            case 16:
+            case 14:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)\s%(\w)(.)%(\w)#';
                 $type = 'datetimeshort';
                 break;
-            case 19:
+            case 17:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)\s%(\w)(.)%(\w)(.)%(\w)#';
                 $type = 'datetimefull';
                 break;
             default:
-                z_exit(__f('Dateformat must be with 10, 16 or 19 characters long.', $dateformat));
+                z_exit(__f('Dateformat must be with 8, 14 or 17 characters long.', $dateformat));
         }
 
         if (preg_match($regex, $dateformat, $matches)) {
