@@ -149,11 +149,14 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
                 $date = strtotime($this->initDate);
             }
 
-            if ($date != null) {
-                $this->text = DateUtil::getDatetime($date, ($this->includeTime ? __('%Y-%m-%d %H:%M') : __('%Y-%m-%d')));
+            if ($date != null) {                
+                $this->text = DateUtil::getDatetime($date, $this->ifFormat, false);
             } else {
                 $this->text = __('Unknown date');
             }
+        } else {
+            $date = strtotime($this->text);
+            $this->text = DateUtil::getDatetime($date, $this->ifFormat, false);
         }
 
         if ($firstTime) {
@@ -211,7 +214,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
 
             $result .= '<div>' . $hiddenInputField . '<span id="' . $this->id . 'cal" style="background-color: #ff8; cursor: default" onmouseover="this.style.backgroundColor=\'#ff0\';" onmouseout="this.style.backgroundColor=\'#ff8\';">';
             if ($this->text) {
-                $result .= DataUtil::formatForDisplay(DateUtil::getDatetime(DateUtil::parseUIDate($this->text), $this->daFormat));
+                $result .= DataUtil::formatForDisplay(DateUtil::getDatetime(DateUtil::parseUIDate($this->text, $this->ifFormat), $this->daFormat));
             } else {
                 $result .= __('Select date');
             }
