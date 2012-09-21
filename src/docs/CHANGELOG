@@ -63,6 +63,7 @@ CHANGELOG - ZIKULA 1.3.4
 
 - Fixed blocks migration from Zikula 1.2 to Zikula 1.3 (issue #406)
 
+- Added check for outdated config.php in upgrade.php (issue #143)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------

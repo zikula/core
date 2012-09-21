@@ -21,6 +21,13 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
 include_once __DIR__.'/plugins/Doctrine/Plugin.php';
+
+// check if the config.php was renewed
+if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
+    echo __('It seems to be that your config.php is outdated. Please check the release notes for more information.');
+    die();
+}
+
 PluginUtil::loadPlugin('SystemPlugin_Doctrine_Plugin');
 $eventManager = $core->getEventManager();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');
