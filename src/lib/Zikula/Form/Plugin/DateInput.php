@@ -127,7 +127,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
 
         $i18n = ZI18n::getInstance();
 
-        if (!empty($this->defaultValue) && !$view->isPostBack()) {
+        if (!empty($this->defaultValue) && !$view->isPostBack() && empty($this->text)) {
             $d = strtolower($this->defaultValue);
             $now = getdate();
             $date = null;
