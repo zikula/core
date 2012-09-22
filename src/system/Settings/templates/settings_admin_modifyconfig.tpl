@@ -19,6 +19,11 @@
                 <input id="settings_slogan" type="text" name="settings[slogan]" value="{$modvars.ZConfig.slogan|safetext}" size="50" maxlength="100" />
             </div>
             <div class="z-formrow">
+                <label for="settings_pagetitle">{gt text="Page title structure"}</label>
+                <input id="settings_pagetitle" type="text" name="settings[pagetitle]" value="{$pagetitle|safetext}" size="50" maxlength="100" />
+                <em class="z-formnote">{gt text="Possible tags: %pagetitle%, %sitename%, %modulename%"}</em>
+            </div>
+            <div class="z-formrow">
                 <label for="settings_adminmail">{gt text="Admin's e-mail address"}</label>
                 <input id="settings_adminmail" type="text" name="settings[adminmail]" value="{$modvars.ZConfig.adminmail|safetext}" size="30" maxlength="100" />
             </div>

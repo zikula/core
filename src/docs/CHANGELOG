@@ -63,6 +63,7 @@ CHANGELOG - ZIKULA 1.3.4
 
 - Fixed blocks migration from Zikula 1.2 to Zikula 1.3 (issue #406)
 
+- Added reimplementation of a core solution for pagetitles/sitenames, (issue #237)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
