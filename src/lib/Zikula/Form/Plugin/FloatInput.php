@@ -79,6 +79,20 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
     }
 
     /**
+     * Render event handler.
+     *
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     *
+     * @return string The rendered output
+     */
+    public function render(Zikula_Form_View $view)
+    {
+        $this->text = DataUtil::formatNumber($this->text, $this->precision);
+
+        return Zikula_Form_Plugin_TextInput::render($view);
+    }
+
+    /**
      * Helper method to determine css class.
      *
      * @see    Zikula_Form_Plugin_TextInput
