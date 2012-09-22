@@ -36,7 +36,11 @@
         {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
         {assign var='themeurl' value="`$homepageurl``$theme.name`"}
         {else}
+        {if $homepageurl|strstr:"?"}
+        {assign var='themeurl' value="`$homepageurl`&theme=`$theme.name`"}
+        {else}
         {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
+        {/if}
         {/if}
         <tr class="{cycle values="z-odd,z-even}{if $theme.name|strtolower eq $currenttheme|strtolower} z-defaulttablerow{/if}">
             <td>
