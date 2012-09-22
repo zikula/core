@@ -2,84 +2,48 @@ CHANGELOG - ZIKULA 1.3.4
 ------------------------
 
 - Update jQuery-UI to 1.8.23
-
 - Update jQuery to 1.8.1
-
 - Fixed invalid URL send in Password recovery (issue #443)
-
 - Fixed users module failing to send password recovery (admin) (issue #459)
-
 - Fixed category management migration 1.2.6 -> 1.3. The display_name and display_desc are updated fine during upgrade from Zikula 12x to Zikula 134 (issue #69)
-
 - Fixed checks in DateUtil::getDateFormatData (issue #198)
-
 - Added message about clearing the database when re-install is needed (issue #200)
-
 - Updated config.php for PHP 5.4 compatibility with explicit E_STRICT excluding in production (issue #451)
-
 - Fixed php warning with array usage in Users_Controller_Admin (issue #440)
-
 - Added a param minLength to the Textinput form plugin (issue #445)
-
 - Added mandatory Param for checkboxes to the Checkbox form plugin (issue #456, #457))
-
 - Adjusted form contextmenu to work again in IE browsers for submitting from a hidden div (module Content uses this a lot) (issue #423)
-
 - Fixed access to admin in IE8 (issue #420)
-
 - Fixed no redirect from session expired page (issue #416)
-
 - Fixed JS error in IE8 when clicking a submit button (issue #451)
-
 - Fixed normalized paths in Menutree, especially for custom templates/styles (issue #414)
-
 - Fixed formcategorycheckboxlist plugin to enable multiple category selection with Doctrine2 (issue #403, #404)
-
 - Fixed creating a category via right click (issue #316)
-
 - Added ability to edit empty menuitems (with a space char) in Menutree, although using stylesheets is the recommmended way (issue #264)
-
 - Fixed Contextmenu in admin area to work in Opera browser (issue #258)
-
 - Fixed error message when uninstalling a module (issue #231)
-
 - Fixed incoherent permissions in Users_Controller_Admin (issue #167)
-
 - Added ability to generate an overrides.yml file (issue #136)
-
 - Extended DateUtil::getdatetime with an option for not translating dates, backwards compatible (issue #81)
-
 - Fixed theme locale sporadically not available with fallback option (issue #79)
-
 - Fixed mailer smtp password being stored too short (issue #441)
-
 - Added correct Categories in the ExampleDoctrine module (issue #401)
-
 - Fixed using setSelectedValue in CategorySelector if there is no selected category (issue #479)
-
 - Added option that a theme can avoid the loading of core.css, e.g. Mobile themes (issue #453)
-
 - Fixed typo causing interactive installers not being recognised (issue #448)
-
 - Fixed blocks migration from Zikula 1.2 to Zikula 1.3 (issue #406)
-
 - Added check for outdated config.php in upgrade.php (issue #143)
-
 - Fixed url of preview theme link (issue #493)
+
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
 
 - Change order in auto generated cache_id for theme caching to: module / type / function / customargs|homepage/startpageargs / uid_X|guest.
-
 - In Admin -> Themes -> Settings: added possibility to delete theme cache for specific module or homepage.
-
 - In Admin -> Themes -> Settings -> 'Length of time to keep cached theme pages' current value is for home page, added other value for modules.
-
 - Addition of jQuery-UI
-
 - update jQuery to latest stable version
-
 - Conversion of Admin and Blocks modules to Doctrine 2
 
 
@@ -87,33 +51,19 @@ CHANGELOG - ZIKULA 1.3.1
 ------------------------
 
 - Fixed issue with FileUtil::getFiles() not respecting nestedData arg (issue #3139).
-
 - Updated DoctrineExtensions.
-
 - Added Imagine image manipulation library - https://github.com/avalanche123/Imagine
-
 - Added standard-fields, attributable, category and metadata extensions for Doctrine 2.
-
 - Fixed DoctineUtil::renameColumn() - was corrupting TEXT to VARCHAR(255) and TINYINT(1) for TINYINT(4) when renaming.
-
 - Added support for DateTime objects to DateUtil.
-
 - Fixed XSS issues in Theme module.
-
 - Clean up remaining table prefix reference closes #77.
-
 - Increased hook name field lengths from 60 to 100 characters.
-
 - Upgraded jQuery to 1.6.3.
-
 - Fixed issue with DoctrineExtensions plugin and short URLs - issue #91.
-
 - Adjusted installer to handle multilingual custom SQL files.
-
 - Upgraded PHPIDS to 0.7.0.
-
 - Fixed issue where restoring defauls for a module, the localization wasn't used (issue #71)
-
 - Fixed issue where pager wasn't able to parse array with three dimensions (issue #111)
 
 
@@ -121,47 +71,27 @@ CHANGELOG - ZIKULA 1.3.0
 ------------------------
 
 - Moved minimum PHP version to 5.3.2.
-
 - Removed support for PHP register_globals and magic_quotes_gpc.
-
 - Created new OO MVC module format.
-
 - Introduced event notification system and added various events through out the core execution cycle for easy customisation and extension.
-
 - Added system-wide and module specific event based plugin system (called 'system plugins' and 'module plugins'.
-
 - Introduced a completely new module hooks system.
-
 - Deprecated the old hooks system.
-
 - Removed ADODB.
-
 - Introduced Doctrine 1.2.4 and shifted entire object library to use Doctrine.
-
 - Introduced Doctrine 2.0.5 as a plugin (was introduced after the PHP requirements were changed mid development).
-
 - Introduced SwiftMailer as a plugin service.
-
 - Upgraded to PHPMailer 5.1.
-
 - Replaced SafeHTML with HTMLPurifier.
-
 - Added PHPIDS intrusion protection support.
-
 - Introduced LivePipe UI library.
-
 - Added support for jQuery 1.6.1. with noConflict automatically set.
-
 - Created a new Zikula.UI ajax interface and library.
-
 - Large overhaul of interfaces to introduce AJAX into administration and give a more modern look and feel in the administration areas.
-
 - Replaced CSRF protection system with new token system to make false hits less frequent and does not break with tabbed browsing.  Introduced an additional option which does not interfere the browser back button.
-
 - Improved installer - less steps, less fiddling required and no need to
 delete installation/upgrade scripts and less post install/upgrade steps like the requirement to delete install- and upgrade.php to access
 administration.
-
 - Merged all templating and rendering control to Theme module and overhauled caching.
 
 Users Module
