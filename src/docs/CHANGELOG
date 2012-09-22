@@ -35,6 +35,7 @@ CHANGELOG - ZIKULA 1.3.4
 - Added check for outdated config.php in upgrade.php (issue #143)
 - Fixed url of preview theme link (issue #493)
 
+- Add check in upgrade.php for identical usernames (issue #344)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------

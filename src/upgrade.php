@@ -110,7 +110,36 @@ if (!file_exists('themes/'.$directory.'/templates/master.tpl')) {
         echo '<p class="z-errormsg">' . __('Theme is not valid!') . '</p>' . "\n";
         _upg_footer();
         die();
-    }    
+    }
+}
+
+// check if they are usernames which are identical in lower case
+$users = UserUtil::getAll();
+$userNames = array();
+$problematicUserNames = array();
+foreach ($users as $user) {
+    $uname = $user['uname'];
+    $lowerUname = strtolower($uname);
+    if (!array_key_exists($lowerUname, $userNames)) {
+        $userNames[$lowerUname] = array();
+    } else {
+        $problematicUserNames[$lowerUname] = $userNames[$lowerUname];
+        $problematicUserNames[$lowerUname][] = $uname;
+    }
+    $userNames[$lowerUname][] = $uname;
+}
+if (count($problematicUserNames) > 0) {
+    _upg_header();
+    echo '<div class="z-errormsg">';
+    echo __('There are usernames which are identical in lower case. This is not allowed anymore! Please solve this conflict before you upgrade. The problematic usernames are:') . "\n";
+    echo '<ul>' . "\n";
+    foreach ($problematicUserNames as $unames) {
+        echo '<li>'.implode(', ', $unames).'</li>';
+    }
+    echo '</ul>' . "\n";
+    echo '</div>' . "\n";
+    _upg_footer();
+    die();
 }
 
 // deactivate file based shorturls
