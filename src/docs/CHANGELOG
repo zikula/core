@@ -37,6 +37,7 @@ CHANGELOG - ZIKULA 1.3.4
 
 - Fixed formfloatinput plugin localisation (issue #462)
 
+- Fixed localisation of formdateinput (issue #496)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------

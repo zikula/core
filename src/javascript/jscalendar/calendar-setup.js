@@ -120,6 +120,7 @@ Calendar.setup = function (params) {
 		}
 		if (update && p.singleClick && cal.dateClicked)
 			cal.callCloseHandler();
+	    cal.params.date = cal.date;
 	};
 
 	if (params.flat != null) {
