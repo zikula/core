@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-29 18:05+0000\n"
+"POT-Creation-Date: 2012-09-24 14:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,26 +54,26 @@ msgstr ""
 msgid "illegal JSON response: \\n%1$s in\\n%2$s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:406
+#: javascript/helpers/Zikula.js:410
 msgid "Ajax connection time out!"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:689 javascript/helpers/Zikula.js:781
+#: javascript/helpers/Zikula.js:693 javascript/helpers/Zikula.js:785
 msgid "hello"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:690 javascript/helpers/Zikula.js:795
+#: javascript/helpers/Zikula.js:694 javascript/helpers/Zikula.js:799
 #, php-format
 msgid "hello %s"
 msgstr ""
 
-#: javascript/helpers/Zikula.js:691 javascript/helpers/Zikula.js:810
+#: javascript/helpers/Zikula.js:695 javascript/helpers/Zikula.js:814
 msgid "hello my friend"
 msgid_plural "hello my friends"
 msgstr[0] ""
 msgstr[1] ""
 
-#: javascript/helpers/Zikula.js:692 javascript/helpers/Zikula.js:833
+#: javascript/helpers/Zikula.js:696 javascript/helpers/Zikula.js:837
 #, php-format
 msgid "hello my friend %s"
 msgid_plural "hello my friends %s"
@@ -171,7 +171,27 @@ msgstr ""
 msgid "Ignore Lock"
 msgstr ""
 
-#: system/Admin/javascript/admin_admin_ajax.js:418
+#: system/Admin/javascript/admin_admin_ajax.js:12
+msgid "Right-click down arrows to edit tab name"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:13
+msgid "Edit category"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:14
+msgid "Delete category"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:15
+msgid "Make default category"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:16
+msgid "Saving"
+msgstr ""
+
+#: system/Admin/javascript/admin_admin_ajax.js:282
 msgid "You must enter a name for the new category"
 msgstr ""
 
