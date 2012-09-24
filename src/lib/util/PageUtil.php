@@ -218,6 +218,7 @@ class PageUtil
                     $moduleInfo = ModUtil::getInfoFromName(ModUtil::getName());
                     $moduleDisplayName = $moduleInfo['displayname'];
                     $title = str_replace('%modulename%', $moduleDisplayName, $title);
+
                     return $title;
                 }
             }
