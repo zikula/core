@@ -40,6 +40,13 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
     protected $newCsrfToken = true;
 
     /**
+     * The ajax payload (raw)
+     *
+     * @var mixed $payload
+     */
+    protected $payload;
+
+    /**
      * Response status messages.
      *
      * @var array
