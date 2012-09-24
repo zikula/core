@@ -37,6 +37,12 @@ CHANGELOG - ZIKULA 1.3.4
 - Fixed url of preview theme link (issue #493)
 - Fixed formfloatinput plugin localisation (issue #462)
 - Fixed localisation of formdateinput (issue #496)
+- Fixed broken dateinput handling with time (issue #199)
+- Fixed in IE8, clicking on a submit button, gives js error 'Object required' (issue #415)
+- Added a default mobile theme (issue #436)
+- Fixed strict standards: Non-static method ZLanguage::getLanguageCodeLegacy() should not be called statically (issue #442)
+- Fixed ModulePlugins do not add the right template directory (issue #452)
+- Fixed incorrect object field reference in DBObject.php (issue #494)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
