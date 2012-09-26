@@ -170,6 +170,18 @@ class PageUtil
         }
 
         if (isset($_pageVars[$varname]) && isset($_pageVars[$varname]['contents'])) {
+            if ($varname == 'title') {
+                $title = System::getVar('pagetitle', '');
+                if (!empty($title) && $title != '%pagetitle%') {
+                    $title = str_replace('%pagetitle%', $_pageVars[$varname]['contents'], $title);
+                    $title = str_replace('%sitename%', System::getVar('sitename', ''), $title);
+                    $moduleInfo = ModUtil::getInfoFromName(ModUtil::getName());
+                    $moduleDisplayName = $moduleInfo['displayname'];
+                    $title = str_replace('%modulename%', $moduleDisplayName, $title);
+
+                    return $title;
+                }
+            }
             return $_pageVars[$varname]['contents'];
         } elseif (isset($_pageVars[$varname]['default'])) {
             return $_pageVars[$varname]['default'];

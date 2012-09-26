@@ -414,6 +414,8 @@ programmatically by directly calling core functions will not see this event fire
 Occurs right after a successful logout. All handlers are notified.
 
  * The event's subject contains the user's user record
+ * Args contain array of `array('authentication_method' => $authenticationMethod,
+                                'uid'                   => $uid));`
 
 #### `user.gettheme`
 Called during UserUtil::getTheme() and is used to filter the results.  Receives arg['type']

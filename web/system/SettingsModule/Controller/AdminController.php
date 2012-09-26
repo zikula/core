@@ -52,6 +52,14 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             throw new \Zikula\Framework\Exception\ForbiddenException();
         }
 
+
+        // localise page title
+        $pagetitle = System::getVar('pagetitle', '%pagetitle%');
+        $pagetitle = str_replace('%pagetitle%', $this->__('%pagetitle%'), $pagetitle);
+        $pagetitle = str_replace('%sitename%', $this->__('%sitename%'), $pagetitle);
+        $pagetitle = str_replace('%modulename%', $this->__('%modulename%'), $pagetitle);
+        // $this->view->assign('pagetitle', $pagetitle); // todo
+
         return $this->get('templating')->renderResponse('ZikulaSettingsModule:Admin:modifyconfig.html.twig');
     }
 
@@ -124,6 +132,11 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
             unset($settings['permasearch']);
             unset($settings['permareplace']);
         }
+
+        // delocalise page title
+        $settings['pagetitle'] = str_replace($this->__('%pagetitle%'), '%pagetitle%', $settings['pagetitle']);
+        $settings['pagetitle'] = str_replace($this->__('%sitename%'), '%sitename%', $settings['pagetitle']);
+        $settings['pagetitle'] = str_replace($this->__('%modulename%'), '%modulename%', $settings['pagetitle']);
 
         // Write the vars
         $configvars = ModUtil::getVar(ModUtil::CONFIG_MODULE);

@@ -51,6 +51,13 @@ abstract class AbstractBaseResponse extends Response
     protected $newCsrfToken = true;
 
     /**
+     * The ajax payload (raw)
+     *
+     * @var mixed $payload
+     */
+    protected $payload;
+
+    /**
      * Response status messages.
      *
      * @var array

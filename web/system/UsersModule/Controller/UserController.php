@@ -1396,21 +1396,22 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         // start logout event
         $uid = UserUtil::getVar('uid');
         $userObj = UserUtil::getVars($uid);
+        $authenticationMethod = SessionUtil::getVar('authentication_method', array('modname' => '', 'method' => ''), 'Zikula_Users');
         if (UserUtil::logout()) {
-            $event = new GenericEvent($userObj);//, array(
-//                'authentication_method' => $authenticationMethod,
-//                'uid'                   => $uid,
-//            ));
+            $event = new GenericEvent($userObj, array(
+                'authentication_method' => $authenticationMethod,
+                'uid'                   => $uid,
+            ));
             $this->dispatcher->dispatch('module.users.ui.logout.succeeded', $event);
 
-//            if ($login_redirect == 1) {
+            if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
                 // we might no have the permission for the recent site any longer
                 return $this->redirect(System::getHomepageUrl());
-//            } else {
-//                // meta refresh
-//                $this->printRedirectPage($this->__('Done! You have been logged out.'), System::getHomepageUrl());
-//            }
+            } else {
+                // meta refresh
+                $this->printRedirectPage($this->__('Done! You have been logged out.'), System::getHomepageUrl());
+            }
         } else {
             $this->registerError($this->__('Error! You have not been logged out.'))
                     ->redirect(System::getHomepageUrl());
@@ -1758,7 +1759,7 @@ class UserController extends \Zikula\Framework\Controller\AbstractController
         );
 
         if (UserUtil::loginUsing($authenticationMethod, $authenticationInfo, $rememberme)) {
-            $user = UserUtil::getVars();
+            $user = UserUtil::getVars(UserUtil::getVar('uid'));
             if (!SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN)) {
                 UserUtil::logout();
 
