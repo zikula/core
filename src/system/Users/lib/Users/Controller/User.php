@@ -1382,6 +1382,8 @@ class Users_Controller_User extends Zikula_AbstractController
 
         // start logout event
         $uid = UserUtil::getVar('uid');
+        $userObj = UserUtil::getVars($uid);
+        $authenticationMethod = SessionUtil::getVar('authentication_method', array('modname' => '', 'method' => ''), 'Zikula_Users');
         if (UserUtil::logout()) {
             $event = new Zikula_Event('module.users.ui.logout.succeeded', $userObj, array(
                 'authentication_method' => $authenticationMethod,
@@ -1747,7 +1749,7 @@ class Users_Controller_User extends Zikula_AbstractController
         );
 
         if (UserUtil::loginUsing($authenticationMethod, $authenticationInfo, $rememberme)) {
-            $user = UserUtil::getVars();
+            $user = UserUtil::getVars(UserUtil::getVar('uid'));
             if (!SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN)) {
                 UserUtil::logout();
 
