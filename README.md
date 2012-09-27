@@ -13,9 +13,9 @@ and quality website.
 
 **The current stable version of Zikula is available on the `release-1.3` branch.**
 Zikula Core 1.3 is appropriate for use in production environments, while
-Zikula Core 2.0 is **not** production-ready (at all).
+Zikula Core 2.0 is **not** production-ready at all.
 
-Please visit [Zikula.org](http://zikula.org) for more information about Zikula.
+Please visit [Zikula.org](http://zikula.org/) for more information about Zikula.
 
 ## PHP Requirements
 
@@ -42,20 +42,16 @@ Due to heavy refactoring and development work currently underway on the `master`
 branch, no installer is available and you will need to follow these steps to
 install Zikula from the `master` branch:
 
+  - If you do not already have [Composer](http://getcomposer.org/) centrally installed
+    please download composer in the root of the core checkout.
+  - Install the necessary vendors running `php composer.phar install`
+    You may need to specify the path to PHP, e.g. `/path/to/php composer.phar install`
   - Install the database manually from `docs/installation.sql`. The admin account
-  username and password are `admin` / `zikula1`.
+    username and password are `admin` / `zikula1`.
   - Configure the database settings in `app/config/database.yml`
-  - In the `core` directory of your checkout:
-    - Install the necessary vendors by [installing Composer](http://getcomposer.org/)
-      and running `php composer.phar install`
-    - Create the needed asset bundles by running `php app/console assets:install web`
 
-If your PHP binary is not in your command path, specify the full path to it in the
-above commands in place of just using `php`.
-
-Example: `/path/to/php composer.phar --dev install`
-
-Remember to run Composer periodically to keep the dependencies up to date.
+Remember to run Composer periodically to keep the dependencies up to date
+using `composer.phar self-update && composer.phar update`.
 
 ## What's Changing in Zikula Core 2.0?
 
@@ -78,8 +74,3 @@ going to be completely changed from the previous model:
 To monitor developer discussion on these issues, please check out the
 [zikula-dev mailing list](https://groups.google.com/group/zikula-dev).
 
-## Contributing
-
-Zikula relies on community contributions. If you'd like to contribute, please
-follow the directions on the [Contributing](https://github.com/zikula/core/wiki/Contributing)
-page of the wiki. Thank you!
