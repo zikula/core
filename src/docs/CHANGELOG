@@ -1,9 +1,3 @@
-CHANGELOG - ZIKULA 1.3.5
-------------------------
-
-- Fixed module.users.ui.logout.succeeded logout event (issue #508)
-
-
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
 
@@ -49,7 +43,7 @@ CHANGELOG - ZIKULA 1.3.4
 - Fixed strict standards: Non-static method ZLanguage::getLanguageCodeLegacy() should not be called statically (issue #442)
 - Fixed ModulePlugins do not add the right template directory (issue #452)
 - Fixed incorrect object field reference in DBObject.php (issue #494)
-
+- Fixed module.users.ui.logout.succeeded logout event (issue #508)
 
 CHANGELOG - ZIKULA 1.3.3
 ------------------------
