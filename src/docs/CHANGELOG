@@ -25,7 +25,6 @@ CHANGELOG - ZIKULA 1.3.4
 - Fixed incoherent permissions in Users_Controller_Admin (issue #167)
 - Added ability to generate an overrides.yml file (issue #136)
 - Extended DateUtil::getdatetime with an option for not translating dates, backwards compatible (issue #81)
-- Fixed theme locale sporadically not available with fallback option (issue #79)
 - Fixed mailer smtp password being stored too short (issue #441)
 - Added correct Categories in the ExampleDoctrine module (issue #401)
 - Fixed using setSelectedValue in CategorySelector if there is no selected category (issue #479)
