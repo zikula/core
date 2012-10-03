@@ -2461,15 +2461,16 @@ class DBUtil
         $sqlStart = "SELECT COUNT(*) ";
         $sqlFrom = "FROM $tableName AS tbl ";
 
-        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where GROUP BY NULL";
+        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where";
         $res = self::executeSQL($sql);
         if ($res === false) {
             return $res;
         }
-
+    
         $count = false;
-        if ($data = $res->fetchColumn(0)) {
-            $count = $data;
+        $res   = $res->fetchAll(Doctrine::FETCH_COLUMN);
+        if ($res && isset($res[0])) {
+            $count = $res[0];
         }
 
         return $count;
