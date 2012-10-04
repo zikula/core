@@ -49,6 +49,17 @@ class Mailer_Api_User extends Zikula_AbstractApi
      */
     public function sendmessage($args)
     {
+        // Development mailer mode
+        if ($this->getVar('mailertype') == 5) {
+            $output = '';
+            foreach ($args as $key => $value) {
+                $output .= '<b>'.$key.'</b>: '.$value.'<br />';
+            }
+            LogUtil::registerStatus($output);
+
+            return true;
+        }
+           
         // Check for installed advanced Mailer module
         $event = new Zikula_Event('module.mailer.api.sendmessage', $this, $args);
         $this->eventManager->notify($event);
