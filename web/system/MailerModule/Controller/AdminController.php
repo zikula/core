@@ -59,7 +59,8 @@ class AdminController extends \Zikula\Framework\Controller\AbstractController
         $this->view->assign('mailertypes', array(1 => DataUtil::formatForDisplay($this->__("Internal PHP `mail()` function")),
                                                  2 => DataUtil::formatForDisplay($this->__('Sendmail message transfer agent')),
                                                  3 => DataUtil::formatForDisplay($this->__('QMail message transfer agent')),
-                                                 4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol'))));
+                                                 4 => DataUtil::formatForDisplay($this->__('SMTP mail transfer protocol')),
+                                                 5 => DataUtil::formatForDisplay($this->__('Development/debug mode (Redirect e-mails to LogUtil)'))));
         $this->view->assign('smtpsecuremethod', $this->getVar('securemethod'));
 
         // assign all module vars

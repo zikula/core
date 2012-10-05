@@ -54,6 +54,17 @@ class UserApi extends \Zikula\Framework\Api\AbstractApi
      */
     public function sendmessage($args)
     {
+        // Development mailer mode
+        if ($this->getVar('mailertype') == 5) {
+            $output = '';
+            foreach ($args as $key => $value) {
+                $output .= '<b>'.$key.'</b>: '.$value.'<br />';
+            }
+            LogUtil::registerStatus($output);
+
+            return true;
+        }
+           
         // Check for installed advanced Mailer module
         $event = new GenericEvent($this, $args);
         $this->dispatcher->dispatch('module.mailer.api.sendmessage', $event);
