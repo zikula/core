@@ -15,12 +15,12 @@
 
 namespace Zikula\Framework\Response\Ajax;
 
-use Zikula\Framework\Response\PlainResponse as Response;
+use Zikula\Framework\Response\PlainResponse;
 
 /**
  * Ajax class.
  */
-abstract class AbstractBaseResponse extends Response
+abstract class AbstractBaseResponse extends PlainResponse
 {
     /**
      * Response code.
