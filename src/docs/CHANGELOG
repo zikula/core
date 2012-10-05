@@ -1,13 +1,12 @@
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
 
+Fixes:
 - Fixed return of DBUtil::selectExpandedObjectCount(), should not return false for 0 count (issue #512)
 
-
-CHANGELOG - ZIKULA 1.3.4
-------------------------
-
+Features:
 - Added development/debug email mode
+
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
