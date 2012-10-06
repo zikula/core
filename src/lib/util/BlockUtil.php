@@ -119,9 +119,9 @@ class BlockUtil
                         continue;
                     }
 
-                    $rule1 = $filter['module'] == $modname;
-                    $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
-                    $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
+                    $rule1 = strtolower($filter['module']) == strtolower($modname);
+                    $rule2 = empty($filter['ftype']) ? true : (strtolower($filter['ftype']) == strtolower($type));
+                    $rule3 = empty($filter['fname']) ? true : (strtolower($filter['fname']) == strtolower($func));
 
                     if (empty($filter['fargs'])) {
                         $rule4 = true;
