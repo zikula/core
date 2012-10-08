@@ -16,9 +16,12 @@
 /**
  * Smarty function to wrap Zikula_Form_View generated form controls with suitable form tags.
  *
- * @param array            $params  Parameters passed in the block tag.
- * @param string           $content Content of the block.
- * @param Zikula_Form_View $view    Reference to Zikula_Form_View object.
+ * @param array            $params              Parameters passed in the block tag.
+ * @param string           $params['enctype']   enctype tag for the form
+ * @param string           $params['cssClass']  css class for the form
+ * @param string           $params['onsubmit']  javascript for javascript event onsubmit
+ * @param string           $content             Content of the block.
+ * @param Zikula_Form_View $view                Reference to Zikula_Form_View object.
  *
  * @return string The rendered output.
  */
@@ -28,16 +31,19 @@ function smarty_block_form($params, $content, $view)
         PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');
         $encodingHtml = (array_key_exists('enctype', $params) ? " enctype=\"$params[enctype]\"" : '');
         $action = htmlspecialchars(System::getCurrentUri());
-        $classString = '';
+        $additionalConfig = '';
         if (isset($params['cssClass'])) {
-            $classString = "class=\"$params[cssClass]\" ";
+            $additionalConfig .= "class=\"$params[cssClass]\" ";
         }
-
+        if (isset($params['onsubmit'])) {
+            $additionalConfig .= "onsubmit=\"$params[onsubmit]\" ";
+        }
+        
         $view->postRender();
 
         $formId = $view->getFormId();
         $out = "
-<form id=\"{$formId}\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>
+<form id=\"{$formId}\" {$additionalConfig}action=\"$action\" method=\"post\"{$encodingHtml}>
     $content
     <div>
         {$view->getStateHTML()}
