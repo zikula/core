@@ -34,7 +34,8 @@ class ThemeListener implements EventSubscriberInterface
 
             if ($response->isRedirection() ||
                 $response instanceof RedirectResponse ||
-                $response instanceof PlainResponse) {
+                $response instanceof PlainResponse
+            ) {
                 // don't theme redirects, plain responses or Ajax responses
                 return;
             }
@@ -44,15 +45,27 @@ class ThemeListener implements EventSubscriberInterface
                 return;
             }
 
-            if (strpos($response->getContent(), '</body>') === false
-                && 'html' === $request->getRequestFormat()
-                && (($response->headers->has('Content-Type') && false !== strpos($response->headers->get('Content-Type'), 'html')) || !$response->headers->has('Content-Type') )) {
-                $themeVars = array();
+            if (strpos($response->getContent(), '</body>') === false &&
+                'html' === $request->getRequestFormat() &&
+                (($response->headers->has('Content-Type') &&
+                    false !== strpos($response->headers->get('Content-Type'), 'html')) ||
+                    !$response->headers->has('Content-Type'))
+            ) {
+                $themeVar = array(
+                    'basecss' => 'grid',
+                    'layout' => '2col',
+                ); // todo
+                $s = \ServiceUtil::getManager();
+                $m = $s->getParameter('zikula_view.metatags');
+
                 $content = $this->templating->render($this->activeTheme.'::master.html.twig',
                                                      array(
                                                          'maincontent' => $response->getContent(),
-                                                         'themevars' => $themeVars,
+                                                         'themevar' => $themeVar,
+                                                         'metatags' => $m,
+                                                         'modvars' => \ModUtil::getModvars(),
                                                      ));
+                $content = \JCSSUtil::render($content);
                 $response->setContent($content);
             }
         }

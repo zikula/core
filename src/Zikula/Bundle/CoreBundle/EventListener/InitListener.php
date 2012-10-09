@@ -205,7 +205,6 @@ class InitListener implements EventSubscriberInterface
             // register default page vars
             \PageUtil::registerVar('title');
             \PageUtil::setVar('title', \System::getVar('defaultpagetitle'));
-            \PageUtil::registerVar('keywords', true);
             \PageUtil::registerVar('stylesheet', true);
             \PageUtil::registerVar('javascript', true);
             \PageUtil::registerVar('jsgettext', true);
@@ -217,8 +216,10 @@ class InitListener implements EventSubscriberInterface
 
             // set some defaults
             // Metadata for SEO
-//            $this->container['zikula_view.metatags']['description'] = \System::getVar('defaultmetadescription');
-//            $this->container['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
+            $array = new \ArrayObject();
+            $this->container['zikula_view.metatags'] = $array;
+            $this->container['zikula_view.metatags']['description'] = \System::getVar('defaultmetadescription');
+            $this->container['zikula_view.metatags']['keywords'] = \System::getVar('metakeywords');
 
             $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch(CoreEvents::INIT, $coreInitEvent);

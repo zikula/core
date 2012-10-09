@@ -1,9 +1,3 @@
-variables:
-  layout: grid
-  home: 3col_w_centerblock
-  master: 2col
-  admin: 1col
-
 layout:
   type: select
   values: grid,960

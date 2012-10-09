@@ -1,33 +1,52 @@
+{% block head %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ lang() }}" dir="{{ langdirection() }}">
-    <head>
-        {% block head %}
-        <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
-        <title>{{ pagegetvar('title') }}</title>
-        <meta name="description" content="{{ metatags.description }}" />
-        <meta name="keywords" content="{{ metatags.keywords }}" />
-        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-        {{ pageaddvar("stylesheet", "$stylepath/fluid960gs/reset.css") }}
-        {{ pageaddvar("stylesheet", "$stylepath/fluid960gs/$layout.css") }}
-        {{ pageaddvar("stylesheet", "$stylepath/style.css") }}
-        {#{#% browserhack condition="if IE 7" assign="ieconditional" %#}#}
-        {#<link rel="stylesheet" type="text/css" href="{{ stylepath }}/fluid960gs/ie.css" media="screen" />#}
-        {#{/browserhack}#}
-        {#{{ pageaddvar('header', ieconditional }}#}
-        {% endblock %}
-    </head>
-    <body>
-        <div id="theme_page_container" class="container_16">
-            <div id="theme_header">
-                <h1 class="title"><a href="{#{ homepage() }#}">{{ modvars.ZConfig.sitename }}</a></h1>
-                <h2 class="slogan">{{ modvars.ZConfig.slogan }}</h2>
-            </div>
-            <div id="theme_contents>{% block contents %}{% endblock %}</div>
-            <div id="theme_footer">
-                {% block footer %}
-                <p>{{ __('Powered by') }} <a href="http://zikula.org">Zikula</a></p>
-                {% endblock %}
-            </div>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset={charset}"/>
+    <title>{{ pagegetvar('title') }}</title>
+    <meta name="description" content="{{ metatags.description }}"/>
+    <meta name="keywords" content="{{ metatags.keywords }}"/>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+    {{ pageaddvar("stylesheet", "bundles/andreas08theme/css/fluid960gs/reset.css") }}
+    {{ pageaddvar("stylesheet", "bundles/andreas08theme/css/fluid960gs/" ~ themevar.basecss ~ ".css") }}
+    {{ pageaddvar("stylesheet", "bundles/andreas08theme/css/style.css") }}
+    {#% browserhack condition="if IE 7" assign="ieconditional" %#}
+    {#<link rel="stylesheet" type="text/css" href="{{ stylepath }}/fluid960gs/ie.css" media="screen" />#}
+    {#{/browserhack}#}
+    {#{{ pageaddvar('header', ieconditional }}#}
+</head>
+<body>
+<div id="theme_page_container" class="container_16">
+    <div id="theme_header">
+        <h1 class="title"><a href="{{ path('homepage') }}">{{ modvars.ZConfig.sitename }}</a></h1>
+        <h2 class="slogan">{{ modvars.ZConfig.slogan }}</h2>
+    </div>
+    {% endblock %}
+    {% block topnav %}
+        <div id="theme_navigation_bar" class="z-clearfix">
+            {#% set topnavblock %}{{ showblockposition('topnav') }}{% endset %#}
+            {% if topnavblock is empty %}
+                <ul class="z-floatleft">
+                    <li><a href="{{ path('homepage') }}" title="{{ __("Go to the site's home page") }}">{{ __('Home') }}</a></li>
+                    <li><a href="{#{ path('zikulausersmodule_user_index') }#}" title="{{ __('Go to your account panel') }}">{{ __("My Account") }}</a></li>
+                    <li><a href="{#{ path('zikulasearchmodule_user_index') }#}" title="{{ __('Search this site') }}">{{ __("Site search") }}</a></li>
+                </ul>
+            {% else %}
+                {{ topnavblock }}
+            {% endif %}
+            {{ showblockposition('search') }}
         </div>
-    </body>
+    {% endblock %}
+    {% block content %}
+        <div id="theme_contents">
+            {{ maincontent|raw }}
+        </div>
+    {% endblock %}
+    {% block footer %}
+        <div id="theme_footer">
+            <p>{{ __('Powered by') }} <a href="http://zikula.org/">Zikula</a></p>
+        </div>
+    {% endblock %}
+</div>
+</body>
 </html>

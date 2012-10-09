@@ -428,6 +428,82 @@ class JCSSUtil
         return $scripts;
     }
 
+    public static function render($source)
+    {
+        $return = '';
+
+        $cssjscombine = ModUtil::getVar('Theme', 'cssjscombine', false);
+        $jcss = JCSSUtil::prepareJCSS($cssjscombine);//, $cacheDir);
+
+        if (is_array($jcss['stylesheets']) && !empty($jcss['stylesheets'])) {
+            foreach ($jcss['stylesheets'] as $stylesheet) {
+                if (empty($stylesheet)) {
+                    continue;
+                }
+
+                $return .= '<link rel="stylesheet" href="'.DataUtil::formatForDisplay($stylesheet).'" type="text/css">'."\n";
+            }
+        }
+
+        // get inline js config and print it just before any script tag
+        $jsConfig = JCSSUtil::getJSConfig();
+        if (!empty($jsConfig)) {
+            $return .= $jsConfig;
+        }
+
+        if (is_array($jcss['javascripts']) && !empty($jcss['javascripts'])) {
+            foreach ($jcss['javascripts'] as $j => $javascript) {
+                if (empty($javascript)) {
+                    unset($jcss['javascripts'][$j]);
+                    continue;
+                }
+                // check if the javascript is in the additional_header array
+                $return .= '<script type="text/javascript" src="'.DataUtil::formatForDisplay($javascript).'"></script>'."\n";
+            }
+        }
+
+        $headerContent = PageUtil::getVar('header');
+        if (is_array($headerContent) && !empty($headerContent)) {
+            $return .= implode("\n", $headerContent)."\n";
+        }
+
+        $return = trim($return);
+        if (!empty($return) && System::getVar('development') != 0) {
+            $return = "<!-- zikula pagevars -->\n".$return."\n<!-- /zikula pagevars -->";
+        }
+
+        $bodyvars = PageUtil::getVar('body');
+        if (!empty($bodyvars)) {
+            $bodyattribs = '<body '.@implode(' ', $bodyvars).'>';
+            $source = str_replace('<body>', $bodyattribs, $source);
+        }
+
+        $footervars = PageUtil::getVar('footer');
+        if (!empty($footervars)) {
+            $footersource = @implode("\n", $footervars)."\n</body>";
+            $source = str_replace('</body>', $footersource, $source);
+        }
+
+        if (stripos($source, '<!-- pagevars -->')) {
+            $source = str_replace('<!-- pagevars -->', $return, $source);
+        } else {
+            $headPos = stripos($source, '</head>');
+            if ($headPos !== false) {
+                if ($headPos == strripos($source, '</head>')) {
+                    // Position of the first </head> matches the last </head> so str_replace is safe
+                    $source = str_replace('</head>', $return."\n</head>", $source);
+                } else {
+                    // Position of the first </head> does not match the last </head> so str_replace is NOT safe
+                    // There was probably a {{ zdebug() }} tag opening a _dbgconsole.
+                    // Need to use preg_replace so we can limit to the first.
+                    preg_replace('#</head>#i', $return."\n</head>", $source, 1);
+                }
+            }
+        }
+
+        return $source;
+    }
+
     /**
      * Save combined pagevars.
      *

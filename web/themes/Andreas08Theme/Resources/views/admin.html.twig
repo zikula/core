@@ -1,7 +1,8 @@
 {% extends 'Andreas08Theme::base.html.twig' %}
+{% block topnav %}
 <div id="theme_navigation_bar">
     <ul class="z-clearfix">
-        <li><a href="{{ homepage() }}">{{ __('Home') }}</a></li>
+        <li><a href="{{ path('homepage') }}">{{ __('Home') }}</a></li>
         <li><a href="{{ path('zikulasettings_admin_index') }}">{{ __("Settings") }}</a></li>
         <li><a href="{{ path('zikulaextensions_admin_index') }}">{{ __("Extensions") }}</a></li>
         <li><a href="{{ path('zikulablocks_admin_index') }}">{{ __("Blocks") }}</a></li>
@@ -11,9 +12,10 @@
         <li><a href="{{ path('zikulatheme_admin_index') }}">{{ __("Themes") }}</a></li>
     </ul>
 </div>
+{% endblock %}
 
 {% block content %}
-{% include "Andreas08Theme::" ~ admin ~ ".html.twig" %}
+{% include "Andreas08Theme::" ~ themevar.layout ~ ".html.twig" %}
 
 {% endblock %}
 

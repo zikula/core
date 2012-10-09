@@ -1,5 +1,8 @@
 master:
   page: master.html.twig
+  variables:
+    basecss: grid
+    layout: 2col
   blocktypes: ~
   blockpositions:
     left: blocks/block.html.twig
@@ -11,6 +14,9 @@ master:
 
 *admin:
   page: admin.html.twig
+  variables:
+    basecss: grid
+    layout: 1col
   blocktypes: ~
   blockpositions: ~
     left: blocks/block.html.twig
@@ -22,11 +28,14 @@ master:
 
 *home:
   page: home.html.twig
+  variables:
+    basecss: grid
+    layout: 3col_w_centerblock
   blocktypes: ~
   blockpositions:
-    left = blocks/block.html.twig
-    right = blocks/block.html.twig
-    center = blocks/block.html.twig
-    topnav = blocks/topnavblock.html.twig
-    search = blocks/searchblock.html.twig
+    left: blocks/block.html.twig
+    right: blocks/block.html.twig
+    center: blocks/block.html.twig
+    topnav: blocks/topnavblock.html.twig
+    search: blocks/searchblock.html.twig
   blockinstances: ~
