@@ -1,0 +1,32 @@
+master:
+  page: master.html.twig
+  blocktypes: ~
+  blockpositions:
+    left: blocks/block.html.twig
+    right: blocks/block.html.twig
+    center: blocks/block.html.twig
+    topnav: blocks/topnavblock.html.twig
+    search: blocks/searchblock.html.twig
+  blockinstances: ~
+
+*admin:
+  page: admin.html.twig
+  blocktypes: ~
+  blockpositions: ~
+    left: blocks/block.html.twig
+    right: blocks/block.html.twig
+    center: blocks/block.html.twig
+    topnav: blocks/topnavblock.html.twig
+    search: blocks/searchblock.html.twig
+  blockinstances: ~
+
+*home:
+  page: home.html.twig
+  blocktypes: ~
+  blockpositions:
+    left = blocks/block.html.twig
+    right = blocks/block.html.twig
+    center = blocks/block.html.twig
+    topnav = blocks/topnavblock.html.twig
+    search = blocks/searchblock.html.twig
+  blockinstances: ~
