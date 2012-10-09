@@ -122,17 +122,17 @@ doctrine:
                 metadata_cache_driver: array
                 query_cache_driver: array
 
-stof_doctrine_extensions:
-    #default_locale: en
-    orm:
-        #default: ~
-        default:
-            tree:           true
-            timestampable:  true
-            sluggable:      true
-            translatable:   true
-            loggable:       false
-            softdeleteable: false
+#stof_doctrine_extensions:
+#    #default_locale: en
+#    orm:
+#        #default: ~
+#        default:
+#            tree:           true
+#            timestampable:  true
+#            sluggable:      true
+#            translatable:   true
+#            loggable:       false
+#            softdeleteable: false
 #    class:
 #        tree:           ~
 #        timestampable:  ~
