@@ -83,7 +83,7 @@ CHANGELOG - ZIKULA 1.3.1
 - Fixed issue with DoctrineExtensions plugin and short URLs - issue #91.
 - Adjusted installer to handle multilingual custom SQL files.
 - Upgraded PHPIDS to 0.7.0.
-- Fixed issue where restoring defauls for a module, the localization wasn't used (issue #71)
+- Fixed issue where restoring defaults for a module, the localization wasn't used (issue #71)
 - Fixed issue where pager wasn't able to parse array with three dimensions (issue #111)
 
 
