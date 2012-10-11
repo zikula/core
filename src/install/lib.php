@@ -208,7 +208,8 @@ function install(Zikula_Core $core)
                     // checks if exists a previous installation with the same prefix
                     $proceed = true;
                     $dbnameConfig = $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbname'];
-                    $exec = ($dbdriver == 'mysql' || $dbdriver == 'mysqli') ?
+                    $dbdriverConfig = $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbdriver'];
+                    $exec = ($dbdriverConfig == 'mysql' || $dbdriverConfig == 'mysqli') ?
                             "SHOW TABLES FROM `$dbnameConfig` LIKE '%'" :
                             "SHOW TABLES FROM $dbnameConfig LIKE '%'";
                     $tables = DBUtil::executeSQL($exec);
