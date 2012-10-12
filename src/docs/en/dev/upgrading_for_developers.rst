@@ -336,10 +336,10 @@ MODULES
         }
 
 - Interactive install/upgrade/uninstall
-  If there are any interactive install methods, please add these to lib/$modname/Controller/Interactiveinstaller.php
+  If there are any interactive install methods, please add these to lib/$modname/Controller/InteractiveInstaller.php
   e.g.
-    lib/MyModule/Controller/Interactiveinstaller.php
-    contains class MyModule_Controller_Interactiveinstaller extends Zikula_InteractiveInstaller (notice the casing).
+    lib/MyModule/Controller/InteractiveInstaller.php
+    contains class MyModule_Controller_InteractiveInstaller extends Zikula_Controller_AbstractInteractiveInstaller (notice the casing).
 
   Basically, if the interactive installers has method install() that will override the install() in
   the main Installer.php, if it has upgrade() it will override the main upgrade() and if it has
