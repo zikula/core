@@ -49,7 +49,7 @@ class ValidationUtil
 
         // if this field already has an error, don't perform further checks
         if (isset($_SESSION['validationErrors'][$objectType][$field])) {
-            return $rc;
+            return false;
         }
 
         if ($required) {
