@@ -3,6 +3,8 @@ CHANGELOG - ZIKULA 1.3.5
 
 Fixes:
 - Fixed return of DBUtil::selectExpandedObjectCount(), should not return false for 0 count (issue #512)
+- Fixed error related to wrong case use in the Mobile theme (issue #529)
+- Fixed ValidationUtil::validateField() return if a validation error for given field already exists (issue #534)
 
 Features:
 - Added development/debug email mode
