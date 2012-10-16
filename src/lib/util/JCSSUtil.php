@@ -695,7 +695,11 @@ class JCSSUtil
                 }
             }
             fclose($source);
-            $contents[] = "\n\n";
+            if ($ext == 'js') {
+                $contents[] = "\n;\n";
+            } else {
+                $contents[] = "\n\n";
+            }
         }
     }
 
