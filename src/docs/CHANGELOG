@@ -5,6 +5,7 @@ Fixes:
 - Fixed return of DBUtil::selectExpandedObjectCount(), should not return false for 0 count (issue #512)
 - Fixed error related to wrong case use in the Mobile theme (issue #529)
 - Fixed ValidationUtil::validateField() return if a validation error for given field already exists (issue #534)
+- Fixed usage of dbdriver from config when installing by SQL (issue #531)
 
 Features:
 - Added development/debug email mode
@@ -278,7 +279,7 @@ system.
 - Fixed problem with deleting group via ajax with insufficient permissions
 (issue #1568).
 
-- Fixed an issue where an incorrect group type was displayed when editing a 
+- Fixed an issue where an incorrect group type was displayed when editing a
 group through the administration panel (issue #2993).
 
 - Allow module to specify core version requirements.
