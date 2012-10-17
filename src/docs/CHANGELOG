@@ -9,6 +9,7 @@ Fixes:
 Features:
 - Added development/debug email mode
 - Added basic setup for jQuery ajax to pass csfr token checks
+- Added new option for Zikula UI Windows - autoClose
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------

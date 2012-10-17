@@ -208,6 +208,7 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @param {HTMLElement} [options.closeOnClick] Element which handles close action
      * @param {Boolean|HTMLElement} [options.draggable] Element which handles dragging or false to disable
      * @param {HTMLElement} [options.insertRemoteContentAt]
+     * @param {Number} [options.autoClose=0] Time in second after which window will be automatically closed, 0 to disable
      *
      * @return {Zikula.UI.Window} New Zikula.UI.Window instance
      */
@@ -229,7 +230,8 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
             iframeshim: Zikula.Browser.IE,
             closeOnClick: this.window.close,
             draggable: this.window.header,
-            insertRemoteContentAt: this.window.body
+            insertRemoteContentAt: this.window.body,
+            autoClose: 0
         }, options || { });
         if(options.modal) {
             options.minmax = false;
@@ -408,6 +410,9 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
                 iframe.onload = null;
             }.bind(this);
         }
+        if (Object.isNumber(this.options.autoClose) && this.options.autoClose > 0) {
+            this.autoClose = this.close.bind(this).delay(this.options.autoClose);
+        }
         this.finishOpen(event);
         return true
     },
@@ -494,6 +499,9 @@ Zikula.UI.Window = Class.create(Control.Window,/** @lends Zikula.UI.Window.proto
      * @return {Boolean}
      */
     close: function($super, event) {
+        if (Object.isNumber(this.autoClose)) {
+            window.clearTimeout(this.autoClose);
+        }
         this.restore(event);
         this.pos = {};
         if(this.initialWidth) {
