@@ -487,7 +487,7 @@ class JCSSUtil
      * @param string $ext       Extention.
      * @param string $cache_dir Cache directory.
      *
-     * @return array Array of file with ombined pagevars file and remote files
+     * @return array Array of file with combined pagevars file and remote files
      */
     private static function save($files, $ext, $cache_dir)
     {
