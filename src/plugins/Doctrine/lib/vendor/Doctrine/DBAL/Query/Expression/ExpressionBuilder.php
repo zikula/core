@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -38,7 +38,7 @@ class ExpressionBuilder
     const LTE = '<=';
     const GT  = '>';
     const GTE = '>=';
-    
+
     /**
      * @var Doctrine\DBAL\Connection DBAL Connection
      */
@@ -47,13 +47,13 @@ class ExpressionBuilder
     /**
      * Initializes a new <tt>ExpressionBuilder</tt>.
      *
-     * @param Doctrine\DBAL\Connection $connection DBAL Connection
+     * @param \Doctrine\DBAL\Connection $connection DBAL Connection
      */
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
-    
+
     /**
      * Creates a conjunction of the given boolean expressions.
      *
@@ -92,9 +92,9 @@ class ExpressionBuilder
 
     /**
      * Creates a comparison expression.
-     * 
+     *
      * @param mixed $x Left expression
-     * @param string $operator One of the ExpressionBuikder::* constants.
+     * @param string $operator One of the ExpressionBuilder::* constants.
      * @param mixed $y Right expression
      * @return string
      */
@@ -102,7 +102,7 @@ class ExpressionBuilder
     {
         return $x . ' ' . $operator . ' ' . $y;
     }
-    
+
     /**
      * Creates an equality comparison expression with the given arguments.
      *
@@ -216,7 +216,7 @@ class ExpressionBuilder
      * Creates an IS NULL expression with the given arguments.
      *
      * @param string $x Field in string format to be restricted by IS NULL
-     * 
+     *
      * @return string
      */
     public function isNull($x)
@@ -228,7 +228,7 @@ class ExpressionBuilder
      * Creates an IS NOT NULL expression with the given arguments.
      *
      * @param string $x Field in string format to be restricted by IS NOT NULL
-     * 
+     *
      * @return string
      */
     public function isNotNull($x)
@@ -241,20 +241,20 @@ class ExpressionBuilder
      *
      * @param string $x Field in string format to be inspected by LIKE() comparison.
      * @param mixed $y Argument to be used in LIKE() comparison.
-     * 
+     *
      * @return string
      */
     public function like($x, $y)
     {
         return $this->comparison($x, 'LIKE', $y);
     }
-    
+
     /**
      * Quotes a given input parameter.
-     * 
+     *
      * @param mixed $input Parameter to be quoted.
      * @param string $type Type of the parameter.
-     * 
+     *
      * @return string
      */
     public function literal($input, $type = null)

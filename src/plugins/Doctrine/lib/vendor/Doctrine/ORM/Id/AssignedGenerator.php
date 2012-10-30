@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -42,46 +42,29 @@ class AssignedGenerator extends AbstractIdGenerator
      */
     public function generate(EntityManager $em, $entity)
     {
-        $class = $em->getClassMetadata(get_class($entity));
+        $class      = $em->getClassMetadata(get_class($entity));
+        $idFields   = $class->getIdentifierFieldNames();
         $identifier = array();
-        if ($class->isIdentifierComposite) {
-            $idFields = $class->getIdentifierFieldNames();
-            foreach ($idFields as $idField) {
-                $value = $class->reflFields[$idField]->getValue($entity);
-                if (isset($value)) {
-                    if (isset($class->associationMappings[$idField])) {
-                        if (!$em->getUnitOfWork()->isInIdentityMap($value)) {
-                            throw ORMException::entityMissingForeignAssignedId($entity, $value);
-                        }
-                        
-                        // NOTE: Single Columns as associated identifiers only allowed - this constraint it is enforced.
-                        $identifier[$idField] = current($em->getUnitOfWork()->getEntityIdentifier($value));
-                    } else {
-                        $identifier[$idField] = $value;
-                    }
-                } else {
-                    throw ORMException::entityMissingAssignedId($entity);
-                }
-            }
-        } else {
-            $idField = $class->identifier[0];
+
+        foreach ($idFields as $idField) {
             $value = $class->reflFields[$idField]->getValue($entity);
-            if (isset($value)) {
-                if (isset($class->associationMappings[$idField])) {
-                    if (!$em->getUnitOfWork()->isInIdentityMap($value)) {
-                        throw ORMException::entityMissingForeignAssignedId($entity, $value);
-                    }
-                    
-                    // NOTE: Single Columns as associated identifiers only allowed - this constraint it is enforced.
-                    $identifier[$idField] = current($em->getUnitOfWork()->getEntityIdentifier($value));
-                } else {
-                    $identifier[$idField] = $value;
-                }
-            } else {
-                throw ORMException::entityMissingAssignedId($entity);
+
+            if ( ! isset($value)) {
+                throw ORMException::entityMissingAssignedIdForField($entity, $idField);
             }
+
+            if (isset($class->associationMappings[$idField])) {
+                if ( ! $em->getUnitOfWork()->isInIdentityMap($value)) {
+                    throw ORMException::entityMissingForeignAssignedId($entity, $value);
+                }
+
+                // NOTE: Single Columns as associated identifiers only allowed - this constraint it is enforced.
+                $value = current($em->getUnitOfWork()->getEntityIdentifier($value));
+            }
+
+            $identifier[$idField] = $value;
         }
-        
+
         return $identifier;
     }
 }

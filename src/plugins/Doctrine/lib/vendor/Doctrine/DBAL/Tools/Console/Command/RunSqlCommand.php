@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -26,8 +26,8 @@ use Symfony\Component\Console\Input\InputArgument,
 /**
  * Task for executing arbitrary SQL that can come from a file or directly from
  * the command line.
+ *
  * 
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
  * @since   2.0
  * @author  Benjamin Eberlei <kontakt@beberlei.de>
@@ -71,13 +71,17 @@ EOT
         if ( ! is_numeric($depth)) {
             throw new \LogicException("Option 'depth' must contains an integer value");
         }
-        
-        if (preg_match('/^select/i', $sql)) {
-           $resultSet = $conn->fetchAll($sql);
+
+        if (stripos($sql, 'select') === 0) {
+            $resultSet = $conn->fetchAll($sql);
         } else {
             $resultSet = $conn->executeUpdate($sql);
         }
 
+        ob_start();
         \Doctrine\Common\Util\Debug::dump($resultSet, (int) $depth);
+        $message = ob_get_clean();
+
+        $output->write($message);
     }
 }

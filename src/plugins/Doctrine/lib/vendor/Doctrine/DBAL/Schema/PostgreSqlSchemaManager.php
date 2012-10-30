@@ -14,24 +14,87 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\DBAL\Schema;
 
 /**
- * xxx
+ * PostgreSQL Schema Manager
  *
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
  * @author      Lukas Smith <smith@pooteeweet.org> (PEAR MDB2 library)
  * @author      Benjamin Eberlei <kontakt@beberlei.de>
- * @version     $Revision$
  * @since       2.0
  */
 class PostgreSqlSchemaManager extends AbstractSchemaManager
 {
+    /**
+     * @var array
+     */
+    private $existingSchemaPaths;
+
+    /**
+     * Get all the existing schema names.
+     *
+     * @return array
+     */
+    public function getSchemaNames()
+    {
+        $rows = $this->_conn->fetchAll("SELECT nspname as schema_name FROM pg_namespace WHERE nspname !~ '^pg_.*' and nspname != 'information_schema'");
+        return array_map(function($v) { return $v['schema_name']; }, $rows);
+    }
+
+    /**
+     * Return an array of schema search paths
+     *
+     * This is a PostgreSQL only function.
+     *
+     * @return array
+     */
+    public function getSchemaSearchPaths()
+    {
+        $params = $this->_conn->getParams();
+        $schema = explode(",", $this->_conn->fetchColumn('SHOW search_path'));
+        if (isset($params['user'])) {
+            $schema = str_replace('"$user"', $params['user'], $schema);
+        }
+        return $schema;
+    }
+
+    /**
+     * Get names of all existing schemas in the current users search path.
+     *
+     * This is a PostgreSQL only function.
+     *
+     * @return array
+     */
+    public function getExistingSchemaSearchPaths()
+    {
+        if ($this->existingSchemaPaths === null) {
+            $this->determineExistingSchemaSearchPaths();
+        }
+        return $this->existingSchemaPaths;
+    }
+
+    /**
+     * Use this to set or reset the order of the existing schemas in the current search path of the user
+     *
+     * This is a PostgreSQL only function.
+     *
+     * @return void
+     */
+    public function determineExistingSchemaSearchPaths()
+    {
+        $names = $this->getSchemaNames();
+        $paths = $this->getSchemaSearchPaths();
+
+        $this->existingSchemaPaths = array_filter($paths, function ($v) use ($names) {
+            return in_array($v, $names);
+        });
+    }
 
     protected function _getPortableTableForeignKeyDefinition($tableForeignKey)
     {
@@ -111,7 +174,10 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
 
     protected function _getPortableTableDefinition($table)
     {
-        if ($table['schema_name'] == 'public') {
+        $schemas = $this->getExistingSchemaSearchPaths();
+        $firstSchema = array_shift($schemas);
+
+        if ($table['schema_name'] == $firstSchema) {
             return $table['table_name'];
         } else {
             return $table['schema_name'] . "." . $table['table_name'];
@@ -128,7 +194,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
     protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
     {
         $buffer = array();
-        foreach ($tableIndexes AS $row) {
+        foreach ($tableIndexes as $row) {
             $colNumbers = explode(' ', $row['indkey']);
             $colNumbersSql = 'IN (' . join(' ,', $colNumbers) . ' )';
             $columnNameSql = "SELECT attnum, attname FROM pg_attribute
@@ -138,7 +204,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
             $indexColumns = $stmt->fetchAll();
 
             // required for getting the order of the columns right.
-            foreach ($colNumbers AS $colNum) {
+            foreach ($colNumbers as $colNum) {
                 foreach ($indexColumns as $colRow) {
                     if ($colNum == $colRow['attnum']) {
                         $buffer[] = array(
@@ -151,7 +217,7 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
                 }
             }
         }
-        return parent::_getPortableTableIndexesList($buffer);
+        return parent::_getPortableTableIndexesList($buffer, $tableName);
     }
 
     protected function _getPortableDatabaseDefinition($database)
@@ -210,9 +276,8 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
         $precision = null;
         $scale = null;
 
-        if ($this->_platform->hasDoctrineTypeMappingFor($tableColumn['type'])) {
-            $dbType = strtolower($tableColumn['type']);
-        } else {
+        $dbType = strtolower($tableColumn['type']);
+        if (strlen($tableColumn['domain_type']) && !$this->_platform->hasDoctrineTypeMappingFor($tableColumn['type'])) {
             $dbType = strtolower($tableColumn['domain_type']);
             $tableColumn['complete_type'] = $tableColumn['domain_complete_type'];
         }
@@ -269,6 +334,10 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
             case 'year':
                 $length = null;
                 break;
+        }
+
+        if ($tableColumn['default'] && preg_match("('([^']+)'::)", $tableColumn['default'], $match)) {
+            $tableColumn['default'] = $match[1];
         }
 
         $options = array(

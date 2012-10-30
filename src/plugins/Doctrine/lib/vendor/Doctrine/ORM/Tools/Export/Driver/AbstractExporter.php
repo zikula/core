@@ -1,8 +1,5 @@
 <?php
-
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -16,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -29,10 +26,9 @@ use Doctrine\ORM\Tools\Export\ExportException;
  * Abstract base class which is to be used for the Exporter drivers
  * which can be found in \Doctrine\ORM\Tools\Export\Driver
  *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision$
  * @author  Jonathan Wage <jonwage@gmail.com>
  */
 abstract class AbstractExporter
@@ -56,7 +52,7 @@ abstract class AbstractExporter
      * Converts a single ClassMetadata instance to the exported format
      * and returns it
      *
-     * @param ClassMetadataInfo $metadata 
+     * @param ClassMetadataInfo $metadata
      * @return mixed $exported
      */
     abstract public function exportClassMetadata(ClassMetadataInfo $metadata);
@@ -64,7 +60,7 @@ abstract class AbstractExporter
     /**
      * Set the array of ClassMetadataInfo instances to export
      *
-     * @param array $metadata 
+     * @param array $metadata
      * @return void
      */
     public function setMetadata(array $metadata)
@@ -90,7 +86,7 @@ abstract class AbstractExporter
      *     $exporter->setOutputDir(__DIR__ . '/yaml');
      *     $exporter->export();
      *
-     * @param string $dir 
+     * @param string $dir
      * @return void
      */
     public function setOutputDir($dir)
@@ -111,23 +107,25 @@ abstract class AbstractExporter
         }
 
         foreach ($this->_metadata as $metadata) {
-            $output = $this->exportClassMetadata($metadata);
-            $path = $this->_generateOutputPath($metadata);
-            $dir = dirname($path);
-            if ( ! is_dir($dir)) {
-                mkdir($dir, 0777, true);
+            //In case output is returned, write it to a file, skip otherwise
+            if($output = $this->exportClassMetadata($metadata)){
+                $path = $this->_generateOutputPath($metadata);
+                $dir = dirname($path);
+                if ( ! is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+                if (file_exists($path) && !$this->_overwriteExistingFiles) {
+                    throw ExportException::attemptOverwriteExistingFile($path);
+                }
+                file_put_contents($path, $output);
             }
-            if (file_exists($path) && !$this->_overwriteExistingFiles) {
-                throw ExportException::attemptOverwriteExistingFile($path);
-            }
-            file_put_contents($path, $output);
         }
     }
 
     /**
      * Generate the path to write the class for the given ClassMetadataInfo instance
      *
-     * @param ClassMetadataInfo $metadata 
+     * @param ClassMetadataInfo $metadata
      * @return string $path
      */
     protected function _generateOutputPath(ClassMetadataInfo $metadata)
@@ -162,11 +160,11 @@ abstract class AbstractExporter
             case ClassMetadataInfo::INHERITANCE_TYPE_JOINED:
                 return 'JOINED';
             break;
-            
+
             case ClassMetadataInfo::INHERITANCE_TYPE_SINGLE_TABLE:
                 return 'SINGLE_TABLE';
             break;
-            
+
             case ClassMetadataInfo::INHERITANCE_TYPE_TABLE_PER_CLASS:
                 return 'PER_CLASS';
             break;
@@ -180,11 +178,11 @@ abstract class AbstractExporter
             case ClassMetadataInfo::CHANGETRACKING_DEFERRED_IMPLICIT:
                 return 'DEFERRED_IMPLICIT';
             break;
-            
+
             case ClassMetadataInfo::CHANGETRACKING_DEFERRED_EXPLICIT:
                 return 'DEFERRED_EXPLICIT';
             break;
-            
+
             case ClassMetadataInfo::CHANGETRACKING_NOTIFY:
                 return 'NOTIFY';
             break;
@@ -198,15 +196,15 @@ abstract class AbstractExporter
             case ClassMetadataInfo::GENERATOR_TYPE_AUTO:
                 return 'AUTO';
             break;
-            
+
             case ClassMetadataInfo::GENERATOR_TYPE_SEQUENCE:
                 return 'SEQUENCE';
             break;
-            
+
             case ClassMetadataInfo::GENERATOR_TYPE_TABLE:
                 return 'TABLE';
             break;
-            
+
             case ClassMetadataInfo::GENERATOR_TYPE_IDENTITY:
                 return 'IDENTITY';
             break;

@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -23,9 +23,9 @@ namespace Doctrine\Common\Util;
 
 /**
  * Doctrine inflector has static methods for inflecting text
- * 
+ *
  * The methods in these classes are from several different sources collected
- * across several different php projects and several different authors. The 
+ * across several different php projects and several different authors. The
  * original author names and emails are not known
  *
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL

@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -31,32 +31,32 @@ namespace Doctrine\DBAL\Platforms\Keywords;
 abstract class KeywordList
 {
     private $keywords = null;
-    
+
     /**
      * Check if the given word is a keyword of this dialect/vendor platform.
-     * 
+     *
      * @param  string $word
-     * @return bool 
+     * @return bool
      */
     public function isKeyword($word)
     {
         if ($this->keywords === null) {
             $this->initializeKeywords();
         }
-        
+
         return isset($this->keywords[strtoupper($word)]);
     }
-    
+
     protected function initializeKeywords()
     {
         $this->keywords = array_flip(array_map('strtoupper', $this->getKeywords()));
     }
-    
+
     abstract protected function getKeywords();
-    
+
     /**
      * Name of this keyword list.
-     * 
+     *
      * @return string
      */
     abstract public function getName();

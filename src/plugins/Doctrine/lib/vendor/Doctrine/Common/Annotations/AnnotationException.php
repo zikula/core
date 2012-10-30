@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -50,5 +50,78 @@ class AnnotationException extends \Exception
     public static function semanticalError($message)
     {
         return new self('[Semantical Error] ' . $message);
+    }
+
+    /**
+     * Creates a new AnnotationException describing a constant semantical error.
+     *
+     * @since 2.3
+     * @param string $identifier
+     * @param string $context
+     * @return AnnotationException
+     */
+    public static function semanticalErrorConstants($identifier, $context = null)
+    {
+        return self::semanticalError(sprintf(
+            "Couldn't find constant %s%s", $identifier,
+            $context ? ", $context." : "."
+        ));
+    }
+
+    /**
+     * Creates a new AnnotationException describing an error which occurred during
+     * the creation of the annotation.
+     *
+     * @since 2.2
+     * @param string $message
+     * @return AnnotationException
+     */
+    public static function creationError($message)
+    {
+        return new self('[Creation Error] ' . $message);
+    }
+
+    /**
+     * Creates a new AnnotationException describing an type error of an attribute.
+     *
+     * @since 2.2
+     * @param string $attributeName
+     * @param string $annotationName
+     * @param string $context
+     * @param string $expected
+     * @param mixed $actual
+     * @return AnnotationException
+     */
+    public static function typeError($attributeName, $annotationName, $context, $expected, $actual)
+    {
+        return new self(sprintf(
+            '[Type Error] Attribute "%s" of @%s declared on %s expects %s, but got %s.',
+            $attributeName,
+            $annotationName,
+            $context,
+            $expected,
+            is_object($actual) ? 'an instance of '.get_class($actual) : gettype($actual)
+        ));
+    }
+
+    /**
+     * Creates a new AnnotationException describing an required error of an attribute.
+     *
+     * @since 2.2
+     * @param string $attributeName
+     * @param string $annotationName
+     * @param string $context
+     * @param string $expected
+     * @return AnnotationException
+     */
+    public static function requiredError($attributeName, $annotationName, $context, $expected)
+    {
+        return new self(sprintf(
+            '[Type Error] Attribute "%s" of @%s declared on %s expects %s. This value should not be null.',
+            $attributeName,
+            $annotationName,
+            $context,
+            $expected
+        ));
     }
 }

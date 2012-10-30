@@ -10,6 +10,7 @@
        This is the XML Schema for the object/relational
        mapping file used by the Doctrine Extensions by Gedmo
        extensions
+       Doctrine component version support: 2.2.x
      ]]></xs:documentation>
   </xs:annotation>
 
@@ -19,68 +20,31 @@ Patches that do that are more than welcome.
 Please note, that marking e.g filed element in xml document with xsi:type is not an option as we need to allow other
 people to push their own additional attributes/elements into the same field element and they should not extend our schema
 -->
-<!--
-  <xs:complexType name="entity-extension">
-    <xs:sequence>
-      <xs:element name="translation" type="gedmo:translation" minOccurs="0" maxOccurs="1" />
-      <xs:element name="tree" type="gedmo:tree" minOccurs="0" maxOccurs="1" />
-      <xs:element name="tree-closure" type="gedmo:tree-closure" minOccurs="0" maxOccurs="1" />
-      <xs:element name="loggable" type="gedmo:loggable" minOccurs="0" maxOccurs="1" />
-    </xs:sequence>
-  </xs:complexType>
 
-  <xs:complexType name="field-extension">
-    <xs:sequence>
-      <xs:element name="sluggable" type="gedmo:sluggable" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="slug" type="gedmo:slug" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="translatable" type="gedmo:emptyType" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="timestampable" type="gedmo:timestampable" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="versioned" type="gedmo:emptyType" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="tree-left" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="tree-right" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="tree-level" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="tree-root" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="many-to-one-extension">
-    <xs:sequence>
-      <xs:element name="versioned" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="tree-parent" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="one-to-one-extension">
-    <xs:sequence>
-      <xs:element name="versioned" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="tree-parent" type="gedmo:emptyType" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
-  </xs:complexType>
--->
-  <!-- because of the above we have for now a root element gedmo with all choices -->
   <!-- entity -->
   <xs:element name="translation" type="gedmo:translation"/>
   <xs:element name="tree" type="gedmo:tree"/>
   <xs:element name="tree-closure" type="gedmo:tree-closure"/>
   <xs:element name="loggable" type="gedmo:loggable"/>
+  <xs:element name="soft-deleteable" type="gedmo:soft-deleteable"/>
+  <xs:element name="uploadable" type="gedmo:uploadable"/>
   <!-- field -->
-  <xs:element name="sluggable" type="gedmo:sluggable"/>
   <xs:element name="slug" type="gedmo:slug"/>
-  <xs:element name="translatable" type="gedmo:emptyType"/>
+  <xs:element name="translatable" type="gedmo:translatable"/>
   <xs:element name="timestampable" type="gedmo:timestampable"/>
   <xs:element name="versioned" type="gedmo:emptyType"/>
   <xs:element name="tree-left" type="gedmo:emptyType"/>
   <xs:element name="tree-right" type="gedmo:emptyType"/>
   <xs:element name="tree-level" type="gedmo:emptyType"/>
   <xs:element name="tree-root" type="gedmo:emptyType"/>
-  <!-- many-to-one -->
-  <!-- xs:element name="versioned" type="gedmo:emptyType"/-->
   <xs:element name="tree-parent" type="gedmo:emptyType"/>
-  <!-- one-to-one -->
-  <!-- same as many-to-one
-  <xs:element name="versioned" type="gedmo:emptyType"/>
-  <xs:element name="tree-parent" type="gedmo:emptyType"/>
-  -->
+  <xs:element name="tree-path-source" type="gedmo:emptyType"/>
+  <xs:element name="tree-lock-time" type="gedmo:emptyType"/>
+  <xs:element name="sortable-group" type="gedmo:emptyType"/>
+  <xs:element name="sortable-position" type="gedmo:emptyType"/>
+  <xs:element name="uploadable-file-mime-type" type="gedmo:emptyType"/>
+  <xs:element name="uploadable-file-path" type="gedmo:emptyType"/>
+  <xs:element name="uploadable-file-size" type="gedmo:emptyType"/>
 
   <xs:complexType name="translation">
     <xs:attribute name="entity" type="xs:string" use="optional" />
@@ -90,32 +54,57 @@ people to push their own additional attributes/elements into the same field elem
 
   <xs:complexType name="tree">
     <xs:attribute name="type" type="gedmo:tree-type" default="nested" />
+    <xs:attribute name="activate-locking" type="xs:boolean" default="false" />
+    <xs:attribute name="locking-timeout" type="xs:integer" default="3" />
   </xs:complexType>
 
   <xs:complexType name="tree-closure">
     <xs:attribute name="class" type="xs:string" use="required" />
   </xs:complexType>
 
+  <xs:complexType name="tree-path">
+    <xs:attribute name="separator" type="xs:string" use="optional" default="|" />
+  </xs:complexType>
+
   <xs:complexType name="loggable">
     <xs:attribute name="log-entry-class" type="xs:string" use="optional" />
   </xs:complexType>
 
-  <xs:complexType name="sluggable">
-    <xs:attribute name="position" type="xs:integer" use="optional" />
-    <xs:attribute name="slugField" type="xs:string" use="optional" />
-  </xs:complexType>
-
   <xs:complexType name="slug">
+    <xs:sequence>
+      <xs:element name="handler" type="gedmo:handler" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="fields" type="xs:string" use="required"/>
     <xs:attribute name="unique" type="xs:boolean" use="optional" />
     <xs:attribute name="updatable" type="xs:boolean" use="optional" />
     <xs:attribute name="separator" type="xs:string" use="optional" />
     <xs:attribute name="style" type="gedmo:slug-style" use="optional" />
   </xs:complexType>
 
+  <xs:complexType name="soft-deleteable">
+    <xs:attribute name="field-name" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  <xs:complexType name="handler">
+    <xs:sequence>
+      <xs:element name="handler-option" type="gedmo:handler-option" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="class" type="xs:string" use="required"/>
+  </xs:complexType>
+  
+  <xs:complexType name="handler-option">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="value" type="xs:string" use="required"/>
+  </xs:complexType>
+
   <xs:complexType name="timestampable">
     <xs:attribute name="on" type="gedmo:timestampable-action" use="optional" />
     <xs:attribute name="field" type="xs:string" use="optional" />
     <xs:attribute name="value" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="translatable">
+    <xs:attribute name="fallback" type="xs:boolean" use="optional" />
   </xs:complexType>
 
   <xs:complexType name="emptyType">
@@ -125,6 +114,7 @@ people to push their own additional attributes/elements into the same field elem
     <xs:restriction base="xs:token">
       <xs:enumeration value="nested"/>
       <xs:enumeration value="closure"/>
+      <xs:enumeration value="materializedPath"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -142,5 +132,17 @@ people to push their own additional attributes/elements into the same field elem
       <xs:enumeration value="change"/>
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:complexType name="uploadable">
+    <xs:attribute name="allow-overwrite" type="xs:boolean" use="optional" />
+    <xs:attribute name="append-number" type="xs:boolean" use="optional" />
+    <xs:attribute name="callback" type="xs:string" use="optional" />
+    <xs:attribute name="path" type="xs:string" use="optional" />
+    <xs:attribute name="path-method" type="xs:string" use="optional" />
+    <xs:attribute name="filename-generator" type="xs:string" use="optional" />
+    <xs:attribute name="max-size" type="xs:double" use="optional" default="0" />
+    <xs:attribute name="allowed-types" type="xs:string" use="optional" />
+    <xs:attribute name="disallowed-types" type="xs:string" use="optional" />
+  </xs:complexType>
 
 </xs:schema>

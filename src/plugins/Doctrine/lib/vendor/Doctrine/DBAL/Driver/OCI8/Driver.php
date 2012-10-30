@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -25,7 +25,7 @@ use Doctrine\DBAL\Platforms;
 
 /**
  * A Doctrine DBAL driver for the Oracle OCI8 PHP extensions.
- * 
+ *
  * @author Roman Borschel <roman@code-factory.org>
  * @since 2.0
  */
@@ -38,7 +38,8 @@ class Driver implements \Doctrine\DBAL\Driver
             $password,
             $this->_constructDsn($params),
             isset($params['charset']) ? $params['charset'] : null,
-            isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT
+            isset($params['sessionMode']) ? $params['sessionMode'] : OCI_DEFAULT,
+            isset($params['persistent']) ? $params['persistent'] : false
         );
     }
 
@@ -47,10 +48,10 @@ class Driver implements \Doctrine\DBAL\Driver
      *
      * @return string The DSN.
      */
-    private function _constructDsn(array $params)
+    protected function _constructDsn(array $params)
     {
         $dsn = '';
-        if (isset($params['host'])) {
+        if (isset($params['host']) && $params['host'] != '') {
             $dsn .= '(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)' .
                    '(HOST=' . $params['host'] . ')';
 
@@ -60,15 +61,18 @@ class Driver implements \Doctrine\DBAL\Driver
                 $dsn .= '(PORT=1521)';
             }
 
-            $dsn .= '))';
-            if (isset($params['dbname'])) {
-                $dsn .= '(CONNECT_DATA=(SID=' . $params['dbname'] . ')';
+            if (isset($params['service']) && $params['service'] == true) {
+                $dsn .= '))(CONNECT_DATA=(SERVICE_NAME=' . $params['dbname'] . '))';
+            } else {
+                $dsn .= '))(CONNECT_DATA=(SID=' . $params['dbname'] . '))';
             }
-            $dsn .= '))';
+            if (isset($params['pooled']) && $params['pooled'] == true) {
+                $dsn .= '(SERVER=POOLED)';
+            }
+            $dsn .= ')';
         } else {
             $dsn .= $params['dbname'];
         }
-
         return $dsn;
     }
 

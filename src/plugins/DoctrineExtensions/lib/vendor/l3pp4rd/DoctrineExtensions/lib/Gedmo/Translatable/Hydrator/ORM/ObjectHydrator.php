@@ -2,7 +2,7 @@
 
 namespace Gedmo\Translatable\Hydrator\ORM;
 
-use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
+use Gedmo\Translatable\TranslatableListener;
 use Doctrine\ORM\Internal\Hydration\ObjectHydrator as BaseObjectHydrator;
 
 /**
@@ -20,11 +20,12 @@ use Doctrine\ORM\Internal\Hydration\ObjectHydrator as BaseObjectHydrator;
 class ObjectHydrator extends BaseObjectHydrator
 {
     /**
+     * 2.1 version
      * {@inheritdoc}
      */
     protected function _hydrateAll()
     {
-        $listener = $this->_hints[TranslationWalker::HINT_TRANSLATION_LISTENER];
+        $listener = $this->getTranslatableListener();
         $listener->setSkipOnLoad(true);
         $result = parent::_hydrateAll();
         $listener->setSkipOnLoad(false);
@@ -32,18 +33,42 @@ class ObjectHydrator extends BaseObjectHydrator
     }
 
     /**
+     * 2.2 version
      * {@inheritdoc}
      */
-    protected function _hydrateRow(array $data, array &$cache, array &$result)
+    protected function hydrateAllData()
     {
-        if (isset($this->_hints[TranslationWalker::HINT_TRANSLATION_FALLBACKS])) {
-            foreach ($this->_hints[TranslationWalker::HINT_TRANSLATION_FALLBACKS] as $field => $alias) {
-                if ($data[$field] && !$data[$alias]) {
-                    $data[$alias] = $data[$field];
+        $listener = $this->getTranslatableListener();
+        $listener->setSkipOnLoad(true);
+        $result = parent::hydrateAllData();
+        $listener->setSkipOnLoad(false);
+        return $result;
+    }
+
+    /**
+     * Get the currently used TranslatableListener
+     *
+     * @throws \Gedmo\Exception\RuntimeException - if listener is not found
+     * @return TranslatableListener
+     */
+    protected function getTranslatableListener()
+    {
+        $translatableListener = null;
+        foreach ($this->_em->getEventManager()->getListeners() as $event => $listeners) {
+            foreach ($listeners as $hash => $listener) {
+                if ($listener instanceof TranslatableListener) {
+                    $translatableListener = $listener;
+                    break;
                 }
-                unset($data[$field]);
+            }
+            if ($translatableListener) {
+                break;
             }
         }
-        return parent::_hydrateRow($data, $cache, $result);
+
+        if (is_null($translatableListener)) {
+            throw new \Gedmo\Exception\RuntimeException('The translation listener could not be found');
+        }
+        return $translatableListener;
     }
 }

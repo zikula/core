@@ -2,9 +2,10 @@
 
 namespace Gedmo\Timestampable;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata,
-    Doctrine\Common\EventArgs,
-    Gedmo\Mapping\MappedEventSubscriber;
+use Doctrine\Common\EventArgs,
+    Gedmo\Mapping\MappedEventSubscriber,
+    Doctrine\Common\NotifyPropertyChanged,
+    Gedmo\Exception\UnexpectedValueException;
 
 /**
  * The Timestampable listener handles the update of
@@ -67,7 +68,8 @@ class TimestampableListener extends MappedEventSubscriber
                     foreach ($config['update'] as $field) {
                         if (!isset($changeSet[$field])) { // let manual values
                             $needChanges = true;
-                            $meta->getReflectionProperty($field)->setValue($object, $ea->getDateValue($meta, $field));
+                            $this->updateField($object, $ea, $meta, $field);
+
                         }
                     }
                 }
@@ -91,7 +93,9 @@ class TimestampableListener extends MappedEventSubscriber
                             if (isset($trackedChild)) {
                                 $changingObject = $changes[1];
                                 if (!is_object($changingObject)) {
-                                    throw new \Gedmo\Exception\UnexpectedValueException("Field - [{$field}] is expected to be object in class - {$meta->name}");
+                                    throw new UnexpectedValueException(
+                                        "Field - [{$field}] is expected to be object in class - {$meta->name}"
+                                    );
                                 }
                                 $objectMeta = $om->getClassMetadata(get_class($changingObject));
                                 $trackedChild instanceof Proxy && $om->refresh($trackedChild);
@@ -101,10 +105,9 @@ class TimestampableListener extends MappedEventSubscriber
                                 $value = $changes[1];
                             }
 
-                            if ($options['value'] == $value) {
+                            if ($options['value'] == $value || $options['value'] === null) {
                                 $needChanges = true;
-                                $meta->getReflectionProperty($options['field'])
-                                    ->setValue($object, $ea->getDateValue($meta, $options['field']));
+                                $this->updateField($object, $ea, $meta, $options['field']);
                             }
                         }
                     }
@@ -135,7 +138,7 @@ class TimestampableListener extends MappedEventSubscriber
             if (isset($config['update'])) {
                 foreach ($config['update'] as $field) {
                     if ($meta->getReflectionProperty($field)->getValue($object) === null) { // let manual values
-                        $meta->getReflectionProperty($field)->setValue($object, $ea->getDateValue($meta, $field));
+                        $this->updateField($object, $ea, $meta, $field);
                     }
                 }
             }
@@ -143,7 +146,7 @@ class TimestampableListener extends MappedEventSubscriber
             if (isset($config['create'])) {
                 foreach ($config['create'] as $field) {
                     if ($meta->getReflectionProperty($field)->getValue($object) === null) { // let manual values
-                        $meta->getReflectionProperty($field)->setValue($object, $ea->getDateValue($meta, $field));
+                        $this->updateField($object, $ea, $meta, $field);
                     }
                 }
             }
@@ -156,5 +159,25 @@ class TimestampableListener extends MappedEventSubscriber
     protected function getNamespace()
     {
         return __NAMESPACE__;
+    }
+
+    /**
+     * Updates a field
+     *
+     * @param $object
+     * @param $ea
+     * @param $meta
+     * @param $field
+     */
+    protected function updateField($object, $ea, $meta, $field)
+    {
+        $property = $meta->getReflectionProperty($field);
+        $oldValue = $property->getValue($object);
+        $newValue = $ea->getDateValue($meta, $field);
+        $property->setValue($object, $newValue);
+        if ($object instanceof NotifyPropertyChanged) {
+            $uow = $ea->getObjectManager()->getUnitOfWork();
+            $uow->propertyChanged($object, $field, $oldValue, $newValue);
+        }
     }
 }

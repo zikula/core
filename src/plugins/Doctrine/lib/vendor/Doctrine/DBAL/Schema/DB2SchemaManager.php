@@ -15,11 +15,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
 */
 
 namespace Doctrine\DBAL\Schema;
+
+use Doctrine\DBAL\Event\SchemaIndexDefinitionEventArgs;
+use Doctrine\DBAL\Events;
 
 /**
  * IBM Db2 Schema Manager
@@ -46,7 +49,7 @@ class DB2SchemaManager extends AbstractSchemaManager
         $sql .= " AND CREATOR = UPPER('".$this->_conn->getUsername()."')";
 
         $tables = $this->_conn->fetchAll($sql);
-        
+
         return $this->_getPortableTablesList($tables);
     }
 
@@ -68,7 +71,7 @@ class DB2SchemaManager extends AbstractSchemaManager
         $precision = false;
 
         $type = $this->_platform->getDoctrineTypeMapping($tableColumn['typename']);
-        
+
         switch (strtolower($tableColumn['typename'])) {
             case 'varchar':
                 $length = $tableColumn['length'];
@@ -111,7 +114,7 @@ class DB2SchemaManager extends AbstractSchemaManager
     protected function _getPortableTablesList($tables)
     {
         $tableNames = array();
-        foreach ($tables AS $tableRow) {
+        foreach ($tables as $tableRow) {
             $tableRow = array_change_key_case($tableRow, \CASE_LOWER);
             $tableNames[] = $tableRow['name'];
         }
@@ -120,9 +123,10 @@ class DB2SchemaManager extends AbstractSchemaManager
 
     protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
     {
-        $tableIndexRows = array();
+        $eventManager = $this->_platform->getEventManager();
+
         $indexes = array();
-        foreach($tableIndexes AS $indexKey => $data) {
+        foreach($tableIndexes as $indexKey => $data) {
             $data = array_change_key_case($data, \CASE_LOWER);
             $unique = ($data['uniquerule'] == "D") ? false : true;
             $primary = ($data['uniquerule'] == "P");
@@ -134,7 +138,31 @@ class DB2SchemaManager extends AbstractSchemaManager
                 $keyName = $indexName;
             }
 
-            $indexes[$keyName] = new Index($indexName, explode("+", ltrim($data['colnames'], '+')), $unique, $primary);
+            $data = array(
+                'name' => $indexName,
+                'columns' => explode("+", ltrim($data['colnames'], '+')),
+                'unique' => $unique,
+                'primary' => $primary
+            );
+
+            $index = null;
+            $defaultPrevented = false;
+
+            if (null !== $eventManager && $eventManager->hasListeners(Events::onSchemaIndexDefinition)) {
+                $eventArgs = new SchemaIndexDefinitionEventArgs($data, $tableName, $this->_conn);
+                $eventManager->dispatchEvent(Events::onSchemaIndexDefinition, $eventArgs);
+
+                $defaultPrevented = $eventArgs->isDefaultPrevented();
+                $index = $eventArgs->getIndex();
+            }
+
+            if ( ! $defaultPrevented) {
+                $index = new Index($data['name'], $data['columns'], $data['unique'], $data['primary']);
+            }
+
+            if ($index) {
+                $indexes[$indexKey] = $index;
+            }
         }
 
         return $indexes;
