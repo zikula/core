@@ -1,8 +1,5 @@
 <?php
-
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -16,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -27,10 +24,9 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 /**
  * ClassMetadata exporter for PHP code
  *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision$
  * @author  Jonathan Wage <jonwage@gmail.com>
  */
 class PhpExporter extends AbstractExporter
@@ -41,7 +37,7 @@ class PhpExporter extends AbstractExporter
      * Converts a single ClassMetadata instance to the exported format
      * and returns it
      *
-     * @param ClassMetadataInfo $metadata 
+     * @param ClassMetadataInfo $metadata
      * @return mixed $exported
      */
     public function exportClassMetadata(ClassMetadataInfo $metadata)
@@ -92,7 +88,7 @@ class PhpExporter extends AbstractExporter
             $lines[] = '$metadata->mapField(' . $this->_varExport($fieldMapping) . ');';
         }
 
-        if ($generatorType = $this->_getIdGeneratorTypeString($metadata->generatorType)) {
+        if ( ! $metadata->isIdentifierComposite && $generatorType = $this->_getIdGeneratorTypeString($metadata->generatorType)) {
             $lines[] = '$metadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_' . $generatorType . ');';
         }
 
@@ -108,7 +104,7 @@ class PhpExporter extends AbstractExporter
                 'targetEntity' => $associationMapping['targetEntity'],
                 'cascade'     => $cascade,
             );
-            
+
             if ($associationMapping['type'] & ClassMetadataInfo::TO_ONE) {
                 $method = 'mapOneToOne';
                 $oneToOneMappingArray = array(
@@ -117,10 +113,10 @@ class PhpExporter extends AbstractExporter
                     'joinColumns'   => $associationMapping['joinColumns'],
                     'orphanRemoval' => $associationMapping['orphanRemoval'],
                 );
-                
+
                 $associationMappingArray = array_merge($associationMappingArray, $oneToOneMappingArray);
             } else if ($associationMapping['type'] == ClassMetadataInfo::ONE_TO_MANY) {
-                $method = 'mapOneToMany';                
+                $method = 'mapOneToMany';
                 $potentialAssociationMappingIndexes = array(
                     'mappedBy',
                     'orphanRemoval',
@@ -133,7 +129,7 @@ class PhpExporter extends AbstractExporter
                 }
                 $associationMappingArray = array_merge($associationMappingArray, $oneToManyMappingArray);
             } else if ($associationMapping['type'] == ClassMetadataInfo::MANY_TO_MANY) {
-                $method = 'mapManyToMany';                
+                $method = 'mapManyToMany';
                 $potentialAssociationMappingIndexes = array(
                     'mappedBy',
                     'joinTable',
@@ -146,7 +142,7 @@ class PhpExporter extends AbstractExporter
                 }
                 $associationMappingArray = array_merge($associationMappingArray, $manyToManyMappingArray);
             }
-            
+
             $lines[] = '$metadata->' . $method . '(' . $this->_varExport($associationMappingArray) . ');';
         }
 

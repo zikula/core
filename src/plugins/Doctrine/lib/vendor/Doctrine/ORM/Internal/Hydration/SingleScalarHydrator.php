@@ -13,37 +13,44 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\ORM\Internal\Hydration;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection,
+    Doctrine\ORM\NoResultException,
+    Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Hydrator that hydrates a single scalar value from the result set.
  *
+ * @since  2.0
  * @author Roman Borschel <roman@code-factory.org>
- * @since 2.0
+ * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
 class SingleScalarHydrator extends AbstractHydrator
 {
-    /** @override */
-    protected function _hydrateAll()
+    /**
+     * {@inheritdoc}
+     */
+    protected function hydrateAllData()
     {
-        $cache = array();
-        $result = $this->_stmt->fetchAll(\PDO::FETCH_ASSOC);
-        $num = count($result);
+        $data    = $this->_stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $numRows = count($data);
 
-        if ($num == 0) {
-            throw new \Doctrine\ORM\NoResultException;
-        } else if ($num > 1 || count($result[key($result)]) > 1) {
-            throw new \Doctrine\ORM\NonUniqueResultException;
+        if ($numRows === 0) {
+            throw new NoResultException();
         }
-        
-        $result = $this->_gatherScalarRowData($result[key($result)], $cache);
-        
+
+        if ($numRows > 1 || count($data[key($data)]) > 1) {
+            throw new NonUniqueResultException();
+        }
+
+        $cache  = array();
+        $result = $this->gatherScalarRowData($data[key($data)], $cache);
+
         return array_shift($result);
     }
 }

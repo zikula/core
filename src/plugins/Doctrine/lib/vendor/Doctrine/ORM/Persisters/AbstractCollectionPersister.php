@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -46,15 +46,31 @@ abstract class AbstractCollectionPersister
     protected $_uow;
 
     /**
+     * The database platform.
+     *
+     * @var \Doctrine\DBAL\Platforms\AbstractPlatform
+     */
+    protected $platform;
+    
+    /**
+     * The quote strategy.
+     *
+     * @var \Doctrine\ORM\Mapping\QuoteStrategy
+     */
+    protected $quoteStrategy;
+
+    /**
      * Initializes a new instance of a class derived from AbstractCollectionPersister.
      *
      * @param \Doctrine\ORM\EntityManager $em
      */
     public function __construct(EntityManager $em)
     {
-        $this->_em = $em;
-        $this->_uow = $em->getUnitOfWork();
-        $this->_conn = $em->getConnection();
+        $this->_em              = $em;
+        $this->_uow             = $em->getUnitOfWork();
+        $this->_conn            = $em->getConnection();
+        $this->platform         = $this->_conn->getDatabasePlatform();
+        $this->quoteStrategy    = $em->getConfiguration()->getQuoteStrategy();
     }
 
     /**
@@ -65,11 +81,11 @@ abstract class AbstractCollectionPersister
     public function delete(PersistentCollection $coll)
     {
         $mapping = $coll->getMapping();
-        
+
         if ( ! $mapping['isOwningSide']) {
             return; // ignore inverse side
         }
-        
+
         $sql = $this->_getDeleteSQL($coll);
         $this->_conn->executeUpdate($sql, $this->_getDeleteSQLParameters($coll));
     }
@@ -98,34 +114,34 @@ abstract class AbstractCollectionPersister
     public function update(PersistentCollection $coll)
     {
         $mapping = $coll->getMapping();
-        
+
         if ( ! $mapping['isOwningSide']) {
             return; // ignore inverse side
         }
-        
+
         $this->deleteRows($coll);
         //$this->updateRows($coll);
         $this->insertRows($coll);
     }
-    
+
     public function deleteRows(PersistentCollection $coll)
-    {        
+    {
         $deleteDiff = $coll->getDeleteDiff();
         $sql = $this->_getDeleteRowSQL($coll);
-        
+
         foreach ($deleteDiff as $element) {
             $this->_conn->executeUpdate($sql, $this->_getDeleteRowSQLParameters($coll, $element));
         }
     }
-    
+
     //public function updateRows(PersistentCollection $coll)
     //{}
-    
+
     public function insertRows(PersistentCollection $coll)
     {
         $insertDiff = $coll->getInsertDiff();
         $sql = $this->_getInsertRowSQL($coll);
-        
+
         foreach ($insertDiff as $element) {
             $this->_conn->executeUpdate($sql, $this->_getInsertRowSQLParameters($coll, $element));
         }
@@ -151,6 +167,16 @@ abstract class AbstractCollectionPersister
         throw new \BadMethodCallException("Checking for existance of a key is not supported by this CollectionPersister.");
     }
 
+    public function removeElement(PersistentCollection $coll, $element)
+    {
+        throw new \BadMethodCallException("Removing an element is not supported by this CollectionPersister.");
+    }
+
+    public function removeKey(PersistentCollection $coll, $key)
+    {
+        throw new \BadMethodCallException("Removing a key is not supported by this CollectionPersister.");
+    }
+
     public function get(PersistentCollection $coll, $index)
     {
         throw new \BadMethodCallException("Selecting a collection by index is not supported by this CollectionPersister.");
@@ -158,7 +184,7 @@ abstract class AbstractCollectionPersister
 
     /**
      * Gets the SQL statement used for deleting a row from the collection.
-     * 
+     *
      * @param PersistentCollection $coll
      */
     abstract protected function _getDeleteRowSQL(PersistentCollection $coll);

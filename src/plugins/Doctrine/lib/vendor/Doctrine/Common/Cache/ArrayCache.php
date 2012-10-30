@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -27,14 +27,13 @@ namespace Doctrine\Common\Cache;
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision: 3938 $
  * @author  Benjamin Eberlei <kontakt@beberlei.de>
  * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
  * @author  David Abdemoulaie <dave@hobodave.com>
  */
-class ArrayCache extends AbstractCache
+class ArrayCache extends CacheProvider
 {
     /**
      * @var array $data
@@ -44,27 +43,15 @@ class ArrayCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    public function getIds()
+    protected function doFetch($id)
     {
-        return array_keys($this->data);
+        return (isset($this->data[$id])) ? $this->data[$id] : false;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _doFetch($id)
-    {
-        if (isset($this->data[$id])) {
-            return $this->data[$id];
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _doContains($id)
+    protected function doContains($id)
     {
         return isset($this->data[$id]);
     }
@@ -72,7 +59,7 @@ class ArrayCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    protected function _doSave($id, $data, $lifeTime = 0)
+    protected function doSave($id, $data, $lifeTime = 0)
     {
         $this->data[$id] = $data;
 
@@ -82,10 +69,28 @@ class ArrayCache extends AbstractCache
     /**
      * {@inheritdoc}
      */
-    protected function _doDelete($id)
+    protected function doDelete($id)
     {
         unset($this->data[$id]);
-        
+
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doFlush()
+    {
+        $this->data = array();
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doGetStats()
+    {
+        return null;
     }
 }

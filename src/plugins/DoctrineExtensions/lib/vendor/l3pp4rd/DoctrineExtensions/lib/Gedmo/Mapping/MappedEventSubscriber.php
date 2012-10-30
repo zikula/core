@@ -9,7 +9,6 @@ use Doctrine\Common\Annotations\Reader;
 use Gedmo\Mapping\ExtensionMetadataFactory;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\EventArgs;
 
 /**
@@ -30,11 +29,20 @@ use Doctrine\Common\EventArgs;
 abstract class MappedEventSubscriber implements EventSubscriber
 {
     /**
-     * List of cached object configurations
+     * Static List of cached object configurations
+     * leaving it static for reasons to look into
+     * other listener configuration
      *
      * @var array
      */
-    protected $configurations = array();
+    protected static $configurations = array();
+
+    /**
+     * Listener name, etc: sluggable
+     *
+     * @var string
+     */
+    protected $name;
 
     /**
      * ExtensionMetadataFactory used to read the extension
@@ -61,7 +69,16 @@ abstract class MappedEventSubscriber implements EventSubscriber
     /**
      * @var \Doctrine\Common\Annotations\AnnotationReader
      */
-    private $defaultAnnotationReader;
+    private static $defaultAnnotationReader;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $parts = explode('\\', $this->getNamespace());
+        $this->name = end($parts);
+    }
 
     /**
      * Get an event adapter to handle event specific
@@ -99,23 +116,29 @@ abstract class MappedEventSubscriber implements EventSubscriber
      */
     public function getConfiguration(ObjectManager $objectManager, $class) {
         $config = array();
-        if (isset($this->configurations[$class])) {
-            $config = $this->configurations[$class];
+        if (isset(self::$configurations[$this->name][$class])) {
+            $config = self::$configurations[$this->name][$class];
         } else {
             $factory = $objectManager->getMetadataFactory();
             $cacheDriver = $factory->getCacheDriver();
             if ($cacheDriver) {
                 $cacheId = ExtensionMetadataFactory::getCacheId($class, $this->getNamespace());
                 if (($cached = $cacheDriver->fetch($cacheId)) !== false) {
-                    $this->configurations[$class] = $cached;
+                    self::$configurations[$this->name][$class] = $cached;
                     $config = $cached;
                 } else {
                     // re-generate metadata on cache miss
                     $this->loadMetadataForObjectClass($objectManager, $factory->getMetadataFor($class));
-                    if (isset($this->configurations[$class])) {
-                        $config = $this->configurations[$class];
+                    if (isset(self::$configurations[$this->name][$class])) {
+                        $config = self::$configurations[$this->name][$class];
                     }
                 }
+
+                $objectClass = isset($config['useObjectClass']) ? $config['useObjectClass'] : $class;
+                if ($objectClass !== $class) {
+                    $this->getConfiguration($objectManager, $objectClass);
+                }
+
             }
         }
         return $config;
@@ -165,15 +188,20 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * event subscribers must subscribe to loadClassMetadata event
      *
      * @param ObjectManager $objectManager
-     * @param ClassMetadata $metadata
+     * @param object $metadata
      * @return void
      */
-    public function loadMetadataForObjectClass(ObjectManager $objectManager, ClassMetadata $metadata)
+    public function loadMetadataForObjectClass(ObjectManager $objectManager, $metadata)
     {
         $factory = $this->getExtensionMetadataFactory($objectManager);
-        $config = $factory->getExtensionMetadata($metadata);
+        try {
+            $config = $factory->getExtensionMetadata($metadata);
+        } catch (\ReflectionException $e) {
+            // entity\document generator is running
+            $config = false; // will not store a cached version, to remap later
+        }
         if ($config) {
-            $this->configurations[$metadata->name] = $config;
+            self::$configurations[$this->name][$metadata->name] = $config;
         }
     }
 
@@ -193,7 +221,7 @@ abstract class MappedEventSubscriber implements EventSubscriber
      */
     private function getDefaultAnnotationReader()
     {
-        if (null === $this->defaultAnnotationReader) {
+        if (null === self::$defaultAnnotationReader) {
             if (version_compare(\Doctrine\Common\Version::VERSION, '2.2.0-DEV', '>=')) {
                 $reader = new \Doctrine\Common\Annotations\AnnotationReader();
                 \Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
@@ -216,10 +244,6 @@ abstract class MappedEventSubscriber implements EventSubscriber
                 $reader->setAnnotationNamespaceAlias('Gedmo\\Mapping\\Annotation\\', 'gedmo');
                 $reader->setEnableParsePhpImports(false);
                 $reader->setAutoloadAnnotations(true);
-                /*\Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace(
-                    'Gedmo\\Mapping\\Annotation',
-                    __DIR__ . '/../../'
-                );*/
                 $reader = new \Doctrine\Common\Annotations\CachedReader(
                     new \Doctrine\Common\Annotations\IndexedReader($reader), new ArrayCache()
                 );
@@ -229,8 +253,8 @@ abstract class MappedEventSubscriber implements EventSubscriber
                 $reader->setAnnotationNamespaceAlias('Gedmo\\Mapping\\Annotation\\', 'gedmo');
                 $reader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
             }
-            $this->defaultAnnotationReader = $reader;
+            self::$defaultAnnotationReader = $reader;
         }
-        return $this->defaultAnnotationReader;
+        return self::$defaultAnnotationReader;
     }
 }

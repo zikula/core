@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
 */
 
@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping\Driver\YamlDriver;
 
 /**
  * Convenience class for setting up Doctrine from different installations and configurations.
- * 
+ *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  */
 class Setup
@@ -36,8 +36,8 @@ class Setup
     /**
      * Use this method to register all autoloaders for a setup where Doctrine is checked out from
      * its github repository at {@link http://github.com/doctrine/doctrine2}
-     * 
-     * @param string $gitCheckoutRootPath 
+     *
+     * @param string $gitCheckoutRootPath
      * @return void
      */
     static public function registerAutoloadGit($gitCheckoutRootPath)
@@ -45,24 +45,24 @@ class Setup
         if (!class_exists('Doctrine\Common\ClassLoader', false)) {
             require_once $gitCheckoutRootPath . "/lib/vendor/doctrine-common/lib/Doctrine/Common/ClassLoader.php";
         }
-        
+
         $loader = new ClassLoader("Doctrine\Common", $gitCheckoutRootPath . "/lib/vendor/doctrine-common/lib");
         $loader->register();
-        
+
         $loader = new ClassLoader("Doctrine\DBAL", $gitCheckoutRootPath . "/lib/vendor/doctrine-dbal/lib");
         $loader->register();
-        
+
         $loader = new ClassLoader("Doctrine\ORM", $gitCheckoutRootPath . "/lib");
         $loader->register();
-        
+
         $loader = new ClassLoader("Symfony\Component", $gitCheckoutRootPath . "/lib/vendor");
         $loader->register();
     }
-    
+
     /**
      * Use this method to register all autoloaders for a setup where Doctrine is installed
      * though {@link http://pear.doctrine-project.org}.
-     * 
+     *
      * @return void
      */
     static public function registerAutoloadPEAR()
@@ -70,13 +70,13 @@ class Setup
         if (!class_exists('Doctrine\Common\ClassLoader', false)) {
             require_once "Doctrine/Common/ClassLoader.php";
         }
-        
+
         $loader = new ClassLoader("Doctrine");
         $loader->register();
-        
+
         $parts = explode(PATH_SEPARATOR, get_include_path());
-        
-        foreach ($parts AS $includePath) {
+
+        foreach ($parts as $includePath) {
             if ($includePath != "." && file_exists($includePath . "/Doctrine")) {
                 $loader = new ClassLoader("Symfony\Component", $includePath . "/Doctrine");
                 $loader->register();
@@ -84,45 +84,46 @@ class Setup
             }
         }
     }
-    
+
     /**
      * Use this method to register all autoloads for a downloaded Doctrine library.
      * Pick the directory the library was uncompressed into.
-     * 
-     * @param string $directory 
+     *
+     * @param string $directory
      */
     static public function registerAutoloadDirectory($directory)
     {
         if (!class_exists('Doctrine\Common\ClassLoader', false)) {
             require_once $directory . "/Doctrine/Common/ClassLoader.php";
         }
-        
+
         $loader = new ClassLoader("Doctrine", $directory);
         $loader->register();
-        
+
         $loader = new ClassLoader("Symfony\Component", $directory . "/Doctrine");
         $loader->register();
     }
-    
+
     /**
      * Create a configuration with an annotation metadata driver.
-     * 
+     *
      * @param array $paths
      * @param boolean $isDevMode
      * @param string $proxyDir
      * @param Cache $cache
+     * @param bool $useSimpleAnnotationReader
      * @return Configuration
      */
-    static public function createAnnotationMetadataConfiguration(array $paths, $isDevMode = false, $proxyDir = null, Cache $cache = null)
+    static public function createAnnotationMetadataConfiguration(array $paths, $isDevMode = false, $proxyDir = null, Cache $cache = null, $useSimpleAnnotationReader = true)
     {
         $config = self::createConfiguration($isDevMode, $proxyDir, $cache);
-        $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($paths));
+        $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($paths, $useSimpleAnnotationReader));
         return $config;
     }
-    
+
     /**
-     * Create a configuration with an annotation metadata driver.
-     * 
+     * Create a configuration with a xml metadata driver.
+     *
      * @param array $paths
      * @param boolean $isDevMode
      * @param string $proxyDir
@@ -135,10 +136,10 @@ class Setup
         $config->setMetadataDriverImpl(new XmlDriver($paths));
         return $config;
     }
-    
+
     /**
-     * Create a configuration with an annotation metadata driver.
-     * 
+     * Create a configuration with a yaml metadata driver.
+     *
      * @param array $paths
      * @param boolean $isDevMode
      * @param string $proxyDir
@@ -151,44 +152,49 @@ class Setup
         $config->setMetadataDriverImpl(new YamlDriver($paths));
         return $config;
     }
-    
+
     /**
      * Create a configuration without a metadata driver.
-     * 
+     *
      * @param bool $isDevMode
      * @param string $proxyDir
      * @param Cache $cache
-     * @return Configuration 
+     * @return Configuration
      */
     static public function createConfiguration($isDevMode = false, $proxyDir = null, Cache $cache = null)
     {
         $proxyDir = $proxyDir ?: sys_get_temp_dir();
         if ($isDevMode === false && $cache === null) {
             if (extension_loaded('apc')) {
-                $cache = new \Doctrine\Common\Cache\ApcCache;
+                $cache = new \Doctrine\Common\Cache\ApcCache();
             } else if (extension_loaded('xcache')) {
-                $cache = new \Doctrine\Common\Cache\XcacheCache;
+                $cache = new \Doctrine\Common\Cache\XcacheCache();
             } else if (extension_loaded('memcache')) {
                 $memcache = new \Memcache();
                 $memcache->connect('127.0.0.1');
                 $cache = new \Doctrine\Common\Cache\MemcacheCache();
                 $cache->setMemcache($memcache);
+            } else if (extension_loaded('redis')) {
+                $redis = new \Redis();
+                $redis->connect('127.0.0.1');
+                $cache = new \Doctrine\Common\Cache\RedisCache();
+                $cache->setRedis($redis);
             } else {
-                $cache = new ArrayCache;
+                $cache = new ArrayCache();
             }
         } else if ($cache === null) {
-            $cache = new ArrayCache;
+            $cache = new ArrayCache();
         }
         $cache->setNamespace("dc2_" . md5($proxyDir) . "_"); // to avoid collisions
-        
+
         $config = new Configuration();
         $config->setMetadataCacheImpl($cache);
         $config->setQueryCacheImpl($cache);
         $config->setResultCacheImpl($cache);
-        $config->setProxyDir( $proxyDir );
+        $config->setProxyDir($proxyDir);
         $config->setProxyNamespace('DoctrineProxies');
         $config->setAutoGenerateProxyClasses($isDevMode);
-        
+
         return $config;
     }
 }

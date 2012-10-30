@@ -4,7 +4,6 @@ namespace Gedmo\Loggable\Mapping\Driver;
 
 use Gedmo\Mapping\Driver\File,
     Gedmo\Mapping\Driver,
-    Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Gedmo\Exception\InvalidMappingException;
 
 /**
@@ -31,20 +30,7 @@ class Yaml extends File implements Driver
     /**
      * {@inheritDoc}
      */
-    public function validateFullMetadata(ClassMetadata $meta, array $config)
-    {
-        if ($config && is_array($meta->identifier) && count($meta->identifier) > 1) {
-            throw new InvalidMappingException("Loggable does not support composite identifiers in class - {$meta->name}");
-        }
-        if (isset($config['versioned']) && !isset($config['loggable'])) {
-            throw new InvalidMappingException("Class must be annoted with Loggable annotation in order to track versioned fields in class - {$meta->name}");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readExtendedMetadata(ClassMetadata $meta, array &$config)
+    public function readExtendedMetadata($meta, array &$config)
     {
         $mapping = $this->_getMapping($meta->name);
 
@@ -102,6 +88,15 @@ class Yaml extends File implements Driver
                 }
             }
         }
+
+        if (!$meta->isMappedSuperclass && $config) {
+            if (is_array($meta->identifier) && count($meta->identifier) > 1) {
+                throw new InvalidMappingException("Loggable does not support composite identifiers in class - {$meta->name}");
+            }
+            if (isset($config['versioned']) && !isset($config['loggable'])) {
+                throw new InvalidMappingException("Class must be annoted with Loggable annotation in order to track versioned fields in class - {$meta->name}");
+            }
+        }
     }
 
     /**
@@ -109,6 +104,6 @@ class Yaml extends File implements Driver
      */
     protected function _loadMappingFile($file)
     {
-        return \Symfony\Component\Yaml\Yaml::load($file);
+        return \Symfony\Component\Yaml\Yaml::parse($file);
     }
 }

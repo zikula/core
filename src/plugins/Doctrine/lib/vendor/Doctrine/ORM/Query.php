@@ -13,15 +13,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\ORM;
 
-use Doctrine\DBAL\LockMode,
-    Doctrine\ORM\Query\Parser,
-    Doctrine\ORM\Query\QueryException;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Doctrine\DBAL\LockMode;
+
+use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\ParserResult;
+use Doctrine\ORM\Query\QueryException;
 
 /**
  * A Query object represents a DQL query.
@@ -33,7 +37,6 @@ use Doctrine\DBAL\LockMode,
  */
 final class Query extends AbstractQuery
 {
-    /* Query STATES */
     /**
      * A query object is in CLEAN state when it has NO unparsed/unprocessed DQL parts.
      */
@@ -108,6 +111,7 @@ final class Query extends AbstractQuery
      */
     const HINT_LOCK_MODE = 'doctrine.lockMode';
 
+
     /**
      * @var integer $_state   The current state of this query.
      */
@@ -153,8 +157,6 @@ final class Query extends AbstractQuery
      */
     private $_useQueryCache = true;
 
-    // End of Caching Stuff
-
     /**
      * Initializes a new Query instance.
      *
@@ -186,6 +188,7 @@ final class Query extends AbstractQuery
     public function getAST()
     {
         $parser = new Parser($this);
+
         return $parser->getAST();
     }
 
@@ -198,30 +201,38 @@ final class Query extends AbstractQuery
      */
     private function _parse()
     {
-        if ($this->_state === self::STATE_CLEAN) {
+        // Return previous parser result if the query and the filter collection are both clean
+        if ($this->_state === self::STATE_CLEAN && $this->_em->isFiltersStateClean()) {
             return $this->_parserResult;
         }
 
-        // Check query cache.
-        if ($this->_useQueryCache && ($queryCache = $this->getQueryCacheDriver())) {
-            $hash = $this->_getQueryCacheId();
-            $cached = $this->_expireQueryCache ? false : $queryCache->fetch($hash);
+        $this->_state = self::STATE_CLEAN;
 
-            if ($cached === false) {
-                // Cache miss.
-                $parser = new Parser($this);
-                $this->_parserResult = $parser->parse();
-                $queryCache->save($hash, $this->_parserResult, $this->_queryCacheTTL);
-            } else {
-                // Cache hit.
-                $this->_parserResult = $cached;
-            }
-        } else {
+        // Check query cache.
+        if ( ! ($this->_useQueryCache && ($queryCache = $this->getQueryCacheDriver()))) {
             $parser = new Parser($this);
+
             $this->_parserResult = $parser->parse();
+
+            return $this->_parserResult;
         }
 
-        $this->_state = self::STATE_CLEAN;
+        $hash   = $this->_getQueryCacheId();
+        $cached = $this->_expireQueryCache ? false : $queryCache->fetch($hash);
+
+        if ($cached instanceof ParserResult) {
+            // Cache hit.
+            $this->_parserResult = $cached;
+
+            return $this->_parserResult;
+        }
+
+        // Cache miss.
+        $parser = new Parser($this);
+
+        $this->_parserResult = $parser->parse();
+
+        $queryCache->save($hash, $this->_parserResult, $this->_queryCacheTTL);
 
         return $this->_parserResult;
     }
@@ -233,10 +244,14 @@ final class Query extends AbstractQuery
     {
         $executor = $this->_parse()->getSqlExecutor();
 
+        if ($this->_queryCacheProfile) {
+            $executor->setQueryCacheProfile($this->_queryCacheProfile);
+        }
+
         // Prepare parameters
         $paramMappings = $this->_parserResult->getParameterMappings();
 
-        if (count($paramMappings) != count($this->_params)) {
+        if (count($paramMappings) != count($this->parameters)) {
             throw QueryException::invalidParameterNumber();
         }
 
@@ -257,21 +272,30 @@ final class Query extends AbstractQuery
      */
     private function processParameterMappings($paramMappings)
     {
-        $sqlParams = $types = array();
+        $sqlParams = array();
+        $types     = array();
 
-        foreach ($this->_params as $key => $value) {
+        foreach ($this->parameters as $parameter) {
+            $key = $parameter->getName();
+
             if ( ! isset($paramMappings[$key])) {
                 throw QueryException::unknownParameter($key);
             }
 
-            if (isset($this->_paramTypes[$key])) {
-                foreach ($paramMappings[$key] as $position) {
-                    $types[$position] = $this->_paramTypes[$key];
-                }
+            $value = $this->processParameterValue($parameter->getValue());
+            $type  = ($parameter->getValue() === $value)
+                ? $parameter->getType()
+                : Query\ParameterTypeInferer::inferType($value);
+
+            foreach ($paramMappings[$key] as $position) {
+                $types[$position] = $type;
             }
 
             $sqlPositions = $paramMappings[$key];
-            $value = array_values($this->processParameterValue($value));
+
+            // optimized multi value sql positions away for now,
+            // they are not allowed in DQL anyways.
+            $value = array($value);
             $countValue = count($value);
 
             for ($i = 0, $l = count($sqlPositions); $i < $l; $i++) {
@@ -295,38 +319,6 @@ final class Query extends AbstractQuery
     }
 
     /**
-     * Process an individual parameter value
-     *
-     * @param mixed $value
-     * @return array
-     */
-    private function processParameterValue($value)
-    {
-        if (is_array($value)) {
-            for ($i = 0, $l = count($value); $i < $l; $i++) {
-                $paramValue = $this->processParameterValue($value[$i]);
-                
-                // TODO: What about Entities that have composite primary key?
-                $value[$i] = is_array($paramValue) ? $paramValue[key($paramValue)] : $paramValue;
-            }
-            
-            return array($value);
-        }
-        
-        if ( ! (is_object($value) && $this->_em->getMetadataFactory()->hasMetadataFor(get_class($value)))) {
-            return array($value);
-        }
-        
-        if ($this->_em->getUnitOfWork()->getEntityState($value) === UnitOfWork::STATE_MANAGED) {
-            return array_values($this->_em->getUnitOfWork()->getEntityIdentifier($value));
-        }
-        
-        $class = $this->_em->getClassMetadata(get_class($value));
-        
-        return array_values($class->getIdentifierValues($value));
-    }
-
-    /**
      * Defines a cache driver to be used for caching queries.
      *
      * @param Doctrine_Cache_Interface|null $driver Cache driver
@@ -335,6 +327,7 @@ final class Query extends AbstractQuery
     public function setQueryCacheDriver($queryCache)
     {
         $this->_queryCache = $queryCache;
+
         return $this;
     }
 
@@ -347,22 +340,23 @@ final class Query extends AbstractQuery
     public function useQueryCache($bool)
     {
         $this->_useQueryCache = $bool;
+
         return $this;
     }
 
     /**
      * Returns the cache driver used for query caching.
      *
-     * @return CacheDriver The cache driver used for query caching or NULL, if this
-     * 					   Query does not use query caching.
+     * @return CacheDriver The cache driver used for query caching or NULL, if
+     *                     this Query does not use query caching.
      */
     public function getQueryCacheDriver()
     {
         if ($this->_queryCache) {
             return $this->_queryCache;
-        } else {
-            return $this->_em->getConfiguration()->getQueryCacheImpl();
         }
+
+        return $this->_em->getConfiguration()->getQueryCacheImpl();
     }
 
     /**
@@ -376,6 +370,7 @@ final class Query extends AbstractQuery
         if ($timeToLive !== null) {
             $timeToLive = (int) $timeToLive;
         }
+
         $this->_queryCacheTTL = $timeToLive;
 
         return $this;
@@ -420,6 +415,7 @@ final class Query extends AbstractQuery
     public function free()
     {
         parent::free();
+
         $this->_dql = null;
         $this->_state = self::STATE_CLEAN;
     }
@@ -436,6 +432,7 @@ final class Query extends AbstractQuery
             $this->_dql = $dqlQuery;
             $this->_state = self::STATE_DIRTY;
         }
+
         return $this;
     }
 
@@ -484,7 +481,8 @@ final class Query extends AbstractQuery
     public function setFirstResult($firstResult)
     {
         $this->_firstResult = $firstResult;
-        $this->_state = self::STATE_DIRTY;
+        $this->_state       = self::STATE_DIRTY;
+
         return $this;
     }
 
@@ -508,7 +506,8 @@ final class Query extends AbstractQuery
     public function setMaxResults($maxResults)
     {
         $this->_maxResults = $maxResults;
-        $this->_state = self::STATE_DIRTY;
+        $this->_state      = self::STATE_DIRTY;
+
         return $this;
     }
 
@@ -527,14 +526,15 @@ final class Query extends AbstractQuery
      * Executes the query and returns an IterableResult that can be used to incrementally
      * iterated over the result.
      *
-     * @param array $params The query parameters.
+     * @param \Doctrine\Common\Collections\ArrayCollection|array $parameters The query parameters.
      * @param integer $hydrationMode The hydration mode to use.
-     * @return IterableResult
+     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
      */
-    public function iterate(array $params = array(), $hydrationMode = self::HYDRATE_OBJECT)
+    public function iterate($parameters = null, $hydrationMode = self::HYDRATE_OBJECT)
     {
         $this->setHint(self::HINT_INTERNAL_ITERATION, true);
-        return parent::iterate($params, $hydrationMode);
+
+        return parent::iterate($parameters, $hydrationMode);
     }
 
     /**
@@ -543,6 +543,7 @@ final class Query extends AbstractQuery
     public function setHint($name, $value)
     {
         $this->_state = self::STATE_DIRTY;
+
         return parent::setHint($name, $value);
     }
 
@@ -552,6 +553,7 @@ final class Query extends AbstractQuery
     public function setHydrationMode($hydrationMode)
     {
         $this->_state = self::STATE_DIRTY;
+
         return parent::setHydrationMode($hydrationMode);
     }
 
@@ -564,13 +566,14 @@ final class Query extends AbstractQuery
      */
     public function setLockMode($lockMode)
     {
-        if ($lockMode == LockMode::PESSIMISTIC_READ || $lockMode == LockMode::PESSIMISTIC_WRITE) {
-            if (!$this->_em->getConnection()->isTransactionActive()) {
+        if (in_array($lockMode, array(LockMode::PESSIMISTIC_READ, LockMode::PESSIMISTIC_WRITE))) {
+            if ( ! $this->_em->getConnection()->isTransactionActive()) {
                 throw TransactionRequiredException::transactionRequired();
             }
         }
 
         $this->setHint(self::HINT_LOCK_MODE, $lockMode);
+
         return $this;
     }
 
@@ -582,9 +585,11 @@ final class Query extends AbstractQuery
     public function getLockMode()
     {
         $lockMode = $this->getHint(self::HINT_LOCK_MODE);
-        if (!$lockMode) {
+
+        if ( ! $lockMode) {
             return LockMode::NONE;
         }
+
         return $lockMode;
     }
 
@@ -601,6 +606,7 @@ final class Query extends AbstractQuery
 
         return md5(
             $this->getDql() . var_export($this->_hints, true) .
+            ($this->_em->hasFilters() ? $this->_em->getFilters()->getHash() : '') .
             '&firstResult=' . $this->_firstResult . '&maxResult=' . $this->_maxResults .
             '&hydrationMode='.$this->_hydrationMode.'DOCTRINE_QUERY_CACHE_SALT'
         );
@@ -614,6 +620,7 @@ final class Query extends AbstractQuery
     public function __clone()
     {
         parent::__clone();
+
         $this->_state = self::STATE_DIRTY;
     }
 }

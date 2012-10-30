@@ -25,7 +25,7 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
     {
         return array('displayname' => $this->__('Doctrine Extensions'),
                      'description' => $this->__('Provides various Doctrine Extensions libraries'),
-                     'version'     => '0.0.2'
+                     'version'     => '0.0.3'
                       );
     }
 

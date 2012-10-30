@@ -13,13 +13,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\Common\Collections;
 
 use Closure, ArrayIterator;
+use Doctrine\Common\Collections\Expr\Expression;
+use Doctrine\Common\Collections\Expr\ClosureExpressionVisitor;
 
 /**
  * An ArrayCollection is a Collection implementation that wraps a regular PHP array.
@@ -29,7 +31,7 @@ use Closure, ArrayIterator;
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
  */
-class ArrayCollection implements Collection
+class ArrayCollection implements Collection, Selectable
 {
     /**
      * An array containing the entries of this collection.
@@ -89,7 +91,7 @@ class ArrayCollection implements Collection
     {
         return key($this->_elements);
     }
-    
+
     /**
      * Moves the internal iterator position to the next element.
      *
@@ -99,7 +101,7 @@ class ArrayCollection implements Collection
     {
         return next($this->_elements);
     }
-    
+
     /**
      * Gets the element of the collection at the current internal iterator position.
      *
@@ -121,7 +123,7 @@ class ArrayCollection implements Collection
         if (isset($this->_elements[$key])) {
             $removed = $this->_elements[$key];
             unset($this->_elements[$key]);
-            
+
             return $removed;
         }
 
@@ -137,13 +139,13 @@ class ArrayCollection implements Collection
     public function removeElement($element)
     {
         $key = array_search($element, $this->_elements, true);
-        
+
         if ($key !== false) {
             unset($this->_elements[$key]);
-            
+
             return true;
         }
-        
+
         return false;
     }
 
@@ -151,6 +153,9 @@ class ArrayCollection implements Collection
      * ArrayAccess implementation of offsetExists()
      *
      * @see containsKey()
+     *
+     * @param mixed $offset
+     * @return bool
      */
     public function offsetExists($offset)
     {
@@ -161,6 +166,9 @@ class ArrayCollection implements Collection
      * ArrayAccess implementation of offsetGet()
      *
      * @see get()
+     *
+     * @param mixed $offset
+     * @return mixed
      */
     public function offsetGet($offset)
     {
@@ -168,10 +176,14 @@ class ArrayCollection implements Collection
     }
 
     /**
-     * ArrayAccess implementation of offsetGet()
+     * ArrayAccess implementation of offsetSet()
      *
      * @see add()
      * @see set()
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     * @return bool
      */
     public function offsetSet($offset, $value)
     {
@@ -185,6 +197,9 @@ class ArrayCollection implements Collection
      * ArrayAccess implementation of offsetUnset()
      *
      * @see remove()
+     *
+     * @param mixed $offset
+     * @return mixed
      */
     public function offsetUnset($offset)
     {
@@ -214,11 +229,17 @@ class ArrayCollection implements Collection
      */
     public function contains($element)
     {
-        return in_array($element, $this->_elements, true);
+        foreach ($this->_elements as $collectionElement) {
+            if ($element === $collectionElement) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Tests for the existance of an element that satisfies the given predicate.
+     * Tests for the existence of an element that satisfies the given predicate.
      *
      * @param Closure $p The predicate.
      * @return boolean TRUE if the predicate is TRUE for at least one element, FALSE otherwise.
@@ -321,8 +342,8 @@ class ArrayCollection implements Collection
 
     /**
      * Checks whether the collection is empty.
-     * 
-     * Note: This is preferrable over count() == 0.
+     *
+     * Note: This is preferable over count() == 0.
      *
      * @return boolean TRUE if the collection is empty, FALSE otherwise.
      */
@@ -379,7 +400,7 @@ class ArrayCollection implements Collection
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -438,4 +459,42 @@ class ArrayCollection implements Collection
     {
         return array_slice($this->_elements, $offset, $length, true);
     }
+
+    /**
+     * Select all elements from a selectable that match the criteria and
+     * return a new collection containing these elements.
+     *
+     * @param  Criteria $criteria
+     * @return Collection
+     */
+    public function matching(Criteria $criteria)
+    {
+        $expr     = $criteria->getWhereExpression();
+        $filtered = $this->_elements;
+
+        if ($expr) {
+            $visitor  = new ClosureExpressionVisitor();
+            $filter   = $visitor->dispatch($expr);
+            $filtered = array_filter($filtered, $filter);
+        }
+
+        if ($orderings = $criteria->getOrderings()) {
+            $next = null;
+            foreach (array_reverse($orderings) as $field => $ordering) {
+                $next = ClosureExpressionVisitor::sortByField($field, $ordering == 'DESC' ? -1 : 1, $next);
+            }
+
+            usort($filtered, $next);
+        }
+
+        $offset = $criteria->getFirstResult();
+        $length = $criteria->getMaxResults();
+
+        if ($offset || $length) {
+            $filtered = array_slice($filtered, (int)$offset, $length);
+        }
+
+        return new static($filtered);
+    }
 }
+

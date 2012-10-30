@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -34,12 +34,12 @@ class Connection extends \Doctrine\DBAL\Driver\PDOConnection implements \Doctrin
     public function quote($value, $type=\PDO::PARAM_STR)
     {
         $val = parent::quote($value, $type);
-		
+
 		// Fix for a driver version terminating all values with null byte
 		if (strpos($val, "\0") !== false) {
 			$val = substr($val, 0, -1);
 		}
-		
+
 		return $val;
     }
 }

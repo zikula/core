@@ -5,8 +5,6 @@ namespace Gedmo\Sortable\Mapping\Driver;
 use Gedmo\Mapping\Driver\Xml as BaseXml,
     Gedmo\Exception\InvalidMappingException;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-
 /**
  * This is a xml mapping driver for Sortable
  * behavioral extension. Used for extraction of extended
@@ -36,17 +34,7 @@ class Xml extends BaseXml
     /**
      * {@inheritDoc}
      */
-    public function validateFullMetadata(ClassMetadata $meta, array $config)
-    {
-        if ($config && !isset($config['position'])) {
-            throw new InvalidMappingException("Missing property: 'position' in class - {$meta->name}");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readExtendedMetadata(ClassMetadata $meta, array &$config)
+    public function readExtendedMetadata($meta, array &$config)
     {
         /**
          * @var \SimpleXmlElement $xml
@@ -71,16 +59,22 @@ class Xml extends BaseXml
             }
             $this->readSortableGroups($xml->field, $config, 'name');
         }
-        
-        
+
+
         // Search for sortable-groups in association mappings
         if (isset($xml->{'many-to-one'})) {
             $this->readSortableGroups($xml->{'many-to-one'}, $config);
         }
-        
+
         // Search for sortable-groups in association mappings
         if (isset($xml->{'many-to-many'})) {
             $this->readSortableGroups($xml->{'many-to-many'}, $config);
+        }
+
+        if (!$meta->isMappedSuperclass && $config) {
+            if (!isset($config['position'])) {
+                throw new InvalidMappingException("Missing property: 'position' in class - {$meta->name}");
+            }
         }
     }
 
@@ -92,7 +86,7 @@ class Xml extends BaseXml
              * @var \SimpleXmlElement $mapping
              */
             $map = $map->children(self::GEDMO_NAMESPACE_URI);
-            
+
             $field = $this->_getAttribute($mappingDoctrine, $fieldAttr);
             if (isset($map->{'sortable-group'})) {
                 if (!isset($config['groups'])) {
@@ -106,7 +100,7 @@ class Xml extends BaseXml
     /**
      * Checks if $field type is valid as Sortable Position field
      *
-     * @param ClassMetadata $meta
+     * @param object $meta
      * @param string $field
      * @return boolean
      */

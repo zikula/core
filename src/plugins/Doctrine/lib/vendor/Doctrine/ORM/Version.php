@@ -13,16 +13,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
- 
+
 namespace Doctrine\ORM;
 
 /**
  * Class to store and retrieve the version of Doctrine
  *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
  * @version $Revision$
@@ -36,19 +36,19 @@ class Version
     /**
      * Current Doctrine Version
      */
-    const VERSION = '2.1.5';
+    const VERSION = '2.3.0';
 
     /**
      * Compares a Doctrine version with the current one.
      *
      * @param string $version Doctrine version to compare.
-     * @return int Returns -1 if older, 0 if it is the same, 1 if version 
+     * @return int Returns -1 if older, 0 if it is the same, 1 if version
      *             passed as argument is newer.
      */
     public static function compare($version)
     {
         $currentVersion = str_replace(' ', '', strtolower(self::VERSION));
-        $version = str_replace(' ', '', $version);
+        $version        = str_replace(' ', '', $version);
 
         return version_compare($version, $currentVersion);
     }

@@ -2,10 +2,8 @@
 
 namespace Gedmo\Sortable\Mapping\Driver;
 
-use Gedmo\Mapping\Driver\AnnotationDriverInterface,
+use Gedmo\Mapping\Driver\AbstractAnnotationDriver,
     Gedmo\Exception\InvalidMappingException;
-
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 /**
  * This is an annotation mapping driver for Sortable
@@ -19,7 +17,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
  * @link http://www.gediminasm.org
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-class Annotation implements AnnotationDriverInterface
+class Annotation extends AbstractAnnotationDriver
 {
     /**
      * Annotation to mark field as one which will store node position
@@ -27,7 +25,7 @@ class Annotation implements AnnotationDriverInterface
     const POSITION = 'Gedmo\\Mapping\\Annotation\\SortablePosition';
 
     /**
-     * Annotation to mark field as sorting group 
+     * Annotation to mark field as sorting group
      */
     const GROUP = 'Gedmo\\Mapping\\Annotation\\SortableGroup';
 
@@ -36,48 +34,19 @@ class Annotation implements AnnotationDriverInterface
      *
      * @var array
      */
-    private $validTypes = array(
+    protected $validTypes = array(
         'integer',
         'smallint',
         'bigint'
     );
 
     /**
-     * Annotation reader instance
-     *
-     * @var object
-     */
-    private $reader;
-
-    /**
-     * original driver if it is available
-     */
-    protected $_originalDriver = null;
-
-    /**
      * {@inheritDoc}
      */
-    public function setAnnotationReader($reader)
+    public function readExtendedMetadata($meta, array &$config)
     {
-        $this->reader = $reader;
-    }
+        $class = $this->getMetaReflectionClass($meta);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function validateFullMetadata(ClassMetadata $meta, array $config)
-    {
-        if ($config && !isset($config['position'])) {
-            throw new InvalidMappingException("Missing property: 'position' in class - {$meta->name}");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readExtendedMetadata(ClassMetadata $meta, array &$config) {
-        $class = $meta->getReflectionClass();
-        
         // property annotations
         foreach ($class->getProperties() as $property) {
             if ($meta->isMappedSuperclass && !$property->isPrivate() ||
@@ -109,29 +78,11 @@ class Annotation implements AnnotationDriverInterface
                 $config['groups'][] = $field;
             }
         }
-    }
 
-    /**
-     * Checks if $field type is valid
-     *
-     * @param ClassMetadata $meta
-     * @param string $field
-     * @return boolean
-     */
-    protected function isValidField($meta, $field)
-    {
-        $mapping = $meta->getFieldMapping($field);
-        return $mapping && in_array($mapping['type'], $this->validTypes);
-    }
-
-    /**
-     * Passes in the mapping read by original driver
-     *
-     * @param $driver
-     * @return void
-     */
-    public function setOriginalDriver($driver)
-    {
-        $this->_originalDriver = $driver;
+        if (!$meta->isMappedSuperclass && $config) {
+            if (!isset($config['position'])) {
+                throw new InvalidMappingException("Missing property: 'position' in class - {$meta->name}");
+            }
+        }
     }
 }
