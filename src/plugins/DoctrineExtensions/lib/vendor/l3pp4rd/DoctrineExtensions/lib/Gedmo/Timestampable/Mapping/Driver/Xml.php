@@ -3,7 +3,6 @@
 namespace Gedmo\Timestampable\Mapping\Driver;
 
 use Gedmo\Mapping\Driver\Xml as BaseXml,
-    Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Gedmo\Exception\InvalidMappingException;
 
 /**
@@ -31,18 +30,15 @@ class Xml extends BaseXml
         'date',
         'time',
         'datetime',
-        'timestamp'
+        'timestamp',
+        'zenddate',
+        'vardatetime'
     );
 
     /**
      * {@inheritDoc}
      */
-    public function validateFullMetadata(ClassMetadata $meta, array $config) {}
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readExtendedMetadata(ClassMetadata $meta, array &$config)
+    public function readExtendedMetadata($meta, array &$config)
     {
         /**
          * @var \SimpleXmlElement $mapping
@@ -71,13 +67,13 @@ class Xml extends BaseXml
                     }
 
                     if ($this->_getAttribute($data, 'on') == 'change') {
-                        if (!$this->_isAttributeSet($data, 'field') || !$this->_isAttributeSet($data, 'value')) {
-                            throw new InvalidMappingException("Missing parameters on property - {$field}, field and value must be set on [change] trigger in class - {$meta->name}");
+                        if (!$this->_isAttributeSet($data, 'field')) {
+                            throw new InvalidMappingException("Missing parameters on property - {$field}, field must be set on [change] trigger in class - {$meta->name}");
                         }
                         $field = array(
                             'field' => $field,
                             'trackedField' => $this->_getAttribute($data, 'field'),
-                            'value' => $this->_getAttribute($data, 'value')
+                            'value' => $this->_isAttributeSet($data, 'value') ? $this->_getAttribute($data, 'value') : null,
                         );
                     }
                     $config[$this->_getAttribute($data, 'on')][] = $field;
@@ -89,11 +85,11 @@ class Xml extends BaseXml
     /**
      * Checks if $field type is valid
      *
-     * @param ClassMetadata $meta
+     * @param object $meta
      * @param string $field
      * @return boolean
      */
-    protected function isValidField(ClassMetadata $meta, $field)
+    protected function isValidField($meta, $field)
     {
         $mapping = $meta->getFieldMapping($field);
         return $mapping && in_array($mapping['type'], $this->validTypes);

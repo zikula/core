@@ -3,12 +3,14 @@
 namespace Gedmo\Translatable\Query\TreeWalker;
 
 use Gedmo\Translatable\Mapping\Event\Adapter\ORM as TranslatableEventAdapter;
-use Gedmo\Translatable\TranslationListener;
+use Gedmo\Translatable\TranslatableListener;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TreeWalkerAdapter;
 use Doctrine\ORM\Query\AST\SelectStatement;
 use Doctrine\ORM\Query\Exec\SingleSelectExecutor;
+use Doctrine\ORM\Query\AST\RangeVariableDeclaration;
+use Doctrine\ORM\Query\AST\Join;
 
 /**
  * The translation sql output walker makes it possible
@@ -16,7 +18,7 @@ use Doctrine\ORM\Query\Exec\SingleSelectExecutor;
  * It works with any select query, any hydration method.
  *
  * Behind the scenes, during the object hydration it forces
- * custom hydrator in order to interact with TranslationListener
+ * custom hydrator in order to interact with TranslatableListener
  * and skip postLoad event which would couse automatic retranslation
  * of the fields.
  *
@@ -30,28 +32,24 @@ class TranslationWalker extends SqlWalker
 {
     /**
      * Name for translation fallback hint
+     *
+     * @internal
      */
-    const HINT_TRANSLATION_FALLBACKS = 'translation_fallbacks';
-
-    /**
-     * Name for translation listener hint
-     */
-    const HINT_TRANSLATION_LISTENER = 'translation_listener';
+    const HINT_TRANSLATION_FALLBACKS = '__gedmo.translatable.stored.fallbacks';
 
     /**
      * Customized object hydrator name
+     *
+     * @internal
      */
-    const HYDRATE_OBJECT_TRANSLATION = 'object_translation_hydrator';
+    const HYDRATE_OBJECT_TRANSLATION = '__gedmo.translatable.object.hydrator';
 
     /**
      * Customized object hydrator name
+     *
+     * @internal
      */
-    const HYDRATE_ARRAY_TRANSLATION = 'array_translation_hydrator';
-
-    /**
-     * Customized object hydrator name
-     */
-    const HYDRATE_SIMPLE_OBJECT_TRANSLATION = 'simple_object_translation_hydrator';
+    const HYDRATE_SIMPLE_OBJECT_TRANSLATION = '__gedmo.translatable.simple_object.hydrator';
 
     /**
      * Stores all component references from select clause
@@ -59,14 +57,6 @@ class TranslationWalker extends SqlWalker
      * @var array
      */
     private $translatedComponents = array();
-
-    /**
-     * Current TranslationListener instance used
-     * in EntityManager
-     *
-     * @var TranslationListener
-     */
-    private $listener;
 
     /**
      * DBAL database platform
@@ -91,19 +81,11 @@ class TranslationWalker extends SqlWalker
     private $replacements = array();
 
     /**
-     * Translation joins on current query
-     * components
+     * List of joins for translated components in query
      *
      * @var array
      */
-    private $translationJoinSql = array();
-
-    /**
-     * Processed subselect number
-     *
-     * @var integer
-     */
-    private $processedNestingLevel = 0;
+    private $components = array();
 
     /**
      * {@inheritDoc}
@@ -113,7 +95,7 @@ class TranslationWalker extends SqlWalker
         parent::__construct($query, $parserResult, $queryComponents);
         $this->conn = $this->getConnection();
         $this->platform = $this->getConnection()->getDatabasePlatform();
-        $this->listener = $this->getTranslationListener();
+        $this->listener = $this->getTranslatableListener();
         $this->extractTranslatedComponents($queryComponents);
     }
 
@@ -125,7 +107,7 @@ class TranslationWalker extends SqlWalker
         if (!$AST instanceof SelectStatement) {
             throw new \Gedmo\Exception\UnexpectedValueException('Translation walker should be used only on select statement');
         }
-        $this->translationJoinSql = $this->getTranslationJoinsSql();
+        $this->prepareTranslatedComponents();
         return new SingleSelectExecutor($AST, $this);
     }
 
@@ -140,18 +122,6 @@ class TranslationWalker extends SqlWalker
         }
 
         $hydrationMode = $this->getQuery()->getHydrationMode();
-        if ($this->needsFallback()) {
-            // in case if fallback is used and hydration is array, it needs custom hydrator
-            if ($hydrationMode === Query::HYDRATE_ARRAY) {
-                $this->getQuery()->setHydrationMode(self::HYDRATE_ARRAY_TRANSLATION);
-                $this->getEntityManager()->getConfiguration()->addCustomHydrationMode(
-                    self::HYDRATE_ARRAY_TRANSLATION,
-                    'Gedmo\\Translatable\\Hydrator\\ORM\\ArrayHydrator'
-                );
-            }
-        }
-
-        $this->getQuery()->setHint(self::HINT_TRANSLATION_LISTENER, $this->listener);
         if ($hydrationMode === Query::HYDRATE_OBJECT) {
             $this->getQuery()->setHydrationMode(self::HYDRATE_OBJECT_TRANSLATION);
             $this->getEntityManager()->getConfiguration()->addCustomHydrationMode(
@@ -176,21 +146,7 @@ class TranslationWalker extends SqlWalker
     public function walkSelectClause($selectClause)
     {
         $result = parent::walkSelectClause($selectClause);
-        $fallbackSql = '';
-        if ($this->needsFallback() && count($this->translatedComponents)) {
-            $fallbackAliases = array();
-            foreach ($this->replacements as $dqlAlias => $trans) {
-                if (preg_match("/{$dqlAlias} AS ([^\s]+)/smi", $result, $m)) {
-                    list($tblAlias, $colName) = explode('.', $dqlAlias);
-                    $fallback = $this->getSQLColumnAlias($colName.'_fallback');
-                    $fallbackSql .= ', '.$dqlAlias.' AS '.$fallback;
-                    $fallbackAliases[$fallback] = rtrim($m[1], ',');
-                }
-            }
-            $this->getQuery()->setHint(self::HINT_TRANSLATION_FALLBACKS, $fallbackAliases);
-        }
         $result = $this->replace($this->replacements, $result);
-        $result .= $fallbackSql;
         return $result;
     }
 
@@ -200,9 +156,7 @@ class TranslationWalker extends SqlWalker
     public function walkFromClause($fromClause)
     {
         $result = parent::walkFromClause($fromClause);
-        if (count($this->translationJoinSql)) {
-            $result .= $this->translationJoinSql[0];
-        }
+        $result .= $this->joinTranslations($fromClause);
         return $result;
     }
 
@@ -238,7 +192,6 @@ class TranslationWalker extends SqlWalker
      */
     public function walkSubselect($subselect)
     {
-        $this->processedNestingLevel++;
         $result = parent::walkSubselect($subselect);
         return $result;
     }
@@ -249,9 +202,7 @@ class TranslationWalker extends SqlWalker
     public function walkSubselectFromClause($subselectFromClause)
     {
         $result = parent::walkSubselectFromClause($subselectFromClause);
-        if (isset($this->translationJoinSql[$this->processedNestingLevel])) {
-            $result .= $this->translationJoinSql[$this->processedNestingLevel];
-        }
+        $result .= $this->joinTranslations($subselectFromClause);
         return $result;
     }
 
@@ -265,24 +216,69 @@ class TranslationWalker extends SqlWalker
     }
 
     /**
+     * Walks from clause, and creates translation joins
+     * for the translated components
+     *
+     * @param Doctrine\ORM\Query\AST\FromClause $from
+     * @return string
+     */
+    private function joinTranslations($from)
+    {
+        $result = '';
+        foreach ($from->identificationVariableDeclarations as $decl) {
+            if ($decl->rangeVariableDeclaration instanceof RangeVariableDeclaration) {
+                if (isset($this->components[$decl->rangeVariableDeclaration->aliasIdentificationVariable])) {
+                    $result .= $this->components[$decl->rangeVariableDeclaration->aliasIdentificationVariable];
+                }
+            }
+            if (isset($decl->joinVariableDeclarations)) {
+                foreach ($decl->joinVariableDeclarations as $joinDecl) {
+                    if ($joinDecl->join instanceof Join) {
+                        if (isset($this->components[$joinDecl->join->aliasIdentificationVariable])) {
+                            $result .= $this->components[$joinDecl->join->aliasIdentificationVariable];
+                        }
+                    }
+                }
+            } else {
+                // based on new changes
+                foreach ($decl->joins as $join) {
+                    if ($join instanceof Join) {
+                        if (isset($this->components[$join->joinAssociationDeclaration->aliasIdentificationVariable])) {
+                            $result .= $this->components[$join->joinAssociationDeclaration->aliasIdentificationVariable];
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Creates a left join list for translations
      * on used query components
      *
      * @todo: make it cleaner
      * @return string
      */
-    private function getTranslationJoinsSql()
+    private function prepareTranslatedComponents()
     {
-        $result = array();
+        $q = $this->getQuery();
+        $locale = $q->getHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE);
+        if (!$locale) {
+            // use from listener
+            $locale = $this->listener->getListenerLocale();
+        }
+        $defaultLocale = $this->listener->getDefaultLocale();
+        if ($locale === $defaultLocale) {
+            // Skip preparation as there's no need to translate anything
+            return;
+        }
         $em = $this->getEntityManager();
         $ea = new TranslatableEventAdapter;
-        $locale = $this->listener->getListenerLocale();
-        $defaultLocale = $this->listener->getDefaultLocale();
+        $ea->setEntityManager($em);
+        $joinStrategy = $q->getHint(TranslatableListener::HINT_INNER_JOIN) ? 'INNER' : 'LEFT';
 
         foreach ($this->translatedComponents as $dqlAlias => $comp) {
-            if (!isset($result[$comp['nestingLevel']])) {
-                $result[$comp['nestingLevel']] = '';
-            }
             $meta = $comp['metadata'];
             $config = $this->listener->getConfiguration($em, $meta->name);
             $transClass = $this->listener->getTranslationClass($ea, $meta->name);
@@ -292,43 +288,43 @@ class TranslationWalker extends SqlWalker
                 $compTableName = $meta->getQuotedTableName($this->platform);
                 $compTblAlias = $this->getSQLTableAlias($compTableName, $dqlAlias);
                 $tblAlias = $this->getSQLTableAlias('trans'.$compTblAlias.$field);
-                $sql = ' LEFT JOIN '.$transTable.' '.$tblAlias;
+                $sql = " {$joinStrategy} JOIN ".$transTable.' '.$tblAlias;
                 $sql .= ' ON '.$tblAlias.'.'.$transMeta->getQuotedColumnName('locale', $this->platform)
                     .' = '.$this->conn->quote($locale);
-                $sql .= ' AND '.$tblAlias.'.'.$transMeta->getQuotedColumnName('objectClass', $this->platform)
-                    .' = '.$this->conn->quote($meta->name);
                 $sql .= ' AND '.$tblAlias.'.'.$transMeta->getQuotedColumnName('field', $this->platform)
                     .' = '.$this->conn->quote($field);
                 $identifier = $meta->getSingleIdentifierFieldName();
-                $colName = $meta->getQuotedColumnName($identifier, $this->platform);
-                $sql .= ' AND '.$tblAlias.'.'.$transMeta->getQuotedColumnName('foreignKey', $this->platform)
-                    .' = '.$compTblAlias.'.'.$colName;
-                $result[$comp['nestingLevel']] .= $sql;
-                if (strlen($defaultLocale) && $locale != $defaultLocale) {
-                    // join default locale
-                    $tblAliasDefault = $this->getSQLTableAlias('trans_default_locale'.$compTblAlias.$field);
-                    $sql = ' LEFT JOIN '.$transTable.' '.$tblAliasDefault;
-                    $sql .= ' ON '.$tblAliasDefault.'.'.$transMeta->getQuotedColumnName('locale', $this->platform)
-                        .' = '.$this->conn->quote($defaultLocale);
-                    $sql .= ' AND '.$tblAliasDefault.'.'.$transMeta->getQuotedColumnName('objectClass', $this->platform)
-                        .' = '.$this->conn->quote($meta->name);
-                    $sql .= ' AND '.$tblAliasDefault.'.'.$transMeta->getQuotedColumnName('field', $this->platform)
-                        .' = '.$this->conn->quote($field);
-                    $sql .= ' AND '.$tblAliasDefault.'.'.$transMeta->getQuotedColumnName('foreignKey', $this->platform)
-                        .' = '.$compTblAlias.'.'.$colName;
-                    $result[$comp['nestingLevel']] .= $sql;
-                    $this->replacements[$compTblAlias.'.'.$meta->getQuotedColumnName($field, $this->platform)]
-                        = 'COALESCE('.$tblAlias.'.'.$transMeta->getQuotedColumnName('content', $this->platform)
-                        .', '.$tblAliasDefault.'.'.$transMeta->getQuotedColumnName('content', $this->platform).')'
-                    ;
+                $idColName = $meta->getQuotedColumnName($identifier, $this->platform);
+                if ($ea->usesPersonalTranslation($transClass)) {
+                    $sql .= ' AND '.$tblAlias.'.'.$transMeta->getSingleAssociationJoinColumnName('object')
+                        .' = '.$compTblAlias.'.'.$idColName;
                 } else {
-                    $this->replacements[$compTblAlias.'.'.$meta->getQuotedColumnName($field, $this->platform)]
-                        = $tblAlias.'.'.$transMeta->getQuotedColumnName('content', $this->platform)
-                    ;
+                    $sql .= ' AND '.$tblAlias.'.'.$transMeta->getQuotedColumnName('objectClass', $this->platform)
+                        .' = '.$this->conn->quote($meta->name);
+                    $sql .= ' AND '.$tblAlias.'.'.$transMeta->getQuotedColumnName('foreignKey', $this->platform)
+                        .' = '.$compTblAlias.'.'.$idColName;
                 }
+                isset($this->components[$dqlAlias]) ? $this->components[$dqlAlias] .= $sql : $this->components[$dqlAlias] = $sql;
+
+                $originalField = $compTblAlias.'.'.$meta->getQuotedColumnName($field, $this->platform);
+                $substituteField = $tblAlias . '.' . $transMeta->getQuotedColumnName('content', $this->platform);
+
+                // If original field is integer - treat translation as integer (for ORDER BY, WHERE, etc)
+                $fieldMapping = $meta->getFieldMapping($field);
+                if (in_array($fieldMapping["type"], array("integer", "bigint", "tinyint", "int"))) {
+                    $substituteField = 'CAST(' . $substituteField . ' AS SIGNED)';
+                }
+
+                // Fallback to original if was asked for
+                if (($this->needsFallback() && (!isset($config['fallback'][$field]) || $config['fallback'][$field]))
+                    ||  (!$this->needsFallback() && isset($config['fallback'][$field]) && $config['fallback'][$field])
+                ) {
+                    $substituteField = 'COALESCE('.$substituteField.', '.$originalField.')';
+                }
+
+                $this->replacements[$originalField] = $substituteField;
             }
         }
-        return $result;
     }
 
     /**
@@ -339,7 +335,12 @@ class TranslationWalker extends SqlWalker
     private function needsFallback()
     {
         $q = $this->getQuery();
-        return $this->listener->getTranslationFallback()
+        $fallback = $q->getHint(TranslatableListener::HINT_FALLBACK);
+        if (false === $fallback) {
+            // non overrided
+            $fallback = $this->listener->getTranslationFallback();
+        }
+        return (bool)$fallback
             && $q->getHydrationMode() !== Query::HYDRATE_SCALAR
             && $q->getHydrationMode() !== Query::HYDRATE_SINGLE_SCALAR;
     }
@@ -366,31 +367,31 @@ class TranslationWalker extends SqlWalker
     }
 
     /**
-     * Get the currently used TranslationListener
+     * Get the currently used TranslatableListener
      *
      * @throws \Gedmo\Exception\RuntimeException - if listener is not found
-     * @return TranslationListener
+     * @return TranslatableListener
      */
-    private function getTranslationListener()
+    private function getTranslatableListener()
     {
-        $translationListener = null;
+        $translatableListener = null;
         $em = $this->getEntityManager();
         foreach ($em->getEventManager()->getListeners() as $event => $listeners) {
             foreach ($listeners as $hash => $listener) {
-                if ($listener instanceof TranslationListener) {
-                    $translationListener = $listener;
+                if ($listener instanceof TranslatableListener) {
+                    $translatableListener = $listener;
                     break;
                 }
             }
-            if ($translationListener) {
+            if ($translatableListener) {
                 break;
             }
         }
 
-        if (is_null($translationListener)) {
+        if (is_null($translatableListener)) {
             throw new \Gedmo\Exception\RuntimeException('The translation listener could not be found');
         }
-        return $translationListener;
+        return $translatableListener;
     }
 
     /**

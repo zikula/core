@@ -13,90 +13,100 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\Common\Annotations;
 
+/**
+ * AnnotationRegistry
+ */
 final class AnnotationRegistry
 {
     /**
      * A map of namespaces to use for autoloading purposes based on a PSR-0 convention.
-     * 
-     * Contains the namespace as key and an array of direectories as value. If the value is NULL
+     *
+     * Contains the namespace as key and an array of directories as value. If the value is NULL
      * the include path is used for checking for the corresponding file.
-     * 
+     *
      * This autoloading mechanism does not utilize the PHP autoloading but implements autoloading on its own.
-     * 
+     *
      * @var array
      */
     static private $autoloadNamespaces = array();
-    
+
     /**
      * A map of autoloader callables.
-     * 
+     *
      * @var array
      */
     static private $loaders = array();
-    
+
     static public function reset()
     {
         self::$autoloadNamespaces = array();
         self::$loaders = array();
     }
-    
+
+    /**
+     * Register file
+     *
+     * @param string $file
+     */
     static public function registerFile($file)
     {
         require_once $file;
     }
-    
+
     /**
      * Add a namespace with one or many directories to look for files or null for the include path.
-     * 
+     *
      * Loading of this namespaces will be done with a PSR-0 namespace loading algorithm.
-     * 
+     *
      * @param string $namespace
-     * @param string|array|null $dirs 
+     * @param string|array|null $dirs
      */
     static public function registerAutoloadNamespace($namespace, $dirs = null)
     {
         self::$autoloadNamespaces[$namespace] = $dirs;
     }
-    
+
     /**
      * Register multiple namespaces
-     * 
+     *
      * Loading of this namespaces will be done with a PSR-0 namespace loading algorithm.
-     * 
+     *
      * @param array $namespaces
      */
     static public function registerAutoloadNamespaces(array $namespaces)
     {
         self::$autoloadNamespaces = array_merge(self::$autoloadNamespaces, $namespaces);
     }
-    
+
     /**
-     * Register an autoloading callabale for annotations, much like spl_autoload_register().
-     * 
+     * Register an autoloading callable for annotations, much like spl_autoload_register().
+     *
      * NOTE: These class loaders HAVE to be silent when a class was not found!
      * IMPORTANT: Loaders have to return true if they loaded a class that could contain the searched annotation class.
-     * 
-     * @param callabale $callabale 
+     *
+     * @param callable $callable
+     *
+     * @throws \InvalidArgumentException
      */
-    static public function registerLoader($callabale)
+    static public function registerLoader($callable)
     {
-        if (!is_callable($callabale)) {
+        if (!is_callable($callable)) {
             throw new \InvalidArgumentException("A callable is expected in AnnotationRegistry::registerLoader().");
         }
-        self::$loaders[] = $callabale;
+        self::$loaders[] = $callable;
     }
-    
+
     /**
      * Autoload an annotation class silently.
-     * 
+     *
      * @param string $class
-     * @return void
+     * @return boolean
      */
     static public function loadAnnotationClass($class)
     {
@@ -118,7 +128,7 @@ final class AnnotationRegistry
                 }
             }
         }
-        
+
         foreach (self::$loaders AS $loader) {
             if (call_user_func($loader, $class) === true) {
                 return true;

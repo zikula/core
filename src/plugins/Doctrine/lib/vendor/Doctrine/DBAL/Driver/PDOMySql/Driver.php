@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -35,7 +35,7 @@ class Driver implements \Doctrine\DBAL\Driver
      * @param string $username
      * @param string $password
      * @param array $driverOptions
-     * @return Doctrine\DBAL\Driver\Connection
+     * @return \Doctrine\DBAL\Driver\Connection
      */
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
     {
@@ -71,7 +71,7 @@ class Driver implements \Doctrine\DBAL\Driver
         if (isset($params['charset'])) {
             $dsn .= 'charset=' . $params['charset'] . ';';
         }
-        
+
         return $dsn;
     }
 
@@ -93,6 +93,10 @@ class Driver implements \Doctrine\DBAL\Driver
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
     {
         $params = $conn->getParams();
-        return $params['dbname'];
+
+        if (isset($params['dbname'])) {
+            return $params['dbname'];
+        }
+        return $conn->query('SELECT DATABASE()')->fetchColumn();
     }
 }

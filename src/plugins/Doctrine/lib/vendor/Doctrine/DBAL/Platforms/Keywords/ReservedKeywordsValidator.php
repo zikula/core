@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -34,22 +34,22 @@ class ReservedKeywordsValidator implements Visitor
      * @var KeywordList[]
      */
     private $keywordLists = array();
-    
+
     /**
      * @var array
      */
     private $violations = array();
-    
+
     public function __construct(array $keywordLists)
     {
         $this->keywordLists = $keywordLists;
     }
-    
+
     public function getViolations()
     {
         return $this->violations;
     }
-    
+
     /**
      * @param string $word
      * @return array
@@ -59,25 +59,25 @@ class ReservedKeywordsValidator implements Visitor
         if ($word[0] == "`") {
             $word = str_replace('`', '', $word);
         }
-        
+
         $keywordLists = array();
-        foreach ($this->keywordLists AS $keywordList) {
+        foreach ($this->keywordLists as $keywordList) {
             if ($keywordList->isKeyword($word)) {
                 $keywordLists[] = $keywordList->getName();
             }
         }
         return $keywordLists;
     }
-    
+
     private function addViolation($asset, $violatedPlatforms)
     {
-        if (!$violatedPlatforms) {
+        if ( ! $violatedPlatforms) {
             return;
         }
-        
+
         $this->violations[] = $asset . ' keyword violations: ' . implode(', ', $violatedPlatforms);
     }
-    
+
     public function acceptColumn(Table $table, Column $column)
     {
         $this->addViolation(
@@ -88,7 +88,7 @@ class ReservedKeywordsValidator implements Visitor
 
     public function acceptForeignKey(Table $localTable, ForeignKeyConstraint $fkConstraint)
     {
-        
+
     }
 
     public function acceptIndex(Table $table, Index $index)
@@ -98,12 +98,12 @@ class ReservedKeywordsValidator implements Visitor
 
     public function acceptSchema(Schema $schema)
     {
-        
+
     }
 
     public function acceptSequence(Sequence $sequence)
     {
-        
+
     }
 
     public function acceptTable(Table $table)

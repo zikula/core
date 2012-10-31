@@ -36,6 +36,17 @@ class DBALException extends \Exception
             "Doctrine currently supports only the following drivers: ".implode(", ", $knownDrivers));
     }
 
+    public static function driverExceptionDuringQuery(\Exception $driverEx, $sql, array $params = array())
+    {
+        $msg = "An exception occurred while executing '".$sql."'";
+        if ($params) {
+            $msg .= " with params ".json_encode($params);
+        }
+        $msg .= ":\n\n".$driverEx->getMessage();
+
+        return new self($msg, 0, $driverEx);
+    }
+
     public static function invalidWrapperClass($wrapperClass)
     {
         return new self("The given 'wrapperClass' ".$wrapperClass." has to be a ".
@@ -78,7 +89,14 @@ class DBALException extends \Exception
 
     public static function unknownColumnType($name)
     {
-        return new self('Unknown column type '.$name.' requested.');
+        return new self('Unknown column type "'.$name.'" requested. Any Doctrine type that you use has ' .
+            'to be registered with \Doctrine\DBAL\Types\Type::addType(). You can get a list of all the ' .
+            'known types with \Doctrine\DBAL\Types\Type::getTypeMap(). If this error occurs during database ' .
+            'introspection then you might have forgot to register all database types for a Doctrine Type. Use ' .
+            'AbstractPlatform#registerDoctrineTypeMapping() or have your custom types implement ' .
+            'Type#getMappedDatabaseTypes(). If the type name is empty you might ' .
+            'have a problem with the cache or forgot some mapping information.'
+        );
     }
 
     public static function typeNotFound($name)

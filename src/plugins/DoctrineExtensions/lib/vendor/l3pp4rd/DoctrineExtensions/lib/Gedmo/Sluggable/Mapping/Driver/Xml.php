@@ -3,7 +3,6 @@
 namespace Gedmo\Sluggable\Mapping\Driver;
 
 use Gedmo\Mapping\Driver\Xml as BaseXml,
-    Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Gedmo\Exception\InvalidMappingException;
 
 /**
@@ -29,30 +28,15 @@ class Xml extends BaseXml
      */
     private $validTypes = array(
         'string',
-        'text'
+        'text',
+        'integer',
+        'int',
     );
 
     /**
      * {@inheritDoc}
      */
-    public function validateFullMetadata(ClassMetadata $meta, array $config)
-    {
-        if ($config) {
-            if (!isset($config['fields'])) {
-                throw new InvalidMappingException("Unable to find any sluggable fields specified for Sluggable entity - {$meta->name}");
-            }
-            foreach ($config['fields'] as $slugField => $fields) {
-                if (!isset($config['slugFields'][$slugField])) {
-                    throw new InvalidMappingException("Unable to find {$slugField} slugField specified for Sluggable entity - {$meta->name}, you should specify slugField annotation property");
-                }
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readExtendedMetadata(ClassMetadata $meta, array &$config)
+    public function readExtendedMetadata($meta, array &$config)
     {
         /**
          * @var \SimpleXmlElement $xml
@@ -68,22 +52,7 @@ class Xml extends BaseXml
                 $mapping = $mapping->children(self::GEDMO_NAMESPACE_URI);
 
                 $field = $this->_getAttribute($mappingDoctrine, 'name');
-                if (isset($mapping->sluggable)) {
-                    if (!$this->isValidField($meta, $field)) {
-                        throw new InvalidMappingException("Cannot slug field - [{$field}] type is not valid and must be 'string' in class - {$meta->name}");
-                    }
-
-                    $options = array('position' => false, 'field' => $field, 'slugField' => 'slug');
-                    if ($this->_isAttributeSet($mapping->sluggable, 'position')) {
-                        $options['position'] =  (int)$this->_getAttribute($mapping->sluggable, 'position');
-                    }
-
-                    if ($this->_isAttributeSet($mapping->sluggable, 'slugField')) {
-                        $options['slugField'] =  $this->_getAttribute($mapping->sluggable, 'slugField');
-                    }
-
-                    $config['fields'][$options['slugField']][] = $options;
-                } elseif (isset($mapping->slug)) {
+                if (isset($mapping->slug)) {
                     /**
                      * @var \SimpleXmlElement $slug
                      */
@@ -91,18 +60,32 @@ class Xml extends BaseXml
                     if (!$this->isValidField($meta, $field)) {
                         throw new InvalidMappingException("Cannot use field - [{$field}] for slug storage, type is not valid and must be 'string' in class - {$meta->name}");
                     }
-                    $config['slugFields'][$field]['slug'] = $field;
-                    $config['slugFields'][$field]['style'] = $this->_isAttributeSet($slug, 'style') ?
-                        $this->_getAttribute($slug, 'style') : 'default';
+                    $fields = array_map('trim', explode(',', (string)$this->_getAttribute($slug, 'fields')));
+                    foreach ($fields as $slugField) {
+                        if (!$meta->hasField($slugField)) {
+                            throw new InvalidMappingException("Unable to find slug [{$slugField}] as mapped property in entity - {$meta->name}");
+                        }
+                        if (!$this->isValidField($meta, $slugField)) {
+                            throw new InvalidMappingException("Cannot use field - [{$slugField}] for slug storage, type is not valid and must be 'string' or 'text' in class - {$meta->name}");
+                        }
+                    }
 
-                    $config['slugFields'][$field]['updatable'] = $this->_isAttributeSet($slug, 'updatable') ?
-                        (bool)$this->_getAttribute($slug, 'updatable') : true;
-
-                    $config['slugFields'][$field]['unique'] = $this->_isAttributeSet($slug, 'unique') ?
-                        (bool)$this->_getAttribute($slug, 'unique') : true;
-
-                    $config['slugFields'][$field]['separator'] = $this->_isAttributeSet($slug, 'separator') ?
-                        $this->_getAttribute($slug, 'separator') : '-';
+                    // set all options
+                    $config['slugs'][$field] = array(
+                        'fields' => $fields,
+                        'slug' => $field,
+                        'style' => $this->_isAttributeSet($slug, 'style') ?
+                            $this->_getAttribute($slug, 'style') : 'default',
+                        'updatable' => $this->_isAttributeSet($slug, 'updatable') ?
+                            $this->_getBooleanAttribute($slug, 'updatable') : true,
+                        'unique' => $this->_isAttributeSet($slug, 'unique') ?
+                            $this->_getBooleanAttribute($slug, 'unique') : true,
+                        'separator' => $this->_isAttributeSet($slug, 'separator') ?
+                            $this->_getAttribute($slug, 'separator') : '-',
+                    );
+                    if (!$meta->isMappedSuperclass && $meta->isIdentifier($field) && !$config['slugs'][$field]['unique']) {
+                        throw new InvalidMappingException("Identifier field - [{$field}] slug must be unique in order to maintain primary key in class - {$meta->name}");
+                    }
                 }
             }
         }
@@ -111,11 +94,11 @@ class Xml extends BaseXml
     /**
      * Checks if $field type is valid as Sluggable field
      *
-     * @param ClassMetadata $meta
+     * @param object $meta
      * @param string $field
      * @return boolean
      */
-    protected function isValidField(ClassMetadata $meta, $field)
+    protected function isValidField($meta, $field)
     {
         $mapping = $meta->getFieldMapping($field);
         return $mapping && in_array($mapping['type'], $this->validTypes);

@@ -1,7 +1,5 @@
 <?php
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -15,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
 */
 
@@ -31,14 +29,13 @@ use Doctrine\Common\EventSubscriber;
  * The following enviroment variables are required for the Doctrine default date format:
  *
  * NLS_TIME_FORMAT="HH24:MI:SS"
- * NLS_DATE_FORMAT="YYYY-MM-DD"
+ * NLS_DATE_FORMAT="YYYY-MM-DD HH24:MI:SS"
  * NLS_TIMESTAMP_FORMAT="YYYY-MM-DD HH24:MI:SS"
  * NLS_TIMESTAMP_TZ_FORMAT="YYYY-MM-DD HH24:MI:SS TZH:TZM"
  *
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link        www.doctrine-project.com
- * @since       1.0
- * @version     $Revision$
+ * @since       2.0
  * @author      Benjamin Eberlei <kontakt@beberlei.de>
  */
 class OracleSessionInit implements EventSubscriber
@@ -48,6 +45,7 @@ class OracleSessionInit implements EventSubscriber
         'NLS_DATE_FORMAT' => "YYYY-MM-DD HH24:MI:SS",
         'NLS_TIMESTAMP_FORMAT' => "YYYY-MM-DD HH24:MI:SS",
         'NLS_TIMESTAMP_TZ_FORMAT' => "YYYY-MM-DD HH24:MI:SS TZH:TZM",
+        'NLS_NUMERIC_CHARACTERS' => ".,",
     );
 
     /**
@@ -67,7 +65,7 @@ class OracleSessionInit implements EventSubscriber
         if (count($this->_defaultSessionVars)) {
             array_change_key_case($this->_defaultSessionVars, \CASE_UPPER);
             $vars = array();
-            foreach ($this->_defaultSessionVars AS $option => $value) {
+            foreach ($this->_defaultSessionVars as $option => $value) {
                 $vars[] = $option." = '".$value."'";
             }
             $sql = "ALTER SESSION SET ".implode(" ", $vars);
