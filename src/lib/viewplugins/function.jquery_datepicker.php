@@ -160,6 +160,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // build the datepicker
     $javascript = "
+        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");
         jQuery(document).ready(function() {
             jQuery('#$displayElement').datepicker({";
     // add additional parameters set in template first
@@ -187,7 +188,7 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     }
     $javascript .= "
                 dateFormat: '$displayFormat_javascript',
-                defaultDate: '{$defaultDate->format($displayFormat_dateTime)}'
+                defaultDate: {$displayElement}DefaultDate
             });
         });";
     PageUtil::addVar("footer", "<script type='text/javascript'>$javascript</script>");
