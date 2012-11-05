@@ -6,6 +6,7 @@ Fixes:
 - Fixed error related to wrong case use in the Mobile theme (issue #529)
 - Fixed ValidationUtil::validateField() return if a validation error for given field already exists (issue #534)
 - Fixed JSCCUtil attempting (incorrectly) to combine remote scripts/styles (refs #435)
+- Fixed minor typo in UserUtil::loginUsing() that prevented correct usage of function
 
 Features:
 - Added development/debug email mode
