@@ -200,7 +200,7 @@
                             <strong><?php echo __('Administrator log-in'); ?></strong>
                         </a>
                     </p>
-                    <form id="login" action="<?php System::getVar('entrypoint', 'index.php'); ?>?module=Users&amp;func=siteofflogin" method="post">
+                    <form id="login" action="<?php System::getVar('entrypoint', 'index.php'); ?>?module=Users&amp;type=user&amp;func=siteofflogin" method="post">
                         <div>
                         <p><strong><?php echo __('An administrator log-in is required.'); ?></strong></p>
                             <div class="loginrow">
