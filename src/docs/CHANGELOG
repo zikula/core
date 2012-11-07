@@ -13,6 +13,7 @@ Features:
 - Added basic setup for jQuery ajax to pass csfr token checks
 - Added new option for Zikula UI Windows - autoClose
 - Update jQuery-UI to 1.9
+- Mark active item in modulelinks
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
