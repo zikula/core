@@ -677,10 +677,8 @@ class System
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
             if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
-                $protocol = System::serverGetVar('SERVER_PROTOCOL');
-                header("{$protocol} 404 Not Found");
-                echo __('The requested URL cannot be found');
-                system::shutDown();
+                self::redirect(self::getBaseUri() . '/' . $root . str_replace(self::getBaseUri(), '', self::getCurrentUrl()));
+                self::shutDown();
             }
 
             if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
@@ -690,9 +688,8 @@ class System
 
             if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
                 $protocol = System::serverGetVar('SERVER_PROTOCOL');
-                header("{$protocol} 404 Not Found");
-                echo __('The requested URL cannot be found');
-                system::shutDown();
+                self::redirect(self::getBaseUri() . str_replace(self::getCurrentUrl(), self::getBaseUri() . '/' . $root));
+                self::shutDown();
             }
 
             // get base path to work out our current url
