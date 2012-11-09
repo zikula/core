@@ -2,8 +2,7 @@
 
 namespace Gedmo\Translatable\Mapping\Driver;
 
-use Gedmo\Mapping\Driver\AnnotationDriverInterface,
-    Doctrine\Common\Persistence\Mapping\ClassMetadata,
+use Gedmo\Mapping\Driver\AbstractAnnotationDriver,
     Gedmo\Exception\InvalidMappingException;
 
 /**
@@ -18,7 +17,7 @@ use Gedmo\Mapping\Driver\AnnotationDriverInterface,
  * @link http://www.gediminasm.org
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-class Annotation implements AnnotationDriverInterface
+class Annotation extends AbstractAnnotationDriver
 {
     /**
      * Annotation to identity translation entity to be used for translation storage
@@ -43,40 +42,11 @@ class Annotation implements AnnotationDriverInterface
     const LANGUAGE = 'Gedmo\\Mapping\\Annotation\\Language';
 
     /**
-     * Annotation reader instance
-     *
-     * @var object
-     */
-    private $reader;
-
-    /**
-     * original driver if it is available
-     */
-    protected $_originalDriver = null;
-
-    /**
      * {@inheritDoc}
      */
-    public function setAnnotationReader($reader)
+    public function readExtendedMetadata($meta, array &$config)
     {
-        $this->reader = $reader;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validateFullMetadata(ClassMetadata $meta, array $config)
-    {
-        if ($config && is_array($meta->identifier) && count($meta->identifier) > 1) {
-            throw new InvalidMappingException("Translatable does not support composite identifiers in class - {$meta->name}");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function readExtendedMetadata(ClassMetadata $meta, array &$config) {
-        $class = $meta->getReflectionClass();
+        $class = $this->getMetaReflectionClass($meta);
         // class annotations
         if ($annot = $this->reader->getClassAnnotation($class, self::ENTITY_CLASS)) {
             if (!class_exists($annot->class)) {
@@ -101,6 +71,9 @@ class Annotation implements AnnotationDriverInterface
                 }
                 // fields cannot be overrided and throws mapping exception
                 $config['fields'][] = $field;
+                if (isset($translatable->fallback)) {
+                    $config['fallback'][$field] = $translatable->fallback;
+                }
             }
             // locale property
             if ($locale = $this->reader->getPropertyAnnotation($property, self::LOCALE)) {
@@ -117,16 +90,11 @@ class Annotation implements AnnotationDriverInterface
                 $config['locale'] = $field;
             }
         }
-    }
 
-    /**
-     * Passes in the mapping read by original driver
-     *
-     * @param $driver
-     * @return void
-     */
-    public function setOriginalDriver($driver)
-    {
-        $this->_originalDriver = $driver;
+        if (!$meta->isMappedSuperclass && $config) {
+            if (is_array($meta->identifier) && count($meta->identifier) > 1) {
+                throw new InvalidMappingException("Translatable does not support composite identifiers in class - {$meta->name}");
+            }
+        }
     }
 }

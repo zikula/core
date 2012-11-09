@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -21,11 +21,11 @@ namespace Doctrine\ORM;
 
 /**
  * Exception thrown when an ORM query unexpectedly does not return any results.
- * 
+ *
  * @author robo
  * @since 2.0
  */
-class NoResultException extends ORMException
+class NoResultException extends UnexpectedResultException
 {
     public function __construct()
     {

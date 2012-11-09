@@ -2,9 +2,10 @@
 
 namespace Gedmo\Mapping\Driver;
 
+use Doctrine\Common\Persistence\Mapping\Driver\FileDriver;
+use Doctrine\Common\Persistence\Mapping\Driver\FileLocator;
+use Doctrine\ORM\Mapping\Driver\AbstractFileDriver;
 use Gedmo\Mapping\Driver;
-use Doctrine\ORM\Mapping\Driver\AbstractFileDriver as ORMAbstractFileDriver;
-use Doctrine\ODM\MongoDB\Mapping\Driver\AbstractFileDriver as MongoDBAbstractFileDriver;
 
 /**
  * The mapping FileDriver abstract class, defines the
@@ -21,6 +22,11 @@ use Doctrine\ODM\MongoDB\Mapping\Driver\AbstractFileDriver as MongoDBAbstractFil
 abstract class File implements Driver
 {
     /**
+     * @var FileLocator
+     */
+    protected $locator;
+
+    /**
      * File extension, must be set in child class
      * @var string
      */
@@ -31,11 +37,10 @@ abstract class File implements Driver
      */
     protected $_originalDriver = null;
 
-    /**
-     * List of paths for file search
-     * @var array
-     */
-    private $_paths = array();
+    public function setLocator(FileLocator $locator)
+    {
+        $this->locator = $locator;
+    }
 
     /**
      * Set the paths for file lookup
@@ -69,27 +74,6 @@ abstract class File implements Driver
     abstract protected function _loadMappingFile($file);
 
     /**
-     * Finds the mapping file for the class with the given name by searching
-     * through the configured paths.
-     *
-     * @param $className
-     * @return string The (absolute) file name.
-     * @throws RuntimeException if not found
-     */
-    protected function _findMappingFile($className)
-    {
-        $fileName = str_replace('\\', '.', $className) . $this->_extension;
-
-        // Check whether file exists
-        foreach ((array) $this->_paths as $path) {
-            if (file_exists($path . DIRECTORY_SEPARATOR . $fileName)) {
-                return $path . DIRECTORY_SEPARATOR . $fileName;
-            }
-        }
-        throw new \Gedmo\Exception\UnexpectedValueException("No mapping file found named '$fileName' for class '$className'.");
-    }
-
-    /**
      * Tries to get a mapping for a given class
      *
      * @param  $className
@@ -100,14 +84,14 @@ abstract class File implements Driver
         //try loading mapping from original driver first
         $mapping = null;
         if (!is_null($this->_originalDriver)) {
-            if ($this->_originalDriver instanceof ORMAbstractFileDriver || $this->_originalDriver instanceof MongoDBAbstractFileDriver) {
+            if ($this->_originalDriver instanceof FileDriver || $this->_originalDriver instanceof AbstractFileDriver) {
                 $mapping = $this->_originalDriver->getElement($className);
             }
         }
 
         //if no mapping found try to load mapping file again
         if (is_null($mapping)) {
-            $yaml = $this->_loadMappingFile($this->_findMappingFile($className));
+            $yaml = $this->_loadMappingFile($this->locator->findMappingFile($className));
             $mapping = $yaml[$className];
         }
 

@@ -39,12 +39,19 @@ Doctrine 1.2.4
     Patch details:
     - Fix on Doctrine_Record::unlinkInDb field names causing exceptions and local unlinking https://github.com/doctrine/doctrine1/pull/35
 
-Doctrine 2.1.2
+Doctrine 2.3.0
 
     Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://www.doctrine-project.org/projects/orm/download/
-    License: LGPL
+    Downloaded from: http://www.doctrine-project.org/downloads/DoctrineORM-2.3.0-full.tar.gz
+    License: MIT
     Location in Zikula: plugins/Doctrine/lib
+
+Doctrine Extensions (master from 2012-10-30)
+
+    Vendor website: https://github.com/l3pp4rd/DoctrineExtensions/
+    Downloaded from: https://github.com/l3pp4rd/DoctrineExtensions/
+    License: MIT
+    Location in Zikula: plugins/DoctrineExtensions/lib
 
 RC4Crypt 3.2
 

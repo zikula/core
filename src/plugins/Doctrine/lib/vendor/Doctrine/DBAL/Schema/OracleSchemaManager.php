@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.phpdoctrine.org>.
  */
 
@@ -89,7 +89,7 @@ class OracleSchemaManager extends AbstractSchemaManager
     protected function _getPortableTableColumnDefinition($tableColumn)
     {
         $tableColumn = \array_change_key_case($tableColumn, CASE_LOWER);
-        
+
         $dbType = strtolower($tableColumn['data_type']);
         if(strpos($dbType, "timestamp(") === 0) {
             if (strpos($dbType, "WITH TIME ZONE")) {
@@ -199,7 +199,7 @@ class OracleSchemaManager extends AbstractSchemaManager
     protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
         $list = array();
-        foreach ($tableForeignKeys as $key => $value) {
+        foreach ($tableForeignKeys as $value) {
             $value = \array_change_key_case($value, CASE_LOWER);
             if (!isset($list[$value['constraint_name']])) {
                 if ($value['delete_rule'] == "NO ACTION") {
@@ -219,7 +219,7 @@ class OracleSchemaManager extends AbstractSchemaManager
         }
 
         $result = array();
-        foreach($list AS $constraint) {
+        foreach($list as $constraint) {
             $result[] = new ForeignKeyConstraint(
                 array_values($constraint['local']), $constraint['foreignTable'],
                 array_values($constraint['foreign']),  $constraint['name'],

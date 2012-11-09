@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -34,5 +34,15 @@ final class Events
     private function __construct() {}
 
     const postConnect = 'postConnect';
-}
 
+    const onSchemaCreateTable             = 'onSchemaCreateTable';
+    const onSchemaCreateTableColumn       = 'onSchemaCreateTableColumn';
+    const onSchemaDropTable               = 'onSchemaDropTable';
+    const onSchemaAlterTable              = 'onSchemaAlterTable';
+    const onSchemaAlterTableAddColumn     = 'onSchemaAlterTableAddColumn';
+    const onSchemaAlterTableRemoveColumn  = 'onSchemaAlterTableRemoveColumn';
+    const onSchemaAlterTableChangeColumn  = 'onSchemaAlterTableChangeColumn';
+    const onSchemaAlterTableRenameColumn  = 'onSchemaAlterTableRenameColumn';
+    const onSchemaColumnDefinition        = 'onSchemaColumnDefinition';
+    const onSchemaIndexDefinition         = 'onSchemaIndexDefinition';
+}

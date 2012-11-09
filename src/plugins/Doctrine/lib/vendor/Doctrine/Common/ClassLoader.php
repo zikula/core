@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -24,19 +24,34 @@ namespace Doctrine\Common;
  * installed on the SPL autoload stack. It is a class loader that either loads only classes
  * of a specific namespace or all namespaces and it is suitable for working together
  * with other autoloaders in the SPL autoload stack.
- * 
+ *
  * If no include path is configured through the constructor or {@link setIncludePath}, a ClassLoader
  * relies on the PHP <code>include_path</code>.
- * 
+ *
  * @author Roman Borschel <roman@code-factory.org>
  * @since 2.0
  */
 class ClassLoader
 {
-    private $fileExtension = '.php';
-    private $namespace;
-    private $includePath;
-    private $namespaceSeparator = '\\';
+    /**
+     * @var string PHP file extension
+     */
+    protected $fileExtension = '.php';
+
+    /**
+     * @var string Current namespace
+     */
+    protected $namespace;
+
+    /**
+     * @var string Current include path
+     */
+    protected $includePath;
+
+    /**
+     * @var string PHP namespace separator
+     */
+    protected $namespaceSeparator = '\\';
 
     /**
      * Creates a new <tt>ClassLoader</tt> that loads classes of the
@@ -45,7 +60,7 @@ class ClassLoader
      * If no include path is given, the ClassLoader relies on the PHP include_path.
      * If neither a namespace nor an include path is given, the ClassLoader will
      * be responsible for loading all classes, thereby relying on the PHP include_path.
-     * 
+     *
      * @param string $ns The namespace of the classes to load.
      * @param string $includePath The base include path to use.
      */
@@ -57,7 +72,7 @@ class ClassLoader
 
     /**
      * Sets the namespace separator used by classes in the namespace of this ClassLoader.
-     * 
+     *
      * @param string $sep The separator to use.
      */
     public function setNamespaceSeparator($sep)
@@ -67,7 +82,7 @@ class ClassLoader
 
     /**
      * Gets the namespace separator used by classes in the namespace of this ClassLoader.
-     * 
+     *
      * @return string
      */
     public function getNamespaceSeparator()
@@ -77,7 +92,7 @@ class ClassLoader
 
     /**
      * Sets the base include path for all class files in the namespace of this ClassLoader.
-     * 
+     *
      * @param string $includePath
      */
     public function setIncludePath($includePath)
@@ -87,7 +102,7 @@ class ClassLoader
 
     /**
      * Gets the base include path for all class files in the namespace of this ClassLoader.
-     * 
+     *
      * @return string
      */
     public function getIncludePath()
@@ -97,7 +112,7 @@ class ClassLoader
 
     /**
      * Sets the file extension of class files in the namespace of this ClassLoader.
-     * 
+     *
      * @param string $fileExtension
      */
     public function setFileExtension($fileExtension)
@@ -107,7 +122,7 @@ class ClassLoader
 
     /**
      * Gets the file extension of class files in the namespace of this ClassLoader.
-     * 
+     *
      * @return string
      */
     public function getFileExtension()
@@ -134,7 +149,8 @@ class ClassLoader
     /**
      * Loads the given class or interface.
      *
-     * @param string $classname The name of the class to load.
+     * @param string $className The name of the class to load.
+
      * @return boolean TRUE if the class has been successfully loaded, FALSE otherwise.
      */
     public function loadClass($className)
@@ -146,7 +162,7 @@ class ClassLoader
         require ($this->includePath !== null ? $this->includePath . DIRECTORY_SEPARATOR : '')
                . str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, $className)
                . $this->fileExtension;
-        
+
         return true;
     }
 
@@ -169,7 +185,7 @@ class ClassLoader
             return file_exists($this->includePath . DIRECTORY_SEPARATOR . $file);
         }
 
-        return self::fileExistsInIncludePath($file);
+        return (false !== stream_resolve_include_path($file));
     }
 
     /**
@@ -195,7 +211,7 @@ class ClassLoader
      */
     public static function classExists($className)
     {
-        if (class_exists($className, false)) {
+        if (class_exists($className, false) || interface_exists($className, false)) {
             return true;
         }
 
@@ -221,7 +237,7 @@ class ClassLoader
             }
         }
 
-        return false;
+        return class_exists($className, false) || interface_exists($className, false);
     }
 
     /**
@@ -229,7 +245,7 @@ class ClassLoader
      * for (and is able to load) the class with the given name.
      *
      * @param string $className The name of the class.
-     * @return The <tt>ClassLoader</tt> for the class or NULL if no such <tt>ClassLoader</tt> exists.
+     * @return ClassLoader The <tt>ClassLoader</tt> for the class or NULL if no such <tt>ClassLoader</tt> exists.
      */
     public static function getClassLoader($className)
     {
@@ -243,19 +259,5 @@ class ClassLoader
         }
 
         return null;
-    }
-    
-    /**
-     * @param string $file The file relative path.
-     * @return boolean Whether file exists in include_path.
-     */
-    public static function fileExistsInIncludePath($file)
-    {
-        foreach (explode(PATH_SEPARATOR, get_include_path()) as $dir) {
-            if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

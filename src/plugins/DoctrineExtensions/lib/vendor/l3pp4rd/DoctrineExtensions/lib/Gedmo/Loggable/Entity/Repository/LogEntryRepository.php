@@ -108,11 +108,11 @@ class LogEntryRepository extends EntityRepository
                 }
                 $filled = count($fields) === 0;
             }
-            if (count($fields)) {
+            /*if (count($fields)) {
                 throw new \Gedmo\Exception\UnexpectedValueException('Could not fully revert the entity to version: '.$version);
-            }
+            }*/
         } else {
-            throw new \Gedmo\Exception\UnexpectedValueException('Count not find any log entries under version: '.$version);
+            throw new \Gedmo\Exception\UnexpectedValueException('Could not find any log entries under version: '.$version);
         }
     }
 

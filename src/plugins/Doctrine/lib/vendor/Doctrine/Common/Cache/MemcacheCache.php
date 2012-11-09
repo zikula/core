@@ -1,7 +1,6 @@
 <?php
+
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -15,7 +14,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -24,24 +23,23 @@ namespace Doctrine\Common\Cache;
 use \Memcache;
 
 /**
- * Memcache cache driver.
+ * Memcache cache provider.
  *
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision: 3938 $
  * @author  Benjamin Eberlei <kontakt@beberlei.de>
  * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
  * @author  David Abdemoulaie <dave@hobodave.com>
  */
-class MemcacheCache extends AbstractCache
+class MemcacheCache extends CacheProvider
 {
     /**
      * @var Memcache
      */
-    private $_memcache;
+    private $memcache;
 
     /**
      * Sets the memcache instance to use.
@@ -50,7 +48,7 @@ class MemcacheCache extends AbstractCache
      */
     public function setMemcache(Memcache $memcache)
     {
-        $this->_memcache = $memcache;
+        $this->memcache = $memcache;
     }
 
     /**
@@ -60,64 +58,64 @@ class MemcacheCache extends AbstractCache
      */
     public function getMemcache()
     {
-        return $this->_memcache;
+        return $this->memcache;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIds()
+    protected function doFetch($id)
     {
-        $keys = array();
-        $allSlabs = $this->_memcache->getExtendedStats('slabs');
+        return $this->memcache->get($id);
+    }
 
-        foreach ($allSlabs as $server => $slabs) {
-            if (is_array($slabs)) {
-                foreach (array_keys($slabs) as $slabId) {
-                    $dump = $this->_memcache->getExtendedStats('cachedump', (int) $slabId);
+    /**
+     * {@inheritdoc}
+     */
+    protected function doContains($id)
+    {
+        return (bool) $this->memcache->get($id);
+    }
 
-                    if ($dump) {
-                        foreach ($dump as $entries) {
-                            if ($entries) {
-                                $keys = array_merge($keys, array_keys($entries));
-                            }
-                        }
-                    }
-                }
-            }
+    /**
+     * {@inheritdoc}
+     */
+    protected function doSave($id, $data, $lifeTime = 0)
+    {
+        if ($lifeTime > 30 * 24 * 3600) {
+            $lifeTime = time() + $lifeTime;
         }
-        return $keys;
+        return $this->memcache->set($id, $data, 0, (int) $lifeTime);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _doFetch($id)
+    protected function doDelete($id)
     {
-        return $this->_memcache->get($id);
+        return $this->memcache->delete($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _doContains($id)
+    protected function doFlush()
     {
-        return (bool) $this->_memcache->get($id);
+        return $this->memcache->flush();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _doSave($id, $data, $lifeTime = 0)
+    protected function doGetStats()
     {
-        return $this->_memcache->set($id, $data, 0, (int) $lifeTime);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function _doDelete($id)
-    {
-        return $this->_memcache->delete($id);
+        $stats = $this->memcache->getStats();
+        return array(
+            Cache::STATS_HITS   => $stats['get_hits'],
+            Cache::STATS_MISSES => $stats['get_misses'],
+            Cache::STATS_UPTIME => $stats['uptime'],
+            Cache::STATS_MEMORY_USAGE       => $stats['bytes'],
+            Cache::STATS_MEMORY_AVAILIABLE  => $stats['limit_maxbytes'],
+        );
     }
 }

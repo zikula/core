@@ -15,7 +15,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -27,19 +27,25 @@ namespace Doctrine\Common\Cache;
  * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision: 3938 $
  * @author  Benjamin Eberlei <kontakt@beberlei.de>
  * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
+ * @author  Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 interface Cache
 {
+    const STATS_HITS    = 'hits';
+    const STATS_MISSES  = 'misses';
+    const STATS_UPTIME  = 'uptime';
+    const STATS_MEMORY_USAGE        = 'memory_usage';
+    const STATS_MEMORY_AVAILIABLE   = 'memory_available';
+
     /**
      * Fetches an entry from the cache.
-     * 
+     *
      * @param string $id cache id The id of the cache entry to fetch.
-     * @return string The cached data or FALSE, if no cache entry exists for the given id.
+     * @return mixed The cached data or FALSE, if no cache entry exists for the given id.
      */
     function fetch($id);
 
@@ -55,7 +61,7 @@ interface Cache
      * Puts data into the cache.
      *
      * @param string $id The cache id.
-     * @param string $data The cache entry/data.
+     * @param mixed $data The cache entry/data.
      * @param int $lifeTime The lifetime. If != 0, sets a specific lifetime for this cache entry (0 => infinite lifeTime).
      * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
      */
@@ -63,9 +69,34 @@ interface Cache
 
     /**
      * Deletes a cache entry.
-     * 
+     *
      * @param string $id cache id
      * @return boolean TRUE if the cache entry was successfully deleted, FALSE otherwise.
      */
     function delete($id);
+
+    /**
+     * Retrieves cached information from data store
+     *
+     * The server's statistics array has the following values:
+     *
+     * - <b>hits</b>
+     * Number of keys that have been requested and found present.
+     *
+     * - <b>misses</b>
+     * Number of items that have been requested and not found.
+     *
+     * - <b>uptime</b>
+     * Time that the server is running.
+     *
+     * - <b>memory_usage</b>
+     * Memory used by this server to store items.
+     *
+     * - <b>memory_available</b>
+     * Memory allowed to use for storage.
+     *
+     * @since   2.2
+     * @var     array Associative array with server's statistics if available, NULL otherwise.
+     */
+    function getStats();
 }

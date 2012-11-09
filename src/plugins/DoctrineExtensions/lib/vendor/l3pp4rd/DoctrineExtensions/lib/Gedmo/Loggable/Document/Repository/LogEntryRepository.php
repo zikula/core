@@ -90,7 +90,7 @@ class LogEntryRepository extends DocumentRepository
                         if (in_array($field, $fields)) {
                             if ($objectMeta->isSingleValuedAssociation($field)) {
                                 $mapping = $objectMeta->getFieldMapping($field);
-                                $value = $value ? $this->dm->getReference($mapping['targetDocument'], current($value)) : null;
+                                $value = $value ? $this->dm->getReference($mapping['targetDocument'], $value) : null;
                             }
                             $wrapped->setPropertyValue($field, $value);
                             unset($fields[array_search($field, $fields)]);
@@ -99,9 +99,9 @@ class LogEntryRepository extends DocumentRepository
                 }
                 $filled = count($fields) === 0;
             }
-            if (count($fields)) {
+            /*if (count($fields)) {
                 throw new \Gedmo\Exception\UnexpectedValueException('Cound not fully revert the document to version: '.$version);
-            }
+            }*/
         } else {
             throw new \Gedmo\Exception\UnexpectedValueException('Count not find any log entries under version: '.$version);
         }

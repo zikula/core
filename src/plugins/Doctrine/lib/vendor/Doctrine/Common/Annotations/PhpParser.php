@@ -13,140 +13,68 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
 namespace Doctrine\Common\Annotations;
 
+use SplFileObject;
+
 /**
  * Parses a file for namespaces/use/class declarations.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @author Christian Kaps <christian.kaps@mohiva.com>
  */
 final class PhpParser
 {
-    private $tokens;
-
     /**
      * Parses a class.
      *
-     * @param \ReflectionClass $class
+     * @param  \ReflectionClass $class A <code>ReflectionClass</code> object.
+     * @return array            A list with use statements in the form (Alias => FQN).
      */
     public function parseClass(\ReflectionClass $class)
     {
+        if (method_exists($class, 'getUseStatements')) {
+            return $class->getUseStatements();
+        }
+
         if (false === $filename = $class->getFilename()) {
             return array();
         }
-        $src = file_get_contents($filename);
-        $name = $class->getName();
 
-        // This is a short-cut for code that follows some conventions:
-        // - namespaced
-        // - one class per file
-        if (preg_match_all('#\bnamespace\s+'.str_replace('\\', '\\\\', $class->getNamespaceName()).'\s*;.*?\b(?:class|interface)\s+'.$class->getShortName().'\b#s', $src, $matches)) {
-            foreach ($matches[0] as $match) {
-                $classes = $this->parse('<?php '.$match, $name);
+        $content = $this->getFileContent($filename, $class->getStartLine());
+        $namespace = str_replace('\\', '\\\\', $class->getNamespaceName());
+        $content = preg_replace('/^.*?(\bnamespace\s+' . $namespace . '\s*[;{].*)$/s', '\\1', $content);
+        $tokenizer = new TokenParser('<?php ' . $content);
 
-                if (isset($classes[$name])) {
-                    return $classes[$name];
-                }
-            }
-        }
+        $statements = $tokenizer->parseUseStatements($class->getNamespaceName());
 
-        $classes = $this->parse($src, $name);
-
-        return $classes[$name];
+        return $statements;
     }
 
-    private function parse($src, $interestedClass = null)
+    /**
+     * Get the content of the file right up to the given line number.
+     *
+     * @param  string $filename   The name of the file to load.
+     * @param  int    $lineNumber The number of lines to read from file.
+     * @return string The content of the file.
+     */
+    private function getFileContent($filename, $lineNumber)
     {
-        $this->tokens = token_get_all($src);
-        $classes = $uses = array();
-        $namespace = '';
-        while ($token = $this->next()) {
-            if (T_NAMESPACE === $token[0]) {
-                $namespace = $this->parseNamespace();
-                $uses = array();
-            } elseif (T_CLASS === $token[0] || T_INTERFACE === $token[0]) {
-                if ('' !== $namespace) {
-                    $class = $namespace.'\\'.$this->nextValue();
-                } else {
-                    $class = $this->nextValue();
-                }
-                $classes[$class] = $uses;
-
-                if (null !== $interestedClass && $interestedClass === $class) {
-                    return $classes;
-                }
-            } elseif (T_USE === $token[0]) {
-                foreach ($this->parseUseStatement() as $useStatement) {
-                    list($alias, $class) = $useStatement;
-                    $uses[strtolower($alias)] = $class;
-                }
-            }
-        }
-
-        return $classes;
-    }
-
-    private function parseNamespace()
-    {
-        $namespace = '';
-        while ($token = $this->next()) {
-            if (T_NS_SEPARATOR === $token[0] || T_STRING === $token[0]) {
-                $namespace .= $token[1];
-            } elseif (is_string($token) && in_array($token, array(';', '{'))) {
-                return $namespace;
-            }
-        }
-    }
-
-    private function parseUseStatement()
-    {
-        $statements = $class = array();
-        $alias = '';
-        while ($token = $this->next()) {
-            if (T_NS_SEPARATOR === $token[0] || T_STRING === $token[0]) {
-                $class[] = $token[1];
-            } else if (T_AS === $token[0]) {
-                $alias = $this->nextValue();
-            } else if (is_string($token)) {
-                if (',' === $token || ';' === $token) {
-                    $statements[] = array(
-                        $alias ? $alias : $class[count($class) - 1],
-                        implode('', $class)
-                    );
-                }
-
-                if (';' === $token) {
-                    return $statements;
-                }
-                if (',' === $token) {
-                    $class = array();
-                    $alias = '';
-
-                    continue;
-                }
-            }
-        }
-    }
-
-    private function next()
-    {
-        while ($token = array_shift($this->tokens)) {
-            if (in_array($token[0], array(T_WHITESPACE, T_COMMENT, T_DOC_COMMENT))) {
-                continue;
+        $content = '';
+        $lineCnt = 0;
+        $file = new SplFileObject($filename);
+        while (!$file->eof()) {
+            if ($lineCnt++ == $lineNumber) {
+                break;
             }
 
-            return $token;
+            $content .= $file->fgets();
         }
-    }
 
-    private function nextValue()
-    {
-        $token = $this->next();
-
-        return is_array($token) ? $token[1] : $token;
+        return $content;
     }
 }

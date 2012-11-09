@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -34,6 +34,8 @@ use Doctrine\DBAL\Platforms\AbstractPlatform,
 abstract class Type
 {
     const TARRAY = 'array';
+    const SIMPLE_ARRAY = 'simple_array';
+    const JSON_ARRAY = 'json_array';
     const BIGINT = 'bigint';
     const BOOLEAN = 'boolean';
     const DATETIME = 'datetime';
@@ -46,7 +48,9 @@ abstract class Type
     const SMALLINT = 'smallint';
     const STRING = 'string';
     const TEXT = 'text';
+    const BLOB = 'blob';
     const FLOAT = 'float';
+    const GUID = 'guid';
 
     /** Map of already instantiated type objects. One instance per type (flyweight). */
     private static $_typeObjects = array();
@@ -54,6 +58,8 @@ abstract class Type
     /** The map of supported doctrine mapping types. */
     private static $_typesMap = array(
         self::TARRAY => 'Doctrine\DBAL\Types\ArrayType',
+        self::SIMPLE_ARRAY => 'Doctrine\DBAL\Types\SimpleArrayType',
+        self::JSON_ARRAY => 'Doctrine\DBAL\Types\JsonArrayType',
         self::OBJECT => 'Doctrine\DBAL\Types\ObjectType',
         self::BOOLEAN => 'Doctrine\DBAL\Types\BooleanType',
         self::INTEGER => 'Doctrine\DBAL\Types\IntegerType',
@@ -67,6 +73,8 @@ abstract class Type
         self::TIME => 'Doctrine\DBAL\Types\TimeType',
         self::DECIMAL => 'Doctrine\DBAL\Types\DecimalType',
         self::FLOAT => 'Doctrine\DBAL\Types\FloatType',
+        self::BLOB => 'Doctrine\DBAL\Types\BlobType',
+        self::GUID => 'Doctrine\DBAL\Types\GuidType',
     );
 
     /* Prevent instantiation and force use of the factory method. */
@@ -131,7 +139,7 @@ abstract class Type
      * @static
      * @throws DBALException
      * @param string $name The name of the type (as returned by getName()).
-     * @return Doctrine\DBAL\Types\Type
+     * @return \Doctrine\DBAL\Types\Type
      */
     public static function getType($name)
     {
@@ -188,21 +196,25 @@ abstract class Type
             throw DBALException::typeNotFound($name);
         }
 
+        if (isset(self::$_typeObjects[$name])) {
+            unset(self::$_typeObjects[$name]);
+        }
+
         self::$_typesMap[$name] = $className;
     }
 
     /**
      * Gets the (preferred) binding type for values of this type that
      * can be used when binding parameters to prepared statements.
-     * 
+     *
      * This method should return one of the PDO::PARAM_* constants, that is, one of:
-     * 
+     *
      * PDO::PARAM_BOOL
      * PDO::PARAM_NULL
      * PDO::PARAM_INT
      * PDO::PARAM_STR
      * PDO::PARAM_LOB
-     * 
+     *
      * @return integer
      */
     public function getBindingType()
@@ -244,7 +256,7 @@ abstract class Type
 
     /**
      * Modifies the SQL expression (identifier, parameter) to convert to a database value.
-     * 
+     *
      * @param string $sqlExpr
      * @param AbstractPlatform $platform
      * @return string
@@ -265,4 +277,30 @@ abstract class Type
     {
         return $sqlExpr;
     }
+
+    /**
+     * Get an array of database types that map to this Doctrine type.
+     *
+     * @param AbstractPlatform $platform
+     * @return array
+     */
+    public function getMappedDatabaseTypes(AbstractPlatform $platform)
+    {
+        return array();
+    }
+
+    /**
+     * If this Doctrine Type maps to an already mapped database type,
+     * reverse schema engineering can't take them apart. You need to mark
+     * one of those types as commented, which will have Doctrine use an SQL
+     * comment to typehint the actual Doctrine Type.
+     *
+     * @param AbstractPlatform $platform
+     * @return bool
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return false;
+    }
 }
+

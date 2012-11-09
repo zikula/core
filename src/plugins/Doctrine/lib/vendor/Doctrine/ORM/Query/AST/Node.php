@@ -1,7 +1,5 @@
 <?php
 /*
- *  $Id$
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -15,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -24,10 +22,9 @@ namespace Doctrine\ORM\Query\AST;
 /**
  * Abstract class of an AST node
  *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
+ * 
  * @link    www.doctrine-project.org
  * @since   2.0
- * @version $Revision: 3938 $
  * @author  Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
@@ -36,16 +33,16 @@ abstract class Node
 {
     /**
      * Double-dispatch method, supposed to dispatch back to the walker.
-     * 
+     *
      * Implementation is not mandatory for all nodes.
-     * 
+     *
      * @param $walker
      */
     public function dispatch($walker)
     {
         throw ASTException::noDispatchForNode($this);
     }
-    
+
     /**
      * Dumps the AST Node into a string representation for information purpose only
      *
@@ -55,36 +52,36 @@ abstract class Node
     {
         return $this->dump($this);
     }
-    
+
     public function dump($obj)
     {
         static $ident = 0;
-        
+
         $str = '';
-        
+
         if ($obj instanceof Node) {
             $str .= get_class($obj) . '(' . PHP_EOL;
             $props = get_object_vars($obj);
-                
+
             foreach ($props as $name => $prop) {
                 $ident += 4;
-                $str .= str_repeat(' ', $ident) . '"' . $name . '": ' 
+                $str .= str_repeat(' ', $ident) . '"' . $name . '": '
                       . $this->dump($prop) . ',' . PHP_EOL;
                 $ident -= 4;
             }
-                
+
             $str .= str_repeat(' ', $ident) . ')';
         } else if (is_array($obj)) {
             $ident += 4;
             $str .= 'array(';
             $some = false;
-                
+
             foreach ($obj as $k => $v) {
-                $str .= PHP_EOL . str_repeat(' ', $ident) . '"' 
+                $str .= PHP_EOL . str_repeat(' ', $ident) . '"'
                       . $k . '" => ' . $this->dump($v) . ',';
                 $some = true;
             }
-                
+
             $ident -= 4;
             $str .= ($some ? PHP_EOL . str_repeat(' ', $ident) : '') . ')';
         } else if (is_object($obj)) {
@@ -92,7 +89,7 @@ abstract class Node
         } else {
             $str .= var_export($obj, true);
         }
-          
+
         return $str;
     }
 }

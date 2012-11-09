@@ -13,7 +13,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
+ * and is licensed under the MIT license. For more information, see
  * <http://www.doctrine-project.org>.
  */
 
@@ -52,12 +52,15 @@ class MySqlSchemaManager extends AbstractSchemaManager
 
     protected function _getPortableTableIndexesList($tableIndexes, $tableName=null)
     {
-        foreach($tableIndexes AS $k => $v) {
+        foreach($tableIndexes as $k => $v) {
             $v = array_change_key_case($v, CASE_LOWER);
             if($v['key_name'] == 'PRIMARY') {
                 $v['primary'] = true;
             } else {
                 $v['primary'] = false;
+            }
+            if (strpos($v['index_type'], 'FULLTEXT') !== false) {
+                $v['flags'] = array('FULLTEXT');
             }
             $tableIndexes[$k] = $v;
         }
@@ -97,7 +100,7 @@ class MySqlSchemaManager extends AbstractSchemaManager
             $decimal = strtok('(), ') ? strtok('(), '):null;
         }
         $type = array();
-        $unsigned = $fixed = null;
+        $fixed = null;
 
         if ( ! isset($tableColumn['name'])) {
             $tableColumn['name'] = '';
@@ -135,25 +138,17 @@ class MySqlSchemaManager extends AbstractSchemaManager
             case 'mediumblob':
             case 'longblob':
             case 'blob':
-            case 'binary':
-            case 'varbinary':
             case 'year':
                 $length = null;
                 break;
         }
 
         $length = ((int) $length == 0) ? null : (int) $length;
-        $def =  array(
-            'type' => $type,
-            'length' => $length,
-            'unsigned' => (bool) $unsigned,
-            'fixed' => (bool) $fixed
-        );
 
         $options = array(
             'length'        => $length,
-            'unsigned'      => (bool)$unsigned,
-            'fixed'         => (bool)$fixed,
+            'unsigned'      => (bool) (strpos($tableColumn['type'], 'unsigned') !== false),
+            'fixed'         => (bool) $fixed,
             'default'       => isset($tableColumn['default']) ? $tableColumn['default'] : null,
             'notnull'       => (bool) ($tableColumn['null'] != 'YES'),
             'scale'         => null,
@@ -170,26 +165,44 @@ class MySqlSchemaManager extends AbstractSchemaManager
         return new Column($tableColumn['field'], \Doctrine\DBAL\Types\Type::getType($type), $options);
     }
 
-    public function _getPortableTableForeignKeyDefinition($tableForeignKey)
+    protected function _getPortableTableForeignKeysList($tableForeignKeys)
     {
-        $tableForeignKey = array_change_key_case($tableForeignKey, CASE_LOWER);
+        $list = array();
+        foreach ($tableForeignKeys as $key => $value) {
+            $value = array_change_key_case($value, CASE_LOWER);
+            if (!isset($list[$value['constraint_name']])) {
+                if (!isset($value['delete_rule']) || $value['delete_rule'] == "RESTRICT") {
+                    $value['delete_rule'] = null;
+                }
+                if (!isset($value['update_rule']) || $value['update_rule'] == "RESTRICT") {
+                    $value['update_rule'] = null;
+                }
 
-        if (!isset($tableForeignKey['delete_rule']) || $tableForeignKey['delete_rule'] == "RESTRICT") {
-            $tableForeignKey['delete_rule'] = null;
-        }
-        if (!isset($tableForeignKey['update_rule']) || $tableForeignKey['update_rule'] == "RESTRICT") {
-            $tableForeignKey['update_rule'] = null;
+                $list[$value['constraint_name']] = array(
+                    'name' => $value['constraint_name'],
+                    'local' => array(),
+                    'foreign' => array(),
+                    'foreignTable' => $value['referenced_table_name'],
+                    'onDelete' => $value['delete_rule'],
+                    'onUpdate' => $value['update_rule'],
+                );
+            }
+            $list[$value['constraint_name']]['local'][] = $value['column_name'];
+            $list[$value['constraint_name']]['foreign'][] = $value['referenced_column_name'];
         }
 
-        return new ForeignKeyConstraint(
-            (array)$tableForeignKey['column_name'],
-            $tableForeignKey['referenced_table_name'],
-            (array)$tableForeignKey['referenced_column_name'],
-            $tableForeignKey['constraint_name'],
-            array(
-                'onUpdate' => $tableForeignKey['update_rule'],
-                'onDelete' => $tableForeignKey['delete_rule'],
-            )
-        );
+        $result = array();
+        foreach($list as $constraint) {
+            $result[] = new ForeignKeyConstraint(
+                array_values($constraint['local']), $constraint['foreignTable'],
+                array_values($constraint['foreign']), $constraint['name'],
+                array(
+                    'onDelete' => $constraint['onDelete'],
+                    'onUpdate' => $constraint['onUpdate'],
+                )
+            );
+        }
+
+        return $result;
     }
 }
