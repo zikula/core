@@ -98,7 +98,11 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             $html .= !empty($class) ? ' class="'.$class.'"' : '';
             $html .= '>';
             $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
-            $attr .= !empty($menuitem['class']) ? ' class="z-iconlink '.$menuitem['class'].'"' : '';
+            $active = '';
+            if (!empty($menuitem['url']) && System::getBaseUrl().$menuitem['url'] === System::getCurrentUrl()) {
+                $active = ' z-bold';
+            }
+            $attr .= !empty($menuitem['class']) ? ' class="z-iconlink '.$menuitem['class'].$active.'"' : '';
 
             if (isset($menuitem['disabled']) && $menuitem['disabled'] == true) {
                 $html .= '<a '.$attr.'>'.$menuitem['text'].'</a>';

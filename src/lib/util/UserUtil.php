@@ -911,7 +911,7 @@ class UserUtil
                     'authentication_info'   => $authenticationInfo,
                     'authentication_method' => $authenticationMethod,
                 );
-                $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuththenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
+                $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuthenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
             }
 
             $userObj = self::internalUserAccountValidation($authenticatedUid, true, isset($userObj) ? $userObj : null);

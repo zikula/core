@@ -196,11 +196,11 @@
                     <h1><?php echo __('The site is currently off-line.'); ?></h1>
                     <h2><?php echo (Zikula_Core::VERSION_NUM != System::getVar('Version_Num')) ? __('This site needs to be upgraded, please contact the system administrator.') : System::getVar('siteoffreason');?></h2>
                     <p>
-                        <a href="#" class="showloginbutton" onclick="toggleLoginBox();" title="<?php echo __('Administrator log-in'); ?>">
+                        <a href="javacript:void(0);" class="showloginbutton" onclick="toggleLoginBox();" title="<?php echo __('Administrator log-in'); ?>">
                             <strong><?php echo __('Administrator log-in'); ?></strong>
                         </a>
                     </p>
-                    <form id="login" action="<?php System::getVar('entrypoint', 'index.php'); ?>?module=Users&amp;func=siteofflogin" method="post">
+                    <form id="login" action="<?php System::getVar('entrypoint', 'index.php'); ?>?module=Users&amp;type=user&amp;func=siteofflogin" method="post">
                         <div>
                         <p><strong><?php echo __('An administrator log-in is required.'); ?></strong></p>
                             <div class="loginrow">
@@ -221,7 +221,7 @@
                         </div>
                     </form>
                     <p>
-                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>                        
+                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>
                     </p>
                 </div>
             </div>
