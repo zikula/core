@@ -5,7 +5,7 @@
 </div><!-- /header -->
 
 <div data-role="content">
-   {blockposition name=left}
+   {blockposition name=mobile}
 </div><!-- /content -->
 
 {include file="includes/footer.tpl"}
