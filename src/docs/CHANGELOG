@@ -14,6 +14,7 @@ Features:
 - Added new option for Zikula UI Windows - autoClose
 - Update jQuery-UI to 1.9
 - Mark active item in modulelinks
+- Mobile Theme: Changed blockposition in home.tpl to 'mobile'
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
