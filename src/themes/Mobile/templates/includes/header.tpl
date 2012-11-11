@@ -16,4 +16,4 @@
         {pageaddvar name="stylesheet" value="$stylepath/style.css"}
     </head>
     <body>
-            <div data-role="page">
+        <div data-role="page">

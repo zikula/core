@@ -1,3 +1,3 @@
-    </div><!-- /page -->
-</body>
+        </div><!-- /page -->
+    </body>
 </html>
