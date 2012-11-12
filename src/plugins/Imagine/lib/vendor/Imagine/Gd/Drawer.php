@@ -13,7 +13,6 @@ namespace Imagine\Gd;
 
 use Imagine\Draw\DrawerInterface;
 use Imagine\Exception\InvalidArgumentException;
-use Imagine\Exception\OutOfBoundsException;
 use Imagine\Exception\RuntimeException;
 use Imagine\Image\AbstractFont;
 use Imagine\Image\BoxInterface;
@@ -28,21 +27,27 @@ final class Drawer implements DrawerInterface
     private $resource;
 
     /**
+     * @var array
+     */
+    private $info;
+
+    /**
      * Constructs Drawer with a given gd image resource
      *
      * @param resource $resource
      */
     public function __construct($resource)
     {
+        $this->loadGdInfo();
         $this->resource = $resource;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::arc()
+     * {@inheritdoc}
      */
-    public function arc(PointInterface $center, BoxInterface $size, $start, $end, Color $color)
+    public function arc(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $thickness = 1)
     {
+        imagesetthickness($this->resource, max(1, (int) $thickness));
         if (false === imagearc(
             $this->resource, $center->getX(), $center->getY(),
             $size->getWidth(), $size->getHeight(), $start, $end,
@@ -57,11 +62,11 @@ final class Drawer implements DrawerInterface
     /**
      * This function doesn't work properly because of a bug in GD
      *
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::chord()
+     * {@inheritdoc}
      */
-    public function chord(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false)
+    public function chord(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false, $thickness = 1)
     {
+        imagesetthickness($this->resource, max(1, (int) $thickness));
         if ($fill) {
             $style = IMG_ARC_CHORD;
         } else {
@@ -80,11 +85,11 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::ellipse()
+     * {@inheritdoc}
      */
-    public function ellipse(PointInterface $center, BoxInterface $size, Color $color, $fill = false)
+    public function ellipse(PointInterface $center, BoxInterface $size, Color $color, $fill = false, $thickness = 1)
     {
+        imagesetthickness($this->resource, max(1, (int) $thickness));
         if ($fill) {
             $callback = 'imagefilledellipse';
         } else {
@@ -102,11 +107,11 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::line()
+     * {@inheritdoc}
      */
-    public function line(PointInterface $start, PointInterface $end, Color $color)
+    public function line(PointInterface $start, PointInterface $end, Color $color, $thickness = 1)
     {
+        imagesetthickness($this->resource, max(1, (int) $thickness));
         if (false === imageline(
             $this->resource, $start->getX(), $start->getY(),
             $end->getX(), $end->getY(), $this->getColor($color)
@@ -118,11 +123,11 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::pieSlice()
+     * {@inheritdoc}
      */
-    public function pieSlice(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false)
+    public function pieSlice(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false, $thickness = 1)
     {
+        imagesetthickness($this->resource, max(1, (int) $thickness));
         if ($fill) {
             $style = IMG_ARC_EDGED;
         } else {
@@ -141,8 +146,7 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::dot()
+     * {@inheritdoc}
      */
     public function dot(PointInterface $position, Color $color)
     {
@@ -157,11 +161,11 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::polygon()
+     * {@inheritdoc}
      */
-    public function polygon(array $coordinates, Color $color, $fill = false)
+    public function polygon(array $coordinates, Color $color, $fill = false, $thickness = 1)
     {
+        imagesetthickness($this->resource, max(1, (int) $thickness));
         if (count($coordinates) < 3) {
             throw new InvalidArgumentException(sprintf(
                 'A polygon must consist of at least 3 points, %d given',
@@ -200,11 +204,14 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::text()
+     * {@inheritdoc}
      */
     public function text($string, AbstractFont $font, PointInterface $position, $angle = 0)
     {
+        if (!$this->info['FreeType Support']) {
+            throw new RuntimeException('GD is not compiled with FreeType support');
+        }
+
         $angle    = -1 * $angle;
         $fontsize = $font->getSize();
         $fontfile = $font->getFile();
@@ -246,7 +253,7 @@ final class Drawer implements DrawerInterface
      *
      * Generates a GD color from Color instance
      *
-     * @param  Imagine\Image\Color $color
+     * @param Imagine\Image\Color $color
      *
      * @return resource
      *
@@ -254,12 +261,12 @@ final class Drawer implements DrawerInterface
      */
     private function getColor(Color $color)
     {
-        $color = imagecolorallocatealpha(
+        $gdColor = imagecolorallocatealpha(
             $this->resource,
             $color->getRed(), $color->getGreen(), $color->getBlue(),
             round(127 * $color->getAlpha() / 100)
         );
-        if (false === $color) {
+        if (false === $gdColor) {
             throw new RuntimeException(sprintf(
                 'Unable to allocate color "RGB(%s, %s, %s)" with '.
                 'transparency of %d percent', $color->getRed(),
@@ -267,6 +274,15 @@ final class Drawer implements DrawerInterface
             ));
         }
 
-        return $color;
+        return $gdColor;
+    }
+
+    private function loadGdInfo()
+    {
+        if (!function_exists('gd_info')) {
+            throw new RuntimeException('Gd not installed');
+        }
+
+        $this->info = gd_info();
     }
 }

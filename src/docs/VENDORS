@@ -88,6 +88,13 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
     Patch details:
     - Removed all helper functions and calltime pass by reference.
 
+Imagine 0.3.0
+
+    Vendor website: http://imagine.readthedocs.org/
+    Downloaded from: https://github.com/avalanche123/Imagine
+    License: MIT
+    Location in Zikula: plugins/Imagine/lib
+
 
 JAVASCRIPT LIBRARIES
 --------------------

@@ -18,15 +18,15 @@ use Imagine\Image\Color;
 final class Font extends AbstractFont
 {
     /**
-     * @var Gmagick
+     * @var \Gmagick
      */
     private $gmagick;
 
     /**
-     * @param Gmagick             $gmagick
-     * @param string              $file
-     * @param integer             $size
-     * @param Imagine\Image\Color $color
+     * @param \Gmagick $gmagick
+     * @param string   $file
+     * @param integer  $size
+     * @param Color    $color
      */
     public function __construct(\Gmagick $gmagick, $file, $size, Color $color)
     {
@@ -36,15 +36,19 @@ final class Font extends AbstractFont
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\FontInterface::box()
+     * {@inheritdoc}
      */
     public function box($string, $angle = 0)
     {
         $text  = new \GmagickDraw();
 
         $text->setfont($this->file);
-        $text->setfontsize($this->size);
+        /**
+         * @see http://www.php.net/manual/en/imagick.queryfontmetrics.php#101027
+         *
+         * ensure font resolution is the same as GD's hard-coded 96
+         */
+        $text->setfontsize((int) ($this->size * (96 / 72)));
         $text->setfontstyle(\Gmagick::STYLE_OBLIQUE);
 
         $info = $this->gmagick->queryfontmetrics($text, $string);
