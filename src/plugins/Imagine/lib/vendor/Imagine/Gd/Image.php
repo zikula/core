@@ -18,11 +18,9 @@ use Imagine\Image\Color;
 use Imagine\Image\Fill\FillInterface;
 use Imagine\Image\Point;
 use Imagine\Image\PointInterface;
-use Imagine\Image\Point\Center;
 use Imagine\Exception\InvalidArgumentException;
 use Imagine\Exception\OutOfBoundsException;
 use Imagine\Exception\RuntimeException;
-use Imagine\Gd\Imagine;
 
 final class Image implements ImageInterface
 {
@@ -51,8 +49,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::copy()
+     * {@inheritdoc}
      */
     final public function copy()
     {
@@ -69,8 +66,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::crop()
+     * {@inheritdoc}
      */
     final public function crop(PointInterface $start, BoxInterface $size)
     {
@@ -100,8 +96,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::paste()
+     * {@inheritdoc}
      */
     final public function paste(ImageInterface $image, PointInterface $start)
     {
@@ -135,8 +130,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::resize()
+     * {@inheritdoc}
      */
     final public function resize(BoxInterface $size)
     {
@@ -160,19 +154,18 @@ final class Image implements ImageInterface
         imagedestroy($this->resource);
 
         $this->resource = $dest;
-        
+
         return $this;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::rotate()
+     * {@inheritdoc}
      */
     final public function rotate($angle, Color $background = null)
     {
         $color = $background ? $background : new Color('fff');
 
-        $resource = imagerotate($this->resource, $angle, $this->getColor($color));
+        $resource = imagerotate($this->resource, -1 * $angle, $this->getColor($color));
 
         if (false === $resource) {
             throw new RuntimeException('Image rotate operation failed');
@@ -186,8 +179,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::save()
+     * {@inheritdoc}
      */
     final public function save($path, array $options = array())
     {
@@ -201,32 +193,30 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::show()
+     * {@inheritdoc}
      */
     public function show($format, array $options = array())
     {
         header('Content-type: '.$this->getMimeType($format));
-        
+
         $this->saveOrOutput($format, $options);
 
         return $this;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::get()
+     * {@inheritdoc}
      */
     public function get($format, array $options = array())
     {
         ob_start();
         $this->saveOrOutput($format, $options);
+
         return ob_get_clean();
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::__toString()
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -234,8 +224,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::flipHorizontally()
+     * {@inheritdoc}
      */
     final public function flipHorizontally()
     {
@@ -259,8 +248,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::flipVertically()
+     * {@inheritdoc}
      */
     final public function flipVertically()
     {
@@ -284,8 +272,19 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::thumbnail()
+     * {@inheritdoc}
+     */
+    final public function strip()
+    {
+        /**
+         * GD strips profiles and comment, so there's nothing to do here
+         */
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function thumbnail(BoxInterface $size, $mode = ImageInterface::THUMBNAIL_INSET)
     {
@@ -324,8 +323,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::draw()
+     * {@inheritdoc}
      */
     public function draw()
     {
@@ -333,8 +331,15 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::getSize()
+     * {@inheritdoc}
+     */
+    public function effects()
+    {
+        return new Effects($this->resource);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getSize()
     {
@@ -342,8 +347,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::applyMask()
+     * {@inheritdoc}
      */
     public function applyMask(ImageInterface $mask)
     {
@@ -383,8 +387,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ManipulatorInterface::fill()
+     * {@inheritdoc}
      */
     public function fill(FillInterface $fill)
     {
@@ -406,8 +409,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::mask()
+     * {@inheritdoc}
      */
     public function mask()
     {
@@ -421,8 +423,7 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::histogram()
+     * {@inheritdoc}
      */
     public function histogram()
     {
@@ -439,11 +440,11 @@ final class Image implements ImageInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Image\ImageInterface::getColorAt()
+     * {@inheritdoc}
      */
-    public function getColorAt(PointInterface $point) {
-        if(!$point->in($this->getSize())) {
+    public function getColorAt(PointInterface $point)
+    {
+        if (!$point->in($this->getSize())) {
             throw new RuntimeException(sprintf(
                 'Error getting color at point [%s,%s]. The point must be inside the image of size [%s,%s]',
                 $point->getX(), $point->getY(), $this->getSize()->getWidth(), $this->getSize()->getHeight()
@@ -451,6 +452,7 @@ final class Image implements ImageInterface
         }
         $index = imagecolorat($this->resource, $point->getX(), $point->getY());
         $info  = imagecolorsforindex($this->resource, $index);
+
         return new Color(array(
                 $info['red'],
                 $info['green'],
@@ -505,7 +507,7 @@ final class Image implements ImageInterface
             isset($options['foreground'])) {
             $args[] = $options['foreground'];
         }
-        
+
         $this->setExceptionHandler();
 
         if (false === call_user_func_array($save, $args)) {
@@ -520,7 +522,7 @@ final class Image implements ImageInterface
      *
      * Generates a GD image
      *
-     * @param  Imagine\Image\BoxInterface $size
+     * @param BoxInterface $size
      * @param  string the operation initiating the creation
      *
      * @return resource
@@ -557,11 +559,11 @@ final class Image implements ImageInterface
      *
      * Generates a GD color from Color instance
      *
-     * @param  Imagine\Image\Color $color
+     * @param Color $color
      *
      * @return resource
      *
-     * @throws Imagine\Exception\RuntimeException
+     * @throws RuntimeException
      */
     private function getColor(Color $color)
     {
@@ -629,16 +631,17 @@ final class Image implements ImageInterface
 
     /**
      * Internal
-     * 
+     *
      * Get the mime type based on format.
-     * 
+     *
      * @param string $format
-     * 
+     *
      * @return string mime-type
-     * 
+     *
      * @throws RuntimeException
      */
-    private function getMimeType($format) {
+    private function getMimeType($format)
+    {
         if (!$this->supported($format)) {
             throw new RuntimeException('Invalid format');
         }

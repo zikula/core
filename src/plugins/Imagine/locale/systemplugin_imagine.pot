@@ -1,0 +1,161 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Zikula 1.x\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-17 16:17-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Imagine/Configuration.php:68
+msgid "Error! Could not change thumbnails storage directory."
+msgstr ""
+
+#: lib/Imagine/Configuration.php:87
+msgid "Done! Saved plugin configuration."
+msgstr ""
+
+#: lib/Imagine/Configuration.php:102
+msgid "Done! Imagine thumbnails were cleanup!"
+msgstr ""
+
+#. ! %1$s is source image path, %2$s is error message
+#: lib/Imagine/Manager.php:287
+#, php-format
+msgid ""
+"An error occurred during thumbnail creation for image [%1$s]. Error details: "
+"%2$s"
+msgstr ""
+
+#: Plugin.php:31
+msgid "Imagine"
+msgstr ""
+
+#: Plugin.php:32
+msgid "Provides Imagine image manipulation library"
+msgstr ""
+
+#: templates/plugins/function.thumb.php:85
+#, php-format
+msgid "Error! in %1$s: the %2$s parameter must be specified."
+msgstr ""
+
+#: templates/configuration.tpl:6
+msgid "Imagine plugin settings"
+msgstr ""
+
+#: templates/configuration.tpl:13
+msgid "General settings"
+msgstr ""
+
+#: templates/configuration.tpl:16
+msgid "Thumbnails storage directory"
+msgstr ""
+
+#: templates/configuration.tpl:18
+msgid "This should be directory inside Zikula temp dir."
+msgstr ""
+
+#: templates/configuration.tpl:19
+msgid "Current storage full path is:"
+msgstr ""
+
+#: templates/configuration.tpl:23
+msgid "Cleanup automatically"
+msgstr ""
+
+#: templates/configuration.tpl:25
+msgid ""
+"When checked, thumbnail cleanup routine is automatically invoked once a day "
+"and unnecessary thumbnails are removed."
+msgstr ""
+
+#: templates/configuration.tpl:29
+msgid "Clear thumb"
+msgstr ""
+
+#: templates/configuration.tpl:29
+msgid "Cleanup thumbnails now"
+msgstr ""
+
+#: templates/configuration.tpl:34
+msgid "Presets"
+msgstr ""
+
+#: templates/configuration.tpl:35
+msgid "Presets allow to define ready to use sets of thumbnail options."
+msgstr ""
+
+#: templates/configuration.tpl:43
+msgid "Preset name"
+msgstr ""
+
+#: templates/configuration.tpl:45
+msgid ""
+"Preset name can contain letters, numbers, underscores, periods, or dashes."
+msgstr ""
+
+#: templates/configuration.tpl:49
+msgid "Width"
+msgstr ""
+
+#: templates/configuration.tpl:51 templates/configuration.tpl:58
+msgid "pixels"
+msgstr ""
+
+#: templates/configuration.tpl:56
+msgid "Height"
+msgstr ""
+
+#: templates/configuration.tpl:63
+msgid "Mode"
+msgstr ""
+
+#: templates/configuration.tpl:71
+msgid "Thumbnail generation mode."
+msgstr ""
+
+#: templates/configuration.tpl:72
+msgid "Inset mode - thumbnails are scale down to not exceed dimensions."
+msgstr ""
+
+#: templates/configuration.tpl:73
+msgid "Outset mode - thumbnails are cut out to exactly fit dimmensions."
+msgstr ""
+
+#: templates/configuration.tpl:78
+msgid "Extension"
+msgstr ""
+
+#: templates/configuration.tpl:80
+msgid "Same as source image"
+msgstr ""
+
+#: templates/configuration.tpl:90
+msgid "Copy"
+msgstr ""
+
+#: templates/configuration.tpl:91
+msgid "Delete"
+msgstr ""
+
+#: templates/configuration.tpl:96
+msgid "Add new preset"
+msgstr ""
+
+#: templates/configuration.tpl:101
+msgid "Save"
+msgstr ""
+
+#: templates/configuration.tpl:102
+msgid "Cancel"
+msgstr ""

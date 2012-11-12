@@ -28,7 +28,7 @@ final class Drawer implements DrawerInterface
     private $imagick;
 
     /**
-     * @param Imagick $imagick
+     * @param \Imagick $imagick
      */
     public function __construct(\Imagick $imagick)
     {
@@ -36,10 +36,9 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::arc()
+     * {@inheritdoc}
      */
-    public function arc(PointInterface $center, BoxInterface $size, $start, $end, Color $color)
+    public function arc(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $thickness = 1)
     {
         $x      = $center->getX();
         $y      = $center->getY();
@@ -51,7 +50,7 @@ final class Drawer implements DrawerInterface
             $arc   = new \ImagickDraw();
 
             $arc->setStrokeColor($pixel);
-            $arc->setStrokeWidth(1);
+            $arc->setStrokeWidth(max(1, (int) $thickness));
             $arc->setFillColor('transparent');
             $arc->arc($x - $width / 2, $y - $height / 2, $x + $width / 2, $y + $height / 2, $start, $end);
 
@@ -72,10 +71,9 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::chord()
+     * {@inheritdoc}
      */
-    public function chord(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false)
+    public function chord(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false, $thickness = 1)
     {
         $x      = $center->getX();
         $y      = $center->getY();
@@ -87,7 +85,7 @@ final class Drawer implements DrawerInterface
             $chord = new \ImagickDraw();
 
             $chord->setStrokeColor($pixel);
-            $chord->setStrokeWidth(1);
+            $chord->setStrokeWidth(max(1, (int) $thickness));
 
             if ($fill) {
                 $chord->setFillColor($pixel);
@@ -133,10 +131,9 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::ellipse()
+     * {@inheritdoc}
      */
-    public function ellipse(PointInterface $center, BoxInterface $size, Color $color, $fill = false)
+    public function ellipse(PointInterface $center, BoxInterface $size, Color $color, $fill = false, $thickness = 1)
     {
         $width  = $size->getWidth();
         $height = $size->getHeight();
@@ -146,7 +143,7 @@ final class Drawer implements DrawerInterface
             $ellipse = new \ImagickDraw();
 
             $ellipse->setStrokeColor($pixel);
-            $ellipse->setStrokeWidth(1);
+            $ellipse->setStrokeWidth(max(1, (int) $thickness));
 
             if ($fill) {
                 $ellipse->setFillColor($pixel);
@@ -181,17 +178,17 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::line()
+     * {@inheritdoc}
      */
-    public function line(PointInterface $start, PointInterface $end, Color $color)
+    public function line(PointInterface $start, PointInterface $end, Color $color, $thickness = 1)
     {
         try {
             $pixel = $this->getColor($color);
             $line  = new \ImagickDraw();
 
             $line->setStrokeColor($pixel);
-            $line->setStrokeWidth(1);
+            $line->setStrokeWidth(max(1, (int) $thickness));
+            $line->setFillColor($pixel);
             $line->line(
                 $start->getX(),
                 $start->getY(),
@@ -216,10 +213,9 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::pieSlice()
+     * {@inheritdoc}
      */
-    public function pieSlice(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false)
+    public function pieSlice(PointInterface $center, BoxInterface $size, $start, $end, Color $color, $fill = false, $thickness = 1)
     {
         $width  = $size->getWidth();
         $height = $size->getHeight();
@@ -230,7 +226,7 @@ final class Drawer implements DrawerInterface
         $y2 = round($center->getY() + $height / 2 * sin(deg2rad($end)));
 
         if ($fill) {
-            $this->chord($center, $size, $start, $end, $color, true);
+            $this->chord($center, $size, $start, $end, $color, true, $thickness);
             $this->polygon(
                 array(
                     $center,
@@ -238,20 +234,20 @@ final class Drawer implements DrawerInterface
                     new Point($x2, $y2),
                 ),
                 $color,
-                true
+                true,
+                $thickness
             );
         } else {
-            $this->arc($center, $size, $start, $end, $color);
-            $this->line($center, new Point($x1, $y1), $color);
-            $this->line($center, new Point($x2, $y2), $color);
+            $this->arc($center, $size, $start, $end, $color, $thickness);
+            $this->line($center, new Point($x1, $y1), $color, $thickness);
+            $this->line($center, new Point($x2, $y2), $color, $thickness);
         }
 
         return $this;
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::dot()
+     * {@inheritdoc}
      */
     public function dot(PointInterface $position, Color $color)
     {
@@ -282,10 +278,9 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::polygon()
+     * {@inheritdoc}
      */
-    public function polygon(array $coordinates, Color $color, $fill = false)
+    public function polygon(array $coordinates, Color $color, $fill = false, $thickness = 1)
     {
         if (count($coordinates) < 3) {
             throw new InvalidArgumentException(sprintf(
@@ -295,8 +290,7 @@ final class Drawer implements DrawerInterface
         }
 
         $points = array_map(
-            function(PointInterface $p)
-            {
+            function(PointInterface $p) {
                 return array('x' => $p->getX(), 'y' => $p->getY());
             },
             $coordinates
@@ -307,7 +301,7 @@ final class Drawer implements DrawerInterface
             $polygon = new \ImagickDraw();
 
             $polygon->setStrokeColor($pixel);
-            $polygon->setStrokeWidth(1);
+            $polygon->setStrokeWidth(max(1, (int) $thickness));
 
             if ($fill) {
                 $polygon->setFillColor($pixel);
@@ -334,8 +328,7 @@ final class Drawer implements DrawerInterface
     }
 
     /**
-     * (non-PHPdoc)
-     * @see Imagine\Draw\DrawerInterface::text()
+     * {@inheritdoc}
      */
     public function text($string, AbstractFont $font, PointInterface $position, $angle = 0)
     {
@@ -344,7 +337,17 @@ final class Drawer implements DrawerInterface
             $text  = new \ImagickDraw();
 
             $text->setFont($font->getFile());
-            $text->setFontSize($font->getSize());
+            /**
+             * @see http://www.php.net/manual/en/imagick.queryfontmetrics.php#101027
+             *
+             * ensure font resolution is the same as GD's hard-coded 96
+             */
+            if (version_compare(phpversion("imagick"), "3.0.2", ">=")) {
+                $text->setResolution(96, 96);
+                $text->setFontSize($font->getSize());
+            } else {
+                $text->setFontSize((int) ($font->getSize() * (96 / 72)));
+            }
             $text->setFillColor($pixel);
             $text->setTextAntialias(true);
 
@@ -383,7 +386,7 @@ final class Drawer implements DrawerInterface
     /**
      * Gets specifically formatted color string from Color instance
      *
-     * @param Imagine\Image\Color $color
+     * @param Color $color
      *
      * @return string
      */
