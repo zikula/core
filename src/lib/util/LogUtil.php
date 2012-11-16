@@ -254,7 +254,7 @@ class LogUtil
      * Also adds method, file and line where the error occured.
      *
      * @param string  $message The error message.
-     * @param intiger $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
+     * @param integer $type    The type of error (numeric and corresponding to a HTTP status code) (optional) (default=null).
      * @param string  $url     The url to redirect to (optional) (default=null).
      *
      * @return false or system redirect if url is set.
