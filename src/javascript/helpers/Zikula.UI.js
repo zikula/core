@@ -1668,8 +1668,8 @@ Zikula.UI.Panels = Class.create(/** @lends Zikula.UI.Panels.prototype */{
      */
     getPanelIndex: function(panel) {
         var panelIndex;
-        if (Object.isElement(panel) && this.headers.include(panel)) {
-            panelIndex = this.headers.indexOf(panel);
+        if (Object.isElement($(panel)) && this.headers.include($(panel))) {
+            panelIndex = this.headers.indexOf($(panel));
         } else if (Object.isElement(this.headers[panel])) {
             panelIndex = panel;
         } else {
