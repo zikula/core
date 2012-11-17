@@ -364,7 +364,7 @@ class FormUtil
      * @param Zikula_AbstractController $controller Controller.
      * @param string                    $className  Optionally instanciate a child of Zikula_Form_View.
      *
-     * @return Form_View The newly created Form_View instance.
+     * @return Zikula_Form_View The newly created Form_View instance.
      */
     public static function newForm($name, Zikula_AbstractController $controller = null, $className=null)
     {
