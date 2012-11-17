@@ -339,7 +339,7 @@ class JCSSUtil
                         'require' => array('noconflict'),
                 ),
                 'jquery-ui' => array(
-                        'path' => 'javascript/jquery-ui/jquery-ui-1.9.0.custom.min.js',
+                        'path' => 'javascript/jquery-ui/jquery-ui-1.9.1.custom.min.js',
                         'require' => array('jquery'),
                 ),
                 'noconflict' => array(
@@ -470,7 +470,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                     'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui-1.9.0.custom.js', // the 'custom' designation is meaningless
+                            'path' => 'javascript/jquery-ui/jquery-ui-1.9.1.custom.js', // the 'custom' designation is meaningless
                             'require' => array('jquery'),
                     ),
             );
