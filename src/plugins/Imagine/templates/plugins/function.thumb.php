@@ -33,44 +33,19 @@
  * Examples
  *
  * Basic usage with inline options:
- *  {thumb
- *      image='path/to/image.png'
- *      width=100
- *      height=100
- *      mode='inset'
- *      extension='jpg'
- *  }
+ *  {thumb image='path/to/image.png' width=100 height=100 mode='inset' extension='jpg'}
  *
  * Using preset define in Imagine plugin
- *  {thumb
- *      image='path/to/image.png'
- *      objectid='123'
- *      preset='my_preset'
- *  }
+ *  {thumb image='path/to/image.png' objectid='123' preset='my_preset'}
  *
  * Using custom preset, defined in module and passed to template
- *  {thumb
- *      image='path/to/image.png'
- *      objectid='123'
- *      preset=$preset
- *  }
+ *  {thumb image='path/to/image.png' objectid='123' preset=$preset}
  *
  * Using custom SystemPlugin_Imagine_Manager instance, defined in module and passed to template
- *  {thumb
- *      image='path/to/image.png'
- *      objectid='123'
- *      manager=$manager
- *  }
+ *  {thumb image='path/to/image.png' objectid='123' manager=$manager}
  *
  * Generating full img tag
- *  {thumb
- *      image='path/to/image.png'
- *      objectid='123'
- *      preset=$preset
- *      tag=true
- *      __img_alt='Alt text, gettext prefix may be used'
- *      img_class='image-class'
- *  }
+ *  {thumb image='path/to/image.png' objectid='123' preset=$preset tag=true __img_alt='Alt text, gettext prefix may be used' img_class='image-class'}
  * This will generate:
  *  <img src="thumb/path" widht="100" height="100" alt="Alt text, gettext prefix may be used" class="image-class" />
  *

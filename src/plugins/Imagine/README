@@ -56,44 +56,23 @@ Thumbnail options can be passed inline or via preset/manager object.
 
 ### Inline options
 
-    {thumb
-        image='path/to/image.png'
-        width=100
-        height=100
-        mode='inset'
-        extension='png'
-    }
+    {thumb image='path/to/image.png' width=100 height=100 mode='inset' extension='png'}
 
 ### Options passed using preset
 
-    {thumb
-        image='path/to/image.png'
-        objectid='123'
-        preset=$preset
-    }
+    {thumb image='path/to/image.png' objectid='123' preset=$preset}
 
 In this case "$preset" have to be initiated in module controller and passed to template.
 
 ### Use custom instance of SystemPlugin_Imagine_Manager
 
-    {thumb
-        image='path/to/image.png'
-        objectid='123'
-        manager=$manager
-    }
+    {thumb image='path/to/image.png' objectid='123' manager=$manager}
 
 In this case "$manager" have to be initiated in module controller and passed to template.
 
 ### Generate full image tag
 
-    {thumb
-        image='path/to/image.png'
-        objectid='123'
-        preset=$preset
-        tag=true
-        __img_alt='Alt text, gettext prefix may be used'
-        img_class='image-class'
-    }
+    {thumb image='path/to/image.png' objectid='123' preset=$preset tag=true __img_alt='Alt text, gettext prefix may be used' img_class='image-class'}
 
 This will generate:
 
