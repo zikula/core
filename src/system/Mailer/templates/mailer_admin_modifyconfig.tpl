@@ -11,7 +11,7 @@
         <fieldset>
             <legend>{gt text="General settings"}</legend>
             <div class="z-formrow">
-                {formlabel for='mailertype' __text='Title' mandatorysym=true}
+                {formlabel for='mailertype' __text='Mail transport' mandatorysym=true}
                 {formdropdownlist id='mailertype' mandatory=true}
             </div>
             <div class="z-formrow">
