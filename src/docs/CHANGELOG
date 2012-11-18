@@ -7,14 +7,17 @@ Fixes:
 - Fixed ValidationUtil::validateField() return if a validation error for given field already exists (issue #534)
 - Fixed JSCCUtil attempting (incorrectly) to combine remote scripts/styles (refs #435)
 - Fixed minor typo in UserUtil::loginUsing() that prevented correct usage of function
+- Fixed issue with setting active panel by element ID in Zikula.UI.Panels
 
 Features:
 - Added development/debug email mode
 - Added basic setup for jQuery ajax to pass csfr token checks
 - Added new option for Zikula UI Windows - autoClose
-- Update jQuery-UI to 1.9
+- Update jQuery-UI to 1.9.1
 - Mark active item in modulelinks
 - Mobile Theme: Changed blockposition in home.tpl to 'mobile'
+- Added thumbnail management features to Imagine plugin
+- Refactor Mailer module to use Zikula Form
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
