@@ -233,7 +233,7 @@ class Zikula_DebugToolbar
         // need to suppress errors due to recursion warrnings
         $data = @json_encode($data);
 
-        $html = "<script type=\"text/javascript\">Zikula.DebugToolbarData = {$data}</script>";
+        $html = "<script type=\"text/javascript\">/* <![CDATA[ */ \nZikula.DebugToolbarData = {$data}\n /* ]]> */</script>";
 
         return $html;
     }

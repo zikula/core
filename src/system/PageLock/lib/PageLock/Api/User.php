@@ -50,7 +50,7 @@ class PageLock_Api_User extends Zikula_AbstractApi
             $hasLock = true;
         }
 
-        $html = "<script type=\"text/javascript\">\n";
+        $html = "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
 
         if (!empty($lockName)) {
             if ($hasLock) {
@@ -73,7 +73,7 @@ PageLock.LockName = '$lockName';
 PageLock.ReturnUrl = '$returnUrl';
 PageLock.PingTime = " . (PageLockLifetime*2/3) . ";
 PageLock.LockedHTML = '" . $lockedHtml . "';
-</script>";
+ /* ]]> */</script>";
 
         PageUtil::addVar('header', $html);
 
