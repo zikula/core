@@ -389,11 +389,12 @@ class JCSSUtil
             $prototypeUncompressed = array(
                     'prototype' => array(
                             'path' => 'javascript/ajax/original_uncompressed/prototype.js',
-                            'require' => array('zikula', 'scriptaculous', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
+                            'require' => array('zikula', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
                             'aliases' => array('prototype', 'scriptaculous'),
                     ),
                     'scriptaculous' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/scriptaculous.js',
+                            'path' => 'javascript/ajax/original_uncompressed/prototype.js',
+                            'require' => array('prototype'),
                     ),
                     'effects' => array(
                             'path' => 'javascript/ajax/original_uncompressed/effects.js',
