@@ -131,7 +131,7 @@ Validation 1.5.4.1
     Location in Zikula: javascript/ajax/validation.min.js
     Patch details: none
 
-jQuery v1.8.1
+jQuery v1.8.3
 
     Vendor website: http://jquery.com/
     Downloaded from: http://jquery.com/
@@ -151,6 +151,13 @@ jQuery-UI v1.9.1
         overcast
         vader
         (all theme css files direct download from http://jqueryui.com/download)
+
+jQuery Mobile 1.2.0
+    Vendor website: http://jquerymobile.com/
+    Downloaded from: http://jquerymobile.com/download/
+    License: MIT
+    Location in Zikula: themes/Mobile/javascript/jquerymobile
+    Patch details: none
 
 jQuery-Timepicker-Addon v1.0.2
 
