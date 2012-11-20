@@ -358,9 +358,9 @@ class FormUtil
     }
 
     /**
-     * Return a newly created pormRender instance with the given name.
+     * Return a newly created Zikula Form instance with the given name.
      *
-     * @param string                    $name       Module name.
+     * @param string                    $name       Module or plugin name.
      * @param Zikula_AbstractController $controller Controller.
      * @param string                    $className  Optionally instanciate a child of Zikula_Form_View.
      *
@@ -373,7 +373,13 @@ class FormUtil
             throw new RuntimeException(__f('%s does not exist', $className));
         }
 
-        $form = $className ? new $className($serviceManager, $name) : new Zikula_Form_View($serviceManager, $name);
+        if ($controller instanceof Zikula_Controller_AbstractPlugin) {
+            // for plugins get module name from controller
+            $modinfo = $controller->getModInfo();
+            $form = $className ? new $className($serviceManager, $modinfo['name'], $name) : new Zikula_Form_View_Plugin($serviceManager, $modinfo['name'], $name);
+        } else {
+            $form = $className ? new $className($serviceManager, $name) : new Zikula_Form_View($serviceManager, $name);
+        }
         if ($className && !$form instanceof Zikula_Form_View) {
             throw new RuntimeException(__f('%s is not an instance of Zikula_Form_View', $className));
         }
@@ -389,5 +395,4 @@ class FormUtil
 
         return $form;
     }
-
 }
