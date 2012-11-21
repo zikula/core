@@ -1,104 +1,95 @@
-{ajaxheader modname=Mailer filename=mailer_admin_modifyconfig.js noscriptaculous=true effects=true}
+{ajaxheader modname='Mailer' filename='mailer_admin_modifyconfig.js' noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
     <h3>{gt text="Settings"}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Mailer" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+{form cssClass='z-form'}
     <div>
-        <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+        {formvalidationsummary}
         <fieldset>
             <legend>{gt text="General settings"}</legend>
             <div class="z-formrow">
-                <label for="mailer_mailertype">{gt text="Mail transport"}</label>
-                <select id="mailer_mailertype" name="mailertype">{html_options options=$mailertypes selected=$mailertype}</select>
+                {formlabel for='mailertype' __text='Mail transport' mandatorysym=true}
+                {formdropdownlist id='mailertype' mandatory=true}
             </div>
             <div class="z-formrow">
                 {charset assign=defaultcharset}
-                <label for="mailer_charset">{gt text="Character set (default: '%s')" tag1=$defaultcharset}</label>
-                <input id="mailer_charset" name="charset" type="text" size="10" maxlength="20" value="{$charset|safetext}" />
+                {formlabel for='charset' __text='Character set' mandatorysym=true}
+                {formtextinput id='charset' size=10 maxLength=20 mandatory=true}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1=$defaultcharset}</p>
             </div>
             <div class="z-formrow">
-                <label for="mailer_encoding">{gt text="Encoding (default: '8bit')"}</label>
-                <select id="mailer_encoding" name="encoding">
-                    <option value="8bit"{if $encoding eq '8bit'} selected="selected"{/if}>8bit</option>
-                    <option value="7bit"{if $encoding eq '7bit'} selected="selected"{/if}>7bit</option>
-                    <option value="binary"{if $encoding eq 'binary'} selected="selected"{/if}>binary</option>
-                    <option value="base64"{if $encoding eq 'base64'} selected="selected"{/if}>base64</option>
-                    <option value="quoted-printable"{if $encoding eq 'quoted-printable'} selected="selected"{/if}>quoted-printable</option>
-                </select>
+                {formlabel for='encoding' __text="Encoding" mandatorysym=true}
+                {formdropdownlist id='encoding' mandatory=true}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1='8bit'}</p>
             </div>
             <div class="z-formrow">
-                <label for="mailer_html">{gt text="HTML-formatted messages"}</label>
-                <input id="mailer_html" type="checkbox" name="html" value="1"{if $html} checked="checked"{/if} />
+                {formlabel for='html' __text='HTML-formatted messages'}
+                {formcheckbox id='html'}
             </div>
             <div class="z-formrow">
-                <label for="mailer_wordwrap">{gt text="Word wrap (default: 50)"}</label>
-                <input id="mailer_wordwrap" name="wordwrap" type="text" size="3" maxlength="3" value="{$wordwrap|safetext}" />
+                {formlabel for='wordwrap' __text='Word wrap' mandatorysym=true}
+                {formtextinput id='wordwrap' size=3 maxLength=3 mandatory=true}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1='50'}</p>
             </div>
             <div class="z-formrow">
-                <label for="mailer_msmailheaders">{gt text="Use Microsoft mail client headers"}</label>
-                {if $msmailheaders eq 1}
-                <input id="mailer_msmailheaders" name="msmailheaders" type="checkbox" value="1" checked="checked" />
-                {else}
-                <input id="mailer_msmailheaders" name="msmailheaders" type="checkbox" value="1" />
-                {/if}
+                {formlabel for='msmailheaders' __text='Use Microsoft mail client headers'}
+                {formcheckbox id='msmailheaders'}
             </div>
         </fieldset>
+
         <fieldset id="mailer_sendmailsettings">
             <legend>{gt text="'Sendmail' settings"}</legend>
             <div class="z-formrow">
-                <label for="mailer_sendmailpath">{gt text="Path to 'Sendmail'"}</label>
-                <input id="mailer_sendmailpath" name="sendmailpath" type="text" size="50" maxlength="50" value="{$sendmailpath|safetext}" />
+                {formlabel for='sendmailpath' __text="Path to 'Sendmail'"}
+                {formtextinput id='sendmailpath' size=50 maxLength=255}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1='/usr/sbin/sendmail'}</p>
             </div>
         </fieldset>
+
         <fieldset id="mailer_smtpsettings">
             <legend>{gt text="SMTP settings"}</legend>
             <div class="z-formrow">
-                <label for="mailer_smtpserver">{gt text="SMTP server (default: localhost)"}</label>
-                <input id="mailer_smtpserver" name="smtpserver" type="text" size="30" maxlength="50" value="{$smtpserver|safetext}" />
+                {formlabel for='smtpserver' __text='SMTP server'}
+                {formtextinput id='smtpserver' size=30 maxLength=255}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1='localhost'}</p>
             </div>
             <div class="z-formrow">
-                <label for="mailer_smtpport">{gt text="SMTP port (default: 25)"}</label>
-                <input id="mailer_smtpport" name="smtpport" type="text" size="5" maxlength="5" value="{$smtpport|safetext}" />
+                {formlabel for='smtpport' __text='SMTP port'}
+                {formtextinput id='smtpport' size=5 maxLength=5}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1='25'}</p>
             </div>
             <div class="z-formrow">
-                <label for="mailer_smtpsecuremethod">{gt text="SMTP Security Method"}</label>
-                <select id="mailer_smtpsecuremethod" name="smtpsecuremethod">
-                    <option value=""{if $smtpsecuremethod eq ''} selected="selected"{/if}>None</option>
-                    <option value="ssl"{if $smtpsecuremethod eq 'ssl'} selected="selected"{/if}>SSL</option>
-                    <option value="tls"{if $smtpsecuremethod eq 'tls'} selected="selected"{/if}>TLS</option>
-                </select>
+                {formlabel for='smtpsecuremethod' __text='SMTP Security Method'}
+                {formdropdownlist id='smtpsecuremethod'}
             </div>
             <div class="z-formrow">
-                <label for="mailer_smtptimeout">{gt text="SMTP time-out (default: 10 seconds)"}</label>
-                <input id="mailer_smtptimeout" name="smtptimeout" type="text" size="5" maxlength="5" value="{$smtptimeout|safetext}" />
+                {formlabel for='smtptimeout' __text='SMTP time-out'}
+                {formtextinput id='smtptimeout' size=5 maxLength=5}
+                <p class="z-formnote z-sub">{gt text="Default: '%s'" tag1='10 seconds'}</p>
             </div>
             <div class="z-formrow">
-                <label for="mailer_smtpauth">{gt text="Enable SMTP authentication"}</label>
-                {if $smtpauth eq 1}
-                <input id="mailer_smtpauth" name="smtpauth" type="checkbox" value="1" checked="checked" />
-                {else}
-                <input id="mailer_smtpauth" name="smtpauth" type="checkbox" value="1" />
-                {/if}
+                {formlabel for='smtpauth' __text='Enable SMTP authentication'}
+                {formcheckbox id='smtpauth'}
             </div>
             <div id="mailer_smtp_authentication">
                 <div class="z-formrow">
-                    <label for="mailer_smtpusername">{gt text="SMTP user name"}</label>
-                    <input id="mailer_smtpusername" name="smtpusername" type="text" size="30" maxlength="50" value="{$smtpusername|safetext}" />
+                    {formlabel for='smtpusername' __text='SMTP user name'}
+                    {formtextinput id='smtpusername' size=30 maxLength=50}
                 </div>
                 <div class="z-formrow">
-                    <label for="mailer_smtppassword">{gt text="SMTP password"}</label>
-                    <input id="mailer_smtppassword" name="smtppassword" type="password" size="30" maxlength="50" value="{$smtppassword|safetext}" />
+                    {formlabel for='smtppassword' __text='SMTP password'}
+                    {formtextinput id='smtppassword' textMode='password' size=30 maxLength=50}
                 </div>
             </div>
         </fieldset>
 
         <div class="z-buttons z-formbuttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Mailer type=admin func=main}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            {formbutton class='z-bt-ok' commandName='save' __text='Save'}
+            {formbutton class='z-bt-cancel' commandName='cancel' __text='Cancel'}
         </div>
     </div>
-</form>
+{/form}
 {adminfooter}

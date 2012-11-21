@@ -4,15 +4,15 @@ document.observe('dom:loaded', mailer_modifyconfig_init);
 
 function mailer_modifyconfig_init()
 {
-     $('mailer_mailertype').observe('change', mailer_transport_onchange);
-     $('mailer_smtpauth').observe('change', mailer_smtpauth_onchange);
+     $('mailertype').observe('change', mailer_transport_onchange);
+     $('smtpauth').observe('change', mailer_smtpauth_onchange);
      mailer_transport_onchange();
      mailer_smtpauth_onchange();
 }
 
 function mailer_transport_onchange()
 {
-    var mailtransport = $('mailer_mailertype')
+    var mailtransport = $('mailertype');
 
     if ( mailtransport.value == '4') {
         $('mailer_smtpsettings').show();
@@ -28,5 +28,5 @@ function mailer_transport_onchange()
 
 function mailer_smtpauth_onchange()
 {
-    Zikula.checkboxswitchdisplaystate('mailer_smtpauth', 'mailer_smtp_authentication', true);
+    Zikula.checkboxswitchdisplaystate('smtpauth', 'mailer_smtp_authentication', true);
 }

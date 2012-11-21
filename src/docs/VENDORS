@@ -95,6 +95,13 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
     Patch details:
     - Removed all helper functions and calltime pass by reference.
 
+Imagine 0.3.0
+
+    Vendor website: http://imagine.readthedocs.org/
+    Downloaded from: https://github.com/avalanche123/Imagine
+    License: MIT
+    Location in Zikula: plugins/Imagine/lib
+
 
 JAVASCRIPT LIBRARIES
 --------------------
@@ -107,7 +114,7 @@ PickyColor 0.1
     Location in Zikula: javascript/picky_color
     Patch details: none
 
-Prototype 1.7.0
+Prototype 1.7.1
 
     Vendor website: http://www.prototypejs.org/
     Downloaded from: http://www.prototypejs.org/
@@ -131,7 +138,7 @@ Validation 1.5.4.1
     Location in Zikula: javascript/ajax/validation.min.js
     Patch details: none
 
-jQuery v1.8.1
+jQuery v1.8.3
 
     Vendor website: http://jquery.com/
     Downloaded from: http://jquery.com/
@@ -139,18 +146,25 @@ jQuery v1.8.1
     Location in Zikula: javascript/jquery
     Patch details: none
 
-jQuery-UI v1.8.23
+jQuery-UI v1.9.1
 
     Vendor website: http://jqueryui.com/
     Downloaded from: http://jqueryui.com/download
     License: MIT and GPL (see http://jqueryui.com/about)
     Location in Zikula: javascript/jquery-ui
     Patch details: included themes:
-        base
+        base (smoothness)
         cupertino
         overcast
         vader
-        (all theme css files direct download from http://jqueryui.com/download#stable-themes) 
+        (all theme css files direct download from http://jqueryui.com/download)
+
+jQuery Mobile 1.2.0
+    Vendor website: http://jquerymobile.com/
+    Downloaded from: http://jquerymobile.com/download/
+    License: MIT
+    Location in Zikula: themes/Mobile/javascript/jquerymobile
+    Patch details: none
 
 jQuery-Timepicker-Addon v1.0.2
 

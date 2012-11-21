@@ -335,11 +335,11 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.8.1.min.js',
+                        'path' => 'javascript/jquery/jquery-1.8.3.min.js',
                         'require' => array('noconflict'),
                 ),
                 'jquery-ui' => array(
-                        'path' => 'javascript/jquery-ui/jquery-ui-1.9.0.custom.min.js',
+                        'path' => 'javascript/jquery-ui/jquery-ui-1.9.1.custom.min.js',
                         'require' => array('jquery'),
                 ),
                 'noconflict' => array(
@@ -389,11 +389,12 @@ class JCSSUtil
             $prototypeUncompressed = array(
                     'prototype' => array(
                             'path' => 'javascript/ajax/original_uncompressed/prototype.js',
-                            'require' => array('zikula', 'scriptaculous', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
+                            'require' => array('zikula', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
                             'aliases' => array('prototype', 'scriptaculous'),
                     ),
                     'scriptaculous' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/scriptaculous.js',
+                            'path' => 'javascript/ajax/original_uncompressed/prototype.js',
+                            'require' => array('prototype'),
                     ),
                     'effects' => array(
                             'path' => 'javascript/ajax/original_uncompressed/effects.js',
@@ -461,7 +462,7 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.8.1.js',
+                            'path' => 'javascript/jquery/jquery-1.8.3.js',
                             'require' => array('noconflict'),
                     ),
                     'noconflict' => array(
@@ -470,7 +471,7 @@ class JCSSUtil
             );
             $jQueryUiUncompressed = array(
                     'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui-1.9.0.custom.js', // the 'custom' designation is meaningless
+                            'path' => 'javascript/jquery-ui/jquery-ui-1.9.1.custom.js', // the 'custom' designation is meaningless
                             'require' => array('jquery'),
                     ),
             );
