@@ -85,3 +85,43 @@ h3 {
     margin: 0.5em 0 !important;
     padding: 0 !important;
 }
+
+/******************************************************************************
+* Special styles for the Zikula Form Handler
+******************************************************************************/
+
+.z-form .z-formrow .z-mandatorysym, /* mandatorysym will be removed in future version */
+.z-form-mandatory-flag {
+    color: #f00;
+    font-weight: bold;
+    padding-left: 3px;
+    display: inline;
+}
+
+.z-form div.z-formrow input[type=text].z-form-mandatory,
+.z-form div.z-formrow select.z-form-mandatory,
+.z-form div.z-formrow textarea.z-form-mandatory {
+    width: 66%;
+}
+
+.z-form .z-formrow input.z-form-float,
+.z-form .z-formrow input.z-form-int {
+    text-align: right;
+    max-width: 15%;
+    display: inline;
+}
+
+.z-form .z-formrow .z-form-readonly {
+    background: #FAFAFA;
+    color: #AAAAAA;
+    cursor: not-allowed;
+}
+
+.z-form .z-formrow .z-form-error {
+    background: #ffe1da;
+    border: 1px solid #f34f4f;
+}
+
+.z-form-validationSummary label {
+    cursor: pointer;
+}
