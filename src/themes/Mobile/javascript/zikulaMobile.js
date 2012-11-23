@@ -25,20 +25,24 @@ jQuery(document).ready(function() {
      
     jQuery('.z-menulinks').attr('data-role','controlgroup');
     jQuery('.z-menulinks').attr('data-type','horizontal');
-      
-    jQuery('.z-menulinks').children().each(
-        function() {
-            jQuery(this).children().each(
-                function() {
-                    if (jQuery(this).prop('tagName') == 'A') {
-                        jQuery(this).attr('data-role', "button");
-                    } else {
-                        jQuery(this).remove();
+
+    jQuery('.z-menulinks').each(
+            function() {
+                jQuery(this).children().each(
+                    function() {
+                        jQuery(this).children().each(
+                            function() {
+                                if (jQuery(this).prop('tagName') == 'A') {
+                                    jQuery(this).attr('data-role', "button");
+                                } else {
+                                    jQuery(this).remove();
+                                }
+                            }
+                        );
                     }
-                }
-            );
-        }
-    );
+                );
+            }
+        );
       
     jQuery('a').attr('data-ajax','false');
 });
