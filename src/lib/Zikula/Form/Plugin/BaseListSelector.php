@@ -145,7 +145,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
      */
     public function create(Zikula_Form_View $view, &$params)
     {
-        $this->inputName = $this->id;
+        $this->inputName = (array_key_exists('inputName', $params) ? $params['inputName'] : $this->id);
 
         $this->readOnly = (array_key_exists('readOnly', $params) ? $params['readOnly'] : false);
 
