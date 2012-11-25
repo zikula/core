@@ -106,6 +106,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Getter for GET.
      *
+     * @deprecated
+     *
      * @return Zikula_Request_Collection
      */
     public function getGet()
@@ -117,6 +119,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 
     /**
      * Getter for POST.
+     *
+     * @deprecated
      *
      * @return Zikula_Request_Collection
      */
@@ -139,6 +143,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 
     /**
      * Getter for SERVER.
+     *
+     * @deprecated
      *
      * @return Zikula_Request_Collection
      */
@@ -171,6 +177,8 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 
     /**
      * Getter for FILES.
+     *
+     * @deprecated
      *
      * @return Zikula_Request_Collection
      */
