@@ -171,6 +171,8 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      */
     public function formatValue(Zikula_Form_View $view, $value)
     {
-        return DataUtil::formatNumber($value, $this->precision);
+        // done already in render() above, this relates to #587
+        //return DataUtil::formatNumber($value, $this->precision);
+        return parent::formatValue($view, $value);
     }
 }
