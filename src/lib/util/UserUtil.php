@@ -563,6 +563,8 @@ class UserUtil
      * @param boolean $rememberme          Whether or not to remember login.
      * @param boolean $checkPassword       Whether or not to check the password.
      *
+     * @deprecated
+     *
      * @return boolean
      */
     public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)

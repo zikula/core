@@ -14,3 +14,114 @@ h3 {
     margin-top: 0px;
     margin-bottom: 0px;
 }
+
+/******************************************************************************
+* CSS Based Messages
+* TODO: Replace by jquerymobile stuff, when it supports it.
+******************************************************************************/
+
+.z-errormsg {
+    background: #F7CBCA url("../../../images/icons/extrasmall/error.png") 13px 50% no-repeat !important;
+    border: 1px solid #CC0000 !important;
+    color: #880000 !important;
+    margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
+}
+.z-errormsg p,
+.z-errormsg h1,
+.z-errormsg h2,
+.z-errormsg h3 {
+    color:#880000 !important;
+    margin:0.5em 0 !important;
+    padding:0 !important;
+}
+.z-errormsg ul {
+    list-style: none;
+    margin:0 !important;
+    padding:0 !important;
+}
+.z-informationmsg {
+    background: #e6e6ff url('../../../images/icons/extrasmall/info.png') 13px 50% no-repeat !important;
+    border: 1px solid #9bb8d9 !important;
+    color: #27427D !important;
+    margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
+}
+.z-informationmsg p,
+.z-informationmsg h1,
+.z-informationmsg h2,
+.z-informationmsg h3 {
+    color: #27427D !important;
+    margin:0.5em 0 !important;
+    padding:0 !important;
+}
+.z-statusmsg {
+    background: #DFF2BF url('../../../images/icons/extrasmall/button_ok.png') 13px 50% no-repeat !important;
+    border: 1px solid #99CC99 !important;
+    color: #264409 !important;
+    margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
+}
+.z-statusmsg p,
+.z-statusmsg h1,
+.z-statusmsg h2,
+.z-statusmsg h3 {
+    color: #264409 !important;
+    margin: 0.5em 0 !important;
+    padding: 0 !important;
+}
+.z-warningmsg {
+    background: #FEEFB3 url('../../../images/icons/extrasmall/bell.png') 13px 50% no-repeat !important;
+    border: 1px solid #EED324 !important;
+    color: #514721 !important;
+    margin: 5px 0 10px !important;
+    padding: 5px 5px 5px 36px !important;
+}
+.z-warningmsg p,
+.z-warningmsg h1,
+.z-warningmsg h2,
+.z-warningmsg h3 {
+    color: #514721 !important;
+    margin: 0.5em 0 !important;
+    padding: 0 !important;
+}
+
+/******************************************************************************
+* Special styles for the Zikula Form Handler
+******************************************************************************/
+
+.z-form .z-formrow .z-mandatorysym, /* mandatorysym will be removed in future version */
+.z-form-mandatory-flag {
+    color: #f00;
+    font-weight: bold;
+    padding-left: 3px;
+    display: inline;
+}
+
+.z-form div.z-formrow input[type=text].z-form-mandatory,
+.z-form div.z-formrow select.z-form-mandatory,
+.z-form div.z-formrow textarea.z-form-mandatory {
+    width: 66%;
+}
+
+.z-form .z-formrow input.z-form-float,
+.z-form .z-formrow input.z-form-int {
+    text-align: right;
+    max-width: 15%;
+    display: inline;
+}
+
+.z-form .z-formrow .z-form-readonly {
+    background: #FAFAFA;
+    color: #AAAAAA;
+    cursor: not-allowed;
+}
+
+.z-form .z-formrow .z-form-error {
+    background: #ffe1da;
+    border: 1px solid #f34f4f;
+}
+
+.z-form-validationSummary label {
+    cursor: pointer;
+}

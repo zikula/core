@@ -1454,7 +1454,8 @@ class DBUtil
             throw new Exception('$objectColumn field count must match the resultset');
         }
 
-        if ($assocKey && $resultRows && !array_key_exists($assocKey, $resultRows[0])) {
+        if ($assocKey && $resultRows &&
+            (!array_key_exists($assocKey, $resultRows[0]) && !in_array($assocKey, $objectColumns))) {
             throw new Exception(__f('Unable to find assocKey [%1$s] in objectColumns for resultset.', array($assocKey)));
         }
 
@@ -2176,7 +2177,7 @@ class DBUtil
      *
      * @return integer The resulting object count.
      */
-    public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null)
+    public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null, $subquery = null)
     {
         $tables = self::getTables();
         $tableName = $tables[$table];
@@ -2188,7 +2189,11 @@ class DBUtil
         $where = self::generateCategoryFilterWhere($table, $where, $categoryFilter);
         $where = self::_checkWhereClause($where);
 
-        $sql = "SELECT COUNT($dst $col) FROM $tableName AS tbl $where";
+        if ($subquery) {
+            $sql = "SELECT COUNT($dst $col) FROM $subquery";
+        } else {
+            $sql = "SELECT COUNT($dst $col) FROM $tableName AS tbl $where";
+        }
 
         $res = self::executeSQL($sql);
         if ($res === false) {
@@ -2506,8 +2511,9 @@ class DBUtil
             $jt = $joinInfo[$k]['join_table'];
             $jf = $joinInfo[$k]['join_field'];
             $ofn = $joinInfo[$k]['object_field_name'];
-            $cft = $joinInfo[$k]['compare_field_table'];
-            $cfj = $joinInfo[$k]['compare_field_join'];
+            $cft = isset($joinInfo[$k]['compare_field_table']) ? $joinInfo[$k]['compare_field_table'] : null;
+            $cfj = isset($joinInfo[$k]['compare_field_join'])  ? $joinInfo[$k]['compare_field_join']  : null;
+            $jw  = isset($joinInfo[$k]['join_where'])          ? $joinInfo[$k]['join_where']          : null;
 
             $joinMethod = 'LEFT JOIN';
             if (isset($joinInfo[$k]['join_method']) && in_array(strtoupper($joinInfo[$k]['join_method']), $allowedJoinMethods)) {
@@ -2540,15 +2546,19 @@ class DBUtil
                 $ca[] = $ofn[$k];
             }
 
-            $compareColumn = $jcol[$cfj];
-            // attempt to remove encoded table name in column list used by some tables
-            $t = strstr($compareColumn, '.');
-            if ($t !== false) {
-                $compareColumn = substr($t, 1);
-            }
+            if ($jw) {
+                $line = ' ' . $joinMethod . " $jtab $alias ON $jw ";
+            } else {
+                $compareColumn = $jcol[$cfj];
+                // attempt to remove encoded table name in column list used by some tables
+                $t = strstr($compareColumn, '.');
+                if ($t !== false) {
+                    $compareColumn = substr($t, 1);
+                }
 
-            $t = isset($columns[$cft]) ? "tbl.$columns[$cft]" : $cft; // if not a column reference assume litereal column name
-            $line = ' ' . $joinMethod . " $jtab $alias ON $alias.$compareColumn = $t ";
+                $t = isset($columns[$cft]) ? "tbl.$columns[$cft]" : $cft; // if not a column reference assume litereal column name
+                $line = ' ' . $joinMethod . " $jtab $alias ON $alias.$compareColumn = $t ";
+            }
 
             $sqlJoin .= $line;
             ++$alias;
