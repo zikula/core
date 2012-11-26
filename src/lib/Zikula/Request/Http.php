@@ -106,7 +106,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Getter for GET.
      *
-     * @deprecated
+     * @deprecated use $request->query instead
      *
      * @return Zikula_Request_Collection
      */
@@ -120,7 +120,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Getter for POST.
      *
-     * @deprecated
+     * @deprecated use $request->request instead
      *
      * @return Zikula_Request_Collection
      */
@@ -144,7 +144,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Getter for SERVER.
      *
-     * @deprecated
+     * @deprecated use $request->server instead
      *
      * @return Zikula_Request_Collection
      */
@@ -178,7 +178,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
     /**
      * Getter for FILES.
      *
-     * @deprecated
+     * @deprecated use $request->files instead
      *
      * @return Zikula_Request_Collection
      */
