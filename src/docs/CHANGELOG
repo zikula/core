@@ -9,12 +9,13 @@ Fixes:
 - Fixed minor typo in UserUtil::loginUsing() that prevented correct usage of function
 - Fixed issue with setting active panel by element ID in Zikula.UI.Panels
 - Fixed display of translated date in jQuery datepicker
+- Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 
 Features:
 - Added development/debug email mode
 - Added basic setup for jQuery ajax to pass csfr token checks
 - Added new option for Zikula UI Windows - autoClose
-- Update jQuery-UI to 1.9.1
+- Update jQuery-UI to 1.9.2
 - Update jQuery to 1.8.3
 - Mark active item in modulelinks
 - Mobile Theme: Changed blockposition in home.tpl to 'mobile'
