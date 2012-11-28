@@ -73,7 +73,9 @@ class Zikula_EntityAccess implements ArrayAccess
                 }
 
                 $method = "get" . ucfirst($property->name);
-                $array[$property->name] = $this->$method();
+                if (method_exists($this, $method)) {
+                    $array[$property->name] = $this->$method();
+                }
             }
         }
 
