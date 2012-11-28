@@ -196,7 +196,13 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
     $readOnlyHtml = ($readOnly) ? " readonly='readonly'" : "";
 
     $name = isset($object) ? "{$object}[{$displayElement}]" : $displayElement;
-    $html = "<input type='text'{$readOnlyHtml} id='$displayElement' name='$name' value='{$defaultDate->format($displayFormat_dateTime)}' />\n";
+    
+    // translate month name since DateTime::format() only returns English
+    $english = explode(" ", 'January February March April May June July August September October November December');
+    $translated = explode(" ", __('January February March April May June July August September October November December'));
+    $displayDateString = str_replace($english, $translated, $defaultDate->format($displayFormat_dateTime));
+    
+    $html = "<input type='text'{$readOnlyHtml} id='$displayElement' name='$name' value='{$displayDateString}' />\n";
     if (isset($valueStorageElement)) {
         $name = isset($object) ? "{$object}[{$valueStorageElement}]" : $valueStorageElement;
         $html .= "<input type='hidden' id='$valueStorageElement' name='$name' value='{$defaultDate->format($valueStorageFormat_dateTime)}' />";

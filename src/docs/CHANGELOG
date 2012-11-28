@@ -8,6 +8,7 @@ Fixes:
 - Fixed JSCCUtil attempting (incorrectly) to combine remote scripts/styles (refs #435)
 - Fixed minor typo in UserUtil::loginUsing() that prevented correct usage of function
 - Fixed issue with setting active panel by element ID in Zikula.UI.Panels
+- Fixed display of translated date in jQuery datepicker
 
 Features:
 - Added development/debug email mode
