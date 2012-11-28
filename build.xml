@@ -87,7 +87,7 @@
         <!-- zip's don't play nicely in Phing - using direct command -->
         <!-- exec escape="false" command="cd ${exportdir}; zip -D -r ${archivedir}/${package}.zip ." / -->
         <zip destfile="${archivedir}/${package}.zip">
-            <fileset dir="${exportdir}/${job_name}">
+            <fileset dir="${exportdir}">
                 <include name="**/**" />
             </fileset>
         </zip>
