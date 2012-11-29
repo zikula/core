@@ -1943,7 +1943,7 @@ class ModUtil
 
         return $directory;
     }
-	
+
     /**
      * Determine the module admin image path.
      *
@@ -1956,28 +1956,32 @@ class ModUtil
      */
     public static function getModuleImagePath($moduleName)
     {
-    	if($moduleName == '')
-    		return false;
-    	
-    	$modinfo = self::getInfoFromName($moduleName);
-    	$modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-    	
-    	$osmoddir = DataUtil::formatForOS($modinfo['directory']);
-    	$paths = array($modpath . '/' . $osmoddir . '/images/admin.png',
-    		$modpath . '/' . $osmoddir . '/images/admin.jpg',
-    		$modpath . '/' . $osmoddir . '/images/admin.gif',
-    		$modpath . '/' . $osmoddir . '/pnimages/admin.gif',
-    		$modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
-    		$modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
-    		$modpath . '/' . $osmoddir . '/pnimages/admin.png',
-    		'system/Admin/images/default.gif');
-    	
-    	foreach ($paths as $path) {
-    		if (is_readable($path)) {
-    			break;
-    		}
-    	}
-    	
-    	return $path;
+        if($moduleName == '') {
+            return false;
+        }
+        
+        $modinfo = self::getInfoFromName($moduleName);
+        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
+        
+        $osmoddir = DataUtil::formatForOS($modinfo['directory']);
+        
+        $paths = array(
+                $modpath . '/' . $osmoddir . '/images/admin.png',
+                $modpath . '/' . $osmoddir . '/images/admin.jpg',
+                $modpath . '/' . $osmoddir . '/images/admin.gif',
+                $modpath . '/' . $osmoddir . '/pnimages/admin.gif',
+                $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
+                $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
+                $modpath . '/' . $osmoddir . '/pnimages/admin.png',
+                'system/Admin/images/default.gif'
+        );
+        
+        foreach ($paths as $path) {
+            if (is_readable($path)) {
+                break;
+            }
+        }
+        
+        return $path;
     }
 }
