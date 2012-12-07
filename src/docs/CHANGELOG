@@ -1,3 +1,14 @@
+CHANGELOG - ZIKULA 1.3.6
+------------------------
+
+Fixes:
+- Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
+
+Features:
+- Update jQuery-UI to 1.9.2
+- Zikula Form - automatically set proper form enctype when upload input is used
+- Added ModUtil::getModuleImagePath() for getting the admin image of a module
+
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
 
@@ -9,20 +20,16 @@ Fixes:
 - Fixed minor typo in UserUtil::loginUsing() that prevented correct usage of function
 - Fixed issue with setting active panel by element ID in Zikula.UI.Panels
 - Fixed display of translated date in jQuery datepicker
-- Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 
 Features:
 - Added development/debug email mode
 - Added basic setup for jQuery ajax to pass csfr token checks
 - Added new option for Zikula UI Windows - autoClose
-- Update jQuery-UI to 1.9.2
 - Update jQuery to 1.8.3
 - Mark active item in modulelinks
 - Mobile Theme: Changed blockposition in home.tpl to 'mobile'
 - Added thumbnail management features to Imagine plugin
 - Refactor Mailer module to use Zikula Form
-- Zikula Form - automatically set proper form enctype when upload input is used
-- Added ModUtil::getModuleImagePath() for getting the admin image of a module
 
 CHANGELOG - ZIKULA 1.3.4
 ------------------------
