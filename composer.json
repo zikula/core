@@ -37,13 +37,21 @@
         "gedmo/doctrine-extensions": "dev-master",
         "beberlei/DoctrineExtensions": "dev-master",
         "imagine/Imagine": "dev-master",
+        "monolog/monolog": "dev-master",
+        "symfony/browser-kit": "2.2.*",
         "symfony/class-loader": "2.2.*",
+        "symfony/config": "2.2.*",
         "symfony/console": "2.2.*",
+        "symfony/css-selector": "2.2.*",
+        "symfony/dependency-injection": "2.2.*",
         "symfony/event-dispatcher": "2.2.*",
         "symfony/finder": "2.2.*",
         "symfony/filesystem": "2.2.*",
         "symfony/form": "2.2.*",
-        "symfony/process": "2.2.*"
+        "symfony/http-foundation": "2.2.*",
+        "symfony/http-kernel": "2.2.*",
+        "symfony/process": "2.2.*",
+        "symfony/yaml": "2.2.*"
     },
     "config": {
         "vendor-dir": "src/vendor",
