@@ -6,6 +6,12 @@ Modules, plugins and themes.
 
 For more information visit http://zikula.org/
 
+Installing
+----------
+
+Run `composer.phar self-update && composer.phar update`. Composer can
+be downloaded from http://getcomposer.org/
+
 Contributing
 ------------
 
