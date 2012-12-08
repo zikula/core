@@ -7,6 +7,7 @@
     "autoload": {
         "psr-0": {
             "Zikula": "src/lib",
+            "DoctrineExtensions\\StandardFields": "src/lib",
             "Zend_Log": "src/lib/vendor"
         },
         "classmap": [
@@ -34,6 +35,7 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "drak/doctrine1": "dev-master",
         "gedmo/doctrine-extensions": "dev-master",
+        "beberlei/DoctrineExtensions": "dev-master",
         "imagine/Imagine": "dev-master",
         "symfony/class-loader": "2.2.*",
         "symfony/console": "2.2.*",

@@ -48,6 +48,100 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
         $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
         $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
+        $this->addhandlerDefinition('core.preinit', 'initDoctrine', -100);
+        $this->addhandlerDefinition('core.preinit', 'initDoctrineExtensions', -100);
+    }
+
+    public function initDoctrine(Zikula_Event $event)
+    {
+        // register namespace
+        // Because the standard kernel classloader already has Doctrine registered as a namespace
+        // we have to add a new loader onto the spl stack.
+        $autoloader = new Zikula_KernelClassLoader();
+        $autoloader->spl_autoload_register();
+        $autoloader->register('DoctrineProxy', __DIR__.'/../../ztemp/doctrinemodels', '\\');
+
+        $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
+        $dbConfig = array('host' => $config['host'],
+                          'user' => $config['user'],
+                          'password' => $config['password'],
+                          'dbname' => $config['dbname'],
+                          'driver' => 'pdo_' . $config['dbdriver'],
+                          );
+        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $this->serviceManager['dbcache.type'] . 'Cache');
+        $dbCache = $r->newInstance();
+        $ORMConfig = new \Doctrine\ORM\Configuration;
+        $this->serviceManager->attachService('doctrine.configuration', $ORMConfig);
+        $ORMConfig->setMetadataCacheImpl($dbCache);
+
+        // create proxy cache dir
+        CacheUtil::createLocalDir('doctrinemodels');
+
+        // setup annotations base
+        require_once __DIR__.'/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+
+        // setup annotation reader
+        $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+        $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
+        $this->serviceManager->attachService('doctrine.annotationreader', $cacheReader);
+
+        // setup annotation driver
+        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
+        $this->serviceManager->attachService('doctrine.annotationdriver', $annotationDriver);
+
+        // setup driver chains
+        $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+        $this->serviceManager->attachService('doctrine.driverchain', $driverChain);
+
+        // configure Doctrine ORM
+        $ORMConfig->setMetadataDriverImpl($annotationDriver);
+        $ORMConfig->setQueryCacheImpl($dbCache);
+        $ORMConfig->setProxyDir(CacheUtil::getLocalDir('doctrinemodels'));
+        $ORMConfig->setProxyNamespace('DoctrineProxy');
+        //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
+
+        if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
+            $ORMConfig->setSQLLogger(new Zikula_Doctrine2_ZikulaSqlLogger());
+        }
+
+        // setup doctrine eventmanager
+        $eventManager = new \Doctrine\Common\EventManager;
+        $this->serviceManager->attachService('doctrine.eventmanager', $eventManager);
+
+         // setup MySQL specific listener (storage engine and encoding)
+        if ($config['dbdriver'] == 'mysql') {
+            $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
+            $eventManager->addEventSubscriber($mysqlSessionInit);
+
+            $mysqlStorageEvent = new Zikula_Doctrine2_MySqlGenerateSchemaListener($eventManager);
+        }
+
+        // setup the doctrine entitymanager
+        $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
+        $this->serviceManager->attachService('doctrine.entitymanager', $entityManager);
+    }
+
+    public function initDoctrineExtensions(Zikula_Event $event)
+    {
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/DoctrineExtensions');
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
+
+        $definition = new Zikula_ServiceManager_Definition('Zikula_Doctrine2_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $this->serviceManager->registerService('doctrine_extensions', $definition);
+
+        $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
+        foreach ($types as $type) {
+            // The listener for Translatable is incorrectly named TranslationListener
+            if ($type != "Translatable") {
+                $definition = new Zikula_ServiceManager_Definition("Gedmo\\$type\\{$type}Listener");
+            } else {
+                $definition = new Zikula_ServiceManager_Definition("Gedmo\\Translatable\\TranslationListener");
+            }
+            $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);
+        }
+
+        $definition = new Zikula_ServiceManager_Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
+        $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.standardfields"), $definition);
     }
 
     /**

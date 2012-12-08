@@ -14,7 +14,7 @@
 /**
  * MySqlGenerateSchemaListener
  */
-class SystemPlugin_Doctrine_MySqlGenerateSchemaListener
+class Zikula_Doctrine2_MySqlGenerateSchemaListener
 {
     const postGenerateSchemaTable = 'postGenerateSchema';
     
