@@ -1,9 +1,9 @@
 language: php
 
 php:
+  - 5.3.3
   - 5.3
   - 5.4
 
-before_install:
-  - phpenv rehash
-
+before_script:
+    - COMPOSER_ROOT_VERSION=dev-master composer --prefer-source --dev install
