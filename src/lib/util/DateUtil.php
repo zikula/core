@@ -117,11 +117,11 @@ class DateUtil
      *
      * @param string  $datetime The (string) datetime to reformat.
      * @param string  $format   The format to use when formatting the date (optional).
-     * @param boolean $TZadjust Adjust the output according to Timezone, default true.
+     * @param boolean $TZadjust Adjust the output according to Timezone, default null.
      *
      * @return string The datetime formatted according to the specified format.
      */
-    public static function formatDatetime($datetime=null, $format=DATEFORMAT_FIXED, $TZadjust=true)
+    public static function formatDatetime($datetime=null, $format=DATEFORMAT_FIXED, $TZadjust=null)
     {
         if ($datetime === null) {
             return '';
@@ -139,6 +139,9 @@ class DateUtil
         }
 
         // adjust with the user timezone diff
+        if (is_null($TZadjust)) {
+             $TZadjust = System::getVar('tzadjust', true); 
+        }
         if ($TZadjust) {
             $time -= self::getTimezoneUserDiff();
         }
