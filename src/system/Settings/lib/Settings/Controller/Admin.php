@@ -190,7 +190,8 @@ class Settings_Controller_Admin extends Zikula_AbstractController
                 'mlsettings_timezone_server' => 'timezone_server',
                 'mlsettings_multilingual' => 'multilingual',
                 'mlsettings_language_detect' => 'language_detect',
-                'mlsettings_languageurl' => 'languageurl');
+                'mlsettings_languageurl' => 'languageurl',
+                'mlsettings_timezone_adjust' => 'tzadjust');
 
         // we can't detect language if multilingual feature is off so reset this to false
         if (FormUtil::getPassedValue('mlsettings_multilingual', null, 'POST') == 0) {
