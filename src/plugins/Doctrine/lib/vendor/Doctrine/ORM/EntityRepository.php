@@ -161,13 +161,14 @@ class EntityRepository implements ObjectRepository, Selectable
      * Finds a single entity by a set of criteria.
      *
      * @param array $criteria
+     * @param array|null $orderBy
      * @return object
      */
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria, array $orderBy = null)
     {
         $persister = $this->_em->getUnitOfWork()->getEntityPersister($this->_entityName);
 
-        return $persister->load($criteria, null, null, array(), 0, 1);
+        return $persister->load($criteria, null, null, array(), 0, 1, $orderBy);
     }
 
     /**
@@ -215,7 +216,7 @@ class EntityRepository implements ObjectRepository, Selectable
                 case 3:
                     return $this->$method(array($fieldName => $arguments[0]), $arguments[1], $arguments[2]);
 
-                case 4;
+                case 4:
                     return $this->$method(array($fieldName => $arguments[0]), $arguments[1], $arguments[2], $arguments[3]);
 
                 default:
