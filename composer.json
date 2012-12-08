@@ -1,0 +1,46 @@
+{
+    "name": "zikula/core1",
+    "homepage": "http://zikula.org/",
+    "license": "LGPL-3.0+",
+    "description": "Zikula Application Framework",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "Zikula": "src/lib",
+            "Zend_Log": "src/lib"
+        },
+        "classmap": [
+            "src/lib/util/", "src/lib/i18n/"
+        ],
+        "files": [
+            "src/lib/i18n/ZGettextFunctions.php",
+            "src/lib/Markdown/markdown.php",
+            "src/lib/Markdown/markdown.php",
+            "src/lib/idn/idna_convert.class.php",
+            "src/lib/Smarty/Smarty.class.php",
+            "src/lib/encryption/rc4crypt.class.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Drak",
+            "email": "drak@zikula.org"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "doctrine/orm": ">=2.2.3,<2.4-dev",
+        "gedmo/doctrine-extensions": "dev-master",
+        "imagine/Imagine": "dev-master",
+        "symfony/class-loader": "2.2.*",
+        "symfony/console": "2.2.*",
+        "symfony/event-dispatcher": "2.2.*",
+        "symfony/finder": "2.2.*",
+        "symfony/filesystem": "2.2.*",
+        "symfony/form": "2.2.*",
+        "symfony/process": "2.2.*"
+    },
+    "config": {
+        "vendor-dir": "src/vendor"
+    }
+}
