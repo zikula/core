@@ -46,6 +46,7 @@
         "symfony/process": "2.2.*"
     },
     "config": {
-        "vendor-dir": "src/vendor"
+        "vendor-dir": "src/vendor",
+        "bin-dir": "bin"
     }
 }
