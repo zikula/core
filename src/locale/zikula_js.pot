@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula Core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-24 14:22+0000\n"
+"POT-Creation-Date: 2012-11-26 17:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,12 +27,15 @@ msgstr ""
 msgid "You have unsaved changes!"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:945 javascript/helpers/Zikula.UI.js:1028
-#: javascript/helpers/Zikula.UI.js:1192
+#: javascript/helpers/Zikula.UI.js:953 javascript/helpers/Zikula.UI.js:1036
+#: javascript/helpers/Zikula.UI.js:1200
 msgid "Ok"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1029 javascript/helpers/Zikula.UI.js:1148
+#: javascript/helpers/Zikula.UI.js:1037 javascript/helpers/Zikula.UI.js:1156
+#: modules/Clip/javascript/Zikula.Clip.Container.js:614
+#: modules/Clip/javascript/Zikula.Clip.Container.js:646
+#: modules/Clip/javascript/Clip.Pubfields.js:59
 #: system/Categories/javascript/categories_admin_view.js:93
 #: system/Categories/javascript/categories_admin_view.js:104
 #: system/Categories/javascript/categories_admin_view.js:249
@@ -40,12 +43,13 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1147
+#: javascript/helpers/Zikula.UI.js:1155
+#: modules/Clip/javascript/Zikula.Clip.Container.js:613
 #: system/Categories/javascript/categories_admin_view.js:248
 msgid "Submit"
 msgstr ""
 
-#: javascript/helpers/Zikula.UI.js:1190
+#: javascript/helpers/Zikula.UI.js:1198
 msgid "Select multiple"
 msgstr ""
 
@@ -96,15 +100,66 @@ msgstr ""
 msgid "Image #{index} of #{total}"
 msgstr ""
 
+#: modules/Clip/javascript/Zikula.Clip.Container.js:410
+#: modules/Clip/javascript/Zikula.Clip.Container.js:447
 #: system/Categories/javascript/categories_admin_view.js:30
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:30
 msgid "Edit"
 msgstr ""
 
+#: modules/Clip/javascript/Zikula.Clip.Container.js:419
+#: modules/Clip/javascript/Zikula.Clip.Container.js:645
 #: system/Categories/javascript/categories_admin_view.js:36
 #: system/Categories/javascript/categories_admin_view.js:92
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:31
 msgid "Delete"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:428
+msgid "Add group after selected"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:437
+msgid "Add subgroup into selected"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:458
+msgid "Fields"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:469
+msgid "Relations"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:480
+msgid "Code"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:492
+msgid "Editor list"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:503
+msgid "New publication"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:642
+msgid "Do you really want to delete this group?"
+msgstr ""
+
+#: modules/Clip/javascript/Zikula.Clip.Container.js:652
+#: system/Categories/javascript/categories_admin_view.js:110
+#: system/PageLock/javascript/pagelock.js:27
+msgid "Confirmation prompt"
+msgstr ""
+
+#: modules/Clip/javascript/Clip.Pubfields.js:54
+#: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
+msgid "Save"
+msgstr ""
+
+#: modules/Clip/javascript/Clip.Pubfields.js:65
+msgid "Plugin configuration"
 msgstr ""
 
 #: system/Categories/javascript/categories_admin_view.js:42
@@ -148,11 +203,6 @@ msgstr ""
 
 #: system/Categories/javascript/categories_admin_view.js:103
 msgid "Move all sub-categories"
-msgstr ""
-
-#: system/Categories/javascript/categories_admin_view.js:110
-#: system/PageLock/javascript/pagelock.js:27
-msgid "Confirmation prompt"
 msgstr ""
 
 #: system/PageLock/javascript/pagelock.js:26
@@ -265,10 +315,6 @@ msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:41
 msgid "Use one for all langs"
-msgstr ""
-
-#: system/Blocks/javascript/Zikula.Menutree.Tree.js:43
-msgid "Save"
 msgstr ""
 
 #: system/Blocks/javascript/Zikula.Menutree.Tree.js:44

@@ -563,7 +563,7 @@ class UserUtil
      * @param boolean $rememberme          Whether or not to remember login.
      * @param boolean $checkPassword       Whether or not to check the password.
      *
-     * @deprecated
+     * @deprecated use UserUtil::loginUsing() instead
      *
      * @return boolean
      */
