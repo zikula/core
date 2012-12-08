@@ -1007,8 +1007,13 @@ class SqlWalker implements TreeWalker
 
         switch (true) {
             case ($joinDeclaration instanceof \Doctrine\ORM\Query\AST\RangeVariableDeclaration):
+                $class = $this->em->getClassMetadata($joinDeclaration->abstractSchemaName);
+                $condExprConjunction = $class->isInheritanceTypeJoined() && $joinType != AST\Join::JOIN_TYPE_LEFT && $joinType != AST\Join::JOIN_TYPE_LEFTOUTER
+                    ? ' AND '
+                    : ' ON ';
+
                 $sql .= $this->walkRangeVariableDeclaration($joinDeclaration)
-                      . ' ON (' . $this->walkConditionalExpression($join->conditionalExpression) . ')';
+                      . $condExprConjunction . '(' . $this->walkConditionalExpression($join->conditionalExpression) . ')';
                 break;
 
             case ($joinDeclaration instanceof \Doctrine\ORM\Query\AST\JoinAssociationDeclaration):
@@ -1147,7 +1152,7 @@ class SqlWalker implements TreeWalker
         switch (true) {
             case ($expr instanceof AST\PathExpression):
                 if ($expr->type !== AST\PathExpression::TYPE_STATE_FIELD) {
-                    throw QueryException::invalidPathExpression($expr->type);
+                    throw QueryException::invalidPathExpression($expr);
                 }
 
                 $fieldName = $expr->field;
@@ -1188,7 +1193,6 @@ class SqlWalker implements TreeWalker
             case ($expr instanceof AST\SimpleArithmeticExpression):
             case ($expr instanceof AST\ArithmeticTerm):
             case ($expr instanceof AST\ArithmeticFactor):
-            case ($expr instanceof AST\ArithmeticPrimary):
             case ($expr instanceof AST\Literal):
             case ($expr instanceof AST\NullIfExpression):
             case ($expr instanceof AST\CoalesceExpression):
@@ -1422,7 +1426,6 @@ class SqlWalker implements TreeWalker
             case ($expr instanceof AST\SimpleArithmeticExpression):
             case ($expr instanceof AST\ArithmeticTerm):
             case ($expr instanceof AST\ArithmeticFactor):
-            case ($expr instanceof AST\ArithmeticPrimary):
             case ($expr instanceof AST\Literal):
             case ($expr instanceof AST\NullIfExpression):
             case ($expr instanceof AST\CoalesceExpression):
@@ -1609,7 +1612,7 @@ class SqlWalker implements TreeWalker
 
             if (count($filterClauses)) {
                 if ($condSql) {
-                    $condSql .= ' AND ';
+                    $condSql = '(' . $condSql . ') AND ';
                 }
 
                 $condSql .= implode(' AND ', $filterClauses);

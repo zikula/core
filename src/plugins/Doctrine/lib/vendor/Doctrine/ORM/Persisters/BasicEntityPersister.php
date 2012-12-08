@@ -88,7 +88,7 @@ class BasicEntityPersister
      */
     static private $comparisonMap = array(
         Comparison::EQ  => '= %s',
-        Comparison::IS  => '= %s',
+        Comparison::IS  => 'IS %s',
         Comparison::NEQ => '!= %s',
         Comparison::GT  => '> %s',
         Comparison::GTE => '>= %s',
@@ -659,12 +659,13 @@ class BasicEntityPersister
      * @param array $hints Hints for entity creation.
      * @param int $lockMode
      * @param int $limit Limit number of results
+     * @param array $orderBy Criteria to order by 
      * @return object The loaded and managed entity instance or NULL if the entity can not be found.
      * @todo Check identity map? loadById method? Try to guess whether $criteria is the id?
      */
-    public function load(array $criteria, $entity = null, $assoc = null, array $hints = array(), $lockMode = 0, $limit = null)
+    public function load(array $criteria, $entity = null, $assoc = null, array $hints = array(), $lockMode = 0, $limit = null, array $orderBy = null)
     {
-        $sql = $this->_getSelectEntitiesSQL($criteria, $assoc, $lockMode, $limit);
+        $sql = $this->_getSelectEntitiesSQL($criteria, $assoc, $lockMode, $limit, null, $orderBy);        
         list($params, $types) = $this->expandParameters($criteria);
         $stmt = $this->_conn->executeQuery($sql, $params, $types);
 
@@ -1699,7 +1700,11 @@ class BasicEntityPersister
                 $idValues = $class->getIdentifierValues($value);
             }
 
-            $value = $idValues[key($idValues)];
+            $key = key($idValues);
+
+            if (null !== $key){
+                $value = $idValues[$key];
+           } 
         }
 
         return $value;
