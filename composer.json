@@ -43,8 +43,7 @@
         "symfony/finder": "2.2.*",
         "symfony/filesystem": "2.2.*",
         "symfony/form": "2.2.*",
-        "symfony/process": "2.2.*",
-        "swiftmailer/swiftmailer": "dev-master"
+        "symfony/process": "2.2.*"
     },
     "config": {
         "vendor-dir": "src/vendor"
