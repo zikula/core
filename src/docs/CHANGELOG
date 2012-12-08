@@ -8,6 +8,7 @@ Features:
 - Update jQuery-UI to 1.9.2
 - Zikula Form - automatically set proper form enctype when upload input is used
 - Added ModUtil::getModuleImagePath() for getting the admin image of a module
+- Update Smarty to 2.6.27
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
