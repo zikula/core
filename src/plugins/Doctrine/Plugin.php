@@ -75,7 +75,6 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
         include 'lib/DoctrineHelper.php';
-        $autoloader->register('Doctrine', dirname(__FILE__) . '/lib/vendor', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
         $serviceManager = $this->eventManager->getServiceManager();
@@ -96,7 +95,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         CacheUtil::createLocalDir('doctrinemodels');
 
         // setup annotations base
-        include_once 'lib/vendor/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        include_once 'vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
 
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();

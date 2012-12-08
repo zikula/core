@@ -40,7 +40,6 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
     {
         $autoloader = new Zikula_KernelClassLoader();
         $autoloader->spl_autoload_register();
-        $autoloader->register('Gedmo', __DIR__ . '/lib/vendor/l3pp4rd/DoctrineExtensions/lib', '\\');
         $autoloader->register('DoctrineExtensions\\StandardFields', __DIR__ . '/lib', '\\');
         $autoloader->register('DoctrineExtensions', __DIR__ . '/lib/vendor/beberlei/DoctrineExtensions/lib', '\\');
         

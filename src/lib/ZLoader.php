@@ -23,15 +23,10 @@ if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
 }
 
-include 'lib/i18n/ZGettextFunctions.php';
-include 'lib/Zikula/KernelClassLoader.php';
-
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // setup vendors in include path
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
-
-include 'Smarty/Smarty.class.php';
 
 /**
  * ZLoader.
@@ -58,14 +53,10 @@ class ZLoader
      */
     public static function register()
     {
-        self::$map = self::map();
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new Zikula_KernelClassLoader();
         self::$autoloaders->spl_autoload_register();
-        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
-        self::addAutoloader('Zend_Log', ZLOADER_PATH . '/vendor');
-        self::addAutoloader('Symfony', ZLOADER_PATH . '/vendor', '\\');
     }
 
     /**
@@ -155,60 +146,6 @@ class ZLoader
             return include $file;
         }
     }
-
-    /**
-     * Provides map for simple autoloader.
-     *
-     * @return array Class locations.
-     */
-    public static function map()
-    {
-        return array(
-                'ZLanguage' => 'i18n',
-                'ZI18n' => 'i18n',
-                'ZL10n' => 'i18n',
-                'ZLocale' => 'i18n',
-                'ZGettext' => 'i18n',
-                'ZMO' => 'i18n',
-                'ZLanguageBrowser' => 'i18n',
-                'DBObject' => 'dbobject',
-                'DBObjectArray' => 'dbobject',
-                'DBUtil' => 'util',
-                'BlockUtil' => 'util',
-                'AjaxUtil' => 'util',
-                'CacheUtil' => 'util',
-                'CategoryRegistryUtil' => 'util',
-                'CategoryUtil' => 'util',
-                'CookieUtil' => 'util',
-                'DataUtil' => 'util',
-                'DateUtil' => 'util',
-                'DoctrineUtil' => 'util',
-                'EventUtil' => 'util',
-                'FileUtil' => 'util',
-                'FilterUtil' => 'util',
-                'FormUtil' => 'util',
-                'HookUtil' => 'util',
-                'HtmlUtil' => 'util',
-                'JCSSUtil' => 'util',
-                'LogUtil' => 'util',
-                'ModUtil' => 'util',
-                'ObjectUtil' => 'util',
-                'PluginUtil' => 'util',
-                'PageUtil' => 'util',
-                'RandomUtil' => 'util',
-                'SecurityUtil' => 'util',
-                'ServiceUtil' => 'util',
-                'SessionUtil' => 'util',
-                'StringUtil' => 'util',
-                'System' => 'util',
-                'ThemeUtil' => 'util',
-                'UserUtil' => 'util',
-                'ValidationUtil' => 'util',
-                'Loader' => 'legacy',
-                'sfYaml' => 'vendor/Doctrine/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
-        );
-    }
-
 }
 
 /**

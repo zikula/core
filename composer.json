@@ -7,18 +7,20 @@
     "autoload": {
         "psr-0": {
             "Zikula": "src/lib",
-            "Zend_Log": "src/lib"
+            "Zend_Log": "src/lib/vendor"
         },
         "classmap": [
-            "src/lib/util/", "src/lib/i18n/"
+            "src/lib/util/",
+            "src/lib/i18n/",
+            "src/lib/dbobject/"
         ],
         "files": [
             "src/lib/i18n/ZGettextFunctions.php",
-            "src/lib/Markdown/markdown.php",
-            "src/lib/Markdown/markdown.php",
-            "src/lib/idn/idna_convert.class.php",
-            "src/lib/Smarty/Smarty.class.php",
-            "src/lib/encryption/rc4crypt.class.php"
+            "src/lib/vendor/Markdown/markdown.php",
+            "src/lib/vendor/idn/idna_convert.class.php",
+            "src/lib/vendor/Smarty/Smarty.class.php",
+            "src/lib/vendor/encryption/rc4crypt.class.php",
+            "src/lib/legacy/Loader.php"
         ]
     },
     "authors": [
@@ -30,6 +32,7 @@
     "require": {
         "php": ">=5.3.3",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
+        "drak/doctrine1": "dev-master",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
         "symfony/class-loader": "2.2.*",
@@ -38,7 +41,8 @@
         "symfony/finder": "2.2.*",
         "symfony/filesystem": "2.2.*",
         "symfony/form": "2.2.*",
-        "symfony/process": "2.2.*"
+        "symfony/process": "2.2.*",
+        "swiftmailer/swiftmailer": "dev-master"
     },
     "config": {
         "vendor-dir": "src/vendor"
