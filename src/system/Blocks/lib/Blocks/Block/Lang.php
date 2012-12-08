@@ -123,15 +123,6 @@ class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
             unset($get['lang']);
         }
 
-        if (System::isLegacyMode()) {
-            if (!isset($type)) {
-                $type = 'user';
-            }
-            if (!isset($func)) {
-                $func = 'main';
-            }
-        }
-
         // make homepage calculations
         $shorturls = System::getVar('shorturls', false);
 

@@ -242,13 +242,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             }
         }
 
-        // adds legacy plugin paths if needed
-        if (System::isLegacyMode()) {
-            $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
-            $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
-            $this->addPluginDir("themes/$theme/templates/modules/$moduleName/plugins"); // Module override in themes
-        }
-
         //---- Cache handling -------------------------------------------------
         if ($caching && in_array((int)$caching, array(0, 1, 2))) {
             $this->caching = (int)$caching;
@@ -297,10 +290,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // register prefilters
         $this->register_prefilter('z_prefilter_add_literal');
 
-        if ($GLOBALS['ZConfig']['System']['legacy_prefilters']) {
-            $this->register_prefilter('z_prefilter_legacy');
-        }
-
         $this->register_prefilter('z_prefilter_gettext_params');
         //$this->register_prefilter('z_prefilter_notifyfilters');
 
@@ -316,13 +305,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('themepath', $this->baseurl . 'themes/' . $theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri);
-
-        if (System::isLegacyMode()) {
-            $this->assign('stylepath', $this->baseurl . 'themes/' . $theme . '/style')
-                 ->assign('scriptpath', $this->baseurl . 'themes/' . $theme . '/javascript')
-                 ->assign('imagepath', $this->baseurl . 'themes/' . $theme . '/images')
-                 ->assign('imagelangpath', $this->baseurl . 'themes/' . $theme . '/images/' . $this->language);
-        }
 
         // for {gt} template plugin to detect gettext domain
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -397,28 +379,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // for {gt} template plugin to detect gettext domain
         if ($view->module[$module]['type'] == ModUtil::TYPE_MODULE) {
             $view->domain = ZLanguage::getModuleDomain($view->module[$module]['name']);
-        }
-
-        if (System::isLegacyMode()) {
-            // load the usemodules configuration if exists
-            $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
-            $usepathOld = "$modpath/" . $view->module[$module]['directory'] . '/pntemplates/config';
-            $usemod_confs = array();
-            $usemod_confs[] = "$usepath/usemodules.txt";
-            $usemod_confs[] = "$usepathOld/usemodules.txt";
-            $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
-            // load the config file
-            foreach ($usemod_confs as $usemod_conf) {
-                if (is_readable($usemod_conf) && is_file($usemod_conf)) {
-                    $additionalmodules = file($usemod_conf);
-                    if (is_array($additionalmodules)) {
-                        foreach ($additionalmodules as $addmod) {
-                            $view->_add_plugins_dir(trim($addmod));
-                        }
-                    }
-                }
-            }
         }
 
         return $view;
@@ -578,15 +538,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $override = self::getTemplateOverride($templatefile);
             if ($override === false) {
                 // no override present
-                if (!System::isLegacyMode()) {
-                    if (is_readable($templatefile)) {
-                        $this->templateCache[$template] = $relativepath;
-
-                        return $relativepath;
-                    } else {
-                        return false;
-                    }
-                }
             } else {
                 if (is_readable($override)) {
                     $path = substr($override, 0, strrpos($override, $ostemplate));
@@ -661,35 +612,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // add userdata
         $core['user']   = UserUtil::getVars(SessionUtil::getVar('uid'));
-
-        if (System::isLegacyMode()) {
-            // add modvars of current modules
-            foreach ($this->module as $module => $dummy) {
-                if (!empty($module)) {
-                    $core[$module] = ModUtil::getVar($module);
-                }
-            }
-
-            // add mod vars of all modules supplied as parameter
-            $modulenames = func_get_args();
-            foreach ($modulenames as $modulename) {
-                // if the modulename is empty do nothing
-                if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
-                    // check if user wants to have config
-                    if ($modulename == ModUtil::CONFIG_MODULE) {
-                        $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
-                        foreach ($ZConfig as $key => $value) {
-                            // gather all config vars
-                            $core['ZConfig'][$key] = $value;
-                        }
-                    } else {
-                        $core[$modulename] = ModUtil::getVar($modulename);
-                    }
-                }
-            }
-
-            $this->assign('pncore', $core);
-        }
 
         // Module vars
         parent::assign('coredata', $core);
@@ -1117,10 +1039,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $this->addPluginDir("$modpath/$modinfo[directory]/templates/plugins");
-
-        if (System::isLegacyMode() && $modpath == 'modules') {
-            $this->addPluginDir("$modpath/$modinfo[directory]/pntemplates/plugins");
-        }
     }
 
     /**
@@ -2992,39 +2910,6 @@ function z_prefilter_gettext_params($tpl_source, $view)
     return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.+?))__([a-zA-Z0-9][a-zA-Z_0-9]*=([\'"])(?:\\\\?+.)*?\3)#', '$1$2|gt:\$zikula_view', $tpl_source);
 }
 
-/**
- * Prefilter for legacy tag delemitters.
- *
- * @param string      $source The template's source prior to prefiltering.
- * @param Zikula_View $view   A reference to the Zikula_View object.
- *
- * @return string The prefiltered template contents.
- */
-function z_prefilter_legacy($source, $view)
-{
-    // rewrite the old delimiters to new.
-    $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
-
-    // handle old plugin names and return.
-    return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
-}
-
-/**
- * Callback function for self::z_prefilter_legacy().
- *
- * @param string $m Tag token.
- *
- * @return string
- */
-function z_prefilter_legacy_callback($m)
-{
-    $m[1] = str_replace('|pndate_format', '|dateformat', $m[1]);
-    $m[1] = str_replace('pndebug', 'zdebug', $m[1]);
-    $m[1] = preg_replace('#^(\s*)(/{0,1})pn([a-zA-Z0-9_]+)(\s*|$)#', '$1$2$3$4', $m[1]);
-    $m[1] = preg_replace('#\|pn#', '|', $m[1]);
-
-    return "{{$m[1]}}";
-}
 
 ///**
 // * Prefilter for hookable filters.

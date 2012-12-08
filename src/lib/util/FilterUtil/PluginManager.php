@@ -167,8 +167,6 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
             $this->_loaded[$name] = $key;
 
             return key(end($this->_plg));
-        } elseif (System::isLegacyMode()) {
-            return $this->loadPluginLegacy();
         }
 
         return false;

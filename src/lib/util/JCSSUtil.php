@@ -37,11 +37,6 @@ class JCSSUtil
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
-        if (System::isLegacyMode()) {
-            $return .= 'document.location.entrypoint="' . $config['entrypoint'] . '";';
-            $return .= 'document.location.pnbaseURL="' . $config['baseURL'] . '"; ';
-            $return .= 'document.location.ajaxtimeout=' . $config['ajaxtimeout'] . ";\n";
-        }
         $return .= "if (typeof(Zikula) == 'undefined') {var Zikula = {};}\n";
         $return .= "Zikula.Config = " . json_encode($config) . "\n";
         $return .= ' /* ]]> */</script>' . "\n";
@@ -69,25 +64,6 @@ class JCSSUtil
         $javascripts = PageUtil::getVar('javascript');
         $stylesheets = PageUtil::getVar('stylesheet');
 
-        if (System::isLegacyMode()) {
-            $replaceLightbox = false;
-            // check if we need to perform ligthbox replacement -- javascript
-            if (is_array($javascripts) && !empty($javascripts)) {
-                $key = array_search('javascript/ajax/lightbox.js', $javascripts);
-                if ($key && !is_readable('javascript/ajax/lightbox.js')) {
-                    $javascripts[$key] = 'javascript/helpers/Zikula.ImageViewer.js';
-                    $replaceLightbox = true;
-                }
-            }
-
-            // check if we need to perform ligthbox replacement -- css
-            if ($replaceLightbox) {
-                $key = array_search('javascript/ajax/lightbox/lightbox.css', $stylesheets);
-                if ($key) {
-                    $stylesheets[$key] = 'javascript/helpers/ImageViewer/ImageViewer.css';
-                }
-            }
-        }
         $javascripts = self::prepareJavascripts($javascripts, $combine);
         // update stylesheets as there might be some additions for js
         $stylesheets = array_merge((array)$stylesheets, (array)PageUtil::getVar('stylesheet'));
@@ -304,9 +280,9 @@ class JCSSUtil
             if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
                 $script = 'prototype';
             }
-        } elseif (System::isLegacyMode() && (strpos($script, 'system/') === 0 || strpos($script, 'modules/') === 0)) {
+        } elseif (strpos($script, 'modules/') === 0) {
             // check for customized javascripts
-            $custom = str_replace(array('javascript/', 'pnjavascript/'), '', $script);
+            $custom = str_replace(array('javascript/'), '', $script);
             $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
             if (file_exists($custom)) {
                 $script = $custom;

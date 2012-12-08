@@ -916,11 +916,7 @@ class System
      */
     public static function isLegacyMode()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+        return false;
     }
 
     /**
@@ -930,11 +926,7 @@ class System
      */
     public static function hasLegacyTemplates()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
+        return false;
     }
 
     /**

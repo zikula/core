@@ -313,11 +313,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        // call any module delete hooks
-        if (System::isLegacyMode() && !$oomod) {
-            ModUtil::callHooks('module', 'remove', $modinfo['name'], array('module' => $modinfo['name']));
-        }
-
         // Get module database info
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
 
@@ -386,11 +381,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // Delete any module variables that the module cleanup function might
         // have missed
         DBUtil::deleteObjectByID('module_vars', $modinfo['name'], 'modname');
-
-        // clean up any hooks activated for this module
-        if (System::isLegacyMode()) {
-            DBUtil::deleteObjectByID('hooks', $modinfo['name'], 'tmodule');
-        }
 
         if ($oomod) {
             HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
@@ -1231,11 +1221,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                                              array('url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array('systemplugins' => true, 'state'=>PluginUtil::ENABLED)),
                                                    'text' => $this->__('Active'))
                                                ));
-
-            $legacyHooks = DBUtil::selectObjectArray('hooks');
-            if (System::isLegacyMode() && $legacyHooks) {
-                $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-hook');
-            }
 
             $links[] = array('url' => ModUtil::url('Extensions', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
             //$filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');

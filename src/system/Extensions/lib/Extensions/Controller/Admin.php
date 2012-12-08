@@ -262,14 +262,6 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
 
-                            if (System::isLegacyMode() && !ModUtil::isOO($mod['name'])) {
-                                $actions[] = array(
-                                        'url' => ModUtil::url('Extensions', 'admin', 'legacyhooks', array(
-                                        'id' => $mod['id'])),
-                                        'image' => 'attach.png',
-                                        'title' => $this->__f('Legacy hook settings for \'%s\'', $mod['name']));
-                            }
-
                             if (PluginUtil::hasModulePlugins($mod['name'])) {
                                 $actions[] = array(
                                         'url' => ModUtil::url('Extensions', 'admin', 'viewPlugins', array(
