@@ -20,7 +20,7 @@ HTMLPurifier 4.3.0
     Location in Zikula: system/SecurityCenter/vendor/htmlpurifier
     Patch details: none
 
-Smarty 2.6.26
+Smarty 2.6.27
 
     Vendor website: http://www.smarty.net/
     Downloaded from: http://www.smarty.net/download.php
@@ -28,7 +28,6 @@ Smarty 2.6.26
     Location in Zikula: lib/vendor/Smarty
     Patch details:
     - Removed check inside the Smarty folder except for its core 'plugins' https://gist.github.com/960158
-    - Security fix on the math plugin http://tinyurl.com/3b6p6vk
 
 Doctrine 1.2.4
 
