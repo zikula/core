@@ -17,6 +17,9 @@
  * Zikula_ServiceManager_Argument container class.
  *
  * This class contains an argument id which references a stored parameter.
+ *
+ * @deprecated from 1.4
+ * @see \Symfony\Component\DependencyInjection\Parameter
  */
 class Zikula_ServiceManager_Argument extends \Symfony\Component\DependencyInjection\Parameter
 {

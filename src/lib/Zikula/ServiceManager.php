@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * ServiceManager class.
+ * @deprecated from 1.4
+ * @use \Symfony\Component\DependencyInjection\ContainerBuilder
  */
 class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
 {

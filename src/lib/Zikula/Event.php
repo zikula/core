@@ -13,6 +13,7 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -62,6 +63,9 @@ class Zikula_Event extends GenericEvent
     /**
      * Signal to stop further event notification.
      *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::stopPropagation()
+     *
      * @return void
      */
     public function stop()
@@ -71,6 +75,9 @@ class Zikula_Event extends GenericEvent
 
     /**
      * Has the event been stopped.
+     *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::isPropagationStopped()
      *
      * @return boolean
      */
@@ -99,6 +106,9 @@ class Zikula_Event extends GenericEvent
      * @param string $key   Argument name.
      * @param mixed  $value Value.
      *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::setArgument()
+     *
      * @return Zikula_Event
      */
     public function setArg($key, $value)
@@ -110,6 +120,9 @@ class Zikula_Event extends GenericEvent
      * Set args property.
      *
      * @param array $args Arguments.
+     *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::setArguments()
      *
      * @return Zikula_Event
      */
@@ -123,6 +136,9 @@ class Zikula_Event extends GenericEvent
      *
      * @param string $key Key.
      *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::getArgument()
+     *
      * @throws InvalidArgumentException If key is not found.
      *
      * @return mixed Contents of array key.
@@ -134,6 +150,9 @@ class Zikula_Event extends GenericEvent
 
     /**
      * Getter for all arguments.
+     *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::getArguments()
      *
      * @return array
      */
@@ -156,6 +175,9 @@ class Zikula_Event extends GenericEvent
      * Has argument.
      *
      * @param string $key Key of arguments array.
+     *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::hasArgument()
      *
      * @return boolean
      */
@@ -209,17 +231,23 @@ class Zikula_Event extends GenericEvent
     /**
      * Sets the EventManager property.
      *
-     * @param Zikula_EventManagerInterface $eventManager
+     * @param EventDispatcherInterface $eventManager
+     *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::setDispatcher()
      *
      * @return void
      */
-    public function setEventManager(\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventManager)
+    public function setEventManager(EventDispatcherInterface $eventManager)
     {
         $this->setDispatcher($eventManager);
     }
 
     /**
      * Gets the EventManager.
+     *
+     * @deprecated since 1.4
+     * @use Symfony\Component\EventDispatcher\GenericEvent::getDispatcher()
      *
      * @return Zikula_EventManager
      */
