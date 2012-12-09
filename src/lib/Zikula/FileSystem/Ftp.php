@@ -61,14 +61,14 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
                 if ($this->driver->pasv($this->_resource, $this->configuration->getPasv())) {
                     if ($this->driver->chdir($this->_resource, $this->configuration->getDir())) {
                         $this->_dir = ftp_pwd($this->_resource);
-                        $this->errorHandler->stop();
+                        $this->errorHandler->stopPropagation();
 
                         return true;
                     }
                 }
             }
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -90,11 +90,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         if ($this->driver->put($this->_resource, $remote, $local, FTP_BINARY)) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return true;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -114,11 +114,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         if ($this->driver->fput($this->_resource, $remote, $stream, FTP_BINARY)) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return true;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -140,11 +140,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         if ($this->driver->get($this->_resource, $local, $remote, FTP_BINARY)) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return true;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -165,11 +165,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $handle = fopen('php://temp', 'r+');
         if ($this->driver->fget($this->_resource, $handle, $remote, FTP_BINARY)) {
             rewind($handle);
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return $handle;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -189,11 +189,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $perm = (int)octdec(str_pad($perm, 4, '0', STR_PAD_LEFT));
         if (($perm = $this->driver->chmod($this->_resource, $perm, $file)) !== false) {
             $perm = (int)decoct(str_pad($perm, 4, '0', STR_PAD_LEFT));
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return $perm;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -211,11 +211,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         $dir = ($dir == '' ? ftp_pwd($this->_resource) : $dir);
         if (($ls = $this->driver->nlist($this->_resource, $dir)) !== false) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return $ls;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -232,11 +232,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         if ($this->driver->chdir($this->_resource, $dir)) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return true;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -256,11 +256,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         if ($this->driver->rename($this->_resource, $sourcepath, $destpath)) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return true;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -281,12 +281,12 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->errorHandler->start();
         if (($handle = $this->fget($sourcepath)) !== false) {
             if ($this->fput($handle, $destpath)) {
-                $this->errorHandler->stop();
+                $this->errorHandler->stopPropagation();
 
                 return true;
             };
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }
@@ -303,11 +303,11 @@ class Zikula_FileSystem_Ftp extends Zikula_FileSystem_AbstractDriver
         $this->isAlive(true);
         $this->errorHandler->start();
         if (($this->driver->delete($this->_resource, $sourcepath)) !== false) {
-            $this->errorHandler->stop();
+            $this->errorHandler->stopPropagation();
 
             return true;
         }
-        $this->errorHandler->stop();
+        $this->errorHandler->stopPropagation();
 
         return false;
     }

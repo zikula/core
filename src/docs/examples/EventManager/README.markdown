@@ -44,7 +44,7 @@ There are two types of event handler, 'notify' and 'notifyUntil' handlers:
 
 Event handlers receive an instance of the Event object and are processed blindly. They do not pass a return value.  There are two kinds of notify event handlers
 1. notify() handlers simply execute with no return.
-2. notify() handlers must call $event->stop() if they executed.  No more handlers will be notified of events after this one exits.
+2. notify() handlers must call $event->stopPropagation() if they executed.  No more handlers will be notified of events after this one exits.
 
 Event handlers receive the event object and have full access to whatever was encapsulated by the event object.
 

@@ -770,7 +770,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         if (array_key_exists($event->data, $this->_overrideMap)) {
             $event->data = $this->_overrideMap[$event->data];
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 
