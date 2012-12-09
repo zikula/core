@@ -17,7 +17,7 @@
  * ServiceHandler class.
  *
  * This is a container for a service managed by ServiceManager (by ID) and
- * a corrisponding method in that service that will handler and event.
+ * a corresponding method in that service that will handler and event.
  */
 class Zikula_ServiceHandler
 {
