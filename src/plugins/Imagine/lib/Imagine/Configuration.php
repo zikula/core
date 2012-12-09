@@ -97,7 +97,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
      */
     public function cleanup()
     {
-        $manager = $this->getServiceManager()->getService('systemplugin.imagine.manager');
+        $manager = $this->getContainer()->get('systemplugin.imagine.manager');
         $manager->cleanupThumbs();
         $this->registerStatus($this->__('Done! Imagine thumbnails were cleanup!'));
 

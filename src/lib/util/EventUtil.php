@@ -102,7 +102,7 @@ class EventUtil
      */
     public static function attachCustomHandlers($dir)
     {
-        self::$eventManager->getServiceManager()->getService('zikula')->attachHandlers($dir);
+        self::$eventManager->getContainer()->get('zikula')->attachHandlers($dir);
     }
 
     /**

@@ -129,7 +129,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function getConfigurationController()
     {
-        return new SystemPlugin_Imagine_Configuration($this->getServiceManager(), $this);
+        return new SystemPlugin_Imagine_Configuration($this->getContainer(), $this);
     }
 
     /**
@@ -248,7 +248,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function getManager()
     {
-        return $this->getServiceManager()->getService('systemplugin.imagine.manager');
+        return $this->getContainer()->get('systemplugin.imagine.manager');
     }
 
     /**

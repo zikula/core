@@ -90,14 +90,14 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
         $this->object = $object;
 
         if ($object instanceof Zikula_AbstractBase || $object instanceof Zikula_AbstractEventHandler || $object instanceof Zikula_Hook_AbstractHandler || $object instanceof Zikula_AbstractPlugin) {
-            $this->serviceManager = $object->getServiceManager();
+            $this->serviceManager = $object->getContainer();
             $this->eventManager = $object->getEventManager();
         } elseif ($object instanceof Zikula_ServiceManager) {
             $this->serviceManager = $object;
             $this->eventManager = $object->getService('event_dispatcher');
         } elseif ($object instanceof Zikula_EventManager) {
             $this->eventManager = $object;
-            $this->serviceManager = $object->getServiceManager();
+            $this->serviceManager = $object->getContainer();
         }
 
         if ($object instanceof Zikula_AbstractBase) {

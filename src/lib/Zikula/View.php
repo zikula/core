@@ -1345,11 +1345,31 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     }
 
     /**
+     * Get ServiceManager.
+     *
+     * @return Zikula_ServiceManager The service manager.
+     */
+    public function getContainer()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
      * Get EventManager.
      *
      * @return Zikula_Eventmanager The event manager.
      */
     public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    /**
+     * Get EventManager.
+     *
+     * @return Zikula_Eventmanager The event manager.
+     */
+    public function getDispatcher()
     {
         return $this->eventManager;
     }

@@ -67,7 +67,7 @@ function smarty_function_thumb($params, Zikula_View $view)
     if (isset($params['manager']) && $params['manager'] instanceof SystemPlugin_Imagine_Manager) {
         $manager = $params['manager'];
     } else {
-        $manager = $view->getServiceManager()->getService('systemplugin.imagine.manager');
+        $manager = $view->getContainer()->get('systemplugin.imagine.manager');
     }
 
     if (isset($params['preset']) && $params['preset'] instanceof SystemPlugin_Imagine_Preset) {

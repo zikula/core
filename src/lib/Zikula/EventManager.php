@@ -112,6 +112,6 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function hasServiceManager()
     {
-        return (bool)$this->getServiceManager();
+        return (bool)$this->getContainer();
     }
 }
