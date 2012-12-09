@@ -45,7 +45,7 @@ class Zikula_HookManager_ServiceFactory
     {
         $this->container = $container;
         if (!$container->has($serviceId)) {
-            throw new Exception\InvalidArgumentException(sprintf('Service %s is not registered in the DIC', $serviceId));
+            throw new InvalidArgumentException(sprintf('Service %s is not registered in the DIC', $serviceId));
         }
 
         $this->serviceId = $serviceId;
