@@ -217,7 +217,7 @@
                     {/foreach}
 
                     {if $total_bindings eq 0}
-                    {if $connection_exists eq false}<span class="z-sub">{gt text="%1$s module can't connect to %2$s module. No connections are supported" tag1=$currentmodule tag2=$subscriber.name|safetext}</span>{/if}
+                    {if $connection_exists eq false}<span class="z-sub">{gt text='%1$s module can\'t connect to %2$s module. No connections are supported' tag1=$currentmodule tag2=$subscriber.name|safetext}</span>{/if}
                     {continue}
                     {/if}
 
