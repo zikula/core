@@ -13,42 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 /**
  * Zikula_Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event implements Zikula_EventInterface, ArrayAccess
+class Zikula_Event extends GenericEvent
 {
-    /**
-     * Name of the event.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Observer pattern subject.
-     *
-     * @var mixed usually object or callable
-     */
-    protected $subject;
-
-    /**
-     * Array of arguments.
-     *
-     * @var array
-     */
-    protected $args;
-
-    /**
-     * Signal to stop further notification.
-     *
-     * @var boolean
-     */
-    protected $stop = false;
-
     /**
      * Storage for any process type events.
      *
@@ -62,13 +36,6 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      * @var Exception
      */
     protected $exception;
-
-    /**
-     * EventManager instance.
-     *
-     * @var Zikula_EventManagerInterface
-     */
-    protected $eventManager;
 
     /**
      * Encapsulate an event called $name with $subject.
@@ -87,10 +54,9 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
             throw new InvalidArgumentException('Event name cannot be empty');
         }
 
-        $this->name = $name;
-        $this->subject = $subject;
-        $this->args = $args;
+        $this->setName($name);
         $this->data = $data;
+        parent::__construct($subject, $args);
     }
 
     /**
@@ -100,7 +66,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function stop()
     {
-        $this->stop = true;
+        $this->stopPropagation();
     }
 
     /**
@@ -110,7 +76,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function isStopped()
     {
-        return $this->stop;
+        return $this->isPropagationStopped();
     }
 
     /**
@@ -137,9 +103,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function setArg($key, $value)
     {
-        $this->args[$key] = $value;
-
-        return $this;
+        return $this->setArgument($key, $value);
     }
 
     /**
@@ -151,9 +115,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function setArgs(array $args = array())
     {
-        $this->args = $args;
-
-        return $this;
+        return $this->setArguments($args);
     }
 
     /**
@@ -167,11 +129,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function getArg($key)
     {
-        if ($this->hasArg($key)) {
-            return $this->args[$key];
-        }
-
-        throw new InvalidArgumentException(sprintf('%s not found in %s', $key, $this->name));
+        return $this->getArgument($key);
     }
 
     /**
@@ -181,41 +139,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function getArgs()
     {
-        return $this->args;
-    }
-
-    /**
-     * Getter for subject property.
-     *
-     * @return mixed $subject The observer subject.
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * Get event name.
-     *
-     * @return string Name property.
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set event name.
-     *
-     * @param type $name Event Name.
-     *
-     * @return Zikula_Event
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->getArguments();
     }
 
     /**
@@ -237,7 +161,7 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function hasArg($key)
     {
-        return array_key_exists($key, $this->args);
+        return $this->hasArgument($key);
     }
 
     /**
@@ -289,9 +213,9 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      *
      * @return void
      */
-    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    public function setEventManager(\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventManager)
     {
-        $this->eventManager = $eventManager;
+        $this->setDispatcher($eventManager);
     }
 
     /**
@@ -301,64 +225,6 @@ class Zikula_Event implements Zikula_EventInterface, ArrayAccess
      */
     public function getEventManager()
     {
-        return $this->eventManager;
+        return $this->getDispatcher();
     }
-
-    /**
-     * ArrayAccess for argument getter.
-     *
-     * @param string $key Array key.
-     *
-     * @throws InvalidArgumentException If key does not exist in $this->args.
-     *
-     * @return mixed
-     */
-    public function offsetGet($key)
-    {
-        if ($this->hasArg($key)) {
-            return $this->args[$key];
-        }
-
-        throw new InvalidArgumentException(sprintf('The requested key %s does not exist', $key));
-    }
-
-    /**
-     * ArrayAccess for argument setter.
-     *
-     * @param string $key   Array key to set.
-     * @param mixed  $value Value.
-     *
-     * @return void
-     */
-    public function offsetSet($key, $value)
-    {
-        $this->setArg($key, $value);
-    }
-
-    /**
-     * ArrayAccess for unset argument.
-     *
-     * @param string $key Array key.
-     *
-     * @return void
-     */
-    public function offsetUnset($key)
-    {
-        if ($this->hasArg($key)) {
-            unset($this->args[$key]);
-        }
-    }
-
-    /**
-     * AccessArray has argument.
-     *
-     * @param string $key Array key.
-     *
-     * @return boolean
-     */
-    public function offsetExists($key)
-    {
-        return $this->hasArg($key);
-    }
-
 }

@@ -13,12 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * Zikula_EventManager.
  *
  * Manages event handlers and invokes them for notified events.
  */
-class Zikula_EventManager implements Zikula_EventManagerInterface
+class Zikula_EventManager extends EventDispatcher implements EventDispatcherInterface
 {
     /**
      * Storage for handlers.
@@ -123,17 +127,17 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
     /**
      * Notify all handlers for given event name but stop if signalled.
      *
-     * @param Zikula_EventInterface $event Event.
+     * @param Event $event Event.
      *
-     * @return Zikula_EventInterface
+     * @return Event
      */
-    public function notify(Zikula_EventInterface $event)
+    public function notify(Event $event)
     {
-        $event->setEventManager($this);
+        $event->setDispatcher($this);
         $handlers = $this->getHandlers($event->getName());
         foreach ($handlers as $handler) {
             $this->invoke($handler, $event);
-            if ($event->isStopped()) {
+            if ($event->isPropagationStopped()) {
                 // stop signal was received from event, so stop.
                 break;
             }
@@ -181,7 +185,7 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      *
      * @return void
      */
-    private function invoke($handler, Zikula_EventInterface $event)
+    private function invoke($handler, Event $event)
     {
         if ($handler instanceof Zikula_ServiceHandler) {
                 $service = $this->serviceManager->getService($handler->getId());

@@ -12,18 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+use \Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook implements Zikula_HookInterface
+class Zikula_AbstractHook extends Event
 {
-    /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
-
     /**
      * Subscriber object id.
      *
@@ -44,20 +40,6 @@ class Zikula_AbstractHook implements Zikula_HookInterface
      * @var string
      */
     protected $caller;
-
-    /**
-     * Stop notification flag.
-     *
-     * @var boolean
-     */
-    protected $stopped = false;
-
-    /**
-     * EventManager instance.
-     *
-     * @var Zikula_EventManagerInterface
-     */
-    protected $eventManager;
 
     /**
      * Get caller.
@@ -120,68 +102,54 @@ class Zikula_AbstractHook implements Zikula_HookInterface
     /**
      * Stop futher notification.
      *
+     * @deprecated
+     * @see Zikula_AbstractHook::stopPropagation()
+     *
      * @return Zikula_AbstractHook
      */
     public function stop()
     {
-        $this->stopped = true;
-
-        return $this;
+        return $this->stopPropagation();
     }
 
     /**
      * Has event stopped.
      *
+     * @deprecated
+     * @see Zikula_AbstractHook::isPropagationStopped()
+     *
      * @return boolean
      */
     public function isStopped()
     {
-        return $this->stopped;
-    }
-
-    /**
-     * Get event name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set event name.
-     *
-     * @param string $name Hook event name.
-     *
-     * @return Zikula_AbstractHook
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->isPropagationStopped();
     }
 
     /**
      * Sets the EventManager property.
      *
-     * @param Zikula_EventManagerInterface $eventManager
+     * @param EventDispatcherInterface $eventManager
+     *
+     * @deprecated
+     * @see Zikula_AbstractHook::setDispatcher()
      *
      * @return void
      */
-    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    public function setEventManager(EventDispatcherInterface $eventManager)
     {
-        $this->eventManager = $eventManager;
+        $this->setDispatcher($eventManager);
     }
 
     /**
      * Gets the EventManager.
      *
-     * @return Zikula_EventManager
+     * @deprecated
+     * @see Zikula_AbstractHook::getDispatcher()
+     *
+     * @return EventDispatcherInterface
      */
     public function getEventManager()
     {
-        return $this->eventManager;
+        return $this->getDispatcher();
     }
 }

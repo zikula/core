@@ -77,7 +77,7 @@ class Zikula_HookManager
      *
      * @return Zikula_HookInterface
      */
-    public function notify(Zikula_HookInterface $hook)
+    public function notify(Zikula_AbstractHook $hook)
     {
         if (!$this->loaded) {
             // lazy load handlers for the first time
@@ -313,7 +313,7 @@ class Zikula_HookManager
      *
      * @param Zikula_HookInterface $hook
      */
-    private function decorateHook(Zikula_HookInterface $hook)
+    private function decorateHook(Zikula_AbstractHook $hook)
     {
         $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
         if ($owningSide) {

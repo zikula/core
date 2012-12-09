@@ -34,7 +34,7 @@ class Zikula_DisplayHook extends Zikula_AbstractHook
 
     public function __construct($name, $id, Zikula_ModUrl $url = null)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->id = $id;
         $this->url = $url;
     }
