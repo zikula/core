@@ -30,7 +30,7 @@ class Zikula_HookManager
      *
      * @var Zikula_EventManager
      */
-    private $eventManager;
+    private $dispatcher;
 
     /**
      * Runtime hooks handlers loaded flag.
@@ -56,7 +56,7 @@ class Zikula_HookManager
     public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager, Zikula_HookManager_ServiceFactory $factory)
     {
         $this->storage = $storage;
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $eventManager;
         $this->factory = $factory;
     }
 
@@ -73,11 +73,16 @@ class Zikula_HookManager
     /**
      * Notify hook handlers.
      *
-     * @param Zikula_HookInterface $hook Hook instance.
+     * @param Zikula_AbstractHook $hook Hook instance.
      *
-     * @return Zikula_HookInterface
+     * @return Zikula_AbstractHook
      */
     public function notify(Zikula_AbstractHook $hook)
+    {
+        return $this->dispatch($hook->getName(), $hook);
+    }
+
+    public function dispatch($name, Zikula_AbstractHook $hook)
     {
         if (!$this->loaded) {
             // lazy load handlers for the first time
@@ -85,12 +90,14 @@ class Zikula_HookManager
             $this->loaded = true;
         }
 
+        $hook->setName($name);
+
         $this->decorateHook($hook);
         if (!$hook->getAreaId()) {
             return $hook;
         }
 
-        $this->eventManager->notify($hook);
+        $this->dispatcher->dispatch($hook->getName(), $hook);
 
         return $hook;
     }
@@ -294,16 +301,17 @@ class Zikula_HookManager
         foreach ($handlers as $handler) {
             if ($handler['serviceid']) {
                 $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+                $this->dispatcher->addListenerService($handler['eventname'], $callable);
             } else {
-                $callable = array($handler['classname'], $handler['method']);
-            }
-
-            try {
-                $this->eventManager->attach($handler['eventname'], $callable);
-            } catch (InvalidArgumentException $e) {
-                throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because " . $e->getMessage());
+                try {
+                    $callable = array($handler['classname'], $handler['method']);
+                    $this->dispatcher->addListener($handler['eventname'], $callable);
+                } catch (InvalidArgumentException $e) {
+                    throw new RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                }
             }
         }
+
 
         return $this;
     }
@@ -311,7 +319,7 @@ class Zikula_HookManager
     /**
      * Decorate hook with required metadata.
      *
-     * @param Zikula_HookInterface $hook
+     * @param Zikula_AbstractHook $hook
      */
     private function decorateHook(Zikula_AbstractHook $hook)
     {
@@ -329,7 +337,7 @@ class Zikula_HookManager
      */
     private function reload()
     {
-        $this->eventManager->flushHandlers();
+        $this->dispatcher->flushHandlers();
         $this->loadRuntimeHandlers();
     }
 
