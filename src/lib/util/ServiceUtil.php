@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
  * ServiceUtil
  *
@@ -66,7 +68,7 @@ class ServiceUtil
      */
     public static function getService($id)
     {
-        return self::getManager()->getService($id);
+        return self::getManager()->get($id);
     }
 
     /**
@@ -123,7 +125,7 @@ class ServiceUtil
         }
 
         foreach ($handlers as $id => $handler) {
-            self::$serviceManager->registerService(new Zikula_ServiceManager_Service($id, $handler['definition'], $handler['shared']));
+            self::$serviceManager->set($id, $handler['definition'], $shared ? ContainerInterface::SCOPE_CONTAINER : ContainerInterface::SCOPE_PROTOTYPE);
         }
     }
 }

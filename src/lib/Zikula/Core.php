@@ -94,14 +94,14 @@ class Zikula_Core
      *
      * @var Zikula_ServiceManager
      */
-    protected $serviceManager;
+    protected $container;
 
     /**
      * EventManager.
      *
      * @var Zikula_EventManager
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Booted flag.
@@ -143,21 +143,47 @@ class Zikula_Core
     /**
      * Getter for servicemanager property.
      *
+     * @depracated since 1.4
+     * @use self::getContainer()
+     *
      * @return Zikula_ServiceManager
      */
     public function getServiceManager()
     {
-        return $this->serviceManager;
+        return $this->container;
+
+    }
+    /**
+     * Getter for servicemanager property.
+     *
+     * @return Zikula_ServiceManager
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     /**
      * Getter for eventmanager property.
      *
+     * @deprecated since 1.4
+     * @use self::getDispatcher()
+     *
      * @return Zikula_Eventmanager
      */
     public function getEventManager()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
+    }
+
+    /**
+     * Getter for eventmanager property.
+     *
+     * @return Zikula_EventManager
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
     }
 
     /**
@@ -186,14 +212,14 @@ class Zikula_Core
 
         $this->bootime = microtime(true);
 
-        $this->serviceManager = new Zikula_ServiceManager();//'zikula.servicemanager');
-        $this->serviceManager->setAlias('zikula.servicemanager', 'service_container');
+        $this->container = new Zikula_ServiceManager();//'zikula.servicemanager');
+        $this->container->setAlias('zikula.servicemanager', 'service_container');
 
-        $this->eventManager = new Zikula_EventManager($this->serviceManager);
-        $this->serviceManager->set('event_dispatcher', $this->eventManager);
-        $this->serviceManager->setAlias('zikula.eventmanager', 'event_dispatcher');
+        $this->dispatcher = new Zikula_EventManager($this->container);
+        $this->container->set('event_dispatcher', $this->dispatcher);
+        $this->container->setAlias('zikula.eventmanager', 'event_dispatcher');
 
-        $this->serviceManager->set('zikula', $this);
+        $this->container->set('zikula', $this);
 
         $this->attachHandlers($this->handlerDir);
     }
@@ -208,24 +234,24 @@ class Zikula_Core
     public function reboot()
     {
         $event = new Zikula_Event('shutdown', $this);
-        $this->eventManager->notify($event);
+        $this->dispatcher->notify($event);
 
         // flush handlers
-        $this->eventManager->flushHandlers();
+        $this->dispatcher->flushHandlers();
 
         // flush all services
-        $services = $this->serviceManager->listServices();
+        $services = $this->container->getServiceIds();
         rsort($services);
         foreach ($services as $id) {
             if (!in_array($id, array(
                 'zikula', 'zikula.servicemanager', 'service_container', 'zikula.eventmanager', 'event_dispatcher'
             ))) {
-                $this->serviceManager->removeDefinition($id);
+                $this->container->removeDefinition($id);
             }
         }
 
         // flush arguments.
-        $this->serviceManager->getParameterBag()->clear();
+        $this->container->getParameterBag()->clear();
 
         $this->attachedHandlers = array();
         $this->stage = 0;
@@ -313,7 +339,7 @@ class Zikula_Core
     public function attachEventHandler($className)
     {
         $r = new ReflectionClass($className);
-        $handler = $r->newInstance($this->eventManager);
+        $handler = $r->newInstance($this->dispatcher);
 
         if (!$handler instanceof Zikula_AbstractEventHandler) {
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractEventHandler', $className));
@@ -373,7 +399,7 @@ class Zikula_Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             ModUtil::flushCache();
             System::flushCache();
-            $this->eventManager->notify(new Zikula_Event('core.preinit', $this));
+            $this->dispatcher->notify(new Zikula_Event('core.preinit', $this));
         }
 
         // Initialise and load configuration
@@ -382,12 +408,12 @@ class Zikula_Core
             if (!System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
                 $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stage));
-                $this->eventManager->notify($event);
+                $this->dispatcher->notify($event);
             }
 
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
 
         // Check that Zikula is installed before continuing
@@ -399,7 +425,7 @@ class Zikula_Core
         if ($stage & self::STAGE_DB) {
             try {
                 $dbEvent = new Zikula_Event('core.init', $this, array('stage' => self::STAGE_DB));
-                $this->eventManager->notify($dbEvent);
+                $this->dispatcher->notify($dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
@@ -426,13 +452,13 @@ class Zikula_Core
                 ModUtil::registerAutoloaders();
             }
             $coreInitEvent->setArg('stage', self::STAGE_TABLES);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
 
         if ($stage & self::STAGE_SESSIONS) {
             SessionUtil::requireSession();
             $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
@@ -444,13 +470,13 @@ class Zikula_Core
         if ($stage & self::STAGE_DECODEURLS) {
             System::queryStringDecode();
             $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
 
         if ($stage & self::STAGE_LANGS) {
             $lang->setup();
             $coreInitEvent->setArg('stage', self::STAGE_LANGS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
         // end block
 
@@ -463,7 +489,7 @@ class Zikula_Core
             ModUtil::load('SecurityCenter');
 
             $coreInitEvent->setArg('stage', self::STAGE_MODS);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
 
         if ($stage & self::STAGE_THEME) {
@@ -482,11 +508,11 @@ class Zikula_Core
 
             // set some defaults
             // Metadata for SEO
-            $this->serviceManager['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
-            $this->serviceManager['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
+            $this->container['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
+            $this->container['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
 
             $coreInitEvent->setArg('stage', self::STAGE_THEME);
-            $this->eventManager->notify($coreInitEvent);
+            $this->dispatcher->notify($coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
@@ -503,7 +529,7 @@ class Zikula_Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->eventManager->notify(new Zikula_Event('core.postinit', $this, array('stages' => $stage)));
+            $this->dispatcher->notify(new Zikula_Event('core.postinit', $this, array('stages' => $stage)));
         }
     }
 }

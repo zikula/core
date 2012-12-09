@@ -224,6 +224,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      * Get the EventManager.
      *
      * @deprecated since 1.4
+     * @use self::getDispatcher()
      *
      * @return Zikula_EventManager
      */
@@ -237,7 +238,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @return Zikula_EventManager
      */
-    public function getEventDispatcher()
+    public function getDispatcher()
     {
         return $this->eventManager;
     }
