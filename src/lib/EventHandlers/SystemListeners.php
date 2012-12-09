@@ -126,7 +126,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/DoctrineExtensions');
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
 
-        $definition = new Zikula_ServiceManager_Definition('Zikula_Doctrine2_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $definition = new Zikula_ServiceManager_Definition('Zikula_Doctrine2_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('service_container')));
         $this->serviceManager->registerService('doctrine_extensions', $definition);
 
         $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
@@ -196,9 +196,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupHookManager(Zikula_Event $event)
     {
         $storageDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_Storage_Doctrine');
-        $smRef = new Zikula_ServiceManager_Reference('zikula.servicemanager');
+        $smRef = new Zikula_ServiceManager_Reference('service_container');
         $eventManagerDef = new Zikula_ServiceManager_Definition('Zikula_EventManager', array($smRef));
-        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'zikula.eventmanager'));
+        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'event_dispatcher'));
         $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
     }
@@ -555,7 +555,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                             'Zikula_DebugToolbar',
-                            array(new Zikula_ServiceManager_Reference('zikula.eventmanager')),
+                            array(new Zikula_ServiceManager_Reference('event_dispatcher')),
                             array('addPanels' => array(0 => array(
                                                     new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
                                                     new Zikula_ServiceManager_Reference('debug.toolbar.panel.config'),

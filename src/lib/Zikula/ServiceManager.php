@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * ServiceManager class.
+ *
  * @deprecated from 1.4
  * @use \Symfony\Component\DependencyInjection\ContainerBuilder
  */
@@ -28,6 +29,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * @param string  $id      The ID of the service.
      * @param object  $service An already existing object.
      * @param boolean $shared  True if this is a single instance (default).
+     *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::set()
      *
      * @throws InvalidArgumentException If the service is already registered.
      *
@@ -48,6 +52,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * @param string $id Service ID.
      *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::remove()
+     *
      * @throws Exception If the $id isn't registered.
      *
      * @return void
@@ -65,6 +72,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * @param string                           $id         Service Id.
      * @param Zikula_ServiceManager_Definition $definition Service definition.
      * @param boolean                          $shared     Shared type.
+     *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setDefinition()
      *
      * @throws InvalidArgumentException If service ID is already registered.
      *
@@ -86,6 +96,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * @param string $id The service identifier.
      *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::removeDefinition()
+     *
      * @throws InvalidArgumentException If the $id isn't registered.
      *
      * @return void
@@ -106,6 +119,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * @param string $id The service identifier.
      *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::get()
+     *
      * @throws InvalidArgumentException If no identifier exists.
      *
      * @return object The service.
@@ -119,6 +135,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * True if we have the service $id registered.
      *
      * @param string $id True if the service is registered.
+     *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::has()
      *
      * @return boolean
      */
@@ -149,6 +168,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     /**
      * Getter for arguments property.
      *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ParameterBag::all()
+     *
      * @return array
      */
     public function getArguments()
@@ -160,6 +182,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * Setter for arguments property.
      *
      * @param array $array Array of id=>value.
+     *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setParameter()
      *
      * @return void
      */
@@ -176,6 +201,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      *
      * @param string $id Id.
      *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::hasParameter()
+     *
      * @return boolean
      */
     public function hasArgument($id)
@@ -189,6 +217,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * @param string $id    Argument id.
      * @param string $value Argument value.
      *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setParameter()
+     *
      * @return void
      */
     public function setArgument($id, $value)
@@ -200,6 +231,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * Get argument.
      *
      * @param string $id Argument id.
+     *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::getParameter()
      *
      * @throws InvalidArgumentException If id is not set.
      *
@@ -214,6 +248,9 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      * Load multiple arguments.
      *
      * @param array $array Array of id=>$value.
+     *
+     * @deprecated from 1.4
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setParameters()
      *
      * @return void
      */

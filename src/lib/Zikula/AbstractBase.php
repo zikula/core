@@ -103,10 +103,10 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->getService('zikula.eventmanager');
+        $this->eventManager = $this->get('event_dispatcher');
 
-        $this->request = $this->getService('request');
-        $this->entityManager = $this->getService('doctrine.entitymanager');
+        $this->request = $this->get('request');
+        $this->entityManager = $this->serviceManager->get('doctrine.entitymanager');
         $this->_configureBase();
         $this->initialize();
         $this->postInitialize();
@@ -201,6 +201,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     /**
      * Get the ServiceManager.
      *
+     * @deprecated since 1.4
+     *
      * @return Zikula_ServiceManager
      */
     public function getServiceManager()
@@ -209,11 +211,33 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     }
 
     /**
+     * Get the ServiceManager.
+     *
+     * @return Zikula_ServiceManager
+     */
+    public function getContainer()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
      * Get the EventManager.
+     *
+     * @deprecated since 1.4
      *
      * @return Zikula_EventManager
      */
     public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    /**
+     * Get the EventManager.
+     *
+     * @return Zikula_EventManager
+     */
+    public function getEventDispatcher()
     {
         return $this->eventManager;
     }
@@ -734,11 +758,39 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service Name.
      *
+     * @deprecated since 1.4
+     *
      * @return mixed Service or null.
      */
     protected function getService($id)
     {
-        return $this->serviceManager->getService($id);
+        return $this->serviceManager->get($id);
+    }
+
+    /**
+     * Convenience to get a service.
+     *
+     * @param string $id Service Name.
+     *
+     * @return mixed Service or null.
+     */
+    protected function get($id)
+    {
+        return $this->serviceManager->get($id);
+    }
+
+    /**
+     * Convenience hasService shortcut.
+     *
+     * @param string $id Service name.
+     *
+     * @deprecated since 1.4
+     *
+     * @return boolean
+     */
+    protected function hasService($id)
+    {
+        return $this->serviceManager->has($id);
     }
 
     /**
@@ -748,8 +800,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @return boolean
      */
-    protected function hasService($id)
+    protected function has($id)
     {
-        return $this->serviceManager->hasService($id);
+        return $this->serviceManager->has($id);
     }
 }

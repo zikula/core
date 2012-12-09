@@ -61,7 +61,7 @@ For convenience Event objects use ArrayAccess on the $args property, so you may 
 Post event call you can also do processing with events that were called with notify() e.g.
 
     [php]
-    if ($event->isStopped()) {
+    if ($event->isPropagationStopped()) {
         //..
     }
 

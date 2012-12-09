@@ -134,7 +134,7 @@ class PluginUtil
         }
 
         $r = new ReflectionClass($className);
-        $plugin = $r->newInstanceArgs(array($sm, $sm->getService('zikula.eventmanager')));
+        $plugin = $r->newInstanceArgs(array($sm, $sm->getService('event_dispatcher')));
 
         if (!$plugin instanceof Zikula_AbstractPlugin) {
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractPlugin', $className));

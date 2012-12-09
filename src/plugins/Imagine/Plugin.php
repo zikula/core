@@ -61,7 +61,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         $autoloader->register('Imagine', dirname(__FILE__) . '/lib/vendor', '\\');
 
         $definition = new Zikula_ServiceManager_Definition('SystemPlugin_Imagine_Manager', array(
-            new Zikula_ServiceManager_Reference('zikula.servicemanager'),
+            new Zikula_ServiceManager_Reference('service_container'),
             new Zikula_ServiceManager_Reference($this->getServiceId())
         ));
         $this->serviceManager->registerService('systemplugin.imagine.manager', $definition, false);

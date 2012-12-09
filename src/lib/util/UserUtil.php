@@ -929,7 +929,7 @@ class UserUtil
                 $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
                 $event = EventUtil::notify($event);
 
-                if ($event->isStopped()) {
+                if ($event->isPropagationStopped()) {
                     // The login attempt has been vetoed by one or more modules.
                     $eventData = $event->getData();
 

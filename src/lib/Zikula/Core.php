@@ -188,9 +188,12 @@ class Zikula_Core
 
         $this->serviceManager = new Zikula_ServiceManager();//'zikula.servicemanager');
         $this->serviceManager->setAlias('zikula.servicemanager', 'service_container');
-        $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
+
+        $this->eventManager = new Zikula_EventManager($this->serviceManager);
+        $this->serviceManager->set('event_dispatcher', $this->eventManager);
         $this->serviceManager->setAlias('zikula.eventmanager', 'event_dispatcher');
-        $this->serviceManager->attachService('zikula', $this);
+
+        $this->serviceManager->set('zikula', $this);
 
         $this->attachHandlers($this->handlerDir);
     }
@@ -214,13 +217,15 @@ class Zikula_Core
         $services = $this->serviceManager->listServices();
         rsort($services);
         foreach ($services as $id) {
-            if (!in_array($id, array('zikula', 'zikula.servicemanager', 'zikula.eventmanager'))) {
-                $this->serviceManager->unregisterService($id);
+            if (!in_array($id, array(
+                'zikula', 'zikula.servicemanager', 'service_container', 'zikula.eventmanager', 'event_dispatcher'
+            ))) {
+                $this->serviceManager->removeDefinition($id);
             }
         }
 
         // flush arguments.
-        $this->serviceManager->setArguments(array());
+        $this->serviceManager->getParameterBag()->clear();
 
         $this->attachedHandlers = array();
         $this->stage = 0;
@@ -381,7 +386,7 @@ class Zikula_Core
             }
 
             // initialise custom event listeners from config.php settings
-            $coreInitEvent->setArg('stage', self::STAGE_CONFIG);
+            $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
             $this->eventManager->notify($coreInitEvent);
         }
 
