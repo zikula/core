@@ -16,22 +16,8 @@
 /**
  * Zikula_ServiceManager_Definition configuration describes a service for ServiceManager.
  */
-class Zikula_ServiceManager_Definition
+class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInjection\Definition
 {
-    /**
-     * Class name.
-     *
-     * @var string
-     */
-    protected $className;
-
-    /**
-     * Constructor arguments.
-     *
-     * @var array
-     */
-    protected $constructorArgs;
-
     /**
      * Methods definition storage.
      *
@@ -52,9 +38,8 @@ class Zikula_ServiceManager_Definition
      */
     public function __construct($className, array $constructorArgs = array(), array $methods = array())
     {
-        $this->className = $className;
-        $this->constructorArgs = $constructorArgs;
-        $this->methods = $methods;
+        parent::__construct($className, $constructorArgs);
+        $this->setMethods($methods);
     }
 
     /**
@@ -64,7 +49,7 @@ class Zikula_ServiceManager_Definition
      */
     public function getClassName()
     {
-        return $this->className;
+        return $this->getClass();
     }
 
     /**
@@ -74,7 +59,7 @@ class Zikula_ServiceManager_Definition
      */
     public function getConstructorArgs()
     {
-        return $this->constructorArgs;
+        return $this->getArguments();
     }
 
     /**
@@ -86,7 +71,7 @@ class Zikula_ServiceManager_Definition
      */
     public function setConstructorArgs(array $args = array())
     {
-        $this->constructorArgs = $args;
+        $this->setArguments($args);
     }
 
     /**
@@ -96,7 +81,7 @@ class Zikula_ServiceManager_Definition
      */
     public function hasConstructorArgs()
     {
-        return (bool)$this->constructorArgs;
+        return (bool)$this->getArguments();
     }
 
     /**
@@ -106,7 +91,7 @@ class Zikula_ServiceManager_Definition
      */
     public function getMethods()
     {
-        return $this->methods;
+        return $this->getMethodCalls();
     }
 
     /**
@@ -119,7 +104,11 @@ class Zikula_ServiceManager_Definition
      */
     public function setMethods(array $methods)
     {
-        $this->methods = $methods;
+        foreach ($methods as $methodArray) {
+            foreach ($methodArray as $method => $args) {
+                $this->addMethodCall($method, $args);
+            }
+        }
     }
 
     /**
@@ -135,7 +124,7 @@ class Zikula_ServiceManager_Definition
      */
     public function addMethod($method, array $args = array())
     {
-        $this->methods[$method][] = $args;
+        $this->addMethodCall($method, $args);
     }
 
     /**
@@ -145,6 +134,6 @@ class Zikula_ServiceManager_Definition
      */
     public function hasMethods()
     {
-        return (bool)$this->methods;
+        return (bool)$this->getMethodCalls();
     }
 }

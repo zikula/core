@@ -186,8 +186,10 @@ class Zikula_Core
 
         $this->bootime = microtime(true);
 
-        $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
+        $this->serviceManager = new Zikula_ServiceManager();//'zikula.servicemanager');
+        $this->serviceManager->setAlias('zikula.servicemanager', 'service_container');
         $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
+        $this->serviceManager->setAlias('zikula.eventmanager', 'event_dispatcher');
         $this->serviceManager->attachService('zikula', $this);
 
         $this->attachHandlers($this->handlerDir);

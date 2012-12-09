@@ -14,7 +14,7 @@
  */
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
  *
  * Manages event handlers and invokes them for notified events.
  */
-class Zikula_EventManager extends EventDispatcher implements EventDispatcherInterface
+class Zikula_EventManager extends EventDispatcher
 {
     /**
      * Storage for handlers.
