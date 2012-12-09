@@ -128,6 +128,8 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Get eventManager.
      *
+     * @deprecated since 1.4
+     *
      * @return Zikula_EventManager
      */
     public function getEventManager()
@@ -136,11 +138,33 @@ abstract class Zikula_AbstractEventHandler
     }
 
     /**
+     * Get eventManager.
+     *
+     * @return Zikula_EventManager
+     */
+    public function getDispatcher()
+    {
+        return $this->eventManager;
+    }
+
+    /**
      * Get servicemanager.
+     *
+     * @deprecated since 1.4
      *
      * @return Zikula_ServiceManager
      */
     public function getServiceManager()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
+     * Get servicemanager.
+     *
+     * @return Zikula_ServiceManager
+     */
+    public function getContainer()
     {
         return $this->serviceManager;
     }

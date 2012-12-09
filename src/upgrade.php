@@ -29,7 +29,7 @@ if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
 }
 
 PluginUtil::loadPlugin('SystemPlugin_Doctrine_Plugin');
-$eventManager = $core->getEventManager();
+$eventManager = $core->getDispatcher();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');
 
 // load zikula core

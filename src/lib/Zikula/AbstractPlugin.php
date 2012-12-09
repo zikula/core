@@ -140,7 +140,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('event_dispatcher');
+        $this->eventManager = $this->serviceManager->get('event_dispatcher');
         $this->_setup();
 
         $meta = $this->getMeta();

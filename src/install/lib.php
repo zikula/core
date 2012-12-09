@@ -25,7 +25,7 @@ function install(Zikula_Core $core)
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
     $serviceManager = $core->getContainer();
-    $eventManager = $core->getEventManager();
+    $eventManager = $core->getDispatcher();
 
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));

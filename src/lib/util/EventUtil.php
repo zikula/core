@@ -50,7 +50,7 @@ class EventUtil
             return self::$eventManager;
         }
 
-        self::$eventManager = $core->getEventManager();
+        self::$eventManager = $core->getDispatcher();
 
         return self::$eventManager;
     }
