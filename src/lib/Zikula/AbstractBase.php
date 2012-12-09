@@ -103,9 +103,9 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->get('event_dispatcher');
+        $this->eventManager = $this->serviceManager->get('event_dispatcher');
 
-        $this->request = $this->get('request');
+        $this->request = $this->serviceManager->get('request');
         $this->entityManager = $this->serviceManager->get('doctrine.entitymanager');
         $this->_configureBase();
         $this->initialize();
