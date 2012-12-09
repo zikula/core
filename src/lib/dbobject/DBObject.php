@@ -381,7 +381,6 @@ class DBObject
             }
 
             $this->_objKey = $where;
-            $this->_objField = 'WHERE';
         } else {
             // generic key=>value lookup
             if ($this->_objJoin) {
