@@ -399,8 +399,8 @@ class Users_Controller_User extends Zikula_AbstractController
                     $validators = $this->eventManager->notify($event)->getData();
 
                     // Validate the hook
-                    $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
-                    $this->notifyHooks($hook);
+                    $hook = new Zikula_ValidationHook($validators);
+                    $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
                     $validators = $hook->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
@@ -456,12 +456,12 @@ class Users_Controller_User extends Zikula_AbstractController
                         }
 
                         // Allow hook-like events to process the registration...
-                        $event = new Zikula_Event('module.users.ui.process_edit.new_registration', $registeredObj);
-                        $this->eventManager->notify($event);
+                        $event = new Zikula_Event($registeredObj);
+                        $this->eventManager->dispatch('module.users.ui.process_edit.new_registration', $event);
 
                         // ...and hooks to process the registration.
-                        $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registeredObj['uid']);
-                        $this->notifyHooks($hook);
+                        $hook = new Zikula_ProcessHook($registeredObj['uid']);
+                        $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
 
                         // If there were errors after the main registration, then make sure they can be displayed.
                         // TODO - Would this even happen?
@@ -1200,11 +1200,11 @@ class Users_Controller_User extends Zikula_AbstractController
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
                             $validators = new Zikula_Hook_ValidationProviders();
                             if ($eventType) {
-                                $event = new Zikula_Event("module.users.ui.validate_edit.{$eventType}", $user, array(), $validators);
-                                $validators  = $this->eventManager->notify($event)->getData();
+                                $event = new Zikula_Event($user, array(), $validators);
+                                $validators  = $this->eventManager->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
 
-                                $hook = new Zikula_ValidationHook("users.ui_hooks.{$eventType}.validate_edit", $validators);
-                                $this->notifyHooks($hook);
+                                $hook = new Zikula_ValidationHook($validators);
+                                $this->dispatchHooks("users.ui_hooks.{$eventType}.validate_edit", $hook);
                                 $validators = $hook->getValidators();
                             }
 
@@ -1212,11 +1212,11 @@ class Users_Controller_User extends Zikula_AbstractController
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
                                 if ($eventType) {
-                                    $event = new Zikula_Event("module.users.ui.process_edit.{$eventType}", $user, array());
-                                    $this->eventManager->notify($event);
+                                    $event = new Zikula_Event($user, array());
+                                    $this->eventManager->dispatch("module.users.ui.process_edit.{$eventType}", $event);
 
-                                    $hook = new Zikula_ProcessHook("users.ui_hooks.{$eventType}.process_edit", $user['uid']);
-                                    $this->notifyHooks($hook);
+                                    $hook = new Zikula_ProcessHook($user['uid']);
+                                    $this->dispatchHooks("users.ui_hooks.{$eventType}.process_edit", $hook);
                                 }
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {

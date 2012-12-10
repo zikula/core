@@ -128,12 +128,12 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $event = new Zikula_Event($userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
         $validators = $this->eventManager->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
 
+        $hook = new Zikula_ValidationHook($validators);
         if (($eventType == 'new_user') || ($eventType == 'modify_user')) {
-            $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
+            $this->dispatchHooks('users.ui_hooks.user.validate_edit', $hook);
         } else {
-            $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
+            $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
         }
-        $this->notifyHooks($hook);
         $validators = $hook->getValidators();
 
         if ($validators->hasErrors()) {

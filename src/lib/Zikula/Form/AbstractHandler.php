@@ -255,11 +255,26 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @param Zikula_AbstractHook $hook Hook interface.
      *
-     * @return mixed Notification result.
+     * @deprecated since 1.4
+     * @use self::dispatchHooks()
+     *
+     * @return Zikula_AbstractHook
      */
     public function notifyHooks(Zikula_AbstractHook $hook)
     {
-        return $this->view->getContainer()->get('zikula.hookmanager')->notify($hook);
+        return $this->getService('zikula.hookmanager')->dispatch($hook->getName(), $hook);
+    }
+
+    /**
+     * Dispatch hooks.
+     *
+     * @param Zikula_AbstractHook $hook Hook interface.
+     *
+     * @return Zikula_AbstractHook
+     */
+    public function dispatchHooks($name, Zikula_AbstractHook $hook)
+    {
+        return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
 
     /**

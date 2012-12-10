@@ -228,8 +228,8 @@ In the module controllers, you will need to implement the process and or validat
 hook types.  This can be done as follows (example of a process hook).
 
     $url = new Zikula_ModUrl(....); // describes how to retrieve this object by URL metadata
-    $hook = new Zikula_ProcessHook('blog.ui_hooks.articles.process_edit', $id, $url);
-    $this->notifyHooks->notify($hook);
+    $hook = new Zikula_ProcessHook($id, $url);
+    $this->notifyHooks()->dispatch('blog.ui_hooks.articles.process_edit', $hook);
 
 
 Provider Display Hooks
@@ -302,8 +302,8 @@ When displaying a new empty form, we simply trigger a `form_edit` in the templat
 When we come to validate a new create form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` hook with
 
-    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Hook_ValidationProviders());
-    $this->notifyHooks($hook);
+    $hook = new Zikula_ValidationHook(new Zikula_Hook_ValidationProviders());
+    $this->dispatchHooks('...validate_edit', $hook);
     $validators = $hook->getValidators();
 
 The validator collection can then be tested for the presence of validation errors or not
@@ -344,8 +344,8 @@ When displaying an edit form, we simply trigger a `form_edit` hook with with
 When we come to validate an edit form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` event with
 
-    $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Hook_ValidationProviders());
-    $this->notifyHooks($hook);
+    $hook = new Zikula_ValidationHook(new Zikula_Hook_ValidationProviders());
+    $this->DispatchHooks('...validate_edit', $hook);
     $validators = $hook->getValidators();
 
 The validator collection can then be tested for the presence of validation errors or not
