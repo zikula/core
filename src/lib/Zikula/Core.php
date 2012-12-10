@@ -233,8 +233,8 @@ class Zikula_Core
      */
     public function reboot()
     {
-        $event = new Zikula_Event('shutdown', $this);
-        $this->dispatcher->notify($event);
+        $event = new Zikula_Event($this);
+        $this->dispatcher->dispatch('shutdown', $event);
 
         // flush handlers
         $this->dispatcher->flushHandlers();
@@ -407,8 +407,8 @@ class Zikula_Core
             // error reporting
             if (!System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
-                $event = new Zikula_Event('setup.errorreporting', null, array('stage' => $stage));
-                $this->dispatcher->notify($event);
+                $event = new Zikula_Event(null, array('stage' => $stage));
+                $this->dispatcher->dispatch('setup.errorreporting', $event);
             }
 
             // initialise custom event listeners from config.php settings

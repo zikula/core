@@ -85,8 +85,8 @@ try {
     }
 
 } catch (Exception $e) {
-    $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-    $core->getDispatcher()->notify($event);
+    $event = new Zikula_Event($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+    $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
         $httpCode = $event['httpcode'];

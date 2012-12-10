@@ -180,8 +180,8 @@ class Zikula_View_Theme extends Zikula_View
             $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
         }
 
-        $event = new Zikula_Event('theme.preinit', $this);
-        $this->eventManager->notify($event);
+        $event = new Zikula_Event($this);
+        $this->eventManager->dispatch('theme.preinit', $event);
 
         // change some base settings from our parent class
         // template compilation
@@ -249,8 +249,8 @@ class Zikula_View_Theme extends Zikula_View
             $this->load_filter('output', 'trimwhitespace');
         }
 
-        $event = new Zikula_Event('theme.init', $this);
-        $this->eventManager->notify($event);
+        $event = new Zikula_Event($this);
+        $this->eventManager->dispatch('theme.init', $event);
 
         // Start the output buffering to capture module output
         ob_start();
@@ -309,8 +309,8 @@ class Zikula_View_Theme extends Zikula_View
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
-        $event = new Zikula_Event('theme.prefetch', $this, array(), $maincontent);
-        $maincontent = $this->eventManager->notify($event)->getData();
+        $event = new Zikula_Event($this, array(), $maincontent);
+        $maincontent = $this->eventManager->dispatch('theme.prefetch', $event)->getData();
 
         // Assign the main content area to the template engine
         $this->assign('maincontent', $maincontent);
@@ -318,8 +318,8 @@ class Zikula_View_Theme extends Zikula_View
         // render the page using the correct template
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
-        $event = new Zikula_Event('theme.postfetch', $this, array(), $output);
-        echo $this->eventManager->notify($event)->getData();
+        $event = new Zikula_Event($this, array(), $output);
+        echo $this->eventManager->dispatch('theme.postfetch', $event)->getData();
     }
 
     /**
@@ -755,8 +755,8 @@ class Zikula_View_Theme extends Zikula_View
             $this->assign('palette', $palette);
         }
 
-        $event = new Zikula_Event('theme.load_config', $this);
-        $this->eventManager->notify($event);
+        $event = new Zikula_Event($this);
+        $this->eventManager->dispatch('theme.load_config', $event);
     }
 
     /**

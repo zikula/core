@@ -57,7 +57,7 @@ class Zikula_Event extends GenericEvent
             $data = isset($funcArgs[3]) ? $funcArgs[3]: null;
         }
 
-        $args = $args ?: array();
+        $args = null !== $args ? $args: array();
         $this->data = $data;
         parent::__construct($subject, $args);
     }

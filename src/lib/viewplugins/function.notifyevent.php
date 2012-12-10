@@ -77,10 +77,10 @@ function smarty_function_notifyevent($params, Zikula_View $view)
             $eventData = null;
         }
 
-        $event = new Zikula_Event($eventName, $eventSubject, $params, $eventData);
+        $event = new Zikula_Event($eventSubject, $params, $eventData);
     }
 
-    $view->getDispatcher()->notify($event);
+    $view->getDispatcher()->dispatch($eventName, $event);
 
     // assign results, this plugin does not return any display
     if ($assign) {

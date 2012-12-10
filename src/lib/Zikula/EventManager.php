@@ -78,6 +78,23 @@ class Zikula_EventManager extends EventDispatcher
     }
 
     /**
+     * Dispatch event.
+     *
+     * @param string                                  $name
+     * @param Symfony\Component\EventDispatcher\Event $event
+     *
+     * @return Zikula_Event
+     */
+    public function dispatch($name, Event $event = null)
+    {
+        if (null === $event) {
+            $event = new Zikula_Event();
+        }
+
+        return parent::dispatch($name, $event);
+    }
+
+    /**
      * Flush handlers.
      *
      * Clears all handlers.

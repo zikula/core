@@ -60,11 +60,27 @@ class EventUtil
      *
      * @param Zikula_Event $event Event.
      *
+     * @deprecated since 1.4
+     * @see dispatch()
+     *
      * @return Zikula_Event
      */
     public static function notify(Zikula_Event $event)
     {
         return self::getManager()->notify($event);
+    }
+
+    /**
+     * dispatch event.
+     *
+     * @param string       $name  Event name.
+     * @param Zikula_Event $event Event.
+     *
+     * @return Zikula_Event
+     */
+    public static function dispatch($name, Zikula_Event $event)
+    {
+        return self::getManager()->dispatch($name, $event);
     }
 
     /**

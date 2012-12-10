@@ -129,9 +129,9 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
         // collect classes from other providers also allows for override
         // TODO A [This is only allowed for the module which owns this object.]
 
-        $event = new Zikula_Event('zikula.filterutil.get_plugin_classes');
+        $event = new Zikula_Event();
         $event->setData($classNames);
-        $classNames = EventUtil::getManager()->notify($event)->getData();
+        $classNames = EventUtil::getManager()->dispatch('zikula.filterutil.get_plugin_classes', $event)->getData();
 
         return $classNames;
     }
