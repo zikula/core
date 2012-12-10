@@ -47,18 +47,10 @@ class Zikula_Event extends GenericEvent
      *
      * @throws InvalidArgumentException When name is empty.
      */
-    public function __construct($subject = null, $args = null, $data = null)
+    public function __construct($subject = null, array $args = array(), $data = null)
     {
-        $funcArgs = func_get_args();
-        if (isset($funcArgs[0]) && is_string($funcArgs[0])) {
-            $this->setName($funcArgs[0]);
-            $subject = isset($funcArgs[1]) ? $funcArgs[1]: null;
-            $args = isset($funcArgs[2]) ? $funcArgs[2]: null;
-            $data = isset($funcArgs[3]) ? $funcArgs[3]: null;
-        }
-
-        $args = null !== $args ? $args: array();
         $this->data = $data;
+
         parent::__construct($subject, $args);
     }
 

@@ -926,8 +926,8 @@ class UserUtil
                     'authentication_method' => $authenticationMethod,
                     'uid'                   => $userObj['uid'],
                 );
-                $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
-                $event = EventUtil::notify($event);
+                $event = new Zikula_Event($userObj, $eventArgs);
+                $event = EventUtil::dispatch('user.login.veto', $event);
 
                 if ($event->isPropagationStopped()) {
                     // The login attempt has been vetoed by one or more modules.
@@ -1527,8 +1527,8 @@ class UserUtil
                     'old_value' => $oldValue,
                     'new_value' => $value,
                 );
-                $updateEvent = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
-                EventUtil::notify($updateEvent);
+                $updateEvent = new Zikula_Event($updatedUserObj, $eventArgs, $eventData);
+                EventUtil::dispatch($eventName, $updateEvent);
             }
         }
 
@@ -1864,12 +1864,13 @@ class UserUtil
                 $eventData = array(
                     'old_value' => $oldValue,
                 );
+                $event = new Zikula_Event( $updatedUserObj, $eventArgs, $eventData);
                 if ($isRegistration) {
-                    $updateEvent = new Zikula_Event('user.registration.update', $updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::dispatch('user.registration.update', $event);
                 } else {
-                    $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::dispatch('user.account.update', $event);
                 }
-                EventUtil::notify($updateEvent);
+
             }
         }
 
@@ -1982,9 +1983,9 @@ class UserUtil
      */
     private static function _getThemeFilterEvent($themeName, $type)
     {
-        $event = new Zikula_Event('user.gettheme', null, array('type' => $type), $themeName);
+        $event = new Zikula_Event(null, array('type' => $type), $themeName);
 
-        return EventUtil::notify($event)->getData();
+        return EventUtil::dispatch('user.gettheme', $event)->getData();
     }
 
     /**

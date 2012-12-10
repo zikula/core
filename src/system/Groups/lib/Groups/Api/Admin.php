@@ -62,8 +62,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         $gid = $obj['gid'];
 
         // Let other modules know that we have created a new group.
-        $createEvent = new Zikula_Event('group.create', $obj);
-        $this->eventManager->notify($createEvent);
+        $this->eventManager->dispatch('group.create', new Zikula_Event($obj));
 
         // Return the id of the newly created item to the calling process
         return $gid;
@@ -125,8 +124,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have deleted a group.
-        $deleteEvent = new Zikula_Event('group.delete', $item);
-        $this->eventManager->notify($deleteEvent);
+        $this->eventManager->dispatch('group.delete', new Zikula_Event($item));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -194,8 +192,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $updateEvent = new Zikula_Event('group.update', $object);
-        $this->eventManager->notify($updateEvent);
+        $this->eventManager->dispatch('group.update', new Zikula_Event($object));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -240,8 +237,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $adduserEvent = new Zikula_Event('group.adduser', $object);
-        $this->eventManager->notify($adduserEvent);
+        $this->eventManager->dispatch('group.adduser', new Zikula_Event($object));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -291,9 +287,9 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new Zikula_Event('group.removeuser', array('gid' => $args['gid'],
+        $removeuserEvent = new Zikula_Event(array('gid' => $args['gid'],
                         'uid' => $args['uid']));
-        $this->eventManager->notify($removeuserEvent);
+        $this->eventManager->dispatch('group.removeuser', $removeuserEvent);
 
         // Let the calling process know that we have finished successfully
         return true;

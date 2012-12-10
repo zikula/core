@@ -199,8 +199,7 @@ class Users_Api_Admin extends Zikula_AbstractApi
                 }
 
                 // Let other modules know we have deleted an item
-                $deleteEvent = new Zikula_Event('user.account.delete', $userObj);
-                $this->eventManager->notify($deleteEvent);
+                $this->eventManager->dispatch('user.account.delete', new Zikula_Event($userObj));
             }
         }
 
@@ -521,11 +520,9 @@ class Users_Api_Admin extends Zikula_AbstractApi
 
             foreach ($importValues as $value) {
                 if ($value['activated'] != Users_Constant::ACTIVATED_PENDING_REG) {
-                    $createEvent = new Zikula_Event('user.account.create', $value);
-                    $this->eventManager->notify($createEvent);
+                    $this->eventManager->dispatch('user.account.create', new Zikula_Event($value));
                 } else {
-                    $createEvent = new Zikula_Event('user.registration.create', $value);
-                    $this->eventManager->notify($createEvent);
+                    $this->eventManager->dispatch('user.registration.create', new Zikula_Event($value));
                 }
                 if ($value['activated'] && $value['sendmail']) {
                     $view->assign('email', $value['email']);

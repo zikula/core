@@ -47,8 +47,8 @@ $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = false;
 $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-$dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
-$connection = $eventManager->notify($dbEvent)->getData();
+$dbEvent = new Zikula_Event(null, array('lazy' => true));
+$connection = $eventManager->dispatch('doctrine.init_connection', $dbEvent)->getData();
 
 $columns = upgrade_getColumnsForTable($connection, 'modules');
 

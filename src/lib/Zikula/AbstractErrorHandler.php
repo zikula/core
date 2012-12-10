@@ -121,7 +121,7 @@ abstract class Zikula_AbstractErrorHandler
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->getService('event_dispatcher');
-        $this->event = new Zikula_Event('log', $this);
+        $this->event = new Zikula_Event($this);
     }
 
     /**

@@ -605,8 +605,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // Force the reload of the user in the cache.
             $userObj = UserUtil::getVars($userObj['uid'], true, 'uid', true);
 
-            $createEvent = new Zikula_Event('user.registration.create', $userObj);
-            $this->eventManager->notify($createEvent);
+            $this->eventManager->dispatch('user.registration.create', new Zikula_Event($userObj));
 
             if ($adminNotification || $userNotification || !empty($passwordCreatedForUser)) {
                 $siteurl   = System::getBaseUrl();
@@ -869,8 +868,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
             // registration is created. It is not a "real" record until now, so it wasn't really
             // "created" until now. It is way down here so that the activated state can be properly
             // saved before the hook is fired.
-            $createEvent = new Zikula_Event('user.account.create', $userObj);
-            $this->eventManager->notify($createEvent);
+            $this->eventManager->dispatch('user.account.create', new Zikula_Event($userObj));
 
             $regErrors = array();
 
@@ -1312,8 +1310,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                     'changetype' => Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                 ));
 
-                $deleteEvent = new Zikula_Event('user.registration.delete', $registration);
-                $this->eventManager->notify($deleteEvent);
+                $this->eventManager->dispatch('user.registration.delete', new Zikula_Event($registration));
             }
         }
 
@@ -1355,8 +1352,7 @@ class Users_Api_Registration extends Zikula_AbstractApi
                         'changetype'=> Users_Constant::VERIFYCHGTYPE_REGEMAIL,
                     ));
 
-                    $deleteEvent = new Zikula_Event('user.registration.delete', $registration);
-                    $this->eventManager->notify($deleteEvent);
+                    $this->eventManager->dispatch('user.registration.delete', new Zikula_Event($registration));
                 }
             }
         }

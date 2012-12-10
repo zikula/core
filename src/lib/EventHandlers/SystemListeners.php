@@ -354,8 +354,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function initDB(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_DB) {
-            $dbEvent = new Zikula_Event('doctrine.init_connection');
-            $this->eventManager->notify($dbEvent);
+            $this->eventManager->dispatch('doctrine.init_connection');
         }
     }
 
@@ -742,9 +741,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArg('modname'));
-        $localevent = new Zikula_Event('module_dispatch.service_links', $event->getSubject(), $args);
-        $this->eventManager->notify($localevent);
+        $args = array('modname' => $event->getArgument('modname'));
+        $localevent = new Zikula_Event($event->getSubject(), $args);
+        $this->eventManager->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
 
         if (!empty($sublinks)) {

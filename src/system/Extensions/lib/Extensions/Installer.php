@@ -89,8 +89,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
                 $commands[] = "ALTER TABLE hook_subscriber CHANGE eventname eventname VARCHAR(100) NOT NULL";
 
                 // Load DB connection
-                $dbEvent = new Zikula_Event('doctrine.init_connection');
-                $connection = $this->eventManager->notify($dbEvent)->getData();
+                $connection = $this->eventManager->dispatch('doctrine.init_connection')->getData();
 
                 foreach ($commands as $sql) {
                     $stmt = $connection->prepare($sql);

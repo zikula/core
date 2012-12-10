@@ -391,7 +391,7 @@ class Zikula_Core
      */
     public function init($stage = self::STAGE_ALL)
     {
-        $coreInitEvent = new Zikula_Event('core.init', $this);
+        $coreInitEvent = new Zikula_Event($this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -399,7 +399,7 @@ class Zikula_Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             ModUtil::flushCache();
             System::flushCache();
-            $this->dispatcher->notify(new Zikula_Event('core.preinit', $this));
+            $this->dispatcher->dispatch('core.preinit', new Zikula_Event($this));
         }
 
         // Initialise and load configuration
@@ -413,7 +413,7 @@ class Zikula_Core
 
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         // Check that Zikula is installed before continuing
@@ -424,8 +424,8 @@ class Zikula_Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new Zikula_Event('core.init', $this, array('stage' => self::STAGE_DB));
-                $this->dispatcher->notify($dbEvent);
+                $dbEvent = new Zikula_Event($this, array('stage' => self::STAGE_DB));
+                $this->dispatcher->dispatch('core.init', $dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
                     header('HTTP/1.1 503 Service Unavailable');
@@ -452,13 +452,13 @@ class Zikula_Core
                 ModUtil::registerAutoloaders();
             }
             $coreInitEvent->setArg('stage', self::STAGE_TABLES);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         if ($stage & self::STAGE_SESSIONS) {
             SessionUtil::requireSession();
             $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
@@ -470,13 +470,13 @@ class Zikula_Core
         if ($stage & self::STAGE_DECODEURLS) {
             System::queryStringDecode();
             $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         if ($stage & self::STAGE_LANGS) {
             $lang->setup();
             $coreInitEvent->setArg('stage', self::STAGE_LANGS);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
         // end block
 
@@ -489,7 +489,7 @@ class Zikula_Core
             ModUtil::load('SecurityCenter');
 
             $coreInitEvent->setArg('stage', self::STAGE_MODS);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         if ($stage & self::STAGE_THEME) {
@@ -512,7 +512,7 @@ class Zikula_Core
             $this->container['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
 
             $coreInitEvent->setArg('stage', self::STAGE_THEME);
-            $this->dispatcher->notify($coreInitEvent);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         // check the users status, if not 1 then log him out
@@ -529,7 +529,7 @@ class Zikula_Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->dispatcher->notify(new Zikula_Event('core.postinit', $this, array('stages' => $stage)));
+            $this->dispatcher->dispatch('core.postinit', new Zikula_Event($this, array('stages' => $stage)));
         }
     }
 }

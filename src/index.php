@@ -15,7 +15,7 @@
 include 'lib/bootstrap.php';
 $core->init();
 
-$core->getDispatcher()->notify(new Zikula_Event('frontcontroller.predispatch'));
+$core->getDispatcher()->dispatch('frontcontroller.predispatch');
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);

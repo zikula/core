@@ -649,7 +649,7 @@ class DBObject
      */
     public function insertPreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.insertpreprocess', $this));
+        EventUtil::dispatch('dbobject.insertpreprocess', new Zikula_Event($this));
         return $this->_objData;
     }
 
@@ -664,7 +664,7 @@ class DBObject
      */
     public function insertPostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.insertpostprocess', $this));
+        EventUtil::dispatch('dbobject.insertpostprocess', new Zikula_Event($this));
         return $this->_objData;
     }
 
@@ -699,7 +699,7 @@ class DBObject
      */
     public function updatePreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.updatepreprocess', $this));
+        EventUtil::dispatch('dbobject.updatepreprocess', new Zikula_Event($this));
         return $this->_objData;
     }
 
@@ -714,7 +714,7 @@ class DBObject
      */
     public function updatePostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.updatepostprocess', $this));
+        EventUtil::dispatch('dbobject.updatepostprocess', new Zikula_Event($this));
         return $this->_objData;
     }
 
@@ -750,7 +750,7 @@ class DBObject
      */
     public function deletePreProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.deletepreprocess', $this));
+        EventUtil::dispatch('dbobject.deletepreprocess', new Zikula_Event($this));
         return $this->_objData;
     }
 
@@ -765,7 +765,7 @@ class DBObject
      */
     public function deletePostProcess($data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.deletepostprocess', $this));
+        EventUtil::dispatch('dbobject.deletepostprocess', new Zikula_Event($this));
         return $this->_objData;
     }
 
@@ -817,7 +817,7 @@ class DBObject
      */
     public function validatePreProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.validatepreprocess', $this));
+        EventUtil::dispatch('dbobject.validatepreprocess', new Zikula_Event($this));
         return true;
     }
 
@@ -833,7 +833,7 @@ class DBObject
      */
     public function validatePostProcess($type = 'user', $data = null)
     {
-        EventUtil::notify(new Zikula_Event('dbobject.validatepostprocess', $this));
+        EventUtil::dispatch('dbobject.validatepostprocess', new Zikula_Event($this));
         return true;
     }
 

@@ -387,9 +387,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
         );
 
         if ($callbackFunc == 'mailUsers') {
-              $processEditEvent = $this->eventManager->notify(new Zikula_Event('users.mailuserssearch.process_edit', null, array(), $findUsersArgs));
+              $processEditEvent = $this->eventManager->dispatch('users.mailuserssearch.process_edit',
+                                                                new Zikula_Event(null, array(), $findUsersArgs)
+              );
         } else {
-            $processEditEvent = $this->eventManager->notify(new Zikula_Event('users.search.process_edit', null, array(), $findUsersArgs));
+            $processEditEvent = $this->eventManager->dispatch('users.search.process_edit',
+                                                              new Zikula_Event(null, array(), $findUsersArgs));
         }
 
         $findUsersArgs = $processEditEvent->getData();
@@ -619,8 +622,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $eventData = array(
                         'old_value' => $originalUser['uname'],
                     );
-                    $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
-                    $this->eventManager->notify($updateEvent);
+                    $updateEvent = new Zikula_Event($updatedUserObj, $eventArgs, $eventData);
+                    $this->eventManager->dispatch('user.account.update', $updateEvent);
                 }
                 if ($originalUser['email'] != $user['email']) {
                     UserUtil::setVar('email', $user['email'], $originalUser['uid']);
@@ -999,7 +1002,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 if ($deleted) {
                     foreach ($userid as $uid) {
                         $event = new Zikula_Event(null, array('id' => $uid));
-                        $this->eventManager->notify('module.users.ui.process_delete', $event);
+                        $this->eventManager->dispatch('module.users.ui.process_delete', $event);
 
                         $hook = new Zikula_ProcessHook($uid);
                         $this->dispatchHooks('users.ui_hooks.user.process_delete', $hook);
@@ -1394,8 +1397,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $eventData = array(
                         'old_value' => $originalRegistration['uname'],
                     );
-                    $updateEvent = new Zikula_Event('user.registration.update', $updatedRegistrationObj, $eventArgs, $eventData);
-                    $this->eventManager->notify($updateEvent);
+                    $updateEvent = new Zikula_Event($updatedRegistrationObj, $eventArgs, $eventData);
+                    $this->eventManager->dispatch('user.registration.update', $updateEvent);
                 }
                 if ($originalRegistration['theme'] != $registration['theme']) {
                     UserUtil::setVar('theme', $registration['theme'], $originalRegistration['uid']);
