@@ -20,9 +20,15 @@ class Zikula_FilterHook extends Zikula_AbstractHook
 {
     private $data;
 
-    public function __construct($name, $data=null)
+    public function __construct($data=null)
     {
-        $this->setName($name);
+        // BC handling for previous constructor
+        $funcArgs = func_get_args();
+        if (count($funcArgs) == 2) {
+            $this->setName($funcArgs[0]);
+            $data = $funcArgs[1];
+        }
+
         $this->data = $data;
     }
 

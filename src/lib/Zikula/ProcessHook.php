@@ -28,9 +28,30 @@ class Zikula_ProcessHook extends Zikula_AbstractHook
      */
     protected $url;
 
-    public function __construct($name, $id, Zikula_ModUrl $url=null)
+    public function __construct($id, $url=null)
     {
-        $this->setName($name);
+        $funcArgs = func_get_args();
+        if (count($funcArgs) == 3) {
+            $this->setName($funcArgs[0]);
+            $id = isset($funcArgs[1]) ? $funcArgs[1]: null;
+            $url = isset($funcArgs[2]) ? $funcArgs[2]: null;
+        } else if (count($funcArgs) == 2 && null === $url) {
+            // $name + $id
+            $this->setName($funcArgs[0]);
+            $id = $funcArgs[0];
+            $url = $funcArgs[1];
+        } else if (count($funcArgs) == 1) {
+            $id = $funcArgs[0];
+        }
+
+        if (!$id) {
+            throw new InvalidArgumentException('$id cannot be empty or null');
+        }
+
+        if (null !== $url && !$url instanceof Zikula_ModUrl) {
+            throw new InvalidArgumentException('$url argument expected to be an instance of Zikula_ModUrl, but something else was given');
+        }
+
         $this->id = $id;
         $this->url = $url;
     }
