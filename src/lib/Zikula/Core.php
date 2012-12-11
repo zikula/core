@@ -99,7 +99,7 @@ class Zikula_Core
     /**
      * EventManager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $dispatcher;
 
@@ -179,7 +179,7 @@ class Zikula_Core
     /**
      * Getter for eventmanager property.
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getDispatcher()
     {

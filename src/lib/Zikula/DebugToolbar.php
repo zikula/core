@@ -63,16 +63,16 @@ class Zikula_DebugToolbar
     /**
      * Event Manager instance.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
     /**
      * Sends an event via the EventManager to allow other code to extend the toolbar.
      *
-     * @param Zikula_EventManager $eventManager Core event manager.
+     * @param Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager Core event manager.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    public function __construct(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager)
     {
         $this->eventManager = $eventManager;
         PageUtil::addVar('javascript', 'prototype');

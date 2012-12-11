@@ -20,7 +20,7 @@ class EventUtil
     /**
      * Singleton instance of EventManager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public static $eventManager;
 
@@ -42,7 +42,7 @@ class EventUtil
      *
      * @param Zikula_Core $core Core instance.
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public static function getManager(Zikula_Core $core = null)
     {

@@ -21,7 +21,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * EventManager instance.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
@@ -56,11 +56,11 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Constructor.
      *
-     * @param Zikula_EventManager $eventManager ServiceManager.
+     * @param Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager ServiceManager.
      *
      * @throws InvalidArgumentException If $this->eventNames is invalid.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    public function __construct(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager)
     {
         $this->eventManager = $eventManager;
         $this->setup();
@@ -83,7 +83,7 @@ abstract class Zikula_Hook_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Get eventManager.
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getEventManager()
     {

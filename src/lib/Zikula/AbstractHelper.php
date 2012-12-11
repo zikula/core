@@ -28,7 +28,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
     /**
      * EventManager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
@@ -81,7 +81,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
      * Generally helpers are instaciated with new Zikula_AbstractHelper($this), but it
      * will accept most Zikula classes, and override this method.
      *
-     * @param object $object Zikula_AbstractBase, Zikula_ServiceManager, Zikula_EventManager, Zikula_AbstractEventHandler, Zikula_Hook_AbstractHandler, or other.
+     * @param object $object Zikula_AbstractBase, Zikula_ServiceManager, Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher, Zikula_AbstractEventHandler, Zikula_Hook_AbstractHandler, or other.
      *
      * @return void
      */
@@ -95,7 +95,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
         } elseif ($object instanceof Zikula_ServiceManager) {
             $this->serviceManager = $object;
             $this->eventManager = $object->getService('event_dispatcher');
-        } elseif ($object instanceof Zikula_EventManager) {
+        } elseif ($object instanceof Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher) {
             $this->eventManager = $object;
             $this->serviceManager = $object->getContainer();
         }

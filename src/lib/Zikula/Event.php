@@ -243,7 +243,7 @@ class Zikula_Event extends GenericEvent
      * @deprecated since 1.4
      * @use Symfony\Component\EventDispatcher\GenericEvent::getDispatcher()
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getEventManager()
     {

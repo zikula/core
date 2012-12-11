@@ -37,7 +37,7 @@ abstract class Zikula_AbstractErrorHandler
     /**
      * EventManager instance.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
@@ -210,7 +210,7 @@ abstract class Zikula_AbstractErrorHandler
     /**
      * Retrieve the event manager instance.
      *
-     * @return Zikula_EventManager The event manager instance.
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher The event manager instance.
      */
     public function getEventManager()
     {

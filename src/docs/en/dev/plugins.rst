@@ -1,7 +1,8 @@
 Zikula Plugin System
 --------------------
 
-The Zikula plugins system is based on the Zikula_EventManager system.
+The Zikula plugins system is based on the
+Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher system.
 
 Plugins can be used for a diverse number of purposes.  For example they could be
 as simple as to register a class namespace, or add some plugin search paths for

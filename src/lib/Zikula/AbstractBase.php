@@ -70,7 +70,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     /**
      * EventManager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
@@ -226,7 +226,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      * @deprecated since 1.4
      * @use self::getDispatcher()
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getEventManager()
     {
@@ -236,7 +236,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     /**
      * Get the EventManager.
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getDispatcher()
     {

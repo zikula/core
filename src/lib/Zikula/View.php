@@ -115,7 +115,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * The event manager instance.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 

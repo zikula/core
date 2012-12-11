@@ -38,7 +38,7 @@ abstract class Zikula_AbstractEventHandler
     /**
      * EventManager instance.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
@@ -59,9 +59,9 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Constructor.
      *
-     * @param Zikula_EventManager $eventManager EventManager.
+     * @param Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager EventManager.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    public function __construct(Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager)
     {
         $this->eventManager = $eventManager;
         $this->serviceManager = $this->eventManager->getContainer();
@@ -130,7 +130,7 @@ abstract class Zikula_AbstractEventHandler
      *
      * @deprecated since 1.4
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getEventManager()
     {
@@ -140,7 +140,7 @@ abstract class Zikula_AbstractEventHandler
     /**
      * Get eventManager.
      *
-     * @return Zikula_EventManager
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getDispatcher()
     {

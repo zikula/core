@@ -35,7 +35,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
     /**
      * EventManager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 

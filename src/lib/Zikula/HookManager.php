@@ -28,7 +28,7 @@ class Zikula_HookManager
     /**
      * Event Manager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     private $dispatcher;
 
@@ -50,10 +50,10 @@ class Zikula_HookManager
      * Constructor.
      *
      * @param Zikula_HookManager_StorageInterface $storage
-     * @param Zikula_EventManager                 $eventManager
+     * @param Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher                 $eventManager
      * @param Zikula_HookManager_ServiceFactory   $factory
      */
-    public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager, Zikula_HookManager_ServiceFactory $factory)
+    public function __construct(Zikula_HookManager_StorageInterface $storage, Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager, Zikula_HookManager_ServiceFactory $factory)
     {
         $this->storage = $storage;
         $this->dispatcher = $eventManager;
