@@ -57,9 +57,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // register namespace
         // Because the standard kernel classloader already has Doctrine registered as a namespace
         // we have to add a new loader onto the spl stack.
-        $autoloader = new Zikula_KernelClassLoader();
-        $autoloader->spl_autoload_register();
-        $autoloader->register('DoctrineProxy', __DIR__.'/../../ztemp/doctrinemodels', '\\');
+        $autoloader = new \Symfony\Component\ClassLoader\ClassLoader();
+        $autoloader->register();
+        $autoloader->addPrefix('DoctrineProxy', __DIR__.'/../../ztemp/doctrinemodels');
 
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         $dbConfig = array('host' => $config['host'],

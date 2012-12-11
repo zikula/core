@@ -11,13 +11,8 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-// For < PHP 5.3.0
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-}
-if (!defined('E_USER_DEPRECATED')) {
-    define('E_USER_DEPRECATED', 16384);
-}
+
+use Symfony\Component\ClassLoader\ClassLoader;
 
 if (!extension_loaded('xdebug')) {
     set_exception_handler('exception_handler');
@@ -42,7 +37,7 @@ class ZLoader
     /**
      * Autoloaders.
      *
-     * @var Zikula_KernelClassLoader
+     * @var ClassLoader
      */
     private static $autoloaders;
 
@@ -53,9 +48,10 @@ class ZLoader
      */
     public static function register()
     {
+
         spl_autoload_register(array('ZLoader', 'autoload'));
-        self::$autoloaders = new Zikula_KernelClassLoader();
-        self::$autoloaders->spl_autoload_register();
+        self::$autoloaders = new ClassLoader();
+        self::$autoloaders->register();
         self::addAutoloader('Categories', 'system/Categories/lib');
     }
 
@@ -68,13 +64,10 @@ class ZLoader
      *
      * @return void
      */
-    public static function addAutoloader($namespace, $path = '', $separator = '_')
+    public static function addAutoloader($namespace, $paths = '', $separator = '_')
     {
-        if (self::$autoloaders->hasAutoloader($namespace)) {
-            return;
-        }
-
-        self::$autoloaders->register($namespace, $path, $separator);
+        $separator = $separator === '\\' ? '' : $separator;
+        self::$autoloaders->addPrefix($namespace.$separator, $paths);
     }
 
     /**
