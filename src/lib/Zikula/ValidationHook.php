@@ -23,17 +23,8 @@ class Zikula_ValidationHook extends Zikula_AbstractHook
      */
     private $validators;
 
-    public function __construct($validators)
+    public function __construct(Zikula_Hook_ValidationProviders $validators)
     {
-        $funcArgs = func_get_args();
-        if (count($funcArgs) == 2) {
-            $this->setName($funcArgs[0]);
-            $validators = isset($funcArgs[1]) ? $funcArgs[1]: null;
-        }
-
-        if (!$validators instanceof Zikula_Hook_ValidationProviders) {
-            throw new InvalidArgumentException('$validators argument expected to be an instance of Zikula_Hook_ValidationProviders, but something else was given');
-        }
         $this->validators = $validators;
     }
 
