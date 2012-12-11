@@ -785,30 +785,8 @@ class ModUtil
             return $modname;
         }
 
-        // is OOP module
-        if (self::isOO($modname)) {
-            self::initOOModule($modname);
-        } else {
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-            $ostype = DataUtil::formatForOS($type);
+        self::initOOModule($modname);
 
-            $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
-            $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-            $mosdir = "$modpath/$osdir/pn{$ostype}{$osapi}";
-
-            if (file_exists($cosfile)) {
-                // Load the file from config
-                include_once $cosfile;
-            } elseif (file_exists($mosfile)) {
-                // Load the file from modules
-                include_once $mosfile;
-            } elseif (is_dir($mosdir)) {
-
-            } else {
-                // File does not exist
-                return false;
-            }
-        }
 
         self::$cache['loaded'][$modtype] = $modname;
 
@@ -882,10 +860,6 @@ class ModUtil
     public static function getClass($modname, $type, $api = false, $force = false)
     {
         // do not cache this process - drak
-        if (!self::isOO($modname)) {
-            return false;
-        }
-
         if ($api) {
             $result = self::loadApi($modname, $type);
         } else {
@@ -1048,20 +1022,18 @@ class ModUtil
         $controller = null;
         $modfunc = null;
         $loaded = call_user_func_array($loadfunc, array($modname, $type));
-        if (self::isOO($modname)) {
-            $result = self::getCallable($modname, $type, $func, $api);
-            if ($result) {
-                $modfunc = $result['callable'];
-                $controller = $modfunc[0];
-                if (!is_null($instanceof)) {
-                    if (!$controller instanceof $instanceof) {
-                        throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
-                    }
+
+        $result = self::getCallable($modname, $type, $func, $api);
+        if ($result) {
+            $modfunc = $result['callable'];
+            $controller = $modfunc[0];
+            if (!is_null($instanceof)) {
+                if (!$controller instanceof $instanceof) {
+                    throw new InvalidArgumentException(__f('%1$s must be an instance of $2$s', array(get_class($controller), $instanceof)));
                 }
             }
         }
 
-        $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
         if ($loaded) {
             $preExecuteEvent = new Zikula_Event($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
@@ -1086,45 +1058,9 @@ class ModUtil
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
                         $modfunc[0]->postDispatch();
                     }
-                } else {
-                    $postExecuteEvent->setData($modfunc($args));
                 }
 
                 return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-            }
-
-            // get the theme
-            if (ServiceUtil::getManager()->getService('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
-                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
-                    include_once $file;
-                    if (function_exists($modfunc)) {
-                        EventUtil::dispatch('module_dispatch.preexecute', $preExecuteEvent);
-                        $postExecuteEvent->setData($modfunc($args));
-
-                        return EventUtil::dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-                    }
-                }
-            }
-
-            if (file_exists($file = "config/functions/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
-                include_once $file;
-                if (is_callable($modfunc)) {
-                    $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-
-                    return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-                }
-            }
-
-            if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
-                include_once $file;
-                if (is_callable($modfunc)) {
-                    $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-
-                    return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-                }
             }
 
             // try to load plugin
@@ -1597,8 +1533,8 @@ class ModUtil
      */
     public static function initOOModule($moduleName)
     {
-        if (self::isInitialized($moduleName)) {
-            return true;
+        if (isset(self::$ooModules[$moduleName])) {
+            return;
         }
 
         $modinfo = self::getInfo(self::getIdFromName($moduleName));
@@ -1624,7 +1560,7 @@ class ModUtil
         // load any plugins
         PluginUtil::loadPlugins("$modpath/$osdir/plugins", "ModulePlugin_{$osdir}");
 
-        self::$ooModules[$moduleName]['initialized'] = true;
+        self::$ooModules[$moduleName] = true;
 
         return true;
     }
@@ -1638,36 +1574,7 @@ class ModUtil
      */
     public static function isInitialized($moduleName)
     {
-        return (self::isOO($moduleName) && self::$ooModules[$moduleName]['initialized']);
-    }
-
-    /**
-     * Checks whether a module is object oriented.
-     *
-     * @param string $moduleName Module name.
-     *
-     * @return boolean
-     */
-    public static function isOO($moduleName)
-    {
-        if (!isset(self::$ooModules[$moduleName])) {
-            self::$ooModules[$moduleName] = array();
-            self::$ooModules[$moduleName]['initialized'] = false;
-            self::$ooModules[$moduleName]['oo'] = false;
-            $modinfo = self::getInfo(self::getIdFromName($moduleName));
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-
-            if (!$modinfo) {
-                return false;
-            }
-
-            if (is_dir("$modpath/$osdir/lib")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            }
-        }
-
-        return self::$ooModules[$moduleName]['oo'];
+        return isset(self::$ooModules[$moduleName]);
     }
 
     /**

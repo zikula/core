@@ -294,11 +294,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
-        }
+        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
 
         $version = Extensions_Util::getVersionMeta($osdir, $modpath);
 
@@ -318,33 +314,25 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-                if (!include_once($file)) {
-                    LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-                }
+            $className = ucwords($modinfo['name']) . '_Installer';
+            $reflectionInstaller = new ReflectionClass($className);
+            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
-
-            if ($oomod) {
-                $className = ucwords($modinfo['name']) . '_Installer';
-                $reflectionInstaller = new ReflectionClass($className);
-                if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+            $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+            $interactiveController = null;
+            if (class_exists($interactiveClass)) {
+                $reflectionInteractive = new ReflectionClass($interactiveClass);
+                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
+                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
                 }
-                $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-                $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
-                $interactiveController = null;
-                if (class_exists($interactiveClass)) {
-                    $reflectionInteractive = new ReflectionClass($interactiveClass);
-                    if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                        LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                    }
-                    $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-                }
+                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
             }
 
             // perform the actual deletion of the module
-            $func = ($oomod) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
-            $interactive_func = ($oomod) ? array($interactiveController, 'uninstall') : $modinfo['name'] . '_init_interactivedelete';
+            $func = array($installer, 'uninstall');
+            $interactive_func = array($interactiveController, 'uninstall');
 
             // allow bypass of interactive removal during a new installation only.
             if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -361,11 +349,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
                         return call_user_func($interactive_func);
                     }
-                } else {
-                    // tnis is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
-                    SessionUtil::setVar('interactive_remove', true);
-
-                    return call_user_func($interactive_func);
                 }
             }
 
@@ -474,15 +457,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                         if (isset($modversion['message']) && $modversion['message']) {
                             $modversion['capabilities']['message'] = '1.0';
                         }
-                        // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/pnadmin.php") || is_dir("$rootdir/$dir/pnadmin")) {
-                            $modversion['capabilities']['admin'] = '1.0';
-                        }
 
-                        // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/pnuser.php") || is_dir("$rootdir/$dir/pnuser")) {
-                            $modversion['capabilities']['user'] = '1.0';
-                        }
                     } elseif ($oomod) {
                         // Work out if admin-capable
                         if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
@@ -809,11 +784,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
-        }
+        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -826,34 +797,26 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
+        $className = ucwords($modinfo['name']) . '_Installer';
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-
-        if ($oomod) {
-            $className = ucwords($modinfo['name']) . '_Installer';
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+        $installer = $reflectionInstaller->newInstance($this->serviceManager);
+        $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+        $interactiveController = null;
+        if (class_exists($interactiveClass)) {
+            $reflectionInteractive = new ReflectionClass($interactiveClass);
+            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstance($this->serviceManager);
-            $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
-            $interactiveController = null;
-            if (class_exists($interactiveClass)) {
-                $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                }
-                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-            }
+            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
         }
 
         // perform the actual install of the module
         // system or module
-        $func = ($oomod) ? array($installer, 'install') : $modinfo['name'] . '_init';
-        $interactive_func = ($oomod) ? array($interactiveController, 'install') : $modinfo['name'] . '_init_interactiveinit';
+        $func = array($installer, 'install');
+        $interactive_func = array($interactiveController, 'install');
 
         // allow bypass of interactive install during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -870,11 +833,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
                     return call_user_func($interactive_func);
                 }
-            } else {
-                // tnis is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
-                SessionUtil::setVar('interactive_init', true);
-
-                return call_user_func($interactive_func);
             }
         }
 
@@ -941,11 +899,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
-        }
+        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -958,33 +912,25 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
         }
 
-        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
+        $className = ucwords($modinfo['name']) . '_Installer';
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
-
-        if ($oomod) {
-            $className = ucwords($modinfo['name']) . '_Installer';
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+        $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+        $interactiveController = null;
+        if (class_exists($interactiveClass)) {
+            $reflectionInteractive = new ReflectionClass($interactiveClass);
+            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-            $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
-            $interactiveController = null;
-            if (class_exists($interactiveClass)) {
-                $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                }
-                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-            }
+            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
         }
 
         // perform the actual upgrade of the module
-        $func = ($oomod) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
-        $interactive_func = ($oomod) ? array($interactiveController, 'upgrade') : $modinfo['name'] . '_init_interactiveupgrade';
+        $func =array($installer, 'upgrade');
+        $interactive_func = array($interactiveController, 'upgrade');
 
         // allow bypass of interactive upgrade during a new installation only.
         if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
@@ -1001,11 +947,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
                     return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
                 }
-            } else {
-                // this is enclosed in the else so that if both conditions fail, execution will pass onto the non-interactive execution below.
-                SessionUtil::setVar('interactive_upgrade', true);
-
-                return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
             }
         }
 
@@ -1045,21 +986,6 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                      'version' => $version);
 
         DBUtil::updateObject($obj, 'modules');
-
-        // legacy to be removed from 1.4 - remove hooks during upgrade since we cannot rely on
-        // module authors to do this - drak
-        if ($oomod) {
-            $tables = DBUtil::getTables();
-            $hooksCol = $tables['hooks_column'];
-            $where = "$hooksCol[smodule] = '$modinfo[name]' OR $hooksCol[tmodule] = '$modinfo[name]'";
-            $hooks = DBUtil::selectObjectArray('hooks', $where);
-            if ($hooks) {
-                foreach ($hooks as $hook) {
-                    DBUtil::deleteObject($hook, 'hooks');
-                }
-                LogUtil::registerStatus($this->__f("NOTICE! Legacy hook configurations for %s have been removed.", $modinfo['name']));
-            }
-        }
 
         // Upgrade succeeded, issue event.
         $event = new Zikula_Event(null, $modinfo);

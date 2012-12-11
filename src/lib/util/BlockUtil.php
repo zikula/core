@@ -305,49 +305,29 @@ class BlockUtil
         $blockdir = "$basedir/$moddir/lib/$moddir/Block";
         $ooblock = "$blockdir/" . ucwords($block) . '.php';
         ModUtil::load($modname);
-        $isOO = ModUtil::isOO($modname);
 
-        if (!$isOO) {
-            $blockdirOld = $moddir . '/pnblocks';
-            $incfile = DataUtil::formatForOS($block . '.php');
-
-            if (file_exists("$basedir/$blockdirOld/$incfile")) {
-                include_once "$basedir/$blockdirOld/$incfile";
+        // get the block info
+        $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+        $r = new ReflectionClass($className);
+        $blockInstance = $r->newInstanceArgs(array($sm));
+        try {
+            if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
+                throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
+            }
+        } catch (LogicException $e) {
+            if (System::isDevelopmentMode()) {
+                throw $e;
             } else {
+                LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
                 return false;
             }
         }
 
-        // get the block info
-        if ($isOO) {
-            $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
-            $r = new ReflectionClass($className);
-            $blockInstance = $r->newInstanceArgs(array($sm));
-            try {
-                if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
-                    throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
-                }
-            } catch (LogicException $e) {
-                if (System::isDevelopmentMode()) {
-                    throw $e;
-                } else {
-                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
+        $sm->attachService($serviceId, $blockInstance);
 
-                    return false;
-                }
-            }
+        $result = $blockInstance;
 
-            $sm->attachService($serviceId, $blockInstance);
-        }
-
-        $result = ($isOO ? $blockInstance : true);
-
-        if ($isOO) {
-            $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
-        } else {
-            $infofunc = "{$modname}_{$block}block_info";
-            $blocks_modules[$block] = $infofunc();
-        }
+        $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
 
         // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
@@ -361,12 +341,7 @@ class BlockUtil
         $GLOBALS['blocks_modules'][$blocks_modules[$block]['mid']][$block] = $blocks_modules[$block];
 
         // Initialise block if required (new-style)
-        if ($isOO) {
-            call_user_func(array($blockInstance, 'init'));
-        } else {
-            $initfunc = "{$modname}_{$block}block_init";
-            $initfunc();
-        }
+        call_user_func(array($blockInstance, 'init'));
 
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
