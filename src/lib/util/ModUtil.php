@@ -1544,7 +1544,11 @@ class ModUtil
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"));
+        ZLoader::addAutoloader($moduleName, array(
+                               realpath("$modpath"),
+                               realpath("$modpath/$osdir/lib"),
+            )
+        );
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -1590,8 +1594,9 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
-            $path = "$base/$module[directory]/lib";
-            ZLoader::addAutoloader($module['directory'], $path);
+            $paths[] = "$base";
+            $paths[] = "$base/$module[directory]/lib";
+            ZLoader::addAutoloader($module['directory'], $paths);
         }
     }
 
@@ -1642,10 +1647,6 @@ class ModUtil
                 $modpath . '/' . $osmoddir . '/images/admin.png',
                 $modpath . '/' . $osmoddir . '/images/admin.jpg',
                 $modpath . '/' . $osmoddir . '/images/admin.gif',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.gif',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.png',
                 'system/Admin/images/default.gif'
         );
         

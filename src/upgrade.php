@@ -19,7 +19,7 @@ ini_set('memory_limit', '64M');
 ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
-ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
+ZLoader::addAutoloader('Users', 'system', '_');
 include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 
 // check if the config.php was renewed

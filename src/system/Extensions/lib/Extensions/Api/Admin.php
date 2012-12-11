@@ -294,7 +294,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
-        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
 
         $version = Extensions_Util::getVersionMeta($osdir, $modpath);
 
@@ -424,7 +424,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     $oomod = false;
                     // register autoloader
                     if (is_dir("$rootdir/$dir/lib")) {
-                        ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
+                        ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
                         $oomod = true;
                     }
 
@@ -784,7 +784,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -899,7 +899,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+        ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
