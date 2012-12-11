@@ -52,7 +52,7 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new ClassLoader();
         self::$autoloaders->register();
-        self::addAutoloader('Categories', 'system/Categories/lib');
+        self::addAutoloader('Categories', 'system');
     }
 
     /**
