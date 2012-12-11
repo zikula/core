@@ -1,6 +1,12 @@
 Upgrading from Core 1.3 to 1.4
 ==============================
 
+Module Structure
+----------------
+
+It is now possible to optionally place module's PHP assets directly in the module's
+root folder, without having to nest in `$modname/lib/$modname`.
+
 Service Manager
 ---------------
 
