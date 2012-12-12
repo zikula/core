@@ -40,7 +40,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         ZLoader::addAutoloader("Zikula\\Core\\Forms", __DIR__ . '/lib', '\\');
 
         // register symfony validation annorations
-        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/src');
+        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/validator');
 
         // register validator service
         $fileLocator = new FileLocator(array(__DIR__ . '/Resources/config/validator.xml'));
@@ -55,7 +55,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
-        
+
         $this->serviceManager->set('symfony.formfactory', $formFactory);
         
         
