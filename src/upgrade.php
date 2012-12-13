@@ -28,7 +28,6 @@ if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
     die();
 }
 
-PluginUtil::loadPlugin('SystemPlugin_Doctrine_Plugin');
 $eventManager = $core->getDispatcher();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');
 
