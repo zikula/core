@@ -365,11 +365,10 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         // have missed
         DBUtil::deleteObjectByID('module_vars', $modinfo['name'], 'modname');
 
-        if ($oomod) {
-            HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
-            HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
-            EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
-        }
+        HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
+        HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+        EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
+
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
@@ -421,11 +420,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 $dirs = FileUtil::getFiles($rootdir, false, true, null, 'd');
 
                 foreach ($dirs as $dir) {
-                    $oomod = false;
                     // register autoloader
-                    if (is_dir("$rootdir/$dir/lib")) {
+                    if (is_dir("$rootdir/$dir")) {
                         ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
-                        $oomod = true;
                     }
 
                     // loads the gettext domain for 3rd party modules
@@ -450,28 +447,19 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     $name = $dir;
 
                     // Get the module version
-                    if (!$modversion instanceof Zikula_AbstractVersion) {
-                        if (isset($modversion['profile']) && $modversion['profile']) {
-                            $modversion['capabilities']['profile'] = '1.0';
-                        }
-                        if (isset($modversion['message']) && $modversion['message']) {
-                            $modversion['capabilities']['message'] = '1.0';
-                        }
 
-                    } elseif ($oomod) {
-                        // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
-                            $caps = $modversion['capabilities'];
-                            $caps['admin'] = array('version' => '1.0');
-                            $modversion['capabilities'] = $caps;
-                        }
+                    // Work out if admin-capable
+                    if (file_exists("$rootdir/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                        $caps = $modversion['capabilities'];
+                        $caps['admin'] = array('version' => '1.0');
+                        $modversion['capabilities'] = $caps;
+                    }
 
-                        // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
-                            $caps = $modversion['capabilities'];
-                            $caps['user'] = array('version' => '1.0');
-                            $modversion['capabilities'] = $caps;
-                        }
+                    // Work out if user-capable
+                    if (file_exists("$rootdir/$dir/Controller/User.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                        $caps = $modversion['capabilities'];
+                        $caps['user'] = array('version' => '1.0');
+                        $modversion['capabilities'] = $caps;
                     }
 
                     $version = $modversion['version'];
