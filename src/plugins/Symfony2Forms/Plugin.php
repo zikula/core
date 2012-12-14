@@ -15,6 +15,7 @@ use Zikula\Core\Forms\Renderer;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Form\Forms;
 
 /**
  * Symfony2 forms plugin definition.
@@ -54,7 +55,8 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $validator = new \Symfony\Component\Form\Extension\Validator\ValidatorExtension($this->serviceManager->get("validator"));
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
-        $formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
+        $formFactory = Forms::createFormFactoryBuilder()->addExtensions(array($core, $csrf, $validator, $zk, $doctrine))->getFormFactory();
+        //$formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
 
         $this->serviceManager->set('symfony.formfactory', $formFactory);
         
@@ -69,7 +71,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $this->addHandlerDefinition('symfony.formrenderer.lookup', 'registerRenderer');
     }
     
-    public function initView(GenericEvent $event) 
+    public function initView(Zikula_Event $event)
     {
         /* @var $view Zikula_View */
         $view = $event->getSubject();
@@ -91,7 +93,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         
         $view->register_function('sform_rest', array($this->serviceManager->get('symfony.formrenderer'),
                                                     'renderRest'));
-        
+
         $view->register_function('sform_all_errors', array($this->serviceManager->get('symfony.formrenderer'),
                                                     'renderGlobalErrors'));
         

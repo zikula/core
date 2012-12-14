@@ -5,7 +5,7 @@ namespace Zikula\Core\Forms;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Util\FormUtil;
-use Zikula\Common\EventManager\EventManagerInterface;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Symfony2 FormView Renderer.
@@ -16,13 +16,13 @@ class FormRenderer
 {
     protected $renderer;
     protected $varStack;
-    protected $eventManager;
+    protected $dispatcher;
 
-    public function __construct(EventManagerInterface $eventManager)
+    public function __construct(ContainerAwareEventDispatcher $dispatcher)
     {
         $this->varStack = array();
         $this->renderer = null;
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $dispatcher;
     }
 
     public function renderEnctype($params)
@@ -195,7 +195,7 @@ class FormRenderer
     {
         if($this->renderer == null) {
             $event = new \Zikula_Event('symfony.formrenderer.lookup', new \ArrayObject(array()));
-            $this->eventManager->notify($event);
+            $this->dispatcher->notify($event);
             
             $renderer = array();
             
