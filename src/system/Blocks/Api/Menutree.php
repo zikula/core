@@ -744,7 +744,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
             );
         } else {
             $serviceManager = ServiceUtil::getManager();
-            $request = $this->serviceManager->getService('request');
+            $request = $this->serviceManager->get('request');
 
             $loginArgs = array();
             if ($request->isGet()) {

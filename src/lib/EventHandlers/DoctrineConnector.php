@@ -139,7 +139,8 @@ class DoctrineListener extends Zikula_AbstractEventHandler
                 $options = array_merge($options, array('servers' => $servers, 'compression' => $this->serviceManager['dbcache.compression']));
             }
 
-            $cacheDriver = $this->serviceManager->attachService('doctrine.cachedriver', $r->newInstance($options));
+            $cacheDriver = $r->newInstance($options);
+            $this->serviceManager->set('doctrine.cachedriver', $cacheDriver);
             $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $cacheDriver);
             $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $cacheDriver);
 

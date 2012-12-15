@@ -249,12 +249,12 @@ class StringUtil
     public static function getMarkdownParser()
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->hasService('markdown_parser')) {
+        if (!$sm->has('markdown_parser')) {
             include_once 'lib/vendor/Markdown/markdown.php';
-            $sm->attachService('markdown_parser', new Markdown_Parser());
+            $sm->set('markdown_parser', new Markdown_Parser());
         }
 
-        return $sm->getService('markdown_parser');
+        return $sm->get('markdown_parser');
     }
 
     /**
@@ -265,12 +265,12 @@ class StringUtil
     public static function getMarkdownExtraParser()
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->hasService('markdownextra_parser')) {
+        if (!$sm->has('markdownextra_parser')) {
             include_once 'lib/vendor/Markdown/markdown.php';
-            $sm->attachService('markdownextra_parser', new MarkdownExtra_Parser());
+            $sm->set('markdownextra_parser', new MarkdownExtra_Parser());
         }
 
-        return $sm->getService('markdownextra_parser');
+        return $sm->get('markdownextra_parser');
     }
 
 }

@@ -230,7 +230,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupRequest(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
-            $request = $this->serviceManager->getService('request');
+            $request = $this->serviceManager->get('request');
             // temporary workaround: reinitialize request information after having decoded short urls
             $request->initialize();
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
@@ -249,7 +249,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initialHandlerScan(Zikula_Event $event)
     {
-        $core = $this->serviceManager->getService('zikula');
+        $core = $this->serviceManager->get('zikula');
         ServiceUtil::getManager($core);
         EventUtil::getManager($core);
         $core->attachHandlers('config/EventHandlers');
@@ -329,7 +329,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function requireSession(Zikula_Event $event)
     {
-        $session = $this->serviceManager->getService('session');
+        $session = $this->serviceManager->get('session');
         try {
             if (!$session->start()) {
                 throw new RuntimeException('Failed to start session');
@@ -393,7 +393,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             return;
         }
 
-        if ($this->serviceManager->hasService('system.errorreporting')) {
+        if ($this->serviceManager->has('system.errorreporting')) {
             return;
         }
 
@@ -403,7 +403,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         $errorHandler = new $class($this->serviceManager);
-        $this->serviceManager->attachService('system.errorreporting', $errorHandler);
+        $this->serviceManager->set('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, 'handler'));
         $event->stopPropagation();
     }
@@ -428,7 +428,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if ($this->serviceManager['log.to_display'] || $this->serviceManager['log.sql.to_display']) {
-            $displayLogger = $this->serviceManager->attachService('zend.logger.display', new Zend_Log());
+            $displayLogger = new Zend_Log();
+            $this->serviceManager->set('zend.logger.display', $displayLogger);
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream('php://output');
             $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
@@ -437,7 +438,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if ($this->serviceManager['log.to_file'] || $this->serviceManager['log.sql.to_file']) {
-            $fileLogger = $this->serviceManager->attachService('zend.logger.file', new Zend_Log());
+            $fileLogger = new Zend_Log();
+            $this->serviceManager->set('zend.logger.file', $fileLogger);
             $filename = LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream($filename);
@@ -491,13 +493,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         if ($this->serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $this->serviceManager['log.display_level']) {
-                $this->serviceManager->getService('zend.logger.display')->log($message, abs($event['type']));
+                $this->serviceManager->get('zend.logger.display')->log($message, abs($event['type']));
             }
         }
 
         if ($this->serviceManager['log.to_file']) {
             if (abs($handler->getType()) <= $this->serviceManager['log.file_level']) {
-                $this->serviceManager->getService('zend.logger.file')->log($message, abs($event['type']));
+                $this->serviceManager->get('zend.logger.file')->log($message, abs($event['type']));
             }
         }
 
@@ -529,11 +531,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $message = __f('SQL Query: %s took %s sec', array($event['query'], $event['time']));
 
         if ($this->serviceManager['log.sql.to_display']) {
-            $this->serviceManager->getService('zend.logger.display')->log($message, Zend_Log::DEBUG);
+            $this->serviceManager->get('zend.logger.display')->log($message, Zend_Log::DEBUG);
         }
 
         if ($this->serviceManager['log.sql.to_file']) {
-            $this->serviceManager->getService('zend.logger.file')->log($message, Zend_Log::DEBUG);
+            $this->serviceManager->get('zend.logger.file')->log($message, Zend_Log::DEBUG);
         }
     }
 

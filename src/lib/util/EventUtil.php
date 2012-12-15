@@ -133,7 +133,7 @@ class EventUtil
     public static function attachEventHandler($className)
     {
         $serviceManager = ServiceUtil::getManager();
-        $serviceManager->getService('zikula')->attachEventHandler($className);
+        $serviceManager->get('zikula')->attachEventHandler($className);
     }
 
     /**

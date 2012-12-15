@@ -193,7 +193,7 @@ class Zikula_DebugToolbar
     public function asJSON()
     {
         $serviceManager = $this->eventManager->getContainer();
-        $request = $serviceManager->getService('request');
+        $request = $serviceManager->get('request');
 
         // check if security key is defined
         $secKey = isset($serviceManager['log.to_debug_toolbar_seckey']) ? $serviceManager['log.to_debug_toolbar_seckey'] : false;

@@ -171,8 +171,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('event_dispatcher');
-        $this->request = $this->serviceManager->getService('request');
+        $this->eventManager = $this->serviceManager->get('event_dispatcher');
+        $this->request = $this->serviceManager->get('request');
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;
@@ -283,7 +283,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->register_block('nocache', array('Zikula_View_Resource', 'block_nocache'), false);
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-        if (($this->serviceManager->getService('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
+        if (($this->serviceManager->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
             $this->load_filter('output', 'shorturls');
         }
 
@@ -317,7 +317,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // add ServiceManager, EventManager and others to all templates
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
-        parent::assign('zikula_core', $this->serviceManager->getService('zikula'));
+        parent::assign('zikula_core', $this->serviceManager->get('zikula'));
         parent::assign('request', $this->request);
         parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
 
@@ -351,11 +351,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         $serviceManager = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.view.%s', $module));
-        if (!$serviceManager->hasService($serviceId)) {
+        if (!$serviceManager->has($serviceId)) {
             $view = new self($serviceManager, $module, $caching);
-            $serviceManager->attachService($serviceId, $view);
+            $serviceManager->set($serviceId, $view);
         } else {
-            $view = $serviceManager->getService($serviceId);
+            $view = $serviceManager->get($serviceId);
         }
 
         if (!is_null($caching)) {

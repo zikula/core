@@ -323,7 +323,7 @@ class BlockUtil
             }
         }
 
-        $sm->attachService($serviceId, $blockInstance);
+        $sm->set($serviceId, $blockInstance);
 
         $result = $blockInstance;
 

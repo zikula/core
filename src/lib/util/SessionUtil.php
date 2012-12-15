@@ -66,7 +66,7 @@ class SessionUtil
      */
     public static function getVar($name, $default = false, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
 
         return $session->get($name, $default, $path);
     }
@@ -84,7 +84,7 @@ class SessionUtil
      */
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
         if (($name == 'errormsg' || $name == 'statusmsg' || $name == '_ZErrorMsg' || $name == '_ZStatusMsg') && !is_array($value)) {
             if (System::isDevelopmentMode()) {
                 LogUtil::log(__("Error! This use of 'SessionUtil::setVar()' is no longer valid. Please use the LogUtil API to manipulate status messages and error messages."));
@@ -115,7 +115,7 @@ class SessionUtil
      */
     public static function delVar($name, $default = false, $path = '/')
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
         $value = $session->get($name, $default, $path);
         $session->del($name, $path);
 

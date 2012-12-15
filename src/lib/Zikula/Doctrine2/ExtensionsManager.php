@@ -30,7 +30,7 @@ class Zikula_Doctrine2_ExtensionsManager
         }
         
         $id = 'doctrine_extensions.listener.' . $type;
-        if (!$this->serviceManager->hasService($id)) {
+        if (!$this->serviceManager->has($id)) {
             throw new InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
 

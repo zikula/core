@@ -49,7 +49,7 @@ class Users_Listener_ClearUsersNamespace
 
         if ($doClear) {
             $serviceManager = ServiceUtil::getManager();
-            $session = $serviceManager->getService('session');
+            $session = $serviceManager->get('session');
             $session->clearNamespace('Zikula_Users');
             //Do not setNotified. Not handling the exception, just reacting to it.
         }

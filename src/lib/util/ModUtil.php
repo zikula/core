@@ -937,8 +937,8 @@ class ModUtil
         $sm = ServiceUtil::getManager();
 
         $callable = false;
-        if ($sm->hasService($serviceId)) {
-            $object = $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
@@ -957,7 +957,7 @@ class ModUtil
                     return false;
                 }
             }
-            $sm->attachService(strtolower($serviceId), $object);
+            $sm->set(strtolower($serviceId), $object);
         }
 
         return $object;
