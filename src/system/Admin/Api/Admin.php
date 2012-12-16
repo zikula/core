@@ -322,7 +322,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $base = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        if (is_dir($dir = "$base/$osmoddir/Resources/public/css") || is_dir($dir = "$base/$osmoddir/style")) {
+        if (is_dir($dir = "$base/$osmoddir/Resources/public/css")) {//} || is_dir($dir = "$base/$osmoddir/style")) {
             $handle = opendir($dir);
             while (false !== ($file = readdir($handle))) {
                 if (stristr($file, '.css') && !in_array($file, $args['exclude'])) {
