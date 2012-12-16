@@ -667,7 +667,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             $onlineVersion = $updateversion;
         } else {
             $s = (extension_loaded('openssl') ? 's' : '');
-            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
+            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion14.cgi"));
             if ($onlineVersion === false) {
                 return array('update_show' => false);
             }
