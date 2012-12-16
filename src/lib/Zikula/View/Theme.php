@@ -176,7 +176,10 @@ class Zikula_View_Theme extends Zikula_View
 
         EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
         EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
-        if (is_readable("themes/$themeName/templates/overrides.yml")) {
+        if (is_readable("themes/$themeName/Resources/config/overrides.yml")) {
+            $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
+            $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/Resources/config/overrides.yml", 'yml');
+        } else if (is_readable("themes/$themeName/templates/overrides.yml")) {
             $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
             $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
         }
@@ -407,42 +410,26 @@ class Zikula_View_Theme extends Zikula_View
         $themeDir = DataUtil::formatForOS($this->directory);
         $osTemplate = DataUtil::formatForOS($template);
 
-        $relativePath = "themes/$themeDir/templates";
-        $templateFile = "$relativePath/$osTemplate";
+        $relativepath = "themes/$themeDir/Resources/views";
+        if (!is_dir($relativepath)) {
+            $relativepath = "themes/$themeDir/templates";
+        }
+
+        $templateFile = "$relativepath/$osTemplate";
         $override = self::getTemplateOverride($templateFile);
+
         if ($override === false) {
-            // ..
+            $path = substr($templateFile, 0, strrpos($templateFile, $osTemplate));
         } else {
             if (is_readable($override)) {
                 $path = substr($override, 0, strrpos($override, $osTemplate));
-                $this->templateCache[$template] = $path;
-
-                return $path;
+            } else {
+                return false;
             }
         }
+        $this->templateCache[$template] = $path;
 
-        // The rest of this code is scheduled for removal from 1.4.0 - drak
-
-        // Define the locations in which we will look for templates
-        // (in this order)
-        // 1. Master template path
-        $masterPath = "themes/$themeDir/templates";
-        // 2. The module template path
-        $modulePath = "themes/$themeDir/templates/modules";
-        // 4. The block template path
-        $blockPath = "themes/$themeDir/templates/blocks";
-
-        $search_path = array($masterPath, $modulePath, $blockPath);
-        foreach ($search_path as $path) {
-            if (is_readable("$path/$osTemplate")) {
-                $this->templateCache[$template] = $path;
-
-                return $path;
-            }
-        }
-
-        // when we arrive here, no path was found
-        return false;
+        return $path;
     }
 
     /**
@@ -453,7 +440,14 @@ class Zikula_View_Theme extends Zikula_View
     private function _plugin_dirs()
     {
         // add theme specific plugins directories, if they exist
-        $this->addPluginDir('themes/' . $this->directory . '/plugins');
+        if (is_dir('themes/' . $this->directory . '/Resources/views/plugins')) {
+            $this->addPluginDir('themes/' . $this->directory . '/Resources/views/plugins');
+            return;
+        }
+
+        if (is_dir('themes/' . $this->directory . '/plugins')) {
+            $this->addPluginDir('themes/' . $this->directory . '/plugins');
+        }
     }
 
     /**
@@ -582,7 +576,13 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         // assign some basic paths for the engine
-        $this->template_dir  = $this->themepath . '/templates'; // default directory for templates
+        if (is_dir($this->themepath . '/templates')) {
+            $this->template_dir  = $this->themepath . '/templates'; // default directory for templates
+        }
+
+        if (is_dir($this->themepath . '/Resources/views')) {
+            $this->template_dir  = $this->themepath . '/Resources/views'; // default directory for templates
+        }
 
         $this->themepath     = 'themes/' . $this->directory;
         $this->imagepath     = $this->themepath . '/images';
