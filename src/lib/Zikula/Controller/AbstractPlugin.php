@@ -66,11 +66,16 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
         $this->moduleName = $this->plugin->getModuleName();
         $this->modinfo = $this->plugin->getModInfo();
         if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_SYSTEM) {
-            $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
+            $this->libBaseDir = $this->baseDir;
+            if (realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}")) {
+                $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
+            }
         } else {
             $modbase = ($this->modinfo['type'] == Zikula_AbstractPlugin::TYPE_MODULE) ? 'modules' : 'system';
-            $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
-            $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
+            $this->baseDir = $this->libBaseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
+            if (realpath("{$this->baseDir}/lib/{$this->pluginName}")) {
+                $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
+            }
         }
         $this->domain = $this->plugin->getDomain();
     }
