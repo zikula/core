@@ -187,29 +187,13 @@ class BlockUtil
 
         $blockInstance = self::load($modname, $blockname);
 
-        if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
-            $displayfunc = array($blockInstance, 'display');
-        } else {
-            $displayfunc = "{$modname}_{$blockname}block_display";
-        }
+        $displayfunc = array($blockInstance, 'display');
 
         if (is_callable($displayfunc)) {
             if (is_array($displayfunc)) {
                 return call_user_func($displayfunc, $blockinfo);
             } else {
                 return $displayfunc($blockinfo);
-            }
-        } else {
-            // Old-style blocks
-            if (isset($blocks_modules[0][$blockname]['func_display'])) {
-                return $blocks_modules[0][$blockname]['func_display']($blockinfo);
-            } else {
-                if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                    $blockinfo['title'] = __f("Block type '%s' not found", $blockname);
-                    $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $blockname);
-
-                    return self::themeBlock($blockinfo);
-                }
             }
         }
     }
@@ -292,8 +276,8 @@ class BlockUtil
         $modinfo = ModUtil::getInfoFromName($modname);
 
         $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block);
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
