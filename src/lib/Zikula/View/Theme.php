@@ -174,6 +174,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->domain = null;
         }
 
+        EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
         EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
         if (is_readable("themes/$themeName/templates/overrides.yml")) {
             $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
