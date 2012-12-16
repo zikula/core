@@ -21,7 +21,7 @@ Events
 
 The event system has been switched out for Symfony2 Event Dispatcher 2.2 component.
 Zikula specifically uses the `ContainerAwareEventDispatcher`. Please use the Symfony2 API
-only.
+only. You should change any typehints from `Zikula_EventManager` to `ContainerAwareEventDispatcher`.
 
 The main changes are:
 
@@ -40,6 +40,16 @@ Example in Core 1.4+
 
 You can also create custom events without using the `Zikula_Event` object directly.
 
+Please note, while they will still work, you should also update event method calls if
+you use them:
+
+    $event->stop() -> stopPropagation()
+    $event->isStopped() -> isPropagationStopped()
+    $event->hasArg() -> hasArgument()
+    $event->getArg() -> getArgument()
+    $event->getArgs() -> getArguments()
+    $event->setArg() -> setArgument()
+    $event->setArgs() -> setArguments()
 
 Hooks
 -----
