@@ -300,10 +300,6 @@ class BlockUtil
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
 
-        $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-        $moddir = DataUtil::formatForOS($modinfo['directory']);
-        $blockdir = "$basedir/$moddir/lib/$moddir/Block";
-        $ooblock = "$blockdir/" . ucwords($block) . '.php';
         ModUtil::load($modname);
 
         // get the block info
