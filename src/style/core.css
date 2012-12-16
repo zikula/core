@@ -390,6 +390,23 @@ table.z-admintable ul li {
     border: 1px solid #fafafa;
 }
 
+.z-form div.z-formrow input[type=file]{
+    display:inline;
+    cursor: pointer;
+    -webkit-appearance:none;
+}
+
+.z-form div.z-formrow input[type=file]::-webkit-file-upload-button{
+    -webkit-appearance: none;
+    cursor: pointer;
+    color: #444;
+    border-color: #CCCCCC #B9B9B9 #B9B9B9 #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)); /*webkit*/
+    -webkit-border-radius: 3px;
+}
+
 .z-form .z-formrow select optgroup {
     font-style: normal;
     font-weight: bold;
