@@ -264,7 +264,7 @@ class Zikula_View_Theme extends Zikula_View
      * @param integer|null $caching   Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id  Cache Id.
      *
-     * @return Zikula_Theme This instance.
+     * @return Zikula_View_Theme This instance.
      */
     public static function getInstance($themeName = '', $caching = null, $cache_id = null)
     {
