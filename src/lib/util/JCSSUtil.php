@@ -230,7 +230,6 @@ class JCSSUtil
      */
     public static function getScriptName($script)
     {
-        $script = self::handleLegacy($script);
         $coreScripts = self::scriptsMap();
         $_script = strtolower($script);
         if (array_key_exists($_script, $coreScripts)) {
@@ -241,51 +240,6 @@ class JCSSUtil
                 return $name;
             } elseif (isset($meta['path']) && $meta['path'] == $script) {
                 return $name;
-            }
-        }
-
-        return $script;
-    }
-
-    /**
-     * Internal procedure for managing legacy script paths.
-     *
-     * @param string $script Script path to check.
-     *
-     * @return string Verified script path
-     */
-    private static function handleLegacy($script)
-    {
-        // Handle legacy references to non-minimised scripts.
-        if (strpos($script, 'javascript/livepipe/') === 0) {
-            $script = 'livepipe';
-        } elseif (strpos($script, 'javascript/ajax/') === 0) {
-            switch ($script) {
-                case 'javascript/ajax/validation.js':
-                    $script = 'validation';
-                    break;
-                case 'javascript/ajax/unittest.js':
-                    $script = 'javascript/ajax/unittest.min.js';
-                    break;
-                case 'javascript/ajax/prototype.js':
-                case 'javascript/ajax/builder.js':
-                case 'javascript/ajax/controls.js':
-                case 'javascript/ajax/dragdrop.js':
-                case 'javascript/ajax/effects.js':
-                case 'javascript/ajax/slider.js':
-                case 'javascript/ajax/sound.js':
-                    $script = 'prototype';
-                    break;
-            }
-            if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
-                $script = 'prototype';
-            }
-        } elseif (strpos($script, 'modules/') === 0) {
-            // check for customized javascripts
-            $custom = str_replace(array('javascript/'), '', $script);
-            $custom = str_replace(array('modules', 'system'), 'config/javascript', $custom);
-            if (file_exists($custom)) {
-                $script = $custom;
             }
         }
 
@@ -309,150 +263,93 @@ class JCSSUtil
      */
     public static function scriptsMap()
     {
-        $scripts = array(
-                'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.8.3.min.js',
-                        'require' => array('noconflict'),
+        $scriptsMap = array(
+            'json2' => array(
+                'production' => array(
+                    'path' => 'javascript/json2/json2.min.js',
                 ),
-                'jquery-ui' => array(
-                        'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.min.js',
-                        'require' => array('jquery'),
+                'development' => array(
+                    'path' => 'javascript/json2/json2.js',
+                )
+            ),
+            'jquery' => array(
+                'production' => array(
+                    'path' => 'javascript/jquery/jquery-1.8.3.min.js',
+                    'require' => array('jquery.noconflict'),
                 ),
-                'noconflict' => array(
-                        'path' => 'javascript/jquery/noconflict.js',
+                'development' => array(
+                    'path' => 'javascript/jquery/jquery-1.8.3.js',
+                    'require' => array('jquery.noconflict'),
+                )
+            ),
+            'jquery.noconflict' => array(
+                'path' => 'javascript/jquery/noconflict.js',
+            ),
+            'jquery-ui' => array(
+                'production' => array(
+                    'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.min.js',
+                    'require' => array('jquery'),
                 ),
-                'prototype' => array(
-                        'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
-                        'require' => array('zikula'),
-                        'aliases' => array('prototype', 'scriptaculous'),
+                'development' => array(
+                    'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.js',
+                    'require' => array('jquery'),
+                )
+            ),
+            'underscore' => array(
+                'production' => array(
+                    'path' => 'javascript/underscore/underscore.min.js',
                 ),
-                'livepipe' => array(
-                        'path' => 'javascript/livepipe/livepipe.combined.min.js',
-                        'require' => array('prototype'),
+                'development' => array(
+                    'path' => 'javascript/underscore/underscore.js',
+                )
+            ),
+            'underscore.string' => array(
+                'production' => array(
+                    'path' => 'javascript/underscore/underscore.string.min.js',
+                    'require' => array('underscore'),
                 ),
-                'zikula' => array(
-                        'path' => 'javascript/helpers/Zikula.js',
-                        'require' => array('prototype'),
-                        'aliases' => array('javascript/ajax/ajax.js'),
+                'development' => array(
+                    'path' => 'javascript/underscore/underscore.string.js',
+                    'require' => array('underscore'),
+                )
+            ),
+            'modernizr' => array(
+                'production' => array(
+                    'path' => 'javascript/modernizr/modernizr.min.js',
                 ),
-                'zikula.ui' => array(
-                        'path' => 'javascript/helpers/Zikula.UI.js',
-                        'require' => array('prototype', 'livepipe', 'zikula'),
-                        'gettext' => true
+                'development' => array(
+                    'path' => 'javascript/modernizr/modernizr.js',
+                )
+            ),
+            'zikula' => array(
+                'production' => array(
+                    'path' => 'javascript/zikula/zikula.min.js',
+                    'require' => array('jquery', 'underscore', 'underscore.string', 'modernizr'),
+                    'gettext' => true
                 ),
-                'zikula.imageviewer' => array(
-                        'path' => 'javascript/helpers/Zikula.ImageViewer.js',
-                        'require' => array('prototype', 'zikula'),
-                        'styles' => array('javascript/helpers/ImageViewer/ImageViewer.css'),
-                        'aliases' => array('imageviewer', 'lightbox'),
-                        'gettext' => true
-                ),
-                'zikula.itemlist' => array(
-                        'path' => 'javascript/helpers/Zikula.itemlist.js',
-                        'require' => array('prototype', 'zikula'),
-                ),
-                'zikula.tree' => array(
-                        'path' => 'javascript/helpers/Zikula.Tree.js',
-                        'require' => array('prototype', 'zikula'),
-                        'styles' => array('javascript/helpers/Tree/Tree.css'),
-                ),
-                'validation' => array(
-                        'path' => 'javascript/ajax/validation.min.js',
-                        'require' => array('prototype'),
-                ),
+                'development' => array(
+                    'path' => 'javascript/zikula/zikula.js',
+                    'require' => array(
+                        'jquery', 'underscore', 'underscore.string', 'modernizr',
+                        'javascript/zikula/lang.js',
+                        'javascript/zikula/class.js',
+                        'javascript/zikula/core.js',
+                        'javascript/zikula/factory.js',
+                        'javascript/zikula/util.cookie.js',
+                        'javascript/zikula/util.gettext.js',
+                        'javascript/zikula/dom.js',
+                        'javascript/zikula/ajax.js',
+                        'javascript/zikula/boot.js'
+                    ),
+                    'gettext' => true
+                )
+            ),
         );
-        if (System::isDevelopmentMode()) {
-            $prototypeUncompressed = array(
-                    'prototype' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/prototype.js',
-                            'require' => array('zikula', 'builder', 'controls', 'dragdrop', 'effects', 'slider', 'sound'),
-                            'aliases' => array('prototype', 'scriptaculous'),
-                    ),
-                    'scriptaculous' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/prototype.js',
-                            'require' => array('prototype'),
-                    ),
-                    'effects' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/effects.js',
-                    ),
-                    'builder' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/builder.js',
-                    ),
-                    'controls' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/controls.js',
-                    ),
-                    'dragdrop' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/dragdrop.js',
-                    ),
-                    'slider' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/slider.js',
-                    ),
-                    'sound' => array(
-                            'path' => 'javascript/ajax/original_uncompressed/sound.js',
-                    )
-            );
-            $livepipeUncompressed = array(
-                    'livepipe' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/livepipe.js',
-                            'require' => array('prototype', 'contextmenu', 'cookie', 'event_behavior', 'hotkey', 'progressbar', 'rating', 'resizable', 'scrollbar', 'selection', 'selectmultiple', 'tabs', 'textarea', 'window'),
-                    ),
-                    'contextmenu' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/contextmenu.js',
-                    ),
-                    'cookie' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/cookie.js',
-                    ),
-                    'event_behavior' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/event_behavior.js',
-                    ),
-                    'hotkey' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/hotkey.js',
-                    ),
-                    'progressbar' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/progressbar.js',
-                    ),
-                    'rating' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/rating.js',
-                    ),
-                    'resizable' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/resizable.js',
-                    ),
-                    'scrollbar' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/scrollbar.js',
-                    ),
-                    'selection' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/selection.js',
-                    ),
-                    'selectmultiple' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/selectmultiple.js',
-                    ),
-                    'tabs' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/tabs.js',
-                    ),
-                    'textarea' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/textarea.js',
-                    ),
-                    'window' => array(
-                            'path' => 'javascript/livepipe/original_uncompressed/window.js',
-                    )
-            );
-            $jQueryUncompressed = array(
-                    'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.8.3.js',
-                            'require' => array('noconflict'),
-                    ),
-                    'noconflict' => array(
-                            'path' => 'javascript/jquery/noconflict.js',
-                    ),
-            );
-            $jQueryUiUncompressed = array(
-                    'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.js', // the 'custom' designation is meaningless
-                            'require' => array('jquery'),
-                    ),
-            );
-            $scripts = array_merge($jQueryUncompressed, $jQueryUiUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
-        }
+
+        $key = System::isDevelopmentMode() ? 'development' : 'production';
+        $scripts = array_map(function($script) use($key) {
+            return isset($script[$key]) ? $script[$key] : $script;
+        }, $scriptsMap);
 
         return $scripts;
     }
