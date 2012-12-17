@@ -46,7 +46,7 @@ class Extensions_Controller_Adminplugin extends Zikula_AbstractController
      *
      * @return mixed
      */
-    public function dispatch()
+    public function dispatchAction()
     {
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();

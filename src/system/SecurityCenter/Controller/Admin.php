@@ -40,7 +40,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string.
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in modifyconfig()
         $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
@@ -51,7 +51,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string.
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
@@ -106,7 +106,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true if successful, false otherwise.
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -341,7 +341,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return void
      */
-    public function purifierconfig()
+    public function purifierconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
@@ -461,7 +461,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return void
      */
-    public function updatepurifierconfig()
+    public function updatepurifierconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -579,7 +579,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function viewidslog()
+    public function viewidslogAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
@@ -626,7 +626,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return string
      */
-    public function exportidslog()
+    public function exportidslogAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_EDIT)) {
@@ -734,7 +734,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return void
      */
-    public function purgeidslog()
+    public function purgeidslogAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
@@ -767,7 +767,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return string html output.
      */
-    public function allowedhtml($args)
+    public function allowedhtmlAction($args)
     {
         // security check
         if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
@@ -792,7 +792,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
      *
      * @return mixed true if successful, false if unsuccessful, error string otherwise.
      */
-    public function updateallowedhtml($args)
+    public function updateallowedhtmlAction($args)
     {
         $this->checkCsrfToken();
 

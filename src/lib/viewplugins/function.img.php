@@ -131,27 +131,31 @@ function smarty_function_img($params, Zikula_View $view)
 
         if ($modplugin) {
             $osmodplugdir    = DataUtil::formatForOS($modplugin);
-            $modpluglangpath = "$moduleDir/$osmoddir/plugins/$osmodplugdir/images/$lang";
-            $modplugpath     = "$moduleDir/$osmoddir/plugins/$osmodplugdir/images";
+            $modpluglangpath = "$moduleDir/$osmoddir/plugins/$osmodplugdir/Resources/public/images/$lang";
+            $modplugpath     = "$moduleDir/$osmoddir/plugins/$osmodplugdir/Resources/public/images";
+            $modpluglangpathOld = "$moduleDir/$osmoddir/plugins/$osmodplugdir/images/$lang";
+            $modplugpathOld     = "$moduleDir/$osmoddir/plugins/$osmodplugdir/images";
 
             // form the array of paths
-            $paths = array($modpluglangpath, $modplugpath);
+            $paths = array($modpluglangpath, $modplugpath, $modpluglangpathOld, $modplugpathOld);
 
         } else {
             // theme directory
             $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
             $osmodname     = DataUtil::formatForOS($modname);
-            $themelangpath = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
-            $themepath     = "themes/$ostheme/templates/modules/$osmodname/images";
+            $themelangpath = "themes/$ostheme/templates/modules/$osmodname/Resources/public/images/$lang";
+            $themepath     = "themes/$ostheme/templates/modules/$osmodname/Resources/public/images";
+            $themelangpathOld = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
+            $themepathOld     = "themes/$ostheme/templates/modules/$osmodname/images";
             $corethemepath = "themes/$ostheme/images";
 
             if ($modname == 'core') {
                 $modpath        = "images";
             } else {
-                $modlangpath    = "$moduleDir/$osmoddir/images/$lang";
-                $modpath        = "$moduleDir/$osmoddir/images";
-                $modlangpathOld = "$moduleDir/$osmoddir/pnimages/$lang";
-                $modpathOld     = "$moduleDir/$osmoddir/pnimages";
+                $modlangpath    = "$moduleDir/$osmoddir/Resources/public/images/$lang";
+                $modpath        = "$moduleDir/$osmoddir/Resources/public/images";
+                $modlangpathOld = "$moduleDir/$osmoddir/images/$lang";
+                $modpathOld     = "$moduleDir/$osmoddir/images";
             }
 
             // form the array of paths
@@ -159,9 +163,9 @@ function smarty_function_img($params, Zikula_View $view)
                 $paths = array($themepath, $corethemepath, $modpath);
             } elseif (preg_match('/^admin.(png|gif|jpg)$/', $params['src'])) {
                 // special processing for modules' admin icon
-                $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld);
+                $paths = array($modlangpath, $modpath, $modlangpathOld, $modpathOld, $modlangpathOld, $modpathOld);
             } else {
-                $paths = array($themelangpath, $themepath, $corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld);
+                $paths = array($themelangpath, $themepath, $themelangpathOld, $themepathOld,$corethemepath, $modlangpath, $modpath, $modlangpathOld, $modpathOld);
             }
         }
     }

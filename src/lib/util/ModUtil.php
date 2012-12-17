@@ -967,8 +967,9 @@ class ModUtil
         }
 
         $object = self::getObject($className);
-        if (is_callable(array($object, $func))) {
-            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func));
+        $action = $api ? '' : 'Action';
+        if (is_callable(array($object, $func.$action))) {
+            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func.$action));
         }
 
         return false;
@@ -1629,10 +1630,14 @@ class ModUtil
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         
         $paths = array(
+                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.png',
+                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.jpg',
+                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.gif',
+                'system/Admin/Resources/public/images/default.gif',
                 $modpath . '/' . $osmoddir . '/images/admin.png',
                 $modpath . '/' . $osmoddir . '/images/admin.jpg',
                 $modpath . '/' . $osmoddir . '/images/admin.gif',
-                'system/Admin/images/default.gif'
+                'system/Admin/images/default.gif',
         );
         
         foreach ($paths as $path) {

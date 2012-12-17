@@ -17,7 +17,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     /**
      * main user function
      */
-    public function main()
+    public function mainAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -38,7 +38,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     /**
      * edit category for a simple, non-recursive set of categories
      */
-    public function edit()
+    public function editAction()
     {
         $docroot = FormUtil::getPassedValue('dr', 0);
         $cid = FormUtil::getPassedValue('cid', 0);
@@ -134,7 +134,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     /**
      * edit categories for the currently logged in user
      */
-    public function edituser()
+    public function edituserAction()
     {
         if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -224,7 +224,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     /**
      * refer the user back to the calling page
      */
-    public function referBack()
+    public function referBackAction()
     {
         $referer = SessionUtil::getVar('categories_referer');
         SessionUtil::DelVar('categories_referer');
@@ -234,7 +234,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     /**
      * return the categories for the currently logged in user, really only used for testing purposes
      */
-    public function getusercategories()
+    public function getusercategoriesAction()
     {
         return ModUtil::apiFunc('Categories', 'user', 'getusercategories');
     }
@@ -242,7 +242,7 @@ class Categories_Controller_User extends Zikula_AbstractController
     /**
      * return the category name for a user, really only used for testing purposes
      */
-    public function getusercategoryname()
+    public function getusercategorynameAction()
     {
         return ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
     }

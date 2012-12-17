@@ -23,7 +23,7 @@ class Errors_Controller_User extends Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function main($args)
+    public function mainAction($args)
     {
         $type      = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
         $exception = isset($args['exception']) ? $args['exception'] : null;
@@ -89,7 +89,7 @@ class Errors_Controller_User extends Zikula_AbstractController
     /**
      * Display a system error
      */
-    public function system($args)
+    public function systemAction($args)
     {
         return $this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)

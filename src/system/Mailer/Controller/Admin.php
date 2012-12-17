@@ -35,7 +35,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
      * view() function)
      * @return string HTML string
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in modifyconfig()
         $this->redirect(ModUtil::url('Mailer', 'admin', 'modifyconfig'));
@@ -46,7 +46,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
      * module
      * @return string HTML string
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
@@ -60,7 +60,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
      * This function displays a form to sent a test mail
      * @return string HTML string
      */
-    public function testconfig()
+    public function testconfigAction()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
 

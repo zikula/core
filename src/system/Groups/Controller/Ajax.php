@@ -29,7 +29,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax
      */
-    public function updategroup($args)
+    public function updategroupAction($args)
     {
         $this->checkAjaxToken();
 
@@ -95,7 +95,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax
      */
-    public function creategroup()
+    public function creategroupAction()
     {
         $this->checkAjaxToken();
 
@@ -145,7 +145,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return Zikula_Response_Ajax
      */
-    public function deletegroup()
+    public function deletegroupAction()
     {
         $this->checkAjaxToken();
 
@@ -168,7 +168,7 @@ class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
         throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete the \'%s\' group.', $gid));
     }
 
-    public function removeuser()
+    public function removeuserAction()
     {
         $this->checkAjaxToken();
 

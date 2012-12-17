@@ -14,7 +14,7 @@
 
 class Theme_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
-    public function dispatch()
+    public function dispatchAction()
     {
         $event = $this->eventManager->dispatch('theme.ajax_request');
         $this->throwNotFoundUnless($event->isPropagationStopped(), $this->__('No event handlers responded.'));

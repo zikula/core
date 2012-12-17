@@ -34,7 +34,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * view() function)
      * @return string HTML string
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Admin', 'admin', 'view'));
@@ -46,7 +46,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  int    $startnum the starting id to view from - optional
      * @return string HTML string
      */
-    public function view($args = array())
+    public function viewAction($args = array())
     {
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -80,7 +80,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * wishes to create a new module item
      * @return string HTML string
      */
-    public function newcat()
+    public function newcatAction()
     {
         if (!SecurityUtil::checkPermission('Admin::Item', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
@@ -98,7 +98,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  string $args['description'] the description of the category to be created
      * @return mixed  category id if create successful, false otherwise
      */
-    public function create($args)
+    public function createAction($args)
     {
         $this->checkCsrfToken();
 
@@ -128,7 +128,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  int    $args['objectid'] generic object id maps to cid if present
      * @return string HTML string
      */
-    public function modify($args)
+    public function modifyAction($args)
     {
         $cid = FormUtil::getPassedValue('cid', isset($args['cid']) ? $args['cid'] : null, 'GET');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'GET');
@@ -161,7 +161,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  string $args['description'] the description of the item to be updated
      * @return bool   true if update successful, false otherwise
      */
-    public function update($args)
+    public function updateAction($args)
     {
         $this->checkCsrfToken();
 
@@ -204,7 +204,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  bool  $args['confirmation'] confirmation that this item can be deleted
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise
      */
-    public function delete($args)
+    public function deleteAction($args)
     {
         $cid = FormUtil::getPassedValue('cid', isset($args['cid']) ? $args['cid'] : null, 'REQUEST');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
@@ -249,7 +249,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  int    $args['acid'] the id of the category to be displayed
      * @return string HTML string
      */
-    public function adminpanel($args)
+    public function adminpanelAction($args)
     {
         if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
@@ -278,7 +278,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         }
 
         // Add category menu to output
-        $this->view->assign('menu', $this->categorymenu(array('acid' => $acid)));
+        $this->view->assign('menu', $this->categorymenuAction(array('acid' => $acid)));
 
         // Check to see if we have access to the requested category.
         if (!SecurityUtil::checkPermission("Admin::", "::$acid", ACCESS_ADMIN)) {
@@ -356,7 +356,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -407,7 +407,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * @param  int    $modulename,... the id of the category to set for each module
      * @return string HTML string
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -472,7 +472,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function categorymenu($args)
+    public function categorymenuAction($args)
     {
         // get the current category
         $acid = FormUtil::getPassedValue('acid', isset($args['acid']) ? $args['acid'] : $this->getVar('startcategory'), 'GET');
@@ -566,7 +566,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * Open the admin container
      *
      */
-    public function adminheader()
+    public function adminheaderAction()
     {
         return $this->view->fetch('admin_admin_header.tpl');
     }
@@ -575,7 +575,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * Close the admin container
      *
      */
-    public function adminfooter()
+    public function adminfooterAction()
     {
         return $this->view->fetch('admin_admin_footer.tpl');
     }
@@ -584,7 +584,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      * display the module help page
      *
      */
-    public function help()
+    public function helpAction()
     {
         if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -667,7 +667,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             $onlineVersion = $updateversion;
         } else {
             $s = (extension_loaded('openssl') ? 's' : '');
-            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
+            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion14.cgi"));
             if ($onlineVersion === false) {
                 return array('update_show' => false);
             }

@@ -22,7 +22,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @param providerarea   string area to attach/detach
      * @return mixed Ajax response
      */
-    public function togglesubscriberareastatus()
+    public function togglesubscriberareastatusAction()
     {
         $this->checkAjaxToken();
 
@@ -91,7 +91,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @param providerorder array   array of sorted provider ids
      * @return Ajax response
      */
-    public function changeproviderareaorder()
+    public function changeproviderareaorderAction()
     {
         $this->checkAjaxToken();
 

@@ -36,7 +36,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function main()
+    public function mainAction()
     {
         // Security check
         $any_access = false;
@@ -68,7 +68,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function view()
+    public function viewAction()
     {
         // Get parameters from whatever input we need.
         $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
@@ -172,7 +172,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function newgroup()
+    public function newgroupAction()
     {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
@@ -197,7 +197,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true If group created succesfully, false otherwise.
      */
-    public function create($args)
+    public function createAction($args)
     {
         $this->checkCsrfToken();
 
@@ -246,7 +246,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function modify($args)
+    public function modifyAction($args)
     {
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
@@ -296,7 +296,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true If group updated successfully, false otherwise.
      */
-    public function update($args)
+    public function updateAction($args)
     {
         $this->checkCsrfToken();
 
@@ -350,7 +350,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return mixed HTML output string if no confirmation, true if group deleted succesfully, false otherwise.
      */
-    public function delete($args)
+    public function deleteAction($args)
     {
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'REQUEST');
@@ -416,7 +416,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function groupmembership($args)
+    public function groupmembershipAction($args)
     {
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'GET');
@@ -562,7 +562,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean True is user added succesfully, false otherwise.
      */
-    public function adduser($args)
+    public function adduserAction($args)
     {
         $this->checkCsrfToken();
 
@@ -602,7 +602,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean true is user added succesfully, false otherwise.
      */
-    public function removeuser($args)
+    public function removeuserAction($args)
     {
         // Get parameters from whatever input we need.
         $gid = (int)FormUtil::getPassedValue('gid', isset($args['gid']) ? $args['gid'] : null, 'REQUEST');
@@ -645,7 +645,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      * display a list of group applications
      *
      */
-    public function userpending()
+    public function userpendingAction()
     {
         $gid = (int)FormUtil::getPassedValue('gid', null, 'GET');
         $userid = (int)FormUtil::getPassedValue('userid', null, 'GET');
@@ -687,7 +687,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      * update group applications
      *
      */
-    public function userupdate()
+    public function userupdateAction()
     {
         $this->checkCsrfToken();
 
@@ -760,7 +760,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
@@ -793,7 +793,7 @@ class Groups_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean True.
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 

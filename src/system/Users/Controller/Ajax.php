@@ -26,7 +26,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return string Zikula_Response_Ajax_Plain with list of users matching the criteria.
      */
-    public function getUsers()
+    public function getUsersAction()
     {
         $this->checkAjaxToken();
         $view = Zikula_View::getInstance($this->name);
@@ -69,7 +69,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
      */
-    public function getRegistrationErrors()
+    public function getRegistrationErrorsAction()
     {
         $this->checkAjaxToken();
         $userOrRegistration = array(
@@ -171,7 +171,7 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @throws Zikula_Exception_Fatal Thrown if the authentication module name or method name are not valid.
      */
-    public function getLoginFormFields()
+    public function getLoginFormFieldsAction()
     {
         $this->checkAjaxToken();
         $formType = $this->request->request->get('form_type', false);
