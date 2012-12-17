@@ -78,38 +78,6 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
 JAVASCRIPT LIBRARIES
 --------------------
 
-PickyColor 0.1
-
-    Vendor website: http://code.google.com/p/picky-color/
-    Downloaded from: http://code.google.com/p/picky-color/
-    License: MIT
-    Location in Zikula: javascript/picky_color
-    Patch details: none
-
-Prototype 1.7.1
-
-    Vendor website: http://www.prototypejs.org/
-    Downloaded from: http://www.prototypejs.org/
-    License: MIT
-    Location in Zikula: javascript/ajax
-    Patch details: none
-
-Scriptaculous 1.9.0
-
-    Vendor website: http://script.aculo.us/
-    Downloaded from: http://script.aculo.us/
-    License: MIT
-    Location in Zikula: javascript/ajax
-    Patch details: none
-
-Validation 1.5.4.1
-
-    Vendor website: http://tetlaw.id.au/view/javascript/really-easy-field-validation
-    Downloaded from: http://tetlaw.id.au/view/javascript/really-easy-field-validation
-    License: MIT
-    Location in Zikula: javascript/ajax/validation.min.js
-    Patch details: none
-
 jQuery v1.8.3
 
     Vendor website: http://jquery.com/
@@ -124,12 +92,7 @@ jQuery-UI v1.9.2
     Downloaded from: http://jqueryui.com/download
     License: MIT and GPL (see http://jqueryui.com/about)
     Location in Zikula: javascript/jquery-ui
-    Patch details: included themes:
-        base (smoothness)
-        cupertino
-        overcast
-        vader
-        (all theme css files direct download from http://jqueryui.com/download)
+    Patch details: none
 
 jQuery Mobile 1.2.0
     Vendor website: http://jquerymobile.com/
@@ -146,22 +109,30 @@ jQuery-Timepicker-Addon v1.0.2
     Location in Zikula: javascript/jquery-plugins/jQuery-Timepicker-Addon
     Patch details: none
 
-DHTML Calendar 1.0
+Underscore.js 1.4.3
 
-    Vendor website: http://www.dynarch.com/projects/calendar
-    Downloaded from: http://www.dynarch.com/projects/calendar
-    License: LGPL
-    Location in Zikula: javascript/jscalendar
-    Patch details: none
-
-LivePipe
-
-    Vendor website: http://livepipe.net/core
-    Downloaded from: http://livepipe.net/core
+    Vendor website: http://underscorejs.org/
+    Downloaded from: http://underscorejs.org/
     License: MIT
-    Location in Zikula: javascript/livepipe
+    Location in Zikula: javascript/underscore
     Patch details: none
 
+Underscore.string 2.3.0
+
+    Vendor website: http://epeli.github.com/underscore.string/
+    Downloaded from: http://epeli.github.com/underscore.string/
+    License: MIT
+    Location in Zikula: javascript/underscore
+    Patch details: none
+
+Modernizr 2.6.2
+
+    Vendor website: http://modernizr.com/
+    Downloaded from: http://modernizr.com/download/
+    License: MIT
+    Location in Zikula: javascript/modernizr
+    Patch details:
+        Build link: http://modernizr.com/download/#-fontface-backgroundsize-borderimage-borderradius-boxshadow-flexbox-hsla-multiplebgs-opacity-rgba-textshadow-cssanimations-csscolumns-generatedcontent-cssgradients-cssreflections-csstransforms-csstransforms3d-csstransitions-applicationcache-canvas-canvastext-draganddrop-hashchange-history-audio-video-indexeddb-input-inputtypes-localstorage-postmessage-sessionstorage-websockets-websqldatabase-webworkers-geolocation-inlinesvg-smil-svg-svgclippaths-touch-webgl-shiv-mq-cssclasses-addtest-prefixed-teststyles-testprop-testallprops-hasevent-prefixes-domprefixes-load
 
 ICON LIBRARIES
 --------------
