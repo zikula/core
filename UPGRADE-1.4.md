@@ -110,3 +110,9 @@ Example in Core 1.4+
     $hook = new Zikula_DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
 
+
+Version.php
+-----------
+
+Modules should have core_min=1.4.0 and core_max=1.4.99 as they specifically will be incompatible
+with Zikula Core 1.3
