@@ -37,6 +37,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     
     public function initialize()
     {
+        return;// disabled temporarily
         // class loading
         ZLoader::addAutoloader("Zikula\\Core\\Forms", __DIR__ . '/lib', '\\');
 
@@ -67,6 +68,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     
     protected function setupHandlerDefinitions()
     {
+        return;// disabled temporarily
         $this->addHandlerDefinition('view.init', 'initView');
         $this->addHandlerDefinition('symfony.formrenderer.lookup', 'registerRenderer');
     }
