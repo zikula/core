@@ -648,7 +648,7 @@ class DBObjectArray
 
         $res = true;
         foreach ($this->_objData as $k => $v) {
-            $res = $res && DBUtil::insertObject($this->_objData[$k], $this->_objType, $this->_objField);
+            $res = $res && DBUtil::insertObject($this->_objData[$k], $this->_objType, $this->_objField, $this->_objInsertPreserve, $this->_objInsertForce);
         }
 
         if ($res) {
@@ -702,7 +702,7 @@ class DBObjectArray
 
         $res = true;
         foreach ($this->_objData as $k => $v) {
-            $res = $res && DBUtil::updateObject($this->_objData[$k], $this->_objType, '', $this->_objField);
+            $res = $res && DBUtil::updateObject($this->_objData[$k], $this->_objType, '', $this->_objField, $this->_objInsertPreserve);
         }
 
         if ($res) {

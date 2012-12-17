@@ -1089,6 +1089,8 @@ class Theme_Controller_Admin extends Zikula_AbstractController
             $this->view->assign('htaccess', 0);
         }
 
+        $this->view->assign('admintheme', ModUtil::getVar('Admin', 'admintheme', ''));
+
         // assign the output variables and fetch the template
         return $this->view->assign('mods', $mods)
                           // assign all module vars
@@ -1152,9 +1154,24 @@ class Theme_Controller_Admin extends Zikula_AbstractController
 
         $theme_change = (bool)FormUtil::getPassedValue('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false, 'POST');
         System::setVar('theme_change', $theme_change);
+
+        $admintheme = (string)FormUtil::getPassedValue('admintheme', isset($args['admintheme']) ? $args['admintheme'] : '', 'POST');
+        ModUtil::setVar('Admin', 'admintheme', $admintheme);
         
-        $enable_mobile_theme = (bool)FormUtil::getPassedValue('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false, 'POST');
+        $enable_mobile_theme = (int)FormUtil::getPassedValue('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : 0, 'POST');
         $this->setVar('enable_mobile_theme', $enable_mobile_theme);
+
+        $mobile_theme_name = (string)FormUtil::getPassedValue('mobile_theme_name', isset($args['mobile_theme_name']) ? $args['mobile_theme_name'] : '', 'POST');
+        $this->setVar('mobile_theme_name', $mobile_theme_name);
+
+        $mobile_theme_domain = (string)FormUtil::getPassedValue('mobile_theme_domain', isset($args['mobile_theme_domain']) ? $args['mobile_theme_domain'] : '', 'POST');
+        $this->setVar('mobile_theme_domain', $mobile_theme_domain);
+
+        $alt_theme_name = (string)FormUtil::getPassedValue('alt_theme_name', isset($args['alt_theme_name']) ? $args['alt_theme_name'] : '', 'POST');
+        $this->setVar('alt_theme_name', $alt_theme_name);
+
+        $alt_theme_domain = (string)FormUtil::getPassedValue('alt_theme_domain', isset($args['alt_theme_domain']) ? $args['alt_theme_domain'] : '', 'POST');
+        $this->setVar('alt_theme_domain', $alt_theme_domain);
 
         $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', isset($args['itemsperpage']) ? $args['itemsperpage'] : 25, 'POST');
         if ($itemsperpage < 1) $itemsperpage = 25;
