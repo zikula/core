@@ -17,7 +17,7 @@ class Theme_Controller_User extends Zikula_AbstractController
     /**
      * display theme changing user interface
      */
-    public function main()
+    public function mainAction()
     {
         // check if theme switching is allowed
         if (!System::getVar('theme_change')) {
@@ -80,7 +80,7 @@ class Theme_Controller_User extends Zikula_AbstractController
     /**
      * reset the current users theme to the site default
      */
-    public function resettodefault()
+    public function resettodefaultAction()
     {
         ModUtil::apiFunc('Theme', 'user', 'resettodefault');
         LogUtil::registerStatus($this->__('Done! Theme has been reset to the default site theme.'));
@@ -93,7 +93,7 @@ class Theme_Controller_User extends Zikula_AbstractController
      *
      * @return string html output
      */
-    public function enableMobileTheme()
+    public function enableMobileThemeAction()
     {
         CookieUtil::setCookie('zikulaMobileTheme', '1', time()+3600*24*365, '/');
         return $this->redirect(System::getHomepageUrl());
@@ -105,7 +105,7 @@ class Theme_Controller_User extends Zikula_AbstractController
      *
      * @return string html output
      */
-    public function disableMobileTheme()
+    public function disableMobileThemeAction()
     {
         CookieUtil::setCookie('zikulaMobileTheme', '2', time()+3600*24*365, '/');
         return $this->redirect(System::getHomepageUrl());

@@ -19,7 +19,7 @@ class PageLock_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @returns { hasLock: bool, message: string, lockedBy: string }
      */
-    public function refreshpagelock($args)
+    public function refreshpagelockAction($args)
     {
         $this->checkAjaxToken();
         $lockName = $this->request->request->get('lockname');
@@ -45,7 +45,7 @@ class PageLock_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * change a page lock
      *
      */
-    public function checkpagelock($args)
+    public function checkpagelockAction($args)
     {
         $this->checkAjaxToken();
         $lockName = $this->request->request->get('lockname');

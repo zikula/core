@@ -17,7 +17,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
     /**
      * delete category
      */
-    public function delete()
+    public function deleteAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
@@ -56,7 +56,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
     /**
      * update category
      */
-    public function edit()
+    public function editAction()
     {
         $this->checkCsrfToken();
 
@@ -119,7 +119,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
     /**
      * move field
      */
-    public function moveField()
+    public function moveFieldAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
@@ -160,7 +160,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
     /**
      * create category
      */
-    public function newcat()
+    public function newcatAction()
     {
         $this->checkCsrfToken();
 
@@ -195,7 +195,7 @@ class Categories_Controller_Userform extends Zikula_AbstractController
     /**
      * resequence categories
      */
-    public function resequence()
+    public function resequenceAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();

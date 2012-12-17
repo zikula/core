@@ -982,8 +982,9 @@ class ModUtil
         }
 
         $object = self::getObject($className);
-        if (is_callable(array($object, $func))) {
-            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func));
+        $action = $api ? '' : 'Action';
+        if (is_callable(array($object, $func.$action))) {
+            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func.$action));
         }
 
         return false;

@@ -45,7 +45,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      *
      * @throws Zikula_Exception_Fatal Thrown if the $args array is invalid, or contains an invalid value.
      */
-    public function getLoginFormFields(array $args)
+    public function getLoginFormFieldsAction(array $args)
     {
         // Parameter extraction and error checking
         if (!isset($args) || !is_array($args)) {
@@ -100,7 +100,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      *
      * @throws Zikula_Exception_Fatal Thrown if the $args array is invalid, or contains an invalid value.
      */
-    public function getAuthenticationMethodSelector(array $args)
+    public function getAuthenticationMethodSelectorAction(array $args)
     {
         // Parameter extraction and error checking
         if (!isset($args) || !is_array($args)) {
@@ -177,7 +177,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
      * @throws Zikula_Exception_Fatal Thrown if no authentication module name or method is specified, or if the module name or method
      *                                  is invalid for this module.
      */
-    public function validateAuthenticationInformation(array $args)
+    public function validateAuthenticationInformationAction(array $args)
     {
         $validates = false;
 

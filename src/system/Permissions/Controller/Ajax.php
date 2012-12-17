@@ -25,7 +25,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @param level the permission level
      * @return mixed updated permission as array or Ajax error
      */
-    public function updatepermission()
+    public function updatepermissionAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
@@ -82,7 +82,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @param permorder array of sorted permissions (value = permission id)
      * @return mixed true or Ajax error
      */
-    public function changeorder()
+    public function changeorderAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
@@ -106,7 +106,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return mixed array with new permission or Ajax error
      */
-    public function createpermission()
+    public function createpermissionAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
@@ -140,7 +140,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @param pid the permission id
      * @return mixed the id of the permission that has been deleted or Ajax error
      */
-    public function deletepermission()
+    public function deletepermissionAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
@@ -174,7 +174,7 @@ class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @param test_level the accesslevel
      * @return string with test result for display
      */
-    public function testpermission()
+    public function testpermissionAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));

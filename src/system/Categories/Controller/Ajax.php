@@ -20,7 +20,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
     /**
      * Resequence categories
      */
-    public function resequence()
+    public function resequenceAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
@@ -45,7 +45,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function edit($args = array())
+    public function editAction($args = array())
     {
         $this->checkAjaxToken();
 
@@ -104,7 +104,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function copy()
+    public function copyAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD));
@@ -148,7 +148,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function delete()
+    public function deleteAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
@@ -166,7 +166,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function deleteandmovesubs()
+    public function deleteandmovesubsAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
@@ -209,7 +209,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function deletedialog()
+    public function deletedialogAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
@@ -229,7 +229,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function activate()
+    public function activateAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
@@ -248,7 +248,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function deactivate()
+    public function deactivateAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
@@ -267,7 +267,7 @@ class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax($result);
     }
 
-    public function save()
+    public function saveAction()
     {
         $this->checkAjaxToken();
         $mode = $this->request->request->get('mode', 'new');

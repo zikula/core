@@ -47,7 +47,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML string containing the rendered view template.
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
@@ -75,7 +75,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
-    public function view()
+    public function viewAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
@@ -225,7 +225,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access, or if the method of accessing this function is improper.
      */
-    public function newUser()
+    public function newUserAction()
     {
         // The user must have ADD access to submit a new user record.
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADD)) {
@@ -420,7 +420,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
-    public function search()
+    public function searchAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
@@ -490,7 +490,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have comment access, or if the method of accessing this function is improper.
      */
-    public function mailUsers()
+    public function mailUsersAction()
     {
         if (!SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT)) {
             throw new Zikula_Exception_Forbidden();
@@ -557,7 +557,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
      */
-    public function modify()
+    public function modifyAction()
     {
         // security check for generic edit access
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
@@ -798,7 +798,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @todo This should have a confirmation page.
      */
-    public function lostUsername()
+    public function lostUsernameAction()
     {
         if ($this->request->isPost()) {
             $this->checkCsrfToken();
@@ -861,7 +861,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @todo This should have a confirmation page.
      */
-    public function lostPassword()
+    public function lostPasswordAction()
     {
         $this->checkCsrfToken($this->request->query->get('csrftoken'));
 
@@ -917,7 +917,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have delete access, or if the method of accessing this function is improper.
      */
-    public function deleteUsers()
+    public function deleteUsersAction()
     {
         // check permissions
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_DELETE)) {
@@ -1141,7 +1141,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access.
      */
-    public function viewRegistrations()
+    public function viewRegistrationsAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
@@ -1256,7 +1256,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
-    public function displayRegistration()
+    public function displayRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
@@ -1330,7 +1330,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access, or if the method of accessing this function is improper.
      */
-    public function modifyRegistration()
+    public function modifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', 'ANY', ACCESS_EDIT)) {
             throw new Zikula_Exception_Forbidden();
@@ -1511,7 +1511,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
-    public function verifyRegistration()
+    public function verifyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
@@ -1626,7 +1626,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have moderate access, or if the method of accessing this function is improper.
      */
-    public function approveRegistration()
+    public function approveRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             throw new Zikula_Exception_Forbidden();
@@ -1753,7 +1753,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * @throws Zikula_Exception_Forbidden Thrown if the user does not have delete access, or if the method used to access this function is improper.
      */
-    public function denyRegistration()
+    public function denyRegistrationAction()
     {
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
             throw new Zikula_Exception_Forbidden();
@@ -1866,7 +1866,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * @throws Zikula_Exception_Fatal     Thrown if the function is accessed improperly.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access.
      */
-    public function config()
+    public function configAction()
     {
         // Security check
         if (!(SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN))) {
@@ -1938,7 +1938,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * @throws Zikula_Exception_Fatal     Thrown if the $args parameter is not valid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have add access.
      */
-    public function import($args)
+    public function importAction($args)
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
@@ -2026,7 +2026,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * @throws Zikula_Exception_Fatal     Thrown if parameters are passed via the $args array, but $args is invalid.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have admin access, or method this function was accessed is invalid.
      */
-    public function exporter($args)
+    public function exporterAction($args)
     {
         // security check
         if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
@@ -2458,7 +2458,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *                                      or the account record is not in a consistent state.
      * @throws Zikula_Exception_Forbidden Thrown if the current user does not have edit access for the account record.
      */
-    public function toggleForcedPasswordChange()
+    public function toggleForcedPasswordChangeAction()
     {
         if ($this->request->isGet()) {
             $uid = $this->request->query->get('userid', false);

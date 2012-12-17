@@ -25,7 +25,7 @@ class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return mixed true or Ajax error
      */
-    public function changeblockorder()
+    public function changeblockorderAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
@@ -61,7 +61,7 @@ class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return mixed true or Ajax error
      */
-    public function toggleblock()
+    public function toggleblockAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));

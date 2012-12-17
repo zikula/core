@@ -23,7 +23,7 @@ class Blocks_Controller_User extends Zikula_AbstractController
      *
      * @return HTML String.
      */
-    public function main()
+    public function mainAction()
     {
         return LogUtil::registerError(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'), 403);
     }
@@ -35,7 +35,7 @@ class Blocks_Controller_User extends Zikula_AbstractController
      *
      * @return void
      */
-    public function changestatus()
+    public function changestatusAction()
     {
         $bid = FormUtil::getPassedValue('bid');
         $uid = UserUtil::getVar('uid');

@@ -43,7 +43,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * @throws Zikula_Exception_Forbidden if the current user does not have adequate permissions to perform
      *          this function.
      */
-    public function main()
+    public function mainAction()
     {
         // Security check
         $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'main')))));
@@ -70,7 +70,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function view()
+    public function viewAction()
     {
         // If has logged in, head to index.php
         $this->redirectIf(UserUtil::isLoggedIn(), System::getHomepageUrl());
@@ -100,7 +100,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function register()
+    public function registerAction()
     {
         // Should not be here if logged in.
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
@@ -618,7 +618,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function lostPwdUname()
+    public function lostPwdUnameAction()
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
@@ -643,7 +643,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function lostUname()
+    public function lostUnameAction()
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
@@ -706,7 +706,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function lostPassword()
+    public function lostPasswordAction()
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
@@ -859,7 +859,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function lostPasswordCode()
+    public function lostPasswordCodeAction()
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
@@ -1052,7 +1052,7 @@ class Users_Controller_User extends Zikula_AbstractController
      * @throws Zikula_Exception_Redirect If the user is already logged in, or upon successful login with the redirect
      *                                   option set to send the user to the appropriate page, or...
      */
-    public function login($args)
+    public function loginAction($args)
     {
         // we shouldn't get here if logged in already....
         $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
@@ -1374,7 +1374,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True (whether successfully logged out or not.)
      */
-    public function logout()
+    public function logoutAction()
     {
         $login_redirect = $this->getVar('login_redirect');
 
@@ -1436,7 +1436,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string|bool The rendered template; true on redirect; false on error.
      */
-    public function verifyRegistration()
+    public function verifyRegistrationAction()
     {
         if (UserUtil::isLoggedIn()) {
             $this->registerError($this->__('Sorry! An account cannot be verified while you are logged in.'))
@@ -1618,7 +1618,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function activation($args)
+    public function activationAction($args)
     {
         if ($this->request->query->has('code')) {
             $code = $this->request->query->get('code');
@@ -1722,7 +1722,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True.
      */
-    public function siteOffLogin()
+    public function siteOffLoginAction()
     {
         // do not process if the site is enabled
         $this->redirectIf(!System::getVar('siteoff', false), System::getHomepageUrl());
@@ -1786,7 +1786,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function usersBlock()
+    public function usersBlockAction()
     {
         $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall');
         $mid = ModUtil::getIdFromName($this->name);
@@ -1824,7 +1824,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function updateUsersBlock()
+    public function updateUsersBlockAction()
     {
         if (!UserUtil::isLoggedIn()) {
             throw new Zikula_Exception_Forbidden();
@@ -1888,7 +1888,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function changePassword($args)
+    public function changePasswordAction($args)
     {
         // Retrieve and delete any session variables being sent in before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
@@ -1985,7 +1985,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function updatePassword()
+    public function updatePasswordAction()
     {
         $sessionVars = $this->request->getSession()->get('Users_Controller_User_updatePassword', null, 'Zikula_Users');
         $this->request->getSession()->del('Users_Controller_User_updatePassword', 'Zikula_Users');
@@ -2086,7 +2086,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function changeEmail()
+    public function changeEmailAction()
     {
         if (!UserUtil::isLoggedIn()) {
             throw new Zikula_Exception_Forbidden();
@@ -2117,7 +2117,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function updateEmail()
+    public function updateEmailAction()
     {
         if (!UserUtil::isLoggedIn()) {
             throw new Zikula_Exception_Forbidden();
@@ -2166,7 +2166,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return string The rendered template.
      */
-    public function changeLang()
+    public function changeLangAction()
     {
         if (!UserUtil::isLoggedIn()) {
             throw new Zikula_Exception_Forbidden();
@@ -2204,7 +2204,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @return bool True on success, otherwise false.
      */
-    public function confirmChEmail($args)
+    public function confirmChEmailAction($args)
     {
         $confirmcode = $this->request->query->get('confirmcode', isset($args['confirmcode']) ? $args['confirmcode'] : null);
 
@@ -2241,7 +2241,7 @@ class Users_Controller_User extends Zikula_AbstractController
      *
      * @deprecated
      */
-    public function loginScreen($args)
+    public function loginScreenAction($args)
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
 
