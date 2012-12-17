@@ -5,7 +5,45 @@ Module Structure
 ----------------
 
 It is now possible to optionally place module's PHP assets directly in the module's
-root folder, without having to nest in `$modname/lib/$modname`.
+root folder, without having to nest in `$modname/lib/$modname`. Move them as follows:
+
+    cd /path/to/MyModule
+    git mv lib/MyModule/* .
+    git commit -a -m "Move php files to module root"
+
+
+Module Assets
+-------------
+
+Non-PHP Module assets are now located in a `Resources/` folder. As follows:
+
+    MyModule/
+        Resource/
+            config/
+            docs/
+            public/
+                css/
+                images/
+                js/
+            views/
+                plugins/
+
+
+There is a script to relocate these for you:
+
+    refactor.php zk:migrate_resource --dir=module/MyModule
+
+
+Controller Methods
+------------------
+
+All public controller methods meant to be accessible from the browser must now be
+suffixed with `Action`, so `public function view()` should now read `public function viewAction()`
+
+There is a script to automate this change:
+
+    refactor.php zk:migrate_resource --dir=module/MyModule/Controller
+
 
 Service Manager
 ---------------
