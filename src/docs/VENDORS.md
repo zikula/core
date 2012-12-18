@@ -4,6 +4,9 @@ This file contains a list of vendor libraries distributed with Zikula
 PHP LIBRARIES
 -------------
 
+Most dependencies are now managed by Composer. A few remain manually
+in the repository pending Composer support.
+
 PHPIDS 0.7.0
 
     Vendor website: http://php-ids.org/
@@ -28,29 +31,6 @@ Smarty 2.6.27
     Location in Zikula: lib/vendor/Smarty
     Patch details:
     - Removed check inside the Smarty folder except for its core 'plugins' https://gist.github.com/960158
-
-Doctrine 1.2.4
-
-    Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://www.doctrine-project.org/projects/orm/1.2/download/1.2.4
-    License: LGPL
-    Location in Zikula: lib/vendor/Doctrine
-    Patch details:
-    - Fix on Doctrine_Record::unlinkInDb field names causing exceptions and local unlinking https://github.com/doctrine/doctrine1/pull/35
-
-Doctrine 2.3.1
-
-    Vendor website: http://www.doctrine-project.org/
-    Downloaded from: http://doctrine-project.org/downloads/
-    License: MIT
-    Location in Zikula: plugins/Doctrine/lib
-
-Doctrine Extensions (master from 2012-12-08)
-
-    Vendor website: https://github.com/l3pp4rd/DoctrineExtensions/
-    Downloaded from: https://github.com/l3pp4rd/DoctrineExtensions/
-    License: MIT
-    Location in Zikula: plugins/DoctrineExtensions/lib
 
 RC4Crypt 3.2
 
@@ -93,13 +73,6 @@ Markdown Extra 1.2.4 (includes Markdown 1.0.1n)
     Location in Zikula: lib/vendor/Markdown
     Patch details:
     - Removed all helper functions and calltime pass by reference.
-
-Imagine 0.3.0
-
-    Vendor website: http://imagine.readthedocs.org/
-    Downloaded from: https://github.com/avalanche123/Imagine
-    License: MIT
-    Location in Zikula: plugins/Imagine/lib
 
 
 JAVASCRIPT LIBRARIES
