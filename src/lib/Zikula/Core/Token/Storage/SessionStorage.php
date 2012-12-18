@@ -13,26 +13,38 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Token\Storage;
+
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 /**
- * Zikula_Token_Storage_Session class.
+ * Stores tokens in session.
  */
-class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
+class SessionStorage implements StorageInterface
 {
     /**
      * Session.
      *
-     * @var Zikula_Session
+     * @var SessionInterface
      */
-    protected $session;
+    private $session;
+
+    /**
+     * Storage key.
+     *
+     * @var string
+     */
+    private $key;
 
     /**
      * Constructor.
      *
-     * @param Zikula_Session $session Zikula_Session instance to inject.
+     * @param \Zikula_Session $session \Zikula_Session instance.
      */
-    public function __construct(Zikula_Session $session)
+    public function __construct(\Zikula_Session $session, $key = '_tokens')
     {
         $this->session = $session;
+        $this->key = $key;
     }
 
     /**
@@ -44,7 +56,7 @@ class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
             return false;
         }
 
-        $tokens = $this->session->get('_tokens', array());
+        $tokens = $this->session->get($this->key, array());
 
         if (!array_key_exists($id, $tokens)) {
             return false;
@@ -59,8 +71,8 @@ class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
     public function save($id, $token, $timestamp)
     {
         $tokens = $this->session->get('_tokens', array());
-        $tokens[$id] = array('token' => $token, 'timestamp' => $timestamp);
-        $this->session->set('_tokens', $tokens);
+        $tokens[$id] = array('token' => $token, 'time' => (int)$timestamp);
+        $this->session->set($this->key, $tokens);
     }
 
     /**
@@ -68,10 +80,27 @@ class Zikula_Token_Storage_Session implements Zikula_Token_StorageInterface
      */
     public function delete($id)
     {
-        $tokens = $this->session->get('_tokens', array());
+        $tokens = $this->session->get($this->key, array());
         if (array_key_exists($id, $tokens)) {
             unset($tokens[$id]);
         }
-        $this->session->set('_tokens', $tokens);
+
+        $this->session->set($this->key, $tokens);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function gc($lifetime)
+    {
+        $tokens = $this->session->get($this->key, array());
+        $now = time();
+        foreach ($tokens as $key => $token) {
+            if ($now - (int)$token['time'] > $lifetime) {
+                unset($token[$key]);
+            }
+        }
+
+        $this->session->set($this->key, $tokens);
     }
 }

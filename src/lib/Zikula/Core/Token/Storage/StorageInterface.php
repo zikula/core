@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Token\Storage;
+
 /**
  * Zikula_Token_Storage class.
  */
-interface Zikula_Token_StorageInterface
+interface StorageInterface
 {
     /**
      * Get token by ID.
@@ -46,4 +48,12 @@ interface Zikula_Token_StorageInterface
      * @return void
      */
     public function delete($id);
+
+    /**
+     * Initiate garbage collection.
+     *
+     * @param integer $lifetime
+     * @return void
+     */
+    public function gc($lifetime);
 }
