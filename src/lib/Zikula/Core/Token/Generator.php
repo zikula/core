@@ -13,63 +13,75 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Token;
+use Zikula\Core\Token\Storage\StorageInterface;
+
 /**
- * Zikula_Token_Generator class.
+ * Token generator class.
  */
-class Zikula_Token_Generator
+class Generator
 {
     /**
      * Storage driver.
      *
-     * @var Zikula_Token_Storage
+     * @var \Zikula\Core\Token\Storage\StorageInterface
      */
-    protected $storage;
+    private $storage;
 
     /**
      * Token ID.
      *
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * Secret.
      *
      * @var string
      */
-    protected $secret;
+    private $secret;
 
     /**
      * Generated token.
      *
      * @var string
      */
-    protected $token;
+    private $token;
 
     /**
      * The token hash.
      *
      * @var string
      */
-    protected $hash;
+    private $hash;
 
     /**
      * Timestamp of generated token.
      *
      * @var integer
      */
-    protected $timestamp;
+    private $timestamp;
+
+    /**
+     * Max life of a token.
+     *
+     * @var integer
+     */
+    private $maxLifetime;
 
     /**
      * Constructor.
      *
-     * @param Zikula_Token_StorageInterface $storage Storage driver.
-     * @param string                        $secret  Secret to sign tokens with.
+     * @param StorageInterface $storage     Storage driver.
+     * @param string           $secret      Secret to sign tokens with.
+     * @param integer          $maxLifetime Max lifetime for a token.
      */
-    public function __construct(Zikula_Token_StorageInterface $storage, $secret)
+    public function __construct(StorageInterface $storage, $secret, $maxLifetime = 3600)
     {
         $this->storage = $storage;
         $this->secret = $secret;
+        $this->maxLifetime = $maxLifetime;
     }
 
     /**
@@ -80,6 +92,7 @@ class Zikula_Token_Generator
     public function save()
     {
         $this->storage->save($this->id, $this->token, $this->timestamp);
+        $this->garbageCollection();
     }
 
     /**
@@ -111,14 +124,14 @@ class Zikula_Token_Generator
      * delete = false leaving storage expire/GC to remove the token.
      *
      * @param string  $id        Token ID.
-     * @param integer $timestamp Create with this timestamp.
+     * @param integer $timestamp Create with this timestamp (defaults null = now)
      *
-     * @return Zikula_Security_TokenGenerator
+     * @return \Zikula\Core\Token\Generator
      */
-    public function generate($id, $timestamp)
+    public function generate($id, $timestamp = null)
     {
         $this->id = $id;
-        $this->timestamp = $timestamp;
+        $this->timestamp = is_null($timestamp) ? time() : $timestamp;
         $this->hash = md5($this->id . $this->secret . $this->timestamp);
         $this->token = base64_encode("{$this->id}:{$this->hash}:{$this->timestamp}");
 
@@ -138,9 +151,9 @@ class Zikula_Token_Generator
     }
 
     /**
-     * Get storage driver.
+     * Gets storage driver.
      *
-     * @return Zikula_Token_Storage
+     * @return \Zikula\Core\Token\Storage\StorageInterface
      */
     public function getStorage()
     {
@@ -148,7 +161,7 @@ class Zikula_Token_Generator
     }
 
     /**
-     * Get token ID.
+     * Gets token ID.
      *
      * @return string
      */
@@ -158,7 +171,7 @@ class Zikula_Token_Generator
     }
 
     /**
-     * Get signing secret.
+     * Gets signing secret.
      *
      * @return string
      */
@@ -168,7 +181,7 @@ class Zikula_Token_Generator
     }
 
     /**
-     * Get generated token.
+     * Gets generated token.
      *
      * @return string
      */
@@ -178,7 +191,7 @@ class Zikula_Token_Generator
     }
 
     /**
-     * Get hash for of token.
+     * Gets hash for of token.
      *
      * @return string
      */
@@ -188,12 +201,38 @@ class Zikula_Token_Generator
     }
 
     /**
-     * Get timestamp of token creation.
+     * Gets timestamp of token creation.
      *
      * @return integer
      */
     public function getTimestamp()
     {
         return $this->timestamp;
+    }
+
+    /**
+     * Runs garbage collection to clean up tokens that expire
+     * before the session expired.
+     *
+     * Generates a number between 1 and $probability and runs
+     * garbage collection if result is 1.
+     *
+     * @param integer $probability Defaults to 20, ie 1/20 = 5%
+     */
+    public function garbageCollection($probability = 20)
+    {
+        if (mt_rand(1, $probability) === 1) {
+            $this->storage->gc($this->maxLifetime);
+        }
+    }
+
+    /**
+     * Gets the max lifetime in seconds.
+     *
+     * @return integer
+     */
+    public function getMaxLifetime()
+    {
+        return $this->maxLifetime;
     }
 }

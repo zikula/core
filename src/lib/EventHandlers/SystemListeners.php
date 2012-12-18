@@ -283,15 +283,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupCsfrProtection(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
-            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula_Token_Storage_Session',
+            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Storage\SessionStorage',
                             array(new Zikula_ServiceManager_Reference('session')));
             $this->serviceManager->registerService('token.storage', $tokenStorageDef);
 
-            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Generator',
+            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Generator',
                             array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
             $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
 
-            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula_Token_Validate',
+            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Validator',
                             array(new Zikula_ServiceManager_Reference('token.generator')));
             $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
         }

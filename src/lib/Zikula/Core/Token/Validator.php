@@ -13,15 +13,20 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Token;
+
+use Zikula\Core\Token\Generator;
+use Zikula\Core\Token\Storage\StorageInterface;
+
 /**
- * Zikula_Token_Validate class.
+ * Token Validator class.
  */
-class Zikula_Token_Validate
+class Validator
 {
     /**
      * Token generator.
      *
-     * @var Zikula_Token_Generator
+     * @var Generator
      */
     protected $tokenGenerator;
 
@@ -33,31 +38,22 @@ class Zikula_Token_Validate
     protected $secret;
 
     /**
-     * Max life of a token.
-     *
-     * @var integer
-     */
-    protected $maxlifetime;
-
-    /**
      * Storage driver.
      *
-     * @var Zikula_Token_Storage
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
      * Constructor.
      *
-     * @param Zikula_Token_Generator $tokenGenerator Token generator.
-     * @param integer                $maxlifetime    Max lifetime in seconds (default = 86400).
+     * @param Generator $tokenGenerator Token generator.
      */
-    public function __construct(Zikula_Token_Generator $tokenGenerator, $maxlifetime = 86400)
+    public function __construct(Generator $tokenGenerator)
     {
         $this->tokenGenerator = $tokenGenerator;
         $this->storage = $tokenGenerator->getStorage();
         $this->secret = $tokenGenerator->getSecret();
-        $this->maxlifetime = (int)$maxlifetime;
     }
 
     /**
@@ -73,14 +69,17 @@ class Zikula_Token_Validate
      *
      * @return boolean
      */
-    public function validate($token, $delete=true, $checkExpire=true)
+    public function validate($token, $delete = true, $checkExpire = true)
     {
         if (!$token) {
             return false;
         }
 
         list($id, $hash, $timestamp) = $this->tokenGenerator->decode($token);
-        $decoded = array('id' => $id, 'timestamp' => $timestamp);
+        $decoded = array('id' => $id, 'time' => $timestamp);
+
+        // Garbage collect the session.
+        $this->tokenGenerator->garbageCollection();
 
         // Check if token ID exists first.
         $stored = $this->storage->get($decoded['id']);
@@ -89,7 +88,7 @@ class Zikula_Token_Validate
         }
 
         // Check if the token has been tampered with.
-        $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['timestamp'])->getToken();
+        $duplicateToken = $this->tokenGenerator->generate($decoded['id'], $decoded['time'])->getToken();
         if ($stored['token'] !== $duplicateToken) {
             $this->storage->delete($decoded['id']);
 
@@ -98,7 +97,7 @@ class Zikula_Token_Validate
 
         // Check if token has expired.
         if ($checkExpire) {
-            $timeDiff = ((int)$decoded['timestamp'] + $this->maxlifetime) - time();
+            $timeDiff = ((int)$decoded['time'] + $this->tokenGenerator->getMaxLifetime()) - time();
             if ($timeDiff < 0) {
                 $this->storage->delete($decoded['id']);
 
