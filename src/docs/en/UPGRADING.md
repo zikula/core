@@ -8,7 +8,7 @@ forums at http://community.zikula.org/
 Server Consideration
 --------------------
 
-- Zikula requires PHP 5.3.2 or greater.
+- Zikula requires PHP 5.3.3 or greater.
 
 - Please make sure the php.ini file has date.timezone set to a valid timezone 
   like UTC, GMT+5, Europe/Berlin.  If this is not set, Zikula will not function
@@ -21,7 +21,7 @@ Requirements
 ------------
 
 This upgrade can only be performed on a Zikula Core 1.2.x installation.  If you
-are on a lower version, you must first upgrade sucessfully before proceeding to
+are on a lower version, you must first upgrade successfully before proceeding to
 this upgrade.
 
 

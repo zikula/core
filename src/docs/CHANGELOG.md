@@ -5,6 +5,7 @@ Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 
 Features:
+- Added ability to configure a mobile viewing URL, like m.example.com
 - Update jQuery-UI to 1.9.2
 - Zikula Form - automatically set proper form enctype when upload input is used
 - Added ModUtil::getModuleImagePath() for getting the admin image of a module
