@@ -13,7 +13,7 @@ Features:
 - Deprecated `Zikula_ServiceManager` for symfony2 Dependency Injection component
 - [BC BREAK] `Zikula_DislayHook`, `Zikula_ProcessHook`, `Zikula_ValidationHook` and
   `Zikula_FilterHook` constructor $name parameter removed
-- [BC BREAK] Controller methods need to be prefixed with the word 'Action'
+- [BC BREAK] Controller methods need to be suffixed with the word 'Action'
 - [BC BREAK] Prototype removed from Core and JS framework replaced with jQuery
 - Added garbage collection to CSRF token generator
 - Introduced Symfony2 Forms plugin
