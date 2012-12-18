@@ -1893,40 +1893,40 @@ class UserUtil
      */
     public static function getTheme($force = false)
     {
-        static $theme;
         static $pagetheme;
 
         if (isset($pagetheme) && !$force) {
             return $pagetheme;
         }
-        if (isset($theme) && !$force) {
-            return $theme;
-        }
-        
-        $thememobile = ModUtil::getVar('Theme', 'mobile_theme_name', 'Mobile');
-        if (empty($thememobile)) {
-            $thememobile = 'Mobile';
-        }
-        if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
-            $pagetheme = $thememobile;
-        } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
-            include_once("system/Theme/lib/vendor/Mobile_Detect.php");
-            $detect = new Mobile_Detect();
-            if ($detect->isMobile()) {
+
+        $theme = FormUtil::getPassedValue('theme', null, 'GETPOST');
+        if (!empty($theme)) {
+            // theme passed as parameter takes priority, can be RSS, Atom, Printer or other
+            $pagetheme = $theme;
+        } else {
+            $thememobile = ModUtil::getVar('Theme', 'mobile_theme_name', 'Mobile');
+            if (empty($thememobile)) {
+                $thememobile = 'Mobile';
+            }
+            if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
+                $pagetheme = $thememobile;
+            } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
+                include_once("system/Theme/lib/vendor/Mobile_Detect.php");
+                $detect = new Mobile_Detect();
+                if ($detect->isMobile()) {
+                    $pagetheme = $thememobile;
+                }
+            }
+            // check for specified mobile domain to force mobile theme
+            $themedomain = ModUtil::getVar('Theme', 'mobile_theme_domain', '');
+            if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain) {
                 $pagetheme = $thememobile;
             }
-        } else {
-             $pagetheme = FormUtil::getPassedValue('theme', null, 'GETPOST');
-        }
-        // check for specified mobile domain to force mobile theme
-        $themedomain = ModUtil::getVar('Theme', 'mobile_theme_domain', '');
-        if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain) {
-            $pagetheme = $thememobile;
-        }
-        // check for specified alternative site view domain and theme
-        $themedomain = ModUtil::getVar('Theme', 'alt_theme_domain', '');
-        if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('Theme', 'alt_theme_name', '')) {
-            $pagetheme = ModUtil::getVar('Theme', 'alt_theme_name');
+            // check for specified alternative site view domain and theme
+            $themedomain = ModUtil::getVar('Theme', 'alt_theme_domain', '');
+            if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('Theme', 'alt_theme_name', '')) {
+                $pagetheme = ModUtil::getVar('Theme', 'alt_theme_name');
+            }
         }
 
         // Page-specific theme
