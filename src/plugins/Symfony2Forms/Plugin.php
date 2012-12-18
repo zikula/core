@@ -55,7 +55,6 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         $formFactory = Forms::createFormFactoryBuilder()->addExtensions(array($core, $csrf, $validator, $zk, $doctrine))->getFormFactory();
-        //$formFactory = new \Symfony\Component\Form\FormFactory(array($core, $csrf, $validator, $zk, $doctrine));
 
         $this->serviceManager->set('symfony.formfactory', $formFactory);
         
