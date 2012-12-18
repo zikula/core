@@ -2,7 +2,7 @@
     {gt text="User account" assign='legend_text'}
     {if isset($change_password) && ($change_password == 1) && ($modvars.Users.use_password_strength_meter == 1)}
         {pageaddvar name='javascript' value='prototype'}
-        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 var passmeter = null;

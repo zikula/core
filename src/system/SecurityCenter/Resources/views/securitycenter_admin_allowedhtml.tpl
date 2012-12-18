@@ -1,5 +1,5 @@
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
-{pageaddvar name="javascript" value="system/SecurityCenter/javascript/securitycenter_admin_allowedhtm.js"}
+{pageaddvar name="javascript" value="system/SecurityCenter/Resources/public/js/securitycenter_admin_allowedhtm.js"}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="options" size="small"}
