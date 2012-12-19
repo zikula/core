@@ -8,12 +8,12 @@ Features:
 - Switched to Composer dependency manager see http://getcomposer.org/ which are now
   managed in `composer.json`
 - Modified module specification to allow PHP assets in modules' root folder and
-  moved non-PHP assets modules' `Resources/` folder
+  moved non-PHP assets modules' `Resources/` folder. Old layout still works.
 - Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
 - Deprecated `Zikula_ServiceManager` for symfony2 Dependency Injection component
 - [BC BREAK] `Zikula_DislayHook`, `Zikula_ProcessHook`, `Zikula_ValidationHook` and
   `Zikula_FilterHook` constructor $name parameter removed
-- [BC BREAK] Controller methods need to be suffixed with the word 'Action'
+- Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
 - [BC BREAK] Prototype removed from Core and JS framework replaced with jQuery
 - Added garbage collection to CSRF token generator
 - Introduced Symfony2 Forms plugin
