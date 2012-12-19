@@ -14,10 +14,6 @@
 
 use Symfony\Component\ClassLoader\ClassLoader;
 
-if (!extension_loaded('xdebug')) {
-    set_exception_handler('exception_handler');
-}
-
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // setup vendors in include path
@@ -52,7 +48,7 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new ClassLoader();
         self::$autoloaders->register();
-        self::addAutoloader('Categories', 'system');
+        //self::addAutoloader('Categories', 'system');
     }
 
     /**
@@ -163,19 +159,3 @@ function z_exit($msg, $html = true)
     //throw new Zikula_Exception_Fatal($msg);
 }
 
-/**
- * Default exception handler.
- *
- * PHP by default doesn't display uncaught exception stacktraces in HTML.
- * This function halts execution of PHP after is finishes.
- *
- * @param Exception $e Exception to handle.
- *
- * @return void
- */
-function exception_handler(Exception $e)
-{
-    echo "<pre>";
-    echo 'Uncaught exception ' . $e->getMessage() . ' in ' . $e->getFile() . ' line, ' . $e->getLine() . "\n";
-    echo $e->getTraceAsString() . "</pre>";
-}

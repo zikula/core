@@ -11,6 +11,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
 /**
  * Event handler to override templates.
  */
@@ -87,7 +90,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $this->serviceManager['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
         $ORMConfig = new \Doctrine\ORM\Configuration;
-        $this->serviceManager->attachService('doctrine.configuration', $ORMConfig);
+        $this->serviceManager->set('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
 
         // create proxy cache dir
@@ -99,15 +102,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
         $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
-        $this->serviceManager->attachService('doctrine.annotationreader', $cacheReader);
+        $this->serviceManager->set('doctrine.annotationreader', $cacheReader);
 
         // setup annotation driver
         $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
-        $this->serviceManager->attachService('doctrine.annotationdriver', $annotationDriver);
+        $this->serviceManager->set('doctrine.annotationdriver', $annotationDriver);
 
         // setup driver chains
         $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
-        $this->serviceManager->attachService('doctrine.driverchain', $driverChain);
+        $this->serviceManager->set('doctrine.driverchain', $driverChain);
 
         // configure Doctrine ORM
         $ORMConfig->setMetadataDriverImpl($annotationDriver);
@@ -122,7 +125,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         // setup doctrine eventmanager
         $eventManager = new \Doctrine\Common\EventManager;
-        $this->serviceManager->attachService('doctrine.eventmanager', $eventManager);
+        $this->serviceManager->set('doctrine.eventmanager', $eventManager);
 
          // setup MySQL specific listener (storage engine and encoding)
         if ($config['dbdriver'] == 'mysql') {
@@ -134,13 +137,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
-        $this->serviceManager->attachService('doctrine.entitymanager', $entityManager);
+        $this->serviceManager->set('doctrine.entitymanager', $entityManager);
     }
 
     public function initDoctrineExtensions(Zikula_Event $event)
     {
-        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Gedmo', __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/DoctrineExtensions');
-        Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
+        AnnotationRegistry::registerAutoloadNamespace('Gedmo', __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/DoctrineExtensions');
+        AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
 
         $definition = new Zikula_ServiceManager_Definition('Zikula_Doctrine2_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('service_container')));
         $this->serviceManager->registerService('doctrine_extensions', $definition);

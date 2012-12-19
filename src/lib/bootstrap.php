@@ -1,7 +1,6 @@
 <?php
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
- *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
@@ -12,9 +11,20 @@
  * information regarding copyright and licensing.
  */
 
-require __DIR__.'/../vendor/autoload.php';
-include 'lib/ZLoader.php';
+use Doctrine\Common\Annotations\AnnotationRegistry;
+
+if (isset($_SERVER['HTTP_HOST']) && !extension_loaded('xdebug')) {
+    set_exception_handler(function (Exception $e) {
+        echo '<pre>Uncaught exception '.$e->getMessage().' in '.$e->getFile().' line, '.$e->getLine()."\n";
+        echo $e->getTraceAsString()."</pre>";
+    });
+}
+
+$loader = require __DIR__.'/../vendor/autoload.php';
+include __DIR__.'/ZLoader.php';
 ZLoader::register();
+
+AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 $core = new Zikula_Core();
 $core->boot();
@@ -25,3 +35,5 @@ $core->getDispatcher()->dispatch('bootstrap.getconfig', $event);
 
 $event = new Zikula_Event($core);
 $core->getDispatcher()->dispatch('bootstrap.custom', $event);
+
+return $core;
