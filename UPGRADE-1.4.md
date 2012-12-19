@@ -4,7 +4,7 @@ Upgrading from Core 1.3 to 1.4
 Module Structure
 ----------------
 
-It is now possible to optionally place module's PHP assets directly in the module's
+It is now possible to place module's PHP assets directly in the module's
 root folder, without having to nest in `$modname/lib/$modname`. Move them as follows:
 
     cd /path/to/MyModule
@@ -15,7 +15,7 @@ root folder, without having to nest in `$modname/lib/$modname`. Move them as fol
 Module Assets
 -------------
 
-Non-PHP Module assets are now located in a `Resources/` folder. As follows:
+Non-PHP Module assets should now be located in a `Resources/` folder. As follows:
 
     MyModule/
         Resource/
@@ -33,17 +33,20 @@ There is a script to relocate these for you:
 
     refactor.php zk:migrate_resource --dir=module/MyModule
 
+The old locations continue to work.
+
 
 Controller Methods
 ------------------
 
-All public controller methods meant to be accessible from the browser must now be
+All public controller methods meant to be accessible from the browser should now be
 suffixed with `Action`, so `public function view()` should now read `public function viewAction()`
 
 There is a script to automate this change:
 
     refactor.php zk:migrate_resource --dir=module/MyModule/Controller
 
+Old method names will continue to work.
 
 Service Manager
 ---------------
