@@ -427,6 +427,11 @@ class Zikula_View_Theme extends Zikula_View
                 return false;
             }
         }
+
+        if (!is_readable($templateFile)) {
+            return false;
+        }
+
         $this->templateCache[$template] = $path;
 
         return $path;

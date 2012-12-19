@@ -532,25 +532,28 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $os_theme = DataUtil::formatForOS($this->theme);
             $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
-            $ostemplate = DataUtil::formatForOS($template);
+            $osTemplate = DataUtil::formatForOS($template);
 
             $relativepath = "$os_dir/$os_module/Resources/views";
             if (!is_dir($relativepath)) {
                 $relativepath = "$os_dir/$os_module/templates";
             }
 
-            $templatefile = "$relativepath/$ostemplate";
-            $override = self::getTemplateOverride($templatefile);
+            $templateFile = "$relativepath/$osTemplate";
+            $override = self::getTemplateOverride($templateFile);
             if ($override === false) {
-                $path = substr($templatefile, 0, strrpos($templatefile, $ostemplate));
+                $path = substr($templateFile, 0, strrpos($templateFile, $osTemplate));
             } else {
                 if (is_readable($override)) {
-                    $path = substr($override, 0, strrpos($override, $ostemplate));
+                    $path = substr($override, 0, strrpos($override, $osTemplate));
                 } else {
                     return false;
                 }
             }
 
+            if (!is_readable($templateFile)) {
+                return false;
+            }
             $this->templateCache[$template] = $path;
 
             return $path;
