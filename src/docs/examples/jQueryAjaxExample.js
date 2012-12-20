@@ -33,11 +33,11 @@ var successHandler = function(result, message, request) {
        test_user: 'admin'
    };
 // this request should be successful
-jQuery.ajax('ajax.php?module=Permissions&func=testpermission', {
+jQuery.ajax('ajax.php?module=Permissions&type=ajax&func=testpermission', {
    data: post
 }).done(successHandler).fail(errorHandler);
 
 // this request should fail
-jQuery.ajax('ajax.php?module=Permissions&func=testpermissionFAIL', {
+jQuery.ajax('ajax.php?module=Permissions&type=ajax&func=testpermissionFAIL', {
    data: post
 }).done(successHandler).fail(errorHandler);
