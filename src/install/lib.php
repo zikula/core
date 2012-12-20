@@ -347,7 +347,7 @@ function install(Zikula_Core $core)
 function createuser($username, $password, $email)
 {
     if (!class_exists('Users_Constant')) {
-        require_once 'system/Users/lib/Users/Constant.php';
+        require_once 'system/Users/Constant.php';
     }
     $connection = Doctrine_Manager::connection();
 
