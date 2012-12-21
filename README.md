@@ -17,7 +17,7 @@ Contributing
 
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing
 
-Pull requests should use the following desription template
+Pull requests should use the following description template
 
     Bug fix: [yes|no]
     Feature addition: [yes|no]
