@@ -1210,7 +1210,7 @@ Zikula.Ajax.Request = Class.create(Ajax.Request,/** @lends Zikula.Ajax.Request.p
      *
      * @example
      * // note - $super param is omitted
-     * new Zikula.Ajax.Request('ajax.php?module=mymodule&func=myfunc',{
+     * new Zikula.Ajax.Request('index.php?module=mymodule&type=ajax&func=myfunc',{
      *     authid: 'authidElementId',
      *     parameters: {
      *         id: someID,
@@ -1476,14 +1476,14 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      *         onSuccess: yourCallbackForSuccessRequests
      *     }
      * });
-     * queue.add('ajax.php?module=mymodule&func=myfunc',{
+     * queue.add('index.php?module=mymodule&type=ajax&func=myfunc',{
      *     authid: 'authidElementId',
      *     parameters: {
      *         id: someID,
      *         foo: bar
      *     }
      * );
-     * queue.add('ajax.php?module=foo&func=bar');
+     * queue.add('index.php?module=foo&type=ajax&func=bar');
      * queue.start();
      *
      * @class Zikula.Ajax.Queue
@@ -1515,7 +1515,7 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      *
      * @example
      * // all params
-     * queue.add('ajax.php?module=mymodule&func=myfunc',{
+     * queue.add('index.php?module=mymodule&type=ajax&func=myfunc',{
      *     authid: 'authidElementId',
      *     parameters: {
      *         id: someID,
@@ -1525,13 +1525,13 @@ Zikula.Ajax.Queue = Class.create(/** @lends Zikula.Ajax.Queue.prototype */{
      * );
      *
      * // options param can be omitted
-     * queue.add('ajax.php?module=mymodule&func=myfunc',true);
+     * queue.add('index.php?module=mymodule&type=ajax&func=myfunc',true);
      *
      * // requests can be added as array
      * queue.add([
-     *     'ajax.php?module=mymodule&func=myfunc&n=1', // this can be single url
-     *     'ajax.php?module=mymodule&func=myfunc&n=2',
-     *     ['ajax.php?module=mymodule&func=myfunc&n=3,{onComplete: doSomething}] // or complete array with url and other params
+     *     'index.php?module=mymodule&type=ajax&func=myfunc&n=1', // this can be single url
+     *     'index.php?module=mymodule&type=ajax&func=myfunc&n=2',
+     *     ['index.php?module=mymodule&type=ajax&func=myfunc&n=3,{onComplete: doSomething}] // or complete array with url and other params
      * );
      *
      * @param {String|Array} url Request url or array of requests params (it can be simple array or urls or array or arrays with single entry containing url, options, execute params)

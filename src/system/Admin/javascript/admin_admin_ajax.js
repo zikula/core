@@ -113,7 +113,7 @@ Zikula.AdminPanel.Tab = Class.create(/** @lends Zikula.AdminPanel.Tab.prototype 
     attachEditor: function() {
         var link = this.tab.down('a'),
             tabKlass = this;
-        this.editor = new Ajax.InPlaceEditor(link, 'ajax.php?module=Admin&type=ajax&func=editCategory', {
+        this.editor = new Ajax.InPlaceEditor(link, 'index.php?module=Admin&type=ajax&func=editCategory', {
             clickToEditText: Zikula.AdminPanel.labels.clickToEdit,
             savingText: Zikula.AdminPanel.labels.saving,
             externalControl: 'admintabs-none',
@@ -159,7 +159,7 @@ Zikula.AdminPanel.Tab = Class.create(/** @lends Zikula.AdminPanel.Tab.prototype 
         var pars = {
             cid: this.id
         };
-        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=deleteCategory", {
+        new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=deleteCategory", {
             parameters: pars,
             onComplete: this.deleteTabResponse.bind(this)
         });
@@ -176,7 +176,7 @@ Zikula.AdminPanel.Tab = Class.create(/** @lends Zikula.AdminPanel.Tab.prototype 
         var pars = {
             cid: this.id
         };
-        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=defaultCategory", {
+        new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=defaultCategory", {
             parameters: pars,
             onComplete: this.setTabDefaultResponse.bind(this)
         });
@@ -236,7 +236,7 @@ Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
                 var pars = Sortable.serialize('admintabs');
                 //send the new sort order to the ajax controller
                 new Zikula.Ajax.Request(
-                    'ajax.php?module=Admin&type=ajax&func=sortCategories', {
+                    'index.php?module=Admin&type=ajax&func=sortCategories', {
                         parameters: pars,
                         onComplete: function(response) {
                             if (!response.isSuccess()) {
@@ -286,7 +286,7 @@ Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
         var pars = {
             name: name
         };
-        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=addCategory", {
+        new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=addCategory", {
             parameters: pars,
             onComplete: this.addTabResponse.bind(this)
         });
@@ -342,7 +342,7 @@ Zikula.AdminPanel.Module = Class.create(/** @lends Zikula.AdminPanel.Module.prot
             modid: this.id,
             cat: Zikula.AdminPanel.Tab.getTab(tab).id
         };
-        new Zikula.Ajax.Request("ajax.php?module=Admin&type=ajax&func=changeModuleCategory", {
+        new Zikula.Ajax.Request("index.php?module=Admin&type=ajax&func=changeModuleCategory", {
             parameters: pars,
             onComplete: this.moveResponse.bind(this)
         });
@@ -405,7 +405,7 @@ Object.extend(Zikula.AdminPanel.Module, /** @lends Zikula.AdminPanel.Module */{
             onUpdate: function(element) {
                 var pars = Sortable.serialize('modules');
                 //send the new order to the ajax controller
-                new Zikula.Ajax.Request('ajax.php?module=Admin&type=ajax&func=sortModules', {
+                new Zikula.Ajax.Request('index.php?module=Admin&type=ajax&func=sortModules', {
                     parameters: pars,
                     onComplete: function(response) {
                         if (!response.isSuccess()) {

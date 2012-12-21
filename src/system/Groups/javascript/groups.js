@@ -53,7 +53,7 @@ function groupappend()
         appending = true;
 
         new Zikula.Ajax.Request(
-            "ajax.php?module=Groups&func=creategroup",
+            "index.php?module=Groups&type=ajax&func=creategroup",
             {
                 onComplete: groupappend_response
             });
@@ -269,7 +269,7 @@ function groupmodify(groupid)
        };
 
         new Zikula.Ajax.Request(
-            "ajax.php?module=Groups&func=updategroup",
+            "index.php?module=Groups&type=ajax&func=updategroup",
             {
                 parameters: pars,
                 onComplete: groupmodify_response,
@@ -356,7 +356,7 @@ function groupdelete(groupid)
         };
 
         new Zikula.Ajax.Request(
-            "ajax.php?module=Groups&func=deletegroup",
+            "index.php?module=Groups&type=ajax&func=deletegroup",
             {
                 parameters: pars,
                 onComplete: groupdelete_response,
@@ -444,7 +444,7 @@ function groupremoveuser(event) {
             gid: rel[0],
             uid: rel[1]
         }
-    new Zikula.Ajax.Request('ajax.php?module=Groups&func=removeuser', {
+    new Zikula.Ajax.Request('index.php?module=Groups&type=ajax&func=removeuser', {
             parameters: pars,
             onComplete: groupremoveuser_response
     });
