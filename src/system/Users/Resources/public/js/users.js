@@ -30,5 +30,5 @@ function liveusersearch()
             });
         }
     });
-    new Ajax.Autocompleter('username', 'username_choices', Zikula.Config.baseURL + 'ajax.php?module=users&func=getusers', options);
+    new Ajax.Autocompleter('username', 'username_choices', Zikula.Config.baseURL + 'index.php?module=users&type=ajax&func=getusers', options);
 }

@@ -175,7 +175,7 @@ Zikula.Users.NewUser = {
         
         var pars = $(Zikula.Users.NewUser.formId).serialize(true);
         new Zikula.Ajax.Request(
-            Zikula.Config.baseURL + "ajax.php?module=Users&func=getRegistrationErrors",
+            Zikula.Config.baseURL + "index.php?module=Users&type=ajax&func=getRegistrationErrors",
             {
                 parameters: pars,
                 onComplete: Zikula.Users.NewUser.getRegistrationErrorsResponse

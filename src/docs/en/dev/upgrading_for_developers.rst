@@ -641,7 +641,7 @@ Send a request from JS:
     var pars = {pid: permid};
     // call request class
     new Zikula.Ajax.Request(
-        "ajax.php?module=permissions&func=deletepermission",
+        "index.php?module=permissions&type=ajax&func=deletepermission",
         {
             method: 'get',
             parameters: pars,
