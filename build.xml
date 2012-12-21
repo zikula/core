@@ -50,8 +50,8 @@
         <mkdir dir="${builddir}/patch" />
         <mkdir dir="${builddir}/tmp" />
         <mkdir dir="${builddir}/jsdoc" />
-        <exec command="curl -s https://getcomposer.org/installer | php;mv composer.phar ${workspace}/source/src" />
-        <exec command="composer.phar install --prefer-dist" />
+        <exec command="curl -s https://getcomposer.org/installer | php;mv composer.phar ${workspace}/source" />
+        <exec command="${workspace}/source/composer.phar install --prefer-dist" />
     </target>
 
     <!-- Build archives -->
