@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * Zikula_Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event implements Zikula_EventInterface, ArrayAccess
+class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
 {
     /**
      * Name of the event.

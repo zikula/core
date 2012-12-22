@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * Zikula_EventManager.
  *
@@ -125,10 +127,27 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
      *
      * @param Zikula_EventInterface $event Event.
      *
+     * @deprecated since 1.3.6
+     * @use dispatch() instead
+     *
      * @return Zikula_EventInterface
      */
     public function notify(Zikula_EventInterface $event)
     {
+        return $this->dispatch($event->getName(), $event);
+    }
+
+    /**
+     * Dispatch all handlers for given event name but stop if signalled.
+     *
+     * @param Event $event Event.
+     *
+     * @return Event
+     */
+    public function dispatch($name, Event $event)
+    {
+        $event->setName($name);
+
         $event->setEventManager($this);
         $handlers = $this->getHandlers($event->getName());
         foreach ($handlers as $handler) {

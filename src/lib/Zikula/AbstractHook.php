@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook implements Zikula_HookInterface
+class Zikula_AbstractHook extends Event implements Zikula_HookInterface
 {
     /**
      * Name.

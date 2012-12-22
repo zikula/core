@@ -75,10 +75,27 @@ class Zikula_HookManager
      *
      * @param Zikula_HookInterface $hook Hook instance.
      *
+     * @deprecated since 1.3.6
+     * @use dispatch() instead
+     *
      * @return Zikula_HookInterface
      */
     public function notify(Zikula_HookInterface $hook)
     {
+        return $this->dispatch($hook->getName(), $hook);
+    }
+
+    /**
+     * Notify hook handlers.
+     *
+     * @param Zikula_AbstractHook $hook Hook instance.
+     *
+     * @return Zikula_AbstractHook
+     */
+    public function dispatch($name, Zikula_AbstractHook $hook)
+    {
+        $hook->setName($name);
+
         if (!$this->loaded) {
             // lazy load handlers for the first time
             $this->loadRuntimeHandlers();
@@ -90,7 +107,7 @@ class Zikula_HookManager
             return $hook;
         }
 
-        $this->eventManager->notify($hook);
+        $this->eventManager->dispatch($hook->getName(), $hook);
 
         return $hook;
     }
