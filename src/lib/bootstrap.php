@@ -35,3 +35,5 @@ $core->getEventManager()->notify($event);
 
 $event = new Zikula_Event('bootstrap.custom', $core);
 $core->getEventManager()->notify($event);
+
+return $core;
