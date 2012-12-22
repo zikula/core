@@ -14,9 +14,10 @@
 use Symfony\Component\HttpFoundation\Request;
 
 include 'lib/bootstrap.php';
+$request = Request::createFromGlobals();
+$core->getServiceManager()->attachService('request', $request);
 $core->init();
 
-$request = Request::createFromGlobals();
 if ($request->isXmlHttpRequest()) {
     __frontcontroller_ajax();
 }
@@ -166,7 +167,7 @@ function __frontcontroller_ajax()
     $type = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
     $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
-// Check for site closed
+    // Check for site closed
     if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
@@ -178,7 +179,7 @@ function __frontcontroller_ajax()
         die(new Zikula_Response_Ajax_NotFound(__f("Missing parameter '%s'", 'func')));
     }
 
-// get module information
+    // get module information
     $modinfo = ModUtil::getInfoFromName($module);
     if ($modinfo == false) {
         die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module))));
@@ -192,13 +193,13 @@ function __frontcontroller_ajax()
         die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
     }
 
-// Handle database transactions
+    // Handle database transactions
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
         $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
         $dbConn->beginTransaction();
     }
 
-// Dispatch controller.
+    // Dispatch controller.
     try {
         $response = ModUtil::func($modinfo['name'], $type, $func);
     } catch (Zikula_Exception_NotFound $e) {
@@ -213,7 +214,7 @@ function __frontcontroller_ajax()
         $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
     }
 
-// Handle database transactions
+    // Handle database transactions
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
         if (isset($e) && $e instanceof Exception) {
             $dbConn->rollback();
@@ -222,8 +223,8 @@ function __frontcontroller_ajax()
         }
     }
 
-// Process final response.
-// If response is not instanceof Zikula_Response_Ajax_AbstractBase provide compat solution
+    // Process final response.
+    // If response is not instanceof Zikula_Response_Ajax_AbstractBase provide compat solution
     if (!$response instanceof Zikula_Response_Ajax_AbstractBase) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
@@ -232,7 +233,7 @@ function __frontcontroller_ajax()
         header('Content-type: application/json');
     }
 
-// Issue response.
+    // Issue response.
     echo $response;
     System::shutdown();
 }

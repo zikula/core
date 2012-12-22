@@ -232,6 +232,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function request(Zikula_Event $event)
     {
+        return;
         $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
         $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Reference('session')));
         $this->serviceManager->registerService('request', $requestDef);
@@ -251,11 +252,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
             $request = $this->serviceManager->get('request');
             // temporary workaround: reinitialize request information after having decoded short urls
-            $request->initialize();
+
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
             $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            $request->addRequest($module, $controller, $action);
+            //$request->addRequest($module, $controller, $action);
         }
     }
 
@@ -349,6 +350,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(Zikula_Event $event)
     {
         $session = $this->serviceManager->get('session');
+        $request = $this->serviceManager->getService('request');
+        $request->setSession($session);
         try {
             if (!$session->start()) {
                 throw new RuntimeException('Failed to start session');

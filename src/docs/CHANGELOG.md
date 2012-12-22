@@ -25,13 +25,19 @@ Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 
 Features:
+- Added forward compatibility layer with Symfony2 HttpFoundation
+  Please note you should and can use the new API. $request->isGet/Post() should be
+  replaced with $request->isMethod('GET/POST');
+- [FORWARD COMPAT] Merged ajax.php front controller into index.php - please use
+  index.php?module=<modname>&type=ajax&func=<func> in AJAX calls.
 - Added ability to configure a mobile viewing URL, like m.example.com
 - Update jQuery-UI to 1.9.2
 - Zikula Form - automatically set proper form enctype when upload input is used
 - Added ModUtil::getModuleImagePath() for getting the admin image of a module
 - Update Smarty to 2.6.27
 - Give possibility to set timezone_adjust default value global.
-- Theme settings: mobile theme different then default; mobile domain; alternative site view theme and domain; set admin theme in theme settings section.
+- Theme settings: mobile theme different then default; mobile domain; alternative site view
+  theme and domain; set admin theme in theme settings section.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------

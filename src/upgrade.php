@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
@@ -20,6 +22,9 @@ ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
 ZLoader::addAutoloader('Users', 'system', '_');
+$request = Request::createFromGlobals();
+$core->getServiceManager()->attachService('request', $request);
+include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 
 // check if the config.php was renewed
 if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {

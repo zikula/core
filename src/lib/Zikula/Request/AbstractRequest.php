@@ -13,49 +13,17 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Request class.
  */
-abstract class Zikula_Request_AbstractRequest
+abstract class Zikula_Request_AbstractRequest extends Request
 {
     /**
-     * Requests array (ArrayIterator).
-     *
-     * @var ArrayIterator
-     */
-    protected $requests;
-
-    /**
-     * Request arguments.
-     *
-     * @var array
-     */
-    protected $args;
-
-    /**
-     * Constructor.
-     *
-     * @param array $requests Array of requests.
-     * @param array $options  Indexed array of arrays requests arguments.
-     */
-    public function __construct(array $requests = array(), array $options = array())
-    {
-        $this->requests = new ArrayIterator($requests);
-        $this->args = isset($options['args']) ? new Zikula_Request_Collection($options['args']) : new Zikula_Request_Collection(array());
-        $this->initialize($options);
-    }
-
-    /**
-     * Initialization function.
-     *
-     * @param array $options Array of arrays (e.g. get, post, server).
-     *
-     * @return void
-     */
-    abstract protected function initialize(array $options = array());
-
-    /**
      * Get current module name from the request stack.
+     *
+     * @deprecated since 1.3.6
      *
      * @return string
      */
@@ -69,6 +37,8 @@ abstract class Zikula_Request_AbstractRequest
     /**
      * Get current controller name from the request stack.
      *
+     * @deprecated since 1.3.6
+     *
      * @return string
      */
     public function getControllerName()
@@ -81,6 +51,8 @@ abstract class Zikula_Request_AbstractRequest
     /**
      * Get current action name from the request stack.
      *
+     * @deprecated since 1.3.6
+     *
      * @return string
      */
     public function getActionName()
@@ -92,6 +64,8 @@ abstract class Zikula_Request_AbstractRequest
 
     /**
      * Add request to the stack.
+     *
+     * @deprecated since 1.3.6
      *
      * @param string $module     Module controller name.
      * @param string $controller Controller type.
@@ -107,6 +81,8 @@ abstract class Zikula_Request_AbstractRequest
     /**
      * Getter for request property.
      *
+     * @deprecated since 1.3.6
+     *
      * @return object ArrayIterator.
      */
     public function getRequests()
@@ -117,11 +93,13 @@ abstract class Zikula_Request_AbstractRequest
     /**
      * Getter for args property.
      *
+     * @deprecated since 1.3.6
+     *
      * @return array
      */
     public function getArgs()
     {
-        return $this->args;
+        return $this->attributes->all();
     }
 
     /**
@@ -129,11 +107,13 @@ abstract class Zikula_Request_AbstractRequest
      *
      * @param array $args Array of args.
      *
+     * @deprecated since 1.3.6
+     *
      * @return void
      */
     public function setArgs(array $args)
     {
-        $this->args = $args;
+        $this->attributes->$args;
     }
 
     /**
@@ -142,11 +122,13 @@ abstract class Zikula_Request_AbstractRequest
      * @param string $key     Key to get.
      * @param string $default Default if not set.
      *
+     * @deprecated since 1.3.6
+     *
      * @return mixed
      */
     public function getArg($key, $default = null)
     {
-        return $this->arg->get($key, $default);
+        return $this->attributes->get($key, $default);
     }
 
     /**
@@ -155,11 +137,13 @@ abstract class Zikula_Request_AbstractRequest
      * @param string $key   Key.
      * @param mixed  $value Value.
      *
+     * @deprecated since 1.3.6
+     *
      * @return void
      */
     public function setArg($key, $value)
     {
-        $this->args[$key] = $value;
+        $this->attributes->set($key, $value);
     }
 
     /**
@@ -167,11 +151,13 @@ abstract class Zikula_Request_AbstractRequest
      *
      * @param string $key Key.
      *
+     * @deprecated since 1.3.6
+     *
      * @return boolean
      */
     public function hasArg($key)
     {
-        return isset($this->args[$key]);
+        return $this->attributes->has($key);
     }
 
     /**
@@ -179,10 +165,12 @@ abstract class Zikula_Request_AbstractRequest
      *
      * @param string $key Key.
      *
+     * @deprecated since 1.3.6
+     *
      * @return void
      */
     public function unsetArg($key)
     {
-        unset($this->args[$key]);
+        $this->attributes->remove($key);
     }
 }

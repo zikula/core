@@ -12,6 +12,10 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 include 'lib/bootstrap.php';
+$request = Request::createFromGlobals();
+$core->getServiceManager()->attachService('request', $request);
 $core->init();
 System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));

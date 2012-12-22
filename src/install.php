@@ -12,9 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 ini_set('max_execution_time', 86400);
 ini_set('memory_limit', '64M');
 
 include 'lib/bootstrap.php';
+$request = Request::createFromGlobals();
+$core->getServiceManager()->attachService('request', $request);
+
 include 'install/lib.php';
 install($core);

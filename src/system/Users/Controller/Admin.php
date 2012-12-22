@@ -85,7 +85,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $itemsPerPage = $this->getVar(Users_Constant::MODVAR_ITEMS_PER_PAGE);
 
         // Get parameters from whatever input we need.
-        if (!$this->request->isGet()) {
+        if (!$this->request->isMethod('GET')) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -245,7 +245,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $errorFields = array();
         $errorMessages = array();
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             // Returning from a form POST operation. Process the input.
             $this->checkCsrfToken();
 
@@ -315,7 +315,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $this->registerError($this->__('Error! Could not create the new user account or registration application.'));
                 }
             }
-        } elseif (!$this->request->isGet()) {
+        } elseif (!$this->request->isMethod('GET')) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -426,7 +426,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $usersList = $this->getSearchResults();
@@ -460,7 +460,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     ->assign('actions', $actions)
                     ->assign('deleteUsers', SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN))
                     ->fetch('users_admin_search_results.tpl');
-        } elseif ($this->request->isGet() || ($this->request->isPost() && (!isset($usersList) || !$usersList))) {
+        } elseif ($this->request->isMethod('GET') || ($this->request->isMethod('POST') && (!isset($usersList) || !$usersList))) {
             return $this->renderSearchForm('search');
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -496,7 +496,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $formId = $this->request->request->get('formid', 'UNKNOWN');
@@ -518,11 +518,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             } else {
                 throw new Zikula_Exception_Fatal($this->__f('An unknown form type was received by %1$s.', array('mailUsers')));
             }
-        } elseif (!$this->request->isGet()) {
+        } elseif (!$this->request->isMethod('GET')) {
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->request->isGet() || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
+        if ($this->request->isMethod('GET') || (($formId == 'users_search') && (!isset($userList) || !$userList)) || (($formId == 'users_mailusers') && !$mailSent)) {
             return $this->renderSearchForm('mailUsers');
         } elseif ($formId == 'users_search') {
             return $this->view->assign('items', $userList)
@@ -568,7 +568,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         $formData = new Users_Controller_FormData_ModifyUserForm('users_modify', $this->serviceManager);
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $formData->setFromRequestCollection($this->request->request);
@@ -687,7 +687,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->registerStatus($this->__("Done! Saved user's account information."));
                 $proceedToForm = false;
             }
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $uid    = $this->request->query->get('userid', null);
             $uname  = $this->request->query->get('uname', null);
 
@@ -800,7 +800,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function lostUsernameAction()
     {
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
             $uid = $this->request->request->get('userid', null);
         } else {
@@ -927,11 +927,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $proceedToForm = false;
         $processDelete = false;
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $userid = $this->request->request->get('userid', null);
             $processDelete = $this->request->request->get('process_delete', false);
             $proceedToForm = !$processDelete;
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $userid = $this->request->query->get('userid', null);
             $uname  = $this->request->query->get('uname', null);
 
@@ -1265,7 +1265,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         // Get parameters from whatever input we need.
         // (Note that the name of the passed parameter is 'userid' but that it
         // is actually a registration application id.)
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             $uid = $this->request->query->get('uid', null);
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -1342,7 +1342,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $errorFields = array();
         $errorMessages = array();
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $formData->setFromRequestCollection($this->request->request);
@@ -1430,7 +1430,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $proceedToForm = false;
             }
 
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $uid = $this->request->query->get('uid', null);
 
             if (!is_int($uid)) {
@@ -1517,12 +1517,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             $uid = $this->request->query->get('uid', null);
             $forceVerification = $this->currentUserIsAdmin() && $this->request->query->get('force', false);
             $restoreView = $this->request->query->get('restoreview', 'view');
             $confirmed = false;
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
             $uid = $this->request->request->get('uid', null);
             $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
@@ -1632,11 +1632,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             $uid = $this->request->query->get('uid', null);
             $forceVerification = $this->currentUserIsAdmin() && $this->request->query->get('force', false);
             $restoreView = $this->request->query->get('restoreview', 'view');
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $uid = $this->request->request->get('uid', null);
             $forceVerification = $this->currentUserIsAdmin() && $this->request->request->get('force', false);
             $restoreView = $this->request->request->get('restoreview', 'view');
@@ -1759,11 +1759,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             $uid = $this->request->query->get('uid', null);
             $restoreView = $this->request->query->get('restoreview', 'view');
             $confirmed = false;
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
             $uid = $this->request->request->get('uid', null);
             $restoreView = $this->request->request->get('restoreview', 'view');
@@ -1876,7 +1876,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         $configData = new Users_Controller_FormData_ConfigForm('users_config', $this->serviceManager);
         $errorFields = array();
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $modVars = $this->request->request;
@@ -1895,7 +1895,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                         'There were problems with %1$d module settings. Please review the messages below, correct the errors, and resubmit your changes.',
                         $errorCount, array($errorCount)));
             }
-        } elseif (!$this->request->isGet()) {
+        } elseif (!$this->request->isMethod('GET')) {
             throw new Zikula_Exception_Fatal();
         }
 
@@ -1950,9 +1950,9 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $confirmed = isset($args['confirmed']) ? $args['confirmed'] : false;
         } elseif (isset($args) && !is_array($args)) {
             throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $confirmed = false;
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
             $confirmed = $this->request->request->get('confirmed', false);
         }
@@ -2045,9 +2045,9 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $groups     = isset($args['exportGroups']) ? $args['exportGroups'] : null;
         } elseif (isset($args) && !is_array($args)) {
             throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $confirmed = false;
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
             $confirmed  = $this->request->request->get('confirmed', false);
             $exportFile = $this->request->request->get('exportFile', null);
@@ -2460,7 +2460,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      */
     public function toggleForcedPasswordChangeAction()
     {
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             $uid = $this->request->query->get('userid', false);
 
             if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
@@ -2482,7 +2482,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             return $this->view->assign('user_obj', $userObj)
                 ->assign('user_must_change_password', $userMustChangePassword)
                 ->fetch('users_admin_toggleforcedpasswordchange.tpl');
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $uid = $this->request->request->get('userid', false);
