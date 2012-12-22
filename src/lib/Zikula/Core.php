@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 // Defines for access levels
 define('ACCESS_INVALID', -1);
 define('ACCESS_NONE', 0);
@@ -358,6 +360,11 @@ class Zikula_Core
      */
     public function init($stage = self::STAGE_ALL)
     {
+        if (!$this->serviceManager->hasService('request')) {
+            $request = Request::createFromGlobals();
+            $this->serviceManager->attachService('request', $request);
+        }
+
         $coreInitEvent = new Zikula_Event('core.init', $this);
 
         // store the load stages in a global so other API's can check whats loaded
