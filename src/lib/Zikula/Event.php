@@ -13,7 +13,8 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Zikula_Event encapsulation class.
@@ -21,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
+class Zikula_Event extends GenericEvent implements Zikula_EventInterface
 {
     /**
      * Name of the event.
@@ -89,30 +90,36 @@ class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
             throw new InvalidArgumentException('Event name cannot be empty');
         }
 
-        $this->name = $name;
-        $this->subject = $subject;
-        $this->args = $args;
+        $this->setName($name);
         $this->data = $data;
+
+        parent::__construct($this->subject = $subject, $args);
     }
 
     /**
      * Signal to stop further event notification.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::stopPropagation()
+     *
      * @return void
      */
     public function stop()
     {
-        $this->stop = true;
+        $this->stopPropagation();
     }
 
     /**
      * Has the event been stopped.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::isPropagationStopped()
+     *
      * @return boolean
      */
     public function isStopped()
     {
-        return $this->stop;
+        return $this->isPropagationStopped();
     }
 
     /**
@@ -135,13 +142,14 @@ class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
      * @param string $key   Argument name.
      * @param mixed  $value Value.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::setArgument()
+     *
      * @return Zikula_Event
      */
     public function setArg($key, $value)
     {
-        $this->args[$key] = $value;
-
-        return $this;
+        return $this->setArgument($key, $value);
     }
 
     /**
@@ -149,13 +157,14 @@ class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
      *
      * @param array $args Arguments.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::setArguments()
+     *
      * @return Zikula_Event
      */
     public function setArgs(array $args = array())
     {
-        $this->args = $args;
-
-        return $this;
+        return $this->setArguments($args);
     }
 
     /**
@@ -163,61 +172,29 @@ class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
      *
      * @param string $key Key.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::getArgument()
+     *
      * @throws InvalidArgumentException If key is not found.
      *
      * @return mixed Contents of array key.
      */
     public function getArg($key)
     {
-        if ($this->hasArg($key)) {
-            return $this->args[$key];
-        }
-
-        throw new InvalidArgumentException(sprintf('%s not found in %s', $key, $this->name));
+        return $this->getArgument($key);
     }
 
     /**
      * Getter for all arguments.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::getArguments()
+     *
      * @return array
      */
     public function getArgs()
     {
-        return $this->args;
-    }
-
-    /**
-     * Getter for subject property.
-     *
-     * @return mixed $subject The observer subject.
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * Get event name.
-     *
-     * @return string Name property.
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set event name.
-     *
-     * @param type $name Event Name.
-     *
-     * @return Zikula_Event
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->getArguments();
     }
 
     /**
@@ -235,11 +212,14 @@ class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
      *
      * @param string $key Key of arguments array.
      *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::hasArgument()
+     *
      * @return boolean
      */
     public function hasArg($key)
     {
-        return array_key_exists($key, $this->args);
+        return $this->hasArgument($key);
     }
 
     /**
@@ -305,62 +285,4 @@ class Zikula_Event extends Event implements Zikula_EventInterface, ArrayAccess
     {
         return $this->eventManager;
     }
-
-    /**
-     * ArrayAccess for argument getter.
-     *
-     * @param string $key Array key.
-     *
-     * @throws InvalidArgumentException If key does not exist in $this->args.
-     *
-     * @return mixed
-     */
-    public function offsetGet($key)
-    {
-        if ($this->hasArg($key)) {
-            return $this->args[$key];
-        }
-
-        throw new InvalidArgumentException(sprintf('The requested key %s does not exist', $key));
-    }
-
-    /**
-     * ArrayAccess for argument setter.
-     *
-     * @param string $key   Array key to set.
-     * @param mixed  $value Value.
-     *
-     * @return void
-     */
-    public function offsetSet($key, $value)
-    {
-        $this->setArg($key, $value);
-    }
-
-    /**
-     * ArrayAccess for unset argument.
-     *
-     * @param string $key Array key.
-     *
-     * @return void
-     */
-    public function offsetUnset($key)
-    {
-        if ($this->hasArg($key)) {
-            unset($this->args[$key]);
-        }
-    }
-
-    /**
-     * AccessArray has argument.
-     *
-     * @param string $key Array key.
-     *
-     * @return boolean
-     */
-    public function offsetExists($key)
-    {
-        return $this->hasArg($key);
-    }
-
 }
