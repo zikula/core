@@ -201,9 +201,6 @@ function __frontcontroller_ajax()
 // Dispatch controller.
     try {
         $response = ModUtil::func($modinfo['name'], $type, $func);
-        if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
-            throw new Zikula_Exception_Fatal(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
-        }
     } catch (Zikula_Exception_NotFound $e) {
         $response = new Zikula_Response_Ajax_NotFound($e->getMessage());
     } catch (Zikula_Exception_Forbidden $e) {
@@ -230,9 +227,6 @@ function __frontcontroller_ajax()
     if (!$response instanceof Zikula_Response_Ajax_AbstractBase) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
-        if (System::isLegacyMode()) {
-            $response['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
-        }
         $response = json_encode($response);
         header("HTTP/1.1 200 OK");
         header('Content-type: application/json');
