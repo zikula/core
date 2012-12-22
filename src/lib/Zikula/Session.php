@@ -13,10 +13,13 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
+
 /**
  * Zikula_Session class.
  */
-class Zikula_Session
+class Zikula_Session implements SessionInterface
 {
     /**
      * The message type for status messages, to use with, for example, {@link hasMessages()}.
@@ -88,6 +91,11 @@ class Zikula_Session
     public function hasStarted()
     {
         return $this->started;
+    }
+
+    public function isStarted()
+    {
+        return $this->hasStarted();
     }
 
     /**
@@ -301,5 +309,75 @@ class Zikula_Session
         }
 
         $_SESSION[$namespace] = array();
+    }
+
+    public function getId()
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function setId($id)
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function getName()
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function setName($name)
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function invalidate($lifetime = null)
+    {
+        $this->expire();
+    }
+
+    public function migrate($destroy = false, $lifetime = null)
+    {
+        $this->regenerate();
+    }
+
+    public function save()
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function all()
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function replace(array $attributes)
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function remove($name)
+    {
+        $this->del($name);
+    }
+
+    public function clear()
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function registerBag(SessionBagInterface $bag)
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function getBag($name)
+    {
+        throw new \BadMethodCallException('not in use');
+    }
+
+    public function getMetadataBag()
+    {
+        throw new \BadMethodCallException('not in use');
     }
 }
