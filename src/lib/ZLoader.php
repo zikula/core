@@ -14,6 +14,7 @@
 
 use Symfony\Component\ClassLoader\ClassLoader;
 
+
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // setup vendors in include path
@@ -48,7 +49,7 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new ClassLoader();
         self::$autoloaders->register();
-        //self::addAutoloader('Categories', 'system');
+        self::addAutoloader('Categories', 'system');
     }
 
     /**
@@ -89,6 +90,10 @@ class ZLoader
             $array = explode('_', $class);
             $pluginName = $array[1];
             $name = substr($class, strlen("SystemPlugin_{$pluginName}") + 1, strlen($class));
+            $path = str_replace('_', '/', "plugins/$pluginName/$name.php");
+            if (file_exists($path)) {
+                return include $path;
+            }
             $path = str_replace('_', '/', "plugins/$pluginName/lib/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
@@ -103,6 +108,10 @@ class ZLoader
             $modinfo = ModUtil::getInfoFromName($moduleName);
             $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
             $name = substr($class, strlen("ModulePlugin_{$moduleName}_{$pluginName}") + 1, strlen($class));
+            $path = str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/$name.php");
+            if (file_exists($path)) {
+                return include $path;
+            }
             $path = str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/lib/$pluginName/$name.php");
             if (file_exists($path)) {
                 return include $path;
@@ -114,6 +123,10 @@ class ZLoader
             $array = explode('_', $class);
             $themeName = $array[1];
             $name = substr($class, strlen("Themes") + 1, strlen($class));
+            $path = str_replace('_', '/', "themes/$themeName/$name.php");
+            if (file_exists($path)) {
+                return include $path;
+            }
             $path = str_replace('_', '/', "themes/$themeName/lib/$name.php");
             if (file_exists($path)) {
                 return include $path;
