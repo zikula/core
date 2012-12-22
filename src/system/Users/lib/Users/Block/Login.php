@@ -111,7 +111,7 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
 
                 // If the current page was reached via a POST or FILES then we don't want to return here.
                 // Only return if the current page was reached via a regular GET
-                if ($this->request->isGet()) {
+                if ($this->request->isMethod('GET')) {
                     $this->view->assign('returnpage', System::getCurrentUri());
                 } else {
                     $this->view->assign('returnpage', '');

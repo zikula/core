@@ -118,7 +118,7 @@ class Users_Controller_User extends Zikula_AbstractController
         // Initialize state for the state machine later on.
         $state = 'error';
 
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             // An HTTP GET, meaning either we are reentering the function from an external authenticator,
             // or we are entering the function for the very first time.
             $reentrantTokenReceived = $this->request->query->get('reentranttoken', false);
@@ -145,7 +145,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                 $state = 'start';
             }
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             // An HTTP POST, so a form was submitted in order to get into the function. There are three possibilities.
             // It could be that the user selected an authentication method, and we need to switch to that method.
             // It could be that the user supplied authentication info to send to an authentication method, and we need to do that.
@@ -652,7 +652,7 @@ class Users_Controller_User extends Zikula_AbstractController
         $proceedToForm = true;
         $email = '';
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $emailMessageSent = false;
 
             $this->checkCsrfToken();
@@ -675,7 +675,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     $this->registerError($this->__('Sorry! We are unable to send the account information for that e-mail address. Please reenter your information, or contact an administrator.'));
                 }
             }
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $email = '';
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -714,7 +714,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
         $formStage = 'request';
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $emailMessageSent = false;
 
             $this->checkCsrfToken();
@@ -806,7 +806,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     $this->registerError($message);
                 }
             }
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $uname = '';
             $email = '';
         } else {
@@ -868,7 +868,7 @@ class Users_Controller_User extends Zikula_AbstractController
         $formStage = 'code';
         $errorInfo = array();
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
 
             $setPass = $this->request->request->get('setpass', false);
@@ -892,7 +892,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                 $formStage = 'setpass';
             }
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $setpass = false;
             $uname = $this->request->query->get('uname', '');
             $email = $this->request->query->get('email', '');
@@ -906,7 +906,7 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        if (($formStage == 'code') && ($this->request->isPost() || !empty($uname) || !empty($email) || !empty($code))) {
+        if (($formStage == 'code') && ($this->request->isMethod('POST') || !empty($uname) || !empty($email) || !empty($code))) {
             // Got something to process from either GET or POST
             if (empty($uname) && empty($email)) {
                 $this->registerError($this->__('Error! User name and e-mail address fields are empty.'));
@@ -1077,7 +1077,7 @@ class Users_Controller_User extends Zikula_AbstractController
         } elseif (isset($args) && !is_array($args)) {
             // Coming from a function call, but bad $args
             throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
             if (System::getVar('anonymoussessions', false)) {
                 $this->checkCsrfToken();
@@ -1092,7 +1092,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $returnPage     = $this->request->request->get('returnurl', urldecode($this->request->query->get('returnurl', '')));
             }
             $eventType          = $this->request->request->get('event_type', false);
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             $reentry = false;
             $reentrantTokenReceived = $this->request->query->get('reentranttoken', '');
 
@@ -1137,7 +1137,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
         $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
 
-        if ($this->request->isPost() || $isFunctionCall || $isReentry) {
+        if ($this->request->isMethod('POST') || $isFunctionCall || $isReentry) {
             // A form submission, or a simulated submission as a function call.
             if (isset($authenticationInfo) && is_array($authenticationInfo) && !empty($authenticationInfo)) {
                 if (!isset($selectedAuthenticationMethod) || !is_array($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod)
@@ -1445,10 +1445,10 @@ class Users_Controller_User extends Zikula_AbstractController
                     ->redirect(ModUtil::url($this->name, 'user', 'main'));
         }
 
-        if ($this->request->isGet()) {
+        if ($this->request->isMethod('GET')) {
             $uname      = $this->request->query->get('uname', '');
             $verifycode = $this->request->query->get('verifycode', '');
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
             $uname          = $this->request->request->get('uname', '');
             $verifycode     = $this->request->request->get('verifycode', '');
@@ -1473,7 +1473,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 if (!isset($reginfo['pass']) || empty($reginfo['pass'])) {
                     $setPass = true;
 
-                    if ($this->request->isPost()) {
+                    if ($this->request->isMethod('POST')) {
                         $passwordErrors = ModUtil::apiFunc($this->name, 'registration', 'getPasswordErrors', array(
                             'uname'         => $uname,
                             'pass'          => $newpass,
@@ -1729,7 +1729,7 @@ class Users_Controller_User extends Zikula_AbstractController
         // do not process if the site is enabled
         $this->redirectIf(!System::getVar('siteoff', false), System::getHomepageUrl());
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $user = $this->request->request->get('user', null);
             $pass = $this->request->request->get('pass', null);
             $rememberme = $this->request->request->get('rememberme', false);
@@ -1846,7 +1846,7 @@ class Users_Controller_User extends Zikula_AbstractController
             throw new Zikula_Exception_Fatal();
         }
 
-        if ($this->request->isPost()) {
+        if ($this->request->isMethod('POST')) {
             $ublockon = (bool)$this->request->request->get('ublockon', false);
             $ublock = (string)$this->request->request->get('ublock', '');
         } else {
@@ -1907,10 +1907,10 @@ class Users_Controller_User extends Zikula_AbstractController
         } elseif (isset($args) && !is_array($args)) {
             // Arrived via function call with bad $args
             throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->isPost()) {
+        } elseif ($this->request->isMethod('POST')) {
             // Arrived from a form post
             $args['login'] = $this->request->request->get('login', false);
-        } elseif ($this->request->isGet()) {
+        } elseif ($this->request->isMethod('GET')) {
             // Arrived from a simple URL
             $args['login'] = $this->request->query->get('login', false);
         }
@@ -1992,7 +1992,7 @@ class Users_Controller_User extends Zikula_AbstractController
         $sessionVars = $this->request->getSession()->get('Users_Controller_User_updatePassword', null, 'Zikula_Users');
         $this->request->getSession()->del('Users_Controller_User_updatePassword', 'Zikula_Users');
 
-        if (!$this->request->isPost()) {
+        if (!$this->request->isMethod('POST')) {
             throw new Zikula_Exception_Forbidden();
         }
 

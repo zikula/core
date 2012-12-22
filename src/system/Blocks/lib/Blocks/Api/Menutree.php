@@ -747,7 +747,7 @@ class Blocks_Api_Menutree extends Zikula_AbstractApi
             $request = $this->serviceManager->getService('request');
 
             $loginArgs = array();
-            if ($request->isGet()) {
+            if ($request->isMethod('GET')) {
                 $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
             }
             $links['login'] = array(
