@@ -50,6 +50,10 @@ class InputOption
             $name = substr($name, 2);
         }
 
+        if (empty($name)) {
+            throw new \InvalidArgumentException('An option name cannot be empty.');
+        }
+
         if (empty($shortcut)) {
             $shortcut = null;
         }
@@ -57,6 +61,10 @@ class InputOption
         if (null !== $shortcut) {
             if ('-' === $shortcut[0]) {
                 $shortcut = substr($shortcut, 1);
+            }
+
+            if (empty($shortcut)) {
+                throw new \InvalidArgumentException('An option shortcut cannot be empty.');
             }
         }
 
@@ -148,7 +156,7 @@ class InputOption
     public function setDefault($default = null)
     {
         if (self::VALUE_NONE === (self::VALUE_NONE & $this->mode) && null !== $default) {
-            throw new \LogicException('Cannot set a default value when using Option::VALUE_NONE mode.');
+            throw new \LogicException('Cannot set a default value when using InputOption::VALUE_NONE mode.');
         }
 
         if ($this->isArray()) {

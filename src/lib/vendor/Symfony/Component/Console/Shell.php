@@ -145,6 +145,7 @@ EOF;
      * Tries to return autocompletion for the current entered text.
      *
      * @param string $text The last segment of the entered text
+     *
      * @return Boolean|array A list of guessed strings or true
      */
     private function autocompleter($text)
@@ -202,5 +203,9 @@ EOF;
     public function setProcessIsolation($processIsolation)
     {
         $this->processIsolation = (Boolean) $processIsolation;
+
+        if ($this->processIsolation && !class_exists('Symfony\\Component\\Process\\Process')) {
+            throw new \RuntimeException('Unable to isolate processes as the Symfony Process Component is not installed.');
+        }
     }
 }

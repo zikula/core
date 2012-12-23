@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Command\Command;
@@ -27,6 +26,7 @@ use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\ProgressHelper;
 
 /**
  * An Application is the container for a collection of commands.
@@ -60,8 +60,8 @@ class Application
     /**
      * Constructor.
      *
-     * @param string  $name    The name of the application
-     * @param string  $version The version of the application
+     * @param string $name    The name of the application
+     * @param string $version The version of the application
      *
      * @api
      */
@@ -218,6 +218,18 @@ class Application
     public function getHelperSet()
     {
         return $this->helperSet;
+    }
+
+    /**
+     * Set an input definition set to be used with this application
+     *
+     * @param InputDefinition $definition The input definition
+     *
+     * @api
+     */
+    public function setDefinition(InputDefinition $definition)
+    {
+        $this->definition = $definition;
     }
 
     /**
@@ -496,7 +508,12 @@ class Application
                 }
 
                 if ($alternatives = $this->findAlternativeNamespace($part, $abbrevs)) {
-                    $message .= "\n\nDid you mean one of these?\n    ";
+                    if (1 == count($alternatives)) {
+                        $message .= "\n\nDid you mean this?\n    ";
+                    } else {
+                        $message .= "\n\nDid you mean one of these?\n    ";
+                    }
+
                     $message .= implode("\n    ", $alternatives);
                 }
 
@@ -519,7 +536,7 @@ class Application
      * Contrary to get, this command tries to find the best
      * match if you give it an abbreviation of a name or alias.
      *
-     * @param  string $name A command name or a command alias
+     * @param string $name A command name or a command alias
      *
      * @return Command A Command instance
      *
@@ -540,7 +557,10 @@ class Application
         // name
         $commands = array();
         foreach ($this->commands as $command) {
-            if ($this->extractNamespace($command->getName()) == $namespace) {
+            $extractedNamespace = $this->extractNamespace($command->getName());
+            if ($extractedNamespace === $namespace
+               || !empty($namespace) && 0 === strpos($extractedNamespace, $namespace)
+            ) {
                 $commands[] = $command->getName();
             }
         }
@@ -560,7 +580,10 @@ class Application
         $aliases = array();
         foreach ($this->commands as $command) {
             foreach ($command->getAliases() as $alias) {
-                if ($this->extractNamespace($alias) == $namespace) {
+                $extractedNamespace = $this->extractNamespace($alias);
+                if ($extractedNamespace === $namespace
+                   || !empty($namespace) && 0 === strpos($extractedNamespace, $namespace)
+                ) {
                     $aliases[] = $alias;
                 }
             }
@@ -571,7 +594,11 @@ class Application
             $message = sprintf('Command "%s" is not defined.', $name);
 
             if ($alternatives = $this->findAlternativeCommands($searchName, $abbrevs)) {
-                $message .= "\n\nDid you mean one of these?\n    ";
+                if (1 == count($alternatives)) {
+                    $message .= "\n\nDid you mean this?\n    ";
+                } else {
+                    $message .= "\n\nDid you mean one of these?\n    ";
+                }
                 $message .= implode("\n    ", $alternatives);
             }
 
@@ -590,9 +617,9 @@ class Application
      *
      * The array keys are the full names and the values the command instances.
      *
-     * @param  string  $namespace A namespace name
+     * @param string $namespace A namespace name
      *
-     * @return array An array of Command instances
+     * @return Command[] An array of Command instances
      *
      * @api
      */
@@ -619,7 +646,7 @@ class Application
      *
      * @return array An array of abbreviations
      */
-    static public function getAbbreviations($names)
+    public static function getAbbreviations($names)
     {
         $abbrevs = array();
         foreach ($names as $name) {
@@ -746,7 +773,7 @@ class Application
     }
 
     /**
-     * Renders a catched exception.
+     * Renders a caught exception.
      *
      * @param Exception       $e      An exception instance
      * @param OutputInterface $output An OutputInterface instance
@@ -834,12 +861,18 @@ class Application
      */
     protected function getTerminalWidth()
     {
-        if (defined('PHP_WINDOWS_VERSION_BUILD') && $ansicon = getenv('ANSICON')) {
-            return preg_replace('{^(\d+)x.*$}', '$1', $ansicon);
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            if ($ansicon = getenv('ANSICON')) {
+                return preg_replace('{^(\d+)x.*$}', '$1', $ansicon);
+            }
+
+            if (preg_match('{^(\d+)x\d+$}i', $this->getConsoleMode(), $matches)) {
+                return $matches[1];
+            }
         }
 
-        if (preg_match("{rows.(\d+);.columns.(\d+);}i", exec('stty -a | grep columns'), $match)) {
-            return $match[1];
+        if (preg_match("{rows.(\d+);.columns.(\d+);}i", $this->getSttyColumns(), $match)) {
+            return $match[2];
         }
     }
 
@@ -850,12 +883,18 @@ class Application
      */
     protected function getTerminalHeight()
     {
-        if (defined('PHP_WINDOWS_VERSION_BUILD') && $ansicon = getenv('ANSICON')) {
-            return preg_replace('{^\d+x\d+ \(\d+x(\d+)\)$}', '$1', trim($ansicon));
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            if ($ansicon = getenv('ANSICON')) {
+                return preg_replace('{^\d+x\d+ \(\d+x(\d+)\)$}', '$1', trim($ansicon));
+            }
+
+            if (preg_match('{^\d+x(\d+)$}i', $this->getConsoleMode(), $matches)) {
+                return $matches[1];
+            }
         }
 
-        if (preg_match("{rows.(\d+);.columns.(\d+);}i", exec('stty -a | grep columns'), $match)) {
-            return $match[2];
+        if (preg_match("{rows.(\d+);.columns.(\d+);}i", $this->getSttyColumns(), $match)) {
+            return $match[1];
         }
     }
 
@@ -868,7 +907,7 @@ class Application
      */
     protected function getCommandName(InputInterface $input)
     {
-        return $input->getFirstArgument('command');
+        return $input->getFirstArgument();
     }
 
     /**
@@ -894,7 +933,7 @@ class Application
     /**
      * Gets the default commands that should always be available.
      *
-     * @return array An array of default Command instances
+     * @return Command[] An array of default Command instances
      */
     protected function getDefaultCommands()
     {
@@ -911,7 +950,56 @@ class Application
         return new HelperSet(array(
             new FormatterHelper(),
             new DialogHelper(),
+            new ProgressHelper(),
         ));
+    }
+
+    /**
+     * Runs and parses stty -a if it's available, suppressing any error output
+     *
+     * @return string
+     */
+    private function getSttyColumns()
+    {
+        if (!function_exists('proc_open')) {
+            return;
+        }
+
+        $descriptorspec = array(1 => array('pipe', 'w'), 2 => array('pipe', 'w'));
+        $process = proc_open('stty -a | grep columns', $descriptorspec, $pipes, null, null, array('suppress_errors' => true));
+        if (is_resource($process)) {
+            $info = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+
+            return $info;
+        }
+    }
+
+    /**
+     * Runs and parses mode CON if it's available, suppressing any error output
+     *
+     * @return string <width>x<height> or null if it could not be parsed
+     */
+    private function getConsoleMode()
+    {
+        if (!function_exists('proc_open')) {
+            return;
+        }
+
+        $descriptorspec = array(1 => array('pipe', 'w'), 2 => array('pipe', 'w'));
+        $process = proc_open('mode CON', $descriptorspec, $pipes, null, null, array('suppress_errors' => true));
+        if (is_resource($process)) {
+            $info = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+
+            if (preg_match('{--------+\r?\n.+?(\d+)\r?\n.+?(\d+)\r?\n}', $info, $matches)) {
+                return $matches[2].'x'.$matches[1];
+            }
+        }
     }
 
     /**
@@ -972,8 +1060,8 @@ class Application
     /**
      * Finds alternative commands of $name
      *
-     * @param string $name      The full name of the command
-     * @param array  $abbrevs   The abbreviations
+     * @param string $name    The full name of the command
+     * @param array  $abbrevs The abbreviations
      *
      * @return array A sorted array of similar commands
      */
@@ -989,8 +1077,8 @@ class Application
     /**
      * Finds alternative namespace of $name
      *
-     * @param string $name      The full name of the namespace
-     * @param array  $abbrevs   The abbreviations
+     * @param string $name    The full name of the namespace
+     * @param array  $abbrevs The abbreviations
      *
      * @return array A sorted array of similar namespace
      */
@@ -1003,14 +1091,15 @@ class Application
      * Finds alternative of $name among $collection,
      * if nothing is found in $collection, try in $abbrevs
      *
-     * @param string                $name       The string
-     * @param array|Traversable     $collection The collecion
-     * @param array                 $abbrevs    The abbreviations
-     * @param Closure|string|array  $callback   The callable to transform collection item before comparison
+     * @param string               $name       The string
+     * @param array|Traversable    $collection The collection
+     * @param array                $abbrevs    The abbreviations
+     * @param Closure|string|array $callback   The callable to transform collection item before comparison
      *
      * @return array A sorted array of similar string
      */
-    private function findAlternatives($name, $collection, $abbrevs, $callback = null) {
+    private function findAlternatives($name, $collection, $abbrevs, $callback = null)
+    {
         $alternatives = array();
 
         foreach ($collection as $item) {

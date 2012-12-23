@@ -72,7 +72,7 @@ class InputDefinition
     /**
      * Sets the InputArgument objects.
      *
-     * @param array $arguments An array of InputArgument objects
+     * @param InputArgument[] $arguments An array of InputArgument objects
      *
      * @api
      */
@@ -113,7 +113,7 @@ class InputDefinition
     public function addArgument(InputArgument $argument)
     {
         if (isset($this->arguments[$argument->getName()])) {
-            throw new \LogicException(sprintf('An argument with name "%s" already exist.', $argument->getName()));
+            throw new \LogicException(sprintf('An argument with name "%s" already exists.', $argument->getName()));
         }
 
         if ($this->hasAnArrayArgument) {
@@ -178,7 +178,7 @@ class InputDefinition
     /**
      * Gets the array of InputArgument objects.
      *
-     * @return array An array of InputArgument objects
+     * @return InputArgument[] An array of InputArgument objects
      *
      * @api
      */
@@ -225,7 +225,7 @@ class InputDefinition
     /**
      * Sets the InputOption objects.
      *
-     * @param array $options An array of InputOption objects
+     * @param InputOption[] $options An array of InputOption objects
      *
      * @api
      */
@@ -262,9 +262,9 @@ class InputDefinition
     public function addOption(InputOption $option)
     {
         if (isset($this->options[$option->getName()]) && !$option->equals($this->options[$option->getName()])) {
-            throw new \LogicException(sprintf('An option named "%s" already exist.', $option->getName()));
+            throw new \LogicException(sprintf('An option named "%s" already exists.', $option->getName()));
         } elseif (isset($this->shortcuts[$option->getShortcut()]) && !$option->equals($this->options[$this->shortcuts[$option->getShortcut()]])) {
-            throw new \LogicException(sprintf('An option with shortcut "%s" already exist.', $option->getShortcut()));
+            throw new \LogicException(sprintf('An option with shortcut "%s" already exists.', $option->getShortcut()));
         }
 
         $this->options[$option->getName()] = $option;
@@ -279,6 +279,8 @@ class InputDefinition
      * @param string $name The InputOption name
      *
      * @return InputOption A InputOption object
+     *
+     * @throws \InvalidArgumentException When option given doesn't exist
      *
      * @api
      */
@@ -308,7 +310,7 @@ class InputDefinition
     /**
      * Gets the array of InputOption objects.
      *
-     * @return array An array of InputOption objects
+     * @return InputOption[] An array of InputOption objects
      *
      * @api
      */
@@ -431,7 +433,7 @@ class InputDefinition
                     $default = '';
                 }
 
-                $description = str_replace("\n", "\n".str_pad('', $max + 2, ' '), $argument->getDescription());
+                $description = str_replace("\n", "\n".str_repeat(' ', $max + 2), $argument->getDescription());
 
                 $text[] = sprintf(" <info>%-${max}s</info> %s%s", $argument->getName(), $description, $default);
             }
@@ -450,7 +452,7 @@ class InputDefinition
                 }
 
                 $multiple = $option->isArray() ? '<comment> (multiple values allowed)</comment>' : '';
-                $description = str_replace("\n", "\n".str_pad('', $max + 2, ' '), $option->getDescription());
+                $description = str_replace("\n", "\n".str_repeat(' ', $max + 2), $option->getDescription());
 
                 $optionMax = $max - strlen($option->getName()) - 2;
                 $text[] = sprintf(" <info>%s</info> %-${optionMax}s%s%s%s",
@@ -524,10 +526,10 @@ class InputDefinition
 
     private function formatDefaultValue($default)
     {
-        if (is_array($default) && $default === array_values($default)) {
-            return sprintf("array('%s')", implode("', '", $default));
+        if (version_compare(PHP_VERSION, '5.4', '<')) {
+            return str_replace('\/', '/', json_encode($default));
         }
 
-        return str_replace("\n", '', var_export($default, true));
+        return json_encode($default, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }

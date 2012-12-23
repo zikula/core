@@ -35,23 +35,23 @@ interface OutputInterface
      *
      * @param string|array $messages The message as an array of lines of a single string
      * @param Boolean      $newline  Whether to add a newline or not
-     * @param integer      $type     The type of output
+     * @param integer      $type     The type of output (0: normal, 1: raw, 2: plain)
      *
      * @throws \InvalidArgumentException When unknown output type is given
      *
      * @api
      */
-    function write($messages, $newline = false, $type = 0);
+    public function write($messages, $newline = false, $type = 0);
 
     /**
      * Writes a message to the output and adds a newline at the end.
      *
      * @param string|array $messages The message as an array of lines of a single string
-     * @param integer      $type     The type of output
+     * @param integer      $type     The type of output (0: normal, 1: raw, 2: plain)
      *
      * @api
      */
-    function writeln($messages, $type = 0);
+    public function writeln($messages, $type = 0);
 
     /**
      * Sets the verbosity of the output.
@@ -60,7 +60,7 @@ interface OutputInterface
      *
      * @api
      */
-    function setVerbosity($level);
+    public function setVerbosity($level);
 
     /**
      * Gets the current verbosity of the output.
@@ -69,7 +69,7 @@ interface OutputInterface
      *
      * @api
      */
-    function getVerbosity();
+    public function getVerbosity();
 
     /**
      * Sets the decorated flag.
@@ -78,7 +78,7 @@ interface OutputInterface
      *
      * @api
      */
-    function setDecorated($decorated);
+    public function setDecorated($decorated);
 
     /**
      * Gets the decorated flag.
@@ -87,7 +87,7 @@ interface OutputInterface
      *
      * @api
      */
-    function isDecorated();
+    public function isDecorated();
 
     /**
      * Sets output formatter.
@@ -96,7 +96,7 @@ interface OutputInterface
      *
      * @api
      */
-    function setFormatter(OutputFormatterInterface $formatter);
+    public function setFormatter(OutputFormatterInterface $formatter);
 
     /**
      * Returns current output formatter instance.
@@ -105,5 +105,5 @@ interface OutputInterface
      *
      * @api
      */
-    function getFormatter();
+    public function getFormatter();
 }
