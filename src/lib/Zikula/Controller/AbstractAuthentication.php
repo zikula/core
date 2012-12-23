@@ -53,7 +53,22 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @return string the rendered HTML fragment containing the authentication module fields for the login form or block.
      */
-    abstract public function getLoginFormFieldsAction(array $args);
+    public function getLoginFormFieldsAction(array $args)
+    {
+        throw new \LogicException('This method must be overridden in concrete class');
+    }
+
+    /**
+     * @param array $args
+     *
+     * @deprecated
+     *
+     * @return string
+     */
+    public function getLoginFormFields(array $args)
+    {
+        return $this->getLoginFormFieldsAction($args);
+    }
 
     /**
      * Render and return an authentication method selector for the login page form or login block form.
@@ -62,7 +77,22 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @return string The rendered authentication method selector for the login page or block.
      */
-    abstract public function getAuthenticationMethodSelectorAction(array $args);
+    public function getAuthenticationMethodSelectorAction(array $args)
+    {
+        throw new \LogicException('This method must be overridden in concrete class');
+    }
+
+    /**
+     * @param array $args
+     *
+     * @deprecated
+     *
+     * @return string
+     */
+    public function getAuthenticationMethodSelector(array $args)
+    {
+        return $this->getAuthenticationMethodSelectorAction($args);
+    }
 
     /**
      * Performs initial user-interface level validation on the authentication information received by the user from the login process.
@@ -101,5 +131,20 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
      */
-    abstract public function validateAuthenticationInformationAction(array $args);
+    public function validateAuthenticationInformationAction(array $args)
+    {
+        throw new \LogicException('This method must be overridden in concrete class');
+    }
+
+    /**
+     * @param array $args
+     *
+     * @deprecated
+     *
+     * @return bool
+     */
+    public function validateAuthenticationInformation(array $args)
+    {
+        return $this->validateAuthenticationInformationAction($args);
+    }
 }
