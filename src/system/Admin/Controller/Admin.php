@@ -278,7 +278,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         }
 
         // Add category menu to output
-        $this->view->assign('menu', $this->categorymenu(array('acid' => $acid)));
+        $this->view->assign('menu', $this->categorymenuAction(array('acid' => $acid)));
 
         // Check to see if we have access to the requested category.
         if (!SecurityUtil::checkPermission("Admin::", "::$acid", ACCESS_ADMIN)) {
