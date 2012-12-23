@@ -222,6 +222,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             default:
+                $mpluginPathNew = "system/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
                 $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
         }
