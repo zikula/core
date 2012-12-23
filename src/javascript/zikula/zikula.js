@@ -15,3 +15,6 @@ if (typeof Zikula === 'undefined') {
      */
     var Zikula = {};
 }
+if (typeof jQuery !== 'undefined') {
+    jQuery.Zikula = Zikula;
+}
