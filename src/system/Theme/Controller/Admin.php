@@ -27,7 +27,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     /**
      * the main admin function
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Theme', 'admin', 'view'));
@@ -36,7 +36,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     /**
      * view all themes
      */
-    public function view($args = array())
+    public function viewAction($args = array())
     {
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
@@ -132,7 +132,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     /**
      * modify theme
      */
-    public function modify($args)
+    public function modifyAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -163,7 +163,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * update the theme variables
      *
      */
-    public function updatesettings($args)
+    public function updatesettingsAction($args)
     {
         $this->checkCsrfToken();
 
@@ -206,7 +206,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * display the theme variables
      *
      */
-    public function variables($args)
+    public function variablesAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -254,7 +254,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * update the theme variables
      *
      */
-    public function updatevariables($args)
+    public function updatevariablesAction($args)
     {
         $this->checkCsrfToken();
 
@@ -334,7 +334,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * display the themes palettes
      *
      */
-    public function palettes($args)
+    public function palettesAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -368,7 +368,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * update the theme palettes
      *
      */
-    public function updatepalettes($args)
+    public function updatepalettesAction($args)
     {
         $this->checkCsrfToken();
 
@@ -441,7 +441,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * display the content wrappers for the theme
      *
      */
-    public function pageconfigurations($args)
+    public function pageconfigurationsAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -518,7 +518,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * modify a theme page configuration
      *
      */
-    public function modifypageconfigtemplates($args)
+    public function modifypageconfigtemplatesAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -617,7 +617,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * modify a theme page configuration
      *
      */
-    public function updatepageconfigtemplates($args)
+    public function updatepageconfigtemplatesAction($args)
     {
         $this->checkCsrfToken();
 
@@ -719,7 +719,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Modify a theme page configuration
      *
      */
-    public function modifypageconfigurationassignment($args)
+    public function modifypageconfigurationassignmentAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -810,7 +810,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * modify a theme page configuration
      *
      */
-    public function updatepageconfigurationassignment($args)
+    public function updatepageconfigurationassignmentAction($args)
     {
         $this->checkCsrfToken();
 
@@ -891,7 +891,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * delete a theme page configuration assignment
      *
      */
-    public function deletepageconfigurationassignment($args)
+    public function deletepageconfigurationassignmentAction($args)
     {
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
         $pcname = FormUtil::getPassedValue('pcname', isset($args['pcname']) ? $args['pcname'] : null, 'REQUEST');
@@ -941,7 +941,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      *
      *
      */
-    public function credits($args)
+    public function creditsAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'GET');
@@ -966,7 +966,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * set theme as default for site
      *
      */
-    public function setasdefault($args)
+    public function setasdefaultAction($args)
     {
         // get our input
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
@@ -1013,7 +1013,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * delete a theme
      *
      */
-    public function delete($args)
+    public function deleteAction($args)
     {
         $themename = FormUtil::getPassedValue('themename', isset($args['themename']) ? $args['themename'] : null, 'REQUEST');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
@@ -1065,7 +1065,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
     /**
      * Modify Theme settings.
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_EDIT)) {
@@ -1108,7 +1108,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Update configuration
      *
      */
-    public function updateconfig($args)
+    public function updateconfigAction($args)
     {
         $this->checkCsrfToken();
 
@@ -1224,7 +1224,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all theme engine compiled
      * templates for the system.
      */
-    public function clear_compiled()
+    public function clear_compiledAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1252,7 +1252,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all theme engine cached
      * templates for the system.
      */
-    public function clear_cache()
+    public function clear_cacheAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1297,7 +1297,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all CSS/JS combination cached
      * files for the system.
      */
-    public function clear_cssjscombinecache()
+    public function clear_cssjscombinecacheAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1320,7 +1320,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all theme engine configuration
      * copies created inside the temporary directory.
      */
-    public function clear_config()
+    public function clear_configAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1348,7 +1348,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all render compiled templates
      * for the system.
      */
-    public function render_clear_compiled()
+    public function render_clear_compiledAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1375,7 +1375,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all render cached templates
      * for the system.
      */
-    public function render_clear_cache()
+    public function render_clear_cacheAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1402,7 +1402,7 @@ class Theme_Controller_Admin extends Zikula_AbstractController
      * Using this function, the admin can clear all theme and render cached,
      * compiled and combined files for the system.
      */
-    public function clearallcompiledcaches()
+    public function clearallcompiledcachesAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {

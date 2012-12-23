@@ -28,7 +28,7 @@ class SecurityCenter_Controller_Adminform extends Zikula_AbstractController
     /**
      * Function to delete an ids log entry
      */
-    public function deleteidsentry()
+    public function deleteidsentryAction()
     {
         // verify auth-key
         $this->checkCsrfToken();

@@ -30,7 +30,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
      *
      * @return string html output
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in modifyconfig()
         $this->redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'));
@@ -41,7 +41,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
      *
      * @return string html output
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -63,7 +63,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
      *
      * @return mixed true if successful, false if unsuccessful, error string otherwise
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -155,7 +155,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
      *
      * @return string html output
      */
-    public function multilingual()
+    public function multilingualAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
@@ -174,7 +174,7 @@ class Settings_Controller_Admin extends Zikula_AbstractController
      *
      * @return mixed true if successful, false if unsuccessful, error string otherwise
      */
-    public function updatemultilingual()
+    public function updatemultilingualAction()
     {
         $this->checkCsrfToken();
 

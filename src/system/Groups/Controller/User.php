@@ -24,7 +24,7 @@ class Groups_Controller_User extends Zikula_AbstractController
      * view() function)
      * @return string HTML output string
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Groups', 'user', 'view'));
@@ -36,7 +36,7 @@ class Groups_Controller_User extends Zikula_AbstractController
      * available from the module.
      * @return string HTML string
      */
-    public function view()
+    public function viewAction()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW));
 
@@ -113,7 +113,7 @@ class Groups_Controller_User extends Zikula_AbstractController
      * display the membership of a public group
      *
      */
-    public function membership()
+    public function membershipAction()
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_OVERVIEW));
 
@@ -174,7 +174,7 @@ class Groups_Controller_User extends Zikula_AbstractController
  * update a users group applications
  *
     */
-    public function userupdate()
+    public function userupdateAction()
     {
         $this->checkCsrfToken();
 
@@ -213,7 +213,7 @@ class Groups_Controller_User extends Zikula_AbstractController
      * display the membership of a group
      *
      */
-    public function memberslist()
+    public function memberslistAction()
     {
         $gid = (int)FormUtil::getPassedValue('gid', null, 'GET');
         $startnum = (int)FormUtil::getPassedValue('startnum', 1, 'GET');

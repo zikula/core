@@ -20,7 +20,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
     /**
      * update category
      */
-    public function edit()
+    public function editAction()
     {
         $this->checkCsrfToken();
 
@@ -98,7 +98,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
     /**
      * create category
      */
-    public function newcat()
+    public function newcatAction()
     {
         $this->checkCsrfToken();
 
@@ -158,7 +158,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
     /**
      * delete category
      */
-    public function delete()
+    public function deleteAction()
     {
         $this->checkCsrfToken();
 
@@ -190,7 +190,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
     /**
      * copy category
      */
-    public function copy()
+    public function copyAction()
     {
         $this->checkCsrfToken();
 
@@ -216,7 +216,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
     /**
      * move category
      */
-    public function move()
+    public function moveAction()
     {
         $this->checkCsrfToken();
 
@@ -241,7 +241,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
     /**
      * rebuild path structure
      */
-    public function rebuild_paths()
+    public function rebuild_pathsAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -254,7 +254,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
-    public function editregistry()
+    public function editregistryAction()
     {
         $this->checkCsrfToken();
 
@@ -297,7 +297,7 @@ class Categories_Controller_Adminform extends Zikula_AbstractController
         $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
     }
 
-    public function preferences()
+    public function preferencesAction()
     {
         $this->checkCsrfToken();
 

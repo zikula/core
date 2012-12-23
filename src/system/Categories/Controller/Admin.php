@@ -27,7 +27,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * main admin function
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
@@ -36,7 +36,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * view categories
      */
-    public function view()
+    public function viewAction()
     {
         $root_id = FormUtil::getPassedValue('dr', 1);
 
@@ -59,7 +59,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * display configure module page
      */
-    public function config()
+    public function configAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -71,7 +71,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * edit category
      */
-    public function edit()
+    public function editAction()
     {
         $cid = FormUtil::getPassedValue('cid', 0);
         $root_id = FormUtil::getPassedValue('dr', 1);
@@ -155,7 +155,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         return $this->view->fetch('categories_admin_edit.tpl');
     }
 
-    public function editregistry()
+    public function editregistryAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -191,7 +191,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
         return $this->view->fetch('categories_admin_registry_edit.tpl');
     }
 
-    public function deleteregistry()
+    public function deleteregistryAction()
     {
         if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -214,7 +214,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * display new category form
      */
-    public function newcat()
+    public function newcatAction()
     {
         $_POST['mode'] = 'new';
 
@@ -224,7 +224,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * generic function to handle copy, delete and move operations
      */
-    public function op()
+    public function opAction()
     {
         $cid = FormUtil::getPassedValue('cid', 1);
         $root_id = FormUtil::getPassedValue('dr', 1);
@@ -250,7 +250,7 @@ class Categories_Controller_Admin extends Zikula_AbstractController
     /**
      * global module preferences
      */
-    public function preferences()
+    public function preferencesAction()
     {
         if (!SecurityUtil::checkPermission('Categories::preferences', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();

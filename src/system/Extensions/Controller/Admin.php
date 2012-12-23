@@ -33,7 +33,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
@@ -44,7 +44,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function modify()
+    public function modifyAction()
     {
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
         if (!is_numeric($id)) {
@@ -105,7 +105,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param string 'newdisplayname' new display name of the module
      * @param string 'newdescription' new description of the module
      */
-    public function update()
+    public function updateAction()
     {
         $this->checkCsrfToken();
 
@@ -136,7 +136,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true if successful, false otherwise
      */
-    public function updatehooks()
+    public function updatehooksAction()
     {
         $this->checkCsrfToken();
 
@@ -159,7 +159,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true if successful, false otherwise
      */
-    public function extendedupdatehooks()
+    public function extendedupdatehooksAction()
     {
         $this->checkCsrfToken();
 
@@ -180,7 +180,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Extensions_admin_view - list modules and current settings
      * @return string HTML output string
      */
-    public function view()
+    public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
@@ -474,7 +474,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @see extensions_admin_view
      * @return string HTML output string
      */
-    public function listview()
+    public function listviewAction()
     {
         $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
     }
@@ -485,7 +485,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true
      */
-    public function initialise()
+    public function initialiseAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -647,7 +647,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true
      */
-    public function activate()
+    public function activateAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -688,7 +688,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true
      */
-    public function upgrade()
+    public function upgradeAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -766,7 +766,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true
      */
-    public function deactivate()
+    public function deactivateAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -812,7 +812,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return bool true if successful
      */
-    public function remove()
+    public function removeAction()
     {
         // Get parameters from whatever input we need
         $id = (int) FormUtil::getPassedValue('id', 0);
@@ -941,7 +941,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string
      */
-    public function legacyhooks()
+    public function legacyhooksAction()
     {
         // get our input
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
@@ -982,7 +982,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param int 'id' module id
      * @return string HTML output string
      */
-    public function extendedhooks()
+    public function extendedhooksAction()
     {
         // get our input
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
@@ -1022,7 +1022,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * module
      * @return string HTML string
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
@@ -1039,7 +1039,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * module given the information passed back by the modification form
      * @return bool true
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -1073,7 +1073,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * @param  int 'id' identity of the module
      * @return string HTML output string
      */
-    public function compinfo()
+    public function compinfoAction()
     {
         // get our input
         $id = (int) FormUtil::getPassedValue('id', null, 'GET');
@@ -1115,7 +1115,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Lists all plugins.
      * @return string HTML output string
      */
-    public function viewPlugins()
+    public function viewPluginsAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
@@ -1327,7 +1327,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Initialise a plugin
      * @return bool true
      */
-    public function initialisePlugin()
+    public function initialisePluginAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1363,7 +1363,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Deactivate a plugin
      * @return bool true
      */
-    public function deactivatePlugin()
+    public function deactivatePluginAction()
     {
         $csrftoken = $this->request->query->get('csrftoken', false);
         $this->checkCsrfToken($csrftoken);
@@ -1399,7 +1399,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Activate a plugin
      * @return bool true
      */
-    public function activatePlugin()
+    public function activatePluginAction()
     {
         $csrftoken = $this->request->query->get('csrftoken', false);
         $this->checkCsrfToken($csrftoken);
@@ -1435,7 +1435,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Remove a plugin
      * @return bool true
      */
-    public function removePlugin()
+    public function removePluginAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1471,7 +1471,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
      * Upgrade a plugin
      * @return bool true
      */
-    public function upgradePlugin()
+    public function upgradePluginAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -1503,7 +1503,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                                                                               'systemplugins' => $systemplugins)));
     }
 
-    public function upgradeall()
+    public function upgradeallAction()
     {
         ModUtil::apiFunc('Extensions', 'admin', 'upgradeall');
         $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));

@@ -40,7 +40,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return mixed HTML string or true
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Permissions', 'admin', 'view'));
@@ -50,7 +50,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      * view permissions
      * @return string HTML string
      */
-    public function view()
+    public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
@@ -96,7 +96,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         // various other bits and pieces
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
-        $ids = $this->getGroupsInfo();
+        $ids = $this->getGroupsInfoAction();
 
         $where = '';
         if ($enableFilter == 1) {
@@ -210,7 +210,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             $components[$compparts[0]] = $compparts[0];
         }
 
-        $this->view->assign('groups', $this->getGroupsInfo());
+        $this->view->assign('groups', $this->getGroupsInfoAction());
         $this->view->assign('permissions', $permissions);
         $this->view->assign('components', $components);
 
@@ -231,7 +231,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean true
      */
-    public function inc()
+    public function incAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -272,7 +272,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean true
      */
-    public function dec()
+    public function decAction()
     {
         $csrftoken = FormUtil::getPassedValue('csrftoken');
         $this->checkCsrfToken($csrftoken);
@@ -311,7 +311,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean
      */
-    public function listedit()
+    public function listeditAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
@@ -336,7 +336,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         $permcolumn = $dbtable['group_perms_column'];
         $mlpermtype = $this->__('Group');
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
-        $ids = $this->getGroupsInfo();
+        $ids = $this->getGroupsInfoAction();
 
         $orderBy = "ORDER BY $permcolumn[sequence]";
         $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);
@@ -419,7 +419,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean true.
      */
-    public function update()
+    public function updateAction()
     {
         $this->checkCsrfToken();
 
@@ -482,7 +482,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true
      */
-    public function create()
+    public function createAction()
     {
         $this->checkCsrfToken();
 
@@ -537,7 +537,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true
      */
-    public function delete()
+    public function deleteAction()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -583,7 +583,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return array groups array
      */
-    public function getGroupsInfo()
+    public function getGroupsInfoAction()
     {
         $dbtable = DBUtil::getTables();
 
@@ -610,7 +610,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean
      */
-    public function viewinstanceinfo()
+    public function viewinstanceinfoAction()
     {
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
@@ -631,7 +631,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
@@ -650,7 +650,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 
@@ -696,7 +696,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
      *
      * @return boolean
      */
-    public function checkpermissions()
+    public function checkpermissionsAction()
     {
         $username = FormUtil::getPassedValue('username', null, 'POST');
         $returnto = FormUtil::getPassedValue('returnto', System::getCurrentUri(), 'POST');

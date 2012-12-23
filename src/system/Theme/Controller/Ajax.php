@@ -14,7 +14,7 @@
 
 class Theme_Controller_Ajax extends Zikula_Controller_AbstractAjax
 {
-    public function dispatch()
+    public function dispatchAction()
     {
         $event = new Zikula_Event("theme.ajax_request");
         $this->eventManager->notify($event);

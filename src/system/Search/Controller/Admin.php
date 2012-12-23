@@ -40,7 +40,7 @@ class Search_Controller_Admin extends Zikula_AbstractController
      *
      * @return string The main module admin page.
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in modifyconfig()
         $this->redirect(ModUtil::url('Search', 'admin', 'modifyconfig'));
@@ -53,7 +53,7 @@ class Search_Controller_Admin extends Zikula_AbstractController
      *
      * @return string The configuration page.
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_ADMIN)) {
@@ -89,7 +89,7 @@ class Search_Controller_Admin extends Zikula_AbstractController
      *
      * @return void
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 

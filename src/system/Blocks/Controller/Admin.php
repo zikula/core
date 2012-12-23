@@ -33,7 +33,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in view()
         $this->redirect(ModUtil::url('Blocks', 'admin', 'view'));
@@ -44,7 +44,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function view()
+    public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
@@ -137,7 +137,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function deactivate()
+    public function deactivateAction()
     {
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
@@ -161,7 +161,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function activate()
+    public function activateAction()
     {
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
@@ -185,7 +185,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function modify()
+    public function modifyAction()
     {
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
@@ -318,7 +318,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true if succesful, false otherwise
      */
-    public function update()
+    public function updateAction()
     {
         $this->checkCsrfToken();
 
@@ -413,7 +413,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function newblock()
+    public function newblockAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
@@ -474,7 +474,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return bool true if successful, false otherwise.
      */
-    public function create()
+    public function createAction()
     {
         $this->checkCsrfToken();
 
@@ -520,7 +520,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function delete()
+    public function deleteAction()
     {
         // Get parameters
         $bid = FormUtil::getPassedValue('bid');
@@ -573,7 +573,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function newposition()
+    public function newpositionAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
@@ -592,7 +592,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function createposition()
+    public function createpositionAction()
     {
         $this->checkCsrfToken();
 
@@ -625,7 +625,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function modifyposition()
+    public function modifypositionAction()
     {
         // get our input
         $pid = FormUtil::getPassedValue('pid');
@@ -682,7 +682,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function updateposition()
+    public function updatepositionAction()
     {
         $this->checkCsrfToken();
 
@@ -715,7 +715,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise.
      */
-    public function deleteposition($args)
+    public function deletepositionAction($args)
     {
         $pid = FormUtil::getPassedValue('pid', isset($args['pid']) ? $args['pid'] : null, 'REQUEST');
         $objectid = FormUtil::getPassedValue('objectid', isset($args['objectid']) ? $args['objectid'] : null, 'REQUEST');
@@ -757,7 +757,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string HTML output string.
      */
-    public function modifyconfig()
+    public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
@@ -776,7 +776,7 @@ class Blocks_Controller_Admin extends Zikula_AbstractController
      *
      * @return string bool true if successful, false otherwise.
      */
-    public function updateconfig()
+    public function updateconfigAction()
     {
         $this->checkCsrfToken();
 

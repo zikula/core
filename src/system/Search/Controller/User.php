@@ -22,7 +22,7 @@ class Search_Controller_User extends Zikula_AbstractController
      *
      * @return string HTML string templated
      */
-    public function main()
+    public function mainAction()
     {
         // Security check will be done in form()
         $this->redirect(ModUtil::url('Search', 'user', 'form'));
@@ -36,7 +36,7 @@ class Search_Controller_User extends Zikula_AbstractController
      *
      * @return string HTML string templated
      */
-    public function form($vars = array())
+    public function formAction($vars = array())
     {
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
@@ -120,7 +120,7 @@ class Search_Controller_User extends Zikula_AbstractController
      *
      * @return string HTML string templated
      */
-    public function search()
+    public function searchAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
@@ -220,7 +220,7 @@ class Search_Controller_User extends Zikula_AbstractController
     /**
      * display a list of recent searches
      */
-    public function recent()
+    public function recentAction()
     {
         // security check
         if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {

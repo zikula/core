@@ -20,7 +20,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      *                          response is a string moduleid on sucess.
      */
-    public function changeModuleCategory()
+    public function changeModuleCategoryAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
@@ -64,7 +64,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *                          response is a string the new cid on sucess.
      *                          url is a formatted url to the new category on success.
      */
-    public function addCategory()
+    public function addCategoryAction()
     {
         $this->checkAjaxToken();
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
@@ -113,7 +113,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      *                          response is a string cid on success.
      */
-    public function deleteCategory()
+    public function deleteCategoryAction()
     {
         $this->checkAjaxToken();
 
@@ -151,7 +151,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
      *
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      */
-    public function editCategory()
+    public function editCategoryAction()
     {
         $this->checkAjaxToken();
 
@@ -218,7 +218,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
      * @return AjaxUtil::output Output to the calling ajax request is returned.
      *                          response is a string message on success.
      */
-    public function defaultCategory()
+    public function defaultCategoryAction()
     {
         $this->checkAjaxToken();
 
@@ -249,7 +249,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         throw new Zikula_Exception_Fatal($this->__('Error! Could not make this category default.'));
     }
 
-    public function sortCategories()
+    public function sortCategoriesAction()
     {
         $this->checkAjaxToken();
 
@@ -270,7 +270,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         return new Zikula_Response_Ajax(array());
     }
 
-    public function sortModules()
+    public function sortModulesAction()
     {
         $this->checkAjaxToken();
 
