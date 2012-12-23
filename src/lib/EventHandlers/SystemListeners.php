@@ -53,22 +53,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
         $this->addhandlerDefinition('core.preinit', 'initDoctrine', -100);
         $this->addhandlerDefinition('core.preinit', 'initDoctrineExtensions', -100);
-        $this->addhandlerDefinition('controller.method_not_found', 'bcAction');
-    }
-
-    /**
-     * Add BC for 1.3 style controller methods.
-     *
-     * @param Zikula_Event $event
-     */
-    public function bcAction(Zikula_Event $event)
-    {
-        $method = preg_replace('/(\w+)Action$/', '$1', $event['method']);
-        $controller = $event->getSubject();
-        if (method_exists($controller, $method)) {
-            $event->data = $controller->$method($event['args']);
-            $event->stopPropagation();
-        }
     }
 
     public function initDoctrine(Zikula_Event $event)

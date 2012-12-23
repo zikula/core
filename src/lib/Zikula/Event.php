@@ -57,7 +57,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Signal to stop further event notification.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::stopPropagation()
      *
      * @return void
@@ -70,7 +70,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Has the event been stopped.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::isPropagationStopped()
      *
      * @return boolean
@@ -100,7 +100,7 @@ class Zikula_Event extends GenericEvent
      * @param string $key   Argument name.
      * @param mixed  $value Value.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::setArgument()
      *
      * @return Zikula_Event
@@ -115,7 +115,7 @@ class Zikula_Event extends GenericEvent
      *
      * @param array $args Arguments.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::setArguments()
      *
      * @return Zikula_Event
@@ -130,7 +130,7 @@ class Zikula_Event extends GenericEvent
      *
      * @param string $key Key.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::getArgument()
      *
      * @throws InvalidArgumentException If key is not found.
@@ -145,7 +145,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Getter for all arguments.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::getArguments()
      *
      * @return array
@@ -170,7 +170,7 @@ class Zikula_Event extends GenericEvent
      *
      * @param string $key Key of arguments array.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::hasArgument()
      *
      * @return boolean

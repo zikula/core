@@ -1613,7 +1613,7 @@ class ModUtil
      *
      * This function searches for the admin image of a module at several places.
      * If no image is found, a default image path is returned.
-     * 
+     *
      * @param string $moduleName Module name.
      *
      * @return string Returns module admin image path.
@@ -1623,12 +1623,12 @@ class ModUtil
         if($moduleName == '') {
             return false;
         }
-        
+
         $modinfo = self::getInfoFromName($moduleName);
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        
+
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        
+
         $paths = array(
                 $modpath . '/' . $osmoddir . '/Resources/public/images/admin.png',
                 $modpath . '/' . $osmoddir . '/Resources/public/images/admin.jpg',
@@ -1639,13 +1639,13 @@ class ModUtil
                 $modpath . '/' . $osmoddir . '/images/admin.gif',
                 'system/Admin/images/default.gif',
         );
-        
+
         foreach ($paths as $path) {
             if (is_readable($path)) {
                 break;
             }
         }
-        
+
         return $path;
     }
 }
