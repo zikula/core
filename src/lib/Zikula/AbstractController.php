@@ -97,6 +97,11 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     public function __call($method, $args)
     {
+        $method = preg_replace('/(\w+)Action$/', '$1', $method);
+        if (method_exists($this, $method)) {
+            return call_user_func_array(array($this, $method), $args);
+        }
+
         $event = new Zikula_Event('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
         $this->eventManager->notify($event);
         if ($event->isStopped()) {

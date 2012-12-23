@@ -1008,8 +1008,9 @@ class ModUtil
         }
 
         $object = self::getObject($className);
-        if (is_callable(array($object, $func))) {
-            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func));
+        $action = $api ? '' : 'Action';
+        if (is_callable(array($object, $func.$action))) {
+            return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func.$action));
         }
 
         return false;
@@ -1842,7 +1843,11 @@ class ModUtil
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        ZLoader::addAutoloader($moduleName, realpath("$modpath/$osdir/lib"));
+        ZLoader::addAutoloader($moduleName, array(
+                               realpath("$modpath"),
+                               realpath("$modpath/$osdir/lib"),
+            )
+        );
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -1899,6 +1904,9 @@ class ModUtil
             if (is_dir("$modpath/$osdir/lib")) {
                 self::$ooModules[$moduleName]['oo'] = true;
             }
+            if (file_exists("$modpath/$osdir/Version.php")) {
+                self::$ooModules[$moduleName]['oo'] = true;
+            }
         }
 
         return self::$ooModules[$moduleName]['oo'];
@@ -1917,8 +1925,9 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
-            $path = "$base/$module[directory]/lib";
-            ZLoader::addAutoloader($module['directory'], $path);
+            $paths[] = "$base";
+            $paths[] = "$base/$module[directory]/lib";
+            ZLoader::addAutoloader($module['directory'], $paths);
         }
     }
 
@@ -1949,7 +1958,7 @@ class ModUtil
      *
      * This function searches for the admin image of a module at several places.
      * If no image is found, a default image path is returned.
-     * 
+     *
      * @param string $moduleName Module name.
      *
      * @return string Returns module admin image path.
@@ -1959,13 +1968,17 @@ class ModUtil
         if($moduleName == '') {
             return false;
         }
-        
+
         $modinfo = self::getInfoFromName($moduleName);
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-        
+
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        
+
         $paths = array(
+                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.png',
+                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.jpg',
+                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.gif',
+                'system/Admin/Resources/public/images/default.gif',
                 $modpath . '/' . $osmoddir . '/images/admin.png',
                 $modpath . '/' . $osmoddir . '/images/admin.jpg',
                 $modpath . '/' . $osmoddir . '/images/admin.gif',
@@ -1975,13 +1988,13 @@ class ModUtil
                 $modpath . '/' . $osmoddir . '/pnimages/admin.png',
                 'system/Admin/images/default.gif'
         );
-        
+
         foreach ($paths as $path) {
             if (is_readable($path)) {
                 break;
             }
         }
-        
+
         return $path;
     }
 }
