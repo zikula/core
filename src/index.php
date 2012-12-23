@@ -10,7 +10,7 @@
  *          information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Zikula_Request_Http as Request;
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();

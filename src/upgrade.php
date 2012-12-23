@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Zikula_Request_Http as Request;
 
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');

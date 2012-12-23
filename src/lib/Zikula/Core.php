@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Zikula_Request_Http as Request;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);

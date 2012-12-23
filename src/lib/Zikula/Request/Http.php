@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Http Request class.
+ *
+ * @deprecated
  */
 class Zikula_Request_Http extends Zikula_Request_AbstractRequest
 {
@@ -148,7 +150,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isGet()
     {
-        LogUtil::log(sprintf('%s is deprecated use isMethod() instead', __METHOD__), E_USER_DEPRECATED);
+        LogUtil::log(sprintf('%s is deprecated use isMethod(\'GET\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('GET');
     }
@@ -163,7 +165,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isPost()
     {
-        LogUtil::log(sprintf('%s is deprecated use isMethod() instead', __METHOD__), E_USER_DEPRECATED);
+        LogUtil::log(sprintf('%s is deprecated use isMethod(\'POST\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('POST');
     }
@@ -178,7 +180,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isPut()
     {
-        LogUtil::log(sprintf('%s is deprecated use isMethod() instead', __METHOD__), E_USER_DEPRECATED);
+        LogUtil::log(sprintf('%s is deprecated use isMethod(\'PUT\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('PUT');
     }
@@ -193,7 +195,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isDelete()
     {
-        LogUtil::log(sprintf('%s is deprecated use isMethod() instead', __METHOD__), E_USER_DEPRECATED);
+        LogUtil::log(sprintf('%s is deprecated use isMethod(\'DELETE\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('DELETE');
     }
@@ -208,7 +210,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isHead()
     {
-        LogUtil::log(sprintf('%s is deprecated use isMethod() instead', __METHOD__), E_USER_DEPRECATED);
+        LogUtil::log(sprintf('%s is deprecated use isMethod(\'HEAD\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('HEAD');
     }
@@ -223,7 +225,7 @@ class Zikula_Request_Http extends Zikula_Request_AbstractRequest
      */
     public function isOptions()
     {
-        LogUtil::log(sprintf('%s is deprecated use isMethod() instead', __METHOD__), E_USER_DEPRECATED);
+        LogUtil::log(sprintf('%s is deprecated use isMethod(\'OPTIONS\') instead', __METHOD__), E_USER_DEPRECATED);
 
         return $this->isMethod('OPTIONS');
     }
