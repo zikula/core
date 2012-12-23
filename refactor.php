@@ -17,15 +17,15 @@ class ControllerActionCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('zk:action_controller')
-            ->setDescription('Adds Action suffic to all public controller methods in specified controller directory')
+            ->setName('module:controller_actions')
+            ->setDescription('Adds "Action" suffix to all public controller methods in specified controller directory')
             ->addOption('dir', null, InputOption::VALUE_REQUIRED,
                 'Target directory is mandatory - should be the Controller folder of a module'
             )
         ->setHelp(<<<EOF
-The <info>zk:action_controller</info> command refactors controller methods with Action suffix.
+The <info>module:controller_actions</info> command refactors controller methods with Action suffix.
 
-<info>refactor zk:action_controller --dir=modules/MyModule/Controller</info>
+<info>refactor module:controller_actions --dir=modules/MyModule/Controller</info>
 EOF
         );
     }
@@ -48,7 +48,7 @@ EOF
             file_put_contents($file->getRealPath(), $content);
         };
 
-        $output->writeln("done\n");
+        $output->writeln("Done. Remember to update Version.php core_min to 1.3.6-dev\n");
     }
 }
 
@@ -57,15 +57,18 @@ class MigrateResourceStructure extends Command
     protected function configure()
     {
         $this
-            ->setName('zk:migrate_resource')
+            ->setName('module:restructure')
             ->setDescription('Creates and moves structure')
             ->addOption('dir', null, InputOption::VALUE_REQUIRED,
                 'Target directory is mandatory - should be module directory'
             )
+            ->addOption('module', null, InputOption::VALUE_REQUIRED,
+                'Module name mandatory - should be module directory name'
+            )
         ->setHelp(<<<EOF
-The <info>zk:migrate_resource</info> command migrates resources</info>
+The <info>module:restructure</info> command migrates resources</info>
 
-<info>refactor zk:migrate_resource --dir=modules/MyModule</info>
+<info>refactor module:restructure --dir=modules/MyModule --module=MyModule</info>
 EOF
         );
     }
@@ -75,6 +78,10 @@ EOF
         $dir = $input->getOption('dir');
         if (!$dir) {
             $output->writeln("--dir= is required\n");
+        }
+        $moduleDir = $input->getOption('dir');
+        if (!$moduleDir) {
+            $output->writeln("--module= is required\n");
         }
 
         if (!is_dir($dir.'/Resources/public')) {
@@ -115,6 +122,13 @@ EOF
             `git mv $dir/templates $dir/Resources/views`;
             $output->writeln("moved $dir/templates to $dir/Resources/public/views\n");
         }
+
+        if (is_dir($dir.'/lib/'.$moduleDir)) {
+            `git mv $dir/lib/$moduleDir/* $dir/`;
+            $output->writeln("moved $dir/lib/$moduleDir to $dir\n");
+        }
+
+        $output->writeln("Done. Remember to update Version.php core_min to 1.3.6-dev\n");
     }
 }
 
