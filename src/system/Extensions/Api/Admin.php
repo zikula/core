@@ -421,7 +421,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
                 foreach ($dirs as $dir) {
                     // register autoloader
-                    if (file_exists("$rootdir/dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
+                    if (file_exists("$rootdir/$dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
                         ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
                     }
 

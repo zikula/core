@@ -68,7 +68,9 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
             $baseDir = ($obj['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
             // load gettext domain for 3rd party modules
-            if ($baseDir == 'modules' && is_dir("modules/$obj[directory]/locale")) {
+            if ($baseDir == 'modules' &&
+                (is_dir("modules/$obj[directory]/Resources/locale") || is_dir("modules/$obj[directory]/locale"))
+            ) {
                 // This is required here since including pnversion automatically executes the pnversion code
                 // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                 // since loading is self contained in each zOO application.
@@ -459,8 +461,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
     /**
      * Extensions_admin_view - list modules and current settings
      *
-     * This function is an alias to extensions_admin_view as pnphpbb calls this
-     * function name directly on the install
+     * This function is an alias to extensions_admin_view
      *
      * @see extensions_admin_view
      * @return string HTML output string
