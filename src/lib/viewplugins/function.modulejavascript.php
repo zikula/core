@@ -25,12 +25,12 @@
  *  - assign      if set, the tag and the script filename are returned
  *
  * Example: {modulejavascript modname=foobar script=module_admin_config.js modonly=1 }
- * Output:  <script type="text/javascript" src="modules/foobar/javascript/module_admin_config.js">
+ * Output:  <script type="text/javascript" src="modules/Foobar/Resources/public/js/module_admin_config.js">
  *
  * Example: {modulejavascript modname=foobar script=module_admin_config.js modonly=1 onload="dosomething()" assign=myjs }
  * Output: nothing, but assigns a variable containing several values:
  *      $myjs.scriptfile = "modules/foobar/javascript/module_admin_config.js"
- *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/foobar/javascript/module_admin_config.js\"></script>"
+ *      $myjs.tag = "<script type=\"text/javascript\" src=\"modules/Foobar/Resources/public/js/module_admin_config.js\"></script>"
  *      $myjs.onload = "onLoad=\"dosomething()\"";
  *      Possible code in master.tpl would be:
  *
@@ -43,7 +43,7 @@
  *      which results in
  *
  *      ...
- *      <script type="text/javascript" src="modules/foobar/javascript/module_admin_config.js"></script>
+ *      <script type="text/javascript" src="modules/foobar/Resources/public/js/module_admin_config.js"></script>
  *      </head>
  *      <body onLoad="dosomething()" >
  *      ...
@@ -88,17 +88,20 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
         // theme directory
         $theme         = DataUtil::formatForOS(UserUtil::getTheme());
         $osmodname     = DataUtil::formatForOS($params['modname']);
-        $themepath     = "themes/$theme/javascript/$osmodname";
+        $themepath     = "themes/$theme/Resources/public/js/$osmodname";
+        $themepathOld     = "themes/$theme/javascript/$osmodname";
 
         // module directory
         $modinfo       = ModUtil::getInfoFromName($params['modname']);
         $osmoddir      = DataUtil::formatForOS($modinfo['directory']);
-        $modpath       = "modules/$osmoddir/javascript";
-        $syspath       = "system/$osmoddir/javascript";
-        $modpathOld       = "modules/$osmoddir/pnjavascript";
-        $syspathOld       = "system/$osmoddir/pnjavascript";
+        $modpath       = "modules/$osmoddir/Resources/public/js";
+        $syspath       = "system/$osmoddir/Resources/public/js";
+        $modpathOld       = "modules/$osmoddir/javascript";
+        $syspathOld       = "system/$osmoddir/javascript";
+        $modpathOld2      = "modules/$osmoddir/pnjavascript";
+        $syspathOld2      = "system/$osmoddir/pnjavascript";
 
-        $searchpaths = array( $themepath, $modpath, $syspath, $modpathOld, $syspathOld);
+        $searchpaths = array($themepath, $themepathOld, $modpath, $syspath, $modpathOld, $syspathOld, $modpathOld2, $syspathOld2);
     }
     $osscript = DataUtil::formatForOS($params['script']);
 
