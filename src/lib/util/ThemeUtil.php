@@ -281,14 +281,16 @@ class ThemeUtil
         // module directory
         $modinfo = ModUtil::getInfoFromName($modname);
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $modpath = "modules/$osmoddir/style";
-        $syspath = "system/$osmoddir/style";
-        $modpathOld = "modules/$osmoddir/pnstyle";
-        $syspathOld = "system/$osmoddir/pnstyle";
+        $modpath = "modules/$osmoddir/Resources/public/css";
+        $syspath = "system/$osmoddir/Resources/public/css";
+        $modpathOld = "modules/$osmoddir/style";
+        $syspathOld = "system/$osmoddir/style";
+        $modpathOld2 = "modules/$osmoddir/pnstyle";
+        $syspathOld2 = "system/$osmoddir/pnstyle";
 
         // search for the style sheet
         $csssrc = '';
-        foreach (array($configpath, $themepath, $modpath, $syspath, $modpathOld, $syspathOld) as $path) {
+        foreach (array($configpath, $themepath, $modpath, $syspath, $modpathOld, $syspathOld, $modpathOld2, $syspathOld2) as $path) {
             if (is_readable("$path/$osstylesheet")) {
                 $csssrc = "$path/$osstylesheet";
                 break;
