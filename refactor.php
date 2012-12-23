@@ -34,9 +34,15 @@ EOF
     {
         $dir = $input->getOption('dir');
         if (!$dir) {
-            $output->writeln("ERROR: --dir= is required\n");
+            $output->writeln("<error>ERROR: --dir= is required</error>");
             exit(1);
         }
+
+        if (!is_dir($dir)) {
+            $output->writeln("<error>$dir does not exist</error>");
+            exit(1);
+        }
+
         $finder = new Finder();
         $finder->in($dir)
             ->files()
@@ -49,7 +55,9 @@ EOF
             file_put_contents($file->getRealPath(), $content);
         };
 
-        $output->writeln("Done. Remember to update Version.php core_min to 1.3.6-dev\n");
+        $output->writeln("<comment>Done.
+
+Remember to update Version.php core_min to 1.3.6-dev</comment>");
     }
 }
 
@@ -139,7 +147,7 @@ EOF
             if (is_dir("$dir/lib")) {
                 $output->writeln("<comment>Please relocate any vendors from $dir/lib/vendor into $dir/vendor/</comment>");
             }
-            $output->writeln("moved $dir/lib/$moduleDir to $dir\n");
+            $output->writeln("<info>moved PHP files from $dir/lib/$moduleDir/* to $dir</info>");
         }
 
         $output->writeln("<info>Done.
