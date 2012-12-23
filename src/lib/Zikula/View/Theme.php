@@ -174,8 +174,12 @@ class Zikula_View_Theme extends Zikula_View
             $this->domain = null;
         }
 
+        EventUtil::attachCustomHandlers("themes/$themeName/EventHandlers");
         EventUtil::attachCustomHandlers("themes/$themeName/lib/$themeName/EventHandlers");
-        if (is_readable("themes/$themeName/templates/overrides.yml")) {
+        if (is_readable("themes/$themeName/Resources/config/overrides.yml")) {
+            $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
+            $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/Resources/config/overrides.yml", 'yml');
+        } else if (is_readable("themes/$themeName/templates/overrides.yml")) {
             $this->eventManager->attach('zikula_view.template_override', array($this, '_templateOverride'), 0);
             $this->_overrideMap = Doctrine_Parser::load("themes/$themeName/templates/overrides.yml", 'yml');
         }
@@ -406,7 +410,10 @@ class Zikula_View_Theme extends Zikula_View
         $themeDir = DataUtil::formatForOS($this->directory);
         $osTemplate = DataUtil::formatForOS($template);
 
-        $relativePath = "themes/$themeDir/templates";
+        $relativePath = "themes/$themeDir/Resources/views";
+        if (!is_dir($relativePath)) {
+            $relativePath = "themes/$themeDir/templates";
+        }
         $templateFile = "$relativePath/$osTemplate";
         $override = self::getTemplateOverride($templateFile);
         if ($override === false) {
@@ -460,7 +467,14 @@ class Zikula_View_Theme extends Zikula_View
     private function _plugin_dirs()
     {
         // add theme specific plugins directories, if they exist
-        $this->addPluginDir('themes/' . $this->directory . '/plugins');
+        if (is_dir('themes/' . $this->directory . '/Resources/views/plugins')) {
+            $this->addPluginDir('themes/' . $this->directory . '/Resources/views/plugins');
+            return;
+        }
+
+        if (is_dir('themes/' . $this->directory . '/plugins')) {
+            $this->addPluginDir('themes/' . $this->directory . '/plugins');
+        }
 
         if (System::isLegacyMode()) {
             // load the usemodules configuration if exists
