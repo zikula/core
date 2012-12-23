@@ -2372,13 +2372,13 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : Users_Constant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
             if (($activated != Users_Constant::ACTIVATED_INACTIVE) && ($activated != Users_Constant::ACTIVATED_ACTIVE)) {
-                return $this->__f('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.');
+                return $this->__('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.');
             }
 
             // validate sendmail
             $importValues[$counter - 1]['sendmail'] = isset($importValues[$counter - 1]['sendmail']) ? (int)$importValues[$counter - 1]['sendmail'] : 0;
             if ($importValues[$counter - 1]['sendmail'] < 0 || $importValues[$counter - 1]['sendmail'] > 1) {
-                return $this->__f('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.');
+                return $this->__('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.');
             }
 
             // check groups and set defaultGroup as default if there are not groups defined
@@ -2510,7 +2510,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             if ($userMustChangePassword) {
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
-                    $this->registerStatus($this->__f('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
+                    $this->registerStatus($this->__('Done! A password change will be required the next time %1$s logs in.', array($userObj['uname'])));
                 } else {
                     throw new Zikula_Exception_Fatal();
                 }
@@ -2518,7 +2518,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 if (isset($userObj['__ATTRIBUTES__']) && isset($userObj['__ATTRIBUTES__']['_Users_mustChangePassword'])) {
                     throw new Zikula_Exception_Fatal();
                 } else {
-                    $this->registerStatus($this->__f('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
+                    $this->registerStatus($this->__('Done! A password change will no longer be required for %1$s.', array($userObj['uname'])));
                 }
             }
 
