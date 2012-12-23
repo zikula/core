@@ -35,8 +35,10 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
         $this->systemBaseDir = realpath('.');
         $parts = explode('_', $this->getReflection()->getName());
         $this->name = $parts[0];
-        $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
-        $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
+        $this->baseDir = $this->libBaseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
+        if (realpath("{$this->baseDir}/lib/" . $this->name)) {
+            $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
+        }
         $this->modinfo = array(
             'directory' => $this->name,
             'type'      => ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE

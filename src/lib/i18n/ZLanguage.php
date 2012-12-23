@@ -396,7 +396,11 @@ class ZLanguage
     {
         $_this  = self::getInstance();
         $domain = self::getThemeDomain($modName);
-        $path = $_this->searchOverrides($domain, "themes/$modName/locale");
+        if (is_dir("themes/$modName/Resources/locale")) {
+            $path = $_this->searchOverrides($domain, "themes/$modName/Resources/locale");
+        } else {
+            $path = $_this->searchOverrides($domain, "themes/$modName/locale");
+        }
 
         return self::bindDomain($domain, $path);
     }
@@ -423,7 +427,11 @@ class ZLanguage
         }
 
         $domain = self::getModuleDomain($modName);
-        $path = $_this->searchOverrides($domain, "modules/$modName/locale");
+        if (is_dir("modules/$modName/Resources/locale")) {
+            $path = $_this->searchOverrides($domain, "modules/$modName/Resources/locale");
+        } else {
+            $path = $_this->searchOverrides($domain, "modules/$modName/locale");
+        }
 
         return self::bindDomain($domain, $path);
     }
@@ -446,7 +454,11 @@ class ZLanguage
 
         $_this  = self::getInstance();
         $domain = self::getModulePluginDomain($moduleName, $pluginName);
-        $path = $_this->searchOverrides($domain, "modules/$moduleName/plugins/$pluginName/locale");
+        if (is_dir("modules/$moduleName/plugins/$pluginName/Resource/locale")) {
+            $path = $_this->searchOverrides($domain, "modules/$moduleName/plugins/$pluginName/Resource/locale");
+        } else {
+            $path = $_this->searchOverrides($domain, "modules/$moduleName/plugins/$pluginName/locale");
+        }
 
         return self::bindDomain($domain, $path);
     }
@@ -462,7 +474,11 @@ class ZLanguage
     {
         $_this  = self::getInstance();
         $domain = self::getSystemPluginDomain($pluginName);
-        $path = $_this->searchOverrides($domain, "plugins/$pluginName/locale");
+        if (is_dir("plugins/$pluginName/Resources/locale")) {
+            $path = $_this->searchOverrides($domain, "plugins/$pluginName/Resources/locale");
+        } else {
+            $path = $_this->searchOverrides($domain, "plugins/$pluginName/locale");
+        }
 
         return self::bindDomain($domain, $path);
     }

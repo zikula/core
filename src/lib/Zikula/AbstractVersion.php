@@ -192,8 +192,10 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         $p = explode('_', get_class($this));
         $this->name = $p[0];
         $this->directory = $this->name; // legacy handling
-        $this->baseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
-        $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
+        $this->baseDir = $this->libBaseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
+        if (realpath($this->baseDir . '/lib/' . $this->name)) {
+            $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
+        }
         $this->type = ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE;
         if ($this->type == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);

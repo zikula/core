@@ -297,7 +297,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $oomod = ModUtil::isOO($modinfo['name']);
 
         if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+            ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         }
 
         $version = Extensions_Util::getVersionMeta($osdir, $modpath);
@@ -308,7 +308,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale")) {
+            if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -450,13 +450,13 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 foreach ($dirs as $dir) {
                     $oomod = false;
                     // register autoloader
-                    if (is_dir("$rootdir/$dir/lib")) {
-                        ZLoader::addAutoloader($dir, "$rootdir/$dir/lib");
+                    if (file_exists("$rootdir/dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
+                        ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
                         $oomod = true;
                     }
 
                     // loads the gettext domain for 3rd party modules
-                    if ($rootdir == 'modules' && is_dir("modules/$dir/locale")) {
+                    if ($rootdir == 'modules' && (is_dir("modules/$dir/Resources/locale") || is_dir("modules/$dir/locale"))) {
                         // This is required here since including pnversion automatically executes the pnversion code
                         // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
                         // since loading is self contained in each zOO application.
@@ -495,14 +495,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                         }
                     } elseif ($oomod) {
                         // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                        if (file_exists("$rootdir/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
                             $caps['admin'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
                         }
 
                         // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                        if (file_exists("$rootdir/$dir/Controller/User.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
                             $caps = $modversion['capabilities'];
                             $caps['user'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
@@ -822,7 +822,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $oomod = ModUtil::isOO($modinfo['name']);
 
         if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+            ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -831,7 +831,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale")) {
+            if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
@@ -954,7 +954,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         $oomod = ModUtil::isOO($modinfo['name']);
 
         if ($oomod) {
-            ZLoader::addAutoloader($osdir, "$modpath/$osdir/lib");
+            ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -963,7 +963,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
-            if (is_dir("modules/$osdir/locale")) {
+            if (is_dir("modules/$osdir/Resources/locale") || is_dir("modules/$osdir/locale")) {
                 ZLanguage::bindModuleDomain($modinfo['name']);
             }
         }
