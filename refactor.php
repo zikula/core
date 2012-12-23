@@ -34,7 +34,8 @@ EOF
     {
         $dir = $input->getOption('dir');
         if (!$dir) {
-            $output->writeln("--dir= is required\n");
+            $output->writeln("ERROR: --dir= is required\n");
+            exit(1);
         }
         $finder = new Finder();
         $finder->in($dir)
@@ -77,11 +78,18 @@ EOF
     {
         $dir = $input->getOption('dir');
         if (!$dir) {
-            $output->writeln("--dir= is required\n");
+            $output->writeln("ERROR: --dir= is required\n");
+            exit(1);
         }
-        $moduleDir = $input->getOption('dir');
+        $moduleDir = $input->getOption('module');
         if (!$moduleDir) {
-            $output->writeln("--module= is required\n");
+            $output->writeln("ERROR: --module= is required\n");
+            exit(1);
+        }
+
+        if (!is_dir($dir)) {
+            $output->writeln("ERROR: $dir does not exist\n");
+            exit(1);
         }
 
         if (!is_dir($dir.'/Resources/public')) {
@@ -124,7 +132,7 @@ EOF
         }
 
         if (is_dir($dir.'/lib/'.$moduleDir)) {
-            `git mv $dir/lib/$moduleDir/* $dir/`;
+            `git mv $dir/lib/$moduleDir/* $dir`;
             $output->writeln("moved $dir/lib/$moduleDir to $dir\n");
         }
 
