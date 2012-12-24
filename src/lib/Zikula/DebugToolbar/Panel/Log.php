@@ -181,7 +181,7 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
      */
     public function log(Zikula_Event $event)
     {
-        $this->_log[] = $event->getArgs();
+        $this->_log[] = $event->getArguments();
     }
 
     /**

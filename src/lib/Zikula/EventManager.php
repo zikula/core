@@ -68,7 +68,8 @@ class Zikula_EventManager extends EventDispatcher
     /**
      * Notify all handlers for given event name but stop if signalled.
      *
-     * @param Event $event Event.
+     * @param string $name  Event name.
+     * @param Event  $event Event object, null creates new Event
      *
      * @return Event
      */

@@ -199,7 +199,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
 
                     // Notify that we are beginning a registration session.
-                    $this->eventManager->dispatch('module.users.ui.registration.started');
+                    $this->eventManager->dispatch('module.users.ui.registration.started', new Zikula_Event());
 
                     // Get a list of authentication methods available for registration
                     // NOTE: The Users module methods should NOT appear on this list!
@@ -1119,7 +1119,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $eventType          = 'login_screen';
                 $user               = array();
 
-                $this->eventManager->dispatch('module.users.ui.login.started');
+                $this->eventManager->dispatch('module.users.ui.login.started', new Zikula_Event('module.users.ui.login.started'));
             }
         } else {
             throw new Zikula_Exception_Forbidden();
