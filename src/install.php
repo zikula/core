@@ -19,7 +19,7 @@ ini_set('memory_limit', '64M');
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getServiceManager()->attachService('request', $request);
+$core->getContainer()->set('request', $request);
 
 include 'install/lib.php';
 install($core);

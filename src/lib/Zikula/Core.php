@@ -393,11 +393,9 @@ class Zikula_Core
      */
     public function init($stage = self::STAGE_ALL)
     {
-        $coreInitEvent = new Zikula_Event($this);
-
-        if (!$this->serviceManager->hasService('request')) {
+        if (!$this->container->has('request')) {
             $request = Request::createFromGlobals();
-            $this->serviceManager->attachService('request', $request);
+            $this->container->set('request', $request);
         }
 
         $coreInitEvent = new Zikula_Event('core.init', $this);
@@ -497,7 +495,7 @@ class Zikula_Core
 
             ModUtil::load('SecurityCenter');
 
-            $coreInitEvent->setArg('stage', self::STAGE_MODS);
+            $coreInitEvent->setArgument('stage', self::STAGE_MODS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
@@ -520,7 +518,7 @@ class Zikula_Core
             $this->container['zikula_view.metatags']['description'] = System::getVar('defaultmetadescription');
             $this->container['zikula_view.metatags']['keywords'] = System::getVar('metakeywords');
 
-            $coreInitEvent->setArg('stage', self::STAGE_THEME);
+            $coreInitEvent->setArgument('stage', self::STAGE_THEME);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 

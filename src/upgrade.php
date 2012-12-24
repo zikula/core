@@ -23,7 +23,7 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 ZLoader::addAutoloader('Users', 'system', '_');
 $request = Request::createFromGlobals();
-$core->getServiceManager()->attachService('request', $request);
+$core->getContainer()->set('request', $request);
 include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 
 // check if the config.php was renewed

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getServiceManager()->attachService('request', $request);
+$core->getContainer()->set('request', $request);
 $core->init();
 
 if ($request->isXmlHttpRequest()) {
@@ -23,7 +23,6 @@ if ($request->isXmlHttpRequest()) {
 }
 $core->getDispatcher()->dispatch('frontcontroller.predispatch');
 
-// Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $type = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);

@@ -16,7 +16,7 @@
 /**
  * Zikula_ServiceManager_Definition configuration describes a service for ServiceManager.
  *
- * @deprecated from 1.4
+ * @deprecated from 1.3.6
  * @use \Symfony\Component\DependencyInjection\Definition
  */
 class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInjection\Definition

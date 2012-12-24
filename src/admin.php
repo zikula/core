@@ -16,6 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getServiceManager()->attachService('request', $request);
+$core->getContainer()->set('request', $request);
 $core->init();
 System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));

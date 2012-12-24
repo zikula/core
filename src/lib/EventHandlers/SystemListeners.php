@@ -785,7 +785,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         foreach ($GLOBALS['ZConfig'] as $config) {
-            $event->getSubject()->getServiceManager()->loadArguments($config);
+            $event->getSubject()->getContainer()->loadArguments($config);
         }
 
         $event->stopPropagation();
