@@ -57,7 +57,7 @@ EOF
 
         $output->writeln("<comment>Done.
 
-Remember to update Version.php core_min to 1.3.6-dev</comment>");
+Remember to update Version.php core_min to 1.3.6</comment>");
     }
 }
 
@@ -153,7 +153,7 @@ EOF
         $output->writeln("<info>Done.
 Todo tasks:
 
-  - Update Version.php core_min to 1.3.6-dev
+  - Update Version.php core_min to 1.3.6
   - If there are any old calls to {pageaddvar} specifying js/css paths, these must be tweaked
 </info>");
         $output->writeln("<comment>To finish please run:\n\n    git commit -a -m Restructured</comment>");
