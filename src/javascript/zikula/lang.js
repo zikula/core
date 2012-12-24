@@ -158,18 +158,19 @@
      * _(object).objectGetPath(pathName, defaultValue); // underscore syntax (recommended)
      *
      * _(Zikula).objectGetPath(pathName, 'Config.entrypoint'); // returns 'index.php'
+     * _(Zikula).objectGetPath(pathName, ['Config', 'entrypoint']); // returns 'index.php'
      * _(Zikula).objectGetPath(pathName, 'this.path.does.not.exists'); // returns undefined
      * _(Zikula).objectGetPath(pathName, 'this.path.does.not.exists', 'default'); // returns 'default'
      *
-     * @param {Object}  object          Object to search in
-     * @param {String}  pathName        Dot separated path relative to object
-     * @param {*}      [defaultValue]   Default value to return when result is undefined
+     * @param {Object}          object          Object to search in
+     * @param {String|Array}    pathName        Dot separated path (or array of parts), relative to object
+     * @param {*}              [defaultValue]   Default value to return when result is undefined
      *
      * @return {*} Property value, default value or undefined.
      */
     Zikula.Lang.objectGetPath = function(object, pathName, defaultValue) {
         var prop,
-            path = pathName.split('.'),
+            path = _(pathName).isArray() ? pathName : pathName.split('.'),
             last = path.pop();
 
         while ((prop = path.shift())) {
@@ -190,15 +191,15 @@
      *
      * _(Zikula).objectSetPath('some.long.path.name', true); // {Zikula:{long:{path:{name:true}}}}
      *
-     * @param {Object} object   Base object
-     * @param {String} pathName Dot separated path relative to object
-     * @param {*}      value    Value to set
+     * @param {Object}          object      Base object
+     * @param {String|Array}    pathName    Dot separated path (or array of parts), relative to object
+     * @param {*}               value       Value to set
      *
      * @return {*} Last property in path chain (the one that has set the value)
      */
     Zikula.Lang.objectSetPath = function(object, pathName, value) {
         var prop,
-            path = pathName.split('.'),
+            path = _(pathName).isArray() ? pathName : pathName.split('.'),
             last = path.pop();
 
         while ((prop = path.shift())) {
@@ -219,8 +220,8 @@
      * _(Zikula).objectIssetPath('Util.Cookie'); // returns true
      * _(Zikula).objectIssetPath('Util.Foo'); // returns false
      *
-     * @param object
-     * @param pathName
+     * @param {Object}          object      Base object
+     * @param {String|Array}    pathName    Dot separated path (or array of parts), relative to object
      *
      * @return {Boolean}
      */
@@ -238,15 +239,15 @@
      * _(Zikula).objectUnsetPath('Config.foo'); // returns true
      * _(Zikula).objectUnsetPath('this.one.does.not.exists'); // returns true
      *
-     * @param {Object} object   Base object
-     * @param {String} pathName Dot separated path relative to object
+     * @param {Object}          object      Base object
+     * @param {String|Array}    pathName    Dot separated path (or array of parts), relative to object
      *
      * @return {Boolean} True on success or if given property did not exist
      */
     Zikula.Lang.objectUnsetPath = function(object, pathName) {
         if (Zikula.Lang.objectIssetPath(object, pathName)) {
             var prop,
-                path = pathName.split('.'),
+                path = _(pathName).isArray() ? pathName : pathName.split('.'),
                 last = path.pop();
             while ((prop = path.shift())) {
                 object = object[prop];
