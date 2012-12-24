@@ -675,7 +675,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArg('modname'));
+        $args = array('modname' => $event->getArgument('modname'));
         $localevent = new Zikula_Event('module_dispatch.service_links', $event->getSubject(), $args);
         $this->eventManager->notify($localevent);
         $sublinks = $localevent->getData();

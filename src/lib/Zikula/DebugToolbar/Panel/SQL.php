@@ -151,7 +151,7 @@ class Zikula_DebugToolbar_Panel_SQL implements Zikula_DebugToolbar_PanelInterfac
      */
     public function logSql(Zikula_Event $event)
     {
-        $this->_queries[] = $event->getArgs();
+        $this->_queries[] = $event->getArguments();
     }
 
     /**

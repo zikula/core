@@ -51,9 +51,9 @@ Event handlers receive the event object and have full access to whatever was enc
     [php]
     $event->getName()
     $event->getSubject()
-    $event->getArgs()
-    $event->getArg()
-    $event->hasArg()
+    $event->getArguments()
+    $event->getArgument()
+    $event->hasArgument()
     $event->getData()
 
 For convenience Event objects use ArrayAccess on the $args property, so you may access $args[$key] by $event[$key].

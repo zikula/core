@@ -12,7 +12,7 @@ to the $event->subject property which may contain something like $this.
         //... other unrelated methods here
         public static function logUser(Event $event)
         {
-            self::write($event->getName(), $event->getArg('username'), $_SERVER['REMOTE_ADDR']);
+            self::write($event->getName(), $event->getArgument('username'), $_SERVER['REMOTE_ADDR']);
             // USING ARRAY ACCESS YOU CAN ALSO DO:
             // self::write($event->getName(), $event['username'], $_SERVER['REMOTE_ADDR']);
         }

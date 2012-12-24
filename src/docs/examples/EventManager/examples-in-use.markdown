@@ -45,12 +45,12 @@
     {
         public static function logLogin(Event $event)
         {
-            MyLogger::write($event->getName(), $event->getArg('username'), $_SERVER['REMOTE_ADDR']);
+            MyLogger::write($event->getName(), $event->getArgument('username'), $_SERVER['REMOTE_ADDR']);
         }
 
         public function sendMail(Event $event)
         {
-            if ($event->hasArg('emailaddress')) {
+            if ($event->hasArgument('emailaddress')) {
                 mail($this->getArg('emailaddress'));
             }
         }
