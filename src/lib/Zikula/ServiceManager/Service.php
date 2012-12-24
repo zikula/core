@@ -18,6 +18,8 @@
  *
  * This is a service container which describes the service.
  * INTERNAL USE ONLY.
+ *
+ * @deprecated from 1.3.6
  */
 class Zikula_ServiceManager_Service
 {

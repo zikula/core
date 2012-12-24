@@ -16,6 +16,6 @@ use Zikula_Request_Http as Request;
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getContainer()->attachService('request', $request);
+$core->getContainer()->set('request', $request);
 $core->init();
 System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));

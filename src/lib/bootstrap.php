@@ -23,7 +23,7 @@ if (version_compare($phpVersion, '5.3.2', '>=') == false) {
     die("Zikula requires PHP version 5.3.2 or greater. Your server is using version $phpVersion.");
 }
 
-include 'lib/ZLoader.php';
+include __DIR__.'/ZLoader.php';
 ZLoader::register();
 
 $core = new Zikula_Core();

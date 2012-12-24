@@ -22,7 +22,7 @@ ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getContainer()->attachService('request', $request);
+$core->getContainer()->set('request', $request);
 ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
 include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 

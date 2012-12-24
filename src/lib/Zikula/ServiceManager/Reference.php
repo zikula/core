@@ -15,26 +15,12 @@
 
 /**
  * Reference class.
+ *
+ * @deprecated from 1.3.6
+ * @use \Symfony\Component\DependencyInjection\Reference
  */
-class Zikula_ServiceManager_Reference
+class Zikula_ServiceManager_Reference extends \Symfony\Component\DependencyInjection\Reference
 {
-    /**
-     * Service ID being referenced.
-     *
-     * @var string
-     */
-    protected $id;
-
-    /**
-     * Constructor.
-     *
-     * @param string $id Service ID being referenced.
-     */
-    public function  __construct($id)
-    {
-        $this->id = $id;
-    }
-
     /**
      * Get service ID.
      *
@@ -42,6 +28,6 @@ class Zikula_ServiceManager_Reference
      */
     public function getId()
     {
-        return $this->id;
+        return $this->__toString();
     }
 }

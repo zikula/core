@@ -29,7 +29,7 @@ function install(Zikula_Core $core)
 
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
     $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
-    $eventManager->notify($dbEvent);
+    $eventManager->dispatch('doctrine.init_connection', $dbEvent);
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 

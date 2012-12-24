@@ -13,36 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 /**
  * ServiceManager class.
+ *
+ * @deprecated from 1.3.6
+ * @use \Symfony\Component\DependencyInjection\ContainerBuilder
  */
-class Zikula_ServiceManager implements ArrayAccess
+class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
 {
-    /**
-     * Storage for services.
-     *
-     * @var array
-     */
-    private $services = array();
-
-    /**
-     * Argument storage.
-     *
-     * @var array
-     */
-    private $arguments = array();
-
-    /**
-     * ServiceManager constructor.
-     *
-     * Attaches a service $id to $this.
-     *
-     * @param string $id The identifier of this ServiceManager.
-     */
-    public function __construct($id = 'servicemanager')
-    {
-        $this->attachService($id, $this);
-    }
     /**
      * Attach an existing service.
      *
@@ -50,25 +30,19 @@ class Zikula_ServiceManager implements ArrayAccess
      * @param object  $service An already existing object.
      * @param boolean $shared  True if this is a single instance (default).
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::set()
+     *
      * @throws InvalidArgumentException If the service is already registered.
      *
      * @return object $service.
      */
     public function attachService($id, $service, $shared = true)
     {
-        if ($this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('Service %s is already attached', $id));
-        }
-
-        $this->services[$id] = new Zikula_ServiceManager_Service($id, null, $shared);
-        $this->services[$id]->setService($service);
+        $scope = $shared ? self::SCOPE_CONTAINER : self::SCOPE_PROTOTYPE;
+        $this->set($id, $service, $scope);
 
         return $service;
-    }
-
-    public function set($id, $service)
-    {
-        $this->attachService($id, $service);
     }
 
     /**
@@ -77,6 +51,9 @@ class Zikula_ServiceManager implements ArrayAccess
      * Alias for unregister service
      *
      * @param string $id Service ID.
+     *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::remove()
      *
      * @throws Exception If the $id isn't registered.
      *
@@ -96,17 +73,22 @@ class Zikula_ServiceManager implements ArrayAccess
      * @param Zikula_ServiceManager_Definition $definition Service definition.
      * @param boolean                          $shared     Shared type.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setDefinition()
+     *
      * @throws InvalidArgumentException If service ID is already registered.
      *
      * @return void
      */
     public function registerService($id, Zikula_ServiceManager_Definition $definition, $shared = true)
     {
-        if ($this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('Service %s is already registered', $id));
+        if ($shared) {
+            $definition->setScope(self::SCOPE_CONTAINER);
+        } else {
+            $definition->setScope(self::SCOPE_PROTOTYPE);
         }
 
-        $this->services[$id] = new Zikula_ServiceManager_Service($id, $definition, $shared);
+        return $this->setDefinition($id, $definition);
     }
 
     /**
@@ -114,16 +96,16 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id The service identifier.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::removeDefinition()
+     *
      * @throws InvalidArgumentException If the $id isn't registered.
      *
      * @return void
      */
     public function unregisterService($id)
     {
-        if (!$this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('Service %s is not registered', $id));
-        }
-        unset($this->services[$id]);
+        $this->removeDefinition($id);
     }
 
     /**
@@ -137,37 +119,16 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id The service identifier.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::get()
+     *
      * @throws InvalidArgumentException If no identifier exists.
      *
      * @return object The service.
      */
     public function getService($id)
     {
-        if (!$this->hasService($id)) {
-            throw new InvalidArgumentException(sprintf('The service %s does not exist', $id));
-        }
-
-        $service = $this->services[$id];
-
-        if ($service->isShared()) {
-            if ($service->hasDefinition()) {
-                $service->setService($this->createService($service->getDefinition()));
-            }
-        } else {
-            if ($service->hasDefinition()) {
-                return $this->createService($service->getDefinition());
-            } else {
-                // no definition means an instanciated object.
-                return clone $service->getService();
-            }
-        }
-
-        return $this->services[$id]->getService();
-    }
-
-    public function get($id)
-    {
-        return $this->getService($id);
+        return $this->get($id);
     }
 
     /**
@@ -175,16 +136,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id True if the service is registered.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::has()
+     *
      * @return boolean
      */
     public function hasService($id)
     {
-        return array_key_exists($id, $this->services);
-    }
-
-    public function has($id)
-    {
-        return $this->hasService($id);
+        return $this->has($id);
     }
 
     /**
@@ -197,9 +156,9 @@ class Zikula_ServiceManager implements ArrayAccess
     public function listServices($prefix = '')
     {
         $list = array();
-        foreach ($this->services as $service) {
-            if (empty($prefix) || strpos($service->getId(), $prefix) === 0) {
-                $list[] = $service->getId();
+        foreach ($this->getServiceIds() as $service) {
+            if (empty($prefix) || strpos($service, $prefix) === 0) {
+                $list[] = $service;
             }
         }
 
@@ -207,82 +166,16 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Dynamically create the service according to the Definition class.
-     *
-     * @param Zikula_ServiceManager_Definition $definition The definition class.
-     *
-     * @return object The newly created service.
-     */
-    private function createService(Zikula_ServiceManager_Definition $definition)
-    {
-        $reflection = new ReflectionClass($definition->getClassName());
-
-        if (($reflection->hasMethod('__construct') || $reflection->hasMethod($definition->getClassName()) && $definition->hasConstructorArgs())) {
-            $service = $reflection->newInstanceArgs($this->compileArguments($definition->getConstructorArgs()));
-        } else {
-            $service = $reflection->newInstance();
-        }
-
-        if ($definition->hasMethods()) {
-            foreach ($definition->getMethods() as $method => $arguments) {
-                foreach ($arguments as $args) {
-                    $reflectionMethod = new ReflectionMethod($definition->getClassName(), $method);
-                    if (count($args) > 0) {
-                        $reflectionMethod->invokeArgs($service, $this->compileArguments($args));
-                    } else {
-                        // no args
-                        $reflectionMethod->invoke($service);
-                    }
-                }
-            }
-        }
-
-        return $service;
-    }
-
-    /**
-     * Compile any parameters that are Definitions, Services or Argument definitions.
-     *
-     * @param array $arguments Non associative array of arguments.
-     *
-     * @throws InvalidArgumentException If unrecognised object type.
-     *
-     * @return array Compiled arguments.
-     */
-    private function compileArguments($arguments)
-    {
-        $compiledArguments = array();
-        foreach ($arguments as $argument) {
-            switch (true) {
-                case (!is_object($argument)):
-                    $compiledArguments[] = $argument;
-                    break;
-                case ($argument instanceof Zikula_ServiceManager_Argument):
-                    $compiledArguments[] = $this->getArgument($argument->getId());
-                    break;
-                case ($argument instanceof Zikula_ServiceManager_Reference):
-                    $compiledArguments[] = $this->getService($argument->getId());
-                    break;
-                case ($argument instanceof Zikula_ServiceManager_Definition):
-                    $compiledArguments[] = $this->createService($argument);
-                    break;
-                default:
-                    throw new InvalidArgumentException(sprintf('Invalid argument object %s', get_class($argument)));
-                    break;
-             }
-         }
-
-        return $compiledArguments;
-    }
-
-    /**
      * Getter for arguments property.
+     *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ParameterBag::all()
      *
      * @return array
      */
     public function getArguments()
     {
-        return $this->arguments;
+        return $this->getParameterBag()->all();
     }
 
     /**
@@ -290,11 +183,17 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param array $array Array of id=>value.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setParameter()
+     *
      * @return void
      */
     public function setArguments(array $array)
     {
-        $this->arguments = $array;
+        // todo $this->getParameterBag()->clear();
+        foreach ($array as $key => $value) {
+            $this->setParameter($key, $value);
+        }
     }
 
     /**
@@ -302,11 +201,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id Id.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::hasParameter()
+     *
      * @return boolean
      */
     public function hasArgument($id)
     {
-        return array_key_exists($id, $this->arguments);
+        return $this->hasParameter($id);
     }
 
     /**
@@ -315,11 +217,14 @@ class Zikula_ServiceManager implements ArrayAccess
      * @param string $id    Argument id.
      * @param string $value Argument value.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setParameter()
+     *
      * @return void
      */
     public function setArgument($id, $value)
     {
-        $this->arguments[$id] = $value;
+        $this->setParameter($id, $value);
     }
 
     /**
@@ -327,17 +232,16 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param string $id Argument id.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::getParameter()
+     *
      * @throws InvalidArgumentException If id is not set.
      *
      * @return mixed
      */
     public function getArgument($id)
     {
-        if (!$this->hasArgument($id)) {
-            throw new InvalidArgumentException(sprintf('No argument "%s" is registered with Zikula_ServiceManager', $id));
-        }
-
-        return $this->arguments[$id];
+        return $this->getParameter($id);
     }
 
     /**
@@ -345,13 +249,14 @@ class Zikula_ServiceManager implements ArrayAccess
      *
      * @param array $array Array of id=>$value.
      *
+     * @deprecated from 1.3.6
+     * @use \Symfony\Component\DependencyInjection\ContainerBuilder::setParameters()
+     *
      * @return void
      */
     public function loadArguments(array $array)
     {
-        foreach ($array as $id => $value) {
-            $this->setArgument($id, $value);
-        }
+        $this->setArguments($array);
     }
 
     /**
@@ -392,7 +297,7 @@ class Zikula_ServiceManager implements ArrayAccess
     }
 
     /**
-     * Unset argument by id, implmentation for ArrayAccess.
+     * Unset argument by id, implementation for ArrayAccess.
      *
      * @param string $id Id.
      *
@@ -401,7 +306,7 @@ class Zikula_ServiceManager implements ArrayAccess
     public function offsetUnset($id)
     {
         if ($this->hasArgument($id)) {
-            unset($this->arguments[$id]);
+            $this->getParameterBag()->set($id, null);
         }
     }
 }
