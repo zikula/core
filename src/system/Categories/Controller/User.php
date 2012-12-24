@@ -163,7 +163,7 @@ class Categories_Controller_User extends Zikula_AbstractController
             return LogUtil::registerError($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
-        $userCatName = $this->getusercategoryname();
+        $userCatName = $this->getusercategorynameAction();
         if (!$userCatName) {
             return LogUtil::registerError($this->__('Error! Cannot determine user category root node name.'));
         }

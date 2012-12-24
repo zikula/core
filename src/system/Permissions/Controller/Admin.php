@@ -96,7 +96,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         // various other bits and pieces
         $dbtable = DBUtil::getTables();
         $permcolumn = $dbtable['group_perms_column'];
-        $ids = $this->getGroupsInfo();
+        $ids = $this->getGroupsInfoAction();
 
         $where = '';
         if ($enableFilter == 1) {
@@ -210,7 +210,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
             $components[$compparts[0]] = $compparts[0];
         }
 
-        $this->view->assign('groups', $this->getGroupsInfo());
+        $this->view->assign('groups', $this->getGroupsInfoAction());
         $this->view->assign('permissions', $permissions);
         $this->view->assign('components', $components);
 
@@ -336,7 +336,7 @@ class Permissions_Controller_Admin extends Zikula_AbstractController
         $permcolumn = $dbtable['group_perms_column'];
         $mlpermtype = $this->__('Group');
         $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
-        $ids = $this->getGroupsInfo();
+        $ids = $this->getGroupsInfoAction();
 
         $orderBy = "ORDER BY $permcolumn[sequence]";
         $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);

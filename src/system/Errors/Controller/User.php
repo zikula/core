@@ -47,7 +47,7 @@ class Errors_Controller_User extends Zikula_AbstractController
         }
 
         // load the stylesheet
-        PageUtil::addVar('stylesheet', 'system/Errors/style/style.css');
+        PageUtil::addVar('stylesheet', 'system/Errors/Resources/public/css/style.css');
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
