@@ -45,6 +45,11 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
         return $service;
     }
 
+    public function set($id, $service)
+    {
+        $this->attachService($id, $service);
+    }
+
     /**
      * Detach service.
      *
@@ -131,6 +136,11 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
         return $this->get($id);
     }
 
+    public function get($id)
+    {
+        return $this->getService($id);
+    }
+
     /**
      * True if we have the service $id registered.
      *
@@ -144,6 +154,11 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     public function hasService($id)
     {
         return $this->has($id);
+    }
+
+    public function has($id)
+    {
+        return $this->hasService($id);
     }
 
     /**

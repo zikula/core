@@ -64,7 +64,7 @@ class ServiceUtil
      *
      * @param string $id Service name.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use get()
      *
      * @return object

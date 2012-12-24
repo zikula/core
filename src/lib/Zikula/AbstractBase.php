@@ -203,7 +203,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     /**
      * Get the ServiceManager.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      *
      * @return Zikula_ServiceManager
      */
@@ -225,7 +225,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     /**
      * Get the EventManager.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use self::getDispatcher()
      *
      * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
@@ -761,7 +761,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service Name.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      *
      * @return mixed Service or null.
      */
@@ -787,7 +787,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service name.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      *
      * @return boolean
      */

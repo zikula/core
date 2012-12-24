@@ -1320,6 +1320,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * Get ServiceManager.
      *
+     * @deprecated since 1.3.6
+     * @see getContainer()
+     *
      * @return Zikula_ServiceManager The service manager.
      */
     public function getServiceManager()
@@ -1339,6 +1342,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
     /**
      * Get EventManager.
+     *
+     * @deprecated since 1.3.6
+     * @see getDispatcher()
      *
      * @return Zikula_Eventmanager The event manager.
      */

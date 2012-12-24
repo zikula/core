@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * EventUtil
  */
@@ -60,7 +62,7 @@ class EventUtil
      *
      * @param Zikula_Event $event Event.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @see dispatch()
      *
      * @return Zikula_Event
@@ -78,7 +80,7 @@ class EventUtil
      *
      * @return Zikula_Event
      */
-    public static function dispatch($name, Zikula_Event $event)
+    public static function dispatch($name, Event $event = null)
     {
         return self::getManager()->dispatch($name, $event);
     }
