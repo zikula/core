@@ -266,10 +266,18 @@ class JCSSUtil
         $scriptsMap = array(
             'json2' => array(
                 'production' => array(
-                    'path' => 'javascript/json2/json2.min.js',
+                    'path' => 'javascript/polyfills/json2/json2.min.js',
                 ),
                 'development' => array(
-                    'path' => 'javascript/json2/json2.js',
+                    'path' => 'javascript/polyfills/json2/json2.js',
+                )
+            ),
+            'storage' => array(
+                'production' => array(
+                    'path' => 'javascript/polyfills/storage/storage.min.js',
+                ),
+                'development' => array(
+                    'path' => 'javascript/polyfills/storage/storage.js',
                 )
             ),
             'jquery' => array(
