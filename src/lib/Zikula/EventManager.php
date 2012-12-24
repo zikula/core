@@ -152,7 +152,7 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
         $handlers = $this->getHandlers($event->getName());
         foreach ($handlers as $handler) {
             $this->invoke($handler, $event);
-            if ($event->isStopped()) {
+            if ($event->isPropagationStopped()) {
                 // stop signal was received from event, so stop.
                 break;
             }

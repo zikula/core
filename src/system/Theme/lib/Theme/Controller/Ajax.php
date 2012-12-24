@@ -18,7 +18,7 @@ class Theme_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $event = new Zikula_Event("theme.ajax_request");
         $this->eventManager->notify($event);
-        $this->throwNotFoundUnless($event->isStopped(), $this->__('No event handlers responded.'));
+        $this->throwNotFoundUnless($event->isPropagationStopped(), $this->__('No event handlers responded.'));
 
         return $event->getData();
     }

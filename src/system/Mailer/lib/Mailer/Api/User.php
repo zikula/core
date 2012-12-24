@@ -63,7 +63,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
         // Check for installed advanced Mailer module
         $event = new Zikula_Event('module.mailer.api.sendmessage', $this, $args);
         $this->eventManager->notify($event);
-        if ($event->isStopped()) {
+        if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 

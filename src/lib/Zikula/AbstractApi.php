@@ -30,7 +30,7 @@ abstract class Zikula_AbstractApi extends Zikula_AbstractBase
     {
         $event = new Zikula_Event('api.method_not_found', $this, array('method' => $method, 'args' => $args));
         $this->eventManager->notify($event);
-        if ($event->isStopped()) {
+        if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 
