@@ -76,13 +76,28 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @param Zikula_HookInterface $hook Hook interface.
+     * @param Zikula_AbstractHook $hook Hook interface.
      *
-     * @return Zikula_HookInterface
+     * @deprecated since 1.3.6
+     * @use self::dispatchHooks()
+     *
+     * @return Zikula_AbstractHook
      */
-    public function notifyHooks(Zikula_HookInterface $hook)
+    public function notifyHooks(Zikula_AbstractHook $hook)
     {
-        return $this->getService('zikula.hookmanager')->dispatch($hook->getName(), $hook);
+        return $this->get('zikula.hookmanager')->dispatch($hook->getName(), $hook);
+    }
+
+    /**
+     * Dispatch hooks.
+     *
+     * @param Zikula_AbstractHook $hook Hook interface.
+     *
+     * @return Zikula_AbstractHook
+     */
+    public function dispatchHooks($name, Zikula_AbstractHook $hook)
+    {
+        return $this->get('zikula.hookmanager')->dispatch($name, $hook);
     }
 
     /**

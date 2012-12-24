@@ -62,11 +62,26 @@ class ServiceUtil
      *
      * @param string $id Service name.
      *
+     * @deprecated since 1.3.6
+     * @use get()
+     *
      * @return object
      */
     public static function getService($id)
     {
-        return self::getManager()->getService($id);
+        return self::getManager()->get($id);
+    }
+
+    /**
+     * Convenience shortcut to get a service.
+     *
+     * @param string $id Service name.
+     *
+     * @return object
+     */
+    public static function get($id)
+    {
+        return self::getManager()->get($id);
     }
 
     /**

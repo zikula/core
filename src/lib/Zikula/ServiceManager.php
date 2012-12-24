@@ -66,6 +66,11 @@ class Zikula_ServiceManager implements ArrayAccess
         return $service;
     }
 
+    public function set($id, $service)
+    {
+        $this->attachService($id, $service);
+    }
+
     /**
      * Detach service.
      *
@@ -160,6 +165,11 @@ class Zikula_ServiceManager implements ArrayAccess
         return $this->services[$id]->getService();
     }
 
+    public function get($id)
+    {
+        return $this->getService($id);
+    }
+
     /**
      * True if we have the service $id registered.
      *
@@ -170,6 +180,11 @@ class Zikula_ServiceManager implements ArrayAccess
     public function hasService($id)
     {
         return array_key_exists($id, $this->services);
+    }
+
+    public function has($id)
+    {
+        return $this->hasService($id);
     }
 
     /**

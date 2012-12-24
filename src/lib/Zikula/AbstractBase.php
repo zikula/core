@@ -203,6 +203,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     /**
      * Get the ServiceManager.
      *
+     * @deprecated since 1.3.6
+     *
      * @return Zikula_ServiceManager
      */
     public function getServiceManager()
@@ -211,11 +213,34 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     }
 
     /**
+     * Get the ServiceManager.
+     *
+     * @return Zikula_ServiceManager
+     */
+    public function getContainer()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
      * Get the EventManager.
      *
-     * @return Zikula_EventManager
+     * @deprecated since 1.3.6
+     * @use self::getDispatcher()
+     *
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    /**
+     * Get the EventManager.
+     *
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     */
+    public function getDispatcher()
     {
         return $this->eventManager;
     }
@@ -736,11 +761,39 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service Name.
      *
+     * @deprecated since 1.3.6
+     *
      * @return mixed Service or null.
      */
     protected function getService($id)
     {
-        return $this->serviceManager->getService($id);
+        return $this->serviceManager->get($id);
+    }
+
+    /**
+     * Convenience to get a service.
+     *
+     * @param string $id Service Name.
+     *
+     * @return mixed Service or null.
+     */
+    protected function get($id)
+    {
+        return $this->serviceManager->get($id);
+    }
+
+    /**
+     * Convenience hasService shortcut.
+     *
+     * @param string $id Service name.
+     *
+     * @deprecated since 1.3.6
+     *
+     * @return boolean
+     */
+    protected function hasService($id)
+    {
+        return $this->serviceManager->has($id);
     }
 
     /**
@@ -750,8 +803,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @return boolean
      */
-    protected function hasService($id)
+    protected function has($id)
     {
-        return $this->serviceManager->hasService($id);
+        return $this->serviceManager->has($id);
     }
 }
