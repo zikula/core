@@ -962,9 +962,8 @@ class ModUtil
         $serviceId = strtolower("module.$className");
         $sm = ServiceUtil::getManager();
 
-        $callable = false;
-        if ($sm->hasService($serviceId)) {
-            $object = $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
@@ -983,7 +982,7 @@ class ModUtil
                     return false;
                 }
             }
-            $sm->attachService(strtolower($serviceId), $object);
+            $sm->set(strtolower($serviceId), $object);
         }
 
         return $object;
@@ -1101,7 +1100,7 @@ class ModUtil
             }
 
             // get the theme
-            if (ServiceUtil::getManager()->getService('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
+            if (ServiceUtil::getManager()->get('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     include_once $file;

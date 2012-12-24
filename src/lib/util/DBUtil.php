@@ -63,7 +63,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
 
             return $cacheDriver->fetch($prefix . $table . $key);
         }
@@ -87,7 +87,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
             $cacheDriver->save($prefix . $table . $key, $fields);
         }
     }
@@ -105,7 +105,7 @@ class DBUtil
             $databases = ServiceUtil::getManager()->getArgument('databases');
             $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
             $prefix = md5(serialize($databases[$connName]));
-            $cacheDriver = ServiceUtil::getManager()->getService('doctrine.cachedriver');
+            $cacheDriver = ServiceUtil::getManager()->get('doctrine.cachedriver');
             $cacheDriver->deleteByPrefix($prefix . $table);
         }
     }

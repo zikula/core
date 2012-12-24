@@ -120,7 +120,7 @@ class EventUtil
      */
     public static function attachCustomHandlers($dir)
     {
-        self::$eventManager->getContainer()->getService('zikula')->attachHandlers($dir);
+        self::$eventManager->getContainer()->get('zikula')->attachHandlers($dir);
     }
 
     /**
@@ -135,7 +135,7 @@ class EventUtil
     public static function attachEventHandler($className)
     {
         $serviceManager = ServiceUtil::getManager();
-        $serviceManager->getService('zikula')->attachEventHandler($className);
+        $serviceManager->get('zikula')->attachEventHandler($className);
     }
 
     /**

@@ -13,7 +13,7 @@ in the vendors documentation.
 Example of use in Zikula:
 
     // get entitymanager
-    $entityManager = $this->serviceManager->getService('doctrine.entitymanager');
+    $entityManager = $this->serviceManager->get('doctrine.entitymanager');
 
     // get the doctrine event manager
     $evm = $entityManager->getEventManager();

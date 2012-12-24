@@ -28,7 +28,7 @@ class LogUtil
      */
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
         $msgs = $session->getMessages(Zikula_Session::MESSAGE_STATUS);
         $errs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
 
@@ -76,7 +76,7 @@ class LogUtil
      */
     public static function getErrorMessages($delete = true, $reverse = true)
     {
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
         $msgs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
 
         if ($delete) {
@@ -193,7 +193,7 @@ class LogUtil
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
         self::log($message, Zikula_AbstractErrorHandler::DEBUG);
-        $session = ServiceUtil::getManager()->getService('session');
+        $session = ServiceUtil::getManager()->get('session');
 
         if ($type === Zikula_AbstractErrorHandler::INFO) {
             $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
@@ -234,7 +234,7 @@ class LogUtil
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
                 $serviceManager = ServiceUtil::getManager();
-                $request = $serviceManager->getService('request');
+                $request = $serviceManager->get('request');
 
                 $loginArgs = array();
                 if ($request->isGet()) {
@@ -338,11 +338,11 @@ class LogUtil
         }
 
         $serviceManager = ServiceUtil::getManager();
-        if (!$serviceManager->hasService('system.errorreporting')) {
+        if (!$serviceManager->has('system.errorreporting')) {
             return;
         }
 
-        $errorReporting = $serviceManager->getService('system.errorreporting');
+        $errorReporting = $serviceManager->get('system.errorreporting');
         $errorReporting->handler($level, $msg);
     }
 

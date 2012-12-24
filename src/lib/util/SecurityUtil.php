@@ -74,7 +74,7 @@ class SecurityUtil
             $serviceManager = ServiceUtil::getManager();
         }
 
-        $tokenGenerator = $serviceManager->getService('token.generator');
+        $tokenGenerator = $serviceManager->get('token.generator');
         if (!$forceUnique && System::getVar('sessioncsrftokenonetime')) {
             $storage = $tokenGenerator->getStorage();
             $tokenId = SessionUtil::getVar('sessioncsrftokenid');
@@ -110,7 +110,7 @@ class SecurityUtil
             $serviceManager = ServiceUtil::getManager();
         }
 
-        $tokenValidator = $serviceManager->getService('token.validator');
+        $tokenValidator = $serviceManager->get('token.validator');
         if (System::getVar('sessioncsrftokenonetime')) {
             $result = $tokenValidator->validate($token, false, false);
             if ($result) {

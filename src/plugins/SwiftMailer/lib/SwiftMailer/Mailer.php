@@ -39,7 +39,7 @@ class SystemPlugins_SwiftMailer_Mailer
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->mailer = $serviceManager->getService('mailer');
+        $this->mailer = $serviceManager->get('mailer');
     }
 
     /**

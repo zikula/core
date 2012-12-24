@@ -5,7 +5,7 @@ mailer.simple - For simple all in one mail, see SystemPlugins_SwiftMailer_Mailer
 mailer - This returns an instance of Swift_Mailer configured with the required
          transport.
 
-    $mailer = $serviceManager->getService('mailer');
+    $mailer = $serviceManager->get('mailer');
     $message = Swift_Message::newInstance();
     $message->setSubject('Your subject')
             ->setFrom(array('john@doe.com' => 'John Doe'))

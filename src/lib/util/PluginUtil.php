@@ -129,12 +129,12 @@ class PluginUtil
     {
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
 
         $r = new ReflectionClass($className);
-        $plugin = $r->newInstanceArgs(array($sm, $sm->getService('event_dispatcher')));
+        $plugin = $r->newInstanceArgs(array($sm, $sm->get('event_dispatcher')));
 
         if (!$plugin instanceof Zikula_AbstractPlugin) {
             throw new LogicException(sprintf('Class %s must be an instance of Zikula_AbstractPlugin', $className));
@@ -151,7 +151,7 @@ class PluginUtil
             $plugin->setBooted();
         }
 
-        return $sm->attachService($serviceId, $plugin);
+        return $sm->set($serviceId, $plugin);
     }
 
     /**
@@ -165,8 +165,8 @@ class PluginUtil
     {
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
     }
 
@@ -456,11 +456,11 @@ class PluginUtil
     public static function isAvailable($id)
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->hasService($id)) {
+        if (!$sm->has($id)) {
             return false;
         }
 
-        $plugin = $sm->getService($id);
+        $plugin = $sm->get($id);
         if ($plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
             return true;
         }

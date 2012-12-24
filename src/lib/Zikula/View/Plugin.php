@@ -76,11 +76,11 @@ class Zikula_View_Plugin extends Zikula_View
         $serviceManager = ServiceUtil::getManager();
         $serviceId = strtolower(sprintf('zikula.renderplugin.%s.%s', $moduleName, $pluginName));
 
-        if (!$serviceManager->hasService($serviceId)) {
+        if (!$serviceManager->has($serviceId)) {
             $view = new self($serviceManager, $moduleName, $pluginName, $caching);
-            $serviceManager->attachService($serviceId, $view);
+            $serviceManager->set($serviceId, $view);
         } else {
-            return $serviceManager->getService($serviceId);
+            return $serviceManager->get($serviceId);
         }
 
         if (!is_null($caching)) {

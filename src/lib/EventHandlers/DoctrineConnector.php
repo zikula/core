@@ -55,10 +55,10 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             Doctrine_Core::debug(System::isDevelopmentMode());
             $this->doctrineManager = Doctrine_Manager::getInstance();
             $internalEvent = new Zikula_Event('doctrine.configure', $this->doctrineManager);
-            $this->eventManager->notify($internalEvent);
+            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
 
             $internalEvent = new Zikula_Event('doctrine.cache', $this->doctrineManager);
-            $this->eventManager->notify($internalEvent);
+            $this->eventManager->dispatch('doctrine.cache', $internalEvent);
         }
 
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : false;
@@ -78,7 +78,7 @@ class DoctrineListener extends Zikula_AbstractEventHandler
                 $connection->setOption('password', $connectionInfo['password']);
             }
             $internalEvent = new Zikula_Event('doctrine.configure', $connection);
-            $this->eventManager->notify($internalEvent);
+            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
         } catch (PDOException $e) {
             throw new PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
         }
@@ -139,7 +139,7 @@ class DoctrineListener extends Zikula_AbstractEventHandler
                 $options = array_merge($options, array('servers' => $servers, 'compression' => $this->serviceManager['dbcache.compression']));
             }
 
-            $cacheDriver = $this->serviceManager->attachService('doctrine.cachedriver', $r->newInstance($options));
+            $this->serviceManager->set('doctrine.cachedriver', $cacheDriver = $r->newInstance($options));
             $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $cacheDriver);
             $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $cacheDriver);
 

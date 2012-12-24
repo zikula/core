@@ -94,7 +94,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
             $this->eventManager = $object->getDispatcher();
         } elseif ($object instanceof Zikula_ServiceManager) {
             $this->serviceManager = $object;
-            $this->eventManager = $object->getService('event_dispatcher');
+            $this->eventManager = $object->get('event_dispatcher');
         } elseif ($object instanceof Zikula_EventManager) {
             $this->eventManager = $object;
             $this->serviceManager = $object->getContainer();

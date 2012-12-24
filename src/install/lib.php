@@ -257,7 +257,7 @@ function install(Zikula_Core $core)
 
                     // create our new site admin
                     // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
-                    $serviceManager->getService('session')->start();
+                    $serviceManager->get('session')->start();
 
                     $authenticationInfo = array(
                         'login_id'  => $username,

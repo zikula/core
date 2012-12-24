@@ -278,11 +278,11 @@ class Zikula_View_Theme extends Zikula_View
         $serviceId = 'zikula.theme';
         $serviceManager = ServiceUtil::getManager();
 
-        if (!$serviceManager->hasService($serviceId)) {
+        if (!$serviceManager->has($serviceId)) {
             $themeInstance = new self($serviceManager, $themeName);
-            $serviceManager->attachService($serviceId, $themeInstance);
+            $serviceManager->set($serviceId, $themeInstance);
         } else {
-            $themeInstance = $serviceManager->getService($serviceId);
+            $themeInstance = $serviceManager->get($serviceId);
         }
 
         if (!is_null($caching)) {

@@ -19,7 +19,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('event_dispatcher');
+        $this->eventManager = $this->serviceManager->get('event_dispatcher');
         $this->_setup();
 
         $meta = $this->getMeta();
@@ -89,7 +89,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $serviceManager['dbcache.type'] . 'Cache');
         $dbCache = $r->newInstance();
         $ORMConfig = new \Doctrine\ORM\Configuration;
-        $serviceManager->attachService('doctrine.configuration', $ORMConfig);
+        $serviceManager->set('doctrine.configuration', $ORMConfig);
         $ORMConfig->setMetadataCacheImpl($dbCache);
 
         // create proxy cache dir
@@ -101,15 +101,15 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
         $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
-        $serviceManager->attachService('doctrine.annotationreader', $cacheReader);
+        $serviceManager->set('doctrine.annotationreader', $cacheReader);
 
         // setup annotation driver
         $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
-        $serviceManager->attachService('doctrine.annotationdriver', $annotationDriver);
+        $serviceManager->set('doctrine.annotationdriver', $annotationDriver);
 
         // setup driver chains
         $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
-        $serviceManager->attachService('doctrine.driverchain', $driverChain);
+        $serviceManager->set('doctrine.driverchain', $driverChain);
 
         // configure Doctrine ORM
         $ORMConfig->setMetadataDriverImpl($annotationDriver);
@@ -124,7 +124,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
 
         // setup doctrine eventmanager
         $eventManager = new \Doctrine\Common\EventManager;
-        $serviceManager->attachService('doctrine.eventmanager', $eventManager);
+        $serviceManager->set('doctrine.eventmanager', $eventManager);
 
          // setup MySQL specific listener (storage engine and encoding)
         if ($config['dbdriver'] == 'mysql') {
@@ -136,6 +136,6 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
 
         // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
-        $serviceManager->attachService('doctrine.entitymanager', $entityManager);
+        $serviceManager->set('doctrine.entitymanager', $entityManager);
     }
 }

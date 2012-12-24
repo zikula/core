@@ -30,14 +30,14 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
         }
         
         $id = 'doctrine_extensions.listener.' . $type;
-        if (!$this->serviceManager->hasService($id)) {
+        if (!$this->serviceManager->has($id)) {
             throw new InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
 
-        $annotationReader = $this->serviceManager->getService('doctrine.annotationreader');
-        $annotationDriver = $this->serviceManager->getService('doctrine.annotationdriver');
+        $annotationReader = $this->serviceManager->get('doctrine.annotationreader');
+        $annotationDriver = $this->serviceManager->get('doctrine.annotationdriver');
         
-        $chain = $this->serviceManager->getService('doctrine.driverchain');
+        $chain = $this->serviceManager->get('doctrine.driverchain');
         
         // specific behaviour required for certain drivers.
         $entityName = null;
@@ -54,7 +54,7 @@ class SystemPlugins_DoctrineExtensions_ExtensionsManager
             $chain->addDriver($annotationDriver, $entityName);
         }
 
-        $this->listeners[$type] = $this->serviceManager->getService($id);
+        $this->listeners[$type] = $this->serviceManager->get($id);
         $this->listeners[$type]->setAnnotationReader($annotationReader);
         $this->eventManager->addEventSubscriber($this->listeners[$type]);
                 

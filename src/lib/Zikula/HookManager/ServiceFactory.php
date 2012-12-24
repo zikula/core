@@ -40,7 +40,7 @@ class Zikula_HookManager_ServiceFactory
     public function __construct(Zikula_ServiceManager $serviceManager, $serviceId)
     {
         $this->serviceManager = $serviceManager;
-        if (!$serviceManager->hasService($serviceId)) {
+        if (!$serviceManager->has($serviceId)) {
             throw new Zikula_HookManager_Exception_InvalidArgumentException(sprintf('Service %s is not registered in ServiceManager', $serviceId));
         }
         $this->serviceId = $serviceId;
@@ -60,7 +60,7 @@ class Zikula_HookManager_ServiceFactory
      */
     public function buildService($id, $className, $method)
     {
-        if (!$this->serviceManager->hasService($id)) {
+        if (!$this->serviceManager->has($id)) {
             $definition = new Zikula_ServiceManager_Definition($className, array(new Zikula_ServiceManager_Reference($this->serviceId)));
             $this->serviceManager->registerService($id, $definition);
         }

@@ -445,7 +445,7 @@ class System
             return false;
         }
 
-        $mailer = ServiceUtil::getManager()->getService('mailer.simple');
+        $mailer = ServiceUtil::getManager()->get('mailer.simple');
         $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
         $failedRecipients = array();
         if ($headers) {

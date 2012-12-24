@@ -11,12 +11,12 @@ inject into your application:
 
     [php]
     $foo = new Foo(); // some class
-    $serviceManager->attachService('example.foo', $foo);
+    $serviceManager->set('example.foo', $foo);
 
     // retrieve the shared service
-    $test = $serviceManager->getService('example.foo');
+    $test = $serviceManager->get('example.foo');
 
-Remember if you use $serviceManager->attachService('example.foo', $foo, false);
+Remember if you use $serviceManager->set('example.foo', $foo, false);
 then you will will always receive a php clone of the object, so you will need to
 follow all the normal cautions of object cloning.
 
@@ -38,7 +38,7 @@ When you need a 'example.bar' service, issue the following command.  Because
 the definition is for a multiple instance, you will get a new Bar each time.
 
     [php]
-    $bar = $serviceManager->getService('example.bar');
+    $bar = $serviceManager->get('example.bar');
 
 ## Building a definition for single instance services (shared services)
 
@@ -51,17 +51,17 @@ The following code will replicate the above example as a shared service (single 
     $definition = new Definition('EventManager');
     $serviceManager->registerService(new Service('example.eventmanager', $definition, true));
 
-The first time we use `$serviceManager->getService('example.eventmanager');`
+The first time we use `$serviceManager->get('example.eventmanager');`
 it will instanciate the instance and store it.  Each subsequent call to
-`$serviceManager->getService('example.eventmanager');` will return the same
+`$serviceManager->get('example.eventmanager');` will return the same
 instance - much like a singleton.
 
 First time called, creates the service. Second time call, the same instance will be returned.
 In the following example $eventManager === $eventManager2
 
     [php]
-    $eventManager = $serviceManager->getService('example.eventmanager');
-    $eventManager2 = $serviceManager->getService('example.eventmanager');
+    $eventManager = $serviceManager->get('example.eventmanager');
+    $eventManager2 = $serviceManager->get('example.eventmanager');
 
 
 ## Building definitions with constructor arguments and methods
@@ -84,7 +84,7 @@ The following example will replicate the above code in a definition.
 
 Get a new female blonde user who likes pizza on demand.
 
-    $user = $serviceManager->getService('example.user');
+    $user = $serviceManager->get('example.user');
 
 ## Passing other classes as constructor (or method) arguments.
 
@@ -115,7 +115,7 @@ Option 3 - Pass reference to an attached service
 
     [php]
     $cd = new Cd('Beetles');
-    $serviceManager->attachService('bettles.cd', $cd);
+    $serviceManager->set('bettles.cd', $cd);
     $playerDef = new Definition('Player', array(new Service('bettles.cd')));
     $serviceManager->registerService(new Service('cdplayer', $playerDef));
 

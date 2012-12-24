@@ -292,8 +292,8 @@ class BlockUtil
         $modinfo = ModUtil::getInfoFromName($modname);
 
         $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block);
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
 
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
@@ -337,7 +337,7 @@ class BlockUtil
                 }
             }
 
-            $sm->attachService($serviceId, $blockInstance);
+            $sm->set($serviceId, $blockInstance);
         }
 
         $result = ($isOO ? $blockInstance : true);
@@ -478,7 +478,7 @@ class BlockUtil
             $uid = UserUtil::getVar('uid');
 
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->getService('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine.entitymanager');
 
             $entity = 'Blocks_Entity_UserBlock';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
