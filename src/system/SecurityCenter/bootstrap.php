@@ -13,18 +13,18 @@
  */
 
 if (!defined('HTMLPURIFIER_PREFIX')) {
-    define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/lib/vendor/htmlpurifier'));
+    define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/vendor/htmlpurifier'));
 }
 
 if (!defined('PHPIDS_PATH_PREFIX')) {
-    define('PHPIDS_PATH_PREFIX', realpath(dirname(__FILE__) . '/lib/vendor/IDS'));
+    define('PHPIDS_PATH_PREFIX', realpath(dirname(__FILE__) . '/vendor/IDS'));
 }
 
 // include the PHPIDS and get access to the result object
-set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/lib/vendor'));
-ZLoader::addAutoloader('HTMLPurifier', realpath(__DIR__ . '/lib/vendor/htmlpurifier'));
-ZLoader::addAutoloader('IDS', realpath(__DIR__ . '/lib/vendor'));
-require_once realpath(__DIR__ . '/lib/vendor/htmlpurifier/HTMLPurifier.php');
+set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/vendor'));
+ZLoader::addAutoloader('HTMLPurifier', realpath(dirname(__FILE__) . '/vendor/htmlpurifier'));
+ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/vendor'));
+include_once __DIR__.'/vendor/htmlpurifier/HTMLPurifier.php';
 
 // register event handlers
 //EventUtil::attachCustomHandlers('system/SecurityCenter/lib/SecurityCenter/EventHandler');

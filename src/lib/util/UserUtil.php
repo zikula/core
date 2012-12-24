@@ -1912,7 +1912,7 @@ class UserUtil
             if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
                 $pagetheme = $thememobile;
             } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
-                include_once("system/Theme/lib/vendor/Mobile_Detect.php");
+                include_once("system/Theme/vendor/Mobile_Detect.php");
                 $detect = new Mobile_Detect();
                 if ($detect->isMobile()) {
                     $pagetheme = $thememobile;
