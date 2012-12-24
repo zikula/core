@@ -19,7 +19,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->eventManager = $this->serviceManager->getService('event_dispatcher');
         $this->_setup();
 
         $meta = $this->getMeta();
@@ -78,7 +78,7 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         $autoloader->register('Doctrine', dirname(__FILE__) . '/lib/vendor', '\\');
         $autoloader->register('DoctrineProxy', 'ztemp/doctrinemodels', '\\');
 
-        $serviceManager = $this->eventManager->getServiceManager();
+        $serviceManager = $this->eventManager->getContainer();
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         $dbConfig = array('host' => $config['host'],
                           'user' => $config['user'],

@@ -123,7 +123,7 @@ class Zikula_DebugToolbar
     public function getContent()
     {
         // check which output type should be returned
-        $serviceManager = $this->eventManager->getServiceManager();
+        $serviceManager = $this->eventManager->getContainer();
         $logType = isset($serviceManager['log.to_debug_toolbar_output']) ? $serviceManager['log.to_debug_toolbar_output'] : 0;
 
         switch ($logType) {
@@ -192,7 +192,7 @@ class Zikula_DebugToolbar
      */
     public function asJSON()
     {
-        $serviceManager = $this->eventManager->getServiceManager();
+        $serviceManager = $this->eventManager->getContainer();
         $request = $serviceManager->getService('request');
 
         // check if security key is defined

@@ -188,8 +188,8 @@ class Zikula_Core
 
         $this->bootime = microtime(true);
 
-        $this->serviceManager = new Zikula_ServiceManager('zikula.servicemanager');
-        $this->eventManager = $this->serviceManager->attachService('zikula.eventmanager', new Zikula_EventManager($this->serviceManager));
+        $this->serviceManager = new Zikula_ServiceManager('service_container');
+        $this->eventManager = $this->serviceManager->attachService('event_dispatcher', new Zikula_EventManager($this->serviceManager));
         $this->serviceManager->attachService('zikula', $this);
 
         $this->attachHandlers($this->handlerDir);
@@ -214,7 +214,7 @@ class Zikula_Core
         $services = $this->serviceManager->listServices();
         rsort($services);
         foreach ($services as $id) {
-            if (!in_array($id, array('zikula', 'zikula.servicemanager', 'zikula.eventmanager'))) {
+            if (!in_array($id, array('zikula', 'service_container', 'event_dispatcher'))) {
                 $this->serviceManager->unregisterService($id);
             }
         }

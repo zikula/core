@@ -14,14 +14,14 @@ use Zikula_Request_Http as Request;
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getServiceManager()->attachService('request', $request);
+$core->getContainer()->attachService('request', $request);
 $core->init();
 
 if ($request->isXmlHttpRequest()) {
     __frontcontroller_ajax();
 }
 
-$core->getEventManager()->notify(new Zikula_Event('frontcontroller.predispatch'));
+$core->getDispatcher()->notify(new Zikula_Event('frontcontroller.predispatch'));
 
 // Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
@@ -96,7 +96,7 @@ try {
 
 } catch (Exception $e) {
     $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-    $core->getEventManager()->dispatch('frontcontroller.exception', $event);
+    $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
         $httpCode = $event['httpcode'];

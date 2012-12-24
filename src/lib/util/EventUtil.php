@@ -52,7 +52,7 @@ class EventUtil
             return self::$eventManager;
         }
 
-        self::$eventManager = $core->getEventManager();
+        self::$eventManager = $core->getDispatcher();
 
         return self::$eventManager;
     }
@@ -120,7 +120,7 @@ class EventUtil
      */
     public static function attachCustomHandlers($dir)
     {
-        self::$eventManager->getServiceManager()->getService('zikula')->attachHandlers($dir);
+        self::$eventManager->getContainer()->getService('zikula')->attachHandlers($dir);
     }
 
     /**

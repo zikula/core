@@ -171,7 +171,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     public function __construct(Zikula_ServiceManager $serviceManager, $moduleName = '', $caching = null)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('zikula.eventmanager');
+        $this->eventManager = $this->serviceManager->getService('event_dispatcher');
         $this->request = $this->serviceManager->getService('request');
 
         // set the error reporting level

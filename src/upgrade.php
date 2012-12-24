@@ -22,7 +22,7 @@ ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getServiceManager()->attachService('request', $request);
+$core->getContainer()->attachService('request', $request);
 ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
 include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 
@@ -33,7 +33,7 @@ if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
 }
 
 PluginUtil::loadPlugin('SystemPlugin_Doctrine_Plugin');
-$eventManager = $core->getEventManager();
+$eventManager = $core->getDispatcher();
 $eventManager->attach('core.init', 'upgrade_suppressErrors');
 
 // load zikula core

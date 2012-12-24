@@ -48,7 +48,7 @@ class SystemPlugin_DoctrineExtensions_Plugin extends Zikula_AbstractPlugin imple
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
         
         include 'ExtensionsManager.php';
-        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_DoctrineExtensions_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_DoctrineExtensions_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('service_container')));
         $this->serviceManager->registerService('doctrine_extensions', $definition);
 
         $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');

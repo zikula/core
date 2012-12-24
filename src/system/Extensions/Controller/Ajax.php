@@ -59,7 +59,7 @@ class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN));
 
         // get hookmanager
-        $hookManager = $this->serviceManager->getService('zikula.hookmanager');
+        $hookManager = $this->serviceManager->getService('hook_dispatcher');
 
         // check if binding between areas exists
         $binding = HookUtil::getBindingBetweenAreas($subscriberArea, $providerArea);

@@ -61,7 +61,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
         $autoloader->register('Imagine', dirname(__FILE__) . '/lib/vendor', '\\');
 
         $definition = new Zikula_ServiceManager_Definition('SystemPlugin_Imagine_Manager', array(
-            new Zikula_ServiceManager_Reference('zikula.servicemanager'),
+            new Zikula_ServiceManager_Reference('service_container'),
             new Zikula_ServiceManager_Reference($this->getServiceId())
         ));
         $this->serviceManager->registerService('systemplugin.imagine.manager', $definition, false);
@@ -129,7 +129,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function getConfigurationController()
     {
-        return new SystemPlugin_Imagine_Configuration($this->getServiceManager(), $this);
+        return new SystemPlugin_Imagine_Configuration($this->getContainer(), $this);
     }
 
     /**
@@ -248,7 +248,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function getManager()
     {
-        return $this->getServiceManager()->getService('systemplugin.imagine.manager');
+        return $this->getContainer()->get('systemplugin.imagine.manager');
     }
 
     /**

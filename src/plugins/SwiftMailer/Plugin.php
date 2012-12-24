@@ -114,7 +114,7 @@ class SystemPlugin_SwiftMailer_Plugin extends Zikula_AbstractPlugin implements Z
         $this->serviceManager->registerService('mailer', $definition, false);
 
         // register simple mailer service
-        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_SwiftMailer_Mailer', array(new Zikula_ServiceManager_Reference('zikula.servicemanager')));
+        $definition = new Zikula_ServiceManager_Definition('SystemPlugins_SwiftMailer_Mailer', array(new Zikula_ServiceManager_Reference('service_container')));
         $this->serviceManager->registerService('mailer.simple', $definition);
     }
 

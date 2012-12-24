@@ -103,11 +103,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupHookManager(Zikula_Event $event)
     {
         $storageDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_Storage_Doctrine');
-        $smRef = new Zikula_ServiceManager_Reference('zikula.servicemanager');
+        $smRef = new Zikula_ServiceManager_Reference('service_container');
         $eventManagerDef = new Zikula_ServiceManager_Definition('Zikula_EventManager', array($smRef));
-        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'zikula.eventmanager'));
+        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_ServiceFactory', array($smRef, 'event_dispatcher'));
         $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula_HookManager', array($storageDef, $eventManagerDef, $hookFactoryDef));
-        $this->serviceManager->registerService('zikula.hookmanager', $hookManagerDef);
+        $this->serviceManager->registerService('hook_dispatcher', $hookManagerDef);
     }
 
     /**
@@ -482,14 +482,14 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupDebugToolbar(Zikula_Event $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getServiceManager()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getArgument('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
 
             // create definitions
             $toolbar = new Zikula_ServiceManager_Definition(
                             'Zikula_DebugToolbar',
-                            array(new Zikula_ServiceManager_Reference('zikula.eventmanager')),
+                            array(new Zikula_ServiceManager_Reference('event_dispatcher')),
                             array('addPanels' => array(0 => array(
                                                     new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
                                                     new Zikula_ServiceManager_Reference('debug.toolbar.panel.config'),
@@ -711,7 +711,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         foreach ($GLOBALS['ZConfig'] as $config) {
-            $event->getSubject()->getServiceManager()->loadArguments($config);
+            $event->getSubject()->getContainer()->loadArguments($config);
         }
 
         $event->stopPropagation();

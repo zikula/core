@@ -259,7 +259,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      */
     public function notifyHooks(Zikula_HookInterface $hook)
     {
-        return $this->view->getServiceManager()->getService('zikula.hookmanager')->dispatch($hook->getName(), $hook);
+        return $this->view->getContainer()->get('hook_dispatcher')->dispatch($hook->getName(), $hook);
     }
 
     /**

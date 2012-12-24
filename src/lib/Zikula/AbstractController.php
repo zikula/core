@@ -85,7 +85,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     public function notifyHooks(Zikula_AbstractHook $hook)
     {
-        return $this->get('zikula.hookmanager')->dispatch($hook->getName(), $hook);
+        return $this->get('hook_dispatcher')->dispatch($hook->getName(), $hook);
     }
 
     /**
@@ -97,7 +97,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     public function dispatchHooks($name, Zikula_AbstractHook $hook)
     {
-        return $this->get('zikula.hookmanager')->dispatch($name, $hook);
+        return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
 
     /**

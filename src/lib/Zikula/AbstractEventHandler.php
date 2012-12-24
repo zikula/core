@@ -64,7 +64,7 @@ abstract class Zikula_AbstractEventHandler
     public function __construct(Zikula_EventManager $eventManager)
     {
         $this->eventManager = $eventManager;
-        $this->serviceManager = $this->eventManager->getServiceManager();
+        $this->serviceManager = $this->eventManager->getContainer();
         $this->setupHandlerDefinitions();
     }
 
