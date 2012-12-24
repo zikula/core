@@ -334,7 +334,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(Zikula_Event $event)
     {
         $session = $this->serviceManager->get('session');
-        $request = $this->serviceManager->getService('request');
+        $request = $this->serviceManager->get('request');
         $request->setSession($session);
         try {
             if (!$session->start()) {
@@ -434,8 +434,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if ($this->serviceManager['log.to_display'] || $this->serviceManager['log.sql.to_display']) {
-            $displayLogger = new Zend_Log();
-            $this->serviceManager->set('zend.logger.display', $displayLogger);
+            $this->serviceManager->set('zend.logger.display', $displayLogger = new Zend_Log());
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream('php://output');
             $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
@@ -444,8 +443,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if ($this->serviceManager['log.to_file'] || $this->serviceManager['log.sql.to_file']) {
-            $fileLogger = new Zend_Log();
-            $this->serviceManager->set('zend.logger.file', $fileLogger);
+            $this->serviceManager->set('zend.logger.file', $fileLogger = new Zend_Log());
             $filename = LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
             $writer = new Zend_Log_Writer_Stream($filename);
@@ -626,9 +624,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
             if ($event->getName() == 'theme.prefetch') {
                 // force object construction (debug toolbar constructor registers javascript and css files via PageUtil)
-                $this->serviceManager->getService('debug.toolbar');
+                $this->serviceManager->get('debug.toolbar');
             } else {
-                $toolbar = $this->serviceManager->getService('debug.toolbar');
+                $toolbar = $this->serviceManager->get('debug.toolbar');
                 $html = $toolbar->getContent() . "\n</body>";
                 $event->setData(str_replace('</body>', $html, $event->getData()));
             }

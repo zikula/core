@@ -63,7 +63,7 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
 
         if (!$serviceManager->has($serviceId)) {
             $view = new self($serviceManager, $moduleName, $pluginName, $caching);
-            $serviceManager->set(($serviceId, $view);
+            $serviceManager->set($serviceId, $view);
         } else {
             return $serviceManager->get($serviceId);
         }

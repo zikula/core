@@ -129,8 +129,8 @@ class PluginUtil
     {
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
 
         $r = new ReflectionClass($className);
@@ -151,7 +151,7 @@ class PluginUtil
             $plugin->setBooted();
         }
 
-        return $sm->attachService($serviceId, $plugin);
+        return $sm->set($serviceId, $plugin);
     }
 
     /**
@@ -165,8 +165,8 @@ class PluginUtil
     {
         $sm = ServiceUtil::getManager();
         $serviceId = self::getServiceId($className);
-        if ($sm->hasService($serviceId)) {
-            return $sm->getService($serviceId);
+        if ($sm->has($serviceId)) {
+            return $sm->get($serviceId);
         }
     }
 
@@ -460,7 +460,7 @@ class PluginUtil
             return false;
         }
 
-        $plugin = $sm->getService($id);
+        $plugin = $sm->get($id);
         if ($plugin->hasBooted() && $plugin->isInstalled() && $plugin->isEnabled()) {
             return true;
         }

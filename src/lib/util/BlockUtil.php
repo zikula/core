@@ -307,7 +307,8 @@ class BlockUtil
 
         $result = $blockInstance;
 
-        $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
+            $sm->set($serviceId, $blockInstance);
+        }
 
         // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
@@ -432,7 +433,7 @@ class BlockUtil
             $uid = UserUtil::getVar('uid');
 
             $sm = ServiceUtil::getManager();
-            $entityManager = $sm->getService('doctrine.entitymanager');
+            $entityManager = $sm->get('doctrine.entitymanager');
 
             $entity = 'Blocks_Entity_UserBlock';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));

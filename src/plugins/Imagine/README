@@ -87,7 +87,7 @@ To access it simply call:
 
 or
 
-    $manager = ServiceUtil::getManager()->getService('systemplugin.imagine.manager');
+    $manager = ServiceUtil::getManager()->get('systemplugin.imagine.manager');
 
 ### Simple usage - default settings
 

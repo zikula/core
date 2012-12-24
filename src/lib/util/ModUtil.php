@@ -936,12 +936,26 @@ class ModUtil
         $serviceId = strtolower("module.$className");
         $sm = ServiceUtil::getManager();
 
-        $callable = false;
         if ($sm->has($serviceId)) {
             $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
+            try {
+                if (strrpos($className, 'Api') && !$object instanceof Zikula_AbstractApi) {
+                    throw new LogicException(sprintf('Api %s must inherit from Zikula_AbstractApi', $className));
+                } elseif (!strrpos($className, 'Api') && !$object instanceof Zikula_AbstractController) {
+                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_AbstractController', $className));
+                }
+            } catch (LogicException $e) {
+                if (System::isDevelopmentMode()) {
+                    throw $e;
+                } else {
+                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
+
+                    return false;
+                }
+            }
             $sm->set(strtolower($serviceId), $object);
         }
 
@@ -1048,6 +1062,7 @@ class ModUtil
 
                 return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
             }
+
 
             // try to load plugin
             // This kind of eventhandler should

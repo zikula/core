@@ -445,7 +445,7 @@ class System
             return false;
         }
 
-        $mailer = ServiceUtil::getManager()->getService('mailer.simple');
+        $mailer = ServiceUtil::getManager()->get('mailer.simple');
         $altBodyContentType = ($html && $altbody) ? 'text/html' : 'plain/text';
         $failedRecipients = array();
         if ($headers) {
@@ -952,7 +952,7 @@ class System
      */
     public static function getSystemErrorTemplate($templateFile)
     {
-        $templatePath = "system/Theme/Resources/view/system/$templateFile";
+        $templatePath = "system/Theme/Resources/views/system/$templateFile";
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;

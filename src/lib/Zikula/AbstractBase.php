@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
 /**
  * AbstractBase class for module abstract controllers and apis.
  */
-abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
+abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, ContainerAwareInterface
 {
     /**
      * Name.
@@ -68,11 +73,21 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
     protected $serviceManager;
 
     /**
+     * @var ContainerBuilder
+     */
+    private $container;
+
+    /**
      * EventManager.
      *
      * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
+
+    /**
+     * @var EventDispatcher
+     */
+    private $dispatcher;
 
     /**
      * Doctrine EntityManager.
@@ -102,11 +117,11 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
-        $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->get('event_dispatcher');
-
-        $this->request = $this->serviceManager->get('request');
-        $this->entityManager = $this->serviceManager->get('doctrine.entitymanager');
+        $this->setContainer($serviceManager);
+        $this->dispatcher = $this->getContainer()->get('event_dispatcher');
+        $this->eventManager = $this->dispatcher;
+        $this->request =  $this->getContainer()->get('request');
+        $this->entityManager = $this->getContainer()->get('doctrine.entitymanager');
         $this->_configureBase();
         $this->initialize();
         $this->postInitialize();
@@ -177,7 +192,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     public function getEntityManager()
     {
-        return $this->entityManager;
+        return $this->getContainer()->get('doctrine.entitymanager');
     }
 
     /**
@@ -209,17 +224,17 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     public function getServiceManager()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
      * Get the ServiceManager.
      *
-     * @return Zikula_ServiceManager
+     * @return ContainerInterface
      */
     public function getContainer()
     {
-        return $this->serviceManager;
+        return $this->container;
     }
 
     /**
@@ -242,7 +257,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
 
@@ -742,7 +757,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
             $token = $this->request->request->get('csrftoken', false);
         }
 
-        $tokenValidator = $this->serviceManager->getService('token.validator');
+        $tokenValidator = $this->container->get('token.validator');
 
         if (System::getVar('sessioncsrftokenonetime') && $tokenValidator->validate($token, false, false)) {
             return;
@@ -761,13 +776,12 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service Name.
      *
-     * @deprecated since 1.3.6
-     *
      * @return mixed Service or null.
      */
-    protected function getService($id)
+    protected function get($id)
     {
-        return $this->serviceManager->get($id);
+        echo 1;
+        return $this->container->get($id);
     }
 
     /**
@@ -775,11 +789,22 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      *
      * @param string $id Service Name.
      *
+     * @deprecated since 1.3.6
+     *
      * @return mixed Service or null.
      */
-    protected function get($id)
+    protected function getService($id)
     {
-        return $this->serviceManager->get($id);
+        return $this->container->get($id);
+    }
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->serviceManager = $container;
+        $this->container = $container;
     }
 
     /**
@@ -793,7 +818,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     protected function hasService($id)
     {
-        return $this->serviceManager->has($id);
+        return $this->container->has($id);
     }
 
     /**
@@ -805,6 +830,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface
      */
     protected function has($id)
     {
-        return $this->serviceManager->has($id);
+        return $this->container->has($id);
     }
 }
