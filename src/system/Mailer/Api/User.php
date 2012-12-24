@@ -68,7 +68,7 @@ class Mailer_Api_User extends Zikula_AbstractApi
         }
 
         // include php mailer class file
-        require_once "system/Mailer/lib/vendor/class.phpmailer.php";
+        require_once "system/Mailer/vendor/class.phpmailer.php";
 
         // create new instance of mailer class
         $mail = new PHPMailer();
