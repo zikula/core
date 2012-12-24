@@ -12,19 +12,18 @@ Module Structure
 ----------------
 
 It is now possible to place module's PHP assets directly in the module's
-root folder, without having to nest in `$modname/lib/$modname`. Move them as follows:
+root folder, without having to nest in `$modname/lib/$modname`.
+Non-PHP assets should now be located in a `Resources/` folder.
 
-    cd /path/to/MyModule
-    git mv lib/MyModule/* .
-    git commit -a -m "Move php files to module root"
-
-
-Module Assets
--------------
-
-Non-PHP Module assets should now be located in a `Resources/` folder. As follows:
+The final structure looks as follows:
 
     MyModule/
+        Api/
+            Admin.php
+            User.php
+        Controller/
+            Admin.php
+            User.php
         Resource/
             config/
             docs/
@@ -34,19 +33,35 @@ Non-PHP Module assets should now be located in a `Resources/` folder. As follows
                 js/
             views/
                 plugins/
-
+        Installer.php
+        Version.php
 
 There is a script to relocate these for you:
 
-    refactor.php zk:migrate_resource --dir=module/MyModule
+    refactor.php zk:migrate_resource --dir=module/MyModule --module=MyModule
 
 The old locations continue to work.
+
+It is recommended you place templates in the `Resource/views` folder in a hierarchy
+as follows:
+
+        Resources/
+            views/
+                Admin/
+                    view.tpl
+                    list.tpl
+                User/
+                    view.tpl
+
+This necessitates a change in template calls such as
+
+    $this->view->fetch('Admin/view.tpl');
 
 
 Controller Methods
 ------------------
 
-All public controller methods meant to be accessible from the browser should now be
+All public controller methods meant to be accessible from the browser request should now be
 suffixed with `Action`, so `public function view()` should now read `public function viewAction()`
 
 There is a script to automate this change:
@@ -54,6 +69,7 @@ There is a script to automate this change:
     refactor.php zk:migrate_resource --dir=module/MyModule/Controller
 
 Old method names will continue to work.
+
 
 Service Manager
 ---------------
