@@ -59,13 +59,13 @@
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
 
-        <exec command="svn export https://github.com/zikula-modules/Legal.git/branches/release-2.0
+        <exec command="svn export https://github.com/zikula-modules/Legal.git/branches/master
  ${builddir}/tmp/Legal" />
-        <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
+        <exec command="mv ${builddir}/tmp/Legal ${packagepath}/modules" />
 
-        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/release-1.6
+        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/master
  ${builddir}/tmp/Profile" />
-        <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
+        <exec command="mv ${builddir}/tmp/Profile ${packagepath}/modules" />
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
