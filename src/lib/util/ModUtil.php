@@ -1143,7 +1143,7 @@ class ModUtil
             // return void
             // This event means that no $type was found
             $event = new Zikula_Event('module_dispatch.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
-            $eventManager->notify($event);
+            $eventManager->dispatch('module_dispatch.type_not_found', $event);
 
             if ($preExecuteEvent->isPropagationStopped()) {
                 return $preExecuteEvent->getData();

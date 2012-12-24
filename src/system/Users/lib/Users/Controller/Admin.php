@@ -276,7 +276,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
 
             $event = new Zikula_Event('module.users.ui.validate_edit.new_user', $registrationInfo, array(), new Zikula_Hook_ValidationProviders());
-            $validators = $this->eventManager->notify($event)->getData();
+            $validators = $this->eventManager->dispatch('module.users.ui.validate_edit.new_user', $event)->getData();
 
             $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
             $this->notifyHooks($hook);
@@ -297,7 +297,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
                 if (isset($registeredObj) && $registeredObj) {
                     $event = new Zikula_Event('module.users.ui.process_edit.new_user', $registeredObj);
-                    $this->eventManager->notify($event);
+                    $this->eventManager->dispatch('module.users.ui.process_edit.new_user', $event);
 
                     $hook = new Zikula_ProcessHook('users.ui_hooks.user.process_edit', $registeredObj['uid']);
                     $this->notifyHooks($hook);
@@ -596,7 +596,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
 
             $event = new Zikula_Event('module.users.ui.validate_edit.modify_user', $user, array(), new Zikula_Hook_ValidationProviders());
-            $validators = $this->eventManager->notify($event)->getData();
+            $validators = $this->eventManager->dispatch('module.users.ui.validate_edit.modify_user', $event)->getData();
 
             $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_edit', $validators);
             $this->notifyHooks($hook);
@@ -676,7 +676,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 }
 
                 $event = new Zikula_Event('module.users.ui.process_edit.modify_user', $user);
-                $this->eventManager->notify($event);
+                $this->eventManager->dispatch('module.users.ui.process_edit.modify_user', $event);
 
                 $hook = new Zikula_ProcessHook('users.ui_hooks.user.process_edit', $user['uid']);
                 $this->notifyHooks($hook);
@@ -981,7 +981,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $valid = true;
             foreach ($userid as $uid) {
                 $event = new Zikula_Event('module.users.ui.validate_delete', null, array('id' => $uid), new Zikula_Hook_ValidationProviders());
-                $validators = $this->eventManager->notify($event)->getData();
+                $validators = $this->eventManager->dispatch('module.users.ui.validate_delete', $event)->getData();
 
                 $hook = new Zikula_ValidationHook('users.ui_hooks.user.validate_delete', $validators);
                 $this->notifyHooks($hook);
@@ -999,7 +999,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 if ($deleted) {
                     foreach ($userid as $uid) {
                         $event = new Zikula_Event('module.users.ui.process_delete', null, array('id' => $uid));
-                        $this->eventManager->notify($event);
+                        $this->eventManager->dispatch('module.users.ui.process_delete', $event);
 
                         $hook = new Zikula_ProcessHook('users.ui_hooks.user.process_delete', $uid);
                         $this->notifyHooks($hook);
@@ -1370,7 +1370,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
 
             $event = new Zikula_Event('module.users.ui.validate_edit.modify_registration', $registration, array(), new Zikula_Hook_ValidationProviders());
-            $validators = $this->eventManager->notify($event)->getData();
+            $validators = $this->eventManager->dispatch('module.users.ui.validate_edit.modify_registration', $event)->getData();
 
             $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
             $this->notifyHooks($hook);
@@ -1418,7 +1418,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 }
 
                 $event = new Zikula_Event('module.users.ui.process_edit.modify_registration', $registration);
-                $this->eventManager->notify($event);
+                $this->eventManager->dispatch('module.users.ui.process_edit.modify_registration', $event);
 
                 $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registration['uid']);
                 $this->notifyHooks($hook);
@@ -1884,7 +1884,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $this->setVars($modVars);
                 $this->registerStatus($this->__('Done! Users module settings have been saved.'));
                 $event = new Zikula_Event('module.users.config.updated', null, array(), $modVars);
-                $this->eventManager->notify($event);
+                $this->eventManager->dispatch('module.users.config.updated', $event);
             } else {
                 $errorFields = $configData->getErrorMessages();
                 $errorCount = count($errorFields);

@@ -32,7 +32,7 @@ each module:
     [php]
     // trigger event
     $event = new Zikula_Event('get.pending_content', new Zikula_Collection_Container('pending_content'));
-    $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+    $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
 
     // process results
     foreach ($pendingCollection as $collection) {
@@ -55,7 +55,7 @@ The following is a full example you can use to run and see how this would work i
 
     // trigger event
     $event = new Zikula_Event('get.pending_content', new Zikula_Collection_Container('pending_content'));
-    $pendingCollection = EventUtil::getManager()->notify($event)->getSubject();
+    $pendingCollection = EventUtil::getManager()->dispatch('get.pending_content', $event)->getSubject();
 
     // process results
     foreach ($pendingCollection as $collection) {

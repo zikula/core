@@ -64,7 +64,7 @@ class EventUtil
      */
     public static function notify(Zikula_Event $event)
     {
-        return self::getManager()->notify($event);
+        return self::getManager()->dispatch($event->getName(), $event);
     }
 
     /**

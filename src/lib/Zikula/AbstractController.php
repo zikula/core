@@ -103,7 +103,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         }
 
         $event = new Zikula_Event('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
-        $this->eventManager->notify($event);
+        $this->eventManager->dispatch('controller.method_not_found', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }

@@ -81,7 +81,7 @@ class Zikula_DebugToolbar
 
         // allow modules and plugins to extend the toolbar
         $event = new Zikula_Event('debugtoolbar.init', $this);
-        $this->eventManager->notify($event);
+        $this->eventManager->dispatch('debugtoolbar.init', $event);
     }
 
     /**

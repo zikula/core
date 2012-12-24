@@ -27,7 +27,7 @@ The handler method $logger->writelog($event) will now be called whenever anythin
 
     [php]
     $event = new Event('user.log', $subject, $parameters);
-    $eventManager->notify($event);
+    $eventManager->dispatch('user.log', $event);
 
 ### A look at the Event class
 

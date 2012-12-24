@@ -185,7 +185,7 @@ class SessionUtil
     public static function requireSession()
     {
         $event = new Zikula_Event('session.require');
-        EventUtil::getManager()->notify($event);
+        EventUtil::getManager()->dispatch('session.require', $event);
     }
 
     /**

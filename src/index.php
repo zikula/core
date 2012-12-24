@@ -96,7 +96,7 @@ try {
 
 } catch (Exception $e) {
     $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-    $core->getEventManager()->notify($event);
+    $core->getEventManager()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
         $httpCode = $event['httpcode'];

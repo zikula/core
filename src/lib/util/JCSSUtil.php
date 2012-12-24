@@ -127,7 +127,7 @@ class JCSSUtil
         
         // Add generic stylesheet as the first stylesheet.
         $event = new Zikula_Event('pageutil.addvar_filter', 'stylesheet', array(), $initStyle);
-        $coreStyle = EventUtil::getManager()->notify($event)->getData();
+        $coreStyle = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
         if (is_array($stylesheets)) {
             array_unshift($stylesheets, $coreStyle[0]);
         } else {

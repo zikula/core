@@ -58,7 +58,7 @@ Back to the Multihook module.  It's implementation could look something like thi
 
     // create and dispatch the event
     $event = Zikula_Event('module.multihook.get_providers');
-    $classes = $eventManager->notify($event)->getData();
+    $classes = $eventManager->dispatch('module.multihook.get_providers', $event)->getData();
 
     // now we got back any results we can process them like this
     foreach ($classes as $class) {
