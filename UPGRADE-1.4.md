@@ -1,6 +1,13 @@
 Upgrading from Core 1.3 to 1.4
 ==============================
 
+Legacy Layers
+-------------
+
+All legacy APIs from the Zikula Core 1.2 series that were supported in 1.3 have
+been completely removed as promised.
+
+
 Module Structure
 ----------------
 
