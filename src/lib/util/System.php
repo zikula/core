@@ -960,7 +960,7 @@ class System
      */
     public static function getSystemErrorTemplate($templateFile)
     {
-        $templatePath = "system/Theme/templates/system/$templateFile";
+        $templatePath = "system/Theme/Resources/views/system/$templateFile";
         $override = Zikula_View::getTemplateOverride($templatePath);
         if ($override !== false) {
             return $override;
