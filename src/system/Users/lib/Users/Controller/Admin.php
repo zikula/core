@@ -934,7 +934,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
             // retreive userid from uname
             if (empty($userid) && !empty($uname)) {
-                $userid = UserUtil::getIdFromName($users);
+                $userid = UserUtil::getIdFromName($uname);
             }
 
             $proceedToForm = true;

@@ -415,6 +415,8 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
             throw new Zikula_Exception_Fatal($this->__f('Invalied \'%1$s\' parameter received in a call to %2$s', array('authentication_info', __METHOD__)));
         }
 
+        $authenticationInfo = $args['authentication_info'];
+
         $fieldsToClean = array(
             'pass',
             'new_pass',

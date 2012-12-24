@@ -74,7 +74,7 @@ class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthenti
                     if (!$this->view->template_exists($templateName)) {
                         $templateName = mb_strtolower("users_auth_loginformfields_default_default.tpl");
                         if (!$this->view->template_exists($templateName)) {
-                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($method, $args['form_type'])));
+                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
                         }
                     }
                 }
