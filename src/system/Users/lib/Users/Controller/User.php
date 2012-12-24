@@ -400,7 +400,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                     // Validate the hook
                     $hook = new Zikula_ValidationHook('users.ui_hooks.registration.validate_edit', $validators);
-                    $this->notifyHooks($hook);
+                    $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
                     $validators = $hook->getValidators();
 
                     if (empty($errorFields) && !$validators->hasErrors()) {
@@ -461,7 +461,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                         // ...and hooks to process the registration.
                         $hook = new Zikula_ProcessHook('users.ui_hooks.registration.process_edit', $registeredObj['uid']);
-                        $this->notifyHooks($hook);
+                        $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
 
                         // If there were errors after the main registration, then make sure they can be displayed.
                         // TODO - Would this even happen?
@@ -1204,7 +1204,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 $validators  = $this->eventManager->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
 
                                 $hook = new Zikula_ValidationHook("users.ui_hooks.{$eventType}.validate_edit", $validators);
-                                $this->notifyHooks($hook);
+                                $this->dispatchHooks("users.ui_hooks.{$eventType}.validate_edit", $hook);
                                 $validators = $hook->getValidators();
                             }
 
@@ -1216,7 +1216,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                     $this->eventManager->dispatch("module.users.ui.process_edit.{$eventType}", $event);
 
                                     $hook = new Zikula_ProcessHook("users.ui_hooks.{$eventType}.process_edit", $user['uid']);
-                                    $this->notifyHooks($hook);
+                                    $this->dispatchHooks("users.ui_hooks.{$eventType}.process_edit", $hook);
                                 }
 
                                 if (!isset($user['lastlogin']) || empty($user['lastlogin']) || ($user['lastlogin'] == '1970-01-01 00:00:00')) {
