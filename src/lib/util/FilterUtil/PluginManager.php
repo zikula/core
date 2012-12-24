@@ -131,7 +131,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
 
         $event = new Zikula_Event('zikula.filterutil.get_plugin_classes');
         $event->setData($classNames);
-        $classNames = EventUtil::getManager()->notify($event)->getData();
+        $classNames = EventUtil::getManager()->dispatch('zikula.filterutil.get_plugin_classes', $event)->getData();
 
         return $classNames;
     }

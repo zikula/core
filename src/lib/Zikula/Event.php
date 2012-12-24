@@ -112,7 +112,7 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     /**
      * Has the event been stopped.
      *
-     * @deprecated since 1.3.6
+     * @deprecated
      * @use Symfony\Component\EventDispatcher\GenericEvent::isPropagationStopped()
      *
      * @return boolean

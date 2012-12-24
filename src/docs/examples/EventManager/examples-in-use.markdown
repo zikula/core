@@ -28,7 +28,7 @@
         {
             //... stuff here
             $event = new Event('user.login', null, array('username' => $user));
-            $this->eventManager->notify($event);
+            $this->eventManager->dispatch('user.login', $event);
         }
 
         public function create($username)
@@ -37,7 +37,7 @@
             $user = new User($username);
             $user->save();
             $event = new Event('user.create', $user);
-            $this->eventManager->notify($event);
+            $this->eventManager->dispatch('user.create', $event);
         }
     }
 
@@ -45,12 +45,12 @@
     {
         public static function logLogin(Event $event)
         {
-            MyLogger::write($event->getName(), $event->getArg('username'), $_SERVER['REMOTE_ADDR']);
+            MyLogger::write($event->getName(), $event->getArgument('username'), $_SERVER['REMOTE_ADDR']);
         }
 
         public function sendMail(Event $event)
         {
-            if ($event->hasArg('emailaddress')) {
+            if ($event->hasArgument('emailaddress')) {
                 mail($this->getArg('emailaddress'));
             }
         }

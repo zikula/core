@@ -31,9 +31,9 @@ $core->boot();
 
 // Load system configuration
 $event = new Zikula_Event('bootstrap.getconfig', $core);
-$core->getEventManager()->notify($event);
+$core->getEventManager()->dispatch('bootstrap.getconfig', $event);
 
 $event = new Zikula_Event('bootstrap.custom', $core);
-$core->getEventManager()->notify($event);
+$core->getEventManager()->dispatch('bootstrap.custom', $event);
 
 return $core;

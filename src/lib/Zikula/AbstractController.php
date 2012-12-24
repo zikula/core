@@ -82,7 +82,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     public function notifyHooks(Zikula_HookInterface $hook)
     {
-        return $this->getService('zikula.hookmanager')->notify($hook);
+        return $this->getService('zikula.hookmanager')->dispatch($hook->getName(), $hook);
     }
 
     /**
@@ -103,8 +103,8 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         }
 
         $event = new Zikula_Event('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
-        $this->eventManager->notify($event);
-        if ($event->isStopped()) {
+        $this->eventManager->dispatch('controller.method_not_found', $event);
+        if ($event->isPropagationStopped()) {
             return $event->getData();
         }
 

@@ -42,7 +42,7 @@ class Users_Listener_ClearUsersNamespace
     public static function clearUsersNamespaceListener(Zikula_Event $event)
     {
         $eventName = $event->getName();
-        $modinfo = $event->hasArg('modinfo') ? $event->getArg('modinfo') : array();
+        $modinfo = $event->hasArgument('modinfo') ? $event->getArgument('modinfo') : array();
 
         $doClear = ($eventName == 'user.logout.succeeded') || (($eventName == 'frontcontroller.exception')
                 && isset($modinfo) && is_array($modinfo) && !empty($modinfo) && !isset($modinfo['name']) && ($modinfo['name'] == self::$modname));

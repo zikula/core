@@ -903,7 +903,7 @@ class ModUtil
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new Zikula_Event('module_dispatch.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::notify($event);
-        if ($event->isStopped()) {
+        if ($event->isPropagationStopped()) {
             $className = $event->getData();
         }
 
@@ -1143,9 +1143,9 @@ class ModUtil
             // return void
             // This event means that no $type was found
             $event = new Zikula_Event('module_dispatch.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
-            $eventManager->notify($event);
+            $eventManager->dispatch('module_dispatch.type_not_found', $event);
 
-            if ($preExecuteEvent->isStopped()) {
+            if ($preExecuteEvent->isPropagationStopped()) {
                 return $preExecuteEvent->getData();
             }
 

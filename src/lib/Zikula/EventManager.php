@@ -140,19 +140,23 @@ class Zikula_EventManager implements Zikula_EventManagerInterface
     /**
      * Dispatch all handlers for given event name but stop if signalled.
      *
-     * @param Event $event Event.
+     * @param string $name  Event name.
+     * @param Event  $event Event object, null creates new Event
      *
      * @return Event
      */
-    public function dispatch($name, Event $event)
+    public function dispatch($name, Event $event = null)
     {
         $event->setName($name);
+        if (null === $event) {
+            new Event($name);
+        }
 
         $event->setEventManager($this);
         $handlers = $this->getHandlers($event->getName());
         foreach ($handlers as $handler) {
             $this->invoke($handler, $event);
-            if ($event->isStopped()) {
+            if ($event->isPropagationStopped()) {
                 // stop signal was received from event, so stop.
                 break;
             }

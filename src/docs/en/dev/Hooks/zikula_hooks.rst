@@ -229,7 +229,7 @@ hook types.  This can be done as follows (example of a process hook).
 
     $url = new Zikula_ModUrl(....); // describes how to retrieve this object by URL metadata
     $hook = new Zikula_ProcessHook('blog.ui_hooks.articles.process_edit', $id, $url);
-    $this->notifyHooks->notify($hook);
+    $this->notifyHooks->dispatch($hook->getName(), $hook);
 
 
 Provider Display Hooks
@@ -303,7 +303,7 @@ When we come to validate a new create form, this means we have received a submit
 in the form.  We can then validate our form and then trigger a `validate_edit` hook with
 
     $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Hook_ValidationProviders());
-    $this->notifyHooks($hook);
+    $this->dispatchHooks($hook->getName(), $hook);
     $validators = $hook->getValidators();
 
 The validator collection can then be tested for the presence of validation errors or not
@@ -345,7 +345,7 @@ When we come to validate an edit form, this means we have received a submit comm
 in the form.  We can then validate our form and then trigger a `validate_edit` event with
 
     $hook = new Zikula_ValidationHook('...validate_edit', new Zikula_Hook_ValidationProviders());
-    $this->notifyHooks($hook);
+    $this->dispatchHooks($hook->getName(), $hook);
     $validators = $hook->getValidators();
 
 The validator collection can then be tested for the presence of validation errors or not

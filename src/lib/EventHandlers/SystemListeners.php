@@ -339,7 +339,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $errorHandler = new $class($this->serviceManager);
         $this->serviceManager->attachService('system.errorreporting', $errorHandler);
         set_error_handler(array($errorHandler, 'handler'));
-        $event->stop();
+        $event->stopPropagation();
     }
 
     /**
@@ -622,7 +622,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
                 $event->data[$key] = 'config/style/core.css';
             }
 
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 
@@ -675,7 +675,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         // notify EVENT here to gather any system service links
-        $args = array('modname' => $event->getArg('modname'));
+        $args = array('modname' => $event->getArgument('modname'));
         $localevent = new Zikula_Event('module_dispatch.service_links', $event->getSubject(), $args);
         $this->eventManager->notify($localevent);
         $sublinks = $localevent->getData();
@@ -714,7 +714,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $event->getSubject()->getServiceManager()->loadArguments($config);
         }
 
-        $event->stop();
+        $event->stopPropagation();
     }
 
     /**

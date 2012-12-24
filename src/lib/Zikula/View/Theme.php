@@ -185,7 +185,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new Zikula_Event('theme.preinit', $this);
-        $this->eventManager->notify($event);
+        $this->eventManager->dispatch('theme.preinit', $event);
 
         // change some base settings from our parent class
         // template compilation
@@ -254,7 +254,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new Zikula_Event('theme.init', $this);
-        $this->eventManager->notify($event);
+        $this->eventManager->dispatch('theme.init', $event);
 
         // Start the output buffering to capture module output
         ob_start();
@@ -314,7 +314,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new Zikula_Event('theme.prefetch', $this, array(), $maincontent);
-        $maincontent = $this->eventManager->notify($event)->getData();
+        $maincontent = $this->eventManager->dispatch('theme.prefetch', $event)->getData();
 
         // Assign the main content area to the template engine
         $this->assign('maincontent', $maincontent);
@@ -323,7 +323,7 @@ class Zikula_View_Theme extends Zikula_View
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
         $event = new Zikula_Event('theme.postfetch', $this, array(), $output);
-        echo $this->eventManager->notify($event)->getData();
+        echo $this->eventManager->dispatch('theme.postfetch', $event)->getData();
     }
 
     /**
@@ -792,7 +792,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         $event = new Zikula_Event('theme.load_config', $this);
-        $this->eventManager->notify($event);
+        $this->eventManager->dispatch('theme.load_config', $event);
     }
 
     /**
@@ -806,7 +806,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         if (array_key_exists($event->data, $this->_overrideMap)) {
             $event->data = $this->_overrideMap[$event->data];
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 

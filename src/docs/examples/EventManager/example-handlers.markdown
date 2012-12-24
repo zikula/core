@@ -12,7 +12,7 @@ to the $event->subject property which may contain something like $this.
         //... other unrelated methods here
         public static function logUser(Event $event)
         {
-            self::write($event->getName(), $event->getArg('username'), $_SERVER['REMOTE_ADDR']);
+            self::write($event->getName(), $event->getArgument('username'), $_SERVER['REMOTE_ADDR']);
             // USING ARRAY ACCESS YOU CAN ALSO DO:
             // self::write($event->getName(), $event['username'], $_SERVER['REMOTE_ADDR']);
         }
@@ -26,7 +26,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
        /**
         * Notify handler.
         *
-        * This kind of handler is called by $eventManager->notify($event)
+        * This kind of handler is called by $eventManager->dispatch($name, $event)
         * This handler must silently perform it's task but should not return
         * anything.
         *
@@ -44,12 +44,12 @@ The folllowing show an example of one of each kind of event handler, notify, not
         /**
          * NotifyUntil handler.
          *
-         * This type of handler is called by $eventManager->notify($event) which
+         * This type of handler is called by $eventManager->dispatch($name, $event) which
          * will keep calling all registered handlers of the name until one
          * responds.
          *
          * This handler should check to see if it should execute and if so it
-         * must call $event->stop();.
+         * must call $event->stopPropagation();.
          *
          * @param Event $event
          *
@@ -59,14 +59,14 @@ The folllowing show an example of one of each kind of event handler, notify, not
         public function handlerUntil(Event $event)
         {
             if ($event->getHas('foo')) {
-                $event->stop();
+                $event->stopPropagation();
             }
         }
 
        /**
         * Notify handler that process a return value.
         *
-        * This kind of handler is called by $eventManager->notify($event)
+        * This kind of handler is called by $eventManager->dispatch($name, $event)
         * This handler returns data via the $event->data property which
         * has been made public for conventience although has getData() and setData.
         * Using this method you can process or filter some data.  How this is done
@@ -89,7 +89,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
        /**
         * NotifyUntil handler that process a return value.
         *
-        * This kind of handler is called by $eventManager->notify($event)
+        * This kind of handler is called by $eventManager->dispatch($name, $event)
         * This handler returns data via the $event->data property which
         * has been made public for conventience although has getData() and setData.
         * Using this method you can process or filter some data.  How this is done
@@ -106,7 +106,7 @@ The folllowing show an example of one of each kind of event handler, notify, not
             }
 
             $event->data++;
-            $event->stop();
+            $event->stopPropagation();
         }
     }
 
