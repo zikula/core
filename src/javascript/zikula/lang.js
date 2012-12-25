@@ -65,44 +65,6 @@
     };
 
     /**
-     * Merge two objects recursively.
-     *
-     * Copies all properties from source to destination object and returns new object.
-     * If property exists in destination it is extended not overwritten
-     *
-     * @example
-     *  Zikula.Lang.extendRecursive(destination, source); // base syntax
-     * _(destination).extendRecursive(source); // underscore syntax (recommended)
-     *
-     * var a = {x: true, z: {za: true}},
-     *     b = {y: false, z: {zb: false}},
-     *     c;
-     * c =  _(a).extendRecursive(b); // c is now {x:true, z:{za:true, zb:false}, y:false}
-     *
-     * @param {Object} destination Destination object
-     * @param {Object} source      Source object
-     *
-     * @return {Object} Extended object
-     */
-    Zikula.Lang.extendRecursive = function(destination, source) {
-        destination = destination || {};
-        for (var prop in source) {
-            if (source.hasOwnProperty(prop)) {
-                try {
-                    if (source[prop].constructor === Object) {
-                        destination[prop] = Zikula.Lang.extendRecursive(destination[prop], source[prop]);
-                    } else {
-                        destination[prop] = source[prop];
-                    }
-                } catch (e) {
-                    destination[prop] = source[prop];
-                }
-            }
-        }
-        return destination;
-    };
-
-    /**
      * Encode json data to url safe format.
      *
      * @example
@@ -147,6 +109,45 @@
             data = JSON.parse(data);
         }
         return data;
+    };
+
+
+    /**
+     * Merge two objects recursively.
+     *
+     * Copies all properties from source to destination object and returns new object.
+     * If property exists in destination it is extended not overwritten
+     *
+     * @example
+     *  Zikula.Lang.extendRecursive(destination, source); // base syntax
+     * _(destination).extendRecursive(source); // underscore syntax (recommended)
+     *
+     * var a = {x: true, z: {za: true}},
+     *     b = {y: false, z: {zb: false}},
+     *     c;
+     * c =  _(a).extendRecursive(b); // c is now {x:true, z:{za:true, zb:false}, y:false}
+     *
+     * @param {Object} destination Destination object
+     * @param {Object} source      Source object
+     *
+     * @return {Object} Extended object
+     */
+    Zikula.Lang.extendRecursive = function(destination, source) {
+        destination = destination || {};
+        for (var prop in source) {
+            if (source.hasOwnProperty(prop)) {
+                try {
+                    if (source[prop].constructor === Object) {
+                        destination[prop] = Zikula.Lang.extendRecursive(destination[prop], source[prop]);
+                    } else {
+                        destination[prop] = source[prop];
+                    }
+                } catch (e) {
+                    destination[prop] = source[prop];
+                }
+            }
+        }
+        return destination;
     };
 
     /**
