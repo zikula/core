@@ -1866,11 +1866,12 @@ class UserUtil
                 );
                 $event = new Zikula_Event( $updatedUserObj, $eventArgs, $eventData);
                 if ($isRegistration) {
-                    EventUtil::dispatch('user.registration.update', $event);
+                    $eventName = 'user.registration.update';
                 } else {
-                    EventUtil::dispatch('user.account.update', $event);
+                    $eventName = 'user.account.update';
                 }
-
+                $event = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
+                EventUtil::dispatch($eventName, $event);
             }
         }
 
