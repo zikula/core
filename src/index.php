@@ -21,7 +21,7 @@ $core->init();
 if ($request->isXmlHttpRequest()) {
     __frontcontroller_ajax();
 }
-$core->getDispatcher()->dispatch('frontcontroller.predispatch');
+$core->getDispatcher()->dispatch('frontcontroller.predispatch', new Zikula_Event());
 
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $type = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
