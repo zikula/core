@@ -28,9 +28,9 @@ class Zikula_HookManager
     /**
      * Event Manager.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
-    private $eventManager;
+    private $dispatcher;
 
     /**
      * Runtime hooks handlers loaded flag.
@@ -50,13 +50,13 @@ class Zikula_HookManager
      * Constructor.
      *
      * @param Zikula_HookManager_StorageInterface $storage
-     * @param Zikula_EventManager                 $eventManager
+     * @param Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher                 $eventManager
      * @param Zikula_HookManager_ServiceFactory   $factory
      */
-    public function __construct(Zikula_HookManager_StorageInterface $storage, Zikula_EventManager $eventManager, Zikula_HookManager_ServiceFactory $factory)
+    public function __construct(Zikula_HookManager_StorageInterface $storage, Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher $eventManager, Zikula_HookManager_ServiceFactory $factory)
     {
         $this->storage = $storage;
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $eventManager;
         $this->factory = $factory;
     }
 
@@ -73,41 +73,31 @@ class Zikula_HookManager
     /**
      * Notify hook handlers.
      *
-     * @param Zikula_HookInterface $hook Hook instance.
-     *
-     * @deprecated since 1.3.6
-     * @use dispatch() instead
-     *
-     * @return Zikula_HookInterface
-     */
-    public function notify(Zikula_HookInterface $hook)
-    {
-        return $this->dispatch($hook->getName(), $hook);
-    }
-
-    /**
-     * Notify hook handlers.
-     *
      * @param Zikula_AbstractHook $hook Hook instance.
      *
      * @return Zikula_AbstractHook
      */
+    public function notify(Zikula_AbstractHook $hook)
+    {
+        return $this->dispatch($hook->getName(), $hook);
+    }
+
     public function dispatch($name, Zikula_AbstractHook $hook)
     {
-        $hook->setName($name);
-
         if (!$this->loaded) {
             // lazy load handlers for the first time
             $this->loadRuntimeHandlers();
             $this->loaded = true;
         }
 
+        $hook->setName($name);
+
         $this->decorateHook($hook);
         if (!$hook->getAreaId()) {
             return $hook;
         }
 
-        $this->eventManager->dispatch($hook->getName(), $hook);
+        $this->dispatcher->dispatch($hook->getName(), $hook);
 
         return $hook;
     }
@@ -311,16 +301,17 @@ class Zikula_HookManager
         foreach ($handlers as $handler) {
             if ($handler['serviceid']) {
                 $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+                $this->dispatcher->addListenerService($handler['eventname'], $callable);
             } else {
-                $callable = array($handler['classname'], $handler['method']);
-            }
-
-            try {
-                $this->eventManager->attach($handler['eventname'], $callable);
-            } catch (InvalidArgumentException $e) {
-                throw new Zikula_HookManager_Exception_RuntimeException("Hook event handler could not be attached because " . $e->getMessage());
+                try {
+                    $callable = array($handler['classname'], $handler['method']);
+                    $this->dispatcher->addListener($handler['eventname'], $callable);
+                } catch (InvalidArgumentException $e) {
+                    throw new RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                }
             }
         }
+
 
         return $this;
     }
@@ -328,9 +319,9 @@ class Zikula_HookManager
     /**
      * Decorate hook with required metadata.
      *
-     * @param Zikula_HookInterface $hook
+     * @param Zikula_AbstractHook $hook
      */
-    private function decorateHook(Zikula_HookInterface $hook)
+    private function decorateHook(Zikula_AbstractHook $hook)
     {
         $owningSide = $this->storage->getRuntimeMetaByEventName($hook->getName());
         if ($owningSide) {
@@ -346,7 +337,7 @@ class Zikula_HookManager
      */
     private function reload()
     {
-        $this->eventManager->flushHandlers();
+        $this->dispatcher->flushHandlers();
         $this->loadRuntimeHandlers();
     }
 
