@@ -615,6 +615,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 $search_path = array(
                         "themes/$os_theme/templates/modules/$os_module", // themepath
                         "config/templates/$os_module", //global path
+                        $relativepath,
                         "$os_dir/$os_module/templates", // modpath
                         "$os_dir/$os_module/pntemplates", // modpath old
                 );
@@ -623,6 +624,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         "themes/$os_theme/templates/modules/$os_module", // themepath
                         "config/templates/$os_module/$os_modname", //globalhookpath
                         "config/templates/$os_module", //global path
+                        $relativepath,
                         "$os_dir/$os_module/templates/$os_modname", //modhookpath
                         "$os_dir/$os_module/templates", // modpath
                         "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
