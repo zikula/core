@@ -182,7 +182,7 @@ class Zikula_View_Plugin extends Zikula_View
             //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
             $search_path = array(
                         //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
-                        "{$base}plugins/{$this->pluginName}/Resources/templates",
+                        "{$base}plugins/{$this->pluginName}/Resources/views",
                         "{$base}plugins/{$this->pluginName}/templates",
             );
 

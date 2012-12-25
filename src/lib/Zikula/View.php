@@ -553,6 +553,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
             if (!is_readable($templateFile)) {
                 return false;
+
             }
             $this->templateCache[$template] = $path;
 
