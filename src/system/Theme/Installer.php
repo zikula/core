@@ -56,6 +56,7 @@ class Theme_Installer extends Zikula_AbstractInstaller
         $this->setVar('render_cache',          true);
         $this->setVar('render_expose_template',false);
         $this->setVar('render_lifetime',       3600);
+        $this->setVar('enable_mobile_theme',   false);
 
         // Initialisation successful
         return true;
