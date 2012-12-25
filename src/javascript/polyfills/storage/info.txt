@@ -1,2 +1,0 @@
-http://www.calormen.com/polyfill/storage.js
-license: MIT
