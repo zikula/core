@@ -1977,7 +1977,6 @@ class ModUtil
                 $modpath . '/' . $osmoddir . '/Resources/public/images/admin.png',
                 $modpath . '/' . $osmoddir . '/Resources/public/images/admin.jpg',
                 $modpath . '/' . $osmoddir . '/Resources/public/images/admin.gif',
-                'system/Admin/Resources/public/images/default.gif',
                 $modpath . '/' . $osmoddir . '/images/admin.png',
                 $modpath . '/' . $osmoddir . '/images/admin.jpg',
                 $modpath . '/' . $osmoddir . '/images/admin.gif',
@@ -1985,7 +1984,7 @@ class ModUtil
                 $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
                 $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
                 $modpath . '/' . $osmoddir . '/pnimages/admin.png',
-                'system/Admin/images/default.gif'
+                'system/Admin/Resources/public/images/default.gif'
         );
 
         foreach ($paths as $path) {
