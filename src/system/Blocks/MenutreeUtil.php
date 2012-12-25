@@ -33,7 +33,7 @@ class Blocks_MenutreeUtil
         );
 
         // module templates
-        $modulesTpls = FileUtil::getFiles('system/Blocks/templates/menutree', false, true, 'tpl', false);
+        $modulesTpls = FileUtil::getFiles('system/Blocks/Resources/views/menutree', false, true, 'tpl', false);
         $configTpls = FileUtil::getFiles('config/templates/Blocks/menutree', false, true, 'tpl', false);
         $tpls['modules'] = array_merge($modulesTpls, $configTpls);
 
@@ -92,13 +92,13 @@ class Blocks_MenutreeUtil
 
         // restricted stylesheets, array for possible future changes
         $sysStyles = array(
-            'system/Blocks/style/menutree/adminstyle.css',
-            'system/Blocks/style/menutree/contextmenu.css',
-            'system/Blocks/style/menutree/tree.css'
+            'system/Blocks/Resources/public/css/menutree/adminstyle.css',
+            'system/Blocks/Resources/public/css/menutree/contextmenu.css',
+            'system/Blocks/Resources/public/css/menutree/tree.css'
         );
 
         // module stylesheets
-        $modulesStyles = FileUtil::getFiles('system/Blocks/style/menutree', false, false, 'css', false);
+        $modulesStyles = FileUtil::getFiles('system/Blocks/Resources/public/css/menutree', false, false, 'css', false);
         $configStyles = FileUtil::getFiles('config/style/Blocks/menutree', false, false, 'css', false);
         $styles['modules'] = array_merge($modulesStyles, $configStyles);
 
