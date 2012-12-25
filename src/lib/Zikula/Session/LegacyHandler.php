@@ -25,6 +25,10 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
      */
     public function read($sessionId)
     {
+        if (System::isInstalling()) {
+            return '';
+        }
+
         $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
         if (!$result) {
             return false;
@@ -38,6 +42,10 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
      */
     public function write($sessionId, $vars)
     {
+        if (System::isInstalling()) {
+            return true;
+        }
+
         $obj = SessionUtil::getVar('obj');
         $obj['sessid'] = $sessionId;
         $obj['vars'] = $vars;
