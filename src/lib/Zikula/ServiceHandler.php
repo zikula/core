@@ -19,7 +19,7 @@
  * This is a container for a service managed by ServiceManager (by ID) and
  * a corresponding method in that service that will handler and event.
  *
- * @deprecated from 1.4
+ * @deprecated from 1.3.6
  */
 class Zikula_ServiceHandler
 {

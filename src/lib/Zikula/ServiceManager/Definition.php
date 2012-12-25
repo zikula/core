@@ -42,7 +42,10 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
     public function __construct($className, array $constructorArgs = array(), array $methods = array())
     {
         parent::__construct($className, $constructorArgs);
-        $this->setMethods($methods);
+
+        if ($methods) {
+            $this->setMethods($methods);
+        }
     }
 
     /**
@@ -107,10 +110,8 @@ class Zikula_ServiceManager_Definition extends \Symfony\Component\DependencyInje
      */
     public function setMethods(array $methods)
     {
-        foreach ($methods as $methodArray) {
-            foreach ($methodArray as $method => $args) {
-                $this->addMethodCall($method, $args);
-            }
+        foreach ($methods as $method => $args) {
+            $this->addMethodCall($method, $args[0]);
         }
     }
 

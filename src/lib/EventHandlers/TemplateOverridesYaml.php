@@ -45,7 +45,7 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
     public function setup()
     {
         if (is_readable('config/template_overrides.yml')) {
-            $this->overrideMap = Doctrine_Parser::load('config/template_overrides.yml', 'yml');
+            $this->overrideMap = \Symfony\Component\Yaml\Yaml::parse('config/template_overrides.yml');
         }
     }
 

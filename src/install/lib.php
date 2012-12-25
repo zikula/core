@@ -408,8 +408,8 @@ function installmodules($lang = 'en')
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
         $modpath = 'system';
-        if (is_dir("$modpath")) {
-            ZLoader::addAutoloader($coremodule, "$modpath");
+        if (is_dir("$modpath/$coremodule")) {
+            ZLoader::addAutoloader($coremodule, $modpath);
         }
 
         $bootstrap = "$modpath/$coremodule/bootstrap.php";
