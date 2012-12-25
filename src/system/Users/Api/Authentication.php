@@ -373,7 +373,7 @@ class Users_Api_Authentication extends Zikula_Api_AbstractAuthentication
             }
         }
 
-        if (!$passwordAuthenticates && !$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+        if (!$passwordAuthenticates && $this->request->hasSession() && !$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
             if ($authenticationMethod['method'] == 'email') {
                 $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
             } else {
