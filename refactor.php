@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-require 'vendor/autoload.php';
+require __DIR__.'/src/vendor/autoload.php';
 
 class ControllerActionCommand extends Command
 {
