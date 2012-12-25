@@ -38,6 +38,7 @@ Features:
 - Give possibility to set timezone_adjust default value global.
 - Theme settings: mobile theme different then default; mobile domain; alternative site view
   theme and domain; set admin theme in theme settings section.
+- Give the profile module the possibility to change the profilelink.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
