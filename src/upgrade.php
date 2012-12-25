@@ -23,7 +23,7 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
-ZLoader::addAutoloader('Users', 'system/Users/lib', '_');
+ZLoader::addAutoloader('Users', 'system', '_');
 include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 
 // check if the config.php was renewed
@@ -52,7 +52,7 @@ $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
 $dbEvent = new Zikula_Event('doctrine.init_connection', null, array('lazy' => true));
-$connection = $eventManager->notify($dbEvent)->getData();
+$connection = $eventManager->dispatch('doctrine.init_connection', $dbEvent)->getData();
 
 $columns = upgrade_getColumnsForTable($connection, 'modules');
 
