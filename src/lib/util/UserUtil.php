@@ -927,7 +927,7 @@ class UserUtil
                     'uid'                   => $userObj['uid'],
                 );
                 $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
-                $event = EventUtil::notify($event);
+                $event = EventUtil::dispatch('user.login.veto', $event);
 
                 if ($event->isPropagationStopped()) {
                     // The login attempt has been vetoed by one or more modules.
@@ -1528,7 +1528,7 @@ class UserUtil
                     'new_value' => $value,
                 );
                 $updateEvent = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
-                EventUtil::notify($updateEvent);
+                EventUtil::dispatch($eventName, $updateEvent);
             }
         }
 
@@ -1865,11 +1865,12 @@ class UserUtil
                     'old_value' => $oldValue,
                 );
                 if ($isRegistration) {
-                    $updateEvent = new Zikula_Event('user.registration.update', $updatedUserObj, $eventArgs, $eventData);
+                    $eventName = 'user.registration.update';
                 } else {
-                    $updateEvent = new Zikula_Event('user.account.update', $updatedUserObj, $eventArgs, $eventData);
+                    $eventName = 'user.account.update';
                 }
-                EventUtil::notify($updateEvent);
+                $event = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
+                EventUtil::dispatch($eventName, $event);
             }
         }
 
@@ -2007,7 +2008,7 @@ class UserUtil
     {
         $event = new Zikula_Event('user.gettheme', null, array('type' => $type), $themeName);
 
-        return EventUtil::notify($event)->getData();
+        return EventUtil::dispatch('user.gettheme', $event)->getData();
     }
 
     /**
