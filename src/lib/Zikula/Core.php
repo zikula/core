@@ -398,7 +398,7 @@ class Zikula_Core
             $this->container->set('request', $request);
         }
 
-        $coreInitEvent = new Zikula_Event('core.init', $this);
+        $coreInitEvent = new Zikula_Event($this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;

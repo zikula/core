@@ -360,7 +360,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function initDB(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_DB) {
-            $this->eventManager->dispatch('doctrine.init_connection');
+            $this->eventManager->dispatch('doctrine.init_connection', new Zikula_Event());
         }
     }
 
