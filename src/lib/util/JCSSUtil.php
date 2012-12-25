@@ -28,12 +28,14 @@ class JCSSUtil
     {
         $return = '';
         $config = array(
-                'entrypoint' => System::getVar('entrypoint', 'index.php'),
-                'baseURL' => System::getBaseUrl(),
-                'baseURI' => System::getBaseUri() . '/',
-                'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
-                'lang' => ZLanguage::getLanguageCode(),
-                'sessionName' => session_name(),
+            'entrypoint' => System::getVar('entrypoint', 'index.php'),
+            'baseURL' => System::getBaseUrl(),
+            'baseURI' => System::getBaseUri() . '/',
+            'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
+            'lang' => ZLanguage::getLanguageCode(),
+            'sessionName' => session_name(),
+            'request' => ServiceUtil::get('request')->query->all(),
+            'isDevelopmentMode' => System::isDevelopmentMode()
         );
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
@@ -74,8 +76,8 @@ class JCSSUtil
             $stylesheets = (array)self::save($stylesheets, 'css', $cache_dir);
         }
         $jcss = array(
-                'stylesheets' => $stylesheets,
-                'javascripts' => $javascripts
+            'stylesheets' => $stylesheets,
+            'javascripts' => $javascripts
         );
         // some core js libs require js gettext - ensure that it will be loaded
         $jsgettext = self::getJSGettext();
