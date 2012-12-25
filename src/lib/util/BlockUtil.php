@@ -306,9 +306,7 @@ class BlockUtil
         $sm->set($serviceId, $blockInstance);
 
         $result = $blockInstance;
-
-            $sm->set($serviceId, $blockInstance);
-        }
+        $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
 
         // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
