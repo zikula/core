@@ -333,7 +333,7 @@ class JCSSUtil
                 'production' => array(
                     'path' => 'javascript/plugins/colorbox/jquery.colorbox-min.js',
                     'aliases' => array('zikula.imageviewer', 'imageviewer', 'lightbox'),
-                    'require' => array('jquery'),
+                    'require' => array('jquery', 'javascript/plugins/colorbox/boot.js'),
                     'styles' => array('javascript/plugins/colorbox/colorbox.css'),
                 ),
                 'development' => array(
