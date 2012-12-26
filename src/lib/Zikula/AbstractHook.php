@@ -17,15 +17,8 @@ use Zikula\Component\HookDispatcher\Hook;
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook extends Hook implements Zikula_HookInterface
+class Zikula_AbstractHook extends Hook
 {
-    /**
-     * Name.
-     *
-     * @var string
-     */
-    protected $name;
-
     /**
      * Subscriber object id.
      *
@@ -46,13 +39,6 @@ class Zikula_AbstractHook extends Hook implements Zikula_HookInterface
      * @var string
      */
     protected $caller;
-
-    /**
-     * Stop notification flag.
-     *
-     * @var boolean
-     */
-    protected $stopped = false;
 
     /**
      * Get caller.
@@ -119,7 +105,7 @@ class Zikula_AbstractHook extends Hook implements Zikula_HookInterface
      */
     public function stop()
     {
-        $this->stopped = true;
+        $this->stopPropagation();
 
         return $this;
     }
@@ -131,31 +117,7 @@ class Zikula_AbstractHook extends Hook implements Zikula_HookInterface
      */
     public function isStopped()
     {
-        return $this->stopped;
-    }
-
-    /**
-     * Get event name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set event name.
-     *
-     * @param string $name Hook event name.
-     *
-     * @return Zikula_AbstractHook
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
+        return $this->isPropagationStopped();
     }
 
     /**
