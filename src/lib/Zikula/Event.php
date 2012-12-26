@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -25,53 +25,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Zikula_Event extends GenericEvent implements Zikula_EventInterface
 {
     /**
-     * Name of the event.
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * Observer pattern subject.
-     *
-     * @var mixed usually object or callable
-     */
-    protected $subject;
-
-    /**
-     * Array of arguments.
-     *
-     * @var array
-     */
-    protected $args;
-
-    /**
-     * Signal to stop further notification.
-     *
-     * @var boolean
-     */
-    protected $stop = false;
-
-    /**
-     * Storage for any process type events.
-     *
-     * @var mixed
-     */
-    public $data;
-
-    /**
      * Exception.
      *
      * @var Exception
      */
     protected $exception;
-
-    /**
-     * EventManager instance.
-     *
-     * @var Zikula_EventManagerInterface
-     */
-    protected $eventManager;
 
     /**
      * Encapsulate an event called $name with $subject.
@@ -91,9 +49,8 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
         }
 
         $this->setName($name);
-        $this->data = $data;
 
-        parent::__construct($this->subject = $subject, $args);
+        parent::__construct($this->subject = $subject, $args, $data);
     }
 
     /**
@@ -120,20 +77,6 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     public function isStopped()
     {
         return $this->isPropagationStopped();
-    }
-
-    /**
-     * Set data.
-     *
-     * @param mixed $data Data to be saved.
-     *
-     * @return Zikula_Event
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
     }
 
     /**
@@ -273,7 +216,7 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
      */
     public function setEventManager(Zikula_EventManagerInterface $eventManager)
     {
-        $this->eventManager = $eventManager;
+        $this->setDispatcher($eventManager);
     }
 
     /**
@@ -283,6 +226,6 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
      */
     public function getEventManager()
     {
-        return $this->eventManager;
+        return $this->getDispatcher();
     }
 }
