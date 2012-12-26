@@ -13,12 +13,12 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\AbstractBaseResponse;
+namespace Zikula\Framework\Response\Ajax;
 
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Json extends AbstractBaseResponse
+class PlainResponse extends AbstractBaseResponse
 {
     /**
      * Constructor.
@@ -38,9 +38,9 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
     public function __toString()
     {
         header($this->createHttpResponseHeader());
-        header('Content-type: application/json');
+        header('Content-type: text/html');
 
-        return json_encode($this->payload);
+        return $this->payload;
     }
 
 }

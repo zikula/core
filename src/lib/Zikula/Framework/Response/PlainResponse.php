@@ -13,11 +13,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\AjaxResponse;
+namespace Zikula\Framework\Response;
+
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Ajax class.
+ * Plain response will override theme.
  */
-class Zikula_Response_Ajax extends AjaxResponse
+class PlainResponse extends Response
 {
+
 }

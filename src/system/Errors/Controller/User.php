@@ -11,6 +11,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+use Symfony\Component\HttpFoundation\Response;
+
 class Errors_Controller_User extends Zikula_AbstractController
 {
     /**
@@ -30,20 +33,18 @@ class Errors_Controller_User extends Zikula_AbstractController
         $message   = isset($args['message']) ? $args['message'] : '';
 
         // perform any error specific tasks
-        $protocol = System::serverGetVar('SERVER_PROTOCOL');
         switch ($type) {
             case 301:
-                header("{$protocol} 301 Moved Permanently");
+                break;
+            case 302:
                 break;
             case 403:
-                header("{$protocol} 403 Access Denied");
                 break;
             case 404:
-                header("{$protocol} 404 Not Found");
                 break;
             case 500:
-                header("{$protocol} 500 Internal Server Error");
             default:
+                $type = 500;
         }
 
         // load the stylesheet
@@ -80,10 +81,12 @@ class Errors_Controller_User extends Zikula_AbstractController
 
         // return the template output
         if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
-            return $this->view->fetch($template);
+            $content = $this->view->fetch($template);
         } else {
-            return $this->view->fetch('errors_user_main.tpl');
+            $content = $this->view->fetch('errors_user_main.tpl');
         }
+
+        return new Response($content, $type);
     }
 
     /**
@@ -91,8 +94,11 @@ class Errors_Controller_User extends Zikula_AbstractController
      */
     public function systemAction($args)
     {
-        return $this->view->setCaching(Zikula_View::CACHE_DISABLED)
+
+        $content =  $this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)
                           ->fetch('errors_user_system.tpl');
+
+        return new Response($content, 500);
     }
 }

@@ -13,22 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\FatalResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Fatal extends Zikula_Response_Ajax_Error
+class Zikula_Response_Ajax_Fatal extends FatalResponse
 {
-    /**
-     * Response code.
-     *
-     * @var integer
-     */
-    protected $responseCode = 500;
-
-    /**
-     * Flag to create a new nonce.
-     *
-     * @var boolean
-     */
-    protected $newCsrfToken = false;
 }

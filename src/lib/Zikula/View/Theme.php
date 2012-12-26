@@ -267,7 +267,7 @@ class Zikula_View_Theme extends Zikula_View
      * @param integer|null $caching   Whether or not to cache (Zikula_View::CACHE_*) or use config variable (null).
      * @param string       $cache_id  Cache Id.
      *
-     * @return Zikula_Theme This instance.
+     * @return Zikula_View_Theme This instance.
      */
     public static function getInstance($themeName = '', $caching = null, $cache_id = null)
     {
@@ -302,11 +302,15 @@ class Zikula_View_Theme extends Zikula_View
      * @access private
      * @return void
      */
-    public function themefooter()
+    public function themefooter(\Symfony\Component\HttpFoundation\Response $response = null)
     {
         // end output buffering and get module output
-        $maincontent = ob_get_contents();
-        ob_end_clean();
+        if (null === $response) {
+            $maincontent = ob_get_contents();
+            ob_end_clean();
+        } else {
+            $maincontent = $response->getContent();
+        }
 
         // add the module wrapper
         if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper'] && $this->toplevelmodule) {
@@ -323,7 +327,11 @@ class Zikula_View_Theme extends Zikula_View
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
         $event = new Zikula_Event('theme.postfetch', $this, array(), $output);
-        echo $this->eventManager->dispatch('theme.postfetch', $event)->getData();
+        $content = $this->eventManager->dispatch('theme.postfetch', $event)->getData();
+
+        $response->setContent($content);
+
+        return $response;
     }
 
     /**

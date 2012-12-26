@@ -13,11 +13,17 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\AjaxResponse;
+namespace Zikula\Framework\Response\Ajax;
 
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax extends AjaxResponse
+class BadDataResponse extends AbstractBaseResponse
 {
+    /**
+     * Response code.
+     *
+     * @var integer
+     */
+    protected $statusCode = 400;
 }

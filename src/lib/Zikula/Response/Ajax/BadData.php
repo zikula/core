@@ -13,15 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\BadDataResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_BadData extends Zikula_Response_Ajax_Error
+class Zikula_Response_Ajax_BadData extends BadDataResponse
 {
-    /**
-     * Response code.
-     *
-     * @var integer
-     */
-    protected $responseCode = 400;
 }

@@ -13,11 +13,24 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\AjaxResponse;
+namespace Zikula\Framework\Response\Ajax;
 
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax extends AjaxResponse
+class UnavailableResponse extends AbstractErrorResponse
 {
+    /**
+     * Response code.
+     *
+     * @var integer
+     */
+    protected $statusCode = 503;
+
+    /**
+     * Flag to create a new nonce.
+     *
+     * @var boolean
+     */
+    protected $newCsrfToken = true;
 }
