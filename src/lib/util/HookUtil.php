@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * HookUtil.
  *
- * In the context of Zikula, unfortunately we need to maintain the HookManager
+ * In the context of Zikula, unfortunately we need to maintain the HookDispatcher
  * since it's not convenient to pass around using dependency injection.
  */
 class HookUtil
@@ -170,8 +172,8 @@ class HookUtil
         $hookManager = ServiceUtil::getManager()->get('hook_dispatcher');
         foreach ($bundles as $bundle) {
             $hookManager->unregisterSubscriberBundle($bundle);
-            $event = new Zikula_Event('installer.subscriberbundle.uninstalled', $bundle, array('areaid' => $hookManager->getAreaId($bundle->getArea())));
-            EventUtil::notify($event);
+            $event = new GenericEvent($bundle, array('areaid' => $hookManager->getAreaId($bundle->getArea())));
+            EventUtil::dispatch('installer.subscriberbundle.uninstalled', $event);
         }
     }
 

@@ -137,5 +137,6 @@ class SystemPlugin_Doctrine_Plugin extends Zikula_AbstractPlugin implements Ziku
         // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
         $serviceManager->set('doctrine.entitymanager', $entityManager);
+        $serviceManager->setAlias('doctrine.orm.default_entity_manager', 'doctrine.entitymanager');
     }
 }

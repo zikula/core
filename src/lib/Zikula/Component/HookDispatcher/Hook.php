@@ -91,7 +91,7 @@ class Hook extends Event
      *
      * @param string $areaId ID of the area.
      *
-     * @return DisplayHook
+     * @return Hook
      */
     public function setAreaId($areaId)
     {

@@ -12,12 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\EventDispatcher\Event;
+use Zikula\Component\HookDispatcher\Hook;
 
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook extends Event implements Zikula_HookInterface
+class Zikula_AbstractHook extends Hook implements Zikula_HookInterface
 {
     /**
      * Name.
@@ -53,13 +53,6 @@ class Zikula_AbstractHook extends Event implements Zikula_HookInterface
      * @var boolean
      */
     protected $stopped = false;
-
-    /**
-     * EventManager instance.
-     *
-     * @var Zikula_EventManagerInterface
-     */
-    protected $eventManager;
 
     /**
      * Get caller.
@@ -174,7 +167,7 @@ class Zikula_AbstractHook extends Event implements Zikula_HookInterface
      */
     public function setEventManager(Zikula_EventManagerInterface $eventManager)
     {
-        $this->eventManager = $eventManager;
+        $this->setDispatcher($eventManager);
     }
 
     /**
@@ -184,6 +177,6 @@ class Zikula_AbstractHook extends Event implements Zikula_HookInterface
      */
     public function getEventManager()
     {
-        return $this->eventManager;
+        return $this->getDispatcher();
     }
 }
