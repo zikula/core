@@ -15,7 +15,6 @@
 
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Zikula_Event encapsulation class.
@@ -44,7 +43,6 @@ class Zikula_Event extends GenericEvent
      */
     public function __construct($subject = null, array $args = array(), $data = null)
     {
-
         parent::__construct($this->subject = $subject, $args, $data);
     }
 
