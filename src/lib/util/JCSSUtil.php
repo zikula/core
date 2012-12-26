@@ -289,7 +289,6 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/jquery/jquery-1.8.3.js',
-                    'require' => array('jquery.noconflict'),
                 )
             ),
             'jquery.noconflict' => array(
@@ -303,8 +302,6 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.js',
-                    'require' => array('jquery'),
-                    'styles' => array('javascript/jquery-ui/themes/smoothness/jquery-ui-1.9.2.custom.css'),
                 )
             ),
             'underscore' => array(
@@ -322,7 +319,6 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/underscore/underscore.string.js',
-                    'require' => array('underscore'),
                 )
             ),
             'modernizr' => array(
@@ -342,9 +338,6 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/plugins/colorbox/jquery.colorbox.js',
-                    'aliases' => array('zikula.imageviewer', 'imageviewer', 'lightbox'),
-                    'require' => array('jquery'),
-                    'styles' => array('javascript/plugins/colorbox/colorbox.css'),
                 )
             ),
             'contextmenu' => array(
@@ -355,8 +348,6 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/plugins/jQuery-contextMenu/jquery.contextMenu.js',
-                    'require' => array('jquery'),
-                    'styles' => array('javascript/plugins/jQuery-contextMenu/jquery.contextMenu.css'),
                 )
             ),
             'zikula' => array(
@@ -379,14 +370,19 @@ class JCSSUtil
                         'javascript/zikula/ajax.js',
                         'javascript/zikula/boot.js'
                     ),
-                    'gettext' => true
                 )
             ),
         );
 
-        $key = System::isDevelopmentMode() ? 'development' : 'production';
-        $scripts = array_map(function($script) use($key) {
-            return isset($script[$key]) ? $script[$key] : $script;
+        $isDevelopmentMode = System::isDevelopmentMode();
+        $scripts = array_map(function($script) use($isDevelopmentMode) {
+            $production = isset($script['production']) ? $script['production'] : $script;
+            if ($isDevelopmentMode) {
+                // merge into script setup possible development changes
+                $dev = isset($script['development']) ? $script['development'] : array();
+                $production = array_merge($production, $dev);
+            }
+            return $production;
         }, $scriptsMap);
 
         return $scripts;
