@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * HookUtil.
  *
- * In the context of Zikula, unfortunately we need to maintain the HookManager
+ * In the context of Zikula, unfortunately we need to maintain the HookDispatcher
  * since it's not convenient to pass around using dependency injection.
  */
 class HookUtil

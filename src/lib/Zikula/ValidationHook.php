@@ -25,6 +25,7 @@ class Zikula_ValidationHook extends Zikula_AbstractHook
 
     public function __construct(Zikula_Hook_ValidationProviders $validators)
     {
+        $this->setName($name);
         $this->validators = $validators;
     }
 

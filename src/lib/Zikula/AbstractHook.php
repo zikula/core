@@ -12,13 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-use \Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Zikula\Component\HookDispatcher\Hook;
 
 /**
  * AbstractHook class.
  */
-class Zikula_AbstractHook extends Event
+class Zikula_AbstractHook extends Hook
 {
     /**
      * Subscriber object id.
@@ -109,7 +108,9 @@ class Zikula_AbstractHook extends Event
      */
     public function stop()
     {
-        return $this->stopPropagation();
+        $this->stopPropagation();
+
+        return $this;
     }
 
     /**
