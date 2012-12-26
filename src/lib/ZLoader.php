@@ -65,6 +65,8 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new ClassLoader();
         self::$autoloaders->register();
+        self::addAutoloader('Zikula', __DIR__, '\\');
+        self::addAutoloader('Zikula', __DIR__);
         self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
         self::addAutoloader('Categories', 'system/Categories/lib');
         self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
