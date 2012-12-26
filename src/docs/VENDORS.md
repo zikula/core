@@ -95,10 +95,11 @@ jQuery-UI v1.9.2
     Patch details: none
 
 jQuery Mobile 1.2.0
+
     Vendor website: http://jquerymobile.com/
     Downloaded from: http://jquerymobile.com/download/
     License: MIT
-    Location in Zikula: themes/Mobile/javascript/jquerymobile
+    Location in Zikula: javascript/jquery-mobile
     Patch details: none
 
 jQuery-Timepicker-Addon v1.0.2
@@ -106,7 +107,7 @@ jQuery-Timepicker-Addon v1.0.2
     Vendor website: http://trentrichardson.com/examples/timepicker/
     Downloaded from: https://github.com/trentrichardson/jQuery-Timepicker-Addon
     License: MIT and GPL (see footer on website)
-    Location in Zikula: javascript/jquery-plugins/jQuery-Timepicker-Addon
+    Location in Zikula: javascript/plugins/jQuery-Timepicker-Addon
     Patch details: none
 
 Underscore.js 1.4.3
@@ -115,7 +116,8 @@ Underscore.js 1.4.3
     Downloaded from: http://underscorejs.org/
     License: MIT
     Location in Zikula: javascript/underscore
-    Patch details: none
+    Patch details:
+        Added minified version (YUI Compressor) for underscore.js as underscore.min.js
 
 Underscore.string 2.3.0
 
@@ -123,7 +125,8 @@ Underscore.string 2.3.0
     Downloaded from: http://epeli.github.com/underscore.string/
     License: MIT
     Location in Zikula: javascript/underscore
-    Patch details: none
+    Patch details:
+        Added minified version (YUI Compressor) for underscore.string.js as underscore.string.min.js
 
 Modernizr 2.6.2
 
@@ -132,7 +135,44 @@ Modernizr 2.6.2
     License: MIT
     Location in Zikula: javascript/modernizr
     Patch details:
-        Build link: http://modernizr.com/download/#-fontface-backgroundsize-borderimage-borderradius-boxshadow-flexbox-hsla-multiplebgs-opacity-rgba-textshadow-cssanimations-csscolumns-generatedcontent-cssgradients-cssreflections-csstransforms-csstransforms3d-csstransitions-applicationcache-canvas-canvastext-draganddrop-hashchange-history-audio-video-indexeddb-input-inputtypes-localstorage-postmessage-sessionstorage-websockets-websqldatabase-webworkers-geolocation-inlinesvg-smil-svg-svgclippaths-touch-webgl-shiv-mq-cssclasses-addtest-prefixed-teststyles-testprop-testallprops-hasevent-prefixes-domprefixes-load
+        Build link: http://modernizr.com/download/#-fontface-backgroundsize-borderimage-borderradius-boxshadow-flexbox-hsla-multiplebgs-opacity-rgba-textshadow-cssanimations-csscolumns-generatedcontent-cssgradients-cssreflections-csstransforms-csstransforms3d-csstransitions-applicationcache-canvas-canvastext-draganddrop-hashchange-history-audio-video-indexeddb-input-inputtypes-localstorage-postmessage-sessionstorage-websockets-websqldatabase-webworkers-geolocation-inlinesvg-smil-svg-svgclippaths-touch-webgl-shiv-mq-cssclasses-addtest-prefixed-teststyles-testprop-testallprops-hasevent-prefixes-domprefixes-cookies-json-load
+
+JSON2
+
+    Vendor website: https://github.com/douglascrockford/JSON-js
+    Downloaded from: https://github.com/douglascrockford/JSON-js
+    License: Public Domain
+    Location in Zikula: javascript/polyfills/json2/
+    Patch details:
+        Added minified version (YUI Compressor) for json2.js as json2.min.js
+
+Storage polyfill
+
+    Vendor website: http://www.calormen.com/polyfill/#storage
+    Downloaded from: http://www.calormen.com/polyfill/#storage
+    License: MIT
+    Location in Zikula: javascript/polyfills/storage/
+    Patch details:
+        Added minified version (YUI Compressor) for storage.js as storage.min.js
+
+ColorBox 1.3.20
+
+    Vendor website: http://www.jacklmoore.com/colorbox
+    Downloaded from: http://www.jacklmoore.com/colorbox
+    License: MIT
+    Location in Zikula: javascript/plugins/colorbox/
+    Patch details:
+        Theme from "example1".
+
+ColorBox 1.5.20
+
+    Vendor website: http://medialize.github.com/jQuery-contextMenu
+    Downloaded from: https://github.com/medialize/jQuery-contextMenu
+    License: MIT
+    Location in Zikula: javascript/plugins/jQuery-contextMenu/
+    Patch details:
+        Added minified version (YUI Compressor) for jquery.contextMenu.js as jquery.contextMenu.min.js
+
 
 ICON LIBRARIES
 --------------
