@@ -16,56 +16,12 @@
 /**
  * DisplayHook class.
  */
-class Zikula_DisplayHook extends Zikula_AbstractHook
+class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
 {
-    /**
-     * Responses.
-     *
-     * @var array
-     */
-    private $responses = array();
-
-    /**
-     * The return url.
-     *
-     * @var Zikula_ModUrl
-     */
-    private $url;
-
     public function __construct($name, $id, Zikula_ModUrl $url = null)
     {
         $this->setName($name);
-        $this->id = $id;
-        $this->url = $url;
-    }
 
-    /**
-     * Add response.
-     *
-     * @return mixed Data property.
-     */
-    public function setResponse(Zikula_Response_DisplayHook $response)
-    {
-        return $this->responses[$response->getArea()] = $response;
-    }
-
-    /**
-     * Set data.
-     *
-     * @return Zikula_DisplayHook
-     */
-    public function getResponses()
-    {
-        return $this->responses;
-    }
-
-    /**
-     * Url getter.
-     *
-     * @return Zikula_ModUrl
-     */
-    public function getUrl()
-    {
-        return $this->url;
+        parent::__construct($id, $url);
     }
 }

@@ -19,24 +19,12 @@
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_ProcessHook extends Zikula_AbstractHook
+class Zikula_ProcessHook extends Zikula\Core\Hook\ProcessHook
 {
-    /**
-     * Url container.
-     *
-     * @var Zikula_ModUrl
-     */
-    protected $url;
-
     public function __construct($name, $id, Zikula_ModUrl $url=null)
     {
         $this->setName($name);
-        $this->id = $id;
-        $this->url = $url;
-    }
 
-    public function getUrl()
-    {
-        return $this->url;
+        parent::__construct($id, $url);
     }
 }
