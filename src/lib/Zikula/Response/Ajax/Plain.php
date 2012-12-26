@@ -13,32 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\PlainResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Plain extends Zikula_Response_Ajax_AbstractBase
+class Zikula_Response_Ajax_Plain extends PlainResponse
 {
-    /**
-     * Constructor.
-     *
-     * @param string $payload Payload data.
-     */
-    public function __construct($payload)
-    {
-        $this->payload = $payload;
-    }
-
-    /**
-     * Convert class to string.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        header($this->createHttpResponseHeader());
-        header('Content-type: text/html');
-
-        return $this->payload;
-    }
-
 }

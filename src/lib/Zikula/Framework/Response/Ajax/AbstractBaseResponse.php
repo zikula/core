@@ -13,11 +13,23 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Framework\Response\Ajax;
+
+use Zikula\Framework\Response\PlainResponse;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Ajax class.
  */
-abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response_Ajax_AbstractBase
+abstract class AbstractBaseResponse extends PlainResponse
 {
+    /**
+     * Response code.
+     *
+     * @var integer
+     */
+    protected $statusCode = 200;
+
     /**
      * CSRF Token.
      *
@@ -67,11 +79,25 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
      */
     public function __toString()
     {
-        $payload = json_encode($this->generatePayload());
-        header($this->createHttpResponseHeader());
-        header('Content-type: application/json');
+        $this->setContent($this->generatePayload());
+        $this->headers->set('Content-type', 'application/json');
 
-        return $payload;
+        return parent::__toString();
+    }
+
+    /**
+     * Sends HTTP headers and content.
+     *
+     * @return Response
+     *
+     * @api
+     */
+    public function send()
+    {
+        $this->setContent($this->generatePayload());
+        $this->headers->set('Content-type', 'application/json');
+
+        return parent::send();
     }
 
     /**
@@ -81,10 +107,10 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
      */
     protected function generatePayload()
     {
-        return array(
-                'core' => $this->generateCoreData(),
-                'data' => $this->payload,
-        );
+        return json_encode(array(
+            'core' => $this->generateCoreData(),
+            'data' => $this->payload,
+        ));
     }
 
     /**
@@ -106,8 +132,9 @@ abstract class Zikula_Response_Ajax_AbstractMediatorBase extends Zikula_Response
             $core['authid'] = $this->authid;
             $core['token'] = $this->csrfToken;
         }
-        $logUtilMessages = (array)LogUtil::getStatusMessages();
-        $core['statusmsg'] = array_merge($this->messages,$logUtilMessages);
+        //$logUtilMessages = (array) \LogUtil::getStatusMessages();
+        //$core['statusmsg'] = array_merge($this->messages, $logUtilMessages);
+        $core['statusmsg'] = $this->messages;
 
         return $core;
     }

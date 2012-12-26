@@ -13,15 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\NotFoundResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_NotFound extends Zikula_Response_Ajax_Error
+class Zikula_Response_Ajax_NotFound extends NotFoundResponse
 {
-    /**
-     * Response code.
-     *
-     * @var integer
-     */
-    protected $responseCode = 404;
 }

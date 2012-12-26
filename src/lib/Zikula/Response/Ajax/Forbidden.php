@@ -13,22 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\ForbiddenResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Forbidden extends Zikula_Response_Ajax_Error
+class Zikula_Response_Ajax_Forbidden extends ForbiddenResponse
 {
-    /**
-     * Response code.
-     *
-     * @var integer
-     */
-    protected $responseCode = 403;
-
-    /**
-     * Flag to create a new nonce.
-     *
-     * @var boolean
-     */
-    protected $newCsrfToken = false;
 }
