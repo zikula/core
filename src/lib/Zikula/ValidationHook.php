@@ -16,26 +16,12 @@
 /**
  * Content validation hook.
  */
-class Zikula_ValidationHook extends Zikula_AbstractHook
+class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
 {
-    /**
-     * @var Zikula_Hook_ValidationProviders
-     */
-    private $validators;
-
-    public function __construct(Zikula_Hook_ValidationProviders $validators)
+    public function __construct($name, Zikula_Hook_ValidationProviders $validators)
     {
         $this->setName($name);
-        $this->validators = $validators;
-    }
 
-    public function setValidator($name, Zikula_Hook_ValidationResponse $response)
-    {
-        $this->validators->set($name, $response);
-    }
-
-    public function getValidators()
-    {
-        return $this->validators;
+        parent::__construct($validators);
     }
 }
