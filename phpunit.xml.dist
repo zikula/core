@@ -14,6 +14,8 @@
     <testsuites>
         <testsuite name="Zikula Test Suite">
             <directory>./tests/lib/Tests/</directory>
+            <directory>./src/lib/Zikula/Component/*/Tests/</directory>
+            <directory>./src/lib/Zikula/Core/Tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
