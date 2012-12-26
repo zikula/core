@@ -299,10 +299,12 @@ class JCSSUtil
                 'production' => array(
                     'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.min.js',
                     'require' => array('jquery'),
+                    'styles' => array('javascript/jquery-ui/themes/smoothness/jquery-ui-1.9.2.custom.min.css'),
                 ),
                 'development' => array(
                     'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.js',
                     'require' => array('jquery'),
+                    'styles' => array('javascript/jquery-ui/themes/smoothness/jquery-ui-1.9.2.custom.css'),
                 )
             ),
             'underscore' => array(
@@ -329,6 +331,32 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/modernizr/modernizr.js',
+                )
+            ),
+            'colorbox' => array(
+                'production' => array(
+                    'path' => 'javascript/plugins/colorbox/jquery.colorbox-min.js',
+                    'aliases' => array('zikula.imageviewer', 'imageviewer', 'lightbox'),
+                    'require' => array('jquery'),
+                    'styles' => array('javascript/plugins/colorbox/colorbox.css'),
+                ),
+                'development' => array(
+                    'path' => 'javascript/plugins/colorbox/jquery.colorbox.js',
+                    'aliases' => array('zikula.imageviewer', 'imageviewer', 'lightbox'),
+                    'require' => array('jquery'),
+                    'styles' => array('javascript/plugins/colorbox/colorbox.css'),
+                )
+            ),
+            'contextmenu' => array(
+                'production' => array(
+                    'path' => 'javascript/plugins/jQuery-contextMenu/jquery.contextMenu.min.js',
+                    'require' => array('jquery'),
+                    'styles' => array('javascript/plugins/jQuery-contextMenu/jquery.contextMenu.css'),
+                ),
+                'development' => array(
+                    'path' => 'javascript/plugins/jQuery-contextMenu/jquery.contextMenu.js',
+                    'require' => array('jquery'),
+                    'styles' => array('javascript/plugins/jQuery-contextMenu/jquery.contextMenu.css'),
                 )
             ),
             'zikula' => array(
