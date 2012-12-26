@@ -151,11 +151,16 @@
          * @name Zikula.Util.Polyfills.when
          * @function
          *
-         * @param {String} name Polyfill name
+         * @param {String[]} names Polyfill name or array of names
          * @return {jQuery.Deferred}
          */
-        function when(name) {
-            return getPolyfill(name).deferred.promise();
+        function when(names) {
+            names = _(names).isArray() ? names : [names];
+            var callbacks = _(names).map(function(name) {
+                return getPolyfill(name).deferred;
+            });
+
+            return $.when.apply($, callbacks);
         }
 
         // Export public methods
