@@ -13,25 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\AjaxResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax extends Zikula_Response_Ajax_AbstractMediatorBase
+class Zikula_Response_Ajax extends AjaxResponse
 {
-    /**
-     * Constructor.
-     *
-     * @param mixed $payload Application data.
-     * @param mixed $message Response status/error message, may be string or array.
-     * @param array $options Options.
-     */
-    public function __construct($payload, $message = null, array $options = array())
-    {
-        $this->payload = $payload;
-        $this->messages = (array)$message;
-        $this->options = $options;
-        if ($this->newCsrfToken) {
-            $this->csrfToken = SecurityUtil::generateCsrfToken();
-        }
-    }
+
 }

@@ -12,6 +12,9 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Framework\Response\PlainResponse;
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
@@ -59,12 +62,6 @@ if ($modinfo) {
     }
 }
 
-$httpCode = 404;
-$message = '';
-$debug = null;
-$return = false;
-$e = null;
-
 if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
     $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
     $dbConn->beginTransaction();
@@ -73,17 +70,21 @@ if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
 try {
     if (empty($module)) {
         // we have a static homepage
-        $return = ' ';
+        $response = new Response();
     } elseif ($modinfo) {
         // call the requested/homepage module
         $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+        if (false === $return instanceof Response) {
+            $response = new Response($return);
+        } elseif (true === $return) {
+            $response = new PlainResponse();
+        } elseif (false === $return) {
+            // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
+            $response = new Response(__('Page not found.'), 404);
+        }
+    } else {
+        $response = new Response('Something unexpected happened', 500);
     }
-
-    if (!$return) {
-        // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
-        throw new Zikula_Exception_NotFound(__('Page not found.'));
-    }
-    $httpCode = 200;
 
     if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
         $dbConn->commit();
@@ -94,23 +95,20 @@ try {
     $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
-        $httpCode = $event['httpcode'];
-        $message = $event['message'];
+        $response = new Response($event['message'], $event['httpcode']);
     } else {
         if ($e instanceof Zikula_Exception_NotFound) {
-            $httpCode = 404;
-            $message = $e->getMessage();
+            $response = new Response($e->getMessage(), 404);
             $debug = array_merge($e->getDebug(), $e->getTrace());
         } elseif ($e instanceof Zikula_Exception_Forbidden) {
-            $httpCode = 403;
-            $message = $e->getMessage();
+            $response = new Response($e->getMessage(), 403);
             $debug = array_merge($e->getDebug(), $e->getTrace());
         } elseif ($e instanceof Zikula_Exception_Redirect) {
+            $response = new RedirectResponse($e->getUrl(), $e->getType());
             System::redirect($e->getUrl(), array(), $e->getType());
             System::shutDown();
         } elseif ($e instanceof PDOException) {
-            $httpCode = 500;
-            $message = $e->getMessage();
+            $response = new Response($e->getMessage(), 500);
             if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
                 $return = __('Error! The transaction failed. Performing rollback.').$return;
                 $dbConn->rollback();
@@ -119,44 +117,44 @@ try {
             }
         } elseif ($e instanceof Exception) {
             // general catch all
-            $httpCode = 500;
-            $message = $e->getMessage();
+            $response = new Response($e->getMessage(), 500);
             $debug = $e->getTrace();
         }
     }
 }
 
 switch (true) {
-    case ($return === true):
-        // prevent rendering of the theme.
+    case ($response->getStatusCode() == 200):
+        break;
+
+    case ($response->getStatusCode() == 301):
+    case ($response->getStatusCode() == 302):
         System::shutDown();
         break;
 
-    case ($httpCode == 403):
+    case ($response->getStatusCode() == 403):
         if (!UserUtil::isLoggedIn()) {
             $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
+            $response->setTargetUrl($url);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
+            echo $response;
             System::shutDown();
         }
-    // there is no break here deliberately.
-    case ($return === false):
+    case ($response->getStatusCode() == 404):
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
         }
-        echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
-        break;
-
-    case ($httpCode == 200):
-        echo $return;
+        $response->setContent(ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e)));
         break;
 
     default:
         LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), $httpCode, null);
-        echo ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
+        $response->setContent(ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e)));
         break;
 }
 
-Zikula_View_Theme::getInstance()->themefooter();
+Zikula_View_Theme::getInstance()->themefooter($response);
+$response->send();
 System::shutdown();
 
 function __frontcontroller_ajax()
@@ -166,51 +164,49 @@ function __frontcontroller_ajax()
     $type = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
     $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
+    // get module information
+    $modinfo = ModUtil::getInfoFromName($module);
+
     // Check for site closed
     if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
         }
-        die(new Zikula_Response_Ajax_Unavailable(__('The site is currently off-line.')));
-    }
-
-    if (empty($func)) {
-        die(new Zikula_Response_Ajax_NotFound(__f("Missing parameter '%s'", 'func')));
-    }
-
-    // get module information
-    $modinfo = ModUtil::getInfoFromName($module);
-    if ($modinfo == false) {
-        die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module))));
-    }
-
-    if (!ModUtil::available($modinfo['name'])) {
-        die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
-    }
-
-    if (!ModUtil::load($modinfo['name'], $type)) {
-        die(new Zikula_Response_Ajax_NotFound(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module))));
-    }
-
-    // Handle database transactions
-    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
-        $dbConn->beginTransaction();
+        $response = new \Zikula\Framework\Response\Ajax\UnavailableResponse(__('The site is currently off-line.'));
+    } else if (empty($func)) {
+        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Missing parameter '%s'", 'func'));
+    } else if ($modinfo == false) {
+        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
+    } else if (!ModUtil::available($modinfo['name'])) {
+        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
+    } else if (!ModUtil::load($modinfo['name'], $type)) {
+        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
     }
 
     // Dispatch controller.
     try {
-        $response = ModUtil::func($modinfo['name'], $type, $func);
+        if (!isset($response)) {
+            // Handle database transactions
+            if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
+                $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
+                $dbConn->beginTransaction();
+            }
+
+            $response = ModUtil::func($modinfo['name'], $type, $func);
+            if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
+                throw new Zikula_Exception_Fatal(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
+            }
+        }
     } catch (Zikula_Exception_NotFound $e) {
-        $response = new Zikula_Response_Ajax_NotFound($e->getMessage());
+        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse($e->getMessage());
     } catch (Zikula_Exception_Forbidden $e) {
-        $response = new Zikula_Response_Ajax_Forbidden($e->getMessage());
+        $response = new \Zikula\Framework\Response\Ajax\ForbiddenResponse($e->getMessage());
     } catch (Zikula_Exception_Fatal $e) {
-        $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+        $response = new \Zikula\Framework\Response\Ajax\FatalResponse($e->getMessage());
     } catch (PDOException $e) {
-        $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+        $response = new \Zikula\Framework\Response\Ajax\FatalResponse($e->getMessage());
     } catch (Exception $e) {
-        $response = new Zikula_Response_Ajax_Fatal($e->getMessage());
+        $response = new \Zikula\Framework\Response\Ajax\FatalResponse($e->getMessage());
     }
 
     // Handle database transactions
@@ -223,8 +219,8 @@ function __frontcontroller_ajax()
     }
 
     // Process final response.
-    // If response is not instanceof Zikula_Response_Ajax_AbstractBase provide compat solution
-    if (!$response instanceof Zikula_Response_Ajax_AbstractBase) {
+    // If response is not instanceof Zikula\Framework\Response\Ajax\AbstractBaseRespons provide compat solution
+    if (!$response instanceof Zikula\Framework\Response\Ajax\AbstractBaseResponse) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
         $response = json_encode($response);
@@ -233,6 +229,6 @@ function __frontcontroller_ajax()
     }
 
     // Issue response.
-    echo $response;
+    $response->send();
     System::shutdown();
 }

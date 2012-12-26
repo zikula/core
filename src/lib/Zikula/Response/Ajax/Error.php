@@ -13,39 +13,11 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\AbstractErrorResponse;
+
 /**
  * Ajax class.
  */
-abstract class Zikula_Response_Ajax_Error extends Zikula_Response_Ajax_AbstractMediatorBase
+abstract class Zikula_Response_Ajax_Error extends AbstractErrorResponse
 {
-    /**
-     * Constructor.
-     *
-     * @param mixed $message Response status/error message, may be string or array.
-     * @param mixed $payload Payload.
-     */
-    public function __construct($message, $payload=null)
-    {
-        $this->messages = (array)$message;
-        $this->payload = $payload;
-        if ($this->newCsrfToken) {
-            $this->authid = SecurityUtil::generateAuthKey(ModUtil::getName());
-            $this->csrfToken = SecurityUtil::generateCsrfToken();
-        }
-    }
-
-    /**
-     * Generate system level payload.
-     *
-     * @return array
-     */
-    protected function generateCoreData()
-    {
-        $core = parent::generateCoreData();
-        if (!isset($core['statusmsg']) || empty($core['statusmsg'])) {
-            $core['statusmsg'] = __('An unknown error occurred');
-        }
-
-        return $core;
-    }
 }

@@ -60,12 +60,13 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
         }
 
         // if we get this far, display template
-        echo ModUtil::func('Errors', 'user', 'system',
+        $return = ModUtil::func('Errors', 'user', 'system',
                            array('type' => $this->errno,
                                  'message' => $this->errstr,
                                  'file' => $this->errfile,
                                  'line' => $this->errline));
-        Zikula_View_Theme::getInstance()->themefooter();
+        $response = Zikula_View_Theme::getInstance()->themefooter(new Response($return, 500));
+        $response->send();
         System::shutDown();
     }
 }

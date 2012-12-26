@@ -13,6 +13,7 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -25,13 +26,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Zikula_Event extends GenericEvent
 {
     /**
-     * Storage for any process type events.
-     *
-     * @var mixed
-     */
-    public $data;
 
-    /**
      * Exception.
      *
      * @var Exception
@@ -49,9 +44,8 @@ class Zikula_Event extends GenericEvent
      */
     public function __construct($subject = null, array $args = array(), $data = null)
     {
-        $this->data = $data;
 
-        parent::__construct($subject, $args);
+        parent::__construct($this->subject = $subject, $args, $data);
     }
 
     /**
@@ -78,20 +72,6 @@ class Zikula_Event extends GenericEvent
     public function isStopped()
     {
         return $this->isPropagationStopped();
-    }
-
-    /**
-     * Set data.
-     *
-     * @param mixed $data Data to be saved.
-     *
-     * @return Zikula_Event
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
     }
 
     /**

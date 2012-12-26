@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Framework\Response\Ajax\AbstractBaseResponse;
+
 /**
  * Ajax class.
  */
-class Zikula_Response_Ajax_Json extends Zikula_Response_Ajax_AbstractBase
+class Zikula_Response_Ajax_Json extends AbstractBaseResponse
 {
     /**
      * Constructor.
