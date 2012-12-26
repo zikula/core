@@ -17,14 +17,14 @@ namespace Zikula\Core\Doctrine;
 class EntityAccess implements \ArrayAccess
 {
     /**
-     * @var ReflectionObject
+     * @var \ReflectionObject
      */
     protected $reflection;
 
     /**
      * Get this reflection.
      *
-     * @return ReflectionObject
+     * @return \ReflectionObject
      */
     public function getReflection()
     {

@@ -18,11 +18,11 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Base class of many-to-many assocation between any entity and attribute.
+ * Base class of many-to-many assocation between any entity and Category.
  *
  * @ORM\MappedSuperclass
  */
-abstract class EntityAttribute extends EntityAccess
+abstract class AbstractEntityCategory extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -33,21 +33,24 @@ abstract class EntityAttribute extends EntityAccess
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
+     * @ORM\Column(type="integer", name="registryId")
+     * @var integer
      */
-    private $name;
+    private $categoryRegistryId;
 
     /**
-     * @ORM\Column(type="array")
-     * @var string
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category")
+     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+     * @var \Zikula\Core\Doctrine\Entity\Category
      */
-    private $value;
+    private $category;
 
-    public function __construct($name, $value, $entity)
+    public function __construct($registryId,
+                                Category $category,
+                                $entity)
     {
-        $this->name = $name;
-        $this->value = $value;
+        $this->categoryRegistryId = $registryId;
+        $this->category = $category;
         $this->setEntity($entity);
     }
 
@@ -61,26 +64,25 @@ abstract class EntityAttribute extends EntityAccess
         $this->id = $id;
     }
 
-    public function getName()
+    public function getCategoryRegistryId()
     {
-        return $this->name;
+        return $this->categoryRegistryId;
     }
 
-    public function setName($name)
+    public function setCategoryRegistryId($categoryRegistryId)
     {
-        $this->name = $name;
+        $this->categoryRegistryId = $categoryRegistryId;
     }
 
-    public function getValue()
+    public function getCategory()
     {
-        return $this->value;
+        return $this->category;
     }
 
-    public function setValue($value)
+    public function setCategory(Category $category)
     {
-        $this->value = $value;
+        $this->category = $category;
     }
-
 
     abstract public function getEntity();
 

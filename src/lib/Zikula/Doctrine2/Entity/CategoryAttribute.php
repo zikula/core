@@ -19,28 +19,6 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  */
-class Zikula_Doctrine2_Entity_CategoryAttribute extends Zikula_Doctrine2_Entity_AbstractAttribute
+class Zikula_Doctrine2_Entity_CategoryAttribute extends Zikula\Core\Doctrine\Entity\CategoryAttribute
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category", inversedBy="attributes")
-     * @ORM\JoinColumn(name="object_id", referencedColumnName="id")
-     * @var integer
-     */
-    private $objectId;
-
-    public function __construct($objectId, $objectStatus, $name, $value)
-    {
-        parent::__construct($objectId, 'categories_category', $objectStatus, $name, $value);
-    }
-
-    public function getObjectId()
-    {
-        return $this->objectId;
-    }
-
-    public function setObjectId($objectId)
-    {
-        $this->objectId = $objectId;
-    }
-
 }

@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\MappedSuperclass
  */
-abstract class EntityMetadata extends EntityAccess
+abstract class AbstractEntityMetadata extends EntityAccess
 {
     /**
      * @ORM\Id
