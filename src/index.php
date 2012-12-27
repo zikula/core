@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Framework\Response\PlainResponse;
@@ -74,13 +74,14 @@ try {
     } elseif ($modinfo) {
         // call the requested/homepage module
         $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
-        if (false === $return instanceof Response) {
-            $response = new Response($return);
-        } elseif (true === $return) {
-            $response = new PlainResponse();
-        } elseif (false === $return) {
+        if (false === $return) {
             // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
             $response = new Response(__('Page not found.'), 404);
+        } else if (true === $return) {
+            // controllers should not return boolean anymore, this is BC for the time being.
+            System::shutDown();
+        } else if (false === $return instanceof Response) {
+            $response = new Response($return);
         }
     } else {
         $response = new Response('Something unexpected happened', 500);
@@ -105,8 +106,6 @@ try {
             $debug = array_merge($e->getDebug(), $e->getTrace());
         } elseif ($e instanceof Zikula_Exception_Redirect) {
             $response = new RedirectResponse($e->getUrl(), $e->getType());
-            System::redirect($e->getUrl(), array(), $e->getType());
-            System::shutDown();
         } elseif ($e instanceof PDOException) {
             $response = new Response($e->getMessage(), 500);
             if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
@@ -129,6 +128,7 @@ switch (true) {
 
     case ($response->getStatusCode() == 301):
     case ($response->getStatusCode() == 302):
+        $response->send();
         System::shutDown();
         break;
 
@@ -136,24 +136,31 @@ switch (true) {
         if (!UserUtil::isLoggedIn()) {
             $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
             $response = new RedirectResponse($url, 302);
-            LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
+            LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url);
             $response->send();
             System::shutDown();
         }
+        break;
+
     case ($response->getStatusCode() == 404):
         if (!LogUtil::hasErrors()) {
-            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), $httpCode, null);
+            LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), 404, null);
         }
         $response->setContent(ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e)));
         break;
 
+    case ($response->getStatusCode() == 500):
+
     default:
-        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), $httpCode, null);
-        $response->setContent(ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e)));
+        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), 500, null);
+        $response = ModUtil::func('Errors', 'user', 'main', array('message' => $message, 'exception' => $e));
         break;
 }
 
-Zikula_View_Theme::getInstance()->themefooter($response);
+if (false === $response instanceof PlainResponse) {
+    Zikula_View_Theme::getInstance()->themefooter($response);
+}
+
 $response->send();
 System::shutdown();
 
@@ -219,7 +226,7 @@ function __frontcontroller_ajax()
     }
 
     // Process final response.
-    // If response is not instanceof Zikula\Framework\Response\Ajax\AbstractBaseRespons provide compat solution
+    // If response is not instanceof Zikula\Framework\Response\Ajax\AbstractBaseResponse provide compat solution
     if (!$response instanceof Zikula\Framework\Response\Ajax\AbstractBaseResponse) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();

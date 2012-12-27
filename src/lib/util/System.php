@@ -354,6 +354,8 @@ class System
      * @param array   $additionalheaders Array of header strings to send with redirect.
      * @param integer $type              Number type of the redirect.
      *
+     * @deprecated Since 1.3.6, throw Redirect exception.
+     *
      * @return boolean True if redirect successful, false otherwise.
      */
     public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
@@ -394,9 +396,7 @@ class System
             $redirecturl = $baseurl . $redirecturl;
         }
 
-        header("Location: $redirecturl", true, (int)$type);
-
-        return true;
+        throw new Zikula_Exception_Redirect($redirecturl, $type);
     }
 
     /**

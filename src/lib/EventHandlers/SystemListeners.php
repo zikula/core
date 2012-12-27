@@ -13,6 +13,7 @@
  */
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Event handler to override templates.
@@ -158,7 +159,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if (SessionUtil::hasExpired()) {
             // Session has expired, display warning
-            $response = ModUtil::apiFunc('Users', 'user', 'expiredsession', 403);
+            $response = new Response(ModUtil::apiFunc('Users', 'user', 'expiredsession', 403));
             $response = Zikula_View_Theme::getInstance()->themefooter($response);
             $response->send();
             System::shutdown();
