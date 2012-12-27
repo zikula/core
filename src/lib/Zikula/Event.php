@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -43,14 +43,9 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
      */
     public function __construct($name, $subject = null, array $args = array(), $data = null)
     {
-        // must have a name
-        if (empty($name)) {
-            throw new InvalidArgumentException('Event name cannot be empty');
-        }
-
         $this->setName($name);
-
-        parent::__construct($this->subject = $subject, $args, $data);
+        $this->data = $data;
+        parent::__construct($subject, $args);
     }
 
     /**
@@ -125,6 +120,20 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     public function getArg($key)
     {
         return $this->getArgument($key);
+    }
+
+    /**
+     * Sets the data
+     *
+     * @param $data
+     *
+     * @return Zikula_Event
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     /**

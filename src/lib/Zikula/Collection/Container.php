@@ -13,10 +13,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Common\Collection\CollectionInterface;
+
 /**
  * Generic Collection.
  */
-class Zikula_Collection_Container implements Zikula_CollectionInterface
+class Zikula_Collection_Container implements CollectionInterface
 {
     /**
      * The name of the collection.
