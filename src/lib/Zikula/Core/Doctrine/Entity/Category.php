@@ -22,11 +22,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Category entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="categories",indexes={@ORM\index(name="idx_categories_is_leaf",columns={"is_leaf"}),
- *                                       @ORM\index(name="idx_categories_name",columns={"name"}),
- *                                       @ORM\index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),
- *                                       @ORM\index(name="idx_categories_status",columns={"status"}),
- *                                       @ORM\index(name="idx_categories_ipath_status",columns={"ipath","status"})})
+ * @ORM\Table(name="categories_category",indexes={@ORM\index(name="idx_categories_is_leaf",columns={"is_leaf"}),
+ *                                                @ORM\index(name="idx_categories_name",columns={"name"}),
+ *                                                @ORM\index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),
+ *                                                @ORM\index(name="idx_categories_status",columns={"status"}),
+ *                                                @ORM\index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
 class Category extends EntityAccess
 {
@@ -275,7 +275,7 @@ class Category extends EntityAccess
     /**
      * get the attributes of the category
      *
-     * @return Zikula\Core\Doctrine\Entity\CategoryAttribute the category's attributes
+     * @return \Zikula\Core\Doctrine\Entity\CategoryAttribute the category's attributes
      */
     public function getAttributes()
     {
@@ -285,7 +285,7 @@ class Category extends EntityAccess
     /**
      * set the attributes for the category
      *
-     * @param Zikula\Core\Doctrine\Entity\CategoryAttribute $attributes the attributes for the category
+     * @param \Zikula\Core\Doctrine\Entity\CategoryAttribute $attributes the attributes for the category
      */
     public function setAttributes($attributes)
     {
