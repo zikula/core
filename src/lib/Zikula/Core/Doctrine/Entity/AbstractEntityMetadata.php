@@ -18,7 +18,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Base class of one-to-one assocation between any entity and metadata.
+ * Base class of one-to-one association between any entity and metadata.
  *
  * @ORM\MappedSuperclass
  */

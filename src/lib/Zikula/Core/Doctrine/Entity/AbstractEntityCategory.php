@@ -18,7 +18,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Base class of many-to-many assocation between any entity and Category.
+ * Base class of many-to-many association between any entity and Category.
  *
  * @ORM\MappedSuperclass
  */
