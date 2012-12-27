@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_Event extends GenericEvent implements Zikula_EventInterface
+class Zikula_Event extends GenericEvent
 {
     /**
      * Exception.
@@ -32,9 +32,9 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     protected $exception;
 
     /**
-     * Encapsulate an event called $name with $subject.
+     * Encapsulate an event called with $subject.
      *
-     * @param string $name    Name of the event.
+     * @param string $name    Event name.
      * @param mixed  $subject Usually and object or other PHP callable.
      * @param array  $args    Arguments to store in the event.
      * @param mixed  $data    Convenience argument of data for optional processing.
@@ -64,7 +64,7 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     /**
      * Has the event been stopped.
      *
-     * @deprecated
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::isPropagationStopped()
      *
      * @return boolean
@@ -219,11 +219,14 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     /**
      * Sets the EventManager property.
      *
-     * @param Zikula_EventManagerInterface $eventManager
+     * @param EventDispatcherInterface $eventManager
+     *
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::setDispatcher()
      *
      * @return void
      */
-    public function setEventManager(Zikula_EventManagerInterface $eventManager)
+    public function setEventManager(EventDispatcherInterface $eventManager)
     {
         $this->setDispatcher($eventManager);
     }
@@ -231,7 +234,10 @@ class Zikula_Event extends GenericEvent implements Zikula_EventInterface
     /**
      * Gets the EventManager.
      *
-     * @return Zikula_EventManager
+     * @deprecated since 1.3.6
+     * @use Symfony\Component\EventDispatcher\GenericEvent::getDispatcher()
+     *
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     public function getEventManager()
     {

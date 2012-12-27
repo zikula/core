@@ -117,7 +117,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
             return call_user_func_array(array($this, $method), $args);
         }
 
-        $event = new Zikula_Event('controller.method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new \Zikula\Core\Event\GenericEvent($this, array('method' => $method, 'args' => $args));
         $this->eventManager->dispatch('controller.method_not_found', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();

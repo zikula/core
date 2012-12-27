@@ -80,7 +80,7 @@ class Zikula_DebugToolbar
         PageUtil::addVar('stylesheet', 'style/debugtoolbar.css');
 
         // allow modules and plugins to extend the toolbar
-        $event = new Zikula_Event('debugtoolbar.init', $this);
+        $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('debugtoolbar.init', $event);
     }
 

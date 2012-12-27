@@ -30,10 +30,10 @@ $core = new Zikula_Core();
 $core->boot();
 
 // Load system configuration
-$event = new Zikula_Event('bootstrap.getconfig', $core);
+$event = new \Zikula\Core\Event\GenericEvent($core);
 $core->getDispatcher()->dispatch('bootstrap.getconfig', $event);
 
-$event = new Zikula_Event('bootstrap.custom', $core);
+$event = new \Zikula\Core\Event\GenericEvent($core);
 $core->getDispatcher()->dispatch('bootstrap.custom', $event);
 
 return $core;

@@ -821,8 +821,8 @@ class ModUtil
 
         self::_loadStyleSheets($modname, $api, $type);
 
-        $event = new Zikula_Event('module_dispatch.postloadgeneric', null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
-        EventUtil::notify($event);
+        $event = new \Zikula\Core\Event\GenericEvent(null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        EventUtil::dispatch('module_dispatch.postloadgeneric', $event);
 
         return $modname;
     }
@@ -901,8 +901,8 @@ class ModUtil
         $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname) . '_Controller_' . ucwords($type);
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new Zikula_Event('module_dispatch.custom_classname', null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
-        EventUtil::notify($event);
+        $event = new \Zikula\Core\Event\GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        EventUtil::dispatch('module_dispatch.custom_classname', $event);
         if ($event->isPropagationStopped()) {
             $className = $event->getData();
         }
@@ -1070,11 +1070,11 @@ class ModUtil
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
         if ($loaded) {
-            $preExecuteEvent = new Zikula_Event('module_dispatch.preexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
-            $postExecuteEvent = new Zikula_Event('module_dispatch.postexecute', $controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $preExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
+            $postExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
 
             if (is_callable($modfunc)) {
-                $eventManager->notify($preExecuteEvent);
+                $eventManager->dispatch('module_dispatch.preexecute', $preExecuteEvent);
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
@@ -1096,7 +1096,7 @@ class ModUtil
                     $postExecuteEvent->setData($modfunc($args));
                 }
 
-                return $eventManager->notify($postExecuteEvent)->getData();
+                return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
             }
 
             // get the theme
@@ -1141,7 +1141,7 @@ class ModUtil
             // 4. $event->setNotify().
             // return void
             // This event means that no $type was found
-            $event = new Zikula_Event('module_dispatch.type_not_found', null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
+            $event = new \Zikula\Core\Event\GenericEvent(null, array('modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), false);
             $eventManager->dispatch('module_dispatch.type_not_found', $event);
 
             if ($preExecuteEvent->isPropagationStopped()) {

@@ -329,7 +329,7 @@ class PageUtil
             $value = array_unique($value);
         }
 
-        $event = new Zikula_Event('pageutil.addvar_filter', $varname, array(), $value);
+        $event = new \Zikula\Core\Event\GenericEvent($varname, array(), $value);
         $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
 
         if ($_pageVars[$varname]['multivalue']) {

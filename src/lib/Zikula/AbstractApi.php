@@ -28,7 +28,7 @@ abstract class Zikula_AbstractApi extends Zikula_AbstractBase
      */
     public function __call($method, $args)
     {
-        $event = new Zikula_Event('api.method_not_found', $this, array('method' => $method, 'args' => $args));
+        $event = new \Zikula\Core\Event\GenericEvent($this, array('method' => $method, 'args' => $args));
         $this->eventManager->dispatch('api.method_not_found', $event);
         if ($event->isPropagationStopped()) {
             return $event->getData();

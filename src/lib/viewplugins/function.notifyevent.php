@@ -77,7 +77,7 @@ function smarty_function_notifyevent($params, Zikula_View $view)
             $eventData = null;
         }
 
-        $event = new Zikula_Event($eventName, $eventSubject, $params, $eventData);
+        $event = new \Zikula\Core\Event\GenericEvent($eventSubject, $params, $eventData);
     }
 
     $view->getDispatcher()->dispatch($eventName, $event);

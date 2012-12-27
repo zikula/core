@@ -115,7 +115,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     /**
      * The event manager instance.
      *
-     * @var Zikula_EventManager
+     * @var Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
      */
     protected $eventManager;
 
@@ -354,7 +354,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         parent::assign('metatags', $this->serviceManager['zikula_view.metatags']);
 
-        $event = new Zikula_Event('view.init', $this);
+        $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('view.init', $event);
     }
 
@@ -745,7 +745,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
         }
 
-        $event = new Zikula_Event('view.postfetch', $this, array('template' => $template), $output);
+        $event = new \Zikula\Core\Event\GenericEvent($this, array('template' => $template), $output);
 
         return $this->eventManager->dispatch('view.postfetch', $event)->getData();
     }
@@ -1149,7 +1149,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
      */
     public static function getTemplateOverride($template)
     {
-        $event = new Zikula_Event('zikula_view.template_override', null, array(), $template);
+        $event = new \Zikula\Core\Event\GenericEvent(null, array(), $template);
         EventUtil::getManager()->dispatch('zikula_view.template_override', $event);
 
         if ($event->isPropagationStopped()) {

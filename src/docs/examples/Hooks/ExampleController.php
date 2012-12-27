@@ -70,7 +70,7 @@ class Example_Controller_User extends Zikula_AbstractController
 
             // validate any hooks
             $validators = new Zikula_Collection_HookValidationProviders();
-            $hook = new Zikula_ValidationHook('example.ui_hooks.general.validate_edit', $article['id'], $this, $validators);
+            $hook = new \Zikula\Core\Hook\ValidationHook($article['id'], $this, $validators);
             $this->dispatchHooks('example.ui_hooks.general.validate_edit', $hook);
             if (!$validators->hasErrors() && !$articleValid) {
                 // commit to the database
@@ -78,7 +78,7 @@ class Example_Controller_User extends Zikula_AbstractController
 
                 $url = new Zikula_ModUrl('Example', 'user', 'edit', 'en', array('id' => $id));
                 // notify any hooks they may now commit the as the original form has been committed.
-                $hook = new Zikula_ProcessHook('example.ui_hooks.general.process_edit', $id, $url);
+                $hook = new \Zikula\Core\Hook\ProcessHook($id, $url);
                 $this->dispatchHooks('example.ui_hooks.general.process_edit', $hook);
             }
         }

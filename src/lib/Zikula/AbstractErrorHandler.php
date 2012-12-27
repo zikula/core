@@ -120,8 +120,8 @@ abstract class Zikula_AbstractErrorHandler
     public function __construct(Zikula_ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this->eventManager = $this->serviceManager->getService('event_dispatcher');
-        $this->event = new Zikula_Event('log', $this);
+        $this->eventManager = $this->serviceManager->get('event_dispatcher');
+        $this->event = new \Zikula\Core\Event\GenericEvent($this);
     }
 
     /**
@@ -210,7 +210,7 @@ abstract class Zikula_AbstractErrorHandler
     /**
      * Retrieve the event manager instance.
      *
-     * @return Zikula_EventManager The event manager instance.
+     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher The event manager instance.
      */
     public function getEventManager()
     {

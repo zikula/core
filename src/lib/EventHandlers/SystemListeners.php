@@ -109,6 +109,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula\Component\HookDispatcher\ServiceFactory', array($smRef, 'event_dispatcher'));
         $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula\Component\HookDispatcher\HookDispatcher', array($storageDef, $eventManagerDef, $hookFactoryDef));
         $this->serviceManager->registerService('hook_dispatcher', $hookManagerDef);
+        $this->serviceManager->setAlias('zikula.hookmanager', 'hook_dispatcher');
     }
 
     /**
@@ -264,8 +265,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function initDB(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_DB) {
-            $dbEvent = new Zikula_Event('doctrine.init_connection');
-            $this->eventManager->notify($dbEvent);
+            $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent());
         }
     }
 
@@ -483,7 +483,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupDebugToolbar(Zikula_Event $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getArgument('log.to_debug_toolbar')) {
+        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
 
@@ -677,8 +677,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         // notify EVENT here to gather any system service links
         $args = array('modname' => $event->getArgument('modname'));
-        $localevent = new Zikula_Event('module_dispatch.service_links', $event->getSubject(), $args);
-        $this->eventManager->notify($localevent);
+        $localevent = new \Zikula\Core\Event\GenericEvent($event->getSubject(), $args);
+        $this->eventManager->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
 
         if (!empty($sublinks)) {

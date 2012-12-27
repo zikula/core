@@ -926,7 +926,7 @@ class UserUtil
                     'authentication_method' => $authenticationMethod,
                     'uid'                   => $userObj['uid'],
                 );
-                $event = new Zikula_Event('user.login.veto', $userObj, $eventArgs);
+                $event = new \Zikula\Core\Event\GenericEvent($userObj, $eventArgs);
                 $event = EventUtil::dispatch('user.login.veto', $event);
 
                 if ($event->isPropagationStopped()) {
@@ -1527,7 +1527,7 @@ class UserUtil
                     'old_value' => $oldValue,
                     'new_value' => $value,
                 );
-                $updateEvent = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
+                $updateEvent = new \Zikula\Core\Event\GenericEvent($updatedUserObj, $eventArgs, $eventData);
                 EventUtil::dispatch($eventName, $updateEvent);
             }
         }
@@ -1869,7 +1869,7 @@ class UserUtil
                 } else {
                     $eventName = 'user.account.update';
                 }
-                $event = new Zikula_Event($eventName, $updatedUserObj, $eventArgs, $eventData);
+                $event = new \Zikula\Core\Event\GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
                 EventUtil::dispatch($eventName, $event);
             }
         }
@@ -2006,7 +2006,7 @@ class UserUtil
      */
     private static function _getThemeFilterEvent($themeName, $type)
     {
-        $event = new Zikula_Event('user.gettheme', null, array('type' => $type), $themeName);
+        $event = new \Zikula\Core\Event\GenericEvent(null, array('type' => $type), $themeName);
 
         return EventUtil::dispatch('user.gettheme', $event)->getData();
     }
