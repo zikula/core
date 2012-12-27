@@ -13,18 +13,38 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Core\ModUrl;
+
 /**
  * Zikula_Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class Zikula_ProcessHook extends Zikula\Core\Hook\ProcessHook
+class Zikula_ProcessHook extends Hook
 {
+    /**
+     * Url container.
+     *
+     * @var ModUrl
+     */
+    protected $url;
+
     public function __construct($name, $id, Zikula_ModUrl $url=null)
     {
         $this->setName($name);
+        $this->id = $id;
+        $this->url = $url;
+    }
 
-        parent::__construct($id, $url);
+    /**
+     * Gets the ModUrl
+     *
+     * @return ModUrl
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }

@@ -13,15 +13,47 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Core\Hook\ValidationResponse;
+
 /**
  * Content validation hook.
  */
-class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
+class Zikula_ValidationHook extends Hook
 {
-    public function __construct($name, Zikula_Hook_ValidationProviders $validators)
+    /**
+     * @var ValidationProviders
+     */
+    private $validators;
+
+    /**
+     * @param ValidationProviders $validators
+     */
+    public function __construct($name, ValidationProviders $validators)
     {
         $this->setName($name);
+        $this->validators = $validators;
+    }
 
-        parent::__construct($validators);
+    /**
+     * Sets the validation response.
+     *
+     * @param $name
+     * @param ValidationResponse $response
+     */
+    public function setValidator($name, ValidationResponse $response)
+    {
+        $this->validators->set($name, $response);
+    }
+
+    /**
+     * Gets validation providers
+     *
+     * @return ValidationProviders
+     */
+    public function getValidators()
+    {
+        return $this->validators;
     }
 }

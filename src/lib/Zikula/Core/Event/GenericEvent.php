@@ -15,23 +15,14 @@
 
 namespace Zikula\Core\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent as Event;
-
 /**
  * Event encapsulation class.
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class GenericEvent extends Event
+class GenericEvent extends \Zikula_Event
 {
-    /**
-     * Storage for any process type events.
-     *
-     * @var mixed
-     */
-    public $data;
-
     /**
      * Encapsulate an event with $subject, $args, and $data.
      *
@@ -41,32 +32,6 @@ class GenericEvent extends Event
      */
     public function __construct($subject = null, array $args = array(), $data = null)
     {
-        $this->data = $data;
-
-        parent::__construct($subject, $args);
-    }
-
-    /**
-     * Set data.
-     *
-     * @param mixed $data Data to be saved.
-     *
-     * @return GenericEvent
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * Getter for Data property.
-     *
-     * @return mixed Data property.
-     */
-    public function getData()
-    {
-        return $this->data;
+        parent::__construct(null, $subject, $args, $data);
     }
 }
