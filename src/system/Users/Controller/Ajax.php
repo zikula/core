@@ -134,7 +134,6 @@ class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
         } else {
             $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
         }
-        $this->dispatchHooks($hook->getName(), $hook);
         $validators = $hook->getValidators();
 
         if ($validators->hasErrors()) {

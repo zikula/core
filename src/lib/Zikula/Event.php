@@ -222,7 +222,7 @@ class Zikula_Event extends GenericEvent
      *
      * @param EventDispatcherInterface $eventManager
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::setDispatcher()
      *
      * @return void
@@ -235,7 +235,7 @@ class Zikula_Event extends GenericEvent
     /**
      * Gets the EventManager.
      *
-     * @deprecated since 1.4
+     * @deprecated since 1.3.6
      * @use Symfony\Component\EventDispatcher\GenericEvent::getDispatcher()
      *
      * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
