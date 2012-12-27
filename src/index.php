@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Framework\Response\PlainResponse;
