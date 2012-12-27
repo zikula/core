@@ -62,9 +62,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if (SessionUtil::hasExpired()) {
             // Session has expired, display warning
-            header('HTTP/1.0 403 Access Denied');
-            echo ModUtil::apiFunc('Users', 'user', 'expiredsession');
-            $response = Zikula_View_Theme::getInstance()->themefooter();
+            $response = ModUtil::apiFunc('Users', 'user', 'expiredsession', 403);
+            $response = Zikula_View_Theme::getInstance()->themefooter($response);
             $response->send();
             System::shutdown();
         }
