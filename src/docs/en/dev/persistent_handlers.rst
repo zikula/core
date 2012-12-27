@@ -57,7 +57,7 @@ In a separate file lib/MyModule/Listeners.php you place the following code (this
 Back to the Multihook module.  It's implementation could look something like this:
 
     // create and dispatch the event
-    $event = Zikula_Event();
+    $event = \Zikula\Core\Event\GenericEvent();
     $classes = $eventManager->dispatch('module.multihook.get_providers', $event)->getData();
 
     // now we got back any results we can process them like this

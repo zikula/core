@@ -11,12 +11,10 @@ Features:
   moved non-PHP assets modules' `Resources/` folder. Old layout still works.
 - Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
 - Deprecated `Zikula_ServiceManager` for symfony2 Dependency Injection component
-- [BC BREAK] `Zikula_DislayHook`, `Zikula_ProcessHook`, `Zikula_ValidationHook` and
-  `Zikula_FilterHook` constructor $name parameter removed
 - Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
 - [BC BREAK] Prototype removed from Core and JS framework replaced with jQuery
 - Added garbage collection to CSRF token generator
-- Introduced Symfony2 Forms plugin
+- Introduced Symfony2 Forms
 
 CHANGELOG - ZIKULA 1.3.6
 ------------------------

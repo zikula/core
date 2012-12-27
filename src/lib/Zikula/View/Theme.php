@@ -184,7 +184,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->_overrideMap = \Symfony\Component\Yaml\Yaml::parse("themes/$themeName/templates/overrides.yml");
         }
 
-        $event = new Zikula_Event($this);
+        $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.preinit', $event);
 
         // change some base settings from our parent class
@@ -253,7 +253,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->load_filter('output', 'trimwhitespace');
         }
 
-        $event = new Zikula_Event($this);
+        $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.init', $event);
 
         // Start the output buffering to capture module output
@@ -317,7 +317,7 @@ class Zikula_View_Theme extends Zikula_View
             $maincontent = '<div id="z-maincontent" class="'.($this->homepage ? 'z-homepage ' : '').'z-module-' . DataUtil::formatForDisplay(strtolower($this->toplevelmodule)) . '">' . $maincontent . '</div>';
         }
 
-        $event = new Zikula_Event($this, array(), $maincontent);
+        $event = new \Zikula\Core\Event\GenericEvent($this, array(), $maincontent);
         $maincontent = $this->eventManager->dispatch('theme.prefetch', $event)->getData();
 
         // Assign the main content area to the template engine
@@ -326,7 +326,7 @@ class Zikula_View_Theme extends Zikula_View
         // render the page using the correct template
         $output = $this->fetch($this->themeconfig['page'], $this->cache_id);
 
-        $event = new Zikula_Event($this, array(), $output);
+        $event = new \Zikula\Core\Event\GenericEvent($this, array(), $output);
         $content = $this->eventManager->dispatch('theme.postfetch', $event)->getData();
 
         $response->setContent($content);
@@ -769,7 +769,7 @@ class Zikula_View_Theme extends Zikula_View
             $this->assign('palette', $palette);
         }
 
-        $event = new Zikula_Event($this);
+        $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.load_config', $event);
     }
 

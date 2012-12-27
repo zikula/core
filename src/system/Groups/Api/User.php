@@ -583,7 +583,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $this->eventManager->dispatch('group.adduser', new Zikula_Event($obj));
+        $this->eventManager->dispatch('group.adduser', new \Zikula\Core\Event\GenericEvent($obj));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -631,7 +631,7 @@ class Groups_Api_User extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new Zikula_Event(array('gid' => $args['gid'],
+        $removeuserEvent = new \Zikula\Core\Event\GenericEvent(array('gid' => $args['gid'],
                         'uid' => $args['uid']));
         $this->eventManager->dispatch('group.removeuser', $removeuserEvent);
 

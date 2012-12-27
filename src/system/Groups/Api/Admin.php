@@ -62,7 +62,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         $gid = $obj['gid'];
 
         // Let other modules know that we have created a new group.
-        $this->eventManager->dispatch('group.create', new Zikula_Event($obj));
+        $this->eventManager->dispatch('group.create', new \Zikula\Core\Event\GenericEvent($obj));
 
         // Return the id of the newly created item to the calling process
         return $gid;
@@ -124,7 +124,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have deleted a group.
-        $this->eventManager->dispatch('group.delete', new Zikula_Event($item));
+        $this->eventManager->dispatch('group.delete', new \Zikula\Core\Event\GenericEvent($item));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -192,7 +192,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $this->eventManager->dispatch('group.update', new Zikula_Event($object));
+        $this->eventManager->dispatch('group.update', new \Zikula\Core\Event\GenericEvent($object));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -237,7 +237,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know that we have updated a group.
-        $this->eventManager->dispatch('group.adduser', new Zikula_Event($object));
+        $this->eventManager->dispatch('group.adduser', new \Zikula\Core\Event\GenericEvent($object));
 
         // Let the calling process know that we have finished successfully
         return true;
@@ -287,7 +287,7 @@ class Groups_Api_Admin extends Zikula_AbstractApi
         }
 
         // Let other modules know we have updated a group
-        $removeuserEvent = new Zikula_Event(array('gid' => $args['gid'],
+        $removeuserEvent = new \Zikula\Core\Event\GenericEvent(array('gid' => $args['gid'],
                         'uid' => $args['uid']));
         $this->eventManager->dispatch('group.removeuser', $removeuserEvent);
 

@@ -194,7 +194,7 @@ class FormRenderer
     protected function getRenderer()
     {
         if ($this->renderer == null) {
-            $event = new \Zikula_Event(new \ArrayObject(array()));
+            $event = new \\Zikula\Core\Event\GenericEvent(new \ArrayObject(array()));
             $this->dispatcher->dispatch('symfony.formrenderer.lookup', $event);
 
             $renderer = array();

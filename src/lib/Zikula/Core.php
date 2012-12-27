@@ -235,7 +235,7 @@ class Zikula_Core
      */
     public function reboot()
     {
-        $event = new Zikula_Event($this);
+        $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->dispatcher->dispatch('shutdown', $event);
 
         // flush handlers
@@ -398,7 +398,7 @@ class Zikula_Core
             $this->container->set('request', $request);
         }
 
-        $coreInitEvent = new Zikula_Event($this);
+        $coreInitEvent = new \Zikula\Core\Event\GenericEvent($this);
 
         // store the load stages in a global so other API's can check whats loaded
         $this->stage = $this->stage | $stage;
@@ -406,7 +406,7 @@ class Zikula_Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             ModUtil::flushCache();
             System::flushCache();
-            $this->dispatcher->dispatch('core.preinit', new Zikula_Event($this));
+            $this->dispatcher->dispatch('core.preinit', new \Zikula\Core\Event\GenericEvent($this));
         }
 
         // Initialise and load configuration
@@ -414,7 +414,7 @@ class Zikula_Core
             // error reporting
             if (!System::isInstalling()) {
                 // this is here because it depends on the config.php loading.
-                $event = new Zikula_Event(null, array('stage' => $stage));
+                $event = new \Zikula\Core\Event\GenericEvent(null, array('stage' => $stage));
                 $this->dispatcher->dispatch('setup.errorreporting', $event);
             }
 
@@ -431,7 +431,7 @@ class Zikula_Core
 
         if ($stage & self::STAGE_DB) {
             try {
-                $dbEvent = new Zikula_Event($this, array('stage' => self::STAGE_DB));
+                $dbEvent = new \Zikula\Core\Event\GenericEvent($this, array('stage' => self::STAGE_DB));
                 $this->dispatcher->dispatch('core.init', $dbEvent);
             } catch (PDOException $e) {
                 if (!System::isInstalling()) {
@@ -536,7 +536,7 @@ class Zikula_Core
         }
 
         if (($stage & self::STAGE_POST) && ($this->stage & ~self::STAGE_POST)) {
-            $this->dispatcher->dispatch('core.postinit', new Zikula_Event($this, array('stages' => $stage)));
+            $this->dispatcher->dispatch('core.postinit', new \Zikula\Core\Event\GenericEvent($this, array('stages' => $stage)));
         }
     }
 }

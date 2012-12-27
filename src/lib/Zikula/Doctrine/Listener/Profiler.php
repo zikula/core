@@ -44,7 +44,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function postQuery(Doctrine_Event $event)
     {
         $event->end();
-        $zevent = new Zikula_Event(null, array('time'  => $event->getElapsedSecs(),
+        $zevent = new \Zikula\Core\Event\GenericEvent(null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
         EventUtil::dispatch('log.sql', $zevent);
     }
@@ -71,7 +71,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function postExec(Doctrine_Event $event)
     {
         $event->end();
-        $zevent = new Zikula_Event(null, array('time'  => $event->getElapsedSecs(),
+        $zevent = new \Zikula\Core\Event\GenericEvent(null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
         EventUtil::dispatch('log.sql', $zevent);
     }
@@ -98,7 +98,7 @@ class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interf
     public function postStmtExecute(Doctrine_Event $event)
     {
         $event->end();
-        $zevent = new Zikula_Event(null, array('time'  => $event->getElapsedSecs(),
+        $zevent = new \Zikula\Core\Event\GenericEvent(null, array('time'  => $event->getElapsedSecs(),
                                                          'query' => $event->getQuery()));
         EventUtil::dispatch('log.sql', $zevent);
     }

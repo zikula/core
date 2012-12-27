@@ -386,7 +386,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             DBUtil::deleteObjectByID('modules', $args['id'], 'id');
         }
 
-        $event = new Zikula_Event(null, $modinfo);
+        $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->eventManager->dispatch('installer.module.uninstalled', $event);
 
         return true;
@@ -844,7 +844,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         // All went ok so issue installed event
-        $event = new Zikula_Event(null, $modinfo);
+        $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->eventManager->dispatch('installer.module.installed', $event);
 
         // Success
@@ -977,7 +977,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         DBUtil::updateObject($obj, 'modules');
 
         // Upgrade succeeded, issue event.
-        $event = new Zikula_Event(null, $modinfo);
+        $event = new \Zikula\Core\Event\GenericEvent(null, $modinfo);
         $this->eventManager->dispatch('installer.module.upgraded', $event);
 
         // Success

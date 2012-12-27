@@ -199,7 +199,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
 
                     // Notify that we are beginning a registration session.
-                    $this->eventManager->dispatch('module.users.ui.registration.started', new Zikula_Event());
+                    $this->eventManager->dispatch('module.users.ui.registration.started', new \Zikula\Core\Event\GenericEvent());
 
                     // Get a list of authentication methods available for registration
                     // NOTE: The Users module methods should NOT appear on this list!
@@ -394,11 +394,11 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
 
                     // Validate the hook-like event.
-                    $event = new Zikula_Event($reginfo, array(), new Zikula_Hook_ValidationProviders());
+                    $event = new \Zikula\Core\Event\GenericEvent($reginfo, array(), new Zikula_Hook_ValidationProviders());
                     $validators = $this->eventManager->dispatch('module.users.ui.validate_edit.new_registration', $event)->getData();
 
                     // Validate the hook
-                    $hook = new Zikula_ValidationHook($validators);
+                    $hook = new \Zikula\Core\Hook\ValidationHook($validators);
                     $this->dispatchHooks('users.ui_hooks.registration.validate_edit', $hook);
                     $validators = $hook->getValidators();
 
@@ -455,11 +455,11 @@ class Users_Controller_User extends Zikula_AbstractController
                         }
 
                         // Allow hook-like events to process the registration...
-                        $event = new Zikula_Event($registeredObj);
+                        $event = new \Zikula\Core\Event\GenericEvent($registeredObj);
                         $this->eventManager->dispatch('module.users.ui.process_edit.new_registration', $event);
 
                         // ...and hooks to process the registration.
-                        $hook = new Zikula_ProcessHook($registeredObj['uid']);
+                        $hook = new \Zikula\Core\Hook\ProcessHook($registeredObj['uid']);
                         $this->dispatchHooks('users.ui_hooks.registration.process_edit', $hook);
 
                         // If there were errors after the main registration, then make sure they can be displayed.
@@ -526,7 +526,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         $arguments = array(
                             'redirecturl' => $redirectUrl,
                         );
-                        $event = new Zikula_Event($registeredObj, $arguments);
+                        $event = new \Zikula\Core\Event\GenericEvent($registeredObj, $arguments);
                         $event = $this->eventManager->dispatch('module.users.ui.registration.succeeded', $event);
                         $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
@@ -558,7 +558,7 @@ class Users_Controller_User extends Zikula_AbstractController
                         $arguments = array(
                             'redirecturl' => $redirectUrl,
                         );
-                        $event = new Zikula_Event(null, $arguments);
+                        $event = new \Zikula\Core\Event\GenericEvent(null, $arguments);
                         $event = $this->eventManager->dispatch('module.users.ui.registration.failed', $event);
                         $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
 
@@ -1119,7 +1119,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $eventType          = 'login_screen';
                 $user               = array();
 
-                $this->eventManager->dispatch('module.users.ui.login.started', new Zikula_Event('module.users.ui.login.started'));
+                $this->eventManager->dispatch('module.users.ui.login.started', new \Zikula\Core\Event\GenericEvent('module.users.ui.login.started'));
             }
         } else {
             throw new Zikula_Exception_Forbidden();
@@ -1198,10 +1198,10 @@ class Users_Controller_User extends Zikula_AbstractController
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
                             $validators = new Zikula_Hook_ValidationProviders();
                             if ($eventType) {
-                                $event = new Zikula_Event($user, array(), $validators);
+                                $event = new \Zikula\Core\Event\GenericEvent($user, array(), $validators);
                                 $validators  = $this->eventManager->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
 
-                                $hook = new Zikula_ValidationHook($validators);
+                                $hook = new \Zikula\Core\Hook\ValidationHook($validators);
                                 $this->dispatchHooks("users.ui_hooks.{$eventType}.validate_edit", $hook);
                                 $validators = $hook->getValidators();
                             }
@@ -1210,10 +1210,10 @@ class Users_Controller_User extends Zikula_AbstractController
                                 // Process the edit hooks BEFORE we log in, so that any changes to the user record are recorded before we re-check
                                 // the user's ability to log in. If we don't do this, then user.login.veto might trap and cancel the login attempt again.
                                 if ($eventType) {
-                                    $event = new Zikula_Event($user, array());
+                                    $event = new \Zikula\Core\Event\GenericEvent($user, array());
                                     $this->eventManager->dispatch("module.users.ui.process_edit.{$eventType}", $event);
 
-                                    $hook = new Zikula_ProcessHook($user['uid']);
+                                    $hook = new \Zikula\Core\Hook\ProcessHook($user['uid']);
                                     $this->dispatchHooks("users.ui_hooks.{$eventType}.process_edit", $hook);
                                 }
 
@@ -1239,7 +1239,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                         'authentication_info'   => $authenticationInfo,
                                         'redirecturl'           => '',
                                     );
-                                    $failedEvent = new Zikula_Event($user, $eventArgs);
+                                    $failedEvent = new \Zikula\Core\Event\GenericEvent($user, $eventArgs);
                                     $failedEvent = $this->eventManager->dispatch('module.users.ui.login.failed', $failedEvent);
 
                                     $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
@@ -1257,7 +1257,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                     'authentication_info'   => $authenticationInfo,
                                     'redirecturl'           => '',
                                 );
-                                $failedEvent = new Zikula_Event($user, $eventArgs);
+                                $failedEvent = new \Zikula\Core\Event\GenericEvent($user, $eventArgs);
                                 $failedEvent = $this->eventManager->dispatch('module.users.ui.login.failed', $failedEvent);
 
                                 $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
@@ -1275,7 +1275,7 @@ class Users_Controller_User extends Zikula_AbstractController
                                 'authentication_info'   => $authenticationInfo,
                                 'redirecturl'           => '',
                             );
-                            $failedEvent = new Zikula_Event(null, $eventArgs);
+                            $failedEvent = new \Zikula\Core\Event\GenericEvent(null, $eventArgs);
                             $failedEvent = $this->eventManager->dispatch('module.users.ui.login.failed', $failedEvent);
 
                             $redirectUrl = $failedEvent->hasArg('redirecturl') ? $failedEvent->getArg('redirecturl') : '';
@@ -1344,7 +1344,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 $eventArgs['is_first_login'] = $isFirstLogin;
             }
 
-            $event = new Zikula_Event($user, $eventArgs);
+            $event = new \Zikula\Core\Event\GenericEvent($user, $eventArgs);
             $event = $this->eventManager->dispatch('module.users.ui.login.succeeded', $event);
 
             $returnPage = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $returnPage;
@@ -1383,7 +1383,7 @@ class Users_Controller_User extends Zikula_AbstractController
         $userObj = UserUtil::getVars($uid);
         $authenticationMethod = SessionUtil::getVar('authentication_method', array('modname' => '', 'method' => ''), 'Zikula_Users');
         if (UserUtil::logout()) {
-            $event = new Zikula_Event($userObj, array(
+            $event = new \Zikula\Core\Event\GenericEvent($userObj, array(
                 'authentication_method' => $authenticationMethod,
                 'uid'                   => $userObj['uid'],
             ));
@@ -1755,7 +1755,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     'authentication_method' => $authenticationMethod,
                     'redirecturl'           => '',
                 );
-                $event = new Zikula_Event($user, $eventArgs);
+                $event = new \Zikula\Core\Event\GenericEvent($user, $eventArgs);
                 $event = $this->eventManager->dispatch('module.users.ui.login.failed', $event);
                 $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             } else {
@@ -1763,7 +1763,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     'authentication_method' => $authenticationMethod,
                     'redirecturl'           => $redirectUrl,
                 );
-                $event = new Zikula_Event($user, $eventArgs);
+                $event = new \Zikula\Core\Event\GenericEvent($user, $eventArgs);
                 $event = $this->eventManager->dispatch('module.users.ui.login.succeeded', $event);
                 $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : $redirectUrl;
             }
@@ -1773,7 +1773,7 @@ class Users_Controller_User extends Zikula_AbstractController
                 'authentication_info'   => $authenticationInfo,
                 'redirecturl'           => '',
             );
-            $event = new Zikula_Event(null, $eventArgs);
+            $event = new \Zikula\Core\Event\GenericEvent(null, $eventArgs);
             $event = $this->eventManager->dispatch('module.users.ui.login.failed', $event);
             $redirectUrl = $event->hasArgument('redirecturl') ? $event->getArgument('redirecturl') : '';
         }

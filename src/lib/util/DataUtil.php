@@ -252,7 +252,7 @@ class DataUtil
         static $outputfilter;
         static $event;
         if (!$event) {
-            $event = new Zikula_Event();
+            $event = new \Zikula\Core\Event\GenericEvent();
         }
 
         if (!isset($allowedtags)) {

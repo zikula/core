@@ -8,7 +8,7 @@ You may register event listeners with
 You may trigger events with
 
     [php]
-    $event = new Zikula_Event($subject, $args, $data);
+    $event = new \Zikula\Core\Event\GenericEvent($subject, $args, $data);
     EventUtil::dispatch($eventName, $event);
 
 Any changes made to the `$event` object or `$subject` in the handlers will be carried over (standard PHP5 behavior).
