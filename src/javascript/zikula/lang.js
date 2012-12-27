@@ -262,4 +262,22 @@
     // Export Zikula.Lang methods to underscore
     _.mixin(Zikula.Lang);
 
+    /**
+     * Creates namespace in Zikula scope through nested chain of objects,
+     * based on the given path.
+     * If object in chain already exists it will be extended, not overwritten
+     *
+     * @example
+     * Zikula.define('Module.Component'); //will create object chain: Zikula.Module.Component
+     *
+     * @param {String}  pathName        Dot separated path to define.
+     *
+     * @return {Object} Zikula extended object
+     */
+    Zikula.define = function(pathName) {
+        if (Zikula.Lang.objectIssetPath(Zikula, pathName)) {
+            return Zikula.Lang.objectGetPath(Zikula, pathName);
+        }
+        return Zikula.Lang.objectSetPath(Zikula, pathName, {});
+    };
 })();

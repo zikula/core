@@ -34,9 +34,10 @@ class JCSSUtil
             'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
             'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
-            'request' => ServiceUtil::get('request')->query->all(),
+            'request' => ServiceUtil::get('request')->query->all(), // fixme - does not work with short urls (but $_GET/$_REQUEST are filled)
             'isDevelopmentMode' => System::isDevelopmentMode()
         );
+
         $config = DataUtil::formatForDisplay($config);
         $return .= "<script type=\"text/javascript\">/* <![CDATA[ */ \n";
         $return .= "if (typeof(Zikula) == 'undefined') {var Zikula = {};}\n";
@@ -362,6 +363,7 @@ class JCSSUtil
                         'jquery', 'underscore', 'underscore.string', 'modernizr',
                         'javascript/zikula/lang.js',
                         'javascript/zikula/class.js',
+                        'javascript/zikula/util.services.js',
                         'javascript/zikula/core.js',
                         'javascript/zikula/factory.js',
                         'javascript/zikula/util.cookie.js',

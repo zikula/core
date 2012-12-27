@@ -33,23 +33,24 @@
 (function($) {
     /**
      * Gettext service.
-     * This is internal service - unless necessary use shortcuts exposed in Zikula namespace
+     * This is internal service - use shortcuts exposed in Zikula namespace
      *
      * @see Zikula.Util.Gettext
      * @type {Zikula.Util.Gettext}
      */
-    Zikula.Services.gettext = new Zikula.Util.Gettext(Zikula.Config.lang, Zikula._translations);
+    var gettext = new Zikula.Util.Gettext(Zikula.Config.lang, Zikula._translations);
+    Zikula.Core.attachService('gettext', gettext);
 
     // Export shortcuts to Zikula global object.
     Zikula.Class.extend(Zikula, {
-        __: Zikula.Services.gettext.__,
-        __f: Zikula.Services.gettext.__f,
-        _n: Zikula.Services.gettext._n,
-        _fn: Zikula.Services.gettext._fn
+        __: gettext.__,
+        __f: gettext.__f,
+        _n: gettext._n,
+        _fn: gettext._fn
     });
 
     // make sure json support is assured before using cookie util
-    Zikula.Util.Polyfills.when('json').then(function(){
+    Zikula.Core.when('json').then(function(){
         /**
          * Cookie service.
          * Initialized with default settings Zikula.Util.Cookie class.
@@ -58,9 +59,10 @@
          * @see Zikula.Util.Cookie
          * @type {Zikula.Util.Cookie}
          */
-        Zikula.Services.cookie = new Zikula.Util.Cookie({
+        var cookie = new Zikula.Util.Cookie({
             path: Zikula.Config.baseURI
         });
+        Zikula.Core.attachService('cookie', cookie);
 
         // Set ajax options
         Zikula.Ajax.defaultOptions = {
@@ -71,7 +73,7 @@
             }
         };
         if (Zikula.Config.sessionName) {
-            var sessionId = Zikula.Services.cookie.get(Zikula.Config.sessionName, false);
+            var sessionId = Zikula.Core.getService('cookie').get(Zikula.Config.sessionName, false);
             if (sessionId) {
                 Zikula.Ajax.defaultOptions.headers = {
                     'X-ZIKULA-AJAX-TOKEN': sessionId
@@ -91,7 +93,6 @@
             });
         });
     });
-
 
     // Setup dom related stuff
     $(document).ready(function() {
