@@ -1,6 +1,10 @@
 Module Specification from Zikula Core 1.3.6
 ===========================================
 
+.. note::
+
+    The following document is for guidance only at this time and has not been fixed.
+
 
 Module Structure
 ----------------
@@ -64,6 +68,17 @@ There is a script to automate this change:
 
 Old method names will continue to work for the time being.
 
+Controller Response
+-------------------
+
+Controllers should return a `Symfony\Component\HttpFoundation\Response`.
+If you wish to not display the theme, it should emit a
+`Zikula\Framework\Response\PlainResponse`.
+
+Zikula will wrap controller return in an appropriate Response.
+
+Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#response
+
 
 Service Manager
 ---------------
@@ -73,6 +88,7 @@ This change is internal so is referenced for completeness only.
 The Zikula_ServiceManager has been replaced with the Symfony2 Dependency Injection 2.2 component.
 Zikula specifically uses the `ContainerBuilder` without compilation.
 
+Documentation: http://symfony.com/doc/master/components/dependency_injection/index.html
 
 Events
 ------
@@ -109,6 +125,9 @@ you use them:
     $event->setArg() ===== $event->setArgument()
     $event->setArgs() ==== $event->setArguments()
 
+Documentation: http://symfony.com/doc/master/components/event_dispatcher/introduction.html
+
+
 Hooks
 -----
 
@@ -138,6 +157,22 @@ Example in Core 1.3.6+
 
     $hook = new \Zikula\Core\Hook\DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
+
+
+Request
+-------
+
+The `Request` object is now switched to `Symfony\Component\HttpFoundation\Request`
+Please refactor the following calls:
+
+    $request->getGet()-> becomes $request->query->
+    $request->getPost()-> becomes $request->post->
+    $request->isGet() becomes $request->isMethod('GET')
+    $request->isPost() becomes $request->isMethod('POST')
+
+There is a legacy layer in place so the old methods continue to work.
+
+Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#request
 
 
 Version.php
