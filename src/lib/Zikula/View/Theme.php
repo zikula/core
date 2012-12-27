@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Zikula_View_Theme class.
  */
@@ -300,9 +302,10 @@ class Zikula_View_Theme extends Zikula_View
      * Display the page output.
      *
      * @access private
-     * @return void
+     *
+     * @return Response
      */
-    public function themefooter(\Symfony\Component\HttpFoundation\Response $response = null)
+    public function themefooter(Response $response = null)
     {
         // end output buffering and get module output
         if (null === $response) {
