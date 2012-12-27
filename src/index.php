@@ -6,11 +6,12 @@
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
  * @package Zikula
- *          Please see the NOTICE file distributed with this source code for further
- *          information regarding copyright and licensing.
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
-use Zikula_Request_Http as Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Framework\Response\PlainResponse;
@@ -23,10 +24,8 @@ $core->init();
 if ($request->isXmlHttpRequest()) {
     __frontcontroller_ajax();
 }
+$core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
 
-$core->getDispatcher()->dispatch('frontcontroller.predispatch', new Zikula_Event('frontcontroller.predispatch'));
-
-// Get variables
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $type = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
@@ -58,10 +57,6 @@ $modinfo = ModUtil::getInfoFromName($module);
 if ($modinfo) {
     $module = $modinfo['url'];
 
-    if (System::isLegacyMode()) {
-        $type = (empty($type)) ? $type = 'user' : $type;
-        $func = (empty($func)) ? $func = 'main' : $func;
-    }
     if ($type == 'init' || $type == 'interactiveinstaller') {
         ModUtil::load($modinfo['name'], $type, true);
     }
@@ -96,7 +91,7 @@ try {
     }
 
 } catch (Exception $e) {
-    $event = new Zikula_Event('frontcontroller.exception', $e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+    $event = new \Zikula\Core\Event\GenericEvent($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
@@ -140,9 +135,9 @@ switch (true) {
     case ($response->getStatusCode() == 403):
         if (!UserUtil::isLoggedIn()) {
             $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
-            $response->setTargetUrl($url);
+            $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
-            echo $response;
+            $response->send();
             System::shutDown();
         }
     case ($response->getStatusCode() == 404):
@@ -228,9 +223,6 @@ function __frontcontroller_ajax()
     if (!$response instanceof Zikula\Framework\Response\Ajax\AbstractBaseResponse) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
-        if (System::isLegacyMode()) {
-            $response['authid'] = SecurityUtil::generateAuthKey(ModUtil::getName());
-        }
         $response = json_encode($response);
         header("HTTP/1.1 200 OK");
         header('Content-type: application/json');
