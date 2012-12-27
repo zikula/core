@@ -24,7 +24,7 @@ $core->init();
 if ($request->isXmlHttpRequest()) {
     __frontcontroller_ajax();
 }
-$core->getDispatcher()->dispatch('frontcontroller.predispatch', new Zikula_Event());
+$core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
 
 $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
 $type = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
@@ -91,7 +91,7 @@ try {
     }
 
 } catch (Exception $e) {
-    $event = new Zikula_Event($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+    $event = new \Zikula\Core\Event\GenericEvent($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
@@ -135,9 +135,9 @@ switch (true) {
     case ($response->getStatusCode() == 403):
         if (!UserUtil::isLoggedIn()) {
             $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
-            $response->setTargetUrl($url);
+            $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), $httpCode, $url);
-            echo $response;
+            $response->send();
             System::shutDown();
         }
     case ($response->getStatusCode() == 404):
