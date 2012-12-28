@@ -13,7 +13,8 @@
  */
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Symfony\Component\HttpFoundation\Response;
+use Zikula_Response_Http as Response;
+
 
 /**
  * Event handler to override templates.
