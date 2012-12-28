@@ -1,34 +1,16 @@
-# /
-.git_externals
-/nbproject
-/.project
-/.settings
-/.buildpath
-/.idea
-
-# /src/config/
+composer.lock
+composer.phar
+composer
 /src/config/personal_config.php
 /src/config/multisites_config.php
-/src/config/FirePHPCore/*
-
-# /src/lib/vendor/
-
-# /src/locale/
-
-# /src/modules/
-/src/modules/*
+/src/modules/
 /src/modules/!\.htaccess
-
-# /src/plugins
 /src/plugins/!README
-
-# /src/userdata
-/src/userdata/*
+/src/userdata/
 /src/userdata/!\.htaccess
-
-# /src/ztemp
-/src/ztemp/*
-/src/userdata/!\.htaccess
+/src/vendor/
+/src/vendor/!\.htaccess
+/src/ztemp/
 /src/ztemp/errors_log/!\.index.html
 /src/ztemp/purifierCache/!\.index.html
 /src/ztemp/idsTmp/!\.index.html
@@ -38,4 +20,3 @@
 /src/ztemp/Theme_compiled/!\.index.html
 /src/ztemp/Theme_Config/!\.index.html
 /src/ztemp/doctrinemodels/!\.index.html
-
