@@ -11,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\ClassLoader\ClassLoader;
+
 class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikula_Plugin_AlwaysOnInterface, Zikula_Plugin_ConfigurableInterface
 {
     /**
@@ -56,9 +58,9 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function initialize()
     {
-        $autoloader = new Zikula_KernelClassLoader();
-        $autoloader->spl_autoload_register();
-        $autoloader->register('Imagine', dirname(__FILE__) . '/lib/vendor', '\\');
+        $autoloader = new ClassLoader();
+        $autoloader->register();
+        $autoloader->addPrefix('Imagine', dirname(__FILE__) . '/lib/vendor');
 
         $definition = new Zikula_ServiceManager_Definition('SystemPlugin_Imagine_Manager', array(
             new Zikula_ServiceManager_Reference('service_container'),

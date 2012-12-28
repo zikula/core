@@ -1,7 +1,0 @@
-Doctrine 2 plugin for Zikula.
-Provides Doctrine Common, DBAL and ORM layers.
-
-Access the Doctrine entitymanager through
-
-    $serviceManager->get('doctrine.entitymanager');
-

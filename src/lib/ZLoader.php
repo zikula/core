@@ -14,27 +14,11 @@
 
 use Symfony\Component\ClassLoader\ClassLoader;
 
-// For < PHP 5.3.0
-if (!defined('E_DEPRECATED')) {
-    define('E_DEPRECATED', 8192);
-}
-if (!defined('E_USER_DEPRECATED')) {
-    define('E_USER_DEPRECATED', 16384);
-}
-
-if (!extension_loaded('xdebug')) {
-    set_exception_handler('exception_handler');
-}
-
-include __DIR__.'/i18n/ZGettextFunctions.php';
-include __DIR__.'/vendor/Symfony/Component/ClassLoader/ClassLoader.php';
 
 define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
 // setup vendors in include path
 set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
-
-include __DIR__.'/vendor/Smarty/Smarty.class.php';
 
 /**
  * ZLoader.
@@ -50,7 +34,7 @@ class ZLoader
     /**
      * Autoloaders.
      *
-     * @var Zikula_KernelClassLoader
+     * @var ClassLoader
      */
     private static $autoloaders;
 
@@ -61,16 +45,11 @@ class ZLoader
      */
     public static function register()
     {
-        self::$map = self::map();
+
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloaders = new ClassLoader();
         self::$autoloaders->register();
-        self::addAutoloader('Zikula', __DIR__, '\\');
-        self::addAutoloader('Zikula', __DIR__);
-        self::addAutoloader('Doctrine', ZLOADER_PATH . '/vendor/Doctrine');
-        self::addAutoloader('Categories', 'system/Categories/lib');
-        self::addAutoloader('Zend', ZLOADER_PATH . '/vendor');
-        self::addAutoloader('Symfony', ZLOADER_PATH . '/vendor', '\\');
+        self::addAutoloader('Categories', 'system');
     }
 
     /**
@@ -85,7 +64,6 @@ class ZLoader
     public static function addAutoloader($namespace, $paths = '', $separator = '_')
     {
         $separator = $separator === '\\' ? '' : $separator;
-
         self::$autoloaders->addPrefix($namespace.$separator, $paths);
     }
 
@@ -170,60 +148,6 @@ class ZLoader
             return include $file;
         }
     }
-
-    /**
-     * Provides map for simple autoloader.
-     *
-     * @return array Class locations.
-     */
-    public static function map()
-    {
-        return array(
-                'ZLanguage' => 'i18n',
-                'ZI18n' => 'i18n',
-                'ZL10n' => 'i18n',
-                'ZLocale' => 'i18n',
-                'ZGettext' => 'i18n',
-                'ZMO' => 'i18n',
-                'ZLanguageBrowser' => 'i18n',
-                'DBObject' => 'dbobject',
-                'DBObjectArray' => 'dbobject',
-                'DBUtil' => 'util',
-                'BlockUtil' => 'util',
-                'AjaxUtil' => 'util',
-                'CacheUtil' => 'util',
-                'CategoryRegistryUtil' => 'util',
-                'CategoryUtil' => 'util',
-                'CookieUtil' => 'util',
-                'DataUtil' => 'util',
-                'DateUtil' => 'util',
-                'DoctrineUtil' => 'util',
-                'EventUtil' => 'util',
-                'FileUtil' => 'util',
-                'FilterUtil' => 'util',
-                'FormUtil' => 'util',
-                'HookUtil' => 'util',
-                'HtmlUtil' => 'util',
-                'JCSSUtil' => 'util',
-                'LogUtil' => 'util',
-                'ModUtil' => 'util',
-                'ObjectUtil' => 'util',
-                'PluginUtil' => 'util',
-                'PageUtil' => 'util',
-                'RandomUtil' => 'util',
-                'SecurityUtil' => 'util',
-                'ServiceUtil' => 'util',
-                'SessionUtil' => 'util',
-                'StringUtil' => 'util',
-                'System' => 'util',
-                'ThemeUtil' => 'util',
-                'UserUtil' => 'util',
-                'ValidationUtil' => 'util',
-                'Loader' => 'legacy',
-                'sfYaml' => 'vendor/Doctrine/Doctrine/Parser/sfYaml', // needed to use Doctrine_Parser since we dont use Doctrine's autoloader
-        );
-    }
-
 }
 
 /**
@@ -248,19 +172,3 @@ function z_exit($msg, $html = true)
     //throw new Zikula_Exception_Fatal($msg);
 }
 
-/**
- * Default exception handler.
- *
- * PHP by default doesn't display uncaught exception stacktraces in HTML.
- * This function halts execution of PHP after is finishes.
- *
- * @param Exception $e Exception to handle.
- *
- * @return void
- */
-function exception_handler(Exception $e)
-{
-    echo "<pre>";
-    echo 'Uncaught exception ' . $e->getMessage() . ' in ' . $e->getFile() . ' line, ' . $e->getLine() . "\n";
-    echo $e->getTraceAsString() . "</pre>";
-}
