@@ -374,6 +374,15 @@ class JCSSUtil
                     ),
                 )
             ),
+            'zikula.ui' => array(
+                'production' => array(
+                    'path' => 'javascript/zikula-plugins/zikula.ui.min.js',
+                    'require' => array('zikula', 'jquery-ui'),
+                ),
+                'development' => array(
+                    'path' => 'javascript/zikula-plugins/zikula.ui.js',
+                )
+            ),
         );
 
         $isDevelopmentMode = System::isDevelopmentMode();
