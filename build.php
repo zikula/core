@@ -14,6 +14,62 @@ use Symfony\Component\Filesystem\Filesystem;
 
 require 'src/vendor/autoload.php';
 
+class PurgeVendorsCommand extends \Symfony\Component\Console\Command\Command
+{
+    protected function configure()
+    {
+        $this
+            ->setName('build:purge_vendors')
+            ->setDescription('Purges tests from vendors')
+            ->addOption('vendor-dir', null, InputOption::VALUE_REQUIRED, 'Vendors dir, e.g. src/vendor');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $dir = $input->getOption('vendor-dir');
+        if (!$dir) {
+            $output->writeln("<error>--vendor-dir= is required</error>");
+            exit(1);
+        }
+
+        /** @var ProgressHelper $progress */
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($output, 4);
+
+        PurgeVendorsCommand::cleanVendors($dir, $progress);
+    }
+
+    public static function cleanVendors($dir, ProgressHelper $progress)
+    {
+        $filesystem = new Filesystem();
+
+        $finder = new Finder();
+        $finder->in($dir)
+            ->directories()
+            ->path('.git')
+            ->path('tests')
+            ->path('Tests')
+            ->ignoreDotFiles(false)
+            ->ignoreVCS(false);
+        $progress->advance();
+
+        $paths = array();
+        /** @var SplFileInfo $file */
+        foreach ($finder as $file) {
+            $paths[] = $file->getRealPath();
+        }
+
+        $paths = array_unique($paths);
+        rsort($paths);
+
+        $progress->advance();
+        $filesystem->chmod($paths, 0777, 0000, true);
+        $progress->advance();
+        $filesystem->remove($paths);
+        $progress->advance();
+    }
+}
+
 class BuildPackageCommand extends Command
 {
     protected function configure()
@@ -62,7 +118,7 @@ class BuildPackageCommand extends Command
         $filesystem->mirror($sourceDir, "$buildDir/$name");
         $progress->advance();
 
-        $this->cleanVendors("$buildDir/$name/vendor", $progress, $input, $output);
+        PurgeVendorsCommand::cleanVendors("$buildDir/$name/vendor", $progress);
 
         $writableArray = array(
             "$buildDir/$name/userdata",
@@ -97,7 +153,7 @@ class BuildPackageCommand extends Command
         $zip = new \ZipArchive();
         $fileName = "$name.zip";
         if ($zip->open($fileName, \ZipArchive::CREATE) !== true) {
-            $output->writeln("Error creating $fileName\n");
+            $output->writeln("<error>Error creating $fileName</error>");
         }
 
         foreach ($allFiles as $file) {
@@ -138,40 +194,11 @@ CHECKSUM;
         $progress->advance();
         $progress->finish();
 
-        $output->writeln("\nArtifacts built in $buildDir/ folder\n");
-    }
-
-    private function cleanVendors($dir, ProgressHelper $progress, InputInterface $input, OutputInterface $output)
-    {
-        $filesystem = new Filesystem();
-
-        $finder = new Finder();
-        $finder->in($dir)
-            ->directories()
-            ->path('.git')
-            ->path('tests')
-            ->path('Tests')
-            ->ignoreDotFiles(false)
-            ->ignoreVCS(false);
-        $progress->advance();
-
-        $paths = array();
-        /** @var SplFileInfo $file */
-        foreach ($finder as $file) {
-            $paths[] = $file->getRealPath();
-        }
-
-        $paths = array_unique($paths);
-        rsort($paths);
-
-        $progress->advance();
-        $filesystem->chmod($paths, 0777, 0000, true);
-        $progress->advance();
-        $filesystem->remove($paths);
-        $progress->advance();
+        $output->writeln("<info>Artifacts built in $buildDir/ folder</info>");
     }
 }
 
 $application = new Application();
 $application->add(new BuildPackageCommand());
+$application->add(new PurgeVendorsCommand());
 $application->run();

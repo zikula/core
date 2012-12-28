@@ -9,8 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-include 'src/lib/ZLoader.php';
-ZLoader::register();
+include 'src/vendor/autoload.php';
 
 class ControllerActionCommand extends Command
 {
