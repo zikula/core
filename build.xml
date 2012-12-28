@@ -58,7 +58,7 @@
     <target name="build" depends="prepare">
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
-        <exec command="${workspace}/source/build.php --vendor-dir ${workspace}/source/src/vendor" />
+        <exec command="${workspace}/source/build.php purge_vendors --vendor-dir ${workspace}/source/src/vendor" />
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
 
