@@ -292,6 +292,7 @@ function install(Zikula_Core $core)
                     }
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
+                    System::setInstalling(false);
                     System::redirect(ModUtil::url('Admin', 'admin', 'adminpanel'));
                     exit;
                 }
@@ -347,7 +348,7 @@ function install(Zikula_Core $core)
 function createuser($username, $password, $email)
 {
     if (!class_exists('Users_Constant')) {
-        require_once 'system/Users/lib/Users/Constant.php';
+        require_once 'system/Users/Constant.php';
     }
     $connection = Doctrine_Manager::connection();
 
@@ -384,15 +385,6 @@ function createuser($username, $password, $email)
 
 function installmodules($lang = 'en')
 {
-    // This is a temporary hack for release 1.3.x to be able to install modules
-    // load Doctrine plugin
-    include_once __DIR__ . '/../plugins/Doctrine/Plugin.php';
-    PluginUtil::loadPlugin('SystemPlugin_Doctrine_Plugin');
-
-    // load DoctrineExtensions plugin
-    include_once __DIR__ . '/../plugins/DoctrineExtensions/Plugin.php';
-    PluginUtil::loadPlugin('SystemPlugin_DoctrineExtensions_Plugin');
-
     $connection = Doctrine_Manager::connection();
 
     // Lang validation

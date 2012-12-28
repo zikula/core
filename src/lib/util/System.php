@@ -911,7 +911,17 @@ class System
      */
     public static function isInstalling()
     {
-        return (bool)defined('_ZINSTALLVER');
+        return (null === self::$installing) ? (bool)defined('_ZINSTALLVER') : self::$installing;
+    }
+
+    /**
+     * Set installing status
+     *
+     * @param $flag
+     */
+    public static function setInstalling($flag)
+    {
+        self::$installing = (bool) $flag;
     }
 
     /**
