@@ -24,18 +24,23 @@
         nope: 'javascript/polyfills/storage/storage.js'
     });
 
-    var request = _(Zikula.Config).objectGetPath('request', {});
-        viewID = [
-        _(request).objectGetPath('module', 'home'),
-        _(request).objectGetPath('type', ''),
-        _(request).objectGetPath('func', '')
-    ].join('-').toLowerCase();
+    var viewId = _(Zikula.Config).objectGetPath('request.view-id', 'homepage'),
+        query = _(Zikula.Config).objectGetPath('request.query', {}),
+        homepage = _(Zikula.Config).objectGetPath('request.homepage', false);
     // attaches event named "$module-$type-$func"
-    Zikula.Core.attachEvent(viewID, function(event) {
-        $(document).ready(function(){
-            event.resolve(request);
+    Zikula.Core.attachEvent(viewId, function(event) {
+        $(document).ready(function() {
+            event.resolve(query);
         });
     });
-
+    Zikula.Core.attachEvent('homepage', function(event) {
+        $(document).ready(function() {
+            if (homepage) {
+                event.resolve(query);
+            } else {
+                event.reject(query);
+            }
+        });
+    });
 
 })(jQuery);

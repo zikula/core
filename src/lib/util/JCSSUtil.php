@@ -34,7 +34,7 @@ class JCSSUtil
             'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
             'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
-            'request' => ServiceUtil::get('request')->query->all(), // fixme - does not work with short urls (but $_GET/$_REQUEST are filled)
+            'request' => self::decodeRequest(),
             'isDevelopmentMode' => System::isDevelopmentMode()
         );
 
@@ -658,4 +658,53 @@ class JCSSUtil
         return $line;
     }
 
+    private static function decodeRequest()
+    {
+        // fixme - does not work with short urls (but $_GET/$_REQUEST are filled)
+        $query = ServiceUtil::get('request')->query->all();
+        $homepage = false;
+
+        // process the homepage
+        if (!isset($query['module']) || empty($query['module'])) {
+            $homepage = true;
+
+            // set the start parameters
+            $query['module'] = System::getVar('startpage');
+            $query['type'] = System::getVar('starttype');
+            $query['func'] = System::getVar('startfunc');
+            $args = explode(',', System::getVar('startargs'));
+
+            foreach ($args as $arg) {
+                if (!empty($arg)) {
+                    $argument = explode('=', $arg);
+                    $query[$argument[0]] = $argument[1];
+                }
+            }
+        }
+
+        // get module information
+        $modinfo = ModUtil::getInfoFromName($query['module']);
+
+        if ($modinfo) {
+            $query['module'] = $modinfo['name'];
+        }
+
+        // normalize module, type, func and generate view-id
+        $query['module'] = mb_strtolower($query['module']);
+        $query['type'] = mb_strtolower($query['type']);
+        $query['func'] = mb_strtolower($query['func']);
+
+        $viewId = 'homepage';
+        if (!empty($query['module'])) {
+            $viewId = "{$query['module']}-{$query['type']}-{$query['func']}";
+        }
+
+        $request = array(
+            'query' => $query,
+            'homepage' => $homepage,
+            'view-id' => $viewId
+        );
+
+        return $request;
+    }
 }
