@@ -28,9 +28,9 @@
 </div>
 
 <div id="admin-systemnotices">
-{include file='admin_admin_securityanalyzer.tpl'}
-{include file='admin_admin_developernotices.tpl'}
-{include file='admin_admin_updatechecker.tpl'}
+{include file='includes/securityanalyzer.tpl'}
+{include file='includes/developernotices.tpl'}
+{include file='includes/updatechecker.tpl'}
 </div>
 
 {insert name="getstatusmsg"}
@@ -45,7 +45,7 @@
         {/foreach}
         <li id="addcat">
             <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
-            {include file='admin_admin_ajaxAddCategory.tpl'}
+            {include file='ajax/add_category.tpl'}
         </li>
     </ul>
 
