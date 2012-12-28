@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class System
 {
+    private static $installing = null;
+    
     /**
      * Internals cache.
      *
