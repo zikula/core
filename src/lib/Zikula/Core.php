@@ -13,6 +13,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);
@@ -398,6 +399,8 @@ class Zikula_Core
             $this->container->set('request', $request);
         }
 
+        $request = $this->container->get('request');
+
         $coreInitEvent = new \Zikula\Core\Event\GenericEvent($this);
 
         // store the load stages in a global so other API's can check whats loaded
@@ -425,7 +428,8 @@ class Zikula_Core
 
         // Check that Zikula is installed before continuing
         if (System::getVar('installed') == 0 && !System::isInstalling()) {
-            System::redirect(System::getBaseUrl().'install.php?notinstalled');
+            $response = new RedirectResponse($request->getBaseUrl().'/install.php?notinstalled', 302);
+            $response->send();
             System::shutDown();
         }
 
