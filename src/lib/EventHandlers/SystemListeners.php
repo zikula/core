@@ -13,7 +13,7 @@
  */
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Zikula_Response_Http as Response;
+use Zikula_Request_Http as Response;
 
 /**
  * Event handler to override templates.
