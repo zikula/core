@@ -9,7 +9,7 @@ composer
 /src/userdata/
 /src/userdata/!\.htaccess
 /src/vendor/
-/src/vendor/!\.htaccess
+/src/vendor/!.htaccess
 /src/ztemp/
 /src/ztemp/errors_log/!\.index.html
 /src/ztemp/purifierCache/!\.index.html
