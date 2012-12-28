@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * System class.
  *
@@ -271,6 +273,9 @@ class System
     /**
      * Get base URI for Zikula.
      *
+     * @deprecated since 1.3.6
+     * @see Request::getBasePath()
+     *
      * @return string Base URI for Zikula.
      */
     public static function getBaseUri()
@@ -294,6 +299,9 @@ class System
 
     /**
      * Get base URL for Zikula.
+     *
+     * @deprecated since 1.3.6
+     * @see Request::getBaseUrl()
      *
      * @return string Base URL for Zikula.
      */
@@ -352,7 +360,8 @@ class System
      * @param array   $additionalheaders Array of header strings to send with redirect.
      * @param integer $type              Number type of the redirect.
      *
-     * @deprecated Since 1.3.6, throw Redirect exception.
+     * @deprecated Since 1.3.6 - from a controller, return RedirectResponse, or
+     * if necessary throw Zikula_Redirect_Exception.
      *
      * @return boolean True if redirect successful, false otherwise.
      */
@@ -473,6 +482,9 @@ class System
      * @param string $name    The name of the variable.
      * @param mixed  $default The default value to return if the requested param is not set.
      *
+     * @deprecated
+     * @see Request->server->get()
+     *
      * @return mixed Value of the variable.
      */
     public static function serverGetVar($name, $default = null)
@@ -490,6 +502,8 @@ class System
      *
      * Returns the server host name fetched from HTTP headers when possible.
      * The host name is in the canonical form (host + : + port) when the port is different than 80.
+     *
+     * @deprecated since 1.3.6 use Request::getHttpHost()
      *
      * @return string HTTP host name.
      */
@@ -514,7 +528,7 @@ class System
      *
      * @param array $args Additional parameters to be added to/replaced in the URI (e.g. theme, ...).
      *
-     * @access public
+     * @deprecated since 1.3.6 use Request::getUri()
      *
      * @return string Current URI.
      */
@@ -586,6 +600,8 @@ class System
      *
      * Returns the HTTP protocol used by current connection, it could be 'http' or 'https'.
      *
+     * @deprecated since 1.3.6 use Request::getScheme()
+     *
      * @return string Current HTTP protocol.
      */
     public static function serverGetProtocol()
@@ -605,8 +621,7 @@ class System
      *
      * @param array $args Additional parameters to be added to/replaced in the URL (e.g. theme, ...).
      *
-     * @access public
-     * @todo cfr. BaseURI() for other possible ways, or try PHP_SELF.
+     * @deprecated since 1.3.6 use Request::getUri()
      *
      * @return string Current URL.
      */
