@@ -22,20 +22,16 @@
  *
  * Available attributes:
  *  - modname           (string)    the module name in which to look for the base javascript file for the module; defaults to top level module when used in a block template.
- *  - filename          (string)    (optional) filename to load (default ajax.js)
- *  - noscriptaculous   (mixed)     (optional) does not include scriptaculous.js if set
+ *  - filename          (string)    (optional) filename to load (default none)
  *  - validation        (mixed)     (optional) includes validation.js if set
- *  - lightbox          (mixed)     (optional) includes lightbox.js if set (loads scriptaculous effects if noscriptaculous is set)
- *  - imageviewer       (mixed)     (optional) includes Zikula.ImageViewer.js if set (loads scriptaculous effects and dragdrop if noscriptaculous is set)
- *  - assign            (string)    (optional) the name of the template variable to which the script tag string is assigned, <i>instead of</i>
- *                                             adding them to the page variables through PageUtil::addVar
- *
+ *  - lightbox          (mixed)     (optional) includes core lightbox script
+ *  - ui                (bool)      (optional) includes core ui helpers (zikula.ui and jquery ui)
  *
  * Examples:
  *
  * <samp>{ajaxheader modname='Example' filename='example.js'}</samp>
  *
- * <samp>{ajaxheader modname='Example' noscriptaculous=1}</samp>
+ * <samp>{ajaxheader modname='Example'}</samp>
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the {@link Zikula_View} object.
@@ -47,48 +43,27 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
     // use supplied modname or top level module
     $modname = (isset($params['modname'])) ? $params['modname'] : ModUtil::getName();
     // define the default filename
-    $filename = (isset($params['filename'])) ? $params['filename'] : 'Zikula.js';
+    $filename = (isset($params['filename'])) ? $params['filename'] : false;
     $validation = (isset($params['validation'])) ? true : false;
     $lightbox = (isset($params['lightbox'])) ? true : false;
     $ui = (isset($params['ui'])) ? true : false;
     $imageviewer = (isset($params['imageviewer'])) ? true : false;
 
-    // create an empty return
-    $return = '';
-
     // we always need those
-    $scripts = array('prototype', 'zikula');
+    $scripts = array('zikula');
 
     if ($validation) {
         $scripts[] = 'validation';
     }
     if ($ui) {
-        $scripts[] = 'livepipe';
         $scripts[] = 'zikula.ui';
     }
-
-    if ($lightbox) {
-        // check if lightbox is present - if not, load ImageViewer instead
-        if (is_readable('javascript/ajax/lightbox.js')) {
-            $scripts[] = 'javascript/ajax/lightbox.js';
-            if (isset($params['assign'])) {
-                $return = '<link rel="stylesheet" href="javascript/ajax/lightbox/lightbox.css" type="text/css" media="screen" />';
-            } else {
-                PageUtil::addVar('stylesheet', 'javascript/ajax/lightbox/lightbox.css');
-            }
-        } else {
-            $imageviewer = true;
-        }
-    }
-    if ($imageviewer) {
-        $scripts[] = 'zikula.imageviewer';
-        if (isset($params['assign'])) {
-            $return = '<link rel="stylesheet" href="javascript/helpers/ImageViewer/ImageViewer.css" type="text/css" media="screen" />';
-        }
+    if ($lightbox || $imageviewer) {
+        $scripts[] = 'colorbox';
     }
 
     $modinfo = ModUtil::getInfoFromName($modname);
-    if ($modinfo !== false) {
+    if ($modinfo !== false && $filename) {
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $osfilename = DataUtil::formatForOS($filename);
 
@@ -98,16 +73,8 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
         }
     }
 
-    if (isset($params['assign'])) {
-        // create script tags now
-        $scripts = JCSSUtil::prepareJavascripts($scripts);
-        foreach ($scripts as $script) {
-            $return .= '<script type="text/javascript" src="' . $script . '"></script>' . "\n";
-        }
-        $view->assign($params['assign'], $return);
-    } else {
-        PageUtil::addVar('javascript', $scripts);
-    }
+    PageUtil::addVar('javascript', $scripts);
+
 
     return;
 }
