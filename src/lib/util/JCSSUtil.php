@@ -134,6 +134,7 @@ class JCSSUtil
     {
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
+
         // set proper file paths for aliased scripts
         $coreScripts = self::scriptsMap();
         $styles = array();
@@ -192,6 +193,32 @@ class JCSSUtil
     }
 
     /**
+     * Method to resolve scripts dependencies and order.
+     *
+     * @param array $javascripts List of javascript files to verify.
+     *
+     * @return array List of javascript files
+     */
+    private static function resolveDependencies($javascripts)
+    {
+        $coreScripts = self::scriptsMap();
+        $coreNames = array_keys($coreScripts);
+
+        $javascripts = array_map('self::getScriptName', $javascripts);
+
+        // separate core and non-core scripts
+        $core = array_intersect($coreNames, $javascripts);
+        $others = array_diff($javascripts, $core);
+
+        // first resolve core scripts
+        $core = self::resolveCoreDependencies($core);
+        // then merge with the rest (for those it's enough to keep order they where requested)
+        $ordered = array_unique(array_merge($core, $others));
+
+        return $ordered;
+    }
+
+    /**
      * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap.
      *
      * @param array $javascripts List of javascript files to verify.
@@ -199,26 +226,26 @@ class JCSSUtil
      *
      * @return array List of javascript files
      */
-    private static function resolveDependencies($javascripts, &$resolved = array())
+    private function resolveCoreDependencies($javascripts, &$resolved = array())
     {
         $coreScripts = self::scriptsMap();
         $withDeps = array();
-        foreach ($javascripts as $script) {
+        foreach ((array)$javascripts as $script) {
             $script = self::getScriptName($script);
-            if (isset($coreScripts[$script]) && isset($coreScripts[$script]['require']) && !in_array($script, $resolved)) {
+            if (!in_array($script, $resolved)) {
                 $resolved[] = $script;
-                $required = $coreScripts[$script]['require'];
-                $r = self::resolveDependencies($required, $resolved);
-                $withDeps = array_merge($withDeps, (array)$r);
+                if (isset($coreScripts[$script]['require'])) {
+                    $required = self::resolveCoreDependencies($coreScripts[$script]['require'], $resolved);
+                    $withDeps = array_merge($withDeps, (array)$required);
+                }
+                $withDeps[] = $script;
+                if (isset($coreScripts[$script]['include'])) {
+                    $included = self::resolveCoreDependencies($coreScripts[$script]['include'], $resolved);
+                    $withDeps = array_merge($withDeps, (array)$included);
+                }
             }
-            $withDeps[] = $script;
         }
-        // set proper order
-        $coreNames = array_keys($coreScripts);
-        $usedCore = array_intersect($coreNames, $withDeps);
-        $ordered = array_unique(array_merge($usedCore, $withDeps));
-
-        return $ordered;
+        return array_unique($withDeps);
     }
 
     /**
@@ -254,13 +281,14 @@ class JCSSUtil
      *
      * For each script can be defined:
      * - path: the true path to the file
-     * - require: other scripts to be loaded along with the file (aliases for core, paths for other)
+     * - require: other scripts to be loaded before given file (script names or paths)
+     * - include: other scripts to be loaded after given file (script names or paths)
      * - aliases: aliases used for this script
      * - styles: information about additional files (styles) that should be loaded along with the script
      * - gettext: if script requires a translations
      *
-     * When System::isDevelopmentMode precombined versions of scripts (prototype, livepipe and jquery)
-     * are replaced by original, uncompressed files
+     * By default minified files are served.
+     * When System::isDevelopmentMode eq true - uncompressed files are served.
      *
      * @return array List of core scripts
      */
@@ -286,7 +314,7 @@ class JCSSUtil
             'jquery' => array(
                 'production' => array(
                     'path' => 'javascript/jquery/jquery-1.8.3.min.js',
-                    'require' => array('jquery.noconflict'),
+                    'include' => array('jquery.noconflict', 'zikula'),
                 ),
                 'development' => array(
                     'path' => 'javascript/jquery/jquery-1.8.3.js',
@@ -334,7 +362,8 @@ class JCSSUtil
                 'production' => array(
                     'path' => 'javascript/plugins/colorbox/jquery.colorbox-min.js',
                     'aliases' => array('zikula.imageviewer', 'imageviewer', 'lightbox'),
-                    'require' => array('jquery', 'javascript/plugins/colorbox/boot.js'),
+                    'require' => array('jquery'),
+                    'include' => array('javascript/plugins/colorbox/boot.js'),
                     'styles' => array('javascript/plugins/colorbox/colorbox.css'),
                 ),
                 'development' => array(
@@ -359,8 +388,7 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/zikula/zikula.js',
-                    'require' => array(
-                        'jquery', 'underscore', 'underscore.string', 'modernizr',
+                    'include' => array(
                         'javascript/zikula/lang.js',
                         'javascript/zikula/class.js',
                         'javascript/zikula/util.services.js',
