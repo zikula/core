@@ -389,26 +389,29 @@ class JCSSUtil
                 'development' => array(
                     'path' => 'javascript/zikula/zikula.js',
                     'include' => array(
-                        'javascript/zikula/lang.js',
-                        'javascript/zikula/class.js',
-                        'javascript/zikula/util.services.js',
-                        'javascript/zikula/core.js',
-                        'javascript/zikula/factory.js',
-                        'javascript/zikula/util.cookie.js',
-                        'javascript/zikula/util.gettext.js',
-                        'javascript/zikula/dom.js',
-                        'javascript/zikula/ajax.js',
-                        'javascript/zikula/boot.js'
+                        'javascript/zikula/zikula.lang.js',
+                        'javascript/zikula/zikula.class.js',
+                        'javascript/zikula/zikula.util.services.js',
+                        'javascript/zikula/zikula.core.js',
+                        'javascript/zikula/zikula.factory.js',
+                        'javascript/zikula/zikula.util.cookie.js',
+                        'javascript/zikula/zikula.util.gettext.js',
+                        'javascript/zikula/zikula.dom.js',
+                        'javascript/zikula/zikula.ajax.js',
+                        'javascript/zikula/zikula.boot.js'
                     ),
                 )
             ),
             'zikula.ui' => array(
                 'production' => array(
-                    'path' => 'javascript/zikula-plugins/zikula.ui.min.js',
+                    'path' => 'javascript/zikula-plugins/zikula-ui/zikula.ui.min.js',
                     'require' => array('zikula', 'jquery-ui'),
                 ),
                 'development' => array(
-                    'path' => 'javascript/zikula-plugins/zikula.ui.js',
+                    'path' => 'javascript/zikula-plugins/zikula-ui/zikula.ui.js',
+                    'include' => array(
+                        'javascript/zikula-plugins/zikula-ui/zikula.ui.zaccordion.js',
+                    ),
                 )
             ),
         );
