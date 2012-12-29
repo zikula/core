@@ -309,6 +309,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         // end output buffering and get module output
         if (null === $response) {
+            $response = new Response();
             $maincontent = ob_get_contents();
             ob_end_clean();
         } else {
