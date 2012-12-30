@@ -32,7 +32,7 @@
  * {/formtabbedpanelset}
  * </code>
  * You can place any Zikula_Form_View plugins inside the individual panels. The tabs
- * require some special styling which is handled by the styles in system/Theme/style/form/style.css.
+ * require some special styling which is handled by the styles in system/Theme/Resources/public/css/form/style.css.
  * If you want to override this styling then either copy the styles to another stylesheet in the
  * templates directory or change the cssClass attribute to something different than the default
  * class name.
