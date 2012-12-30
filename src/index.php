@@ -17,37 +17,27 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Framework\Response\PlainResponse;
 
 include 'lib/bootstrap.php';
+
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 $core->init();
 
+//$response = $kernel->handle($request);
+
+//$response->send();
+//$kernel->terminate($request, $response);
+
 if ($request->isXmlHttpRequest()) {
-    __frontcontroller_ajax();
+    __frontcontroller_ajax($request);
 }
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
 
-$module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-$type = FormUtil::getPassedValue('type', '', 'GETPOST', FILTER_SANITIZE_STRING);
-$func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+$module = $request->attributes->get('_module');
+$type = $request->attributes->get('_type');
+$func = $request->attributes->get('_func');
 
 // check requested module
-$arguments = array();
-
-// process the homepage
-if (!$module) {
-    // set the start parameters
-    $module = System::getVar('startpage');
-    $type = System::getVar('starttype');
-    $func = System::getVar('startfunc');
-    $args = explode(',', System::getVar('startargs'));
-
-    foreach ($args as $arg) {
-        if (!empty($arg)) {
-            $argument = explode('=', $arg);
-            $arguments[$argument[0]] = $argument[1];
-        }
-    }
-}
+$arguments = $request->attributes->get('_args');
 
 // get module information
 $modinfo = ModUtil::getInfoFromName($module);
@@ -68,7 +58,7 @@ if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
 }
 
 try {
-    if (empty($module)) {
+    if (!$module) {
         // we have a static homepage
         $response = new Response();
     } elseif ($modinfo) {
@@ -101,6 +91,8 @@ try {
         if ($e instanceof Zikula_Exception_NotFound) {
             $response = new Response($e->getMessage(), 404);
             $debug = array_merge($e->getDebug(), $e->getTrace());
+        } elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            $response = new Response($e->getMessage(), 404);
         } elseif ($e instanceof Zikula_Exception_Forbidden) {
             $response = new Response($e->getMessage(), 403);
             $debug = array_merge($e->getDebug(), $e->getTrace());
@@ -164,7 +156,7 @@ if (false === $response instanceof PlainResponse) {
 $response->send();
 System::shutdown();
 
-function __frontcontroller_ajax()
+function __frontcontroller_ajax($request)
 {
     // Get variables
     $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);

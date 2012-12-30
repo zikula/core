@@ -21,12 +21,17 @@ if (isset($_SERVER['HTTP_HOST']) && !extension_loaded('xdebug')) {
 }
 
 $loader = require __DIR__.'/../vendor/autoload.php';
+include __DIR__.'/../app/ZikulaKernel.php';
 include __DIR__.'/ZLoader.php';
 ZLoader::register();
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
+$kernel = new ZikulaKernel('prod', true);
+$kernel->boot();
+
 $core = new Zikula_Core();
+$core->setKernel($kernel);
 $core->boot();
 
 // Load system configuration
