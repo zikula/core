@@ -25,7 +25,7 @@
 function smarty_block_form($params, $content, $view)
 {
     if ($content) {
-        PageUtil::addVar('stylesheet', 'system/Theme/style/form/style.css');
+        PageUtil::addVar('stylesheet', 'system/Theme/Resources/public/css/form/style.css');
         $action = htmlspecialchars(System::getCurrentUri());
         $classString = '';
         if (isset($params['cssClass'])) {
