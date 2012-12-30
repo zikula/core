@@ -391,21 +391,28 @@ class System
             }
         }
 
-        if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $redirecturl)) {
+        $redirecturl = self::normalizeUrl($redirecturl);
+
+        throw new Zikula_Exception_Redirect($redirecturl, $type);
+    }
+
+    public static function normalizeUrl($url)
+    {
+        if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $url)) {
             // Absolute URL - simple redirect
-        } elseif (substr($redirecturl, 0, 1) == '/') {
+        } elseif (substr($url, 0, 1) == '/') {
             // Root-relative links
-            $redirecturl = 'http' . (self::serverGetVar('HTTPS') == 'on' ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $redirecturl;
+            $url = 'http' . (self::serverGetVar('HTTPS') == 'on' ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $url;
         } else {
             // Relative URL
             // Removing leading slashes from redirect url
-            $redirecturl = preg_replace('!^/*!', '', $redirecturl);
+            $url = preg_replace('!^/*!', '', $url);
             // Get base URL and append it to our redirect url
             $baseurl = self::getBaseUrl();
-            $redirecturl = $baseurl . $redirecturl;
+            $url = $baseurl . $url;
         }
 
-        throw new Zikula_Exception_Redirect($redirecturl, $type);
+        return $url;
     }
 
     /**

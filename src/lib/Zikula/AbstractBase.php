@@ -491,7 +491,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     protected function redirect($url, $type = 302)
     {
-        throw new Zikula_Exception_Redirect(System::getBaseUrl().$url, $type);
+        throw new Zikula_Exception_Redirect($url, $type);
     }
 
     /**

@@ -105,7 +105,7 @@ try {
             $response = new Response($e->getMessage(), 403);
             $debug = array_merge($e->getDebug(), $e->getTrace());
         } elseif ($e instanceof Zikula_Exception_Redirect) {
-            $response = new RedirectResponse($e->getUrl(), $e->getType());
+            $response = new RedirectResponse(System::normalizeUrl($e->getUrl()), $e->getType());
         } elseif ($e instanceof PDOException) {
             $response = new Response($e->getMessage(), 500);
             if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
