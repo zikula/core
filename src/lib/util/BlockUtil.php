@@ -50,7 +50,7 @@ class BlockUtil
         }
 
         if (!isset($modname)) {
-            $modname = FormUtil::getPassedValue('module', '_homepage_', 'GETPOST', FILTER_SANITIZE_STRING);
+            $modname = strtolower(FormUtil::getPassedValue('module', '_homepage_', 'GETPOST', FILTER_SANITIZE_STRING));
         }
 
         // get all block placements
@@ -119,9 +119,9 @@ class BlockUtil
                         continue;
                     }
 
-                    $rule1 = strtolower($filter['module']) == strtolower($modname);
-                    $rule2 = empty($filter['ftype']) ? true : (strtolower($filter['ftype']) == strtolower($type));
-                    $rule3 = empty($filter['fname']) ? true : (strtolower($filter['fname']) == strtolower($func));
+                    $rule1 = strtolower($filter['module']) == $modname;
+                    $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
+                    $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
 
                     if (empty($filter['fargs'])) {
                         $rule4 = true;
