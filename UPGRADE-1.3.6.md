@@ -6,6 +6,17 @@ Module Specification from Zikula Core 1.3.6
     The following document is for guidance only at this time and has not been fixed.
 
 
+User Upgrade Tasks
+------------------
+
+Please delete the `plugins/Doctrine` and `plugins\DoctrineExtensions` folders entirely and then
+run `http://yoursiteurl/upgrade.php`
+
+
+
+>>>> The following is for module developers only.
+
+
 Module Structure
 ----------------
 
