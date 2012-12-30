@@ -62,6 +62,11 @@ function smarty_function_pagesetvar($params, Zikula_View $view)
         return false;
     }
 
+    // handle Clip which is manually loading a Theme's stylesheets
+    if ($name == 'stylesheet' && false !== strpos($value, 'system/Theme/style/')) {
+        $value = str_replace('system/Theme/style/', 'system/Theme/Resources/public/css/', $value);
+    }
+
     if (in_array($name, array('stylesheet', 'javascript'))) {
         $value = explode(',', $value);
     }
