@@ -71,7 +71,7 @@ class HookAreaEntity
      * Set owner
      *
      * @param string $owner
-     * @return HookArea
+     * @return HookAreaEntity
      */
     public function setOwner($owner)
     {
@@ -93,7 +93,7 @@ class HookAreaEntity
      * Set subowner
      *
      * @param string $subowner
-     * @return HookArea
+     * @return HookAreaEntity
      */
     public function setSubowner($subowner)
     {
@@ -115,7 +115,7 @@ class HookAreaEntity
      * Set areatype
      *
      * @param string $areatype
-     * @return HookArea
+     * @return HookAreaEntity
      */
     public function setAreatype($areatype)
     {
@@ -137,7 +137,7 @@ class HookAreaEntity
      * Set category
      *
      * @param string $category
-     * @return HookArea
+     * @return HookAreaEntity
      */
     public function setCategory($category)
     {
@@ -159,7 +159,7 @@ class HookAreaEntity
      * Set areaname
      *
      * @param string $areaname
-     * @return HookArea
+     * @return HookAreaEntity
      */
     public function setAreaname($areaname)
     {
