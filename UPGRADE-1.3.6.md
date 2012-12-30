@@ -14,7 +14,7 @@ run `http://yoursiteurl/upgrade.php`
 
 
 
->>>> The following is for module developers only.
+**The following is for module developers only.**
 
 
 Module Structure
