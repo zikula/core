@@ -121,6 +121,8 @@ class BuildPackageCommand extends Command
         PurgeVendorsCommand::cleanVendors("$buildDir/$name/vendor", $progress);
 
         $writableArray = array(
+            "$buildDir/$name/app/cache",
+            "$buildDir/$name/app/log",
             "$buildDir/$name/userdata",
             "$buildDir/$name/ztemp",
             "$buildDir/$name/ztemp/error_logs",
