@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
+        <parameter key="zikula.themeinit_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeInitListener</parameter>
+        <parameter key="zikula.system_listener.class">Zikula\Bundle\CoreBundle\EventListener\SystemListener</parameter>
+        <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
+        <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
+
+        <parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>
+        <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>
+        <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
+
+        <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
+        <parameter key="token.storage.key">_tokens</parameter>
+        <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
+        <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
+        <parameter key="token.max_life">3600</parameter>
+
+        <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
+        <parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>
+    </parameters>
+
+    <services>
+        <!--<service id="zikula" class="%zikula_core.class%">-->
+            <!--<argument type="service" id="service_container" />-->
+        <!--</service>-->
+
+        <!--<service id="zikula.core_init" class="%zikula.core_init_listener.class%">-->
+            <!--<tag name="zikula.event_subscriber" />-->
+            <!--<argument type="service" id="service_container" />-->
+        <!--</service>-->
+
+        <!--<service id="token.storage" class="%token.storage.class%">-->
+            <!--<argument type="service" id="session" />-->
+            <!--<argument>%token.storage.key%</argument>-->
+        <!--</service>-->
+
+        <!--<service id="token.generator" class="%token.generator.class%">-->
+            <!--<argument type="service" id="token.storage" />-->
+            <!--<argument>%signing.key%</argument>-->
+            <!--<argument>%token.max_life%</argument>-->
+        <!--</service>-->
+
+        <!--<service id="token.validator" class="%token.validator.class%">-->
+            <!--<argument type="service" id="token.generator" />-->
+        <!--</service>-->
+
+        <!--<service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%">-->
+            <!--&lt;!&ndash;<argument type="service" id="doctrine.orm.default_entity_manager" />&ndash;&gt;-->
+            <!--<argument type="service" id="doctrine.entitymanager" />-->
+        <!--</service>-->
+        <!--<service id="hook_dispatcher.servicefactory" class="%hook_dispatcher.servicefactory.class%">-->
+            <!--<argument type="service" id="service_container" />-->
+            <!--<argument>event_dispatcher</argument>-->
+        <!--</service>-->
+
+        <!--<service id="hook_dispatcher" class="%hook_dispatcher.class%">-->
+            <!--<argument type="service" id="hook_dispatcher.storage" />-->
+            <!--<argument type="service" id="event_dispatcher" />-->
+            <!--<argument type="service" id="hook_dispatcher.servicefactory" />-->
+        <!--</service>-->
+
+        <!--<service id="zikula.system_listeners" class="%zikula.system_listener.class%">-->
+            <!--<tag name="kernel.event_subscriber" />-->
+            <!--<argument type="service" id="service_container" />-->
+        <!--</service>-->
+
+        <!--<service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">-->
+            <!--<tag name="kernel.event_subscriber" />-->
+        <!--</service>-->
+
+        <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->
+            <!--<tag name="kernel.event_subscriber" />-->
+            <!--<argument type="service" id="service_container" />-->
+        <!--</service>-->
+
+        <!--<service id="zikula.themes.subscriber" class="%zikula.theme_listener.class%">-->
+            <!--<tag name="kernel.event_subscriber" />-->
+            <!--<argument type="service" id="service_container" />-->
+            <!--<argument type="service" id="templating" />-->
+        <!--</service>-->
+    </services>
+</container>

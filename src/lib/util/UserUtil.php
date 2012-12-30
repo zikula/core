@@ -1896,6 +1896,7 @@ class UserUtil
     {
         static $pagetheme;
 
+        $request = ServiceUtil::get('request');
         if (isset($pagetheme) && !$force) {
             return $pagetheme;
         }
@@ -1965,7 +1966,10 @@ class UserUtil
                 }
 
                 $pagetheme = $themeinfo['name'];
-                return self::_getThemeFilterEvent($themeinfo['name'], 'new-theme');
+                $themeName = self::_getThemeFilterEvent($themeinfo['name'], 'new-theme');
+                $request->attributes->set('_theme', $themeName);
+
+                return $themeName;
             }
         }
 
@@ -1979,7 +1983,11 @@ class UserUtil
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
             if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 $pagetheme = $themeinfo['name'];
-                return self::_getThemeFilterEvent($themeinfo['name'], 'user-theme');
+
+                $themeName = self::_getThemeFilterEvent($themeinfo['name'], 'user-theme');
+                $request->attributes->set('_theme', $themeName);
+
+                return $themeName;
             }
         }
 
@@ -1988,7 +1996,11 @@ class UserUtil
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
         if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
             $pagetheme = $themeinfo['name'];
-            return self::_getThemeFilterEvent($themeinfo['name'], 'default-theme');
+
+            $themeName = self::_getThemeFilterEvent($themeinfo['name'], 'default-theme');
+            $request->attributes->set('_theme', $themeName);
+
+            return $themeName;
         }
 
         if (!System::isInstalling()) {

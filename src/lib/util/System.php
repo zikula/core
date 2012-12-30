@@ -671,7 +671,7 @@ class System
      *
      * @return void
      */
-    public static function queryStringDecode()
+    public static function queryStringDecode(Request $request)
     {
         if (self::isInstalling()) {
             return;
@@ -760,7 +760,7 @@ class System
                         System::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''));
                         System::shutDown();
                     }
-                    self::queryStringSetVar('lang', $args[0]);
+                    self::queryStringSetVar('lang', $args[0], $request);
                     array_shift($args);
 
                 } elseif (ZLanguage::getLangUrlRule()) {
@@ -787,7 +787,7 @@ class System
                     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args[0]));
 
                     if ($themeinfo) {
-                        self::queryStringSetVar('theme', $themeinfo['name']);
+                        self::queryStringSetVar('theme', $themeinfo['name'], $request);
                         // now shift the vars and continue as before
                         array_shift($args);
                         if ($args) {
@@ -814,26 +814,51 @@ class System
                 array_unshift($args, ''); // support for 1.2- empty parameter due the initial explode
                 array_unshift($args, $modinfo['url']);
                 // set the REQUEST parameters
-                self::queryStringSetVar('module', $modinfo['name']);
+                self::queryStringSetVar('module', $modinfo['name'], $request);
                 // the user.function name can be the second argument string, set a default
                 // later the custom module handler (if exists) must setup a new one if needed
-                self::queryStringSetVar('type', 'user');
+                self::queryStringSetVar('type', 'user', $request);
                 if (isset($args[2])) {
-                    self::queryStringSetVar('func', $args[2]);
+                    self::queryStringSetVar('func', $args[2], $request);
                 } else {
-                    self::queryStringSetVar('func', 'main');
+                    self::queryStringSetVar('func', 'main', $request);
                 }
                 if (!ModUtil::apiFunc($modinfo['name'], 'user', 'decodeurl', array('vars' => $args))) {
                     // any remaining arguments are specific to the module
                     $argscount = count($args);
                     for ($i = 3; $i < $argscount; $i = $i + 2) {
                         if (isset($args[$i]) && isset($args[$i + 1])) {
-                            self::queryStringSetVar($args[$i], urldecode($args[$i + 1]));
+                            self::queryStringSetVar($args[$i], urldecode($args[$i + 1]), $request);
                         }
                     }
                 }
             }
         }
+
+        $module = ucfirst(FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING));
+        $func = ucfirst(FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING));
+        $type = ucfirst(FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING));
+
+        $arguments = array();
+        if (!$module) {
+           // set the start parameters
+            $module = System::getVar('startpage');
+            $type = System::getVar('starttype');
+            $func = System::getVar('startfunc');
+            $args = explode(',', System::getVar('startargs'));
+            foreach ($args as $arg) {
+                if (!empty($arg)) {
+                    $argument = explode('=', $arg);
+                    $arguments[$argument[0]] = $argument[1];
+                }
+            }
+        }
+
+        $request->attributes->set('_controller', "$module:$type:$func");
+        $request->attributes->set('_module', $module);
+        $request->attributes->set('_type', $type);
+        $request->attributes->set('_func', $func);
+        $request->attributes->set('_args', $arguments);
     }
 
     /**
@@ -847,7 +872,7 @@ class System
      *
      * @return bool True if successful, false otherwise.
      */
-    public static function queryStringSetVar($name, $value)
+    public static function queryStringSetVar($name, $value, Request $request = null)
     {
         if (!isset($name)) {
             return false;
