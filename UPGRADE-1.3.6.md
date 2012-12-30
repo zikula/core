@@ -110,6 +110,10 @@ only. You should change any typehints from `Zikula_EventManager` to `ContainerAw
 
 The main changes are:
 
+  - Listener priorities are reversed. Higher numbers are executed first. When attaching
+    listeners using the `Zikula_EventManager::attach()` API is fully BC, and translates
+    the priorities to the `EventDispatcher` standard.
+
   - Introduced a new generic event object called `Zikula\Core\Event\GenericEvent`.
     This is compatible with `Zikula_Event` and you should switch to using it immediately.
     
