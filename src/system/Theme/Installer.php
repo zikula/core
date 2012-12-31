@@ -139,8 +139,8 @@ class Theme_Installer extends Zikula_AbstractInstaller
                 if (!DBUtil::changeTable('themes')) {
                     return '3.4.1';
                 }
-                $this->setVar('enable_mobile_theme', false);
             case '3.4.2':
+                $this->setVar('enable_mobile_theme', false);
                 // future upgrade
         }
 
