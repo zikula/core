@@ -12,7 +12,8 @@
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
 
         <parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>
-        <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>
+        <!--<parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>-->
+        <parameter key="hook_dispatcher.storage.class">Zikula_HookManager_Storage_Doctrine</parameter>
         <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
