@@ -411,6 +411,7 @@ class JCSSUtil
                     'path' => 'javascript/zikula-plugins/zikula-ui/zikula.ui.js',
                     'include' => array(
                         'javascript/zikula-plugins/zikula-ui/zikula.ui.zaccordion.js',
+                        'javascript/zikula-plugins/zikula-ui/zikula.ui.zpanels.js',
                     ),
                 )
             ),
