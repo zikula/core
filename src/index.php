@@ -156,12 +156,12 @@ if (false === $response instanceof PlainResponse) {
 $response->send();
 System::shutdown();
 
-function __frontcontroller_ajax($request)
+function __frontcontroller_ajax(Request $request)
 {
     // Get variables
-    $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-    $type = FormUtil::getPassedValue('type', 'ajax', 'GETPOST', FILTER_SANITIZE_STRING);
-    $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
+    $module = $request->attributes->get('_module');
+    $type = $request->attributes->get('_type', 'ajax');
+    $func = $request->attributes->get('_func');
 
     // get module information
     $modinfo = ModUtil::getInfoFromName($module);
