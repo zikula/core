@@ -13,7 +13,8 @@
  */
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Zikula_Request_Http as Response;
+use Zikula_Request_Http as Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -82,8 +83,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         // create proxy cache dir
         CacheUtil::createLocalDir('doctrinemodels');
 
-        // setup annotations base
-        require_once __DIR__.'/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php';
+        // setup annotations base (probably not needed)
+        AnnotationRegistry::registerFile(__DIR__.'/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
 
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
@@ -95,7 +96,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->serviceManager->set('doctrine.annotationdriver', $annotationDriver);
 
         // setup driver chains
-        $driverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
+        $driverChain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
         $this->serviceManager->set('doctrine.driverchain', $driverChain);
 
         // configure Doctrine ORM
@@ -128,9 +129,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
     public function initDoctrineExtensions(Zikula_Event $event)
     {
-        AnnotationRegistry::registerAutoloadNamespace('Gedmo', __DIR__ . '/../../vendor/gedmo/doctrine-extensions/lib/DoctrineExtensions');
-        AnnotationRegistry::registerAutoloadNamespace('DoctrineExtensions\\StandardFields', __DIR__ . '/lib');
-
         $definition = new Zikula_ServiceManager_Definition('Zikula_Doctrine2_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('service_container')));
         $this->serviceManager->registerService('doctrine_extensions', $definition);
 
