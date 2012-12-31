@@ -113,7 +113,7 @@ class HookRuntimeEntity
      * Set sowner
      *
      * @param string $sowner
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setSowner($sowner)
     {
@@ -135,7 +135,7 @@ class HookRuntimeEntity
      * Set subsowner
      *
      * @param string $subsowner
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setSubsowner($subsowner)
     {
@@ -157,7 +157,7 @@ class HookRuntimeEntity
      * Set powner
      *
      * @param string $powner
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setPowner($powner)
     {
@@ -179,7 +179,7 @@ class HookRuntimeEntity
      * Set subpowner
      *
      * @param string $subpowner
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setSubpowner($subpowner)
     {
@@ -201,7 +201,7 @@ class HookRuntimeEntity
      * Set sareaid
      *
      * @param integer $sareaid
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setSareaid($sareaid)
     {
@@ -223,7 +223,7 @@ class HookRuntimeEntity
      * Set pareaid
      *
      * @param integer $pareaid
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setPareaid($pareaid)
     {
@@ -245,7 +245,7 @@ class HookRuntimeEntity
      * Set eventname
      *
      * @param string $eventname
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setEventname($eventname)
     {
@@ -267,7 +267,7 @@ class HookRuntimeEntity
      * Set classname
      *
      * @param string $classname
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setClassname($classname)
     {
@@ -289,7 +289,7 @@ class HookRuntimeEntity
      * Set method
      *
      * @param string $method
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setMethod($method)
     {
@@ -311,7 +311,7 @@ class HookRuntimeEntity
      * Set serviceid
      *
      * @param string $serviceid
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setServiceid($serviceid)
     {
@@ -333,7 +333,7 @@ class HookRuntimeEntity
      * Set priority
      *
      * @param integer $priority
-     * @return HookRuntime
+     * @return HookRuntimeEntity
      */
     public function setPriority($priority)
     {

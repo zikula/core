@@ -92,7 +92,7 @@ class HookProviderEntity
      * Set owner
      *
      * @param string $owner
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setOwner($owner)
     {
@@ -114,7 +114,7 @@ class HookProviderEntity
      * Set subowner
      *
      * @param string $subowner
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setSubowner($subowner)
     {
@@ -136,7 +136,7 @@ class HookProviderEntity
      * Set pareaid
      *
      * @param integer $pareaid
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setPareaid($pareaid)
     {
@@ -158,7 +158,7 @@ class HookProviderEntity
      * Set hooktype
      *
      * @param string $hooktype
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setHooktype($hooktype)
     {
@@ -180,7 +180,7 @@ class HookProviderEntity
      * Set category
      *
      * @param string $category
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setCategory($category)
     {
@@ -202,7 +202,7 @@ class HookProviderEntity
      * Set classname
      *
      * @param string $classname
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setClassname($classname)
     {
@@ -224,7 +224,7 @@ class HookProviderEntity
      * Set method
      *
      * @param string $method
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setMethod($method)
     {
@@ -246,7 +246,7 @@ class HookProviderEntity
      * Set serviceid
      *
      * @param string $serviceid
-     * @return HookProvider
+     * @return HookProviderEntity
      */
     public function setServiceid($serviceid)
     {

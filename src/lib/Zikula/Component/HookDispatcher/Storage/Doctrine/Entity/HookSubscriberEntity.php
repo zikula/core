@@ -78,7 +78,7 @@ class HookSubscriberEntity
      * Set owner
      *
      * @param string $owner
-     * @return HookSubscriber
+     * @return HookSubscriberEntity
      */
     public function setOwner($owner)
     {
@@ -100,7 +100,7 @@ class HookSubscriberEntity
      * Set subowner
      *
      * @param string $subowner
-     * @return HookSubscriber
+     * @return HookSubscriberEntity
      */
     public function setSubowner($subowner)
     {
@@ -122,7 +122,7 @@ class HookSubscriberEntity
      * Set sareaid
      *
      * @param integer $sareaid
-     * @return HookSubscriber
+     * @return HookSubscriberEntity
      */
     public function setSareaid($sareaid)
     {
@@ -144,7 +144,7 @@ class HookSubscriberEntity
      * Set hooktype
      *
      * @param string $hooktype
-     * @return HookSubscriber
+     * @return HookSubscriberEntity
      */
     public function setHooktype($hooktype)
     {
@@ -166,7 +166,7 @@ class HookSubscriberEntity
      * Set category
      *
      * @param string $category
-     * @return HookSubscriber
+     * @return HookSubscriberEntity
      */
     public function setCategory($category)
     {
@@ -188,7 +188,7 @@ class HookSubscriberEntity
      * Set eventname
      *
      * @param string $eventname
-     * @return HookSubscriber
+     * @return HookSubscriberEntity
      */
     public function setEventname($eventname)
     {

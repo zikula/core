@@ -92,7 +92,7 @@ class HookBindingEntity
      * Set sowner
      *
      * @param string $sowner
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setSowner($sowner)
     {
@@ -114,7 +114,7 @@ class HookBindingEntity
      * Set subsowner
      *
      * @param string $subsowner
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setSubsowner($subsowner)
     {
@@ -136,7 +136,7 @@ class HookBindingEntity
      * Set powner
      *
      * @param string $powner
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setPowner($powner)
     {
@@ -158,7 +158,7 @@ class HookBindingEntity
      * Set subpowner
      *
      * @param string $subpowner
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setSubpowner($subpowner)
     {
@@ -180,7 +180,7 @@ class HookBindingEntity
      * Set sareaid
      *
      * @param integer $sareaid
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setSareaid($sareaid)
     {
@@ -202,7 +202,7 @@ class HookBindingEntity
      * Set pareaid
      *
      * @param integer $pareaid
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setPareaid($pareaid)
     {
@@ -224,7 +224,7 @@ class HookBindingEntity
      * Set category
      *
      * @param string $category
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setCategory($category)
     {
@@ -246,7 +246,7 @@ class HookBindingEntity
      * Set sortorder
      *
      * @param smallint $sortorder
-     * @return HookBinding
+     * @return HookBindingEntity
      */
     public function setSortorder($sortorder)
     {

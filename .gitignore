@@ -1,6 +1,7 @@
 /composer
 /composer.lock
 /composer.phar
+/bin/
 /src/app/bootstrap.php.cache
 /src/app/cache/
 /src/app/logs/

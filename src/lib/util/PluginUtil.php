@@ -99,8 +99,17 @@ class PluginUtil
         $it = FileUtil::getFiles($path, false, false, null, 'd');
 
         foreach ($it as $dir) {
+            if (strrpos($dir, 'Doctrine')) {
+                // todo consider removing this condition - drak
+                die('Please delete plugins/Doctrine and plugins/DoctrineExtensions folders - they have been deprecated');
+            }
             $file = $dir . DIRECTORY_SEPARATOR . 'Plugin.php';
             if (!file_exists($file)) {
+                // silently ignore non-compliant folders
+                if (!System::isDevelopmentMode()) {
+                    break;
+                }
+
                 throw new RuntimeException(sprintf('%s must exist', $file));
             }
             include_once $file;

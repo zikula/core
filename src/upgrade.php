@@ -24,7 +24,6 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 ZLoader::addAutoloader('Users', 'system', '_');
-include_once __DIR__.'/plugins/Doctrine/Plugin.php';
 
 // check if the config.php was renewed
 if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
@@ -417,6 +416,10 @@ function _upg_sanity_check($username, $password)
             echo _upg_continue('sanitycheck', __('Check again'), $username, $password);
             $validupgrade = false;
         }
+    } elseif (version_compare(Zikula_Core::VERSION_NUM, '1.3.6', '>=') && (is_dir('plugins/Doctrine') || is_dir('plugins/DoctrineExtensions'))) {
+        echo '<h2>' . __('Legacy plugins found.') . "</h2>\n";
+        echo '<p class="z-warningmsg">' . __f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER)) . "</p>\n";
+        $validupgrade = false;
     }
 
     if ($validupgrade) {
