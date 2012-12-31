@@ -1,4 +1,5 @@
-{ajaxheader modname=Admin filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
+{ajaxheader ui=true filename='main.js'}
+
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}

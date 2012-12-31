@@ -1,12 +1,4 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    var accordion;
-    document.observe("dom:loaded", function() {
-        accordion = new Zikula.UI.Accordion('adminhelp');
-    });
-</script>
-{/pageaddvarblock}
+{ajaxheader ui=true filename='main.js'}
 
 {adminheader}
 <div class="z-admin-content-pagetitle">
@@ -14,8 +6,8 @@
     <h3>{gt text="Help"}</h3>
 </div>
 
-<div id="adminhelp">
-    <h4 id="view" class="z-acc-header">{gt text="Module categories list"}</h4>
+<div class="admin-help">
+    <h5 id="view" class="z-acc-header">{gt text="Module categories list"}</h5>
     <div class="z-acc-content">
         <p>{gt text="Displays the list view of module categories included within the category tab menu. In the 'Actions' column on the right, you can choose to edit or delete a module category"}</p>
         <ul>
@@ -30,7 +22,7 @@
         </ul>
     </div>
 
-    <h4 id="new" class="z-acc-header">{gt text="Create new module category"}</h4>
+    <h5 id="new" class="z-acc-header">{gt text="Create new module category"}</h5>
     <div class="z-acc-content">
         <p>{gt text="Lets you add a new category to the module categories tab list. You can edit the following:"}</p>
         <ul>
@@ -43,12 +35,12 @@
         </ul>
     </div>
 
-    <h4 id="modifyconfig" class="z-acc-header">{gt text="Settings"}</h4>
+    <h5 id="modifyconfig" class="z-acc-header">{gt text="Settings"}</h5>
     <div class="z-acc-content">
         <p>{gt text="The 'Settings' page contains three sections: 'General settings', 'Display settings' and 'Modules categorisation'. Each is covered below."}</p>
     </div>
 
-    <h4 id="generalsettings" class="z-acc-header">{gt text="General settings"}</h4>
+    <h5 id="generalsettings" class="z-acc-header">{gt text="General settings"}</h5>
     <div class="z-acc-content">
         <p>{gt text="There is currently only one option in the General settings section."}</p>
         <ul>
@@ -57,7 +49,7 @@
         </ul>
     </div>
 
-    <h4 id="displaysettings" class="z-acc-header">{gt text="Display settings"}</h4>
+    <h5 id="displaysettings" class="z-acc-header">{gt text="Display settings"}</h5>
     <div class="z-acc-content">
         <p>{gt text="There are six display settings."}</p>
         <ul>
@@ -70,7 +62,7 @@
         </ul>
     </div>
 
-    <h4 id="categoryconfiguration" class="z-acc-header">{gt text="Modules categorisation"}</h4>
+    <h5 id="categoryconfiguration" class="z-acc-header">{gt text="Modules categorisation"}</h5>
     <div class="z-acc-content">
         <p>{gt text="In the Modules categorisation section, you can choose two things:"}</p>
         <ul>
@@ -79,10 +71,9 @@
         </ul>
     </div>
 </div>
-<br />
+<h4>{gt text="Messages you might see"}</h4>
 
-<fieldset>
-    <legend>{gt text="Messages you might see"}</legend>
+<div class="admin-help">
     <h5 id="securitywarnings">{gt text="Security analyser warnings"}</h5>
     <p>{gt text='In the Administration panel, you will see security warnings displayed if the Security analyser detects potential security vulnerabilities in your site\'s installation. If you see no warning box then it means that no vulnerabilities have been found. Below are explanations for each vulnerability possibly identified.'}</p>
 
@@ -121,5 +112,5 @@
 
     <h5 id="admin_legacymodewarning">{gt text="You see the message"}: {gt text="Legacy module support is enabled, but preferably should be disabled."}</h5>
     <p>{gt text="You have the possibility of enabling support for legacy PostNuke modules. However, legacy modules can contain security holes that can compromise a site's security. You are strongly recommended to only use up-to-date versions of modules that are compliant with the project's official API (Application Programming Interface). In this case, legacy module support can be disabled (this is the default setting when a site is first installed)."}</p>
-</fieldset>
+</div>
 {adminfooter}
