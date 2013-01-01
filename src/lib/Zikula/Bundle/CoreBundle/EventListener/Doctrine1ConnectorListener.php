@@ -12,10 +12,20 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Bundle\CoreBundle\EventListener;
+
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine_Manager,
+    Doctrine_Core,
+    Zikula_Event,
+    System;
+
 /**
  * Doctrine listeners.
  */
-class DoctrineListener extends Zikula_AbstractEventHandler
+class Doctrine1ConnectorListener implements EventSubscriberInterface
 {
     /**
      * The Doctrine Manager instance.
@@ -24,16 +34,22 @@ class DoctrineListener extends Zikula_AbstractEventHandler
      */
     protected $doctrineManager;
 
-    /**
-     * Setup handlers.
-     *
-     * @return void
-     */
-    public function setupHandlerDefinitions()
+    private $container;
+    private $dispatcher;
+
+    public function __construct(ContainerInterface $container, EventDispatcherInterface $dispatcher)
     {
-        $this->addHandlerDefinition('doctrine.init_connection', 'doctrineInit');
-        $this->addHandlerDefinition('doctrine.configure', 'configureDoctrine');
-        $this->addHandlerDefinition('doctrine.cache', 'configureCache');
+        $this->container = $container;
+        $this->dispatcher = $dispatcher;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'doctrine.init_connection' => array('doctrineInit'),
+            'doctrine.configure' => array('configureDoctrine'),
+            'doctrine.cache' => array('configureCache'),
+        );
     }
 
     /**
@@ -55,16 +71,16 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             Doctrine_Core::debug(System::isDevelopmentMode());
             $this->doctrineManager = Doctrine_Manager::getInstance();
             $internalEvent = new \Zikula\Core\Event\GenericEvent($this->doctrineManager);
-            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
+            $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
 
             $internalEvent = new \Zikula\Core\Event\GenericEvent($this->doctrineManager);
-            $this->eventManager->dispatch('doctrine.cache', $internalEvent);
+            $this->dispatcher->dispatch('doctrine.cache', $internalEvent);
         }
 
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : false;
         $name = isset($event['name']) ? $event['name'] : 'default';
 
-        $connectionInfo = $this->serviceManager['databases'][$name];
+        $connectionInfo = $this->container['databases'][$name];
 
         // test the DB connection works or just set lazy
         try {
@@ -72,15 +88,15 @@ class DoctrineListener extends Zikula_AbstractEventHandler
                 $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]/$connectionInfo[dbname]";
                 $connection = Doctrine_Manager::connection($dsn, $name);
             } else {
-                $dbh = new PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
                 $connection = Doctrine_Manager::connection($dbh, $name);
                 $connection->setOption('username', $connectionInfo['user']);
                 $connection->setOption('password', $connectionInfo['password']);
             }
             $internalEvent = new \Zikula\Core\Event\GenericEvent($connection);
-            $this->eventManager->dispatch('doctrine.configure', $internalEvent);
-        } catch (PDOException $e) {
-            throw new PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
+            $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
+        } catch (\PDOException $e) {
+            throw new \PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
         }
 
         // set mysql engine type
@@ -95,7 +111,7 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             if (isset($connectionInfo['collate'])) {
                 $connection->setCollate($connectionInfo['collate']);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             //if (!System::isInstalling()) {
             //    throw new Exception(__('Error setting database characterset and collation.'));
             //}
@@ -105,9 +121,9 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             $connection->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_ALL ^ Doctrine_Core::PORTABILITY_EMPTY_TO_NULL);
         }
 
-        if (isset($this->serviceManager['log.enabled']) && $this->serviceManager['log.enabled']) {
+        if (isset($this->container['log.enabled']) && $this->container['log.enabled']) {
             // add listener that sends events for all sql queries
-            $connection->setListener(new Zikula_Doctrine_Listener_Profiler());
+            $connection->setListener(new \Zikula_Doctrine_Listener_Profiler());
         }
 
         $event->data = $connection;
@@ -126,29 +142,29 @@ class DoctrineListener extends Zikula_AbstractEventHandler
     public function configureCache(Zikula_Event $event)
     {
         $manager = $event->getSubject();
-        if (!System::isInstalling() && $this->serviceManager['dbcache.enable']) {
-            $type = $this->serviceManager['dbcache.type'];
+        if (!System::isInstalling() && $this->container['dbcache.enable']) {
+            $type = $this->container['dbcache.type'];
 
             // Setup Doctrine Caching
             $type = ucfirst(strtolower($type));
             $doctrineCacheClass = "Doctrine_Cache_$type";
-            $r = new ReflectionClass($doctrineCacheClass);
+            $r = new \ReflectionClass($doctrineCacheClass);
             $options = array('prefix' => 'dd');
             if (strpos($type, 'Memcache') === 0) {
-                $servers = $this->serviceManager['dbcache.servers'];
-                $options = array_merge($options, array('servers' => $servers, 'compression' => $this->serviceManager['dbcache.compression']));
+                $servers = $this->container['dbcache.servers'];
+                $options = array_merge($options, array('servers' => $servers, 'compression' => $this->container['dbcache.compression']));
             }
 
-            $this->serviceManager->set('doctrine.cachedriver', $cacheDriver = $r->newInstance($options));
+            $this->container->set('doctrine.cachedriver', $cacheDriver = $r->newInstance($options));
             $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $cacheDriver);
             $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE, $cacheDriver);
 
             // implment resultcache lifespan configuration variable
-            $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, $this->serviceManager['dbcache.cache_result_ttl']);
+            $manager->setAttribute(Doctrine_Core::ATTR_RESULT_CACHE_LIFESPAN, $this->container['dbcache.cache_result_ttl']);
 
             // Support for multisites to prevent clashes
             $name = 'default'; // todo - drak
-            $cacheDriver->setOption('prefix', md5(serialize($this->serviceManager['databases'][$name])));
+            $cacheDriver->setOption('prefix', md5(serialize($this->container['databases'][$name])));
         }
     }
 
@@ -215,14 +231,14 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             // enable dql hooks (used by Categorisable doctrine template)
             $object->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true);
 
-            $object->registerHydrator(DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY, 'Zikula_Doctrine_Hydrator_SingleScalarArray');
+            $object->registerHydrator(\DoctrineUtil::HYDRATE_SINGLE_SCALAR_ARRAY, 'Zikula_Doctrine_Hydrator_SingleScalarArray');
 
             // tell doctrine our extended Doctrine_Query class (Doctrine_Query::create() returns a Zikula_Doctrine_Query instance)
             $object->setAttribute(Doctrine_Core::ATTR_QUERY_CLASS, 'Zikula_Doctrine_Query');
 
             return;
         }
-        if ($object instanceof Doctrine_Connection) {
+        if ($object instanceof \Doctrine_Connection) {
             // set connection options
 
 
@@ -245,12 +261,12 @@ class DoctrineListener extends Zikula_AbstractEventHandler
             //                                                  'length' => 16));
 
             return;
-        } elseif ($object instanceof Doctrine_Table) {
+        } elseif ($object instanceof \Doctrine_Table) {
             // set table options
             return;
         }
 
-        throw new Exception(get_class($object) . ' is not valid in configureDoctrine()');
+        throw new \Exception(get_class($object) . ' is not valid in configureDoctrine()');
     }
 
 }
