@@ -1,4 +1,4 @@
-{ajaxheader modname='Admin' filename='admin_admin_ajax.js' ui=true}
+{ajaxheader modname='Admin' ui=true filename='adminpanel.js'}
 
 <div class="z-admin-breadcrumbs">
     <span class="z-sub">{gt text='You are in:'}</span>
