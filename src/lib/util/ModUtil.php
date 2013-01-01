@@ -874,9 +874,8 @@ class ModUtil
 
         $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
         $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
-//var_dump($className);
         $className = class_exists($className) ? $className : $classNameOld;
-//var_dump($className);
+
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new \Zikula\Core\Event\GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::dispatch('module_dispatch.custom_classname', $event);
