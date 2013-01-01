@@ -26,7 +26,9 @@ class Extensions_Util
     {
         $modversion = array();
 
-        $class = "{$moduleName}_Version";
+        $class = "{$moduleName}\\{$moduleName}Version";
+        $classOld = "{$moduleName}_Version";
+        $class = class_exists($class) ? $class : $classOld;
         if (class_exists($class)) {
             try {
                 $modversion = new $class();

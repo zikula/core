@@ -287,7 +287,9 @@ class BlockUtil
         ModUtil::load($modname);
 
         // get the block info
-        $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+        $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block).'Block';
+        $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+        $className = class_exists($className) ? $className : $classNameOld;
         $r = new ReflectionClass($className);
         $blockInstance = $r->newInstanceArgs(array($sm));
         try {

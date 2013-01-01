@@ -872,8 +872,11 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname) . '_Api_' . ucwords($type) : ucwords($modname) . '_Controller_' . ucwords($type);
-
+        $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
+        $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
+//var_dump($className);
+        $className = class_exists($className) ? $className : $classNameOld;
+//var_dump($className);
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new \Zikula\Core\Event\GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::dispatch('module_dispatch.custom_classname', $event);
@@ -941,21 +944,6 @@ class ModUtil
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
-            try {
-                if (strrpos($className, 'Api') && !$object instanceof Zikula_AbstractApi) {
-                    throw new LogicException(sprintf('Api %s must inherit from Zikula_AbstractApi', $className));
-                } elseif (!strrpos($className, 'Api') && !$object instanceof Zikula_AbstractController) {
-                    throw new LogicException(sprintf('Controller %s must inherit from Zikula_AbstractController', $className));
-                }
-            } catch (LogicException $e) {
-                if (System::isDevelopmentMode()) {
-                    throw $e;
-                } else {
-                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
-
-                    return false;
-                }
-            }
             $sm->set(strtolower($serviceId), $object);
         }
 
@@ -1550,6 +1538,8 @@ class ModUtil
                                realpath("$modpath/$osdir/lib"),
             )
         );
+        ZLoader::addPrefix($moduleName, $modpath);
+
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -1583,6 +1573,7 @@ class ModUtil
     }
 
     /**
+
      * Register all autoloaders for all modules.
      *
      * @internal
@@ -1598,6 +1589,7 @@ class ModUtil
             $paths[] = "$base";
             $paths[] = "$base/$module[directory]/lib";
             ZLoader::addAutoloader($module['directory'], $paths);
+            ZLoader::addPrefix($module['directory'], $base);
         }
     }
 

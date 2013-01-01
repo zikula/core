@@ -419,6 +419,7 @@ function installmodules($lang = 'en')
         $modpath = 'system';
         if (is_dir("$modpath/$coremodule")) {
             ZLoader::addAutoloader($coremodule, $modpath);
+            ZLoader::addPrefix($coremodule, $modpath);
         }
 
         $bootstrap = "$modpath/$coremodule/bootstrap.php";
@@ -427,7 +428,9 @@ function installmodules($lang = 'en')
         }
 
         ModUtil::dbInfoLoad($coremodule, $coremodule);
-        $className = "{$coremodule}_Installer";
+        $className = "{$coremodule}\\{$coremodule}Installer";
+        $classNameOld = "{$coremodule}_Installer";
+        $className = class_exists($className) ? $className : $classNameOld;
         $instance = new $className($sm);
         if ($instance->install()) {
             $results[$coremodule] = true;
@@ -503,6 +506,7 @@ function installmodules($lang = 'en')
         $modpath = 'modules';
         if (is_dir("$modpath/$module")) {
             ZLoader::addAutoloader($module, array($modpath, "$modpath/$module/lib"));
+            ZLoader::addPrefix($module, $modpath);
         }
         $bootstrap = "$modpath/$module/bootstrap.php";
         if (file_exists($bootstrap)) {

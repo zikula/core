@@ -36,7 +36,7 @@ class ZLoader
      *
      * @var ClassLoader
      */
-    private static $autoloaders;
+    private static $autoloader;
 
     /**
      * Base setup.
@@ -47,8 +47,8 @@ class ZLoader
     {
 
         spl_autoload_register(array('ZLoader', 'autoload'));
-        self::$autoloaders = new ClassLoader();
-        self::$autoloaders->register();
+        self::$autoloader = new ClassLoader();
+        self::$autoloader->register();
         self::addAutoloader('Categories', 'system');
     }
 
@@ -64,7 +64,13 @@ class ZLoader
     public static function addAutoloader($namespace, $paths = '', $separator = '_')
     {
         $separator = $separator === '\\' ? '' : $separator;
-        self::$autoloaders->addPrefix($namespace.$separator, $paths);
+
+        self::$autoloader->addPrefix($namespace.$separator, $paths);
+    }
+
+    public static function addPrefix($prefix, $paths)
+    {
+        self::$autoloader->addPrefix($prefix, $paths);
     }
 
     /**

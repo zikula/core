@@ -59,7 +59,8 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
     protected function _configureBase()
     {
         $this->systemBaseDir = realpath('.');
-        $parts = explode('_', get_class($this));
+        $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
+        $parts = explode($separator, get_class($this));
         $this->name = $parts[0];
         $this->baseDir = $this->plugin->getBaseDir();
         $this->pluginName = $this->plugin->getPluginName();

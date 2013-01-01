@@ -24,6 +24,7 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 ZLoader::addAutoloader('Users', 'system', '_');
+ZLoader::addPrefix('Users', 'system');
 
 // check if the config.php was renewed
 if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {

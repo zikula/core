@@ -13,7 +13,7 @@
  */
 
 global $ZConfig;
-$ZConfig['System']['installed'] = 1;        // installer will change this during installation
+$ZConfig['System']['installed'] = 0;        // installer will change this during installation
 $ZConfig['System']['temp'] = 'ztemp';       // location of temporary folder
 $ZConfig['System']['datadir'] = 'userdata';     // location of site data files
 $ZConfig['System']['prefix'] = '';         // database prefix (deprecated).
@@ -27,7 +27,7 @@ $ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new dir
 $ZConfig['DBInfo']['databases']['default']['host'] = 'localhost';
 $ZConfig['DBInfo']['databases']['default']['user'] = 'root';
 $ZConfig['DBInfo']['databases']['default']['password'] = '';
-$ZConfig['DBInfo']['databases']['default']['dbname'] = 'z13';
+$ZConfig['DBInfo']['databases']['default']['dbname'] = 'test';
 $ZConfig['DBInfo']['databases']['default']['dbdriver'] = 'mysql';
 $ZConfig['DBInfo']['databases']['default']['dbtabletype'] = 'myisam';
 $ZConfig['DBInfo']['databases']['default']['charset'] = 'utf8';

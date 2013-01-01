@@ -189,7 +189,8 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     {
         $this->systemBaseDir = realpath('.');
         $this->reflection = new ReflectionObject($this);
-        $p = explode('_', get_class($this));
+        $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
+        $p = explode($separator, get_class($this));
         $this->name = $p[0];
         $this->directory = $this->name; // legacy handling
         $this->baseDir = $this->libBaseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
