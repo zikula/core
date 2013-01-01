@@ -339,7 +339,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
                 }
                 $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-                $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+                $interactiveClass = ucwords($modinfo['name']) . '\\Controller\\InteractiveInstallerController';
+                $interactiveClassOld = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+                $interactiveClass = class_exists($interactiveClass) ? $interactiveClass : $interactiveClassOld;
                 $interactiveController = null;
                 if (class_exists($interactiveClass)) {
                     $reflectionInteractive = new ReflectionClass($interactiveClass);
@@ -856,7 +858,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstance($this->serviceManager);
-            $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+            $interactiveClass = ucwords($modinfo['name']) . '\\Controller\\InteractiveInstallerController';
+            $interactiveClassOld = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+            $interactiveClass = class_exists($interactiveClass) ? $interactiveClass : $interactiveClassOld;
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
                 $reflectionInteractive = new ReflectionClass($interactiveClass);
@@ -991,7 +995,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-            $interactiveClass = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+            $interactiveClass = ucwords($modinfo['name']) . '\\Controller\\InteractiveInstallerController';
+            $interactiveClassOld = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
+            $interactiveClass = class_exists($interactiveClass) ? $interactiveClass : $interactiveClassOld;
             $interactiveController = null;
             if (class_exists($interactiveClass)) {
                 $reflectionInteractive = new ReflectionClass($interactiveClass);
