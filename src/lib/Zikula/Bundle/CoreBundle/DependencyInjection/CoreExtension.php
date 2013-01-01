@@ -24,7 +24,7 @@ class CoreExtension extends Extension
         $loader->load('services.xml');
 
 //        $loader->load('web.xml');
-//        $loader->load('core.xml');
+        $loader->load('core.xml');
 
 //        $config = Yaml::parse(file_get_contents(ZIKULA_ROOT.'/../app/config/core_legacy.yml'));
 //        foreach ($config as $key => $array) {
