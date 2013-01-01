@@ -71,9 +71,9 @@
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
 
-        <!--<service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">-->
-            <!--<tag name="kernel.event_subscriber" />-->
-        <!--</service>-->
+        <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
+            <tag name="kernel.event_subscriber" />
+        </service>
 
         <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->
             <!--<tag name="kernel.event_subscriber" />-->
