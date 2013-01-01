@@ -568,7 +568,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function adminheaderAction()
     {
-        return $this->view->fetch('includes/header.tpl');
+        return $this->view->fetch('includes/adminheader.tpl');
     }
 
     /**
@@ -577,7 +577,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function adminfooterAction()
     {
-        return $this->view->fetch('includes/footer.tpl');
+        return $this->view->fetch('includes/adminfooter.tpl');
     }
 
     /**
