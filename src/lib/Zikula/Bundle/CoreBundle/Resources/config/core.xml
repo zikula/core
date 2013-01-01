@@ -11,6 +11,8 @@
         <parameter key="zikula.template_override_listener.class">Zikula\Bundle\CoreBundle\EventListener\TemplateOverrideYamlListener</parameter>
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
 
+        <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
+
         <parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>
         <!--<parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>-->
         <parameter key="hook_dispatcher.storage.class">Zikula_HookManager_Storage_Doctrine</parameter>
@@ -35,6 +37,12 @@
             <!--<tag name="zikula.event_subscriber" />-->
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
+
+        <service id="zikula.doctrine1_init" class="%zikula.doctrine1_connector.class%">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="service_container" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
 
         <!--<service id="token.storage" class="%token.storage.class%">-->
             <!--<argument type="service" id="session" />-->
