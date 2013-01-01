@@ -298,6 +298,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         if ($oomod) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
+            ZLoader::addPrefix($osdir, $modpath);
         }
 
         $version = Extensions_Util::getVersionMeta($osdir, $modpath);
@@ -330,7 +331,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             }
 
             if ($oomod) {
-                $className = ucwords($modinfo['name']) . '_Installer';
+                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+                $classNameOld = ucwords($modinfo['name']) . '_Installer';
+                $className = class_exists($className) ? $className : $classNameOld;
                 $reflectionInstaller = new ReflectionClass($className);
                 if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
@@ -450,8 +453,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                 foreach ($dirs as $dir) {
                     $oomod = false;
                     // register autoloader
-                    if (file_exists("$rootdir/$dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
+                    if (file_exists("$rootdir/$dir/{$dir}Version.php") || file_exists("$rootdir/$dir/Version.php") || is_dir("$rootdir/$dir/lib")) {
                         ZLoader::addAutoloader($dir, array($rootdir, "$rootdir/$dir/lib"));
+                        ZLoader::addPrefix($dir, $rootdir);
                         $oomod = true;
                     }
 
@@ -495,14 +499,14 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                         }
                     } elseif ($oomod) {
                         // Work out if admin-capable
-                        if (file_exists("$rootdir/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
+                        if (file_exists("$rootdir/$dir/Controller/AdminController.php") || file_exists("$rootdir/$dir/Controller/Admin.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/Admin.php")) {
                             $caps = $modversion['capabilities'];
                             $caps['admin'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
                         }
 
                         // Work out if user-capable
-                        if (file_exists("$rootdir/$dir/Controller/User.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
+                        if (file_exists("$rootdir/$dir/Controller/UserController.php") || file_exists("$rootdir/$dir/Controller/User.php") || file_exists("$rootdir/$dir/lib/$dir/Controller/User.php")) {
                             $caps = $modversion['capabilities'];
                             $caps['user'] = array('version' => '1.0');
                             $modversion['capabilities'] = $caps;
@@ -823,6 +827,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         if ($oomod) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
+            ZLoader::addPrefix($osdir, $modpath);
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -843,7 +848,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($oomod) {
-            $className = ucwords($modinfo['name']) . '_Installer';
+            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+            $classNameOld = ucwords($modinfo['name']) . '_Installer';
+            $className = class_exists($className) ? $className : $classNameOld;
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
@@ -955,6 +962,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
 
         if ($oomod) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
+            ZLoader::addPrefix($osdir, $modpath);
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -975,7 +983,9 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
 
         if ($oomod) {
-            $className = ucwords($modinfo['name']) . '_Installer';
+            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+            $classNameOld = ucwords($modinfo['name']) . '_Installer';
+            $className = class_exists($className) ? $className : $classNameOld;
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));

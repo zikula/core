@@ -200,7 +200,8 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
         $this->baseDir = dirname($this->getReflection()->getFileName());
 
         // Split class name into parts - commented in if statement below.
-        $p = explode('_', $this->className);
+        $separator = (false === strpos($this->className, '_')) ? '\\' : '_';
+        $p = explode($separator, $this->className);
 
         if (strpos($this->serviceId, 'moduleplugin') === 0) {
             // ModulePlugin_{ModuleName}_{PluginName}_Plugin

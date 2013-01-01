@@ -320,7 +320,9 @@ class BlockUtil
 
         // get the block info
         if ($isOO) {
-            $className = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+            $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block).'Block';
+            $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+            $className = class_exists($className) ? $className : $classNameOld;
             $r = new ReflectionClass($className);
             $blockInstance = $r->newInstanceArgs(array($sm));
             try {
