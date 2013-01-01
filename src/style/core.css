@@ -1,6 +1,7 @@
 /******************************************************************************
 * Generic styles
 ******************************************************************************/
+html { overflow-y: scroll; } /* force vertical scrollbars*/
 
 .z-hide { display: none !important; }
 .z-show { display: inherit !important; }
