@@ -491,7 +491,7 @@ class Zikula_Core
         }
 
         if ($stage & self::STAGE_LANGS) {
-            $lang->setup();
+            $lang->setup($request);
             $coreInitEvent->setArg('stage', self::STAGE_LANGS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula_Request_Http as Request;
+
 /**
  * ZLanguage class.
  */
@@ -150,13 +152,15 @@ class ZLanguage
      *
      * @return void
      */
-    public function setup()
+    public function setup(Request $request)
     {
         $this->langRequested = preg_replace('#[^a-z-].#', '', FormUtil::getPassedValue('lang', null, 'GET')); // language for this request
         $this->detectLanguage();
         $this->validate();
         $this->fixLanguageToSession();
         $this->setLocale($this->languageCode);
+        $request->setLocale($this->languageCode);
+        $request->setDefaultLocale($this->languageCode);
         $this->bindCoreDomain();
         $this->processErrors();
     }
@@ -424,7 +428,8 @@ class ZLanguage
         $_this  = self::getInstance();
         // Hack refs #2740
         if (!$_this->locale) {
-            $_this->setup();
+            $request = ServiceUtil::get('request');
+            $_this->setup($request);
         }
 
         $domain = self::getModuleDomain($modName);
