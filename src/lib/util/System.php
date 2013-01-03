@@ -367,7 +367,7 @@ class System
      *
      * @return boolean True if redirect successful, false otherwise.
      */
-    public static function redirect($redirecturl, $additionalheaders = array(), $type = 302)
+    public static function redirect($redirecturl, $additionalheaders = array(), $type = 302, $response = false)
     {
         // very basic input validation against HTTP response splitting
         $redirecturl = str_replace(array(
@@ -392,6 +392,12 @@ class System
         }
 
         $redirecturl = self::normalizeUrl($redirecturl);
+
+        if ($response) {
+            $response = new \Symfony\Component\HttpFoundation\RedirectResponse($redirecturl);
+            $response->send();
+            return;
+        }
 
         throw new Zikula_Exception_Redirect($redirecturl, $type);
     }
@@ -708,7 +714,7 @@ class System
             }
 
             if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
-                self::redirect(self::getHomepageUrl());
+                self::redirect(self::getHomepageUrl(), array(), 302, true);
                 self::shutDown();
             }
 
@@ -743,7 +749,7 @@ class System
                 // we are in the homepage, checks if language code is forced
                 if (ZLanguage::getLangUrlRule() && $lang) {
                     // and redirect then
-                    System::redirect(self::getCurrentUrl()."/$lang");
+                    System::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
                     System::shutDown();
                 }
             } else {
@@ -757,7 +763,7 @@ class System
                         foreach ($args as $k => $v) {
                             $args[$k] = urlencode($v);
                         }
-                        System::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''));
+                        System::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
                         System::shutDown();
                     }
                     self::queryStringSetVar('lang', $args[0], $request);
@@ -769,7 +775,7 @@ class System
                         $args[$k] = urlencode($v);
                     }
                     $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
-                    System::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args));
+                    System::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
                     System::shutDown();
                 }
 
@@ -855,14 +861,10 @@ class System
                 }
             }
         } else {
-            if (false === isset($args)) {
-                $arguments = $_GET;
-                unset($arguments['module']);
-                unset($arguments['type']);
-                unset($arguments['func']);
-            } else {
-                $arguments = $_GET;
-            }
+            $arguments = $_GET;
+            unset($arguments['module']);
+            unset($arguments['type']);
+            unset($arguments['func']);
         }
 
         $request->attributes->set('_controller', "$module:$type:$func");
