@@ -21,7 +21,7 @@ class Extensions_HookUI
         // check if this is for this handler
         $subject = $event->getSubject();
         if (!($event['method'] == 'hooks' && strrpos(get_class($subject), '_Controller_Admin'))) {
-           return;
+            return;
         }
 
         // get view
@@ -38,7 +38,9 @@ class Extensions_HookUI
 
         // create an instance of the module's version
         // we will use it to get the bundles
-        $moduleVersion = $moduleName.'_Version';
+        $moduleVersion = $moduleName.'\\ModuleVersion';
+        $moduleVersionOld = $moduleName.'_Version';
+        $moduleVersion = class_exists($moduleVersion) ? $moduleVersion : $moduleVersionOld;
         $moduleVersionObj = new $moduleVersion;
 
         // find out the capabilities of the module
