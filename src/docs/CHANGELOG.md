@@ -23,14 +23,17 @@ Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 
 Features:
-- Added forward compatibility layer with Symfony2 HttpFoundation
-  Please note you should and can use the new API. `$request->isGet/Post()` should be
-  replaced with `$request->isMethod('GET/POST')`
-  The GET request is available from `$request->query->` and POST from 
-  `$request->request->`. The routing request can be retrieved with `$request->attributes->get()`
-  using the key `_controller`, '_module', '_type', '_func' (these key may chnage before release).
+- [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
+
+  - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.
+  - The GET request is available from `$request->query->get()` and POST from 
+    `$request->request->get()`. 
+  - The routing request can be retrieved with `$request->attributes->get($key)`
+    using the keys `_controller`, `_module`, `_type`, and `_func`.
+
 - [FORWARD COMPAT] Merged `ajax.php` front controller into `index.php` - please use
   index.php?module=<modname>&type=ajax&func=<func> in AJAX calls.
+- [FORWARD COMPAT] New module structure.
 - Added ability to configure a mobile viewing URL, like m.example.com
 - Update jQuery-UI to 1.9.2
 - Zikula Form - automatically set proper form enctype when upload input is used
