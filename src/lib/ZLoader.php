@@ -26,12 +26,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__FILE__) . DIREC
 class ZLoader
 {
     /**
-     * Map.
-     *
-     * @var array
-     */
-    private static $map;
-    /**
      * Autoloaders.
      *
      * @var ClassLoader
@@ -82,15 +76,6 @@ class ZLoader
      */
     public static function autoload($class)
     {
-        // load from maps
-        $map = self::$map;
-        if (isset($map[$class])) {
-            $path = ZLOADER_PATH . "$map[$class]/$class.php";
-            if (file_exists($path)) {
-                return include $path;
-            }
-        }
-
         // Classloader for SystemPlugin
         if (strpos($class, 'SystemPlugin') === 0) {
             $array = explode('_', $class);
@@ -147,11 +132,6 @@ class ZLoader
             if (file_exists($path)) {
                 return include $path;
             }
-        }
-
-        $file = "lib/$class.php";
-        if (file_exists($file)) {
-            return include $file;
         }
     }
 }
