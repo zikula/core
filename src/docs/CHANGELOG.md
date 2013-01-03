@@ -6,9 +6,12 @@ Fixes:
 
 Features:
 - Added forward compatibility layer with Symfony2 HttpFoundation
-  Please note you should and can use the new API. $request->isGet/Post() should be
-  replaced with $request->isMethod('GET/POST');
-- [FORWARD COMPAT] Merged ajax.php front controller into index.php - please use
+  Please note you should and can use the new API. `$request->isGet/Post()` should be
+  replaced with `$request->isMethod('GET/POST')`
+  The GET request is available from `$request->query->` and POST from 
+  `$request->request->`. The routing request can be retrieved with `$request->attributes->get()`
+  using the key `_controller`, '_module', '_type', '_func' (these key may chnage before release).
+- [FORWARD COMPAT] Merged `ajax.php` front controller into `index.php` - please use
   index.php?module=<modname>&type=ajax&func=<func> in AJAX calls.
 - Added ability to configure a mobile viewing URL, like m.example.com
 - Update jQuery-UI to 1.9.2
