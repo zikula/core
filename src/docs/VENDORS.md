@@ -164,7 +164,7 @@ ColorBox 1.3.20
     Patch details:
         Theme from "example1".
 
-ColorBox 1.5.20
+jQuery-contextMenu 1.6.0
 
     Vendor website: http://medialize.github.com/jQuery-contextMenu
     Downloaded from: https://github.com/medialize/jQuery-contextMenu
