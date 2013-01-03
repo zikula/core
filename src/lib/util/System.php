@@ -689,7 +689,7 @@ class System
         $type = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
 
         // check if we need to decode the url
-        if ((self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
+        if (($shorturls = self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
             // user language is not set at this stage
             $lang = System::getVar('language_i18n', '');
             $customentrypoint = self::getVar('entrypoint');
@@ -865,6 +865,10 @@ class System
             unset($arguments['module']);
             unset($arguments['type']);
             unset($arguments['func']);
+        }
+
+        if ($shorturls) {
+            $request->query->replace($_GET);
         }
 
         $request->attributes->set('_controller', "$module:$type:$func");
