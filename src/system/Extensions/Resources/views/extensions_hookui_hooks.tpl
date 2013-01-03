@@ -1,5 +1,5 @@
 {ajaxheader modname='Extensions' filename='hookui.js' ui=true}
-{pageaddvar name='stylesheet' value='system/Extensions/style/hooks.css'}
+{pageaddvar name='stylesheet' value='system/Extensions/Resources/public/css/hooks.css'}
 {pageaddvarblock}
 <script type="text/javascript">
     var subscriber_areas = new Array();
