@@ -14,6 +14,8 @@
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Zikula_Request_Http as Request;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -54,97 +56,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
         $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
         $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
-        $this->addhandlerDefinition('core.preinit', 'initDoctrine', -100);
-        $this->addhandlerDefinition('core.preinit', 'initDoctrineExtensions', -100);
-    }
-
-    public function initDoctrine(Zikula_Event $event)
-    {
-        // register namespace
-        // Because the standard kernel classloader already has Doctrine registered as a namespace
-        // we have to add a new loader onto the spl stack.
-        $autoloader = new \Symfony\Component\ClassLoader\ClassLoader();
-        $autoloader->register();
-        $autoloader->addPrefix('DoctrineProxy', __DIR__.'/../../ztemp/doctrinemodels');
-
-        $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
-        $dbConfig = array('host' => $config['host'],
-                          'user' => $config['user'],
-                          'password' => $config['password'],
-                          'dbname' => $config['dbname'],
-                          'driver' => 'pdo_' . $config['dbdriver'],
-                          );
-        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $this->serviceManager['dbcache.type'] . 'Cache');
-        $dbCache = $r->newInstance();
-        $ORMConfig = new \Doctrine\ORM\Configuration;
-        $this->serviceManager->set('doctrine.configuration', $ORMConfig);
-        $ORMConfig->setMetadataCacheImpl($dbCache);
-
-        // create proxy cache dir
-        CacheUtil::createLocalDir('doctrinemodels');
-
-        // setup annotations base (probably not needed)
-        AnnotationRegistry::registerFile(__DIR__.'/../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
-
-        // setup annotation reader
-        $reader = new \Doctrine\Common\Annotations\AnnotationReader();
-        $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
-        $this->serviceManager->set('doctrine.annotationreader', $cacheReader);
-
-        // setup annotation driver
-        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
-        $this->serviceManager->set('doctrine.annotationdriver', $annotationDriver);
-
-        // setup driver chains
-        $driverChain = new \Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain();
-        $this->serviceManager->set('doctrine.driverchain', $driverChain);
-
-        // configure Doctrine ORM
-        $ORMConfig->setMetadataDriverImpl($annotationDriver);
-        $ORMConfig->setQueryCacheImpl($dbCache);
-        $ORMConfig->setProxyDir(CacheUtil::getLocalDir('doctrinemodels'));
-        $ORMConfig->setProxyNamespace('DoctrineProxy');
-        //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
-
-        if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
-            $ORMConfig->setSQLLogger(new Zikula_Doctrine2_ZikulaSqlLogger());
-        }
-
-        // setup doctrine eventmanager
-        $eventManager = new \Doctrine\Common\EventManager;
-        $this->serviceManager->set('doctrine.eventmanager', $eventManager);
-
-         // setup MySQL specific listener (storage engine and encoding)
-        if ($config['dbdriver'] == 'mysql') {
-            $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
-            $eventManager->addEventSubscriber($mysqlSessionInit);
-
-            $mysqlStorageEvent = new Zikula_Doctrine2_MySqlGenerateSchemaListener($eventManager);
-        }
-
-        // setup the doctrine entitymanager
-        $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
-        $this->serviceManager->set('doctrine.entitymanager', $entityManager);
-    }
-
-    public function initDoctrineExtensions(Zikula_Event $event)
-    {
-        $definition = new Zikula_ServiceManager_Definition('Zikula_Doctrine2_ExtensionsManager', array(new Zikula_ServiceManager_Reference('doctrine.eventmanager'), new Zikula_ServiceManager_Reference('service_container')));
-        $this->serviceManager->registerService('doctrine_extensions', $definition);
-
-        $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
-        foreach ($types as $type) {
-            // The listener for Translatable is incorrectly named TranslationListener
-            if ($type != "Translatable") {
-                $definition = new Zikula_ServiceManager_Definition("Gedmo\\$type\\{$type}Listener");
-            } else {
-                $definition = new Zikula_ServiceManager_Definition("Gedmo\\Translatable\\TranslationListener");
-            }
-            $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.$type"), $definition);
-        }
-
-        $definition = new Zikula_ServiceManager_Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
-        $this->serviceManager->registerService(strtolower("doctrine_extensions.listener.standardfields"), $definition);
     }
 
     /**
@@ -198,13 +109,13 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupHookManager(Zikula_Event $event)
     {
-        $storageDef = new Zikula_ServiceManager_Definition('Zikula_HookManager_Storage_Doctrine');
-//        $storageDef = new Zikula_ServiceManager_Definition('Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage', array(new Zikula_ServiceManager_Reference('doctrine.entitymanager')));
-        $smRef = new Zikula_ServiceManager_Reference('service_container');
-        $eventManagerDef = new Zikula_ServiceManager_Definition('Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher', array($smRef));
-        $hookFactoryDef = new Zikula_ServiceManager_Definition('Zikula\Component\HookDispatcher\ServiceFactory', array($smRef, 'event_dispatcher'));
-        $hookManagerDef = new Zikula_ServiceManager_Definition('Zikula\Component\HookDispatcher\HookDispatcher', array($storageDef, $eventManagerDef, $hookFactoryDef));
-        $this->serviceManager->registerService('hook_dispatcher', $hookManagerDef);
+        $storageDef = new Definition('Zikula_HookManager_Storage_Doctrine');
+//        $storageDef = new Definition('Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage', array(new Reference('doctrine.entitymanager')));
+        $smRef = new Reference('service_container');
+        $eventManagerDef = new Definition('Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher', array($smRef));
+        $hookFactoryDef = new Definition('Zikula\Component\HookDispatcher\ServiceFactory', array($smRef, 'event_dispatcher'));
+        $hookManagerDef = new Definition('Zikula\Component\HookDispatcher\HookDispatcher', array($storageDef, $eventManagerDef, $hookFactoryDef));
+        $this->serviceManager->setDefinition('hook_dispatcher', $hookManagerDef);
         $this->serviceManager->setAlias('zikula.hookmanager', 'hook_dispatcher');
     }
 
@@ -218,9 +129,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function request(Zikula_Event $event)
     {
         return;
-        $requestDef = new Zikula_ServiceManager_Definition('Zikula_Request_Http');
-        $requestDef->addMethod('setSession', array(new Zikula_ServiceManager_Reference('session')));
-        $this->serviceManager->registerService('request', $requestDef);
+        $requestDef = new Definition('Zikula_Request_Http');
+        $requestDef->addMethod('setSession', array(new Reference('session')));
+        $this->serviceManager->setDefinition('request', $requestDef);
     }
 
     /**
@@ -271,11 +182,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupSessions(Zikula_Event $event)
     {
-        $storageDef = new Zikula_ServiceManager_Definition('Zikula_Session_Storage_Legacy');
-        $this->serviceManager->registerService('session.storage', $storageDef);
-        $storageReference = new Zikula_ServiceManager_Reference('session.storage');
-        $session = new Zikula_ServiceManager_Definition('Zikula_Session', array($storageReference));
-        $this->serviceManager->registerService('session', $session);
+        $storageDef = new Definition('Zikula_Session_Storage_Legacy');
+        $this->serviceManager->setDefinition('session.storage', $storageDef);
+        $storageReference = new Reference('session.storage');
+        $session = new Definition('Zikula_Session', array($storageReference));
+        $this->serviceManager->setDefinition('session', $session);
     }
 
     /**
@@ -560,56 +471,52 @@ class SystemListeners extends Zikula_AbstractEventHandler
             include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
 
             // create definitions
-            $toolbar = new Zikula_ServiceManager_Definition(
-                            'Zikula_DebugToolbar',
-                            array(new Zikula_ServiceManager_Reference('event_dispatcher')),
-                            array('addPanels' => array(0 => array(
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.version'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.config'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.memory'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.rendertime'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.sql'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.view'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.exec'),
-                                                    new Zikula_ServiceManager_Reference('debug.toolbar.panel.logs'))))
-            );
+            $toolbar = new Definition('Zikula_DebugToolbar',  array(new Reference('event_dispatcher')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.version')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.config')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.memory')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.rendertime')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.sql')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.view')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.exec')));
+            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.logs')));
 
-            $versionPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Version');
-            $configPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Config');
-            $momoryPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Memory');
-            $rendertimePanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_RenderTime');
-            $sqlPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_SQL');
-            $viewPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_View');
-            $execPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Exec');
-            $logsPanel = new Zikula_ServiceManager_Definition('Zikula_DebugToolbar_Panel_Log');
+            $versionPanel = new Definition('Zikula_DebugToolbar_Panel_Version');
+            $configPanel = new Definition('Zikula_DebugToolbar_Panel_Config');
+            $momoryPanel = new Definition('Zikula_DebugToolbar_Panel_Memory');
+            $rendertimePanel = new Definition('Zikula_DebugToolbar_Panel_RenderTime');
+            $sqlPanel = new Definition('Zikula_DebugToolbar_Panel_SQL');
+            $viewPanel = new Definition('Zikula_DebugToolbar_Panel_View');
+            $execPanel = new Definition('Zikula_DebugToolbar_Panel_Exec');
+            $logsPanel = new Definition('Zikula_DebugToolbar_Panel_Log');
 
             // save start time (required by rendertime panel)
-            $this->serviceManager->setArgument('debug.toolbar.panel.rendertime.start', microtime(true));
+            $this->serviceManager->setParameter('debug.toolbar.panel.rendertime.start', microtime(true));
 
             // register services
-            $this->serviceManager->registerService('debug.toolbar.panel.version', $versionPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.config', $configPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.memory', $momoryPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.rendertime', $rendertimePanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.sql', $sqlPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.view', $viewPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.exec', $execPanel, true);
-            $this->serviceManager->registerService('debug.toolbar.panel.logs', $logsPanel, true);
-            $this->serviceManager->registerService('debug.toolbar', $toolbar, true);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.version', $versionPanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.config', $configPanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.memory', $momoryPanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.rendertime', $rendertimePanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.sql', $sqlPanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.view', $viewPanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.exec', $execPanel);
+            $this->serviceManager->setDefinition('debug.toolbar.panel.logs', $logsPanel);
+            $this->serviceManager->setDefinition('debug.toolbar', $toolbar);
 
             // setup rendering event listeners
-            $this->eventManager->attach('theme.prefetch', array($this, 'debugToolbarRendering'));
-            $this->eventManager->attach('theme.postfetch', array($this, 'debugToolbarRendering'));
+            $this->eventManager->addListener('theme.prefetch', array($this, 'debugToolbarRendering'));
+            $this->eventManager->addListener('theme.postfetch', array($this, 'debugToolbarRendering'));
 
             // setup event listeners
-            $this->eventManager->attach('view.init', new Zikula_ServiceHandler('debug.toolbar.panel.view', 'initRenderer'));
-            $this->eventManager->attach('module_dispatch.preexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPre'), 20);
-            $this->eventManager->attach('module_dispatch.postexecute', new Zikula_ServiceHandler('debug.toolbar.panel.exec', 'modexecPost'), 20);
-            $this->eventManager->attach('module_dispatch.execute_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logExecNotFound'), 20);
-            $this->eventManager->attach('log', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'log'));
-            $this->eventManager->attach('log.sql', new Zikula_ServiceHandler('debug.toolbar.panel.sql', 'logSql'));
-            $this->eventManager->attach('controller.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerNotFound'), 20);
-            $this->eventManager->attach('controller_api.method_not_found', new Zikula_ServiceHandler('debug.toolbar.panel.logs', 'logModControllerAPINotFound'), 20);
+            $this->eventManager->addListenerService('view.init', array('debug.toolbar.panel.view', 'initRenderer'));
+            $this->eventManager->addListenerService('module_dispatch.preexecute', array('debug.toolbar.panel.exec', 'modexecPre'), -20);
+            $this->eventManager->addListenerService('module_dispatch.postexecute', array('debug.toolbar.panel.exec', 'modexecPost'), -20);
+            $this->eventManager->addListenerService('module_dispatch.execute_not_found', array('debug.toolbar.panel.logs', 'logExecNotFound'), -20);
+            $this->eventManager->addListenerService('log', array('debug.toolbar.panel.logs', 'log'));
+            $this->eventManager->addListenerService('log.sql', array('debug.toolbar.panel.sql', 'logSql'));
+            $this->eventManager->addListenerService('controller.method_not_found', array('debug.toolbar.panel.logs', 'logModControllerNotFound'), -20);
+            $this->eventManager->addListenerService('controller_api.method_not_found', array('debug.toolbar.panel.logs', 'logModControllerAPINotFound'),- 20);
         }
     }
 
