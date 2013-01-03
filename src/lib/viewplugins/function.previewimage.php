@@ -52,10 +52,7 @@ function smarty_function_previewimage($params, Zikula_View $view)
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($params['name']));
 
     if (!file_exists($filesrc = "themes/{$themeinfo['directory']}/images/preview_{$params['size']}.png")) {
-        $filesrc = "system/Theme/images/preview_{$params['size']}.png";
-        if (!file_exists($filesrc)) {
-            $filesrc = "system/Theme/pnimages/preview_{$params['size']}.png";
-        }
+        $filesrc = "system/Theme/Resources/public/images/preview_{$params['size']}.png";
     }
 
     $markup = "<img{$idstring} src=\"{$filesrc}\" alt=\"\" />";
