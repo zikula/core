@@ -840,8 +840,9 @@ class System
         $type = ucfirst(FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING));
 
         $arguments = array();
+
         if (!$module) {
-           // set the start parameters
+            // set the start parameters
             $module = System::getVar('startpage');
             $type = System::getVar('starttype');
             $func = System::getVar('startfunc');
@@ -852,12 +853,21 @@ class System
                     $arguments[$argument[0]] = $argument[1];
                 }
             }
+        } else {
+            if (false === isset($args)) {
+                $arguments = $_GET;
+                unset($arguments['module']);
+                unset($arguments['type']);
+                unset($arguments['func']);
+            } else {
+                $arguments = $_GET;
+            }
         }
 
         $request->attributes->set('_controller', "$module:$type:$func");
-        $request->attributes->set('_module', $module);
-        $request->attributes->set('_type', $type);
-        $request->attributes->set('_func', $func);
+        $request->attributes->set('_module', strtolower($module)); // legacy - this is how they are received originally
+        $request->attributes->set('_type', strtolower($type)); // legacy - this is how they are received originally
+        $request->attributes->set('_func', strtolower($func)); // legacy - this is how they are received originally
         $request->attributes->set('_args', $arguments);
     }
 
