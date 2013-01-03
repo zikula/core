@@ -79,6 +79,7 @@ There is a script to automate this change:
 
 Old method names will continue to work for the time being.
 
+
 Controller Response
 -------------------
 
@@ -100,6 +101,7 @@ The Zikula_ServiceManager has been replaced with the Symfony2 Dependency Injecti
 Zikula specifically uses the `ContainerBuilder` without compilation.
 
 Documentation: http://symfony.com/doc/master/components/dependency_injection/index.html
+
 
 Events
 ------

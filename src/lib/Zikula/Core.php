@@ -143,6 +143,8 @@ class Zikula_Core
      */
     protected $scannedDirs = array();
 
+    private $kernel;
+
     /**
      * Getter for servicemanager property.
      *
@@ -200,6 +202,11 @@ class Zikula_Core
         $this->baseMemory = memory_get_usage();
     }
 
+    public function setKernel($kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * Boot Zikula.
      *
@@ -215,11 +222,10 @@ class Zikula_Core
 
         $this->bootime = microtime(true);
 
-        $this->container = new Zikula_ServiceManager();//'zikula.servicemanager');
+        $this->container = $this->kernel->getContainer();
         $this->container->setAlias('zikula.servicemanager', 'service_container');
 
-        $this->dispatcher = new Zikula_EventManager($this->container);
-        $this->container->set('event_dispatcher', $this->dispatcher);
+        $this->dispatcher = $this->getContainer()->get('event_dispatcher');
         $this->container->setAlias('zikula.eventmanager', 'event_dispatcher');
 
         $this->container->set('zikula', $this);
@@ -479,13 +485,13 @@ class Zikula_Core
         }
 
         if ($stage & self::STAGE_DECODEURLS) {
-            System::queryStringDecode();
+            System::queryStringDecode($request);
             $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         if ($stage & self::STAGE_LANGS) {
-            $lang->setup();
+            $lang->setup($request);
             $coreInitEvent->setArg('stage', self::STAGE_LANGS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }

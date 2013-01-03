@@ -12,10 +12,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Bundle\CoreBundle\EventListener;
+
+use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /**
  * Event handler to override templates.
  */
-class TemplateOverridesYaml extends Zikula_AbstractEventHandler
+class TemplateOverrideYamlListener implements EventSubscriberInterface
 {
     /**
      * Associative array.
@@ -24,43 +30,32 @@ class TemplateOverridesYaml extends Zikula_AbstractEventHandler
      *
      * @var array
      */
-    protected $overrideMap = array();
+    private $overrideMap = array();
 
-    /**
-     * Setup handler definitions.
-     *
-     * @return void
-     */
-    protected function setupHandlerDefinitions()
-    {
-        // weight -5 ensures it's notified before any other handlers since this need to override anything else.
-        $this->addHandlerDefinition('zikula_view.template_override', 'handler', -5);
-    }
-
-    /**
-     * Setup of handlers.
-     *
-     * @return void
-     */
-    public function setup()
+    public function __construct()
     {
         if (is_readable('config/template_overrides.yml')) {
-            $this->overrideMap = \Symfony\Component\Yaml\Yaml::parse('config/template_overrides.yml');
+            $this->overrideMap = Yaml::parse('config/template_overrides.yml');
         }
     }
 
     /**
      * Listens for 'zikula_view.template_override' events.
      *
-     * @param Zikula_Event $event Event handler.
+     * @param GenericEvent $event Event handler.
      *
      * @return void
      */
-    public function handler(Zikula_Event $event)
+    public function handler(GenericEvent $event)
     {
         if (array_key_exists($event->data, $this->overrideMap)) {
             $event->data = $this->overrideMap[$event->data];
             $event->stopPropagation();
         }
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array('zikula_view.template_override' => array('handler', 5));
     }
 }

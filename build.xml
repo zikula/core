@@ -74,6 +74,8 @@
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
 
         <echo msg="Prepare permissions..." />
+        <chmod file="${packagepath}/app/cache" mode="0777" />
+        <chmod file="${packagepath}/app/log" mode="0777" />
         <chmod file="${packagepath}/config/config.php" mode="0666" />
         <chmod file="${packagepath}/userdata" mode="0777" />
         <chmod file="${packagepath}/ztemp" mode="0777" />

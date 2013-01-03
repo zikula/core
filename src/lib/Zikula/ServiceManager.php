@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * ServiceManager class.
