@@ -226,7 +226,7 @@ class JCSSUtil
      *
      * @return array List of javascript files
      */
-    private function resolveCoreDependencies($javascripts, &$resolved = array())
+    private static function resolveCoreDependencies($javascripts, &$resolved = array())
     {
         $coreScripts = self::scriptsMap();
         $withDeps = array();
