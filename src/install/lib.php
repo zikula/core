@@ -113,7 +113,8 @@ function install(Zikula_Core $core)
     $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
 
     $_lang = ZLanguage::getInstance();
-    $_lang->setup();
+    $request = $core->getContainer()->get('request');
+    $_lang->setup($request);
 
     $lang = ZLanguage::getLanguageCode();
 
