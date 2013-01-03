@@ -788,6 +788,7 @@ class System
 
                     if ($themeinfo) {
                         self::queryStringSetVar('theme', $themeinfo['name'], $request);
+                        $request->attributes->set('_theme', $themeinfo['name']);
                         // now shift the vars and continue as before
                         array_shift($args);
                         if ($args) {
