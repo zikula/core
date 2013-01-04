@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Standard class.
  */
@@ -34,7 +36,7 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
         // Notify all loggers
-        $this->eventManager->dispatch('log', $this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
+        $this->eventManager->dispatch('log', $this->event->setArguments(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
         if ($this->isPHPError() && System::isDevelopmentMode() && $this->showPHPErrorHandler()) {
             // allow PHP to return error
             $this->resetHandler();

@@ -34,7 +34,7 @@ class Zikula_ErrorHandler_Ajax extends Zikula_AbstractErrorHandler
         $this->setupHandler($errno, $errstr, $errfile, $errline, $errcontext);
 
         // Notify all loggers.
-        $this->eventManager->dispatch('log', $this->event->setArgs(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
+        $this->eventManager->dispatch('log', $this->event->setArguments(array('trace' => $this->trace, 'type' => $this->type, 'errno' => $this->errno, 'errstr' => $this->errstr, 'errfile' => $this->errfile, 'errline' => $this->errline, 'errcontext' => $this->errcontext)));
         // prevent PHP handler showing here.
         $this->resetHandler();
 

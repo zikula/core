@@ -346,23 +346,22 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         if ($this->serviceManager['log.to_display'] || $this->serviceManager['log.sql.to_display']) {
-            $this->serviceManager->set('zend.logger.display', $displayLogger = new Zend_Log());
+            $this->serviceManager->set('zend.logger.display', $displayLogger = new Monolog\Logger('logger'));
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
-            $writer = new Zend_Log_Writer_Stream('php://output');
-            $formatter = new Zend_Log_Formatter_Simple('%priorityName% (%priority%): %message% <br />' . PHP_EOL);
-            $writer->setFormatter($formatter);
-            $displayLogger->addWriter($writer);
+            $handler = new Monolog\Handler\StreamHandler('php://output');
+            $formatter = new Monolog\Formatter\LineFormatter();
+            $handler->setFormatter($formatter);
+            $displayLogger->pushHandler($handler);
         }
 
         if ($this->serviceManager['log.to_file'] || $this->serviceManager['log.sql.to_file']) {
-            $this->serviceManager->set('zend.logger.file', $fileLogger = new Zend_Log());
+            $this->serviceManager->set('zend.logger.file', $fileLogger = new Monolog\Logger('logger.file'));
             $filename = LogUtil::getLogFileName();
             // load writer first because of hard requires in the Zend_Log_Writer_Stream
-            $writer = new Zend_Log_Writer_Stream($filename);
-            $formatter = new Zend_Log_Formatter_Simple('%timestamp% %priorityName% (%priority%): %message%' . PHP_EOL);
-
-            $writer->setFormatter($formatter);
-            $fileLogger->addWriter($writer);
+            $handler = new Monolog\Handler\StreamHandler($filename);
+            $formatter = new Monolog\Formatter\LineFormatter();
+            $handler->setFormatter($formatter);
+            $fileLogger->pushHandler($handler);
         }
     }
 
@@ -407,20 +406,22 @@ class SystemListeners extends Zikula_AbstractEventHandler
             }
         }
 
+        $type = Zikula_AbstractErrorHandler::$configConversion[abs($handler->getType())];
+//var_dump($handler->getType(), abs($handler->getType()), $type, $event['type']);
         if ($this->serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $this->serviceManager['log.display_level']) {
-                $this->serviceManager->get('zend.logger.display')->log($message, abs($event['type']));
+                $this->serviceManager->get('zend.logger.display')->log(abs($event['type']), $message);
             }
         }
 
         if ($this->serviceManager['log.to_file']) {
-            if (abs($handler->getType()) <= $this->serviceManager['log.file_level']) {
-                $this->serviceManager->get('zend.logger.file')->log($message, abs($event['type']));
+            if ($type <= $this->serviceManager['log.file_level']) {
+                $this->serviceManager->get('zend.logger.file')->log(abs($event['type']), $message);
             }
         }
 
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
-            if (abs($handler->getType()) <= $this->serviceManager['log.display_ajax_level']) {
+            if ($type <= $this->serviceManager['log.display_ajax_level']) {
                 // autoloaders don't work inside error handlers!
                 include_once 'lib/Zikula/Exception.php';
                 include_once 'lib/Zikula/Exception/Fatal.php';
@@ -447,11 +448,11 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $message = __f('SQL Query: %s took %s sec', array($event['query'], $event['time']));
 
         if ($this->serviceManager['log.sql.to_display']) {
-            $this->serviceManager->get('zend.logger.display')->log($message, Zend_Log::DEBUG);
+            $this->serviceManager->get('zend.logger.display')->debug($message);
         }
 
         if ($this->serviceManager['log.sql.to_file']) {
-            $this->serviceManager->get('zend.logger.file')->log($message, Zend_Log::DEBUG);
+            $this->serviceManager->get('zend.logger.file')->debug($message);
         }
     }
 

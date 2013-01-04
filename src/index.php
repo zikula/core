@@ -128,7 +128,7 @@ switch (true) {
         if (!UserUtil::isLoggedIn()) {
             $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
             $response = new RedirectResponse($url, 302);
-            LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url);
+            LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
             $response->send();
             System::shutDown();
         }
