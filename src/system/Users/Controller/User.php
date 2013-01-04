@@ -394,7 +394,7 @@ class Users_Controller_User extends Zikula_AbstractController
                     }
 
                     // Validate the hook-like event.
-                    $event = new \Zikula\Core\Event\GenericEvent($reginfo, array(), new Zikula_Hook_ValidationProviders());
+                    $event = new \Zikula\Core\Event\GenericEvent($reginfo, array(), new \Zikula\Core\Hook\ValidationProviders());
                     $validators = $this->eventManager->dispatch('module.users.ui.validate_edit.new_registration', $event)->getData();
 
                     // Validate the hook
@@ -1196,7 +1196,7 @@ class Users_Controller_User extends Zikula_AbstractController
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
-                            $validators = new Zikula_Hook_ValidationProviders();
+                            $validators = new \Zikula\Core\Hook\ValidationProviders();
                             if ($eventType) {
                                 $event = new \Zikula\Core\Event\GenericEvent($user, array(), $validators);
                                 $validators  = $this->eventManager->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
