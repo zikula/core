@@ -33,7 +33,7 @@ The final structure looks as follows:
         Controller/
             Admin.php
             User.php
-        Resource/
+        Resources/
             config/
             docs/
             public/
@@ -47,7 +47,7 @@ The final structure looks as follows:
 
 There is a script to relocate these for you:
 
-    refactor.php zk:migrate_resource --dir=module/MyModule --module=MyModule
+    refactor.php module:restructure --dir=module/MyModule --module=MyModule
 
 The old locations continue to work for the time being.
 
@@ -75,7 +75,7 @@ suffixed with `Action`, so `public function view()` should now read `public func
 
 There is a script to automate this change:
 
-    refactor.php zk:migrate_resource --dir=module/MyModule/Controller
+    refactor.php module:controller_actions --dir=module/MyModule/Controller
 
 Old method names will continue to work for the time being.
 
