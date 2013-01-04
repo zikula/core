@@ -13,24 +13,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Framework\Response\Ajax;
+namespace Zikula\Core\Hook;
 
 /**
- * Ajax class.
+ * Zikula display hook response class.
+ *
+ * Hook handlers should return one of these.
  */
-class FatalResponse extends AbstractErrorResponse
+class DisplayHookResponse extends \Zikula_Response_DisplayHook
 {
-    /**
-     * Response code.
-     *
-     * @var integer
-     */
-    protected $statusCode = 500;
-
-    /**
-     * Flag to create a new nonce.
-     *
-     * @var boolean
-     */
-    protected $newCsrfToken = false;
 }

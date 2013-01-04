@@ -14,7 +14,7 @@
 use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Zikula\Framework\Response\PlainResponse;
+use Zikula\Core\Response\PlainResponse;
 
 include 'lib/bootstrap.php';
 
@@ -171,15 +171,15 @@ function __frontcontroller_ajax(Request $request)
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
         }
-        $response = new \Zikula\Framework\Response\Ajax\UnavailableResponse(__('The site is currently off-line.'));
+        $response = new \Zikula\Core\Response\Ajax\UnavailableResponse(__('The site is currently off-line.'));
     } else if (empty($func)) {
-        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Missing parameter '%s'", 'func'));
+        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Missing parameter '%s'", 'func'));
     } else if ($modinfo == false) {
-        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
+        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
     } else if (!ModUtil::available($modinfo['name'])) {
-        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
+        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
     } else if (!ModUtil::load($modinfo['name'], $type)) {
-        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
+        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
     }
 
     // Dispatch controller.
@@ -197,15 +197,15 @@ function __frontcontroller_ajax(Request $request)
             }
         }
     } catch (Zikula_Exception_NotFound $e) {
-        $response = new \Zikula\Framework\Response\Ajax\NotFoundResponse($e->getMessage());
+        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse($e->getMessage());
     } catch (Zikula_Exception_Forbidden $e) {
-        $response = new \Zikula\Framework\Response\Ajax\ForbiddenResponse($e->getMessage());
+        $response = new \Zikula\Core\Response\Ajax\ForbiddenResponse($e->getMessage());
     } catch (Zikula_Exception_Fatal $e) {
-        $response = new \Zikula\Framework\Response\Ajax\FatalResponse($e->getMessage());
+        $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     } catch (PDOException $e) {
-        $response = new \Zikula\Framework\Response\Ajax\FatalResponse($e->getMessage());
+        $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     } catch (Exception $e) {
-        $response = new \Zikula\Framework\Response\Ajax\FatalResponse($e->getMessage());
+        $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     }
 
     // Handle database transactions
@@ -218,8 +218,8 @@ function __frontcontroller_ajax(Request $request)
     }
 
     // Process final response.
-    // If response is not instanceof Zikula\Framework\Response\Ajax\AbstractBaseResponse provide compat solution
-    if (!$response instanceof Zikula\Framework\Response\Ajax\AbstractBaseResponse) {
+    // If response is not instanceof Zikula\Core\Response\Ajax\AbstractBaseResponse provide compat solution
+    if (!$response instanceof Zikula\Core\Response\Ajax\AbstractBaseResponse) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
         $response = json_encode($response);

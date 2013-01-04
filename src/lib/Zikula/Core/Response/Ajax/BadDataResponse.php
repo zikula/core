@@ -13,13 +13,17 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Hook\Response;
+namespace Zikula\Core\Response\Ajax;
 
 /**
- * Zikula display hook response class.
- *
- * Hook handlers should return one of these.
+ * Ajax class.
  */
-class DisplayHookResponse extends \Zikula_Response_DisplayHook
+class BadDataResponse extends AbstractBaseResponse
 {
+    /**
+     * Response code.
+     *
+     * @var integer
+     */
+    protected $statusCode = 400;
 }

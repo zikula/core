@@ -13,9 +13,9 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Framework\Response\Ajax;
+namespace Zikula\Core\Response\Ajax;
 
-use Zikula\Framework\Response\PlainResponse;
+use Zikula\Core\Response\PlainResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

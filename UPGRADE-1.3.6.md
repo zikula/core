@@ -3,36 +3,93 @@ Module Specification from Zikula Core 1.3.6
 
 .. note::
 
-    The following document is for guidance only at this time and has not been fixed.
+    **The following document is for guidance only at this
+      time and has not been fixed.**
 
 
 User Upgrade Tasks
 ------------------
 
-Please delete the `plugins/Doctrine` and `plugins\DoctrineExtensions` folders entirely and then
-run `http://yoursiteurl/upgrade.php`
+Zikula Core 1.3.6 introduces a lot of forward compatibility for new features
+that will come in Zikula 1.4.0.
 
+  - Before uploading the new files please delete the `plugins` and `lib/vendor`
+    folders entirely.
+  - Upload new files.
+  - Make `app/cache` and `app/logs` writable.
+  - Run `http://yoursiteurl/upgrade.php`
 
 
 **The following is for module developers only.**
 
+All of the following changes are optional and forward compatible with
+Zikula Core 1.4. Module developers can begin adopting these immediately
+without risking any compatibility problems. The reason for these changes
+are to allow rapid adoption of various Symfony Components and rapidly
+modernize the Core.
+
+
+Namespaces
+----------
+
+Zikula Core 1.3.6 supports PHP namespaces and module should be refactored
+for namespace compliance which should MUST be in line with PSR-0 and PSR-1.
+
+In order to be PSR-0 compliant, module the PHP assets in `lib/Modname/*`
+need to moved into the module root (see below).
+
+The current specification mandates: (still in dev)
+'Foo' is the module name in the examples below and give a few examples of
+how module classes should look like:
+
+Controllers:
+  - Named like Foo\Controller\UserController
+  - Stored in Foo/Controller/UserController.php
+  - Example:
+
+        <?php
+        namespace FooModule\Controller;
+
+        class UserController extends \Zikula_AbstractController
+        {
+        }
+
+Apis:
+  - Named like Foo\Api\UserApi
+  - Stored in Foo/Api/UserApi.php
+  - Example:
+
+        <?php
+        namespace FooModule\Api;
+
+        class UserApi extends \Zikula_AbstractApi
+        {
+        }
+
+Entities:
+  - Named like Foo\Entity\BarEntity
+  - Stored in Foo/Entity/BarEntity.php
+  - Example:
+
+        <?php
+        namespace FooModule\Entity;
+
+        class BarEntity
+        {
+        }
 
 Module Structure
 ----------------
 
-It is now possible to place module's PHP assets directly in the module's
-root folder, without having to nest in `$modname/lib/$modname`.
-Non-PHP assets should now be located in a `Resources/` folder.
-
 The final structure looks as follows:
 
-    MyModule/
+    FooModule/
         Api/
-            Admin.php
-            User.php
+            AdminApi.php
+            UserApi.php
         Controller/
-            Admin.php
-            User.php
+            AdminController.php
+            UserController.php
         Resources/
             config/
             docs/
@@ -42,17 +99,35 @@ The final structure looks as follows:
                 js/
             views/
                 plugins/
-        Installer.php
-        Version.php
+        ModuleInstaller.php
+        ModuleVersion.php
+        FooModule.php
 
-There is a script to relocate these for you:
+The last file `FooModule.php` is new and should look like this:
+
+    <?php
+    namespace FooModule;
+
+    use Zikula\Bundle\CoreBundle\AbstractModule;
+
+    class PermissionsModule extends AbstractModule
+    {
+    }
+
+There is a script to restructure the module for you:
 
     refactor.php module:restructure --dir=module/MyModule --module=MyModule
 
-The old locations continue to work for the time being.
+You should commit these changes immediately. Your module will continue to work
+with the interrim structure created, and you can begin refactoring to namespaces.
 
-It is recommended you place templates in the `Resource/views` folder in a hierarchy
-as follows:
+.. note::
+
+    It's wise to `git mv` the files to rename the controllers for example before
+    making changes to the file contents (should be made in a separate commit).
+
+It is also recommended you place templates in the `Resource/views` folder in a
+hierarchy as follows:
 
         Resources/
             views/
@@ -85,7 +160,7 @@ Controller Response
 
 Controllers should return a `Symfony\Component\HttpFoundation\Response`.
 If you wish to not display the theme, it should emit a
-`Zikula\Framework\Response\PlainResponse`.
+`Zikula\Core\Response\PlainResponse`.
 
 Zikula will wrap controller return in an appropriate Response.
 
@@ -154,15 +229,11 @@ The main changes are:
 
   - Four new Hook objects with no name arg in the constructor:
   
-    `Zikula\Core\Hook\DisplayHook`
-    `Zikula\Core\Hook\FilterHook`
-    `Zikula\Core\Hook\ProcessHook`
-    `Zikula\Core\Hook\ValidationHook`
+    - `Zikula\Core\Hook\DisplayHook` (was `Zikula_DisplayHook`).
+    - `Zikula\Core\Hook\FilterHook` (was `Zikula_FilterHook`).
+    - `Zikula\Core\Hook\ProcessHook` (was `Zikula_ProcessHook`).
+    - `Zikula\Core\Hook\ValidationHook` (was `Zikula_ValidationHook`).
   
-  They are backward compatible with the existing `Zikula_DisplayHook`, 
-  `Zikula_ProcessHook`, `Zikula_FilterHook`, and `Zikula_validationHook`, hooks
-  and you can switch to using them immediately.
-    
   - hooks are triggered by `->dispatch($name, $hook)` instead of `->notify($hook)`
 
 Example in Core 1.3.0-1.3.5
@@ -174,6 +245,13 @@ Example in Core 1.3.6+
 
     $hook = new \Zikula\Core\Hook\DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
+
+New class list:
+
+  - `Zikula\Core\Hook\ValidationProviders` (was `Zikula_Hook_ValidationProviders`).
+  - `Zikula\Core\Hook\ValidationResponse` (was `Zikula_Hook_ValidationResponse`).
+  - `Zikula\Core\Hook\DisplayResponse` (was `Zikula_Response_DisplayHook`).
+  - `Zikula\Core\Hook\AbstractHookListener` (was `Zikula_Hook_AbstractHandler`).
 
 
 Request

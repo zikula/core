@@ -13,24 +13,34 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Framework\Response\Ajax;
+namespace Zikula\Core\Response\Ajax;
 
 /**
  * Ajax class.
  */
-class UnavailableResponse extends AbstractErrorResponse
+class PlainResponse extends AbstractBaseResponse
 {
     /**
-     * Response code.
+     * Constructor.
      *
-     * @var integer
+     * @param string $payload Payload data.
      */
-    protected $statusCode = 503;
+    public function __construct($payload)
+    {
+        $this->payload = $payload;
+    }
 
     /**
-     * Flag to create a new nonce.
+     * Convert class to string.
      *
-     * @var boolean
+     * @return string
      */
-    protected $newCsrfToken = true;
+    public function __toString()
+    {
+        header($this->createHttpResponseHeader());
+        header('Content-type: text/html');
+
+        return $this->payload;
+    }
+
 }
