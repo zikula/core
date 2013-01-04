@@ -94,7 +94,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
         static $firstTime = true;
         if ($firstTime) {
             PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
-            PageUtil::addVar('javascript', 'system/Theme/javascript/form/form_tabbedpanelset.js');
+            PageUtil::addVar('javascript', 'system/Theme/Resources/public/js/form/form_tabbedpanelset.js');
             PageUtil::addVar('footer', "<script type=\"text/javascript\">$$('.tabsToHide').invoke('hide')</script>");
         }
         $firstTime = false;
