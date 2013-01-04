@@ -69,9 +69,7 @@
  ${builddir}/tmp/Profile" />
         <exec command="mv ${builddir}/tmp/Profile ${packagepath}/modules" />
 
-        <echo msg="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" />
         <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" />
-        <echo msg="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" />
         <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" />
 
         <!-- compress JS -->
