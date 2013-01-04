@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Component\HookDispatcher\Hook;
+
 /**
  * Base form handler class
  *
@@ -272,7 +274,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @return Zikula_AbstractHook
      */
-    public function dispatchHooks($name, Zikula_AbstractHook $hook)
+    public function dispatchHooks($name, Hook $hook)
     {
         return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
