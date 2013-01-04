@@ -59,8 +59,6 @@
         <echo msg="Exporting for build..." />
         <!-- ATTN export urls require manual edit -->
 
-        <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${workspace}/source/src/vendor" />
-        <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${workspace}/source/src/vendor" />
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
 
         <exec command="svn export https://github.com/zikula-modules/Legal.git/branches/master
@@ -70,6 +68,9 @@
         <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/master
  ${builddir}/tmp/Profile" />
         <exec command="mv ${builddir}/tmp/Profile ${packagepath}/modules" />
+
+        <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" />
+        <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" />
 
         <!-- compress JS -->
         <foreach list="${ownjslist}" param="filename" target="compressownjs" />
