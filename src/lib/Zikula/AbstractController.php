@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Component\HookDispatcher\Hook;
+
 /**
  * Abstract controller for modules.
  */
@@ -95,7 +97,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @return Zikula_AbstractHook
      */
-    public function dispatchHooks($name, Zikula_AbstractHook $hook)
+    public function dispatchHooks($name, Hook $hook)
     {
         return $this->get('hook_dispatcher')->dispatch($name, $hook);
     }
