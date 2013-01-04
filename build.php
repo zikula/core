@@ -36,7 +36,7 @@ class PurgeVendorsCommand extends \Symfony\Component\Console\Command\Command
         $progress = $this->getHelperSet()->get('progress');
         $progress->start($output, 4);
 
-        PurgeVendorsCommand::cleanVendors($dir, $progress);
+        self::cleanVendors($dir, $progress);
     }
 
     public static function cleanVendors($dir, ProgressHelper $progress)
@@ -67,6 +67,47 @@ class PurgeVendorsCommand extends \Symfony\Component\Console\Command\Command
         $progress->advance();
         $filesystem->remove($paths);
         $progress->advance();
+    }
+}
+
+class FixAutoloaderCommand extends \Symfony\Component\Console\Command\Command
+{
+    protected function configure()
+    {
+        $this
+            ->setName('build:fix_autoloader')
+            ->setDescription('Fixes autoloader paths')
+            ->addOption('vendor-dir', null, InputOption::VALUE_REQUIRED, 'Vendors dir, e.g. src/vendor');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $dir = $input->getOption('vendor-dir');
+        if (!$dir) {
+            $output->writeln("<error>--vendor-dir= is required</error>");
+            exit(1);
+        }
+
+        /** @var ProgressHelper $progress */
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($output, 3);
+
+        self::fix($dir, $progress);
+    }
+
+    public static function fix($dir, ProgressHelper $progress)
+    {
+        // fix paths in composer autoloader files removing src/ from paths
+        $composerFiles = array(
+            'autoload_classmap.php', 'autoload_namespaces.php', 'autoload_real.php',
+        );
+        foreach ($composerFiles as $file) {
+            $file = "$dir/composer/$file";
+            $content = file_get_contents($file);
+            $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
+            file_put_contents($file, $content);
+            $progress->advance();
+        }
     }
 }
 
@@ -102,7 +143,7 @@ class BuildPackageCommand extends Command
 
         /** @var ProgressHelper $progress */
         $progress = $this->getHelperSet()->get('progress');
-        $progress->start($output, 14);
+        $progress->start($output, 17);
 
         $filesystem = new Filesystem();
 
@@ -119,17 +160,7 @@ class BuildPackageCommand extends Command
         $progress->advance();
 
         PurgeVendorsCommand::cleanVendors("$buildDir/$name/vendor", $progress);
-
-        // fix paths in composer autoloader files removing src/ from paths
-        $composerFiles = array(
-            'autoload_classmap.php', 'autoload_namespaces.php', 'autoload_real.php',
-        );
-        foreach ($composerFiles as $file) {
-            $file = "$buildDir/$name/vendor/composer/$file";
-            $content = file_get_contents($file);
-            $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
-            file_put_contents($file, $content);
-        }
+        FixAutoloaderCommand::fix("$buildDir/$name/vendor", $progress);
 
         $writableArray = array(
             "$buildDir/$name/app/cache",
@@ -214,4 +245,5 @@ CHECKSUM;
 $application = new Application();
 $application->add(new BuildPackageCommand());
 $application->add(new PurgeVendorsCommand());
+$application->add(new FixAutoloaderCommand());
 $application->run();
