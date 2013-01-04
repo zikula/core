@@ -85,11 +85,11 @@ The final structure looks as follows:
 
     FooModule/
         Api/
-            AdminApi.php
-            UserApi.php
+            AdminApi.php (was Admin.php)
+            UserApi.php (was User.php)
         Controller/
-            AdminController.php
-            UserController.php
+            AdminController.php (was Admin.php)
+            UserController.php (was User.php)
         Resources/
             config/
             docs/
@@ -99,8 +99,8 @@ The final structure looks as follows:
                 js/
             views/
                 plugins/
-        ModuleInstaller.php
-        ModuleVersion.php
+        FooInstaller.php (was Installer.php)
+        FooVersion.php (was Version.php)
         FooModule.php
 
 The last file `FooModule.php` is new and should look like this:
@@ -110,7 +110,7 @@ The last file `FooModule.php` is new and should look like this:
 
     use Zikula\Bundle\CoreBundle\AbstractModule;
 
-    class PermissionsModule extends AbstractModule
+    class FooModule extends AbstractModule
     {
     }
 
