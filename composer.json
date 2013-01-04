@@ -36,7 +36,7 @@
         "gedmo/doctrine-extensions": "dev-master",
         "beberlei/DoctrineExtensions": "dev-master",
         "imagine/Imagine": "dev-master",
-        "monolog/monolog": "dev-psr",
+        "monolog/monolog": "dev-master",
         "symfony/class-loader": "2.2.*",
         "symfony/config": "2.2.*",
         "symfony/console": "2.2.*",

@@ -120,9 +120,20 @@ class BuildPackageCommand extends Command
 
         PurgeVendorsCommand::cleanVendors("$buildDir/$name/vendor", $progress);
 
+        // fix paths in composer autoloader files removing src/ from paths
+        $composerFiles = array(
+            'autoload_classmap.php', 'autoload_namespaces.php', 'autoload_real.php',
+        );
+        foreach ($composerFiles as $file) {
+            $file = "$buildDir/$name/vendor/composer/$file";
+            $content = file_get_contents($file);
+            $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
+            file_put_contents($file, $content);
+        }
+
         $writableArray = array(
             "$buildDir/$name/app/cache",
-            "$buildDir/$name/app/log",
+            "$buildDir/$name/app/logs",
             "$buildDir/$name/userdata",
             "$buildDir/$name/ztemp",
             "$buildDir/$name/ztemp/error_logs",
