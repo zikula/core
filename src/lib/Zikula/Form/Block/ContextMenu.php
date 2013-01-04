@@ -115,7 +115,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
      */
     public function dataBound(Zikula_Form_View $view, &$params)
     {
-        PageUtil::AddVar('javascript', 'system/Theme/javascript/form/form.js');
+        PageUtil::AddVar('javascript', 'system/Theme/Resources/public/js/form/form.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     }
 
