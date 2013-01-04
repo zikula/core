@@ -13,14 +13,24 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Framework\Response;
-
-use Symfony\Component\HttpFoundation\Response;
+namespace Zikula\Core\Response\Ajax;
 
 /**
- * Plain response will override theme.
+ * Ajax class.
  */
-class PlainResponse extends Response
+class UnavailableResponse extends AbstractErrorResponse
 {
+    /**
+     * Response code.
+     *
+     * @var integer
+     */
+    protected $statusCode = 503;
 
+    /**
+     * Flag to create a new nonce.
+     *
+     * @var boolean
+     */
+    protected $newCsrfToken = true;
 }

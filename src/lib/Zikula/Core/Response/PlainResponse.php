@@ -13,17 +13,13 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Framework\Response\Ajax;
+namespace Zikula\Core\Response;
+
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Ajax class.
+ * Plain response will override theme.
  */
-class BadDataResponse extends AbstractBaseResponse
+class PlainResponse extends Response
 {
-    /**
-     * Response code.
-     *
-     * @var integer
-     */
-    protected $statusCode = 400;
 }

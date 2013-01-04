@@ -13,17 +13,24 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Framework\Response\Ajax;
+namespace Zikula\Core\Response\Ajax;
 
 /**
  * Ajax class.
  */
-class NotFoundResponse extends AbstractErrorResponse
+class ForbiddenResponse extends AbstractErrorResponse
 {
     /**
      * Response code.
      *
      * @var integer
      */
-    protected $statusCode = 404;
+    protected $statusCode = 403;
+
+    /**
+     * Flag to create a new nonce.
+     *
+     * @var boolean
+     */
+    protected $newCsrfToken = false;
 }
