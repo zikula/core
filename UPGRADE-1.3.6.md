@@ -28,6 +28,10 @@ without risking any compatibility problems. The reason for these changes
 are to allow rapid adoption of various Symfony Components and rapidly
 modernize the Core.
 
+There is a refactor tool `zikula-tools` which is referred to in this
+document for the purposes of refactoring modules to the new standards
+below with very little effort.
+
 
 Namespaces
 ----------
@@ -116,7 +120,7 @@ The last file `FooModule.php` is new and should look like this:
 
 There is a script to restructure the module for you:
 
-    refactor.php module:restructure --dir=module/MyModule --module=MyModule
+    zikula-tools module:restructure --dir=module/MyModule --module=MyModule
 
 You should commit these changes immediately. Your module will continue to work
 with the interrim structure created, and you can begin refactoring to namespaces.
@@ -150,7 +154,7 @@ suffixed with `Action`, so `public function view()` should now read `public func
 
 There is a script to automate this change:
 
-    refactor.php module:controller_actions --dir=module/MyModule/Controller
+    zikula-tools module:controller_actions --dir=module/MyModule/Controller
 
 Old method names will continue to work for the time being.
 
