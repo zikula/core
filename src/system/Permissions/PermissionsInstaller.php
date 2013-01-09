@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Installer extends Zikula_AbstractInstaller
+namespace Permissions;
+
+use DBUtil;
+
+class PermissionsInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the permissions module
