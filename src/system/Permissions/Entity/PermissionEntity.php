@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="group_perms")
  */
-class Permission extends EntityAccess
+class PermissionEntity extends EntityAccess
 {
     /**
      * @ORM\Id

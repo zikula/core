@@ -12,10 +12,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Permissions\Api;
+
+use LogUtil;
+use SecurityUtil;
+use DBUtil;
+use DataUtil;
+use BlockUtil;
+use ModUtil;
+
 /**
  * Permissions_Api_Admin class.
  */
-class Permissions_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
 
     /**

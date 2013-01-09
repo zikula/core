@@ -12,10 +12,22 @@
  * information regarding copyright and licensing.
  */
 
+namespace Permissions\Controller;
+
+use Zikula_View;
+use ModUtil;
+use LogUtil;
+use SecurityUtil;
+use FormUtil;
+use UserUtil;
+use DBUtil;
+use DataUtil;
+use System;
+
 /**
  * Permissions_Controller_Admin class.
  */
-class Permissions_Controller_Admin extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.

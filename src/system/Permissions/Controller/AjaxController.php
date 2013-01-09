@@ -12,7 +12,18 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Controller_Ajax extends Zikula_Controller_AbstractAjax
+namespace Permissions\Controller;
+
+use SecurityUtil;
+use ModUtil;
+use DBUtil;
+use Zikula_Response_Ajax;
+use DataUtil;
+use AjaxUtil;
+use Zikula_Exception_Fatal;
+use UserUtil;
+
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a permission rule in the database
