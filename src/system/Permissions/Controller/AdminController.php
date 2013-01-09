@@ -70,17 +70,14 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $permgrp = FormUtil::getPassedValue('permgrp', -1, 'REQUEST');
-        $testuser = FormUtil::getPassedValue('test_user', null, 'POST');
-        $testcomponent = FormUtil::getPassedValue('test_component', null, 'POST');
-        $testinstance = FormUtil::getPassedValue('test_instance', null, 'POST');
-        $testlevel = FormUtil::getPassedValue('test_level', null, 'POST');
+        $permgrp = $this->request->get('permgrp', -1);
+        $testuser = $this->request->request->get('test_user', null);
+        $testcomponent = $this->request->request->get('test_component', null);
+        $testinstance = $this->request->request->get('test_instance', null);
+        $testlevel = $this->request->request->get('test_level', null);
 
         $testresult = '';
-        if (!empty($testuser) &&
-                !empty($testcomponent) &&
-                !empty($testinstance)
-        ) {
+        if (!empty($testuser) && !empty($testcomponent) && !empty($testinstance)) {
             // we have everything we need for an effective permission check
             $testuid = UserUtil::getIdFromName($testuser);
             if ($testuid <> false) {
@@ -95,41 +92,31 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $this->view->assign('testuser', $testuser)
-                ->assign('testcomponent', $testcomponent)
-                ->assign('testinstance', $testinstance)
-                ->assign('testlevel', $testlevel)
-                ->assign('testresult', $testresult);
+                   ->assign('testcomponent', $testcomponent)
+                   ->assign('testinstance', $testinstance)
+                   ->assign('testlevel', $testlevel)
+                   ->assign('testresult', $testresult);
 
-        // decide the default view
-        $enableFilter = $this->getVar('filter', 1);
-        $rowview = $this->getVar('rowview', 25);
-
-        // Work out which tables to operate against, and
-        // various other bits and pieces
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
-        $ids = $this->getGroupsInfoAction();
+        $ids = $this->getGroupsInfo();
 
         $where = '';
-        if ($enableFilter == 1) {
+        $enableFilter = $this->getVar('filter', 1);        if ($enableFilter == 1) {
             $permgrpparts = explode('+', $permgrp);
             if ($permgrpparts[0] == 'g') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
-                    $where = "WHERE (" . $permcolumn['gid'] . "='" . SecurityUtil::PERMS_ALL . "' OR " . $permcolumn['gid'] . "='" . DataUtil::formatForStore($permgrpparts[1]) . "')";
+                    $where = "WHERE (p.gid = '" . SecurityUtil::PERMS_ALL . "' OR p.gid = '" . DataUtil::formatForStore($permgrpparts[1]) . "')";
                     $permgrp = $permgrpparts[1];
                     $this->view->assign('filtertype', 'group');
                 } else {
                     $permgrp = SecurityUtil::PERMS_ALL;
-                    $where = '';
                 }
             } elseif ($permgrpparts[0] == 'c') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
-                    $where = "WHERE (" . $permcolumn['component'] . "='.*' OR " . $permcolumn['component'] . " LIKE '" . DataUtil::formatForStore($permgrpparts[1]) . "%')";
+                    $where = "WHERE (p.component = '.*' OR p.component LIKE '" . DataUtil::formatForStore($permgrpparts[1]) . "%')";
                     $permgrp = $permgrpparts[1];
                     $this->view->assign('filtertype', 'component');
                 } else {
                     $permgrp = SecurityUtil::PERMS_ALL;
-                    $where = '';
                 }
             } else {
                 $this->view->assign('filtertype', '');
@@ -143,31 +130,30 @@ class AdminController extends \Zikula_AbstractController
             $this->view->assign('permgrp', SecurityUtil::PERMS_ALL);
         }
 
-        $accesslevels = SecurityUtil::accesslevelnames();
-
-        $orderBy = "ORDER BY $permcolumn[sequence]";
-        $objArray = DBUtil::selectObjectArray('group_perms', $where, $orderBy, -1, -1, false);
-        $numrows = DBUtil::_getFetchedObjectCount();
+        $dql = "SELECT p FROM Permissions\Entity\PermissionEntity p $where ORDER BY p.sequence ASC";
+        $query = $this->entityManager->createQuery($dql);
+        $objArray = $query->getResult();
+        $numrows = count($objArray);
 
         $permissions = array();
-        $components = array(-1 => $this->__('All components'));
+
         if ($numrows > 0) {
-            $csrftoken = SecurityUtil::generateCsrfToken($this->serviceManager, true);
+            $accesslevels = SecurityUtil::accesslevelnames();
+            $csrftoken = SecurityUtil::generateCsrfToken($this->getContainer(), true);
             $rownum = 1;
-            $ak = array_keys($objArray);
-            foreach ($ak as $v) {
-                $obj = $objArray[$v];
+
+            foreach ($objArray as $obj) {
                 $id = $obj['gid'];
                 $up = array('url' => ModUtil::url('Permissions', 'admin', 'inc',
                                 array('pid' => $obj['pid'],
-                                        'permgrp' => $permgrp,
-                                        'csrftoken' => $csrftoken)),
-                        'title' => $this->__('Up'));
+                                      'permgrp' => $permgrp,
+                                      'csrftoken' => $csrftoken)),
+                            'title' => $this->__('Up'));
                 $down = array('url' => ModUtil::url('Permissions', 'admin', 'dec',
                                 array('pid' => $obj['pid'],
-                                        'permgrp' => $permgrp,
-                                        'csrftoken' => $csrftoken)),
-                        'title' => $this->__('Down'));
+                                       'permgrp' => $permgrp,
+                                       'csrftoken' => $csrftoken)),
+                              'title' => $this->__('Down'));
                 switch ($rownum) {
                     case 1:
                         $arrows = array('up' => 0, 'down' => 1);
@@ -184,45 +170,45 @@ class AdminController extends \Zikula_AbstractController
                 $options = array();
                 $inserturl = ModUtil::url('Permissions', 'admin', 'listedit',
                                 array('permgrp' => $permgrp,
-                                        'action' => 'insert',
-                                        'insseq' => $obj['sequence']));
+                                      'action' => 'insert',
+                                      'insseq' => $obj['sequence']));
                 $editurl = ModUtil::url('Permissions', 'admin', 'listedit',
                                 array('chgpid' => $obj['pid'],
-                                        'permgrp' => $permgrp,
-                                        'action' => 'modify'));
+                                      'permgrp' => $permgrp,
+                                      'action' => 'modify'));
                 $deleteurl = ModUtil::url('Permissions', 'admin', 'delete',
                                 array('pid' => $obj['pid'],
-                                        'permgrp' => $permgrp));
+                                      'permgrp' => $permgrp));
 
-                $permissions[] = array('sequence' => $obj['sequence'],
-                        'arrows' => $arrows,
-                        // Realms not currently functional so hide the output - jgm
-                        //'realms'    => $realms[$realm],
-                        'group' => $ids[$id],
-                        'groupid' => $id,
-                        'component' => $obj['component'],
-                        'instance' => $obj['instance'],
-                        'accesslevel' => $accesslevels[$obj['level']],
-                        'accesslevelid' => $obj['level'],
-                        'options' => $options,
-                        'up' => $up,
-                        'down' => $down,
-                        'permid' => $obj['pid'],
-                        'inserturl' => $inserturl,
-                        'editurl' => $editurl,
-                        'deleteurl' => $deleteurl);
-            }
+                $permissions[] = array(
+                    'sequence' => $obj['sequence'],
+                    'arrows' => $arrows,
+                    // Realms not currently functional so hide the output - jgm
+                    //'realms'    => $realms[$realm],
+                    'group' => $ids[$id],
+                    'groupid' => $id,
+                    'component' => $obj['component'],
+                    'instance' => $obj['instance'],
+                    'accesslevel' => $accesslevels[$obj['level']],
+                    'accesslevelid' => $obj['level'],
+                    'options' => $options,
+                    'up' => $up,
+                    'down' => $down,
+                    'permid' => $obj['pid'],
+                    'inserturl' => $inserturl,
+                    'editurl' => $editurl,
+                    'deleteurl' => $deleteurl);            }
         }
 
-        // read all perms to extract components
-        $allPerms = DBUtil::selectObjectArray('group_perms', '', $orderBy, -1, -1, false);
-        foreach ($allPerms as $singlePerm) {
+        $components = array(-1 => $this->__('All components'));        // read all perms to extract components
+        $allperms = $this->entityManager->getRepository('Permissions\Entity\PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        foreach ($allperms as $singlePerm) {
             // extract components, we keep everything up to the first colon
             $compparts = explode(':', $singlePerm['component']);
             $components[$compparts[0]] = $compparts[0];
         }
 
-        $this->view->assign('groups', $this->getGroupsInfoAction());
+        $this->view->assign('groups', $this->getGroupsInfo());
         $this->view->assign('permissions', $permissions);
         $this->view->assign('components', $components);
 
@@ -245,7 +231,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function incAction()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
         // MMaes,2003-06-23: Added sec.check
@@ -254,9 +240,8 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters
-        // MMaes,2003-06-23: View permissions applying to single group; added permgrp
-        $pid = FormUtil::getPassedValue('pid', null, 'GET');
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'GET');
+        $pid = $this->request->query->get('pid', null);
+        $permgrp = $this->request->query->get('permgrp', null);
 
         if (empty($permgrp)) {
             // For group-permissions, make sure we return something sensible.
@@ -265,9 +250,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'inc',
-                        array('pid' => $pid,
-                                'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Incremented permission rule.'));
         }
@@ -286,18 +269,16 @@ class AdminController extends \Zikula_AbstractController
      */
     public function decAction()
     {
-        $csrftoken = FormUtil::getPassedValue('csrftoken');
+        $csrftoken = $this->request->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
-        // MMaes,2003-06-23: Added sec.check
         if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
         // Get parameters
-        // MMaes,2003-06-23: View permissions applying to single group; added permgrp
-        $pid = FormUtil::getPassedValue('pid', null, 'GET');
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'GET');
+        $pid = $this->request->query->get('pid', null);
+        $permgrp = $this->request->query->get('permgrp', null);
 
         if (!isset($permgrp) || $permgrp == '') {
             // For group-permissions, make sure we return something sensible.
@@ -306,9 +287,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('Permissions', 'admin', 'dec',
-                        array('pid' => $pid,
-                                'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('Permissions', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Decremented permission rule.'));
         }
@@ -331,86 +310,74 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters from whatever input we need.
-        $chgpid = FormUtil::getPassedValue('chgpid', null, 'GET');
-        $action = FormUtil::getPassedValue('action', null, 'GET');
-        $insseq = FormUtil::getPassedValue('insseq', null, 'GET');
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'REQUEST');
-
-        // decide default view
-        $rowview = is_null($this->getVar('rowview')) ? '25' : $this->getVar('rowview');
+        $chgpid = $this->request->query->get('chgpid', null);
+        $action = $this->request->query->get('action', null);
+        $insseq = $this->request->query->get('insseq', null);
+        $permgrp = $this->request->get('permgrp', null);
 
         // Assign the permission levels
         $this->view->assign('permissionlevels', SecurityUtil::accesslevelnames());
 
-        // Work out which tables to operate against, and
-        // various other bits and pieces
-        $dbtable = DBUtil::getTables();
-        $permcolumn = $dbtable['group_perms_column'];
-        $mlpermtype = $this->__('Group');
-        $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
-        $ids = $this->getGroupsInfoAction();
-
-        $orderBy = "ORDER BY $permcolumn[sequence]";
-        $objArray = DBUtil::selectObjectArray('group_perms', '', $orderBy);
-        if (!$objArray && $action != 'add') {
+        // get all permissions
+        $allperms = $this->entityManager->getRepository('Permissions\Entity\PermissionEntity')->findBy(array(), array('sequence' => 'ASC'));
+        if (!$allperms && $action != 'add') {
             LogUtil::registerError($this->__('Error! No permission rules of this kind were found. Please add some first.'));
-            $this->redirect(ModUtil::url('modules', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('modules', 'admin', 'view'));
         }
 
-        $this->view->assign('title', $viewperms)
-                ->assign('mlpermtype', $mlpermtype);
+        $viewperms = ($action == 'modify') ? $this->__('Modify permission rule') : $this->__('Create new permission rule');
+        $this->view->assign('title', $viewperms);
 
-        $accesslevels = SecurityUtil::accesslevelnames();
-        $numrows = count($objArray);
+        $mlpermtype = $this->__('Group');
+        $this->view->assign('mlpermtype', $mlpermtype);
 
-        $this->view->assign('idvalues', $ids);
+        $ids = $this->getGroupsInfo();        $this->view->assign('idvalues', $ids);
 
         if ($action == 'modify') {
             // Form-start
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'update'))
-                    ->assign('permgrp', $permgrp)
-                    ->assign('chgpid', $chgpid);
+                       ->assign('permgrp', $permgrp)
+                       ->assign('chgpid', $chgpid);
 
             // Realms hard-code4d - jgm
             $this->view->assign('realm', 0)
-                    ->assign('insseq', $chgpid)
-                    ->assign('submit', $this->__('Edit permission rule'));
+                       ->assign('insseq', $chgpid)
+                       ->assign('submit', $this->__('Edit permission rule'));
         } elseif ($action == 'insert') {
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
-                    ->assign('permgrp', $permgrp)
-                    ->assign('insseq', $insseq);
+                       ->assign('permgrp', $permgrp)
+                       ->assign('insseq', $insseq);
 
             // Realms hard-coded - jgm
             $this->view->assign('realm', 0)
-                    ->assign('submit', $this->__('Create new permission rule'));
+                       ->assign('submit', $this->__('Create new permission rule'));
         } elseif ($action == 'add') {
             // Form-start
             $this->view->assign('formurl', ModUtil::url('Permissions', 'admin', 'create'))
-                    ->assign('permgrp', $permgrp)
-                    ->assign('insseq', -1);
+                       ->assign('permgrp', $permgrp)
+                       ->assign('insseq', -1);
 
             // Realms hard-coded - jgm
             $this->view->assign('realm', 0)
-                    ->assign('submit', $this->__('Create new permission rule'));
+                       ->assign('submit', $this->__('Create new permission rule'));
         }
 
         $this->view->assign('action', $action);
 
-        $permissions = array();
-        $ak = array_keys($objArray);
-        foreach ($ak as $v) {
-            $obj = & $objArray[$v];
+        $accesslevels = SecurityUtil::accesslevelnames();        $permissions = array();
+
+        foreach ($allperms as $obj) {
             $id = $obj['gid']; //get's uid or gid accordingly
-            $permissions[] = array(// Realms not currently functional so hide the output - jgm
-                    //'realms' => $realms[$realm],
-                    'pid' => $obj['pid'],
-                    'group' => $ids[$id],
-                    'component' => $obj['component'],
-                    'instance' => $obj['instance'],
-                    'accesslevel' => $accesslevels[$obj['level']],
-                    'level' => $obj['level'],
-                    'sequence' => $obj['sequence']);
-            if ($action == 'modify' && $obj['pid'] == $chgpid) {
+
+            $permissions[] = array(
+                'pid' => $obj['pid'],
+                'group' => $ids[$id],
+                'component' => $obj['component'],
+                'instance' => $obj['instance'],
+                'accesslevel' => $accesslevels[$obj['level']],
+                'level' => $obj['level'],
+                'sequence' => $obj['sequence']
+            );            if ($action == 'modify' && $obj['pid'] == $chgpid) {
                 $this->view->assign('selectedid', $id);
             }
         }
@@ -440,14 +407,14 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters
-        $pid = FormUtil::getPassedValue('pid', null, 'POST');
-        $seq = FormUtil::getPassedValue('seq', null, 'POST');
-        $oldseq = FormUtil::getPassedValue('oldseq', null, 'POST');
-        $realm = FormUtil::getPassedValue('realm', null, 'POST');
-        $id = FormUtil::getPassedValue('id', null, 'POST');
-        $component = FormUtil::getPassedValue('component', null, 'POST');
-        $instance = FormUtil::getPassedValue('instance', null, 'POST');
-        $level = FormUtil::getPassedValue('level', null, 'POST');
+        $pid = $this->request->request->get('pid', null);
+        $seq = $this->request->request->get('seq', null);
+        $oldseq = $this->request->request->get('oldseq', null);
+        $realm = $this->request->request->get('realm', null);
+        $id = $this->request->request->get('id', null);
+        $component = $this->request->request->get('component', null);
+        $instance = $this->request->request->get('instance', null);
+        $level = $this->request->request->get('level', null);
 
         // Since we're using TextAreas, make sure no carriage-returns etc get through unnoticed.
         $warnmsg = '';
@@ -465,13 +432,13 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('Permissions', 'admin', 'update',
                         array('pid' => $pid,
-                                'seq' => $seq,
-                                'oldseq' => $oldseq,
-                                'realm' => $realm,
-                                'id' => $id,
-                                'component' => $component,
-                                'instance' => $instance,
-                                'level' => $level))) {
+                              'seq' => $seq,
+                              'oldseq' => $oldseq,
+                              'realm' => $realm,
+                              'id' => $id,
+                              'component' => $component,
+                              'instance' => $instance,
+                              'level' => $level))) {
             // Success
             if ($warnmsg == '') {
                 LogUtil::registerStatus($this->__('Done! Saved permission rule.'));
@@ -503,12 +470,12 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters
-        $realm = FormUtil::getPassedValue('realm', null, 'POST');
-        $id = FormUtil::getPassedValue('id', null, 'POST');
-        $component = FormUtil::getPassedValue('component', null, 'POST');
-        $instance = FormUtil::getPassedValue('instance', null, 'POST');
-        $level = FormUtil::getPassedValue('level', null, 'POST');
-        $insseq = FormUtil::getPassedValue('insseq', null, 'POST');
+        $realm = $this->request->request->get('realm', null);
+        $id = $this->request->request->get('id', null);
+        $component = $this->request->request->get('component', null);
+        $instance = $this->request->request->get('instance', null);
+        $level = $this->request->request->get('level', null);
+        $insseq = $this->request->request->get('insseq', null);
 
         // Since we're using TextAreas, make sure no carriage-returns etc get through unnoticed.
         $warnmsg = '';
@@ -526,11 +493,11 @@ class AdminController extends \Zikula_AbstractController
         // Pass to API
         if (ModUtil::apiFunc('Permissions', 'admin', 'create',
                         array('realm' => $realm,
-                                'id' => $id,
-                                'component' => $component,
-                                'instance' => $instance,
-                                'level' => $level,
-                                'insseq' => $insseq))) {
+                              'id' => $id,
+                              'component' => $component,
+                              'instance' => $instance,
+                              'level' => $level,
+                              'insseq' => $insseq))) {
             // Success
             if ($warnmsg == '') {
                 LogUtil::registerStatus($this->__('Done! Created permission rule.'));
@@ -556,9 +523,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get parameters
-        $permgrp = FormUtil::getPassedValue('permgrp', null, 'REQUEST');
-        $pid = FormUtil::getPassedValue('pid', null, 'REQUEST');
-        $confirmation = FormUtil::getPassedValue('confirmation', null, 'REQUEST');
+        $permgrp = $this->request->get('permgrp', null);
+        $pid = $this->request->get('pid', null);
+        $confirmation = $this->request->get('confirmation', null);
 
         // Check for confirmation.
         if (empty($confirmation)) {
@@ -595,24 +562,18 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return array groups array
      */
-    public function getGroupsInfoAction()
+    public function getGroupsInfo()
     {
-        $dbtable = DBUtil::getTables();
-
-        $groupcolumn = $dbtable['groups_column'];
-
-        $orderBy = "ORDER BY $groupcolumn[name]";
-        $objArrray = DBUtil::selectObjectArray('groups', '', $orderBy);
+        $groups = array();
         $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
         $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
 
-        $ak = array_keys($objArrray);
-        foreach ($ak as $v) {
-            $gid = $objArrray[$v]['gid'];
-            $groups[$gid] = $objArrray[$v]['name'];
+        $objArray = ModUtil::apiFunc('Groups', 'user', 'getall');
+        foreach ($objArray as $group) {
+            $groups[$group['gid']] = $group['name'];
         }
 
-        return($groups);
+        return $groups;
     }
 
     /**
@@ -672,22 +633,22 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $error = false;
-        $filter = (bool)FormUtil::getPassedValue('filter', false, 'POST');
+        $filter = (bool)$this->request->request->get('filter', false);
         $this->setVar('filter', $filter);
 
-        $rowview = (int)FormUtil::getPassedValue('rowview', 25, 'POST');
+        $rowview = (int)$this->request->request->get('rowview', 25);
         $this->setVar('rowview', $rowview);
 
-        $rowedit = (int)FormUtil::getPassedValue('rowedit', 35, 'POST');
+        $rowedit = (int)$this->request->request->get('rowedit', 35);
         $this->setVar('rowedit', $rowedit);
 
-        $lockadmin = (bool)FormUtil::getPassedValue('lockadmin', false, 'POST');
+        $lockadmin = (bool)$this->request->request->get('lockadmin', false);
         $this->setVar('lockadmin', $lockadmin);
 
-        $adminid = (int)FormUtil::getPassedValue('adminid', 1, 'POST');
+        $adminid = (int)$this->request->request->get('adminid', 1);
         if ($adminid <> 0) {
-            $perm = DBUtil::selectObjectByID('group_perms', $adminid, 'pid');
-            if ($perm == false) {
+            $perm = $this->entityManager->find('Permissions\Entity\PermissionEntity', $adminid);
+            if (!$perm) {
                 $adminid = 0;
                 $error = true;
             }
@@ -710,9 +671,8 @@ class AdminController extends \Zikula_AbstractController
      */
     public function checkpermissionsAction()
     {
-        $username = FormUtil::getPassedValue('username', null, 'POST');
-        $returnto = FormUtil::getPassedValue('returnto', System::getCurrentUri(), 'POST');
-        $this->redirect($returnto);
+        $returnto = $this->request->request->get('returnto', \System::getCurrentUri());
+        return $this->redirect($returnto);
     }
 
 }
