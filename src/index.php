@@ -69,9 +69,12 @@ try {
             $response = new Response(__('Page not found.'), 404);
         } else if (true === $return) {
             // controllers should not return boolean anymore, this is BC for the time being.
+            // todo PlainResponse here....
             System::shutDown();
         } else if (false === $return instanceof Response) {
             $response = new Response($return);
+        } else {
+           $response = $return;
         }
     } else {
         $response = new Response('Something unexpected happened', 500);
