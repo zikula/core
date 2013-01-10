@@ -328,7 +328,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        $dql = "SELECT MAX(p.sequence) FROM Permissions\Entity\PermissionEntuty p";
+        $dql = "SELECT MAX(p.sequence) FROM Permissions\Entity\PermissionEntity p";
         $query = $this->entityManager->createQuery($dql);
         return (int)$query->getSingleScalarResult();
     }
