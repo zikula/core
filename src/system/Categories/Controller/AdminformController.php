@@ -22,7 +22,7 @@ use FormUtil;
 use Categories_DBObject_Category;
 use DBObject;
 use CategoryUtil;
-use ;
+use Categories\GenericUtil;
 
 /**
  * Controller.
@@ -40,71 +40,88 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
+        // get data from post
+        $data = $this->request->request->get('category', null);
+
+        if (!isset($data['is_locked'])) {
+            $data['is_locked'] = 0;
+        }
+        if (!isset($data['is_leaf'])) {
+            $data['is_leaf'] = 0;
+        }
+        if (!isset($data['status'])) {
+            $data['status'] = 'I';
+        }
+
         $args = array();
 
-        if (FormUtil::getPassedValue('category_copy', null, 'POST')) {
+        if ($this->request->request->get('category_copy', null)) {
             $args['op'] = 'copy';
-            $args['cid'] = $_POST['category']['id'];
-
-            return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
+            $args['cid'] = (int)$data['id'];
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_move', null, 'POST')) {
+        if ($this->request->request->get('category_move', null)) {
             $args['op'] = 'move';
-            $args['cid'] = $_POST['category']['id'];
-
-            return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
+            $args['cid'] = (int)$data['id'];
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_delete', null, 'POST')) {
+        if ($this->request->request->get('category_delete', null)) {
             $args['op'] = 'delete';
-            $args['cid'] = $_POST['category']['id'];
-
-            return System::redirect(ModUtil::url('Categories', 'admin', 'op', $args));
+            $args['cid'] = (int)$data['id'];
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'op', $args));
         }
 
-        if (FormUtil::getPassedValue('category_user_edit', null, 'POST')) {
+        if ($this->request->request->get('category_user_edit', null)) {
             $_SESSION['category_referer'] = System::serverGetVar('HTTP_REFERER');
-            $args['dr'] = $_POST['category']['id'];
-
-            return System::redirect(ModUtil::url('Categories', 'user', 'edit', $args));
+            $args['dr'] = (int)$data['id'];
+            return $this->redirect(ModUtil::url('Categories', 'user', 'edit', $args));
         }
 
-        $cat = new Categories_DBObject_Category ();
-        $data = $cat->getDataFromInput();
-
-        if (!$cat->validate('admin')) {
-            $category = FormUtil::getPassedValue('category', null, 'POST');
-            $args['cid'] = $category['id'];
-            $args['mode'] = 'edit';
-
-            return System::redirect(ModUtil::url('Categories', 'admin', 'edit', $args));
+        $valid = GenericUtil::validateCategoryData($data);
+        if (!$valid) {
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'edit', array('mode' => 'edit', 'cid' => (int)$data['id'])));
         }
 
-        $attributes = array();
-        $values = FormUtil::getPassedValue('attribute_value', 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', 'POST') as $index => $name) {
-            if (!empty($name)) $attributes[$name] = $values[$index];
-        }
+        // process name
+        $data['name'] = GenericUtil::processCategoryName($data['name']);
 
-        $cat->setDataField('__ATTRIBUTES__', $attributes);
+        // process parent
+        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        unset($data['parent_id']);
 
-        // retrieve old category from DB
-        $category = FormUtil::getPassedValue('category', null, 'POST');
-        $oldCat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $category['id']);
+        // process display names
+        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
-        // update new category data
-        $cat->update();
+        // get existing category
+        $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $data['id']);
+
+        $prevCategoryName = $category['name'];
+
+        // save category
+        $category->merge($data);
+        $this->entityManager->flush();
+
+        // process path and ipath
+        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+
+        // process category attributes
+        $attrib_names = $this->request->request->get('attribute_name', array());
+        $attrib_values = $this->request->request->get('attribute_value', array());
+        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+
+        $this->entityManager->flush();
 
         // since a name change will change the object path, we must rebuild it here
-        if ($oldCat->_objData['name'] != $cat->_objData['name']) {
-            $obj = $cat->_objData;
-            CategoryUtil::rebuildPaths('path', 'name', $obj['id']);
+        if ($prevCategoryName != $category['name']) {
+            CategoryUtil::rebuildPaths('path', 'name', $category['id']);
         }
 
-        $msg = __f('Done! Saved the %s category.', $oldCat->_objData['name']);
+        $msg = __f('Done! Saved the %s category.', $prevCategoryName);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -118,51 +135,42 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $cat = new Categories_DBObject_Category ();
-        $cat->getDataFromInput();
+        // get data from post
+        $data = $this->request->request->get('category', null);
 
-        // submit button wasn't pressed -> category was chosen from dropdown
-        // we now get the parent (security) category domains so we can inherit them
-        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) {
-            $newCat = $_POST['category'];
-            $pcID = $newCat['parent_id'];
-
-            $pCat = new Categories_DBObject_Category ();
-            $parentCat = $pCat->get($pcID);
-
-            //$newCat['security_domain'] = $parentCat['security_domain'];
-            //for ($i=1; $i<=5; $i++) {
-            //    $name = 'data' . $i . '_domain';
-            //    $newCat[$name] = $parentCat[$name];
-            //}
-
-            $_SESSION['newCategory'] = $newCat;
-
-            return System::redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
+        $valid = GenericUtil::validateCategoryData($data);
+        if (!$valid) {
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'newcat'));
         }
 
-        if (!$cat->validate('admin')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'newcat') . '#top');
-        }
+        // process name
+        $data['name'] = GenericUtil::processCategoryName($data['name']);
 
-        $attributes = array();
-        $values = FormUtil::getPassedValue('attribute_value', array(), 'POST');
-        foreach (FormUtil::getPassedValue('attribute_name', array(), 'POST') as $index => $name) {
-            if (!empty($name)) {
-                $attributes[$name] = $values[$index];
-            }
-        }
+        // process parent
+        $data['parent'] = GenericUtil::processCategoryParent($data['parent_id']);
+        unset($data['parent_id']);
 
-        if ($attributes) {
-            $cat->setDataField('__ATTRIBUTES__', $attributes);
-        }
+        // process display names
+        $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
-        $cat->insert();
-        // since the original insert can't construct the ipath (since
-        // the insert id is not known yet) we update the object here.
-        $cat->update();
+        // save category
+        $category = new \Zikula\Core\Doctrine\Entity\Category;
+        $category->merge($data);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
 
-        $msg = __f('Done! Inserted the %s category.', $cat->_objData['name']);
+        // process path and ipath
+        $category['path'] = GenericUtil::processCategoryPath($data['parent']['path'], $category['name']);
+        $category['ipath'] = GenericUtil::processCategoryIPath($data['parent']['ipath'], $category['id']);
+
+        // process category attributes
+        $attrib_names = $this->request->request->get('attribute_name', array());
+        $attrib_values = $this->request->request->get('attribute_value', array());
+        GenericUtil::processCategoryAttributes($category, $attrib_names, $attrib_values);
+
+        $this->entityManager->flush();
+
+        $msg = __f('Done! Inserted the %s category.', $category['name']);
         LogUtil::registerStatus($msg);
         $this->redirect(ModUtil::url('Categories', 'admin', 'view') . '#top');
     }
@@ -178,25 +186,30 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
+        if ($this->request->request->get('category_cancel', null)) {
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
-        $cid = FormUtil::getPassedValue('cid', null, 'POST');
-        $cat = new Categories_DBObject_Category ();
-        $cat->get($cid);
+        $cid = $this->request->request->get('cid', null);
+
+        $cat = CategoryUtil::getCategoryByID($cid);
 
         // delete subdirectories
-        if ($_POST['subcat_action'] == 'delete') {
-            $cat->delete(true);
-        } elseif ($_POST['subcat_action'] == 'move') {
+        if ($this->request->request->get('subcat_action') == 'delete') {
+            CategoryUtil::deleteCategoriesByPath($cat['ipath']);
+        } elseif ($this->request->request->get('subcat_action') == 'move') {
             // move subdirectories
-            $cat->deleteMoveSubcategories($_POST['category']['parent_id']);
+            $data = $this->request->request->get('category', null);
+            if ($data['parent_id']) {
+                CategoryUtil::moveSubCategoriesByPath($cat['ipath'], $data['parent_id']);
+                CategoryUtil::deleteCategoryByID($cid);
+            }
         }
 
-        $msg = __f('Done! Deleted the %s category.', $cat->_objData['name']);
+        $msg = __f('Done! Deleted the %s category.', $cat['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -210,19 +223,21 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
+        if ($this->request->request->get('category_cancel', null)) {
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
-        $cid = FormUtil::getPassedValue('cid', null, 'POST');
-        $cat = new Categories_DBObject_Category ();
-        $cat->get($cid);
+        $cid = $this->request->request->get('cid', null);
+        $cat = CategoryUtil::getCategoryByID($cid);
 
-        $cat->copy($_POST['category']['parent_id']);
+        $data = $this->request->request->get('category', null);
 
-        $msg = __f('Done! Copied the %s category.', $cat->_objData['name']);
+        CategoryUtil::copyCategoriesByPath($cat['ipath'], $data['parent_id']);
+
+        $msg = __f('Done! Copied the %s category.', $cat['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -236,18 +251,21 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        if (FormUtil::getPassedValue('category_cancel', null, 'POST')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'view'));
+        if ($this->request->request->get('category_cancel', null)) {
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
         }
 
-        $cid = FormUtil::getPassedValue('cid', null, 'POST');
-        $cat = new Categories_DBObject_Category ();
-        $cat->get($cid);
-        $cat->move($_POST['category']['parent_id']);
+        $cid = $this->request->request->get('cid', null);
+        $cat = CategoryUtil::getCategoryByID($cid);
 
-        $msg = __f('Done! Moved the %s category.', $cat->_objData['name']);
+        $data = $this->request->request->get('category', null);
+
+        CategoryUtil::moveCategoriesByPath($cat['ipath'], $data['parent_id']);
+
+        $msg = __f('Done! Moved the %s category.', $cat['name']);
         LogUtil::registerStatus($msg);
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     /**
@@ -263,7 +281,8 @@ class AdminformController extends \Zikula_AbstractController
         CategoryUtil::rebuildPaths('ipath', 'id');
 
         LogUtil::registerStatus(__('Done! Rebuilt the category paths.'));
-        $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
+
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'view'));
     }
 
     public function editregistryAction()
@@ -274,39 +293,66 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $id = FormUtil::getPassedValue('id', 0);
-
-        $class = 'Categories_DBObject_Registry';
-
-        if (FormUtil::getPassedValue('mode', null, 'POST') == 'delete') {
-            $obj = new $class();
-            $obj->get($id);
-            $obj->delete($id);
+        // delete registry
+        if ($this->request->request->get('mode', null) == 'delete') {
+            $id = $this->request->get('id', 0);
+            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $id);
+            $this->entityManager->remove($obj);
+            $this->entityManager->flush();
 
             LogUtil::registerStatus(__('Done! Deleted the category registry entry.'));
 
-            return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
         }
 
         $args = array();
-        if (!FormUtil::getPassedValue('category_submit', null, 'POST')) { // got here through selector auto-submit
-            $obj = new $class();
-            $data = $obj->getDataFromInput($id);
+
+        if (!$this->request->request->get('category_submit', null)) {
+            // got here through selector auto-submit
+            $data = $this->request->request->get('category_registry', null);
             $args['category_registry'] = $data;
-
-            return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
 
-        $obj = new $class();
-        $obj->getDataFromInput();
+        // get data from post
+        $data = $this->request->request->get('category_registry', null);
 
-        if (!$obj->validate('admin')) {
-            return System::redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
+        // do some validation
+        if (empty($data['modname'])) {
+            $args['category_registry'] = $data;
+            LogUtil::registerError(__('Error! You did not select a module.'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+        }
+        if (empty($data['entityname'])) {
+            $args['category_registry'] = $data;
+            LogUtil::registerError(__('Error! You did not select an entity.'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+        }
+        if (empty($data['property'])) {
+            $args['category_registry'] = $data;
+            LogUtil::registerError(__('Error! You did not enter a property name.'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
+        }
+        if ((int)$data['category_id'] == 0) {
+            $args['category_registry'] = $data;
+            LogUtil::registerError(__('Error! You did not select a category.'));
+            return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry', $args));
         }
 
-        $obj->save();
+        if (isset($data['id']) && (int)$data['id'] > 0) {
+            // update existing registry
+            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $data['id']);
+        } else {
+            // save the new registry
+            $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
+        }
+        $obj->merge($data);
+        $this->entityManager->persist($obj);
+        $this->entityManager->flush();
+
         LogUtil::registerStatus(__('Done! Saved the category registry entry.'));
-        $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
+
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'editregistry'));
     }
 
     public function preferencesAction()
@@ -317,28 +363,29 @@ class AdminformController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $userrootcat = FormUtil::getPassedValue('userrootcat', null);
+        $userrootcat = $this->request->get('userrootcat', null);
         if ($userrootcat) {
             $this->setVar('userrootcat', $userrootcat);
         }
 
-        $autocreateusercat = (int)FormUtil::getPassedValue('autocreateusercat', 0);
+        $autocreateusercat = (int)$this->request->get('autocreateusercat', 0);
         $this->setVar('autocreateusercat', $autocreateusercat);
 
-        $allowusercatedit = (int)FormUtil::getPassedValue('allowusercatedit', 0);
+        $allowusercatedit = (int)$this->request->get('allowusercatedit', 0);
         $this->setVar('allowusercatedit', $allowusercatedit);
 
-        $autocreateuserdefaultcat = FormUtil::getPassedValue('autocreateuserdefaultcat', 0);
+        $autocreateuserdefaultcat = $this->request->get('autocreateuserdefaultcat', 0);
         $this->setVar('autocreateuserdefaultcat', $autocreateuserdefaultcat);
 
-        $userdefaultcatname = FormUtil::getPassedValue('userdefaultcatname', 'Default');
+        $userdefaultcatname = $this->request->get('userdefaultcatname', 'Default');
         $this->setVar('userdefaultcatname', $userdefaultcatname);
 
-        $permissionsall = (int)FormUtil::getPassedValue('permissionsall', 0);
+        $permissionsall = (int)$this->request->get('permissionsall', 0);
         $this->setVar('permissionsall', $permissionsall);
 
         LogUtil::registerStatus(__('Done! Saved module configuration.'));
-        $this->redirect(ModUtil::url('Categories', 'admin', 'preferences'));
+
+        return $this->redirect(ModUtil::url('Categories', 'admin', 'preferences'));
     }
 
 }

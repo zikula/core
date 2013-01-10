@@ -1,5 +1,5 @@
 {ajaxheader filename='categories_admin_view.js' ui=true}
-{pageaddvar name='javascript' value='system/Categories/javascript/categories_admin_edit.js'}
+{pageaddvar name='javascript' value='system/Categories/Resources/public/js/categories_admin_edit.js'}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type='view' size='small'}

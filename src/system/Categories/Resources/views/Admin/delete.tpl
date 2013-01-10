@@ -20,11 +20,11 @@
                 {gt text="It contains %s direct sub-categories." tag1=$numSubcats}
                 {gt text="Please also choose what to do with this category's sub-categories:"}
             </p>
-            <div class="z-formrow">
+            <div class="z-formlist">
                 <label for="subcat_action_delete" >{gt text="Delete all sub-categories"}</label>
                 <input type="radio" id="subcat_action_delete" name="subcat_action" value="delete" checked="checked" onclick="document.getElementById('subcat_move').style.visibility='hidden'" />
             </div>
-            <div class="z-formrow">
+            <div class="z-formlist">
                 <label for="subcat_action_move">{gt text="Move all sub-categories to next category"}</label>
                 <input type="radio" id="subcat_action_move" name="subcat_action" value="move" onclick="document.getElementById('subcat_move').style.visibility='visible'" />
                 <div id="subcat_move" style="visibility: hidden;">
