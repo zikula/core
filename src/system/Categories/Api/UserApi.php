@@ -12,7 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Api_User extends Zikula_AbstractApi
+namespace Categories\Api;
+
+use LogUtil;
+use CategoryUtil;
+use UserUtil;
+
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * get the roor category for a user

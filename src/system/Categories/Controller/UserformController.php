@@ -12,7 +12,18 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Controller_Userform extends Zikula_AbstractController
+namespace Categories\Controller;
+
+use LogUtil;
+use SecurityUtil;
+use FormUtil;
+use System;
+use Categories_DBObject_Category;
+use CategoryUtil;
+use ModUtil;
+use ObjectUtil;
+
+class UserformController extends \Zikula_AbstractController
 {
     /**
      * delete category

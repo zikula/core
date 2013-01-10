@@ -12,10 +12,22 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Controller;
+
+use LogUtil;
+use SecurityUtil;
+use ModUtil;
+use System;
+use FormUtil;
+use Categories_DBObject_Category;
+use DBObject;
+use CategoryUtil;
+use ;
+
 /**
  * Controller.
  */
-class Categories_Controller_Adminform extends Zikula_AbstractController
+class AdminformController extends \Zikula_AbstractController
 {
     /**
      * update category

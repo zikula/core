@@ -11,7 +11,22 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Categories_Controller_Admin extends Zikula_AbstractController
+
+namespace Categories\Controller;
+
+use Zikula_View;
+use ModUtil;
+use FormUtil;
+use LogUtil;
+use SecurityUtil;
+use CategoryUtil;
+use ZLanguage;
+use Categories_DBObject_Category;
+use DBObject;
+use StringUtil;
+use ;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.

@@ -12,7 +12,23 @@
  * information regarding copyright and licensing.
  */
 
-class Categories_Controller_User extends Zikula_AbstractController
+namespace Categories\Controller;
+
+use LogUtil;
+use SecurityUtil;
+use System;
+use SessionUtil;
+use Zikula_View;
+use FormUtil;
+use ModUtil;
+use CategoryUtil;
+use ZLanguage;
+use UserUtil;
+use ServiceUtil;
+use Categories_Installer;
+use Categories_DBObject_Category;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * main user function

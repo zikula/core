@@ -12,10 +12,23 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Controller;
+
+use SecurityUtil;
+use CategoryUtil;
+use Categories_DBObject_Category;
+use Zikula_Response_Ajax;
+use FormUtil;
+use ZLanguage;
+use DBObject;
+use Zikula_Response_Ajax_BadData;
+use Zikula_AbstractController;
+use Zikula_View;
+
 /**
  * Categories_Controller_Ajax.
  */
-class Categories_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Resequence categories
