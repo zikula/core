@@ -106,7 +106,7 @@ class ZLoader
             }
         }
 
-        // Classloader for ModulePlugin
+        // Classloader for Themes
         if (strpos($class, 'Themes') === 0) {
             $array = explode('_', $class);
             $themeName = $array[1];
