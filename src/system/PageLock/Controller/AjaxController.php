@@ -16,7 +16,7 @@ namespace PageLock\Controller;
 
 use UserUtil;
 use ModUtil;
-use Zikula_Response_Ajax;
+use Zikula\Response\Ajax\AjaxResponse;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -25,7 +25,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @returns { hasLock: bool, message: string, lockedBy: string }
      */
-    public function refreshpagelockAction($args)
+    public function refreshpagelockAction(array $args = array())
     {
         $this->checkAjaxToken();
         $lockName = $this->request->request->get('lockname');
@@ -44,14 +44,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $lockInfo['message'] = null;
         }
 
-        return new Zikula_Response_Ajax($lockInfo);
+        return new AjaxResponse($lockInfo);
     }
 
     /**
      * change a page lock
      *
      */
-    public function checkpagelockAction($args)
+    public function checkpagelockAction(array $args = array())
     {
         $this->checkAjaxToken();
         $lockName = $this->request->request->get('lockname');
@@ -70,7 +70,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $lockInfo['message'] = null;
         }
 
-        return new Zikula_Response_Ajax($lockInfo);
+        return new AjaxResponse($lockInfo);
     }
 
 }

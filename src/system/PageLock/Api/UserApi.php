@@ -1,4 +1,5 @@
-<?php/**
+<?php
+/**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
