@@ -20,10 +20,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula_ServiceManager_Definition;
-use Zikula_ServiceManager_Reference;
 use Zikula_Doctrine2_ZikulaSqlLogger;
 use Zikula_Doctrine2_MySqlGenerateSchemaListener;
 

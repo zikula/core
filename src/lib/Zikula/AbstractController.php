@@ -14,6 +14,8 @@
  */
 
 use Zikula\Component\HookDispatcher\Hook;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Abstract controller for modules.
@@ -100,6 +102,34 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     public function dispatchHooks($name, Hook $hook)
     {
         return $this->get('hook_dispatcher')->dispatch($name, $hook);
+    }
+
+    /**
+     * Return a response.
+     *
+     * @param       $text
+     * @param null  $code
+     * @param array $headers
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function response($text, $code = 200, $headers = array())
+    {
+        return new Response($text, $code, $headers);
+    }
+
+    /**
+     * Return a redirect response.
+     *
+     * @param string $url
+     * @param int    $status
+     * @param array  $headers
+     *
+     * @return Symfony\Component\HttpFoundation\RedirectResponse|void
+     */
+    public function redirect($url, $status = 302, $headers = array())
+    {
+        return new RedirectResponse($url, $status, $headers);
     }
 
     /**

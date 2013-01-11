@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Permissions_Installer extends Zikula_AbstractInstaller
+namespace Permissions;
+
+use DBUtil;
+use Entity\PermissionEntity;
+
+class PermissionsInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the permissions module
@@ -25,12 +30,16 @@ class Permissions_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
-        if (!DBUtil::createTable('group_perms')) {
+        // create the table
+        try {
+            \DoctrineHelper::createSchema($this->entityManager, array('Permission'));
+        } catch (\Exception $e) {
             return false;
         }
 
         // Create any default for this module
         $this->defaultdata();
+
         // Initialisation successful
         return true;
     }
@@ -82,55 +91,57 @@ class Permissions_Installer extends Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $record = array();
-        $record['gid']       = '2';
-        $record['sequence']  = '1';
-        $record['realm']     = '0';
+        $record = new PermissionEntity();
+        $record['gid']       = 2;
+        $record['sequence']  = 1;
+        $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
-        $record['level']     = '800';
-        $record['bond']      = '0';
-        DBUtil::insertObject($record, 'group_perms', 'pid');
+        $record['level']     = 800;
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
 
-        $record = array();
-        $record['gid']       = '-1';
-        $record['sequence']  = '2';
-        $record['realm']     = '0';
+        $record = new PermissionEntity();
+        $record['gid']       = -1;
+        $record['sequence']  = 2;
+        $record['realm']     = 0;
         $record['component'] = 'ExtendedMenublock::';
         $record['instance']  = '1:1:';
-        $record['level']     = '0';
-        $record['bond']      = '0';
-        DBUtil::insertObject($record, 'group_perms', 'pid');
+        $record['level']     = 0;
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
 
-        $record = array();
-        $record['gid']       = '1';
-        $record['sequence']  = '3';
-        $record['realm']     = '0';
+        $record = new PermissionEntity();
+        $record['gid']       = 1;
+        $record['sequence']  = 3;
+        $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
-        $record['level']     = '300';
-        $record['bond']      = '0';
-        DBUtil::insertObject($record, 'group_perms', 'pid');
+        $record['level']     = 300;
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
 
-        $record = array();
-        $record['gid']       = '0';
-        $record['sequence']  = '4';
-        $record['realm']     = '0';
+        $record = new PermissionEntity();
+        $record['gid']       = 0;
+        $record['sequence']  = 4;
+        $record['realm']     = 0;
         $record['component'] = 'ExtendedMenublock::';
         $record['instance']  = '1:(1|2|3):';
-        $record['level']     = '0';
-        $record['bond']      = '0';
-        DBUtil::insertObject($record, 'group_perms', 'pid');
+        $record['level']     = 0;
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
 
-        $record = array();
-        $record['gid']       = '0';
-        $record['sequence']  = '5';
-        $record['realm']     = '0';
+        $record = new PermissionEntity();
+        $record['gid']       = 0;
+        $record['sequence']  = 5;
+        $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
-        $record['level']     = '200';
-        $record['bond']      = '0';
-        DBUtil::insertObject($record, 'group_perms', 'pid');
+        $record['level']     = 200;
+        $record['bond']      = 0;
+        $this->entityManager->persist($record);
+
+        $this->entityManager->flush();
 
         $this->setVar('filter', 1);
         $this->setVar('warnbar', 1);
