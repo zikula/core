@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Installer extends Zikula_AbstractInstaller
+namespace Theme;
+
+use DBUtil;
+use ModUtil;
+
+class ThemeInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the theme module

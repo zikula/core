@@ -12,7 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Api_Admin extends Zikula_AbstractApi
+namespace Theme\Api;
+
+use Theme\Util;
+use ModUtil;
+use SecurityUtil;
+use LogUtil;
+use DBUtil;
+use System;
+use ThemeUtil;
+use DataUtil;
+use FileUtil;
+use CacheUtil;
+
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Regenerate themes list.
@@ -23,7 +36,7 @@ class Theme_Api_Admin extends Zikula_AbstractApi
      */
     public function regenerate()
     {
-        return Theme_Util::regenerate();
+        return Util::regenerate();
     }
 
     /**

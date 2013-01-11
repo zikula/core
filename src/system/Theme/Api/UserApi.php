@@ -12,7 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Api_User extends Zikula_AbstractApi
+namespace Theme\Api;
+
+use LogUtil;
+use ModUtil;
+use ThemeUtil;
+use DataUtil;
+use FileUtil;
+use CacheUtil;
+use System;
+use SecurityUtil;
+use UserUtil;
+use ZLanguage;
+
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all settings for a theme
@@ -306,7 +319,7 @@ class Theme_Api_User extends Zikula_AbstractApi
             if (!file_exists($zpath.'/'.$osfile) || is_writable($zpath.'/'.$osfile)) {
                 $handle = fopen($zpath.'/'.$osfile, 'w+');
             } else {
-                return LogUtil::registerError($this->__f("Error! Cannot write in '%1$s' or '%2$s' to store the contents of '%3$s'.", array($tpath, $zpath, $osfile)));
+                return LogUtil::registerError($this->__f('Error! Cannot write in "%1$s" or "%2$s" to store the contents of "%3$s"', array($tpath, $zpath, $osfile)));
             }
         }
 

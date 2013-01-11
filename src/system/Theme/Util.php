@@ -12,12 +12,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Theme;
+
+use ModUtil;
+use FileUtil;
+use LogUtil;
+use ThemeUtil;
+use DBUtil;
+
 /**
  * Theme_Util class.
  */
-class Theme_Util
+class Util
 {
-
     /**
      * Regenerates the theme list.
      */

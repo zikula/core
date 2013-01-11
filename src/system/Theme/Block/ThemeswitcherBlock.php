@@ -12,7 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Block_Themeswitcher extends Zikula_Controller_AbstractBlock
+namespace Theme\Block;
+
+use SecurityUtil;
+use System;
+use ModUtil;
+use DataUtil;
+use BlockUtil;
+use UserUtil;
+use ThemeUtil;
+use Zikula_View;
+use FormUtil;
+use Zikula_View_Theme;
+
+class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

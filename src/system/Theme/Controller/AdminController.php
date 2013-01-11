@@ -11,7 +11,23 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Theme_Controller_Admin extends Zikula_AbstractController
+
+namespace Theme\Controller;
+
+use Zikula_View;
+use LogUtil;
+use Modutil;
+use SecurityUtil;
+use FormUtil;
+use ThemeUtil;
+use System;
+use CacheUtil;
+use DataUtil;
+use ZLanguage;
+use BlockUtil;
+use Zikula_View_Theme;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
