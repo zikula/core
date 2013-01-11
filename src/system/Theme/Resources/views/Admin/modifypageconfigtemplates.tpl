@@ -112,7 +112,7 @@
                     {foreach name='blockpositions' from=$pageconfiguration.blockpositions key='position' item='template'}
                     {if !isset($blockpositions.$position)}
                     {assign var='undefinedblockposition' value=true}
-                    <li><a href="{modurl modname="BlocksModule" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
+                    <li><a href="{modurl modname="Blocks" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
                     {/if}
                     {/foreach}
                 </ul>

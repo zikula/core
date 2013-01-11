@@ -67,10 +67,10 @@ class AdminController extends \Zikula_AbstractController
             // only the main site can regenerate the themes list
             if ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)) {
                 //return true but any action has been made
-                ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
+                ModUtil::apiFunc('Theme', 'admin', 'regenerate');
             }
         } else {
-            ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
+            ModUtil::apiFunc('Theme', 'admin', 'regenerate');
         }
 
         // get our input
@@ -250,10 +250,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($filename) {
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
+            $variables = ModUtil::apiFunc('Theme', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            $variables = ModUtil::apiFunc('Theme', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
         } else {
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
+            $variables = ModUtil::apiFunc('Theme', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
         }
 
         // load the language file

@@ -202,7 +202,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete theme
-        $dql = "DELETE FROM ThemeModule\Entity\Theme t WHERE t.id = {$themeid}";
+        $dql = "DELETE FROM Theme\Entity\Theme t WHERE t.id = {$themeid}";
         $query = $this->entityManager->createQuery($dql);
         $result = $query->getResult();
         if (!$result) {
