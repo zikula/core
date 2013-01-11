@@ -1,6 +1,6 @@
 {pageaddvar name='javascript' value='zikula.ui'}
 {adminheader}
-{include file="theme_admin_modifymenu.tpl"}
+{include file="Admin/modifymenu.tpl"}
 
 <h4>{gt text="Edit page configuration"} - {$filename|safetext}</h4>
 
@@ -112,7 +112,7 @@
                     {foreach name='blockpositions' from=$pageconfiguration.blockpositions key='position' item='template'}
                     {if !isset($blockpositions.$position)}
                     {assign var='undefinedblockposition' value=true}
-                    <li><a href="{modurl modname="Blocks" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
+                    <li><a href="{modurl modname="BlocksModule" type="admin" func="newposition" name=$position|safetext}">{$position|safetext}</a></li>
                     {/if}
                     {/foreach}
                 </ul>

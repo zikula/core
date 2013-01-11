@@ -43,7 +43,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      *
      * @param Zikula_View $view Default null means new Render instance for this module name.
      *
-     * @return Zikula_AbstractController
+     * @return \Zikula_AbstractController
      */
     protected function setView(Zikula_View $view = null)
     {
@@ -185,7 +185,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // generate the output
         return $this->view->assign($vars)
                           ->assign('warnings', $warnings)
-                          ->fetch('theme_block_render_modify.tpl');
+                          ->fetch('Block/render_modify.tpl');
     }
 
     /**
@@ -200,9 +200,9 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
             return false;
         }
 
-        $module = FormUtil::getPassedValue('rmodule', null, 'POST');
-        $template = FormUtil::getPassedValue('rtemplate', null, 'POST');
-        $parameters = FormUtil::getPassedValue('rparameters', null, 'POST');
+        $module = $this->request->request->get('rmodule');
+        $template = $this->request->request->get('rtemplate');
+        $parameters = $this->request->request->get('rparameters');
 
         $blockinfo['content'] = BlockUtil::varsToContent(compact('module', 'template', 'parameters' ));
 

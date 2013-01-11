@@ -24,14 +24,15 @@ class ThemeInstaller extends \Zikula_AbstractInstaller
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance.
-     * This function MUST exist in the pninit file for a module
      *
-     * @return bool true on success, false otherwise
+     * @return       bool       true on success, false otherwise
      */
     public function install()
     {
         // create the table
-        if (!DBUtil::createTable('themes')) {
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array('ThemeModule\Entity\Theme'));
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -73,77 +74,12 @@ class ThemeInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
+     * @param        string   $oldVersion   version number string to upgrade from
+     * @return       mixed    true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
-        // update the table
-        if (!DBUtil::changeTable('themes')) {
-            return false;
-        }
-
         switch ($oldversion) {
-            case '3.1':
-                $this->setVar('cssjscombine', false);
-                $this->setVar('cssjscompress', false);
-                $this->setVar('cssjsminify', false);
-                $this->setVar('cssjscombine_lifetime', 3600);
-
-            case '3.3':
-            // convert pnRender modvars
-                $pnrendervars = ModUtil::getVar('pnRender');
-                foreach ($pnrendervars as $k => $v) {
-                    $this->setVar('render_' . $k, $v);
-                }
-                // delete pnRender modvars
-                ModUtil::delVar('pnRender');
-
-                $modid = ModUtil::getIdFromName('pnRender');
-
-                // check and update blocks
-                $blocks = ModUtil::apiFunc('Blocks', 'user', 'getall', array('modid' => $modid));
-                if (!empty($blocks)) {
-                    $thememodid = ModUtil::getIdFromName('Theme');
-                    foreach ($blocks as $block) {
-                        $block->setBkey('render');
-                        $block->setMid($thememodid);
-                        $this->entityManager->flush();
-                    }
-                }
-
-                // check and fix permissions
-                $dbtable = DBUtil::getTables();
-                $permscolumn = $dbtable['group_perms_column'];
-                $permswhere = "WHERE $permscolumn[component] = 'pnRender:pnRenderblock:'";
-                $perms = DBUtil::selectObjectArray('group_perms', $permswhere);
-                if (!empty($perms)) {
-                    foreach ($perms as $perm) {
-                        $perm['component'] = 'Theme:Renderblock:';
-                        DBUtil::updateObject($perm, 'group_perms', '', 'pid');
-                    }
-                }
-
-                // Set Module pnRender 'Inactive'
-                if (!ModUtil::apiFunc('Extensions', 'admin', 'setstate', array(
-                'id' => $modid,
-                'state' => ModUtil::STATE_INACTIVE))) {
-                    return '3.3';
-                }
-                // Remove Module pnRender from Modulelist
-                if (!ModUtil::apiFunc('Extensions', 'admin', 'remove', array(
-                'id' => $modid))) {
-                    return '3.3';
-                }
-
-            case '3.4':
-                if (!DBUtil::changeTable('themes')) {
-                    return '3.4';
-                }
-            case '3.4.1':
-                if (!DBUtil::changeTable('themes')) {
-                    return '3.4.1';
-                }
             case '3.4.2':
                 $this->setVar('enable_mobile_theme', false);
                 // future upgrade
@@ -158,21 +94,12 @@ class ThemeInstaller extends \Zikula_AbstractInstaller
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance
-     * This function MUST exist in the pninit file for a module
      *
      * Since the theme module should never be deleted we'all always return false here
      * @return bool false
      */
     public function uninstall()
     {
-        // drop the table
-        if (!DBUtil::dropTable('Themes')) {
-            return false;
-        }
-
-        // delete all module variables
-        $this->delVar('Theme');
-
         // Deletion not allowed
         return false;
     }
