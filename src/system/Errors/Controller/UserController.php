@@ -1,5 +1,4 @@
-<?php
-/**
+<?php/**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
@@ -11,10 +10,20 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 use Symfony\Component\HttpFoundation\Response;
 
-class Errors_Controller_User extends Zikula_AbstractController
+namespace Errors\Controller;
+
+use LogUtil;
+use FormUtil;
+use PageUtil;
+use Zikula_View;
+use System;
+use SecurityUtil;
+use Exception;
+use Response;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * Display an error
