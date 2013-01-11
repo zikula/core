@@ -1,4 +1,5 @@
-<?php/**
+<?php
+/**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
@@ -35,7 +36,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return string HTML string
      */
-    public function mainAction($args)
+    public function mainAction(array $args = array())
     {
         $type      = FormUtil::getPassedValue('errtype', isset($args['type']) ? $args['type'] : LogUtil::getErrorType(), 'GET');
         $exception = isset($args['exception']) ? $args['exception'] : null;
@@ -76,7 +77,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         $trace = array();
-        if (System::isDevelopmentMode() && $exception instanceof Exception) {
+        if (System::isDevelopmentMode() && $exception instanceof \Exception) {
             $line = $exception->getLine();
             $file = $exception->getFile();
             $trace = array(0 => '#0 '.$this->__f('Exception thrown in %1$s, line %2$s.', array($file, $line)));
@@ -89,25 +90,20 @@ class UserController extends \Zikula_AbstractController
                    ->assign('trace', $trace);
 
         // return the template output
-        if ($this->view->template_exists($template = "errors_user_{$type}.tpl")) {
-            $content = $this->view->fetch($template);
+        if ($this->view->template_exists($template = "User/{$type}.tpl")) {
+            return $this->response($this->view->fetch($template), $type);
         } else {
-            $content = $this->view->fetch('errors_user_main.tpl');
+            return $this->response($this->view->fetch('User/main.tpl'), $type);
         }
-
-        return new Response($content, $type);
     }
 
     /**
      * Display a system error
      */
-    public function systemAction($args)
+    public function systemAction(array $args = array())
     {
-
-        $content =  $this->view->setCaching(Zikula_View::CACHE_DISABLED)
+        return $this->response($this->view->setCaching(Zikula_View::CACHE_DISABLED)
                           ->assign($args)
-                          ->fetch('errors_user_system.tpl');
-
-        return new Response($content, 500);
+                          ->fetch('User/system.tpl'), 500);
     }
 }
