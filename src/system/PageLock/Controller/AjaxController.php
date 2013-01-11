@@ -12,7 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-class PageLock_Controller_Ajax extends Zikula_Controller_AbstractAjax
+namespace PageLock\Controller;
+
+use UserUtil;
+use ModUtil;
+use Zikula_Response_Ajax;
+
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * refresh a page lock
