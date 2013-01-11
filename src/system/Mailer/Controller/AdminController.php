@@ -12,7 +12,16 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Controller_Admin extends Zikula_AbstractController
+namespace Mailer\Controller;
+
+use Zikula_View;
+use ModUtil;
+use SecurityUtil;
+use FormUtil;
+use Mailer\Form\Handler\ModifyConfigHandler;
+use Mailer\Form\Handler\TestConfigHandler;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -53,7 +62,7 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
 
         $form = FormUtil::newForm('Mailer', $this);
 
-        return $form->execute('mailer_admin_modifyconfig.tpl', new Mailer_Form_Handler_ModifyConfig());
+        return $form->execute('mailer_admin_modifyconfig.tpl', new ModifyConfigHandler());
     }
 
     /**
@@ -66,6 +75,6 @@ class Mailer_Controller_Admin extends Zikula_AbstractController
 
         $form = FormUtil::newForm('Mailer', $this);
 
-        return $form->execute('mailer_admin_testconfig.tpl', new Mailer_Form_Handler_TestConfig());
+        return $form->execute('mailer_admin_testconfig.tpl', new TestConfigHandler());
     }
 }

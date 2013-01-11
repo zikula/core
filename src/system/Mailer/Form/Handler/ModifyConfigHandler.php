@@ -12,7 +12,17 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Form_Handler_ModifyConfig extends Zikula_Form_AbstractHandler
+namespace Mailer\Form\Handler;
+
+use Zikula_Form_View;
+use SecurityUtil;
+use LogUtil;
+use DataUtil;
+use Zikula_Exception_Forbidden;
+use ZLanguage;
+use ModUtil;
+
+class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 {
     private $formValues;
 
