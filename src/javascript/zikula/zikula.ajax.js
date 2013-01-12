@@ -45,7 +45,6 @@
          */
         getMessage: function() {
             return _(this.decodeResponse()).objectGetPath('core.statusmsg', null);
-
         },
         /**
          * Get data returned by module controller
@@ -86,21 +85,23 @@
         decodeResponse: function(force) {
             if (!this.result || force) {
                 var responseText = this.response().responseText,
-                    response;
-                try {
-                    if (_(responseText).isJSON()) {
-                        response = jQuery.parseJSON(responseText);
-                        this.result = {
-                            data: response.data || responseText,
-                            core: response.core || null
-                        };
-                    }
-                } catch (e) {
-                    this.result = {
+                    result = {
                         data: responseText || null,
                         core: null
-                    };
+                    },
+                    response;
+                if (_(responseText).isJSON()) {
+                    try {
+                        if (_(responseText).isJSON()) {
+                            response = jQuery.parseJSON(responseText);
+                            result = {
+                                data: response.data || responseText,
+                                core: response.core || null
+                            };
+                        }
+                    } catch (e) {}
                 }
+                this.result = result;
             }
 
             return this.result;
