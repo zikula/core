@@ -63,6 +63,9 @@
             }
 
             function klass() {
+                if (!(this instanceof klass)) {
+                    return construct(klass, arguments);
+                }
                 this.init.apply(this, arguments);
             }
 
@@ -74,7 +77,9 @@
                 var subclass = function() {};
                 subclass.prototype = parent.prototype;
                 klass.prototype = new subclass();
-                parent.subclasses.push(klass);
+                if (parent.subclasses) {
+                    parent.subclasses.push(klass);
+                }
             }
 
             for (var i = 0; i < args.length; i++) {
