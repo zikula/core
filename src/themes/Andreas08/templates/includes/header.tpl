@@ -19,5 +19,5 @@
         <div id="theme_page_container" class="container_16">
             <div id="theme_header">
                 <h1 class="title"><a href="{homepage}">{$modvars.ZConfig.sitename}</a></h1>
-                <h2 class="slogan">{$modvars.ZConfig.slogan}</h2>
+                {* <h2 class="slogan">{$modvars.ZConfig.slogan}</h2> *}
             </div>
