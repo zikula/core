@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Mailer\Api;
+
+use ModUtil;
+use SecurityUtil;
+
 /**
  * Mailer_Api_Admin class.
  */
-class Mailer_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Get available admin panel links.
