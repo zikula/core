@@ -5,12 +5,10 @@
 </div>
 
 <p class="z-warningmsg">{gt text="Do you really want to delete this page configuration assignment?"}</p>
-<form class="z-form" action="{modurl modname=Theme type=admin func=deletepageconfigurationassignment}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="z-form" action="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$name|safetext pcname=$pcname|safetext}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
-        <input type="hidden" name="themename" value="{$name|safetext}" />
-        <input type="hidden" name="pcname" value="{$pcname|safetext}" />
         <fieldset>
             <legend>{gt text="Confirmation prompt"}</legend>
             <div class="z-buttons z-formbuttons">

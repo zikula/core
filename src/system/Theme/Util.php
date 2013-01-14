@@ -12,12 +12,19 @@
  * information regarding copyright and licensing.
  */
 
+namespace Theme;
+
+use ModUtil;
+use FileUtil;
+use LogUtil;
+use ThemeUtil;
+use DBUtil;
+
 /**
  * Theme_Util class.
  */
-class Theme_Util
+class Util
 {
-
     /**
      * Regenerates the theme list.
      */
@@ -25,7 +32,7 @@ class Theme_Util
     {
         // Get all themes on filesystem
         $filethemes = array();
-        ModUtil::dbInfoLoad('Themes', 'Themes', true);
+
         if (is_dir('themes')) {
             $dirArray = FileUtil::getFiles('themes', false, true, null, 'd');
             foreach ($dirArray as $dir) {
@@ -72,15 +79,29 @@ class Theme_Util
             }
         }
 
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->get('doctrine')->getEntityManager();
+
         // Get all themes in DB
-        $dbthemes = DBUtil::selectObjectArray('themes', '', '', -1, -1, 'name');
+        $dbthemes = array();
+        $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();
+
+        foreach ($themes as $theme) {
+            $theme = $theme->toArray();
+            $dbthemes[$theme['directory']] = $theme;
+        }
 
         // See if we have lost any themes since last generation
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($filethemes[$name])) {
                 // delete a running configuration
                 ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $name));
-                $result = DBUtil::deleteObjectByID('themes', $name, 'name');
+
+                // delete item from db
+                $item = $entityManager->getRepository('Theme\Entity\Theme')->findOneBy(array('name' => $name));
+                $entityManager->remove($item);
+
                 unset($dbthemes[$name]);
             }
         }
@@ -89,9 +110,13 @@ class Theme_Util
         // or if any current themes have been upgraded
         foreach ($filethemes as $name => $themeinfo) {
             if (empty($dbthemes[$name])) {
-                // New theme
+                // new theme
                 $themeinfo['state'] = ThemeUtil::STATE_ACTIVE;
-                DBUtil::insertObject($themeinfo, 'themes', 'id');
+
+                // add item to db
+                $item = new \Theme\Entity\Theme;
+                $item->merge($themeinfo);
+                $entityManager->persist($item);
             }
         }
 
@@ -107,12 +132,16 @@ class Theme_Util
                         ($themeinfo['contact'] != $dbthemes[$name]['contact']) ||
                         ($themeinfo['xhtml'] != $dbthemes[$name]['xhtml'])) {
                     $themeinfo['id'] = $dbthemes[$name]['id'];
-                    DBUtil::updateObject($themeinfo, 'themes');
+
+                    // update item
+                    $item = $entityManager->getRepository('Theme\Entity\Theme')->find($themeinfo['id']);
+                    $item->merge($themeinfo);
                 }
             }
         }
 
+        $entityManager->flush();
+
         return true;
     }
-
 }

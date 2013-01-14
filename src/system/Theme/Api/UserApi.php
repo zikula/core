@@ -12,7 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class Theme_Api_User extends Zikula_AbstractApi
+namespace Theme\Api;
+
+use LogUtil;
+use ModUtil;
+use ThemeUtil;
+use DataUtil;
+use FileUtil;
+use CacheUtil;
+use System;
+use SecurityUtil;
+use UserUtil;
+use ZLanguage;
+
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all settings for a theme
@@ -271,6 +284,8 @@ class Theme_Api_User extends Zikula_AbstractApi
 
     /**
      * write an ini file to the running configuration directory
+     *
+     * @return boolean
      */
     public function writeinifile($args)
     {
@@ -286,7 +301,7 @@ class Theme_Api_User extends Zikula_AbstractApi
         // get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
 
-        $content = ModUtil::apiFunc('theme', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
+        $content = ModUtil::apiFunc('Theme', 'user', 'createinifile', array('has_sections' => $args['has_sections'], 'assoc_arr' => $args['assoc_arr']));
 
         $ostemp  = CacheUtil::getLocalDir();
         $ostheme = DataUtil::formatForOS($themeinfo['directory']);
@@ -300,13 +315,13 @@ class Theme_Api_User extends Zikula_AbstractApi
 
         } else {
             if (!file_exists($zpath = $ostemp.'/Theme_Config/'.$ostheme)) {
-                mkdir($zpath, $this->serviceManager['system.chmod_dir'], true);
+                mkdir($zpath, $this->container['system.chmod_dir'], true);
             }
 
             if (!file_exists($zpath.'/'.$osfile) || is_writable($zpath.'/'.$osfile)) {
                 $handle = fopen($zpath.'/'.$osfile, 'w+');
             } else {
-                return LogUtil::registerError($this->__f("Error! Cannot write in '%1$s' or '%2$s' to store the contents of '%3$s'.", array($tpath, $zpath, $osfile)));
+                return LogUtil::registerError($this->__f('Error! Cannot write in "%1$s" or "%2$s" to store the contents of "%3$s"', array($tpath, $zpath, $osfile)));
             }
         }
 

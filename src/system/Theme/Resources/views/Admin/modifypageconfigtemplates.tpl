@@ -1,6 +1,6 @@
 {pageaddvar name='javascript' value='zikula.ui'}
 {adminheader}
-{include file="theme_admin_modifymenu.tpl"}
+{include file="Admin/modifymenu.tpl"}
 
 <h4>{gt text="Edit page configuration"} - {$filename|safetext}</h4>
 
