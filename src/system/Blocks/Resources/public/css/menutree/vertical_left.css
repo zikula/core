@@ -1,4 +1,4 @@
-ul.menutree_vertical_left,
+﻿ul.menutree_vertical_left,
 ul.menutree_vertical_left ul {
     background: #FFFFFF;
     border: 1px solid #CCCCCC;
@@ -39,14 +39,18 @@ u.menutree_vertical_left li.parent > span:hover {
     background: url("../../../../../../images/global/arrow_right_black.png") no-repeat scroll 95% 50% transparent;
 }
 
+ul.menutree_vertical_left {
+    width: 85%;
+}
+
 ul.menutree_vertical_left ul,
 ul.menutree_vertical_left ul ul,
 ul.menutree_vertical_left ul ul ul,
 ul.menutree_vertical_left ul ul ul ul {
-    left: 100%;
+    left: 35%;
     position: absolute;
-    top: -45%;
-    width: 100%;
+    top: -25%;
+    width: 80%;
 }
 
 ul.menutree_vertical_left ul,

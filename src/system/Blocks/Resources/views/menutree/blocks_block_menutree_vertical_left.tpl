@@ -1,4 +1,5 @@
 <div class="menutree_vertical_left_container">
+    <a id="navigation" name="navigation"></a>
     {menutree data=$menutree_content id='menu'|cat:$blockinfo.bid class='menutree_vertical_left' ext=true}
     {if $menutree_editlinks}
     <p class="menutree_vertical_left_controls">
