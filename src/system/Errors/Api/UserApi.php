@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Errors\Api;
+
+use System;
+use Zikula_Core;
+
 /**
  * Errors_Api_User class.
  */
-class Errors_Api_User extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * This function e-mails the site administrator with an error.
