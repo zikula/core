@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Mailer;
+
+use ZLanguage;
+
 /**
  * Mailer_Installer class.
  */
-class Mailer_Installer extends Zikula_AbstractInstaller
+class MailerInstaller extends \Zikula_AbstractInstaller
 {
 
     /**

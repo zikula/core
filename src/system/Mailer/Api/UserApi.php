@@ -12,7 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-class Mailer_Api_User extends Zikula_AbstractApi
+namespace Mailer\Api;
+
+use LogUtil;
+use Zikula;
+use PHPMailer;
+use System;
+use SecurityUtil;
+
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * API function to send e-mail message
