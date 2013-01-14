@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Errors_Version extends Zikula_AbstractVersion
+namespace Errors;
+
+class ErrorsVersion extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {
