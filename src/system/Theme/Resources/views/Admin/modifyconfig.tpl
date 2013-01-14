@@ -20,40 +20,8 @@
                 <input id="theme_change" name="theme_change" type="checkbox" value="1" {if $theme_change}checked="checked"{/if} />
             </div>
             <div class="z-formrow">
-                <label for="admintheme">{gt text="Admin theme"}</label>
-                <select id="admintheme" name="admintheme">
-                    <option value="">{gt text="Use site's theme"}</option>
-                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$admintheme}
-                </select>
-            </div>
-            <div class="z-formrow">
-                <label for="mobile_theme_name">{gt text="Mobile theme"}</label>
-                <select id="mobile_theme_name" name="mobile_theme_name">
-                    <option value="">{gt text="Use default mobile theme"}</option>
-                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$mobile_theme_name}
-                </select>
-            </div>
-            <div class="z-formrow">
-                <label for="mobile_theme_domain">{gt text="Mobile theme domain"}</label>
-                <input id="mobile_theme_domain" type="text" name="mobile_theme_domain" value="{$mobile_theme_domain|safetext}" size="50" />
-            </div>
-            <div class="z-formrow">
-                <label for="enable_mobile_theme">{gt text="Mobile device detection"}</label>
-                <select id="enable_mobile_theme" name="enable_mobile_theme">
-                    <option value="0">{gt text="Not enabled"}</option>
-                    <option value="1"{if $enable_mobile_theme eq '1'} selected="selected"{/if}>{gt text="Enabled: force mobile theme"}</option>
-                </select>
-            </div>
-            <div class="z-formrow">
-                <label for="alt_theme_name">{gt text="Theme for alternative site view"}</label>
-                <select id="alt_theme_name" name="alt_theme_name">
-                    <option value="">{gt text="Not set"}</option>
-                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$alt_theme_name}
-                </select>
-            </div>
-            <div class="z-formrow">
-                <label for="alt_theme_domain">{gt text="Domain for alternative site view"}</label>
-                <input id="alt_theme_domain" type="text" name="alt_theme_domain" value="{$alt_theme_domain|safetext}" size="50" />
+                <label for="enable_mobile_theme">{gt text="Enable mobile theme"}</label>
+                <input id="enable_mobile_theme" name="enable_mobile_theme" type="checkbox" value="1" {if $enable_mobile_theme}checked="checked"{/if} />
             </div>
         </fieldset>
         <fieldset>

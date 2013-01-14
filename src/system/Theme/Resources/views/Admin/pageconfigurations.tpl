@@ -1,5 +1,5 @@
 {adminheader}
-{include file="theme_admin_modifymenu.tpl"}
+{include file="Admin/modifymenu.tpl"}
 <h4>{gt text="Page configuration assignments"}</h4>
 
 <table class="z-datatable">
