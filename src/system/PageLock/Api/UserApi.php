@@ -17,7 +17,19 @@
  */
 define('PageLockLifetime', 30);
 
-class PageLock_Api_User extends Zikula_AbstractApi
+namespace PageLock\Api;
+
+use UserUtil;
+use PageUtil;
+use ThemeUtil;
+use ModUtil;
+use Zikula_View;
+use DBUtil;
+use DataUtil;
+use DateUtil;
+use System;
+
+class UserApi extends \Zikula_AbstractApi
 {
     public function pageLock($args)
     {

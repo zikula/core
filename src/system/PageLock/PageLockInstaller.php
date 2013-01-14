@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class PageLock_Installer extends Zikula_AbstractInstaller
+namespace PageLock;
+
+use DBUtil;
+
+class PageLockInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialize the module
