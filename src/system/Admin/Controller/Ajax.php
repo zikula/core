@@ -255,7 +255,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
 
-        $data = $this->request->request->get('admintabs');
+        $data = $this->request->request->get('admintab');
 
         $entity = $this->name . '_Entity_AdminCategory';
 

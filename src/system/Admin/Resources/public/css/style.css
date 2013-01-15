@@ -520,7 +520,8 @@ ul#admintabs li > .z-admindrop {
     width: 7px;
 }
 
-ul#admintabs li > .z-admindrop:hover {
+ul#admintabs li > .z-admindrop:hover,
+ul#admintabs li > .z-admindrop.hover {
     background: url("../../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% #FFFFFF;
     border-left: 1px solid #CCCCCC;
     -webkit-border-radius: 0 5px 0 0;
@@ -528,7 +529,8 @@ ul#admintabs li > .z-admindrop:hover {
     border-radius: 0 5px 0 0;
 }
 
-ul#admintabs li.active > .z-admindrop:hover {
+ul#admintabs li.active > .z-admindrop:hover,
+ul#admintabs li.active > .z-admindrop.hover {
     background: url("../../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
     border-left: 1px solid transparent;
     -webkit-border-radius: 0 5px 0 0;

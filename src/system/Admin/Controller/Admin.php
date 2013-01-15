@@ -541,6 +541,50 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                 }
             }
         }
+        // TMP!!!!!!!
+        $parseLinks = function($links, $parent = null)  use (&$parseLinks) {
+            $items = array();
+            foreach ((array)$links as $k => $link) {
+                $key = is_null($parent) ? $k : "{$parent}.{$k}";
+                $item = array(
+                    'name' => $key,
+                    '_name' => $link['text'],
+                    'type' => 'url',
+                    'href' => $link['url'],
+                    'className' => isset($link['class']) ? $link['class'] : ''
+                );
+                if (isset($link['links']) && !empty($link['links'])) {
+                    $item['items'] = $parseLinks($link['links'], $key);
+                    unset($item['type']);
+                }
+                $items['item' .$key] = $item;
+            }
+            return $items;
+        };
+        $categoriesData = array();
+        foreach ($menuoptions as $menuoption) {
+            $row = $menuoption;
+            $items = array();
+            foreach ($menuoption['items'] as $item) {
+                $items[$item['modname']] = array(
+//                    'type' => 'url',
+                    'name' => $item['modname'],
+                    '_name' => $item['menutext'],
+                    'href' => $item['menutexturl'],
+                    'id' => $item['id'],
+                    'order' => $item['order'],
+                    'items' => $parseLinks(ModUtil::apiFunc($item['modname'], 'admin', 'getLinks'), $item['modname']),
+                );
+            }
+            $row['items'] = $items;
+            $categoriesData[] = $row;
+//            dump($menuoption);
+        }
+
+        $this->view->assign('categoriesData', $categoriesData);
+
+        // TMP END!!!!!!!!!!!
+
 
         // if permission is false we are not allowed to see this category because its
         // empty and we are not admin
