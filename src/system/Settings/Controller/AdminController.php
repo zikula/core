@@ -12,7 +12,18 @@
  * information regarding copyright and licensing.
  */
 
-class Settings_Controller_Admin extends Zikula_AbstractController
+namespace Settings\Controller;
+
+use Zikula_View;
+use ModUtil;
+use LogUtil;
+use SecurityUtil;
+use System;
+use FormUtil;
+use DateUtil;
+use SessionUtil;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
