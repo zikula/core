@@ -65,7 +65,7 @@ class Settings_Installer extends Zikula_AbstractInstaller
         System::setVar('shorturls', false);
         System::setVar('shorturlstype', '0');
         System::setVar('shorturlsseparator', '-');
-        System::setVar('shorturlsstripentrypoint', false);
+        System::setVar('shorturlsstripentrypoint', true);
         System::setVar('shorturlsdefaultmodule', '');
         System::setVar('profilemodule', ModUtil::available('Profile') ? 'Profile' : '');
         System::setVar('messagemodule', '');
