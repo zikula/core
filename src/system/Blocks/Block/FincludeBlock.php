@@ -12,7 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Finclude extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use SecurityUtil;
+use BlockUtil;
+use DataUtil;
+use Zikula_View;
+use FormUtil;
+
+class FincludeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

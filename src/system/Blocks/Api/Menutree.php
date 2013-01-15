@@ -12,7 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Api_Menutree extends Zikula_AbstractApi
+namespace Blocks\Api;
+
+use ModUtil;
+use SecurityUtil;
+use Blocks_MenutreeUtil;
+use ZLanguage;
+use Loader;
+use CategoryRegistryUtil;
+use CategoryUtil;
+use System;
+use ServiceUtil;
+use UserUtil;
+
+class MenutreeApi extends \Zikula_AbstractApi
 {
     /**
      * Return list of admin modules

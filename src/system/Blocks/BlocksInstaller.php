@@ -12,7 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Installer extends Zikula_AbstractInstaller
+namespace Blocks;
+
+use DoctrineHelper;
+use DBUtil;
+use ModUtil;
+use ZLanguage;
+use Doctrine;
+
+class BlocksInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the blocks module

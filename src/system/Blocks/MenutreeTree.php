@@ -12,17 +12,23 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks;
+
+use ModUtil;
+use PageUtil;
+use DataUtil;
+
 /**
  * Zikula_Tree class.
  */
-class  Blocks_MenutreeTree extends Zikula_Tree
+class MenutreeTree extends \Zikula_Tree
 {
     /**
      * Constructor.
      *
      * @param array $config Config array.
      */
-    public function __construct(array $config=array())
+    public function __construct(array $config = array())
     {
         $config = array_merge($config, array(
             'langs'        => array('en'),

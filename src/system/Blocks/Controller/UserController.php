@@ -12,10 +12,17 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Controller;
+
+use LogUtil;
+use FormUtil;
+use UserUtil;
+use System;
+
 /**
  * Blocks_Controller_User class.
  */
-class Blocks_Controller_User extends Zikula_AbstractController
+class UserController extends \Zikula_AbstractController
 {
 
     /**
