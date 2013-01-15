@@ -421,6 +421,12 @@ class JCSSUtil
                     'require' => array('zikula', 'contextmenu'),
                 )
             ),
+            'zikula.template' => array(
+                'production' => array(
+                    'path' => 'javascript/zikula-plugins/zikula.plugins.template.js',
+                    'require' => array('zikula'),
+                )
+            ),
         );
 
         $isDevelopmentMode = System::isDevelopmentMode();
