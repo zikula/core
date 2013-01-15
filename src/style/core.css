@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 * Generic styles
 ******************************************************************************/
 
@@ -283,7 +283,6 @@ table.z-admintable th {
     padding: 5px;
     border-width: 0px;
     vertical-align: middle;
-	border-bottom: 1px solid #D0D0D0; /* separate rows with light line */
 }
 
 table.z-datatable thead th,
@@ -315,7 +314,7 @@ table.z-admintable tbody tr.z-defaulttablerow {
 
 table.z-datatable tbody tr:hover,
 table.z-datatable tbody tr.hover {
-    background-color: #D0D0D0; /* highlight rows under the mouse */
+    background-color: #eee;
     color: #000;
 }
 

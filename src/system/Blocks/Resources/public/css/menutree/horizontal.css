@@ -1,4 +1,4 @@
-﻿ul.menutree_horizontal,
+ul.menutree_horizontal,
 ul.menutree_horizontal ul {
     background: #FFFFFF;
     border: 1px solid #CCCCCC;
@@ -14,7 +14,6 @@ ul.menutree_horizontal li {
     margin: 0;
     padding: 0;
     position: relative;
-    width: auto;
 }
 
 ul.menutree_horizontal li:hover {

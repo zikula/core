@@ -1,10 +1,10 @@
-﻿/* Based on an open source xhtml/css website layout by Andreas Viklund (http://andreasviklund.com) called Andreas08 */
+/* Based on an open source xhtml/css website layout by Andreas Viklund (http://andreasviklund.com) called Andreas08 */
 /* Free to use in any way and for any purpose as long as the proper credits are given to the original designer.     */
 /**************** Body and tag styles ****************/
 body {
     font: 76% Verdana, Tahoma, Arial, sans-serif;
     line-height: 1.4em;
-    text-align: left;
+    text-align: center;
     color: #303030;
     background: #e8eaec;
     margin: 0;
@@ -89,8 +89,7 @@ dd {
 
 /**************** Header and navigation styles ****************/
 #theme_page_container {
-    margin: 0; /* 20px auto */
-    width: auto;
+    margin: 20px auto;
     padding: 1px 0;
     text-align: left;
     background: #ffffff;
@@ -102,14 +101,14 @@ dd {
 }
 
 #theme_header {
-    /* height: 110px; */
+    height: 110px;
     margin: 0 1px 1px 1px;
     background: #467aa7;
     overflow: hidden;
 }
 
 #theme_header h1 {
-    padding: 10px 0 0 5px;
+    padding: 35px 0 0 20px;
     font-size: 2.4em;
     color: #ffffff;
     letter-spacing: -2px;
