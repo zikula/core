@@ -1959,3 +1959,77 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     color: #999;
     cursor: pointer;
 }
+/* new context menu styles */
+
+.z-context-menu,
+.z-context-menu ul,
+.z-context-menu.context-menu-list,
+.z-context-menu .context-menu-list {
+    text-align: left;
+    background: #ddd; /*non-CSS3 browsers*/
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /*IE*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /*webkit*/
+    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /*gecko*/
+    background: linear-gradient(top,  #fff,  #cfcfcf); /*CSS3*/
+    border: solid 1px #b4b4b4;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    min-width: 100px;
+}
+
+.z-context-menu .context-menu-item {
+    background-color: transparent;
+    background-position: 4px 4px;
+    margin: 0;
+    list-style: none !important;
+    text-align: left;
+    padding: 4px 24px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-weight: normal;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.z-context-menu .context-menu-submenu:after {
+    content: url("../images/global/arrow_right_grey.png");
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    z-index: 1;
+}
+
+.z-context-menu .context-menu-submenu.hover:after {
+    content: url("../images/global/arrow_right_black.png");
+}
+
+.z-context-menu li.selected,
+.z-context-menu li.hover {
+    background-color:#3875D7;
+    color:#FFFFFF;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.z-context-menu li.selected.hover {
+    color: #333;
+    background-color: #f3f3f3;
+    cursor: pointer;
+}
+
+.z-context-menu li.disabled,
+.z-context-menu li.hover.disabled {
+    color: #999;
+    cursor: pointer;
+}
+
+.z-context-menu .context-menu-separator {
+    border-top: 1px solid #B4B4B4;
+    border-bottom: 1px solid #F9F9F9;
+    padding: 0;
+    margin: 1px 2px;
+    cursor: auto;
+}
