@@ -12,7 +12,19 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Controller_User extends Zikula_AbstractController
+namespace Groups\Controller;
+
+use ModUtil;
+use SecurityUtil;
+use FormUtil;
+use UserUtil;
+use Zikula_View;
+use Groups_Helper_Common;
+use LogUtil;
+use DataUtil;
+use System;
+
+class UserController extends \Zikula_AbstractController
 {
     /**
      * Groups Module main user function

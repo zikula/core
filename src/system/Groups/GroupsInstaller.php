@@ -12,7 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Installer extends Zikula_AbstractInstaller
+namespace Groups;
+
+use DBUtil;
+
+class GroupsInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the groups module

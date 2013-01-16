@@ -12,10 +12,22 @@
  * information regarding copyright and licensing.
  */
 
+namespace Groups\Api;
+
+use LogUtil;
+use Groups_Helper_Common;
+use SecurityUtil;
+use DBUtil;
+use Zikula;
+use ModUtil;
+use DataUtil;
+use UserUtil;
+use System;
+
 /**
  * Groups_Api_Admin class.
  */
-class Groups_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
 
     /**

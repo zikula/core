@@ -12,10 +12,20 @@
  * information regarding copyright and licensing.
  */
 
+namespace Groups\Controller;
+
+use SecurityUtil;
+use Zikula_Response_Ajax;
+use ModUtil;
+use LogUtil;
+use Groups_Helper_Common;
+use DBUtil;
+use Zikula_Exception_Fatal;
+
 /**
  * Groups_Controller_Ajax class.
  */
-class Groups_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Updates a group in the database

@@ -12,7 +12,19 @@
  * information regarding copyright and licensing.
  */
 
-class Groups_Controller_Admin extends Zikula_AbstractController
+namespace Groups\Controller;
+
+use Zikula_View;
+use ModUtil;
+use SecurityUtil;
+use LogUtil;
+use FormUtil;
+use Groups_Helper_Common;
+use UserUtil;
+use Users_Constant;
+use System;
+
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
