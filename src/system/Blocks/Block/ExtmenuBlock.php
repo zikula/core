@@ -12,7 +12,23 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Extmenu extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use SecurityUtil;
+use BlockUtil;
+use ThemeUtil;
+use PageUtil;
+use UserUtil;
+use ZLanguage;
+use ModUtil;
+use System;
+use Securityutil;
+use FormUtil;
+use Zikula_View;
+use Zikula_View_Theme;
+use DataUtil;
+
+class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

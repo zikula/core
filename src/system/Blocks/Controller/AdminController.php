@@ -12,10 +12,22 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Controller;
+
+use Zikula_View;
+use ModUtil;
+use LogUtil;
+use SecurityUtil;
+use SessionUtil;
+use FormUtil;
+use ZLanguage;
+use BlockUtil;
+use Zikula_Controller_AbstractBlock;
+
 /**
  * Blocks_Controller_Admin class.
  */
-class Blocks_Controller_Admin extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.

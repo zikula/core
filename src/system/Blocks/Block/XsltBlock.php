@@ -12,7 +12,16 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Xslt extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use SecurityUtil;
+use BlockUtil;
+use DOMDocument;
+use XSLTProcessor;
+use Zikula_View;
+use FormUtil;
+
+class XsltBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
