@@ -16,6 +16,7 @@ namespace Theme;
 
 use DBUtil;
 use ModUtil;
+use DoctrineHelper;
 
 class ThemeInstaller extends \Zikula_AbstractInstaller
 {
