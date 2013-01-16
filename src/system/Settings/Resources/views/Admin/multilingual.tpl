@@ -64,15 +64,6 @@
                 <span>{$timezone_server_abbr}</span>
                 <input type="hidden" name="mlsettings_timezone_server" value="{$timezone_server|default:0}" />
             </div>
-            <div class="z-formrow">
-                <label for='mlsettings_timezone_adjust'>{gt text="Adjust dateformat output according to the user timezone"}</label>
-                   <div>
-                       <input id="tzadjustyes" type="radio" name="mlsettings_timezone_adjust" value="1" {if $modvars.ZConfig.tzadjust|default:1 == 1}checked="checked" {/if}/>
-                       <label for="tzadjustyes">{gt text="Yes"}</label>
-                       <input id="tzadjustno" type="radio" name="mlsettings_timezone_adjust" value="0" {if $modvars.ZConfig.tzadjust|default:1 != 1}checked="checked" {/if}/>
-                       <label for="tzadjustno">{gt text="No"}</label>
-                   </div>
-            </div>
         </fieldset>
         <fieldset>
             <legend>{gt text="Variable validation"}</legend>
