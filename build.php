@@ -105,6 +105,7 @@ class FixAutoloaderCommand extends \Symfony\Component\Console\Command\Command
             $file = "$dir/composer/$file";
             $content = file_get_contents($file);
             $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
+            $content = str_replace('dirname(dirname($vendorDir))', 'dirname($vendorDir)', $content);
             file_put_contents($file, $content);
             $progress->advance();
         }
