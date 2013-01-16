@@ -14,6 +14,7 @@
 
 namespace Groups;
 
+use DoctrineHelper;
 use DBUtil;
 
 class GroupsInstaller extends \Zikula_AbstractInstaller
@@ -26,13 +27,16 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        // create the groups table
-        if (!DBUtil::createTable('groups')) {
-            return false;
-        }
+        // create tables
+        $classes = array(
+            'Groups\Entity\Group',
+            'Groups\Entity\GroupMembership',
+            'Groups\Entity\GroupApplication'
+        );
 
-        // create the group membership table
-        if (!DBUtil::createTable('group_membership')) {
+        try {
+            DoctrineHelper::createSchema($this->entityManager, $classes);
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -46,6 +50,7 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
         $this->setVar('defaultgroup', 1);
         $this->setVar('mailwarning', 0);
         $this->setVar('hideclosed', 0);
+
         // Set the primary admin group gid as a module var so it is accessible by other modules,
         // but it should not be editable at this time. For now it is read-only.
         $this->setVar('primaryadmingroup', 2);
@@ -84,6 +89,7 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
             case '2.3.2':
             // future upgrade routines
         }
+
         // Update successful
         return true;
     }
@@ -118,7 +124,13 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
                     'prefix'      => $this->__('adm'))
         );
 
-        DBUtil::insertObjectArray($records, 'groups', 'gid');
+        foreach ($records as $record) {
+            $item = new \Groups\Entity\Group;
+            $item['name'] = $record['name'];
+            $item['description'] = $record['description'];
+            $item['prefix'] = $record['prefix'];
+            $this->entityManager->persist($item);
+        }
 
         // Insert Anonymous and Admin users
         $records = array(
@@ -134,6 +146,13 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
                   'uid' => '2')
         );
 
-        DBUtil::insertObjectArray($records, 'group_membership', 'gid', true);
+        foreach ($records as $record) {
+            $item = new \Groups\Entity\GroupMembership;
+            $item['gid'] = $record['gid'];
+            $item['uid'] = $record['uid'];
+            $this->entityManager->persist($item);
+        }
+
+        $this->entityManager->flush();
     }
 }

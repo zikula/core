@@ -24,7 +24,7 @@
 {/pageaddvarblock}
 
 {adminheader}
-{include file="groups_admin_header.tpl"}
+{include file="Admin/header.tpl"}
 
 <div class="z-admin-content-pagetitle">
     {icon type="view" size="small"}
@@ -215,7 +215,7 @@
         <tr>
             <th>{gt text="User ID"}</th>
             <th>{gt text="User name"}</th>
-            <th>{gt text="Name"}</th>
+            <th>{gt text="Group name to join"}</th>
             <th>{gt text="Comment"}</th>
             <th>{gt text="Actions"}</th>
         </tr>
@@ -224,7 +224,7 @@
         {foreach item=useritem from=$useritems}
         <tr class="{cycle values='z-odd,z-even' name='pending'}">
             <td>{$useritem.userid}</td>
-            <td><strong>{$useritem.username|profilelinkbyuname}</strong></td>
+            <td>{$useritem.username|profilelinkbyuname}</td>
             <td>{$useritem.gname}</td>
             <td>{$useritem.application|safehtml}</td>
             <td>

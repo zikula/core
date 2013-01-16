@@ -2,7 +2,7 @@
 <div class="z-warningmsg">{gt text="There are currently no groups that can be joined."}</div>
 {else}
 {gt text="Groups manager" assign=templatetitle}
-{include file="groups_user_menu.tpl"}
+{include file="User/menu.tpl"}
 <table class="z-datatable">
     <thead>
         <tr>
@@ -12,8 +12,9 @@
             <th> {gt text="State"} </th>
             <th> {gt text="Members"} </th>
             <th> {gt text="Maximum membership"} </th>
+            {if $state gt 0}
             <th> {gt text="Functions"} </th>
-            <th> {gt text="Extras"} </th>
+            {/if}
         </tr>
     </thead>
     {if $items}
