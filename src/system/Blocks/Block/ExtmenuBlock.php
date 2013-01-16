@@ -22,7 +22,6 @@ use UserUtil;
 use ZLanguage;
 use ModUtil;
 use System;
-use Securityutil;
 use FormUtil;
 use Zikula_View;
 use Zikula_View_Theme;

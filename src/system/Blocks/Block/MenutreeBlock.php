@@ -15,14 +15,13 @@
 namespace Blocks\Block;
 
 use SecurityUtil;
-use Securityutil;
 use BlockUtil;
 use PageUtil;
 use UserUtil;
 use ZLanguage;
 use ModUtil;
-use Blocks_MenutreeTree;
-use Blocks_MenutreeUtil;
+use Blocks\MenutreeTree;
+use Blocks\MenutreeUtil;
 use FormUtil;
 use System;
 use Zikula_View;
