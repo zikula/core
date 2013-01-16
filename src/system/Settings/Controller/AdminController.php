@@ -44,7 +44,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in modifyconfig()
-        $this->redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url($this->name, 'admin', 'modifyconfig'));
     }
 
     /**
@@ -58,6 +58,7 @@ class AdminController extends \Zikula_AbstractController
         if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
+
 
         // localise page title
         $pagetitle = System::getVar('pagetitle', '%pagetitle%');
@@ -88,7 +89,7 @@ class AdminController extends \Zikula_AbstractController
 
         // if this form wasnt posted to redirect back
         if ($settings === null) {
-            $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+            return $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
         }
 
         // validate the entry point
@@ -158,7 +159,7 @@ class AdminController extends \Zikula_AbstractController
 
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('Settings', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -177,7 +178,7 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('timezone_server', DateUtil::getTimezone());
         $this->view->assign('timezone_server_abbr', DateUtil::getTimezoneAbbr());
 
-        return $this->view->fetch('settings_admin_multilingual.tpl');
+        return $this->response($this->view->fetch('Admin/multilingual.tpl'));
     }
 
     /**
@@ -205,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
                 'mlsettings_timezone_adjust' => 'tzadjust');
 
         // we can't detect language if multilingual feature is off so reset this to false
-        if (FormUtil::getPassedValue('mlsettings_multilingual', null, 'POST') == 0) {
+        if ($this->request->request->get('mlsettings_multilingual', null) == 0) {
             if (System::getVar('language_detect')) {
                 System::setVar('language_detect', 0);
                 unset($settings['mlsettings_language_detect']);
@@ -237,7 +238,6 @@ class AdminController extends \Zikula_AbstractController
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved localisation settings.'));
 
-        $this->redirect($url);
+        return $this->redirect($url);
     }
-
 }
