@@ -12,7 +12,25 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Menutree extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use SecurityUtil;
+use Securityutil;
+use BlockUtil;
+use PageUtil;
+use UserUtil;
+use ZLanguage;
+use ModUtil;
+use Blocks_MenutreeTree;
+use Blocks_MenutreeUtil;
+use FormUtil;
+use System;
+use Zikula_View;
+use DataUtil;
+use LogUtil;
+use Zikula_View_Theme;
+
+class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

@@ -11,10 +11,18 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+namespace Blocks\Api;
+
+use SecurityUtil;
+use LogUtil;
+use System;
+use ModUtil;
+
 /**
  * Blocks_Api_User class.
  */
-class Blocks_Api_User extends Zikula_AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all blocks.

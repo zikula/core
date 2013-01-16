@@ -12,6 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Block;
+
+use SecurityUtil;
+use Zikula_Collection_Container;
+use Zikula;
+use EventUtil;
+use ModUtil;
+use BlockUtil;
+
 /**
  * Pending Content block
  */

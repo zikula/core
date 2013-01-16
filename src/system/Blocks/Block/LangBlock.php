@@ -12,7 +12,18 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_Block_Lang extends Zikula_Controller_AbstractBlock
+namespace Blocks\Block;
+
+use SecurityUtil;
+use System;
+use ZLanguage;
+use BlockUtil;
+use Zikula_View;
+use FormUtil;
+use ModUtil;
+use Zikula_View_Theme;
+
+class LangBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block

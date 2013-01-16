@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Blocks_MenutreeUtil
+namespace Blocks;
+
+use FileUtil;
+use ThemeUtil;
+
+class MenutreeUtil
 {
     public static function getIdOffset($id = null)
     {

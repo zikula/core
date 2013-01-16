@@ -12,10 +12,20 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Controller;
+
+use SecurityUtil;
+use Blocks_Entity_BlockPlacement;
+use Zikula_Response_Ajax;
+use Zikula_Exception_Fatal;
+use BlockUtil;
+use DataUtil;
+use ModUtil;
+
 /**
  * Blocks_Controller_Ajax class.
  */
-class Blocks_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Changeblockorder.

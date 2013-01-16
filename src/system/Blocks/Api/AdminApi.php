@@ -12,10 +12,20 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Api;
+
+use LogUtil;
+use System;
+use SecurityUtil;
+use Blocks_Entity_BlockPlacement;
+use ModUtil;
+use Blocks_Entity_Block;
+use Blocks_Entity_BlockPosition;
+
 /**
  * Blocks_Api_Admin class.
  */
-class Blocks_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Update attributes of a block.
