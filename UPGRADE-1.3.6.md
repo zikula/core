@@ -82,6 +82,12 @@ Entities:
         {
         }
 
+
+There is a script to do some of the refactoring for you:
+
+    zikula-tools module:ns --dir=module/MyModule --module=MyModule
+
+
 Module Structure
 ----------------
 
@@ -103,6 +109,7 @@ The final structure looks as follows:
                 js/
             views/
                 plugins/
+        vendor/
         FooInstaller.php (was Installer.php)
         FooVersion.php (was Version.php)
         FooModule.php

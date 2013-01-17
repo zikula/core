@@ -287,9 +287,10 @@ class BlockUtil
         ModUtil::load($modname);
 
         // get the block info
-        $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block).'Block';
+        $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
+        $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
         $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
-        $className = class_exists($className) ? $className : $classNameOld;
+        $className = class_exists($classNameOld) ? $classNameOld :$className;
         $r = new ReflectionClass($className);
         $blockInstance = $r->newInstanceArgs(array($sm));
         try {
