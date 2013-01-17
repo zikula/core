@@ -13,10 +13,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Listener;
+
+use Users_Constant;
+use ModUtil;
+use Zikula_Collection_Container;
+use Zikula_Provider_AggregateItem;
+use SecurityUtil;
+
 /**
  * Persistent event listener for pending content queries.
  */
-class Users_Listener_PendingContent
+class PendingContentListener
 {
     /**
      * The module name.
@@ -47,11 +55,11 @@ class Users_Listener_PendingContent
      * assemped as a {@link Zikula_Provider_AggregateItem} and added to the event
      * subject's collection.
      *
-     * @param Zikula_Event $event The event that was fired, a 'get_pending_content' event.
+     * @param \Zikula_Event $event The event that was fired, a 'get_pending_content' event.
      *
      * @return void
      */
-    public static function pendingContentListener(Zikula_Event $event)
+    public static function pendingContentListener(\Zikula_Event $event)
     {
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', Users_Constant::APPROVAL_ANY);

@@ -13,10 +13,21 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Api;
+
+use Zikula_View;
+use SecurityUtil;
+use System;
+use ModUtil;
+use DBUtil;
+use DataUtil;
+use Users\Constant as UsersConstant;
+use Search_Api_User;
+
 /**
  * The search for items in the Users module.
  */
-class Users_Api_Search extends Zikula_AbstractApi
+class SearchApi extends \Zikula_AbstractApi
 {
     /**
      * Return search plugin info.
@@ -95,7 +106,7 @@ class Users_Api_Search extends Zikula_AbstractApi
 
         // build the where clause
         $where   = array();
-        $where[] = "({$userscolumn['activated']} != " . Users_Constant::ACTIVATED_PENDING_REG . ')';
+        $where[] = "({$userscolumn['activated']} != " . UsersConstant::ACTIVATED_PENDING_REG . ')';
 
         $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
 

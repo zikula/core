@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Helper;
+
 /**
  * Defines the valid list of password hashing methods.
  */
-class Users_Helper_HashMethodList
+class HashMethodListHelper
 {
     /**
      * Retrieve an array containing the valid hashing methods.
@@ -29,7 +31,7 @@ class Users_Helper_HashMethodList
             'sha256'=> 'sha256',
         );
     }
-
+    
     /**
      * Retreive a PCRE regular expression that can be used to match a string against the valid hashing methods.
      *
@@ -39,4 +41,5 @@ class Users_Helper_HashMethodList
     {
         return '/(?:sha1|sha256)/';
     }
+
 }

@@ -13,10 +13,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Api;
+
+use UserUtil;
+use ModUtil;
+use Users\Constant as UsersConstant;
+use ZLanguage;
+use System;
+
 /**
  * The Account API provides links for modules on the "user account page"; this class provides them for the Users module.
  */
-class Users_Api_Account extends Zikula_AbstractApi
+class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the the user's account panel.
@@ -32,7 +40,7 @@ class Users_Api_Account extends Zikula_AbstractApi
         // Show change password action only if the account record contains a password, and the password is not the
         // special marker for an account created without a Users module authentication password.
         $pass = UserUtil::getVar('pass');
-        if (!empty($pass) && ($pass != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
+        if (!empty($pass) && ($pass != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
             // show edit password link
             $items['1'] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'changePassword'),

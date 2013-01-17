@@ -13,6 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Block;
+
+use Zikula_View;
+use SecurityUtil;
+use DataUtil;
+use Users\Helper\AuthenticationMethodListHelper;
+use System;
+use BlockUtil;
+use UserUtil;
+
 /**
  * A block that allows users to log into the system.
  *
@@ -21,7 +31,7 @@
  *          set the blocktitle and method descriptions for different languages. See extmenu
  *          for an example.
  */
-class Users_Block_Login extends Zikula_Controller_AbstractBlock
+class LoginBlock extends \Zikula_Controller_AbstractBlock
 {
 
     /**
@@ -82,7 +92,7 @@ class Users_Block_Login extends Zikula_Controller_AbstractBlock
                     $blockInfo['title'] = DataUtil::formatForDisplay('Login');
                 }
 
-                $authenticationMethodList = new Users_Helper_AuthenticationMethodList($this);
+                $authenticationMethodList = new AuthenticationMethodListHelper($this);
 
                 if ($authenticationMethodList->countEnabledForAuthentication() > 1) {
                     $selectedAuthenticationMethod = $this->request->request->get('authentication_method', false);

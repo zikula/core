@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData\Validator;
+
 /**
  * Validates a field's value, ensuring that is is a string value.
  */
-class Users_Controller_FormData_Validator_StringType extends Users_Controller_FormData_Validator_AbstractValidator
+class StringType extends AbstractValidator
 {
     /**
      * Validates the specified data, ensuring that the data is a string.

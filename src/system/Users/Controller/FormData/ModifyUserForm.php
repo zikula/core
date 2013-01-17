@@ -12,10 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData;
+
+use Users\Constant as UsersConstant;
+
 /**
  * Contains and validates the data found on the Users module's modify user form.
  */
-class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData_AbstractFormData
+class ModifyUserForm extends AbstractFormData
 {
     /**
      * A validator to conditionally check the length of the password field.
@@ -28,136 +32,136 @@ class Users_Controller_FormData_ModifyUserForm extends Users_Controller_FormData
      * Create a new instance of the form data container, intializing the fields and validators.
      *
      * @param string                $formId         The id value to use for the form.
-     * @param Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
      */
-    public function __construct($formId, Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
     {
         parent::__construct($formId, $serviceManager);
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'uid',
                 0,
                 0,
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
+            ->addValidator(new Validator\IntegerNumericType(
                 $this->serviceManager,
                 $this->__('The value must be an integer.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'uname',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+            ->addValidator(new Validator\StringMinimumLength(
                 $this->serviceManager,
                 1,
                 $this->__('A user name is required, and cannot be left blank.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
+            ->addValidator(new Validator\StringRegularExpression(
                 $this->serviceManager,
-                '/^'. Users_Constant::UNAME_VALIDATION_PATTERN .'$/uD',
+                '/^'. UsersConstant::UNAME_VALIDATION_PATTERN .'$/uD',
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringLowercase(
+            ->addValidator(new Validator\StringLowercase(
                 $this->serviceManager,
                 $this->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'email',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringMinimumLength(
+            ->addValidator(new Validator\StringMinimumLength(
                 $this->serviceManager,
                 1,
                 $this->__('An e-mail address is required, and cannot be left blank.')))
-            ->addValidator(new Users_Controller_FormData_Validator_StringRegularExpression(
+            ->addValidator(new Validator\StringRegularExpression(
                 $this->serviceManager,
-                '/^'. Users_Constant::EMAIL_VALIDATION_PATTERN .'$/Di',
+                '/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di',
                 $this->__('The value entered does not appear to be a valid e-mail address.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'emailagain',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'activated',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericType(
+            ->addValidator(new Validator\IntegerNumericType(
                 $this->serviceManager,
                 $this->__('The value must be an integer.')))
-            ->addValidator(new Users_Controller_FormData_Validator_IntegerNumericInSet(
+            ->addValidator(new Validator\IntegerNumericInSet(
                 $this->serviceManager,
-                array(Users_Constant::ACTIVATED_INACTIVE, Users_Constant::ACTIVATED_ACTIVE, Users_Constant::ACTIVATED_PENDING_DELETE),
+                array(UsersConstant::ACTIVATED_INACTIVE, UsersConstant::ACTIVATED_ACTIVE, UsersConstant::ACTIVATED_PENDING_DELETE),
                 $this->__('The value must be an integer.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'theme',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'setpass',
                 false,
                 false,
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_BooleanType(
+            ->addValidator(new Validator\BooleanType(
                 $this->serviceManager,
                 $this->__('The value must be a boolean.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'pass',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        $this->addField(new Users_Controller_FormData_Field(
+        $this->addField(new Field(
                 $this,
                 'passagain',
                 '',
                 '',
                 $this->serviceManager))
             ->setNullAllowed(false)
-            ->addValidator(new Users_Controller_FormData_Validator_StringType(
+            ->addValidator(new Validator\StringType(
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        $passwordMinimumLength = (int)$this->getVar(Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
-        $this->passwordLengthValidator = new Users_Controller_FormData_Validator_StringMinimumLength($this->serviceManager, $passwordMinimumLength,
+        $passwordMinimumLength = (int)$this->getVar(UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
+        $this->passwordLengthValidator = new Validator\StringMinimumLength($this->serviceManager, $passwordMinimumLength,
                 $this->__f('Passwords must be at least %1$d characters in length.', array($passwordMinimumLength)));
 
     }

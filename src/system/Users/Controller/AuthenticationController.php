@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller;
+
+use Zikula_View;
+use Zikula_Exception_Fatal;
+
 /**
  * Access to user-initiated authentication actions for the Users module.
  */
-class Users_Controller_Authentication extends Zikula_Controller_AbstractAuthentication
+class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
 {
     /**
      * Post initialise.

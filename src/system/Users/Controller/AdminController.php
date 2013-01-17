@@ -13,10 +13,36 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller;
+
+use Zikula_View;
+use UserUtil;
+use SecurityUtil;
+use ModUtil;
+use Zikula_Exception_Forbidden;
+use Users\Constant as UsersConstant;
+use DataUtil;
+use DateUtil;
+use System;
+use Users\Controller\FormData\NewUserForm;
+use Zikula_Hook_ValidationProviders;
+use Zikula;
+use Zikula_Exception_Fatal;
+use Users\Controller\FormData\ModifyUserForm;
+use DBUtil;
+use LogUtil;
+use Zikula_Session;
+use DateTimeZone;
+use DateTime;
+use Users\Controller\FormData\ModifyRegistrationForm;
+use Users\Controller\FormData\ConfigForm;
+use FileUtil;
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Administrator-initiated actions for the Users module.
  */
-class Users_Controller_Admin extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -82,7 +108,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         // we need this value multiple times, so we keep it
-        $itemsPerPage = $this->getVar(Users_Constant::MODVAR_ITEMS_PER_PAGE);
+        $itemsPerPage = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE);
 
         // Get parameters from whatever input we need.
         if (!$this->request->isMethod('GET')) {
@@ -145,7 +171,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $isCurrentUser      = ($userObj['uid'] == $currentUid);
             $isGuestAccount     = ($userObj['uid'] == 1);
             $isAdminAccount     = ($userObj['uid'] == 2);
-            $hasUsersPassword   = (!empty($userObj['pass']) && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION));
+            $hasUsersPassword   = (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION));
             $currentUserHasReadAccess       = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_READ);
             $currentUserHasModerateAccess   = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_MODERATE);
             $currentUserHasEditAccess       = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_EDIT);
@@ -215,7 +241,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * Parameters passed via POST:
      * ---------------------------
-     * See the definition of {@link Users_Controller_FormData_NewUserForm}.
+     * See the definition of {@link NewUserForm}.
      *
      * Parameters passed via SESSION:
      * ------------------------------
@@ -233,15 +259,15 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         // When new user registration is disabled, the user must have ADMIN access instead of ADD access.
-        if (!$this->getVar(Users_Constant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
-            $registrationUnavailableReason = $this->getVar(Users_Constant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('Sorry! New user registration is currently disabled.'));
+        if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, false) && !SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_ADMIN)) {
+            $registrationUnavailableReason = $this->getVar(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, $this->__('Sorry! New user registration is currently disabled.'));
             $this->registerError($registrationUnavailableReason);
             // TODO - The home page typically does not display errors.
             $this->redirect(System::getHomepageUrl());
         }
 
         $proceedToForm = true;
-        $formData = new Users_Controller_FormData_NewUserForm('users_newuser', $this->serviceManager);
+        $formData = new NewUserForm('users_newuser', $this->serviceManager);
         $errorFields = array();
         $errorMessages = array();
 
@@ -302,7 +328,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                     $hook = new \Zikula\Core\Hook\ProcessHook($registeredObj['uid']);
                     $this->dispatchHooks('users.ui_hooks.user.process_edit', $hook);
 
-                    if ($registeredObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
+                    if ($registeredObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
                         $this->registerStatus($this->__('Done! Created new registration application.'));
                     } elseif (isset($registeredObj['activated'])) {
                         $this->registerStatus($this->__('Done! Created new user account.'));
@@ -547,7 +573,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * ---------------------------
      * array access_permissions An array used to modify a user's group membership.
      *
-     * See also the definition of {@link Users_Controller_FormData_ModifyUserForm}.
+     * See also the definition of {@link ModifyUserForm}.
      *
      * Parameters passed via SESSION:
      * ------------------------------
@@ -566,7 +592,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         $proceedToForm = true;
 
-        $formData = new Users_Controller_FormData_ModifyUserForm('users_modify', $this->serviceManager);
+        $formData = new ModifyUserForm('users_modify', $this->serviceManager);
 
         if ($this->request->isMethod('POST')) {
             $this->checkCsrfToken();
@@ -1038,7 +1064,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
     {
         $actions = array();
         if (!empty($reglist)) {
-            $approvalOrder = $this->getVar('moderation_order', Users_Constant::APPROVAL_BEFORE);
+            $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
             // Don't try to put any visual elements here (images, titles, colors, css classes, etc.). Leave that to
             // the template, so that they can be customized without hacking the core code. In fact, all we really need here
@@ -1066,8 +1092,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
             } elseif (SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE)) {
                 $actions['count'] = 5;
                 foreach ($reglist as $key => $reginfo) {
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $reginfo['isapproved']);
-                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != Users_Constant::APPROVAL_AFTER) || $reginfo['isverified']);
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != UsersConstant::APPROVAL_AFTER) || $reginfo['isverified']);
                     $actions['list'][$reginfo['uid']] = array(
                         'display'       =>                  ModUtil::url($this->name, 'admin', 'displayRegistration',   array('uid' => $reginfo['uid'])),
                         'modify'        =>                  ModUtil::url($this->name, 'admin', 'modifyRegistration',    array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
@@ -1080,8 +1106,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $actions['count'] = 4;
                 foreach ($reglist as $key => $reginfo) {
                     $actionUrlArgs['uid'] = $reginfo['uid'];
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $reginfo['isapproved']);
-                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != Users_Constant::APPROVAL_AFTER) || $reginfo['isverified']);
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $enableApprove = !$reginfo['isapproved'] && (($approvalOrder != UsersConstant::APPROVAL_AFTER) || $reginfo['isverified']);
                     $actions['list'][$reginfo['uid']] = array(
                         'display'       =>                  ModUtil::url($this->name, 'admin', 'displayRegistration',   array('uid' => $reginfo['uid'])),
                         'modify'        =>                  ModUtil::url($this->name, 'admin', 'modifyRegistration',    array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
@@ -1093,7 +1119,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $actions['count'] = 3;
                 foreach ($reglist as $key => $reginfo) {
                     $actionUrlArgs['uid'] = $reginfo['uid'];
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
                     $actions['list'][$reginfo['uid']] = array(
                         'display'       =>                  ModUtil::url($this->name, 'admin', 'displayRegistration',   array('uid' => $reginfo['uid'])),
                         'modify'        =>                  ModUtil::url($this->name, 'admin', 'modifyRegistration',    array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)),
@@ -1104,7 +1130,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $actions['count'] = 2;
                 foreach ($reglist as $key => $reginfo) {
                     $actionUrlArgs['uid'] = $reginfo['uid'];
-                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $reginfo['isapproved']);
+                    $enableVerify = !$reginfo['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $reginfo['isapproved']);
                     $actions['list'][$reginfo['uid']] = array(
                         'display'       =>                  ModUtil::url($this->name, 'admin', 'displayRegistration',   array('uid' => $reginfo['uid'])),
                         'verify'        => $enableVerify ?  ModUtil::url($this->name, 'admin', 'verifyRegistration',    array('uid' => $reginfo['uid'], 'restoreview' => $restoreView)) : false,
@@ -1149,7 +1175,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
         }
 
         $regCount = ModUtil::apiFunc($this->name, 'registration', 'countAll');
-        $limitNumRows = $this->getVar(Users_Constant::MODVAR_ITEMS_PER_PAGE, Users_Constant::DEFAULT_ITEMS_PER_PAGE);
+        $limitNumRows = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
         if (!is_numeric($limitNumRows) || ((int)$limitNumRows != $limitNumRows) || (($limitNumRows < 1) && ($limitNumRows != -1))) {
             $limitNumRows = 25;
         }
@@ -1291,11 +1317,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
         if (!$reginfo['isverified'] && !empty($reginfo['verificationsent']) && ($regExpireDays > 0)) {
             try {
                 $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-            } catch (Exception $e) {
-                $expiresUTC = new DateTime(Users_Constant::EXPIRED, new DateTimeZone('UTC'));
+            } catch (\Exception $e) {
+                $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
             }
             $expiresUTC->modify("+{$regExpireDays} days");
-            $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(Users_Constant::DATETIME_FORMAT),
+            $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
                 $this->__('%m-%d-%Y %H:%M'));
         }
 
@@ -1320,7 +1346,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      * string restorview To restore the main view to use the filtering options present prior to executing this function, then 'view',
      *                          otherwise not present.
      *
-     * See also the definition of {@link Users_Controller_FormData_ModifyRegistrationForm}.
+     * See also the definition of {@link ModifyRegistrationForm}.
      *
      * Parameters passed via SESSION:
      * ------------------------------
@@ -1338,7 +1364,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
 
         $proceedToForm = true;
 
-        $formData = new Users_Controller_FormData_ModifyRegistrationForm('users_modifyreg', $this->serviceManager);
+        $formData = new ModifyRegistrationForm('users_modifyreg', $this->serviceManager);
         $errorFields = array();
         $errorMessages = array();
 
@@ -1411,8 +1437,8 @@ class Users_Controller_Admin extends Zikula_AbstractController
                 $registration = UserUtil::getVars($registration['uid'], true, 'uid', true);
 
                 if ($emailUpdated) {
-                    $approvalOrder = $this->getVar('moderation_order', Users_Constant::APPROVAL_BEFORE);
-                    if (!$originalRegistration['isverified'] && (($approvalOrder != Users_Constant::APPROVAL_BEFORE) || $originalRegistration['isapproved'])) {
+                    $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
+                    if (!$originalRegistration['isverified'] && (($approvalOrder != UsersConstant::APPROVAL_BEFORE) || $originalRegistration['isapproved'])) {
                         $verificationSent = ModUtil::apiFunc($this->name, 'registration', 'sendVerificationCode', array(
                             'reginfo'   => $registration,
                             'force'     => true,
@@ -1552,12 +1578,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $cancelUrl = ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true));
         }
 
-        $approvalOrder = $this->getVar('moderation_order', Users_Constant::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
         if ($reginfo['isverified']) {
             $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It is already verified.', $reginfo['uname']));
             $this->redirect($cancelUrl);
-        } elseif (!$forceVerification && ($approvalOrder == Users_Constant::APPROVAL_BEFORE) && !$reginfo['isapproved']) {
+        } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_BEFORE) && !$reginfo['isapproved']) {
             $this->registerError($this->__f('Error! A verification code cannot be sent for the registration record for \'%1$s\'. It must first be approved.', $reginfo['uname']));
             $this->redirect($cancelUrl);
         }
@@ -1568,11 +1594,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             if (!$reginfo['isverified'] && $reginfo['verificationsent'] && ($regExpireDays > 0)) {
                 try {
                     $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-                } catch (Exception $e) {
-                    $expiresUTC = new DateTime(Users_Constant::EXPIRED, new DateTimeZone('UTC'));
+                } catch (\Exception $e) {
+                    $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
                 }
                 $expiresUTC->modify("+{$regExpireDays} days");
-                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(Users_Constant::DATETIME_FORMAT),
+                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
@@ -1664,12 +1690,12 @@ class Users_Controller_Admin extends Zikula_AbstractController
             $cancelUrl = ModUtil::url($this->name, 'admin', 'viewRegistrations', array('restoreview' => true));
         }
 
-        $approvalOrder = $this->getVar('moderation_order', Users_Constant::APPROVAL_BEFORE);
+        $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
 
         if ($reginfo['isapproved'] && !$forceVerification) {
             $this->registerError($this->__f('Warning! Nothing to do! The registration record with uid \'%1$s\' is already approved.', $reginfo['uid']));
             $this->redirect($cancelUrl);
-        } elseif (!$forceVerification && ($approvalOrder == Users_Constant::APPROVAL_AFTER) && !$reginfo['isapproved']
+        } elseif (!$forceVerification && ($approvalOrder == UsersConstant::APPROVAL_AFTER) && !$reginfo['isapproved']
                 && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
             $this->registerError($this->__f('Error! The registration record with uid \'%1$s\' cannot be approved. The registration\'s e-mail address must first be verified.', $reginfo['uid']));
             $this->redirect($cancelUrl);
@@ -1688,11 +1714,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             if (!$reginfo['isverified'] && !empty($reginfo['verificationsent']) && ($regExpireDays > 0)) {
                 try {
                     $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-                } catch (Exception $e) {
-                    $expiresUTC = new DateTime(Users_Constant::EXPIRED, new DateTimeZone('UTC'));
+                } catch (\Exception $e) {
+                    $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
                 }
                 $expiresUTC->modify("+{$regExpireDays} days");
-                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(Users_Constant::DATETIME_FORMAT),
+                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
@@ -1803,11 +1829,11 @@ class Users_Controller_Admin extends Zikula_AbstractController
             if (!$reginfo['isverified'] && !empty($reginfo['verificationsent']) && ($regExpireDays > 0)) {
                 try {
                     $expiresUTC = new DateTime($reginfo['verificationsent'], new DateTimeZone('UTC'));
-                } catch (Exception $e) {
-                    $expiresUTC = new DateTime(Users_Constant::EXPIRED, new DateTimeZone('UTC'));
+                } catch (\Exception $e) {
+                    $expiresUTC = new DateTime(UsersConstant::EXPIRED, new DateTimeZone('UTC'));
                 }
                 $expiresUTC->modify("+{$regExpireDays} days");
-                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(Users_Constant::DATETIME_FORMAT),
+                $reginfo['validuntil'] = DateUtil::formatDatetime($expiresUTC->format(UsersConstant::DATETIME_FORMAT),
                     $this->__('%m-%d-%Y %H:%M'));
             }
 
@@ -1855,7 +1881,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
      *
      * Parameters passed via POST:
      * ---------------------------
-     * See the definition of {@link Users_Controller_FormData_ConfigForm}.
+     * See the definition of {@link ConfigForm}.
      *
      * Parameters passed via SESSION:
      * ------------------------------
@@ -1873,7 +1899,7 @@ class Users_Controller_Admin extends Zikula_AbstractController
             throw new Zikula_Exception_Forbidden();
         }
 
-        $configData = new Users_Controller_FormData_ConfigForm('users_config', $this->serviceManager);
+        $configData = new ConfigForm('users_config', $this->serviceManager);
         $errorFields = array();
 
         if ($this->request->isMethod('POST')) {
@@ -2369,9 +2395,9 @@ class Users_Controller_Admin extends Zikula_AbstractController
             }
 
             // validate activation value
-            $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : Users_Constant::ACTIVATED_ACTIVE;
+            $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : UsersConstant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
-            if (($activated != Users_Constant::ACTIVATED_INACTIVE) && ($activated != Users_Constant::ACTIVATED_ACTIVE)) {
+            if (($activated != UsersConstant::ACTIVATED_INACTIVE) && ($activated != UsersConstant::ACTIVATED_ACTIVE)) {
                 return $this->__('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.');
             }
 

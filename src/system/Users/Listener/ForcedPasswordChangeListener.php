@@ -13,10 +13,16 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Listener;
+
+use Users_Constant;
+use UserUtil;
+use LogUtil;
+
 /**
  * Persistent event listener for user.login.veto events that forces the change of a user's password.
  */
-class Users_Listener_ForcedPasswordChange
+class ForcedPasswordChangeListener
 {
     /**
      * The module name.
@@ -35,11 +41,11 @@ class Users_Listener_ForcedPasswordChange
      * Account or an OpenID, and never established a Users password), then this handler
      * will not trigger a change of password.
      *
-     * @param Zikula_Event $event The event that triggered this handler.
+     * @param \Zikula_Event $event The event that triggered this handler.
      *
      * @return void
      */
-    public static function forcedPasswordChangeListener(Zikula_Event $event)
+    public static function forcedPasswordChangeListener(\Zikula_Event $event)
     {
         $userObj = $event->getSubject();
 

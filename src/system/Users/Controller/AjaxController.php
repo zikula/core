@@ -12,10 +12,24 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller;
+
+use Zikula_View;
+use ModUtil;
+use DBUtil;
+use DataUtil;
+use SecurityUtil;
+use Zikula_Response_Ajax_Plain;
+use Zikula_Exception_Forbidden;
+use Zikula_Hook_ValidationProviders;
+use Zikula;
+use Zikula_Response_Ajax;
+use Zikula_Exception_Fatal;
+
 /**
  * Access to actions initiated through AJAX for the Users module.
  */
-class Users_Controller_Ajax extends Zikula_Controller_AbstractAjax
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Performs a user search based on the user name fragment entered so far.

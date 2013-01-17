@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Listener;
+
+use Users_Constant;
+use ServiceUtil;
+
 /**
  * Persistent event listener used to clean up the Users module session variables related to logging in.
  */
-class Users_Listener_ClearUsersNamespace
+class ClearUsersNamespaceListener
 {
     /**
      * The module name.
@@ -35,11 +40,11 @@ class Users_Listener_ClearUsersNamespace
      * if it detects session variables containing authentication information which might make it think
      * that a re-attempt is in progress.
      *
-     * @param Zikula_Event $event The event that triggered this handler.
+     * @param \Zikula_Event $event The event that triggered this handler.
      *
      * @return void
      */
-    public static function clearUsersNamespaceListener(Zikula_Event $event)
+    public static function clearUsersNamespaceListener(\Zikula_Event $event)
     {
         $eventName = $event->getName();
         $modinfo = $event->hasArgument('modinfo') ? $event->getArgument('modinfo') : array();
