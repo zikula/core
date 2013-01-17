@@ -20,7 +20,6 @@ use PageUtil;
 use UserUtil;
 use ZLanguage;
 use ModUtil;
-use Blocks\MenutreeTree;
 use Blocks\MenutreeUtil;
 use FormUtil;
 use System;
