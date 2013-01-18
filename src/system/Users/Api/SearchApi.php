@@ -22,7 +22,6 @@ use ModUtil;
 use DBUtil;
 use DataUtil;
 use Users\Constant as UsersConstant;
-use Search_Api_User;
 
 /**
  * The search for items in the Users module.
@@ -97,39 +96,38 @@ class SearchApi extends \Zikula_AbstractApi
         $profileModule = System::getVar('profilemodule', '');
         $useProfileMod = (!empty($profileModule) && ModUtil::available($profileModule));
 
-        // get the db and table info
-        $dbtable = DBUtil::getTables();
-        $userscolumn = $dbtable['users_column'];
-
         $q = DataUtil::formatForStore($args['q']);
         $q = str_replace('%', '\\%', $q);  // Don't allow user input % as wildcard
 
         // build the where clause
         $where   = array();
-        $where[] = "({$userscolumn['activated']} != " . UsersConstant::ACTIVATED_PENDING_REG . ')';
+        $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
 
-        $unameClause = Search_Api_User::construct_where($args, array($userscolumn['uname']));
+        $unameClause = \Search\Api\UserApi::construct_where($args, array('u.uname'));
 
         // invoke the current profilemodule search query
         if ($useProfileMod) {
-            $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata',
-                                 array('dynadata' => array('all' => $q)));
+            $uids = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => array('all' => $q)));
 
             $tmp = $unameClause;
             if (is_array($uids) && !empty($uids)) {
-                $tmp .= " OR {$userscolumn['uid']} IN (" . implode(', ', $uids) . ')';
+                $tmp .= " OR u.uid IN (" . implode(', ', $uids) . ')';
             }
-            $where[] = "({$tmp}) ";
+
+            $where[] = "{$tmp} ";
         } else {
             $where[] = $unameClause;
         }
 
         $where = implode(' AND ', $where);
 
-        $users = DBUtil::selectObjectArray ('users', $where, '', -1, -1, 'uid');
+        $dql = "SELECT u FROM Users\Entity\User u $where";
+        $query = $this->entityManager->createQuery($dql);
+        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
-        if (!$users) {
-            return true;
+        $users = array();
+        foreach ($items as $item) {
+            $users[$item['uid']] = $item;
         }
 
         $sessionId = session_id();

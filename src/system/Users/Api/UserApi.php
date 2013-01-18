@@ -14,6 +14,7 @@
 
 namespace Users\Api;
 
+use Zikula_Fatal_Exception;
 use Zikula_Exception_Forbidden;
 use SecurityUtil;
 use LogUtil;
@@ -58,97 +59,44 @@ class UserApi extends \Zikula_AbstractApi
             throw new Zikula_Exception_Forbidden();
         }
 
-        // Check validity of startnum arg, or set default
-        if (!isset($args['startnum'])) {
-            $limitOffset = -1;
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
+
+        // add select and from params
+        $qb->select('u')
+           ->from('Users\Entity\User', 'u');
+
+        // add clauses for filtering activation states
+        $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
+        $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_DELETE)));
+
+        // add clause for filtering letter
+        if (isset($args['letter']) && !empty($args['letter'])) {
+            $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
+        }
+
+        // add ordering
+        if (isset($args['sort']) && !empty($args['sort']) && is_array($args['sort'])) {
+            foreach ($args['sort'] as $sort => $sortDir) {
+                $qb->addOrderBy('u.' . $sort, $sortDir);
+            }
         } else {
-            if (is_numeric($args['startnum']) && ((int)$args['startnum'] == $args['startnum'])) {
-                $limitOffset = (int)$args['startnum'] - 1;
-            } else {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-            }
+            $qb->addOrderBy('u.uname', 'ASC');
         }
 
-        // Check validity of numitems arg, or set default
-        if (!isset($args['numitems'])) {
-            $limitNumRows = -1;
-        } else {
-            if (is_numeric($args['numitems']) && ((int)$args['numitems'] == $args['numitems']) && ($args['numitems'] >= 1)) {
-                $limitNumRows = (int)$args['numitems'];
-            } else {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-            }
+        // add limit and offset
+        $startnum = (!isset($args['startnum']) || empty($args['startnum']) || $args['startnum'] < 0) ? 0 : (int)$args['startnum'];
+        $numitems = (!isset($args['numitems']) || empty($args['numitems']) || $args['numitems'] < 0) ? 0 : (int)$args['numitems'];
+        if ($numitems > 0) {
+            $qb->setFirstResult($startnum)
+               ->setMaxResults($numitems);
         }
 
-        // Check validity of letter arg.
-        // $args['letter'] is really an SQL LIKE filter
-        if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-        }
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
 
-        // Sort
-        $table = DBUtil::getTables();
-        $usersColumn = $table['users_column'];
-        if (isset($args['sort']) && !empty($args['sort'])) {
-            if (is_string($args['sort'])) {
-                $sortBy = array($args['sort']);
-            } elseif (is_array($args['sort'])) {
-                $sortBy = $args['sort'];
-            } else {
-                throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-            }
-
-            $orderBy = array();
-            foreach ($sortBy as $key => $value) {
-                if (is_numeric($key)) {
-                    $fieldName = $value;
-                    $direction = '';
-                } else {
-                    $fieldName = $key;
-                    $direction = $value;
-                }
-                if (!empty($direction) && ($direction != 'ASC') && ($direction != 'DESC')) {
-                    throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-                } elseif (isset($usersColumn[$fieldName])) {
-                    $orderBy[] = $usersColumn[$fieldName] . (!empty($direction) ? ' ' . $direction : '');
-                } else {
-                    throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-                }
-            }
-
-            $orderBy = 'ORDER BY ' . implode(', ', $orderBy);
-        } else {
-            $orderBy = 'ORDER BY uname';
-        }
-
-        $permFilter = array();
-        // corresponding filter permission to filter anonymous in admin view:
-        // Administrators | Users:: | Anonymous:: | None
-        $permFilter[] = array(
-            'realm'             => 0,
-            'component_left'    => $this->name,
-            'component_middle'  => '',
-            'component_right'   => '',
-            'instance_left'     => 'uname',
-            'instance_middle'   => '',
-            'instance_right'    => 'uid',
-            'level'             => ACCESS_READ
-        );
-
-        // form where clause
-        $where = array();
-        if (isset($args['letter'])) {
-            $where[] = "({$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%')";
-        }
-        $where[] = "({$usersColumn['activated']} NOT IN (" . implode(', ', array(UsersConstant::ACTIVATED_PENDING_REG, UsersConstant::ACTIVATED_PENDING_DELETE)) . '))';
-        $where = 'WHERE ' . implode(' AND ', $where);
-
-        $objArray = DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, null, $permFilter);
-
-        // Check for a DB error
-        if ($objArray === false) {
-            throw new Zikula_Exception_Fatal($this->__('Error! Could not load data.'));
-        }
+        // execute query
+        $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         return $objArray;
     }
@@ -222,25 +170,29 @@ class UserApi extends \Zikula_AbstractApi
             return false;
         }
 
-        $table = DBUtil::getTables();
-        $usersColumn = $table['users_column'];
+        // create a QueryBuilder instance
+        $qb = $this->entityManager->createQueryBuilder();
 
-        // form where clause
-        $where = '';
-        if (isset($args['letter'])) {
-            $where = "WHERE {$usersColumn['uname']} LIKE '".DataUtil::formatForStore($args['letter'])."%'";
+        // add select and from params
+        $qb->select('count(u.uid)')
+           ->from('Users\Entity\User', 'u');
+
+        // add clauses for filtering activation states
+        $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_REG)));
+        $qb->andWhere($qb->expr()->neq('u.activated', $qb->expr()->literal(UsersConstant::ACTIVATED_PENDING_DELETE)));
+
+        // add clause for filtering letter
+        if (isset($args['letter']) && !empty($args['letter'])) {
+            $qb->andWhere($qb->expr()->like('u.uname', $qb->expr()->literal($args['letter'] . '%')));
         }
 
-        $objCount = DBUtil::selectObjectCount('users', $where);
+        // convert querybuilder instance into a Query object
+        $query = $qb->getQuery();
 
-        // Check for a DB error
-        if ($objCount === false) {
-            $this->registerError($this->__('Error! Could not load data.'));
+        // execute query
+        $count = $query->getSingleScalarResult();
 
-            return false;
-        }
-
-        return $objCount;
+        return (int)$count;
     }
 
     /**
@@ -324,7 +276,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if ($mailerArgs['body']) {
-            return ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $mailerArgs);
+            return ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', $mailerArgs);
         }
 
         return true;
@@ -356,7 +308,9 @@ class UserApi extends \Zikula_AbstractApi
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         if ($args['idfield'] == 'email') {
-            $ucount = DBUtil::selectObjectCountByID ('users', $args['id'], 'email');
+            $dql = "SELECT count(u.uid) FROM Users\Entity\User u WHERE u.email = '{$args['id']}'";
+            $query = $this->entityManager->createQuery($dql);
+            $ucount = (int)$query->getSingleScalarResult();
 
             if ($ucount > 1) {
                 return false;
@@ -440,21 +394,20 @@ class UserApi extends \Zikula_AbstractApi
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($hashedConfirmationCode !== false) {
-                $tables = DBUtil::getTables();
-                $verifychgColumn = $tables['users_verifychg_column'];
-                DBUtil::deleteWhere('users_verifychg',
-                    "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_PWD . ")");
+                $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $query = $this->entityManager->createQuery($dql);
+                $query->getResult();
 
-                $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+                $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
-                $verifyChangeObj = array(
-                    'changetype'    => UsersConstant::VERIFYCHGTYPE_PWD,
-                    'uid'           => $user['uid'],
-                    'newemail'      => '',
-                    'verifycode'    => $hashedConfirmationCode,
-                    'created_dt'    => $nowUTC->format(UsersConstant::DATETIME_FORMAT),
-                );
-                $codeSaved = DBUtil::insertObject($verifyChangeObj, 'users_verifychg');
+                $codeSaved = new \Users\Entity\UserVerification;
+                $codeSaved['changetype'] = UsersConstant::VERIFYCHGTYPE_PWD;
+                $codeSaved['uid'] = $user['uid'];
+                $codeSaved['newemail'] = '';
+                $codeSaved['verifycode'] = $hashedConfirmationCode;
+                $codeSaved['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
+                $this->entityManager->persist($codeSaved);
+                $this->entityManager->flush();
 
                 if ($codeSaved) {
                     $urlArgs = array();
@@ -529,18 +482,18 @@ class UserApi extends \Zikula_AbstractApi
             return false;
         } else {
             // delete all the records for password reset confirmation that have expired
-            $tables = DBUtil::getTables();
-            $verifychgColumn = $tables['users_verifychg_column'];
             $chgPassExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
             if ($chgPassExpireDays > 0) {
-                $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+                $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-                $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_PWD . ")";
-                DBUtil::deleteWhere ('users_verifychg', $where);
+
+                $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $query = $this->entityManager->createQuery($dql);
+                $query->getResult();
             }
-            $verifychgObj = DBUtil::selectObject('users_verifychg',
-                "({$verifychgColumn['uid']} = {$user['uid']}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_PWD . ")");
+
+            $verifychgObj = $this->entityManager->getRepository('Users\Entity\UserVerification')->findOneBy(array('uid' => $user['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_PWD));
             if ($verifychgObj) {
                 $codeIsGood = UserUtil::passwordsMatch($args['code'], $verifychgObj['verifycode']);
             } else {
@@ -632,10 +585,7 @@ class UserApi extends \Zikula_AbstractApi
             throw new Zikula_Exception_Forbidden();
         }
 
-        $dbinfo = DBUtil::getTables();
-        $verifychgColumn = $dbinfo['users_verifychg_column'];
-
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
 
         $uid = UserUtil::getVar('uid');
         $uname = UserUtil::getVar('uname');
@@ -644,21 +594,18 @@ class UserApi extends \Zikula_AbstractApi
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
-        $obj = array(
-            'changetype'    => UsersConstant::VERIFYCHGTYPE_EMAIL,
-            'uid'           => $uid,
-            'newemail'      => DataUtil::formatForStore($args['newemail']),
-            'verifycode'    => $confirmCodeHash,
-            'created_dt'    => $nowUTC->format(UsersConstant::DATETIME_FORMAT),
-        );
+        $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.uid = " . $uid . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
 
-        DBUtil::deleteWhere('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_EMAIL . ")");
-        $obj = DBUtil::insertObject($obj, 'users_verifychg', 'id');
-
-        if (!$obj) {
-            return false;
-        }
+        $obj = new \Users\Entity\UserVerification;
+        $obj['changetype'] = UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $obj['uid'] = $uid;
+        $obj['newemail'] = DataUtil::formatForStore($args['newemail']);
+        $obj['verifycode'] = $confirmCodeHash;
+        $obj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
+        $this->entityManager->persist($obj);
+        $this->entityManager->flush();
 
         // send confirmation e-mail to user with the changing code
         $subject = $this->__f('Confirmation change of e-mail for %s', $uname);
@@ -701,27 +648,21 @@ class UserApi extends \Zikula_AbstractApi
             throw new Zikula_Exception_Forbidden();
         }
 
-        $dbinfo = DBUtil::getTables();
-        $verifychgColumn = $dbinfo['users_verifychg_column'];
-
         // delete all the records from e-mail confirmation that have expired
         $chgEmailExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
         if ($chgEmailExpireDays > 0) {
-            $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+            $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
-            $where = "({$verifychgColumn['created_dt']} < '{$staleRecordUTCStr}') AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_EMAIL . ")";
-            DBUtil::deleteWhere ('users_verifychg', $where);
+
+            $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+            $query = $this->entityManager->createQuery($dql);
+            $query->getResult();
         }
 
         $uid = UserUtil::getVar('uid');
 
-        $item = DBUtil::selectObject('users_verifychg',
-            "({$verifychgColumn['uid']} = {$uid}) AND ({$verifychgColumn['changetype']} = " . UsersConstant::VERIFYCHGTYPE_EMAIL . ")");
-
-        if (!$item) {
-            return false;
-        }
+        $item = $this->entityManager->getRepository('Users\Entity\UserVerification')->findOneBy(array('uid' => $uid, 'changetype' => UsersConstant::VERIFYCHGTYPE_EMAIL));
 
         return $item;
     }
@@ -748,7 +689,9 @@ class UserApi extends \Zikula_AbstractApi
 
             return false;
         }
+
         $uid = $args['uid'];
+
         if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
             $this->registerError(LogUtil::getErrorMsgArgs());
 
@@ -773,14 +716,12 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        $dbinfo = DBUtil::getTables();
-        $verifyChgColumn = $dbinfo['users_verifychg_column'];
-
-        $where = "WHERE ({$verifyChgColumn['uid']} = {$uid})";
+        $dql = "DELETE FROM Users\Entity\UserVerification v WHERE v.uid = " . $uid;
         if (isset($changeType)) {
-            $where .= " AND ({$verifyChgColumn['changetype']} IN (" . implode(', ', $changeType) . "))";
+            $dql .= " AND v.changetype IN (" . implode(', ', $changeType) . ")";
         }
-        DBUtil::deleteWhere('users_verifychg', $where);
+        $query = $this->entityManager->createQuery($dql);
+        $query->getResult();
     }
 
     /**
