@@ -15,17 +15,18 @@
 
 namespace Users;
 
+use DoctrineHelper;
+use DataUtil;
+use ModUtil;
+use System;
+use DateTime;
+use DateTimeZone;
+use ServiceUtil;
+use Zikula_Exception_Fatal;
 use DBUtil;
 use EventUtil;
 use HookUtil;
 use Users\Constant as UsersConstant;
-use System;
-use ModUtil;
-use DateTimeZone;
-use DateTime;
-use DataUtil;
-use ServiceUtil;
-use Zikula_Exception_Fatal;
 
 /**
  * Provides module installation and upgrade services for the Users module.
@@ -42,15 +43,16 @@ class UsersInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        if (!DBUtil::createTable('session_info')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('users')) {
-            return false;
-        }
-
-        if (!DBUtil::createTable('users_verifychg')) {
+        // create the tables
+        $classes = array(
+            'Users\Entity\User',
+            'Users\Entity\UserAttribute',
+            'Users\Entity\UserSession',
+            'Users\Entity\UserVerification'
+        );
+        try {
+            DoctrineHelper::createSchema($this->entityManager, $classes);
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -59,10 +61,14 @@ class UsersInstaller extends \Zikula_AbstractInstaller
         $this->setVars($this->getDefaultModvars());
 
         // Register persistent event listeners (handlers)
-        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
-        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
+            array('Users\Listener\PendingContentListener', 'pendingContentListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
+            array('Users\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
+            array('Users\Listener\ClearUsersNamespace\Listener', 'clearUsersNamespaceListener'));
+        EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
+            array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
 
         // Register persistent hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
@@ -154,27 +160,33 @@ class UsersInstaller extends \Zikula_AbstractInstaller
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
                 // This s the current version: add 2.2.0 --> next when appropriate
-        }
 
-        $currentModVars = $this->getVars();
-        $defaultModVars = $this->getDefaultModvars();
-
-        // Remove modvars that are no longer defined.
-        foreach ($currentModVars as $modVar => $currentValue) {
-            if (!array_key_exists($modVar, $defaultModVars)) {
-                $this->delVar($modVar);
+            // Upgrade dependent on old version number
+            switch ($oldVersion) {
+                case '2.2.1':
+                    // This is the current version: add 2.2.1 --> next when appropriate
             }
-        }
 
-        // Add modvars that are new to the version
-        foreach ($defaultModVars as $modVar => $defaultValue) {
-            if (!array_key_exists($modVar, $currentModVars)) {
-                $this->setVar($modVar, $defaultValue);
+            $currentModVars = $this->getVars();
+            $defaultModVars = $this->getDefaultModvars();
+
+            // Remove modvars that are no longer defined.
+            foreach ($currentModVars as $modVar => $currentValue) {
+                if (!array_key_exists($modVar, $defaultModVars)) {
+                    $this->delVar($modVar);
+                }
             }
-        }
 
-        // Update successful
-        return true;
+            // Add modvars that are new to the version
+            foreach ($defaultModVars as $modVar => $defaultValue) {
+                if (!array_key_exists($modVar, $currentModVars)) {
+                    $this->setVar($modVar, $defaultValue);
+                }
+            }
+
+            // Update successful
+            return true;
+        }
     }
 
     /**
@@ -249,7 +261,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
      */
     private function defaultdata()
     {
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
 
         // Anonymous
@@ -268,7 +280,9 @@ class UsersInstaller extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        DBUtil::insertObject($record, 'users', 'uid', true);
+        $user = new \Users\Entity\User;
+        $user->merge($record);
+        $this->entityManager->persist($user);
 
         // Admin
         $record = array(
@@ -286,7 +300,11 @@ class UsersInstaller extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        DBUtil::insertObject($record, 'users', 'uid', true);
+        $user = new \Users\Entity\User;
+        $user->merge($record);
+        $this->entityManager->persist($user);
+
+        $this->entityManager->flush();
     }
 
     /**
