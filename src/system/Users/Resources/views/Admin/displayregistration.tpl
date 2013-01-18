@@ -4,7 +4,7 @@
     <h3>{gt text='Registration for \'%1$s\'' tag1=$reginfo.uname}</h3>
 </div>
 
-{include file='users_admin_includeregistration.tpl'}
+{include file='Admin/includeregistration.tpl'}
 
 <div class="z-buttons z-center" style="margin:0 0 1em; padding:1em 0;">
     {strip}

@@ -1,6 +1,6 @@
 {gt text='Lost password recovery' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 {if !empty($passreminder)}
 <div class="z-form">

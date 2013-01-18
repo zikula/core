@@ -2,7 +2,7 @@
 {gt text='Password changer' assign='templatetitle'}
 {if $modvars.Users.use_password_strength_meter == 1}
 {pageaddvar name='javascript' value='prototype'}
-{pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+{pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
 {pageaddvarblock}
 <script type="text/javascript">
     var passmeter = null;
@@ -16,7 +16,7 @@
 {/pageaddvarblock}
 {/if}
 {/strip}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 {if $login}
 <div class="z-warningmsg">

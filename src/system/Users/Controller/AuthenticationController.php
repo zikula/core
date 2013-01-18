@@ -71,22 +71,23 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
-            $templateName = mb_strtolower("users_auth_loginformfields_{$args['form_type']}_{$args['method']}.tpl");
+            $templateName = "Authentication/".mb_strtolower("loginformfields_{$args['form_type']}_{$args['method']}.tpl");
             if (!$this->view->template_exists($templateName)) {
-                $templateName = mb_strtolower("users_auth_loginformfields_default_{$args['method']}.tpl");
+                $templateName = "Authentication/".mb_strtolower("loginformfields_default_{$args['method']}.tpl");
                 if (!$this->view->template_exists($templateName)) {
-                    $templateName = mb_strtolower("users_auth_loginformfields_{$args['form_type']}_default.tpl");
+                    $templateName = "Authentication/".mb_strtolower("loginformfields_{$args['form_type']}_default.tpl");
                     if (!$this->view->template_exists($templateName)) {
-                        $templateName = mb_strtolower("users_auth_loginformfields_default_default.tpl");
+                        $templateName = "Authentication/".mb_strtolower("loginformfields_default_default.tpl");
                         if (!$this->view->template_exists($templateName)) {
-                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
+                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the
+                             %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
                         }
                     }
                 }
             }
 
-            return $this->view->assign('authentication_method', $args['method'])
-                    ->fetch($templateName);
+            return $this->response($this->view->assign('authentication_method', $args['method'])
+                    ->fetch($templateName));
         }
     }
 
@@ -142,13 +143,13 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
                 'form_action'           => $args['form_action'],
             );
 
-            $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['form_type']}_{$args['method']}.tpl");
+            $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_{$args['form_type']}_{$args['method']}.tpl");
             if (!$this->view->template_exists($templateName)) {
-                $templateName = mb_strtolower("users_auth_authenticationmethodselector_default_{$args['method']}.tpl");
+                $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_default_{$args['method']}.tpl");
                 if (!$this->view->template_exists($templateName)) {
-                    $templateName = mb_strtolower("users_auth_authenticationmethodselector_{$args['form_type']}_default.tpl");
+                    $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_{$args['form_type']}_default.tpl");
                     if (!$this->view->template_exists($templateName)) {
-                        $templateName = mb_strtolower("users_auth_authenticationmethodselector_default_default.tpl");
+                        $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_default_default.tpl");
                         if (!$this->view->template_exists($templateName)) {
                             throw new Zikula_Exception_Fatal($this->__f('An authentication method selector template was not found for method \'%1$s\' using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
                         }
@@ -156,8 +157,9 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
                 }
             }
 
-            return $this->view->assign($templateVars)
-                    ->fetch($templateName);
+            return $this->response(
+                $this->view->assign($templateVars)
+                     ->fetch($templateName));
         }
     }
 

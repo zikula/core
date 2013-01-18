@@ -1,5 +1,5 @@
 {gt text='E-mail address manager' assign='templatetitle'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 <p class="z-informationmsg">
     {gt text="Notice: Please enter your new e-mail address, the same address again for verification, and then click 'Save'. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is <strong>'%s'</strong>." tag1=$coredata.user.email}
@@ -22,7 +22,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text='Save'}
-            <a href="{modurl modname='Users' type='user' func='main'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            <a href="{modurl modname='Users' type='user' func='index'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

@@ -3,7 +3,7 @@
     {ajaxheader modname='Users' filename='Zikula.Users.NewUser.js'}
     {if $modvars.Users.use_password_strength_meter && ($authentication_method.modname == 'Users')}
         {pageaddvar name='javascript' value='prototype'}
-        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 var passmeter = null;
@@ -35,22 +35,22 @@
     {/pageaddvarblock}
 {/strip}
 
-{include file="users_user_menu.tpl"}
+{include file="User/menu.tpl"}
 
 <p id="users_formtop">
     {gt text='Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.'}
     {gt text='During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.'}
 </p>
 
-{if $modvars.Users.moderation && ($modvars.Users.reg_verifyemail != 'Users_Constant::VERIFY_NO'|constant)}
-    {if $modvars.Users.moderation_order == 'Users_Constant::APPROVAL_BEFORE'|constant}
+{if $modvars.Users.moderation && ($modvars.Users.reg_verifyemail != 'Users\Constant::VERIFY_NO'|constant)}
+    {if $modvars.Users.moderation_order == 'Users\Constant::APPROVAL_BEFORE'|constant}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request and you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after an administrator has approved your request."}</p>
     {else}
-    <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $modvars.Users.moderation_order == 'Users_Constant::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
+    <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $modvars.Users.moderation_order == 'Users\Constant::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
     {/if}
 {elseif $modvars.Users.moderation}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below."}</p>
-{elseif $modvars.Users.reg_verifyemail != 'Users_Constant::VERIFY_NO'|constant}
+{elseif $modvars.Users.reg_verifyemail != 'Users\Constant::VERIFY_NO'|constant}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}</p>
 {/if}
 
@@ -80,7 +80,8 @@
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
-                {if ($authentication_method.modname != 'Users') || (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users_Constant::LOGIN_METHOD_EMAIL'|constant))}
+
+                {if ($authentication_method.modname != 'Users') || (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users\Constant::LOGIN_METHOD_EMAIL'|constant))}
                 <em class="z-formnote z-sub">{gt text='Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -116,8 +117,8 @@
             </div>
         </fieldset>
         {else}
-            <input id="{$formData->getFieldId('pass')}" name="pass" type="hidden" value="{'Users_Constant::PWD_NO_USERS_AUTHENTICATION'|constant}" />
-            <input id="{$formData->getFieldId('passagain')}" name="passagain" type="hidden" value="{'Users_Constant::PWD_NO_USERS_AUTHENTICATION'|constant}" />
+            <input id="{$formData->getFieldId('pass')}" name="pass" type="hidden" value="{'Users\Constant::PWD_NO_USERS_AUTHENTICATION'|constant}" />
+            <input id="{$formData->getFieldId('passagain')}" name="passagain" type="hidden" value="{'Users\Constant::PWD_NO_USERS_AUTHENTICATION'|constant}" />
             <input id="{$formData->getFieldId('passreminder')}" name="passreminder" type="hidden" value="{$formData->getFieldData('passreminder')|safetext}" />
         {/if}
 {/capture}
@@ -128,7 +129,8 @@
                 {assign var='fieldName' value='email'}
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
-                {if (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users_Constant::LOGIN_METHOD_EMAIL'|constant))}
+
+                {if (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users\Constant::LOGIN_METHOD_EMAIL'|constant))}
                 <em class="z-formnote z-sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -143,7 +145,7 @@
 {/capture}
 
         {* Order the fieldsets based on whether e-mail is the exclusive log-in id or not. *}
-        {if (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users_Constant::LOGIN_METHOD_EMAIL'|constant))}
+        {if (($authentication_method.modname == 'Users') && ($modvars.Users.loginviaoption == 'Users\Constant::LOGIN_METHOD_EMAIL'|constant))}
             {$smarty.capture.email}
             {$smarty.capture.pass}
             {$smarty.capture.uname}

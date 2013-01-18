@@ -1,11 +1,10 @@
 {strip}
-    {gt text='Create new user' assign='templatetitle'}
+    {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
     {if $modvars.Users.use_password_strength_meter == 1}
-        {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
         {pageaddvar name='javascript' value='prototype'}
-        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 var passmeter = null;
@@ -18,13 +17,19 @@
             </script>
         {/pageaddvarblock}
     {/if}
+    {insert name='csrftoken' assign='csrftoken'}
+    {if ($formData->getFieldData('uid') == $coredata.user.uid)}
+        {assign var='editingSelf' value=true}
+    {else}
+        {assign var='editingSelf' value=false}
+    {/if}
     {pageaddvarblock}
         <script type="text/javascript">
             Zikula.Users.NewUser.setup = function() {
                 Zikula.Users.NewUser.formId = '{{$formData->getFormId()}}';
 
                 Zikula.Users.NewUser.fieldId = {
-                    submit:         '{{$formData->getFormId()}}_submitnewuser',
+                    submit:         '{{$formData->getFormId()}}_submit',
                     checkUser:      '{{$formData->getFormId()}}_checkuserajax',
                     checkMessage:   '{{$formData->getFormId()}}_checkmessage',
                     validMessage:   '{{$formData->getFormId()}}_validmessage',
@@ -51,27 +56,32 @@
     {/pageaddvarblock}
 {/strip}
 
-{adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="new" size="small"}
-    <h3>{gt text='Create new user'}</h3>
-</div>
-
 <div id="{$formData->getFormId()}_errormsgs" class="z-errormsg{if empty($errorMessages)} z-hide{/if}">
     {if isset($errorMessages)}
     {foreach from=$errorMessages item='message' name='errorMessages'}
-    {$message|safetext}
-    {if !$smarty.foreach.errorMessages.last}<hr />{/if}
+        {$message|safetext}
+        {if !$smarty.foreach.errorMessages.last}<hr />{/if}
     {/foreach}
     {/if}
 </div>
 
+{adminheader}
+<div class="z-admin-content-pagetitle">
+    {icon type="edit" size="small"}
+    <h3>{$templatetitle}</h3>
+</div>
+
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='newUser'}" method="post">
+{if $editingSelf}
+<div class="z-informationmsg">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
+{/if}
+<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='Users' type='admin' func='modify'}" method="post">
     <div>
-        <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-        <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_user" />
+        <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_user" />
+        {assign var='fieldName' value='uid'}
+        <input id="{$formData->getFieldId($fieldName)}" type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)|safetext}" />
         <fieldset>
             <legend>{gt text='Account information'}</legend>
             <div class="z-formrow">
@@ -94,6 +104,18 @@
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
             <div class="z-formrow">
+                {assign var='fieldName' value='activated'}
+                <label for="{$formData->getFieldId($fieldName)}">{gt text='User status'}</label>
+                {if $editingSelf}
+                <input type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)}" />
+                {/if}
+                <select id="{$formData->getFieldId($fieldName)}" name="{$fieldName}{if $editingSelf}_displayonly" disabled="disabled{/if}">
+                    <option value="{'Users\Constant::ACTIVATED_INACTIVE'|constant}" {if $formData->getFieldData($fieldName) != 'Users\Constant::ACTIVATED_ACTIVE'|constant}selected="selected"{/if}>{gt text="Inactive"}</option>
+                    <option value="{'Users\Constant::ACTIVATED_ACTIVE'|constant}" {if $formData->getFieldData($fieldName) == 'Users\Constant::ACTIVATED_ACTIVE'|constant}selected="selected"{/if}>{gt text="Active"}</option>
+                </select>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+            </div>
+            <div class="z-formrow">
                 {assign var='fieldName' value='theme'}
                 <label for="{$formData->getFieldId($fieldName)}">{gt text='Theme'}</label>
                 <select id="{$formData->getFieldId($fieldName)}" name="{$fieldName}">
@@ -105,9 +127,19 @@
         </fieldset>
         <fieldset>
             <legend>{gt text='Log-in information'}</legend>
+            {if ($formData->getFieldData('pass') == 'Users\Constant::PWD_NO_USERS_AUTHENTICATION'|constant)}
+                {assign var='usersAuth' value=false}
+            {else}
+                {assign var='usersAuth' value=true}
+            {/if}
+            {if !$usersAuth}
+            <div class="z-formrow">
+                <p class="z-formnote z-informationmsg">{gt text='This user does not currently log in with a web site account password. To enable the user to do so&mdash;in addition to any other log-in method used, create a password for the account here.'}</p>
+            </div>
+            {/if}
             {assign var='fieldName' value='setpass'}
             <div id="{$formData->getFieldId($fieldName)}_wrap" class="z-formrow">
-                <label>{gt text="Set the user's password now?"}</label>
+                <label>{if $usersAuth}{gt text="Change the user's password?"}{else}{gt text="Create a password for the user?"}{/if}</label>
                 <div id="{$formData->getFieldId($fieldName)}">
                     <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $formData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
@@ -116,10 +148,10 @@
                 </div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
-            {assign var='fieldName' value='pass'}
-            <div id="{$formData->getFieldId($fieldName)}_wrap">
+            <div id="{$formData->getFieldId('pass')}_wrap">
+                {assign var='fieldName' value='pass'}
                 <div class="z-formrow">
-                    <label for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                    <label for="{$formData->getFieldId($fieldName)}">{if $usersAuth}{gt text='New password'}{else}{gt text='Create a password'}{/if}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="password" name="{$fieldName}" size="30" maxlength="20" />
                     <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.Users.minpass}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -132,62 +164,72 @@
                     <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="password" name="{$fieldName}" size="30" maxlength="20" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
-                {assign var='fieldName' value='sendpass'}
-                <div id="{$formData->getFieldId($fieldName)}_container" class="z-formrow">
-                    <label>{gt text="Send password via e-mail?"}</label>
-                    <div id="{$formData->getFieldId($fieldName)}">
-                        <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $formData->getFieldData($fieldName)} checked="checked"{/if} />
-                        <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
-                        <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
-                        <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
-                    </div>
-                    <p class="z-formnote z-warningmsg">{gt text="Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication."}</p>
-                    <p class="z-formnote z-informationmsg">{gt text="Even if you choose to not send the user's password via e-mail, other e-mail messages may be sent to the user as part of the registration process."}</p>
-                    <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
-                </div>
             </div>
             <div id="{$formData->getFormId()}_password_not_set_wrap" class="z-formrow z-hide">
-                {if $modvars.Users.reg_verifyemail == 'Users_Constant::VERIFY_NO'|constant}
-                <p class="z-formnote z-warningmsg">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
+                {if $usersAuth}
+                <p class="z-formnote z-informationmsg">{gt text="The user's password will not be changed."}</p>
                 {else}
-                <p class="z-formnote z-informationmsg">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
+                <p class="z-formnote z-informationmsg">{gt text="A web site account password will not be created for the user. The user will continue to log in with the method(s) currently used."}</p>
                 {/if}
             </div>
             <div id="{$formData->getFormId()}_password_is_set_wrap" class="z-formrow">
-                {assign var='fieldName' value='usermustverify'}
-                <label>{gt text="Verify user's e-mail address?"}</label>
-                <div class="z-formlist">
-                    <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $formData->getFieldData($fieldName)} checked="checked"{/if} />
-                    <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes (recommended)"}</label>
-                    <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0"{if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
-                    <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
-                </div>
-                <em class="z-sub z-formnote">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</em>
-                <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                {if $usersAuth}
+                <p class="z-formnote z-warningmsg">{gt text="The user's password will be changed."}</p>
+                {else}
+                <p class="z-formnote z-warningmsg">{gt text="A web site account password will be created for the user. The user will continue to log in with the method(s) currently used, and will additionally be able to log in with this password."}</p>
+                {/if}
             </div>
         </fieldset>
+        <fieldset>
+            <legend>{gt text='Group membership'}</legend>
+            <table class="z-datatable">
+                <thead>
+                    <tr>
+                        <th>{gt text='Group'}</th>
+                        <th>{gt text='Member'}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach key='group_id' item='group' from=$accessPermissions}
+                    <tr class="{cycle values='z-odd,z-even'}">
+                        <td>{$group.name}</td>
+                        <td style="text-align:right;">{if $editingSelf && ((($group_id == $defaultGroupId) && $group.access) || ($group_id == $primaryAdminGroupId))}<input type="hidden" name="access_permissions[]" value="{$group_id}" />{/if}<input type="checkbox" {if $editingSelf && ((($group_id == $defaultGroupId) && $group.access) || ($group_id == $primaryAdminGroupId))}disabled="disabled"{else}name="access_permissions[]" value="{$group_id}"{/if} {if $group.access}checked="checked" {/if}/></td>
+                    </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            <p id="{$formData->getFormId()}_groupmembership_error" class="z-formnote z-errormsg{if !isset($errorFields.groupmembership)} z-hide{/if}">{if isset($errorFields.groupmembership)}{$errorFields.groupmembership}{/if}</p>
+        </fieldset>
 
-        {notifyevent eventname='module.users.ui.form_edit.new_user' eventsubject=null id=null assign="eventData"}
+        {notifyevent eventname='module.users.ui.form_edit.modify_user' eventsubject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
         
-        {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=null}
+        {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=$formData->getFieldData('uid')}
 
         <fieldset>
-            <legend>{gt text="Check your entries and submit your registration"}</legend>
-            <p id="{$formData->getFormId()}_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
-            <p id="{$formData->getFormId()}_validmessage" class="z-hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
+            <legend>{gt text="Check your entries and save your updates"}</legend>
+            <p id="{$formData->getFormId()}_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Save' to continue."}</p>
+            <p id="{$formData->getFormId()}_validmessage" class="z-hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Save' when you are ready to continue."}</p>
             <div class="z-formbuttons z-buttons">
                 {img id=$formData->getFormId()|cat:'_ajax_indicator' class='z-hide z-center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
-                {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
+                {button id=$formData->getFormId()|cat:'_submit' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='z-hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
                 <a href="{modurl modname='Users' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </fieldset>
     </div>
 </form>
+
+<div class="z-admin-content-pagetitle">
+    {icon type="utilities" size="small"}
+    <h3>{gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}</h3>
+</div>
+
+<div class="z-center z-buttons">
+    {if !$editingSelf}<a href="{modurl modname='Users' type='admin' func='deleteusers' userid=$formData->getFieldData('uid')}">{img modname='core' set='icons/extrasmall' src="delete_user.png" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
+    <a href="{modurl modname='Users' type='admin' func='lostUsername' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
+    <a href="{modurl modname='Users' type='admin' func='lostPassword' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
+</div>
 {adminfooter}
-{* Script blocks should remain at the end of the file so that it does not block progressive rendering of the page. *}
-{if $modvars.Users.use_password_strength_meter == 1}
-{/if}

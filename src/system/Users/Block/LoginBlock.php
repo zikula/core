@@ -131,7 +131,7 @@ class LoginBlock extends \Zikula_Controller_AbstractBlock
                 if ($this->view->template_exists($tplName)) {
                     $blockInfo['content'] = $this->view->fetch($tplName);
                 } else {
-                    $blockInfo['content'] = $this->view->fetch('users_block_login.tpl');
+                    $blockInfo['content'] = $this->view->fetch('Block/login.tpl');
                 }
 
                 $renderedOutput = BlockUtil::themeBlock($blockInfo);

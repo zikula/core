@@ -14,14 +14,16 @@
 
 namespace Users\Controller;
 
-use Zikula_View;
-use ModUtil;
+use Zikula\Core\Event\GenericEvent;
+use Zikula\Core\Response\PlainResponse;
+use Zikula\Core\Hook\ValidationHook;
+use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Core\Response\Ajax\AjaxResponse;
+use Zikula_View;use ModUtil;
 use DBUtil;
 use DataUtil;
 use SecurityUtil;
-use Zikula_Response_Ajax_Plain;
 use Zikula_Exception_Forbidden;
-use Zikula_Hook_ValidationProviders;
 use Zikula;
 use Zikula_Response_Ajax;
 use Zikula_Exception_Fatal;
@@ -48,20 +50,16 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
-            ModUtil::dbInfoLoad($this->name);
-            $tables = DBUtil::getTables();
-
-            $usersColumn = $tables['users_column'];
-
-            $where = 'WHERE ' . $usersColumn['uname'] . ' REGEXP \'(' . DataUtil::formatForStore($fragment) . ')\'';
-            $results = DBUtil::selectObjectArray('users', $where);
+            $dql = "SELECT u FROM Users\Entity\User u WHERE u.uname LIKE '% " . DataUtil::formatForStore($fragment) . "%'";
+            $query = $this->entityManager->createQuery($dql);
+            $results = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
             $view->assign('results', $results);
         }
 
-        $output = $view->fetch('users_ajax_getusers.tpl');
+        $output = $view->fetch('Ajax/getusers.tpl');
 
-        return new Zikula_Response_Ajax_Plain($output);
+        return new PlainResponse($output);
     }
 
     /**
@@ -79,7 +77,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * string  antispamanswer The user-entered answer to the registration question.
      * string  checkmode      Either 'new' or 'modify', depending on whether the record is a new user or an existing user or registration.
      *
-     * @return array A Zikula_Response_Ajax containing error messages and message counts.
+     * @return array A AjaxResponse containing error messages and message counts.
      *
      * @throws Zikula_Exception_Forbidden Thrown if registration is disbled.
      */
@@ -129,9 +127,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'antispamanswer'    => $antiSpamUserAnswer
         ));
 
-        $errorMessages = array();
-        $errorFields = array();
-        $fields = array();
         if ($registrationErrors) {
             foreach ($registrationErrors as $field => $message) {
                 $returnValue['errorFields'][$field] = $message;
@@ -139,10 +134,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             }
         }
 
-        $event = new \Zikula\Core\Event\GenericEvent($userOrRegistration, array(), new Zikula_Hook_ValidationProviders());
-        $validators = $this->eventManager->dispatch("module.users.ui.validate_edit.{$eventType}", $event)->getData();
+        $event = new GenericEvent($userOrRegistration, array(), new ValidationProviders());
+        $this->getDispatcher()->dispatch("module.users.ui.validate_edit.{$eventType}", $event);
+        $validators =  $event->getData();
 
-        $hook = new \Zikula\Core\Hook\ValidationHook($validators);
+        $hook = new ValidationHook($validators);
         if (($eventType == 'new_user') || ($eventType == 'modify_user')) {
             $this->dispatchHooks('users.ui_hooks.user.validate_edit', $hook);
         } else {
@@ -170,7 +166,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             $returnValue['errorMessagesCount']++;
         }
 
-        return new Zikula_Response_Ajax($returnValue);
+        return new AjaxResponse($returnValue);
     }
 
     /**
@@ -206,7 +202,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'method'    => $method,
         ));
 
-        return new Zikula_Response_Ajax(array(
+        return new AjaxResponse(array(
             'content'   => $loginFormFields,
             'modname'   => $modname,
             'method'    => $method,

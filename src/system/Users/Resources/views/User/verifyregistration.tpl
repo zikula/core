@@ -2,7 +2,7 @@
     {gt text='Enter verification code' assign='templatetitle'}
     {if $modvars.Users.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
-        {pageaddvar name='javascript' value='system/Users/javascript/Zikula.Users.PassMeter.js'}
+        {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
             <script type="text/javascript">
                 var passmeter = null;
@@ -18,7 +18,7 @@
 {/strip}
             
 {modulelinks modname='Users' type='user'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 {if !empty($errormessages)}
 <div id="users_errormessages_div" class="z-errormsg">

@@ -73,13 +73,13 @@
             {/if}
             <td class="users_activated">{strip}
                 {switch expr=$usersitems[usersitems].activated}
-                {case expr='Users_Constant::ACTIVATED_ACTIVE'|const}
+                {case expr='Users\Constant::ACTIVATED_ACTIVE'|const}
                 {img modname=core set=icons/extrasmall src='greenled.png' __title='Active' __alt='Active' class='tooltips'}
                 {/case}
-                {case expr='Users_Constant::ACTIVATED_INACTIVE'|const}
+                {case expr='Users\Constant::ACTIVATED_INACTIVE'|const}
                 {img modname=core set=icons/extrasmall src='yellowled.png' __title='Inactive' __alt='Inactive' class='tooltips'}
                 {/case}
-                {case expr='Users_Constant::ACTIVATED_PENDING_DELETE'|const}
+                {case expr='Users\Constant::ACTIVATED_PENDING_DELETE'|const}
                 {img modname=core set=icons/extrasmall src='14_layer_deletelayer.png' __title='Inactive, marked for deletion' __alt='Inactive, marked for deletion' class='tooltips'}
                 {/case}
                 {case}

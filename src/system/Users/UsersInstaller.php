@@ -152,10 +152,10 @@ class UsersInstaller extends \Zikula_AbstractInstaller
                     return '1.13';
                 }
 
-                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users_Listener_PendingContent', 'pendingContentListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users_Listener_ForcedPasswordChange', 'forcedPasswordChangeListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users_Listener_ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Users\Listener\PendingContent', 'pendingContentListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Users\Listener\ForcedPasswordChange', 'forcedPasswordChangeListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Users\Listener\ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Users\Listener\ClearUsersNamespace', 'clearUsersNamespaceListener'));
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':

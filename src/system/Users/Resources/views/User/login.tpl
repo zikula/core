@@ -7,7 +7,7 @@
 {/foreach}
 {gt text='User log-in' assign='templatetitle'}
 {modulelinks modname='Users' type='user'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
 <div>
     <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Choose how you would like to log in by clicking on one of the following..."}</h5>

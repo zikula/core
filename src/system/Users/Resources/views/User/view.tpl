@@ -1,5 +1,5 @@
 {gt text='Log-in and registration' assign='templatetitle'}
-{include file='users_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 <p>{gt text="Please choose an action:"}</p>
 <ul>
