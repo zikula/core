@@ -79,6 +79,26 @@ class UserUtil
     /**
      * Return a hash structure mapping uid to username.
      *
+     * @param string  $where        The where clause to use (optional).
+     * @param string  $orderBy      The order by clause to use (optional).
+     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
+     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
+     *
+     * @deprecated since 1.3.0
+     *
+     * @return array An array mapping uid to username.
+     */
+    public static function getPNUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
+    {
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUsers')), E_USER_DEPRECATED);
+
+        return self::getUsers($where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+    }
+
+    /**
+     * Return a hash structure mapping uid to username.
+     *
      * @param string  $where        The where clause to use (optional, default=array()).
      * @param string  $orderBy      The order by clause to use (optional, default=array()).
      * @param integer $limitOffset  The select-limit offset (optional, default=null).
@@ -100,6 +120,23 @@ class UserUtil
         }
 
         return $items;
+    }
+
+    /**
+     * Return a group object.
+     *
+     * @param integer $gid The groupID to retrieve.
+     *
+     * @deprecated since 1.3.0
+     * @see    UserUtil::getGroup()
+     *
+     * @return array The resulting group object.
+     */
+    public static function getPNGroup($gid)
+    {
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroup')), E_USER_DEPRECATED);
+
+        return self::getGroup($gid);
     }
 
     /**
@@ -141,6 +178,26 @@ class UserUtil
     }
 
     /**
+     * Return a hash structure mapping gid to groupname.
+     *
+     * @param string  $where        The where clause to use (optional) (default='').
+     * @param string  $orderBy      The order by clause to use (optional) (default='').
+     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
+     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
+     *
+     * @deprecated since 1.3.0
+     *
+     * @return array An array mapping gid to groupname
+     */
+    public static function getPNGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
+    {
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
+
+        return self::getGroups();
+    }
+
+    /**
      * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
      *
      * @param string $where     The where clause to use (optional).
@@ -170,6 +227,25 @@ class UserUtil
      * @param string $orderBy   The order by clause to use (optional).
      * @param string $separator The field separator to use (default=",") (optional).
      *
+     * @deprecated since 1.3.0
+     * @see    UserUtil::getGroupIdList()
+     *
+     * @return string A string list of group ids
+     */
+    public static function getPNGroupIdList($where = '', $orderBy = '', $separator = ',')
+    {
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroupIdList')), E_USER_DEPRECATED);
+
+        return self::getGroupIdList($where, $orderBy, $separator);
+    }
+
+    /**
+     * Return a (string) list of group-ids which can then be used in a SQL 'IN (...)' clause.
+     *
+     * @param string $where     The where clause to use (optional).
+     * @param string $orderBy   The order by clause to use (optional).
+     * @param string $separator The field separator to use (default=",") (optional).
+     *
      * @return string A string list of group ids.
      */
     public static function getGroupIdList($where = array(), $orderBy = array(), $separator = ',')
@@ -184,6 +260,25 @@ class UserUtil
         }
 
         return $list;
+    }
+
+    /**
+     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
+     *
+     * @param string $where     The where clause to use (optional).
+     * @param string $orderBy   The order by clause to use (optional).
+     * @param string $separator The field separator to use (default=",") (optional).
+     *
+     * @deprecated since 1.3.0
+     * @see    UserUtil::getUserIdList()
+     *
+     * @return string A string list of user ids.
+     */
+    public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
+    {
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
+
+        return self::getUserIdList($where, $orderBy, $separator);
     }
 
     /**
