@@ -1,8 +1,8 @@
 {
-    "name": "zikula/persmissions-module",
+    "name": "zikula/permissions-module",
     "description": "User Permissions Administration Module",
     "type": "zikula-module",
-    "license": "LGPLv3",
+    "license": "LGPL-3.0+",
     "authors": [
         {
             "name": "Zikula",

@@ -2,7 +2,7 @@
     "name": "zikula/pacgelock-module",
     "description": "Zikula Forms Pagelock Module",
     "type": "zikula-module",
-    "license": "LGPLv3",
+    "license": "LGPL-3.0+",
     "authors": [
         {
             "name": "Zikula",
