@@ -38,6 +38,10 @@ class DoctrineListener implements EventSubscriberInterface
 
     public function initDoctrine(GenericEvent $event)
     {
+        if ($this->container->has('doctrine.entitymanager')) {
+            return;
+        }
+
         // register namespace
         // Because the standard kernel classloader already has Doctrine registered as a namespace
         // we have to add a new loader onto the spl stack.
@@ -127,7 +131,7 @@ class DoctrineListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array('core.preinit' => array(
+        return array('doctrine.boot' => array(
             array('initDoctrine', 100),
             array('initDoctrineExtensions', 100),
         ));

@@ -159,13 +159,15 @@ class UsersInstaller extends \Zikula_AbstractInstaller
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
-                // This s the current version: add 2.2.0 --> next when appropriate
-
-            // Upgrade dependent on old version number
-            switch ($oldVersion) {
-                case '2.2.1':
-                    // This is the current version: add 2.2.1 --> next when appropriate
-            }
+//                this is done in upgrade script.
+//                try {
+//                    DoctrineHelper::createSchema($this->entityManager, array('Users\Entity\UserAttribute'));
+//                } catch (\Exception $e) {
+//                    return false;
+//                }
+                $this->migrateAttributes();
+            case '2.2.1':
+                // This is the current version: add 2.2.1 --> next when appropriate
 
             $currentModVars = $this->getVars();
             $defaultModVars = $this->getDefaultModvars();
@@ -575,5 +577,23 @@ class UsersInstaller extends \Zikula_AbstractInstaller
         }
 
         return true;
+    }
+
+    private function migrateAttributes()
+    {
+        $dataset = DBUtil::selectObjectArray('users');
+        $em = $this->getEntityManager();
+        foreach ($dataset as $data) {
+            if (!isset($data['__ATTRIBUTES__'])) {
+                continue;
+            }
+
+            $category = $em->getRepository('Users\Entity\User')->findOneBy(array('id' => $data['id']));
+            foreach ($data['__ATTRIBUTES__'] as $name => $value) {
+                $category->setAttribute($name ,$value);
+            }
+
+            $em->flush();
+        }
     }
 }

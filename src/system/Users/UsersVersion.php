@@ -1,16 +1,14 @@
 <?php
 /**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
- *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
+ * @license    GNU/LGPLv3 (or at your option, any later version).
+ * @package    Zikula
  * @subpackage Users
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ *             Please see the NOTICE file distributed with this source code for further
+ *             information regarding copyright and licensing.
  */
 
 namespace Users;
@@ -31,9 +29,16 @@ class UsersVersion extends \Zikula_AbstractVersion
      */
     public function getMetaData()
     {
-        return array('version' => '2.2.0', 'displayname' => $this->__('Users'), 'description' => $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.'), 'url' => $this->__('users'), 'capabilities' => array(UsersConstant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'), HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true)), 'core_min' => '1.3.0', 'securityschema' => array('Users::' => 'Uname::User ID', 'Users::MailUsers' => '::'));
+        return array(
+            'version' => '2.2.1',
+            'displayname' => $this->__('Users'),
+            'description' => $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.'),
+            'url' => $this->__('users'),
+            'capabilities' => array(UsersConstant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'), HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true)),
+            'core_min' => '1.3.6',
+            'securityschema' => array('Users::' => 'Uname::User ID', 'Users::MailUsers' => '::'));
     }
-    
+
     /**
      * Define the hook bundles supported by this module.
      *
