@@ -31,15 +31,15 @@ class BlocksInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Blocks_Entity_Block',
-            'Blocks_Entity_BlockPosition',
-            'Blocks_Entity_BlockPlacement',
-            'Blocks_Entity_UserBlock'
+            'Blocks\Entity\Block',
+            'Blocks\Entity\BlockPosition',
+            'Blocks\Entity\BlockPlacement',
+            'Blocks\Entity\UserBlock'
         );
 
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -86,7 +86,7 @@ class BlocksInstaller extends \Zikula_AbstractInstaller
 
             case '3.8.0':
                 // update empty filter fields to an empty array
-                $entity = $this->name . '_Entity_Block';
+                $entity = $this->name . '\Entity\Block';
                 $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = '' OR p.filter = 's:0:\"\";' OR p.filter = 'a:3:{s:4:\"type\";s:0:\"\";s:9:\"functions\";s:0:\"\";s:10:\"customargs\";s:0:\"\";}'";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();

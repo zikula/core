@@ -59,7 +59,7 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
         System::setVar('outputfilter', 1);
 
         // Location of HTML Purifier
-        System::setVar('htmlpurifierlocation', 'system/SecurityCenter/lib/vendor/htmlpurifier/');
+        System::setVar('htmlpurifierlocation', 'system/SecurityCenter/vendor/htmlpurifier/');
 
         // HTML Purifier cache dir
         $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
@@ -94,9 +94,9 @@ class SecurityCenter_Installer extends Zikula_AbstractInstaller
 
         // now lets set the default mail message contents
         // file is read from includes directory
-        $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/summary.txt'));
+        $summarycontent = implode('', file(getcwd() . '/system/SecurityCenter/vendor/summary.txt'));
         System::setVar('summarycontent', $summarycontent);
-        $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/lib/vendor/full.txt'));
+        $fullcontent = implode('', file(getcwd() . '/system/SecurityCenter/vendor/full.txt'));
         System::setVar('fullcontent', $fullcontent);
 
         // cci vars, see pndocs/ccisecuritystrings.txt

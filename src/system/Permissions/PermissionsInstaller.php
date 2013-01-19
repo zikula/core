@@ -15,7 +15,7 @@
 namespace Permissions;
 
 use DBUtil;
-use Entity\PermissionEntity;
+use Permissions\Entity\PermissionEntity;
 
 class PermissionsInstaller extends \Zikula_AbstractInstaller
 {
@@ -32,7 +32,7 @@ class PermissionsInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            \DoctrineHelper::createSchema($this->entityManager, array('Permission'));
+            \DoctrineHelper::createSchema($this->entityManager, array('Permissions\Entity\PermissionEntity'));
         } catch (\Exception $e) {
             return false;
         }

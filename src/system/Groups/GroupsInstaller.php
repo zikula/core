@@ -40,11 +40,6 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-        // create the groups applications table
-        if (!DBUtil::createTable('group_applications')) {
-            return false;
-        }
-
         // set all our module vars
         $this->setVar('itemsperpage', 25);
         $this->setVar('defaultgroup', 1);

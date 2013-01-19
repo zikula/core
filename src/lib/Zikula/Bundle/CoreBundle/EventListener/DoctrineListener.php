@@ -85,7 +85,7 @@ class DoctrineListener implements EventSubscriberInterface
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
-            $ORMConfig->setSQLLogger(new Zikula_Doctrine2_ZikulaSqlLogger());
+            $ORMConfig->setSQLLogger(new \Zikula_Doctrine2_ZikulaSqlLogger());
         }
 
         // setup doctrine eventmanager
@@ -97,7 +97,7 @@ class DoctrineListener implements EventSubscriberInterface
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $eventManager->addEventSubscriber($mysqlSessionInit);
 
-            $mysqlStorageEvent = new Zikula_Doctrine2_MySqlGenerateSchemaListener($eventManager);
+            $mysqlStorageEvent = new \Zikula_Doctrine2_MySqlGenerateSchemaListener($eventManager);
         }
 
         // setup the doctrine entitymanager
@@ -110,7 +110,10 @@ class DoctrineListener implements EventSubscriberInterface
         $definition = new Definition('Zikula_Doctrine2_ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
         $this->container->setDefinition('doctrine_extensions', $definition);
 
-        $types = array('Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
+        $types = array(
+            'Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree',
+            'Sortable', 'SoftDeletable', 'Blameable', 'Uploadable'
+        );
         foreach ($types as $type) {
             // The listener for Translatable is incorrectly named TranslationListener
             if ($type != "Translatable") {
@@ -120,6 +123,9 @@ class DoctrineListener implements EventSubscriberInterface
             }
             $this->container->setDefinition(strtolower("doctrine_extensions.listener.$type"), $definition);
         }
+
+        $config = $this->container->get('doctrine.configuration');
+        $config->addFilter('soft-deleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
 
         $definition = new Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
         $this->container->setDefinition(strtolower("doctrine_extensions.listener.standardfields"), $definition);

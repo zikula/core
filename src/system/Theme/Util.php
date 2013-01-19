@@ -19,6 +19,7 @@ use FileUtil;
 use LogUtil;
 use ThemeUtil;
 use DBUtil;
+use ServiceUtil;
 
 /**
  * Theme_Util class.
@@ -81,7 +82,7 @@ class Util
 
         // get entityManager
         $sm = ServiceUtil::getManager();
-        $entityManager = $sm->get('doctrine')->getEntityManager();
+        $entityManager = $sm->get('doctrine.entitymanager');
 
         // Get all themes in DB
         $dbthemes = array();

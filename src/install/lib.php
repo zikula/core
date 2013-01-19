@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
 
@@ -71,7 +73,7 @@ function install(Zikula_Core $core)
 
     // If somehow we are browsing the not installed page but installed, redirect back to homepage
     if ($installedState && $notinstalled) {
-        $response = new \Symfony\Component\HttpFoundation\RedirectResponse(System::getHomepageUrl());
+        $response = new RedirectResponse(System::getHomepageUrl());
         $response->send();
         return;
     }
@@ -79,7 +81,7 @@ function install(Zikula_Core $core)
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
     if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        $response = new \Symfony\Component\HttpFoundation\RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+        $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
         $response->send();
         return;
     }
@@ -87,7 +89,7 @@ function install(Zikula_Core $core)
     // see if the language was already selected
     $languageAlreadySelected = ($lang) ? true : false;
     if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        $response = new \Symfony\Component\HttpFoundation\RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
+        $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
         $response->send();
         return;
     }
@@ -280,7 +282,7 @@ function install(Zikula_Core $core)
                     System::setVar('adminmail', $email);
 
                     if (!$installbySQL) {
-                        Theme_Util::regenerate();
+                        Theme\Util::regenerate();
                     }
 
                     // set site status as installed and protect config.php file
@@ -300,7 +302,7 @@ function install(Zikula_Core $core)
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfullly installed.'));
                     System::setInstalling(false);
-                    $response = new \Symfony\Component\HttpFoundation\RedirectResponse(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                    $response = new RedirectResponse(ModUtil::url('Admin', 'admin', 'adminpanel'));
                     $response->send();
                     exit;
                 }
@@ -325,7 +327,7 @@ function install(Zikula_Core $core)
                 }
             }
             if ($ok) {
-                $response = new \Symfony\Component\HttpFoundation\RedirectResponse(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang");
+                $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=dbinformation&lang=$lang");
                 $response->send();
                 exit;
             }
@@ -478,7 +480,7 @@ function installmodules($lang = 'en')
                                 'category' => $modscat[$category]));
     }
     // create the default blocks.
-    $blockInstance = new Blocks_Installer($sm);
+    $blockInstance = new Blocks\BlocksInstaller($sm);
     $blockInstance->defaultdata();
 
     // install all the basic modules
@@ -505,25 +507,26 @@ function installmodules($lang = 'en')
             continue;
         }
         $modpath = 'modules';
-        if (is_dir("$modpath/$module")) {
-            ZLoader::addAutoloader($module, array($modpath, "$modpath/$module/lib"));
-            ZLoader::addPrefix($module, $modpath);
+        $moduleName = $module['module'];
+        if (is_dir("$modpath/$moduleName")) {
+            ZLoader::addAutoloader($moduleName, array($modpath, "$modpath/$moduleName/lib"));
+            ZLoader::addPrefix($moduleName, $modpath);
         }
-        $bootstrap = "$modpath/$module/bootstrap.php";
+        $bootstrap = "$modpath/$moduleName/bootstrap.php";
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
 
-        ZLanguage::bindModuleDomain($module);
+        ZLanguage::bindModuleDomain($moduleName);
 
-        $results[$module['module']] = false;
+        $results[$moduleName] = false;
 
         // #6048 - prevent trying to install modules which are contained in an install type, but are not available physically
-        if (!file_exists('system/' . $module['module'] . '/') && !file_exists('modules/' . $module['module'] . '/')) {
+        if (!file_exists('system/' . $moduleName . '/') && !file_exists('modules/' . $moduleName . '/')) {
             continue;
         }
 
-        $mid = ModUtil::getIdFromName($module['module']);
+        $mid = ModUtil::getIdFromName($moduleName);
 
         // init it
         if (ModUtil::apiFunc('Extensions', 'admin', 'initialise',
@@ -536,7 +539,7 @@ function installmodules($lang = 'en')
             }
             // Set category
             ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
-                            array('module' => $module['module'],
+                            array('module' => $moduleName,
                                     'category' => $modscat[$module['category']]));
         }
     }
