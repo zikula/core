@@ -555,7 +555,7 @@ class AdminController extends \Zikula_AbstractController
                 ->assign('mailusers', SecurityUtil::checkPermission($this->name . '::MailUsers', '::', ACCESS_COMMENT))
                 ->fetch('Admin/mailusers.tpl'));
         } elseif ($formId == 'users_mailusers') {
-            return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
+            return $this->redirect(ModUtil::url($this->name, 'admin', 'main'));
         } else {
             throw new Zikula_Exception_Fatal($this->__f('The %1$s function has entered an unknown state.', array('mailUsers')));
         }
@@ -1994,7 +1994,7 @@ class AdminController extends \Zikula_AbstractController
             if ($importResults == '') {
                 // the users have been imported successfully
                 $this->registerStatus($this->__('Done! Users imported successfully.'));
-                return $this->redirect(ModUtil::url($this->name, 'admin', 'index'));
+                return $this->redirect(ModUtil::url($this->name, 'admin', 'main'));
             }
         }
 
