@@ -1,0 +1,2 @@
+Zikula Errors Module
+====================
