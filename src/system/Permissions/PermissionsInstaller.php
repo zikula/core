@@ -15,7 +15,7 @@
 namespace Permissions;
 
 use DBUtil;
-use Entity\PermissionEntity;
+use Permissions\Entity\PermissionEntity;
 
 class PermissionsInstaller extends \Zikula_AbstractInstaller
 {
