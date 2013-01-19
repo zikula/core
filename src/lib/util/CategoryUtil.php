@@ -604,7 +604,7 @@ class CategoryUtil
         $fpath = 'path';
         $fipath = 'ipath';
 
-        $em = ServiceUtil::get('doctrine')->getManager();
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
         $dql = "
         SELECT c
@@ -741,7 +741,7 @@ class CategoryUtil
             }
         }
 
-        $em = ServiceUtil::get('doctrine')->getManager();
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
         $oldToNewID = array();
         $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('Zikula\Core\Doctrine\Entity\Category', $newParent['id']);
