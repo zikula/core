@@ -12,8 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Categories\Api;
 
-class Categories_Api_Account extends Zikula_AbstractApi
+use System;
+use SessionUtil;
+use ModUtil;
+use SecurityUtil;
+
+class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.
@@ -28,6 +34,7 @@ class Categories_Api_Account extends Zikula_AbstractApi
         if (SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT) && $this->getVar('allowusercatedit')) {
             $referer = System::serverGetVar('HTTP_REFERER');
             if (strpos($referer, 'module=Categories') === false) {
+                //$this->request->getSession()->set('categories_referer', $referer);
                 SessionUtil::setVar('categories_referer', $referer);
             }
             $items['0'] = array('url'     => ModUtil::url('Categories', 'user', 'edituser'),
