@@ -16,7 +16,7 @@ namespace Blocks\Api;
 
 use ModUtil;
 use SecurityUtil;
-use Blocks_MenutreeUtil;
+use Blocks\MenutreeUtil;
 use ZLanguage;
 use Loader;
 use CategoryRegistryUtil;

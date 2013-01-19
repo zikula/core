@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+namespace Blocks\Entity;
+
+use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,10 +22,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Blocks_Entity_Repository_BlockPosition")
+ * @ORM\Entity
  * @ORM\Table(name="block_positions",indexes={@ORM\index(name="name_idx",columns={"name"})})
  */
-class Blocks_Entity_BlockPosition extends Zikula_EntityAccess
+class BlockPosition extends EntityAccess
 {
     /**
      * @ORM\Id
