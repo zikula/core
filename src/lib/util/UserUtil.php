@@ -12,6 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+use Users\Constant as UsersConstant;
+use Zikula_Exception_Fatal as FatalException;
+use Zikula_Exception_Redirect as RedirectException;
+use Zikula_Exception_Forbidden as ForbiddenException;
+
 /**
  * UserUtil
  */
@@ -93,19 +99,27 @@ class UserUtil
     /**
      * Return a hash structure mapping uid to username.
      *
-     * @param string  $where        The where clause to use (optional).
-     * @param string  $orderBy      The order by clause to use (optional).
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
+     * @param string  $where        The where clause to use (optional, default=array()).
+     * @param string  $orderBy      The order by clause to use (optional, default=array()).
+     * @param integer $limitOffset  The select-limit offset (optional, default=null).
+     * @param integer $limitNumRows The number of rows to fetch (optional, default=null).
+     * @param string  $assocKey     The associative key to apply (optional) (default='uid').
      *
      * @deprecated since 1.3.0
      *
      * @return array An array mapping uid to username.
      */
-    public static function getUsers($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'uid')
+    public static function getUsers($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
-        return DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $users = $em->getRepository('Users\Entity\User')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+
+        $items = array();
+        foreach ($users as $user) {
+            $items[$user[$assocKey]] = $user->toArray();
+        }
+
+        return $items;
     }
 
     /**
@@ -136,7 +150,31 @@ class UserUtil
      */
     public static function getGroup($gid)
     {
-        return DBUtil::selectObjectByID('groups', $gid, 'gid');
+        return ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+    }
+
+    /**
+     * Return a hash structure mapping gid to groupname.
+     *
+     * @param string  $where        The where clause to use (optional) (default=array()).
+     * @param string  $orderBy      The order by clause to use (optional) (default=array()).
+     * @param integer $limitOffset  The select-limit offset (optional) (default=null).
+     * @param integer $limitNumRows The number of rows to fetch (optional) (default=null).
+     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
+     *
+     * @return array An array mapping gid to groupname.
+     */
+    public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
+    {
+        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $groups = $em->getRepository('Groups\Entity\Group')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+
+        $items = array();
+        foreach ($groups as $group) {
+            $items[$group[$assocKey]] = $group->toArray();
+        }
+
+        return $items;
     }
 
     /**
@@ -157,41 +195,6 @@ class UserUtil
         LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getGroups')), E_USER_DEPRECATED);
 
         return self::getGroups();
-    }
-
-    /**
-     * Return a hash structure mapping gid to groupname.
-     *
-     * @param string  $where        The where clause to use (optional) (default='').
-     * @param string  $orderBy      The order by clause to use (optional) (default='').
-     * @param integer $limitOffset  The select-limit offset (optional) (default=-1).
-     * @param integer $limitNumRows The number of rows to fetch (optional) (default=-1).
-     * @param string  $assocKey     The associative key to apply (optional) (default='gid').
-     *
-     * @return array An array mapping gid to groupname.
-     */
-    public static function getGroups($where = '', $orderBy = '', $limitOffset = -1, $limitNumRows = -1, $assocKey = 'gid')
-    {
-        return DBUtil::selectObjectArray('groups', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
-    }
-
-    /**
-     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
-     *
-     * @param string $where     The where clause to use (optional).
-     * @param string $orderBy   The order by clause to use (optional).
-     * @param string $separator The field separator to use (default=",") (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getUserIdList()
-     *
-     * @return string A string list of user ids.
-     */
-    public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
-
-        return self::getUserIdList($where, $orderBy, $separator);
     }
 
     /**
@@ -245,7 +248,7 @@ class UserUtil
      *
      * @return string A string list of group ids.
      */
-    public static function getGroupIdList($where = '', $orderBy = '', $separator = ',')
+    public static function getGroupIdList($where = array(), $orderBy = array(), $separator = ',')
     {
         $groupdata = self::getGroups($where, $orderBy);
 
@@ -257,6 +260,25 @@ class UserUtil
         }
 
         return $list;
+    }
+
+    /**
+     * Return a (string) list of user-ids which can then be used in a SQL 'IN (...)' clause.
+     *
+     * @param string $where     The where clause to use (optional).
+     * @param string $orderBy   The order by clause to use (optional).
+     * @param string $separator The field separator to use (default=",") (optional).
+     *
+     * @deprecated since 1.3.0
+     * @see    UserUtil::getUserIdList()
+     *
+     * @return string A string list of user ids.
+     */
+    public static function getPNUserIdList($where = '', $orderBy = '', $separator = ',')
+    {
+        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getUserIdList')), E_USER_DEPRECATED);
+
+        return self::getUserIdList($where, $orderBy, $separator);
     }
 
     /**
@@ -272,12 +294,7 @@ class UserUtil
             return array();
         }
 
-        $where = '';
-        if ($uid != -1) {
-            $where = "WHERE uid = '" . DataUtil::formatForStore($uid) . "'";
-        }
-
-        return DBUtil::selectFieldArray('group_membership', 'gid', $where);
+        return ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
     }
 
     /**
@@ -325,9 +342,17 @@ class UserUtil
             return array();
         }
 
-        $where = "WHERE gid = '" . DataUtil::formatForStore($gid) . "'";
+        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
 
-        return DBUtil::selectFieldArray('group_membership', 'uid', $where);
+        $members = $group['members'];
+
+        $uids = array();
+
+        foreach ($members as $uid => $membership) {
+            $uids[] = $uid;
+        }
+
+        return $uids;
     }
 
     /**
@@ -378,51 +403,7 @@ class UserUtil
             return array();
         }
 
-        ModUtil::dbInfoLoad($profileModule);
-
         return DBUtil::selectObjectArray('user_property');
-    }
-
-    /**
-     * Return a string list of user-ids for the specified group.
-     *
-     * @param integer $uid            The user ID for which we want the users.
-     * @param string  $assocKey       The associate Key to use.
-     * @param boolean $standardFields Whether or not to also marshall the standard user properties into the DUD array.
-     *
-     * @todo No this is not what this functions does, but what does it do? It is not used within the core
-     * @deprecated 1.3.0
-     *
-     * @return array An array of user IDs.
-     */
-    public static function getUserDynamicDataFields($uid, $assocKey = 'uda_propid', $standardFields = false)
-    {
-        if (!$uid) {
-            return array();
-        }
-
-        return self::getVars($uid, '__ATTRIBUTES__');
-    }
-
-    /**
-     * Return a PN array structure for the PN user group selector.
-     *
-     * @param mixed  $defaultValue The default value of the selector (default=0) (optional).
-     * @param string $defaultText  The text of the default value (optional).
-     * @param array  $ignore       An array of keys to ignore (optional).
-     * @param mixed  $includeAll   Whether to include an "All" choice (optional).
-     * @param string $allText      The text to display for the "All" choice (optional).
-     *
-     * @deprecated since 1.3.0
-     * @see    UserUtil::getSelectorData_Group()
-     *
-     * @return array The array structure for the user group selector
-     */
-    public static function getSelectorData_PNGroup($defaultValue = 0, $defaultText = '', $ignore = array(), $includeAll = 0, $allText = '')
-    {
-        LogUtil::log(__f('Warning! UserUtil::%1$s is deprecated. Please use %2$s instead.', array(__METHOD__, 'UserUtil::getSelectorData_Group')), E_USER_DEPRECATED);
-
-        return self::getSelectorData_Group($defaultValue, $defaultText, $ignore, $includeAll, $allText);
     }
 
     /**
@@ -444,7 +425,7 @@ class UserUtil
             $dropdown[] = array('id' => $defaultValue, 'name' => $defaultText);
         }
 
-        $groupdata = self::getGroups('', 'ORDER BY name');
+        $groupdata = self::getGroups(array(), array('name' => 'ASC'));
 
         if (!$groupdata || !count($groupdata)) {
             return $dropdown;
@@ -521,25 +502,25 @@ class UserUtil
      *
      * @return array An array of account recovery information.
      *
-     * @throws Zikula_Exception_Fatal If the $uid parameter is not valid.
+     * @throws FatalException If the $uid parameter is not valid.
      */
     public static function getUserAccountRecoveryInfo($uid = -1)
     {
         if (!isset($uid) || !is_numeric($uid) || ((string)((int)$uid) != $uid) || (($uid < -1) || ($uid == 0) || ($uid == 1))) {
-            throw new Zikula_Exception_Fatal('Attempt to get authentication information for an invalid user id.');
+            throw new FatalException('Attempt to get authentication information for an invalid user id.');
         }
 
         if ($uid == -1) {
             if (self::isLoggedIn()) {
                 $uid = self::getVar('uid');
             } else {
-                throw new Zikula_Exception_Fatal('Attempt to get authentication information for an invalid user id.');
+                throw new FatalException('Attempt to get authentication information for an invalid user id.');
             }
         }
 
         $userAuthenticationInfo = array();
 
-        $authenticationModules = ModUtil::getModulesCapableOf(Users_Constant::CAPABILITY_AUTHENTICATION);
+        $authenticationModules = ModUtil::getModulesCapableOf(UsersConstant::CAPABILITY_AUTHENTICATION);
         if ($authenticationModules) {
             $accountRecoveryArgs = array (
                 'uid' => $uid,
@@ -563,8 +544,6 @@ class UserUtil
      * @param boolean $rememberme          Whether or not to remember login.
      * @param boolean $checkPassword       Whether or not to check the password.
      *
-     * @deprecated use UserUtil::loginUsing() instead
-     *
      * @return boolean
      */
     public static function login($loginID, $userEnteredPassword, $rememberme = false, $checkPassword = true)
@@ -579,7 +558,7 @@ class UserUtil
             'modname'   => 'Users',
         );
 
-        if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::DEFAULT_LOGIN_METHOD) == Users_Constant::LOGIN_METHOD_EMAIL) {
+        if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::DEFAULT_LOGIN_METHOD) == UsersConstant::LOGIN_METHOD_EMAIL) {
             $authenticationMethod['method'] = 'email';
         } else {
             $authenticationMethod['method'] = 'uname';
@@ -594,34 +573,34 @@ class UserUtil
      * @param array  $authenticationMethod Auth method.
      * @param string $reentrantURL         Reentrant URL (optional).
      *
-     * @throws Zikula_Exception_Fatal
+     * @throws FatalException
      *
      * @return true
      */
     private static function preAuthenticationValidation(array $authenticationMethod, $reentrantURL = null)
     {
         if (empty($authenticationMethod) || (count($authenticationMethod) != 2)) {
-            throw new Zikula_Exception_Fatal(__f('An invalid %1$s parameter was received.', array('authenticationMethod')));
+            throw new FatalException(__f('An invalid %1$s parameter was received.', array('authenticationMethod')));
         }
 
         if (!isset($authenticationMethod['modname']) || !is_string($authenticationMethod['modname']) || empty($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal(__f('An invalid %1$s parameter was received.', array('modname')));
+            throw new FatalException(__f('An invalid %1$s parameter was received.', array('modname')));
         } elseif (!ModUtil::getInfoFromName($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' could not be found.', array($authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication module \'%1$s\' could not be found.', array($authenticationMethod['modname'])));
         } elseif (!ModUtil::available($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' is not available.', array($authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication module \'%1$s\' is not available.', array($authenticationMethod['modname'])));
         } elseif (!ModUtil::loadApi($authenticationMethod['modname'], 'Authentication')) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' could not be loaded.', array($authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication module \'%1$s\' could not be loaded.', array($authenticationMethod['modname'])));
         }
 
         if (!isset($authenticationMethod['method']) || !is_string($authenticationMethod['method']) || empty($authenticationMethod['method'])) {
-            throw new Zikula_Exception_Fatal(__f('An invalid %1$s parameter was received.', array('method')));
+            throw new FatalException(__f('An invalid %1$s parameter was received.', array('method')));
         } elseif (!ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'supportsAuthenticationMethod', array('method' => $authenticationMethod['method']), 'Zikula_Api_AbstractAuthentication')) {
-            throw new Zikula_Exception_Fatal(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', array($authenticationMethod['method'], $authenticationMethod['modname'])));
+            throw new FatalException(__f('The authentication method \'%1$s\' is not supported by the authentication module \'%2$s\'.', array($authenticationMethod['method'], $authenticationMethod['modname'])));
         }
 
         if (ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'isReentrant', null, 'Zikula_Api_AbstractAuthentication') && (!isset($reentrantURL) || empty($reentrantURL))) {
-            throw new Zikula_Exception_Fatal(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', array($authenticationMethod['modname'], 'reentrantURL')));
+            throw new FatalException(__f('The authentication module \'%1$s\' is reentrant. A %2$s is required.', array($authenticationMethod['modname'], 'reentrantURL')));
         }
 
         return true;
@@ -740,7 +719,6 @@ class UserUtil
             if (!$userObj) {
                 // Need to make sure the Users module stuff is loaded and available, especially if we are authenticating during
                 // an upgrade or install.
-                ModUtil::dbInfoLoad('Users', 'Users');
                 ModUtil::loadApi('Users', 'user', true);
 
                 // The user's credentials have authenticated with the authentication module's method, but
@@ -757,28 +735,28 @@ class UserUtil
             if (!$userObj || !is_array($userObj)) {
                 // Note that we have not actually logged into anything yet, just authenticated.
 
-                throw new Zikula_Exception_Fatal(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', array('uid', $uid)));
+                throw new FatalException(__f('A %1$s (%2$s) was returned by the authenticating module, but a user account record (or registration request record) could not be found.', array('uid', $uid)));
             }
 
             if (!isset($userObj['activated'])) {
                 // Provide a sane value.
-                $userObj['activated'] = Users_Constant::ACTIVATED_INACTIVE;
+                $userObj['activated'] = UsersConstant::ACTIVATED_INACTIVE;
             }
 
-            if ($userObj['activated'] != Users_Constant::ACTIVATED_ACTIVE) {
+            if ($userObj['activated'] != UsersConstant::ACTIVATED_ACTIVE) {
                 if ($reportErrors) {
-                    $displayVerifyPending = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    $displayApprovalPending = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
-                    if (($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) && ($displayApprovalPending || $displayVerifyPending)) {
-                        $moderationOrder = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, Users_Constant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
+                    $displayVerifyPending = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
+                    $displayApprovalPending = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
+                    if (($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) && ($displayApprovalPending || $displayVerifyPending)) {
+                        $moderationOrder = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_APPROVAL_SEQUENCE, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_SEQUENCE);
                         if (!$userObj['isverified']
-                                && (($moderationOrder == Users_Constant::APPROVAL_AFTER) || ($moderationOrder == Users_Constant::APPROVAL_ANY)
+                                && (($moderationOrder == UsersConstant::APPROVAL_AFTER) || ($moderationOrder == UsersConstant::APPROVAL_ANY)
                                         || (!empty($userObj['approved_by'])))
                                 && $displayVerifyPending
                                 ) {
                             $message = __('Your request to register with this site is still waiting for verification of your e-mail address. Please check your inbox for a message from us.');
                         } elseif (empty($userObj['approved_by'])
-                                && (($moderationOrder == Users_Constant::APPROVAL_BEFORE) || ($moderationOrder == Users_Constant::APPROVAL_ANY))
+                                && (($moderationOrder == UsersConstant::APPROVAL_BEFORE) || ($moderationOrder == UsersConstant::APPROVAL_ANY))
                                 && $displayApprovalPending
                                 ) {
                             $message = __('Your request to register with this site is still waiting for approval from a site administrator.');
@@ -789,9 +767,9 @@ class UserUtil
                         }
                         // It is a pending registration but the site admin elected to not display this to the user.
                         // No exception here because the answer is simply "no." This will fall through to return false.
-                    } elseif (($userObj['activated'] == Users_Constant::ACTIVATED_INACTIVE) && ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
+                    } elseif (($userObj['activated'] == UsersConstant::ACTIVATED_INACTIVE) && ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
                         $message = __('Your account has been disabled. Please contact a site administrator for more information.');
-                    } elseif (($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_DELETE) && ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, Users_Constant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
+                    } elseif (($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_DELETE) && ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS)) {
                         $message = __('Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.');
                     } else {
                         $message = __('Sorry! Either there is no active user in our system with that information, or the information you provided does not match the information for your account.');
@@ -906,14 +884,14 @@ class UserUtil
                     $authenticatedUid = $preauthenticatedUser['uid'];
                     $userObj = $preauthenticatedUser;
                 } else {
-                    throw new Zikula_Exception_Fatal();
+                    throw new FatalException();
                 }
             } else {
                 $authArgs = array(
                     'authentication_info'   => $authenticationInfo,
                     'authentication_method' => $authenticationMethod,
                 );
-                $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuthenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
+                $authenticatedUid = ModUtil::apiFunc($authenticationMethod['modname'], 'Authentication', 'getUidForAuththenticationInfo', $authArgs, 'Zikula_Api_AbstractAuthentication');
             }
 
             $userObj = self::internalUserAccountValidation($authenticatedUid, true, isset($userObj) ? $userObj : null);
@@ -926,7 +904,7 @@ class UserUtil
                     'authentication_method' => $authenticationMethod,
                     'uid'                   => $userObj['uid'],
                 );
-                $event = new \Zikula\Core\Event\GenericEvent($userObj, $eventArgs);
+                $event = new GenericEvent($userObj, $eventArgs);
                 $event = EventUtil::dispatch('user.login.veto', $event);
 
                 if ($event->isPropagationStopped()) {
@@ -940,7 +918,7 @@ class UserUtil
                     } elseif (isset($eventData['redirect_func'])) {
                         if (isset($eventData['redirect_func']['session'])) {
                             $sessionVarName = $eventData['redirect_func']['session']['var'];
-                            $sessionNamespace = isset($eventData['redirect_func']['session']['namespace']) ? $eventData['redirect_func']['session']['namespace'] : '/';
+                            $sessionNamespace = isset($eventData['redirect_func']['session']['namespace']) ? $eventData['redirect_func']['session']['namespace'] : '';
                         }
                         $redirectURL = ModUtil::url($eventData['redirect_func']['modname'], $eventData['redirect_func']['type'], $eventData['redirect_func']['func'], $eventData['redirect_func']['args']);
                     }
@@ -961,10 +939,9 @@ class UserUtil
                             SessionUtil::setVar($sessionVarName, $sessionVars, $sessionNamespace, true, true);
                         }
                         $userObj = false;
-                        //System::redirect($redirectURL);
-                        throw new Zikula_Exception_Redirect($redirectURL);
+                        throw new RedirectException($redirectURL);
                     } else {
-                        throw new Zikula_Exception_Forbidden();
+                        throw new ForbiddenException();
                     }
                 } else {
                     // The login has not been vetoed
@@ -991,7 +968,7 @@ class UserUtil
     public static function setUserByUname($uname, $rememberMe = false)
     {
         if (!isset($uname) || !is_string($uname) || empty($uname)) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uname.'));
+            throw new FatalException(__('Attempt to set the current user with an invalid uname.'));
         }
 
         $uid = self::getIdFromName($uname);
@@ -1020,12 +997,12 @@ class UserUtil
     public static function setUserByUid($uid, $rememberMe = false, array $authenticationMethod = null)
     {
         if (!isset($uid) || empty($uid) || ((string)((int)$uid) != $uid)) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid uid.'));
+            throw new FatalException(__('Attempt to set the current user with an invalid uid.'));
         }
 
         $userObj = self::getVars($uid);
         if (!isset($userObj) || !is_array($userObj) || empty($userObj)) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an unknown uid.'));
+            throw new FatalException(__('Attempt to set the current user with an unknown uid.'));
         }
 
         if (!isset($authenticationMethod)) {
@@ -1036,7 +1013,7 @@ class UserUtil
         } elseif (empty($authenticationMethod) || !isset($authenticationMethod['modname']) || empty($authenticationMethod['modname'])
                 || !isset($authenticationMethod['method']) || empty($authenticationMethod['method'])
                 ) {
-            throw new Zikula_Exception_Fatal(__('Attempt to set the current user with an invalid authentication method.'));
+            throw new FatalException(__('Attempt to set the current user with an invalid authentication method.'));
         }
 
         // Storing Last Login date -- store it in UTC! Do not use date() function!
@@ -1105,16 +1082,19 @@ class UserUtil
 
         $uname = DataUtil::formatForStore(mb_strtolower($uname));
 
+        // get doctrine manager
+        $em = \ServiceUtil::get('doctrine.entitymanager');
+
+        // count of uname appearances in users table
+        $dql = "SELECT count(u.uid) FROM Users\Entity\User u WHERE u.uname = '{$uname}'";
         if ($excludeUid > 1) {
-            $dbinfo = DBUtil::getTables();
-            $usersColumn = $dbinfo['users_column'];
-            $where = "({$usersColumn['uname']} = '{$uname}') AND ({$usersColumn['uid']} != {$excludeUid})";
-            $ucount = DBUtil::selectObjectCount('users', $where);
-        } else {
-            $ucount = DBUtil::selectObjectCountByID('users', $uname, 'uname');
+            $dql .= " AND u.uid <> {$excludeUid}";
         }
 
-        return $ucount;
+        $query = $em->createQuery($dql);
+        $ucount = $query->getSingleScalarResult();
+
+        return (int)$ucount;
     }
 
     /**
@@ -1123,7 +1103,7 @@ class UserUtil
      * @param string $emailAddress The e-mail address in question (required).
      * @param int    $excludeUid   The uid to exclude from the check, used when checking modifications.
      *
-     * @return integer|boolean The count, or false on error.
+     * @return integer|boolean the count, or false on error.
      */
     public static function getEmailUsageCount($emailAddress, $excludeUid = 0)
     {
@@ -1133,27 +1113,28 @@ class UserUtil
 
         $emailAddress = DataUtil::formatForStore(mb_strtolower($emailAddress));
 
-        $dbinfo = DBUtil::getTables();
-        $usersColumn = $dbinfo['users_column'];
-        $where = "({$usersColumn['email']} = '{$emailAddress}')";
-        if ($excludeUid > 1) {
-            $where .= " AND ({$usersColumn['uid']} != {$excludeUid})";
-        }
-        $ucount = DBUtil::selectObjectCount('users', $where);
+        // get doctrine manager
+        $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $verifyChgColumn = $dbinfo['users_verifychg_column'];
-        $where = "({$verifyChgColumn['newemail']} = '{$emailAddress}') AND ({$verifyChgColumn['changetype']} = "
-                . Users_Constant::VERIFYCHGTYPE_EMAIL . ")";
+        // count of email appearances in users table
+        $dql = "SELECT COUNT(u.uid) FROM Users\Entity\User u WHERE u.email = '{$emailAddress}'";
         if ($excludeUid > 1) {
-            $where .= " AND ({$verifyChgColumn['uid']} != {$excludeUid})";
+            $dql .= " AND u.uid <> {$excludeUid}";
         }
-        $vcount = DBUtil::selectObjectCount('users_verifychg', $where);
 
-        if (($ucount === false) || ($vcount === false)) {
-            return false;
-        } else {
-            return ($ucount + $vcount);
+        $query = $em->createQuery($dql);
+        $ucount = (int)$query->getSingleScalarResult();
+
+        // count of email appearances in users verification table
+        $dql = "SELECT COUNT(v.id) FROM Users\Entity\UserVerification v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        if ($excludeUid > 1) {
+            $dql .= " AND v.uid <> {$excludeUid}";
         }
+
+        $query = $em->createQuery($dql);
+        $vcount = (int)$query->getSingleScalarResult();
+
+        return ($ucount + $vcount);
     }
 
     /**
@@ -1166,20 +1147,22 @@ class UserUtil
      */
     public static function postProcessGetRegistration(&$userObj)
     {
-        if ($userObj['activated'] == Users_Constant::ACTIVATED_PENDING_REG) {
+        if ($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
             // Get isverified from the attributes.
             if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
                 $userObj['isverified'] = $userObj['__ATTRIBUTES__']['_Users_isVerified'];
+                // todo why was this unset statement commented out in 2.0?
                 unset($userObj['__ATTRIBUTES__']['_Users_isVerified']);
             } else {
                 $userObj['isverified'] = false;
             }
 
             // Get verificationsent from the users_verifychg table
-            $dbinfo = DBUtil::getTables();
-            $verifyChgColumn = $dbinfo['users_verifychg_column'];
-            $where = "WHERE ({$verifyChgColumn['uid']} = {$userObj['uid']}) AND ({$verifyChgColumn['changetype']} = " . Users_Constant::VERIFYCHGTYPE_REGEMAIL . ")";
-            $verifyChgList = DBUtil::selectObjectArray('users_verifychg', $where, '', -1, 1);
+            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $dql = "SELECT v FROM Users\Entity\UserVerification v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
+            $query = $em->createQuery($dql);
+            $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
             if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
                 $userObj['verificationsent'] = $verifyChgList[0]['created_dt'];
             } else {
@@ -1254,27 +1237,31 @@ class UserUtil
         }
 
         if (!isset($user) || $force) {
-            // load the Users database information
-            ModUtil::dbInfoLoad('Users', 'Users');
+            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $user = $em->getRepository('Users\Entity\User')->findOneBy(array($idfield => $id));
 
-            // get user info, don't cache as this information must be up-to-date
-            // NOTE: Do not use a permission filter, or you will enter an infinite nesting loop where getVars calls checkPermission (from within
-            // DBUtil), which will call getVars to find out who you are, which will call checkPermission, etc., etc.
-            // Do your permission check in the API that is using UserUtil.
-            $user = DBUtil::selectObjectByID('users', $id, $idfield, null, null, null, false);
+            if ($user) {
+                $user = $user->toArray();
+
+                $attributes = array();
+                foreach ($user['attributes'] as $attribute) {
+                    $attributes[$attribute['name']] = $attribute['value'];
+                }
+
+                $user['__ATTRIBUTES__'] = $attributes;
+                unset($user['attributes']);
+            }
 
             // If $idfield is email, make sure that we are getting a unique record.
             if ($user && ($idfield == 'email')) {
                 $emailCount = self::getEmailUsageCount($id);
-
                 if (($emailCount > 1) || ($emailCount === false)) {
                     $user = false;
                 }
             }
 
             // update cache
-            // user can be false (error) or empty array (no such user)
-            if ($user === false || empty($user)) {
+            if (!$user) {
                 switch ($idfield) {
                     case 'uid':
                         $cache[$id] = false;
@@ -1286,17 +1273,14 @@ class UserUtil
                         $emails[$id] = false;
                         break;
                 }
-                if ($user === false) {
-                    return LogUtil::registerError(__('Error! Could not load data.'));
-                }
 
                 return false;
             } else {
                 // This check should come at the very end, here, so that if $force is true the vars get
                 // reloaded into cache no matter what $getRegistration is set to. If not, and this is
                 // called from setVar(), and setVar() changed the 'activated' value, then we'd have trouble.
-                if (($getRegistration && ($user['activated'] != Users_Constant::ACTIVATED_PENDING_REG))
-                        || (!$getRegistration && ($user['activated'] == Users_Constant::ACTIVATED_PENDING_REG))) {
+                if (($getRegistration && ($user['activated'] != UsersConstant::ACTIVATED_PENDING_REG))
+                        || (!$getRegistration && ($user['activated'] == UsersConstant::ACTIVATED_PENDING_REG))) {
                     return false;
                 }
 
@@ -1306,8 +1290,8 @@ class UserUtil
                 $unames[$user['uname']] = $user['uid'];
                 $emails[$user['email']] = $user['uid'];
             }
-        } elseif (($getRegistration && ($user['activated'] != Users_Constant::ACTIVATED_PENDING_REG))
-                || (!$getRegistration && ($user['activated'] == Users_Constant::ACTIVATED_PENDING_REG))) {
+        } elseif (($getRegistration && ($user['activated'] != UsersConstant::ACTIVATED_PENDING_REG))
+                || (!$getRegistration && ($user['activated'] == UsersConstant::ACTIVATED_PENDING_REG))) {
 
             return false;
         }
@@ -1448,11 +1432,10 @@ class UserUtil
      */
     public static function setVar($name, $value, $uid = -1)
     {
-        $dbtable = DBUtil::getTables();
-
         if (empty($name)) {
             return false;
         }
+
         if (!isset($value)) {
             return false;
         }
@@ -1460,6 +1443,7 @@ class UserUtil
         if ($uid == -1) {
             $uid = SessionUtil::getVar('uid');
         }
+
         if (empty($uid)) {
             return false;
         }
@@ -1472,16 +1456,22 @@ class UserUtil
         }
 
         $varIsSet = false;
+
         // Cannot setVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
+            // get user given a uid
+            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $user = $em->getRepository('Users\Entity\User')->findOneBy(array('uid' => $uid));
+
+            // check if var to set belongs to table or it's an attribute
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
-                $obj = array(
-                    'uid' => $uid,
-                    $name => $value
-                );
                 $oldValue = isset($origUserObj[$name]) ? $origUserObj[$name] : null;
-                $varIsSet = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
+
+                $user[$name] = $value;
+                $em->flush();
+
+                $varIsSet = true;
             } else {
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
                 $dudAttributeName = self::convertOldDynamicUserDataAlias($name);
@@ -1495,15 +1485,11 @@ class UserUtil
                     $attributeName = $name;
                 }
 
-                $obj = array(
-                    'uid' => $uid,
-                    '__ATTRIBUTES__' => array(
-                        $attributeName => $value
-                    )
-                );
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
-                $varIsSet = (bool)ObjectUtil::updateObjectAttributes($obj, 'users', 'uid', true);
+                $user->setAttribute($attributeName, $value);
+
+                $varIsSet = true;
             }
 
             // force loading of attributes from db
@@ -1527,7 +1513,8 @@ class UserUtil
                     'old_value' => $oldValue,
                     'new_value' => $value,
                 );
-                $updateEvent = new \Zikula\Core\Event\GenericEvent($updatedUserObj, $eventArgs, $eventData);
+
+                $updateEvent = new GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
                 EventUtil::dispatch($eventName, $updateEvent);
             }
         }
@@ -1640,7 +1627,7 @@ class UserUtil
      */
     public static function validatePassword($unhashedPassword)
     {
-        $minLength = ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_PASSWORD_MINIMUM_LENGTH, Users_Constant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
+        $minLength = ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, UsersConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH);
 
         return isset($unhashedPassword)
                 && is_string($unhashedPassword)
@@ -1684,7 +1671,7 @@ class UserUtil
             }
         }
 
-        return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, Users_Constant::SALT_DELIM);
+        return SecurityUtil::getSaltedHash($unhashedPassword, $hashAlgorithmName, self::getPasswordHashMethods(false), 5, UsersConstant::SALT_DELIM);
 
         // FIXME this return is not reached
         return array(
@@ -1759,11 +1746,11 @@ class UserUtil
             return LogUtil::registerArgsError();
         }
 
-        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, Users_Constant::SALT_DELIM) === false)) {
+        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, UsersConstant::SALT_DELIM) === false)) {
             return LogUtil::registerArgsError();
         }
 
-        $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), Users_Constant::SALT_DELIM);
+        $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), UsersConstant::SALT_DELIM);
 
         return $passwordsMatch;
     }
@@ -1801,6 +1788,7 @@ class UserUtil
         if ($uid == -1) {
             $uid = SessionUtil::getVar('uid');
         }
+
         if (empty($uid)) {
             return false;
         }
@@ -1818,16 +1806,21 @@ class UserUtil
         }
 
         $varIsDeleted = false;
+
         // Cannot delVar the user's uid or uname
         if (($name != 'uid') && ($name != 'uname')) {
+            // get user given a uid
+            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $user = $em->getRepository('Users\Entity\User')->findOneBy(array('uid' => $uid));
+
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
-                $obj = array(
-                    'uid' => $uid,
-                    $name => '',
-                );
                 $oldValue = isset($origUserObj[$name]) ? $origUserObj[$name] : null;
-                $varIsDeleted = (bool)DBUtil::updateObject($obj, 'users', '', 'uid');
+
+                $user[$name] = '';
+                $em->flush();
+
+                $varIsDeleted = true;
             } else {
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
                 $dudAttributeName = self::convertOldDynamicUserDataAlias($name);
@@ -1840,9 +1833,12 @@ class UserUtil
                     // forbidden names, let's make an attribute out of it
                     $attributeName = $name;
                 }
+
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
-                $varIsDeleted = (bool)ObjectUtil::deleteObjectSingleAttribute($uid, 'users', $attributeName);
+                $user->delAttribute($attributeName);
+
+                $varIsDeleted = true;
             }
 
             // force loading of attributes from db
@@ -1866,12 +1862,13 @@ class UserUtil
                 );
                 $event = new \Zikula\Core\Event\GenericEvent( $updatedUserObj, $eventArgs, $eventData);
                 if ($isRegistration) {
-                    $eventName = 'user.registration.update';
+                    $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::dispatch('user.registration.update', $updateEvent);
                 } else {
-                    $eventName = 'user.account.update';
+                    $updateEvent = new GenericEvent($updatedUserObj, $eventArgs, $eventData);
+                    EventUtil::dispatch('user.account.update', $updateEvent);
                 }
-                $event = new \Zikula\Core\Event\GenericEvent($eventName, $updatedUserObj, $eventArgs, $eventData);
-                EventUtil::dispatch($eventName, $event);
+
             }
         }
 
@@ -2019,8 +2016,7 @@ class UserUtil
      */
     private static function _getThemeFilterEvent($themeName, $type)
     {
-        $event = new \Zikula\Core\Event\GenericEvent(null, array('type' => $type), $themeName);
-
+        $event = new GenericEvent(null, array('type' => $type), $themeName);
         return EventUtil::dispatch('user.gettheme', $event)->getData();
     }
 
@@ -2038,46 +2034,60 @@ class UserUtil
      *
      * @return array Array of users.
      */
-    public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = -1, $startnum = -1, $activated = '', $regexpfield = '', $regexpression = '', $where = '')
+    public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
-        $dbtable = DBUtil::getTables();
-        $userscolumn = $dbtable['users_column'];
+        $user = new \Users\Entity\User;
 
         if (empty($where)) {
-            $sqlFragments = array();
-            if (!empty($regexpfield) && (array_key_exists($regexpfield, $userscolumn)) && !empty($regexpression)) {
-                $sqlFragments[] = '(' . $userscolumn[$regexpfield] . ' REGEXP "' . DataUtil::formatForStore($regexpression) . '")';
-            }
-            if (!empty($activated) && is_numeric($activated) && array_key_exists('activated', $userscolumn)) {
-                $sqlFragments[] = "({$userscolumn['activated']} != '" . DataUtil::formatForStore($activated) . "')";
+            $whereFragments = array();
+
+            if (!empty($field) && isset($user[$field]) && !empty($expression)) {
+                $whereFragments[] = 'u.' . $field . ' LIKE \'' . DataUtil::formatForStore($expression) . '\'';
             }
 
-            if (!empty($sqlFragments)) {
-                $where = 'WHERE ' . implode(' AND ', $sqlFragments);
+            if (!empty($activated) && is_numeric($activated) && isset($user['activated'])) {
+                $whereFragments[] = 'u.activated <> "' . DataUtil::formatForStore($activated) . '"';
+            }
+
+            if (!empty($whereFragments)) {
+                $where = 'WHERE ' . implode(' AND ', $whereFragments);
             }
         }
 
-        $sortby = '';
         if (!empty($sortbyfield)) {
-            // Do not skip the following line, it might still have $where stuff in there!
-            $sqlFragments = array();
-            if (array_key_exists($sortbyfield, $userscolumn)) {
-                $sqlFragments[] = $userscolumn[$sortbyfield] . ' ' . DataUtil::formatForStore($sortorder);
-            } else {
-                $sqlFragments[] = DataUtil::formatForStore($sortbyfield) . ' ' . DataUtil::formatForStore($sortorder); //sort by dynamic.....
-            }
+            $sortFragments = array();
+
+            $sortFragments[] = 'u.'. $sortbyfield . ' ' . DataUtil::formatForStore($sortorder);
+
             if ($sortbyfield != 'uname') {
-                $sqlFragments[] = $userscolumn['uname'] . ' ASC ';
+                $sortFragments[] = 'u.uname ASC';
             }
 
-            if (!empty($sqlFragments)) {
-                $sortby = 'ORDER BY ' . implode(', ', $sqlFragments);
+            if (!empty($sortFragments)) {
+                $orderby = 'ORDER BY ' . implode(', ', $sortFragments);
             }
         }
 
-        // NOTE: DO NOT use a permission filter here to avoid potential infinite loops (DBUtil calls SecurityUtil
-        // which calls back to UserUtil. Do your permission check in the API that uses UserUtil.
-        return DBUtil::selectObjectArray('users', $where, $sortby, $startnum, $limit, 'uid');
+        $em = \ServiceUtil::get('doctrine.entitymanager');
+        $dql = "SELECT u FROM Users\Entity\User u $where $orderby $limit_clause";
+        $query = $em->createQuery($dql);
+
+        if (isset($limit) && is_numeric($limit) && $limit > 0) {
+            $query->setMaxResults($limit);
+
+            if (isset($offset) && is_numeric($offset) && $offset > 0) {
+                $query->setFirstResult($offset);
+            }
+        }
+
+        $users = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
+        $usersObj = array();
+        foreach ($users as $user) {
+            $usersObj[$user['uid']] = $user;
+        }
+
+        return $usersObj;
     }
 
     /**
@@ -2125,15 +2135,8 @@ class UserUtil
 
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
-            // Only need to retrieve users table columns once.
-            static $usersColumns;
-
-            if (!isset($usersColumns)) {
-                $dbtables = DBUtil::getTables();
-                $usersColumns = $dbtables['users_column'];
-            }
-
-            $isFieldAlias = array_key_exists($label, $usersColumns);
+            $userObj = new \Users\Entity\User;
+            $isFieldAlias = isset($userObj[$label]) ? true : false;
         }
 
         return $isFieldAlias;

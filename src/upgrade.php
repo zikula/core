@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Request;
+use Zikula_Request_Http as Request;
 
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
@@ -23,7 +23,6 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
-ZLoader::addAutoloader('Users', 'system', '_');
 ZLoader::addPrefix('Users', 'system');
 
 // check if the config.php was renewed
@@ -33,7 +32,7 @@ if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
 }
 
 $eventManager = $core->getDispatcher();
-$eventManager->attach('core.init', 'upgrade_suppressErrors');
+//$eventManager->attach('core.init', 'upgrade_suppressErrors');
 
 // load zikula core
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
@@ -52,6 +51,13 @@ $GLOBALS['ZConfig']['System']['Z_CONFIG_USE_OBJECT_META'] = false;
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
 $dbEvent = new \Zikula\Core\Event\GenericEvent(null, array('lazy' => true));
 $connection = $eventManager->dispatch('doctrine.init_connection', $dbEvent)->getData();
+$eventManager->dispatch('doctrine.boot', $dbEvent);
+$em = $core->getContainer()->get('doctrine.entitymanager');
+
+try {
+    DoctrineHelper::createSchema($em, array('Users\Entity\UserAttribute'));
+} catch (\Exception $e) {
+}
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
