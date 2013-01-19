@@ -103,16 +103,25 @@ The final structure looks as follows:
         Resources/
             config/
             docs/
+            locale/
+                foo_module.pot
             public/
                 css/
                 images/
                 js/
             views/
                 plugins/
+        Tests/
+            AdminControllerTest.php
         vendor/
         FooInstaller.php (was Installer.php)
         FooVersion.php (was Version.php)
         FooModule.php
+        CHANGELOG.md
+        LICENSE
+        README.md
+        composer.json
+        phpunit.xml.dist
 
 The last file `FooModule.php` is new and should look like this:
 
