@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData\Validator;
+
 /**
  * Validates a field against a maximum value, ensuring that the field value is less than or equal to this maximum.
  */
-class Users_Controller_FormData_Validator_IntegerNumericMaximumValue extends Users_Controller_FormData_Validator_AbstractValidator
+class IntegerNumericMaximumValue extends AbstractValidator
 {
     /**
      * The maximum valid value for the data in the field.
@@ -27,18 +29,18 @@ class Users_Controller_FormData_Validator_IntegerNumericMaximumValue extends Use
     /**
      * Constructs a new validator, initializing the maximum valid value.
      *
-     * @param Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
      * @param integer               $value          The maximum valid value for the field data.
      * @param string                $errorMessage   The error message to return if the field data is not valid.
      *
-     * @throws InvalidArgumentException If the maximum value specified is not an integer.
+     * @throws \InvalidArgumentException If the maximum value specified is not an integer.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, $value, $errorMessage = null)
+    public function __construct(\Zikula_ServiceManager $serviceManager, $value, $errorMessage = null)
     {
         parent::__construct($serviceManager, $errorMessage);
 
         if (!isset($value) || !is_int($value) || ($value < 0)) {
-            throw new InvalidArgumentException($this->__('An invalid integer value was received.'));
+            throw new \InvalidArgumentException($this->__('An invalid integer value was received.'));
         }
 
         $this->value = $value;

@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData\Validator;
+
 /**
  * Ensures that the field contains data compatible with a boolean type.
  */
-class Users_Controller_FormData_Validator_BooleanType extends Users_Controller_FormData_Validator_AbstractValidator
+class BooleanType extends AbstractValidator
 {
     /**
      * Validate the data for compatibility with the boolean type.

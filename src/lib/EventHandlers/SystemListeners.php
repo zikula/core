@@ -50,7 +50,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
-        $this->addHandlerDefinition('core.init', 'initDB');
+        $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.preinit', 'setupHookManager');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
@@ -271,9 +271,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initDB(Zikula_Event $event)
     {
-        if ($event['stage'] & Zikula_Core::STAGE_DB) {
-            $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent());
-        }
+        $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent());
+        $this->eventManager->dispatch('doctrine.boot', new \Zikula\Core\Event\GenericEvent());
     }
 
     /**
