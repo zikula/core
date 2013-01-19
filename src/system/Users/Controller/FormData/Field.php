@@ -12,15 +12,21 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData;
+
+use ServiceUtil;
+use InvalidArgumentException;
+use OutOfBoundsException;
+
 /**
  * One field in a form data container.
  */
-class Users_Controller_FormData_Field extends Zikula_AbstractBase
+class Field extends \Zikula_AbstractBase
 {
     /**
      * A reference back to the parent form data container.
      *
-     * @var Users_Controller_FormData_AbstractFormData
+     * @var AbstractFormData
      */
     private $formContainer;
 
@@ -83,15 +89,15 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
     /**
      * Build a new form data container field.
      *
-     * @param Users_Controller_FormData_AbstractFormData $formContainer  The parent form data container.
+     * @param AbstractFormData $formContainer  The parent form data container.
      * @param string                                     $fieldName      The name of the field.
      * @param mixed                                      $initialValue   The initial value of the field.
      * @param mixed                                      $defaultValue   The defaule value for the field.
-     * @param Zikula_ServiceManager                      $serviceManager The current service manager instance.
+     * @param \Zikula_ServiceManager                      $serviceManager The current service manager instance.
      *
      * @throws InvalidArgumentException Thrown if any of the parameters are not valid.
      */
-    public function __construct(Users_Controller_FormData_AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, Zikula_ServiceManager $serviceManager = null)
+    public function __construct(AbstractFormData $formContainer, $fieldName, $initialValue = null, $defaultValue = null, \Zikula_ServiceManager $serviceManager = null)
     {
         if (!isset($serviceManager)) {
             $serviceManager = ServiceUtil::getManager();
@@ -99,7 +105,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
         parent::__construct($serviceManager);
 
         if (!isset($formContainer)) {
-            throw new InvalidArgumentException($this->__f('Invalid formn container.'));
+            throw new InvalidArgumentException($this->__('Invalid form container.'));
         } else {
             $this->formContainer = $formContainer;
         }
@@ -124,7 +130,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
     /**
      * Retrieve the parent form data container.
      *
-     * @return Users_Controller_FormData_AbstractFormData The form data container that owns this field.
+     * @return AbstractFormData The form data container that owns this field.
      */
     public function getFormContainer()
     {
@@ -235,7 +241,7 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      *
      * @param boolean $isNullAllowed True if null values are valid for this field, otherwise false.
      *
-     * @return Users_Controller_FormData_Field Returns $this to allow for function chaining.
+     * @return Field Returns $this to allow for function chaining.
      *
      * @throws InvalidArgumentException Thrown if the value of the parameter is not a boolean value.
      */
@@ -265,11 +271,11 @@ class Users_Controller_FormData_Field extends Zikula_AbstractBase
      *
      * This can be called multiple times to add a chain of several validators.
      *
-     * @param Users_Controller_FormData_Validator_AbstractValidator $validator The validator to be attached to this field for validation of its data.
+     * @param Validator\AbstractValidator $validator The validator to be attached to this field for validation of its data.
      *
-     * @return Users_Controller_FormData_Field Returns $this to allow function chaining.
+     * @return Field Returns $this to allow function chaining.
      */
-    public function addValidator(Users_Controller_FormData_Validator_AbstractValidator $validator)
+    public function addValidator(Validator\AbstractValidator $validator)
     {
         $this->validators[] = $validator;
 

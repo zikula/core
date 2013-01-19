@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData;
+
+use ServiceUtil;
+use InvalidArgumentException;
+
 /**
  * A form data container and validator.
  */
-abstract class Users_Controller_FormData_AbstractFormData extends Zikula_AbstractBase
+abstract class AbstractFormData extends \Zikula_AbstractBase
 {
     /**
      * The value for the form's id attribute, and used in creating the id attribute for each field.
@@ -42,11 +47,11 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * Construct a new form data container instance, initializing the id value.
      *
      * @param string                $formId         A value for the form's id attribute.
-     * @param Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
      *
      * @throws InvalidArgumentException Thrown if the specified form id is not valid.
      */
-    public function __construct($formId, Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
     {
         if (!isset($serviceManager)) {
             $serviceManager = ServiceUtil::getManager();
@@ -68,13 +73,13 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
     /**
      * Add a field to the form container.
      *
-     * @param Users_Controller_FormData_Field $field The field definition.
+     * @param Field $field The field definition.
      *
-     * @return Users_Controller_FormData_Field A reference to the field just added, to allow for function chaining to configure the field.
+     * @return Field A reference to the field just added, to allow for function chaining to configure the field.
      *
      * @throws InvalidArgumentException Thrown if the field definition is not valid, a field with the specified name is already defined, or adding the field would result in a duplicate field id.
      */
-    public function addField(Users_Controller_FormData_Field $field)
+    public function addField(Field $field)
     {
         if (!isset($field)) {
             throw new InvalidArgumentException($this->__('Invalid field definition'));
@@ -107,7 +112,7 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      *
      * @param string $fieldName The name of the field previously added to this form container.
      *
-     * @return Users_Controller_FormData_Field The field definition for the specified name.
+     * @return Field The field definition for the specified name.
      *
      * @throws InvalidArgumentException Thrown if this form data container does not contain a field with the specified name.
      */
@@ -257,12 +262,12 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * The session variables should be named the same as the field names. Session variables within the namespace that
      * do not represent known fields are ignored. The validation status of the form data container is reset by this function.
      *
-     * @param Zikula_Session $session   The session instance.
+     * @param \Zikula_Session $session   The session instance.
      * @param string         $namespace The session namespace where the fields are found; optional; defaults to '/'.
      *
      * @return void
      */
-    public function setFromSession(Zikula_Session $session, $namespace = '/')
+    public function setFromSession(\Zikula_Session $session, $namespace = '/')
     {
         foreach ($this->formFields as $fieldName => $formField) {
             if ($session->has($fieldName, $namespace)) {
@@ -278,15 +283,15 @@ abstract class Users_Controller_FormData_AbstractFormData extends Zikula_Abstrac
      * The request variables should be named the same as the field names. Request variables within the namespace that
      * do not represent known fields are ignored. The validation status of the form data container is reset by this function.
      *
-     * @param Zikula_Request_Collection $requestCollection The request collection (e.g. $this->request->request) from which to set field data.
+     * @param array $requestCollection The request collection (e.g. $this->request->request) from which to set field data.
      *
      * @return void
      */
-    public function setFromRequestCollection(Zikula_Request_Collection $requestCollection)
+    public function setFromRequestCollection(array $requestCollection)
     {
         foreach ($this->formFields as $fieldName => $formField) {
-            if ($requestCollection->has($fieldName)) {
-                $this->formFields[$fieldName]->setData($requestCollection->get($fieldName));
+            if (array_key_exists($fieldName, $requestCollection)) {
+                $this->formFields[$fieldName]->setData($requestCollection[$fieldName]);
             }
         }
         $this->clearValidation();

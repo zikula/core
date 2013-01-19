@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData\Validator;
+
 /**
  * Validates a field to ensure that it contains a string whose letters are all lowercase (or are non-letter characters).
  */
-class Users_Controller_FormData_Validator_StringLowerCase extends Users_Controller_FormData_Validator_AbstractValidator
+class StringLowerCase extends AbstractValidator
 {
     /**
      * Validates the specified data, looking for letters that are not lower case.

@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Users\Controller\FormData\Validator;
+
 /**
  * Validates a field's data against a list of valid string values.
  */
-class Users_Controller_FormData_Validator_StringInSet extends Users_Controller_FormData_Validator_AbstractValidator
+class StringInSet extends AbstractValidator
 {
     /**
      * List of valid strings.
@@ -27,25 +29,25 @@ class Users_Controller_FormData_Validator_StringInSet extends Users_Controller_F
     /**
      * Creates a new validator, initializing the set of valid string values.
      *
-     * @param Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
      * @param array                 $validStrings   An array containing valid string values.
      * @param string                $errorMessage   The error message to return if the data is not valid.
      *
-     * @throws InvalidArgumentException Thrown if the list of valid string values is not valid, or if it contains an invalid value.
+     * @throws \InvalidArgumentException Thrown if the list of valid string values is not valid, or if it contains an invalid value.
      */
-    public function __construct(Zikula_ServiceManager $serviceManager, array $validStrings, $errorMessage = null)
+    public function __construct(\Zikula_ServiceManager $serviceManager, array $validStrings, $errorMessage = null)
     {
         parent::__construct($serviceManager, $errorMessage);
 
         if (empty($validStrings)) {
-            throw new InvalidArgumentException($this->__('An invalid list of valid strings was received.'));
+            throw new \InvalidArgumentException($this->__('An invalid list of valid strings was received.'));
         }
 
         foreach ($validStrings as $validString) {
             if (isset($validString) && is_string($validString)) {
                 $this->validStrings[$validString] = $validString;
             } else {
-                throw new InvalidArgumentException($this->__('An invalid value was received in the list of valid strings.'));
+                throw new \InvalidArgumentException($this->__('An invalid value was received in the list of valid strings.'));
             }
         }
     }
