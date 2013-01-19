@@ -1,0 +1,2 @@
+Zikula Categories Module
+========================

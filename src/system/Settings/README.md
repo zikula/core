@@ -1,0 +1,2 @@
+Zikula Settings Module
+======================
