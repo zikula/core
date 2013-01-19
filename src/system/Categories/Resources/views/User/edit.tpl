@@ -18,7 +18,7 @@
 </ul>
 
 {insert name="getstatusmsg"}
-{include file="categories_user_list.tpl"}
+{include file="User/list.tpl"}
 
 <h3>{$templatetitle}</h3>
 
@@ -39,26 +39,11 @@
             <input type="hidden" name="category[id]"              value="{$category.id|safetext}" />
             <input type="hidden" name="category[path]"            value="{$category.path|safetext}" />
             <input type="hidden" name="category[ipath]"           value="{$category.ipath|safetext}" />
-            <input type="hidden" name="category[obj_status]"      value="{$category.obj_status|safetext}" />
-            <input type="hidden" name="category[cr_date]"         value="{$category.cr_date|safetext}" />
-            <input type="hidden" name="category[cr_uid]"          value="{$category.cr_uid|safetext}" />
-            <input type="hidden" name="category[lu_date]"         value="{$category.lu_date|safetext}" />
-            <input type="hidden" name="category[lu_uid]"          value="{$category.lu_uid|safetext}" />
             {/if}
             <div class="z-formrow">
-                <label for="category_name">{gt text="Name"}</label>
+                <label for="category_name">{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
                 {array_field assign='catName' array='category' field='name'}
                 <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" size="32" maxlength="255" />
-                {php}
-                $tplVars =& $this->_tpl_vars;
-                if (isset($tplVars['validationErrors']) && $tplVars['validationErrors'])
-                {
-                {/php}
-                {formutil_getfieldmarker objectType="category" field="name" validation=$validation validationErrors=$validationErrors}
-                {formutil_getvalidationerror objectType="category" field="name"}
-                {php}
-                }
-                {/php}
             </div>
             <div class="z-formrow">
                 <label for="category_value">{gt text="Value"}</label>
@@ -68,7 +53,6 @@
             <div class="z-formrow">
                 <label for="category_status">{gt text="Active"}</label>
                 {array_field assign='catStatus' array='category' field='status'}
-
                 <input id="category_status" name="category[status]" value="A" type="checkbox"{if ($catStatus=='A')} checked="checked"{/if} />
             </div>
         </fieldset>
@@ -103,7 +87,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text="Attributes"}</legend>
-            {include file=categories_include_editattributes.tpl}
+            {include file=editattributes.tpl}
         </fieldset>
         {if $catID}
         <fieldset>
