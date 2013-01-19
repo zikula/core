@@ -60,7 +60,7 @@ class CategoryAttribute extends EntityAccess
     /**
      * get the category item
      *
-     * @return Zikula\Core\Doctrine\Entity\Category the category item
+     * @return \Zikula\Core\Doctrine\Entity\Category the category item
      */
     public function getCategory()
     {
@@ -70,7 +70,7 @@ class CategoryAttribute extends EntityAccess
     /**
      * set the category item
      *
-     * @param Zikula\Core\Doctrine\Entity\Category $category the category item
+     * @param \Zikula\Core\Doctrine\Entity\Category $category the category item
      */
     public function setCategory($category)
     {

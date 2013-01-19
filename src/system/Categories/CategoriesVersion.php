@@ -23,7 +23,7 @@ class CategoriesVersion extends \Zikula_AbstractVersion
         $meta['description']    = $this->__('Category administration.');
         //! module name that appears in URL
         $meta['url']            = $this->__('categories');
-        $meta['version']        = '1.2.1';
+        $meta['version']        = '1.2.2';
         $meta['securityschema'] = array('Categories::Category' => 'Category ID:Category Path:Category IPath');
 
         return $meta;

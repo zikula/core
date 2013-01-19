@@ -20,6 +20,7 @@ use DoctrineUtil;
 use DoctrineHelper;
 use DataUtil;
 use ZLanguage;
+use Zikula\Core\Doctrine\Entity\Category;
 
 class CategoriesInstaller extends \Zikula_AbstractInstaller
 {
@@ -45,7 +46,7 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
         $this->insertData_10();
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
-        $cat = new \Zikula\Core\Doctrine\Entity\Category;
+        $cat = new Category;
         $cat['id'] = 9999;
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
@@ -81,7 +82,15 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
                 DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
                         'length' => 60), false);
             case '1.2.1':
-            // future upgrade routines
+                try {
+                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\CategoryAttribute'));
+                } catch (\Exception $e) {
+                    return false;
+                }
+
+                $this->migrateAttributesFromObjectData();
+            case '1.2.2':
+                // future
         }
 
         return true;
@@ -648,7 +657,7 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
         );
 
         foreach ($objArray as $obj) {
-            $category = new \Zikula\Core\Doctrine\Entity\Category;
+            $category = new Category;
 
             if ($obj['parent_id'] == 0) {
                 $obj['parent'] = null;
@@ -684,5 +693,22 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
     public function makeDisplayDesc()
     {
         return array(ZLanguage::getLanguageCode() => '');
+    }
+
+    private function migrateAttributesFromObjectData()
+    {
+        $dataset = DBUtil::selectObjectArray('categories_category');
+        $em = $this->getEntityManager();
+        foreach ($dataset as $data) {
+            if (!isset($data['__ATTRIBUTES__'])) {
+                continue;
+            }
+            $category = $em->getRepository('Zikula\Core\Doctrine\Entity\Category')->findOneBy(array('id' => $data['id']));
+            foreach ($data['__ATTRIBUTES__'] as $name => $value) {
+                $category->setAttribute($name ,$value);
+            }
+
+            $em->flush();
+        }
     }
 }
