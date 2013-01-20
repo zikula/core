@@ -82,14 +82,16 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
                 DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
                         'length' => 60), false);
             case '1.2.1':
+            case '1.2.2':
                 try {
                     DoctrineHelper::createSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\CategoryAttribute'));
                 } catch (\Exception $e) {
-                    return false;
                 }
+                DoctrineUtil::createColumn('categories_registry', 'entityname', array('type' => 'string',
+                        'length' => 60), false);
 
                 $this->migrateAttributesFromObjectData();
-            case '1.2.2':
+            case '1.2.3':
                 // future
         }
 
