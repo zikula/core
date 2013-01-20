@@ -24,7 +24,7 @@ use DataUtil;
 use UserUtil;
 use Users\Constant as UsersConstant;
 use Zikula;
-use Zikula_Exception_Forbidden as ForbiddenException;
+use Zikula_Exception_Forbidden;
 use Zikula_View;
 
 /**

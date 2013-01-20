@@ -47,33 +47,36 @@ class CategoryUtil
 
         $lang = ZLanguage::getLanguageCode();
 
+        /** @var \Zikula\Core\Doctrine\Entity\Category $rootCat */
         $rootCat = self::getCategoryByPath($rootPath);
+//        var_dump($rootCat);die;
         if (!$rootCat) {
             return LogUtil::registerError(__f("Error! Non-existing root category '%s' received", $rootPath));
         }
 
         $checkCat = self::getCategoryByPath("$rootPath/$name");
         if (!$checkCat) {
-            $cat = new Categories_DBObject_Category();
+            $cat = new \Zikula\Core\Doctrine\Entity\Category();
+            $em = ServiceUtil::get('doctrine.entitymanager');
+            $em->persist($cat);
             $data = array();
-            $data['parent_id'] = $rootCat['id'];
+            $data['parent'] = $rootCat['parent'];
             $data['name'] = $name;
             $data['display_name'] = array($lang => $displayname);
             $data['display_desc'] = array($lang => $description);
             if ($value) {
                 $data['value'] = $value;
             }
+            $cat->merge($data);
             if ($attributes && is_array($attributes)) {
-                $data['__ATTRIBUTES__'] = $attributes;
+                $cat->setAttributes($attributes);
             }
-            $cat->setData($data);
-            if (!$cat->validate('admin')) {
-                return false;
-            }
-            $cat->insert();
-            $cat->update();
+//            if (!$cat->validate('admin')) {
+//                return false;
+//            }
+            $em->flush();
 
-            return $cat->getDataField('id');
+            return $cat->getId();
         }
 
         return false;
@@ -604,7 +607,7 @@ class CategoryUtil
         $fpath = 'path';
         $fipath = 'ipath';
 
-        $em = ServiceUtil::get('doctrine')->getManager();
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
         $dql = "
         SELECT c
@@ -741,7 +744,7 @@ class CategoryUtil
             }
         }
 
-        $em = ServiceUtil::get('doctrine')->getManager();
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
         $oldToNewID = array();
         $oldToNewID[$cats[0]['parent']['id']] = $em->getReference('Zikula\Core\Doctrine\Entity\Category', $newParent['id']);

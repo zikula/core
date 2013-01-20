@@ -71,7 +71,7 @@ class UserController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check
-        $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'index')))));
+        $this->redirectUnless(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'login', array('returnpage' => urlencode(ModUtil::url($this->name, 'user', 'main')))));
 
         if (!SecurityUtil::checkPermission($this->name . '::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
@@ -128,7 +128,7 @@ class UserController extends \Zikula_AbstractController
     public function registerAction()
     {
         // Should not be here if logged in.
-        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'index'));
+        $this->redirectIf(UserUtil::isLoggedIn(), ModUtil::url($this->name, 'user', 'main'));
 
         // check permisisons
         if (!SecurityUtil::checkPermission($this->name .'::', '::', ACCESS_READ)) {
@@ -2113,7 +2113,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($this->getVar('changeemail', 1) != 1) {
-            return $this->redirect(ModUtil::url($this->name, 'user', 'index'));
+            return $this->redirect(ModUtil::url($this->name, 'user', 'main'));
         }
 
         return $this->response($this->view->fetch('User/changeemail.tpl'));
@@ -2178,7 +2178,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         $this->registerStatus($this->__('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'))
-                ->redirect(ModUtil::url($this->name, 'user', 'index'));
+                ->redirect(ModUtil::url($this->name, 'user', 'main'));
     }
 
     /**
