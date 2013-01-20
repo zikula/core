@@ -44,6 +44,10 @@ abstract class AbstractEntityAttribute extends EntityAccess
      */
     private $value;
 
+    abstract public function getEntity();
+
+    abstract public function setEntity($entity);
+
     public function __construct($name, $value, $entity)
     {
         $this->name = $name;
@@ -80,10 +84,5 @@ abstract class AbstractEntityAttribute extends EntityAccess
     {
         $this->value = $value;
     }
-
-
-    abstract public function getEntity();
-
-    abstract public function setEntity($entity);
 }
 

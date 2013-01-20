@@ -41,7 +41,7 @@ class Category extends EntityAccess
     /**
      * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @var \Zikula\Core\Doctrine\Entity\Category
+     * @var Category
      */
     private $parent;
 
@@ -275,7 +275,7 @@ class Category extends EntityAccess
     /**
      * get the attributes of the category
      *
-     * @return \Zikula\Core\Doctrine\Entity\CategoryAttribute the category's attributes
+     * @return CategoryAttribute the category's attributes
      */
     public function getAttributes()
     {
@@ -285,7 +285,7 @@ class Category extends EntityAccess
     /**
      * set the attributes for the category
      *
-     * @param \Zikula\Core\Doctrine\Entity\CategoryAttribute $attributes the attributes for the category
+     * @param CategoryAttribute $attributes the attributes for the category
      */
     public function setAttributes($attributes)
     {

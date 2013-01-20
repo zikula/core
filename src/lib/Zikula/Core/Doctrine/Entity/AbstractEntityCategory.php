@@ -41,13 +41,15 @@ abstract class AbstractEntityCategory extends EntityAccess
     /**
      * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category")
      * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
-     * @var \Zikula\Core\Doctrine\Entity\Category
+     * @var Category
      */
     private $category;
 
-    public function __construct($registryId,
-                                Category $category,
-                                $entity)
+    abstract public function getEntity();
+
+    abstract public function setEntity($entity);
+
+    public function __construct($registryId, Category $category, $entity)
     {
         $this->categoryRegistryId = $registryId;
         $this->category = $category;
@@ -83,9 +85,5 @@ abstract class AbstractEntityCategory extends EntityAccess
     {
         $this->category = $category;
     }
-
-    abstract public function getEntity();
-
-    abstract public function setEntity($entity);
 }
 
