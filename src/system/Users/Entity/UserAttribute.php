@@ -60,7 +60,7 @@ class UserAttribute extends EntityAccess
     /**
      * get the user item
      *
-     * @return UsersModule\Entity\User the user item
+     * @return User the user item
      */
     public function getUser()
     {
@@ -70,7 +70,7 @@ class UserAttribute extends EntityAccess
     /**
      * set the user item
      *
-     * @param UsersModule\Entity\User $user the user item
+     * @param User $user the user item
      */
     public function setUser($user)
     {
