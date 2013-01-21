@@ -22,12 +22,13 @@ use CacheUtil;
 use SessionUtil;
 use UserUtil;
 use DateUtil;
-use SecurityCenter_DBObject_Intrusion;
 use ModUtil;
+use ServiceUtil;
 use LogUtil;
 use Zikula_Exception_Forbidden;
 use SecurityCenter\Util as SecurityCenterUtil;
 use Zikula_Event;
+use SecurityCenter\Entity\Intrusion;
 
 class FilterListener extends \Zikula_AbstractEventHandler
 {
@@ -77,12 +78,13 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 }
                 // while i think that REQUEST_URI is unnecessary,
                 // the REFERER would be important, but results in way too many false positives
-                /*                    if (isset($_SERVER['REQUEST_URI'])) {
-                        $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
-                    }
-                    if (isset($_SERVER['HTTP_REFERER'])) {
-                        $request['REFERER'] = $_SERVER['HTTP_REFERER'];
-                    }
+                /*
+                if (isset($_SERVER['REQUEST_URI'])) {
+                    $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
+                }
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    $request['REFERER'] = $_SERVER['HTTP_REFERER'];
+                }
                 */
 
                 // initialise configuration object
@@ -238,6 +240,12 @@ class FilterListener extends \Zikula_AbstractEventHandler
 
             $currentPage = System::getCurrentUri();
             $currentUid = UserUtil::getVar('uid');
+            if (!$currentUid) {
+                $currentUid = 1;
+            }
+
+            // get entity manager
+            $em = ServiceUtil::get('doctrine.manager');
 
             $intrusionItems = array();
 
@@ -259,15 +267,15 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 $tagVal = $malVar[1];
 
                 $newIntrusionItem = array(
-                        'name'    => array($eventName),
-                        'tag'     => $tagVal,
-                        'value'   => $event->getValue(),
-                        'page'    => $currentPage,
-                        'uid'     => $currentUid,
-                        'ip'      => $ipAddress,
-                        'impact'  => $result->getImpact(),
-                        'filters' => serialize($filters),
-                        'date'    => DateUtil::getDatetime()
+                    'name'    => array($eventName),
+                    'tag'     => $tagVal,
+                    'value'   => $event->getValue(),
+                    'page'    => $currentPage,
+                    'user'    => $em->getReference('Users\Entity\User', $currentUid),
+                    'ip'      => $ipAddress,
+                    'impact'  => $result->getImpact(),
+                    'filters' => serialize($filters),
+                    'date'    => new \DateTime("now")
                 );
 
                 if (array_key_exists($tagVal, $intrusionItems)) {
@@ -281,13 +289,12 @@ class FilterListener extends \Zikula_AbstractEventHandler
             foreach ($intrusionItems as $tag => $intrusionItem) {
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
 
-                // create new ZIntrusion instance
-                $obj = new SecurityCenter_DBObject_Intrusion();
-                // set data
-                $obj->setData($intrusionItem);
-                // save object to db
-                $obj->save();
+                $obj = new Intrusion;
+                $obj->merge($intrusionItem);
+                $em->persist($obj);
             }
+
+            $em->flush();
         }
 
         if (System::getVar('idsmail') && ($usedImpact > $impactThresholdTwo)) {
