@@ -68,7 +68,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         $links = array();
@@ -225,7 +225,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
 
         $links = array();
         // build some link
@@ -312,7 +312,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo['groupby'] = isset($extrainfo['groupby'])? $extrainfo['groupby'] : 'menuitem';
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         $links = array();
@@ -487,7 +487,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $extrainfo['links'] = isset($extrainfo['links'])? explode(',',$extrainfo['links']) : array('all');
 
         // get id for first element, use api func to aviod id conflicts inside menu
-        $idoffset = Blocks_MenutreeUtil::getIdOffset($item['id']);
+        $idoffset = MenutreeUtil::getIdOffset($item['id']);
         $lineno = 0;
 
         // load plugin language file
