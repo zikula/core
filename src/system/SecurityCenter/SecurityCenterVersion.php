@@ -12,7 +12,10 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_Version extends Zikula_AbstractVersion
+namespace SecurityCenter;
+
+
+class SecurityCenterVersion extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {

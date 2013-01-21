@@ -12,10 +12,28 @@
  * information regarding copyright and licensing.
  */
 
+namespace SecurityCenter\Controller;
+
+use Zikula_View;
+use ModUtil;
+use LogUtil;
+use SecurityUtil;
+use System;
+use FormUtil;
+use Zikula_Core;
+use CacheUtil;
+use DataUtil;
+use UserUtil;
+use SecurityCenter\Util as SecurityCenterUtil;
+use HTMLPurifier;
+use HTMLPurifier_Config;
+use HTMLPurifier_VarParser;
+use FileUtil;
+
 /**
  * SecurityCenter_Controller_Admin class.
  */
-class SecurityCenter_Controller_Admin extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -353,10 +371,10 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('itemsperpage', $this->getVar('itemsperpage'));
 
         if ($reset) {
-            $purifierconfig = SecurityCenter_Util::getPurifierConfig(true);
+            $purifierconfig = SecurityCenterUtil::getPurifierConfig(true);
             LogUtil::registerStatus($this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
-            $purifierconfig = SecurityCenter_Util::getPurifierConfig(false);
+            $purifierconfig = SecurityCenterUtil::getPurifierConfig(false);
         }
 
         $purifier = new HTMLPurifier($purifierconfig);
@@ -471,7 +489,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         }
 
         // Load HTMLPurifier Classes
-        $purifier = SecurityCenter_Util::getpurifier();
+        $purifier = SecurityCenterUtil::getpurifier();
 
         // Update module variables.
         $config = FormUtil::getPassedValue('purifierConfig', null, 'POST');
@@ -561,7 +579,7 @@ class SecurityCenter_Controller_Admin extends Zikula_AbstractController
         //echo "\r\n\r\n<pre>" . print_r($config, true) . "</pre>\r\n\r\n"; exit;
         $this->setVar('htmlpurifierConfig', serialize($config));
 
-        $purifier = SecurityCenter_Util::getpurifier(true);
+        $purifier = SecurityCenterUtil::getpurifier(true);
 
         // clear all cache and compile directories
         ModUtil::apiFunc('Settings', 'admin', 'clearallcompiledcaches');

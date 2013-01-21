@@ -12,8 +12,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace SecurityCenter\Api;
 
-class SecurityCenter_Api_Admin extends Zikula_AbstractApi
+use SecurityUtil;
+use DBUtil;
+use ModUtil;
+use System;
+
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Purge IDS Log.

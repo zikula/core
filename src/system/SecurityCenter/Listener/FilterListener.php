@@ -12,7 +12,24 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
+namespace SecurityCenter\Listener;
+
+use IDS_Init;
+use IDS_Monitor;
+use Zikula_Core;
+use System;
+use CacheUtil;
+use SessionUtil;
+use UserUtil;
+use DateUtil;
+use SecurityCenter_DBObject_Intrusion;
+use ModUtil;
+use LogUtil;
+use Zikula_Exception_Forbidden;
+use SecurityCenter\Util as SecurityCenterUtil;
+use Zikula_Event;
+
+class FilterListener extends \Zikula_AbstractEventHandler
 {
     /**
      * Setup this handler.
@@ -87,7 +104,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 } else {
                     // no attack detected
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // sth went wrong - maybe the filter rules weren't found
                 z_exit(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
             }
@@ -169,12 +186,12 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
     /**
      * Process results from IDS scan.
      *
-     * @param IDS_Init   $init   PHPIDS init object reference.
-     * @param IDS_Report $result The result object from PHPIDS.
+     * @param \IDS_Init   $init   PHPIDS init object reference.
+     * @param \IDS_Report $result The result object from PHPIDS.
      *
      * @return void
      */
-    private function _processIdsResult(IDS_Init $init, IDS_Report $result)
+    private function _processIdsResult(\IDS_Init $init, \IDS_Report $result)
     {
         // $result contains any suspicious fields enriched with additional info
 
@@ -343,7 +360,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
 
         // prepare htmlpurifier class
         static $safecache;
-        $purifier = SecurityCenter_Util::getpurifier();
+        $purifier = SecurityCenterUtil::getpurifier();
 
         $md5 = md5($event->data);
         // check if the value is in the safecache

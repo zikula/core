@@ -11,7 +11,16 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class SecurityCenter_Installer extends Zikula_AbstractInstaller
+
+namespace SecurityCenter;
+
+use DBUtil;
+use System;
+use Zikula_Core;
+use CacheUtil;
+use SecurityCenter_Util;
+
+class SecurityCenterInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the SecurityCenter module
