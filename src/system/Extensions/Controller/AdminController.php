@@ -56,6 +56,15 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * @deprecated since 1.3.6
+     */
+    public function mainAction()
+    {
+        // Security check will be done in view()
+        return $this->redirect(ModUtil::url('Extensions', 'admin', 'view'));
+    }
+
+    /**
      * Extensions_admin_modify - modify a module.
      *
      * @return string HTML output string.
