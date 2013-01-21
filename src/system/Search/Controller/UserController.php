@@ -12,9 +12,17 @@
  * information regarding copyright and licensing.
  */
 
-class Search_Controller_User extends Zikula_AbstractController
-{
+namespace Search\Controller;
 
+use ModUtil;
+use LogUtil;
+use SecurityUtil;
+use FormUtil;
+use SessionUtil;
+use UserUtil;
+
+class UserController extends \Zikula_AbstractController
+{
     /**
      * Main user function
      *

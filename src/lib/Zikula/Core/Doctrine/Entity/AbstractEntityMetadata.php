@@ -140,15 +140,14 @@ abstract class AbstractEntityMetadata extends EntityAccess
      */
     private $extra;
 
+    abstract public function getEntity();
+
+    abstract public function setEntity($entity);
 
     public function __construct($entity)
     {
         $this->setEntity($entity);
     }
-
-    abstract public function getEntity();
-
-    abstract public function setEntity($entity);
 
     public function getId()
     {

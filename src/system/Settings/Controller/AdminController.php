@@ -67,7 +67,7 @@ class AdminController extends \Zikula_AbstractController
         $pagetitle = str_replace('%modulename%', $this->__('%modulename%'), $pagetitle);
         $this->view->assign('pagetitle', $pagetitle);
 
-        return $this->view->fetch('settings_admin_modifyconfig.tpl');
+        return $this->view->fetch('Admin/modifyconfig.tpl');
     }
 
     /**

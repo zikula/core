@@ -12,17 +12,20 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_Version extends Zikula_AbstractVersion
+namespace Search;
+
+class SearchVersion extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {
         $meta = array();
-        $meta['displayname']    = $this->__('Security Center');
-        $meta['description']    = $this->__('Manage site security and settings.');
+        $meta['displayname']    = $this->__('Site search');
+        $meta['description']    = $this->__('Site search module.');
         //! module name that appears in URL
-        $meta['url']            = $this->__('securitycenter');
-        $meta['version']        = '1.4.4';
-        $meta['securityschema'] = array('SecurityCenter::' => '::');
+        $meta['url']            = $this->__('search');
+        $meta['version']        = '1.5.2';
+
+        $meta['securityschema'] = array('Search::' => 'Module name::');
 
         return $meta;
     }

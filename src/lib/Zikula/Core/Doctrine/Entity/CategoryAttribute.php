@@ -32,7 +32,7 @@ class CategoryAttribute extends EntityAccess
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="attributes")
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="attributes")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
@@ -60,7 +60,7 @@ class CategoryAttribute extends EntityAccess
     /**
      * get the category item
      *
-     * @return \Zikula\Core\Doctrine\Entity\Category the category item
+     * @return Category the category item
      */
     public function getCategory()
     {
@@ -70,7 +70,7 @@ class CategoryAttribute extends EntityAccess
     /**
      * set the category item
      *
-     * @param \Zikula\Core\Doctrine\Entity\Category $category the category item
+     * @param Category $category the category item
      */
     public function setCategory($category)
     {
