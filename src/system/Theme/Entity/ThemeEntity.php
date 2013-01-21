@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="themes")
  */
-class Theme extends EntityAccess
+class ThemeEntity extends EntityAccess
 {
     /**
      * @ORM\Id

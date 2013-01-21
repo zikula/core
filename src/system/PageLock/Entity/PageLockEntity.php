@@ -29,14 +29,14 @@ class PageLockEntity
     private $name;
 
     /**
-     * @var datetime $cdate
+     * @var \Datetime $cdate
      *
      * @ORM\Column(name="cdate", type="datetime", nullable=false)
      */
     private $cdate;
 
     /**
-     * @var datetime $edate
+     * @var \Datetime $edate
      *
      * @ORM\Column(name="edate", type="datetime", nullable=false)
      */
@@ -78,7 +78,7 @@ class PageLockEntity
      * Set name
      *
      * @param string $name
-     * @return Pagelock
+     * @return PagelockEntity
      */
     public function setName($name)
     {
@@ -99,8 +99,8 @@ class PageLockEntity
     /**
      * Set cdate
      *
-     * @param datetime $cdate
-     * @return Pagelock
+     * @param \Datetime $cdate
+     * @return PagelockEntity
      */
     public function setCdate($cdate)
     {
@@ -111,7 +111,7 @@ class PageLockEntity
     /**
      * Get cdate
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getCdate()
     {
@@ -121,8 +121,8 @@ class PageLockEntity
     /**
      * Set edate
      *
-     * @param datetime $edate
-     * @return Pagelock
+     * @param \Datetime $edate
+     * @return PagelockEntity
      */
     public function setEdate($edate)
     {
@@ -133,7 +133,7 @@ class PageLockEntity
     /**
      * Get edate
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getEdate()
     {
@@ -144,7 +144,7 @@ class PageLockEntity
      * Set session
      *
      * @param string $session
-     * @return Pagelock
+     * @return PagelockEntity
      */
     public function setSession($session)
     {
@@ -166,7 +166,7 @@ class PageLockEntity
      * Set title
      *
      * @param string $title
-     * @return Pagelock
+     * @return PagelockEntity
      */
     public function setTitle($title)
     {
@@ -188,7 +188,7 @@ class PageLockEntity
      * Set ipno
      *
      * @param string $ipno
-     * @return Pagelock
+     * @return PagelockEntity
      */
     public function setIpno($ipno)
     {

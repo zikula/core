@@ -28,7 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *                                                @ORM\index(name="idx_categories_status",columns={"status"}),
  *                                                @ORM\index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
-class Category extends EntityAccess
+class CategoryEntity extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -39,15 +39,15 @@ class Category extends EntityAccess
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @var Category
+     * @var CategoryEntity
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\Category", mappedBy="parent")
-     * @var \Zikula\Core\Doctrine\Entity\Category
+     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", mappedBy="parent")
+     * @var \Zikula\Core\Doctrine\Entity\CategoryEntity
      */
     private $children;
 
@@ -112,7 +112,7 @@ class Category extends EntityAccess
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttribute",
+     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttributeEntity",
      *                mappedBy="category",
      *                cascade={"all"},
      *                orphanRemoval=true,
@@ -157,7 +157,7 @@ class Category extends EntityAccess
         return $this->parent;
     }
 
-    public function setParent(Category $parent)
+    public function setParent(CategoryEntity $parent)
     {
         $this->parent = $parent;
     }
@@ -303,7 +303,7 @@ class Category extends EntityAccess
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new CategoryAttribute($this, $name, $value);
+            $this->attributes[$name] = new CategoryAttributeEntity($this, $name, $value);
         }
     }
 

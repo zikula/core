@@ -77,7 +77,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         unset($args['themeinfo']['i18n']);
 
-        $item = $this->entityManager->find('Theme\Entity\Theme', $args['themeinfo']['id']);
+        $item = $this->entityManager->find('Theme\Entity\ThemeEntity', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
 
@@ -202,7 +202,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete theme
-        $dql = "DELETE FROM Theme\Entity\Theme t WHERE t.id = {$themeid}";
+        $dql = "DELETE FROM Theme\Entity\ThemeEntity t WHERE t.id = {$themeid}";
         $query = $this->entityManager->createQuery($dql);
         $result = $query->getResult();
         if (!$result) {

@@ -12,7 +12,18 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Installer extends Zikula_AbstractInstaller
+namespace Extensions;
+
+use DBUtil;
+use Doctrine_Core;
+use EventUtil;
+use System;
+use Zikula_Event;
+use Extensions\ExtensionsVersion;
+use ModUtil;
+use Zikula\Core\Doctrine\Entity\ExtensionEntity;
+
+class ExtensionsInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Install the Extensions module.
@@ -21,30 +32,30 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      */
     public function install()
     {
-        // modules
-        if (!DBUtil::createTable('modules')) {
+        // create tables
+        $tables = array(
+            'Zikula\Core\Doctrine\Entity\ExtensionEntity',
+            'Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity',
+            'Zikula\Core\Doctrine\Entity\ExtensionVarEntity',
+            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
+            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
+            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
+            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
+        );
+
+        try {
+            \DoctrineHelper::createSchema($this->entityManager, $tables);
+        } catch (\Exception $e) {
             return false;
         }
 
-        // module_vars
-        if (!DBUtil::createTable('module_vars')) {
-            return false;
-        }
-
-        // hooks
-        if (!DBUtil::createTable('hooks')) {
-            return false;
-        }
-
-        // module_deps
-        if (!DBUtil::createTable('module_deps')) {
-            return false;
-        }
 
         // create hook provider table.
         Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
+        
+        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions\Listener\HookUiListener', 'hooks'));
+        EventUtil::registerPersistentModuleHandler('Extensions', 'controller.method_not_found', array('Extensions\Listener\HookUiListener', 'moduleservices'));
 
         // populate default data
         $this->defaultdata();
@@ -62,7 +73,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      *
      * @param string $oldVersion Version number string to upgrade from.
      *
-     * @return boolean|string True on success, last valid version string or false if fails.
+     * @return  boolean|string True on success, last valid version string or false if fails.
      */
     public function upgrade($oldversion)
     {
@@ -127,11 +138,16 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $version = new Extensions_Version();
+        $version = new ExtensionsVersion();
         $meta = $version->toArray();
-        $meta['capabilities'] = serialize($meta['capabilities']);
-        $meta['securityschema'] = serialize($meta['securityschema']);
-        $meta['state'] = ModUtil::STATE_ACTIVE;
-        DBUtil::insertObject($meta, 'modules');
+        $meta['state'] = \ModUtil::STATE_ACTIVE;
+
+        unset($meta['dependencies']);
+
+        $item = new ExtensionEntity();
+        $item->merge($meta);
+
+        $this->entityManager->persist($item);
+        $this->entityManager->flush();
     }
 }

@@ -31,10 +31,10 @@ class BlocksInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Blocks\Entity\Block',
-            'Blocks\Entity\BlockPosition',
-            'Blocks\Entity\BlockPlacement',
-            'Blocks\Entity\UserBlock'
+            'Blocks\Entity\BlockEntity',
+            'Blocks\Entity\BlockPositionEntity',
+            'Blocks\Entity\BlockPlacementEntity',
+            'Blocks\Entity\UserBlockEntity'
         );
 
         try {
@@ -86,7 +86,7 @@ class BlocksInstaller extends \Zikula_AbstractInstaller
 
             case '3.8.0':
                 // update empty filter fields to an empty array
-                $entity = $this->name . '\Entity\Block';
+                $entity = $this->name . '\Entity\BlockEntity';
                 $dql = "UPDATE $entity p SET p.filter = 'a:0:{}' WHERE p.filter = '' OR p.filter = 's:0:\"\";' OR p.filter = 'a:3:{s:4:\"type\";s:0:\"\";s:9:\"functions\";s:0:\"\";s:10:\"customargs\";s:0:\"\";}'";
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();

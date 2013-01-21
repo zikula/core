@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="block_positions",indexes={@ORM\index(name="name_idx",columns={"name"})})
  */
-class BlockPosition extends EntityAccess
+class BlockPositionEntity extends EntityAccess
 {
     /**
      * @ORM\Id

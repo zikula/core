@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="categories_registry",indexes={@ORM\index(name="idx_categories_registry",columns={"modname","entityname","property"})})
  */
-class CategoryRegistry extends EntityAccess
+class CategoryRegistryEntity extends EntityAccess
 {
     /**
      * @ORM\Id

@@ -22,7 +22,7 @@ class CategoriesType extends AbstractType
                     'registry_' . $registryId, 
                     'entity', 
                     array(
-                        'class' => 'Zikula\Core\Doctrine\Entity\Category',
+                        'class' => 'Zikula\Core\Doctrine\Entity\CategoryEntity',
                         'property' => 'name',
                         'query_builder' => function(EntityRepository $repo) use($categoryId) {
                             //TODO: (move to)/use own entity repository after CategoryUtil migration

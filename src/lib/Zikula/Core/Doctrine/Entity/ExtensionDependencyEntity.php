@@ -13,6 +13,7 @@
  */
 
 namespace Zikula\Core\Doctrine\Entity;
+
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="module_deps")
  */
-class ExtensionDependency extends EntityAccess
+class ExtensionDependencyEntity extends EntityAccess
 {
     /**
      * @ORM\Id

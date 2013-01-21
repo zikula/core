@@ -471,7 +471,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             return $obj;
         }
 
-        $user = new \Users\Entity\User;
+        $user = new \Users\Entity\UserEntity;
 
         if (!isset($obj['__ATTRIBUTES__'])) {
             $obj['__ATTRIBUTES__'] = array();
@@ -603,7 +603,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         // account record. This is so that modules that do default actions on the creation
         // of a user account do not perform those actions on a pending registration, which
         // may be deleted at any point.
-        $user = new \Users\Entity\User;
+        $user = new \Users\Entity\UserEntity;
         $user->merge($userObj);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -839,7 +839,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             $attributes = $userObj['__ATTRIBUTES__'];
             unset($userObj['__ATTRIBUTES__']);
 
-            $user = new \Users\Entity\User;
+            $user = new \Users\Entity\UserEntity;
             $user->merge($userObj);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -879,7 +879,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             // delete attribute from user without using UserUtil::delVar
             // so that we don't get an update event. (Create hasn't happened yet.);
-            $user = $this->entityManager->find('Users\Entity\User', $reginfo['uid']);
+            $user = $this->entityManager->find('Users\Entity\UserEntity', $reginfo['uid']);
             $user->delAttribute('_Users_isVerified');
 
             // NOTE: See below for the firing of the item-create hook.
@@ -889,7 +889,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Set appropriate activated status. Again, use Doctrine so we don't get an update event. (Create hasn't happened yet.)
             // Need to do this here so that it happens for both the case where $reginfo is coming in new, and the case where
             // $reginfo was already in the database.
-            $user = $this->entityManager->find('Users\Entity\User', $userObj['uid']);
+            $user = $this->entityManager->find('Users\Entity\UserEntity', $userObj['uid']);
             $user['activated'] = UsersConstant::ACTIVATED_ACTIVE;
 
             $userObj['activated'] = UsersConstant::ACTIVATED_ACTIVE;
@@ -1195,7 +1195,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         $this->purgeExpired();
 
-        $dql = "SELECT u FROM Users\Entity\User u $where $orderBy";
+        $dql = "SELECT u FROM Users\Entity\UserEntity u $where $orderBy";
         $query = $this->entityManager->createQuery($dql);
 
         if (isset($limitNumRows) && is_numeric($limitNumRows) && $limitNumRows > 0) {
@@ -1272,7 +1272,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (isset($isVerifiedFilter)) {
             // TODO - Can probably do this with a constructed SQL count select and join, but we'll do it this way for now.
-            $dql = "SELECT u FROM Users\Entity\User u $where";
+            $dql = "SELECT u FROM Users\Entity\UserEntity u $where";
             $query = $this->entityManager->createQuery($dql);
             $users = $query->getResult();
 
@@ -1297,7 +1297,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             return $count;
         } else {
-            $dql = "SELECT COUNT(u.uid) FROM Users\Entity\User u $where";
+            $dql = "SELECT COUNT(u.uid) FROM Users\Entity\UserEntity u $where";
             $query = $this->entityManager->createQuery($dql);
             $count = $query->getSingleScalarResult();
             return $count;
@@ -1349,7 +1349,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $registration = UserUtil::getVars($uid, true, 'uid', true);
 
         if (isset($registration) && $registration) {
-            $user = $this->entityManager->find('Users\Entity\User', $uid);
+            $user = $this->entityManager->find('Users\Entity\UserEntity', $uid);
             $this->entityManager->remove($user);
             $this->entityManager->flush();
 
@@ -1383,7 +1383,7 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             $dql = "
             SELECT v
-            FROM Users\Entity\UserVerification v
+            FROM Users\Entity\UserVerificationEntity v
             WHERE v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL . "
               AND v.created_dt IS NOT NULL
               AND v.created_dt <> '0000-00-00 00:00:00'
@@ -1398,7 +1398,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                     $registration = UserUtil::getVars($verifyChg['uid'], true, 'uid', true);
 
                     // delete user record
-                    $dql = "DELETE FROM Users\Entity\User u WHERE u.uid = " . $verifyChg['uid'];
+                    $dql = "DELETE FROM Users\Entity\UserEntity u WHERE u.uid = " . $verifyChg['uid'];
                     $query = $this->entityManager->createQuery($dql);
                     $query->getResult();
 
@@ -1507,7 +1507,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             'changetype'=> UsersConstant::VERIFYCHGTYPE_REGEMAIL,
         ));
 
-        $verifyChgObj = new \Users\Entity\UserVerification;
+        $verifyChgObj = new \Users\Entity\UserVerificationEntity;
         $verifyChgObj['changetype'] = UsersConstant::VERIFYCHGTYPE_REGEMAIL;
         $verifyChgObj['uid'] = $reginfo['uid'];
         $verifyChgObj['newemail'] = $reginfo['email'];
@@ -1572,7 +1572,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             return false;
         }
 
-        $verifyChg = $this->entityManager->getRepository('Users\Entity\UserVerification')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
+        $verifyChg = $this->entityManager->getRepository('Users\Entity\UserVerificationEntity')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
         return $verifyChg;
     }
 

@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Module Util.
  */
@@ -106,17 +108,16 @@ class ModUtil
         }
 
         // This loads all module variables into the modvars static class variable.
-        $modvars = DBUtil::selectObjectArray('module_vars');
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        $modvars = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findAll();
         foreach ($modvars as $var) {
             if (!array_key_exists($var['modname'], self::$modvars)) {
                 self::$modvars[$var['modname']] = array();
             }
             if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
                 self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
-            } elseif ($var['value'] == '0' || $var['value'] == '1') {
-                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             } else {
-                self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
+                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             }
          }
 
@@ -142,6 +143,9 @@ class ModUtil
     public static function hasVar($modname, $name)
     {
         // define input, all numbers and booleans to strings
+        //if ('ZConfig' !== $modname) {
+        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        //}
         $modname = isset($modname) ? ((string)$modname) : '';
         $name = isset($name) ? ((string)$name) : '';
 
@@ -188,37 +192,15 @@ class ModUtil
             $modname = self::getName();
         }
 
+        //if ('ZConfig' !== $modname) {
+        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        //}
+
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            if (System::isUpgrading()) {
-                $tables = DBUtil::getTables();
-                $col = $tables['module_vars_column'];
-                $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
-                // The following line is not a mistake. A sort string containing one space is used to disable the default sort for DBUtil::selectFieldArray().
-                $sort = ' ';
-
-                $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
-
-                if (is_array($results)) {
-                    if (!empty($results)) {
-                        foreach ($results as $k => $v) {
-                            // ref #2045 vars are being stored with 0/1 unserialised.
-                            if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
-                                self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
-                            } elseif ($v == '0' || $v == '1') {
-                                self::$modvars[$modname][$k] = $v;
-                            } else {
-                                self::$modvars[$modname][$k] = unserialize($v);
-                            }
-                        }
-                    }
-                }
-                // TODO - There should probably be an exception thrown here if $results === false
-            } else {
-                // Prevent a re-query for the same module in the future, where the module does not define any module variables.
-                self::$modvars[$modname] = array();
-            }
+            // Prevent a re-query for the same module in the future, where the module does not define any module variables.
+            self::$modvars[$modname] = array();
         }
 
         // if they didn't pass a variable name then return every variable
@@ -252,6 +234,9 @@ class ModUtil
     public static function setVar($modname, $name, $value = '')
     {
         // define input, all numbers and booleans to strings
+        //if ('ZConfig' !== $modname) {
+        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        //}
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
@@ -259,26 +244,23 @@ class ModUtil
             return false;
         }
 
-        $obj = array();
-        $obj['value'] = serialize($value);
-
+        $em = ServiceUtil::get('doctrine.entitymanager');
         if (self::hasVar($modname, $name)) {
-            $tables = DBUtil::getTables();
-            $cols = $tables['module_vars_column'];
-            $where = "WHERE $cols[modname] = '" . DataUtil::formatForStore($modname) . "'
-                         AND $cols[name] = '" . DataUtil::formatForStore($name) . "'";
-            $res = DBUtil::updateObject($obj, 'module_vars', $where);
+            $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\ExtensionVarEntity')->findOneBy(array('modname' => $modname, 'name' => $name));
+            $entity->setValue($value);
         } else {
-            $obj['name'] = $name;
-            $obj['modname'] = $modname;
-            $res = DBUtil::insertObject($obj, 'module_vars');
+            $entity = new \Zikula\Core\Doctrine\Entity\ExtensionVarEntity();
+            $entity->setModname($modname);
+            $entity->setName($name);
+            $entity->setValue($value);
+            $em->persist($entity);
         }
 
-        if ($res) {
-            self::$modvars[$modname][$name] = $value;
-        }
+        self::$modvars[$modname][$name] = $value;
 
-        return (bool)$res;
+        $em->flush();
+
+        return true;
     }
 
     /**
@@ -313,6 +295,9 @@ class ModUtil
     public static function delVar($modname, $name = '')
     {
         // define input, all numbers and booleans to strings
+        //if ('ZConfig' !== $modname) {
+        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
+        //}
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // validate
@@ -339,21 +324,20 @@ class ModUtil
             }
         }
 
-        $tables = DBUtil::getTables();
-        $cols = $tables['module_vars_column'];
+        $em = ServiceUtil::get('doctrine.entitymanager');
 
-        // check if we're deleting one module var or all module vars
-        $specificvar = '';
-        $name = DataUtil::formatForStore($name);
-        $modname = DataUtil::formatForStore($modname);
-        if (!empty($name)) {
-            $specificvar = " AND $cols[name] = '$name'";
+        // if $name is not provided, delete all variables of this module
+        // else just delete this specific variable
+        if (empty($name)) {
+            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
+        } else {
+            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
         }
 
-        $where = "WHERE $cols[modname] = '$modname' $specificvar";
-        $res = (bool)DBUtil::deleteWhere('module_vars', $where);
+        $query = $em->createQuery($dql);
+        $result = $query->getResult();
 
-        return ($val ? $val : $res);
+        return (boolean)$result;
     }
 
     /**
@@ -378,6 +362,8 @@ class ModUtil
     public static function getIdFromName($module)
     {
         // define input, all numbers and booleans to strings
+        $alias = (isset($module) ? strtolower((string)$module) : '');
+        //$module = preg_match('/\w+Module$/i', $module) || !$module ? $module : $module.'Module';
         $module = (isset($module) ? strtolower((string)$module) : '');
 
         // validate
@@ -396,16 +382,16 @@ class ModUtil
                 return false;
             }
 
-            foreach ($modules as $mod) {
+            foreach ($modules as $id => $mod) {
                 $mName = strtolower($mod['name']);
                 self::$cache['modid'][$mName] = $mod['id'];
-                if (isset($mod['url']) && $mod['url']) {
+                if (!$id == 0) {
                     $mdName = strtolower($mod['url']);
                     self::$cache['modid'][$mdName] = $mod['id'];
                 }
             }
 
-            if (!isset(self::$cache['modid'][$module])) {
+            if (!isset(self::$cache['modid'][$module]) && !isset(self::$cache['modid'][$alias])) {
                 self::$cache['modid'][$module] = false;
 
                 return false;
@@ -414,6 +400,10 @@ class ModUtil
 
         if (isset(self::$cache['modid'][$module])) {
             return self::$cache['modid'][$module];
+        }
+
+        if (isset(self::$cache['modid'][$alias])) {
+            return self::$cache['modid'][$alias];
         }
 
         return false;
@@ -590,7 +580,7 @@ class ModUtil
 
         if (empty(self::$cache['modsarray'])) {
             $all = self::getModsTable();
-            foreach ($all as $key => $mod) {
+            foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
                     || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
@@ -748,6 +738,7 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
+        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
         $modtype = strtolower("$modname{$type}{$osapi}");
 
@@ -799,7 +790,7 @@ class ModUtil
 
         self::_loadStyleSheets($modname, $api, $type);
 
-        $event = new \Zikula\Core\Event\GenericEvent(null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
+        $event = new GenericEvent(null, array('modinfo' => $modinfo, 'type' => $type, 'force' => $force, 'api' => $api));
         EventUtil::dispatch('module_dispatch.postloadgeneric', $event);
 
         return $modname;
@@ -877,7 +868,7 @@ class ModUtil
         $className = class_exists($className) ? $className : $classNameOld;
 
         // allow overriding the OO class (to override existing methods using inheritance).
-        $event = new \Zikula\Core\Event\GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
+        $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
         EventUtil::dispatch('module_dispatch.custom_classname', $event);
         if ($event->isPropagationStopped()) {
             $className = $event->getData();
@@ -935,7 +926,7 @@ class ModUtil
             return false;
         }
 
-        $serviceId = strtolower("module.$className");
+        $serviceId = str_replace('\\', '_', strtolower("module.$className"));
         $sm = ServiceUtil::getManager();
 
         if ($sm->has($serviceId)) {
@@ -943,7 +934,7 @@ class ModUtil
         } else {
             $r = new ReflectionClass($className);
             $object = $r->newInstanceArgs(array($sm));
-            $sm->set(strtolower($serviceId), $object);
+            $sm->set($serviceId, $object);
         }
 
         return $object;
@@ -994,6 +985,7 @@ class ModUtil
     public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
     {
         // define input, all numbers and booleans to strings
+        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
         $ftype = ($api ? 'api' : '');
         $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
@@ -1140,6 +1132,7 @@ class ModUtil
     public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         // define input, all numbers and booleans to strings
+        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
 
         // note - when this legacy is to be removed, change method signature $type = null to $type making it a required argument.
@@ -1329,6 +1322,7 @@ class ModUtil
     public static function available($modname = null, $force = false)
     {
         // define input, all numbers and booleans to strings
+        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
 
         // validate
@@ -1459,18 +1453,31 @@ class ModUtil
         }
 
         if (!self::$cache['modstable'] || System::isInstalling()) {
-            self::$cache['modstable'] = DBUtil::selectObjectArray('modules', '', '', -1, -1, 'id');
-            foreach (self::$cache['modstable'] as $mid => $module) {
-                if (!isset($module['url']) || empty($module['url'])) {
-                    self::$cache['modstable'][$mid]['url'] = $module['displayname'];
-                }
-                self::$cache['modstable'][$mid]['capabilities'] = unserialize($module['capabilities']);
-                self::$cache['modstable'][$mid]['securityschema'] = unserialize($module['securityschema']);
-            }
-        }
+            // get entityManager
+            $sm = ServiceUtil::getManager();
+            $entityManager = $sm->get('doctrine.entitymanager');
 
-        // add Core module (hack).
-        self::$cache['modstable'][0] = array('id' => '0', 'name' => 'zikula', 'type' => self::TYPE_CORE, 'directory' => '', 'displayname' => 'Zikula Core v' . Zikula_Core::VERSION_NUM, 'version' => Zikula_Core::VERSION_NUM, 'state' => self::STATE_ACTIVE);
+            // get all modules
+            $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findAll();
+
+            foreach ($modules as $module) {
+                $module = $module->toArray();
+                if (!isset($module['url']) || empty($module['url'])) {
+                    $module['url'] = strtolower($module['displayname']);
+                }
+                self::$cache['modstable'][$module['id']] = $module;
+            }
+
+            // add Core module (hack).
+            self::$cache['modstable'][0] = array(
+                'id' => 0,
+                'name' => 'zikula',
+                'type' => self::TYPE_CORE,
+                'directory' => '',
+                'displayname' => 'Zikula Core v' . \Zikula_Core::VERSION_NUM,
+                'version' => \Zikula_Core::VERSION_NUM,
+                'state' => self::STATE_ACTIVE);
+        }
 
         return self::$cache['modstable'];
     }
@@ -1486,9 +1493,16 @@ class ModUtil
      *
      * @return array The resulting module object array.
      */
-    public static function getModules($where='', $sort='displayname')
+    public static function getModules($where=array(), $sort='displayname')
     {
-        return DBUtil::selectObjectArray('modules', $where, $sort);
+        // get entityManager
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->get('doctrine.entitymanager');
+
+        // get all modules
+        $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findBy($where, array($sort => 'ASC'));
+
+        return $modules;
     }
 
     /**
@@ -1504,12 +1518,11 @@ class ModUtil
      */
     public static function getModulesByState($state=self::STATE_ACTIVE, $sort='displayname')
     {
-        $tables = DBUtil::getTables();
-        $cols = $tables['modules_column'];
+        $sm = ServiceUtil::getManager();
+        $entityManager = $sm->get('doctrine.entitymanager');
+        $modules = $entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findBy(array('state' => $state), array($sort => 'ASC'));
 
-        $where = "$cols[state] = $state";
-
-        return DBUtil::selectObjectArray('modules', $where, $sort);
+        return $modules;
     }
 
     /**

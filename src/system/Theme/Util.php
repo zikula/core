@@ -86,7 +86,7 @@ class Util
 
         // Get all themes in DB
         $dbthemes = array();
-        $themes = $entityManager->getRepository('Theme\Entity\Theme')->findAll();
+        $themes = $entityManager->getRepository('Theme\Entity\ThemeEntity')->findAll();
 
         foreach ($themes as $theme) {
             $theme = $theme->toArray();
@@ -100,7 +100,7 @@ class Util
                 ModUtil::apiFunc('Theme', 'admin', 'deleterunningconfig', array('themename' => $name));
 
                 // delete item from db
-                $item = $entityManager->getRepository('Theme\Entity\Theme')->findOneBy(array('name' => $name));
+                $item = $entityManager->getRepository('Theme\Entity\ThemeEntity')->findOneBy(array('name' => $name));
                 $entityManager->remove($item);
 
                 unset($dbthemes[$name]);
@@ -115,7 +115,7 @@ class Util
                 $themeinfo['state'] = ThemeUtil::STATE_ACTIVE;
 
                 // add item to db
-                $item = new \Theme\Entity\Theme;
+                $item = new \Theme\Entity\ThemeEntity;
                 $item->merge($themeinfo);
                 $entityManager->persist($item);
             }
@@ -135,7 +135,7 @@ class Util
                     $themeinfo['id'] = $dbthemes[$name]['id'];
 
                     // update item
-                    $item = $entityManager->getRepository('Theme\Entity\Theme')->find($themeinfo['id']);
+                    $item = $entityManager->getRepository('Theme\Entity\ThemeEntity')->find($themeinfo['id']);
                     $item->merge($themeinfo);
                 }
             }

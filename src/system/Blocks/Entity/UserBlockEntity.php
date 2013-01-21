@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="userblocks",indexes={@ORM\index(name="uid_bid_idx",columns={"uid","bid"})})
  */
-class UserBlock extends EntityAccess
+class UserBlockEntity extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -124,7 +124,7 @@ class UserBlock extends EntityAccess
     /**
      * get last update time of the block
      *
-     * @return datetime the block's last updated time
+     * @return \Datetime the block's last updated time
      */
     public function getLast_Update()
     {

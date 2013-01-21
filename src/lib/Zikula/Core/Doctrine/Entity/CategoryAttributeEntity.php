@@ -12,30 +12,30 @@
  * information regarding copyright and licensing.
  */
 
-namespace Users\Entity;
+namespace Zikula\Core\Doctrine\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * UserAttribute entity class.
+ * CategoryAttribute entity class.
  *
  * We use annotations to define the entity mappings to database (see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html).
  *
  * @ORM\Entity
- * @ORM\Table(name="users_attributes")
+ * @ORM\Table(name="categories_attributes")
  *
- * User attributes table.
- * Stores extra information about each user account.
+ * Category attributes table.
+ * Stores extra information about each category.
  */
-class UserAttribute extends EntityAccess
+class CategoryAttributeEntity extends EntityAccess
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="attributes")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="uid")
+     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", inversedBy="attributes")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
-    private $user;
+    private $category;
 
     /**
      * @ORM\Id
@@ -51,30 +51,30 @@ class UserAttribute extends EntityAccess
     /**
      * constructor
      */
-    public function __construct($user, $name, $value)
+    public function __construct($category, $name, $value)
     {
-        $this->setUser($user);
+        $this->setCategory($category);
         $this->setAttribute($name, $value);
     }
 
     /**
-     * get the user item
+     * get the category item
      *
-     * @return User the user item
+     * @return CategoryEntity the category item
      */
-    public function getUser()
+    public function getCategory()
     {
-        return $this->user;
+        return $this->category;
     }
 
     /**
-     * set the user item
+     * set the category item
      *
-     * @param User $user the user item
+     * @param CategoryEntity $category the category item
      */
-    public function setUser($user)
+    public function setCategory($category)
     {
-        $this->user = $user;
+        $this->category = $category;
     }
 
     /**

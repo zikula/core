@@ -28,7 +28,7 @@ use LogUtil;
 use Zikula_Exception_Forbidden;
 use SecurityCenter\Util as SecurityCenterUtil;
 use Zikula_Event;
-use SecurityCenter\Entity\Intrusion;
+use SecurityCenter\Entity\IntrusionEntity;
 
 class FilterListener extends \Zikula_AbstractEventHandler
 {
@@ -271,7 +271,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                     'tag'     => $tagVal,
                     'value'   => $event->getValue(),
                     'page'    => $currentPage,
-                    'user'    => $em->getReference('Users\Entity\User', $currentUid),
+                    'user'    => $em->getReference('Users\Entity\UserEntity', $currentUid),
                     'ip'      => $ipAddress,
                     'impact'  => $result->getImpact(),
                     'filters' => serialize($filters),
@@ -289,7 +289,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             foreach ($intrusionItems as $tag => $intrusionItem) {
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
 
-                $obj = new Intrusion;
+                $obj = new IntrusionEntity;
                 $obj->merge($intrusionItem);
                 $em->persist($obj);
             }

@@ -432,7 +432,7 @@ class HtmlUtil
 
         $data = array();
         foreach ($entities as $entity) {
-            $class = $modname . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4);
+            $class = $modname . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4).'Entity';
 
             if (class_exists($class)) {
                 $entityName = substr($entity, 0, strlen($entity) - 4);

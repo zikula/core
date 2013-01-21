@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Stores per-user session information for users who are logged in.
  * (Note: Users who use the "remember me" option when logging in remain logged in across multiple visits for a defined period of time, therefore their session record remains active.)
  */
-class UserSession extends EntityAccess
+class UserSessionEntity extends EntityAccess
 {
     /**
      * @ORM\Id

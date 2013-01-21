@@ -15,8 +15,8 @@
 namespace Groups\Api;
 use Zikula\Core\Event\GenericEvent;
 use Groups\Helper\CommonHelper;
-use Groups\Entity\GroupApplication;
-use Groups\Entity\GroupMembership;
+use Groups\Entity\GroupApplicationEntity;
+use Groups\Entity\GroupMembershipEntity;
 use SecurityUtil;
 use DBUtil;
 use LogUtil;
@@ -156,7 +156,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dql = "SELECT count(g.gid) FROM Groups\Entity\Group g WHERE g.gtype <> " . CommonHelper::GTYPE_CORE;
+        $dql = "SELECT count(g.gid) FROM Groups\Entity\GroupEntity g WHERE g.gtype <> " . CommonHelper::GTYPE_CORE;
 
         if ($this->getVar('hideclosed')) {
             $dql .= " AND g.state <> " . CommonHelper::STATE_CLOSED;
@@ -180,7 +180,7 @@ class UserApi extends \Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $dql = "SELECT count(m.gid) FROM Groups\Entity\GroupMembership m WHERE m.gid = {$args['gid']}";
+        $dql = "SELECT count(m.gid) FROM Groups\Entity\GroupMembershipEntity m WHERE m.gid = {$args['gid']}";
         $query = $this->entityManager->createQuery($dql);
         return (int)$query->getSingleScalarResult();
     }
@@ -210,7 +210,7 @@ class UserApi extends \Zikula_AbstractApi
             return $items;
         }
 
-        $groupmembership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findBy(array('uid' => $args['uid']));
+        $groupmembership = $this->entityManager->getRepository('Groups\Entity\GroupMembershipEntity')->findBy(array('uid' => $args['uid']));
 
         // Check for an error with the database code
         if ($groupmembership === false) {
@@ -256,7 +256,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Groups\Entity\Group', 'g');
+           ->from('Groups\Entity\GroupEntity', 'g');
 
         // add clause for filtering type
         $qb->andWhere($qb->expr()->neq('g.gtype', $qb->expr()->literal(CommonHelper::GTYPE_CORE)));
@@ -404,7 +404,7 @@ class UserApi extends \Zikula_AbstractApi
             return LogUtil::registerError($this->__('Error! You have already applied for membership of this group.'));
         }
 
-        $application = new GroupApplication;
+        $application = new GroupApplicationEntity;
         $application['uid'] = $args['uid'];
         $application['gid'] = $args['gid'];
         $application['application'] = $args['applytext'];
@@ -435,7 +435,7 @@ class UserApi extends \Zikula_AbstractApi
                               'uid' => $args['uid']));
 
         if ($ispending == true) {
-            $application = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+            $application = $this->entityManager->getRepository('Groups\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
             $this->entityManager->remove($application);
             $this->entityManager->flush();
         }
@@ -457,7 +457,7 @@ class UserApi extends \Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $applications = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $applications = $this->entityManager->getRepository('Groups\Entity\GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
 
         if (count($applications) >= 1) {
             return true;
@@ -581,7 +581,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Add item
         if (!$is_member) {
-            $membership = new GroupMembership;
+            $membership = new GroupMembershipEntity;
             $membership['gid'] = $args['gid'];
             $membership['uid'] = $args['uid'];
             $this->entityManager->persist($membership);
@@ -625,11 +625,11 @@ class UserApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new Zikula_Exception_Forbidden();
+            throw new \Zikula_Exception_Forbidden();
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('Groups\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
         $this->entityManager->flush();
 
@@ -652,7 +652,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $activetime = time() - (\System::getVar('secinactivemins') * 60);
 
-        $dql = "SELECT DISTINCT(s.uid) FROM Users\Entity\UserSession s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
+        $dql = "SELECT DISTINCT(s.uid) FROM Users\Entity\UserSessionEntity s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
         $query = $this->entityManager->createQuery($dql);
         $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 

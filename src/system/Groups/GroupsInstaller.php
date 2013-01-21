@@ -29,9 +29,9 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Groups\Entity\Group',
-            'Groups\Entity\GroupMembership',
-            'Groups\Entity\GroupApplication'
+            'Groups\Entity\GroupEntity',
+            'Groups\Entity\GroupMembershipEntity',
+            'Groups\Entity\GroupApplicationEntity'
         );
 
         try {
@@ -120,7 +120,7 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
         );
 
         foreach ($records as $record) {
-            $item = new \Groups\Entity\Group;
+            $item = new \Groups\Entity\GroupEntity;
             $item['name'] = $record['name'];
             $item['description'] = $record['description'];
             $item['prefix'] = $record['prefix'];
@@ -142,7 +142,7 @@ class GroupsInstaller extends \Zikula_AbstractInstaller
         );
 
         foreach ($records as $record) {
-            $item = new \Groups\Entity\GroupMembership;
+            $item = new \Groups\Entity\GroupMembershipEntity;
             $item['gid'] = $record['gid'];
             $item['uid'] = $record['uid'];
             $this->entityManager->persist($item);

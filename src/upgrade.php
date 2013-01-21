@@ -55,7 +55,7 @@ $eventManager->dispatch('doctrine.boot', $dbEvent);
 $em = $core->getContainer()->get('doctrine.entitymanager');
 
 try {
-    DoctrineHelper::createSchema($em, array('Users\Entity\UserAttribute'));
+    DoctrineHelper::createSchema($em, array('Users\Entity\UserAttributeEntity'));
 } catch (\Exception $e) {
 }
 
