@@ -116,10 +116,8 @@ class ModUtil
             }
             if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
                 self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
-            } elseif ($var['value'] == '0' || $var['value'] == '1') {
-                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             } else {
-                self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
+                self::$modvars[$var['modname']][$var['name']] = $var['value'];
             }
          }
 
@@ -201,8 +199,37 @@ class ModUtil
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
             // A query out to the database should only be needed if the system is upgrading. Use the installing flag to determine this.
-            // Prevent a re-query for the same module in the future, where the module does not define any module variables.
-            self::$modvars[$modname] = array();
+            if (System::isUpgrading()) {
+                self::initCoreVars(true);
+                /* This code is being kept for the time being incase the above fix doesnt work.
+                $tables = DBUtil::getTables();
+                $col = $tables['module_vars_column'];
+                $where = "WHERE $col[modname] = '" . DataUtil::formatForStore($modname) . "'";
+                // The following line is not a mistake. A sort string containing one space is used to disable the default sort for DBUtil::selectFieldArray().
+                $sort = ' ';
+
+                $results = DBUtil::selectFieldArray('module_vars', 'value', $where, $sort, false, 'name');
+
+                if (is_array($results)) {
+                    if (!empty($results)) {
+                        foreach ($results as $k => $v) {
+                            // ref #2045 vars are being stored with 0/1 unserialised.
+                            if (array_key_exists($k, $GLOBALS['ZConfig']['System'])) {
+                                self::$modvars[$modname][$k] = $GLOBALS['ZConfig']['System'][$k];
+                            } elseif ($v == '0' || $v == '1') {
+                                self::$modvars[$modname][$k] = $v;
+                            } else {
+                                self::$modvars[$modname][$k] = unserialize($v);
+                            }
+                        }
+                    }
+                }
+                // TODO - There should probably be an exception thrown here if $results === false
+            */
+            } else {
+                // Prevent a re-query for the same module in the future, where the module does not define any module variables.
+                self::$modvars[$modname] = array();
+            }
         }
 
         // if they didn't pass a variable name then return every variable
