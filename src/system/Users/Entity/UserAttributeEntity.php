@@ -12,30 +12,30 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Users\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * CategoryAttribute entity class.
+ * UserAttribute entity class.
  *
  * We use annotations to define the entity mappings to database (see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html).
  *
  * @ORM\Entity
- * @ORM\Table(name="categories_attributes")
+ * @ORM\Table(name="users_attributes")
  *
- * Category attributes table.
- * Stores extra information about each category.
+ * User attributes table.
+ * Stores extra information about each user account.
  */
-class CategoryAttribute extends EntityAccess
+class UserAttributeEntity extends EntityAccess
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\Category", inversedBy="attributes")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="attributes")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="uid")
      */
-    private $category;
+    private $user;
 
     /**
      * @ORM\Id
@@ -51,30 +51,30 @@ class CategoryAttribute extends EntityAccess
     /**
      * constructor
      */
-    public function __construct($category, $name, $value)
+    public function __construct($user, $name, $value)
     {
-        $this->setCategory($category);
+        $this->setUser($user);
         $this->setAttribute($name, $value);
     }
 
     /**
-     * get the category item
+     * get the user item
      *
-     * @return Category the category item
+     * @return User the user item
      */
-    public function getCategory()
+    public function getUser()
     {
-        return $this->category;
+        return $this->user;
     }
 
     /**
-     * set the category item
+     * set the user item
      *
-     * @param Category $category the category item
+     * @param User $user the user item
      */
-    public function setCategory($category)
+    public function setUser($user)
     {
-        $this->category = $category;
+        $this->user = $user;
     }
 
     /**

@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="groups")
  */
-class Group extends EntityAccess
+class GroupEntity extends EntityAccess
 {
     /**
      * @ORM\Id

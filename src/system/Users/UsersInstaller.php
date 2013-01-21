@@ -45,10 +45,10 @@ class UsersInstaller extends \Zikula_AbstractInstaller
     {
         // create the tables
         $classes = array(
-            'Users\Entity\User',
-            'Users\Entity\UserAttribute',
-            'Users\Entity\UserSession',
-            'Users\Entity\UserVerification'
+            'Users\Entity\UserEntity',
+            'Users\Entity\UserAttributeEntity',
+            'Users\Entity\UserSessionEntity',
+            'Users\Entity\UserVerificationEntity'
         );
         try {
             DoctrineHelper::createSchema($this->entityManager, $classes);
@@ -161,7 +161,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
             case '2.2.0':
 //                this is done in upgrade script.
 //                try {
-//                    DoctrineHelper::createSchema($this->entityManager, array('Users\Entity\UserAttribute'));
+//                    DoctrineHelper::createSchema($this->entityManager, array('Users\Entity\UserAttributeEntity'));
 //                } catch (\Exception $e) {
 //                    return false;
 //                }
@@ -282,7 +282,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        $user = new \Users\Entity\User;
+        $user = new \Users\Entity\UserEntity;
         $user->merge($record);
         $this->entityManager->persist($user);
 
@@ -302,7 +302,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
             'ublockon'      => 0,
             'ublock'        => '',
         );
-        $user = new \Users\Entity\User;
+        $user = new \Users\Entity\UserEntity;
         $user->merge($record);
         $this->entityManager->persist($user);
 
@@ -588,7 +588,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
                 continue;
             }
 
-            $category = $em->getRepository('Users\Entity\User')->findOneBy(array('id' => $data['id']));
+            $category = $em->getRepository('Users\Entity\UserEntity')->findOneBy(array('id' => $data['id']));
             foreach ($data['__ATTRIBUTES__'] as $name => $value) {
                 $category->setAttribute($name ,$value);
             }

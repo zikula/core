@@ -47,7 +47,7 @@ class UserController extends \Zikula_AbstractController
         $bid = FormUtil::getPassedValue('bid');
         $uid = UserUtil::getVar('uid');
 
-        $entity = $this->name . '\Entity\UserBlock';
+        $entity = $this->name . '\Entity\UserBlockEntity';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $bid));
 
         if ($item['active'] == 1) {

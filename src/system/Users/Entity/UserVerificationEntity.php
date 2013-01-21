@@ -30,7 +30,7 @@ use Doctrine\ORM\Mapping as ORM;
  * reset his password and has not answered any security questions,
  * or when a new user is registering with the site for the first time.
  */
-class UserVerification extends EntityAccess
+class UserVerificationEntity extends EntityAccess
 {
     /**
      * @ORM\Id

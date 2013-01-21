@@ -2,7 +2,6 @@
 
 namespace Zikula\Core\Doctrine\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="workflows")
  * @ORM\Entity
  */
-class Workflows
+class WorkflowsEntity
 {
     /**
      * @var integer $id

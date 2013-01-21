@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="sc_intrusion")
  * @ORM\Entity
  */
-class Intrusion extends EntityAccess
+class IntrusionEntity extends EntityAccess
 {
     /**
      * @var integer $id
@@ -51,7 +51,7 @@ class Intrusion extends EntityAccess
     private $page;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Users\Entity\UserEntity")
      * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
      */
     private $user;
@@ -78,7 +78,7 @@ class Intrusion extends EntityAccess
     private $filters;
 
     /**
-     * @var datetime $date
+     * @var \Datetime $date
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
      */
@@ -99,7 +99,7 @@ class Intrusion extends EntityAccess
      * Set name
      *
      * @param string $name
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setName($name)
     {
@@ -121,7 +121,7 @@ class Intrusion extends EntityAccess
      * Set tag
      *
      * @param string $tag
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setTag($tag)
     {
@@ -143,7 +143,7 @@ class Intrusion extends EntityAccess
      * Set value
      *
      * @param text $value
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setValue($value)
     {
@@ -165,7 +165,7 @@ class Intrusion extends EntityAccess
      * Set page
      *
      * @param text $page
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setPage($page)
     {
@@ -186,8 +186,8 @@ class Intrusion extends EntityAccess
     /**
      * Set user
      *
-     * @param \UsersModule\Entity\User $user
-     * @return Intrusion
+     * @param \Users\Entity\UserEntity $user
+     * @return IntrusionEntity
      */
     public function setUser($user)
     {
@@ -198,7 +198,7 @@ class Intrusion extends EntityAccess
     /**
      * Get user
      *
-     * @return \UsersModule\Entity\User
+     * @return \Users\Entity\UserEntity
      */
     public function getUser()
     {
@@ -209,7 +209,7 @@ class Intrusion extends EntityAccess
      * Set ip
      *
      * @param string $ip
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setIp($ip)
     {
@@ -231,7 +231,7 @@ class Intrusion extends EntityAccess
      * Set impact
      *
      * @param integer $impact
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setImpact($impact)
     {
@@ -253,7 +253,7 @@ class Intrusion extends EntityAccess
      * Set filters
      *
      * @param text $filters
-     * @return Intrusion
+     * @return IntrusionEntity
      */
     public function setFilters($filters)
     {
@@ -274,8 +274,8 @@ class Intrusion extends EntityAccess
     /**
      * Set date
      *
-     * @param datetime $date
-     * @return Intrusion
+     * @param \Datetime $date
+     * @return IntrusionEntity
      */
     public function setDate($date)
     {
@@ -286,7 +286,7 @@ class Intrusion extends EntityAccess
     /**
      * Get date
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getDate()
     {

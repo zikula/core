@@ -93,7 +93,7 @@ class AdminformController extends \Zikula_AbstractController
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
-        $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\Category', $data['id']);
+        $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntity', $data['id']);
 
         $prevCategoryName = $category['name'];
 
@@ -152,7 +152,7 @@ class AdminformController extends \Zikula_AbstractController
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // save category
-        $category = new \Zikula\Core\Doctrine\Entity\Category;
+        $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
         $category->merge($data);
         $this->entityManager->persist($category);
         $this->entityManager->flush();
@@ -294,7 +294,7 @@ class AdminformController extends \Zikula_AbstractController
         // delete registry
         if ($this->request->request->get('mode', null) == 'delete') {
             $id = $this->request->get('id', 0);
-            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $id);
+            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity', $id);
             $this->entityManager->remove($obj);
             $this->entityManager->flush();
 
@@ -339,10 +339,10 @@ class AdminformController extends \Zikula_AbstractController
 
         if (isset($data['id']) && (int)$data['id'] > 0) {
             // update existing registry
-            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $data['id']);
+            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity', $data['id']);
         } else {
             // save the new registry
-            $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
+            $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity;
         }
         $obj->merge($data);
         $this->entityManager->persist($obj);

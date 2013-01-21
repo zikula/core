@@ -118,22 +118,22 @@ class AdminController extends \Zikula_AbstractController
             if (isset($_SESSION['newCategory']) && $_SESSION['newCategory']) {
                 $editCat = $_SESSION['newCategory'];
                 unset($_SESSION['newCategory']);
-                $category = new \Zikula\Core\Doctrine\Entity\Category; // need this for validation info
+                $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity; // need this for validation info
             }
             // if we're back from validation get the posted data from session
             elseif (FormUtil::getValidationErrors()) {
                 $newCatActionData = \SessionUtil::getVar('newCatActionData');
                 \SessionUtil::delVar('newCatActionData');
-                $editCat = new \Zikula\Core\Doctrine\Entity\Category;
+                $editCat = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
                 $editCat = $editCat->toArray();
                 $editCat = array_merge($editCat, $newCatActionData);
                 unset($editCat['path']);
                 unset($editCat['ipath']);
-                $category = new \Zikula\Core\Doctrine\Entity\Category; // need this for validation info
+                $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity; // need this for validation info
             }
             // someone just pressed 'new' -> populate defaults
             else {
-                $category = new \Zikula\Core\Doctrine\Entity\Category;
+                $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
                 $editCat['sort_value'] = '0';
             }
         }
@@ -180,7 +180,7 @@ class AdminController extends \Zikula_AbstractController
         $root_id = $this->request->get('dr', 1);
         $id = $this->request->get('id', 0);
 
-        $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
+        $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity;
 
         $category_registry = $this->request->query->get('category_registry', null);
         if ($category_registry) {
@@ -188,7 +188,7 @@ class AdminController extends \Zikula_AbstractController
             $obj = $obj->toArray();
         }
 
-        $registries = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
+        $registries = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\CategoryEntityRegistry')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
 
         $this->view->assign('objectArray', $registries)
                    ->assign('newobj', $obj)
@@ -206,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
 
         $id = $this->request->get('id', 0);
 
-        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistry', $id);
+        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntityRegistry', $id);
         $data = $obj->toArray();
 
         $this->view->assign('data', $data)

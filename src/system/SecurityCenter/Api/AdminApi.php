@@ -42,7 +42,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('i')
-           ->from('SecurityCenter\Entity\Intrusion', 'i');
+           ->from('SecurityCenter\Entity\IntrusionEntity', 'i');
 
         // add clause for user
         if (isset($args['where']['uid'])) {
@@ -50,7 +50,7 @@ class AdminApi extends \Zikula_AbstractApi
             unset($args['where']['uid']);
 
             if ($uid > 0) {
-                $qb->from('Users\Entity\User', 'u');
+                $qb->from('Users\Entity\UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
                 $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
             }
@@ -69,7 +69,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $sortdir = $args['sorting']['username'];
                 unset($args['sorting']['username']);
 
-                $qb->from('Users\Entity\User', 'u');
+                $qb->from('Users\Entity\UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
                 $qb->addOrderBy('u.uname', $sortdir);
             }
@@ -117,7 +117,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('count(i.id)')
-           ->from('SecurityCenter\Entity\Intrusion', 'i');
+           ->from('SecurityCenter\Entity\IntrusionEntity', 'i');
 
         // add clause for user
         if (isset($args['where']['uid'])) {
@@ -125,7 +125,7 @@ class AdminApi extends \Zikula_AbstractApi
             unset($args['where']['uid']);
 
             if ($uid > 0) {
-                $qb->from('Users\Entity\User', 'u');
+                $qb->from('Users\Entity\UserEntity', 'u');
                 $qb->andWhere($qb->expr()->eq('i.user', 'u.uid'));
                 $qb->andWhere($qb->expr()->eq('i.user', $qb->expr()->literal($uid)));
             }

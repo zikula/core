@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Main Users table.
  * Stores core information about each user account.
  */
-class User extends EntityAccess
+class UserEntity extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -171,7 +171,7 @@ class User extends EntityAccess
     private $locale;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserAttribute",
+     * @ORM\OneToMany(targetEntity="UserAttributeEntity",
      *                mappedBy="user",
      *                cascade={"all"},
      *                orphanRemoval=true,
@@ -326,7 +326,7 @@ class User extends EntityAccess
     /**
      * get the approved date of the user
      *
-     * @return datetime the user's approved date
+     * @return \Datetime the user's approved date
      */
     public function getApproved_Date()
     {
@@ -336,7 +336,7 @@ class User extends EntityAccess
     /**
      * set the approved date for the user
      *
-     * @param datetime $approved date the user's approved_date
+     * @param \Datetime $approved date the user's approved_date
      */
     public function setApproved_Date($approved_date)
     {
@@ -366,7 +366,7 @@ class User extends EntityAccess
     /**
      * get the regdate of the user
      *
-     * @return datetime the user's regdate
+     * @return \Datetime the user's regdate
      */
     public function getUser_Regdate()
     {
@@ -376,7 +376,7 @@ class User extends EntityAccess
     /**
      * set the regdate for the user
      *
-     * @param datetime $user_regdate the user's regdate
+     * @param \Datetime $user_regdate the user's regdate
      */
     public function setUser_Regdate($user_regdate)
     {
@@ -386,7 +386,7 @@ class User extends EntityAccess
     /**
      * get the last login of the user
      *
-     * @return datetime the user's last login
+     * @return \Datetime the user's last login
      */
     public function getLastlogin()
     {
@@ -396,7 +396,7 @@ class User extends EntityAccess
     /**
      * set the last login for the user
      *
-     * @param datetime $lastlogin the user's last login
+     * @param \Datetime $lastlogin the user's last login
      */
     public function setLastlogin($lastlogin)
     {
@@ -506,7 +506,7 @@ class User extends EntityAccess
     /**
      * get the attributes of the user
      *
-     * @return UsersModule\Entity\UserAttribute the user's attributes
+     * @return UserAttributeEntity the user's attributes
      */
     public function getAttributes()
     {
@@ -516,7 +516,7 @@ class User extends EntityAccess
     /**
      * set the attributes for the user
      *
-     * @param UsersModule\Entity\UserAttribute $attributes the attributes for the user
+     * @param UserAttributeEntity $attributes the attributes for the user
      */
     public function setAttributes($attributes)
     {
@@ -534,7 +534,7 @@ class User extends EntityAccess
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new UserAttribute($this, $name, $value);
+            $this->attributes[$name] = new UserAttributeEntity($this, $name, $value);
         }
     }
 

@@ -15,8 +15,8 @@
 namespace Groups\Api;
 
 use Zikula\Core\Event\GenericEvent;
-use Groups\Entity\Group;
-use Groups\Entity\GroupMembership;
+use Groups\Entity\GroupEntity;
+use Groups\Entity\GroupMembershipEntity;
 use Groups\Helper\CommonHelper;
 use LogUtil;
 use SecurityUtil;
@@ -61,7 +61,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Add item
-        $obj = new Group;
+        $obj = new GroupEntity;
         $obj['name'] = $args['name'];
         $obj['gtype'] = $args['gtype'];
         $obj['state'] = $args['state'];
@@ -129,7 +129,7 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         // remove all memberships of this group
-        $dql = "DELETE FROM Groups\Entity\GroupMembership m WHERE m.gid = {$args['gid']}";
+        $dql = "DELETE FROM Groups\Entity\GroupMembershipEntity m WHERE m.gid = {$args['gid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
@@ -137,7 +137,7 @@ class AdminApi extends \Zikula_AbstractApi
         //
 
         // Remove any group permissions for this group
-        $dql = "DELETE FROM Permissions\Entity\Permission p WHERE p.gid = {$args['gid']}";
+        $dql = "DELETE FROM Permissions\Entity\PermissionEntity p WHERE p.gid = {$args['gid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
@@ -167,7 +167,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $item = $this->entityManager->find('Groups\Entity\Group', $args['gid']);
+        $item = $this->entityManager->find('Groups\Entity\GroupEntity', $args['gid']);
 
         if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -235,7 +235,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Add user to group
-        $membership = new GroupMembership;
+        $membership = new GroupMembershipEntity;
         $membership['gid'] = $args['gid'];
         $membership['uid'] = $args['uid'];
         $this->entityManager->persist($membership);
@@ -277,7 +277,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('Groups\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
         $this->entityManager->flush();
 
@@ -309,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Groups\Entity\Group', 'g');
+           ->from('Groups\Entity\GroupEntity', 'g');
 
         // add clause for filtering name
         $qb->andWhere($qb->expr()->eq('g.name', $qb->expr()->literal($args['name'])));
@@ -342,7 +342,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getapplications()
     {
-        $objArray = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findBy(array(), array('app_id' => 'ASC'));
+        $objArray = $this->entityManager->getRepository('Groups\Entity\GroupApplicationEntity')->findBy(array(), array('app_id' => 'ASC'));
 
         if ($objArray === false) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
@@ -383,7 +383,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $appInfo = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $appInfo = $this->entityManager->getRepository('Groups\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
 
         if (!$appInfo) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
@@ -408,7 +408,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete group application
-        $application = $this->entityManager->getRepository('Groups\Entity\GroupApplication')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
+        $application = $this->entityManager->getRepository('Groups\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
         $this->entityManager->remove($application);
         $this->entityManager->flush();
 
@@ -441,7 +441,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dql = "SELECT count(g.gid) FROM Groups\Entity\Group g";
+        $dql = "SELECT count(g.gid) FROM Groups\Entity\GroupEntity g";
         $query = $this->entityManager->createQuery($dql);
         return (int)$query->getSingleScalarResult();
     }

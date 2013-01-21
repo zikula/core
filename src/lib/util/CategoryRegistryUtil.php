@@ -38,7 +38,7 @@ class CategoryRegistryUtil
             $params = array('id' => $entryID);
         }
 
-        $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findOneBy($params);
+        $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->findOneBy($params);
         $em->remove($entity);
         $em->flush();
 
@@ -132,9 +132,9 @@ class CategoryRegistryUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         if (isset($catreg['id']) && is_numeric($catreg['id'])) {
-            $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->find($catreg['id']);
+            $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->find($catreg['id']);
         } else {
-            $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
+            $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity;
         }
 
         $entity->merge($catreg);
@@ -161,9 +161,9 @@ class CategoryRegistryUtil
 
         foreach ($catregs as $catreg) {
             if ($catreg['id']) {
-                $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->find($catreg['id']);
+                $entity = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->find($catreg['id']);
             } else {
-                $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistry;
+                $entity = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity;
             }
 
             $entity->merge($catreg);
@@ -197,11 +197,11 @@ class CategoryRegistryUtil
         /** @var $em Doctrine\ORM\EntityManager */
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
+        $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname), array('id' => 'ASC'));
 
         $fArr = array();
 
-        /** @var $rCategory Zikula\Core\Doctrine\Entity\CategoryRegistry */
+        /** @var $rCategory Zikula\Core\Doctrine\Entity\CategoryRegistryEntity */
         foreach ($rCategories as $rCategory) {
             $rCategory = $rCategory->toArray();
             $fArr[$rCategory[$arraykey]] = $rCategory;
@@ -256,12 +256,12 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategoriesIds($modname, $entityname)
     {
         if (!$modname || !$entityname) {
-            return z_exit(__f("Error! Received invalid specifications %1$s, %2$s.", array($modname, $entityname)));
+            return z_exit(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
-        $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistry')->findBy(array('modname' => $modname, 'entityname' => $entityname));
+        $rCategories = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->findBy(array('modname' => $modname, 'entityname' => $entityname));
 
         $fArr = array();
 

@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="group_membership",indexes={@ORM\Index(name="gid_uid",columns={"uid","gid"})})
  */
-class GroupMembership extends EntityAccess
+class GroupMembershipEntity extends EntityAccess
 {
     /**
      * @ORM\Id
