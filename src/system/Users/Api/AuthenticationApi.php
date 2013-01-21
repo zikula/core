@@ -374,7 +374,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                         }
                     }
                     // *** IMPORTANT ***
-                    // End of old-style to new-style hasing conversion.
+                    // End of old-style to new-style hashing conversion.
 
                     // The password is good, so the password is authenticated.
                     $passwordAuthenticates = true;
@@ -382,7 +382,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
             }
         }
 
-        if (!$passwordAuthenticates && !$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
+        if (!$passwordAuthenticates && !LogUtil::hasErrors()) {
             if ($authenticationMethod['method'] == 'email') {
                 $this->registerError($this->__('Sorry! The e-mail address or password you entered was incorrect.'));
             } else {
