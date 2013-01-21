@@ -12,10 +12,15 @@
  * information regarding copyright and licensing.
  */
 
+namespace Search\Api;
+
+use ModUtil;
+use SecurityUtil;
+
 /**
  * Search_Api_Admin class.
  */
-class Search_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Get available admin panel links.

@@ -12,10 +12,18 @@
  * information regarding copyright and licensing.
  */
 
+namespace Search\Block;
+
+use SecurityUtil;
+use BlockUtil;
+use ModUtil;
+use Zikula_View;
+use Zikula_View_Theme;
+
 /**
  * Search_Block_Search class.
  */
-class Search_Block_Search extends Zikula_Controller_AbstractBlock
+class SearchBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
