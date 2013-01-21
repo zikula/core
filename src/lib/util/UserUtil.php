@@ -1476,7 +1476,7 @@ class UserUtil
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
                 $dudAttributeName = self::convertOldDynamicUserDataAlias($name);
                 if ($dudAttributeName) {
-                    LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($dudAttributeName, $name)), E_USER_DEPRECATED);
                     // $name is a former DUD /old style user information now stored as an attribute
                     $attributeName = $dudAttributeName;
                 } else {
@@ -1825,7 +1825,7 @@ class UserUtil
                 // Not a table field alias, not 'uid', and not 'uname'. Treat it as an attribute.
                 $dudAttributeName = self::convertOldDynamicUserDataAlias($name);
                 if ($dudAttributeName) {
-                    LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($name, $mappingarray[$name])), E_USER_DEPRECATED);
+                    LogUtil::log(__f('Warning! User variable [%1$s] is deprecated. Please use [%2$s] instead.', array($dudAttributeName, $name)), E_USER_DEPRECATED);
                     // $name is a former DUD /old style user information now stored as an attribute
                     $attributeName = $dudAttributeName;
                 } else {
@@ -2069,7 +2069,7 @@ class UserUtil
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $dql = "SELECT u FROM Users\Entity\UserEntity u $where $orderby $limit_clause";
+        $dql = "SELECT u FROM Users\Entity\UserEntity u $where $orderby";
         $query = $em->createQuery($dql);
 
         if (isset($limit) && is_numeric($limit) && $limit > 0) {

@@ -315,7 +315,7 @@ class UserApi extends \Zikula_AbstractApi
 
         } else {
             if (!file_exists($zpath = $ostemp.'/Theme_Config/'.$ostheme)) {
-                mkdir($zpath, $this->container['system.chmod_dir'], true);
+                mkdir($zpath, $this->serviceManager['system.chmod_dir'], true);
             }
 
             if (!file_exists($zpath.'/'.$osfile) || is_writable($zpath.'/'.$osfile)) {
