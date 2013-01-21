@@ -21,7 +21,6 @@ use LogUtil;
 use SecurityUtil;
 use CategoryUtil;
 use ZLanguage;
-use DBObject;
 use StringUtil;
 
 class AdminController extends \Zikula_AbstractController

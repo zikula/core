@@ -18,10 +18,10 @@ use LogUtil;
 use SecurityUtil;
 use FormUtil;
 use System;
-use Categories_DBObject_Category;
 use CategoryUtil;
 use ModUtil;
 use ObjectUtil;
+use Categories\GenericUtil;
 
 class UserformController extends \Zikula_AbstractController
 {

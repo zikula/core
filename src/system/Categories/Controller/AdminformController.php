@@ -19,8 +19,6 @@ use SecurityUtil;
 use ModUtil;
 use System;
 use FormUtil;
-use Categories_DBObject_Category;
-use DBObject;
 use CategoryUtil;
 use Categories\GenericUtil;
 

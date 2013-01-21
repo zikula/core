@@ -16,16 +16,13 @@ namespace Categories\Controller;
 
 use SecurityUtil;
 use CategoryUtil;
-use Categories_DBObject_Category;
-use Zikula_Response_Ajax;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use FormUtil;
 use ZLanguage;
 use DBObject;
-use Zikula_Response_Ajax_BadData;
 use Zikula\Core\Response\Ajax\BadDataResponse;
-use Zikula_AbstractController;
 use Zikula_View;
+use Categories\GenericUtil;
 
 /**
  * Categories_Controller_Ajax.

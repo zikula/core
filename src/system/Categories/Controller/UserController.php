@@ -26,7 +26,6 @@ use ZLanguage;
 use UserUtil;
 use ServiceUtil;
 use Categories\CategoriesInstaller;
-use Categories_DBObject_Category;
 
 class UserController extends \Zikula_AbstractController
 {
