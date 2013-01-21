@@ -116,8 +116,10 @@ class ModUtil
             }
             if (array_key_exists($var['name'], $GLOBALS['ZConfig']['System'])) {
                 self::$modvars[$var['modname']][$var['name']] = $GLOBALS['ZConfig']['System'][$var['name']];
-            } else {
+            } elseif ($var['value'] == '0' || $var['value'] == '1') {
                 self::$modvars[$var['modname']][$var['name']] = $var['value'];
+            } else {
+                self::$modvars[$var['modname']][$var['name']] = unserialize($var['value']);
             }
          }
 
