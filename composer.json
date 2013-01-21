@@ -16,9 +16,7 @@
         ],
         "files": [
             "src/lib/i18n/ZGettextFunctions.php",
-            "src/lib/vendor/Markdown/markdown.php",
             "src/lib/vendor/idn/idna_convert.class.php",
-            "src/lib/vendor/Smarty/Smarty.class.php",
             "src/lib/vendor/encryption/rc4crypt.class.php",
             "src/lib/legacy/Loader.php"
         ]
@@ -33,9 +31,11 @@
         "php": ">=5.3.3",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "drak/doctrine1": "dev-master",
+        "drak/smarty": "dev-master",
         "gedmo/doctrine-extensions": "dev-master",
         "beberlei/DoctrineExtensions": "dev-master",
         "imagine/Imagine": "dev-master",
+        "michelf/php-markdown": "1.3.*@dev",
         "monolog/monolog": "dev-master",
         "symfony/browser-kit": "2.2.*",
         "symfony/class-loader": "2.2.*",

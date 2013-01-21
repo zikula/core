@@ -25,6 +25,9 @@
         <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
         <parameter key="token.max_life">3600</parameter>
 
+        <parameter key="markdown.class">Michelf\Markdown</parameter>
+        <parameter key="markdown_extra.class">Michelf\MarkdownExtra</parameter>
+
         <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
         <parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>
     </parameters>
@@ -33,6 +36,9 @@
         <!--<service id="zikula" class="%zikula_core.class%">-->
             <!--<argument type="service" id="service_container" />-->
         <!--</service>-->
+
+        <service id="markdown_parser" class="%markdown.class%" />
+        <service id="markdown_extra_parser" class="%markdown.class%" />
 
         <!--<service id="zikula.core_init" class="%zikula.core_init_listener.class%">-->
             <!--<tag name="zikula.event_subscriber" />-->
