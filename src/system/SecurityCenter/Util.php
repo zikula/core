@@ -12,7 +12,17 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_Util
+namespace SecurityCenter;
+
+use HTMLPurifier_Config;
+use ZLanguage;
+use UserUtil;
+use ThemeUtil;
+use ModUtil;
+use CacheUtil;
+use HTMLPurifier;
+
+class Util
 {
     /**
      * Retrieves default configuration array for HTML Purifier.
