@@ -12,10 +12,32 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions\Api;
+
+use DBUtil;
+use LogUtil;
+use SecurityUtil;
+use ModUtil;
+use System;
+use DataUtil;
+use ZLoader;
+use Extensions\Util as ExtensionsUtil;
+use ZLanguage;
+use ReflectionClass;
+use SessionUtil;
+use HookUtil;
+use EventUtil;
+use FormUtil;
+use Zikula;
+use FileUtil;
+use Zikula_AbstractVersion;
+use Zikula_Core;
+use PluginUtil;
+
 /**
  * Administrative API functions for the Extensions module.
  */
-class Extensions_Api_Admin extends Zikula_AbstractApi
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * Update module information.
@@ -301,7 +323,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
             ZLoader::addPrefix($osdir, $modpath);
         }
 
-        $version = Extensions_Util::getVersionMeta($osdir, $modpath);
+        $version = ExtensionsUtil::getVersionMeta($osdir, $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -470,8 +492,8 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
                     }
 
                     try {
-                        $modversion = Extensions_Util::getVersionMeta($dir, $rootdir);
-                    } catch (Exception $e) {
+                        $modversion = ExtensionsUtil::getVersionMeta($dir, $rootdir);
+                    } catch (\Exception $e) {
                         LogUtil::registerError($e->getMessage());
                         continue;
                     }
@@ -1052,7 +1074,7 @@ class Extensions_Api_Admin extends Zikula_AbstractApi
         }
         $modversion['version'] = '0';
 
-        $modversion = Extensions_Util::getVersionMeta($osdir, $modpath);
+        $modversion = ExtensionsUtil::getVersionMeta($osdir, $modpath);
         $version = $modversion['version'];
 
         // Update state of module
