@@ -270,7 +270,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function getusercategoriesAction()
     {
-        return ModUtil::apiFunc('CategoriesModule', 'user', 'getusercategories');
+        return ModUtil::apiFunc('Categories', 'user', 'getusercategories');
     }
 
     /**
@@ -278,6 +278,6 @@ class UserController extends \Zikula_AbstractController
      */
     public function getusercategorynameAction()
     {
-        return ModUtil::apiFunc('CategoriesModule', 'user', 'getusercategoryname');
+        return ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
     }
 }
