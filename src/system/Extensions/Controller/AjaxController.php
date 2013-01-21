@@ -18,7 +18,7 @@ use Zikula_Exception_Fatal;
 use HookUtil;
 use ModUtil;
 use SecurityUtil;
-use Zikula_Response_Ajax;
+use Zikula\Core\Response\Ajax\AjaxResponse;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -88,7 +88,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'isSubscriberSelfCapable' => (HookUtil::isSubscriberSelfCapable($subscriber) ? true : false)
         );
 
-        return new Zikula_Response_Ajax($response);
+        return new AjaxResponse($response);
     }
 
     /**
@@ -97,7 +97,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      *
      * @param subscriber string     name of the subscriber
      * @param providerorder array   array of sorted provider ids
-     * @return Ajax response
+     * @return AjaxResponse response
      */
     public function changeproviderareaorderAction()
     {
@@ -130,6 +130,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $ol_id = $this->request->request->get('ol_id','');
 
-        return new Zikula_Response_Ajax(array('result' => true, 'ol_id' => $ol_id));
+        return new AjaxResponse(array('result' => true, 'ol_id' => $ol_id));
     }
 }
