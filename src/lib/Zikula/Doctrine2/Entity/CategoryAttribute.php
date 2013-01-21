@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  * CategoryAttribute doctrine2 entity.
  *
  * @ORM\Entity
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine2_Entity_CategoryAttribute extends Zikula_Doctrine2_Entity_AbstractAttribute
 {

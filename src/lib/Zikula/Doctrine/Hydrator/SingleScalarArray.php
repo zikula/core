@@ -39,6 +39,7 @@
  * </li>
  * </ul>
  *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Hydrator_SingleScalarArray extends Doctrine_Hydrator_Abstract
 {

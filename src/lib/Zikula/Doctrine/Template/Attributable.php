@@ -15,6 +15,8 @@
 
 /**
  * This behavior adds dynamic attributes to the record.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Template_Attributable extends Doctrine_Template
 {

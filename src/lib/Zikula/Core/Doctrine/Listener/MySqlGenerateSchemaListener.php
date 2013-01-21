@@ -11,19 +11,24 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\Doctrine\Listener;
+
+use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
+use Doctrine\Common\EventManager;
+
 /**
  * MySqlGenerateSchemaListener
  */
-class Zikula_Doctrine2_MySqlGenerateSchemaListener
+class MySqlGenerateSchemaListener
 {
     const postGenerateSchemaTable = 'postGenerateSchema';
     
-    public function __construct(\Doctrine\Common\EventManager $evm)
+    public function __construct(EventManager $evm)
     {
         $evm->addEventListener(array(self::postGenerateSchemaTable), $this);
     }
     
-    public function postGenerateSchema(\Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs $event) 
+    public function postGenerateSchema(GenerateSchemaEventArgs $event)
     {
         foreach($event->getSchema()->getTables() as $table) {
             $table->addOption('engine', $GLOBALS['ZConfig']['DBInfo']['databases']['default']['dbtabletype']);

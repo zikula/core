@@ -15,6 +15,8 @@
 
 /**
  * Zikula_Doctrine_Model_HookRumtime model class.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Model_HookRuntime extends Doctrine_Record
 {

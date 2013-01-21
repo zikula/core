@@ -15,6 +15,8 @@
 
 /**
  * Zikula_Doctrine_Model_HookArea model class.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Model_HookArea extends Doctrine_Record
 {

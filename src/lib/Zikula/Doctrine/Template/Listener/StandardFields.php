@@ -15,6 +15,8 @@
 
 /**
  * This listener takes care for setting the standard fields properly.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Template_Listener_StandardFields extends Doctrine_Record_Listener
 {

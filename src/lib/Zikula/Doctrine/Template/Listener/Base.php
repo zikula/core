@@ -15,6 +15,8 @@
 
 /**
  * Base doctrine listener with useful helper methods.
+ *
+ * @deprecated since 1.3.6
  */
 abstract class Zikula_Doctrine_Template_Listener_Base extends Doctrine_Record_Listener
 {

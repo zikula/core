@@ -23,6 +23,8 @@
  *     $this->actAs('Zikula_Doctrine_Template_StandardFields', array('oldColumnPrefix' => 'z_'));
  * }
  * </code>
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Template_StandardFields extends Doctrine_Template
 {

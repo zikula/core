@@ -15,6 +15,8 @@
 
 /**
  * Doctrine listener for the MetaData doctrine template.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Template_Listener_MetaData extends Zikula_Doctrine_Template_Listener_Base
 {
