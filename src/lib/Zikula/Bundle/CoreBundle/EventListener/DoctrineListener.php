@@ -21,8 +21,9 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula_Doctrine2_ZikulaSqlLogger;
-use Zikula_Doctrine2_MySqlGenerateSchemaListener;
+use Zikula\Core\Doctrine\Logger\ZikulaSqlLogger;
+use Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener;
+use Zikula\Core\Doctrine\ExtensionsManager;
 
 /**
  * Event handler to override templates.
@@ -89,7 +90,7 @@ class DoctrineListener implements EventSubscriberInterface
         //$ORMConfig->setAutoGenerateProxyClasses(System::isDevelopmentMode());
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
-            $ORMConfig->setSQLLogger(new \Zikula_Doctrine2_ZikulaSqlLogger());
+            $ORMConfig->setSQLLogger(new ZikulaSqlLogger());
         }
 
         // setup doctrine eventmanager
@@ -101,7 +102,7 @@ class DoctrineListener implements EventSubscriberInterface
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $eventManager->addEventSubscriber($mysqlSessionInit);
 
-            $mysqlStorageEvent = new \Zikula_Doctrine2_MySqlGenerateSchemaListener($eventManager);
+            $mysqlStorageEvent = new MySqlGenerateSchemaListener($eventManager);
         }
 
         // setup the doctrine entitymanager
@@ -111,7 +112,7 @@ class DoctrineListener implements EventSubscriberInterface
 
     public function initDoctrineExtensions(GenericEvent $event)
     {
-        $definition = new Definition('Zikula_Doctrine2_ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
+        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
         $this->container->setDefinition('doctrine_extensions', $definition);
 
         $types = array(

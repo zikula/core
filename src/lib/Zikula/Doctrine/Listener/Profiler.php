@@ -19,6 +19,8 @@
  * Zikula_Event args:
  *   time: execution time in secounds
  *   query: sql query
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Listener_Profiler implements Doctrine_EventListener_Interface
 {

@@ -15,6 +15,8 @@
 
 /**
  * Doctrine listener for the Categorisable doctrine template.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Template_Listener_Categorisable extends Doctrine_Record_Listener
 {

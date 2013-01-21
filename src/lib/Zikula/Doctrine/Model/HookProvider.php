@@ -15,6 +15,8 @@
 
 /**
  * HookProvider model class.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
 {

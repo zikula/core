@@ -15,6 +15,8 @@
 
 /**
  * This behavior add categories to the record.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
 {

@@ -20,6 +20,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Entity
  * @ORM\Table(name="categories_category")
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
 {

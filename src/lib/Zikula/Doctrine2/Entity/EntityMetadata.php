@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Base class of one-to-one association between any entity and metadata.
  *
  * @ORM\MappedSuperclass
+ *
+ * @deprecated since 1.3.6
  */
 abstract class Zikula_Doctrine2_Entity_EntityMetadata extends Zikula_EntityAccess
 {

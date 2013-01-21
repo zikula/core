@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  * Base class of many-to-many association between any entity and attribute.
  *
  * @ORM\MappedSuperclass
+ *
+ * @deprecated since 1.3.6
  */
 abstract class Zikula_Doctrine2_Entity_EntityAttribute extends Zikula_EntityAccess
 {

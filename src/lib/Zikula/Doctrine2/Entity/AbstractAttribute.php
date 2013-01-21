@@ -22,6 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorColumn(name="object_type", type="string")
  * @ORM\DiscriminatorMap({"categories_category" = "Zikula_Doctrine2_Entity_CategoryAttribute"})
  * @ORM\Table(name="objectdata_attributes")
+ *
+ * @deprecated since 1.3.6
  */
 abstract class Zikula_Doctrine2_Entity_AbstractAttribute extends Zikula_EntityAccess
 {

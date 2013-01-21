@@ -15,6 +15,8 @@
 
 /**
  * Join Table for the many-to-many relationship categorisable entities -> category.
+ *
+ * @deprecated since 1.3.6
  */
 class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
 {

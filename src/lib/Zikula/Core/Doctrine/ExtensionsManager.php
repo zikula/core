@@ -10,13 +10,21 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-class Zikula_Doctrine2_ExtensionsManager
+
+namespace Zikula\Core\Doctrine;
+
+use Doctrine\Common\EventManager;
+
+/**
+ *
+ */
+class ExtensionsManager
 {
     private $eventManager;
     private $serviceManager;
     private $listeners;
 
-    public function __construct(\Doctrine\Common\EventManager $eventManager, Zikula_ServiceManager $serviceManager)
+    public function __construct(EventManager $eventManager, \Zikula_ServiceManager $serviceManager)
     {
         $this->eventManager = $eventManager;
         $this->serviceManager = $serviceManager;
@@ -31,7 +39,7 @@ class Zikula_Doctrine2_ExtensionsManager
         
         $id = 'doctrine_extensions.listener.' . $type;
         if (!$this->serviceManager->has($id)) {
-            throw new InvalidArgumentException(sprintf('No such behaviour %s', $type));
+            throw new \InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
 
         $annotationReader = $this->serviceManager->get('doctrine.annotationreader');
