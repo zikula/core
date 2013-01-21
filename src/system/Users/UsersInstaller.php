@@ -588,7 +588,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
                 continue;
             }
 
-            $category = $em->getRepository('Users\Entity\UserEntity')->findOneBy(array('id' => $data['id']));
+            $category = $em->getRepository('Users\Entity\UserEntity')->findOneBy(array('uid' => $data['uid']));
             foreach ($data['__ATTRIBUTES__'] as $name => $value) {
                 $category->setAttribute($name ,$value);
             }
