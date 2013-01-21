@@ -32,7 +32,7 @@ if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
 }
 
 $eventManager = $core->getDispatcher();
-//$eventManager->attach('core.init', 'upgrade_suppressErrors');
+$eventManager->attach('core.init', 'upgrade_suppressErrors');
 
 // load zikula core
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
