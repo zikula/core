@@ -91,9 +91,16 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
             $view->trigger_error(__('Sorry! No such item found.'));
         }
     } else {
-        $objectData = Doctrine_Core::getTable($params['recordClass'])->find($params['id']);
-        if ($objectData === false) {
-            $view->trigger_error(__('Sorry! No such item found.'));
+        if ($params['recordClass'] instanceof \Doctrine_Record) {
+            $objectData = Doctrine_Core::getTable($params['recordClass'])->find($params['id']);
+            if ($objectData === false) {
+                $view->trigger_error(__('Sorry! No such item found.'));
+            }
+        } else {
+            /** @var $em Doctrine\ORM\EntityManager */
+            $em = \ServiceUtil::get('doctrine.entitymanager');
+            $result = $em->getRepository($params['recordClass'])->find($params['id']);
+            $objectData = $result->toArray();
         }
     }
 

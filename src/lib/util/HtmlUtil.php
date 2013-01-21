@@ -204,6 +204,87 @@ class HtmlUtil
     }
 
     /**
+     * Creates an entity array selector.
+     *
+     * @param string  $entity         Entity name.
+     * @param string  $name           Select field name.
+     * @param string  $field          Value field.
+     * @param string  $displayField   Display field.
+     * @param string  $where          Where clause.
+     * @param string  $sort           Sort clause.
+     * @param string  $selectedValue  Selected value.
+     * @param string  $defaultValue   Value for "default" option.
+     * @param string  $defaultText    Text for "default" option.
+     * @param string  $allValue       Value for "all" option.
+     * @param string  $allText        Text for "all" option.
+     * @param string  $displayField2  Second display field.
+     * @param boolean $submit         Submit on choose.
+     * @param boolean $disabled       Add Disabled attribute to select.
+     * @param string  $fieldSeparator Field seperator if $displayField2 is given.
+     * @param integer $multipleSize   Size for multiple selects.
+     *
+     * @return string The rendered output.
+     */
+    public static function getSelector_EntityArray($entity, $name, $field, $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
+    {
+        if (!$entity) {
+            return z_exit(__f('Invalid %1$s passed to %2$s.', array('entity', 'HtmlUtil::getSelector_EntityArray')));
+        }
+
+        if (!$field) {
+            return z_exit(__f('Invalid %1$s passed to %2$s.', array('field', 'HtmlUtil::getSelector_EntityArray')));
+        }
+
+        $em = \ServiceUtil::get('doctrine.entitymanager');
+
+        $filters = array();
+        if (!empty($where)) {
+            $where = explode("=", $where);
+            $filters[$where[0]] = $where[1];
+        }
+
+        $ordering = array();
+        if (!empty($sort)) {
+            $sort = explode(" ", $sort);
+            $ordering[$sort[0]] = $sort[1];
+        }
+
+        $dataArray = $em->getRepository($entity)->findBy($filters, $ordering);
+
+        $data2 = array();
+        foreach ($dataArray as $object) {
+            if (strpos($field, '->') !== false) {
+                $field_exp = explode('->', $field);
+                $val = $object[$field_exp[0]][$field_exp[1]];
+            } else {
+                $val = $object[$field];
+            }
+
+            if (strpos($displayField, '->') !== false) {
+                $displayField_exp = explode('->', $displayField);
+                $disp = $object[$displayField_exp[0]][$displayField_exp[1]];
+            } else {
+                $disp = $object[$displayField];
+            }
+
+            if ($displayField2) {
+                if (strpos($displayField2, '->') !== false) {
+                    $displayField2_exp = explode('->', $displayField2);
+                    $disp2 = $object[$displayField2_exp[0]][$displayField2_exp[1]];
+                } else {
+                    $disp2 = $object[$displayField2];
+                }
+
+                $disp .= $fieldSeparator . $disp2;
+            }
+
+            $data2[$val] = $disp;
+        }
+
+        return self::getSelector_Generic($name, $data2, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
+    }
+
+    /**
      * Get selector by table field.
      *
      * @param string  $modname       Module name.
@@ -342,95 +423,39 @@ class HtmlUtil
             return z_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
         }
 
-        $tables = ModUtil::dbInfoLoad($modname, '', true);
-        $data = array();
-        if (is_array($tables) && $tables) {
-            foreach ($tables as $k => $v) {
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    $checkColumns = $k . '_column';
-                    if (!isset($tables[$checkColumns])) {
-                        continue;
-                    }
-                }
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    if (strpos($k, 'z_') === 0) {
-                        $k = substr($k, 4);
-                    }
-
-                    if ($remove) {
-                        $k2 = str_replace($remove, '', $k);
-                    } else {
-                        $k2 = $k;
-                    }
-
-                    if ($nStripChars) {
-                        $k2 = ucfirst(substr($k2, $nStripChars));
-                    }
-
-                    // Use $k2 for display also (instead of showing the internal table name)
-                    $data[$k2] = $k2;
-                }
-            }
-        }
-
-        // Doctrine models
-        DoctrineUtil::loadModels($modname);
-        $records = Doctrine::getLoadedModels();
-
-        foreach ($records as $recordClass) {
-            // remove records from other modules
-            if (substr($recordClass, 0, strlen($modname)) != $modname) {
-                continue;
-            }
-
-            // get table name of remove table prefix
-            $tableNameRaw = Doctrine::getTable($recordClass)->getTableName();
-            sscanf($tableNameRaw, Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
-
-            if ($remove) {
-                $tableName = str_replace($remove, '', $tableName);
-            }
-
-            if ($nStripChars) {
-                $tableName = ucfirst(substr($tableName, $nStripChars));
-            }
-
-            $data[$tableName] = $tableName;
-        }
-
-        // Doctrine2 models
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        $entityDir = "$modpath/$osdir/lib/$osdir/Entity/";
+        $entityDir = "$modpath/$osdir/Entity/";
 
         $entities = array();
         if (file_exists($entityDir)) {
-            $entities = scandir($entityDir);
+            $files = scandir($entityDir);
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..' && substr($file, -4) === '.php') {
+                    $entities[] = $file;
+                }
+            }
         }
 
+        $data = array();
         foreach ($entities as $entity) {
-            if (!($entity[0] != '.' && substr($entity, -4) === '.php')) {
-                continue;
-            }
+            $class = $modname . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4);
 
-            $class = $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4);
-            if (class_exists($class) && !in_array('Doctrine_Record', class_parents($class))) {
-                $tableName = substr($entity, 0, strlen($entity) - 4);
+            if (class_exists($class)) {
+                $entityName = substr($entity, 0, strlen($entity) - 4);
 
                 if ($remove) {
-                    $tableName = str_replace($remove, '', $tableName);
+                    $entityName = str_replace($remove, '', $entityName);
                 }
 
                 if ($nStripChars) {
-                    $tableName = ucfirst(substr($tableName, $nStripChars));
+                    $entityName = ucfirst(substr($entityName, $nStripChars));
                 }
 
-                $data[$tableName] = $tableName;
+                $data[$entityName] = $entityName;
             }
         }
-
-
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
     }
@@ -629,37 +654,12 @@ class HtmlUtil
      * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
      * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
      *
-     * @deprecated since 1.3.0 see {@link getSelector_Group()}
-     *
-     * @return The html for the user group selector.
-     */
-    public static function getSelector_PNGroup($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
-    {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNGroup', 'getSelector_Group')), E_USER_DEPRECATED);
-
-        return self::getSelector_Group($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit, $disabled);
-    }
-
-    /**
-     * Return the html for the PN user group selector.
-     *
-     * @param string  $name          The selector name.
-     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
-     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
-     * @param string  $defaultText   The text of the default value (optional) (default='').
-     * @param integer $allValue      The value to assign for the "All" choice (optional) (default=0).
-     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
-     * @param string  $excludeList   A (string) list of IDs to exclude (optional) (default=null).
-     * @param boolean $submit        Whether or not to auto-submit the selector (optional) (default=false).
-     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
-     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
-     *
      * @return The html for the user group selector.
      */
     public static function getSelector_Group($name = 'groupid', $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
     {
         $data = array();
-        $grouplist = UserUtil::getGroups('', 'ORDER BY name');
+        $grouplist = UserUtil::getGroups(array(), array('name' => 'ASC'));
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];
@@ -669,32 +669,6 @@ class HtmlUtil
         }
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
-    }
-
-    /**
-     * Return a PN array strcuture for the PN user dropdown box.
-     *
-     * @param string  $name          The selector name.
-     * @param integer $gid           The group ID to get users for (optional) (default=null).
-     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
-     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
-     * @param string  $defaultText   The text of the default value (optional) (default='').
-     * @param integer $allValue      The value to assign for the "All" choice (optional) (default='').
-     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
-     * @param string  $excludeList   A (string) list of IDs to exclude (optional) (default=null).
-     * @param boolean $submit        Whether or not to auto-submit the selector (optional) (default=false).
-     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
-     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
-     *
-     * @deprecated since 1.3.0 see {@link getSelector_User()}
-     *
-     * @return The string for the user group selector.
-     */
-    public static function getSelector_PNUser($name = 'userid', $gid = null, $selectedValue = 0, $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $excludeList = '', $submit = false, $disabled = false, $multipleSize = 1)
-    {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
-
-        return self::getSelector_User($name, $gid, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $excludeList, $submit);
     }
 
     /**
@@ -736,31 +710,6 @@ class HtmlUtil
         }
 
         return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
-    }
-
-    /**
-     * Return the html for the PNModule selector.
-     *
-     * @param string  $name          The selector name.
-     * @param integer $selectedValue The currently selected value of the selector (optional) (default=0).
-     * @param integer $defaultValue  The default value of the selector (optional) (default=0).
-     * @param string  $defaultText   The text of the default value (optional) (default='').
-     * @param integer $allValue      The value to assign the "All" choice (optional) (default=0).
-     * @param string  $allText       The text to display for the "All" choice (optional) (default='').
-     * @param boolean $submit        Whether or not to auto-submit the selector.
-     * @param boolean $disabled      Whether or not to disable selector (optional) (default=false).
-     * @param integer $multipleSize  The size to use for a multiple selector, 1 produces a normal/single selector (optional (default=1).
-     * @param string  $field         The field to use for value.
-     *
-     * @deprecated since 1.3.0 see {@link getSelector_Module()}
-     *
-     * @return The string for the user group selector.
-     */
-    public static function getSelector_PNModule($name='moduleName', $selectedValue=0, $defaultValue=0, $defaultText='', $allValue=0, $allText='', $submit=false, $disabled=false, $multipleSize=1, $field='name')
-    {
-        LogUtil::log(__f('Warning! %1$s::%2$s is deprecated. Please use %1$s::%3$s instead.', array(__CLASS__, 'getSelector_PNUser', 'getSelector_User')), E_USER_DEPRECATED);
-
-        return self::getSelector_Module($name, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
     }
 
     /**
