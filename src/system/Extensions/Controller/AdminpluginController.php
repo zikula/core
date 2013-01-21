@@ -12,22 +12,29 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions\Controller;
+
+use LogUtil;
+use SecurityUtil;
+use PluginUtil;
+use Zikula_Plugin_ConfigurableInterface;
+
 /**
  * Extensions_Plugin controller.
  */
-class Extensions_Controller_Adminplugin extends Zikula_AbstractController
+class AdminpluginController extends \Zikula_AbstractController
 {
     /**
      * Plugin instance.
      *
-     * @var Zikula_AbstractPlugin
+     * @var \Zikula_AbstractPlugin
      */
     protected $plugin;
 
     /**
      * Plugin controller instance.
      *
-     * @var Zikula_Controller_AbstractPlugin
+     * @var \Zikula_Controller_AbstractPlugin
      */
     protected $pluginController;
 

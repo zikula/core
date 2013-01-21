@@ -11,10 +11,20 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions;
+
+use Zikula_View;
+use LogUtil;
+use SecurityUtil;
+use Zikula_Event;
+use HookUtil;
+use EventUtil;
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * HooksUI class.
  */
-class Extensions_HookUI
+class HookUI
 {
     public static function hooks(Zikula_Event $event)
     {
@@ -109,7 +119,10 @@ class Extensions_HookUI
                 }
 
                 // create an instance of the subscriber's version
-                $hooksubscriberVersion = $hooksubscribers[$i]['name'].'_Version';
+                $hooksubscriberVersionOld = $hooksubscribers[$i]['name'].'_Version';
+                $hooksubscriberVersion = $hooksubscribers[$i]['name'].'\\'. $hooksubscribers[$i]['name'].'Version';
+                $hooksubscriberVersion = class_exists($hooksubscriberVersion) ? $hooksubscriberVersion : $hooksubscriberVersionOld;
+
                 $hooksubscriberVersionObj = new $hooksubscriberVersion;
 
                 // get the areas of the subscriber
@@ -164,7 +177,10 @@ class Extensions_HookUI
                     $sbaProviderModule = HookUtil::getOwnerByArea($areaname);
 
                     // create an instance of the provider's version
-                    $sbaProviderModuleVersion = $sbaProviderModule.'_Version';
+                    $sbaProviderModuleVersionOld = $sbaProviderModule.'_Version';
+                    $sbaProviderModuleVersion = "$sbaProviderModule\\{$sbaProviderModule}Version";
+                    $sbaProviderModuleVersion = class_exists($sbaProviderModuleVersion) ? $sbaProviderModuleVersion : $sbaProviderModuleVersionOld;
+
                     $sbaProviderModuleVersionObj = new $sbaProviderModuleVersion;
 
                     // get the bundle title
@@ -249,7 +265,7 @@ class Extensions_HookUI
         $view->assign('currentmodule', $moduleName);
 
         // notify EVENT here to gather any system service links
-        $localevent = new \Zikula\Core\Event\GenericEvent($subject, array('modname' => $moduleName));
+        $localevent = new GenericEvent($subject, array('modname' => $moduleName));
         EventUtil::dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
         $view->assign('sublinks', $sublinks);

@@ -12,7 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Controller_Ajax extends Zikula_Controller_AbstractAjax
+namespace Extensions\Controller;
+
+use Zikula_Exception_Fatal;
+use HookUtil;
+use ModUtil;
+use SecurityUtil;
+use Zikula_Response_Ajax;
+
+class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * togglesubscriberareastatus

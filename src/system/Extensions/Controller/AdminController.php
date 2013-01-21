@@ -12,10 +12,26 @@
  * information regarding copyright and licensing.
  */
 
+namespace Extensions\Controller;
+
+use Zikula_View;
+use ModUtil;
+use FormUtil;
+use LogUtil;
+use SecurityUtil;
+use ZLanguage;
+use Extensions\Util as ExtensionsUtil;
+use System;
+use SessionUtil;
+use PluginUtil;
+use Zikula_View_Theme;
+use Zikula_Plugin_AlwaysOnInterface;
+use Zikula_Plugin_ConfigurableInterface;
+
 /**
  * Extensions_Controller_Admin class.
  */
-class Extensions_Controller_Admin extends Zikula_AbstractController
+class AdminController extends \Zikula_AbstractController
 {
     /**
      * Post initialise.
@@ -77,7 +93,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                 ZLanguage::bindModuleDomain($obj['directory']);
             }
 
-            $modversion = Extensions_Util::getVersionMeta($obj['directory'], $baseDir);
+            $modversion = ExtensionsUtil::getVersionMeta($obj['directory'], $baseDir);
 
             // load defaults
             $name = (isset($modversion['name']) ? $modversion['name'] : '');
@@ -517,7 +533,7 @@ class Extensions_Controller_Admin extends Zikula_AbstractController
                     if (is_dir("$base/$dependency[modname]")) {
                         $minok = 0;
                         $maxok = 0;
-                        $modversion = Extensions_Util::getVersionMeta($dependency['modname'], $base);
+                        $modversion = ExtensionsUtil::getVersionMeta($dependency['modname'], $base);
 
                         if (!empty($dependency['minversion'])) {
                             $minok = version_compare($modversion['version'], $dependency['minversion']);

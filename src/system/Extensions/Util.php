@@ -12,7 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Util
+namespace Extensions;
+
+use Zikula_AbstractErrorHandler;
+use LogUtil;
+use InvalidArgumentException;
+use Zikula_AbstractVersion;
+use System;
+
+class Util
 {
     /**
      * Get version metadata for a module.
@@ -32,7 +40,7 @@ class Extensions_Util
         if (class_exists($class)) {
             try {
                 $modversion = new $class();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_AbstractErrorHandler::CRIT);
                 throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
             }
