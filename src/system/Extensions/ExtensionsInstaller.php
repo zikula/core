@@ -12,7 +12,17 @@
  * information regarding copyright and licensing.
  */
 
-class Extensions_Installer extends Zikula_AbstractInstaller
+namespace Extensions;
+
+use DBUtil;
+use Doctrine_Core;
+use EventUtil;
+use System;
+use Zikula_Event;
+use Extensions\ExtensionsVersion;
+use ModUtil;
+
+class ExtensionsInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Install the Extensions module.
@@ -128,7 +138,7 @@ class Extensions_Installer extends Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $version = new Extensions_Version();
+        $version = new ExtensionsVersion();
         $meta = $version->toArray();
         $meta['capabilities'] = serialize($meta['capabilities']);
         $meta['securityschema'] = serialize($meta['securityschema']);
