@@ -244,15 +244,11 @@ class StringUtil
     /**
      * Get Markdown Parser.
      *
-     * @return Markdown_Parser
+     * @return Michelf\Markdown
      */
     public static function getMarkdownParser()
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->has('markdown_parser')) {
-            include_once 'lib/vendor/Markdown/markdown.php';
-            $sm->set('markdown_parser', new Markdown_Parser());
-        }
 
         return $sm->get('markdown_parser');
     }
@@ -260,17 +256,13 @@ class StringUtil
     /**
      * Get MarkdownExtra Parser.
      *
-     * @return MarkdownExtra_Parser
+     * @return Michelf\MarkdownExtra
      */
     public static function getMarkdownExtraParser()
     {
         $sm = ServiceUtil::getManager();
-        if (!$sm->has('markdownextra_parser')) {
-            include_once 'lib/vendor/Markdown/markdown.php';
-            $sm->set('markdownextra_parser', new MarkdownExtra_Parser());
-        }
 
-        return $sm->get('markdownextra_parser');
+        return $sm->get('markdown_extra_parser');
     }
 
 }
