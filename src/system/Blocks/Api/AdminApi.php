@@ -149,7 +149,7 @@ class AdminApi extends \Zikula_AbstractApi
             'content' => $args['content']
         );
 
-        $item = new Block();
+        $item = new BlockEntity();
         $item->merge($block);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -315,7 +315,7 @@ class AdminApi extends \Zikula_AbstractApi
      * Update a block position item.
      *
      * @param int    $args['pid']         the ID of the item.
-     * @param sting  $args['name']        name of the block position.
+     * @param string $args['name']        name of the block position.
      * @param string $args['description'] description of the block position.
      *
      * @return bool true if successful, false otherwise.
