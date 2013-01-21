@@ -24,9 +24,9 @@ if (!defined('PHPIDS_PATH_PREFIX')) {
 set_include_path(get_include_path() . PATH_SEPARATOR . realpath(dirname(__FILE__) .'/vendor'));
 ZLoader::addAutoloader('HTMLPurifier', realpath(dirname(__FILE__) . '/vendor/htmlpurifier'));
 ZLoader::addAutoloader('IDS', realpath(dirname(__FILE__) . '/vendor'));
+ZLoader::addAutoloader('SecurityCenter', __DIR__);
 include_once __DIR__.'/vendor/htmlpurifier/HTMLPurifier.php';
 
 // register event handlers
 //EventUtil::attachCustomHandlers('system/SecurityCenter/lib/SecurityCenter/EventHandler');
-EventUtil::attachEventHandler('SecurityCenter_EventHandler_Filter');
-
+EventUtil::attachEventHandler('SecurityCenter\Listener\FilterListener');

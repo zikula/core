@@ -12,7 +12,25 @@
  * information regarding copyright and licensing.
  */
 
-class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
+namespace SecurityCenter\Listener;
+
+use IDS_Init;
+use IDS_Monitor;
+use Zikula_Core;
+use System;
+use CacheUtil;
+use SessionUtil;
+use UserUtil;
+use DateUtil;
+use ModUtil;
+use ServiceUtil;
+use LogUtil;
+use Zikula_Exception_Forbidden;
+use SecurityCenter\Util as SecurityCenterUtil;
+use Zikula_Event;
+use SecurityCenter\Entity\Intrusion;
+
+class FilterListener extends \Zikula_AbstractEventHandler
 {
     /**
      * Setup this handler.
@@ -60,12 +78,13 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 }
                 // while i think that REQUEST_URI is unnecessary,
                 // the REFERER would be important, but results in way too many false positives
-                /*                    if (isset($_SERVER['REQUEST_URI'])) {
-                        $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
-                    }
-                    if (isset($_SERVER['HTTP_REFERER'])) {
-                        $request['REFERER'] = $_SERVER['HTTP_REFERER'];
-                    }
+                /*
+                if (isset($_SERVER['REQUEST_URI'])) {
+                    $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
+                }
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    $request['REFERER'] = $_SERVER['HTTP_REFERER'];
+                }
                 */
 
                 // initialise configuration object
@@ -87,7 +106,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 } else {
                     // no attack detected
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // sth went wrong - maybe the filter rules weren't found
                 z_exit(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
             }
@@ -169,12 +188,12 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
     /**
      * Process results from IDS scan.
      *
-     * @param IDS_Init   $init   PHPIDS init object reference.
-     * @param IDS_Report $result The result object from PHPIDS.
+     * @param \IDS_Init   $init   PHPIDS init object reference.
+     * @param \IDS_Report $result The result object from PHPIDS.
      *
      * @return void
      */
-    private function _processIdsResult(IDS_Init $init, IDS_Report $result)
+    private function _processIdsResult(\IDS_Init $init, \IDS_Report $result)
     {
         // $result contains any suspicious fields enriched with additional info
 
@@ -221,6 +240,12 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
 
             $currentPage = System::getCurrentUri();
             $currentUid = UserUtil::getVar('uid');
+            if (!$currentUid) {
+                $currentUid = 1;
+            }
+
+            // get entity manager
+            $em = ServiceUtil::get('doctrine.manager');
 
             $intrusionItems = array();
 
@@ -242,15 +267,15 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
                 $tagVal = $malVar[1];
 
                 $newIntrusionItem = array(
-                        'name'    => array($eventName),
-                        'tag'     => $tagVal,
-                        'value'   => $event->getValue(),
-                        'page'    => $currentPage,
-                        'uid'     => $currentUid,
-                        'ip'      => $ipAddress,
-                        'impact'  => $result->getImpact(),
-                        'filters' => serialize($filters),
-                        'date'    => DateUtil::getDatetime()
+                    'name'    => array($eventName),
+                    'tag'     => $tagVal,
+                    'value'   => $event->getValue(),
+                    'page'    => $currentPage,
+                    'user'    => $em->getReference('Users\Entity\User', $currentUid),
+                    'ip'      => $ipAddress,
+                    'impact'  => $result->getImpact(),
+                    'filters' => serialize($filters),
+                    'date'    => new \DateTime("now")
                 );
 
                 if (array_key_exists($tagVal, $intrusionItems)) {
@@ -264,13 +289,12 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
             foreach ($intrusionItems as $tag => $intrusionItem) {
                 $intrusionItem['name'] = implode(", ", $intrusionItem['name']);
 
-                // create new ZIntrusion instance
-                $obj = new SecurityCenter_DBObject_Intrusion();
-                // set data
-                $obj->setData($intrusionItem);
-                // save object to db
-                $obj->save();
+                $obj = new Intrusion;
+                $obj->merge($intrusionItem);
+                $em->persist($obj);
             }
+
+            $em->flush();
         }
 
         if (System::getVar('idsmail') && ($usedImpact > $impactThresholdTwo)) {
@@ -343,7 +367,7 @@ class SecurityCenter_EventHandler_Filter extends Zikula_AbstractEventHandler
 
         // prepare htmlpurifier class
         static $safecache;
-        $purifier = SecurityCenter_Util::getpurifier();
+        $purifier = SecurityCenterUtil::getpurifier();
 
         $md5 = md5($event->data);
         // check if the value is in the safecache

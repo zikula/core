@@ -6,7 +6,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ScIntrusion
+ * Intrusion
  *
  * @ORM\Table(name="sc_intrusion")
  * @ORM\Entity
@@ -51,7 +51,7 @@ class Intrusion extends EntityAccess
     private $page;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\UsersModule\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Users\Entity\User")
      * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
      */
     private $user;
@@ -99,7 +99,7 @@ class Intrusion extends EntityAccess
      * Set name
      *
      * @param string $name
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setName($name)
     {
@@ -121,7 +121,7 @@ class Intrusion extends EntityAccess
      * Set tag
      *
      * @param string $tag
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setTag($tag)
     {
@@ -143,7 +143,7 @@ class Intrusion extends EntityAccess
      * Set value
      *
      * @param text $value
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setValue($value)
     {
@@ -165,7 +165,7 @@ class Intrusion extends EntityAccess
      * Set page
      *
      * @param text $page
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setPage($page)
     {
@@ -187,7 +187,7 @@ class Intrusion extends EntityAccess
      * Set user
      *
      * @param \UsersModule\Entity\User $user
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setUser($user)
     {
@@ -209,7 +209,7 @@ class Intrusion extends EntityAccess
      * Set ip
      *
      * @param string $ip
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setIp($ip)
     {
@@ -231,7 +231,7 @@ class Intrusion extends EntityAccess
      * Set impact
      *
      * @param integer $impact
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setImpact($impact)
     {
@@ -253,7 +253,7 @@ class Intrusion extends EntityAccess
      * Set filters
      *
      * @param text $filters
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setFilters($filters)
     {
@@ -275,7 +275,7 @@ class Intrusion extends EntityAccess
      * Set date
      *
      * @param datetime $date
-     * @return ScIntrusion
+     * @return Intrusion
      */
     public function setDate($date)
     {
