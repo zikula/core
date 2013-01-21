@@ -37,6 +37,7 @@ use Zikula_Session;
 use LogUtil;
 use ThemeUtil;
 use ZLanguage;
+use Zikula_Exception_NotFound;
 
 /**
  * Access to (non-administrative) user-initiated actions for the Users module.

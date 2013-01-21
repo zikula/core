@@ -541,10 +541,11 @@ class UserApi extends \Zikula_AbstractApi
             $modpath = ($mod['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
 
+            $ooAccountApiFileNs = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/Api/AccountApi.php");
             $ooAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/Api/Account.php");
             $ooAccountApiFileOld = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/lib/{$mod['directory']}/Api/Account.php");
             $legacyAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/pnaccountapi.php");
-            if (file_exists($ooAccountApiFile) || file_exists($ooAccountApiFileOld) || file_exists($legacyAccountApiFile)) {
+            if (file_exists($ooAccountApiFileNs) || file_exists($ooAccountApiFile) || file_exists($ooAccountApiFileOld) || file_exists($legacyAccountApiFile)) {
                 $items = ModUtil::apiFunc($mod['name'], 'account', 'getAll');
                 if ($items) {
                     foreach ($items as $k => $item) {
