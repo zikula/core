@@ -66,7 +66,7 @@ class UsersInstaller extends \Zikula_AbstractInstaller
         EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
             array('Users\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-            array('Users\Listener\ClearUsersNamespace\Listener', 'clearUsersNamespaceListener'));
+            array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
             array('Users\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
 

@@ -374,7 +374,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                         }
                     }
                     // *** IMPORTANT ***
-                    // End of old-style to new-style hasing conversion.
+                    // End of old-style to new-style hashing conversion.
 
                     // The password is good, so the password is authenticated.
                     $passwordAuthenticates = true;
