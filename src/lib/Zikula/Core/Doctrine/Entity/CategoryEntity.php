@@ -157,7 +157,7 @@ class CategoryEntity extends EntityAccess
         return $this->parent;
     }
 
-    public function setParent(CategoryEntity $parent)
+    public function setParent(CategoryEntity $parent = null)
     {
         $this->parent = $parent;
     }
