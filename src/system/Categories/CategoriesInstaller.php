@@ -661,7 +661,7 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
         );
 
         foreach ($objArray as $obj) {
-            $category = new Category;
+            $category = new CategoryEntity();
 
             if ($obj['parent_id'] == 0) {
                 $obj['parent'] = null;
