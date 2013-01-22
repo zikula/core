@@ -47,8 +47,8 @@ The current specification mandates: (still in dev)
 how module classes should look like:
 
 Controllers:
-  - Named like Foo\Controller\UserController
-  - Stored in Foo/Controller/UserController.php
+  - Named like `FooModule\Controller\UserController`
+  - Stored in `FooModule/Controller/UserController.php`
   - Example:
 
         <?php
@@ -59,8 +59,8 @@ Controllers:
         }
 
 Apis:
-  - Named like Foo\Api\UserApi
-  - Stored in Foo/Api/UserApi.php
+  - Named like `FooModule\Api\UserApi`
+  - Stored in `FooModule/Api/UserApi.php`
   - Example:
 
         <?php
@@ -71,8 +71,8 @@ Apis:
         }
 
 Entities:
-  - Named like Foo\Entity\BarEntity
-  - Stored in Foo/Entity/BarEntity.php
+  - Named like `FooModule\Entity\BarEntity`
+  - Stored in `FooModule/Entity/BarEntity.php`
   - Example:
 
         <?php
