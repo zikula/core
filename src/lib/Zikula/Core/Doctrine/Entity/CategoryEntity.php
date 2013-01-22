@@ -47,7 +47,7 @@ class CategoryEntity extends EntityAccess
 
     /**
      * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", mappedBy="parent")
-     * @var \Zikula\Core\Doctrine\Entity\CategoryEntity
+     * @var CategoryEntity
      */
     private $children;
 
@@ -157,7 +157,7 @@ class CategoryEntity extends EntityAccess
         return $this->parent;
     }
 
-    public function setParent(CategoryEntity $parent)
+    public function setParent(CategoryEntity $parent = null)
     {
         $this->parent = $parent;
     }
@@ -275,7 +275,7 @@ class CategoryEntity extends EntityAccess
     /**
      * get the attributes of the category
      *
-     * @return CategoryAttribute the category's attributes
+     * @return CategoryAttributeEntity the category's attributes
      */
     public function getAttributes()
     {
@@ -285,7 +285,7 @@ class CategoryEntity extends EntityAccess
     /**
      * set the attributes for the category
      *
-     * @param CategoryAttribute $attributes the attributes for the category
+     * @param CategoryAttributeEntity $attributes the attributes for the category
      */
     public function setAttributes($attributes)
     {
