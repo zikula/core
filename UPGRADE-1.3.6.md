@@ -87,6 +87,12 @@ There is a script to do some of the refactoring for you:
 
     zikula-tools module:ns --dir=module/MyModule --module=MyModule
 
+Module code must be PSR-1 and PSR-2 compliant. You can fix formatting
+with PHP-CS-Fixer: https://github.com/fabpot/PHP-CS-Fixer
+
+PSR-1: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
+PSR-2: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+
 
 Module Structure
 ----------------
