@@ -47,8 +47,8 @@ The current specification mandates: (still in dev)
 how module classes should look like:
 
 Controllers:
-  - Named like Foo\Controller\UserController
-  - Stored in Foo/Controller/UserController.php
+  - Named like `FooModule\Controller\UserController`
+  - Stored in `FooModule/Controller/UserController.php`
   - Example:
 
         <?php
@@ -59,8 +59,8 @@ Controllers:
         }
 
 Apis:
-  - Named like Foo\Api\UserApi
-  - Stored in Foo/Api/UserApi.php
+  - Named like `FooModule\Api\UserApi`
+  - Stored in `FooModule/Api/UserApi.php`
   - Example:
 
         <?php
@@ -71,8 +71,8 @@ Apis:
         }
 
 Entities:
-  - Named like Foo\Entity\BarEntity
-  - Stored in Foo/Entity/BarEntity.php
+  - Named like `FooModule\Entity\BarEntity`
+  - Stored in `FooModule/Entity/BarEntity.php`
   - Example:
 
         <?php
@@ -87,6 +87,22 @@ There is a script to do some of the refactoring for you:
 
     zikula-tools module:ns --dir=module/MyModule --module=MyModule
 
+Module code must be PSR-1 and PSR-2 compliant. You can fix formatting
+with PHP-CS-Fixer: https://github.com/fabpot/PHP-CS-Fixer
+
+PSR-1: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
+PSR-2: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
+
+
+Naming conventions
+------------------
+
+Interfaces and traits names should be suffixed with `Interface` or `Trait`.
+Abstract classes should be prefixed with `Abstract`
+Generally classes should be suffixed with whatever they are and kept in a
+folder. So listeners would be stored in `Listener/` and called `FooListener`.
+You can see concrete examples in the module structure section next.
+
 
 Module Structure
 ----------------
@@ -100,6 +116,12 @@ The final structure looks as follows:
         Controller/
             AdminController.php (was Admin.php)
             UserController.php (was User.php)
+        Entity/
+            FooEntity.php
+        Listener/
+            FooListener.php
+        Hook/
+            FooHook.php
         Resources/
             config/
             docs/
@@ -110,6 +132,11 @@ The final structure looks as follows:
                 images/
                 js/
             views/
+                Admin/
+                    view.tpl
+                User/
+                    list.tpl
+                    view.tpl
                 plugins/
         Tests/
             AdminControllerTest.php
@@ -143,8 +170,8 @@ with the interrim structure created, and you can begin refactoring to namespaces
 
 .. note::
 
-    It's wise to `git mv` the files to rename the controllers for example before
-    making changes to the file contents (should be made in a separate commit).
+    It's wise to `git mv` the files to rename/move file before making changes
+    to the file contents (which should be made in a separate commit).
 
 It is also recommended you place templates in the `Resource/views` folder in a
 hierarchy as follows:
@@ -280,8 +307,8 @@ Request
 The `Request` object is now switched to `Symfony\Component\HttpFoundation\Request`
 Please refactor the following calls:
 
-    $request->getGet()-> becomes $request->query->
-    $request->getPost()-> becomes $request->post->
+    $request->getGet()->*() becomes $request->query->*()
+    $request->getPost()->*() becomes $request->post->*()
     $request->isGet() becomes $request->isMethod('GET')
     $request->isPost() becomes $request->isMethod('POST')
 
@@ -290,7 +317,39 @@ There is a legacy layer in place so the old methods continue to work.
 Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#request
 
 
+Gedmo (Doctrine Extensions)
+---------------------------
+If you use `Sluggable`, you must change the annotation in your Doctrine entities from:
+
+from:
+
+    /**
+     * @ORM\Column(name="tag", type="string", length=36)
+     * @Gedmo\Sluggable(slugField="slug")
+     */
+    private $tag;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=128)
+     * @Gedmo\Slug
+     */
+    private $slug;
+
+to:
+
+    /**
+     * @ORM\Column(name="tag", type="string", length=36)
+     */
+    private $tag;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=128)
+     * @Gedmo\Slug(fields={"tag"})
+     */
+    private $slug;
+
+
 Version.php
 -----------
 
-Modules should have core_min=1.3.6
+Modules should have `core_min = 1.3.6`.
