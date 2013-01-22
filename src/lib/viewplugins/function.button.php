@@ -117,7 +117,9 @@ function smarty_function_button($params, Zikula_View $view)
     $title = (isset($params['title']) ? $params['title'] : '');
     $alt = (isset($params['alt']) ? $params['alt'] : '');
 
-    // call the pnimg plugin and work out the src from the assigned template vars
+    // call the img plugin and work out the src from the assigned template vars
+    $img = '';
+    $imgsrc = '';
     if (isset($params['src'])) {
         smarty_function_img(array('assign' => 'buttonsrc', 'src' => $params['src'], 'set' => $params['set'], 'modname' => 'core'), $view);
         $imgvars = $view->get_template_vars('buttonsrc');
