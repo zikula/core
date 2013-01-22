@@ -21,14 +21,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Category registry entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="categories_registry",indexes={@ORM\index(name="idx_categories_registry",columns={"modname","entityname","property"})})
+ * @ORM\Table(name="categories_registry",indexes={@ORM\index(name="idx_categories_registry",columns={"modname","entityname"})})
  */
 class CategoryRegistryEntity extends EntityAccess
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer", type="integer", nullable=false)
+     * @ORM\Column(type="integer")
      * @var integer
      */
     private $id;

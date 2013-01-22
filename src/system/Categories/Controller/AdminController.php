@@ -180,7 +180,7 @@ class AdminController extends \Zikula_AbstractController
         $root_id = $this->request->get('dr', 1);
         $id = $this->request->get('id', 0);
 
-        $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity;
+        $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity();
 
         $category_registry = $this->request->query->get('category_registry', null);
         if ($category_registry) {
@@ -188,7 +188,7 @@ class AdminController extends \Zikula_AbstractController
             $obj = $obj->toArray();
         }
 
-        $registries = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\CategoryEntityRegistry')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
+        $registries = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
 
         $this->view->assign('objectArray', $registries)
                    ->assign('newobj', $obj)
@@ -206,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
 
         $id = $this->request->get('id', 0);
 
-        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntityRegistry', $id);
+        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity', $id);
         $data = $obj->toArray();
 
         $this->view->assign('data', $data)
