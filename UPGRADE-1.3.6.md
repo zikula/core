@@ -94,6 +94,16 @@ PSR-1: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic
 PSR-2: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
 
 
+Naming conventions
+------------------
+
+Interfaces and traits names should be suffixed with `Interface` or `Trait`.
+Abstract classes should be prefixed with `Abstract`
+Generally classes should be suffixed with whatever they are and kept in a
+folder. So listeners would be stored in `Listener/` and called `FooListener`.
+You can see concrete examples in the module structure section next.
+
+
 Module Structure
 ----------------
 
@@ -106,6 +116,12 @@ The final structure looks as follows:
         Controller/
             AdminController.php (was Admin.php)
             UserController.php (was User.php)
+        Entity/
+            FooEntity.php
+        Listener/
+            FooListener.php
+        Hook/
+            FooHook.php
         Resources/
             config/
             docs/
@@ -116,6 +132,11 @@ The final structure looks as follows:
                 images/
                 js/
             views/
+                Admin/
+                    view.tpl
+                User/
+                    list.tpl
+                    view.tpl
                 plugins/
         Tests/
             AdminControllerTest.php
@@ -149,8 +170,8 @@ with the interrim structure created, and you can begin refactoring to namespaces
 
 .. note::
 
-    It's wise to `git mv` the files to rename the controllers for example before
-    making changes to the file contents (should be made in a separate commit).
+    It's wise to `git mv` the files to rename/move file before making changes
+    to the file contents (which should be made in a separate commit).
 
 It is also recommended you place templates in the `Resource/views` folder in a
 hierarchy as follows:
@@ -286,8 +307,8 @@ Request
 The `Request` object is now switched to `Symfony\Component\HttpFoundation\Request`
 Please refactor the following calls:
 
-    $request->getGet()-> becomes $request->query->
-    $request->getPost()-> becomes $request->post->
+    $request->getGet()->*() becomes $request->query->*()
+    $request->getPost()->*() becomes $request->post->*()
     $request->isGet() becomes $request->isMethod('GET')
     $request->isPost() becomes $request->isMethod('POST')
 
@@ -296,7 +317,39 @@ There is a legacy layer in place so the old methods continue to work.
 Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#request
 
 
+Gedmo (Doctrine Extensions)
+---------------------------
+If you use `Sluggable`, you must change the annotation in your Doctrine entities from:
+
+from:
+
+    /**
+     * @ORM\Column(name="tag", type="string", length=36)
+     * @Gedmo\Sluggable(slugField="slug")
+     */
+    private $tag;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=128)
+     * @Gedmo\Slug
+     */
+    private $slug;
+
+to:
+
+    /**
+     * @ORM\Column(name="tag", type="string", length=36)
+     */
+    private $tag;
+
+    /**
+     * @ORM\Column(name="slug", type="string", length=128)
+     * @Gedmo\Slug(fields={"tag"})
+     */
+    private $slug;
+
+
 Version.php
 -----------
 
-Modules should have core_min=1.3.6
+Modules should have `core_min = 1.3.6`.
