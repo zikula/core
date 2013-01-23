@@ -46,6 +46,8 @@ class BlocksInstaller extends \Zikula_AbstractInstaller
         // Set a default value for a module variable
         $this->setVar('collapseable', 0);
 
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+
         // Initialisation successful
         return true;
     }
@@ -92,6 +94,9 @@ class BlocksInstaller extends \Zikula_AbstractInstaller
                 $query->getResult();
 
             case '3.8.1':
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+                
+            case '3.8.2':
                 // future upgrade routines
         }
 
