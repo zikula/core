@@ -37,7 +37,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     
     public function initialize()
     {
-        return;// disabled temporarily
+        //return;// disabled temporarily
 
         // register symfony validation annorations
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/validator');
@@ -46,19 +46,21 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
         $fileLocator = new FileLocator(array(__DIR__ . '/Resources/config/validator.xml'));
         $xmlFileLoader = new XmlFileLoader($this->serviceManager->get('service_container'), $fileLocator);
         $xmlFileLoader->load(__DIR__ . '/Resources/config/validator.xml');
+        $xmlFileLoader->load(__DIR__ . '/Resources/config/translation.xml');
 
         // setup symfony forms
         $registry = new \Zikula\Core\Forms\DoctrineRegistryImpl();
         $csrf = new \Symfony\Component\Form\Extension\Csrf\CsrfExtension(new \Zikula\Core\Forms\ZikulaCsrfProvider());
         $core = new \Symfony\Component\Form\Extension\Core\CoreExtension();
         $validator = new \Symfony\Component\Form\Extension\Validator\ValidatorExtension($this->serviceManager->get("validator"));
+
         $zk = new \Zikula\Core\Forms\ZikulaExtension();
         $doctrine = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
         $formFactory = Forms::createFormFactoryBuilder()->addExtensions(array($core, $csrf, $validator, $zk, $doctrine))->getFormFactory();
 
         $this->serviceManager->set('symfony.formfactory', $formFactory);
-        
-        
+
+
         $formRenderer = new \Zikula\Core\Forms\FormRenderer($this->eventManager);
         $this->serviceManager->set('symfony.formrenderer', $formRenderer);
     }
