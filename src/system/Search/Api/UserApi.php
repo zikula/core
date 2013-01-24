@@ -14,18 +14,17 @@
 
 namespace Search\Api;
 
-use LogUtil;
 use ModUtil;
-use DBUtil;
 use UserUtil;
 use Doctrine_Manager;
-use System;
 use SessionUtil;
-use search_result_checker;
-use SecurityUtil;
-use DataUtil;
+use System;
 use FormUtil;
+use DataUtil;
 use ZLanguage;
+use LogUtil;
+use DBUtil;
+use SecurityUtil;
 
 /**
  * Search_Api_User class.
