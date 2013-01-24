@@ -76,7 +76,8 @@ class UserApi extends \Zikula_AbstractApi
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $query = $this->entityManager->createQuery("DELETE FROM Search\Entity\SearchResultEntity s WHERE s.sessid = '$sessionId' OR OR DATE_ADD(s.found, INTERVAL 8 HOUR) < NOW()");
+            $query = $this->entityManager->createQuery("DELETE Search\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
+            $query->setParameter('sid', $sessionId);
             $query->execute();
 
             // get all the search plugins
@@ -107,7 +108,7 @@ class UserApi extends \Zikula_AbstractApi
             }
 
             // Count number of found results (pointless, this will alays be 0 as we just deleted these! - drak)
-            $query = $this->entityManager->createQuery("SELECT COUNT(s.sessid) FROM Search\Entity\SearchResultEntity WHERE s.sessid = '$sessionId'");
+            $query = $this->entityManager->createQuery("SELECT COUNT(s.sesid) FROM Search\Entity\SearchResultEntity WHERE s.sesid = '$sessionId'");
             $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
             SessionUtil::setVar('searchModulesByName', $searchModulesByName);
@@ -139,7 +140,7 @@ class UserApi extends \Zikula_AbstractApi
         // 2) let the modules add "url" to the found (and viewed) items
         $checker = new ResultHelper($searchModulesByName);
 
-        $dql = "SELECT FROM Search\Entity\SearchResultEntity s WHERE s.sessid = '$sessionId' s.sort";
+        $dql = "SELECT FROM Search\Entity\SearchResultEntity s WHERE s.sesid = '$sessionId' s.sort";
         $query = $this->entityManager->createQuery($dql);
         $query->setMaxResults($vars['numlimit']);
         $query->setFirstResult($vars['startnum'] - 1);
