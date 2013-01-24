@@ -60,7 +60,7 @@ class ThemeInstaller extends \Zikula_AbstractInstaller
         // View
         $this->setVar('render_compile_check',  true);
         $this->setVar('render_force_compile',  false);
-        $this->setVar('render_cache',          true);
+        $this->setVar('render_cache',          false);
         $this->setVar('render_expose_template',false);
         $this->setVar('render_lifetime',       3600);
         $this->setVar('enable_mobile_theme',   false);
