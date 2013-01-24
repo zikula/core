@@ -50,14 +50,14 @@ class SearchResultEntity
     private $extra;
 
     /**
-     * @var datetime $created
+     * @var \Datetime $created
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
     private $created;
 
     /**
-     * @var datetime $found
+     * @var \Datetime $found
      *
      * @ORM\Column(name="found", type="datetime", nullable=true)
      */
@@ -85,7 +85,7 @@ class SearchResultEntity
      * Set title
      *
      * @param string $title
-     * @return SearchResult
+     * @return SearchResultEntity
      */
     public function setTitle($title)
     {
@@ -107,7 +107,7 @@ class SearchResultEntity
      * Set text
      *
      * @param text $text
-     * @return SearchResult
+     * @return SearchResultEntity
      */
     public function setText($text)
     {
@@ -129,7 +129,7 @@ class SearchResultEntity
      * Set module
      *
      * @param string $module
-     * @return SearchResult
+     * @return SearchResultEntity
      */
     public function setModule($module)
     {
@@ -151,7 +151,7 @@ class SearchResultEntity
      * Set extra
      *
      * @param string $extra
-     * @return SearchResult
+     * @return SearchResultEntity
      */
     public function setExtra($extra)
     {
@@ -172,8 +172,8 @@ class SearchResultEntity
     /**
      * Set created
      *
-     * @param datetime $created
-     * @return SearchResult
+     * @param \Datetime $created
+     * @return SearchResultEntity
      */
     public function setCreated($created)
     {
@@ -184,7 +184,7 @@ class SearchResultEntity
     /**
      * Get created
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getCreated()
     {
@@ -194,8 +194,8 @@ class SearchResultEntity
     /**
      * Set found
      *
-     * @param datetime $found
-     * @return SearchResult
+     * @param \Datetime $found
+     * @return SearchResultEntity
      */
     public function setFound($found)
     {
@@ -206,7 +206,7 @@ class SearchResultEntity
     /**
      * Get found
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getFound()
     {
@@ -217,7 +217,7 @@ class SearchResultEntity
      * Set sesid
      *
      * @param string $sesid
-     * @return SearchResult
+     * @return SearchResultEntity
      */
     public function setSesid($sesid)
     {

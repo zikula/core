@@ -1,6 +1,6 @@
-{pageaddvar name="javascript" value="system/Search/javascript/search_user_form.js"}
+{pageaddvar name="javascript" value="system/Search/Resources/public/js/search_user_form.js"}
 {gt text='Site search' assign='templatetitle' domain='zikula'}
-{include file='search_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 <form class="z-form" id="search_form" method="post" action="{modurl modname='Search' type='user' func='search'}">
     <fieldset>
