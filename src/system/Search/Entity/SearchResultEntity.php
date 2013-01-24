@@ -64,11 +64,11 @@ class SearchResultEntity
     private $found;
 
     /**
-     * @var string $sessid
+     * @var string $sesid
      *
-     * @ORM\Column(name="sessid", type="string", length=50, nullable=true)
+     * @ORM\Column(name="sesid", type="string", length=50, nullable=true)
      */
-    private $sessid;
+    private $sesid;
 
 
     /**
@@ -225,9 +225,9 @@ class SearchResultEntity
      * @param string $sesid
      * @return SearchResultEntity
      */
-    public function setSessid($sessid)
+    public function setSesid($sesid)
     {
-        $this->sessid = $sessid;
+        $this->sesid = $sesid;
 
         return $this;
     }
