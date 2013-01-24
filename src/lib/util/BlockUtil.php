@@ -323,7 +323,7 @@ class BlockUtil
             $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
             $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
             $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
-            $className = class_exists($classNameOld) ? $classNameOld :$className;
+            $className = class_exists($className) ? $className :$classNameOld;
             $r = new ReflectionClass($className);
             $blockInstance = $r->newInstanceArgs(array($sm));
             try {
