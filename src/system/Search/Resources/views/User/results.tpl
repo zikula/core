@@ -1,5 +1,5 @@
 {gt text="Search results" assign=templatetitle domain='zikula'}
-{include file='search_user_menu.tpl'}
+{include file='User/menu.tpl'}
 
 <h3>{$templatetitle}</h3>
 

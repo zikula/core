@@ -118,10 +118,9 @@ class SearchApi extends \Zikula_AbstractApi
         } else {
             $where[] = $unameClause;
         }
-
         $where = implode(' AND ', $where);
 
-        $dql = "SELECT u FROM Users\Entity\UserEntity u $where";
+        $dql = "SELECT u FROM Users\Entity\UserEntity u WHERE $where";
         $query = $this->entityManager->createQuery($dql);
         $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
