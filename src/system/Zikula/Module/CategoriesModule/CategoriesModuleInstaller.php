@@ -663,6 +663,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         foreach ($objArray as $obj) {
             $category = new CategoryEntity();
 
+            // we need to force the ID to be set here - drak
+            // it just means we can work with the array dataset above.
+            $metadata = $this->entityManager->getClassMetaData(get_class($category));
+            $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_NONE);
+
             if ($obj['parent_id'] == 0) {
                 $obj['parent'] = null;
             } else {
@@ -678,12 +683,16 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             $category->merge($obj);
             $this->entityManager->persist($category);
             $this->entityManager->flush();
+            $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_AUTO);
 
             if (isset($attributes)) {
                 foreach ($attributes as $attrib_key => $attrib_name) {
                     $category->setAttribute($attrib_name, $attrib_key);
                 }
             }
+
+            // unset this so it doesn't persist in the next foreach
+            unset($attributes);
         }
 
         $this->entityManager->flush();

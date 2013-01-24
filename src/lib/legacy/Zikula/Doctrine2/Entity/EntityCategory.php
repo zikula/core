@@ -13,6 +13,7 @@
  */
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\Entity\AbstractEntityCategory;
 
 /**
  * Base class of many-to-many association between any entity and Category.
@@ -21,68 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @deprecated since 1.3.6
  */
-abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAccess
+abstract class Zikula_Doctrine2_Entity_EntityCategory extends AbstractEntityCategory
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var integer
-     */
-    private $id;
 
-    /**
-     * @ORM\Column(type="integer", name="registryId")
-     * @var integer
-     */
-    private $categoryRegistryId;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Zikula_Doctrine2_Entity_Category")
-     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
-     * @var Zikula_Doctrine2_Entity_Category
-     */
-    private $category;
-
-    public function __construct($registryId, Zikula_Doctrine2_Entity_Category $category, $entity)
-    {
-        $this->categoryRegistryId = $registryId;
-        $this->category = $category;
-        $this->setEntity($entity);
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    public function getCategoryRegistryId()
-    {
-        return $this->categoryRegistryId;
-    }
-
-    public function setCategoryRegistryId($categoryRegistryId)
-    {
-        $this->categoryRegistryId = $categoryRegistryId;
-    }
-
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    public function setCategory(Zikula_Doctrine2_Entity_Category $category)
-    {
-        $this->category = $category;
-    }
-
-    abstract public function getEntity();
-
-    abstract public function setEntity($entity);
 }
 

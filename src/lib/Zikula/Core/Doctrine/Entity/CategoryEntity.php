@@ -137,7 +137,7 @@ class CategoryEntity extends EntityAccess
         $this->display_desc = array();
         $this->path = '';
         $this->ipath = '';
-        $this->status = 'I';
+        $this->status = 'A';
 
         $this->attributes = new ArrayCollection();
     }
@@ -319,4 +319,103 @@ class CategoryEntity extends EntityAccess
         }
     }
 
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return bool|int
+     */
+    public function getLocked()
+    {
+        return $this->getIs_locked();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $locked
+     */
+    public function setLocked($locked)
+    {
+        $this->setIs_locked($locked);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return bool|int
+     */
+    public function getLeaf()
+    {
+        return $this->getIs_leaf();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $leaf
+     */
+    public function setLeaf($leaf)
+    {
+        $this->setIs_leaf($leaf);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return int
+     */
+    public function getSortValue()
+    {
+        return $this->getSort_value();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $sortValue
+     */
+    public function setSortValue($sortValue)
+    {
+        $this->setSort_value($sortValue);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return array
+     */
+    public function getDisplayName()
+    {
+        return $this->getDisplay_name();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $displayName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->setDisplay_name($displayName);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return array
+     */
+    public function getDisplayDesc()
+    {
+        return $this->getDisplay_desc();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $displayDesc
+     */
+    public function setDisplayDesc($displayDesc)
+    {
+        $this->setDisplay_desc($displayDesc);
+    }
 }
