@@ -13,8 +13,8 @@ User Upgrade Tasks
 Zikula Core 1.3.6 introduces a lot of forward compatibility for new features
 that will come in Zikula 1.4.0.
 
-  - Before uploading the new files please delete the `plugins` and `lib/vendor`
-    folders entirely.
+  - Before uploading the new files please delete the `system/`, `plugins`/ and
+    `lib/vendor/` folders entirely.
   - Upload new files.
   - Make `app/cache` and `app/logs` writable.
   - Run `http://yoursiteurl/upgrade.php`
