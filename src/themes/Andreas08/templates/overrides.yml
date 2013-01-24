@@ -1,5 +1,5 @@
 ## YAML Override template
 ## original/file.tpl: override/file.tpl
 ---
-system/Search/Resources/views/search_block_search.tpl: themes/Andreas08/templates/modules/Search/search_block_search.tpl
+system/Search/Resources/views/Block/search.tpl: themes/Andreas08/templates/modules/Search/search_block_search.tpl
 system/Blocks/Resources/views/blocks_block_extmenu_topnav.tpl: themes/Andreas08/templates/modules/Blocks/blocks_block_extmenu_topnav.tpl
