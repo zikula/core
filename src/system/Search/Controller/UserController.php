@@ -85,6 +85,7 @@ class UserController extends \Zikula_AbstractController
 
         // get all the search plugins
         $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
+        $search_modules = false === $search_modules ? array() : $search_modules;
 
         if (count($search_modules) > 0) {
             $plugin_options = array();
