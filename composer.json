@@ -37,6 +37,7 @@
         "imagine/Imagine": "dev-master",
         "michelf/php-markdown": "1.3.*@dev",
         "monolog/monolog": "dev-master",
+        "symfony/doctrine-bridge": "2.2.*",
         "symfony/class-loader": "2.2.*",
         "symfony/config": "2.2.*",
         "symfony/console": "2.2.*",
