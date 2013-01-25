@@ -25,6 +25,8 @@ use ZLanguage;
 use LogUtil;
 use DBUtil;
 use SecurityUtil;
+use Search\ResultHelper;
+use Search\Entity\SearchStatEntity;
 
 /**
  * Search_Api_User class.
@@ -67,29 +69,16 @@ class UserApi extends \Zikula_AbstractApi
         // work out row index from page number
         $vars['startnum'] = $vars['numlimit'] > 0 ? (($vars['page'] - 1) * $vars['numlimit']) + 1 : 1;
 
-        // Load database stuff
-        ModUtil::dbInfoLoad('Search');
-        $dbtable = DBUtil::getTables();
         $userId = (int)UserUtil::getVar('uid');
-        $searchTable = $dbtable['search_result'];
-        $searchColumn = $dbtable['search_result_column'];
-
-        // Create restriction on result table (so user only sees own results)
-        $userResultWhere = "$searchColumn[session] = '" . session_id() . "'";
+        $sessionId = session_id();
 
         // Do all the heavy database stuff on the first page only
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-            $where = $userResultWhere;
-            if ($dbDriverName == 'pgsql') {
-                $where .= " OR $searchColumn[found] + INTERVAL '8 HOUR' < NOW()";
-            } else {
-                $where .= " OR DATE_ADD($searchColumn[found], INTERVAL 8 HOUR) < NOW()";
-            }
-
-            DBUtil::deleteWhere('search_result', $where);
+            $query = $this->entityManager->createQuery("DELETE Search\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
+            $query->setParameter('sid', $sessionId);
+            $query->execute();
 
             // get all the search plugins
             $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
@@ -118,8 +107,10 @@ class UserApi extends \Zikula_AbstractApi
                 }
             }
 
-            // Count number of found results
-            $resultCount = DBUtil::selectObjectCount('search_result', $userResultWhere);
+            // Count number of found results (pointless, this will alays be 0 as we just deleted these! - drak)
+            $query = $this->entityManager->createQuery("SELECT COUNT(s.sesid) FROM Search\Entity\SearchResultEntity s WHERE s.sesid = :sid");
+            $query->setParameter('sid', $sessionId);
+            $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
             SessionUtil::setVar('searchModulesByName', $searchModulesByName);
         } else {
@@ -148,11 +139,25 @@ class UserApi extends \Zikula_AbstractApi
         // The "checker" object is used to:
         // 1) do secondary access control (deprecated more or less)
         // 2) let the modules add "url" to the found (and viewed) items
-        $checker = new search_result_checker($searchModulesByName);
-        $sqlResult = DBUtil::selectObjectArrayFilter('search_result', $userResultWhere, $sort,
-                        $vars['startnum'] - 1, $vars['numlimit'], '',
-                        $checker, null);
+        $checker = new ResultHelper($searchModulesByName);
+
+        $dql = "SELECT s FROM Search\Entity\SearchResultEntity s WHERE s.sesid = :sid ORDER BY s.created ASC";
+        $query = $this->entityManager->createQuery($dql);
+        $query->setParameter('sid', $sessionId);
+        $query->setMaxResults($vars['numlimit']);
+
+        $query->setFirstResult($vars['startnum'] - 1);
+
+        $results = $query->execute();
+
         // add displayname of modules found
+        $sqlResult = array();
+        foreach ($results as $result) {
+            if ($checker->checkResult($result)) {
+                $sqlResult[] = $result;
+            }
+        }
+
         $cnt = count($sqlResult);
         for ($i = 0; $i < $cnt; $i++) {
             $modinfo = ModUtil::getInfoFromName($sqlResult[$i]['module']);
@@ -196,8 +201,12 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Get items
-        $sort = isset($args['sortorder']) ? "ORDER BY {$args['sortorder']} DESC" : '';
-        $items = DBUtil::selectObjectArray('search_stat', '', $sort, $args['startnum'] - 1, $args['numitems']);
+        $sort = isset($args['sortorder']) ? "ORDER BY s.{$args['sortorder']} DESC" : '';
+        $dql = "SELECT s Search\Entity\SearchStatEntity s $sort";
+        $query = $this->entityManager->createQuery($dql);
+        $query->setMaxResults($args['numitems']);
+        $query->setFirstResult($args['startnum'] - 1);
+        $items = $query->execute();
 
         return $items;
     }
@@ -251,21 +260,18 @@ class UserApi extends \Zikula_AbstractApi
     {
         $searchterms = DataUtil::formatForStore($args['q']);
 
-        $obj = DBUtil::selectObjectByID('search_stat', $searchterms, 'search');
+        $obj = $this->entityManager->getRepository('Search\Entity\SearchStatEntity')->findOneBy(array('search' => $searchterms));
 
-        $newobj['count'] = isset($obj['count']) ? $obj['count'] + 1 : 1;
-        $newobj['date'] = date('Y-m-d H:i:s');
-        $newobj['search'] = $searchterms;
-
-        if (!isset($obj) || empty($obj)) {
-            $res = DBUtil::insertObject($newobj, 'search_stat');
-        } else {
-            $res = DBUtil::updateObject($newobj, 'search_stat', '', 'search');
+        if (!$obj) {
+            $obj = new SearchStatEntity();
+            $this->entityManager->persist($obj);
         }
 
-        if (!$res) {
-            return false;
-        }
+        $obj['count'] = isset($obj['count']) ? $obj['count'] + 1 : 1;
+        $obj['date'] = new \DateTime('now', new \DateTimeZone('UTC'));
+        $obj['search'] = $searchterms;
+
+        $this->entityManager->flush();
 
         return true;
     }
@@ -458,52 +464,6 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         return $links;
-    }
-
-}
-
-/**
- * Class for doing module based access check and URL creation of search result
- *
- * - The module based access is somewhat deprecated (it still works but is not
- *   used since it makes it impossible to count the number of search result).
- * - The URL for each found item is created here. By doing this we only create
- *   URLs for results the user actually view and save some time this way.
- */
-class search_result_checker
-{
-    // This variable contains a table of all search plugins (indexed by module name)
-    public $search_modules = array();
-
-    public function __construct($search_modules)
-    {
-        $this->search_modules = $search_modules;
-    }
-
-    // This method is called by DBUtil::selectObjectArrayFilter() for each and every search result.
-    // A return value of true means "keep result" - false means "discard".
-    // The decision is delegated to the search plugin (module) that generated the result
-    public function checkResult(&$datarow)
-    {
-        // Get module name
-        $module = $datarow['module'];
-
-        // Get plugin information
-        $mod = $this->search_modules[$module];
-
-        $ok = true;
-
-        if (isset($mod['functions'])) {
-            foreach ($mod['functions'] as $contenttype => $function) {
-                // Delegate check to search plugin
-                // (also allow plugin to write 'url' => ... into $datarow by passing it by reference)
-                $ok = $ok && ModUtil::apiFunc($mod['title'], 'search', $function . '_check',
-                                array('datarow' => &$datarow,
-                                        'contenttype' => $contenttype));
-            }
-        }
-
-        return $ok;
     }
 
 }

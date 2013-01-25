@@ -44,6 +44,7 @@ Features:
   theme and domain; set admin theme in theme settings section.
 - Give the profile module the possibility to change the profilelink.
 - Added viewplugin `nl2html`
+- Added hook to Blocks module to allow for use with Html Block (only)
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
