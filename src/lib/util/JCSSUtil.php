@@ -34,7 +34,7 @@ class JCSSUtil
             'ajaxtimeout' => (int)System::getVar('ajaxtimeout', 5000),
             'lang' => ZLanguage::getLanguageCode(),
             'sessionName' => session_name(),
-            'request' => ServiceUtil::get('request')->query->all(), // fixme - does not work with short urls (but $_GET/$_REQUEST are filled)
+            'request' => self::decodeRequest(),
             'isDevelopmentMode' => System::isDevelopmentMode()
         );
 
@@ -134,6 +134,7 @@ class JCSSUtil
     {
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
+
         // set proper file paths for aliased scripts
         $coreScripts = self::scriptsMap();
         $styles = array();
@@ -192,6 +193,32 @@ class JCSSUtil
     }
 
     /**
+     * Method to resolve scripts dependencies and order.
+     *
+     * @param array $javascripts List of javascript files to verify.
+     *
+     * @return array List of javascript files
+     */
+    private static function resolveDependencies($javascripts)
+    {
+        $coreScripts = self::scriptsMap();
+        $coreNames = array_keys($coreScripts);
+
+        $javascripts = array_map('self::getScriptName', $javascripts);
+
+        // separate core and non-core scripts
+        $core = array_intersect($coreNames, $javascripts);
+        $others = array_diff($javascripts, $core);
+
+        // first resolve core scripts
+        $core = self::resolveCoreDependencies($core);
+        // then merge with the rest (for those it's enough to keep order they where requested)
+        $ordered = array_unique(array_merge($core, $others));
+
+        return $ordered;
+    }
+
+    /**
      * Method to resolve scripts dependencies basing on scripts map from JCSSUtil: scriptsMap.
      *
      * @param array $javascripts List of javascript files to verify.
@@ -199,26 +226,26 @@ class JCSSUtil
      *
      * @return array List of javascript files
      */
-    private static function resolveDependencies($javascripts, &$resolved = array())
+    private static function resolveCoreDependencies($javascripts, &$resolved = array())
     {
         $coreScripts = self::scriptsMap();
         $withDeps = array();
-        foreach ($javascripts as $script) {
+        foreach ((array)$javascripts as $script) {
             $script = self::getScriptName($script);
-            if (isset($coreScripts[$script]) && isset($coreScripts[$script]['require']) && !in_array($script, $resolved)) {
+            if (!in_array($script, $resolved)) {
                 $resolved[] = $script;
-                $required = $coreScripts[$script]['require'];
-                $r = self::resolveDependencies($required, $resolved);
-                $withDeps = array_merge($withDeps, (array)$r);
+                if (isset($coreScripts[$script]['require'])) {
+                    $required = self::resolveCoreDependencies($coreScripts[$script]['require'], $resolved);
+                    $withDeps = array_merge($withDeps, (array)$required);
+                }
+                $withDeps[] = $script;
+                if (isset($coreScripts[$script]['include'])) {
+                    $included = self::resolveCoreDependencies($coreScripts[$script]['include'], $resolved);
+                    $withDeps = array_merge($withDeps, (array)$included);
+                }
             }
-            $withDeps[] = $script;
         }
-        // set proper order
-        $coreNames = array_keys($coreScripts);
-        $usedCore = array_intersect($coreNames, $withDeps);
-        $ordered = array_unique(array_merge($usedCore, $withDeps));
-
-        return $ordered;
+        return array_unique($withDeps);
     }
 
     /**
@@ -254,13 +281,14 @@ class JCSSUtil
      *
      * For each script can be defined:
      * - path: the true path to the file
-     * - require: other scripts to be loaded along with the file (aliases for core, paths for other)
+     * - require: other scripts to be loaded before given file (script names or paths)
+     * - include: other scripts to be loaded after given file (script names or paths)
      * - aliases: aliases used for this script
      * - styles: information about additional files (styles) that should be loaded along with the script
      * - gettext: if script requires a translations
      *
-     * When System::isDevelopmentMode precombined versions of scripts (prototype, livepipe and jquery)
-     * are replaced by original, uncompressed files
+     * By default minified files are served.
+     * When System::isDevelopmentMode eq true - uncompressed files are served.
      *
      * @return array List of core scripts
      */
@@ -286,7 +314,7 @@ class JCSSUtil
             'jquery' => array(
                 'production' => array(
                     'path' => 'javascript/jquery/jquery-1.8.3.min.js',
-                    'require' => array('jquery.noconflict'),
+                    'include' => array('jquery.noconflict', 'zikula'),
                 ),
                 'development' => array(
                     'path' => 'javascript/jquery/jquery-1.8.3.js',
@@ -334,7 +362,8 @@ class JCSSUtil
                 'production' => array(
                     'path' => 'javascript/plugins/colorbox/jquery.colorbox-min.js',
                     'aliases' => array('zikula.imageviewer', 'imageviewer', 'lightbox'),
-                    'require' => array('jquery', 'javascript/plugins/colorbox/boot.js'),
+                    'require' => array('jquery'),
+                    'include' => array('javascript/plugins/colorbox/boot.js'),
                     'styles' => array('javascript/plugins/colorbox/colorbox.css'),
                 ),
                 'development' => array(
@@ -359,19 +388,43 @@ class JCSSUtil
                 ),
                 'development' => array(
                     'path' => 'javascript/zikula/zikula.js',
-                    'require' => array(
-                        'jquery', 'underscore', 'underscore.string', 'modernizr',
-                        'javascript/zikula/lang.js',
-                        'javascript/zikula/class.js',
-                        'javascript/zikula/util.services.js',
-                        'javascript/zikula/core.js',
-                        'javascript/zikula/factory.js',
-                        'javascript/zikula/util.cookie.js',
-                        'javascript/zikula/util.gettext.js',
-                        'javascript/zikula/dom.js',
-                        'javascript/zikula/ajax.js',
-                        'javascript/zikula/boot.js'
+                    'include' => array(
+                        'javascript/zikula/zikula.lang.js',
+                        'javascript/zikula/zikula.class.js',
+                        'javascript/zikula/zikula.util.services.js',
+                        'javascript/zikula/zikula.core.js',
+                        'javascript/zikula/zikula.factory.js',
+                        'javascript/zikula/zikula.util.cookie.js',
+                        'javascript/zikula/zikula.util.gettext.js',
+                        'javascript/zikula/zikula.dom.js',
+                        'javascript/zikula/zikula.ajax.js',
+                        'javascript/zikula/zikula.boot.js'
                     ),
+                )
+            ),
+            'zikula.ui' => array(
+                'production' => array(
+                    'path' => 'javascript/zikula-plugins/zikula-ui/zikula.ui.min.js',
+                    'require' => array('zikula', 'jquery-ui'),
+                ),
+                'development' => array(
+                    'path' => 'javascript/zikula-plugins/zikula-ui/zikula.ui.js',
+                    'include' => array(
+                        'javascript/zikula-plugins/zikula-ui/zikula.ui.zaccordion.js',
+                        'javascript/zikula-plugins/zikula-ui/zikula.ui.zpanels.js',
+                    ),
+                )
+            ),
+            'zikula.contextmenu' => array(
+                'production' => array(
+                    'path' => 'javascript/zikula-plugins/zikula.plugins.contextmenu.js',
+                    'require' => array('zikula', 'contextmenu'),
+                )
+            ),
+            'zikula.template' => array(
+                'production' => array(
+                    'path' => 'javascript/zikula-plugins/zikula.plugins.template.js',
+                    'require' => array('zikula'),
                 )
             ),
         );
@@ -649,4 +702,53 @@ class JCSSUtil
         return $line;
     }
 
+    private static function decodeRequest()
+    {
+        // fixme - does not work with short urls (but $_GET/$_REQUEST are filled)
+        $query = ServiceUtil::get('request')->query->all();
+        $homepage = false;
+
+        // process the homepage
+        if (!isset($query['module']) || empty($query['module'])) {
+            $homepage = true;
+
+            // set the start parameters
+            $query['module'] = System::getVar('startpage');
+            $query['type'] = System::getVar('starttype');
+            $query['func'] = System::getVar('startfunc');
+            $args = explode(',', System::getVar('startargs'));
+
+            foreach ($args as $arg) {
+                if (!empty($arg)) {
+                    $argument = explode('=', $arg);
+                    $query[$argument[0]] = $argument[1];
+                }
+            }
+        }
+
+        // get module information
+        $modinfo = ModUtil::getInfoFromName($query['module']);
+
+        if ($modinfo) {
+            $query['module'] = $modinfo['name'];
+        }
+
+        // normalize module, type, func and generate view-id
+        $query['module'] = mb_strtolower($query['module']);
+        $query['type'] = mb_strtolower($query['type']);
+        $query['func'] = mb_strtolower($query['func']);
+
+        $viewId = 'homepage';
+        if (!empty($query['module'])) {
+            $viewId = "{$query['module']}-{$query['type']}-{$query['func']}";
+        }
+
+        $request = array(
+            'query' => $query,
+            'homepage' => $homepage,
+            'view-id' => $viewId
+        );
+
+        return $request;
+    }
 }

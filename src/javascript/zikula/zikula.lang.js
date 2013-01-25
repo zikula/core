@@ -171,7 +171,7 @@
      */
     Zikula.Lang.objectGetPath = function(object, pathName, defaultValue) {
         var prop,
-            path = _(pathName).isArray() ? pathName : pathName.split('.'),
+            path = _(pathName).isArray() ? _(pathName).clone() : pathName.split('.'),
             last = path.pop();
 
         while ((prop = path.shift())) {
@@ -200,7 +200,7 @@
      */
     Zikula.Lang.objectSetPath = function(object, pathName, value) {
         var prop,
-            path = _(pathName).isArray() ? pathName : pathName.split('.'),
+            path = _(pathName).isArray() ? _(pathName).clone() : pathName.split('.'),
             last = path.pop();
 
         while ((prop = path.shift())) {
@@ -248,8 +248,9 @@
     Zikula.Lang.objectUnsetPath = function(object, pathName) {
         if (Zikula.Lang.objectIssetPath(object, pathName)) {
             var prop,
-                path = _(pathName).isArray() ? pathName : pathName.split('.'),
+                path = _(pathName).isArray() ? _(pathName).clone() : pathName.split('.'),
                 last = path.pop();
+
             while ((prop = path.shift())) {
                 object = object[prop];
             }

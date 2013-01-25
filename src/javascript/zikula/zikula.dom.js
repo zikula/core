@@ -98,7 +98,8 @@
     $.zPluginFactory('zToggleInput', Zikula.Dom.toggleInput);
 
     /**
-     * Change the display state of an specific container depending of an input value.
+     * Changes the display state of an specific container depending of an input value.
+     * By default this method observe given input changes and automatically control container state.
      *
      * @exports Zikula.Dom.displayWhen as jQuery.fn.zDisplayWhen
      *
@@ -109,24 +110,39 @@
      * $('#container').zDisplayWhen('[name[radio_group]', true);
      * $('#container').zDisplayWhen('#input_parent_element', true);
      *
-     * @param {HTMLElement}        $this Single element from jQuery collection
-     * @param {HTMLElement|String} input Selector for input, inputs group or theirs container
-     * @param {*}                  value Input value to trigger container display
+     * @param {HTMLElement}        $this        Single element from jQuery collection
+     * @param {HTMLElement|String} input        Selector for input, inputs group or theirs container
+     * @param {*}                  value        Input value to trigger container display
+     * @param {Boolean}           [once=false]  Run once or observe the changes
      *
      * @return {HTMLElement}
      */
-    Zikula.Dom.displayWhen = function($this, input, value) {
+    Zikula.Dom.displayWhen = function($this, input, value, once) {
         value = _(value).isUndefined() ? true : value;
+        once = _(once).isUndefined() ? false : once;
         input = $(input);
 
         if (input.prop('nodeName') !== 'INPUT') {
             input = input.find('input[type=radio],input[type=checkbox]');
         }
 
-        if (input.filter(':checked').val() == value) {
-            $($this).slideDown();
+        var handler = function(animation) {
+            animation = _(animation).isUndefined() ? true : animation;
+            var test = input.filter(':checked').val() == value,
+                hide = animation ? 'slideUp' : 'hide',
+                show = animation ? 'slideDown' : 'show';
+            if (test) {
+                $($this)[show]();
+            } else {
+                $($this)[hide]();
+            }
+        };
+
+        if (once) {
+            handler();
         } else {
-            $($this).slideUp();
+            handler(false);
+            input.on('change', handler);
         }
 
         return $this;

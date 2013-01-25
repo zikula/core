@@ -68,18 +68,23 @@
                     instance = $(this).data(klassName); // try to get already instanced class
                 if (instance instanceof klass) { // if instance exists - call its method
                     // get first arg - it should be method name - then call it and pass the rest of args
-                    var method = localArgs.shift();
+                    var method = localArgs.shift(),
+                        localResult;
                     if (klass.hasMethod(method)) {
-                        var localResult = instance[method].apply(instance, localArgs);
+                        localResult = instance[method].apply(instance, localArgs);
                         // here we make assumption that destroy method return value should evaluate to true on success
                         // if so - remove stored class data
                         if (method === 'destroy' && result) {
                             $(this).removeData(klassName);
                         }
-                        // if method returned value other then itself - return this value instead of default
-                        if (localResult !== instance) {
-                            result = localResult;
-                        }
+                    } else if (klass.hasMethod('__call')) {
+                        // allow klass to handle calls to no existing methods
+                        // to do so klass have to have '__call' method
+                        localResult = instance['__call'].apply(instance, [method, localArgs]);
+                    }
+                    // if method returned value other then itself - return this value instead of default
+                    if (typeof localResult !== 'undefined' && localResult !== instance) {
+                        result = localResult;
                     }
                 } else { // instance does not exist - call class constructor
                     // add $this as the first arg and send it to class constructor
