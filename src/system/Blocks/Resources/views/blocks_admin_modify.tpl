@@ -129,6 +129,9 @@
                 <textarea id="blocks_content" name="content" cols="50" rows="10">{$content|safetext}</textarea>
             </div>
         </fieldset>
+        {if $bkey eq "HtmlBlock"}{* notify hooks here strictly for html block *}
+        {notifydisplayhooks eventname='blocks.htmlblock.ui_hooks.content.form_edit' id=$bid"}
+        {/if}
         {/if}
 
         {if $blockoutput neq ''}
