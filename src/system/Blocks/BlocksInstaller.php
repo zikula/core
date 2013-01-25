@@ -19,6 +19,7 @@ use DBUtil;
 use ModUtil;
 use ZLanguage;
 use Doctrine;
+use HookUtil;
 
 class BlocksInstaller extends \Zikula_AbstractInstaller
 {
