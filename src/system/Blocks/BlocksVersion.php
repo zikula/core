@@ -39,20 +39,18 @@ class BlocksVersion extends \Zikula_AbstractVersion
         return $meta;
     }
 
+    /**
+     * Set up hook subscriber bundle
+     * 
+     * This area is only activated when editing an Html Block. It is really only
+     * useful to activate Scribite as a WYSIWYG editor for the block.
+     * There are no other hook functions currently implemented since linking
+     * back (via url) to a block is impossible. 
+     */
     protected function setupHookBundles()
     {
         $bundle = new SubscriberBundle($this->name, 'subscriber.blocks.ui_hooks.content', 'ui_hooks', $this->__('HTML Block content hooks'));
-        $bundle->addEvent('display_view', 'blocks.ui_hooks.content.display_view');
         $bundle->addEvent('form_edit', 'blocks.ui_hooks.content.form_edit');
-        $bundle->addEvent('form_delete', 'blocks.ui_hooks.content.form_delete');
-        $bundle->addEvent('validate_edit', 'blocks.ui_hooks.content.validate_edit');
-        $bundle->addEvent('validate_delete', 'blocks.ui_hooks.content.validate_delete');
-        $bundle->addEvent('process_edit', 'blocks.ui_hooks.content.process_edit');
-        $bundle->addEvent('process_delete', 'blocks.ui_hooks.content.process_delete');
-        $this->registerHookSubscriberBundle($bundle);
-
-        $bundle = new SubscriberBundle($this->name, 'subscriber.blocks.filter_hooks.content', 'filter_hooks', $this->__('HTML block filter hook'));
-        $bundle->addEvent('filter', 'blocks.filter_hooks.content.filter');
         $this->registerHookSubscriberBundle($bundle);
     }
 
