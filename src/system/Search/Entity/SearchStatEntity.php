@@ -3,6 +3,7 @@
 namespace Search\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * SearchStat
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="search_stat")
  * @ORM\Entity
  */
-class SearchStatEntity
+class SearchStatEntity extends EntityAccess
 {
     /**
      * @var integer $id
@@ -36,7 +37,7 @@ class SearchStatEntity
     private $scount;
 
     /**
-     * @var date $date
+     * @var \Datetime $date
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
@@ -57,7 +58,7 @@ class SearchStatEntity
      * Set search
      *
      * @param string $search
-     * @return SearchStat
+     * @return SearchStatEntity
      */
     public function setSearch($search)
     {
@@ -79,9 +80,9 @@ class SearchStatEntity
      * Set scount
      *
      * @param integer $scount
-     * @return SearchStat
+     * @return SearchStatEntity
      */
-    public function setScount($scount)
+    public function setCount($scount)
     {
         $this->scount = $scount;
         return $this;
@@ -92,7 +93,7 @@ class SearchStatEntity
      *
      * @return integer
      */
-    public function getScount()
+    public function getCount()
     {
         return $this->scount;
     }
@@ -100,8 +101,8 @@ class SearchStatEntity
     /**
      * Set date
      *
-     * @param date $date
-     * @return SearchStat
+     * @param \Datetime $date
+     * @return SearchStatEntity
      */
     public function setDate($date)
     {
@@ -112,7 +113,7 @@ class SearchStatEntity
     /**
      * Get date
      *
-     * @return date
+     * @return \Datetime
      */
     public function getDate()
     {

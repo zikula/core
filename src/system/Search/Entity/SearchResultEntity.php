@@ -90,6 +90,7 @@ class SearchResultEntity
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -112,6 +113,7 @@ class SearchResultEntity
     public function setText($text)
     {
         $this->text = $text;
+
         return $this;
     }
 
@@ -134,6 +136,7 @@ class SearchResultEntity
     public function setModule($module)
     {
         $this->module = $module;
+
         return $this;
     }
 
@@ -156,6 +159,7 @@ class SearchResultEntity
     public function setExtra($extra)
     {
         $this->extra = $extra;
+
         return $this;
     }
 
@@ -178,6 +182,7 @@ class SearchResultEntity
     public function setCreated($created)
     {
         $this->created = $created;
+
         return $this;
     }
 
@@ -200,6 +205,7 @@ class SearchResultEntity
     public function setFound($found)
     {
         $this->found = $found;
+
         return $this;
     }
 
@@ -222,6 +228,7 @@ class SearchResultEntity
     public function setSesid($sesid)
     {
         $this->sesid = $sesid;
+
         return $this;
     }
 
