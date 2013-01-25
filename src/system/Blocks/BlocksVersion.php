@@ -48,8 +48,8 @@ class BlocksVersion extends \Zikula_AbstractVersion
      */
     protected function setupHookBundles()
     {
-        $bundle = new SubscriberBundle($this->name, 'subscriber.blocks.ui_hooks.content', 'ui_hooks', $this->__('HTML Block content hook'));
-        $bundle->addEvent('form_edit', 'blocks.ui_hooks.content.form_edit');
+        $bundle = new SubscriberBundle($this->name, 'subscriber.blocks.htmlblock.ui_hooks.content', 'ui_hooks', $this->__('HTML Block content hook'));
+        $bundle->addEvent('form_edit', 'blocks.htmlblock.ui_hooks.content.form_edit');
         $this->registerHookSubscriberBundle($bundle);
     }
 

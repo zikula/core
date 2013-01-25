@@ -130,7 +130,7 @@
             </div>
         </fieldset>
         {if $bkey eq "HtmlBlock"}{* notify hooks here strictly for html block *}
-        {notifydisplayhooks eventname='blocks.ui_hooks.content.form_edit' id=$bid"}
+        {notifydisplayhooks eventname='blocks.htmlblock.ui_hooks.content.form_edit' id=$bid"}
         {/if}
         {/if}
 
