@@ -129,6 +129,10 @@
                 <textarea id="blocks_content" name="content" cols="50" rows="10">{$content|safetext}</textarea>
             </div>
         </fieldset>
+        {if $bkey eq "HtmlBlock"}
+        {* hook here strictly to enable scribite for html block *}
+        {notifydisplayhooks eventname='blocks.ui_hooks.content.form_edit' id=$bid"}
+        {/if}
         {/if}
 
         {if $blockoutput neq ''}
