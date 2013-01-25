@@ -3,6 +3,7 @@
 namespace Search\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * SearchStat
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="search_stat")
  * @ORM\Entity
  */
-class SearchStatEntity
+class SearchStatEntity extends EntityAccess
 {
     /**
      * @var integer $id
@@ -81,7 +82,7 @@ class SearchStatEntity
      * @param integer $scount
      * @return SearchStatEntity
      */
-    public function setScount($scount)
+    public function setCount($scount)
     {
         $this->scount = $scount;
         return $this;
@@ -92,7 +93,7 @@ class SearchStatEntity
      *
      * @return integer
      */
-    public function getScount()
+    public function getCount()
     {
         return $this->scount;
     }
