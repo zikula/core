@@ -24,27 +24,3 @@ Contributing
 ------------
 
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing
-
-Pull requests should use the following description template. Use [WIP] for work in progress.
-
-```
-| Q             | A
-| ------------- | ---
-| Bug fix?      | [yes|no]
-| New feature?  | [yes|no]
-| BC breaks?    | [yes|no]
-| Deprecations? | [yes|no]
-| Tests pass?   | [yes|no]
-| Fixed tickets | [comma separated list of tickets fixed by the PR]
-| License       | MIT
-| Doc PR        | [The reference to the documentation PR if any]
-```
-
-If there are any todos, please use this template:
-
-```
-- [ ] fix the tests as they have not been updated yet
-- [ ] submit changes to the documentation
-- [ ] document the BC breaks
-```
-

@@ -13,10 +13,15 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+
 /**
  * Zikula_Session class.
  */
-class Zikula_Session extends \Symfony\Component\HttpFoundation\Session\Session
+class Zikula_Session extends Session
 {
     /**
      * The message type for status messages, to use with, for example, {@link hasMessages()}.
@@ -35,7 +40,7 @@ class Zikula_Session extends \Symfony\Component\HttpFoundation\Session\Session
     /**
      * Storage engine.
      *
-     * @var Zikula_Session_Storage
+     * @var Zikula_Session_StorageInterface
      */
     protected $storage;
 
@@ -51,7 +56,7 @@ class Zikula_Session extends \Symfony\Component\HttpFoundation\Session\Session
      *
      * @param Zikula_Session_StorageInterface $storage Storage engine.
      */
-    public function __construct(\Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface $storage)
+    public function __construct(SessionStorageInterface $storage)
     {
         $config = array(
             'gc_probability' => System::getVar('gc_probability'),
@@ -99,8 +104,8 @@ class Zikula_Session extends \Symfony\Component\HttpFoundation\Session\Session
 
         $config['cookie_lifetime'] = $lifetime;
 
-        $storage = new \Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage($config);
-        parent::__construct($storage, new \Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag());
+        $storage = new NativeSessionStorage($config);
+        parent::__construct($storage, new NamespacedAttributeBag());
     }
 
 
@@ -217,7 +222,7 @@ class Zikula_Session extends \Symfony\Component\HttpFoundation\Session\Session
      */
     public function set($key, $value, $namespace = '/')
     {
-        return parent::set($key, $value);
+        parent::set($key, $value);
     }
 
     /**
@@ -232,7 +237,7 @@ class Zikula_Session extends \Symfony\Component\HttpFoundation\Session\Session
      */
     public function del($key, $namespace = '/')
     {
-        return parent::remove($key);
+        parent::remove($key);
     }
 
     /**
