@@ -3,7 +3,7 @@ Contributing Guidelines
 
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing
 
-Pull requests should use the following desription template:
+Pull requests should use the following description template:
 
 ```
 | Q             | A
@@ -23,7 +23,7 @@ For example:
 ```
 | Q             | A
 | ------------- | ---
-| Bug fix?      | no
+| Bug fix?      | yes
 | New feature?  | no
 | BC breaks?    | no
 | Deprecations? | no
