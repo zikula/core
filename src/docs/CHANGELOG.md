@@ -5,6 +5,14 @@ Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 
 Features:
+- Added garbage collection to CSRF token generator
+- Introduced Symfony2 Forms
+
+- Controller methods need to be suffixed with the word 'Action'. Old methods will continue to work.
+- Deprecated `Zikula_EventManager` for Symfony2 EventDispatcher component
+- Deprecated `Zikula_ServiceManager` for symfony2 Dependency Injection component
+- Switched to Composer dependency manager see http://getcomposer.org/ which are now
+  managed in `composer.json`
 - [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
 
   - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.

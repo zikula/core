@@ -13,13 +13,15 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * Zikula_Session class.
  */
-class Zikula_Session implements SessionInterface
+class Zikula_Session extends Session
 {
     /**
      * The message type for status messages, to use with, for example, {@link hasMessages()}.
@@ -38,7 +40,7 @@ class Zikula_Session implements SessionInterface
     /**
      * Storage engine.
      *
-     * @var Zikula_Session_Storage
+     * @var Zikula_Session_StorageInterface
      */
     protected $storage;
 
@@ -54,34 +56,58 @@ class Zikula_Session implements SessionInterface
      *
      * @param Zikula_Session_StorageInterface $storage Storage engine.
      */
-    public function __construct(Zikula_Session_StorageInterface $storage)
+    public function __construct(SessionStorageInterface $storage)
     {
-        $this->storage = $storage;
-        $this->started = false;
-    }
+        $config = array(
+            'gc_probability' => System::getVar('gc_probability'),
+            'gc_divisor' => 10000,
+            'gc_maxlifetime' => System::getVar('secinactivemins'),
+        );
 
-    /**
-     * Start session.
-     *
-     * @throws RuntimeException If illegal namespace received.
-     *
-     * @return boolean
-     */
-    public function start()
-    {
-        if (!$this->started && session_id()) {
-            throw new RuntimeException('Error! Session has already been started outside of Zikula_Session.');
+        $path = System::getBaseUri();
+        if (empty($path)) {
+            $path = '/';
+        } elseif (substr($path, -1, 1) != '/') {
+            $path .= '/';
         }
 
-        if (!$this->started) {
-            register_shutdown_function('session_write_close');
-            $this->storage->start();
-            $_SESSION['_zikula_messages'] = array_key_exists('_zikula_messages', $_SESSION) ? $_SESSION['_zikula_messages'] : array();
-            $this->started = true;
+        $config['cookie_path'] = $path;
+
+        $host = System::serverGetVar('HTTP_HOST');
+
+        if (($pos = strpos($host, ':')) !== false) {
+            $host = substr($host, 0, $pos);
         }
 
-        return $this->started;
+        // PHP configuration variables
+        // Set lifetime of session cookie
+        $seclevel = System::getVar('seclevel');
+        switch ($seclevel) {
+            case 'High':
+                // Session lasts duration of browser
+                $lifetime = 0;
+                // Referer check
+                // ini_set('session.referer_check', $host.$path);
+                $config['referer_check'] = $host;
+                break;
+            case 'Medium':
+                // Session lasts set number of days
+                $lifetime = System::getVar('secmeddays') * 86400;
+                break;
+            case 'Low':
+            default:
+                // Session lasts unlimited number of days (well, lots, anyway)
+                // (Currently set to 25 years)
+                $lifetime = 788940000;
+                break;
+        }
+
+        $config['cookie_lifetime'] = $lifetime;
+
+        $storage = new NativeSessionStorage($config);
+        parent::__construct($storage, new NamespacedAttributeBag());
     }
+
 
     /**
      * Check if session has started.
@@ -90,12 +116,7 @@ class Zikula_Session implements SessionInterface
      */
     public function hasStarted()
     {
-        return $this->started;
-    }
-
-    public function isStarted()
-    {
-        return $this->hasStarted();
+        return $this->isStarted();
     }
 
     /**
@@ -107,7 +128,7 @@ class Zikula_Session implements SessionInterface
      */
     public function expire()
     {
-        $this->storage->expire();
+        $this->invalidate();
     }
 
     /**
@@ -119,7 +140,7 @@ class Zikula_Session implements SessionInterface
      */
     public function regenerate()
     {
-        $this->storage->regenerate();
+        $this->migrate();
     }
 
     /**
@@ -132,10 +153,7 @@ class Zikula_Session implements SessionInterface
      */
     public function addMessage($type, $value)
     {
-        if (!$this->hasMessages($type)) {
-            $_SESSION['_zikula_messages'][$type] = array();
-        }
-        $_SESSION['_zikula_messages'][$type][] = $value;
+        $this->getFlashBag()->add($type, $value);
     }
 
     /**
@@ -148,11 +166,7 @@ class Zikula_Session implements SessionInterface
      */
     public function getMessages($type, $default = array())
     {
-        if (isset($_SESSION) && array_key_exists($type, $_SESSION['_zikula_messages'])) {
-            return $_SESSION['_zikula_messages'][$type];
-        }
-
-        return $default;
+        return $this->getFlashBag()->get($type, $default);
     }
 
     /**
@@ -164,7 +178,7 @@ class Zikula_Session implements SessionInterface
      */
     public function hasMessages($type)
     {
-        return isset($_SESSION) && array_key_exists($type, $_SESSION['_zikula_messages']) && !empty($_SESSION['_zikula_messages'][$type]);
+        return $this->getFlashBag()->has($type);
     }
 
     /**
@@ -176,13 +190,7 @@ class Zikula_Session implements SessionInterface
      */
     public function clearMessages($type = null)
     {
-        if (is_null($type)) {
-            $_SESSION['_zikula_messages'] = array();
-        }
-
-        if ($this->hasMessages($type)) {
-            $_SESSION['_zikula_messages'][$type] = array();
-        }
+        $this->getFlashBag()->get($type);
     }
 
     /**
@@ -198,11 +206,7 @@ class Zikula_Session implements SessionInterface
      */
     public function get($key, $default = null, $namespace = '/')
     {
-        if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
-        }
-
-        return $this->has($key, $namespace) ? $_SESSION[$namespace][$key] : $default;
+        return parent::get($key, $default);
     }
 
     /**
@@ -218,10 +222,7 @@ class Zikula_Session implements SessionInterface
      */
     public function set($key, $value, $namespace = '/')
     {
-        if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
-        }
-        $_SESSION[$namespace][$key] = $value;
+        parent::set($key, $value);
     }
 
     /**
@@ -236,12 +237,7 @@ class Zikula_Session implements SessionInterface
      */
     public function del($key, $namespace = '/')
     {
-        if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
-        }
-        if ($this->has($key, $namespace)) {
-            unset($_SESSION[$namespace][$key]);
-        }
+        parent::remove($key);
     }
 
     /**
@@ -256,39 +252,7 @@ class Zikula_Session implements SessionInterface
      */
     public function has($key, $namespace = '/')
     {
-        if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikula_messages directly');
-        }
-
-        if (isset($_SESSION[$namespace])) {
-            return array_key_exists($key, $_SESSION[$namespace]);
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the contents of an entire namespace as an array.
-     *
-     * @param string $namespace Namespace name; optional; default is '/'.
-     *
-     * @throws InvalidArgumentException If illegal namespace received.
-     *
-     * @return array The contents of the namespace as an array indexed by session variable keys; empty if the namespace is empty or does not exist.
-     */
-    public function getNamespaceContents($namespace = '/')
-    {
-        if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikula_messages directly.');
-        }
-
-        $contents = array();
-
-        if (isset($_SESSION[$namespace]) && !empty($_SESSION[$namespace]) && is_array($_SESSION[$namespace])) {
-            $contents = $_SESSION[$namespace];
-        }
-
-        return $contents;
+        return parent::has($key);
     }
 
     /**
@@ -298,86 +262,14 @@ class Zikula_Session implements SessionInterface
      *
      * @param string $namespace Namespace.
      *
+     * @deprecated
+     *
      * @throws InvalidArgumentException If illegal namespace received.
      *
      * @return void
      */
     public function clearNamespace($namespace)
     {
-        if ($namespace == '_zikula_messages') {
-            throw new InvalidArgumentException('You cannot access _zikula_messages directly.');
-        }
-
-        $_SESSION[$namespace] = array();
-    }
-
-    public function getId()
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function setId($id)
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function getName()
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function setName($name)
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function invalidate($lifetime = null)
-    {
-        $this->expire();
-    }
-
-    public function migrate($destroy = false, $lifetime = null)
-    {
-        $this->regenerate();
-    }
-
-    public function save()
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function all()
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function replace(array $attributes)
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function remove($name)
-    {
-        $this->del($name);
-    }
-
-    public function clear()
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function registerBag(SessionBagInterface $bag)
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function getBag($name)
-    {
-        throw new \BadMethodCallException('not in use');
-    }
-
-    public function getMetadataBag()
-    {
-        throw new \BadMethodCallException('not in use');
+        $this->remove($namespace);
     }
 }

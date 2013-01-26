@@ -199,17 +199,17 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupCsfrProtection(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
-            $tokenStorageDef = new Definition('Zikula_Token_Storage_Session',
-                            array(new Reference('session')));
-            $this->serviceManager->setDefinition('token.storage', $tokenStorageDef);
+            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Storage\SessionStorage',
+                            array(new Zikula_ServiceManager_Reference('session')));
+            $this->serviceManager->registerService('token.storage', $tokenStorageDef);
 
-            $tokenGeneratorDef = new Definition('Zikula_Token_Generator',
-                            array(new Reference('token.storage'), System::getVar('signingkey')));
-            $this->serviceManager->setDefinition('token.generator', $tokenGeneratorDef);
+            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Generator',
+                            array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
+            $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
 
-            $tokenValidatorDef = new Definition('Zikula_Token_Validate',
-                            array(new Reference('token.generator')));
-            $this->serviceManager->setDefinition('token.validator', $tokenValidatorDef);
+            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Validator',
+                            array(new Zikula_ServiceManager_Reference('token.generator')));
+            $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
         }
     }
 

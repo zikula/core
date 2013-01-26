@@ -18,42 +18,6 @@
 class SessionUtil
 {
     /**
-     * Initialise session.
-     *
-     * @return void
-     */
-    public static function initialize()
-    {
-    }
-
-    /**
-     * Create a new session.
-     *
-     * @param string $sessid The session ID.
-     * @param string $ipaddr The IP address of the host with this session.
-     *
-     * @return boolean
-     */
-    public static function _createNew($sessid, $ipaddr)
-    {
-        $now = date('Y-m-d H:i:s', time());
-        $obj = array('sessid' => $sessid, 'ipaddr' => $ipaddr, 'uid' => 0, 'lastused' => $now);
-        $GLOBALS['_ZSession']['obj'] = $obj;
-        $GLOBALS['_ZSession']['new'] = true;
-        // Generate a random number, used for some authentication (using prime numer bounds)
-        //self::setVar('rand', RandomUtil::getString(32, 40, false, true, true, false, true, true, true));
-        // Initialize the array of random values for modules authentication
-        self::setVar('rand', array());
-        // write hash of useragent into the session for later validation
-        self::setVar('useragent', sha1(System::serverGetVar('HTTP_USER_AGENT')));
-
-        // init status & error message arrays
-        self::setVar('uid', 0);
-
-        return true;
-    }
-
-    /**
      * Get a session variable
      *
      * @param string  $name                 Name of the session variable to get.
@@ -85,20 +49,9 @@ class SessionUtil
     public static function setVar($name, $value, $path = '/', $autocreate = true, $overwriteExistingVar = false)
     {
         $session = ServiceUtil::getManager()->get('session');
-        if (($name == 'errormsg' || $name == 'statusmsg' || $name == '_ZErrorMsg' || $name == '_ZStatusMsg') && !is_array($value)) {
-            if (System::isDevelopmentMode()) {
-                LogUtil::log(__("Error! This use of 'SessionUtil::setVar()' is no longer valid. Please use the LogUtil API to manipulate status messages and error messages."));
-            }
-            if ($name == '_ZErrorMsg' || $name == 'errormsg') {
-                return LogUtil::registerError($value);
-            }
-            if ($name == '_ZStatusMsg' || $name == 'statusmsg') {
-                return LogUtil::registerStatus($value);
-            }
-        }
 
         if ($name == 'uid') {
-            $session->regenerate();
+            $session->regenerate(true);
         }
 
         return $session->set($name, $value, $path);
@@ -120,59 +73,6 @@ class SessionUtil
         $session->del($name, $path);
 
         return $value;
-    }
-
-    /**
-     * Traverse the session data structure according to the path given and return a reference to last object in the path.
-     *
-     * @param string  $path                 Path to traverse to reach the element we wish to return.
-     * @param boolean $autocreate           Whether or not to autocreate the supplied path (optional) (default=true).
-     * @param boolean $overwriteExistingVar Whether or not to overwrite existing/set variable entries which the given path requires to be arrays (optional) (default=false).
-     *
-     * @return mixed Array upon successful location/creation of path element(s), false upon failure.
-     */
-    public static function &_resolvePath($path, $autocreate = true, $overwriteExistingVar = false)
-    {
-        // now traverse down the path and set the var
-        if ($path == '/' || !$path) {
-            return LogUtil::registerError(__f('Error! Invalid [%s] received.', 'path'));
-        }
-
-        // remove leading '/' so that explode doesn't deliver an empty 1st element
-        if (strpos($path, '/') === 0) {
-            $path = substr($path, 1);
-        }
-
-        $c = 0;
-        $parent = & $_SESSION;
-        $paths = explode('/', $path);
-        foreach ($paths as $p) {
-            $pFixed = ($c == 0 ? 'ZSV' . $p : $p);
-            if (!isset($parent[$pFixed])) {
-                if ($autocreate) {
-                    $parent[$pFixed] = array();
-                    $parent = & $parent[$pFixed];
-                } else {
-                    $false = false;
-
-                    return $false;
-                }
-            } else {
-                if (!is_array($parent[$pFixed])) {
-                    if ($overwriteExistingVar) {
-                        $parent[$pFixed] = array();
-                    } else {
-                        $false = false;
-
-                        return $false;
-                    }
-                }
-                $parent = & $parent[$pFixed];
-            }
-            $c++;
-        }
-
-        return $parent;
     }
 
     /**
@@ -202,17 +102,15 @@ class SessionUtil
 
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
-            self::_createNew(session_id(), $GLOBALS['_ZSession']['obj']['ipaddr']);
-            // session is not new, remove flag
-            unset($GLOBALS['_ZSession']['new']);
+
             self::regenerate(true);
 
             return;
         }
 
-        // for all logged in users with session destroy session and set flag
-        session_destroy();
-        $GLOBALS['_ZSession']['expired'] = true;
+        $session = ServiceUtil::getManager()->get('session');
+        $session->invalidate();
+        self::setVar('session_expire', true);
     }
 
     /**
@@ -222,13 +120,7 @@ class SessionUtil
      */
     public static function hasExpired()
     {
-        if (isset($GLOBALS['_ZSession']['expired']) && $GLOBALS['_ZSession']['expired']) {
-            unset($GLOBALS['_ZSession']);
-
-            return true;
-        }
-
-        return false;
+        return self::getVar('session_expired', false);
     }
 
     /**
@@ -240,50 +132,10 @@ class SessionUtil
      */
     public static function regenerate($force = false)
     {
-        // only regenerate if set in admin
-        if ($force == false) {
-            if (!System::getVar('sessionregenerate') || System::getVar('sessionregenerate') == 0) {
-                // there is no point changing a newly generated session.
-                if (isset($GLOBALS['_ZSession']['new']) && $GLOBALS['_ZSession']['new'] == true) {
-                    return;
-                }
-
-                return;
-            }
-        }
-
-        // dont allow multiple regerations
-        if (isset($GLOBALS['_ZSession']['regenerated']) && $GLOBALS['_ZSession']['regenerated'] == true) {
-            return;
-        }
-
-        $GLOBALS['_ZSession']['sessid_old'] = session_id(); // save old session id
-
-        session_regenerate_id();
-
-        $GLOBALS['_ZSession']['obj']['sessid'] = session_id(); // commit new sessid
-        $GLOBALS['_ZSession']['regenerated'] = true; // flag regeneration
+        $session = ServiceUtil::getManager()->get('session');
+        $session->migrate();
 
         return;
-    }
-
-    /**
-     * Regenerate session according to probability set by admin.
-     *
-     * @return void
-     */
-    public static function random_regenerate()
-    {
-        if (!System::getVar('sessionrandregenerate')) {
-            return;
-        }
-
-        $chance = 100 - System::getVar('sessionregeneratefreq');
-        $a = mt_rand(0, $chance);
-        $b = mt_rand(0, $chance);
-        if ($a == $b) {
-            self::regenerate();
-        }
     }
 
     /**
