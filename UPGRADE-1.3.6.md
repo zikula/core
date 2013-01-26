@@ -280,7 +280,7 @@ The main changes are:
     - `Zikula\Core\Hook\FilterHook` (was `Zikula_FilterHook`).
     - `Zikula\Core\Hook\ProcessHook` (was `Zikula_ProcessHook`).
     - `Zikula\Core\Hook\ValidationHook` (was `Zikula_ValidationHook`).
-  
+
   - hooks are triggered by `->dispatch($name, $hook)` instead of `->notify($hook)`
 
 Example in Core 1.3.0-1.3.5
@@ -290,7 +290,7 @@ Example in Core 1.3.0-1.3.5
 
 Example in Core 1.3.6+
 
-    $hook = new \Zikula\Core\Hook\DisplayHook($id, $url);
+    $hook = new Zikula\Core\Hook\DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
 
 New class list:
@@ -299,6 +299,8 @@ New class list:
   - `Zikula\Core\Hook\ValidationResponse` (was `Zikula_Hook_ValidationResponse`).
   - `Zikula\Core\Hook\DisplayResponse` (was `Zikula_Response_DisplayHook`).
   - `Zikula\Core\Hook\AbstractHookListener` (was `Zikula_Hook_AbstractHandler`).
+  - `Zikula\Component\HookDispatcher\SubscriberBundle` (was `Zikula_HookManager_SubscriberBundle`).
+  - `Zikula\Component\HookDispatcher\ProviderBundle` (was `Zikula_HookManager_ProviderBundle`).
 
 
 Request
