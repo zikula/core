@@ -52,11 +52,6 @@ if ($modinfo) {
     }
 }
 
-if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-    $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
-    $dbConn->beginTransaction();
-}
-
 try {
     if (!$module) {
         // we have a static homepage
@@ -80,10 +75,6 @@ try {
         $response = new Response('Something unexpected happened', 500);
     }
 
-    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        $dbConn->commit();
-    }
-
 } catch (Exception $e) {
     $event = new \Zikula\Core\Event\GenericEvent($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
@@ -103,12 +94,6 @@ try {
             $response = new RedirectResponse(System::normalizeUrl($e->getUrl()), $e->getType());
         } elseif ($e instanceof PDOException) {
             $response = new Response($e->getMessage(), 500);
-            if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-                $return = __('Error! The transaction failed. Performing rollback.').$return;
-                $dbConn->rollback();
-            } else {
-                $return = __('Error! The transaction failed.').$return;
-            }
         } elseif ($e instanceof Exception) {
             // general catch all
             $response = new Response($e->getMessage(), 500);
@@ -188,12 +173,6 @@ function __frontcontroller_ajax(Request $request)
     // Dispatch controller.
     try {
         if (!isset($response)) {
-            // Handle database transactions
-            if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-                $dbConn = Doctrine_Manager::getInstance()->getCurrentConnection();
-                $dbConn->beginTransaction();
-            }
-
             $response = ModUtil::func($modinfo['name'], $type, $func);
             if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
                 throw new Zikula_Exception_Fatal(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
@@ -209,15 +188,6 @@ function __frontcontroller_ajax(Request $request)
         $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     } catch (Exception $e) {
         $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
-    }
-
-    // Handle database transactions
-    if (System::getVar('Z_CONFIG_USE_TRANSACTIONS')) {
-        if (isset($e) && $e instanceof Exception) {
-            $dbConn->rollback();
-        } else {
-            $dbConn->commit();
-        }
     }
 
     // Process final response.

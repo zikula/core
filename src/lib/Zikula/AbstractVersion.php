@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Component\HookDispatcher\ProviderBundle;
+
 /**
  * Zikula Version base class.
  */
@@ -660,11 +663,11 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param Zikula_HookManager_SubscriberBundle $bundle HookBundle.
+     * @param SubscriberBundle $bundle HookBundle.
      *
      * @return Zikula_AbstractVersion
      */
-    public function registerHookSubscriberBundle(Zikula_HookManager_SubscriberBundle $bundle)
+    public function registerHookSubscriberBundle(SubscriberBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookSubscriberBundles)) {
             throw new InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
@@ -678,11 +681,11 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Register a hook subscriber bundle.
      *
-     * @param Zikula_HookManager_ProviderBundle $bundle HookProviderBundle.
+     * @param ProviderBundle $bundle HookProviderBundle.
      *
      * @return Zikula_AbstractVersion
      */
-    public function registerHookProviderBundle(Zikula_HookManager_ProviderBundle $bundle)
+    public function registerHookProviderBundle(ProviderBundle $bundle)
     {
         if (array_key_exists($bundle->getArea(), $this->hookProviderBundles)) {
             throw new InvalidArgumentException(sprintf('Area %s is already registered', $bundle->getArea()));
@@ -698,7 +701,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of Zikula_Version_HookSubscriberBundle
+     * @return array Of SubscriberBundle
      */
     public function getHookSubscriberBundles()
     {
@@ -710,7 +713,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * Usually this will only be one.
      *
-     * @return array Of Zikula_Version_HookProviderBundle
+     * @return array Of ProviderBundle
      */
     public function getHookProviderBundles()
     {
@@ -724,7 +727,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * @throws InvalidArgumentException If the area specified is not registered.
      *
-     * @return Zikula_HookManager_SubscriberBundle
+     * @return SubscriberBundle
      */
     public function getHookSubscriberBundle($area)
     {
@@ -742,7 +745,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
      *
      * @throws InvalidArgumentException If the area specified is not registered.
      *
-     * @return Zikula_HookManager_ProviderBundle
+     * @return ProviderBundle
      */
     public function getHookProviderBundle($area)
     {

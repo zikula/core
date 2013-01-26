@@ -90,7 +90,6 @@ $ZConfig['System']['Z_CONFIG_USE_OBJECT_ATTRIBUTION'] = 0;     // enable univers
 $ZConfig['System']['Z_CONFIG_USE_OBJECT_CATEGORIZATION'] = 1;  // categorization/filtering services, 0 to turn off
 $ZConfig['System']['Z_CONFIG_USE_OBJECT_LOGGING'] = 0;         // object audit trail logging, 0 to turn off
 $ZConfig['System']['Z_CONFIG_USE_OBJECT_META'] = 0;            // meta-data services, 0 to turn off
-$ZConfig['System']['Z_CONFIG_USE_TRANSACTIONS'] = 0;           // run request as a transaction, 0 to turn off
 
 // ----------------------------------------------------------------------
 // Database cache settings
