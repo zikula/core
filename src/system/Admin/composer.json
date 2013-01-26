@@ -9,6 +9,9 @@
             "homepage": "http://zikula.org/"
         }
     ],
+    "autoload": {
+        "psr-0": { "Admin\\": "" },
+    },
     "require": {
         "php": ">5.3.2"
     }
