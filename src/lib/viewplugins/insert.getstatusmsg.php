@@ -54,11 +54,9 @@ function smarty_insert_getstatusmsg($params, $view)
     // we do not use LogUtil::getStatusMessages() because we need to know if we have to
     // show a status or an error
     $session = $view->getContainer()->get('session');
-    $msgStatus = $session->getMessages(Zikula_Session::MESSAGE_STATUS);
+    $msgStatus = $session->getFlashBag()->get(Zikula_Session::MESSAGE_STATUS);
     $msgtype   = ($class ? $class : 'z-statusmsg');
-    $session->clearMessages(Zikula_Session::MESSAGE_STATUS);
-    $msgError = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
-    $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
+    $msgError = $session->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
 
     // Error message overrides status message
     if (!empty($msgError)) {

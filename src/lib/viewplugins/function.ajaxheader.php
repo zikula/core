@@ -53,6 +53,10 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
     $ui = (isset($params['ui'])) ? true : false;
     $imageviewer = (isset($params['imageviewer'])) ? true : false;
 
+    /* @var \Symfony\Component\HttpFoundation\Request $request */
+    $request = ServiceUtil::getManager()->get('request');
+    $basePath = $request->getBasePath();
+
     // create an empty return
     $return = '';
 
@@ -72,9 +76,9 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
         if (is_readable('javascript/ajax/lightbox.js')) {
             $scripts[] = 'javascript/ajax/lightbox.js';
             if (isset($params['assign'])) {
-                $return = '<link rel="stylesheet" href="javascript/ajax/lightbox/lightbox.css" type="text/css" media="screen" />';
+                $return = '<link rel="stylesheet" href="'.$basePath.'javascript/ajax/lightbox/lightbox.css" type="text/css" media="screen" />';
             } else {
-                PageUtil::addVar('stylesheet', 'javascript/ajax/lightbox/lightbox.css');
+                PageUtil::addVar('stylesheet', $basePath.'javascript/ajax/lightbox/lightbox.css');
             }
         } else {
             $imageviewer = true;
@@ -83,7 +87,7 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
     if ($imageviewer) {
         $scripts[] = 'zikula.imageviewer';
         if (isset($params['assign'])) {
-            $return = '<link rel="stylesheet" href="javascript/helpers/ImageViewer/ImageViewer.css" type="text/css" media="screen" />';
+            $return = '<link rel="stylesheet" href="'.$basePath.'javascript/helpers/ImageViewer/ImageViewer.css" type="text/css" media="screen" />';
         }
     }
 
