@@ -100,7 +100,8 @@ class AdminController extends \Zikula_AbstractController
         $ids = $this->getGroupsInfo();
 
         $where = '';
-        $enableFilter = $this->getVar('filter', 1);        if ($enableFilter == 1) {
+        $enableFilter = $this->getVar('filter', 1);
+        if ($enableFilter == 1) {
             $permgrpparts = explode('+', $permgrp);
             if ($permgrpparts[0] == 'g') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
