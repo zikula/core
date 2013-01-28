@@ -33,8 +33,10 @@ Features:
 - Theme settings: mobile theme different then default; mobile domain; alternative site view
   theme and domain; set admin theme in theme settings section.
 - Give the profile module the possibility to change the profilelink.
-- Added viewplugin `nl2html`
-- Added hook to Blocks module to allow for use with Html Block (only)
+- Added viewplugin `nl2html`.
+- Added hook to Blocks module to allow for use with Html Block (only).
+- [BC BREAK] DoctrineExtensions Paginator has been removed, use Doctrine ORM paginator 
+  instead http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
