@@ -51,7 +51,7 @@ function smarty_function_sortlink($params, Zikula_View $view)
 
     $modname = isset($params['modname']) ? $params['modname'] : $view->getTopLevelModule();
     $type    = isset($params['type']) ? $params['type'] : 'user';
-    $func    = isset($params['func']) ? $params['func'] : 'main';
+    $func    = isset($params['func']) ? $params['func'] : 'index';
 
     $text    = isset($params['linktext']) ? $params['linktext'] : '&nbsp;';
     $sortdir = isset($params['sortdir']) ? strtoupper($params['sortdir']) : 'ASC';

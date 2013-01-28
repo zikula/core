@@ -49,7 +49,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $output = array(
             'id' => $moduleID,
             'name' => $displayname,
-            'url' => ModUtil::url($module, 'admin', 'main'),
+            'url' => ModUtil::url($module, 'admin', 'index'),
             'parentCategory' => $newParentCat,
             'oldCategory' => $oldcid,
         );

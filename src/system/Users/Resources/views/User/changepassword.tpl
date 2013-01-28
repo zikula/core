@@ -101,7 +101,7 @@
             {else}
             {button class='z-bt-ok' __alt='Save' __title='Save' __text='Save'}
             {/if}
-            <a href="{modurl modname='Users' type='user' func='main'}" title="{gt text='Cancel'}" class='z-bt-cancel'>{gt text='Cancel'}</a>
+            <a href="{modurl modname='Users' type='user' func='index'}" title="{gt text='Cancel'}" class='z-bt-cancel'>{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

@@ -115,7 +115,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
 
             foreach ($mods as $mod) {
                 if (SecurityUtil::checkPermission("$mod[name]::", '::', ACCESS_OVERVIEW)) {
-                    $menuitems[] = self::addMenuItem($mod['displayname'], ModUtil::url($mod['name'], 'user', 'main'), $mod['description']);
+                    $menuitems[] = self::addMenuItem($mod['displayname'], ModUtil::url($mod['name'], 'user', 'index'), $mod['description']);
                     $content = true;
                 }
             }
@@ -176,7 +176,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
 
                     // default values
                     $type = 'user';
-                    $func = 'main';
+                    $func = 'index';
                     $params = array();
 
                     // url[1] can be a function or function&param=value

@@ -23,7 +23,7 @@
  * Available parameters:
  *   - x_class:    The well-known name of a module to execute a function from (required)
  *   - x_method:   The type of function to execute; currently one of 'user' or 'admin' (default is 'user')
- *   - x_function: The name of the module function to execute (default is 'main')
+ *   - x_function: The name of the module function to execute (default is 'index')
  *   - x_assign:     If set, the results are assigned to the corresponding variable instead of printed out
  *   - all remaining parameters are passed to the callable.
  *

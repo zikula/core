@@ -1,7 +1,7 @@
 {gt text='Language switcher' assign='templatetitle'}
 {include file='User/menu.tpl'}
 
-<form id="changelang" class="z-form" action="{modurl modname='Users' type='user' func='main'}" method="post">
+<form id="changelang" class="z-form" action="{modurl modname='Users' type='user' func='index'}" method="post">
     <fieldset>
         <legend>{gt text="Change language"}</legend>
         <div class="z-formrow">
@@ -19,6 +19,6 @@
     </fieldset>
     <div class="z-formbuttons z-buttons">
         {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-        <a href="{modurl modname='Users' type='user' func='main'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <a href="{modurl modname='Users' type='user' func='index'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
     </div>
 </form>
