@@ -134,6 +134,7 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
             unset($get['lang']);
         }
 
+
         // make homepage calculations
         $shorturls = System::getVar('shorturls', false);
 

@@ -281,7 +281,7 @@ class UserApi extends \Zikula_AbstractApi
             $func = $url[2];
         } else {
             // defaults allowed here for usability
-            $func = 'main';
+            $func = 'index';
         }
 
         $params = array();

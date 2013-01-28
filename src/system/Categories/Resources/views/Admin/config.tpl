@@ -13,7 +13,7 @@
             <legend>{gt text="Confirmation prompt"}</legend>
             <div class="z-buttons z-formbuttons">
                 {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Rebuild paths" __title="Rebuild paths" __text="Rebuild paths"}
-                <a class="z-btred" href="{modurl modname=Categories type=admin func=main}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="z-btred" href="{modurl modname=Categories type=admin func=index}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
         </fieldset>
     </div>

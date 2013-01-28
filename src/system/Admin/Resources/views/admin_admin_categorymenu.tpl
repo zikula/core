@@ -15,12 +15,12 @@
         <span class="z-sub">&raquo;</span>
         {foreach from=$menuoptions.$currentcat.items item='moditem'}
             {if $toplevelmodule eq $moditem.modname}
-                <span class="z-breadcrumb"><a href="{modurl modname=$toplevelmodule type='admin' func='main'}" class="z-admin-pagemodule">{$moditem.menutext|safetext}</a></span>
+                <span class="z-breadcrumb"><a href="{modurl modname=$toplevelmodule type='admin' func='index'}" class="z-admin-pagemodule">{$moditem.menutext|safetext}</a></span>
                 {break}
             {/if}
         {/foreach}
 
-        {if $func neq 'main'}
+        {if $func neq 'index'}
             <span class="z-sub">&raquo;</span>
             <span class="z-breadcrumb z-admin-pagefunc">{$func|safetext}</span>
         {/if}

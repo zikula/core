@@ -135,7 +135,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         $pager['module'] = !empty($module) ? $module : $name;
     }
 
-    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'main', 'GETPOST', FILTER_SANITIZE_STRING);
+    $pager['func'] = isset($params['func']) ? $params['func'] : FormUtil::getPassedValue('func', 'index', 'GETPOST', FILTER_SANITIZE_STRING);
     $pager['type'] = isset($params['type']) ? $params['type'] : FormUtil::getPassedValue('type', 'user', 'GETPOST', FILTER_SANITIZE_STRING);
 
     $allVars = array_merge($_POST, $_GET);
@@ -146,7 +146,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         $starttype = System::getVar('starttype');
         $pager['type'] = !empty($starttype) ? $starttype : 'user';
         $startfunc = System::getVar('startfunc');
-        $pager['func'] = !empty($startfunc) ? $startfunc : 'main';
+        $pager['func'] = !empty($startfunc) ? $startfunc : 'index';
 
         $startargs = explode(',', System::getVar('startargs'));
         foreach ($startargs as $arg) {

@@ -101,7 +101,7 @@ class UserApi extends \Zikula_AbstractApi
                         if (!$ok) {
                             LogUtil::registerError($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
 
-                            return System::redirect(ModUtil::url('Search', 'user', 'main'));
+                            return System::redirect(ModUtil::url('Search', 'user', 'index'));
                         }
                     }
                 }
@@ -295,7 +295,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (empty($args['func'])) {
-            $args['func'] = 'main';
+            $args['func'] = 'index';
         }
 
         // rename the search function to avoid conflicts
@@ -319,7 +319,7 @@ class UserApi extends \Zikula_AbstractApi
         if (empty($vars) && isset($args['args']['startnum']) && !empty($args['args']['startnum'])) {
             return $args['modname'] . '/' . $args['func'] . '/' . $args['args']['startnum'];
         } else {
-            return $args['modname'] . (!empty($vars) || $args['func'] != 'main' ? '/' . $args['func'] . $vars : '');
+            return $args['modname'] . (!empty($vars) || $args['func'] != 'index' ? '/' . $args['func'] . $vars : '');
         }
     }
 
@@ -338,13 +338,13 @@ class UserApi extends \Zikula_AbstractApi
         System::queryStringSetVar('type', 'user');
 
         // define the available user functions
-        $funcs = array('main', 'form', 'search', 'process', 'recent');
+        $funcs = array('index', 'form', 'search', 'process', 'recent');
         // set the correct function name based on our input
         if (empty($args['vars'][2])) {
             // Retain this for BC for older URLs that might be stored
-            System::queryStringSetVar('func', 'main');
+            System::queryStringSetVar('func', 'index');
         } elseif (!in_array($args['vars'][2], $funcs)) {
-            System::queryStringSetVar('func', 'main');
+            System::queryStringSetVar('func', 'index');
             $nextvar = 2;
         } else {
             if ($args['vars'][2] == 'process') {
@@ -457,7 +457,7 @@ class UserApi extends \Zikula_AbstractApi
         $search_modules = ModUtil::apiFunc('Search', 'user', 'getallplugins');
 
         if (SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Search', 'user', 'main', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
+            $links[] = array('url' => ModUtil::url('Search', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
             if ((count($search_modules) > 0) && UserUtil::isLoggedIn()) {
                 $links[] = array('url' => ModUtil::url('Search', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');
             }
