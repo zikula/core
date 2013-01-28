@@ -46,13 +46,16 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
             return true;
         }
 
-        $obj = SessionUtil::getVar('obj');
+        /** @var $session Zikula_Session */
+        $session = ServiceUtil::get('session');
+
+        $obj = $session->get('obj');
         $obj['sessid'] = $sessionId;
         $obj['vars'] = $vars;
-        $obj['remember'] = SessionUtil::getVar('rememberme') ? SessionUtil::getVar('rememberme') : 0;
-        $obj['uid'] = SessionUtil::getVar('uid') ? SessionUtil::getVar('uid') : 0;
-        $obj['ipaddr'] = SessionUtil::getVar('obj/ipaddr');
-        $obj['lastused'] = date('Y-m-d H:i:s', ServiceUtil::get('session')->getMetadataBag()->getLastUsed());
+        $obj['remember'] = $session->get('rememberme', 0);
+        $obj['uid'] = $session->get('uid', 0);
+        $obj['ipaddr'] = $session->get('obj/ipaddr');
+        $obj['lastused'] = date('Y-m-d H:i:s', $session->getMetadataBag()->getLastUsed());
 
         $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
         if (!$result) {
