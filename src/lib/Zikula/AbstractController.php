@@ -130,8 +130,17 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     public function __call($method, $args)
     {
+        $r = $this->getReflection();
+
+        // BC for methods that aren't prefixed with Action
         $method = preg_replace('/(\w+)Action$/', '$1', $method);
-        if (method_exists($this, $method)) {
+        if ($r->hasMethod($method)) {
+            return call_user_func_array(array($this, $method), $args);
+        }
+
+        // BC for default entry point as 'index' if not present try main
+        if ($method == 'index' && (false === $r->hasMethod('index') && false === $r->hasMethod('indexAction'))) {
+            $method = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
             return call_user_func_array(array($this, $method), $args);
         }
 
