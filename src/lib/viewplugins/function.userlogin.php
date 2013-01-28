@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use UsersModule\Constant as UsersConstant;
+
 /**
  * Zikula_View function to display the login box
  *
@@ -44,7 +46,7 @@ function smarty_function_userlogin($params, Zikula_View $view)
         $maxlengthpass = isset($params['maxlenthpass'])  ? $params['maxlenthpass'] : 20;
         $class         = isset($params['class'])         ? ' class="'.$params['class'].'"' : '';
 
-        if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_EMAIL) {
+        if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::LOGIN_METHOD_UNAME) == UsersConstant::LOGIN_METHOD_EMAIL) {
             $value = isset($params['value']) ? DataUtil::formatForDisplay($params['value']) : __('E-mail address');
             $userNameLabel = __('E-mail address');
             $methodName = 'email';

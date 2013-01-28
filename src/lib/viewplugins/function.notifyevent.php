@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\Event\GenericEvent;
+
 /**
  * Zikula_View function notify event.
  *
@@ -77,7 +79,7 @@ function smarty_function_notifyevent($params, Zikula_View $view)
             $eventData = null;
         }
 
-        $event = new \Zikula\Core\Event\GenericEvent($eventSubject, $params, $eventData);
+        $event = new GenericEvent($eventSubject, $params, $eventData);
     }
 
     $view->getDispatcher()->dispatch($eventName, $event);

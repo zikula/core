@@ -53,7 +53,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('g')
-           ->from('Groups\Entity\Group', 'g');
+           ->from('Groups\Entity\GroupEntity', 'g');
 
          // add clause for ordering
         $qb->addOrderBy('g.name', 'ASC');
@@ -98,7 +98,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $result = $this->entityManager->find('Groups\Entity\Group', $args['gid']);
+        $result = $this->entityManager->find('Groups\Entity\GroupEntity', $args['gid']);
 
         if (!$result) {
             return false;
@@ -116,7 +116,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['numitems'] = null;
         }
 
-        $groupmembership = $this->entityManager->getRepository('Groups\Entity\GroupMembership')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
+        $groupmembership = $this->entityManager->getRepository('Groups\Entity\GroupMembershipEntity')->findBy(array('gid' => $args['gid']), array(), $args['numitems'], $args['startnum']);
 
         // Check for an error with the database code
         if ($groupmembership === false) {
