@@ -30,8 +30,8 @@ class SearchInstaller extends \Zikula_AbstractInstaller
         // create schema
         try {
             DoctrineHelper::createSchema($this->entityManager, array(
-                'SearchModule\Entity\SearchResultEntity',
-                'SearchModule\Entity\SearchStatEntity',
+                'Search\Entity\SearchResultEntity',
+                'Search\Entity\SearchStatEntity',
             ));
         } catch (\Exception $e) {
             return false;
@@ -82,8 +82,8 @@ class SearchInstaller extends \Zikula_AbstractInstaller
     {
         try {
             DoctrineHelper::dropSchema($this->entityManager, array(
-                'SearchModule\Entity\SearchResultEntity',
-                'SearchModule\Entity\SearchStatEntity',
+                'Search\Entity\SearchResultEntity',
+                'Search\Entity\SearchStatEntity',
             ));
         } catch (\Exception $e) {
             return false;
