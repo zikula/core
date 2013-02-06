@@ -181,6 +181,16 @@ class Generator
     }
 
     /**
+     * Sets secret.
+     *
+     * @param string $secret
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+    }
+
+    /**
      * Gets generated token.
      *
      * @return string

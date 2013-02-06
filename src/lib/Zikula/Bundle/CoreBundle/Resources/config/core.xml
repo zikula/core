@@ -20,7 +20,6 @@
         <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
-        <parameter key="token.storage.key">_tokens</parameter>
         <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
         <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
         <parameter key="token.max_life">3600</parameter>
@@ -56,35 +55,37 @@
             <argument type="service" id="service_container" />
         </service>
 
-        <!--<service id="token.storage" class="%token.storage.class%">-->
-            <!--<argument type="service" id="session" />-->
-            <!--<argument>%token.storage.key%</argument>-->
-        <!--</service>-->
+        <service id="token.storage" class="%token.storage.class%">
+            <argument type="service" id="session" />
+        </service>
 
-        <!--<service id="token.generator" class="%token.generator.class%">-->
-            <!--<argument type="service" id="token.storage" />-->
-            <!--<argument>%signing.key%</argument>-->
-            <!--<argument>%token.max_life%</argument>-->
-        <!--</service>-->
+        <service id="token.generator" class="%token.generator.class%">
+            <argument type="service" id="token.storage" />
+            <argument>_dummy</argument>
+            <argument>3600</argument>
+        </service>
 
-        <!--<service id="token.validator" class="%token.validator.class%">-->
-            <!--<argument type="service" id="token.generator" />-->
-        <!--</service>-->
+        <service id="token.validator" class="%token.validator.class%">
+            <argument type="service" id="token.generator" />
+        </service>
 
-        <!--<service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%">-->
-            <!--&lt;!&ndash;<argument type="service" id="doctrine.orm.default_entity_manager" />&ndash;&gt;-->
+        <service id="hook_dispatcher.storage" class="%hook_dispatcher.storage.class%">
+            <!--<argument type="service" id="doctrine.orm.default_entity_manager" />-->
             <!--<argument type="service" id="doctrine.entitymanager" />-->
-        <!--</service>-->
-        <!--<service id="hook_dispatcher.servicefactory" class="%hook_dispatcher.servicefactory.class%">-->
-            <!--<argument type="service" id="service_container" />-->
-            <!--<argument>event_dispatcher</argument>-->
-        <!--</service>-->
+        </service>
 
-        <!--<service id="hook_dispatcher" class="%hook_dispatcher.class%">-->
-            <!--<argument type="service" id="hook_dispatcher.storage" />-->
-            <!--<argument type="service" id="event_dispatcher" />-->
-            <!--<argument type="service" id="hook_dispatcher.servicefactory" />-->
-        <!--</service>-->
+        <service id="hook_dispatcher.servicefactory" class="%hook_dispatcher.servicefactory.class%">
+            <argument type="service" id="service_container" />
+            <argument>event_dispatcher</argument>
+        </service>
+
+        <service id="hook_dispatcher" class="%hook_dispatcher.class%">
+            <argument type="service" id="hook_dispatcher.storage" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="hook_dispatcher.servicefactory" />
+        </service>
+
+        <service id="zikula.hookmanager" alias="hook_dispatcher" />
 
         <!--<service id="zikula.system_listeners" class="%zikula.system_listener.class%">-->
             <!--<tag name="kernel.event_subscriber" />-->

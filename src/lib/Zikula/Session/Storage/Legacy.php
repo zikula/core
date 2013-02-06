@@ -14,6 +14,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 
 /**
  * Legacy session storage class.
@@ -23,11 +24,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
  */
 class Zikula_Session_Storage_Legacy extends NativeSessionStorage
 {
-    public function __construct()
-    {
-        parent::__construct(array(), new Zikula_Session_LegacyHandler());
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -5,6 +5,16 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandle
 class Zikula_Session_LegacyHandler extends NativeSessionHandler
 {
     /**
+     * @var Zikula_Session_Storage_Legacy
+     */
+    private $storage;
+
+    public function setStorage(Zikula_Session_Storage_Legacy $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function open($savePath, $sessionName)
@@ -46,16 +56,13 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
             return true;
         }
 
-        /** @var $session Zikula_Session */
-        $session = ServiceUtil::get('session');
-
-        $obj = $session->get('obj');
+        $obj = $this->storage->getBag('attributes')->get('obj');
         $obj['sessid'] = $sessionId;
         $obj['vars'] = $vars;
-        $obj['remember'] = $session->get('rememberme', 0);
-        $obj['uid'] = $session->get('uid', 0);
-        $obj['ipaddr'] = $session->get('obj/ipaddr');
-        $obj['lastused'] = date('Y-m-d H:i:s', $session->getMetadataBag()->getLastUsed());
+        $obj['remember'] = $this->storage->getBag('attributes')->get('rememberme', 0);
+        $obj['uid'] = $this->storage->getBag('attributes')->get('uid', 0);
+        $obj['ipaddr'] = $this->storage->getBag('attributes')->get('obj/ipaddr');
+        $obj['lastused'] = date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed());
 
         $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
         if (!$result) {
