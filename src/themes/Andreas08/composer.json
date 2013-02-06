@@ -10,9 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Andreas08\\": "" },
+        "psr-0": { "Andreas08\\": "" }
     },
     "require": {
-        "php": ">5.3.2"
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula" : {
+            "class": "Andreas08\\Andreas08Theme"
+        }
     }
 }
