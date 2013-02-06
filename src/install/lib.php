@@ -26,6 +26,8 @@ function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
+    ZLoader::addPrefix('Users', 'system');
+
     $serviceManager = $core->getContainer();
     $eventManager = $core->getDispatcher();
 
