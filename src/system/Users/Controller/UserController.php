@@ -38,6 +38,7 @@ use LogUtil;
 use ThemeUtil;
 use ZLanguage;
 use Zikula_Exception_NotFound;
+use Zikula_Api_AbstractAuthentication;
 
 /**
  * Access to (non-administrative) user-initiated actions for the Users module.

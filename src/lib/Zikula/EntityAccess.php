@@ -68,6 +68,11 @@ class Zikula_EntityAccess implements ArrayAccess
             $r = $r->getParentClass();
 
             foreach ($properties as $property) {
+                if ($this instanceof \Doctrine\ORM\Proxy\Proxy) {
+                    if (($property->name == '_entityPersister') || ($property->name == '_identifier') || ($property->name == '__isInitialized__')) {
+                        continue;
+                    }
+                }
                 if ($property->name == 'reflection') {
                     continue;
                 }
