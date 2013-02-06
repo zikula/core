@@ -20,7 +20,6 @@
         <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
         <parameter key="token.storage.class">Zikula\Core\Token\Storage\SessionStorage</parameter>
-        <parameter key="token.storage.key">_tokens</parameter>
         <parameter key="token.generator.class">Zikula\Core\Token\Generator</parameter>
         <parameter key="token.validator.class">Zikula\Core\Token\Validator</parameter>
         <parameter key="token.max_life">3600</parameter>
@@ -58,7 +57,6 @@
 
         <service id="token.storage" class="%token.storage.class%">
             <argument type="service" id="session" />
-            <argument>_dummy</argument>
         </service>
 
         <service id="token.generator" class="%token.generator.class%">
