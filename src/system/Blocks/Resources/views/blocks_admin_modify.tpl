@@ -35,7 +35,8 @@
             <div class="z-formrow">
                 <label for="blocks_position">{gt text="Position(s)"}</label>
                 <span>
-                    <select id="blocks_position" name="positions[]" multiple="multiple">
+                    {assign var="selectsize" value=$block_positions|@count}{if $selectsize gt 20}{assign var="selectsize" value=20}{/if}{if $selectsize lt 4}{assign var="selectsize" value=4}{/if}
+                    <select id="blocks_position" name="positions[]" multiple="multiple" size="{$selectsize}">
                         {html_options options=$block_positions selected=$placements}
                     </select>
                 </span>
