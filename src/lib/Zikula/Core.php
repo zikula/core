@@ -533,7 +533,7 @@ class Zikula_Core
         }
 
         // check the users status, if not 1 then log him out
-        if (UserUtil::isLoggedIn()) {
+        if (!System::isInstalling() && UserUtil::isLoggedIn()) {
             $userstatus = UserUtil::getVar('activated');
             if ($userstatus != Users_Constant::ACTIVATED_ACTIVE) {
                 UserUtil::logout();

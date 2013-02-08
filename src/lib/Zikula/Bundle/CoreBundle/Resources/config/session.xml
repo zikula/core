@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="session.class">Zikula_Session</parameter>
+        <parameter key="session.flashbag.class">Symfony\Component\HttpFoundation\Session\Flash\FlashBag</parameter>
+        <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
+        <parameter key="session.storage.legacy.class">Zikula_Session_Storage_Legacy</parameter>
+        <parameter key="session.storage.mock_file.class">Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage</parameter>
+        <parameter key="session.handler.legacy.class">Zikula_Session_LegacyHandler</parameter>
+    </parameters>
+
+    <services>
+        <service id="session" class="%session.class%">
+            <argument type="service" id="session.storage.legacy" />
+            <argument type="service" id="session.attribute_bag" />
+            <argument type="service" id="session.flash_bag" />
+        </service>
+
+        <service id="session.storage.legacy" class="%session.storage.legacy.class%" />
+
+        <service id="session.flash_bag" class="%session.flashbag.class%" public="false" />
+
+        <service id="session.attribute_bag" class="%session.attribute_bag.class%" public="false" />
+
+        <service id="session.handler.legacy" class="%session.handler.legacy.class%" public="false">
+            <call method="setStorage">
+                <argument type="service" id="session.storage.legacy" />
+            </call>
+        </service>
+
+    </services>
+</container>

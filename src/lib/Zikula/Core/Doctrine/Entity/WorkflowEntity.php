@@ -5,12 +5,12 @@ namespace Zikula\Core\Doctrine\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Workflows
+ * Workflow
  *
  * @ORM\Table(name="workflows")
  * @ORM\Entity
  */
-class WorkflowsEntity
+class WorkflowEntity
 {
     /**
      * @var integer $id
@@ -106,7 +106,7 @@ class WorkflowsEntity
      * Set metaid
      *
      * @param integer $metaid
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setMetaid($metaid)
     {
@@ -128,7 +128,7 @@ class WorkflowsEntity
      * Set module
      *
      * @param string $module
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setModule($module)
     {
@@ -150,7 +150,7 @@ class WorkflowsEntity
      * Set schemaname
      *
      * @param string $schemaname
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setSchemaname($schemaname)
     {
@@ -172,7 +172,7 @@ class WorkflowsEntity
      * Set state
      *
      * @param string $state
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setState($state)
     {
@@ -194,7 +194,7 @@ class WorkflowsEntity
      * Set type
      *
      * @param smallint $type
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setType($type)
     {
@@ -216,7 +216,7 @@ class WorkflowsEntity
      * Set objTable
      *
      * @param string $objTable
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setObjTable($objTable)
     {
@@ -238,7 +238,7 @@ class WorkflowsEntity
      * Set objIdcolumn
      *
      * @param string $objIdcolumn
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setObjIdcolumn($objIdcolumn)
     {
@@ -260,7 +260,7 @@ class WorkflowsEntity
      * Set objId
      *
      * @param integer $objId
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setObjId($objId)
     {
@@ -282,7 +282,7 @@ class WorkflowsEntity
      * Set busy
      *
      * @param integer $busy
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setBusy($busy)
     {
@@ -304,7 +304,7 @@ class WorkflowsEntity
      * Set debug
      *
      * @param text $debug
-     * @return Workflows
+     * @return WorkflowEntity
      */
     public function setDebug($debug)
     {

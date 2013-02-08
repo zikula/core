@@ -35,7 +35,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
         $this->addHandlerDefinition('core.preinit', 'systemCheck');
-        $this->addHandlerDefinition('core.preinit', 'setupSessions');
         $this->addHandlerDefinition('core.init', 'setupLoggers');
         $this->addHandlerDefinition('log', 'errorLog');
         $this->addHandlerDefinition('core.init', 'sessionLogging');
@@ -51,7 +50,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addHooksLink');
         $this->addHandlerDefinition('module_dispatch.postexecute', 'addServiceLink');
         $this->addHandlerDefinition('core.preinit', 'initDB');
-        $this->addHandlerDefinition('core.preinit', 'setupHookManager');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
         $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
@@ -98,25 +96,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
             require_once System::getSystemErrorTemplate('siteoff.tpl');
             System::shutdown();
         }
-    }
-
-    /**
-     * Listens on 'core.preinit' event.
-     *
-     * Sets up hookmanager.
-     *
-     * @param Zikula_Event $event Event.
-     */
-    public function setupHookManager(Zikula_Event $event)
-    {
-        $storageDef = new Definition('Zikula_HookManager_Storage_Doctrine');
-//        $storageDef = new Definition('Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage', array(new Reference('doctrine.entitymanager')));
-        $smRef = new Reference('service_container');
-        $eventManagerDef = new Definition('Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher', array($smRef));
-        $hookFactoryDef = new Definition('Zikula\Component\HookDispatcher\ServiceFactory', array($smRef, 'event_dispatcher'));
-        $hookManagerDef = new Definition('Zikula\Component\HookDispatcher\HookDispatcher', array($storageDef, $eventManagerDef, $hookFactoryDef));
-        $this->serviceManager->setDefinition('hook_dispatcher', $hookManagerDef);
-        $this->serviceManager->setAlias('zikula.hookmanager', 'hook_dispatcher');
     }
 
     /**
@@ -172,24 +151,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     }
 
     /**
-     * Start sessions.
-     *
-     * Implements 'core.preinit' event.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @return void
-     */
-    public function setupSessions(Zikula_Event $event)
-    {
-        $storageDef = new Definition('Zikula_Session_Storage_Legacy');
-        $this->serviceManager->setDefinition('session.storage', $storageDef);
-        $storageReference = new Reference('session.storage');
-        $session = new Definition('Zikula_Session', array($storageReference));
-        $this->serviceManager->setDefinition('session', $session);
-    }
-
-    /**
      * Listen on 'core.init' module.
      *
      * @param Zikula_Event $event Event.
@@ -199,17 +160,10 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function setupCsfrProtection(Zikula_Event $event)
     {
         if ($event['stage'] & Zikula_Core::STAGE_MODS) {
-            $tokenStorageDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Storage\SessionStorage',
-                            array(new Zikula_ServiceManager_Reference('session')));
-            $this->serviceManager->registerService('token.storage', $tokenStorageDef);
-
-            $tokenGeneratorDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Generator',
-                            array(new Zikula_ServiceManager_Reference('token.storage'), System::getVar('signingkey')));
-            $this->serviceManager->registerService('token.generator', $tokenGeneratorDef);
-
-            $tokenValidatorDef = new Zikula_ServiceManager_Definition('Zikula\Core\Token\Validator',
-                            array(new Zikula_ServiceManager_Reference('token.generator')));
-            $this->serviceManager->registerService('token.validator', $tokenValidatorDef);
+            // todo - handle this in DIC later
+            // inject secret
+            $def = $this->serviceManager->get('token.generator');
+            $def->setSecret(System::getVar('signingkey'));
         }
     }
 

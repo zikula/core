@@ -9,6 +9,21 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 abstract class ZikulaKernel extends Kernel
 {
     /**
+     * @var boolean
+     */
+    private $dump = true;
+
+    /**
+     * Flag determines if container is dumped or not
+     *
+     * @param $flag
+     */
+    public function setDump($flag)
+    {
+        $this->dump = $flag;
+    }
+
+    /**
      * Overridden to prevent error-reporting being overridden
      */
     public function init()
@@ -26,7 +41,9 @@ abstract class ZikulaKernel extends Kernel
      */
     protected function initializeContainer()
     {
-        // todo - re-activate dumping
+        if (true === $this->dump) {
+            return parent::initializeContainer();
+        }
 
         $this->container = $this->buildContainer();
         $this->container->set('kernel', $this);
@@ -43,8 +60,8 @@ abstract class ZikulaKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-//        return 'Zikula_ServiceManager';
-        return 'Zikula\Component\DependencyInjection\ContainerBuilder';
+        return 'Zikula_ServiceManager';
+        //return 'Zikula\Component\DependencyInjection\ContainerBuilder';
     }
 
     /**
@@ -55,6 +72,6 @@ abstract class ZikulaKernel extends Kernel
     protected function getContainerBuilder()
     {
         return new \Zikula_ServiceManager(new ParameterBag($this->getKernelParameters()));
-//        return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
+        //return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
     }
 }

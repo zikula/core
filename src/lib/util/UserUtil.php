@@ -1126,7 +1126,7 @@ class UserUtil
         $ucount = (int)$query->getSingleScalarResult();
 
         // count of email appearances in users verification table
-        $dql = "SELECT COUNT(v.id) FROM Users\Entity\UserEntityVerificationEntity v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $dql = "SELECT COUNT(v.id) FROM Users\Entity\UserVerificationEntity v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
         if ($excludeUid > 1) {
             $dql .= " AND v.uid <> {$excludeUid}";
         }
@@ -1159,7 +1159,7 @@ class UserUtil
 
             // Get verificationsent from the users_verifychg table
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $dql = "SELECT v FROM Users\Entity\UserEntityVerificationEntity v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
+            $dql = "SELECT v FROM Users\Entity\UserVerificationEntity v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
             $query = $em->createQuery($dql);
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 

@@ -19,6 +19,7 @@ use Zikula_Core;
 use ModUtil;
 use ZLanguage;
 use DBUtil;
+use DoctrineHelper;
 
 /**
  * Settings_Installer class.
@@ -90,7 +91,12 @@ class SettingsInstaller extends \Zikula_AbstractInstaller
 
         System::setVar('idnnames', 1);
 
-        if (!DBUtil::createTable('workflows')) {
+        // create schema
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array(
+                'Zikula\Core\Doctrine\Entity\WorkflowEntity',
+            ));
+        } catch (\Exception $e) {
             return false;
         }
 
