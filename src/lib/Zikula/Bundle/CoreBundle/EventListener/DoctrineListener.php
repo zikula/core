@@ -107,7 +107,8 @@ class DoctrineListener implements EventSubscriberInterface
 
         // setup the doctrine entitymanager
         $entityManager = \Doctrine\ORM\EntityManager::create($dbConfig, $ORMConfig, $eventManager);
-        $this->container->set('doctrine.entitymanager', $entityManager);
+        $this->container->set('doctrine.orm.default_entity_manager', $entityManager);
+        $this->container->setAlias('doctrine.entitymanager', 'doctrine.orm.default_entity_manager');
     }
 
     public function initDoctrineExtensions(GenericEvent $event)
