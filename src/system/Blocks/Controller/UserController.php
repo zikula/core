@@ -17,6 +17,7 @@ namespace Blocks\Controller;
 use LogUtil;
 use FormUtil;
 use UserUtil;
+use BlockUtil;
 use System;
 
 /**
@@ -33,6 +34,30 @@ class UserController extends \Zikula_AbstractController
     public function mainAction()
     {
         return LogUtil::registerError(__('Sorry! This module is not designed or is not currently configured to be accessed in the way you attempted.'), 403);
+    }
+
+    /**
+     * Display a block if is active
+     *
+     * @param array $args Arguments.
+     */
+    public function displayAction($args)
+    {
+        // Block Id - if passed - display the block
+        $bid   = (int)FormUtil::getPassedValue('bid', isset($args['bid']) ? $args['bid'] : null, 'REQUEST');
+
+        if ($bid > 0) {
+            // {block} function in template is not checking for active status, so let's check here
+            $blockinfo = BlockUtil::getBlockInfo($bid);
+            if ($blockinfo['active']) {
+                $this->view->assign('args', $args);
+                $this->view->assign('bid', $bid);
+
+                return $this->view->fetch('blocks_user_display.tpl');
+            }
+        }
+
+        return '';
     }
 
     /**
