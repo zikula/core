@@ -180,14 +180,18 @@ class Zikula_Workflow_Util
      *
      * @return boolean
      */
-    public static function deleteWorkflowsForModule($module)
+     public static function deleteWorkflowsForModule($module)
     {
         if (!isset($module)) {
             $module = ModUtil::getName();
         }
-
-        // this is a cheat to delete all items in table with value $module
-        return (bool)DBUtil::deleteObjectByID('workflows', $module, 'module');
+        //This is a static function, so we have to user ServiceUtil to get the entity manager
+        $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+        //crete the dql query.
+        $dql = "DELETE  Zikula\Core\Doctrine\Entity\WorkflowEntity w WHERE w.module = '$module'";
+        $query = $em->createQuery($dql);
+        $result = $query->execute();        
+        return $result;
     }
 
     /**
@@ -201,11 +205,13 @@ class Zikula_Workflow_Util
     {
         $workflow = $obj['__WORKFLOW__'];
         $idcolumn = $workflow['obj_idcolumn'];
-        if (!DBUtil::deleteObjectByID($workflow['obj_table'], $obj[$idcolumn], $idcolumn)) {
-            return false;
-        }
-
-        return (bool)DBUtil::deleteObjectByID('workflows', $workflow['id']);
+        //This is a static function, so we have to user ServiceUtil to get the entity manager
+        $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+        //crete the dql query.
+        $dql = "DELETE Zikula\Core\Doctrine\Entity\WorkflowEntity i WHERE i.objIdcolumn = '$idcolumn'";
+        $query = $em->createQuery($dql);
+        $result = $query->execute();        
+        return $result;
     }
 
     /**
@@ -350,15 +356,17 @@ class Zikula_Workflow_Util
         $workflow = false;
 
         if (!empty($obj[$idcolumn])) {
-            // get workflow data from DB
-            $dbtables = DBUtil::getTables();
-            $workflows_column = $dbtables['workflows_column'];
-            $where = "WHERE $workflows_column[module] = '" . DataUtil::formatForStore($module) . "'
-                        AND $workflows_column[obj_table] = '" . DataUtil::formatForStore($dbTable) . "'
-                        AND $workflows_column[obj_idcolumn] = '" . DataUtil::formatForStore($idcolumn) . "'
-                        AND $workflows_column[obj_id] = '" . DataUtil::formatForStore($obj[$idcolumn]) . "'";
-
-            $workflow = DBUtil::selectObject('workflows', $where);
+            //This is a static function, so we have to user ServiceUtil to get the manager
+            //prep the date for the table 
+            $module = DataUtil::formatForStore($module);
+            $obj_table = DataUtil::formatForStore($dbTable);
+            $obj_idcolumn =  DataUtil::formatForStore($idcolumn);
+            $obj_id = DataUtil::formatForStore($obj[$idcolumn]);
+            $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+            //build the query and execute
+            $dql = "SELECT w FROM Zikula\Core\Doctrine\Entity\WorkflowEntity w WHERE w.module = '$module' AND w.objIdcolumn = '$idcolumn' AND w.objTable = '$obj_table' AND w.objId = $obj_id";
+            $query = $em->createQuery($dql);
+            $workflow = $query->getResult();
         }
 
         if (!$workflow) {
@@ -369,7 +377,7 @@ class Zikula_Workflow_Util
         }
 
         // attach workflow to object
-        if ($obj instanceof Doctrine_Record) {
+         if ($obj instanceof Doctrine_Record) {
             $obj->mapValue('__WORKFLOW__', $workflow);
         } else {
             $obj['__WORKFLOW__'] = $workflow;
