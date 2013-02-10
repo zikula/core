@@ -10,9 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "SeaBreeze\\": "" },
+        "psr-0": { "SeaBreeze\\": "" }
     },
     "require": {
-        "php": ">5.3.2"
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula" : {
+            "class": "SeaBreeze\\SeaBreezeTheme"
+        }
     }
 }
