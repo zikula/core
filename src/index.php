@@ -48,6 +48,7 @@ if ($modinfo) {
     $module = $modinfo['url'];
 
     if ($type == 'init' || $type == 'interactiveinstaller') {
+        $type = 'InteractiveInstaller';
         ModUtil::load($modinfo['name'], $type, true);
     }
 }
