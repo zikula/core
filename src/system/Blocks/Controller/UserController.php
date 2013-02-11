@@ -18,6 +18,7 @@ use LogUtil;
 use FormUtil;
 use UserUtil;
 use BlockUtil;
+use SecurityUtil;
 use System;
 
 /**
@@ -45,11 +46,17 @@ class UserController extends \Zikula_AbstractController
     {
         // Block Id - if passed - display the block
         $bid   = (int)FormUtil::getPassedValue('bid', isset($args['bid']) ? $args['bid'] : null, 'REQUEST');
+        $showinactive = (bool)FormUtil::getPassedValue('showinactive', isset($args['showinactive']) ? $args['showinactive'] : false, 'REQUEST');
+
+        // Security check for $showinactive only
+        if ($showinactive && !SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
+            return LogUtil::registerPermissionError();
+        }
 
         if ($bid > 0) {
             // {block} function in template is not checking for active status, so let's check here
             $blockinfo = BlockUtil::getBlockInfo($bid);
-            if ($blockinfo['active']) {
+            if ($blockinfo['active'] || $showinactive) {
                 $this->view->assign('args', $args);
                 $this->view->assign('bid', $bid);
 
