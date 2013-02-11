@@ -33,7 +33,7 @@ use FileUtil;
 use Zikula_AbstractVersion;
 use Zikula_Core;
 use PluginUtil;
-
+use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 /**
  * Administrative API functions for the Extensions module.
  */
@@ -103,7 +103,6 @@ class AdminApi extends \Zikula_AbstractApi
         $entity->setUrl($args['url']);
 
         $this->entityManager->persist($entity);
-        $this->entityManager->flush();
 
         // write changes to db
         $this->entityManager->flush();
@@ -345,41 +344,10 @@ class AdminApi extends \Zikula_AbstractApi
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
             $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-            $interactiveClass = ucwords($modinfo['name']) . '\\Controller\\InteractiveInstallerController';
-            $interactiveClassOld = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
-            $interactiveClass = class_exists($interactiveClass) ? $interactiveClass : $interactiveClassOld;
-            $interactiveController = null;
-            if (class_exists($interactiveClass)) {
-                $reflectionInteractive = new ReflectionClass($interactiveClass);
-                if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-                }
-                $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-            }
 
             // perform the actual deletion of the module
             $func = array($installer, 'uninstall');
-            $interactive_func = array($interactiveController, 'uninstall');
 
-            // allow bypass of interactive removal during a new installation only.
-            if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
-                return; // return void here
-            }
-
-            if ((isset($args['interactive_remove']) && $args['interactive_remove'] == false) && is_callable($interactive_func)) {
-                if (is_array($interactive_func)) {
-                    // This must be an OO controller since callable is an array.
-                    // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
-                    // so we must check if the method actually exists by reflection - drak
-                    if ($reflectionInteractive->hasMethod('upgrade')) {
-                        SessionUtil::setVar('interactive_remove', true);
-
-                        return call_user_func($interactive_func);
-                    }
-                }
-            }
-
-            // non-interactive
             if (is_callable($func)) {
                 if (call_user_func($func) != true) {
                     return false;
@@ -851,42 +819,11 @@ class AdminApi extends \Zikula_AbstractApi
             LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
         $installer = $reflectionInstaller->newInstance($this->serviceManager);
-        $interactiveClass = ucwords($modinfo['name']) . '\\Controller\\InteractiveInstallerController';
-        $interactiveClassOld = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
-        $interactiveClass = class_exists($interactiveClass) ? $interactiveClass : $interactiveClassOld;
-        $interactiveController = null;
-        if (class_exists($interactiveClass)) {
-            $reflectionInteractive = new ReflectionClass($interactiveClass);
-            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-            }
-            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-        }
 
         // perform the actual install of the module
         // system or module
         $func = array($installer, 'install');
-        $interactive_func = array($interactiveController, 'install');
 
-        // allow bypass of interactive install during a new installation only.
-        if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
-            return; // return void here
-        }
-
-        if (!System::isInstalling() && isset($args['interactive_init']) && ($args['interactive_init'] == false) && is_callable($interactive_func)) {
-            if (is_array($interactive_func)) {
-                // This must be an OO controller since callable is an array.
-                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
-                // so we must check if the method actually exists by reflection - drak
-                if ($reflectionInteractive->hasMethod('install')) {
-                    SessionUtil::setVar('interactive_init', true);
-
-                    return call_user_func($interactive_func);
-                }
-            }
-        }
-
-        // non-interactive
         if (is_callable($func)) {
             if (call_user_func($func) != true) {
                 return false;
@@ -973,41 +910,10 @@ class AdminApi extends \Zikula_AbstractApi
             LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
         $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
-        $interactiveClass = ucwords($modinfo['name']) . '\\Controller\\InteractiveInstallerController';
-        $interactiveClassOld = ucwords($modinfo['name']) . '_Controller_InteractiveInstaller';
-        $interactiveClass = class_exists($interactiveClass) ? $interactiveClass : $interactiveClassOld;
-        $interactiveController = null;
-        if (class_exists($interactiveClass)) {
-            $reflectionInteractive = new ReflectionClass($interactiveClass);
-            if (!$reflectionInteractive->isSubclassOf('Zikula_Controller_AbstractInteractiveInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_Controller_AbstractInteractiveInstaller", $className));
-            }
-            $interactiveController = $reflectionInteractive->newInstance($this->serviceManager);
-        }
 
         // perform the actual upgrade of the module
         $func =array($installer, 'upgrade');
-        $interactive_func = array($interactiveController, 'upgrade');
 
-        // allow bypass of interactive upgrade during a new installation only.
-        if (System::isInstalling() && is_callable($interactive_func) && !is_callable($func)) {
-            return; // return void here
-        }
-
-        if (isset($args['interactive_upgrade']) && $args['interactive_upgrade'] == false && is_callable($interactive_func)) {
-            if (is_array($interactive_func)) {
-                // This must be an OO controller since callable is an array.
-                // Because interactive installers extend the Zikula_AbstractController, is_callable will always return true because of the __call()
-                // so we must check if the method actually exists by reflection - drak
-                if ($reflectionInteractive->hasMethod('upgrade')) {
-                    SessionUtil::setVar('interactive_upgrade', true);
-
-                    return call_user_func($interactive_func, array('oldversion' => $modinfo['version']));
-                }
-            }
-        }
-
-        // non-interactive
         if (is_callable($func)) {
             $result = call_user_func($func, $modinfo['version']);
             if (is_string($result)) {
