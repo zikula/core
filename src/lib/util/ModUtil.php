@@ -1050,6 +1050,20 @@ class ModUtil
             return null;
         }
 
+        if($type == 'InteractiveInstaller')
+        {
+            if(!(SessionUtil::getVar('interactive_init') || SessionUtil::getVar('interactive_upgrade') || SessionUtil::getVar('interactive_remove')))
+                return false;
+            if(SessionUtil::getVar('interactive_init') && substr($func, 0, 7) != 'install')
+                return false;
+            if(SessionUtil::getVar('interactive_upgrade') && substr($func, 0, 7) != 'upgrade')
+                return false;
+            if(SessionUtil::getVar('interactive_remove') && substr($func, 0, 9) != 'uninstall')
+                return false;
+            if(SessionUtil::getVar('modules_id') != self::getIDFromName($modname))
+                return false;
+        }
+
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
