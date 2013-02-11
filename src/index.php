@@ -46,10 +46,6 @@ $modinfo = ModUtil::getInfoFromName($module);
 // function because the modules is not active right now
 if ($modinfo) {
     $module = $modinfo['url'];
-
-    if ($type == 'init' || $type == 'interactiveinstaller') {
-        ModUtil::load($modinfo['name'], $type, true);
-    }
 }
 
 try {

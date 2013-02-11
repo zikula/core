@@ -37,6 +37,8 @@ Features:
 - Added hook to Blocks module to allow for use with Html Block (only).
 - [BC BREAK] DoctrineExtensions Paginator has been removed, use Doctrine ORM paginator 
   instead http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
+- [BC BREAK] Removed interactive installer from module specification.
+
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
