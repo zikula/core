@@ -91,6 +91,7 @@
         {assign var='lbl_block' value=$block.title|strip_tags|safetext}
         {gt text='Deactivate %s' tag1=$lbl_block assign='lbl_deactivate_block'}
         {gt text='Activate %s' tag1=$lbl_block assign='lbl_activate_block'}
+        {gt text='Preview %s' tag1=$lbl_block assign='lbl_preview_block'}
         {gt text='Edit %s' tag1=$lbl_block assign='lbl_edit_block'}
         {gt text='Delete %s' tag1=$lbl_block assign='lbl_delete_block'}
         {checkpermission component="`$module`::" instance="`$block.bkey`:`$block.title`:`$block.bid`" level="ACCESS_EDIT" assign="access_edit"}
@@ -114,7 +115,8 @@
                 &nbsp;<span id="activity_{$block.bid}">{gt text="Inactive"}</span>
                 {/if}
             </td>
-            <td class="z-right">
+            <td class="z-right z-nowrap">
+                <a href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}">{img modname='core' src='demo.png' set='icons/extrasmall' title=$lbl_preview_block alt=$lbl_preview_block class='tooltips'}</a>
                 {if $access_edit}
                 <a href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}">{img modname='core' src='xedit.png' set='icons/extrasmall' title=$lbl_edit_block alt=$lbl_edit_block class='tooltips'}</a>
                 {/if}
