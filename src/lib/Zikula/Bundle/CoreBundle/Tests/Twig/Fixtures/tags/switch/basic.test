@@ -1,0 +1,32 @@
+--TEST--
+"switch" basic test
+--TEMPLATE--
+{% switch foo %}
+{% case 1 %}
+    case 1
+{% case 2 %}
+    case 2
+    {% break %}
+{% case 3 %}
+    case 3
+    {% break %}
+{% default %}
+    default case
+{% endswitch %}
+--DATA--
+return array('foo' => 1)
+--EXPECT--
+    case 1
+    case 2
+--DATA--
+return array('foo' => 2)
+--EXPECT--
+    case 2
+--DATA--
+return array('foo' => 3)
+--EXPECT--
+    case 3
+--DATA--
+return array('foo' => 4)
+--EXPECT--
+    default case

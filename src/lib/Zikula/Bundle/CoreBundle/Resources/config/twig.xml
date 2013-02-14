@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="twig.extension.zikula_gettext.class">Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension</parameter>
+        <parameter key="twig.extension.zikula_core.class">Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension</parameter>
+        <parameter key="theme.assets.js.class">Zikula\Core\Theme\AssetBag</parameter>
+        <parameter key="theme.assets.css.class">Zikula\Core\Theme\AssetBag</parameter>
+        <parameter key="theme.pagevars.class">Zikula\Core\Theme\ParameterBag</parameter>
+        <parameter key="theme.themevars.class">Zikula\Core\Theme\ParameterBag</parameter>
+        <parameter key="theme.metatags.class">Zikula\Core\Theme\ParameterBag</parameter>
+        <parameter key="theme.asset_helper.class">Zikula\Core\Theme\Asset</parameter>
+        <parameter key="theme.asset.packagepath.class">Zikula\Core\Theme\Asset\PackagePath</parameter>
+        <parameter key="theme.asset.js_resolver.class">Zikula\Core\Theme\Asset\JsResolver</parameter>
+        <parameter key="theme.asset.css_resolver.class">Zikula\Core\Theme\Asset\CssResolver</parameter>
+    </parameters>
+
+    <services>
+        <service id="twig.extension.zikula_gettext" class="%twig.extension.zikula_gettext.class%" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="twig.extension.zikula_core" class="%twig.extension.zikula_core.class%" public="false">
+            <tag name="twig.extension" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="theme.assets_js" class="%theme.assets.js.class%">
+        </service>
+
+        <service id="theme.assets_css" class="%theme.assets.css.class%">
+        </service>
+
+        <service id="theme.pagevars" class="%theme.pagevars.class%">
+        </service>
+
+        <service id="theme.themevars" class="%theme.themevars.class%">
+        </service>
+
+        <service id="theme.metatags" class="%theme.metatags.class%">
+        </service>
+
+        <service id="theme.js_resolver" class="%theme.asset.js_resolver.class%">
+            <argument type="service" id="theme.assets_js" />
+        </service>
+
+        <service id="theme.css_resolver" class="%theme.asset.css_resolver.class%">
+            <argument type="service" id="theme.assets_css" />
+        </service>
+
+        <service id="theme.asset.packagepath" scope="request" class="%theme.asset.packagepath.class%">
+            <argument type="service" id="request" />
+            <!-- todo, version and format args -->
+        </service>
+
+        <service id="theme.asset_helper" scope="request" class="%theme.asset_helper.class%">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="theme.asset.packagepath" />
+        </service>
+    </services>
+</container>
