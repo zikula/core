@@ -282,7 +282,14 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
             // load the object class corresponding to $this->objecttype
             $class = "{$this->module}_DBObject_".StringUtil::camelize($this->objecttype).'Array';
 
-           // instantiate the object-array
+            if (!class_exists($class) && System::isLegacyMode()) {
+                if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
+                    throw new \Exception(__f('Unable to load class [%s] for module [%s]',
+                               array(DataUtil::formatForDisplay($this->objecttype, $this->module))));
+                }
+            }
+
+            // instantiate the object-array
             $objectArray = new $class();
 
             // get() returns the cached object fetched from the DB during object instantiation

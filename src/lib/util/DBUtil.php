@@ -3598,7 +3598,7 @@ class DBUtil
                     $table = substr($table, 0, $maxlen - 10 - $lenPrefix); // same as 20-strlen(), but easier to understand :-)
                 }
                 if (empty($table)) {
-                    return z_exit(__f('%1$s: unable to limit tablename [%2$s] because database prefix is too long for Oracle, please shorten it (recommended length is 4 chars)', array(
+                    throw new \Exception(__f('%1$s: unable to limit tablename [%2$s] because database prefix is too long for Oracle, please shorten it (recommended length is 4 chars)', array(
                                     __CLASS__ . '::' . __FUNCTION__,
                                     DataUtil::formatForDisplay($_tablename))));
                 }

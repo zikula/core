@@ -28,7 +28,7 @@ class FileUtil
     public static function getFilebase($filename, $keepDot = false)
     {
         if (!$filename) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::getFilename', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::getFilename', 'filename')));
         }
 
         $base = basename($filename);
@@ -54,7 +54,7 @@ class FileUtil
     public static function getBasename($filename)
     {
         if (!$filename) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::getBasename', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::getBasename', 'filename')));
         }
 
         return basename($filename);
@@ -71,7 +71,7 @@ class FileUtil
     public static function getExtension($filename, $keepDot = false)
     {
         if (!$filename) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::getExtension', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::getExtension', 'filename')));
         }
 
         $p = strrpos($filename, '.');
@@ -97,7 +97,7 @@ class FileUtil
     public static function stripExtension($filename, $keepDot = false)
     {
         if (!$filename) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::stripExtension', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::stripExtension', 'filename')));
         }
 
         $p = strrpos($filename, '.');
@@ -170,7 +170,7 @@ class FileUtil
         $type  = strtolower ($type);
 
         if ($type && $type != 'd' && $type != 'f') {
-            z_exit(__f('Error! Invalid type of object [%s] received.', $type));
+            throw new \Exception(__f('Error! Invalid type of object [%s] received.', $type));
         }
 
         if (!is_dir($rootPath) || !is_readable($rootPath)) {
@@ -314,7 +314,7 @@ class FileUtil
     public static function readFile($filename, $absolute = false)
     {
         if (!strlen($filename)) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::readFile', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::readFile', 'filename')));
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
@@ -401,7 +401,7 @@ class FileUtil
     public static function writeFile($filename, $data = '', $absolute = false)
     {
         if (!$filename) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::writeFile', 'filename')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::writeFile', 'filename')));
         }
 
         $fName = DataUtil::formatForOS($filename, $absolute);
@@ -436,11 +436,11 @@ class FileUtil
     public static function uploadFile($key, $destination, $newName = '', $absolute = false)
     {
         if (!$key) {
-            return z_exit(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'key')));
+            throw new \Exception(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'key')));
         }
 
         if (!$destination) {
-            return z_exit(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'destination')));
+            throw new \Exception(__f('%s: called with invalid %s.', array('FileUtil::uploadFile', 'destination')));
         }
 
         $msg = '';
@@ -519,12 +519,12 @@ class FileUtil
     {
         // check if $datarows is array
         if (!is_array($datarows)) {
-            return z_exit(__f('%1$s: %2$s is not an array', array('FileUtil::exportCSV', 'datarows')));
+            throw new \Exception(__f('%1$s: %2$s is not an array', array('FileUtil::exportCSV', 'datarows')));
         }
 
         // check if $datarows is empty
         if (count($datarows) == 0) {
-            return z_exit(__f('%1$s: %2$s is empty', array('FileUtil::exportCSV', 'datarows')));
+            throw new \Exception(__f('%1$s: %2$s is empty', array('FileUtil::exportCSV', 'datarows')));
         }
 
         // create random filename if none is given or else format it appropriately

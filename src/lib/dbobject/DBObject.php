@@ -196,7 +196,7 @@ class DBObject
             switch ($init) {
                 case self::GET_FROM_DB:
                     if (!$key) {
-                        return z_exit("Invalid DB-key in DBObject::_init() ...");
+                        throw new \Exception("Invalid DB-key in DBObject::_init() ...");
                     }
                     $this->get($key, $field);
                     break;
@@ -216,10 +216,10 @@ class DBObject
                     break;
 
                 default:
-                    return z_exit(__f("Error! An invalid initialization directive '%s' found in 'DBObject::_init()'.", $init));
+                    throw new \Exception(__f("Error! An invalid initialization directive '%s' found in 'DBObject::_init()'.", $init));
             }
         } else
-            return z_exit(__f("Error! An unexpected parameter type initialization '%s' was encountered in 'DBObject::_init()'.", $init));
+            throw new \Exception(__f("Error! An unexpected parameter type initialization '%s' was encountered in 'DBObject::_init()'.", $init));
     }
 
     /**

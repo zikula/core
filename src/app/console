@@ -6,7 +6,7 @@ set_time_limit(0);
 require_once __DIR__.'/../lib/bootstrap.php';
 require_once __DIR__.'/ZikulaKernel.php';
 
-use Symfony\Component\Console\Application;
+use Zikula\Bundle\CoreBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 
 $input = new ArgvInput();
@@ -14,5 +14,5 @@ $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?:
 $debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
 
 $kernel = new ZikulaKernel($env, $debug);
-$application = new Application('Zikula Core', Zikula_Core::VERSION_NUM);
+$application = new Application($kernel);
 $application->run($input);

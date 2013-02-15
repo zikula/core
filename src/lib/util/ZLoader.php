@@ -14,9 +14,6 @@
 
 use Symfony\Component\ClassLoader\ClassLoader;
 
-
-define('ZLOADER_PATH', dirname(__FILE__) . DIRECTORY_SEPARATOR);
-
 /**
  * ZLoader.
  */
@@ -36,7 +33,6 @@ class ZLoader
      */
     public static function register()
     {
-
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloader = new ClassLoader();
         self::$autoloader->register();
@@ -125,33 +121,11 @@ class ZLoader
         if (strpos($class, '_')) {
             $array = explode('_', $class);
             $prefix = (isset($map[$array[0]]) ? $map[$array[0]] . '/' : '');
-            $path = ZLOADER_PATH . $prefix . str_replace('_', '/', $class) . '.php';
+            $path = __DIR__.'/../'.$prefix . str_replace('_', '/', $class) . '.php';
             if (file_exists($path)) {
                 return include $path;
             }
         }
     }
-}
-
-/**
- * Exit.
- *
- * @param string  $msg  Message.
- * @param boolean $html True for html.
- *
- * @deprecated since 1.3.0
- *
- * @return false
- */
-function z_exit($msg, $html = true)
-{
-    if ($html) {
-        $msg = DataUtil::formatForDisplayHTML($msg);
-    }
-    LogUtil::registerError($msg);
-    trigger_error($msg, E_USER_ERROR);
-
-    return false;
-    //throw new Zikula_Exception_Fatal($msg);
 }
 

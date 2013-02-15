@@ -108,7 +108,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 }
             } catch (\Exception $e) {
                 // sth went wrong - maybe the filter rules weren't found
-                z_exit(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
+                throw new \Exception(__f('An error occured during executing PHPIDS: %s', $e->getMessage()));
             }
         }
     }

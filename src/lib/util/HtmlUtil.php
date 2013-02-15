@@ -37,11 +37,11 @@ class HtmlUtil
         $html = '';
 
         if (!$htmlname) {
-            return z_exit(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'htmlname')));
+            throw new \Exception(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'htmlname')));
         }
 
         if (!$dateFormat) {
-            return z_exit(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'dateFormat')));
+            throw new \Exception(__f('%1$s: Missing %2$s.', array('HtmlUtil::buildCalendarInputBox', 'dateFormat')));
         }
 
         $fieldKey = $htmlname;
@@ -153,11 +153,11 @@ class HtmlUtil
     public static function getSelector_ObjectArray($modname, $objectType, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
         if (!$modname) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ObjectArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ObjectArray')));
         }
 
         if (!$objectType) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('objectType', 'HtmlUtil::getSelector_ObjectArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('objectType', 'HtmlUtil::getSelector_ObjectArray')));
         }
 
         if (!ModUtil::dbInfoLoad($modname)) {
@@ -220,11 +220,11 @@ class HtmlUtil
     public static function getSelector_EntityArray($entity, $name, $field, $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
     {
         if (!$entity) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('entity', 'HtmlUtil::getSelector_EntityArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('entity', 'HtmlUtil::getSelector_EntityArray')));
         }
 
         if (!$field) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('field', 'HtmlUtil::getSelector_EntityArray')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('field', 'HtmlUtil::getSelector_EntityArray')));
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
@@ -302,11 +302,11 @@ class HtmlUtil
     public static function getSelector_FieldArray($modname, $tablekey, $name, $field = 'id', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $assocKey = '', $distinct = false, $submit = true, $disabled = false, $truncate = 0, $multipleSize = 1)
     {
         if (!$tablekey) {
-            return z_exit(__f('Invalid %1$s [%2$s] passed to %3$s.', array('tablekey', $modname, 'HtmlUtil::getSelector_FieldArray')));
+            throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', array('tablekey', $modname, 'HtmlUtil::getSelector_FieldArray')));
         }
 
         if (!$name) {
-            return z_exit(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_FieldArray')));
+            throw new \Exception(__f('Invalid %1$s [%2$s] passed to %3$s.', array('name', $name, 'HtmlUtil::getSelector_FieldArray')));
         }
 
         if ($modname) {
@@ -364,7 +364,7 @@ class HtmlUtil
     public static function getCheckboxes_CategoryField($categoryPath, $values = array(), $namePrefix = '', $excludeList = null, $disabled = false)
     {
         if (!$categoryPath) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('category', 'HtmlUtil::getCheckboxes_CategoryField')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('category', 'HtmlUtil::getCheckboxes_CategoryField')));
         }
 
         if (!$lang) {
@@ -412,7 +412,7 @@ class HtmlUtil
     public static function getSelector_ModuleTables($modname, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $remove = '', $disabled = false, $nStripChars = 0, $multipleSize = 1)
     {
         if (!$modname) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
         }
 
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
@@ -471,15 +471,15 @@ class HtmlUtil
     public static function getSelector_TableFields($modname, $tablename, $name, $selectedValue = '', $defaultValue = 0, $defaultText = '', $submit = false, $showSystemColumns = false, $disabled = false, $multipleSize = 1)
     {
         if (!$modname) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_TableFields')));
         }
 
         if (!$tablename) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('tablename', 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('tablename', 'HtmlUtil::getSelector_TableFields')));
         }
 
         if (!$name) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('name', 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('name', 'HtmlUtil::getSelector_TableFields')));
         }
 
         $tables = ModUtil::dbInfoLoad($modname, '', true);
@@ -487,7 +487,7 @@ class HtmlUtil
         $cols = $tables[$colkey];
 
         if (!$cols) {
-            return z_exit(__f('Invalid %1$s [%2$s] in %3$s.', array('column key', $colkey, 'HtmlUtil::getSelector_TableFields')));
+            throw new \Exception(__f('Invalid %1$s [%2$s] in %3$s.', array('column key', $colkey, 'HtmlUtil::getSelector_TableFields')));
         }
 
         if (!$showSystemColumns) {

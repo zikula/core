@@ -31,7 +31,7 @@ class Loader
     public static function loadFile($fileName, $path = null, $exitOnError = true, $returnVar = null)
     {
         if (!$fileName) {
-            return z_exit(__f("Error! Invalid file specification '%s'.", $fileName));
+            throw new \Exception(__f("Error! Invalid file specification '%s'.", $fileName));
         }
 
         $file = null;
@@ -54,7 +54,7 @@ class Loader
         }
 
         if ($exitOnError) {
-            return z_exit(__f("Error! Could not load the file '%s'.", $fileName));
+            throw new \Exception(__f("Error! Could not load the file '%s'.", $fileName));
         }
 
         return false;
@@ -105,7 +105,7 @@ class Loader
     public static function loadFiles($files, $path = null, $all = false, $exitOnError = false, $returnVar = '')
     {
         if (!is_array($files) || !$files) {
-            return z_exit(__('Error! Invalid file array specification.'));
+            throw new \Exception(__('Error! Invalid file array specification.'));
         }
 
         $files = array_unique($files);
@@ -145,7 +145,7 @@ class Loader
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), E_USER_DEPRECATED));
         if (!$className) {
-            return z_exit(__f("Error! Invalid class specification '%s'.", $className));
+            throw new \Exception(__f("Error! Invalid class specification '%s'.", $className));
         }
 
         if (class_exists($className)) {
@@ -179,11 +179,11 @@ class Loader
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__CLASS__ . '#' . __FUNCTION__, 'autoloading'), E_USER_DEPRECATED));
         if (!$module) {
-            return z_exit(__f("Error! Invalid module specification '%s'.", $module));
+            throw new \Exception(__f("Error! Invalid module specification '%s'.", $module));
         }
 
         if (!$base_obj_type) {
-            return z_exit(__f("Error! Invalid 'base_obj_type' specification '%s'.", $base_obj_type));
+            throw new \Exception(__f("Error! Invalid 'base_obj_type' specification '%s'.", $base_obj_type));
         }
 
         $prefix = (string) $prefix;
@@ -223,7 +223,7 @@ class Loader
                 }
 
                 if ($exitOnError) {
-                    return z_exit(__f('Error! Unable to load class [%s]', $classFile));
+                    throw new \Exception(__f('Error! Unable to load class [%s]', $classFile));
                 }
 
                 return false;
