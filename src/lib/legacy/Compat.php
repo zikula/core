@@ -2578,7 +2578,7 @@ function pnVarPrepForStore()
  * Exit the program after displaying the appropriate messages
  *
  * @deprecated
- * @see z_exit()
+ * @see throw new \Exception()
  * @param msg         The messgage to show
  * @param html        whether or not to generate HTML (can be turned off for command line execution)
  */
@@ -2587,8 +2587,8 @@ if (!function_exists('pn_exit')) {
     {
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(
             'pn_exit()',
-            'z_exit()')), E_USER_DEPRECATED);
-        z_exit($msg, $html);
+            'throw new \Exception()')), E_USER_DEPRECATED);
+        throw new \Exception($msg, $html);
     }
 }
 
@@ -4193,3 +4193,24 @@ interface FilterUtil_Replace extends FilterUtil_ReplaceInterface{}
 interface FilterUtil_Build extends FilterUtil_BuildInterface{}
 abstract class FilterUtil_Common extends FilterUtil_AbstractBase{}
 abstract class FilterUtil_PluginCommon extends FilterUtil_AbstractPlugin{}
+
+/**
+ * Exit.
+ *
+ * @param string  $msg  Message.
+ * @param boolean $html True for html.
+ *
+ * @deprecated since 1.3.0
+ *
+ * @return false
+ */
+function z_exit($msg, $html = true)
+{
+    if ($html) {
+        $msg = DataUtil::formatForDisplayHTML($msg);
+    }
+    LogUtil::registerError($msg);
+    trigger_error($msg, E_USER_ERROR);
+
+    return false;
+}

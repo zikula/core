@@ -39,7 +39,7 @@ class FormUtil
     public static function getPassedValue($key, $default = null, $source = null, $filter = null, array $args = array(), $objectType=null)
     {
         if (!$key) {
-            return z_exit(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValue')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('key', 'FormUtil::getPassedValue')));
         }
 
         $source = strtoupper($source);
@@ -106,7 +106,7 @@ class FormUtil
                 if ($source) {
                     static $valid = array('R', 'REQUEST', 'G', 'GET', 'P', 'POST', 'C', 'COOKIE', 'F', 'FILES', 'GP', 'GETPOST');
                     if (!in_array($source, $valid)) {
-                        z_exit(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
+                        throw new \Exception(__f('Invalid input source [%s] received.', DataUtil::formatForDisplay($source)));
 
                         return $default;
                     }
@@ -133,11 +133,11 @@ class FormUtil
     public static function isRequiredField($validationInfo, $field)
     {
         if (!$validationInfo) {
-            return z_exit(__f('Empty %1$s passed to %2$s.', array('validationInfo', 'FormUtil::isRequiredField')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('validationInfo', 'FormUtil::isRequiredField')));
         }
 
         if (!$field) {
-            return z_exit(__f('Empty %1$s passed to %2$s.', array('fieldname', 'FormUtil::isRequiredField')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('fieldname', 'FormUtil::isRequiredField')));
         }
 
         $rec = isset($validationInfo[$field]) ? $validationInfo[$field] : null;
@@ -267,11 +267,11 @@ class FormUtil
     public static function hasValidationErrors($objectType, $field = null)
     {
         if (!$objectType) {
-            return z_exit(__f('Empty %1$s passed to %2$s.', array('objectType', 'FormUtil::hasValidationErrors')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('objectType', 'FormUtil::hasValidationErrors')));
         }
 
         if (!$field) {
-            return z_exit(__f('Empty %1$s passed to %2$s.', array('field', 'FormUtil::hasValidationErrors')));
+            throw new \Exception(__f('Empty %1$s passed to %2$s.', array('field', 'FormUtil::hasValidationErrors')));
         }
 
         $ve = self::getValidationErrors();

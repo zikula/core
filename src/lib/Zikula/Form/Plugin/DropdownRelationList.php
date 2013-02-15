@@ -284,7 +284,7 @@ class Zikula_Form_Plugin_DropDownRelationlist extends Zikula_Form_Plugin_Dropdow
 
             if (!class_exists($class) && System::isLegacyMode()) {
                 if (!($class = Loader::loadArrayClassFromModule($this->module, $this->objecttype, false, $this->prefix))) {
-                    z_exit(__f('Unable to load class [%s] for module [%s]',
+                    throw new \Exception(__f('Unable to load class [%s] for module [%s]',
                                array(DataUtil::formatForDisplay($this->objecttype, $this->module))));
                 }
             }

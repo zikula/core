@@ -75,7 +75,7 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
             // BC check for PNObject old style.
             // load the object class corresponding to $params['objecttype']
             if (!($class = Loader::loadClassFromModule($params['module'], $params['objecttype'], false, false, $params['prefix']))) {
-                z_exit(__f('Unable to load class [%s] for module [%s]', array(DataUtil::formatForDisplay($params['objecttype']), DataUtil::formatForDisplay($params['module']))));
+                throw new \Exception(__f('Unable to load class [%s] for module [%s]', array(DataUtil::formatForDisplay($params['objecttype']), DataUtil::formatForDisplay($params['module']))));
             }
         }
 

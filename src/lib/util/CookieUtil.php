@@ -33,11 +33,11 @@ class CookieUtil
     public static function setCookie($name, $value='', $expires=null, $path=null, $domain=null, $secure=null, $signed = true)
     {
         if (!$name) {
-            return z_exit(__f("Error! In 'setCookie', you must specify at least the cookie name '%s'.", DataUtil::formatForDisplay($name)));
+            throw new \Exception(__f("Error! In 'setCookie', you must specify at least the cookie name '%s'.", DataUtil::formatForDisplay($name)));
         }
 
         if (!is_string($value)) {
-            return z_exit('setCookie: ' . DataUtil::formatForDisplay($value) . ' must be a string');
+            throw new \Exception('setCookie: ' . DataUtil::formatForDisplay($value) . ' must be a string');
         }
 
         if (System::getVar('signcookies') && (!$signed == false)) {

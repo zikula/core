@@ -74,7 +74,7 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
             // BC check for PNObjectArray old style.
             // load the object class corresponding to $params['objecttype']
             if (!($class = Loader::loadArrayClassFromModule($params['module'], $params['objecttype'], false, $params['prefix']))) {
-                z_exit(__f('Error! Cannot load module array class %1$s for module %2$s.', array(DataUtil::formatForDisplay($params['module']), DataUtil::formatForDisplay($params['objecttype']))));
+                throw new \Exception(__f('Error! Cannot load module array class %1$s for module %2$s.', array(DataUtil::formatForDisplay($params['module']), DataUtil::formatForDisplay($params['objecttype']))));
             }
         }
 

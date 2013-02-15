@@ -129,25 +129,3 @@ class ZLoader
     }
 }
 
-/**
- * Exit.
- *
- * @param string  $msg  Message.
- * @param boolean $html True for html.
- *
- * @deprecated since 1.3.0
- *
- * @return false
- */
-function z_exit($msg, $html = true)
-{
-    if ($html) {
-        $msg = DataUtil::formatForDisplayHTML($msg);
-    }
-    LogUtil::registerError($msg);
-    trigger_error($msg, E_USER_ERROR);
-
-    return false;
-    //throw new Zikula_Exception_Fatal($msg);
-}
-

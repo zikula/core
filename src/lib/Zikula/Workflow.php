@@ -152,19 +152,19 @@ class Zikula_Workflow
     {
         // check if state exists
         if (!isset($this->actionMap[$stateID])) {
-            return z_exit("STATE: $stateID not found");
+            throw new \Exception("STATE: $stateID not found");
         }
 
         // check the action exists for given state
         if (!isset($this->actionMap[$stateID][$actionID])) {
-            return z_exit(__f('Action: %1$s not available in this State: %2$s', array($actionID, $stateID)));
+            throw new \Exception(__f('Action: %1$s not available in this State: %2$s', array($actionID, $stateID)));
         }
 
         $action = $this->actionMap[$stateID][$actionID];
 
         // permission check
         if (!Zikula_Workflow_Util::permissionCheck($this->module, $this->id, $obj, $action['permission'])) {
-            return z_exit(__f('No permission to execute action: %s [permission]', $action));
+            throw new \Exception(__f('No permission to execute action: %s [permission]', $action));
         }
 
         // commit workflow to object
@@ -232,14 +232,14 @@ class Zikula_Workflow
         // test operation file exists
         $path = Zikula_Workflow_Util::_findpath("operations/function.{$operation['name']}.php", $this->module);
         if (!$path) {
-            return z_exit(__f('Operation file [%s] does not exist', $operation['name']));
+            throw new \Exception(__f('Operation file [%s] does not exist', $operation['name']));
         }
 
         // load file and test if function exists
         include_once $path;
         $function = "{$this->module}_operation_{$operation['name']}";
         if (!function_exists($function)) {
-            return z_exit(__f('Operation function [%s] is not defined', $function));
+            throw new \Exception(__f('Operation function [%s] is not defined', $function));
         }
 
         // execute operation and return result

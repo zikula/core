@@ -114,7 +114,7 @@ class ObjectUtil
     public static function setStandardFieldsOnObjectCreate(&$obj, $preserveValues = false, $idcolumn = 'id')
     {
         if (!is_array($obj)) {
-            z_exit(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectCreate'));
+            throw new \Exception(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectCreate'));
 
             return;
         }
@@ -146,7 +146,7 @@ class ObjectUtil
     public static function setStandardFieldsOnObjectUpdate(&$obj, $preserveValues = false)
     {
         if (!is_array($obj)) {
-            z_exit(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectUpdate'));
+            throw new \Exception(__f('%s called on a non-object', 'ObjectUtil::setStandardFieldsOnObjectUpdate'));
 
             return;
         }
@@ -238,7 +238,7 @@ class ObjectUtil
     {
         $dbtable = DBUtil::getTables();
         if (!$dbtable[$type]) {
-            return z_exit(__f('%1$s: Unable to reference object type [%2$s]', array('ObjectUtil::createObject', $type)));
+            throw new \Exception(__f('%1$s: Unable to reference object type [%2$s]', array('ObjectUtil::createObject', $type)));
         }
 
         $obj = array();
@@ -260,10 +260,10 @@ class ObjectUtil
     public static function diff($obj1, $obj2)
     {
         if (!is_array($obj1)) {
-            return z_exit(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object1')));
+            throw new \Exception(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object1')));
         }
         if (!is_array($obj2)) {
-            return z_exit(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object2')));
+            throw new \Exception(__f('%1$s: %2$s is not an object.', array('ObjectUtil::diff', 'object2')));
         }
 
         return array_diff($obj1, $obj2);
@@ -338,11 +338,11 @@ class ObjectUtil
     public static function moveField($obj, $tablename, $direction = 'up', $field = 'position', $idcolumn = 'id', $field2 = '', $value2 = '')
     {
         if (!is_array($obj)) {
-            return z_exit(__f('%1$s: %2$s is not an array.', array('ObjectUtil::moveField', 'object')));
+            throw new \Exception(__f('%1$s: %2$s is not an array.', array('ObjectUtil::moveField', 'object')));
         }
 
         if (!isset($obj[$idcolumn])) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($idcolumn, 'ObjectUtil::moveField')));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($idcolumn, 'ObjectUtil::moveField')));
         }
 
         $dbtables = DBUtil::getTables();
@@ -350,7 +350,7 @@ class ObjectUtil
         $column = $dbtables["{$tablename}_column"];
 
         if (!$column[$field]) {
-            return z_exit(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::moveField', $field, $tablename)));
+            throw new \Exception(__f('%1$s: there is no [%2$s] field in the [%3$s] table.', array('ObjectUtil::moveField', $field, $tablename)));
         }
 
         // Get info on current position of field
@@ -375,7 +375,7 @@ class ObjectUtil
                     WHERE $column[$field] > '" . DataUtil::formatForStore($seq) . "' $where2
                     ORDER BY $column[$field] ASC LIMIT 0,1";
         } else {
-            return z_exit(__f('%1$s: invalid direction [%2$s] supplied.', array('ObjectUtil::moveField', $direction)));
+            throw new \Exception(__f('%1$s: invalid direction [%2$s] supplied.', array('ObjectUtil::moveField', $direction)));
         }
 
         $res = DBUtil::executeSQL($sql);
@@ -409,11 +409,11 @@ class ObjectUtil
     public static function retrieveObjectAttributes($obj, $type, $idcolumn = 'id')
     {
         if (!$obj) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$type) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         // ensure that only objects with a valid ID are used
@@ -444,7 +444,7 @@ class ObjectUtil
     public static function expandObjectWithAttributes(&$obj, $type, $idcolumn = 'id')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $atrs = self::retrieveObjectAttributes($obj, $type, $idcolumn);
@@ -472,15 +472,15 @@ class ObjectUtil
     public static function storeObjectAttributes($obj, $type, $idcolumn = 'id', $wasUpdateQuery = true)
     {
         if (!$obj) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$type) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$idcolumn) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!isset($obj['__ATTRIBUTES__']) || !is_array($obj['__ATTRIBUTES__'])) {
@@ -493,7 +493,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         if ($wasUpdateQuery) {
@@ -545,11 +545,11 @@ class ObjectUtil
     public static function updateObjectAttributes($obj, $type, $idcolumn = 'id', $force=false)
     {
         if (!$obj) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$type) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!isset($obj['__ATTRIBUTES__']) || !is_array($obj['__ATTRIBUTES__'])) {
@@ -558,7 +558,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $dbtables = DBUtil::getTables();
@@ -606,15 +606,15 @@ class ObjectUtil
     public static function deleteObjectAttributes(&$obj, $type, $idcolumn = 'id')
     {
         if (!$obj) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$type) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$idcolumn) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         $dbtables = DBUtil::getTables();
@@ -628,7 +628,7 @@ class ObjectUtil
 
         $objID = $obj[$idcolumn];
         if (!$objID) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $sql = "DELETE FROM $table WHERE $column[object_type] = '" . DataUtil::formatForStore($type) . "' AND
@@ -656,15 +656,15 @@ class ObjectUtil
     public static function deleteObjectSingleAttribute($objID, $type, $attributename)
     {
         if (!$objID) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('objectid', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('objectid', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$type) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('type', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$attributename) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('attributename', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('attributename', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         $dbtables = DBUtil::getTables();
@@ -942,7 +942,7 @@ class ObjectUtil
     public static function expandObjectWithMeta(&$obj, $tablename, $idcolumn = 'id')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         $meta = self::retrieveObjectMetaData($obj, $tablename, $idcolumn);
@@ -968,15 +968,15 @@ class ObjectUtil
     public static function storeObjectCategories($obj, $tablename, $idcolumn = 'id', $wasUpdateQuery = true)
     {
         if (!$obj) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('object', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$tablename) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('tablename', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('tablename', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!$idcolumn) {
-            return z_exit(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
@@ -1234,7 +1234,7 @@ class ObjectUtil
     public static function expandObjectWithCategories(&$obj, $tablename, $idcolumn = 'id', $assocKey = '')
     {
         if (!isset($obj[$idcolumn]) || !$obj[$idcolumn]) {
-            return z_exit(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
+            throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
         if (!ModUtil::dbInfoLoad('Categories')) {
@@ -1264,7 +1264,7 @@ class ObjectUtil
     public static function postProcessExpandedObjectArrayCategories(&$objArray, $rootCats, $includeRoot = false)
     {
         if (!$objArray) {
-            return z_exit(__f('Invalid object in %s', 'postProcessExpandedObjectArrayCategories'));
+            throw new \Exception(__f('Invalid object in %s', 'postProcessExpandedObjectArrayCategories'));
         }
 
         $ak = array_keys($objArray);
@@ -1289,7 +1289,7 @@ class ObjectUtil
     public static function postProcessExpandedObjectCategories(&$obj, $rootCatsIDs, $includeRoot = false)
     {
         if (!$obj) {
-            return z_exit(__f('Invalid object in %s', 'postProcessExpandedObjectCategories'));
+            throw new \Exception(__f('Invalid object in %s', 'postProcessExpandedObjectCategories'));
         }
 
         $rootCats = CategoryUtil::getCategoriesByRegistry($rootCatsIDs);

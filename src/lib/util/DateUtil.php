@@ -876,7 +876,7 @@ class DateUtil
                 $type = 'datetimefull';
                 break;
             default:
-                z_exit(__f('Dateformat must be with 8, 14 or 17 characters long.', $dateformat));
+                throw new \Exception(__f('Dateformat must be with 8, 14 or 17 characters long.', $dateformat));
         }
 
         if (preg_match($regex, $dateformat, $matches)) {
@@ -884,7 +884,7 @@ class DateUtil
             // validate separator
             if ($matches[2] != $matches[4]) {
                 // TODO A throw exception here (dateformat separators must match) - drak
-                z_exit(__f('Dateformat separators must be the same in %s', $dateformat));
+                throw new \Exception(__f('Dateformat separators must be the same in %s', $dateformat));
             }
 
             // construct separator regex
@@ -911,7 +911,7 @@ class DateUtil
             if ($matchCount > 8) {
                 if ($matchCount == 11 && $matches[7] != $matches[9]) {
                     // TODO A throw exception here (dateformat separators must match) - drak
-                    z_exit(__f('Dateformat time separators must be the same in %s', $dateformat));
+                    throw new \Exception(__f('Dateformat time separators must be the same in %s', $dateformat));
                 }
 
                 $timeseparator = preg_quote($matches[7]);
@@ -949,7 +949,7 @@ class DateUtil
         }
 
         // TODO A throw exception here in 1.3.0 - drak
-        z_exit(__f('Dateformat did not match known format in %s', $dateformat));
+        throw new \Exception(__f('Dateformat did not match known format in %s', $dateformat));
     }
 
 }

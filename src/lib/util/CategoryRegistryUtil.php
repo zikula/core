@@ -28,7 +28,7 @@ class CategoryRegistryUtil
     public static function deleteEntry($modname, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
+            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
 
         $where = "modname='$modname'";
@@ -68,7 +68,7 @@ class CategoryRegistryUtil
     public static function updateEntry($entryID, $modname, $table, $property, $categoryID)
     {
         if (!isset($entryID) || !$entryID) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'entryID'));
+            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'entryID'));
         }
 
         return self::_processEntry($modname, $table, $property, $categoryID, $entryID);
@@ -88,20 +88,20 @@ class CategoryRegistryUtil
     private static function _processEntry($modname, $table, $property, $categoryID, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'modname'));
+            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
         if (!isset($table) || !$table) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'table'));
+            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'table'));
         }
         if (!isset($property) || !$property) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'property'));
+            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'property'));
         }
         if (!isset($categoryID) || !$categoryID) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'categoryID'));
+            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
         if (!ModUtil::dbInfoLoad($modname)) {
-            return z_exit(__f("Error! Unable to load table information for module '%s'", $modname));
+            throw new \Exception(__f("Error! Unable to load table information for module '%s'", $modname));
         }
 
         $data = array();
@@ -171,7 +171,7 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategories($modname, $tablename, $arraykey='property')
     {
         if (!$modname || !$tablename) {
-            return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
+            throw new \Exception(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
         static $cache = array();
@@ -237,7 +237,7 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategoriesIds($modname, $tablename)
     {
         if (!$modname || !$tablename) {
-            return z_exit(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
+            throw new \Exception(__f("Error! Received invalid specifications '%1$s', '%2$s'.", array($modname, $tablename)));
         }
 
         $wheres = array();

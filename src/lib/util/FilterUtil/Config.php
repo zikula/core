@@ -408,7 +408,7 @@ class FilterUtil_Config
                 $a = $join['object_field_name'][$k];
                 if (isset($this->_column[$a])) {
                     // Oh, that won't work! Two fields with the same alias!
-                    return z_exit(__f('%s: Invalid join information!', 'FilterUtil'));
+                    throw new \Exception(__f('%s: Invalid join information!', 'FilterUtil'));
                 }
                 // so, let's add the field to the column array
                 $this->_column[$a] = $join['join_alias'] . '.' . ($jc ? $jc[$f] : $f);
