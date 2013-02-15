@@ -15,7 +15,8 @@ interface StandardFieldsAdapter extends AdapterInterface
      * Get the user id value
      *
      * @param ClassMetadata $meta
-     * @param string $field
+     * @param string        $field
+     *
      * @return mixed
      */
     function getUserIdValue(ClassMetadata $meta, $field);
