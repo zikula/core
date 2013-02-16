@@ -1488,6 +1488,7 @@ class UserUtil
                 $oldValue = isset($origUserObj['__ATTRIBUTES__'][$attributeName]) ? $origUserObj['__ATTRIBUTES__'][$attributeName] : null;
 
                 $user->setAttribute($attributeName, $value);
+                $em->flush();
 
                 $varIsSet = true;
             }
