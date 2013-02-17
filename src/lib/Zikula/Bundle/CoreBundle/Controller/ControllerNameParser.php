@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Bundle\FrameworkBundle\Controller;
+namespace Zikula\Bundle\CoreBundle\Controller;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
