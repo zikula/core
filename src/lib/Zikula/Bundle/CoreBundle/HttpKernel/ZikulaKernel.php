@@ -5,6 +5,8 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 use Symfony\Component\HttpKernel\Kernel;
 use Zikula\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -47,6 +49,26 @@ abstract class ZikulaKernel extends Kernel
 
         $this->container = $this->buildContainer();
         $this->container->set('kernel', $this);
+    }
+
+    /**
+     * Dumps the service container to PHP code in the cache.
+     *
+     * @param ConfigCache      $cache     The config cache
+     * @param ContainerBuilder $container The service container
+     * @param string           $class     The name of the class to generate
+     * @param string           $baseClass The name of the container's base class
+     */
+    protected function dumpContainer(ConfigCache $cache, ContainerBuilder $container, $class, $baseClass)
+    {
+        // cache the container
+        $dumper = new PhpDumper($container);
+        $content = $dumper->dump(array('class' => $class, 'base_class' => $baseClass));
+        if (!$this->debug) {
+            $content = self::stripComments($content);
+        }
+
+        $cache->write($content, $container->getResources());
     }
 
     /**
