@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Component\DependencyInjection;
+namespace Zikula\Bridge\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper as BasePhpDumper;
 

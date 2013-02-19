@@ -3,10 +3,11 @@
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Symfony\Component\HttpKernel\Kernel;
-use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Bridge\DependencyInjection\PhpDumper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -83,7 +84,7 @@ abstract class ZikulaKernel extends Kernel
     protected function getContainerBaseClass()
     {
         return 'Zikula_ServiceManager';
-        //return 'Zikula\Component\DependencyInjection\ContainerBuilder';
+        //return 'Zikula\Bridge\DependencyInjection\ContainerBuilder';
     }
 
     /**
@@ -95,5 +96,24 @@ abstract class ZikulaKernel extends Kernel
     {
         return new \Zikula_ServiceManager(new ParameterBag($this->getKernelParameters()));
         //return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
+    }
+
+    /**
+     * Gets the environment parameters.
+     *
+     * Only the parameters starting with "ZIKULA__" are considered.
+     *
+     * @return array An array of parameters
+     */
+    protected function getEnvParameters()
+    {
+        $parameters = parent::getEnvParameters();
+        foreach ($_SERVER as $key => $value) {
+            if (0 === strpos($key, 'ZIKULA__')) {
+                $parameters[strtolower(str_replace('__', '.', substr($key, 9)))] = $value;
+            }
+        }
+
+        return $parameters;
     }
 }

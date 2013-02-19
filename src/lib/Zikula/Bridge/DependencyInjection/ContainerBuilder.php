@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\DependencyInjection;
+namespace Zikula\Bridge\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder as BaseContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
