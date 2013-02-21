@@ -135,7 +135,7 @@
                                 <ol id="availableareasdraglist_{$draglist_identifier_md5}" class="z-itemlist">
                                     {foreach from=$areas item='parea'}
                                         {assign var="parea_md5" value=$parea|md5}
-                                        {assign var="available_area_identifier" value="`$parea_md5`-::sarea_identifier::"}
+                                        {assign var="available_area_identifier" value="`$parea_md5`-sarea_identifier"}
 
                                         <li id="availablearea_{$available_area_identifier}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
                                             <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink z-hide" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" onmouseover="this.up().up().addClassName('attachedarea_detach')" onmouseout="this.up().up().removeClassName('attachedarea_detach')" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
