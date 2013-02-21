@@ -87,7 +87,7 @@ function togglesubscriberareastatus_response(req)
  */
 function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
 {
-    var area_to_attach = $('availablearea_' + parea_id + '-::sarea_identifier::');
+    var area_to_attach = $('availablearea_' + parea_id + '-sarea_identifier');
     var area_to_attach_to = $('sarea_' + sarea_id + '_list');
     var empty_area = $('sarea_empty_' + sarea_id);
     
@@ -100,10 +100,10 @@ function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
     }
 
     newitem.id = newitem.id.replace('availablearea_', 'attachedarea_');
-    newitem.id = newitem.id.replace('::sarea_identifier::', sarea_id);
+    newitem.id = newitem.id.replace('sarea_identifier', sarea_id);
    
     newitem.innerHTML = newitem.innerHTML.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
-    newitem.innerHTML = newitem.innerHTML.replace(new RegExp('::sarea_identifier::', 'g'), sarea_id);
+    newitem.innerHTML = newitem.innerHTML.replace(new RegExp('sarea_identifier', 'g'), sarea_id);
     newitem.innerHTML = newitem.innerHTML.replace(' z-hide', '');
     newitem.innerHTML = newitem.innerHTML.replace('##id', sarea_id);
     newitem.innerHTML = newitem.innerHTML.replace('##name', sarea_name);
