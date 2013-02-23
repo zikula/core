@@ -26,7 +26,7 @@ ZLoader::register();
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
-$kernel = new ZikulaKernel('prod', true);
+$kernel = new ZikulaKernel('dev', true);
 $kernel->boot();
 
 $core = new Zikula_Core();

@@ -118,7 +118,7 @@ class DoctrineListener implements EventSubscriberInterface
 
         $types = array(
             'Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree',
-            'Sortable', 'SoftDeletable', 'Blameable', 'Uploadable'
+            'Sortable', 'SoftDeleteable', 'Blameable', 'Uploadable'
         );
         foreach ($types as $type) {
             // The listener for Translatable is incorrectly named TranslationListener

@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\DependencyInjection\ContainerBuilder;
+use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 
 /**
  * ServiceManager class.
