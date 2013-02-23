@@ -152,7 +152,7 @@ class System
         if (!is_array($value)) {
             $value = stripslashes($value);
         } else {
-            array_walk($value, 'System::stripslashes');
+            array_walk($value, 'self::stripslashes');
         }
     }
 
@@ -691,7 +691,7 @@ class System
         // check if we need to decode the url
         if (($shorturls = self::getVar('shorturls') && (empty($module) && empty($type) && empty($func)))) {
             // user language is not set at this stage
-            $lang = System::getVar('language_i18n', '');
+            $lang = self::getVar('language_i18n', '');
             $customentrypoint = self::getVar('entrypoint');
             $expectEntrypoint = !self::getVar('shorturlsstripentrypoint');
             $root = empty($customentrypoint) ? 'index.php' : $customentrypoint;
@@ -707,10 +707,10 @@ class System
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
             if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
-                $protocol = System::serverGetVar('SERVER_PROTOCOL');
+                $protocol = self::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
-                system::shutDown();
+                self::shutDown();
             }
 
             if (!$expectEntrypoint && self::getCurrentUrl() == self::getBaseUrl() . $root) {
@@ -719,10 +719,10 @@ class System
             }
 
             if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
-                $protocol = System::serverGetVar('SERVER_PROTOCOL');
+                $protocol = self::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
-                system::shutDown();
+                self::shutDown();
             }
 
             // get base path to work out our current url
@@ -749,8 +749,8 @@ class System
                 // we are in the homepage, checks if language code is forced
                 if (ZLanguage::getLangUrlRule() && $lang) {
                     // and redirect then
-                    System::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
-                    System::shutDown();
+                    self::redirect(self::getCurrentUrl()."/$lang", array(), 302, true);
+                    self::shutDown();
                 }
             } else {
                 // check the existing shortURL parameters
@@ -763,8 +763,8 @@ class System
                         foreach ($args as $k => $v) {
                             $args[$k] = urlencode($v);
                         }
-                        System::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
-                        System::shutDown();
+                        self::redirect(self::getBaseUrl().$frontController.($args ? implode('/', $args) : ''), array(), 302, true);
+                        self::shutDown();
                     }
                     self::queryStringSetVar('lang', $args[0], $request);
                     array_shift($args);
@@ -775,8 +775,8 @@ class System
                         $args[$k] = urlencode($v);
                     }
                     $langTheme = isset($_GET['theme']) ? "$lang/$_GET[theme]" : $lang;
-                    System::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
-                    System::shutDown();
+                    self::redirect(self::getBaseUrl().$frontController.$langTheme.'/'.implode('/', $args), array(), 302, true);
+                    self::shutDown();
                 }
 
                 // check if there are remaining arguments
@@ -850,10 +850,10 @@ class System
 
         if (!$module) {
             // set the start parameters
-            $module = System::getVar('startpage');
-            $type = System::getVar('starttype');
-            $func = System::getVar('startfunc');
-            $args = explode(',', System::getVar('startargs'));
+            $module = self::getVar('startpage');
+            $type = self::getVar('starttype');
+            $func = self::getVar('startfunc');
+            $args = explode(',', self::getVar('startargs'));
             foreach ($args as $arg) {
                 if (!empty($arg)) {
                     $argument = explode('=', $arg);
