@@ -151,7 +151,7 @@ jQuery-UI v1.9.2
         vader
         (all theme css files direct download from http://jqueryui.com/download)
 
-jQuery Mobile 1.2.0
+jQuery Mobile 1.3.0
     Vendor website: http://jquerymobile.com/
     Downloaded from: http://jquerymobile.com/download/
     License: MIT
