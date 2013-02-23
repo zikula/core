@@ -1,7 +1,0 @@
-parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     zikula
-    database_user:     root
-    database_password: ~

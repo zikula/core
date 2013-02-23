@@ -50,6 +50,7 @@ Features:
   instead http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
 - Blocks: added display function and preview button in blocks list.
 - [BC BREAK] Removed interactive installer from module specification.
+- Update JqueryMobile to 1.3.0
 
 
 CHANGELOG - ZIKULA 1.3.5

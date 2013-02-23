@@ -13,6 +13,8 @@ jQuery(document).ready(function() {
          }
     );
 
+    jQuery('table').attr('data-role', 'table');
+
     jQuery('.z-bt-ok').attr('data-icon','check');
     jQuery('.z-bt-cancel').attr('data-icon','delete');
     jQuery('.z-bt-preview').attr('data-icon','eye-open');
