@@ -121,12 +121,7 @@ class DoctrineListener implements EventSubscriberInterface
             'Sortable', 'SoftDeleteable', 'Blameable', 'Uploadable'
         );
         foreach ($types as $type) {
-            // The listener for Translatable is incorrectly named TranslationListener
-            if ($type != "Translatable") {
-                $definition = new Definition("Gedmo\\$type\\{$type}Listener");
-            } else {
-                $definition = new Definition("Gedmo\\Translatable\\TranslationListener");
-            }
+            $definition = new Definition("Gedmo\\$type\\{$type}Listener");
             $this->container->setDefinition(strtolower("doctrine_extensions.listener.$type"), $definition);
         }
 
