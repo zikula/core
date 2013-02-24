@@ -28,6 +28,7 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
     public function __construct($payload)
     {
         $this->payload = $payload;
+        parent::__construct('', $this->statusCode);
     }
 
     /**

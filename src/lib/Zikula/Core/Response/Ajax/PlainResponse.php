@@ -28,6 +28,7 @@ class PlainResponse extends AbstractBaseResponse
     public function __construct($payload)
     {
         $this->payload = $payload;
+        parent::__construct();
     }
 
     /**
