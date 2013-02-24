@@ -3,7 +3,7 @@
 #                  stored under the system/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|jpg|gif|png)$">
+<FilesMatch "(?i)\.(css|js|jpg|gif|png)$">
 order allow,deny
 allow from all
 </filesmatch>
