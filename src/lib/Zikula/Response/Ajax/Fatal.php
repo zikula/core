@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\FatalResponse;
+use Zikula\Core\Response\Ajax\FatalResponse;
 
 /**
  * Ajax class.

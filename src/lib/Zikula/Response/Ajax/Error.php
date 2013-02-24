@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\AbstractErrorResponse;
+use Zikula\Core\Response\Ajax\AbstractErrorResponse;
 
 /**
  * Ajax class.

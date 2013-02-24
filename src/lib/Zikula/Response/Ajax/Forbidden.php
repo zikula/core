@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\ForbiddenResponse;
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
 
 /**
  * Ajax class.

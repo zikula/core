@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\BadDataResponse;
+use Zikula\Core\Response\Ajax\BadDataResponse;
 
 /**
  * Ajax class.
