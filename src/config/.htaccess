@@ -3,7 +3,7 @@
 #                  the config/ directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(css|js|png|gif|jpg|bmp)$">
+<FilesMatch "(?i)\.(css|js|png|gif|jpg|bmp)$">
 order allow,deny
 allow from all
 </filesmatch>

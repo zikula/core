@@ -3,7 +3,7 @@
 #                  stored under the imagine thumbnails directory
 # ----------------------------------------------------------------------
 deny from all
-<FilesMatch "\.(png|gif|jpg)$">
+<FilesMatch "(?i)\.(png|gif|jpg)$">
 order allow,deny
 allow from all
 </filesmatch>
