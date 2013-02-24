@@ -28,7 +28,7 @@ class PlainResponse extends AbstractBaseResponse
     public function __construct($payload)
     {
         $this->payload = $payload;
-        parent::__construct();
+        parent::__construct('', $this->statusCode);
     }
 
     /**
@@ -38,10 +38,12 @@ class PlainResponse extends AbstractBaseResponse
      */
     public function __toString()
     {
-        header($this->createHttpResponseHeader());
-        header('Content-type: text/html');
+        $this->setContent($this->payload);
+        $this->headers->set('Content-type', 'text/html');
 
-        return $this->payload;
+        return
+            sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)."\r\n".
+            $this->headers."\r\n".
+            $this->getContent();
     }
-
 }
