@@ -30,5 +30,8 @@ class ZikulaKernel extends Kernel
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
         $loader->load(__DIR__.'/config/parameters.yml');
+        if (is_readable(__DIR__.'/config/personal_parameters.yml')) {
+            $loader->load(__DIR__.'/config/personal_parameters.yml');
+        }
     }
 }
