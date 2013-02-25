@@ -19,6 +19,8 @@
     <thead>
         <tr>
             <th>{gt text="User name"}</th>
+            <th>{gt text="Internal ID"}</th>
+            <th>{gt text="Registration date"}</th>
             <th>{gt text="E-mail address"}</th>
             <th class="z-center">{gt text="Approved?"}</th>
             <th class="z-center">{gt text="Verified?"}</th>
@@ -30,6 +32,8 @@
         {gt assign='titleIfNotSent' text='Send an e-mail verification code'}
         {foreach from=$reglist item='reginfo' name='reglist'}<tr class="{cycle values='z-odd,z-even'}">
             <td>{$reginfo.uname|safetext}</td>
+            <td>{$reginfo.uid|safetext}</td>
+            <td>{$reginfo.user_regdate|safetext}</td>
             <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
             <td class="z-center">
                 {if $reginfo.isapproved}
