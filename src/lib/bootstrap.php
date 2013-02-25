@@ -13,6 +13,7 @@
  */
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Symfony\Component\Yaml\Yaml;
 
 if (isset($_SERVER['HTTP_HOST']) && !extension_loaded('xdebug')) {
     set_exception_handler(function (Exception $e) {
@@ -27,7 +28,11 @@ ZLoader::register();
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
-$kernel = new ZikulaKernel('dev', true);
+$file = is_readable($file = __DIR__.'/../app/config/custom_kernel.yml') ? $file : __DIR__.'/../app/config/kernel.yml';
+
+$kernelConfig = Yaml::parse(file_get_contents($file));
+
+$kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
 $kernel->boot();
 
 $core = new Zikula_Core();

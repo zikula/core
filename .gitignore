@@ -4,7 +4,7 @@
 /bin/
 /src/app/bootstrap.php.cache
 /src/app/cache/
-/src/app/config/personal_parameters.yml
+/src/app/config/custom_*.yml
 /src/app/logs/
 /src/config/personal_config.php
 /src/config/multisites_config.php
