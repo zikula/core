@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Framework\Response\Ajax\AbstractBaseResponse;
+use Zikula\Core\Response\Ajax\AbstractBaseResponse;
 
 /**
  * Ajax class.
@@ -27,7 +27,9 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
      */
     public function __construct($payload)
     {
-        $this->payload = $payload;
+        $this->payload = json_encode($payload);
+        parent::__construct($this->payload, $this->statusCode);
+        $this->headers->set('Content-type', 'application/json');
     }
 
     /**
@@ -37,10 +39,10 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
      */
     public function __toString()
     {
-        header($this->createHttpResponseHeader());
-        header('Content-type: application/json');
-
-        return json_encode($this->payload);
+        return
+            sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)."\r\n".
+            $this->headers."\r\n".
+            $this->getContent();
     }
 
 }

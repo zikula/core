@@ -178,17 +178,13 @@ function __frontcontroller_ajax(Request $request)
         $response = new \Zikula\Core\Response\Ajax\NotFoundResponse($e->getMessage());
     } catch (Zikula_Exception_Forbidden $e) {
         $response = new \Zikula\Core\Response\Ajax\ForbiddenResponse($e->getMessage());
-    } catch (Zikula_Exception_Fatal $e) {
-        $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
-    } catch (PDOException $e) {
-        $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     } catch (Exception $e) {
         $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     }
 
     // Process final response.
-    // If response is not instanceof Zikula\Core\Response\Ajax\AbstractBaseResponse provide compat solution
-    if (!$response instanceof Zikula\Core\Response\Ajax\AbstractBaseResponse) {
+    // If response is not instanceof Response provide compat solution
+    if (!$response instanceof \Symfony\Component\HttpFoundation\Response) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
         $response = json_encode($response);
