@@ -100,7 +100,7 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
 
         $this->hasColumn('method', 'string', 20, array(
              'type' => 'string',
-             'length' => 20,
+             'length' => 60,
              'fixed' => false,
              'unsigned' => false,
              'primary' => false,
