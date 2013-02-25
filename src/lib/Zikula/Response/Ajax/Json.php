@@ -28,7 +28,8 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
     public function __construct($payload)
     {
         $this->payload = json_encode($payload);
-        parent::__construct('', $this->statusCode);
+        parent::__construct($this->payload, $this->statusCode);
+        $this->headers->set('Content-type', 'application/json');
     }
 
     /**
@@ -38,9 +39,6 @@ class Zikula_Response_Ajax_Json extends AbstractBaseResponse
      */
     public function __toString()
     {
-        $this->setContent($this->payload);
-        $this->headers->set('Content-type', 'application/json');
-
         return
             sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)."\r\n".
             $this->headers."\r\n".

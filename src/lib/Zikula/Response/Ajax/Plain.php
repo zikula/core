@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Core\Response\Ajax\PlainResponse;
+use Zikula\Core\Response\PlainResponse;
 
 /**
  * Ajax class.
