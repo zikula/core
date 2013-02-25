@@ -79,11 +79,10 @@
                     <input id="users_subject" name="sendmail[subject]" type="text" size="40" />
                 </div>
                 <div class="z-formrow">
-                    {modgetvar module="Mailer" name="html" assign="mailer_html"}
                     <label for="users_format">{gt text='Format'}</label>
                     <select id="users_format" name="sendmail[format]" size="1" >
-                        <option value="text"{if !$mailer_html} selected="selected"{/if}>{gt text='Text'}</option>
-                        <option value="html"{if $mailer_html} selected="selected"{/if}>{gt text='HTML'}</option>
+                        <option value="text"{if !$modvars.Mailer.html} selected="selected"{/if}>{gt text='Text'}</option>
+                        <option value="html"{if $modvars.Mailer.html} selected="selected"{/if}>{gt text='HTML'}</option>
                     </select>
                 </div>
                 <div class="z-formrow">
