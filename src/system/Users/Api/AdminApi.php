@@ -290,6 +290,14 @@ class AdminApi extends \Zikula_AbstractApi
         }
         unset($missingFields);
 
+        // Set default email format from Mailer, if not specified
+        $html = null;
+        if ($sendmail['format'] == 'html') {
+            $html = true;
+        } elseif ($sendmail['format'] == 'text') {
+            $html = false;
+        }
+
         $bcclist = array();
         $recipientlist = array();
         $recipientscount = 0;
@@ -309,6 +317,7 @@ class AdminApi extends \Zikula_AbstractApi
                                        'replytoaddress' => $sendmail['rpemail'],
                                        'subject'        => $sendmail['subject'],
                                        'body'           => $sendmail['message'],
+                                       'html'           => $html,
                                        'bcc'            => $bcclist)) == true) {
                     $recipientscount += count($bcclist);
                     $bcclist = array();
@@ -329,6 +338,7 @@ class AdminApi extends \Zikula_AbstractApi
                 'replytoaddress'=> $sendmail['rpemail'],
                 'subject'       => $sendmail['subject'],
                 'body'          => $sendmail['message'],
+                'html'          => $html,
                 'bcc'           => $bcclist,
             );
             if (ModUtil::apiFunc('Mailer', 'user', 'sendMessage', $sendMessageArgs)) {
