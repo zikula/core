@@ -80,7 +80,7 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
 
         $this->hasColumn('category', 'string', 20, array(
              'type' => 'string',
-             'length' => 10,
+             'length' => 20,
              'fixed' => false,
              'unsigned' => false,
              'primary' => false,
@@ -98,7 +98,7 @@ class Zikula_Doctrine_Model_HookProvider extends Doctrine_Record
              'autoincrement' => false,
              ));
 
-        $this->hasColumn('method', 'string', 20, array(
+        $this->hasColumn('method', 'string', 60, array(
              'type' => 'string',
              'length' => 60,
              'fixed' => false,
