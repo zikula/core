@@ -113,8 +113,9 @@ class AdminController extends \Zikula_AbstractController
         // we need this value multiple times, so we keep it
         $itemsPerPage = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE);
 
-        $sort = $this->request->query->get('sort', isset($args['sort']) ? $args['sort'] : 'uname');
-        $sortDirection = $this->request->query->get('sortdir', isset($args['sortdir']) ? $args['sortdir'] : 'ASC');
+        $letter = $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null);
+        $sort = $this->request->query->get('sort', isset($args['sort']) ? $args['sort'] : ($letter ? 'uname' : 'uid'));
+        $sortDirection = $this->request->query->get('sortdir', isset($args['sortdir']) ? $args['sortdir'] : ($letter ? 'ASC' : 'DESC'));
         $sortArgs = array(
             $sort => $sortDirection,
         );
@@ -125,7 +126,7 @@ class AdminController extends \Zikula_AbstractController
         $getAllArgs = array(
             'startnum' => $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null),
             'numitems' => $itemsPerPage,
-            'letter' => $this->request->query->get('letter', isset($args['letter']) ? $args['letter'] : null),
+            'letter' => $letter,
             'sort' => $sortArgs,
         );
 
