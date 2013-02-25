@@ -68,15 +68,23 @@
                 <p class="z-informationmsg">{gt text="Notice: This e-mail message will be sent to your address and to all other recipients you select. Your address will be the entered as the main recipient, and all your selected recipients will be included in the blind carbon copies ('Bcc') list. You can specify the number of 'Bcc' recipients to be added to each e-mail message. If the number of your selected recipients exceeds the number you enter here, then repeat messages will be sent until everyone in your selection has been mailed (you will receive a copy of each message). The allowed batch size may be set by your hosting provider."}</p>
                 <div class="z-formrow">
                     <label for="users_from">{gt text="Sender's name"}</label>
-                    <input id="users_from" name="sendmail[from]" type="text" size="40" />
+                    <input id="users_from" name="sendmail[from]" type="text" size="40" value="{$modvars.ZConfig.sitename}" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_rpemail">{gt text="Address to which replies should be sent"}</label>
-                    <input id="users_rpemail" name="sendmail[rpemail]" type="text" size="40" />
+                    <input id="users_rpemail" name="sendmail[rpemail]" type="text" size="40" value="{$modvars.ZConfig.adminmail}" />
                 </div>
                 <div class="z-formrow">
                     <label for="users_subject">{gt text="Subject"}</label>
                     <input id="users_subject" name="sendmail[subject]" type="text" size="40" />
+                </div>
+                <div class="z-formrow">
+                    {modgetvar module="Mailer" name="html" assign="mailer_html"}
+                    <label for="users_format">{gt text='Format'}</label>
+                    <select id="users_format" name="sendmail[format]" size="1" >
+                        <option value="text"{if !$mailer_html} selected="selected"{/if}>{gt text='Text'}</option>
+                        <option value="html"{if $mailer_html} selected="selected"{/if}>{gt text='HTML'}</option>
+                    </select>
                 </div>
                 <div class="z-formrow">
                     <label for="users_message">{gt text="Message"}</label>
@@ -90,6 +98,8 @@
                     </span>
                 </div>
             </fieldset>
+
+            {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=null}
 
             <div class="z-formbuttons z-buttons">
                 {button type='submit' src='mail_generic.png' set='icons/extrasmall' __alt="Send e-mail to selected recipients" __title="Send e-mail to selected recipients" __text="Send e-mail to selected recipients"}
