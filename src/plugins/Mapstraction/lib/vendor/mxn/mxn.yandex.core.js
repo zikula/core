@@ -1,42 +1,47 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 mxn.register('yandex', {
 
 Mapstraction: {
 
 	init: function(element, api) {
 		var me = this;
-		if (YMaps) {
-			var yandexMap = this.maps[api] = new YMaps.Map(element);
-			
-			YMaps.Events.observe(yandexMap, yandexMap.Events.Click, function(map, mouseEvent) {
-				var lat = mouseEvent.getCoordPoint().getX();
-				var lon = mouseEvent.getCoordPoint().getY();
-				me.click.fire({'location': new mxn.LatLonPoint(lat, lon)});
-			});
-			// deal with zoom change
-			YMaps.Events.observe(yandexMap, yandexMap.Events.SmoothZoomEnd, function(map) {
-				me.changeZoom.fire();
-			});
-			
-			this.loaded[api] = true;
-			me.load.fire();
-		  }
-		else {
-			alert(api + ' map script not imported');
+
+		if (typeof YMaps.Map === 'undefined') {
+			throw new Error(api + ' map script not imported');
 		}
+
+		this.controls =  {
+			pan: null,
+			zoom: null,
+			overview: null,
+			scale: null,
+			map_type: null
+		};
+
+		var yandexMap = this.maps[api] = new YMaps.Map(element);
+		
+		YMaps.Events.observe(yandexMap, yandexMap.Events.Click, function(map, mouseEvent) {
+			var lat = mouseEvent.getCoordPoint().getX();
+			var lon = mouseEvent.getCoordPoint().getY();
+			me.click.fire({'location': new mxn.LatLonPoint(lat, lon)});
+		});
+
+		YMaps.Events.observe(yandexMap, yandexMap.Events.BoundsChange, function(map, scaling) {
+			me.changeZoom.fire();
+		});
+
+		YMaps.Events.observe(yandexMap, yandexMap.Events.ZoomRangeChange, function(map, scaling) {
+			me.changeZoom.fire();
+		});
+
+		YMaps.Events.observe(yandexMap, yandexMap.Events.Update, function(map) {
+			me.endPan.fire();
+		});
+
+		YMaps.Events.observe(yandexMap, yandexMap.Events.AddLayer, function(map, layer) {
+			me.load.fire();
+		});
+		
+		this.loaded[api] = true;
 	},
 	
 	applyOptions: function(){
@@ -62,63 +67,120 @@ Mapstraction: {
 	},
 
 	addControls: function(args) {
+		/* args = { 
+		 *     pan:      true,
+		 *     zoom:     'large' || 'small',
+		 *     overview: true,
+		 *     scale:    true,
+		 *     map_type: true,
+		 * }
+		 */
+		
 		var map = this.maps[this.api];
 		
-		if (args.zoom == 'large') {
-			this.addLargeControls();
-		} 
-		else if (args.zoom == 'small') {
-			this.addSmallControls();
-		}
-		
-		if (args.pan) {
-			this.controls.unshift(new YMaps.ToolBar());
-			this.addControlsArgs.pan = true;
-			map.addControl(this.controls[0]);
-		}
-		
-		if (args.scale) {
-			this.controls.unshift(new YMaps.ScaleLine());
-			this.addControlsArgs.scale = true;
-			map.addControl(this.controls[0]);
-		}
-		
-		if (args.overview) {
-			if (typeof(args.overview) != 'number') {
-				args.overview = 5;
+		if ('pan' in args && args.pan) {
+			if (this.controls.pan !== null) {
+				this.controls.pan = new YMaps.ToolBar();
+				map.addControl(this.controls.pan);
 			}
-			this.controls.unshift(new YMaps.MiniMap(args.overview));
-			this.addControlsArgs.overview = true;
-			map.addControl(this.controls[0]);
 		}
 		
-		if (args.map_type) {
+		else {
+			if (this.controls.pan !== null) {
+				map.removeControl(this.controls.pan);
+				this.controls.pan = null;
+			}
+		}
+
+		if ('zoom' in args) {
+			if (args.zoom || args.zoom == 'small') {
+				this.addSmallControls();
+			}
+			
+			else if (args.zoom == 'large') {
+				this.addLargeControls();
+			}
+		}
+		
+		else {
+			if (this.controls.zoom !== null) {
+				map.removeControl(this.controls.zoom);
+				this.controls.zoom = null;
+			}
+		}
+		
+		if ('overview' in args) {
+			if (this.controls.overview === null) {
+				if (typeof(args.overview) != 'number') {
+					args.overview = 5;
+				}
+				this.controls.overview = new YMaps.MiniMap(args.overview);
+				map.addControl(this.controls.overview);
+			}
+		}
+		
+		else {
+			if (this.controls.overview !== null) {
+				map.removeControl(this.controls.overview);
+				this.controls.overview = null;
+			}
+		}
+		
+		if ('scale' in args && args.scale) {
+			if (this.controls.scale === null) {
+				this.controls.scale = new YMaps.ScaleLine();
+				map.addControl(this.controls.scale);
+			}
+		}
+		
+		else {
+			if (this.controls.scale !== null) {
+				map.removeControl(this.controls.scale);
+				this.controls.scale = null;
+			}
+		}
+		
+		if ('map_type' in args && args.map_type) {
 			this.addMapTypeControls();
+		}
+		
+		else {
+			if (this.controls.map_type !== null) {
+				map.removeControl(this.controls.map_type);
+				this.controls.map_type = null;
+			}
 		}
 	},
 
 	addSmallControls: function() {
 		var map = this.maps[this.api];
 		
-		this.controls.unshift(new YMaps.SmallZoom());
-		this.addControlsArgs.zoom = 'small';
-		map.addControl(this.controls[0]);
+		if (this.controls.zoom !== null) {
+			map.removeControl(this.controls.zoom);
+		}
+		
+		this.controls.zoom = new YMaps.SmallZoom();
+		map.addControl(this.controls.zoom);
 	},
 
 	addLargeControls: function() {
 		var map = this.maps[this.api];
 		
-		this.controls.unshift(new YMaps.SmallZoom());
-		this.addControlsArgs.zoom = 'large';
-		map.addControl(this.controls[0]);
+		if (this.controls.zoom !== null) {
+			map.removeControl(this.controls.zoom);
+		}
+		
+		this.controls.zoom = new YMaps.Zoom();
+		map.addControl(this.controls.zoom);
 	},
 
 	addMapTypeControls: function() {
 		var map = this.maps[this.api];
-
-		this.controls.unshift(new YMaps.TypeControl());
-		this.addControlsArgs.map_type = true;
-		map.addControl(this.controls[0]);
+		
+		if (this.controls.map_type === null) {
+			this.controls.map_type = new YMaps.TypeControl();
+			map.addControl(this.controls.map_type);
+		}
 	},
 
 	setCenterAndZoom: function(point, zoom) {
@@ -142,7 +204,7 @@ Mapstraction: {
 	},
 	
 	declutterMarkers: function(opts) {
-		throw 'Not supported';
+		throw new Error('Mapstraction.declutterMarkers is not currently supported by provider ' + this.api);
 	},
 
 	addPolyline: function(polyline, old) {
@@ -272,6 +334,7 @@ Mapstraction: {
 		this.setImageOpacity(id, opacity);
 		this.setImagePosition(id);
 	},
+
 	setImagePosition: function(id, oContext) {
 		var map = this.maps[this.api];
 
@@ -292,15 +355,15 @@ Mapstraction: {
 		map.addOverlay(kml);
 		
 		YMaps.Events.observe(kml, kml.Events.Fault, function (kml, error) {
-			alert("KML upload faults. Error: " + error);
+			throw new Error('Mapstraction.addOverlay. KML upload error: ' + error + ' for provider ' + this.api);
 		});
 	},
 
-	addTileLayer: function(tile_url, opacity, copyright_text, min_zoom, max_zoom, map_type) {
+	addTileLayer: function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
 		var map = this.maps[this.api];
 		var dataSource = new YMaps.TileDataSource(tile_url, true, true);
 		dataSource.getTileUrl = function (t, s) { 
-			return this._tileUrlTemplate.replace(/\{X\}/g,t.x).replace(/\{Y\}/g,t.y).replace(/\{Z\}/g,s); 
+			return this._tileUrlTemplate.replace(/\{X\}/gi,t.x).replace(/\{Y\}/gi,t.y).replace(/\{Z\}/gi,s); 
 		};
 		var newLayer = new YMaps.Layer(dataSource);
 		newLayer._$element.css('opacity', opacity);
@@ -331,7 +394,7 @@ Mapstraction: {
 		} 
 		else {
 			map.addLayer(newLayer);
-			map.addCopyright(copyright_text);
+			map.addCopyright(attribution);
 		}
 		this.tileLayers.push( [tile_url, newLayer, true] );
 		return newLayer;
@@ -354,7 +417,7 @@ Mapstraction: {
 	},
 
 	getPixelRatio: function() {
-		throw 'Not implemented';
+		throw new Error('Mapstraction.getPixelRatio is not currently supported by provider ' + this.api);
 	},
 	
 	mousePosition: function(element) {

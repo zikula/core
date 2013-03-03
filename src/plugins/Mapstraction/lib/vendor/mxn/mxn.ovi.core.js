@@ -1,17 +1,3 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 mxn.register('ovi', {
 
 Mapstraction: {
@@ -27,82 +13,93 @@ Mapstraction: {
 			"mapsize": false
 		};
 		
-		if (ovi.mapsapi) {
-			ovi_map = new ovi.mapsapi.map.Display (element);
-			ovi_map.addComponent(new ovi.mapsapi.map.component.InfoBubbles());
-			ovi_map.addComponent(new ovi.mapsapi.map.component.Behavior());
+		if (typeof ovi.mapsapi.map.Display === 'undefined') {
+			throw new Error(api + ' map script not imported');
+		}
 
-			// Handle click event
-			ovi_map.addListener('click', function(event){
-				coords = ovi_map.pixelToGeo(event.targetX, event.targetY);
-				me.click.fire({'location': new mxn.LatLonPoint(coords.latitude, coords.longitude)});
-			});
+		ovi_map = new ovi.mapsapi.map.Display (element);
+		ovi_map.addComponent(new ovi.mapsapi.map.component.InfoBubbles());
+		ovi_map.addComponent(new ovi.mapsapi.map.component.Behavior());
 
-			// Handle endPan (via centre change) and zoom events
-			// the Ovi Maps API doesn't have a discrete event for each of these events
-			// instead it uses a start/update/end sequence of events, where update may happen
-			// multiple times or not at all, so we need to keep track of which Ovi events have
-			// fired during a start(/update) event sequence and then fire the relevent Mapstraction
-			// events upon receiving the Ovi end event
-			ovi_map.addListener('mapviewchangestart', function(event){
-				if (event.data & event.MAPVIEWCHANGE_CENTER) {
-					eventStates.center = true;
-				}
-				if (event.data & event.MAPVIEWCHANGE_ZOOM) {
-					eventStates.zoom = true;
-				}
-				if (event.data & event.MAPVIEWCHANGE_SIZE) {
-					eventStates.mapsize = true;
-				}
-			});
+		// Handle click event
+		ovi_map.addListener('click', function(event){
+			coords = ovi_map.pixelToGeo(event.targetX, event.targetY);
+			me.click.fire({'location': new mxn.LatLonPoint(coords.latitude, coords.longitude)});
+		});
 
-			ovi_map.addListener('mapviewchangeupdate', function(event){
-				if (event.data & event.MAPVIEWCHANGE_CENTER) {
-					eventStates.center = true;
-				}
-				if (event.data & event.MAPVIEWCHANGE_ZOOM) {
-					eventStates.zoom = true;
-				}
-				if (event.data & event.MAPVIEWCHANGE_SIZE) {
-					eventStates.mapsize = true;
-				}
-			});
+		// Handle endPan (via centre change) and zoom events
+		// the Ovi Maps API doesn't have a discrete event for each of these events
+		// instead it uses a start/update/end sequence of events, where update may happen
+		// multiple times or not at all, so we need to keep track of which Ovi events have
+		// fired during a start(/update) event sequence and then fire the relevent Mapstraction
+		// events upon receiving the Ovi end event
+		ovi_map.addListener('mapviewchangestart', function(event){
+			if (event.data & event.MAPVIEWCHANGE_CENTER) {
+				eventStates.center = true;
+			}
+			if (event.data & event.MAPVIEWCHANGE_ZOOM) {
+				eventStates.zoom = true;
+			}
+			if (event.data & event.MAPVIEWCHANGE_SIZE) {
+				eventStates.mapsize = true;
+			}
+		});
 
-			ovi_map.addListener('mapviewchangeend', function(event){
-				// The Ovi Maps API doesn't support a "map loaded" event, but both a
-				// "centre" and "size" mapviewchangestart/mapviewchangeupdate/mapviewchangeend
-				// event sequence will be fired as part of the initial loading so we can trap
-				// this and fire the MXN "load" event.
-				
-				if (!mapLoaded) {
-					if (eventStates.center && eventStates.mapsize) {
-						mapLoaded = true;
-						eventStates.mapsize = false;
-						me.load.fire();
-					}
+		ovi_map.addListener('mapviewchangeupdate', function(event){
+			if (event.data & event.MAPVIEWCHANGE_CENTER) {
+				eventStates.center = true;
+			}
+			if (event.data & event.MAPVIEWCHANGE_ZOOM) {
+				eventStates.zoom = true;
+			}
+			if (event.data & event.MAPVIEWCHANGE_SIZE) {
+				eventStates.mapsize = true;
+			}
+		});
+
+		ovi_map.addListener('mapviewchangeend', function(event){
+			// The Ovi Maps API doesn't support a "map loaded" event, but both a
+			// "centre" and "size" mapviewchangestart/mapviewchangeupdate/mapviewchangeend
+			// event sequence will be fired as part of the initial loading so we can trap
+			// this and fire the MXN "load" event.
+			
+			if (!mapLoaded) {
+				if (eventStates.center && eventStates.mapsize) {
+					mapLoaded = true;
+					eventStates.mapsize = false;
+					me.load.fire();
 				}
-				if (eventStates.center) {
+			} 
+			else {
+			    if (eventStates.center) {
 					eventStates.center = false;
 					me.moveendHandler(me);
 					me.endPan.fire();
-				}
-				if (eventStates.zoom) {
-					eventStates.zoom = false;
-					me.changeZoom.fire();
-				}
-			});
+			    }
+			}
+			
+			if (eventStates.zoom) {
+				eventStates.zoom = false;
+				me.changeZoom.fire();
+			}
+		});
 
-			this.maps[api] = ovi_map;
-			this.loaded[api] = true;
-		}
-		
-		else {
-			alert(api + ' map script not imported');
-		}
+		this.maps[api] = ovi_map;
+		this.loaded[api] = true;
 	},
 	
 	applyOptions: function() {
-		// TODO
+		var map = this.maps[this.api];
+		
+		if (this.options.enableScrollWheelZoom) {
+			map.addComponent(new ovi.mapsapi.map.component.zoom.MouseWheel());
+		} 
+		else {
+			var mousewheel = map.getComponentById('zoom.MouseWheel');
+			if (mousewheel) {
+				map.removeComponent(mousewheel);
+			}
+		}	
 	},
 	
 	resizeTo: function(width, height) {
@@ -121,27 +118,74 @@ Mapstraction: {
 		 */
 
 		var map = this.maps[this.api];
+		var cid = null;
 		
-		if (args.pan) {
-			map.addComponent(new ovi.mapsapi.map.component.Behavior());
+		if ('pan' in args && args.pan) {
+			cid = map.getComponentById('Behavior');
+			if (cid === null) {
+				map.addComponent(new ovi.mapsapi.map.component.Behavior());
+			}
+		}
+		
+		else {
+			cid = map.getComponentById('Behavior');
+			if (cid !== null) {
+				map.removeComponent(cid);
+			}
 		}
 		
 		// TODO: The Ovi Maps API doesn't currently differentiate between large and small
 		// style of Zoom controls so, for now, make them functionally equivalent
-		if (args.zoom == 'large' || args.zoom == 'small') {
-			map.addComponent(new ovi.mapsapi.map.component.ZoomBar());
+		if ('zoom' in args) {
+			if (args.zoom || args.zoom == 'large' || args.zoom == 'small') {
+				this.addSmallControls();
+			}
+		}
+
+		else {
+			cid = map.getComponentById('ZoomBar');
+			if (cid !== null) {
+				map.removeComponent(cid);
+			}
+		}
+
+		if ('overview' in args && args.overview) {
+			cid = map.getComponentById('Overview');
+			if (cid === null) {
+				map.addComponent(new ovi.mapsapi.map.component.Overview());
+			}
 		}
 		
-		if (args.overview) {
-			map.addComponent(new ovi.mapsapi.map.component.Overview());
+		else {
+			cid = map.getComponentById('Overview');
+			if (cid !== null) {
+				map.removeComponent(cid);
+			}
 		}
 		
-		if (args.scale) {
-			map.addComponent(new ovi.mapsapi.map.component.ScaleBar ());
+		if ('scale' in args && args.scale) {
+			cid = map.getComponentById('ScaleBar');
+			if (cid === null) {
+				map.addComponent(new ovi.mapsapi.map.component.ScaleBar ());
+			}
+		}
+
+		else {
+			cid = map.getComponentById('ScaleBar');
+			if (cid !== null) {
+				map.removeComponent(cid);
+			}
 		}
 		
-		if (args.map_type) {
-			map.addComponent(new ovi.mapsapi.map.component.TypeSelector ());
+		if ('map_type' in args && args.map_type) {
+			this.addMapTypeControls();
+		}
+
+		else {
+			cid = map.getComponentById('TypeSelector');
+			if (cid !== null) {
+				map.removeComponent(cid);
+			}
 		}
 	},
 
@@ -149,20 +193,22 @@ Mapstraction: {
 	// style of Zoom controls so, for now, make them functionally equivalent
 	addSmallControls: function() {
 		var map = this.maps[this.api];
-		
-		map.addComponent(new ovi.mapsapi.map.component.ZoomBar());
+		cid = map.getComponentById('ZoomBar');
+		if (cid === null) {
+			map.addComponent(new ovi.mapsapi.map.component.ZoomBar());
+		}
 	},
 	
 	addLargeControls: function() {
-		var map = this.maps[this.api];
-		
-		map.addComponent(new ovi.mapsapi.map.component.ZoomBar());
+		this.addSmallControls();
 	},
 	
 	addMapTypeControls: function() {
 		var map = this.maps[this.api];
-		
-		map.addComponent(new ovi.mapsapi.map.component.TypeSelector ());
+		cid = map.getComponentById('TypeSelector');
+		if (cid === null) {
+			map.addComponent(new ovi.mapsapi.map.component.TypeSelector ());
+		}
 	},
 	
 	setCenterAndZoom: function(point, zoom) {
@@ -188,7 +234,7 @@ Mapstraction: {
 	},
 	
 	declutterMarkers: function(opts) {
-		throw 'Not supported';
+		throw new Error('Mapstraction.declutterMarkers is not currently supported by provider ' + this.api);
 	},
 	
 	addPolyline: function(polyline, old) {
@@ -215,7 +261,7 @@ Mapstraction: {
 		var map = this.maps[this.api];
 		var pt = point.toProprietary(this.api);
 
-		map.setCentre(pt);
+		map.setCenter(pt);
 	},
 	
 	setZoom: function(zoom) {
@@ -250,7 +296,8 @@ Mapstraction: {
 				map.set("baseMapType", map.TERRAIN);
 				break;
 			case mxn.Mapstraction.HYBRID:
-				throw 'Not implemented';
+				map.set("baseMapType", map.SATELLITE);
+				break;
 			case mxn.Mapstraction.SATELLITE:
 				map.set("baseMapType", map.SATELLITE);
 				break;
@@ -279,44 +326,47 @@ Mapstraction: {
 	getBounds: function() {
 		var map = this.maps[this.api];
 		var bbox = map.getViewBounds();
-		var sw = bbox.topLeft;
-		var ne = bbox.bottomRight;
-
-		return new mxn.BoundingBox(sw.latitude, sw.longitude, ne.latitude, ne.longitude);
+		var nw = bbox.topLeft;
+		var se = bbox.bottomRight;
+		
+		return new mxn.BoundingBox(se.latitude, nw.longitude, nw.latitude, se.longitude);
 	},
 	
 	setBounds: function(bounds) {
 		var map = this.maps[this.api];
-		var sw = bounds.getSouthWest().toProprietary(this.api);
-		var ne = bounds.getNorthEast().toProprietary(this.api);
-		var ovi_bb = new ovi.mapsapi.geo.BoundingBox(sw, ne);
+
+		var sw = bounds.getSouthWest();
+		var ne = bounds.getNorthEast();
+
+		var nw = new mxn.LatLonPoint(ne.lat, sw.lon).toProprietary(this.api);
+		var se = new mxn.LatLonPoint(sw.lat, ne.lon).toProprietary(this.api);
+		var ovi_bb = new ovi.mapsapi.geo.BoundingBox(nw, se);
 		var keepCentre = false;
-		
 		map.zoomTo(ovi_bb, keepCentre);
 	},
 	
-	addImageOverlay: function(id, src, poacity, west, south, east, north, oContext) {
-		throw 'Not implemented';
+	addImageOverlay: function(id, src, opacity, west, south, east, north, oContext) {
+		throw new Error('Mapstraction.addImageOverlay is not currently supported by provider ' + this.api);
 	},
 	
 	setImagePosition: function(id, oContext) {
-		throw 'Not implemented';
+		throw new Error('Mapstraction.setImagePosition is not currently supported by provider ' + this.api);
 	},
 	
 	addOverlay: function(url, autoCenterAndZoom) {
-		throw 'Not implemented';
+		throw new Error('Mapstraction.addOverlay is not currently supported by provider ' + this.api);
 	},
 	
-	addTileLayer: function(tile_url, opacity, copyright_text, min_zoom, max_zoom, map_type) {
-		throw 'Not implemented';
+	addTileLayer: function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
+		throw new Error('Mapstraction.addTileLayer is not currently supported by provider ' + this.api);
 	},
 	
 	toggleTileLayer: function(tile_url) {
-		throw 'Not implemented';
+		throw new Error('Mapstraction.toggleTileLayer is not currently supported by provider ' + this.api);
 	},
 	
 	getPixelRatio: function() {
-		throw 'Not implemented';
+		throw new Error('Mapstraction.getPixelRatio is not currently supported by provider ' + this.api);
 	},
 	
 	mousePosition: function(element) {
@@ -412,14 +462,14 @@ Marker: {
 	
 	openBubble: function() {
 		if (!this.map) {
-			throw 'This marker must be added to a map in order to manage a Bubble';
+			throw new Error('Marker.openBubble: This marker must be added to a map in order to manage a Bubble for provider ' + this.api);
 		}
 		this.proprietary_infobubble = this.map.getComponentById("InfoBubbles").addBubble(this.infoBubble, this.location.toProprietary('ovi'));
 	},
 	
 	closeBubble: function() {
 		if (!this.map) {
-			throw 'This marker must be added to a map in order to manage a Bubble';
+			throw new Error('Marker.closeBubble: This marker must be added to a map in order to manage a Bubble for provider ' + this.api);
 		}
 
 		if (this.map.getComponentById("InfoBubbles").bubbleExists(this.proprietary_infobubble)) {
@@ -437,7 +487,7 @@ Marker: {
 	},
 	
 	update: function() {
-		throw 'Not implemented';
+		throw new Error('Marker.update is not currently supported by provider ' + this.api);
 	}
 	
 },
@@ -451,19 +501,29 @@ Polyline: {
 			coords.push(this.points[i].toProprietary('ovi'));
 		}
 		
-		if (this.closed || coords[0].equals(coords[length-1])) {
+		if (this.closed) {
+			if (!(this.points[0].equals(this.points[this.points.length - 1]))) {
+				coords.push(coords[0]);
+			}
+		}
+
+		else if (this.points[0].equals(this.points[this.points.length - 1])) {
+			this.closed = true;
+		}
+
+		if (this.closed) {
 			var polycolor = new mxn.util.Color();
 
-			polycolor.setHexColor(this.color || "#5462E3");
+			polycolor.setHexColor(this.color);
 
 			var polycolor_rgba = "rgba(" + polycolor.red + "," + polycolor.green + "," +
-				polycolor.blue + "," + (this.opacity || 1.0) + ")";
+				polycolor.blue + "," + this.opacity + ")";
 			var polygon_options = {
 				'visibility' : true,
 				'fillColor' : polycolor_rgba,
-				'color' : this.color || "#5462E3",
+				'color' : this.color,
 				'stroke' : 'solid',
-				'width' : this.width || 1
+				'width' : this.width
 			};
 			this.proprietary_polyline = new ovi.mapsapi.map.Polygon (coords, polygon_options);
 		}
@@ -471,9 +531,9 @@ Polyline: {
 		else {
 			var polyline_options = {
 				'visibility' : true,
-				'color' : this.color || "#5462E3",
+				'color' : this.color,
 				'stroke' : 'solid',
-				'width' : this.width || 1
+				'width' : this.width
 			};
 			this.proprietary_polyline = new ovi.mapsapi.map.Polyline (coords, polyline_options);
 		}

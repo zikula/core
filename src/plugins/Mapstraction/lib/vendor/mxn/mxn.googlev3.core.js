@@ -1,105 +1,113 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 mxn.register('googlev3', {	
 
 Mapstraction: {
 	
 	init: function(element, api){		
 		var me = this;
-		if ( google && google.maps ){
-			// by default add road map and no controls
-			var myOptions = {
-				disableDefaultUI: true,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				mapTypeControl: false,
-				mapTypeControlOptions: null,
-				navigationControl: false,
-				navigationControlOptions: null,
-				scrollwheel: false
-			};
-
-			// find controls
-			if (!this.addControlsArgs && loadoptions.addControlsArgs) {
-				this.addControlsArgs = loadoptions.addControlsArgs;
-			}
-			if (this.addControlsArgs) {
-				if (this.addControlsArgs.zoom) {
-					myOptions.navigationControl = true;
-					if (this.addControlsArgs.zoom == 'small') {
-						myOptions.navigationControlOptions = {style: google.maps.NavigationControlStyle.SMALL};
-					}
-					if (this.addControlsArgs.zoom == 'large') {
-						myOptions.navigationControlOptions = {style: google.maps.NavigationControlStyle.ZOOM_PAN};
-					}
-				}
-				if (this.addControlsArgs.map_type) {
-					myOptions.mapTypeControl = true;
-					myOptions.mapTypeControlOptions = {style: google.maps.MapTypeControlStyle.DEFAULT};
-				}
-			}
 		
-			var map = new google.maps.Map(element, myOptions);
-			
-			var fireOnNextIdle = [];
-			
-			google.maps.event.addListener(map, 'idle', function() {
-				var fireListCount = fireOnNextIdle.length;
-				if(fireListCount > 0) {
-					var fireList = fireOnNextIdle.splice(0, fireListCount);
-					var handler;
-					while((handler = fireList.shift())){
-						handler();
-					}
+		if (typeof google.maps.Map === 'undefined') {
+			throw new Error(api + ' map script not imported');
+		}
+
+		var myOptions = {
+			disableDefaultUI: true,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			mapTypeControl: false,
+			mapTypeControlOptions: null,
+			navigationControl: false,
+			navigationControlOptions: null,
+			scrollwheel: false,
+			disableDoubleClickZoom: true
+		};
+
+		// Background color can only be set at construction
+		// To provide some control, adopt any explicit element style
+		var backgroundColor = null;
+		if ( element.currentStyle ) {
+			backgroundColor = element.currentStyle['background-color'];
+		}
+		else if ( window.getComputedStyle ) {
+			backgroundColor = document.defaultView.getComputedStyle(element, null).getPropertyValue('background-color');
+		}
+		// Only set the background if a style has been explicitly set, ruling out the "transparent" default
+		if ( backgroundColor && 'transparent' !== backgroundColor ) {
+			myOptions.backgroundColor = backgroundColor;
+		}
+
+		// find controls
+		if (!this.addControlsArgs && loadoptions.addControlsArgs) {
+			this.addControlsArgs = loadoptions.addControlsArgs;
+		}
+		if (this.addControlsArgs) {
+			if (this.addControlsArgs.zoom) {
+				myOptions.navigationControl = true;
+				if (this.addControlsArgs.zoom == 'small') {
+					myOptions.navigationControlOptions = {style: google.maps.NavigationControlStyle.SMALL};
 				}
-			});
-			
-			// deal with click
-			google.maps.event.addListener(map, 'click', function(location){
-				me.click.fire({'location': 
-					new mxn.LatLonPoint(location.latLng.lat(),location.latLng.lng())
-				});
-			});
-
-			// deal with zoom change
-			google.maps.event.addListener(map, 'zoom_changed', function(){
-				// zoom_changed fires before the zooming has finished so we 
-				// wait for the next idle event before firing our changezoom
-				// so that method calls report the correct values
-				fireOnNextIdle.push(function() {
-					me.changeZoom.fire();
-				});
-			});
-
-			// deal with map movement
-			google.maps.event.addListener(map, 'center_changed', function(){
-				me.moveendHandler(me);
-				me.endPan.fire();
-			});
-			
-			// deal with initial tile loading
-			var loadListener = google.maps.event.addListener(map, 'tilesloaded', function(){
-				me.load.fire();
-				google.maps.event.removeListener( loadListener );
-			});			
-			
-			this.maps[api] = map;
-			this.loaded[api] = true;
+				if (this.addControlsArgs.zoom == 'large') {
+					myOptions.navigationControlOptions = {style: google.maps.NavigationControlStyle.ZOOM_PAN};
+				}
+			}
+			if (this.addControlsArgs.map_type) {
+				myOptions.mapTypeControl = true;
+				myOptions.mapTypeControlOptions = {style: google.maps.MapTypeControlStyle.DEFAULT};
+			}
+			if (this.addControlsArgs.overview) {
+				myOptions.overviewMapControl = true;
+				myOptions.overviewMapControlOptions = {opened: true};
+			}
 		}
-		else {
-			alert(api + ' map script not imported');
-		}
+	
+		var map = new google.maps.Map(element, myOptions);
+		
+		var fireOnNextIdle = [];
+		
+		google.maps.event.addListener(map, 'idle', function() {
+			var fireListCount = fireOnNextIdle.length;
+			if (fireListCount > 0) {
+				var fireList = fireOnNextIdle.splice(0, fireListCount);
+				var handler;
+				while((handler = fireList.shift())){
+					handler();
+				}
+			}
+		});
+		
+		// deal with click
+		google.maps.event.addListener(map, 'click', function(location){
+			me.click.fire({'location': 
+				new mxn.LatLonPoint(location.latLng.lat(),location.latLng.lng())
+			});
+		});
+
+		// deal with zoom change
+		google.maps.event.addListener(map, 'zoom_changed', function(){
+			// zoom_changed fires before the zooming has finished so we 
+			// wait for the next idle event before firing our changezoom
+			// so that method calls report the correct values
+			fireOnNextIdle.push(function() {
+				me.changeZoom.fire();
+			});
+		});
+
+		// deal with map movement
+		google.maps.event.addListener(map, 'dragend', function(){
+			me.moveendHandler(me);
+			me.endPan.fire();
+		});
+		
+		google.maps.event.addListener(map, 'center_changed', function() {
+			me.endPan.fire();
+		});
+		
+		// deal with initial tile loading
+		var loadListener = google.maps.event.addListener(map, 'tilesloaded', function(){
+			me.load.fire();
+			google.maps.event.removeListener( loadListener );
+		});			
+		
+		this.maps[api] = map;
+		this.loaded[api] = true;
 	},
 	
 	applyOptions: function(){
@@ -108,9 +116,21 @@ Mapstraction: {
 		if (this.options.enableDragging) {
 			myOptions.draggable = true;
 		} 
+		else{
+			myOptions.draggable = false;
+		}
 		if (this.options.enableScrollWheelZoom){
 			myOptions.scrollwheel = true;
 		} 
+		else{
+			myOptions.scrollwheel = false;
+		}
+		if(this.options.disableDoubleClickZoom){
+			myOptions.disableDoubleClickZoom = true;
+		}
+		else{
+			myOptions.disableDoubleClickZoom = false;
+		}
 		map.setOptions(myOptions);
 	},
 
@@ -122,48 +142,106 @@ Mapstraction: {
   	},
 
 	addControls: function( args ) {
-		var map = this.maps[this.api];	
-		// remove old controls
+		/* args = { 
+		 *     pan:      true,
+		 *     zoom:     'large' || 'small',
+		 *     overview: true,
+		 *     scale:    true,
+		 *     map_type: true,
+		 * }
+		 */
+
+		var map = this.maps[this.api];
+		var myOptions;
 
 		// Google has a combined zoom and pan control.
-		if (args.zoom || args.pan) {
-			if (args.zoom == 'large'){ 
-				this.addLargeControls();
-			} else { 
+
+		if ('pan' in args && args.pan) {
+			myOptions = { panControl: true };
+			map.setOptions(myOptions);
+			this.addControlsArgs.pan = true;
+			
+		}
+		
+		else if (!('pan' in args) || ('pan' in args && !args.pan)) {
+			myOptions = { panControl: false };
+			map.setOptions(myOptions);
+			this.addControlsArgs.pan = false;
+		}
+		
+		if ('zoom' in args) {
+			if (args.zoom == 'small') {
 				this.addSmallControls();
 			}
+			
+			else if (args.zoom == 'large') {
+				this.addLargeControls();
+			}
 		}
-		if (args.scale){
-			var myOptions = {
+		
+		else {
+			myOptions = { zoomControl: false };
+			map.setOptions(myOptions);
+			this.addControlsArgs.zoom = false;
+		}
+
+		if ('scale' in args && args.scale){
+			myOptions = {
 				scaleControl:true,
 				scaleControlOptions: {style:google.maps.ScaleControlStyle.DEFAULT}				
 			};
 			map.setOptions(myOptions);
 			this.addControlsArgs.scale = true;
 		}
-		if (args.map_type){
+		
+		else {
+			myOptions = { scaleControl: false };
+			map.setOptions(myOptions);
+			this.addControlsArgs.scale = false;
+		}
+
+		if ('map_type' in args && args.map_type){
 			this.addMapTypeControls();
+		}
+
+		else {
+			myOptions = { mapTypeControl : false };
+			map.setOptions(myOptions);
+			this.addControlsArgs.map_type = false;
+		}
+		
+		if ('overview' in args) {
+			myOptions = {
+				overviewMapControl: true,
+				overviewMapControlOptions: {opened: true}
+			};
+			map.setOptions(myOptions);
+			this.addControlsArgs.overview = true;
+		}
+		
+		else {
+			myOptions = { overviewMapControl: false };
+			map.setOptions(myOptions);
+			this.addControlsArgs.overview = false;
 		}
 	},
 
 	addSmallControls: function() {
 		var map = this.maps[this.api];
 		var myOptions = {
-			navigationControl: true,
-			navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}
+			zoomControl: true,
+			zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL}
 		};
 		map.setOptions(myOptions);
-
-		this.addControlsArgs.pan = false;
-		this.addControlsArgs.scale = false;						
 		this.addControlsArgs.zoom = 'small';
 	},
 
 	addLargeControls: function() {
 		var map = this.maps[this.api];
 		var myOptions = {
-			navigationControl: true,
-			navigationControlOptions: {style:google.maps.NavigationControlStyle.DEFAULT}
+			panControl: true,
+			zoomControl: true,
+			zoomControlOptions: {style:google.maps.ZoomControlStyle.LARGE}
 		};
 		map.setOptions(myOptions);
 		this.addControlsArgs.pan = true;
@@ -192,13 +270,11 @@ Mapstraction: {
 	},
 
 	removeMarker: function(marker) {
-		// doesn't really remove them, just hides them
-		marker.hide();
+		marker.proprietary_marker.setMap(null);
 	},
 	
 	declutterMarkers: function(opts) {
-		var map = this.maps[this.api];
-		// TODO: Add provider code
+		throw new Error('Mapstraction.declutterMarkers is not currently supported by provider ' + this.api);
 	},
 
 	addPolyline: function(polyline, old) {
@@ -222,7 +298,7 @@ Mapstraction: {
 	setCenter: function(point, options) {
 		var map = this.maps[this.api];
 		var pt = point.toProprietary(this.api);
-		if(options && options.pan) { 
+		if (options && options.pan) { 
 			map.panTo(pt);
 		}
 		else { 
@@ -290,7 +366,7 @@ Mapstraction: {
 		var map = this.maps[this.api];
 		var gLatLngBounds = map.getBounds();
 		if (!gLatLngBounds) {
-			throw 'Bounds not available, map must be initialized';
+			throw 'Mapstraction.getBounds; bounds not available, map must be initialized';
 		}
 		var sw = gLatLngBounds.getSouthWest();
 		var ne = gLatLngBounds.getNorthEast();
@@ -317,7 +393,7 @@ Mapstraction: {
 	},
 
 	setImagePosition: function(id, oContext) {
-		// do nothing
+		throw new Error('Mapstraction.declutterMarkers is not currently supported by provider ' + this.api);
 	},
 	
 	addOverlay: function(url, autoCenterAndZoom) {
@@ -328,16 +404,26 @@ Mapstraction: {
 		layer.setMap(map);
 	},
 
-	addTileLayer: function(tile_url, opacity, copyright_text, min_zoom, max_zoom, map_type) {
+addTileLayer: function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
 		var map = this.maps[this.api];
-		var tilelayers = [];
 		var z_index = this.tileLayers.length || 0;
-		tilelayers[0] = {
+		var tilelayer = {
 			getTileUrl: function (coord, zoom) {
-				url = tile_url;
-				url = url.replace(/\{Z\}/g, zoom);
-				url = url.replace(/\{X\}/g, coord.x);
-				url = url.replace(/\{Y\}/g, coord.y);
+				var url = mxn.util.sanitizeTileURL(tile_url);
+				if (typeof subdomains !== 'undefined') {
+					url = mxn.util.getSubdomainTileURL(url, subdomains);
+				}
+				var x = coord.x;
+				var maxX = Math.pow(2, zoom);
+				while (x < 0) {
+					x += maxX;
+				}
+				while (x >= maxX) {
+					x -= maxX;
+				}
+				url = url.replace(/\{Z\}/gi, zoom);
+				url = url.replace(/\{X\}/gi, x);
+				url = url.replace(/\{Y\}/gi, coord.y);
 				return url;
 			},
 			tileSize: new google.maps.Size(256, 256),
@@ -345,10 +431,13 @@ Mapstraction: {
 			minZoom: min_zoom,
 			maxZoom: max_zoom,
 			opacity: opacity,
-			name: copyright_text
+			name: label
 		};
-		var tileLayerOverlay = new google.maps.ImageMapType(tilelayers[0]);
-		if(map_type) {
+
+		var tileLayerOverlay = new google.maps.ImageMapType(tilelayer);
+		this.tileLayers.push( [tile_url, tileLayerOverlay, true, z_index] );
+
+		if (map_type) {
 			map.mapTypes.set('tile' + z_index, tileLayerOverlay);
 			var mapTypeIds = [
 				google.maps.MapTypeId.ROADMAP,
@@ -361,10 +450,11 @@ Mapstraction: {
 			}
 			var optionsUpdate = {mapTypeControlOptions: {mapTypeIds: mapTypeIds}};
 			map.setOptions(optionsUpdate);
-		} else {
+		} 
+		else {
 			map.overlayMapTypes.insertAt(z_index, tileLayerOverlay);
 		}
-		this.tileLayers.push( [tile_url, tileLayerOverlay, true, z_index] );
+		
 		return tileLayerOverlay;
 	},
 
@@ -386,9 +476,7 @@ Mapstraction: {
 	},
 
 	getPixelRatio: function() {
-		var map = this.maps[this.api];
-
-		// TODO: Add provider code	
+		throw new Error('Mapstraction.getPixelRatio is not currently supported by provider ' + this.api);
 	},
 	
 	mousePosition: function(element) {
@@ -436,7 +524,7 @@ Marker: {
  			options.icon = new google.maps.MarkerImage(
 				this.iconUrl,
 				new google.maps.Size(this.iconSize[0], this.iconSize[1]),
-				new google.maps.Point(0,0),
+				new google.maps.Point(0, 0),
 				gAnchorPoint
 			);
 
@@ -457,13 +545,13 @@ Marker: {
 				}
 			}
 		}
-		if (this.draggable){
+		if (this.draggable) {
 			options.draggable = this.draggable;
 		}
-		if (this.labelText){
+		if (this.labelText) {
 			options.title =  this.labelText;
 		}
-		if (this.imageMap){
+		if (this.imageMap) {
 			options.shape = {
 				coord: this.imageMap,
 				type: 'poly'
@@ -475,7 +563,7 @@ Marker: {
 
 		var marker = new google.maps.Marker(options);
 
-		if (this.infoBubble){
+		if (this.infoBubble) {
 			var event_action = "click";
 			if (this.hover) {
 				event_action = "mouseover";
@@ -485,7 +573,7 @@ Marker: {
 			});
 		}
 
-		if (this.hoverIconUrl){
+		if (this.hoverIconUrl) {
 			var gSize = new google.maps.Size(this.iconSize[0], this.iconSize[1]);
 			var zerozero = new google.maps.Point(0,0);
  			var hIcon = new google.maps.MarkerImage(
@@ -522,30 +610,37 @@ Marker: {
 	},
 
 	openBubble: function() {
-		var infowindow = new google.maps.InfoWindow({
-	   		content: this.infoBubble
-		});
-		google.maps.event.addListener(infowindow, 'closeclick', function(closedWindow) {
-			// TODO: set proprietary_infowindow to null, fire closeInfoBubble
-		});
-		this.openInfoBubble.fire({'marker': this});
-		infowindow.open(this.map,this.proprietary_marker);
+		var infowindow, marker = this;
+		if (!this.hasOwnProperty('proprietary_infowindow') || this.proprietary_infowindow === null) {
+			infowindow = new google.maps.InfoWindow({
+				content: this.infoBubble
+			});
+			google.maps.event.addListener(infowindow, 'closeclick', function(closedWindow) {
+				marker.closeBubble();
+			});
+		}
+		else {
+			infowindow = this.proprietary_infowindow;
+		}
+		this.openInfoBubble.fire( { 'marker': this } );
+		infowindow.open(this.map, this.proprietary_marker);
 		this.proprietary_infowindow = infowindow; // Save so we can close it later
 	},
-	
+
 	closeBubble: function() {
-		if (this.hasOwnProperty('proprietary_infowindow')) {
+		if (this.hasOwnProperty('proprietary_infowindow') && this.proprietary_infowindow !== null) {
 			this.proprietary_infowindow.close();
-			this.closeInfoBubble.fire({'marker': this});
+			this.proprietary_infowindow = null;
+			this.closeInfoBubble.fire( { 'marker': this } );
 		}
 	},
 
 	hide: function() {
-		this.proprietary_marker.setOptions({visible:false});
+		this.proprietary_marker.setOptions( { visible: false } );
 	},
 
 	show: function() {
-		this.proprietary_marker.setOptions({visible:true});
+		this.proprietary_marker.setOptions( { visible: true } );
 	},
 
 	update: function() {
@@ -559,31 +654,49 @@ Marker: {
 Polyline: {
 
 	toProprietary: function() {
-		var points = [];
-		for(var i =0, length = this.points.length; i < length; i++) {
-			points.push(this.points[i].toProprietary('googlev3'));
+		var coords = [];
+
+		for (var i = 0, length = this.points.length; i < length; i++) {
+			coords.push(this.points[i].toProprietary('googlev3'));
 		}
 		
 		var polyOptions = {
-			path: points,
-			strokeColor: this.color || '#000000',
-			strokeOpacity: this.opacity || 1.0, 
-			strokeWeight: this.width || 3
+			path: coords,
+			strokeColor: this.color,
+			strokeOpacity: this.opacity, 
+			strokeWeight: this.width
 		};
+		
+		if (this.closed) {
+			if (!(this.points[0].equals(this.points[this.points.length - 1]))) {
+				coords.push(coords[0]);
+			}
+		}
 
-		var polyline = new google.maps.Polyline(polyOptions);
+		else if (this.points[0].equals(this.points[this.points.length - 1])) {
+			this.closed = true;
+		}
 
-		return polyline;
+		if (this.closed) {
+			polyOptions.fillColor = this.fillColor;
+			polyOptions.fillOpacity = polyOptions.strokeOpacity;
+			
+			this.proprietary_polyline = new google.maps.Polygon(polyOptions);
+		}
+		else {
+			this.proprietary_polyline = new google.maps.Polyline(polyOptions);
+		}
+		
+		return this.proprietary_polyline;
 	},
 	
 	show: function() {
-			throw 'Not implemented';
+		this.proprietary_polyline.setVisible(true);
 	},
 
 	hide: function() {
-			throw 'Not implemented';
+		this.proprietary_polyline.setVisible(false);
 	}
-	
 }
 
 });

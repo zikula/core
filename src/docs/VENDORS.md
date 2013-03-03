@@ -182,6 +182,12 @@ LivePipe
     Location in Zikula: javascript/livepipe
     Patch details: none
 
+Mapstraction 3.0.0
+    Vendor website: http://mapstraction.com/
+    Downloaded from: https://github.com/mapstraction/mxn/tags
+    License: BSD License (see at the bottom of http://mapstraction.com/)
+    Location in Zikula: plugins/Mapstraction/lib/vendor/mxn
+    Patch details: none
 
 ICON LIBRARIES
 --------------
