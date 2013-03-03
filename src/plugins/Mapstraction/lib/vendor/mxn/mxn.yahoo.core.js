@@ -1,48 +1,35 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 mxn.register('yahoo', {	
 
 Mapstraction: {
-	
-	init: function(element,api) {		
-		var me = this;
-		if (YMap) {
-			this.maps[api] = new YMap(element);
+	init: function(element,api) {
+		throw new Error('The Yahoo! Maps API is now obsolete and no longer supported by Mapstraction');
 
-			YEvent.Capture(this.maps[api], EventsList.MouseClick, function(event,location) {
-				me.clickHandler(location.Lat, location.Lon, location, me);
-				me.click.fire({'location': new mxn.LatLonPoint(location.Lat, location.Lon)});
-			});
-			YEvent.Capture(this.maps[api], EventsList.changeZoom, function() {
-				me.moveendHandler(me);
-				me.changeZoom.fire();
-			});
-			YEvent.Capture(this.maps[api], EventsList.endPan, function() {
-				me.moveendHandler(me);
-				me.endPan.fire();
-			});
-			YEvent.Capture(this.maps[api], EventsList.endAutoPan, function() {
-				me.endPan.fire();
-			});
-			
-			this.loaded[api] = true;
-			me.load.fire();
+		/*var me = this;
+		
+		if (!YMap) {
+			throw new Error(api + ' map script not imported');
 		}
-		else {
-			alert(api + ' map script not imported');
-		}  
+
+		this.maps[api] = new YMap(element);
+
+		YEvent.Capture(this.maps[api], EventsList.MouseClick, function(event,location) {
+			me.clickHandler(location.Lat, location.Lon, location, me);
+			me.click.fire({'location': new mxn.LatLonPoint(location.Lat, location.Lon)});
+		});
+		YEvent.Capture(this.maps[api], EventsList.changeZoom, function() {
+			me.moveendHandler(me);
+			me.changeZoom.fire();
+		});
+		YEvent.Capture(this.maps[api], EventsList.endPan, function() {
+			me.moveendHandler(me);
+			me.endPan.fire();
+		});
+		YEvent.Capture(this.maps[api], EventsList.endAutoPan, function() {
+			me.endPan.fire();
+		});
+		
+		this.loaded[api] = true;
+		me.load.fire();*/
 	},
 	
 	applyOptions: function(){
@@ -265,7 +252,7 @@ Mapstraction: {
 		map.addOverlay(new YGeoRSS(url));
 	},
 	
-	addTileLayer: function(tile_url, opacity, copyright_text, min_zoom, max_zoom) {
+	addTileLayer: function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
 		throw 'Not implemented';
 	},
 

@@ -1,33 +1,49 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 mxn.register('cloudmade', {	
 
 	Mapstraction: {
 
 		init: function(element, api) {
 			var me = this;
+			
+			if (typeof CM.Map === 'undefined') {
+				throw new Error(api + ' map script not imported');
+			}
+			
 			var opts = {
 				key: cloudmade_key
 			};
 			if (typeof cloudmade_styleId != "undefined"){
 				opts.styleId = cloudmade_styleId;
 			}
+
+			this.controls = {
+				zoom: null,
+				overview: null,
+				scale: null,
+				map_type: null
+			};
+			
+			this._fireOnNextCall = [];
+			this._fireQueuedEvents =  function() {
+				var fireListCount = me._fireOnNextCall.length;
+				if (fireListCount > 0) {
+					var fireList = me._fireOnNextCall.splice(0, fireListCount);
+					var handler;
+					while ((handler = fireList.shift())) {
+						handler();
+					}
+				}
+			};
+		
 			var cloudmade = new CM.Tiles.CloudMade.Web(opts);
 			this.maps[api] = new CM.Map(element, cloudmade);
-			this.loaded[api] = true;
 
+			CM.Event.addListener(this.maps[api], 'load', function() {
+				me._fireOnNextCall.push(function() {
+					me.load.fire();
+				});
+			});
+		
 			CM.Event.addListener(this.maps[api], 'click', function(location,marker) {
 				if ( marker && marker.mapstraction_marker ) {
 					marker.mapstraction_marker.click.fire();
@@ -42,63 +58,139 @@ mxn.register('cloudmade', {
 					me.clickHandler(location.lat(),location.lng(),location,me);
 				}
 			});
-			CM.Event.addListener(this.maps[api], 'dragend', function() {
+			CM.Event.addListener(this.maps[api], 'moveend', function() {
 				me.endPan.fire();
 			});
 			CM.Event.addListener(this.maps[api], 'zoomend', function() {
 				me.changeZoom.fire();
 			});
+
+			// CloudMade insists that setCenter is called with a valid lat/long and a zoom
+			// level before any other operation is called on the map. Surely a WTF moment.
+			this.maps[api].setCenter(new CM.LatLng(0, 0), 12);
+			this.loaded[api] = true;
 		},
 
 		applyOptions: function(){
+			// applyOptions is called by mxn.core.js immediate after the provider specific call
+			// to init, so don't check for queued events just yet.
+			//this._fireQueuedEvents();
 			var map = this.maps[this.api];
-			if(this.options.enableScrollWheelZoom){
+			if (this.options.enableScrollWheelZoom) {
 				map.enableScrollWheelZoom();
+			}
+			else {
+				map.disableScrollWheelZoom();
 			}
 		},
 
 		resizeTo: function(width, height){	
+			this._fireQueuedEvents();
 			this.maps[this.api].checkResize();
 		},
 
 		addControls: function( args ) {
+			/* args = { 
+			 *     pan:      true,
+			 *     zoom:     'large' || 'small',
+			 *     overview: true,
+			 *     scale:    true,
+			 *     map_type: true,
+			 * }
+			 */
+
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			var c = this.addControlsArgs;
-			switch (c.zoom) {
-				case 'large':
-					this.addLargeControls();
-					break;
-				case 'small':
+			if ('zoom' in args) {
+				if (args.zoom == 'small') {
 					this.addSmallControls();
-					break;
+				}
+
+				else if (args.zoom == 'large') {
+					this.addLargeControls();
+				}
 			}
 
-			if (c.map_type) {
+			else {
+				if (this.controls.zoom !== null) {
+					map.removeControl(this.controls.zoom);
+					this.controls.zoom = null;
+				}
+			}
+
+			if ('overview' in args && args.overview) {
+				if (this.controls.overview === null) {
+					this.controls.overview = new CM.OverviewMapControl();
+					map.addControl(this.controls.overview);
+				}
+			}
+			
+			else {
+				if (this.controls.overview !== null) {
+					map.removeControl(this.controls.overview);
+					this.controls.overview = null;
+				}
+			}
+			
+			if ('map_type' in args && args.map_type) {
 				this.addMapTypeControls();
 			}
-			if (c.scale) {
-				map.addControl(new CM.ScaleControl());
-				this.addControlsArgs.scale = true;
+
+			else {
+				if (this.controls.map_type !== null) {
+					map.removeControl(this.controls.map_type);
+					this.controls.map_type = null;
+				}
+			}
+			
+			if ('scale' in args && args.scale) {
+				if (this.controls.scale === null) {
+					this.controls.scale = new CM.ScaleControl();
+					map.addControl(this.controls.scale);
+				}
+			}
+			
+			else {
+				if (this.controls.scale !== null) {
+					map.removeControl(this.controls.scale);
+					this.controls.scale = null;
+				}
 			}
 		},
 
 		addSmallControls: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
-			map.addControl(new CM.SmallMapControl());
-			this.addControlsArgs.zoom = 'small';
+
+			if (this.controls.zoom !== null) {
+				map.removeControl(this.controls.zoom);
+			}
+
+			this.controls.zoom = new CM.SmallMapControl();
+			map.addControl(this.controls.zoom);
 		},
 
 		addLargeControls: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
-			map.addControl(new CM.LargeMapControl());
-			this.addControlsArgs.zoom = 'large';
+
+			if (this.controls.zoom !== null) {
+				map.removeControl(this.controls.zoom);
+			}
+
+			this.controls.zoom = new CM.LargeMapControl();
+			map.addControl(this.controls.zoom);
 		},
 
 		addMapTypeControls: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
-			map.addControl(new CM.TileLayerControl());
-			this.addControlsArgs.map_type = true;
+
+			if (this.controls.map_type === null) {
+				this.controls.map_type = new CM.TileLayerControl();
+				map.addControl(this.controls.map_type);
+			}
 		},
 
 		dragging: function(on) {
@@ -112,13 +204,14 @@ mxn.register('cloudmade', {
 		},
 
 		setCenterAndZoom: function(point, zoom) { 
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var pt = point.toProprietary(this.api);
 			map.setCenter(pt, zoom);
-
 		},
 
 		addMarker: function(marker, old) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var pin = marker.toProprietary(this.api);
 			map.addOverlay(pin);
@@ -126,18 +219,21 @@ mxn.register('cloudmade', {
 		},
 
 		removeMarker: function(marker) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			marker.proprietary_marker.closeInfoWindow();
 			map.removeOverlay(marker.proprietary_marker);
 		},
 		
 		declutterMarkers: function(opts) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Add provider code
+			throw new Error('Mapstraction.declutterMarkers is not currently supported by provider ' + this.api);
 		},
 
 		addPolyline: function(polyline, old) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var pl = polyline.toProprietary(this.api);
 			map.addOverlay(pl);
@@ -145,11 +241,13 @@ mxn.register('cloudmade', {
 		},
 
 		removePolyline: function(polyline) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			map.removeOverlay(polyline.proprietary_polyline);
 		},
 
 		getCenter: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var pt = map.getCenter();
 
@@ -157,23 +255,27 @@ mxn.register('cloudmade', {
 		},
 
 		setCenter: function(point, options) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var pt = point.toProprietary(this.api);
-			if(options !== null && options.pan) { map.panTo(pt); }
+			if(typeof (options) != 'undefined' && options.pan) { map.panTo(pt); }
 			else { map.setCenter(pt); }
 		},
 
 		setZoom: function(zoom) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			map.setZoom(zoom);
 		},
 
 		getZoom: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			return map.getZoom();
 		},
 
 		getZoomLevelForBoundingBox: function( bbox ) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			// NE and SW points from the bounding box.
 			var ne = bbox.getNorthEast();
@@ -184,37 +286,26 @@ mxn.register('cloudmade', {
 		},
 
 		setMapType: function(type) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Are there any MapTypes for Cloudmade?
-
-			switch(type) {
-				case mxn.Mapstraction.ROAD:
-					// TODO: Add provider code
-					break;
-				case mxn.Mapstraction.SATELLITE:
-					// TODO: Add provider code
-					break;
-				case mxn.Mapstraction.HYBRID:
-					// TODO: Add provider code
-					break;
-				default:
-					// TODO: Add provider code
-			}	 
+			// CloudMade supports Web, Mobile, Mapnik, OSMarender and Cycle map tiles
+			// but none of theme map to the standard MXN map tile types. So effectively
+			// we can only support mxn.Mapstraction.ROAD, which is equivalent to the
+			// default CloudMade Web map tile type.
 		},
 
 		getMapType: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Are there any MapTypes for Cloudmade?
+			// See note in setMapType() above regarding CloudMade map tile types
 
 			return mxn.Mapstraction.ROAD;
-			//return mxn.Mapstraction.SATELLITE;
-			//return mxn.Mapstraction.HYBRID;
-
 		},
 
 		getBounds: function () {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
 			var box = map.getBounds();
@@ -225,6 +316,7 @@ mxn.register('cloudmade', {
 		},
 
 		setBounds: function(bounds){
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var sw = bounds.getSouthWest();
 			var ne = bounds.getNorthEast();
@@ -233,48 +325,60 @@ mxn.register('cloudmade', {
 		},
 
 		addImageOverlay: function(id, src, opacity, west, south, east, north, oContext) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Add provider code
+			throw new Error('Mapstraction.addImageOverlay is not currently supported by provider ' + this.api);
 		},
 
 		setImagePosition: function(id, oContext) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 			var topLeftPoint; var bottomRightPoint;
 
-			// TODO: Add provider code
-
+			throw new Error('Mapstraction.setImagePosition is not currently supported by provider ' + this.api);
 		},
 
 		addOverlay: function(url, autoCenterAndZoom) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Add provider code
-
+			throw new Error('Mapstraction.addOverlay is not currently supported by provider ' + this.api);
 		},
 
-		addTileLayer: function(tile_url, opacity, copyright_text, min_zoom, max_zoom) {
+		addTileLayer: function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Add provider code
+			throw new Error('Mapstraction.addTileLayer is not currently supported by provider ' + this.api);
 		},
 
 		toggleTileLayer: function(tile_url) {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Add provider code
+			throw new Error('Mapstraction.toggleTileLayer is not currently supported by provider ' + this.api);
 		},
 
 		getPixelRatio: function() {
+			this._fireQueuedEvents();
 			var map = this.maps[this.api];
 
-			// TODO: Add provider code	
+			throw new Error('Mapstraction.getPixelRatio is not currently supported by provider ' + this.api);
 		},
 
 		mousePosition: function(element) {
-			var map = this.maps[this.api];
+			this._fireQueuedEvents();
 
-			// TODO: Add provider code	
+			var map = this.maps[this.api];
+			var locDisp = document.getElementById(element);
+			if (locDisp !== null) {
+				CM.Event.addListener(map, 'mousemove', function(point) {
+					var loc = point.latLng.lat().toFixed(4) + ' / ' + point.latLng.lng().toFixed(4);
+					locDisp.innerHTML = loc;
+				});
+				locDisp.innerHTML = '0.0000 / 0.0000';
+			}
 		}
 	},
 
@@ -289,7 +393,6 @@ mxn.register('cloudmade', {
 			this.lat = point.lat();
 			this.lon = point.lng();
 		}
-
 	},
 
 	Marker: {
@@ -333,6 +436,11 @@ mxn.register('cloudmade', {
 			pin.openInfoWindow(this.infoBubble);
 		},
 
+		closeBubble: function() {
+			var pin = this.proprietary_marker;
+			pin.closeInfoWindow();
+		},
+		
 		hide: function() {
 			var pin = this.proprietary_marker;
 			pin.hide();
@@ -344,27 +452,38 @@ mxn.register('cloudmade', {
 		},
 
 		update: function() {
-			// TODO: Add provider code
+			throw new Error('Marker.update is not currently supported by provider ' + this.api);
 		}
-
 	},
 
 	Polyline: {
 
 		toProprietary: function() {
-			var pts = [];
-			var poly;
+			var coords = [];
 
 			for (var i = 0,  length = this.points.length ; i< length; i++){
-				pts.push(this.points[i].toProprietary(this.api));
+				coords.push(this.points[i].toProprietary(this.api));
 			}
-			if (this.closed || pts[0].equals(pts[pts.length-1])) {
-				poly = new CM.Polygon(pts, this.color, this.width, this.opacity, this.fillColor || "#5462E3", this.opacity || "0.3");
-			} 
+			
+			if (this.closed) {
+				if (!(this.points[0].equals(this.points[this.points.length - 1]))) {
+					coords.push(coords[0]);
+				}
+			}
+
+			else if (this.points[0].equals(this.points[this.points.length - 1])) {
+				this.closed = true;
+			}
+			
+			
+			if (this.closed) {
+				this.proprietary_polyline = new CM.Polygon(coords, this.color, this.width, this.opacity, this.fillColor || "#5462E3", this.opacity || "0.3");
+			}
 			else {
-				poly = new CM.Polyline(pts, this.color, this.width, this.opacity);
+				this.proprietary_polyline = new CM.Polyline(coords, this.color, this.width, this.opacity);
 			}
-			return poly;
+
+			return this.proprietary_polyline;
 		},
 
 		show: function() {
@@ -374,7 +493,5 @@ mxn.register('cloudmade', {
 		hide: function() {
 			this.proprietary_polyline.hide();
 		}
-
 	}
-
 });
