@@ -1,39 +1,63 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 mxn.register('openspace', {
 
 Mapstraction: {
 
 	init: function(element, api) {
 		var me = this;
+		var map;
+		
+		if (typeof OpenLayers === 'undefined') {
+			throw new Error('OpenLayers is not loaded but is required to work with OpenSpace');
+		}
+		
+		if (typeof OpenSpace.Map === 'undefined') {
+			throw new Error(api + ' map script not imported');
+		}
+
+		this.controls = {
+			pan: null,
+			zoom: null,
+			overview: null,
+			scale: null,
+			map_type: null
+		};
+
+		//FIX STUPID OPENSPACE BUG IN openspace Version 1.2 - is triggered by Mapstraction Core Tests when adding a marker with label text
+		if (typeof (OpenLayers.Marker.prototype.setDragMode) == "undefined")
+		{
+			OpenLayers.Marker.prototype.setDragMode = function(mode) {
+				if (this.eventObj) {
+					if (mode) {
+						this.events.unregister("mousedown", this.eventObj, this.eventFunc);
+					} 
+					else {
+						if (this.events.listeners.mousedown.length === 0) {
+							this.events.register("mousedown", this.eventObj, this.eventFunc);
+						}
+					}
+				}
+			};
+		}
+
 		// create the map with no controls and don't centre popup info window
-		this.maps[api] = new OpenSpace.Map(element,{
-				controls: [],
-				centreInfoWindow: false
+		map = new OpenSpace.Map(element,{
+			controls: [],
+			centreInfoWindow: false
 		});
+
 		// note that these three controls are always there and the fact that 
 		// there are three resident controls is used in addControls()
 		// enable map drag with mouse and keyboard
-		this.maps[api].addControl(new OpenLayers.Control.Navigation());
-		this.maps[api].addControl(new OpenLayers.Control.KeyboardDefaults());
+
+		map.addControl(new OpenLayers.Control.Navigation());
+		map.addControl(new OpenLayers.Control.KeyboardDefaults());
 		// include copyright statement
-		this.maps[api].addControl(new OpenSpace.Control.CopyrightCollection());
-		
-		this.maps[api].events.register(
+		map.addControl(new OpenSpace.Control.CopyrightCollection());
+		map.addControl(new OpenSpace.Control.PoweredBy());
+	
+		map.events.register(
 			"click", 
-			this.maps[api],
+			map,
 			function(evt) {
 				var point = this.getLonLatFromViewPortPx( evt.xy );
 				// convert to LatLonPoint
@@ -43,6 +67,30 @@ Mapstraction: {
 				return false;
 			}
 		);
+		
+		var loadfire = function(e) {
+			me.load.fire();
+			this.events.unregister('loadend', this, loadfire);
+		};
+		
+		for (var layerName in map.layers) {
+			if (map.layers.hasOwnProperty(layerName)) {
+				if (map.layers[layerName].visibility === true) {
+					map.layers[layerName].events.register('loadend', map.layers[layerName], loadfire);
+				}
+			}
+		}
+		
+		map.events.register('zoomend', map, function(evt) {
+			me.changeZoom.fire();
+		});
+		
+		map.events.register('moveend', map, function(evt) {
+			me.moveendHandler(me);
+			me.endPan.fire();
+		});
+		
+		this.maps[api] = map;
 		this.loaded[api] = true;
 	},
 	
@@ -59,50 +107,139 @@ Mapstraction: {
 	},
 	
 	addControls: function( args ) {
+		/* args = { 
+		 *     pan:      true,
+		 *     zoom:     'large' || 'small',
+		 *     overview: true,
+		 *     scale:    true,
+		 *     map_type: true,
+		 * }
+		 */
+
 		var map = this.maps[this.api];
-		// remove existing controls but leave the basic navigation,	keyboard 
-		// and copyright controls in place these were added in addAPI and not 
-		// normally be removed
-		for (var i = map.controls.length; i>3; i--) {
-			map.controls[i-1].deactivate();
-			map.removeControl(map.controls[i-1]);
+		var controls;
+		var	control;
+		var i;
+		
+		if ('zoom' in args || ('pan' in args && args.pan)) {
+			if (args.pan || args.zoom == 'small') {
+				this.addSmallControls();
+			}
+			
+			else if (args.zoom == 'large') {
+				this.addLargeControls();
+			}
 		}
-		// pan and zoom controls not available separately
-		if ( args.zoom == 'large') {
-			map.addControl(new OpenSpace.Control.LargeMapControl());
+
+		else {
+			if (!('pan' in args)) {
+				controls = map.getControlsByClass('OpenSpace.Control.SmallMapControl');
+				for (i=0; i < controls.length; i++) {
+					controls[i].deactivate();
+					map.removeControl(controls[i]);
+				}
+			}
+			
+			if (!('zoom' in args)) {
+				controls = map.getControlsByClass('OpenSpace.Control.SmallMapControl');
+				for (i=0; i < controls.length; i++) {
+					controls[i].deactivate();
+					map.removeControl(controls[i]);
+				}
+				controls = map.getControlsByClass('OpenSpace.Control.LargeMapControl');
+				for (i=0; i < controls.length; i++) {
+					controls[i].deactivate();
+					map.removeControl(controls[i]);
+				}
+			}
 		}
-		else if ( args.zoom == 'small' || args.pan ) {
-			map.addControl(new OpenSpace.Control.SmallMapControl());
+		if ('overview' in args) {
+			controls = map.getControlsByClass('OpenSpace.Control.OverviewMap');
+			if (controls.length === 0) {
+				// Yuck, yuck and more yuck. OpenSpace 1.2 with OpenLayers 2.8
+				// throws a TypeError exception with the message "Cannot read property
+				// '_eventCacheID' of null" if you try to add the OverviewMap control
+				// after calling an initial setCenterAndZoom
+				try {
+					control = new OpenSpace.Control.OverviewMap();
+					map.addControl(control);
+					control.maximizeControl();
+				}
+				
+				catch (e) {
+					//
+				}
+			}
 		}
-		if ( args.overview ) {
-			// this should work but as of OpenSpace 0.7.2 generates an error
-			// unless done before setCenterAndZoom
-			var osOverviewControl = new OpenSpace.Control.OverviewMap();
-			map.addControl(osOverviewControl);
-			osOverviewControl.maximizeControl();
+		
+		else {
+			controls = map.getControlsByClass('OpenSpace.Control.OverviewMap');
+			for (i=0; i < controls.length; i++) {
+				controls[i].deactivate();
+				map.removeControl(controls[i]);
+			}
 		}
-		if ( args.map_type ) {
-			// this is all you get with openspace, a control to switch on or
-			// off the layers and markers
-			// probably not much use to anybody
-			map.addControl(new OpenLayers.Control.LayerSwitcher());
+		
+		if ('scale' in args && args.scale) {
+			if (this.controls.scale === null) {
+				this.controls.scale = new OpenLayers.Control.ScaleLine();
+				map.addControl(this.controls.scale);
+			}
+		}
+
+		else {
+			if (this.controls.scale !== null) {
+				this.controls.scale.deactivate();
+				map.removeControl(this.controls.scale);
+				this.controls.scale = null;
+			}
+		}
+
+		
+		if ('map_type' in args) {
+			this.addMapTypeControls ();
+		}
+
+		else {
+			controls = map.getControlsByClass('OpenSpace.Control.LayerSwitcher');
+			for (i=0; i < controls.length; i++) {
+				controls[i].deactivate();
+				map.removeControl(controls[i]);
+			}
 		}
 	},
 	
 	addSmallControls: function() {
 		var map = this.maps[this.api];
-		map.addControl(new OpenSpace.Control.SmallMapControl());
+		var controls;
+		
+		controls = map.getControlsByClass('OpenSpace.Control.SmallMapControl');
+		if (controls.length === 0) {
+			map.addControl(new OpenSpace.Control.SmallMapControl());
+		}
 	},
 	
 	addLargeControls: function() {
 		var map = this.maps[this.api];
-		map.addControl(new OpenSpace.Control.LargeMapControl());
+		var controls;
+
+		controls = map.getControlsByClass('OpenSpace.Control.LargeMapControl');
+		if (controls.length === 0) {
+			map.addControl(new OpenSpace.Control.LargeMapControl());
+		}
 	},
 	
 	addMapTypeControls: function() {
 		var map = this.maps[this.api];
+		var controls;
 	
-		// TODO: Add provider code
+		// This is all you get with OpenSpace, a control to switch on or
+		// off the layers and markers; probably not much use to anybody
+
+		controls = map.getControlsByClass('OpenSpace.Control.LayerSwitcher');
+		if (controls.length === 0) {
+			map.addControl(new OpenLayers.Control.LayerSwitcher());
+		}
 	},
 	
 	setCenterAndZoom: function(point, zoom) {
@@ -116,66 +253,61 @@ Mapstraction: {
 		else if (oszoom>10) {
 			oszoom = 10;
 		}
-		map.setCenter(pt, oszoom);
+		map.setCenter(pt, oszoom, false, false);
 	},
 	
 	addMarker: function(marker, old) {
 		var map = this.maps[this.api];
-		var pin = marker.toProprietary(this.api);
-	
-		map.addOverlay(pin);
+		var loc = marker.location.toProprietary(this.api);
+		var pin = map.createMarker(loc, null, marker.labelText);
 	
 		return pin;
 	},
 
 	removeMarker: function(marker) {
 		var map = this.maps[this.api];
-	
-		// TODO: Add provider code
+		
+		//map.removeMarker(marker.toProprietary(this.api));
+		map.removeMarker(marker.proprietary_marker);
 	},
 	
 	declutterMarkers: function(opts) {
-		var map = this.maps[this.api];
-	
-		// TODO: Add provider code
+		throw new Error('Mapstraction.declutterMarkers is not currently supported by provider ' + this.api);
 	},
 	
 	addPolyline: function(polyline, old) {
 		var map = this.maps[this.api];
 		var pl = polyline.toProprietary(this.api);
 
-		// TODO: Add provider code
+		map.getVectorLayer().addFeatures([pl]);
+		//this.poly_layer.addFeatures([pl]);
+		//map.addLayer(this.poly_layer);
 
 		return pl;
 	},
 
 	removePolyline: function(polyline) {
 		var map = this.maps[this.api];
-	
-		// TODO: Add provider code
+		//var pl = polyline.toProprietary(this.api);
+		var pl = polyline.proprietary_polyline;
+
+		map.removeFeatures([pl]);
 	},
 	
 	getCenter: function() {
 		var point;
 		var map = this.maps[this.api];
 	
-		var pt = map.getCenter(); // an OpenSpace.MapPoint,
-							  // UK National Grid
-		point = new mxn.LatLonPoint();
-		point.fromOpenSpace(pt);  // convert to LatLonPoint
-	
-		return point;
+		var pt = map.getCenter(); // an OpenSpace.MapPoint, National Grid
+		var gridProjection = new OpenSpace.GridProjection();
+		var center = gridProjection.getLonLatFromMapPoint(pt);
+		return new mxn.LatLonPoint(center.lat, center.lon);
 	},
 
 	setCenter: function(point, options) {
 		var map = this.maps[this.api];
 		var pt = point.toProprietary(this.api);
-		if(options && options.pan) {
-			map.setCenter(pt.toProprietary(this.api));
-		}
-		else {
-			map.setCenter(pt.toProprietary(this.api));
-		}
+		map.setCenter(pt);
 	},
 	
 	setZoom: function(zoom) {
@@ -217,29 +349,11 @@ Mapstraction: {
 	},
 
 	setMapType: function(type) {
-		var map = this.maps[this.api];
-		switch(type) {
-		case mxn.Mapstraction.ROAD:
-			// TODO: Add provider code
-			break;
-		case mxn.Mapstraction.SATELLITE:
-			// TODO: Add provider code
-			break;
-		case mxn.Mapstraction.HYBRID:
-			// TODO: Add provider code
-			break;
-		default:
-			// TODO: Add provider code
-		}
+		// OpenSpace only supports a single ROAD tile layer
 	},
 
 	getMapType: function() {
-		var map = this.maps[this.api];
-	
-		// TODO: Add provider code
-		//return mxn.Mapstraction.ROAD;
-		//return mxn.Mapstraction.SATELLITE;
-		//return mxn.Mapstraction.HYBRID;
+		return mxn.Mapstraction.ROAD;
 	},
 
 	getBounds: function () {
@@ -252,9 +366,9 @@ Mapstraction: {
 		var osne = new OpenSpace.MapPoint( olbox[2], olbox[3] );
 		// convert to LatLonPoints
 		var sw = new mxn.LatLonPoint();
-		sw.fromOpenSpace(ossw);
+		sw.fromProprietary('openspace', ossw);
 		var ne = new mxn.LatLonPoint();
-		ne.fromOpenSpace(osne);
+		ne.fromProprietary('openspace', osne);
 		return new mxn.BoundingBox(sw.lat, sw.lon, ne.lat, ne.lon);
 	},
 
@@ -269,50 +383,36 @@ Mapstraction: {
 		map.zoomToExtent(obounds);	
 	},
 
-	addImageOverlay: function(id, src, opacity, west, south, east,
-				  north, oContext) {
+	addImageOverlay: function(id, src, opacity, west, south, east, north, oContext) {
 		var map = this.maps[this.api];
-	
-		// TODO: Add provider code
+		throw new Error('Mapstraction.addImageOverlay is not currently supported by provider ' + this.api);
 	},
 
 	setImagePosition: function(id, oContext) {
-		var map = this.maps[this.api];
-		var topLeftPoint; var bottomRightPoint;
-	
-		// TODO: Add provider code
-	
-		//oContext.pixels.top = ...;
-		//oContext.pixels.left = ...;
-		//oContext.pixels.bottom = ...;
-		//oContext.pixels.right = ...;
+		throw new Error('Mapstraction.setImagePosition is not currently supported by provider ' + this.api);
 	},
 
 	addOverlay: function(url, autoCenterAndZoom) {
-		var map = this.maps[this.api];
-	
-		// TODO: Add provider code
+		throw new Error('Mapstraction.addOverlay is not currently supported by provider ' + this.api);
 	},
 
-	addTileLayer: function(tile_url, opacity, copyright_text, min_zoom, max_zoom) {
-		var map = this.maps[this.api];
-		// TODO: Add provider code
+	addTileLayer: function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
+		throw new Error('Mapstraction.addTileLayer is not currently supported by provider ' + this.api);
 	},
 
 	toggleTileLayer: function(tile_url) {
-		var map = this.maps[this.api];
-		// TODO: Add provider code
+		throw new Error('Mapstraction.toggleTileLayer is not currently supported by provider ' + this.api);
 	},
 
 	getPixelRatio: function() {
-		var map = this.maps[this.api];
-		// TODO: Add provider code
+		throw new Error('Mapstraction.getPixelRatio is not currently supported by provider ' + this.api);
 	},
 
 	mousePosition: function(element) {
 		var map = this.maps[this.api];
 
-		try {
+		locDisp = document.getElementById(element);
+		if (locDisp !== null) {
 			map.events.register('mousemove', map, function (e) {
 				var lonLat = map.getLonLatFromViewPortPx(e.xy);
 				var lon = lonLat.lon * (180.0 / 20037508.34);
@@ -323,12 +423,7 @@ Mapstraction: {
 				   // 4 dec places
 				locDisp.innerHTML = loc;
 			});
-			locDisp.innerHTML = '0.0000 / 0.0000';
-		} catch (x) {
-				alert("Error: " + x);
 		}
-	
-		// TODO: Add provider code
 	}
 },
 
@@ -350,7 +445,6 @@ LatLonPoint: {
 		this.lon = olpt.lon;
 		this.lat = olpt.lat;
 	}
-	
 },
 
 Marker: {
@@ -377,53 +471,62 @@ Marker: {
 		if(this.iconUrl) {
 			icon = new OpenSpace.Icon(this.iconUrl, size, anchor);
 		}
-		else { // leave at default OpenSpace icon
-		}
 	
-		// This requires an OpenLayers specific hack, doesn't work when
-		// not including OpenLayers.js
-		OpenLayers.Marker.Label(this.location.toProprietary(this.api), icon,
-				this.labelText, {mouseOver:true,tooltipsFormat:true});
-		
-		var marker = new OpenLayers.Marker(this.location.toProprietary(this.api), icon);
+		var marker = new OpenLayers.Marker(this.location.toProprietary(this.api), icon, this.labelText, new OpenLayers.Size(300,100));
 		
 		return marker;
 	},
 
 	openBubble: function() {
-		// TODO: Add provider code
+		this.map.openInfoWindow(this.proprietary_marker.icon, this.location.toProprietary(this.api), this.infoBubble, new OpenLayers.Size(300, 100));
+		//this.map.openInfoWindow(this.proprietary_marker.icon, this.location.toProprietary(this.api), this.infoBubble);
+		this.map.infoWindow.autoSize = true;
+	},
+	
+	closeBubble: function() {
+		this.map.closeInfoWindow();
 	},
 
 	hide: function() {
-		// TODO: Add provider code
+		this.proprietary_marker.display(false);
 	},
 	
 	show: function() {
-		// TODO: Add provider code
+		this.proprietary_marker.display(true);
 	},
 	
 	update: function() {
-		// TODO: Add provider code
+		throw new Error('Mapstraction.update is not currently supported by provider ' + this.api);
 	}
 },
 
 Polyline: {
 
 	toProprietary: function() {
-		var ospolyline;
-		var ospoints = [];
+		var coords = [];
+
 		for (var i = 0, length = this.points.length ; i< length; i++){
 			// convert each point to OpenSpace.MapPoint
 			var ospoint = this.points[i].toProprietary(this.api);
-			var olgpoint = new OpenLayers.Geometry.Point(ospoint.getEasting(),ospoint.getNorthing());
-			ospoints.push(olgpoint);
+			coords.push(new OpenLayers.Geometry.Point(ospoint.getEasting(),ospoint.getNorthing()));
 		}
+
 		if (this.closed) {
-			ospolyline = new OpenLayers.Feature.Vector(
-				new OpenLayers.Geometry.LinearRing(ospoints), 
+			if (!(this.points[0].equals(this.points[this.points.length - 1]))) {
+				coords.push(coords[0]);
+			}
+		}
+
+		else if (this.points[0].equals(this.points[this.points.length - 1])) {
+			this.closed = true;
+		}
+
+		if (this.closed) {
+			this.proprietary_polyline = new OpenLayers.Feature.Vector(
+				new OpenLayers.Geometry.LinearRing(coords), 
 				null,
 				{
-					fillColor: this.color,
+					fillColor: this.fillColor,
 					strokeColor: this.color,
 					strokeOpacity: this.opacity,
 					fillOpacity: this.opacity,
@@ -432,29 +535,29 @@ Polyline: {
 			);
 		}
 		else {
-			ospolyline = new OpenLayers.Feature.Vector(
-				new	OpenLayers.Geometry.LineString(ospoints),
+			this.proprietary_polyline = new OpenLayers.Feature.Vector(
+				new	OpenLayers.Geometry.LineString(coords),
 				null, 
 				{
-				   fillColor: 0,
-				   strokeColor: this.color,
-				   strokeOpacity: this.opacity,
-				   fillOpacity: 0,
-				   strokeWidth: this.width
+					fillColor: this.fillColor,
+					strokeColor: this.color,
+					strokeOpacity: this.opacity,
+					fillOpacity: this.opacity,
+					strokeWidth: this.width
 				}
 			);
 		}
-		return ospolyline;
+
+		return this.proprietary_polyline;
 	},
 	
 	show: function() {
-		// TODO: Add provider code
+		delete this.proprietary_polyline.style.display;
 	},
 	
 	hide: function() {
-		// TODO: Add provider code
+		this.proprietary_polyline.style.display = "none";
 	}
-	
 }
 	
 });

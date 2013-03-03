@@ -1,17 +1,3 @@
-/*
-MAPSTRACTION   v2.0.17   http://www.mapstraction.com
-
-Copyright (c) 2011 Tom Carden, Steve Coast, Mikel Maron, Andrew Turner, Henri Bergius, Rob Moran, Derek Fowler, Gary Gale
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * Neither the name of the Mapstraction nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
 (function(){
 
 /**
@@ -21,7 +7,7 @@ var $m = mxn.util.$m;
 
 /**
  * Initialise our provider. This function should only be called 
- * from within mapstraction code, not exposed as part of the API.
+ * from within Mapstraction code, not exposed as part of the API.
  * @private
  */
 var init = function() {
@@ -30,12 +16,31 @@ var init = function() {
 };
 
 /**
- * Mapstraction instantiates a map with some API choice into the HTML element given
+ * <p>Creates and loads a Mapstraction map into a specified HTML element. The following mapping APIs
+ * are supported by Mapstraction:</p>
+ *
+ * <ul>
+ * <li><code>cloudmade</code> - CloudMade</li>
+ * <li><code>esri</code> - ESRI ArcGIS</li>
+ * <li><code>google</code> - Google v2</li>
+ * <li><code>googlev3</code> - Google v3</li>
+ * <li><code>leaflet</code> - Leaflet</li>
+ * <li><code>mapquest</code> - MapQuest</li>
+ * <li><code>microsoft</code> - Microsoft Bing v6</li>
+ * <li><code>microsoft7</code> - Microsoft Bing v7</li>
+ * <li><code>nokia</code> - Nokia Here</li>
+ * <li><code>openlayers</code> - OpenLayers</li>
+ * <li><code>openmq</code> - MapQuest Open</li>
+ * <li><code>openspace</code> - Ordnance Survey OpenSpace</li>
+ * <li><code>ovi</code> - Nokia Ovi</li>
+ * <li><code>yahoo</code> - <strong><em>Yahoo (obsoleted)</em></strong></li>
+ * <li><code>yandex</code> - Yandex</li>
+ * </ul>
  * @name mxn.Mapstraction
  * @constructor
- * @param {String} element The HTML element to replace with a map
- * @param {String} api The API to use, one of 'google', 'googlev3', 'yahoo', 'microsoft', 'openstreetmap', 'multimap', 'map24', 'openlayers', 'mapquest'. If omitted, first loaded provider implementation is used.
- * @param {Bool} debug optional parameter to turn on debug support - this uses alert panels for unsupported actions
+ * @param {string} element The HTML element to replace with a map.
+ * @param {string} api The API ID of the mapping API to use; if omitted, the first loaded provider implementation is used.
+ * @param {boolean} [debug] optional parameter to turn on debug support; this uses alert panels for unsupported actions.
  * @exports Mapstraction as mxn.Mapstraction
  */
 var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
@@ -46,7 +51,7 @@ var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
 	/**
 	 * The name of the active API.
 	 * @name mxn.Mapstraction#api
-	 * @type {String}
+	 * @type {string}
 	 */
 	this.api = api;
 		
@@ -63,7 +68,15 @@ var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
 	this.eventListeners = [];
 	
 	/**
-	 * The markers currently loaded.
+	 * The array of all layers that have been added to the map.
+	 * @name mxn.Mapstraction#tileLayers
+	 * @property
+	 * @type {Array}
+	 */
+	this.tileLayers = [];	
+		
+	/**
+	 * The array of currently loaded <code>mxn.Marker</code> objects.
 	 * @name mxn.Mapstraction#markers
 	 * @property
 	 * @type {Array}
@@ -71,7 +84,7 @@ var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
 	this.markers = [];
 		
 	/**
-	 * The polylines currently loaded.
+	 * The array of currently loaded <code>mxn.Polyline</code> objects.
 	 * @name mxn.Mapstraction#polylines
 	 * @property
 	 * @type {Array}
@@ -89,7 +102,7 @@ var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
 	 * The original element value passed to the constructor.
 	 * @name mxn.Mapstraction#element
 	 * @property
-	 * @type {String|DOMElement}
+	 * @type {string|DOMElement}
 	 */
 	this.element = element;
 	
@@ -119,7 +132,7 @@ var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
 		'load',
 		
 		/**
-		 * Map is clicked {location: LatLonPoint}
+		 * Map is clicked {location: mxn.LatLonPoint}
 		 * @name mxn.Mapstraction#click
 		 * @event
 		 */
@@ -140,7 +153,7 @@ var Mapstraction = mxn.Mapstraction = function(element, api, debug) {
 		'changeZoom',
 		
 		/**
-		 * Marker is removed {marker: Marker}
+		 * Marker is added {marker: Marker}
 		 * @name mxn.Mapstraction#markerAdded
 		 * @event
 		 */
@@ -199,8 +212,8 @@ mxn.addProxyMethods(Mapstraction, [
 	 *  some flavors of GeoRSS and KML are not supported by some of the Map providers
 	 * @name mxn.Mapstraction#addOverlay
 	 * @function
-	 * @param {String} url GeoRSS or KML feed URL
-	 * @param {Boolean} autoCenterAndZoom Set true to auto center and zoom after the feed is loaded
+	 * @param {string} url GeoRSS or KML feed URL
+	 * @param {boolean} autoCenterAndZoom Set true to auto center and zoom after the feed is loaded
 	 */
 	'addOverlay', 
 	
@@ -222,7 +235,7 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Gets the BoundingBox of the map
 	 * @name mxn.Mapstraction#getBounds
 	 * @function
-	 * @returns {BoundingBox} The bounding box for the current map state
+	 * @returns {mxn.BoundingBox} The bounding box for the current map state
 	 */
 	'getBounds', 
 	
@@ -230,17 +243,20 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Gets the central point of the map
 	 * @name mxn.Mapstraction#getCenter
 	 * @function
-	 * @returns {LatLonPoint} The center point of the map
+	 * @returns {mxn.LatLonPoint} The center point of the map
 	 */
 	'getCenter', 
 	
 	/**
-	 * Gets the imagery type for the map.
-	 * The type can be one of:
-	 *  mxn.Mapstraction.ROAD
-	 *  mxn.Mapstraction.SATELLITE
-	 *  mxn.Mapstraction.HYBRID
-	 *  mxn.Mapstraction.PHYSICAL
+	 * <p>Gets the imagery type for the map. The type can be one of:</p>
+	 *
+	 * <ul>
+	 * <li><code>mxn.Mapstraction.ROAD</code></li>
+	 * <li><code>mxn.Mapstraction.SATELLITE</code></li>
+	 * <li><code>mxn.Mapstraction.HYBRID</code></li>
+	 * <li><code>mxn.Mapstraction.PHYSICAL</code></li>
+	 * </ul>
+	 *
 	 * @name mxn.Mapstraction#getMapType
 	 * @function
 	 * @returns {Number} 
@@ -248,10 +264,10 @@ mxn.addProxyMethods(Mapstraction, [
 	'getMapType', 
 
 	/**
-	 * Returns a ratio to turn distance into pixels based on current projection
+	 * Returns a ratio to turn distance into pixels based on the current projection.
 	 * @name mxn.Mapstraction#getPixelRatio
 	 * @function
-	 * @returns {Float} ratio
+	 * @returns {number} ratio
 	 */
 	'getPixelRatio', 
 	
@@ -259,7 +275,7 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Returns the zoom level of the map
 	 * @name mxn.Mapstraction#getZoom
 	 * @function
-	 * @returns {Integer} The zoom level of the map
+	 * @returns {number} The zoom level of the map
 	 */
 	'getZoom', 
 	
@@ -267,8 +283,8 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Returns the best zoom level for bounds given
 	 * @name mxn.Mapstraction#getZoomLevelForBoundingBox
 	 * @function
-	 * @param {BoundingBox} bbox The bounds to fit
-	 * @returns {Integer} The closest zoom level that contains the bounding box
+	 * @param {mxn.BoundingBox} bbox The bounds to fit
+	 * @returns {number} The closest zoom level that contains the bounding box
 	 */
 	'getZoomLevelForBoundingBox', 
 	
@@ -276,7 +292,7 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Displays the coordinates of the cursor in the HTML element
 	 * @name mxn.Mapstraction#mousePosition
 	 * @function
-	 * @param {String} element ID of the HTML element to display the coordinates in
+	 * @param {string} element ID of the HTML element to display the coordinates in
 	 */
 	'mousePosition',
 	
@@ -287,8 +303,8 @@ mxn.addProxyMethods(Mapstraction, [
 	 * mapElement may have no effect on the size of the actual map)
 	 * @name mxn.Mapstraction#resizeTo
 	 * @function
-	 * @param {Integer} width The width the map should be.
-	 * @param {Integer} height The width the map should be.
+	 * @param {number} width The width the map should be.
+	 * @param {number} height The width the map should be.
 	 */
 	'resizeTo', 
 	
@@ -296,7 +312,7 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Sets the map to the appropriate location and zoom for a given BoundingBox
 	 * @name mxn.Mapstraction#setBounds
 	 * @function
-	 * @param {BoundingBox} bounds The bounding box you want the map to show
+	 * @param {mxn.BoundingBox} bounds The bounding box you want the map to show
 	 */
 	'setBounds', 
 	
@@ -304,9 +320,9 @@ mxn.addProxyMethods(Mapstraction, [
 	 * setCenter sets the central point of the map
 	 * @name mxn.Mapstraction#setCenter
 	 * @function
-	 * @param {LatLonPoint} point The point at which to center the map
-	 * @param {Object} options Optional parameters
-	 * @param {Boolean} options.pan Whether the map should move to the locations using a pan or just jump straight there
+	 * @param {mxn.LatLonPoint} point The point at which to center the map
+	 * @param {Object} [options] Optional parameters
+	 * @param {boolean} options.pan Whether the map should move to the locations using a pan or just jump straight there
 	 */
 	'setCenter', 
 	
@@ -314,18 +330,21 @@ mxn.addProxyMethods(Mapstraction, [
 	 * Centers the map to some place and zoom level
 	 * @name mxn.Mapstraction#setCenterAndZoom
 	 * @function
-	 * @param {LatLonPoint} point Where the center of the map should be
-	 * @param {Integer} zoom The zoom level where 0 is all the way out.
+	 * @param {mxn.LatLonPoint} point Where the center of the map should be
+	 * @param {number} zoom The zoom level where 0 is all the way out.
 	 */
 	'setCenterAndZoom', 
 	
 	/**
-	 * Sets the imagery type for the map
-	 * The type can be one of:
-	 *  mxn.Mapstraction.ROAD
-	 *  mxn.Mapstraction.SATELLITE
-	 *  mxn.Mapstraction.HYBRID
-	 *  mxn.Mapstraction.PHYSICAL
+	 * <p>Sets the imagery type for the map. The type can be one of:</p>
+	 *
+	 * <ul>
+	 * <li><code>mxn.Mapstraction.ROAD</code></li>
+	 * <li><code>mxn.Mapstraction.SATELLITE</code></li>
+	 * <li><code>mxn.Mapstraction.HYBRID</code></li>
+	 * <li><code>mxn.Mapstraction.PHYSICAL</code></li>
+	 * </ul>
+	 *
 	 * @name mxn.Mapstraction#setMapType
 	 * @function
 	 * @param {Number} type 
@@ -333,9 +352,7 @@ mxn.addProxyMethods(Mapstraction, [
 	'setMapType', 
 	
 	/**
-	 * Sets the zoom level for the map
-	 * MS doesn't seem to do zoom=0, and Gg's sat goes closer than it's maps, and MS's sat goes closer than Y!'s
-	 * TODO: Mapstraction.prototype.getZoomLevels or something.
+	 * Sets the zoom level for the map.
 	 * @name mxn.Mapstraction#setZoom
 	 * @function
 	 * @param {Number} zoom The (native to the map) level zoom the map to.
@@ -343,7 +360,7 @@ mxn.addProxyMethods(Mapstraction, [
 	'setZoom',
 	
 	/**
-	 * Turns a Tile Layer on or off
+	 * Turns a tile layer on or off
 	 * @name mxn.Mapstraction#toggleTileLayer
 	 * @function
 	 * @param {tile_url} url of the tile layer that was created.
@@ -362,7 +379,7 @@ Mapstraction.prototype.setOptions = function(oOpts){
 
 /**
  * Sets an option and applies it.
- * @param {String} sOptName Option name
+ * @param {string} sOptName Option name
  * @param vVal Option value
  */
 Mapstraction.prototype.setOption = function(sOptName, vVal){
@@ -380,7 +397,7 @@ Mapstraction.prototype.enableScrollWheelZoom = function() {
 
 /**
  * Enable/disable dragging of the map
- * @param {Boolean} on
+ * @param {boolean} on
  * @deprecated Use setOption instead.
  */
 Mapstraction.prototype.dragging = function(on) {
@@ -388,11 +405,12 @@ Mapstraction.prototype.dragging = function(on) {
 };
 
 /**
- * Change the current api on the fly
- * @param {String} api The API to swap to
- * @param element
+ * Change the current API on the fly
+ * @see mxn.Mapstraction
+ * @param {Object} element The DOM element containing the map
+ * @param {string} api The API to swap to
  */
-Mapstraction.prototype.swap = function(element,api) {
+Mapstraction.prototype.swap = function(element, api) {
 	if (this.api === api) {
 		return;
 	}
@@ -410,7 +428,7 @@ Mapstraction.prototype.swap = function(element,api) {
 	this.api = api;
 	this.onload[api] = [];
 	
-	if (this.maps[this.api] === undefined) {	
+	if (!this.maps.hasOwnProperty(this.api)) {
 		init.apply(this);
 
 		for (var i = 0; i < this.markers.length; i++) {
@@ -438,7 +456,7 @@ Mapstraction.prototype.swap = function(element,api) {
 
 /**
  * Returns the loaded state of a Map Provider
- * @param {String} api Optional API to query for. If not specified, returns state of the originally created API
+ * @param {string} [api] Optional API to query for. If not specified, returns the state of the originally created API
  */
 Mapstraction.prototype.isLoaded = function(api){
 	if (api === null) {
@@ -449,7 +467,7 @@ Mapstraction.prototype.isLoaded = function(api){
 
 /**
  * Set the debugging on or off - shows alert panels for functions that don't exist in Mapstraction
- * @param {Boolean} debug true to turn on debugging, false to turn it off
+ * @param {boolean} [debug] Specify <code>true</code> to turn on debugging or <code>false</code> to turn it off
  */
 Mapstraction.prototype.setDebug = function(debug){
 	if(debug !== null) {
@@ -461,7 +479,7 @@ Mapstraction.prototype.setDebug = function(debug){
 /**
  * Set the api call deferment on or off - When it's on, mxn.invoke will queue up provider API calls until
  * runDeferred is called, at which time everything in the queue will be run in the order it was added. 
- * @param {Boolean} set deferred to true to turn on deferment
+ * @param {boolean} set deferred to true to turn on deferment
  */
 Mapstraction.prototype.setDefer = function(deferred){
 	this.loaded[this.api] = !deferred;
@@ -501,7 +519,7 @@ Mapstraction.prototype.moveendHandler = function(me) {
 
 /**
  * Add a listener for an event.
- * @param {String} type Event type to attach listener to
+ * @param {string} type Event type to attach listener to
  * @param {Function} func Callback function
  * @param {Object} caller Callback object
  */
@@ -524,7 +542,7 @@ Mapstraction.prototype.addEventListener = function() {
 
 /**
  * Call listeners for a particular event.
- * @param {String} sEventType Call listeners of this event type
+ * @param {string} sEventType Call listeners of this event type
  * @param {Object} oEventArgs Event args object to pass back to the callback
  */
 Mapstraction.prototype.callEventListeners = function(sEventType, oEventArgs) {
@@ -558,18 +576,23 @@ Mapstraction.prototype.callEventListeners = function(sEventType, oEventArgs) {
 
 
 /**
- * addControls adds controls to the map. You specify which controls to add in
- * the associative array that is the only argument.
- * addControls can be called multiple time, with different args, to dynamically change controls.
+ * <p><code>addControls</code> adds (or removes) controls to/from the map. You specify which controls to add in
+ * the object literal that is the only argument.<p>
+ * <p>To remove all controls from the map, call <code>addControls</code> with an empty object literal as the
+ * argument.<p>
+ * <p>Each time <code>addControls</code> is called, those controls present in the <code>args</code> object literal will
+ * be added; those that are not specified or as specified as false will be removed.</p>
  *
+ * <pre>
  * args = {
- *	 pan:	  true,
- *	 zoom:	 'large' || 'small',
- *	 overview: true,
- *	 scale:	true,
- *	 map_type: true,
+ *	 pan:		true,
+ *	 zoom:		'large' | 'small',
+ *	 overview:	true,
+ *	 scale:		true,
+ *	 map_type:	true,
  * }
- * @param {array} args Which controls to switch on
+ * </pre>
+ * @param {Array} args Which controls to switch on
  */
 Mapstraction.prototype.addControls = function( args ) {
 	this.addControlsArgs = args;
@@ -578,8 +601,8 @@ Mapstraction.prototype.addControls = function( args ) {
 
 /**
  * Adds a marker pin to the map
- * @param {Marker} marker The marker to add
- * @param {Boolean} old If true, doesn't add this marker to the markers array. Used by the "swap" method
+ * @param {mxn.Marker} marker The marker to add
+ * @param {boolean} old If true, doesn't add this marker to the markers array. Used by the "swap" method
  */
 Mapstraction.prototype.addMarker = function(marker, old) {
 	marker.mapstraction = this;
@@ -596,7 +619,7 @@ Mapstraction.prototype.addMarker = function(marker, old) {
 
 /**
  * addMarkerWithData will addData to the marker, then add it to the map
- * @param {Marker} marker The marker to add
+ * @param {mxn.Marker} marker The marker to add
  * @param {Object} data A data has to add
  */
 Mapstraction.prototype.addMarkerWithData = function(marker, data) {
@@ -615,14 +638,15 @@ Mapstraction.prototype.addPolylineWithData = function(polyline, data) {
 };
 
 /**
- * removeMarker removes a Marker from the map
- * @param {Marker} marker The marker to remove
+ * Removes a Marker from the map
+ * @param {mxn.Marker} marker The marker to remove
  */
 Mapstraction.prototype.removeMarker = function(marker) {	
 	var current_marker;
 	for(var i = 0; i < this.markers.length; i++){
 		current_marker = this.markers[i];
 		if(marker == current_marker) {
+			marker.closeBubble();
 			this.invoker.go('removeMarker', arguments);
 			marker.onmap = false;
 			this.markers.splice(i, 1);
@@ -633,7 +657,7 @@ Mapstraction.prototype.removeMarker = function(marker) {
 };
 
 /**
- * removeAllMarkers removes all the Markers on a map
+ * Removes all the Markers currently loaded on a map
  */
 Mapstraction.prototype.removeAllMarkers = function() {
 	var current_marker;
@@ -694,7 +718,7 @@ Mapstraction.prototype.declutterMarkers = function(opts) {
 			break;
 		default:
 			if(this.debug) {
-				alert(this.api + ' not supported by Mapstraction.declutterMarkers');
+				throw new Error(this.api + ' not supported by Mapstraction.declutterMarkers');
 			}
 	}
 };
@@ -702,7 +726,7 @@ Mapstraction.prototype.declutterMarkers = function(opts) {
 /**
  * Add a polyline to the map
  * @param {Polyline} polyline The Polyline to add to the map
- * @param {Boolean} old If true replaces an existing Polyline
+ * @param {boolean} old If true replaces an existing Polyline
  */
 Mapstraction.prototype.addPolyline = function(polyline, old) {
 	polyline.api = this.api;
@@ -749,43 +773,40 @@ Mapstraction.prototype.removeAllPolylines = function() {
 	}
 };
 
+var collectPoints = function(bMarkers, bPolylines, predicate) {
+	var points = [];
+	
+	if (bMarkers) {	
+		for (var i = 0; i < this.markers.length; i++) {
+			var mark = this.markers[i];
+			if (!predicate || predicate(mark)) {
+				points.push(mark.location);
+			}
+		}
+	}
+	
+	if (bPolylines) {
+		for(i = 0; i < this.polylines.length; i++) {
+			var poly = this.polylines[i];
+			if (!predicate || predicate(poly)) {
+				for (var j = 0; j < poly.points.length; j++) {
+					points.push(poly.points[j]);
+				}
+			}
+		}
+	}
+
+	return points;
+};
+
 /**
- * autoCenterAndZoom sets the center and zoom of the map to the smallest bounding box
- * containing all markers
+ * Sets the center and zoom of the map to the smallest bounding box
+ * containing all markers and polylines
  */
 Mapstraction.prototype.autoCenterAndZoom = function() {
-	var lat_max = -90;
-	var lat_min = 90;
-	var lon_max = -180;
-	var lon_min = 180;
-	var lat, lon;
-	var checkMinMax = function(){
-		if (lat > lat_max) {
-			lat_max = lat;
-		}
-		if (lat < lat_min) {
-			lat_min = lat;
-		}
-		if (lon > lon_max) {
-			lon_max = lon;
-		}
-		if (lon < lon_min) {
-			lon_min = lon;
-		}
-	};
-	for (var i = 0; i < this.markers.length; i++) {
-		lat = this.markers[i].location.lat;
-		lon = this.markers[i].location.lon;
-		checkMinMax();
-	}
-	for(i = 0; i < this.polylines.length; i++) {
-		for (var j = 0; j < this.polylines[i].points.length; j++) {
-			lat = this.polylines[i].points[j].lat;
-			lon = this.polylines[i].points[j].lon;
-			checkMinMax();
-		}
-	}
-	this.setBounds( new BoundingBox(lat_min, lon_min, lat_max, lon_max) );
+	var points = collectPoints.call(this, true, true);
+	
+	this.centerAndZoomOnPoints(points);
 };
 
 /**
@@ -794,9 +815,9 @@ Mapstraction.prototype.autoCenterAndZoom = function() {
  * This is useful if you don't want to have to add markers to the map
  */
 Mapstraction.prototype.centerAndZoomOnPoints = function(points) {
-	var bounds = new BoundingBox(points[0].lat,points[0].lon,points[0].lat,points[0].lon);
+	var bounds = new BoundingBox(90, 180, -90, -180);
 
-	for (var i=1, len = points.length ; i<len; i++) {
+	for (var i = 0, len = points.length; i < len; i++) {
 		bounds.extend(points[i]);
 	}
 
@@ -809,88 +830,43 @@ Mapstraction.prototype.centerAndZoomOnPoints = function(points) {
  * will only include markers and polylines with an attribute of "visible"
  */
 Mapstraction.prototype.visibleCenterAndZoom = function() {
-	var lat_max = -90;
-	var lat_min = 90;
-	var lon_max = -180;
-	var lon_min = 180;
-	var lat, lon;
-	var checkMinMax = function(){
-		if (lat > lat_max) {
-			lat_max = lat;
-		}
-		if (lat < lat_min) {
-			lat_min = lat;
-		}
-		if (lon > lon_max) {
-			lon_max = lon;
-		}
-		if (lon < lon_min) {
-			lon_min = lon;
-		}
+	var predicate = function(obj) {
+		return obj.getAttribute("visible");
 	};
-	for (var i=0; i<this.markers.length; i++) {
-		if (this.markers[i].getAttribute("visible")) {
-			lat = this.markers[i].location.lat;
-			lon = this.markers[i].location.lon;
-			checkMinMax();
-		}
-	}
-
-	for (i=0; i<this.polylines.length; i++){
-		if (this.polylines[i].getAttribute("visible")) {
-			for (j=0; j<this.polylines[i].points.length; j++) {
-				lat = this.polylines[i].points[j].lat;
-				lon = this.polylines[i].points[j].lon;
-				checkMinMax();
-			}
-		}
-	}
-
-	this.setBounds(new BoundingBox(lat_min, lon_min, lat_max, lon_max));
+	var points = collectPoints.call(this, true, true, predicate);
+	
+	this.centerAndZoomOnPoints(points);
 };
 
 /**
  * Automatically sets center and zoom level to show all polylines
- * Takes into account radious of polyline
- * @param {Int} radius
+ * @param {Number} padding Optional number of kilometers to pad around polyline
  */
-Mapstraction.prototype.polylineCenterAndZoom = function(radius) {
-	var lat_max = -90;
-	var lat_min = 90;
-	var lon_max = -180;
-	var lon_min = 180;
+Mapstraction.prototype.polylineCenterAndZoom = function(padding) {
+	padding = padding || 0;
+	
+	var points = collectPoints.call(this, false, true);
+	
+	if (padding > 0) {
+		var padPoints = [];
+		for (var i = 0; i < points.length; i++) {
+			var point = points[i];
+			
+			var kmInOneDegreeLat = point.latConv();
+			var kmInOneDegreeLon = point.lonConv();
+			
+			var latPad = padding / kmInOneDegreeLat;
+			var lonPad = padding / kmInOneDegreeLon;
 
-	for (var i=0; i < mapstraction.polylines.length; i++)
-	{
-		for (var j=0; j<mapstraction.polylines[i].points.length; j++)
-		{
-			lat = mapstraction.polylines[i].points[j].lat;
-			lon = mapstraction.polylines[i].points[j].lon;
-
-			latConv = lonConv = radius;
-
-			if (radius > 0)
-			{
-				latConv = (radius / mapstraction.polylines[i].points[j].latConv());
-				lonConv = (radius / mapstraction.polylines[i].points[j].lonConv());
-			}
-
-			if ((lat + latConv) > lat_max) {
-				lat_max = (lat + latConv);
-			}
-			if ((lat - latConv) < lat_min) {
-				lat_min = (lat - latConv);
-			}
-			if ((lon + lonConv) > lon_max) {
-				lon_max = (lon + lonConv);
-			}
-			if ((lon - lonConv) < lon_min) {
-				lon_min = (lon - lonConv);
-			}
+			var ne = new LatLonPoint(point.lat + latPad, point.lon + lonPad);
+			var sw = new LatLonPoint(point.lat - latPad, point.lon - lonPad);
+			
+			padPoints.push(ne, sw);			
 		}
+		points = points.concat(padPoints);
 	}
-
-	this.setBounds(new BoundingBox(lat_min, lon_min, lat_max, lon_max));
+	
+	this.centerAndZoomOnPoints(points);
 };
 
 /**
@@ -1008,15 +984,18 @@ Mapstraction.prototype.addJSON = function(json) {
 				break;
 			case "Polygon":
 				var points = [];
+				for (var j = 0; j < item.geometry.coordinates[0].length; j++) {
+					points.push(new LatLonPoint(item.geometry.coordinates[0][j][1], item.geometry.coordinates[0][j][0]));
+				}
 				polyline = new Polyline(points);
-				mapstraction.addPolylineWithData(polyline,{
+				this.addPolylineWithData(polyline,{
 					fillColor : item.poly_color,
 					date : "new Date(\""+item.date+"\")",
 					category : item.source_id,
 					width : item.line_width,
 					opacity : item.line_opacity,
 					color : item.line_color,
-					polygon : true
+					closed : points[points.length-1].equals(points[0]) //first point = last point in the polygon so its closed
 				});
 				markers.push(polyline);
 				break;
@@ -1028,34 +1007,44 @@ Mapstraction.prototype.addJSON = function(json) {
 };
 
 /**
- * Adds a Tile Layer to the map
+ * <p>Adds a Tile Layer to the map.</p>
+ * 
+ * <p>Requires providing a templated tile URL. Use <code>{S}</code>, <code>{Z}</code>, <code>{X}</code>, and <code>{Y}</code> to specify where the parameters
+ * should go in the URL. <code>{S}</code> is the (optional) subdomain to be used in the URL. <code>{Z}</code> is the zoom level.
+ * <code>{X}</code> and <code>{Y}</code> are the longitude and latitude of the tile.</p>
  *
- * Requires providing a parameterized tile url. Use {Z}, {X}, and {Y} to specify where the parameters
- *  should go in the URL.
+ * <p>Sample templated tile URLs are :-</p>
  *
- * For example, the OpenStreetMap tiles are:
- *  m.addTileLayer("http://tile.openstreetmap.org/{Z}/{X}/{Y}.png", 1.0, "OSM", 1, 19, true);
+ * <ul>
+ * <li>OpenStreetMap - <code>http://{S}.tile.openstreetmap.org/{Z}/{X}/{Y}.png</code></li>
+ * <li>Stamen Toner - <code>http://tile.stamen.com/toner/{Z}/{X}/{Y}.png</code></li>
+ * <li>MapQuest OSM - <code>http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg</code></li>
+ * <li>MapQuest Open Aerial - <code>http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg</code></li>
+ * </ul>
  *
- * @param {tile_url} template url of the tiles.
- * @param {opacity} opacity of the tile layer - 0 is transparent, 1 is opaque. (default=0.6)
- * @param {copyright_text} copyright text to use for the tile layer. (default=Mapstraction)
- * @param {min_zoom} Minimum (furtherest out) zoom level that tiles are available (default=1)
- * @param {max_zoom} Maximum (closest) zoom level that the tiles are available (default=18)
- * @param {map_type} Should the tile layer be a selectable map type in the layers palette (default=false)
+ * @param {string} tile_url Template URL of the tiles.
+ * @param {number} opacity Opacity of the tile layer - 0 is transparent, 1 is opaque. (default=0.6)
+ * @param {string} label The label to be used for the tile layer in the Map Type control
+ * @param {string} attribution The attribution and/or copyright text to use for the tile layer
+ * @param {Int} min_zoom Minimum (furthest out) zoom level that tiles are available (default=1)
+ * @param {Int} max_zoom Maximum (closest in) zoom level that the tiles are available (default=18)
+ * @param {boolean} map_type Should the tile layer be a selectable map type in the layers palette (default=false)
+ * @param {String|Array} subdomains List of subdomains that the tile server in <code>tile_url</code> refers to. Can be specified as a string "abc" or as an array [1, 2, 3]
+ * @return {Object} The tile layer object
  */
-Mapstraction.prototype.addTileLayer = function(tile_url, opacity, copyright_text, min_zoom, max_zoom, map_type) {
+Mapstraction.prototype.addTileLayer = function(tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains) {
 	if(!tile_url) {
 		return;
 	}
 	
-	this.tileLayers = this.tileLayers || [];	
 	opacity = opacity || 0.6;
-	copyright_text = copyright_text || "Mapstraction";
+	label = label || "Mapstraction";
+	attribution = attribution || "Mapstraction";
 	min_zoom = min_zoom || 1;
 	max_zoom = max_zoom || 18;
 	map_type = map_type || false;
 
-	return this.invoker.go('addTileLayer', [ tile_url, opacity, copyright_text, min_zoom, max_zoom, map_type] );
+	return this.invoker.go('addTileLayer', [ tile_url, opacity, label, attribution, min_zoom, max_zoom, map_type, subdomains] );
 };
 
 /**
@@ -1201,6 +1190,13 @@ Mapstraction.prototype.applyFilter = function(o, f) {
 				vis = false;
 			}
 			break;
+		case 'in':
+			if ( typeof(o.getAttribute( f[0] )) == 'undefined' ) {
+				vis = false;
+			} else if (o.getAttribute( f[0] ).indexOf( f[2] ) == -1 ) {
+				vis = false;
+			}
+			break;
 	}
 
 	return vis;
@@ -1209,7 +1205,7 @@ Mapstraction.prototype.applyFilter = function(o, f) {
 /**
  * getAttributeExtremes returns the minimum/maximum of "field" from all markers
  * @param {field} name of "field" to query
- * @returns {array} of minimum/maximum
+ * @returns {Array} of minimum/maximum
  */
 Mapstraction.prototype.getAttributeExtremes = function(field) {
 	var min;
@@ -1251,58 +1247,62 @@ Mapstraction.prototype.getMap = function() {
 /////////////////////////////
 
 /**
- * LatLonPoint is a point containing a latitude and longitude with helper methods
+ * Defines a coordinate point, expressed as a latitude and longitude.
  * @name mxn.LatLonPoint
  * @constructor
- * @param {double} lat is the latitude
- * @param {double} lon is the longitude
+ * @param {number} lat The point's latitude
+ * @param {number} lon The point's longitude
  * @exports LatLonPoint as mxn.LatLonPoint
  */
-var LatLonPoint = mxn.LatLonPoint = function(lat, lon) {
-	// TODO error if undefined?
-	//  if (lat == undefined) alert('undefined lat');
-	//  if (lon == undefined) alert('undefined lon');
-	this.lat = lat;
-	this.lon = lon;
-	this.lng = lon; // lets be lon/lng agnostic
+var LatLonPoint = mxn.LatLonPoint = function(lat, lon) {	
+	this.lat = Number(lat); // force to be numeric
+	this.lon = Number(lon);
+	this.lng = this.lon; // lets be lon/lng agnostic
 	
 	this.invoker = new mxn.Invoker(this, 'LatLonPoint');		
 };
 
 mxn.addProxyMethods(LatLonPoint, [ 
 	/**
-	 * Retrieve the lat and lon values from a proprietary point.
+	 * Extract the lat and lon values from a proprietary point.
 	 * @name mxn.LatLonPoint#fromProprietary
 	 * @function
-	 * @param {String} apiId The API ID of the proprietary point.
+	 * @param {string} api The API ID of the proprietary point.
 	 * @param {Object} point The proprietary point.
 	 */
 	'fromProprietary',
 	
 	/**
-	 * Converts the current LatLonPoint to a proprietary one for the API specified by apiId.
+	 * Converts the current LatLonPoint to a proprietary one for the API specified by <code>api</code>.
 	 * @name mxn.LatLonPoint#toProprietary
 	 * @function
-	 * @param {String} apiId The API ID of the proprietary point.
+	 * @param {string} api The API ID of the proprietary point.
 	 * @returns A proprietary point.
 	 */
 	'toProprietary'
 ], true);
 
 /**
- * toString returns a string represntation of a point
- * @returns a string like '51.23, -0.123'
- * @type String
+ * Returns a string representation of a point
+ * @name mxn.LatLonPoint#toString
+ * @param {Number} places Optional number of decimal places to display for the lat and long
+ * @returns A string like '51.23, -0.123'
+ * @type {string}
  */
-LatLonPoint.prototype.toString = function() {
-	return this.lat + ', ' + this.lon;
+LatLonPoint.prototype.toString = function(places) {
+	if (typeof places !== 'undefined') {
+		return this.lat.toFixed(places) + ', ' + this.lon.toFixed(places);
+	}
+	else {
+		return this.lat + ', ' + this.lon;
+	}
 };
 
 /**
- * distance returns the distance in kilometers between two points
- * @param {LatLonPoint} otherPoint The other point to measure the distance from to this one
- * @returns the distance between the points in kilometers
- * @type double
+ * Returns the distance in kilometers between two <code>mxn.LatLonPoint</code> objects.
+ * @param {mxn.LatLonPoint} otherPoint The other point to measure the distance from to this one
+ * @returns The distance between the points in kilometers
+ * @type {number}
  */
 LatLonPoint.prototype.distance = function(otherPoint) {
 	// Uses Haversine formula from http://www.movable-type.co.uk
@@ -1316,26 +1316,26 @@ LatLonPoint.prototype.distance = function(otherPoint) {
 };
 
 /**
- * equals tests if this point is the same as some other one
- * @param {LatLonPoint} otherPoint The other point to test with
+ * Tests if this <code>mxn.LatLonPoint</code> is equal to another point by precisely comparing the latitude and longitude values.
+ * @param {mxn.LatLonPoint} otherPoint The other point to test with
  * @returns true or false
- * @type boolean
+ * @type {boolean}
  */
 LatLonPoint.prototype.equals = function(otherPoint) {
 	return this.lat == otherPoint.lat && this.lon == otherPoint.lon;
 };
 
 /**
- * Returns latitude conversion based on current projection
- * @returns {Float} conversion
+ * Returns the latitude conversion based on the map's current projection
+ * @returns {number} conversion
  */
 LatLonPoint.prototype.latConv = function() {
 	return this.distance(new LatLonPoint(this.lat + 0.1, this.lon))*10;
 };
 
 /**
- * Returns longitude conversion based on current projection
- * @returns {Float} conversion
+ * Returns the longitude conversion based on the map's current projection
+ * @returns {number} conversion
  */
 LatLonPoint.prototype.lonConv = function() {
 	return this.distance(new LatLonPoint(this.lat, this.lon + 0.1))*10;
@@ -1349,85 +1349,155 @@ LatLonPoint.prototype.lonConv = function() {
 //////////////////////////
 
 /**
- * BoundingBox creates a new bounding box object
+ * Defines a bounding box, expressed as a rectangle by coordinates for the south west and north east corners.
  * @name mxn.BoundingBox
  * @constructor
- * @param {double} swlat the latitude of the south-west point
- * @param {double} swlon the longitude of the south-west point
- * @param {double} nelat the latitude of the north-east point
- * @param {double} nelon the longitude of the north-east point
+ * @param {number} swlat The latitude of the south-west point
+ * @param {number} swlon The longitude of the south-west point
+ * @param {number} nelat The latitude of the north-east point
+ * @param {number} nelon The longitude of the north-east point
  * @exports BoundingBox as mxn.BoundingBox
  */
 var BoundingBox = mxn.BoundingBox = function(swlat, swlon, nelat, nelon) {
 	//FIXME throw error if box bigger than world
-	//alert('new bbox ' + swlat + ',' +  swlon + ',' +  nelat + ',' + nelon);
 	this.sw = new LatLonPoint(swlat, swlon);
 	this.ne = new LatLonPoint(nelat, nelon);
+	this.se = new LatLonPoint(swlat, nelon);
+	this.nw = new LatLonPoint(nelat, swlon);
 };
 
 /**
- * getSouthWest returns a LatLonPoint of the south-west point of the bounding box
- * @returns the south-west point of the bounding box
- * @type LatLonPoint
+ * Returns the <code>mxn.LatLonPoint</code> of the south-west point of the bounding box
+ * @returns The south-west point of the bounding box
+ * @type {mxn.LatLonPoint}
  */
 BoundingBox.prototype.getSouthWest = function() {
 	return this.sw;
 };
 
 /**
- * getNorthEast returns a LatLonPoint of the north-east point of the bounding box
- * @returns the north-east point of the bounding box
- * @type LatLonPoint
+ * Returns the <code>mxn.LatLonPoint</code> of the south-east point of the bounding box
+ * @returns The south-east point of the bounding box
+ * @type {mxn.LatLonPoint}
+ */
+BoundingBox.prototype.getSouthEast = function() {
+	return this.se;
+};
+
+/**
+ * Returns the <code>mxn.LatLonPoint</code> of the north-west point of the bounding box
+ * @returns The north-west point of the bounding box
+ * @type {mxn.LatLonPoint}
+ */
+BoundingBox.prototype.getNorthWest = function() {
+	return this.nw;
+};
+
+/**
+ * Returns the <code>mxn.LatLonPoint</code> of the north-east point of the bounding box
+ * @returns The north-east point of the bounding box
+ * @type {mxn.LatLonPoint}
  */
 BoundingBox.prototype.getNorthEast = function() {
 	return this.ne;
 };
 
 /**
- * isEmpty finds if this bounding box has zero area
- * @returns whether the north-east and south-west points of the bounding box are the same point
- * @type boolean
+ * Determines if this <code>mxn.BoundingBox</code> has a zero area
+ * @returns Whether the north-east and south-west points of the bounding box are the same point
+ * @type {boolean}
  */
 BoundingBox.prototype.isEmpty = function() {
 	return this.ne == this.sw; // is this right? FIXME
 };
 
 /**
- * contains finds whether a given point is within a bounding box
- * @param {LatLonPoint} point the point to test with
- * @returns whether point is within this bounding box
- * @type boolean
+ * Determines whether a given <code>mxn.LatLonPoint</code> is within an <code>mxn.BoundingBox</code>
+ * @param {mxn.LatLonPoint} point the point to test with
+ * @returns Whether point is within this bounding box
+ * @type {boolean}
  */
-BoundingBox.prototype.contains = function(point){
-	return point.lat >= this.sw.lat && point.lat <= this.ne.lat && point.lon >= this.sw.lon && point.lon <= this.ne.lon;
+BoundingBox.prototype.contains = function(point) {
+	return point.lat >= this.sw.lat && point.lat <= this.ne.lat &&
+		((this.sw.lon <= this.ne.lon && point.lon >= this.sw.lon && point.lon <= this.ne.lon) ||
+			(this.sw.lon > this.ne.lon && (point.lon >= this.sw.lon || point.lon <= this.ne.lon)));
 };
 
 /**
- * toSpan returns a LatLonPoint with the lat and lon as the height and width of the bounding box
- * @returns a LatLonPoint containing the height and width of this bounding box
- * @type LatLonPoint
+ * Returns an <code>mxn.LatLonPoint</code> with the lat and lon as the height and width of the <code>mxn.BoundingBox</code>
+ * @returns A <code>mxn.LatLonPoint</code> containing the height and width of this the <code>mxn.BoundingBox</code>
+ * @type {mxn.LatLonPoint}
  */
 BoundingBox.prototype.toSpan = function() {
 	return new LatLonPoint( Math.abs(this.sw.lat - this.ne.lat), Math.abs(this.sw.lon - this.ne.lon) );
 };
 
+
 /**
- * extend extends the bounding box to include the new point
+ * Returns a string representation of an <code>mxn.BoundingBox</code>
+ * @param {Number} [places] Optional number of decimal places to display for each lat and long
+ * @returns A string like <code>SW: 52.62647572585443, 41.90677719368304, NE: 55.21343254471387, 56.01322251932069</code>
+ * @type {string}
+ */
+BoundingBox.prototype.toString = function(places) {
+	var sw;
+	var ne;
+	
+	if (typeof places !== 'undefined') {
+		sw = this.sw.toString(places);
+		ne = this.ne.toString(places);
+	}
+	else {
+
+		sw = this.sw;
+		ne = this.ne;
+	}
+
+	return 'SW: ' + sw +  ', NE: ' + ne;
+};
+
+/**
+ * Extends the <code>mxn.BoundingBox</code> to include the new the <code>mxn.LatLonPoint</code>
+ * @param {mxn.LatLonPoint} point The <code>mxn.LatLonPoint</code> around which the <code>mxn.BoundingBox</code> should be extended
  */
 BoundingBox.prototype.extend = function(point) {
-	if(this.sw.lat > point.lat) {
+	var extended = false;
+	if (this.sw.lat > point.lat) {
 		this.sw.lat = point.lat;
+		extended = true;
 	}
-	if(this.sw.lon > point.lon) {
+	if (this.sw.lon > point.lon) {
 		this.sw.lon = point.lon;
+		extended = true;
 	}
-	if(this.ne.lat < point.lat) {
+	if (this.ne.lat < point.lat) {
 		this.ne.lat = point.lat;
+		extended = true;
 	}
-	if(this.ne.lon < point.lon) {
+	if (this.ne.lon < point.lon) {
 		this.ne.lon = point.lon;
+		extended = true;
+	}
+	
+	if (extended) {
+		this.se = new LatLonPoint(this.sw.lat, this.ne.lon);
+		this.nw = new LatLonPoint(this.ne.lat, this.sw.lon);
 	}
 	return;
+};
+
+/**
+ * Determines whether a given <code>mxn.BoundingBox</code> intersects another <code>mxn.BoundingBox</code>
+ * @param {mxn.BoundingBox} other The <code>mxn.BoundingBox</code> to test against
+ * @returns Whether the current <code>mxn.BoundingBox</code> overlaps the other
+ * @type {boolean}
+ */
+BoundingBox.prototype.intersects = function(other) {
+	return this.sw.lat <= other.ne.lat && this.ne.lat >= other.sw.lat &&
+		((this.sw.lon <= this.ne.lon && other.sw.lon <= other.ne.lon && this.sw.lon <= other.ne.lon && this.ne.lon >= other.sw.lon) ||
+			(this.sw.lon > this.ne.lon && other.sw.lon > other.ne.lon) ||
+			(this.sw.lon > this.ne.lon && other.sw.lon <= other.ne.lon && (this.sw.lon <= other.ne.lon || this.ne.lon >= other.sw.lon)) ||
+			(this.sw.lon <= this.ne.lon && other.sw.lon > other.ne.lon && (this.ne.lon >= other.sw.lon || this.sw.lon <= other.ne.lon)));
 };
 
 //////////////////////////////
@@ -1437,10 +1507,10 @@ BoundingBox.prototype.extend = function(point) {
 ///////////////////////////////
 
 /**
- * Marker create's a new marker pin
+ * Creates a Mapstraction map marker capable of showing an optional <code>infoBubble</code> pop-up.
  * @name mxn.Marker
  * @constructor
- * @param {LatLonPoint} point the point on the map where the marker should go
+ * @param {mxn.LatLonPoint} point The point specifying where on the map the <code>mxn.Marker</code> should be positioned.
  * @exports Marker as mxn.Marker
  */
 var Marker = mxn.Marker = function(point) {
@@ -1462,7 +1532,7 @@ mxn.addProxyMethods(Marker, [
 	 * Retrieve the settings from a proprietary marker.
 	 * @name mxn.Marker#fromProprietary
 	 * @function
-	 * @param {String} apiId The API ID of the proprietary point.
+	 * @param {string} api The API ID of the proprietary point.
 	 * @param {Object} marker The proprietary marker.
 	 */
 	'fromProprietary',
@@ -1475,14 +1545,14 @@ mxn.addProxyMethods(Marker, [
 	'hide',
 	
 	/**
-	 * Open the marker's info bubble.
+	 * Open the marker's <code>infoBubble</code> pop-up
 	 * @name mxn.Marker#openBubble
 	 * @function
 	 */
 	'openBubble',
 	
 	/**
-	 * Closes the marker's info bubble.
+	 * Closes the marker's <code>infoBubble</code> pop-up
 	 * @name mxn.Marker#closeBubble
 	 * @function
 	 */
@@ -1496,11 +1566,11 @@ mxn.addProxyMethods(Marker, [
 	'show',
 	
 	/**
-	 * Converts the current Marker to a proprietary one for the API specified by apiId.
+	 * Converts the current Marker to a proprietary one for the API specified by <code>api</code>.
 	 * @name mxn.Marker#toProprietary
 	 * @function
-	 * @param {String} apiId The API ID of the proprietary marker.
-	 * @returns A proprietary marker.
+	 * @param {string} api The API ID of the proprietary marker.
+	 * @returns {Object} A proprietary marker.
 	 */
 	'toProprietary',
 	
@@ -1512,19 +1582,54 @@ mxn.addProxyMethods(Marker, [
 	'update'
 ]);
 
-Marker.prototype.setChild = function(some_proprietary_marker) {
-	this.proprietary_marker = some_proprietary_marker;
-	some_proprietary_marker.mapstraction_marker = this;
+/**
+ * Sets a proprietary marker as a child of the current <code>mxn.Marker</code>.
+ * @name mxn.Marker#setChild
+ * @function
+ * @param {Object} childMarker The proprietary marker's object
+ */
+Marker.prototype.setChild = function(childMarker) {
+	this.proprietary_marker = childMarker;
+	childMarker.mapstraction_marker = this;
 	this.onmap = true;
 };
 
+/**
+ * Sets the label text of the current <code>mxn.Marker</code>. The label is used in some maps
+ * API implementation as the text to be displayed when the mouse pointer hovers over the marker.
+ * @name mxn.Marker#setLabel
+ * @function
+ * @param {string} labelText The text to be used for the label
+ */
 Marker.prototype.setLabel = function(labelText) {
 	this.labelText = labelText;
 };
 
 /**
- * addData conviniently set a hash of options on a marker
- * @param {Object} options An object literal hash of key value pairs. Keys are: label, infoBubble, icon, iconShadow, infoDiv, draggable, hover, hoverIcon, openBubble, groupName.
+ * Sets the properties of a marker via an object literal, which contains the following
+ * property name/value pairs:
+ *
+ * <pre>
+ * options = {
+ *	label: 'marker label; see <code>mxn.Marker.setLabel()</code>',
+ *	infoBubble: 'infoBubble text or HTML, see <code>mxn.Marker.setInfoBubble()</code>',
+ *	icon: 'icon image URL, see <code>mxn.Marker.setIcon()</code>',
+ *	iconSize: 'icon image size, see <code>mxn.Marker.setIcon()</code>',
+ *	iconAnchor: 'icon image anchor, see <code>mxn.Marker.setIcon()</code>',
+ *	iconShadow: 'icon shadow image URL, see <code>mxn.Marker.setShadowIcon()</code>',
+ *	iconShadowSize: 'icon shadow size, see <code>mxn.Marker.setShadowIcon()</code>',
+ *	infoDiv: 'informational div, see <code>mxn.Marker.setInfoDiv()</code>',
+ *	draggable: 'draggable state, see <code>mxn.Marker.setDraggable()</code>',
+ *	hover: 'hover text, see <code>mxn.Marker.setHover()</code>',
+ *	hoverIcon: 'hover icon URL, see <code>mxn.Marker.setHoverIcon()</code>',
+ *	openBubble: 'if specified, calls <code>mxn.Marker.openBubble()</code>',
+ *	closeBubble: 'if specified, calls <code>mxn.Marker.closeBubble()</code>',
+ *	groupName: 'marker group name, see <code>mxn.Marker.setGroupName()</code>'
+ * };
+ * </pre>
+ *
+ * <p>Any other literal name value pairs are added to the marker's list of properties.</p>
+ * @param {Object} options An object literal of property name/value pairs.
  */
 Marker.prototype.addData = function(options){
 	for(var sOptKey in options) {
@@ -1563,7 +1668,6 @@ Marker.prototype.addData = function(options){
 					break;
 				case 'hover':
 					this.setHover(options.hover);
-					this.setHoverIcon(options.hoverIcon);
 					break;
 				case 'hoverIcon':
 					this.setHoverIcon(options.hoverIcon);
@@ -1588,27 +1692,28 @@ Marker.prototype.addData = function(options){
 };
 
 /**
- * Sets the html/text content for a bubble popup for a marker
- * @param {String} infoBubble the html/text you want displayed
+ * Sets the HTML or text content for the marker's <code>InfoBubble</code> pop-up.
+ * @param {string} infoBubble The HTML or plain text to be displayed
  */
 Marker.prototype.setInfoBubble = function(infoBubble) {
 	this.infoBubble = infoBubble;
 };
 
 /**
- * Sets the text and the id of the div element where to the information
- * useful for putting information in a div outside of the map
- * @param {String} infoDiv the html/text you want displayed
- * @param {String} div the element id to use for displaying the text/html
+ * Sets the text content and the id of the <code>DIV</code> element to display additional
+ * information associated with the marker; useful for putting information in a <code>DIV</code>
+ * outside of the map
+ * @param {string} infoDiv The HMTML or text content to be displayed
+ * @param {string} div The element id to use for displaying the HTML or text content
  */
-Marker.prototype.setInfoDiv = function(infoDiv,div){
+Marker.prototype.setInfoDiv = function(infoDiv, div){
 	this.infoDiv = infoDiv;
 	this.div = div;
 };
 
 /**
  * Sets the icon for a marker
- * @param {String} iconUrl The URL of the image you want to be the icon
+ * @param {string} iconUrl The URL of the image you want to be the icon
  */
 Marker.prototype.setIcon = function(iconUrl, iconSize, iconAnchor) {
 	this.iconUrl = iconUrl;
@@ -1622,9 +1727,9 @@ Marker.prototype.setIcon = function(iconUrl, iconSize, iconAnchor) {
 
 /**
  * Sets the size of the icon for a marker
- * @param {Array} iconSize The array size in pixels of the marker image: [ width, height ]
+ * @param {Array} iconSize The array size in pixels of the marker image: <code>[width, height]</code>
  */
-Marker.prototype.setIconSize = function(iconSize){
+Marker.prototype.setIconSize = function(iconSize) {
 	if(iconSize) {
 		this.iconSize = iconSize;
 	}
@@ -1632,7 +1737,7 @@ Marker.prototype.setIconSize = function(iconSize){
 
 /**
  * Sets the anchor point for a marker
- * @param {Array} iconAnchor The array offset in pixels of the anchor point from top left: [ right, down ]
+ * @param {Array} iconAnchor The array offset in pixels of the anchor point from top left: <code>[right, down]</code>
  */
 Marker.prototype.setIconAnchor = function(iconAnchor){
 	if(iconAnchor) {
@@ -1642,7 +1747,7 @@ Marker.prototype.setIconAnchor = function(iconAnchor){
 
 /**
  * Sets the icon for a marker
- * @param {String} iconUrl The URL of the image you want to be the icon
+ * @param {string} iconUrl The URL of the image you want to be the icon
  */
 Marker.prototype.setShadowIcon = function(iconShadowUrl, iconShadowSize){
 	this.iconShadowUrl = iconShadowUrl;
@@ -1651,46 +1756,52 @@ Marker.prototype.setShadowIcon = function(iconShadowUrl, iconShadowSize){
 	}
 };
 
+/**
+ * Sets the icon to be used on hover
+ * @param {strong} hoverIconUrl The URL of the image to be used
+ */
 Marker.prototype.setHoverIcon = function(hoverIconUrl){
 	this.hoverIconUrl = hoverIconUrl;
 };
 
 /**
  * Sets the draggable state of the marker
- * @param {Bool} draggable set to true if marker should be draggable by the user
+ * @param {boolean} draggable Set to <code>true</code> if the marker should be draggable by the user
  */
 Marker.prototype.setDraggable = function(draggable) {
 	this.draggable = draggable;
 };
 
 /**
- * Sets that the marker info is displayed on hover
- * @param {Boolean} hover set to true if marker should display info on hover
+ * Sets that the marker label is to be displayed on hover
+ * @param {boolean} hover Set to <code>true</code> if the marker should display the label on hover
  */
 Marker.prototype.setHover = function(hover) {
 	this.hover = hover;
 };
 
 /**
- * Markers are grouped up by this name. declutterGroup makes use of this.
+ * Add this marker to a named group; used in decluttering a group of markers.
+ * @param {string} groupName Name of the marker's group
+ * @see mxn.Mapstraction.declutterGroup
  */
-Marker.prototype.setGroupName = function(sGrpName) {
-	this.groupName = sGrpName;
+Marker.prototype.setGroupName = function(groupName) {
+	this.groupName = groupName;
 };
 
 /**
- * Set an arbitrary key/value pair on a marker
- * @param {String} key
- * @param value
+ * Set an arbitrary property name and value on a marker
+ * @param {string} key The property key name
+ * @param {string} value The property value to be associated with the key
  */
 Marker.prototype.setAttribute = function(key,value) {
 	this.attributes[key] = value;
 };
 
 /**
- * getAttribute: gets the value of "key"
- * @param {String} key
- * @returns value
+ * Gets the value of a marker's property
+ * @param {string} key The key whose value is to be returned
+ * @returns {string} The value associated with the key
  */
 Marker.prototype.getAttribute = function(key) {
 	return this.attributes[key];
@@ -1702,10 +1813,10 @@ Marker.prototype.getAttribute = function(key) {
 ///////////////
 
 /**
- * Instantiates a new Polyline.
+ * Creates a Mapstraction Polyline; either an open-ended polyline or an enclosed polygon.
  * @name mxn.Polyline
  * @constructor
- * @param {Point[]} points Points that make up the Polyline.
+ * @param {Array} points Array of <code>mxn.LatLonPoint</code> that make up the Polyline.
  * @exports Polyline as mxn.Polyline
  */
 var Polyline = mxn.Polyline = function(points) {
@@ -1716,6 +1827,11 @@ var Polyline = mxn.Polyline = function(points) {
 	this.proprietary_polyline = false;
 	this.pllID = "mspll-"+new Date().getTime()+'-'+(Math.floor(Math.random()*Math.pow(2,16)));
 	this.invoker = new mxn.Invoker(this, 'Polyline', function(){return this.api;});
+	this.color = "#000000";
+	this.width = 3;
+	this.opacity = 0.5;
+	this.closed = false;
+	this.fillColor = "#808080";
 };
 
 mxn.addProxyMethods(Polyline, [ 
@@ -1724,7 +1840,7 @@ mxn.addProxyMethods(Polyline, [
 	 * Retrieve the settings from a proprietary polyline.
 	 * @name mxn.Polyline#fromProprietary
 	 * @function
-	 * @param {String} apiId The API ID of the proprietary polyline.
+	 * @param {string} api The API ID of the proprietary polyline.
 	 * @param {Object} polyline The proprietary polyline.
 	 */
 	'fromProprietary', 
@@ -1744,11 +1860,11 @@ mxn.addProxyMethods(Polyline, [
 	'show',
 	
 	/**
-	 * Converts the current Polyline to a proprietary one for the API specified by apiId.
+	 * Converts the current Polyline to a proprietary one for the API specified by <code>api</code>.
 	 * @name mxn.Polyline#toProprietary
 	 * @function
-	 * @param {String} apiId The API ID of the proprietary polyline.
-	 * @returns A proprietary polyline.
+	 * @param {string} api The API ID of the proprietary polyline.
+	 * @returns {Object} A proprietary polyline.
 	 */
 	'toProprietary',
 	
@@ -1761,8 +1877,21 @@ mxn.addProxyMethods(Polyline, [
 ]);
 
 /**
- * addData conviniently set a hash of options on a polyline
- * @param {Object} options An object literal hash of key value pairs. Keys are: color, width, opacity, closed, fillColor.
+ * <p>Sets the properties of a polyline via an object literal, which contains the following
+ * property name/value pairs:</p>
+ *
+ * <pre>
+ * options = {
+ *	color: 'line color; see <code>mxn.Polyline.setColor()</code>',
+ *	width: 'line stroke width; see <code>mxn.Polyline.setWidth()</code>',
+ *	opacity: 'polyline opacity; see <code>mxn.Polyline.setOpacity()</code>',
+ *	closed: 'polyline or polygon; see <code>mxn.Polyline.setClosed()</code>',
+ *	fillColor: 'fill color; see <code>mxn.Polyline.seFillColor()</code>',
+ * };
+ * </pre>
+ *
+ * <p>Any other literal name value pairs are added to the marker's list of properties.</p>
+ * @param {Object} options An object literal of property name/value pairs.
  */
 Polyline.prototype.addData = function(options){
 	for(var sOpt in options) {
@@ -1791,30 +1920,34 @@ Polyline.prototype.addData = function(options){
 	}
 };
 
-Polyline.prototype.setChild = function(some_proprietary_polyline) {
-	this.proprietary_polyline = some_proprietary_polyline;
+/**
+ * Sets a proprietary polyline as a child of the current <code>mxn.Polyline</code>.
+ * @param {Object} childPolyline The proprietary polyline's object
+ */
+Polyline.prototype.setChild = function(childPolyline) {
+	this.proprietary_polyline = childPolyline;
 	this.onmap = true;
 };
 
 /**
- * in the form: #RRGGBB
- * Note map24 insists on upper case, so we convert it.
+ * Sets the line color for the polyline.
+ * @param {string} color RGB color expressed in the form <code>#RRGGBB</code>
  */
 Polyline.prototype.setColor = function(color){
 	this.color = (color.length==7 && color[0]=="#") ? color.toUpperCase() : color;
 };
 
 /**
- * Stroke width of the polyline
- * @param {Integer} width
+ * Sets the line stroke width of the polyline
+ * @param {number} width Line stroke width in pixels.
  */
 Polyline.prototype.setWidth = function(width){
 	this.width = width;
 };
 
 /**
- * A float between 0.0 and 1.0
- * @param {Float} opacity
+ * Sets the polyline opacity.
+ * @param {number} opacity A number between <code>0.0</code> (transparent) and <code>1.0</code> (opaque)
  */
 Polyline.prototype.setOpacity = function(opacity){
 	this.opacity = opacity;
@@ -1822,34 +1955,34 @@ Polyline.prototype.setOpacity = function(opacity){
 
 /**
  * Marks the polyline as a closed polygon
- * @param {Boolean} bClosed
+ * @param {boolean} closed Specify as <code>true</code> to mark the polyline as an enclosed polygon
  */
-Polyline.prototype.setClosed = function(bClosed){
-	this.closed = bClosed;
+Polyline.prototype.setClosed = function(closed){
+	this.closed = closed;
 };
 
 /**
- * Fill color for a closed polyline as HTML color value e.g. #RRGGBB
- * @param {String} sFillColor HTML color value #RRGGBB
+ * Sets the fill color for a closed polyline.
+ * @param {string} color RGB color expressed in the form <code>#RRGGBB</code>
  */
-Polyline.prototype.setFillColor = function(sFillColor) {
-	this.fillColor = sFillColor;
+Polyline.prototype.setFillColor = function(fillColor) {
+	this.fillColor = fillColor;
 };
 
 
 /**
- * Set an arbitrary key/value pair on a polyline
- * @param {String} key
- * @param value
+ * Set an arbitrary property name and value on a polyline
+ * @param {string} key The property key name
+ * @param {string} value The property value to be associated with the key
  */
-Polyline.prototype.setAttribute = function(key,value) {
+Polyline.prototype.setAttribute = function(key, value) {
 	this.attributes[key] = value;
 };
 
 /**
- * Gets the value of "key"
- * @param {String} key
- * @returns value
+ * Gets the value of a polyline's property
+ * @param {string} key The key whose value is to be returned
+ * @returns {string} The value associated with the key
  */
 Polyline.prototype.getAttribute = function(key) {
 	return this.attributes[key];
@@ -1857,7 +1990,7 @@ Polyline.prototype.getAttribute = function(key) {
 
 /**
  * Simplifies a polyline, averaging and reducing the points
- * @param {Number} tolerance (1.0 is a good starting point)
+ * @param {number} tolerance The simplification tolerance; 1.0 is a good starting point
  */
 Polyline.prototype.simplify = function(tolerance) {
 	var reduced = [];
@@ -1887,11 +2020,12 @@ Polyline.prototype.simplify = function(tolerance) {
 ///////////////
 
 /**
- * Creates a new radius object for drawing circles around a point, does a lot of initial calculation to increase load time
+ * Creates a Mapstraction Radius for drawing circles around a given point. Note that creating
+ * a radius performs a lot of initial calculation which can lead to increased page load times.
  * @name mxn.Radius
  * @constructor
- * @param {LatLonPoint} center LatLonPoint of the radius
- * @param {Number} quality Number of points that comprise the approximated circle (20 is a good starting point)
+ * @param {mxn.LatLonPoint} center Central <code>mxn.LatLonPoint</code> of the radius
+ * @param {number} quality Number of points that comprise the approximated circle (20 is a good starting point)
  * @exports Radius as mxn.Radius
  */
 var Radius = mxn.Radius = function(center, quality) {
@@ -1909,10 +2043,10 @@ var Radius = mxn.Radius = function(center, quality) {
 };
 
 /**
- * Returns polyline of a circle around the point based on new radius
- * @param {Radius} radius
- * @param {Color} color
- * @returns {Polyline} Polyline
+ * Returns the <code>mxn.Polyline</code> of a circle around the point based on a new radius value.
+ * @param {number} radius The new radius value
+ * @param {string} color RGB fill color expressed in the form <code>#RRGGBB</code>
+ * @returns {Polyline} The calculated <code>mxn.Polyline</code>
  */
 Radius.prototype.getPolyline = function(radius, color) {
 	var points = [];
