@@ -313,9 +313,9 @@ class Zikula_View_Theme extends Zikula_View
             $response = new Response();
             $maincontent = ob_get_contents();
             ob_end_clean();
-        } else {
-            $maincontent = $response->getContent();
         }
+
+        $maincontent = $response->getContent();
 
         // add the module wrapper
         if (!$this->themeinfo['system'] && (bool)$this->themeconfig['modulewrapper'] && $this->toplevelmodule) {
