@@ -11,13 +11,13 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+namespace PageLock\Api;
+
 /**
  * length of time to lock a page
  *
  */
 define('PageLockLifetime', 30);
-
-namespace PageLock\Api;
 
 use UserUtil;
 use PageUtil;
