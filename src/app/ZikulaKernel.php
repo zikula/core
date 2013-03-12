@@ -15,8 +15,8 @@ class ZikulaKernel extends Kernel
             //new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Zikula\Bundle\CoreBundle\CoreBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Zikula\Bundle\CoreBundle\CoreBundle(),
         );
 
         $this->registerCoreModules($bundles);

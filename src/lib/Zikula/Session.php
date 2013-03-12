@@ -56,7 +56,7 @@ class Zikula_Session extends Session
      *
      * @param Zikula_Session_StorageInterface $storage Storage engine.
      */
-    public function __construct(SessionStorageInterface $storage)
+    public function __construct(SessionStorageInterface $storage, $attributeBag, $flashBag = null)
     {
         $config = array(
             'gc_probability' => System::getVar('gc_probability'),
@@ -104,8 +104,8 @@ class Zikula_Session extends Session
 
         $config['cookie_lifetime'] = $lifetime;
 
-        $storage = new NativeSessionStorage($config);
-        parent::__construct($storage, new NamespacedAttributeBag());
+        $storage->setOptions($config);
+        parent::__construct($storage, $attributeBag, $flashBag);
     }
 
 
