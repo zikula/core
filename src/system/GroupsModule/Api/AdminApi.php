@@ -419,8 +419,8 @@ class AdminApi extends \Zikula_AbstractApi
         // Send message part
         switch ($args['sendtag']) {
             case 1:
-                if (ModUtil::available('Mailer')) {
-                    $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                if (ModUtil::available('MailerModule')) {
+                    $send = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
                                     array('toname' => UserUtil::getVar('uname', $args['userid']),
                                           'toaddress' => UserUtil::getVar('email', $args['userid']),
                                           'subject' => $args['reasontitle'],

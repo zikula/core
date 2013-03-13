@@ -325,7 +325,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $adminmail = System::getVar('adminmail');
             $mailTitle = __('Intrusion attempt detected by PHPIDS');
 
-            if (ModUtil::available('Mailer')) {
+            if (ModUtil::available('MailerModule')) {
                 $args = array();
                 $args['fromname']    = $siteName;
                 $args['fromaddress'] = $adminmail;
@@ -334,7 +334,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 $args['subject']     = $mailTitle;
                 $args['body']        = $mailBody;
 
-                $rc = ModUtil::apiFunc('Mailer', 'user', 'sendmessage', $args);
+                $rc = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage', $args);
             } else {
                 $headers = "From: $siteName <$adminmail>\n"
                         ."X-Priority: 1 (Highest)";

@@ -28,6 +28,7 @@ use System;
 use ModUtil;
 use DateTimeZone;
 use DateTime;
+use Doctrine\ORM\AbstractQuery;
 
 /**
  * The system-level and database-level functions for user-initiated actions for the Users module.
@@ -96,7 +97,7 @@ class UserApi extends \Zikula_AbstractApi
         $query = $qb->getQuery();
 
         // execute query
-        $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $objArray = $query->getResult(AbstractQuery::HYDRATE_ARRAY);
 
         return $objArray;
     }
@@ -308,7 +309,7 @@ class UserApi extends \Zikula_AbstractApi
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         if ($args['idfield'] == 'email') {
-            $dql = "SELECT count(u.uid) FROM UsersModule\Entity\UserEntity u WHERE u.email = '{$args['id']}'";
+            $dql = "SELECT count(u.uid) FROM UsersModule\\Entity\\UserEntity u WHERE u.email = '{$args['id']}'";
             $query = $this->entityManager->createQuery($dql);
             $ucount = (int)$query->getSingleScalarResult();
 
@@ -339,7 +340,7 @@ class UserApi extends \Zikula_AbstractApi
 
             $subject = $this->__f('Account information for %s', $userObj['uname']);
 
-            $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+            $emailMessageSent = ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', array(
                 'toaddress' => $userObj['email'],
                 'subject'   => $subject,
                 'body'      => $htmlBody,
@@ -394,7 +395,7 @@ class UserApi extends \Zikula_AbstractApi
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($hashedConfirmationCode !== false) {
-                $dql = "DELETE FROM UsersModule\Entity\UserVerificationEntity v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
 
@@ -429,7 +430,7 @@ class UserApi extends \Zikula_AbstractApi
 
                     $subject = $this->__f('Confirmation code for %s', $user['uname']);
 
-                    $emailMessageSent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+                    $emailMessageSent = ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', array(
                         'toaddress' => $user['email'],
                         'subject'   => $subject,
                         'body'      => $htmlBody,
@@ -488,7 +489,7 @@ class UserApi extends \Zikula_AbstractApi
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-                $dql = "DELETE FROM UsersModule\Entity\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
             }
@@ -622,7 +623,7 @@ class UserApi extends \Zikula_AbstractApi
         $view->assign($viewArgs);
 
         $message = $view->fetch('users_email_userverifyemail_html.tpl');
-        $sent = ModUtil::apiFunc('Mailer', 'user', 'sendMessage', array(
+        $sent = ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', array(
             'toaddress' => $args['newemail'],
             'subject'   => $subject,
             'body'      => $message,
@@ -656,7 +657,7 @@ class UserApi extends \Zikula_AbstractApi
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-            $dql = "DELETE FROM UsersModule\Entity\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+            $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
             $query = $this->entityManager->createQuery($dql);
             $query->getResult();
         }
@@ -717,7 +718,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        $dql = "DELETE FROM UsersModule\Entity\UserVerificationEntity v WHERE v.uid = " . $uid;
+        $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $uid;
         if (isset($changeType)) {
             $dql .= " AND v.changetype IN (" . implode(', ', $changeType) . ")";
         }

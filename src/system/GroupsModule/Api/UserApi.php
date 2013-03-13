@@ -510,7 +510,7 @@ class UserApi extends \Zikula_AbstractApi
 
                 if ($this->getVar('mailwarning')) {
                     $uname = UserUtil::getVar('uname', $userid);
-                    $send = ModUtil::apiFunc('Mailer', 'user', 'sendmessage',
+                    $send = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
                                     array('toname' => $this->__('Administrator'),
                                           'toaddress' => System::getVar('adminmail'),
                                           'subject' => $this->__('Group membership application registered'),

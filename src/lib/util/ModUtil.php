@@ -91,6 +91,8 @@ class ModUtil
      *
      * Preloads module vars for a number of key modules to reduce sql statements.
      *
+     * @param boolean $force
+     *
      * @return void
      */
     public static function initCoreVars($force=false)
@@ -143,10 +145,7 @@ class ModUtil
     public static function hasVar($modname, $name)
     {
         // define input, all numbers and booleans to strings
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
-        $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName(isset($modname) ? ((string)$modname) : '');
         $name = isset($name) ? ((string)$name) : '';
 
         // make sure we have the necessary parameters
@@ -192,9 +191,7 @@ class ModUtil
             $modname = self::getName();
         }
 
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
+        $modname = static::convertModuleName($modname);
 
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
@@ -263,10 +260,8 @@ class ModUtil
     public static function setVar($modname, $name, $value = '')
     {
         // define input, all numbers and booleans to strings
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
 
         // validate
         if (!System::varValidate($modname, 'mod') || !isset($name)) {
@@ -324,10 +319,8 @@ class ModUtil
     public static function delVar($modname, $name = '')
     {
         // define input, all numbers and booleans to strings
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
 
         // validate
         if (!System::varValidate($modname, 'modvar')) {
@@ -358,9 +351,9 @@ class ModUtil
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
         if (empty($name)) {
-            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
+            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
         } else {
-            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
+            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
         }
 
         $query = $em->createQuery($dql);
@@ -392,7 +385,7 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $alias = (isset($module) ? strtolower((string)$module) : '');
-        //$module = preg_match('/\w+Module$/i', $module) || !$module ? $module : $module.'Module';
+        $module = static::convertModuleName($module);
         $module = (isset($module) ? strtolower((string)$module) : '');
 
         // validate
@@ -635,6 +628,8 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
+        $modname = static::convertModuleName($modname);
+        $directory = static::convertModuleName($directory);
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -767,8 +762,8 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
         $modtype = strtolower("$modname{$type}{$osapi}");
 
         if (!isset(self::$cache['loaded'])) {
@@ -1040,8 +1035,8 @@ class ModUtil
     public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
     {
         // define input, all numbers and booleans to strings
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
         $ftype = ($api ? 'api' : '');
         $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
 
@@ -1230,8 +1225,8 @@ class ModUtil
     public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         // define input, all numbers and booleans to strings
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
 
         // note - when this legacy is to be removed, change method signature $type = null to $type making it a required argument.
         if (!$type) {
@@ -1260,7 +1255,7 @@ class ModUtil
 
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "ExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
             $modname = 'ExtensionsModule';
         }
 
@@ -1436,8 +1431,8 @@ class ModUtil
     public static function available($modname = null, $force = false)
     {
         // define input, all numbers and booleans to strings
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
+        $modname = static::convertModuleName($modname);
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -2035,5 +2030,31 @@ class ModUtil
         }
 
         return $path;
+    }
+
+    /**
+     * Internal function to help migration from old module references.
+     *
+     * @todo remove in 1.4+ (drak)
+     *
+     * @param $name
+     *
+     * @return string
+     *
+     * @return string
+     *
+     * @internal
+     */
+    public static function convertModuleName($name)
+    {
+        if (in_array($name, array(
+            'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
+            'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
+            //'Admin', 'Categories' // todo
+        ))) {
+            $name = $name.'Module';
+        }
+
+        return $name;
     }
 }
