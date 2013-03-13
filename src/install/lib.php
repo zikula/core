@@ -482,7 +482,7 @@ function installmodules($lang = 'en')
                                 'category' => $modscat[$category]));
     }
     // create the default blocks.
-    $blockInstance = new BlocksModule\BlocksInstaller($sm);
+    $blockInstance = new BlocksModule\BlocksModuleInstaller($sm);
     $blockInstance->defaultdata();
 
     // install all the basic modules
