@@ -21,6 +21,7 @@ use Doctrine_Manager,
     Doctrine_Core,
     Zikula_Event,
     System;
+use Zikula\Core\Event\GenericEvent;
 
 /**
  * Doctrine listeners.
@@ -63,6 +64,8 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
      *
      * @param Zikula_Event $event Event.
      *
+     * @throws \PDOException
+     *
      * @return void
      */
     public function doctrineInit(Zikula_Event $event)
@@ -70,10 +73,10 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         if (!$this->doctrineManager) {
             Doctrine_Core::debug(System::isDevelopmentMode());
             $this->doctrineManager = Doctrine_Manager::getInstance();
-            $internalEvent = new \Zikula\Core\Event\GenericEvent($this->doctrineManager);
+            $internalEvent = new GenericEvent($this->doctrineManager);
             $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
 
-            $internalEvent = new \Zikula\Core\Event\GenericEvent($this->doctrineManager);
+            $internalEvent = new GenericEvent($this->doctrineManager);
             $this->dispatcher->dispatch('doctrine.cache', $internalEvent);
         }
 
@@ -93,7 +96,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                 $connection->setOption('username', $connectionInfo['user']);
                 $connection->setOption('password', $connectionInfo['password']);
             }
-            $internalEvent = new \Zikula\Core\Event\GenericEvent($connection);
+            $internalEvent = new GenericEvent($connection);
             $this->dispatcher->dispatch('doctrine.configure', $internalEvent);
         } catch (\PDOException $e) {
             throw new \PDOException(__('Connection failed to database') . ': ' . $e->getMessage());
@@ -175,6 +178,8 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
      * Subject is either Doctrine_Manager, Doctrine_Connection or Doctrine_Table.
      *
      * @param Zikula_Event $event Event.
+     *
+     * @throws \Exception
      *
      * @return void
      */
