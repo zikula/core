@@ -13,15 +13,11 @@
  */
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\Core\Event\GenericEvent;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
 
-/**
- * Install controller.
- *
- * @return void
- */
 function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
@@ -32,7 +28,7 @@ function install(Zikula_Core $core)
     $eventManager = $core->getDispatcher();
 
     // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-    $dbEvent = new \Zikula\Core\Event\GenericEvent(null, array('lazy' => true));
+    $dbEvent = new GenericEvent(null, array('lazy' => true));
     $eventManager->dispatch('doctrine.init_connection', $dbEvent);
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
