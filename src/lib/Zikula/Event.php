@@ -25,6 +25,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Zikula_Event extends GenericEvent
 {
     /**
+     * @var mixed
+     */
+    public $data;
+
+    /**
      * Exception.
      *
      * @var Exception
@@ -38,13 +43,12 @@ class Zikula_Event extends GenericEvent
      * @param mixed  $subject Usually and object or other PHP callable.
      * @param array  $args    Arguments to store in the event.
      * @param mixed  $data    Convenience argument of data for optional processing.
-     *
-     * @throws InvalidArgumentException When name is empty.
      */
     public function __construct($name, $subject = null, array $args = array(), $data = null)
     {
         $this->setName($name);
         $this->data = $data;
+
         parent::__construct($subject, $args);
     }
 
