@@ -61,7 +61,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('Theme:Renderblock:', 'Block ID::');
+        SecurityUtil::registerPermissionSchema('ZikulaThemeModule:Renderblock:', 'Block ID::');
     }
 
     /**
@@ -88,7 +88,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function display($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Theme:Renderblock:', "$blockinfo[bid]::", ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule:Renderblock:', "$blockinfo[bid]::", ACCESS_OVERVIEW)) {
             return;
         }
 
@@ -102,7 +102,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
             $this->rmodule = $vars['module'];
         }
 
-        $showerror = SecurityUtil::checkPermission('Theme:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN);
+        $showerror = SecurityUtil::checkPermission('ZikulaThemeModule:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN);
 
         // If the template is not speficied or empty it register an error for the admin
         if (!isset($vars['template']) || empty($vars['template'])) {
@@ -151,7 +151,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function modify($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Theme:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN)) {
             return false;
         }
 
@@ -196,7 +196,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function update($blockinfo)
     {
-        if (!SecurityUtil::checkPermission('Theme:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule:Renderblock:', "$blockinfo[bid]::", ACCESS_ADMIN)) {
             return false;
         }
 

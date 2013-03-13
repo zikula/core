@@ -56,7 +56,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -109,7 +109,7 @@ class AdminApi extends \Zikula_AbstractApi
         $deletedItem = $item->toArray();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -174,7 +174,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -230,7 +230,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -272,7 +272,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -353,7 +353,7 @@ class AdminApi extends \Zikula_AbstractApi
         foreach ($objArray as $obj) {
             $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $obj['gid']));
             if ($group) {
-                if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
+                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
                     $items[] = array(
                         'app_id' => $obj['app_id'],
                         'userid' => $obj['uid'],
@@ -455,13 +455,13 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'class' => 'z-icon-es-new');
         }
-        if (SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'class' => 'z-icon-es-config');
         }
 

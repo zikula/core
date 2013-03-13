@@ -26,7 +26,7 @@ class SearchModuleVersion extends \Zikula_AbstractVersion
         $meta['version']        = '1.5.2';
         $meta['core_min'] = '1.3.6';
 
-        $meta['securityschema'] = array('Search::' => 'Module name::');
+        $meta['securityschema'] = array('ZikulaSearchModule::' => 'Module name::');
 
         return $meta;
     }

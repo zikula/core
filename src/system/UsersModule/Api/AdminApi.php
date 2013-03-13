@@ -400,7 +400,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'z-icon-es-search');
         }
-        if (SecurityUtil::checkPermission('Users::MailUsers', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::MailUsers', '::', ACCESS_MODERATE)) {
             $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'class' => 'z-icon-es-mail');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {

@@ -26,7 +26,7 @@ class SecurityCenterModuleVersion extends \Zikula_AbstractVersion
         $meta['url']            = $this->__('securitycenter');
         $meta['version']        = '1.4.4';
         $meta['core_min'] = '1.3.6';
-        $meta['securityschema'] = array('SecurityCenter::' => '::');
+        $meta['securityschema'] = array('ZikulaSecurityCenterModule::' => '::');
 
         return $meta;
     }

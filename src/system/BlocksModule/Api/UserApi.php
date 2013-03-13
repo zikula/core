@@ -42,7 +42,7 @@ class UserApi extends \Zikula_AbstractApi
         $items = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
 
@@ -156,7 +156,7 @@ class UserApi extends \Zikula_AbstractApi
         static $block_positions = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_OVERVIEW)) {
             return $block_positions;
         }
 

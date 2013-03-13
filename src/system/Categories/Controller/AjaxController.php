@@ -36,7 +36,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function resequenceAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT));
 
         $data  = json_decode($this->request->request->get('data'), true);
         $cats = CategoryUtil::getSubCategories(1, true, true, true, true, true, '', 'id');
@@ -64,7 +64,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $mode = isset($args['mode']) ? $args['mode'] : $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel));
 
         $cid = isset($args['cid']) ? $args['cid'] : $this->request->request->get('cid', 0);
         $parent = isset($args['parent']) ? $args['parent'] : $this->request->request->get('parent', 1);
@@ -120,7 +120,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function copyAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD));
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
@@ -164,7 +164,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deleteAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE));
 
         $cid = $this->request->request->get('cid');
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
@@ -182,7 +182,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deleteandmovesubsAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE));
 
         $cid = $this->request->request->get('cid');
         $parent = $this->request->request->get('parent');
@@ -225,7 +225,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deletedialogAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE));
 
         $cid = $this->request->request->get('cid');
         $allCats = CategoryUtil::getSubCategories(1, true, true, true, false, true, $cid);
@@ -245,7 +245,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function activateAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT));
 
         $cid = $this->request->request->get('cid');
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
@@ -264,7 +264,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deactivateAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT));
 
         $cid = $this->request->request->get('cid');
         $cat = new Categories_DBObject_Category(DBObject::GET_FROM_DB, $cid);
@@ -285,7 +285,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $mode = $this->request->request->get('mode', 'new');
         $accessLevel = $mode == 'edit' ? ACCESS_EDIT : ACCESS_ADD;
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Categories::', '::', $accessLevel));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', $accessLevel));
 
         $result = array();
 

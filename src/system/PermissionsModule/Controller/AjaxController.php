@@ -39,7 +39,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function updatepermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
 
         $pid       = (int)$this->request->request->get('pid');
         $gid       = (int)$this->request->request->get('gid');
@@ -99,7 +99,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function changeorderAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
 
         $permorder = $this->request->request->get('permorder');
 
@@ -121,7 +121,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function createpermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
 
         // add a blank permission
         $dummyperm = array(
@@ -156,7 +156,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function deletepermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
 
         $pid = (int)$this->request->request->get('pid');
 
@@ -186,7 +186,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function testpermissionAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN));
 
         $uname = $this->request->request->get('test_user', '');
         $comp  = $this->request->request->get('test_component', '.*');

@@ -393,7 +393,7 @@ class UserApi extends \Zikula_AbstractApi
             return LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
         }
 
-        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
             return LogUtil::registerPermissionError();
         }
 

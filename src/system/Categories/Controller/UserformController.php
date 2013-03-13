@@ -31,7 +31,7 @@ class UserformController extends \Zikula_AbstractController
      */
     public function deleteAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -72,7 +72,7 @@ class UserformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -134,7 +134,7 @@ class UserformController extends \Zikula_AbstractController
      */
     public function moveFieldAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -178,7 +178,7 @@ class UserformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -212,7 +212,7 @@ class UserformController extends \Zikula_AbstractController
      */
     public function resequenceAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 

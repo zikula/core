@@ -47,7 +47,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     private function currentUserIsAdmin()
     {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN);
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN);
     }
 
     /**
@@ -58,7 +58,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     private function currentUserIsAdminOrSubAdmin()
     {
-        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('Users::', '::', ACCESS_EDIT);
+        return UserUtil::isLoggedIn() && SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
     }
 
     /**
@@ -256,7 +256,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     {
         $registrationErrors = array();
 
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -398,7 +398,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function registerNewUser($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1009,8 +1009,8 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function get($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1143,8 +1143,8 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function getAll($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1243,8 +1243,8 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function countAll($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             return false;
         }
 
@@ -1323,8 +1323,8 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function remove($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_DELETE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_DELETE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1437,8 +1437,8 @@ class RegistrationApi extends \Zikula_AbstractApi
         // In the future, it is possible we will add a feature to allow a newly registered user to resend
         // a new verification code to himself after doing a login-like process with information from  his
         // registration record, so allow not-logged-in plus READ, as well as moderator.
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1561,8 +1561,8 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function getVerificationCode($args)
     {
-        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_READ))
-                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE))) {
+        if ((!UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ))
+                || (UserUtil::isLoggedIn() && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE))) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1659,7 +1659,7 @@ class RegistrationApi extends \Zikula_AbstractApi
      */
     public function approve($args)
     {
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADD)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -1741,7 +1741,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     public function activateUser($args)
     {
         // This function is an end-user function.
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return false;
         }
 

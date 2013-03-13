@@ -25,7 +25,7 @@ class ErrorsModuleVersion extends \Zikula_AbstractVersion
         $meta['url']            = $this->__('errors');
         $meta['version']        = '1.1.1';
         $meta['core_min'] = '1.3.6';
-        $meta['securityschema'] = array('Errors::' => '::');
+        $meta['securityschema'] = array('ZikulaErrorsModule::' => '::');
 
         return $meta;
     }

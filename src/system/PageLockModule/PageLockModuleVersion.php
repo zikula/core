@@ -26,7 +26,7 @@ class PageLockModuleVersion extends \Zikula_AbstractVersion
         $meta['version']        = '1.1.1';
         $meta['core_min'] = '1.3.6';
 
-        $meta['securityschema'] = array('PageLock::' => '::');
+        $meta['securityschema'] = array('ZikulaPageLockModule::' => '::');
 
         return $meta;
     }

@@ -55,7 +55,7 @@ class AdminpluginController extends \Zikula_AbstractController
      */
     public function dispatchAction()
     {
-        if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

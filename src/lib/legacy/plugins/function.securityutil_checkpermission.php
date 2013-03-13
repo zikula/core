@@ -15,7 +15,7 @@
 
 /**
  * Example:
- * {securityutil_checkpermission component='Users::' instance='.*' level='ACCESS_ADMIN' assign='auth'}
+ * {securityutil_checkpermission component='ZikulaUsersModule::' instance='.*' level='ACCESS_ADMIN' assign='auth'}
  *
  * true/false will be returned.
  *

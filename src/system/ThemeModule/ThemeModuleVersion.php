@@ -25,7 +25,7 @@ class ThemeModuleVersion extends \Zikula_AbstractVersion
         $meta['url']            = $this->__('theme');
         $meta['version']        = '3.4.3';
         $meta['core_min'] = '1.3.6';
-        $meta['securityschema'] = array('Theme::' => 'Theme name::');
+        $meta['securityschema'] = array('ZikulaThemeModule::' => 'Theme name::');
 
         return $meta;
     }

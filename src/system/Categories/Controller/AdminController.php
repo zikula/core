@@ -54,11 +54,11 @@ class AdminController extends \Zikula_AbstractController
     {
         $root_id = $this->request->get('dr', 1);
 
-        if (!SecurityUtil::checkPermission('Categories::category', "ID::$root_id", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$root_id", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
-        if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -75,7 +75,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function configAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -97,7 +97,7 @@ class AdminController extends \Zikula_AbstractController
 
         // indicates that we're editing
         if ($mode == 'edit') {
-            if (!SecurityUtil::checkPermission('Categories::category', "::", ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "::", ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
 
@@ -112,7 +112,7 @@ class AdminController extends \Zikula_AbstractController
             }
         } else {
             // new category creation
-            if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_ADD)) {
+            if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_ADD)) {
                 return LogUtil::registerPermissionError();
             }
 
@@ -171,7 +171,7 @@ class AdminController extends \Zikula_AbstractController
 
     public function editregistryAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -207,7 +207,7 @@ class AdminController extends \Zikula_AbstractController
 
     public function deleteregistryAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', "::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -244,7 +244,7 @@ class AdminController extends \Zikula_AbstractController
         $root_id = $this->request->get('dr', 1);
         $op = $this->request->get('op', 'NOOP');
 
-        if (!SecurityUtil::checkPermission('Categories::category', "ID::$cid", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$cid", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -266,7 +266,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function preferencesAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::preferences', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::preferences', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

@@ -49,7 +49,7 @@ class UserController extends \Zikula_AbstractController
         $showinactive = (bool)FormUtil::getPassedValue('showinactive', isset($args['showinactive']) ? $args['showinactive'] : false, 'REQUEST');
 
         // Security check for $showinactive only
-        if ($showinactive && !SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
+        if ($showinactive && !SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 

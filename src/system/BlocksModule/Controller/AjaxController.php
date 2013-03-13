@@ -38,7 +38,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function changeblockorderAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN));
 
         $blockorder = $this->request->request->get('blockorder');
         $position = $this->request->request->get('position');
@@ -74,7 +74,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function toggleblockAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN));
 
         $bid = $this->request->request->get('bid', -1);
 

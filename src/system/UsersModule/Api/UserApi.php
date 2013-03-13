@@ -56,7 +56,7 @@ class UserApi extends \Zikula_AbstractApi
     public function getAll($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW)) {
             throw new Zikula_Exception_Forbidden();
         }
 
@@ -551,7 +551,7 @@ class UserApi extends \Zikula_AbstractApi
                 if ($items) {
                     foreach ($items as $k => $item) {
                         // check every retured link for permissions
-                        if (SecurityUtil::checkPermission('Users::', "$mod[name]::$item[title]", ACCESS_READ)) {
+                        if (SecurityUtil::checkPermission('ZikulaUsersModule::', "$mod[name]::$item[title]", ACCESS_READ)) {
                             if (!isset($item['module'])) {
                                 $item['module']  = $mod['name'];
                             }
@@ -738,7 +738,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $links = array();
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'login'),
                 'text'  => $this->__('Log in'),

@@ -65,7 +65,7 @@ class AdminController extends \Zikula_AbstractController
     public function viewAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -236,7 +236,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // MMaes,2003-06-23: Added sec.check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -273,7 +273,7 @@ class AdminController extends \Zikula_AbstractController
         $csrftoken = $this->request->request->get('csrftoken');
         $this->checkCsrfToken($csrftoken);
 
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -306,7 +306,7 @@ class AdminController extends \Zikula_AbstractController
     public function listeditAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -403,7 +403,7 @@ class AdminController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -466,7 +466,7 @@ class AdminController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -519,7 +519,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function deleteAction()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -586,7 +586,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function viewinstanceinfoAction()
     {
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -608,7 +608,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -629,7 +629,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

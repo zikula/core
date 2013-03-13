@@ -36,7 +36,7 @@ class UsersModuleVersion extends \Zikula_AbstractVersion
             'url' => $this->__('users'),
             'capabilities' => array(UsersConstant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'), HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true)),
             'core_min' => '1.3.6',
-            'securityschema' => array('Users::' => 'Uname::User ID', 'Users::MailUsers' => '::'));
+            'securityschema' => array('ZikulaUsersModule::' => 'Uname::User ID', 'ZikulaUsersModule::MailUsers' => '::'));
     }
 
     /**

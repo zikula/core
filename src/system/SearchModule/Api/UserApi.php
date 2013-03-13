@@ -196,7 +196,7 @@ class UserApi extends \Zikula_AbstractApi
         $items = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_OVERVIEW)) {
             return $items;
         }
 
@@ -240,7 +240,7 @@ class UserApi extends \Zikula_AbstractApi
         // The modules should be determined by a select of the modules table or something like that in the future
         $usermods = ModUtil::getAllMods();
         foreach ($usermods as $usermod) {
-            if ($args['loadall'] || (!$this->getVar("disable_$usermod[name]") && SecurityUtil::checkPermission('Search::Item', "$usermod[name]::", ACCESS_READ))) {
+            if ($args['loadall'] || (!$this->getVar("disable_$usermod[name]") && SecurityUtil::checkPermission('ZikulaSearchModule::Item', "$usermod[name]::", ACCESS_READ))) {
                 $info = ModUtil::apiFunc($usermod['name'], 'search', 'info');
                 if ($info) {
                     $info['name'] = $usermod['name'];
@@ -456,7 +456,7 @@ class UserApi extends \Zikula_AbstractApi
         $links = array();
         $search_modules = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins');
 
-        if (SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('SearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
             if ((count($search_modules) > 0) && UserUtil::isLoggedIn()) {
                 $links[] = array('url' => ModUtil::url('SearchModule', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');

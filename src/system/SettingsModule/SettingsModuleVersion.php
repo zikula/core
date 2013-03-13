@@ -25,7 +25,7 @@ class SettingsModuleVersion extends \Zikula_AbstractVersion
         $meta['url']            = $this->__('settings');
         $meta['version']        = '2.9.7';
         $meta['core_min'] = '1.3.6';
-        $meta['securityschema'] = array('Settings::' => '::');
+        $meta['securityschema'] = array('ZikulaSettingsModule::' => '::');
 
         return $meta;
     }

@@ -41,7 +41,7 @@ class AdminformController extends \Zikula_AbstractController
         $this->checkCsrfToken($csrftoken);
 
         // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 

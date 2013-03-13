@@ -44,7 +44,7 @@ class UserApi extends \Zikula_AbstractApi
         $items = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             return $items;
         }
 
@@ -130,7 +130,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $result['gid'] . '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $result['gid'] . '::', ACCESS_READ)) {
             return false;
         }
 
@@ -206,7 +206,7 @@ class UserApi extends \Zikula_AbstractApi
         $items = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             return $items;
         }
 
@@ -247,7 +247,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $items = array();
 
-        if (!SecurityUtil::checkPermission('Groups::', 'ANY', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', 'ANY', ACCESS_OVERVIEW)) {
             return $items;
         }
 
@@ -309,7 +309,7 @@ class UserApi extends \Zikula_AbstractApi
             $state = $obj['state'];
             $nbumax = $obj['nbumax'];
 
-            if (SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_OVERVIEW)) {
+            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_OVERVIEW)) {
                 if (!isset($gtype) || is_null($gtype)) {
                     $gtype = CommonHelper::GTYPE_CORE;
                 }
@@ -330,7 +330,7 @@ class UserApi extends \Zikula_AbstractApi
 
                 $nbuser = ModUtil::apiFunc('GroupsModule', 'user', 'countgroupmembers', array('gid' => $gid));
 
-                if (SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_READ)) {
+                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)) {
                     $canview = true;
                     $canapply = true;
                 } else {
@@ -391,7 +391,7 @@ class UserApi extends \Zikula_AbstractApi
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
 
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
             throw new \Zikula_Exception_Forbidden();
         }
 
@@ -572,7 +572,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
             throw new \Zikula_Exception_Forbidden();
         }
 
@@ -624,7 +624,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', $args['gid'] . '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
             throw new \Zikula_Exception_Forbidden();
         }
 
@@ -676,7 +676,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Groups::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             return false;
         }
 

@@ -50,7 +50,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $name = $this->request->request->get('name');
         $description = $this->request->request->get('description');
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT));
 
         if (empty($name)) {
             return new AjaxResponse(array('result' => false, 'error' => true, 'gid' => $gid, 'message' => $this->__('Error! The group name is missing.')));
@@ -107,7 +107,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD));
 
         $groupsCommon = new CommonHelper();
         $typelabel = $groupsCommon->gtypeLabels();
@@ -157,7 +157,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $gid = $this->request->request->get('gid');
         $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE));
 
         // Check if it is the default group...
         $defaultgroup = $this->getVar('defaultgroup');
@@ -180,7 +180,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $gid = (int)$this->request->request->get('gid');
         $uid = (int)$this->request->request->get('uid');
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid . '::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT));
 
         if (!ModUtil::apiFunc('GroupsModule', 'admin', 'removeuser', array('gid' => $gid, 'uid' => $uid))) {
             throw new Zikula_Exception_Fatal($this->__('Error! A problem occurred while attempting to remove the user. The user has not been removed from the group.'));

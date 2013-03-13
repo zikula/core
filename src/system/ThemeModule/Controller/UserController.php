@@ -39,7 +39,7 @@ class UserController extends \Zikula_AbstractController
             return $this->redirect(ModUtil::url('UsersModule', 'user', 'index'));
         }
 
-        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_COMMENT)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
             return LogUtil::registerPermissionError();
         }
 

@@ -119,7 +119,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * Add default block data for new installs
-     * This is called after a complete pn installation since the blocks
+     * This is called after a complete installation since the blocks
      * need to be populated with module id's which are only available
      * once the install has been completed
      */
@@ -164,10 +164,10 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
             // insert the links
             $menucontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{Admin:admin:adminpanel}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{Users:user:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $menucontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{Search}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Administration'), 'url' => '{AdminModule:admin:adminpanel}', 'title' => $this->__('Go to the site administration'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{UsersModule}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Log out'), 'url' => '{UsersModule:user:logout}', 'title' => $this->__('Log out of this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $menucontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{SearchModule}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
 
             $topnavcontent['displaymodules'] = '0';
             $topnavcontent['stylesheet'] = 'extmenu.css';
@@ -176,8 +176,8 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
             // insert the links
             $topnavcontent['links'][$lang][] = array('name' => $this->__('Home'), 'url' => '{homepage}', 'title' => $this->__("Go to the site's home page"), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{Users}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
-            $topnavcontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{Search}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $topnavcontent['links'][$lang][] = array('name' => $this->__('My Account'), 'url' => '{UsersModule}', 'title' => $this->__('Go to your account panel'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
+            $topnavcontent['links'][$lang][] = array('name' => $this->__('Site search'), 'url' => '{SearchModule}', 'title' => $this->__('Search this site'), 'level' => 0, 'parentid' => null, 'image' => '', 'active' => '1');
         }
 
         ZLanguage::setLocale($saveLanguage);
@@ -190,7 +190,7 @@ class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 
         $hellomessage = $this->__('<p><a href="http://zikula.org/">Zikula</a> is a content management system (CMS) and application framework. It is secure and stable, and is a good choice for sites with a large volume of traffic.</p><p>With Zikula:</p><ul><li>you can customise all aspects of the site\'s appearance through themes, with support for CSS style sheets, JavaScript, Flash and all other modern web development technologies;</li><li>you can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation and internationalisation of your site;</li><li>you can be sure that your pages will display properly in all browsers, thanks to Zikula\'s full compliance with W3C HTML standards;</li><li>you get a standard application-programming interface (API) that lets you easily augment your site\'s functionality through modules, blocks and other extensions;</li><li>you can get help and support from the Zikula community of webmasters and developers at <a href="http://www.zikula.org">zikula.org</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
         $blocks[] = array('bkey' => 'Extmenu', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('BlocksModule'), 'title' => $this->__('Main menu'), 'description' => $this->__('Main menu'), 'content' => $menucontent, 'positions' => array($left));
-        $blocks[] = array('bkey' => 'SearchModule', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('SearchModule'), 'title' => $this->__('Search box'), 'description' => $this->__('Search block'), 'content' => $searchcontent, 'positions' => array($search));
+        $blocks[] = array('bkey' => 'Search', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('SearchModule'), 'title' => $this->__('Search box'), 'description' => $this->__('Search block'), 'content' => $searchcontent, 'positions' => array($search));
         $blocks[] = array('bkey' => 'Html', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('BlocksModule'), 'title' => $this->__("This site is powered by Zikula!"), 'description' => $this->__('HTML block'), 'content' => $hellomessage, 'positions' => array($center));
         $blocks[] = array('bkey' => 'Login', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('UsersModule'), 'title' => $this->__('User log-in'), 'description' => $this->__('Login block'), 'positions' => array($right));
         //$blocks[] = array('bkey' => 'Online', 'collapsable' => 1, 'defaultstate' => 1, 'language' => '', 'mid' => ModUtil::getIdFromName('UsersModule'), 'title' => $this->__('Who\'s on-line'), 'description' => $this->__('Online block'), 'positions' => array($right));

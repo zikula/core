@@ -28,7 +28,7 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
 
     public function initialize(Zikula_Form_View $view)
     {
-        if (!SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
         }
 

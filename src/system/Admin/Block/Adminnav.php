@@ -30,7 +30,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
      */
     public function init()
     {
-        SecurityUtil::registerPermissionSchema('Admin:adminnavblock:', 'Block title::Block ID');
+        SecurityUtil::registerPermissionSchema('ZikulaAdminModule:adminnavblock:', 'Block title::Block ID');
     }
 
     /**
@@ -54,7 +54,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
     public function display($blockinfo)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Admin:adminnavblock', "$blockinfo[title]::$blockinfo[bid]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule:adminnavblock', "$blockinfo[title]::$blockinfo[bid]", ACCESS_ADMIN)) {
             return;
         }
 
@@ -80,7 +80,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
         // Display each item, permissions permitting
         $admincategories = array();
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $adminlinks = array();
                 foreach ($adminmodules as $adminmodule) {
                     // Get all modules in the category

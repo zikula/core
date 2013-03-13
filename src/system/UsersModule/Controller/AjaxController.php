@@ -47,7 +47,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
         $view = Zikula_View::getInstance($this->name);
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_MODERATE)) {
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
             $dql = "SELECT u FROM UsersModule\Entity\UserEntity u WHERE u.uname LIKE '% " . DataUtil::formatForStore($fragment) . "%'";
@@ -100,7 +100,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // Check if registration is disabled and the user is not an admin.
-        if (($eventType == 'new_registration') && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        if (($eventType == 'new_registration') && !$this->getVar('reg_allowreg', true) && !SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             throw new Zikula_Exception_Forbidden($this->__('Sorry! New user registration is currently disabled.'));
         }
 

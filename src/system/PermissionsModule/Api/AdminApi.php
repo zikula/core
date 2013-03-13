@@ -42,7 +42,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function inc($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -114,7 +114,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function dec($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -191,7 +191,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function update($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -238,7 +238,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function create($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "group::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -297,7 +297,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function delete($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "group::$args[pid]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::$args[pid]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -324,7 +324,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function maxsequence()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -341,7 +341,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function resequence()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "group::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -380,7 +380,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function full_resequence($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', "::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -459,7 +459,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getallschemas()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -486,15 +486,15 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('PermissionsModule', 'admin', 'view', array()), 'text' => $this->__('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-view');
         }
 
-        if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('PermissionsModule', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-es-new');
         }
 
-        if (SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('PermissionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
         }
 

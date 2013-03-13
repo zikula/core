@@ -57,7 +57,7 @@ class AdminController extends \Zikula_AbstractController
         $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
         if (is_array($groups)) {
             foreach ($groups as $group) {
-                if (SecurityUtil::checkPermission('Groups::', $group['gid'] . '::', ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT)) {
                     $any_access = true;
                     break;
                 }
@@ -109,11 +109,11 @@ class AdminController extends \Zikula_AbstractController
 
         foreach ($items as $item) {
 
-            if (SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_READ)) {
 
                 // Options for the item.
                 $options = array();
-                if (SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT)) {
 
                     $editurl    = ModUtil::url('GroupsModule', 'admin', 'modify', array('gid'     => $item['gid']));
                     $deleteurl  = ModUtil::url('GroupsModule', 'admin', 'view', array());
@@ -123,7 +123,7 @@ class AdminController extends \Zikula_AbstractController
                             'title'   => $this->__('Edit'),
                             'imgfile' => 'xedit.png');
 
-                    if ((SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE))
+                    if ((SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE))
                             && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup)) {
                         $deleteurl  = ModUtil::url('GroupsModule', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'delete', array('gid'     => $item['gid'])),
@@ -195,7 +195,7 @@ class AdminController extends \Zikula_AbstractController
     public function newgroupAction()
     {
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADD));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD));
 
         // Setting various defines
         $groupsCommon = new CommonHelper();
@@ -277,7 +277,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT));
 
         // assign the item
         $this->view->assign('item', $item);
@@ -366,7 +366,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $item['gid'].'::', ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE));
 
         // get the user default group - we do not allow its deletion
         $defaultgroup = $this->getVar('defaultgroup');
@@ -424,7 +424,7 @@ class AdminController extends \Zikula_AbstractController
                       'numitems' => $this->getVar('itemsperpage')));
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_EDIT));
 
         // assign the group to the template
         $this->view->assign('group', $group);
@@ -437,7 +437,7 @@ class AdminController extends \Zikula_AbstractController
 
         $groupmembers = array();
 
-        if (is_array($users) && SecurityUtil::checkPermission('Groups::', $group['gid'].'::', ACCESS_EDIT)) {
+        if (is_array($users) && SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'].'::', ACCESS_EDIT)) {
             foreach ($users as $user) {
                 $options = array();
 
@@ -590,7 +590,7 @@ class AdminController extends \Zikula_AbstractController
         $gid = (int)$this->request->query->get('gid', isset($args['gid']) ? $args['gid'] : null);
         $uid = (int)$this->request->query->get('uid', isset($args['uid']) ? $args['uid'] : null);
         $confirmation = (bool)$this->request->request->get('confirmation', isset($args['confirmation']) ? $args['confirmation'] : null);
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', $gid.'::', ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', $gid.'::', ACCESS_EDIT));
 
         // Check for confirmation.
         if (empty($confirmation)) {
@@ -737,7 +737,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN));
 
         // get all groups from the API
         $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
@@ -766,7 +766,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Groups::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN));
 
         // Update module variables.
         $itemsperpage = (int)$this->request->request->get('itemsperpage', 25);

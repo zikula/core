@@ -161,7 +161,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             $blockinfo['title'] = $vars['menutree_titles'][$lang];
         }
 
-        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT))
+        $this->view->assign('menutree_editlinks', $vars['menutree_editlinks'] && Securityutil::checkPermission('ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT))
                    ->assign('menutree_content', $newTree)
                    ->assign('blockinfo', $blockinfo);
 
@@ -274,7 +274,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_settingsperms'] = !empty($vars['menutree_settingsperms']) ? $vars['menutree_settingsperms'] : 'ACCESS_EDIT';
 
         // check user permissions for settings sections
-        $useraccess = SecurityUtil::getSecurityLevel(SecurityUtil::getAuthInfo(), 'Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]");
+        $useraccess = SecurityUtil::getSecurityLevel(SecurityUtil::getAuthInfo(), 'ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]");
         $vars['menutree_titlesaccess']      = $useraccess >= constant($vars['menutree_titlesperms']);
         $vars['menutree_displayaccess']     = $useraccess >= constant($vars['menutree_displayperms']);
         $vars['menutree_settingsaccess']    = $useraccess >= constant($vars['menutree_settingsperms']);

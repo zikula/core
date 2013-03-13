@@ -1770,7 +1770,7 @@ class UserController extends \Zikula_AbstractController
 
         if (UserUtil::loginUsing($authenticationMethod, $authenticationInfo, $rememberme)) {
             $user = UserUtil::getVars(UserUtil::getVar('uid'));
-            if (!SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)) {
                 UserUtil::logout();
 
                 $eventArgs = array(

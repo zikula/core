@@ -58,7 +58,7 @@ class SearchApi extends \Zikula_AbstractApi
     {
         $options = '';
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
             $renderer = Zikula_View::getInstance($this->name);
@@ -84,7 +84,7 @@ class SearchApi extends \Zikula_AbstractApi
     public function search($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return false;
         }
 
@@ -132,7 +132,7 @@ class SearchApi extends \Zikula_AbstractApi
         $sessionId = session_id();
 
         foreach ($users as $user) {
-            if ($user['uid'] != 1 && SecurityUtil::checkPermission('Users::', "$user[uname]::$user[uid]", ACCESS_READ)) {
+            if ($user['uid'] != 1 && SecurityUtil::checkPermission('ZikulaUsersModule::', "$user[uname]::$user[uid]", ACCESS_READ)) {
                 if ($useProfileMod) {
                      $qtext = $this->__("Click the user's name to view his/her complete profile.");
                 } else {

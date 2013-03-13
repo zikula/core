@@ -53,7 +53,7 @@ class UserController extends \Zikula_AbstractController
     public function formAction($vars = array())
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -138,7 +138,7 @@ class UserController extends \Zikula_AbstractController
     public function searchAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -238,7 +238,7 @@ class UserController extends \Zikula_AbstractController
     public function recentAction()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Search::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
+        if (!SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ) || !UserUtil::isLoggedIn()) {
             return LogUtil::registerPermissionError();
         }
 

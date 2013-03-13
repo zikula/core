@@ -74,7 +74,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -129,7 +129,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -219,7 +219,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_EDIT)) {
+            if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_EDIT)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -243,7 +243,7 @@ class AdminApi extends \Zikula_AbstractApi
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
                 if ($this->serviceManager['multisites.enabled'] == 1) {
-                    if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+                    if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                         return LogUtil::registerError($this->__('Error! Invalid module state transition.'));
                     }
                 }
@@ -297,7 +297,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -425,7 +425,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -579,7 +579,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -1139,7 +1139,7 @@ class AdminApi extends \Zikula_AbstractApi
         $startnum = (int)FormUtil::getPassedValue('startnum', null, 'GET');
         $letter = FormUtil::getPassedValue('letter', null, 'GET');
 
-        if (SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ExtensionsModule', 'admin', 'view'),
                              'text' => $this->__('Modules list'),
                              'class' => 'z-icon-es-view',
@@ -1277,7 +1277,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Security check
         if (!System::isInstalling()) {
-            if (!SecurityUtil::checkPermission('Extensions::', '::', ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError();
             }
         }
@@ -1379,7 +1379,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
         // Security check
-        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -1710,7 +1710,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
         // Security check
-        if (!SecurityUtil::checkPermission('Extensions::', "::$args[id]", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "::$args[id]", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

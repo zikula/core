@@ -31,7 +31,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('SettingsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Main settings'), 'class' => 'z-icon-es-config');
             $links[] = array('url' => ModUtil::url('SettingsModule', 'admin', 'multilingual'), 'text' => $this->__('Localisation settings'), 'class' => 'z-icon-es-locale');
         }

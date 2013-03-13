@@ -56,7 +56,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Security check
         // this function is called during the init process so we have to check in _ZINSTALLVER
         // is set as alternative to the correct permission check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
+        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:$args[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -129,7 +129,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
+        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::', "$args[bkey]:$args[title]:", ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -188,7 +188,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         $item = ModUtil::apiFunc('BlocksModule', 'user', 'get', array('bid' => $block['bid']));
-        if (!SecurityUtil::checkPermission('Blocks::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$item[bkey]:$item[title]:$item[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -254,7 +254,7 @@ class AdminApi extends \Zikula_AbstractApi
         $block = ModUtil::apiFunc('BlocksModule', 'user', 'get', array('bid' => $args['bid']));
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$block[bkey]:$block[title]:$block[bid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -289,7 +289,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('Blocks::position', "$args[name]::", ACCESS_ADD)) {
+        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$args[name]::", ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -337,7 +337,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$item[pid]", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$item[name]::$item[pid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -373,7 +373,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $position = ModUtil::apiFunc('BlocksModule', 'user', 'getposition', array('pid' => $args['pid']));
 
-        if (!SecurityUtil::checkPermission('Blocks::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$position[name]::$position[pid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -413,20 +413,20 @@ class AdminApi extends \Zikula_AbstractApi
                     'text' => $this->__f('Position \"%s\" ', $blocksposition['name']));
         }
 
-        if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
+        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             $links[] = array('url' => ModUtil::url('BlocksModule', 'admin', 'view'),
                     'text' => $this->__('Blocks list'),
                     'class' => 'z-icon-es-view',
                     'links' => $submenulinks);
         }
 
-        if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('BlocksModule', 'admin', 'newblock'), 'text' => $this->__('Create new block'), 'class' => 'z-icon-es-new');
         }
-        if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('BlocksModule', 'admin', 'newposition'), 'text' => $this->__('Create new block position'), 'class' => 'z-icon-es-new');
         }
-        if (SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('BlocksModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 

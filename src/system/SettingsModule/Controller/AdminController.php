@@ -55,7 +55,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -80,7 +80,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // security check
-        if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -170,7 +170,7 @@ class AdminController extends \Zikula_AbstractController
     public function multilingualAction()
     {
         // security check
-        if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -191,7 +191,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // security check
-        if (!SecurityUtil::checkPermission('Settings::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

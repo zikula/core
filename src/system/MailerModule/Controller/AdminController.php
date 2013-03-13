@@ -58,7 +58,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
 
         $form = FormUtil::newForm('MailerModule', $this);
 
@@ -71,7 +71,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function testconfigAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
 
         $form = FormUtil::newForm('MailerModule', $this);
 

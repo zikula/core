@@ -42,7 +42,7 @@ Dynamic elements are inserted in the same way as any other element of the menu. 
 
 This plugin generates a list of admin modules - similar to adminnav block.
 
-    {ext:Blocks:adminlinks[:[flat,category]]}
+    {ext:ZikulaBlocksModule:adminlinks[:[flat,category]]}
 
 *   Last parameter is optional. It can be flat and/or category separated by a comma. 
     *   **flat** - will add the admin links in the current menu. Without flat the links are grouped one level down.
@@ -53,7 +53,7 @@ This plugin generates a list of admin modules - similar to adminnav block.
 
 Plugin for Content module. This plugin generates a list of Content pages.
 
-    {ext:Blocks:Content:[groupby=page&parent=1]}
+    {ext:ZikulaBlocksModule:Content:[groupby=page&parent=1]}
 
 *   Parameters in square brackets are optional: 
     *   **Groupby** - allows to choose grouping method, allow values are menuitem (default) or page.
@@ -65,7 +65,7 @@ Note that this plugin considers if pages are enabled for display in menu. So if 
 
 This plugin generates a list of installed modules - similar to adequate option in standard menu.
 
-    {ext:Blocks:modules:[flat]}
+    {ext:ZikulaBlocksModule:modules:[flat]}
 
 Parameter **flat** is optional and allows you to disable links grouping.
 
@@ -73,7 +73,7 @@ Parameter **flat** is optional and allows you to disable links grouping.
 
 Plugin for News module, generates a list of useful links to module and a list of categories.
 
-    {ext:Blocks:news:[flat=BOOL&links=view,add,cat,arch|ALL]}
+    {ext:ZikulaBlocksModule:news:[flat=BOOL&links=view,add,cat,arch|ALL]}
 
 *   Parameters in square brackets are optional:
 *   **Flat** - true or false, default is false, the parameter allows you to disable links grouping
@@ -92,6 +92,6 @@ For logged-in users: Your Account, Profile, Private messages, Logout.
 
 For not logged users: Your Account, Login, Register, Lost password.
 
-    {ext:Blocks:userlinks:[flat]}
+    {ext:ZikulaBlocksModule:userlinks:[flat]}
 
 Parameter **flat** is optional and allows you to disable links grouping.

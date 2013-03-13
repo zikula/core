@@ -654,10 +654,10 @@ Send a request from JS:
 
 Process the request in the module controller:
     // test permissions and throw an exception on failure (in a Zikula_Base instance)
-    $this->throwForbiddenUnless(SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
+    $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN), LogUtil::getErrorMsgPermission());
 
     // test permissions and throw an exception on failure (outside a Zikula_Base instance)
-    if (!SecurityUtil::checkPermission('Permissions::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
         throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
     }
 

@@ -2696,7 +2696,7 @@ function pnVarCensor()
 function theme_userapi_clear_compiled()
 {
     // Security check
-    if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -2717,7 +2717,7 @@ function theme_userapi_clear_compiled()
 function theme_userapi_clear_cache()
 {
     // Security check
-    if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -2738,7 +2738,7 @@ function theme_userapi_clear_cache()
 function theme_userapi_render_clear_compiled()
 {
     // Security check
-    if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 
@@ -2761,7 +2761,7 @@ function theme_userapi_render_clear_compiled()
 function theme_userapi_render_clear_cache($args)
 {
     // Security check
-    if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
 

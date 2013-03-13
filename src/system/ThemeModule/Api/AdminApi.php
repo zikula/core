@@ -48,10 +48,10 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ThemeModule', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ThemeModule', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
         }
 
@@ -66,7 +66,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function updatesettings($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -92,7 +92,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function setasdefault($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -141,7 +141,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', "$themename::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -189,7 +189,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', "$themeinfo[name]::", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -249,7 +249,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', $themename .'::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', $themename .'::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -280,7 +280,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', "$themename::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -318,7 +318,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', "$themename", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename", ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -355,7 +355,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Security check
-        if (!SecurityUtil::checkPermission('Theme::', "$themeinfo[name]::pageconfigurations", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themeinfo[name]::pageconfigurations", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 

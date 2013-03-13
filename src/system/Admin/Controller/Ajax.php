@@ -23,7 +23,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
     public function changeModuleCategoryAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
 
         $moduleID = $this->request->request->get('modid');
         $newParentCat = (int)$this->request->request->get('cat');
@@ -67,7 +67,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
     public function addCategoryAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
 
         //get form information
         $name = trim($this->request->request->get('name'));
@@ -78,7 +78,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $cats = array();
         $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $cats[] = $item;
             }
         }
@@ -90,7 +90,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         }
 
         // Security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$name::", ACCESS_ADD));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD));
 
         //create the category
         $result = ModUtil::apiFunc('Admin', 'admin', 'create', array('name' => $name, 'description' => ''));
@@ -121,7 +121,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $cid = trim($this->request->request->get('cid'));
 
         //check user has permission to delete this
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "::$cid", ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::$cid", ACCESS_DELETE));
 
         //find the category corresponding to the cid.
         $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $cid));
@@ -129,7 +129,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$item[name]::$item[cid]", ACCESS_DELETE));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_DELETE));
 
         $output = array();
 
@@ -160,7 +160,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $name = trim($this->request->request->get('name'));
 
         //security checks
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$name::$cid", ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$name::$cid", ACCESS_EDIT));
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || $cid == '' || !isset($name) || $name == '') {
@@ -173,7 +173,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $cats = array();
         $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $cats[] = $item;
             }
         }
@@ -198,7 +198,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('Error! No such category found.'));
         }
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::Category', "$item[name]::$item[cid]", ACCESS_EDIT));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_EDIT));
 
         // update the category using the info from the database and from the form.
         $update = ModUtil::apiFunc('Admin', 'admin', 'update', array('cid' => $cid, 'name' => $name, 'description' => $item['description']));
@@ -223,7 +223,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
         $this->checkAjaxToken();
 
         //check user has permission to change the initially selected category
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
 
         //get passed cid
         $cid = trim($this->request->request->get('cid'));
@@ -253,7 +253,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
 
         $data = $this->request->request->get('admintabs');
 
@@ -274,7 +274,7 @@ class Admin_Controller_Ajax extends Zikula_Controller_AbstractAjax
     {
         $this->checkAjaxToken();
 
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN));
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN));
 
         $data = $this->request->request->get('modules');
 

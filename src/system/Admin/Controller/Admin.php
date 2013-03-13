@@ -48,7 +48,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function viewAction($args = array())
     {
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -60,7 +60,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
                                           array('startnum' => $startnum,
                                                 'numitems' => $itemsperpage));
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
@@ -82,7 +82,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function newcatAction()
     {
-        if (!SecurityUtil::checkPermission('Admin::Item', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Item', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -105,7 +105,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $category = FormUtil::getPassedValue('category', isset($args['category']) ? $args['category'] : null, 'POST');
 
         // Security check
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[name]::", ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]::", ACCESS_ADD)) {
             return LogUtil::registerPermissionError ();
         }
 
@@ -142,7 +142,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! No such category found.'), 404);
         }
 
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[name]::$cid", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]::$cid", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -170,7 +170,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             $category['cid'] = $category['objectid'];
         }
 
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[name]:$category[cid]", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]:$category[cid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError ();
         }
 
@@ -218,7 +218,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! No such category found.'), 404);
         }
 
-        if (!SecurityUtil::checkPermission('Admin::Category', "$category[name]::$cid", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$category[name]::$cid", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -281,7 +281,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $this->view->assign('menu', $this->categorymenuAction(array('acid' => $acid)));
 
         // Check to see if we have access to the requested category.
-        if (!SecurityUtil::checkPermission("Admin::", "::$acid", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission("ZikulaAdminModule::", "::$acid", ACCESS_ADMIN)) {
             $acid = -1;
         }
 
@@ -297,7 +297,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
             $acid = $this->getVar('startcategory');
 
             // Check to see if we have access to the requested category.
-            if (!SecurityUtil::checkPermission("Admin::", "::$acid", ACCESS_ADMIN)) {
+            if (!SecurityUtil::checkPermission("ZikulaAdminModule::", "::$acid", ACCESS_ADMIN)) {
                 return LogUtil::registerPermissionError(System::getHomepageUrl());
             }
 
@@ -358,7 +358,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function modifyconfigAction()
     {
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -369,7 +369,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $categories = array();
         $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
@@ -411,7 +411,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -481,7 +481,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         $categories = array();
         $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
         foreach ($items as $item) {
-            if (SecurityUtil::checkPermission('Admin::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
@@ -586,7 +586,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
      */
     public function helpAction()
     {
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

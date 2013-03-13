@@ -33,7 +33,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getAllIntrusions($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
             return array();
         }
 
@@ -108,7 +108,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function countAllIntrusions($args)
     {
         // Security check
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_OVERVIEW)) {
+        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_OVERVIEW)) {
             return 0;
         }
 
@@ -156,7 +156,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function purgeidslog()
     {
-        if (!SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
             return false;
         }
 
@@ -176,7 +176,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('SecurityCenter::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
             $links[] = array('url' => ModUtil::url('SecurityCenterModule', 'admin', 'allowedhtml'), 'text' => $this->__('Allowed HTML settings'), 'class' => 'z-icon-es-options');
             $links[] = array('url' => ModUtil::url('SecurityCenterModule', 'admin', 'viewidslog'),

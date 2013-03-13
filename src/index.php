@@ -151,8 +151,8 @@ function __frontcontroller_ajax(Request $request)
     $modinfo = ModUtil::getInfoFromName($module);
 
     // Check for site closed
-    if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'UsersModule' && $func == 'siteofflogin')) {
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
+    if (System::getVar('siteoff') && !SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'UsersModule' && $func == 'siteofflogin')) {
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
         }
         $response = new \Zikula\Core\Response\Ajax\UnavailableResponse(__('The site is currently off-line.'));

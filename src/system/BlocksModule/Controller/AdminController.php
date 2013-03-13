@@ -59,7 +59,7 @@ class AdminController extends \Zikula_AbstractController
     public function viewAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -206,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
         $blockinfo = BlockUtil::getBlockInfo($bid);
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -428,7 +428,7 @@ class AdminController extends \Zikula_AbstractController
     public function newblockAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -542,7 +542,7 @@ class AdminController extends \Zikula_AbstractController
         $blockinfo = BlockUtil::getBlockInfo($bid);
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', "$blockinfo[bkey]:$blockinfo[title]:$blockinfo[bid]", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -588,7 +588,7 @@ class AdminController extends \Zikula_AbstractController
     public function newpositionAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -609,7 +609,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::position', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -646,7 +646,7 @@ class AdminController extends \Zikula_AbstractController
         $position = ModUtil::apiFunc('BlocksModule', 'user', 'getposition', array('pid' => $pid));
 
         // Security check
-        if (!SecurityUtil::checkPermission("Blocks::$position[name]", '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission("ZikulaBlocksModule::$position[name]", '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -742,7 +742,7 @@ class AdminController extends \Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! No such block position found.'), 404);
         }
 
-        if (!SecurityUtil::checkPermission('Blocks::position', "$item[name]::$pid", ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::position', "$item[name]::$pid", ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -772,7 +772,7 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -793,7 +793,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Blocks::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

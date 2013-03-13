@@ -31,10 +31,10 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('MailerModule', 'admin', 'testconfig'), 'text' => $this->__('Test current settings'), 'class' => 'z-icon-es-mail');
         }
-        if (SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('MailerModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 

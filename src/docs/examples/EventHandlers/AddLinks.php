@@ -42,7 +42,7 @@ class Users_EventHandlers_AddLinks extends Zikula_AbstractEventHandler
             return;
         }
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             $event->data[] = array('url' => ModUtil::url('UsersModule', 'admin', 'somelink'), 'text' => __('Here is another link'));
         }
     }

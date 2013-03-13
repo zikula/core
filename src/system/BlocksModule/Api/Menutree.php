@@ -31,7 +31,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return list of admin modules
      *
      * Syntax used in menutree
-     * {ext:Blocks:adminlinks:[flat,category]}
+     * {ext:ZikulaBlocksModule:adminlinks:[flat,category]}
      * Last param is optional.  It can be flat and/or category separated by a comma.
      * 'flat' will add the admin links in the current menu.  Without 'flat' the links are grouped one level down
      * 'category' additionally groups the admin links by their category.
@@ -63,7 +63,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             return false;
         }
 
-        if (!SecurityUtil::checkPermission('Admin::', "::", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', "::", ACCESS_EDIT)) {
             return array(); // Since no permission, return empty links
         }
 
@@ -103,7 +103,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
 
             foreach ($categories as $item) {
-                if (SecurityUtil::checkPermission('Admin::', "$item[catname]::$item[cid]", ACCESS_EDIT)) {
+                if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[catname]::$item[cid]", ACCESS_EDIT)) {
                     // Set up the menu information for this category
                     $catinfo[$item['cid']] = array (
                             'id' => $idoffset, // will need this to be a parent
@@ -283,7 +283,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return Content pages
      *
      * Syntax used in menutree
-     * {ext:Blocks:Content:[groupby=page&parent=1]}
+     * {ext:ZikulaBlocksModule:Content:[groupby=page&parent=1]}
      * Params in [] are optional and
      *      groupby = menuitem (default) or page, all other values stands for none
      *      parent - id of parent node - this allows to get specified node of Content pages
@@ -382,7 +382,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return list of user modules
      *
      * Syntax used in menutree
-     * {ext:Blocks:modules:[flat]}
+     * {ext:ZikulaBlocksModule:modules:[flat]}
      * Last param is optional
      *
      * @param  array  $args['item']      menu node to be replaced
@@ -452,7 +452,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return some useful News links
      *
      * Syntax used in menutree
-     * {ext:Blocks:news:[flat=BOOL&links=view,add,cat,arch|ALL]}
+     * {ext:ZikulaBlocksModule:news:[flat=BOOL&links=view,add,cat,arch|ALL]}
      * Params in [] are optional and
      *      flat - true or false, if set to true links are ungrouped (default is false)
      *      links - list of elements, default is ALL, avaiable items:
@@ -647,7 +647,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * Return some common user links
      *
      * Syntax used in menutree
-     * {ext:Blocks:userlinks:[flat]}
+     * {ext:ZikulaBlocksModule:userlinks:[flat]}
      * Last param is optional
      *
      * This plugin generates a list of  some common user links. The list looks as follows:

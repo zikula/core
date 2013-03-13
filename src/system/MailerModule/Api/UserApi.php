@@ -235,7 +235,7 @@ class UserApi extends \Zikula_AbstractApi
             // message not send
             $args['errorinfo'] = ($mail->IsError()) ? $mail->ErrorInfo : __('Error! An unidentified problem occurred while sending the e-mail message.');
             LogUtil::log(__f('Error! A problem occurred while sending an e-mail message from \'%1$s\' (%2$s) to (%3$s) (%4$s) with the subject line \'%5$s\': %6$s', $args));
-            if (SecurityUtil::checkPermission('Mailer::', '::', ACCESS_ADMIN)) {
+            if (SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
                 return LogUtil::registerError($args['errorinfo']);
             } else {
                 return LogUtil::registerError(__('Error! A problem occurred while sending the e-mail message.'));
