@@ -1,0 +1,23 @@
+{
+    "name": "zikula/pagelock-module",
+    "description": "Zikula Forms Pagelock Module",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "PageLockModule\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "PageLockModule\\PageLockModule"
+        }
+    }
+}

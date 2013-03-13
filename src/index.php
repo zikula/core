@@ -110,7 +110,7 @@ switch (true) {
 
     case ($response->getStatusCode() == 403):
         if (!UserUtil::isLoggedIn()) {
-            $url = ModUtil::url('Users', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
+            $url = ModUtil::url('UsersModule', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
             $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
             $response->send();
@@ -122,14 +122,14 @@ switch (true) {
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), 404, null);
         }
-        $response->setContent(ModUtil::func('Errors', 'user', 'main', array('message' => $e->getMessage(), 'exception' => $e)));
+        $response->setContent(ModUtil::func('ErrorsModule', 'user', 'main', array('message' => $e->getMessage(), 'exception' => $e)));
         break;
 
     case ($response->getStatusCode() == 500):
 
     default:
         LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), 500, null);
-        $response = ModUtil::func('Errors', 'user', 'main', array('message' => $e->getMessage(), 'exception' => $e));
+        $response = ModUtil::func('ErrorsModule', 'user', 'main', array('message' => $e->getMessage(), 'exception' => $e));
         break;
 }
 
@@ -151,7 +151,7 @@ function __frontcontroller_ajax(Request $request)
     $modinfo = ModUtil::getInfoFromName($module);
 
     // Check for site closed
-    if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin')) {
+    if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'UsersModule' && $func == 'siteofflogin')) {
         if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
         }

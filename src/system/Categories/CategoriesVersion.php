@@ -24,6 +24,7 @@ class CategoriesVersion extends \Zikula_AbstractVersion
         //! module name that appears in URL
         $meta['url']            = $this->__('categories');
         $meta['version']        = '1.2.1';
+        $meta['core_min'] = '1.3.6';
         $meta['securityschema'] = array('Categories::Category' => 'Category ID:Category Path:Category IPath');
 
         return $meta;

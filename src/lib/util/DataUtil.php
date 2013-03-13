@@ -287,7 +287,7 @@ class DataUtil
         }
 
         if (!isset($outputfilter)) {
-            if (ModUtil::available('SecurityCenter') && !System::isInstalling()) {
+            if (ModUtil::available('SecurityCenterModule') && !System::isInstalling()) {
                 $outputfilter = System::getVar('outputfilter');
             } else {
                 $outputfilter = 0;

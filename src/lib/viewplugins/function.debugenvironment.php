@@ -33,11 +33,11 @@ function smarty_function_debugenvironment($params, Zikula_View $view)
     $view->assign('_ZSession_vals', array_values($_SESSION) );
 
     $view->assign('_smartyversion', $view->_version);
-    $_theme = ModUtil::getInfoFromName('Theme');
+    $_theme = ModUtil::getInfoFromName('ThemeModule');
     $view->assign('_themeversion', $_theme['version']);
 
-    $view->assign('_force_compile', (ModUtil::getVar('Theme', 'force_compile')) ? __('On') : __('Off'));
-    $view->assign('_compile_check', (ModUtil::getVar('Theme', 'compile_check')) ? __('On') : __('Off'));
+    $view->assign('_force_compile', (ModUtil::getVar('ThemeModule', 'force_compile')) ? __('On') : __('Off'));
+    $view->assign('_compile_check', (ModUtil::getVar('ThemeModule', 'compile_check')) ? __('On') : __('Off'));
 
     $view->assign('_baseurl', System::getBaseUrl());
     $view->assign('_baseuri', System::getBaseUri());

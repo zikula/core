@@ -86,7 +86,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
 
         LogUtil::registerStatus($this->__('Done! Saved plugin configuration.'));
 
-        $this->redirect(ModUtil::url('Extensions', 'adminplugin', 'dispatch', array(
+        $this->redirect(ModUtil::url('ExtensionsModule', 'adminplugin', 'dispatch', array(
             '_plugin' => 'Imagine',
             '_action' => 'configure'
         )));
@@ -101,7 +101,7 @@ class SystemPlugin_Imagine_Configuration extends Zikula_Controller_AbstractPlugi
         $manager->cleanupThumbs();
         $this->registerStatus($this->__('Done! Imagine thumbnails were cleanup!'));
 
-        $this->redirect(ModUtil::url('Extensions', 'adminplugin', 'dispatch', array(
+        $this->redirect(ModUtil::url('ExtensionsModule', 'adminplugin', 'dispatch', array(
             '_plugin' => 'Imagine',
             '_action' => 'configure'
         )));

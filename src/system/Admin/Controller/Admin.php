@@ -637,10 +637,10 @@ class Admin_Controller_Admin extends Zikula_AbstractController
         }
         $data['temp_htaccess'] = $temp_htaccess;
 
-        $data['scactive']  = (bool)ModUtil::available('SecurityCenter');
+        $data['scactive']  = (bool)ModUtil::available('SecurityCenterModule');
 
         // check for outputfilter
-        $data['useids'] = (bool)(ModUtil::available('SecurityCenter') && System::getVar('useids') == 1);
+        $data['useids'] = (bool)(ModUtil::available('SecurityCenterModule') && System::getVar('useids') == 1);
         $data['idssoftblock'] = System::getVar('idssoftblock');
 
         return $data;
@@ -693,7 +693,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         global $ZConfig;
 
-        $modvars = ModUtil::getVar('Theme');
+        $modvars = ModUtil::getVar('ThemeModule');
 
         $data = array();
         $data['devmode']                     = (bool) $ZConfig['System']['development'];

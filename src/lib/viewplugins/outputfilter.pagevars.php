@@ -31,7 +31,7 @@ function smarty_outputfilter_pagevars($source, $view)
     $return = '';
 
     $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-    $cssjscombine = ModUtil::getVar('Theme', 'cssjscombine', false);
+    $cssjscombine = ModUtil::getVar('ThemeModule', 'cssjscombine', false);
     // get list of stylesheets and scripts from JCSSUtil
     $jcss = JCSSUtil::prepareJCSS($cssjscombine,$view->cache_dir);
 

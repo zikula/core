@@ -41,19 +41,19 @@ class ZikulaKernel extends Kernel
 
     private function registerCoreModules(array &$bundles)
     {
-        $bundles[] = new Blocks\BlocksModule();
+        $bundles[] = new BlocksModule\BlocksModule();
         $bundles[] = new Categories\CategoriesModule();
-        $bundles[] = new Errors\ErrorsModule();
-        $bundles[] = new Extensions\ExtensionsModule();
-        $bundles[] = new Groups\GroupsModule();
-        $bundles[] = new Mailer\MailerModule();
-        $bundles[] = new PageLock\PageLockModule();
-        $bundles[] = new Permissions\PermissionsModule();
-        $bundles[] = new Search\SearchModule();
-        $bundles[] = new SecurityCenter\SecurityCenterModule();
-        $bundles[] = new Settings\SettingsModule();
-        $bundles[] = new Theme\ThemeModule();
-        $bundles[] = new Users\UsersModule();
-        $bundles[] = new Andreas08\Andreas08Theme();
+        $bundles[] = new ErrorsModule\ErrorsModule();
+        $bundles[] = new ExtensionsModule\ExtensionsModule();
+        $bundles[] = new GroupsModule\GroupsModule();
+        $bundles[] = new MailerModule\MailerModule();
+        $bundles[] = new PageLockModule\PageLockModule();
+        $bundles[] = new PermissionsModule\PermissionsModule();
+        $bundles[] = new SearchModule\SearchModule();
+        $bundles[] = new SecurityCenterModule\SecurityCenterModule();
+        $bundles[] = new SettingsModule\SettingsModule();
+        $bundles[] = new ThemeModule\ThemeModule();
+        $bundles[] = new UsersModule\UsersModule();
+        $bundles[] = new Andreas08Theme\Andreas08Theme();
     }
 }

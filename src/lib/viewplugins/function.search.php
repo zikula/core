@@ -67,7 +67,7 @@ function smarty_function_search($params, Zikula_View $view)
     $button_class     = (!isset($params['button_class']) || empty($params['button_class'])) ? '' : 'class="'.DataUtil::formatForDisplay($params['button_class']).'" ';
 
     // Staring the search box
-    $searchbox  = '<form ' . $class . ' action="'.DataUtil::formatForDisplay(ModUtil::url('Search', 'user', 'search')).'" method="post">'."\n";
+    $searchbox  = '<form ' . $class . ' action="'.DataUtil::formatForDisplay(ModUtil::url('SearchModule', 'user', 'search')).'" method="post">'."\n";
     $searchbox .= ' <div>'."\n";
     $searchbox .= '  <input type="hidden" name="overview" value="1" />'."\n";
     $searchbox .= '  <input type="hidden" name="bool" value="'.DataUtil::formatForDisplay($bool).'" />'."\n";

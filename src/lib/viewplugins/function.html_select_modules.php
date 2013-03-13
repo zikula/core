@@ -66,7 +66,7 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
 
     // process our list of modules for input to the html_options plugin
     $moduleslist = array();
-    $installerArray = array('Blocks', 'Errors', 'Permissions', 'Categories', 'Groups', 'Theme', 'Users', 'Search');
+    $installerArray = array('BlocksModule', 'ErrorsModule', 'PermissionsModule', 'Categories', 'GroupsModule', 'ThemeModule', 'UsersModule', 'SearchModule');
     if (!empty($modules)) {
         foreach ($modules as $module) {
             if (!(System::isInstalling() && in_array($module['name'], $installerArray))) {

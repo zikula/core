@@ -332,7 +332,7 @@ function smarty_function_pager($params, Zikula_View $view)
         $pager['itemEnd'] = $pager['total'];
     }
 
-    $modview = $params['owner'] && ModUtil::available($params['owner']) ? $params['owner'] : 'Theme';
+    $modview = $params['owner'] && ModUtil::available($params['owner']) ? $params['owner'] : 'ThemeModule';
 
     $renderer = Zikula_View::getInstance($modview);
     $renderer->setCaching(Zikula_View::CACHE_DISABLED);

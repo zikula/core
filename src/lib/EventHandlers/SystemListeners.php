@@ -67,7 +67,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if (SessionUtil::hasExpired()) {
             // Session has expired, display warning
-            $response = new Response(ModUtil::apiFunc('Users', 'user', 'expiredsession', 403));
+            $response = new Response(ModUtil::apiFunc('UsersModule', 'user', 'expiredsession', 403));
             $response = Zikula_View_Theme::getInstance()->themefooter($response);
             $response->send();
             System::shutdown();
@@ -88,7 +88,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
 
         // Check for site closed
-        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
+        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('Settings::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'UsersModule' && $func == 'siteofflogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
             if (SecurityUtil::checkPermission('Users::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
                 UserUtil::logout();
             }

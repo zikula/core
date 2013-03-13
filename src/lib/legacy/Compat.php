@@ -2701,7 +2701,7 @@ function theme_userapi_clear_compiled()
     }
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_compiled', 'Theme::clear_compiled()')), E_USER_DEPRECATED);
-    $Theme = Theme::getInstance('Theme');
+    $Theme = Theme::getInstance('ThemeModule');
     $res   = $Theme->clear_compiled();
 
     return $res;
@@ -2722,7 +2722,7 @@ function theme_userapi_clear_cache()
     }
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_cache', 'Theme::clear_all_cache()')), E_USER_DEPRECATED);
-    $Theme = Theme::getInstance('Theme');
+    $Theme = Theme::getInstance('ThemeModule');
     $res   = $Theme->clear_all_cache();
 
     return $res;
@@ -3625,7 +3625,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginUsing()')), E_USER_DEPRECATED);
 
     $authenticationMethod = array(
-        'modname'   => 'Users',
+        'modname'   => 'UsersModule',
     );
     if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_EMAIL) {
         $authenticationMethod['method'] = 'email';

@@ -567,7 +567,7 @@ class CategoriesInstaller extends \Zikula_AbstractInstaller
             'is_leaf' => 0,
             'value' => '',
             'sort_value' => 31,
-            'name' => 'Users',
+            'name' => 'UsersModule',
             'display_name' => $this->makeDisplayName($this->__('Users')),
             'display_desc' => $this->makeDisplayDesc(),
             'path' => '/__SYSTEM__/Users',

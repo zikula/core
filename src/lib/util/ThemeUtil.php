@@ -12,6 +12,9 @@
  * information regarding copyright and licensing.
  */
 
+use ThemeModule\Entity\ThemeEntity;
+use Doctrine\ORM\Query;
+
 /**
  * ThemeUtil
  */
@@ -82,9 +85,9 @@ class ThemeUtil
      * self::FILTER_SYSTEM - get system themes
      * self::FILTER_ADMIN - get admin themes
      *
-     * @param constant $filter Filter list of returned themes by type.
-     * @param constant $state  Theme state.
-     * @param constant $type   Theme type.
+     * @param integer $filter Filter list of returned themes by type.
+     * @param integer $state  Theme state.
+     * @param integer $type   Theme type.
      *
      * @return array Available themes.
      */
@@ -94,32 +97,35 @@ class ThemeUtil
 
         $key = md5((string)$filter . (string)$state . (string)$type);
 
+        /** @var $em Doctrine\ORM\EntityManager */
+        $em = ServiceUtil::get('doctrine.entitymanager');
+
         if (empty($themesarray[$key])) {
-            $dbtable = DBUtil::getTables();
-            $themescolumn = $dbtable['themes_column'];
             $whereargs = array();
             if ($state != self::STATE_ALL) {
-                $whereargs[] = "$themescolumn[state] = '" . DataUtil::formatForStore($state) . "'";
+                $whereargs[] = "t.state = '" . DataUtil::formatForStore($state) . "'";
             }
             if ($type != self::TYPE_ALL) {
-                $whereargs[] = "$themescolumn[type] = '" . (int)DataUtil::formatForStore($type) . "'";
+                $whereargs[] = "t.type = '" . (int)DataUtil::formatForStore($type) . "'";
             }
             if ($filter == self::FILTER_USER) {
-                $whereargs[] = "$themescolumn[user] = '1'";
+                $whereargs[] = "t.user = '1'";
             }
             if ($filter == self::FILTER_SYSTEM) {
-                $whereargs[] = "$themescolumn[system] = '1'";
+                $whereargs[] = "t.system = '1'";
             }
             if ($filter == self::FILTER_ADMIN) {
-                $whereargs[] = "$themescolumn[admin] = '1'";
+                $whereargs[] = "t.admin = '1'";
             }
 
-            $where = implode($whereargs, ' AND ');
-            $orderBy = "ORDER BY $themescolumn[name]";
-            // define the permission filter to apply
-            $permFilter = array(
-                    array('realm' => 0, 'component_left' => 'Theme', 'instance_left' => 'name', 'level' => ACCESS_READ));
-            $themesarray[$key] = DBUtil::selectObjectArray('themes', $where, $orderBy, 0, -1, 'directory', $permFilter);
+            $where = $whereargs ? 'WHERE '.implode($whereargs, ' AND ') : '';
+            $orderBy = "ORDER BY t.name ASC";
+            $query = $em->createQuery('SELECT t FROM ThemeModule\Entity\ThemeEntity t '.$where.' '.$orderBy);
+            $array = $query->execute();
+            foreach ($array as $value) {
+                $themesarray[$key][$value['directory']] = $value->toArray();
+            }
+
             if (!$themesarray[$key]) {
                 return false;
             }
@@ -234,8 +240,11 @@ class ThemeUtil
     {
         static $themestable;
         if (!isset($themestable) || System::isInstalling()) {
-            $array = DBUtil::selectObjectArray('themes', '', '', -1, -1, 'id');
+            /** @var $em Doctrine\ORM\EntityManager */
+            $em = ServiceUtil::get('doctrine.entitymanager');
+            $array = $em->getRepository('ThemeModule\Entity\ThemeEntity')->findAll();
             foreach ($array as $theme) {
+                $theme = $theme->toArray();
                 $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);
                 $themestable[$theme['id']] = $theme;
             }

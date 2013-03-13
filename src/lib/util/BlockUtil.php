@@ -42,7 +42,7 @@ class BlockUtil
 
         // get the block position
         if (empty($positions)) {
-            $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+            $positions = ModUtil::apiFunc('BlocksModule', 'user', 'getallpositions');
         }
 
         if (!isset($positions[$side])) {
@@ -55,7 +55,7 @@ class BlockUtil
 
         // get all block placements
         if (empty($blockplacements)) {
-            $blockplacements = ModUtil::apiFunc('Blocks', 'user', 'getallplacements');
+            $blockplacements = ModUtil::apiFunc('BlocksModule', 'user', 'getallplacements');
         }
 
         // get variables from input
@@ -232,7 +232,7 @@ class BlockUtil
             $blockinfo['title'] = '';
         }
 
-        if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')) {
+        if (UserUtil::isLoggedIn() && ModUtil::getVar('BlocksModule', 'collapseable') == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')) {
             if (!isset($themeinfo)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 $themedir = DataUtil::formatForOS($themeinfo['directory']);
@@ -261,12 +261,12 @@ class BlockUtil
             $checkUserBlock = self::checkUserBlock($blockinfo);
             if ($checkUserBlock) {
                 if (!empty($blockinfo['title'])) {
-                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
+                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('BlocksModule', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
                 }
             } else {
                 $blockinfo['content'] = '';
                 if (!empty($blockinfo['title'])) {
-                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $downb . '</a>';
+                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('BlocksModule', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $downb . '</a>';
                 }
             }
             // end collapseable menu config
@@ -509,7 +509,7 @@ class BlockUtil
      */
     public static function getBlocksInfo()
     {
-        return ModUtil::apiFunc('Blocks', 'user', 'getall');
+        return ModUtil::apiFunc('BlocksModule', 'user', 'getall');
     }
 
     /**

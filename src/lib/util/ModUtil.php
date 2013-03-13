@@ -99,7 +99,7 @@ class ModUtil
         self::$modvars = new ArrayObject(array(
                 EventUtil::HANDLERS => array(),
                 ServiceUtil::HANDLERS => array(),
-                'Settings'          => array(),
+                'SettingsModule'          => array(),
         ));
 
         // don't init vars during the installer or upgrader
@@ -612,7 +612,7 @@ class ModUtil
             foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
-                    || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
+                    || (preg_match('/^(extensionsmodule|admin|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     self::$cache['modsarray'][$mod['name']] = $mod;
                 }
@@ -1053,7 +1053,7 @@ class ModUtil
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
-            $modname = 'Extensions';
+            $modname = 'ExtensionsModule';
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
@@ -1261,7 +1261,7 @@ class ModUtil
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
-            $modname = 'Extensions';
+            $modname = 'ExtensionsModule';
         }
 
         //get the module info
@@ -1460,7 +1460,7 @@ class ModUtil
         }
 
         if ((isset(self::$cache['modstate'][$modname]) &&
-                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
+                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensionsmodule|adminmodule|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $modname) &&
                 (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
 
@@ -1931,12 +1931,18 @@ class ModUtil
                 return false;
             }
 
-            if (is_dir("$modpath/$osdir/lib")) {
+            if (file_exists("$modpath/$osdir/$osdir.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
             }
+
             if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
             }
+
+            if (is_dir("$modpath/$osdir/lib")) {
+                self::$ooModules[$moduleName]['oo'] = true;
+            }
+
             if (file_exists("$modpath/$osdir/Version.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
             }
@@ -1978,7 +1984,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'blocks', 'categories', 'errors', 'extensions', 'groups', 'mailer', 'pagelock', 'permissions', 'search', 'securitycenter', 'settings', 'theme', 'users'))) {
+        if (in_array(strtolower($moduleName), array('admin', 'blocksmodule', 'categories', 'errorsmodule', 'extensionsmodule', 'groupsmodule', 'mailermodule', 'pagelockmodule', 'permissionsmodule', 'searchmodule', 'securitycentermodule', 'settingsmodule', 'thememodule', 'usersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';

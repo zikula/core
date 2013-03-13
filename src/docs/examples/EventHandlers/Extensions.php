@@ -47,7 +47,7 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
         }
 
         // Zikula Modules and Themes versions
-        $view = Zikula_View::getInstance('Users');
+        $view = Zikula_View::getInstance('UsersModule');
         $view->assign('mods', ModuleUtil::getModules());
         $view->assign('themes', ThemeUtil::getAllThemes());
 

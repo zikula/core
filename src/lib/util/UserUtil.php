@@ -13,7 +13,7 @@
  */
 
 use Zikula\Core\Event\GenericEvent;
-use Users\Constant as UsersConstant;
+use UsersModule\Constant as UsersConstant;
 use Zikula_Exception_Fatal as FatalException;
 use Zikula_Exception_Redirect as RedirectException;
 use Zikula_Exception_Forbidden as ForbiddenException;
@@ -112,7 +112,7 @@ class UserUtil
     public static function getUsers($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $users = $em->getRepository('Users\Entity\UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $users = $em->getRepository('UsersModule\Entity\UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($users as $user) {
@@ -150,7 +150,7 @@ class UserUtil
      */
     public static function getGroup($gid)
     {
-        return ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        return ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
     }
 
     /**
@@ -167,7 +167,7 @@ class UserUtil
     public static function getGroups($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey='gid')
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $groups = $em->getRepository('Groups\Entity\GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
+        $groups = $em->getRepository('GroupsModule\Entity\GroupEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
         $items = array();
         foreach ($groups as $group) {
@@ -294,7 +294,7 @@ class UserUtil
             return array();
         }
 
-        return ModUtil::apiFunc('Groups', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
+        return ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
     }
 
     /**
@@ -342,7 +342,7 @@ class UserUtil
             return array();
         }
 
-        $group = ModUtil::apiFunc('Groups', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
 
         $members = $group['members'];
 
@@ -555,7 +555,7 @@ class UserUtil
             'pass'     => $userEnteredPassword,
         );
         $authenticationMethod = array(
-            'modname'   => 'Users',
+            'modname'   => 'UsersModule',
         );
 
         if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_LOGIN_METHOD, UsersConstant::DEFAULT_LOGIN_METHOD) == UsersConstant::LOGIN_METHOD_EMAIL) {
@@ -719,7 +719,7 @@ class UserUtil
             if (!$userObj) {
                 // Need to make sure the Users module stuff is loaded and available, especially if we are authenticating during
                 // an upgrade or install.
-                ModUtil::loadApi('Users', 'user', true);
+                ModUtil::loadApi('UsersModule', 'user', true);
 
                 // The user's credentials have authenticated with the authentication module's method, but
                 // now we have to check the account status itself. If the account status would not allow the
@@ -914,7 +914,7 @@ class UserUtil
                     if (isset($eventData['retry']) && $eventData['retry']) {
                         $sessionVarName = 'Users_Controller_User_login';
                         $sessionNamespace = 'Zikula_Users';
-                        $redirectURL = ModUtil::url('Users', 'user', 'login', array('csrftoken' => SecurityUtil::generateCsrfToken()));
+                        $redirectURL = ModUtil::url('UsersModule', 'user', 'login', array('csrftoken' => SecurityUtil::generateCsrfToken()));
                     } elseif (isset($eventData['redirect_func'])) {
                         if (isset($eventData['redirect_func']['session'])) {
                             $sessionVarName = $eventData['redirect_func']['session']['var'];
@@ -974,7 +974,7 @@ class UserUtil
         $uid = self::getIdFromName($uname);
 
         $authenticationMethod = array(
-            'modname' => 'Users',
+            'modname' => 'UsersModule',
             'method'  => 'uname',
         );
 
@@ -990,7 +990,7 @@ class UserUtil
      * @param boolean $rememberMe If the user's login should be maintained on the computer from which the user is logging in, set this to true;
      *                                          optional, defaults to false.
      * @param array $authenticationMethod An array containing the authentication method used to log the user in; optional,
-     *                                          defaults to the 'Users' module 'uname' method.
+     *                                          defaults to the 'UsersModule' module 'uname' method.
      *
      * @return void
      */
@@ -1007,7 +1007,7 @@ class UserUtil
 
         if (!isset($authenticationMethod)) {
             $authenticationMethod = array(
-                'modname' => 'Users',
+                'modname' => 'UsersModule',
                 'method'  => 'uname',
             );
         } elseif (empty($authenticationMethod) || !isset($authenticationMethod['modname']) || empty($authenticationMethod['modname'])
@@ -1086,7 +1086,7 @@ class UserUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // count of uname appearances in users table
-        $dql = "SELECT count(u.uid) FROM Users\Entity\UserEntity u WHERE u.uname = '{$uname}'";
+        $dql = "SELECT count(u.uid) FROM UsersModule\Entity\UserEntity u WHERE u.uname = '{$uname}'";
         if ($excludeUid > 1) {
             $dql .= " AND u.uid <> {$excludeUid}";
         }
@@ -1117,7 +1117,7 @@ class UserUtil
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // count of email appearances in users table
-        $dql = "SELECT COUNT(u.uid) FROM Users\Entity\UserEntity u WHERE u.email = '{$emailAddress}'";
+        $dql = "SELECT COUNT(u.uid) FROM UsersModule\Entity\UserEntity u WHERE u.email = '{$emailAddress}'";
         if ($excludeUid > 1) {
             $dql .= " AND u.uid <> {$excludeUid}";
         }
@@ -1126,7 +1126,7 @@ class UserUtil
         $ucount = (int)$query->getSingleScalarResult();
 
         // count of email appearances in users verification table
-        $dql = "SELECT COUNT(v.id) FROM Users\Entity\UserVerificationEntity v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $dql = "SELECT COUNT(v.id) FROM UsersModule\Entity\UserVerificationEntity v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
         if ($excludeUid > 1) {
             $dql .= " AND v.uid <> {$excludeUid}";
         }
@@ -1159,7 +1159,7 @@ class UserUtil
 
             // Get verificationsent from the users_verifychg table
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $dql = "SELECT v FROM Users\Entity\UserVerificationEntity v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
+            $dql = "SELECT v FROM UsersModule\Entity\UserVerificationEntity v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
             $query = $em->createQuery($dql);
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
@@ -1238,7 +1238,7 @@ class UserUtil
 
         if (!isset($user) || $force) {
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Users\Entity\UserEntity')->findOneBy(array($idfield => $id));
+            $user = $em->getRepository('UsersModule\Entity\UserEntity')->findOneBy(array($idfield => $id));
 
             if ($user) {
                 $user = $user->toArray();
@@ -1461,7 +1461,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Users\Entity\UserEntity')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $uid));
 
             // check if var to set belongs to table or it's an attribute
             if (self::fieldAlias($name)) {
@@ -1665,7 +1665,7 @@ class UserUtil
             }
 
         } else {
-            $hashAlgorithmName = ModUtil::getVar('Users', 'hash_method', '');
+            $hashAlgorithmName = ModUtil::getVar('UsersModule', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
                 return LogUtil::registerArgsError();
@@ -1688,7 +1688,7 @@ class UserUtil
      */
     public static function generatePassword()
     {
-        $minLength = ModUtil::getVar('Users', 'minpass', 5);
+        $minLength = ModUtil::getVar('UsersModule', 'minpass', 5);
         if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 5)) {
             $minLength = 5;
         }
@@ -1812,7 +1812,7 @@ class UserUtil
         if (($name != 'uid') && ($name != 'uname')) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $user = $em->getRepository('Users\Entity\UserEntity')->findOneBy(array('uid' => $uid));
+            $user = $em->getRepository('UsersModule\Entity\UserEntity')->findOneBy(array('uid' => $uid));
 
             if (self::fieldAlias($name)) {
                 // this value comes from the users table
@@ -1904,13 +1904,13 @@ class UserUtil
             // theme passed as parameter takes priority, can be RSS, Atom, Printer or other
             $pagetheme = $theme;
         } else {
-            $thememobile = ModUtil::getVar('Theme', 'mobile_theme_name', 'Mobile');
+            $thememobile = ModUtil::getVar('ThemeModule', 'mobile_theme_name', 'Mobile');
             if (empty($thememobile)) {
                 $thememobile = 'Mobile';
             }
-            if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
+            if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('ThemeModule', 'enable_mobile_theme', 0)) {
                 $pagetheme = $thememobile;
-            } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('Theme', 'enable_mobile_theme', 0)) {
+            } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('ThemeModule', 'enable_mobile_theme', 0)) {
                 include_once("system/Theme/vendor/Mobile_Detect.php");
                 $detect = new Mobile_Detect();
                 if ($detect->isMobile()) {
@@ -1918,14 +1918,14 @@ class UserUtil
                 }
             }
             // check for specified mobile domain to force mobile theme
-            $themedomain = ModUtil::getVar('Theme', 'mobile_theme_domain', '');
+            $themedomain = ModUtil::getVar('ThemeModule', 'mobile_theme_domain', '');
             if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain) {
                 $pagetheme = $thememobile;
             }
             // check for specified alternative site view domain and theme
-            $themedomain = ModUtil::getVar('Theme', 'alt_theme_domain', '');
-            if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('Theme', 'alt_theme_name', '')) {
-                $pagetheme = ModUtil::getVar('Theme', 'alt_theme_name');
+            $themedomain = ModUtil::getVar('ThemeModule', 'alt_theme_domain', '');
+            if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('ThemeModule', 'alt_theme_name', '')) {
+                $pagetheme = ModUtil::getVar('ThemeModule', 'alt_theme_name');
             }
         }
 
@@ -2036,7 +2036,7 @@ class UserUtil
      */
     public static function getAll($sortbyfield = 'uname', $sortorder = 'ASC', $limit = null, $offset = null, $activated = '', $field = '', $expression = '', $where = '')
     {
-        $user = new \Users\Entity\UserEntity;
+        $user = new \UsersModule\Entity\UserEntity;
 
         if (empty($where)) {
             $whereFragments = array();
@@ -2069,7 +2069,7 @@ class UserUtil
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        $dql = "SELECT u FROM Users\Entity\UserEntity u $where $orderby";
+        $dql = "SELECT u FROM UsersModule\Entity\UserEntity u $where $orderby";
         $query = $em->createQuery($dql);
 
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -2135,7 +2135,7 @@ class UserUtil
 
         // no change in uid or uname allowed, empty label is not an alias
         if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
-            $userObj = new \Users\Entity\UserEntity;
+            $userObj = new \UsersModule\Entity\UserEntity;
             $isFieldAlias = isset($userObj[$label]) ? true : false;
         }
 

@@ -204,7 +204,7 @@ class SecurityUtil
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Warning! "Modules" module has been renamed to "Extensions".  Please update any "confirmAuthKey" calls in PHP or templates.'));
-            $modname = 'Extensions';
+            $modname = 'ExtensionsModule';
         }
 
         // get the module info
@@ -283,7 +283,7 @@ class SecurityUtil
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update any generateAuthKey calls in PHP or templates.'));
-            $modname = 'Extensions';
+            $modname = 'ExtensionsModule';
         }
 
         // get the module info
@@ -328,6 +328,7 @@ class SecurityUtil
         // Empty arrays
         $groupperms = array();
 
+        $uids = array();
         $uids[] = -1;
         // Get user ID
         if (!isset($user)) {
