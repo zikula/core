@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace MailerModule\Api;
+namespace Zikula\Module\MailerModule\Api;
 
 use ModUtil;
 use SecurityUtil;
@@ -32,10 +32,10 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('MailerModule', 'admin', 'testconfig'), 'text' => $this->__('Test current settings'), 'class' => 'z-icon-es-mail');
+            $links[] = array('url' => ModUtil::url('ZikulaMailerModule', 'admin', 'testconfig'), 'text' => $this->__('Test current settings'), 'class' => 'z-icon-es-mail');
         }
         if (SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('MailerModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaMailerModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 
         return $links;

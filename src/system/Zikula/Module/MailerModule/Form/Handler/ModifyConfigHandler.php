@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace MailerModule\Form\Handler;
+namespace Zikula\Module\MailerModule\Form\Handler;
 
 use Zikula_Form_View;
 use SecurityUtil;
@@ -109,7 +109,7 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return $view->redirect(ModUtil::url('MailerModule', 'admin', 'modifyconfig'));
+        return $view->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'modifyconfig'));
     }
 
     private function getFormValue($key, $default)

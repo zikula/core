@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace MailerModule\Api;
+namespace Zikula\Module\MailerModule\Api;
 
 use LogUtil;
 use Zikula;

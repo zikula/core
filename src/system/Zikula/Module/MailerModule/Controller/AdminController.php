@@ -12,14 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-namespace MailerModule\Controller;
+namespace Zikula\Module\MailerModule\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
 use FormUtil;
-use MailerModule\Form\Handler\ModifyConfigHandler;
-use MailerModule\Form\Handler\TestConfigHandler;
+use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
+use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
 
 class AdminController extends \Zikula_AbstractController
 {
@@ -47,7 +48,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        $this->redirect(ModUtil::url('MailerModule', 'admin', 'modifyconfig'));
+        $this->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -60,7 +61,7 @@ class AdminController extends \Zikula_AbstractController
         // security check
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
 
-        $form = FormUtil::newForm('MailerModule', $this);
+        $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
         return $form->execute('mailer_admin_modifyconfig.tpl', new ModifyConfigHandler());
     }
@@ -73,7 +74,7 @@ class AdminController extends \Zikula_AbstractController
     {
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
 
-        $form = FormUtil::newForm('MailerModule', $this);
+        $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
         return $form->execute('mailer_admin_testconfig.tpl', new TestConfigHandler());
     }

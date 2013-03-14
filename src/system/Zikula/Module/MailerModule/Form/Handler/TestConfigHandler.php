@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace MailerModule\Form\Handler;
+namespace Zikula\Module\MailerModule\Form\Handler;
 
 use Zikula_Form_View;
 use SecurityUtil;
@@ -68,7 +68,7 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 }
 
                 // set the email
-                $result = ModUtil::apiFunc('MailerModule', 'user', 'sendmessage', array(
+                $result = ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage', array(
                     'toname' => $toname,
                     'toaddress' => $toaddress,
                     'subject' => $subject,
@@ -92,6 +92,6 @@ class TestConfigHandler extends \Zikula_Form_AbstractHandler
                 break;
         }
 
-        return $view->redirect(ModUtil::url('MailerModule', 'admin', 'testconfig'));
+        return $view->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'testconfig'));
     }
 }

@@ -1,4 +1,4 @@
-{ajaxheader modname='MailerModule' filename='mailer_admin_modifyconfig.js' noscriptaculous=true effects=true}
+{ajaxheader modname='ZikulaMailerModule' filename='mailer_admin_modifyconfig.js' noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}

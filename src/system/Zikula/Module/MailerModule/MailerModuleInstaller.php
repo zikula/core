@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace MailerModule;
+namespace Zikula\Module\MailerModule;
 
 use ZLanguage;
 
