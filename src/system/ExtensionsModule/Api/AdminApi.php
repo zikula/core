@@ -1340,7 +1340,7 @@ class AdminApi extends \Zikula_AbstractApi
                 'Categories',
                 'ErrorsModule',
                 'GroupsModule',
-                'MailerModule',
+                'ZikulaMailerModule',
                 'ExtensionsModule',
                 'PermissionsModule',
                 'SecurityCenterModule',

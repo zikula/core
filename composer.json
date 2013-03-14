@@ -7,6 +7,7 @@
     "autoload": {
         "psr-0": {
             "Zikula": "src/lib",
+            "Zikula\\Module": "src/system",
             "DoctrineExtensions\\StandardFields": "src/lib",
             "Admin\\": "src/system",
             "BlocksModule\\": "src/system",
@@ -14,7 +15,6 @@
             "ErrorsModule\\": "src/system",
             "ExtensionsModule\\": "src/system",
             "GroupsModule\\": "src/system",
-            "MailerModule\\": "src/system",
             "PageLockModule\\": "src/system",
             "PermissionsModule\\": "src/system",
             "SearchModule\\": "src/system",
@@ -23,7 +23,11 @@
             "ThemeModule\\": "src/system",
             "UsersModule\\": "src/system",
             "CustomBundle\\": "src/app/custom",
-            "Andreas08Theme\\": "src/themes"
+            "Andreas08Theme\\": "src/themes",
+            "MobileTheme\\": "src/themes",
+            "PrinterTheme\\": "src/themes",
+            "RSSTheme\\": "src/themes",
+            "SeaBreezeTheme\\": "src/themes"
 
         },
         "classmap": [

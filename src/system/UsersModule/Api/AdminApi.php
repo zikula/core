@@ -308,7 +308,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $recipientlist[] = $recipient;
             }
             if (count($bcclist) == $sendmail['batchsize']) {
-                if (ModUtil::apiFunc('MailerModule', 'user', 'sendmessage',
+                if (ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendmessage',
                                  array('fromname'       => $sendmail['from'],
                                        'fromaddress'    => $sendmail['rpemail'],
                                        'toname'         => UserUtil::getVar('uname'),
@@ -341,7 +341,7 @@ class AdminApi extends \Zikula_AbstractApi
                 'html'          => $html,
                 'bcc'           => $bcclist,
             );
-            if (ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
+            if (ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
                 $recipientscount += count($bcclist);
             } else {
                 $this->registerError($this->__('Error! Could not send the e-mail message.'));
@@ -524,7 +524,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // check if module Mailer is active
-        $modinfo = ModUtil::getInfoFromName('MailerModule');
+        $modinfo = ModUtil::getInfoFromName('ZikulaMailerModule');
         if ($modinfo['state'] == ModUtil::TYPE_SYSTEM) {
             $sitename  = System::getVar('sitename');
             $siteurl   = System::getBaseUrl();
@@ -553,7 +553,7 @@ class AdminApi extends \Zikula_AbstractApi
                         'body'      => $message,
                         'html'      => true,
                     );
-                    if (!ModUtil::apiFunc('MailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
+                    if (!ModUtil::apiFunc('ZikulaMailerModule', 'user', 'sendMessage', $sendMessageArgs)) {
                         $this->registerError($this->__f('Error! A problem has occurred while sending e-mail messages. The error happened trying to send a message to the user %s. After this error, no more messages were sent.', $value['uname']));
                         break;
                     }
