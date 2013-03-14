@@ -913,9 +913,18 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
-        $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
-        $className = class_exists($className) ? $className : $classNameOld;
+        /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+        $kernel = ServiceUtil::getManager()->get('kernel');
+        try {
+            /** @var $module Zikula\Bundle\CoreBundle\AbstractModule */
+            $module = $kernel->getBundle($modname);
+            $ns = $module->getNamespace();
+            $className = ($api) ? $ns.'\\Api\\'.ucwords($type).'Api' : $ns.'\\Controller\\'.ucwords($type).'Controller';
+        } catch (\InvalidArgumentException $e) {
+            $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
+            $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
+            $className = class_exists($className) ? $className : $classNameOld;
+        }
 
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
@@ -970,7 +979,7 @@ class ModUtil
      * @throws LogicException If $className is neither a Zikula_AbstractApi nor a Zikula_AbstractController.
      * @return object         Module object.
      */
-    public static function getObject($className)
+    public static function getObject($className, $modname)
     {
         if (!$className) {
             return false;
@@ -983,7 +992,21 @@ class ModUtil
             $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
-            $object = $r->newInstanceArgs(array($sm));
+
+            /** @var $kernel \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+            $kernel = $sm->get('kernel');
+            $module = null;
+            try {
+                /** @var $module \Zikula\Bundle\CoreBundle\AbstractBundle */
+                $module = $kernel->getModule($modname);
+            } catch (\InvalidArgumentException $e) {
+            }
+
+            $object = $r->newInstanceArgs(array($sm, $module));
+            if ($modname== "ZikulaMailerModule") {
+//            var_dump($module);
+            }
+
             $sm->set($serviceId, $object);
         }
 
@@ -1008,7 +1031,7 @@ class ModUtil
             return false;
         }
 
-        $object = self::getObject($className);
+        $object = self::getObject($className, $modname);
         $action = $api ? '' : 'Action';
         if (is_callable(array($object, $func.$action))) {
             return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func.$action));
@@ -1038,7 +1061,6 @@ class ModUtil
         $modname = isset($modname) ? ((string)$modname) : '';
         $modname = static::convertModuleName($modname);
         $ftype = ($api ? 'api' : '');
-        $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -1056,7 +1078,7 @@ class ModUtil
 
         $controller = null;
         $modfunc = null;
-        $loaded = call_user_func_array($loadfunc, array($modname, $type));
+        $loaded = call_user_func_array($api ? 'ModUtil::loadApi' : 'ModUtil::load', array($modname, $type));
         if (self::isOO($modname)) {
             $result = self::getCallable($modname, $type, $func, $api);
             if ($result) {
@@ -1928,18 +1950,21 @@ class ModUtil
 
             if (file_exists("$modpath/$osdir/$osdir.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
-            }
-
-            if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
+            } else if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
-            }
-
-            if (is_dir("$modpath/$osdir/lib")) {
+            } else if (is_dir("$modpath/$osdir/lib")) {
                 self::$ooModules[$moduleName]['oo'] = true;
-            }
-
-            if (file_exists("$modpath/$osdir/Version.php")) {
+            } else if (file_exists("$modpath/$osdir/Version.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
+            } else {
+                /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+                $kernel = ServiceUtil::getManager()->get('kernel');
+                try {
+                    /** @var $module Zikula\Bundle\CoreBundle\AbstractModule */
+                    $module = $kernel->getBundle($moduleName);
+                    self::$ooModules[$moduleName]['oo'] = true;
+                } catch (\InvalidArgumentException $e) {
+                }
             }
         }
 
@@ -1979,7 +2004,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'blocksmodule', 'categories', 'errorsmodule', 'extensionsmodule', 'groupsmodule', 'mailermodule', 'pagelockmodule', 'permissionsmodule', 'searchmodule', 'securitycentermodule', 'settingsmodule', 'thememodule', 'usersmodule'))) {
+        if (in_array(strtolower($moduleName), array('admin', 'blocksmodule', 'categories', 'errorsmodule', 'extensionsmodule', 'groupsmodule', 'zikulamailermodule', 'pagelockmodule', 'permissionsmodule', 'searchmodule', 'securitycentermodule', 'settingsmodule', 'thememodule', 'usersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';

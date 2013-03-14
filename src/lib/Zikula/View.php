@@ -578,10 +578,17 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template);
+            try {
+                $bundle = $this->getContainer()->get('kernel')->getBundle($module);
+                $bundlePath = $relativepath = $bundle->getPath().'/Resources/views';
+            } catch (\InvalidArgumentException $e) {
+            }
 
-            $relativepath = "$os_dir/$os_module/Resources/views";
-            if (!is_dir($relativepath)) {
-                $relativepath = "$os_dir/$os_module/templates";
+            if (!isset($bundlePath)) {
+                $relativepath = "$os_dir/$os_module/Resources/views";
+                if (!is_dir($relativepath)) {
+                    $relativepath = "$os_dir/$os_module/templates";
+                }
             }
 
             $templatefile = "$relativepath/$ostemplate";
