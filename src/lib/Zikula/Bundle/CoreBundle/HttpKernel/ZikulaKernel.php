@@ -8,6 +8,7 @@ use Zikula\Bridge\DependencyInjection\PhpDumper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
+use Zikula\Bundle\CoreBundle\AbstractModule;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -32,6 +33,34 @@ abstract class ZikulaKernel extends Kernel
     public function init()
     {
         // todo - switch out Zikula's error reporting for Sf
+    }
+
+    /**
+     * Get named module bundle.
+     *
+     * @param $moduleName
+     *
+     * @return \Zikula\Bundle\CoreBundle\AbstractModule|\Zikula\Bundle\CoreBundle\AbstractModule[]
+     */
+    public function getModule($moduleName)
+    {
+        // todo - only return a module bundle
+
+        return $this->getBundle($moduleName);
+    }
+
+    /**
+     * Get named theme bundle.
+     *
+     * @param $themeName
+     *
+     * @return \Zikula\Bundle\CoreBundle\AbstractTheme|\Zikula\Bundle\CoreBundle\AbstractTheme[]
+     */
+    public function getTheme($themeName)
+    {
+        // todo - only return a theme bundle
+
+        return $this->getBundle($themeName);
     }
 
     /**
