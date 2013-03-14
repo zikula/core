@@ -6,7 +6,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Bundle\Bundle as BaseBundle;
 
-abstract class Bundle extends BaseBundle
+abstract class AbstractBundle extends BaseBundle
 {
     protected static $staticPath;
 
