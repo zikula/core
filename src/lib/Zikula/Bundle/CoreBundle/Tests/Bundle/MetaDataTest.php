@@ -48,6 +48,14 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getRootPath
+     */
+    public function testGetRootPath()
+    {
+        $this->assertEquals('', $this->metaData->getRootPath());
+    }
+
+    /**
      * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getClass
      */
     public function testGetClass()
@@ -86,7 +94,8 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     "extra": {
         "zikula": {
             "class": "Zikula\\Module\\AdminModule\\ZikulaAdminModule",
-            "base-path": ""
+            "base-path": "",
+            "root-path": ""
         }
     }
 }

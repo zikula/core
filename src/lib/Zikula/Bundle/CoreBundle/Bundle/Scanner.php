@@ -8,6 +8,11 @@ class Scanner
 {
     private $jsons = array();
 
+    /**
+     * @param array  $paths
+     * @param int    $depth
+     * @param Finder $finder
+     */
     public function scan(array $paths, $depth = 3, Finder $finder = null)
     {
         $paths = (array) $paths;
@@ -21,7 +26,7 @@ class Scanner
 
         /** @var $f \SplFileInfo */
         foreach ($finder as $f) {
-            $base = dirname(dirname($f->getRealPath()));
+            $base = str_replace('\\', '/', dirname($f->getRealPath()));
             $json = json_decode(file_get_contents($f->getRealPath()));
             if (\JSON_ERROR_NONE === json_last_error() && true === $this->validateBasic($json)) {
                 // add base-path for future use
@@ -30,10 +35,11 @@ class Scanner
                 // calculate PSR-0 autoloading path for this namespace
                 $class = $json->extra->zikula->class;
                 $ns = substr($class, 0, strrpos($class, '\\')+1);
+                $nsShort = str_replace('\\', '/', substr($class, 0, strrpos($class, '\\')));
                 if (false === isset($json->autoload->{'psr-0'}->$ns)) {
                     continue;
                 }
-                $json->autoload->{'psr-0'}->$ns = $base;
+                $json->autoload->{'psr-0'}->$ns = $json->extra->zikula->{'root-path'} = substr($base, 0, strpos($base, $nsShort)-1);
 
                 $this->jsons[$json->name] = $json;
             }

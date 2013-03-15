@@ -8,6 +8,7 @@ class MetaData
     private $class;
     private $namespace;
     private $basePath;
+    private $rootPath;
     private $psr0;
 
     public function __construct($json)
@@ -16,6 +17,7 @@ class MetaData
         $this->class = $json->extra->zikula->class;
         $this->namespace = substr($this->class, 0, strrpos($this->class, '\\')+1);
         $this->basePath = $json->extra->zikula->{'base-path'};
+        $this->rootPath = $json->extra->zikula->{'root-path'};
         $this->psr0 = $json->autoload->{'psr-0'};
     }
 
@@ -32,6 +34,11 @@ class MetaData
     public function getBasePath()
     {
         return $this->basePath;
+    }
+
+    public function getRootPath()
+    {
+        return $this->rootPath;
     }
 
     public function getClass()
