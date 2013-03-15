@@ -175,16 +175,26 @@ class Zikula_View_Plugin extends Zikula_View
 
             $ostemplate = DataUtil::formatForOS($template);
 
-            // check the module for which we're looking for a template is the
-            // same as the top level mods. This limits the places to look for
-            // templates.
-            $base = ($modinfo['type'] == ModUtil::TYPE_CORE) ? '' : "$os_dir/$os_module/";
-            //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
-            $search_path = array(
-                        //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
-                        "{$base}plugins/{$this->pluginName}/Resources/views",
-                        "{$base}plugins/{$this->pluginName}/templates",
-            );
+            $search_path = array();
+            try {
+                $bundle = $this->getContainer()->get('kernel')->getBundle($module);
+                $bundlePath = $relativepath = $bundle->getPath().'/Resources/views';
+                $search_path[] = $bundlePath;
+            } catch (\InvalidArgumentException $e) {
+            }
+
+            if (!isset($bundlePath)) {
+                // check the module for which we're looking for a template is the
+                // same as the top level mods. This limits the places to look for
+                // templates.
+                $base = ($modinfo['type'] == ModUtil::TYPE_CORE) ? '' : "$os_dir/$os_module/";
+                //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
+                $search_path = array(
+                    //"config/plugins/$configPath/{$this->pluginName}/templates", //global path
+                    "{$base}plugins/{$this->pluginName}/Resources/views",
+                    "{$base}plugins/{$this->pluginName}/templates",
+                );
+            }
 
             foreach ($search_path as $path) {
                 if (is_readable("$path/$ostemplate")) {
