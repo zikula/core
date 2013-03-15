@@ -415,7 +415,7 @@ class Zikula_Core
         if (($stage & self::STAGE_PRE) && ($this->stage & ~self::STAGE_PRE)) {
             ModUtil::flushCache();
             System::flushCache();
-            $this->dispatcher->dispatch('core.preinit', new \Zikula\Core\Event\GenericEvent($this));
+            $this->dispatcher->dispatch('core.preinit', new \Zikula\Core\Event\GenericEvent($this, array('lazy' => true)));
         }
 
         // Initialise and load configuration
