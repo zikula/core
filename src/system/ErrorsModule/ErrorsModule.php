@@ -2,7 +2,7 @@
 
 namespace ErrorsModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class ErrorsModule extends AbstractModule
 {

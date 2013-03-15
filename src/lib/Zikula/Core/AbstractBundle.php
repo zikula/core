@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Bundle\CoreBundle;
+namespace Zikula\Core;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;

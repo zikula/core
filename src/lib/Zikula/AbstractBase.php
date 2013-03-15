@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
@@ -112,7 +112,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     protected $reflection;
 
     /**
-     * @var AbstractModule
+     * @var \Zikula\Core\AbstractModule
      */
     protected $bundle;
 

@@ -8,7 +8,7 @@ use Zikula\Bridge\DependencyInjection\PhpDumper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -40,7 +40,7 @@ abstract class ZikulaKernel extends Kernel
      *
      * @param $moduleName
      *
-     * @return \Zikula\Bundle\CoreBundle\AbstractModule|\Zikula\Bundle\CoreBundle\AbstractModule[]
+     * @return \Zikula\Core\AbstractModule|\Zikula\Core\AbstractModule[]
      */
     public function getModule($moduleName)
     {
@@ -54,7 +54,7 @@ abstract class ZikulaKernel extends Kernel
      *
      * @param $themeName
      *
-     * @return \Zikula\Bundle\CoreBundle\AbstractTheme|\Zikula\Bundle\CoreBundle\AbstractTheme[]
+     * @return \Zikula\Core\AbstractTheme|\Zikula\Core\AbstractTheme[]
      */
     public function getTheme($themeName)
     {

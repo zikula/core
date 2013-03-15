@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Scope;
 //use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class CoreBundle extends Bundle
+class ZikulaCoreBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {

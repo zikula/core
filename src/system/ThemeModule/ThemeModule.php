@@ -2,7 +2,7 @@
 
 namespace ThemeModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class ThemeModule extends AbstractModule
 {

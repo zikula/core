@@ -2,7 +2,7 @@
 
 namespace ExtensionsModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class ExtensionsModule extends AbstractModule
 {

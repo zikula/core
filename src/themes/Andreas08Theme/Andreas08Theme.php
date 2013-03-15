@@ -2,7 +2,7 @@
 
 namespace Andreas08Theme;
 
-use Zikula\Bundle\CoreBundle\AbstractTheme;
+use Zikula\Core\AbstractTheme;
 
 class Andreas08Theme extends AbstractTheme
 {

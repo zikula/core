@@ -2,7 +2,7 @@
 
 namespace BlocksModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class BlocksModule extends AbstractModule
 {

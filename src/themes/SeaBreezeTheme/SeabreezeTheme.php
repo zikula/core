@@ -2,7 +2,7 @@
 
 namespace SeaBreezeTheme;
 
-use Zikula\Bundle\CoreBundle\AbstractTheme;
+use Zikula\Core\AbstractTheme;
 
 class SeaBreezeTheme extends AbstractTheme
 {

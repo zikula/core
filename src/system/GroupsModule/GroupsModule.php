@@ -2,7 +2,7 @@
 
 namespace GroupsModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class GroupsModule extends AbstractModule
 {

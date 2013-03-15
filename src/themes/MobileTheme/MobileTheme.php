@@ -2,7 +2,7 @@
 
 namespace MobileTheme;
 
-use Zikula\Bundle\CoreBundle\AbstractTheme;
+use Zikula\Core\AbstractTheme;
 
 class MobileTheme extends AbstractTheme
 {

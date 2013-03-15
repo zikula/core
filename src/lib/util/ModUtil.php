@@ -916,7 +916,7 @@ class ModUtil
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
         try {
-            /** @var $module Zikula\Bundle\CoreBundle\AbstractModule */
+            /** @var $module \Zikula\Core\AbstractModule */
             $module = $kernel->getBundle($modname);
             $ns = $module->getNamespace();
             $className = ($api) ? $ns.'\\Api\\'.ucwords($type).'Api' : $ns.'\\Controller\\'.ucwords($type).'Controller';
@@ -997,7 +997,7 @@ class ModUtil
             $kernel = $sm->get('kernel');
             $module = null;
             try {
-                /** @var $module \Zikula\Bundle\CoreBundle\AbstractBundle */
+                /** @var $module \Zikula\Core\AbstractBundle */
                 $module = $kernel->getModule($modname);
             } catch (\InvalidArgumentException $e) {
             }
@@ -1960,7 +1960,7 @@ class ModUtil
                 /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
                 $kernel = ServiceUtil::getManager()->get('kernel');
                 try {
-                    /** @var $module Zikula\Bundle\CoreBundle\AbstractModule */
+                    /** @var $module \Zikula\Core\AbstractModule */
                     $module = $kernel->getBundle($moduleName);
                     self::$ooModules[$moduleName]['oo'] = true;
                 } catch (\InvalidArgumentException $e) {

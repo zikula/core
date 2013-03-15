@@ -2,7 +2,7 @@
 
 namespace Zikula\Module\MailerModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class ZikulaMailerModule extends AbstractModule
 {

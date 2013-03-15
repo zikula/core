@@ -2,7 +2,7 @@
 
 namespace RSSTheme;
 
-use Zikula\Bundle\CoreBundle\AbstractTheme;
+use Zikula\Core\AbstractTheme;
 
 class RSSTheme extends AbstractTheme
 {

@@ -2,7 +2,7 @@
 
 namespace UsersModule;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Core\AbstractModule;
 
 class UsersModule extends AbstractModule
 {
