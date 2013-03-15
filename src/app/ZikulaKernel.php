@@ -16,7 +16,7 @@ class ZikulaKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Zikula\Bundle\CoreBundle\ZikulaCoreBundle(),
+            new Zikula\Bundle\CoreBundle\CoreBundle(),
         );
 
         $this->registerCoreModules($bundles);
