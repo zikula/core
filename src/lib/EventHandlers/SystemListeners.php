@@ -225,7 +225,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function initDB(Zikula_Event $event)
     {
-        $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent());
+        $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent(null, $event->getArgs()));
         $this->eventManager->dispatch('doctrine.boot', new \Zikula\Core\Event\GenericEvent());
     }
 
