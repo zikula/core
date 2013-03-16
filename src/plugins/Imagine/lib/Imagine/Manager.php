@@ -290,7 +290,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             }
         }
 
-        return $image->getThumbPathname();
+        return str_replace(realpath('.') . '/', '', $image->getThumbPathname());
     }
 
     /**
