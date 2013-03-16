@@ -107,7 +107,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $result = array(
             'action' => $mode == 'new' ? 'add' : 'edit',
-            'result' => $this->view->fetch('categories_adminajax_edit.tpl'),
+            'result' => $this->view->fetch('Ajax/edit.tpl'),
             'validationErrors' => $validationErrors
         );
         if ($validationErrors) {
@@ -236,7 +236,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $this->view->assign('categorySelector', $selector);
         $result = array(
-            'result' => $this->view->fetch('categories_adminajax_delete.tpl'),
+            'result' => $this->view->fetch('Ajax/delete.tpl'),
         );
 
         return new AjaxResponse($result);
