@@ -52,7 +52,6 @@ class UserApi extends \Zikula_AbstractApi
      *                  format array($string,$filename,$encoding,$type)
      * @param array args['embeddedimages'] array of absolute filenames to image files
      *                  to embed in the mail
-     * @todo Loading of language file based on Zikula language
      * @return bool true if successful, false otherwise
      */
     public function sendmessage($args)
