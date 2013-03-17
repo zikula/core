@@ -124,7 +124,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $getAllArgs = array(
-            'startnum' => $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null),
+            'startnum' => $this->request->query->get('startnum', isset($args['startnum']) ? $args['startnum'] : null) - 1,
             'numitems' => $itemsPerPage,
             'letter' => $letter,
             'sort' => $sortArgs,
