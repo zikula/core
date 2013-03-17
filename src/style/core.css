@@ -536,7 +536,7 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     padding: 0.3em 2px 0.3em 1px;
     cursor: pointer;
     width: 68.6%;
-    display: block;
+    display: inline-block;
     position: relative;
 }
 
