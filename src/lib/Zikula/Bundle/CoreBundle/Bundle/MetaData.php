@@ -5,6 +5,7 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 class MetaData
 {
     private $name;
+    private $shortName;
     private $class;
     private $namespace;
     private $basePath;
@@ -14,6 +15,7 @@ class MetaData
     public function __construct($json)
     {
         $this->name = $json->name;
+        $this->shortName = $json->extra->zikula->{'short-name'};
         $this->class = $json->extra->zikula->class;
         $this->namespace = substr($this->class, 0, strrpos($this->class, '\\')+1);
         $this->basePath = $json->extra->zikula->{'base-path'};
@@ -24,6 +26,12 @@ class MetaData
     public function getName()
     {
         return $this->name;
+    }
+
+
+    public function getShortName()
+    {
+        return $this->shortName;
     }
 
     public function getPsr0()

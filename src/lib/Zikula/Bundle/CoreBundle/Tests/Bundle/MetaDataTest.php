@@ -32,6 +32,14 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getShortName
+     */
+    public function testShortName()
+    {
+        $this->assertEmpty($this->metaData->getShortName());
+    }
+
+    /**
      * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getPsr0
      */
     public function testGetPsr0()
@@ -44,7 +52,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBasePath()
     {
-        $this->assertEquals('', $this->metaData->getBasePath());
+        $this->assertEmpty($this->metaData->getBasePath());
     }
 
     /**
@@ -52,7 +60,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRootPath()
     {
-        $this->assertEquals('', $this->metaData->getRootPath());
+        $this->assertEmpty($this->metaData->getRootPath());
     }
 
     /**
@@ -95,7 +103,8 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
         "zikula": {
             "class": "Zikula\\Module\\AdminModule\\ZikulaAdminModule",
             "base-path": "",
-            "root-path": ""
+            "root-path": "",
+            "short-name": ""
         }
     }
 }
