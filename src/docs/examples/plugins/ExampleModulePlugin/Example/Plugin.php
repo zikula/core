@@ -55,7 +55,7 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
         }
 
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            $event->data[] = array('url' => ModUtil::url('UsersModule', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
+            $event->data[] = array('url' => ModUtil::url('ZikulaUsersModule', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
         }
     }
 

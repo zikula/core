@@ -605,7 +605,7 @@ class ModUtil
             foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
-                    || (preg_match('/^(extensionsmodule|admin|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $mod['name'])
+                    || (preg_match('/^(zikulaextensionsmodule|admin|zikulathememodule|zikulablockmodule|zikulagroupsmodule|zikulapermissionsmodule|zikulausersmodule)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     self::$cache['modsarray'][$mod['name']] = $mod;
                 }
@@ -2004,7 +2004,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'blocksmodule', 'categories', 'errorsmodule', 'extensionsmodule', 'groupsmodule', 'zikulamailermodule', 'pagelockmodule', 'permissionsmodule', 'searchmodule', 'securitycentermodule', 'settingsmodule', 'thememodule', 'usersmodule'))) {
+        if (in_array(strtolower($moduleName), array('admin', 'zikulablocksmodule', 'categories', 'zikulaerrorsmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';
@@ -2077,7 +2077,7 @@ class ModUtil
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
             //'Admin', 'Categories' // todo
         ))) {
-            $name = $name.'Module';
+            $name = 'Zikula'.$name.'Module';
         }
 
         return $name;

@@ -13,7 +13,7 @@
  * information regarding copyright and licensing.
  */
 
-use UsersModule\Constant as UsersConstant;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 
 /**
  * Zikula_View function to display the avatar of a user

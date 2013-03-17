@@ -16,7 +16,7 @@
                 <a href="{modurl modname='ExtensionsModule' type='admin' func='index'}"><span>{gt text="Extensions"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='BlocksModule' type='admin' func='index'}"><span>{gt text="Blocks"}</span></a>
+                <a href="{modurl modname='ZikulaBlocksModule' type='admin' func='index'}"><span>{gt text="Blocks"}</span></a>
             </li>
             <li class="page_item">
                 <a href="{modurl modname='UsersModule' type='admin' func='index'}"><span>{gt text="Users"}</span></a>

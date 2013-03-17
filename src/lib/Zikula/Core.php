@@ -460,7 +460,7 @@ class Zikula_Core
             ModUtil::initCoreVars();
             ModUtil::dbInfoLoad('SettingsModule', 'SettingsModule');
             ModUtil::dbInfoLoad('ThemeModule', 'ThemeModule');
-            ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
+            ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
             ModUtil::dbInfoLoad('GroupsModule', 'GroupsModule');
             ModUtil::dbInfoLoad('PermissionsModule', 'PermissionsModule');
             ModUtil::dbInfoLoad('Categories', 'Categories');
@@ -541,7 +541,7 @@ class Zikula_Core
                 //        then a new one is created on the reentry into index.php. The message
                 //        set by the registerStatus call below gets lost.
                 LogUtil::registerStatus(__('You have been logged out.'));
-                System::redirect(ModUtil::url('UsersModule', 'user', 'login'));
+                System::redirect(ModUtil::url('ZikulaUsersModule', 'user', 'login'));
             }
         }
 

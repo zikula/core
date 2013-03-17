@@ -3625,7 +3625,7 @@ function pnUserLogIn($uname, $pass, $rememberme = false, $checkPassword = true)
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array(__FUNCTION__, 'UserUtil::loginUsing()')), E_USER_DEPRECATED);
 
     $authenticationMethod = array(
-        'modname'   => 'UsersModule',
+        'modname'   => 'ZikulaUsersModule',
     );
     if (ModUtil::getVar(Users_Constant::MODNAME, Users_Constant::MODVAR_LOGIN_METHOD, Users_Constant::LOGIN_METHOD_UNAME) == Users_Constant::LOGIN_METHOD_EMAIL) {
         $authenticationMethod['method'] = 'email';

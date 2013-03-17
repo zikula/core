@@ -110,7 +110,7 @@ switch (true) {
 
     case ($response->getStatusCode() == 403):
         if (!UserUtil::isLoggedIn()) {
-            $url = ModUtil::url('UsersModule', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
+            $url = ModUtil::url('ZikulaUsersModule', 'user', 'login', array('returnpage' => urlencode(System::getCurrentUri())));
             $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
             $response->send();
@@ -151,7 +151,7 @@ function __frontcontroller_ajax(Request $request)
     $modinfo = ModUtil::getInfoFromName($module);
 
     // Check for site closed
-    if (System::getVar('siteoff') && !SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'UsersModule' && $func == 'siteofflogin')) {
+    if (System::getVar('siteoff') && !SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'ZikulaUsersModule' && $func == 'siteofflogin')) {
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
         }

@@ -1,0 +1,23 @@
+{
+    "name": "zikula/permissions-module",
+    "description": "User Permissions Administration Module",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Zikula\\Module\\PermissionsModule\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\Module\\PermissionsModule\\ZikulaPermissionsModule"
+        }
+    }
+}

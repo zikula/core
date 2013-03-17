@@ -26,7 +26,7 @@ function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
-    ZLoader::addPrefix('UsersModule', 'system');
+    ZLoader::addPrefix('ZikulaUsersModule', 'system');
 
     $serviceManager = $core->getContainer();
     $eventManager = $core->getDispatcher();
@@ -251,7 +251,7 @@ function install(Zikula_Core $core)
                                     $exec = '';
                                 }
                             }
-                            ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
+                            ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
                             ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule');
                             ModUtil::initCoreVars(true);
                             createuser($username, $password, $email);
@@ -275,7 +275,7 @@ function install(Zikula_Core $core)
                         'pass'      => $password
                     );
                     $authenticationMethod = array(
-                        'modname'   => 'UsersModule',
+                        'modname'   => 'ZikulaUsersModule',
                         'method'    => 'uname',
                     );
                     UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
@@ -366,7 +366,7 @@ function createuser($username, $password, $email)
     $connection = Doctrine_Manager::connection();
 
     // get the database connection
-    ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
+    ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
     ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule');
     $dbtables = DBUtil::getTables();
 
@@ -415,8 +415,8 @@ function installmodules($lang = 'en')
             'Admin',
             'PermissionsModule',
             'GroupsModule',
-            'BlocksModule',
-            'UsersModule',
+            'ZikulaBlocksModule',
+            'ZikulaUsersModule',
     );
 
     // manually install the modules module
@@ -464,8 +464,8 @@ function installmodules($lang = 'en')
     $coremodscat = array('ExtensionsModule' => __('System'),
             'PermissionsModule' => __('Users'),
             'GroupsModule' => __('Users'),
-            'BlocksModule' => __('Layout'),
-            'UsersModule' => __('Users'),
+            'ZikulaBlocksModule' => __('Layout'),
+            'ZikulaUsersModule' => __('Users'),
             'ThemeModule' => __('Layout'),
             'Admin' => __('System'),
             'SettingsModule' => __('System'));
@@ -482,7 +482,7 @@ function installmodules($lang = 'en')
                                 'category' => $modscat[$category]));
     }
     // create the default blocks.
-    $blockInstance = new BlocksModule\BlocksModuleInstaller($sm);
+    $blockInstance = new Zikula\Module\BlocksModule\BlocksModuleInstaller($sm);
     $blockInstance->defaultdata();
 
     // install all the basic modules

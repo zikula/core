@@ -55,7 +55,7 @@ $eventManager->dispatch('doctrine.boot', $dbEvent);
 $em = $core->getContainer()->get('doctrine.entitymanager');
 
 try {
-    DoctrineHelper::createSchema($em, array('UsersModule\Entity\UserAttributeEntity'));
+    DoctrineHelper::createSchema($em, array('Zikula\Module\UsersModule\Entity\UserAttributeEntity'));
 } catch (\Exception $e) {
 }
 
@@ -69,7 +69,7 @@ if (!isset($columns['capabilities'])) {
     Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
     ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule', true);
     DBUtil::changeTable('modules');
-    ModUtil::dbInfoLoad('BlocksModule', 'BlocksModule', true);
+    ModUtil::dbInfoLoad('ZikulaBlocksModule', 'ZikulaBlocksModule', true);
     DBUtil::changeTable('blocks');
 
 }

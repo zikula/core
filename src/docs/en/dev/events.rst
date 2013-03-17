@@ -333,7 +333,7 @@ prior to logging in. The code used for the notification might look like the foll
     $event->stopPropagation();
     $event->setData(array(
         'redirect_func'  => array(
-            'modname'   => 'UsersModule',
+            'modname'   => 'ZikulaUsersModule',
             'type'      => 'user',
             'func'      => 'changePassword',
             'args'      => array(
