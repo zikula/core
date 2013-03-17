@@ -1,0 +1,23 @@
+{
+    "name": "zikula/groups-module",
+    "description": "Permission Groups Administration Module",
+    "type": "zikula-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "GroupsModule\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "GroupsModule\\GroupsModule"
+        }
+    }
+}
