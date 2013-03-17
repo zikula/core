@@ -12,7 +12,8 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups\Api;
+namespace GroupsModule\Api;
+
 use Zikula\Core\Event\GenericEvent;
 use GroupsModule\Helper\CommonHelper;
 use GroupsModule\Entity\GroupApplicationEntity;

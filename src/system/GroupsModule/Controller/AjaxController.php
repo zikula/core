@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Groups\Controller;
+namespace GroupsModule\Controller;
 
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use GroupsModule\Helper\CommonHelper;
