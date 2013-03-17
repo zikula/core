@@ -188,22 +188,29 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
     /**
      * Build a new instance.
      */
-    public function __construct()
+    public function __construct($bundle = null)
     {
         $this->systemBaseDir = realpath('.');
-        $this->reflection = new ReflectionObject($this);
-        $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
-        $p = explode($separator, get_class($this));
-        $this->name = $p[0];
-        $this->directory = $this->name; // legacy handling
-        $this->baseDir = $this->libBaseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
-        if (realpath($this->baseDir . '/lib/' . $this->name)) {
-            $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
+        if (null !== $bundle) {
+            $this->name = $bundle->getName();
+            $this->baseDir = $bundle->getPath();
+        } else {
+            $this->reflection = new ReflectionObject($this);
+            $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
+            $p = explode($separator, get_class($this));
+            $this->name = $p[0];
+            $this->directory = $this->name; // legacy handling
+            $this->baseDir = $this->libBaseDir = realpath(dirname($this->reflection->getFileName()).'/../..');
+            if (realpath($this->baseDir . '/lib/' . $this->name)) {
+                $this->libBaseDir = realpath($this->baseDir . '/lib/' . $this->name);
+            }
         }
+
         $this->type = ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE;
         if ($this->type == ModUtil::TYPE_MODULE) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
+
         Zikula_ClassProperties::load($this, $this->getMetaData());
 
         // Load configuration of any hook bundles.

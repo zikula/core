@@ -18,6 +18,7 @@ use Zikula_AbstractErrorHandler;
 use LogUtil;
 use InvalidArgumentException;
 use Zikula_AbstractVersion;
+use ServiceUtil;
 use System;
 
 class Util
@@ -33,13 +34,19 @@ class Util
     public static function getVersionMeta($moduleName, $rootdir = 'modules')
     {
         $modversion = array();
+        $bundle = null;
+
+        try {
+            $bundle = ServiceUtil::get('kernel')->getModule($moduleName);
+        } catch (\InvalidArgumentException $e) {
+        }
 
         $class = "{$moduleName}\\{$moduleName}Version";
         $classOld = "{$moduleName}_Version";
         $class = class_exists($class) ? $class : $classOld;
         if (class_exists($class)) {
             try {
-                $modversion = new $class();
+                $modversion = new $class($bundle);
             } catch (\Exception $e) {
                 LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_AbstractErrorHandler::CRIT);
                 throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
@@ -59,15 +66,16 @@ class Util
             // pre 1.3 modules
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
-                if (!System::isUpgrading()) {
-                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
-                    LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
-                }
-                $modversion = array(
-                    'name' => $moduleName,
-                    'description' => '',
-                    'version' => 0
-                );
+//                if (!System::isUpgrading()) {
+//                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
+//                    LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
+//                }
+//                $modversion = array(
+//                    'name' => $moduleName,
+//                    'description' => '',
+//                    'version' => 0
+//                );
+                return array();
             } else {
                 include $legacyVersionPath;
             }

@@ -10,6 +10,16 @@ abstract class AbstractModule extends Bundle
     private $serviceIds = array();
 
 //    abstract public function getVersion();
+//    public function getVersion()
+//    {
+//        $ns = $this->getNamespace();
+//        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
+//
+//        $version = new $class;
+//        $version['name'] = $this->getName();
+//
+//        return $version;
+//    }
 
 //    /**
 //     * @return ModuleInstallerInterface

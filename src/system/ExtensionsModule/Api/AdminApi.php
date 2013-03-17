@@ -430,6 +430,53 @@ class AdminApi extends \Zikula_AbstractApi
         // Get all modules on filesystem
         $filemodules = array();
 
+        $scanner = new Zikula\Bundle\CoreBundle\Bundle\Scanner();
+        $scanner->scan(array('system'), 4);
+        $newModules = $scanner->getModulesMetaData();
+
+        foreach ($newModules as $name => $module) {
+            foreach ($module->getPsr0() as $ns => $path) {
+                ZLoader::addPrefix($ns, $path);
+            }
+            $class = $module->getClass();
+            /** @var $bundle \Zikula\Core\AbstractModule */
+            $bundle = new $class;
+
+            $ns = $bundle->getNamespace();
+            $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
+
+            $version = new $class($bundle);
+            $version['name'] = $bundle->getName();
+
+            $array = $version->toArray();
+            unset($array['id']);
+
+            // Work out if admin-capable
+            if (file_exists($bundle->getPath().'/Controller/AdminController.php')) {
+                $caps = $array['capabilities'];
+                $caps['admin'] = array('version' => '1.0');
+                $array['capabilities'] = $caps;
+            }
+
+            // Work out if user-capable
+            if (file_exists($bundle->getPath().'/Controller/UserController.php')) {
+                $caps = $array['capabilities'];
+                $caps['user'] = array('version' => '1.0');
+                $array['capabilities'] = $caps;
+            }
+
+            // $baseDir = ModUtil::getModuleBaseDir($bundle->getName());
+            // $array['directory'] = $baseDir.'/'.str_replace('\\', '/', $ns);
+            $array['directory'] = str_replace('\\', '/', $bundle->getNamespace());
+
+            $array['capabilities'] = serialize($array['capabilities']);
+            $array['securityschema'] = serialize($array['securityschema']);
+            $array['dependencies'] = serialize($array['dependencies']);
+
+            $filemodules[$bundle->getName()] = $array;
+            $filemodules[$bundle->getName()]['oldnames'] = serialize(array());
+        }
+
         // set the paths to search
         $rootdirs = array('system' => ModUtil::TYPE_SYSTEM, 'modules' => ModUtil::TYPE_MODULE);
 
@@ -448,16 +495,17 @@ class AdminApi extends \Zikula_AbstractApi
 
                     // loads the gettext domain for 3rd party modules
                     if ($rootdir == 'modules' && (is_dir("modules/$dir/Resources/locale") || is_dir("modules/$dir/locale"))) {
-                        // This is required here since including pnversion automatically executes the pnversion code
-                        // this results in $this->__() caching the result before the domain is bounded.  Will not occur in zOO
-                        // since loading is self contained in each zOO application.
                         ZLanguage::bindModuleDomain($dir);
                     }
 
                     try {
                         $modversion = ExtensionsUtil::getVersionMeta($dir, $rootdir);
                     } catch (\Exception $e) {
-                        LogUtil::registerError($e->getMessage());
+                        // LogUtil::registerError($e->getMessage());
+                        continue;
+                    }
+
+                    if (!$modversion) {
                         continue;
                     }
 
@@ -622,7 +670,7 @@ class AdminApi extends \Zikula_AbstractApi
                     if (isset($dbmodinfo['name']) && in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
                         $dql = "
-                        UPDATE Zikula\Core\DoctrineEntity\ExtensionVarEntity v
+                        UPDATE Zikula\\Core\\DoctrineEntity\\ExtensionVarEntity v
                         SET v.modname = '{$modinfo['name']}'
                         WHERE v.modname = '{$dbname}'";
                         $query = $this->entityManager->createQuery($dql);
@@ -1331,30 +1379,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function iscoremodule($args)
     {
-        static $coreModules;
-
-        if (!isset($coreModules)) {
-            $coreModules = array(
-                'Admin',
-                'BlocksModule',
-                'Categories',
-                'ErrorsModule',
-                'GroupsModule',
-                'ZikulaMailerModule',
-                'ExtensionsModule',
-                'PermissionsModule',
-                'SecurityCenterModule',
-                'SettingsModule',
-                'ThemeModule',
-                'UsersModule',
-            );
-        }
-
-        if (in_array($args['modulename'], $coreModules)) {
-            return true;
-        }
-
-        return false;
+        return ModUtil::getModuleBaseDir($args['modulename']) === 'system' ? true : false;
     }
 
     // from here is to be moved out into legacy
