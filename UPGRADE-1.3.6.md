@@ -52,7 +52,7 @@ Here are a a few examples of how module classes should look like:
 
 Controllers:
   - Named like `Foo\MyModule\Controller\UserController`
-  - Stored in `Foo\MyModule/Controller/UserController.php`
+  - Stored in `Foo/MyModule/Controller/UserController.php`
   - Example:
 
         <?php
@@ -76,7 +76,7 @@ Apis:
 
 Entities:
   - Named like `Foo\MyModule\Entity\BarEntity`
-  - Stored in `Foo\MyModule/Entity/BarEntity.php`
+  - Stored in `Foo/MyModule/Entity/BarEntity.php`
   - Example:
 
         <?php
@@ -88,9 +88,9 @@ Entities:
 
 .. note::
 
-    The namespace can be as deep as required, e.g
-    `Zikula\Module\AdminModule` so you might have a class like
-    called `Zikula\Module\AdminModule\Controller\AdminController`
+  The namespace can be as deep as required, e.g
+  `Zikula\Module\AdminModule` so you might have a class like
+  called `Zikula\Module\AdminModule\Controller\AdminController`
 
             <?php
             namespace Zikula\Module\AdminModule\Controller;
@@ -158,8 +158,8 @@ The final structure looks as follows:
             Tests/
                 AdminControllerTest.php
             vendor/
-            MyModuleInstaller.php (was Installer.php)
-            MyModuleVersion.php (was Version.php) (todo - this file will go away)
+            ModuleInstaller.php (was Installer.php)
+            ModuleVersion.php (was Version.php) (todo - this file will go away)
             FooMyModule.php
             CHANGELOG.md
             LICENSE
@@ -181,9 +181,9 @@ combining the vendor name (`Foo` with the class name).
 
 .. note::
 
-    The namespace can be as deep as required, e.g
-    `Zikula\Module\AdminModule` would result in a class
-    called `Zikula\Module\AdminModule\ZikulaAdminModule`
+  The namespace can be as deep as required, e.g
+  `Zikula\Module\AdminModule` would result in a class
+  called `Zikula\Module\AdminModule\ZikulaAdminModule`
 
 There is a script to restructure the module for you:
 
@@ -194,8 +194,8 @@ with the interrim structure created, and you can begin refactoring to namespaces
 
 .. note::
 
-    It's wise to `git mv` the files to rename/move file before making changes
-    to the file contents (which should be made in a separate commit).
+  It's wise to `git mv` the files to rename/move file before making changes
+  to the file contents (which should be made in a separate commit).
 
 It is also recommended you place templates in the `Resource/views` folder in a
 hierarchy as follows:
