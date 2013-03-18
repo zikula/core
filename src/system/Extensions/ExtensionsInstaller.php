@@ -112,10 +112,22 @@ class ExtensionsInstaller extends \Zikula_AbstractInstaller
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
                 }
-
             case '3.7.10':
-                // future upgrade routines
+                // increase length of some hook table fields from 20 to 60
+                $commands = array();
+                $commands[] = "ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL";
+                $commands[] = "ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL";
 
+                // Load DB connection
+                $dbEvent = new Zikula_Event('doctrine.init_connection');
+                $connection = $this->eventManager->notify($dbEvent)->getData();
+
+                foreach ($commands as $sql) {
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                }
+            case '3.7.11':
+                // future upgrade routines
         }
 
         // Update successful
