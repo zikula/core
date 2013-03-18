@@ -425,7 +425,7 @@ class Zikula_View_Theme extends Zikula_View
 
         try {
             $bundle = $this->getContainer()->get('kernel')->getBundle($this->name);
-            $bundlePath = $relativepath = $bundle->getPath().'/Resources/views';
+            $bundlePath = $relativePath = $bundle->getPath().'/Resources/views';
         } catch (\InvalidArgumentException $e) {
         }
 

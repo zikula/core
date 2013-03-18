@@ -439,9 +439,9 @@ class AdminApi extends \Zikula_AbstractApi
                 ZLoader::addPrefix($ns, $path);
             }
             $class = $module->getClass();
+
             /** @var $bundle \Zikula\Core\AbstractModule */
             $bundle = new $class;
-
             $ns = $bundle->getNamespace();
             $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
 
@@ -465,8 +465,6 @@ class AdminApi extends \Zikula_AbstractApi
                 $array['capabilities'] = $caps;
             }
 
-            // $baseDir = ModUtil::getModuleBaseDir($bundle->getName());
-            // $array['directory'] = $baseDir.'/'.str_replace('\\', '/', $ns);
             $array['directory'] = str_replace('\\', '/', $bundle->getNamespace());
 
             $array['capabilities'] = serialize($array['capabilities']);
@@ -1082,7 +1080,7 @@ class AdminApi extends \Zikula_AbstractApi
             $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
 
             // Sort upgrade order according to this list.
-            $priorities = array('ZikulaExtensionsModule', 'UsersModule' , 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'Admin', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'Categories', 'SecurityCenterModule', 'ZikulaErrorsModule');
+            $priorities = array('ZikulaExtensionsModule', 'ZikulaUsersModule' , 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'Admin', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'Categories', 'SecurityCenterModule', 'ZikulaErrorsModule');
             $sortedList = array();
             foreach ($priorities as $priority) {
                 foreach ($newmods as $key => $modinfo) {

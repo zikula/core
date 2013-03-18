@@ -361,7 +361,7 @@ function install(Zikula_Core $core)
 function createuser($username, $password, $email)
 {
     if (!class_exists('Users_Constant')) {
-        require_once 'system/Users/Constant.php';
+        require_once 'system/Zikula/Module/UsersModule/Constant.php';
     }
     $connection = Doctrine_Manager::connection();
 
@@ -407,66 +407,85 @@ function installmodules($lang = 'en')
     $results = array();
 
     $sm = ServiceUtil::getManager();
+    $kernel = $sm->get('kernel');
     $em = EventUtil::getManager();
 
-    $coremodules = array('ZikulaExtensionsModule',
-            'ZikulaSettingsModule',
-            'ZikulaThemeModule',
-            'Admin',
-            'ZikulaPermissionsModule',
-            'ZikulaGroupsModule',
-            'ZikulaBlocksModule',
-            'ZikulaUsersModule',
+    $coremodules = array(
+        'ZikulaExtensionsModule',
+        'ZikulaSettingsModule',
+        'ZikulaThemeModule',
+        'Admin',
+        'ZikulaPermissionsModule',
+        'ZikulaGroupsModule',
+        'ZikulaBlocksModule',
+        'ZikulaUsersModule',
+        'ZikulaSecurityCenterModule',
+        'Categories',
+        'ZikulaMailerModule',
+        'ZikulaSearchModule',
+        'ZikulaErrorsModule',
     );
 
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
-        $modpath = 'system';
-        if (is_dir("$modpath/$coremodule")) {
-            ZLoader::addAutoloader($coremodule, $modpath);
-            ZLoader::addPrefix($coremodule, $modpath);
+        $className = null;
+        $module = null;
+        try {
+            $module = $kernel->getModule($coremodule);
+            $className = $module->getInstallerClass();
+            $bootstrap = $module->getPath().'/bootstrap.php';
+            if (file_exists($bootstrap)) {
+                include_once $bootstrap;
+            }
+        } catch (\InvalidArgumentException $e) {
         }
-
-        $bootstrap = "$modpath/$coremodule/bootstrap.php";
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
+//        $bootstrap = "$modpath/$coremodule/bootstrap.php";
+//        if (file_exists($bootstrap)) {
+//            include_once $bootstrap;
+//        }
 
         ModUtil::dbInfoLoad($coremodule, $coremodule);
-        $className = "{$coremodule}\\{$coremodule}Installer";
-        $classNameOld = "{$coremodule}_Installer";
-        $className = class_exists($className) ? $className : $classNameOld;
-        $instance = new $className($sm);
+        if (null === $className) {
+            if (is_dir("system/$coremodule")) {
+                ZLoader::addAutoloader($coremodule, 'system');
+                ZLoader::addPrefix($coremodule, 'system');
+            }
+            $className = "{$coremodule}\\{$coremodule}Installer";
+            $classNameOld = "{$coremodule}_Installer";
+            $className = class_exists($className) ? $className : $classNameOld;
+        }
+        $instance = new $className($sm, $module);
         if ($instance->install()) {
             $results[$coremodule] = true;
         }
     }
 
     // regenerate modules list
-    $filemodules = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules');
-    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate',
-                    array('filemodules' => $filemodules));
+    $modApi = new Zikula\Module\ExtensionsModule\Api\AdminApi($sm, new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
+    $modApi->regenerate(array('filemodules' => $modApi->getfilemodules()));
 
     // set each of the core modules to active
     reset($coremodules);
     foreach ($coremodules as $coremodule) {
         $mid = ModUtil::getIdFromName($coremodule, true);
-        ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
-                        array('id' => $mid,
+        $modApi->setstate(array('id' => $mid,
                                 'state' => ModUtil::STATE_INACTIVE));
-        ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
-                        array('id' => $mid,
+        $modApi->setstate(array('id' => $mid,
                                 'state' => ModUtil::STATE_ACTIVE));
     }
     // Add them to the appropriate category
     reset($coremodules);
-
     $coremodscat = array('ZikulaExtensionsModule' => __('System'),
             'ZikulaPermissionsModule' => __('Users'),
             'ZikulaGroupsModule' => __('Users'),
             'ZikulaBlocksModule' => __('Layout'),
             'ZikulaUsersModule' => __('Users'),
             'ZikulaThemeModule' => __('Layout'),
+            'ZikulaSecurityCenterModule' => __('Security'),
+            'Categories' => __('Content'),
+            'ZikulaMailerModule' => __('System'),
+            'ZikulaErrorsModule' => __('System'),
+            'ZikulaSearchModule' => __('Content'),
             'Admin' => __('System'),
             'ZikulaSettingsModule' => __('System'));
 
@@ -482,69 +501,8 @@ function installmodules($lang = 'en')
                                 'category' => $modscat[$category]));
     }
     // create the default blocks.
-    $blockInstance = new Zikula\Module\BlocksModule\BlocksModuleInstaller($sm);
+    $blockInstance = new Zikula\Module\BlocksModule\BlocksModuleInstaller($sm, $kernel->getModule('ZikulaBlocksModule'));
     $blockInstance->defaultdata();
-
-    // install all the basic modules
-    $modules = array(array('module' => 'SecurityCenterModule',
-                    'category' => __('Security')),
-            array('module' => 'Tour',
-                    'category' => __('Content')),
-            array('module' => 'Categories',
-                    'category' => __('Content')),
-            array('module' => 'Legal',
-                    'category' => __('Content')),
-            array('module' => 'ZikulaMailerModule',
-                    'category' => __('System')),
-            array('module' => 'ZikulaErrorsModule',
-                    'category' => __('System')),
-            array('module' => 'ZikulaThemeModule',
-                    'category' => __('Layout')),
-            array('module' => 'ZikulaSearchModule',
-                    'category' => __('Content')));
-
-    foreach ($modules as $module) {
-        // sanity check - check if module is already installed
-        if (ModUtil::available($module['module'])) {
-            continue;
-        }
-        $modpath = 'modules';
-        $moduleName = $module['module'];
-        if (is_dir("$modpath/$moduleName")) {
-            ZLoader::addAutoloader($moduleName, array($modpath, "$modpath/$moduleName/lib"));
-            ZLoader::addPrefix($moduleName, $modpath);
-        }
-        $bootstrap = "$modpath/$moduleName/bootstrap.php";
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
-
-        ZLanguage::bindModuleDomain($moduleName);
-
-        $results[$moduleName] = false;
-
-        // #6048 - prevent trying to install modules which are contained in an install type, but are not available physically
-        if (!file_exists('system/' . $moduleName . '/') && !file_exists('modules/' . $moduleName . '/')) {
-            continue;
-        }
-
-        $mid = ModUtil::getIdFromName($moduleName);
-
-        // init it
-        if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'initialise',
-                        array('id' => $mid)) == true) {
-            // activate it
-            if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
-                            array('id' => $mid,
-                                    'state' => ModUtil::STATE_ACTIVE))) {
-                $results[$module['module']] = true;
-            }
-            // Set category
-            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
-                            array('module' => $moduleName,
-                                    'category' => $modscat[$module['category']]));
-        }
-    }
 
     System::setVar('language_i18n', $lang);
 

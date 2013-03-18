@@ -320,12 +320,24 @@ class BlockUtil
 
         // get the block info
         if ($isOO) {
-            $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
-            $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
-            $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
-            $className = class_exists($className) ? $className :$classNameOld;
+            $kernel = $sm->get('kernel');
+            $module = null;
+            try {
+                /** @var $module \Zikula\Core\AbstractModule */
+                $module = $kernel->getModule($modinfo['name']);
+                $className = $module->getNamespace().'\\Block\\'.ucwords($block);
+                $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
+            } catch (\InvalidArgumentException $e) {
+            }
+
+            if (!isset($className)) {
+                $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
+                $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
+                $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+                $className = class_exists($className) ? $className :$classNameOld;
+            }
             $r = new ReflectionClass($className);
-            $blockInstance = $r->newInstanceArgs(array($sm));
+            $blockInstance = $r->newInstanceArgs(array($sm, $module));
             try {
                 if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
                     throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
