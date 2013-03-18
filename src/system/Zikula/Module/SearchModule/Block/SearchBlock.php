@@ -40,7 +40,7 @@ class SearchBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'          => 'ZikulaSearchModule',
+        return array('module'          => 'Search',
                      'text_type'       => $this->__('Search'),
                      'text_type_long'  => $this->__('Search box'),
                      'allow_multiple'  => true,
