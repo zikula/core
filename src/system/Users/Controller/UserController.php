@@ -1397,11 +1397,15 @@ class UserController extends \Zikula_AbstractController
      * The user is redirected to the entry point of the site, or to a redirect
      * page if specified in the site configuration.
      *
+     * Parameters:
+     * string  returnpage The URL of the page to return to if the log-out attempt is successful. (This URL must not be urlencoded.)
+     *
      * @return bool True (whether successfully logged out or not.)
      */
     public function logoutAction()
     {
         $login_redirect = $this->getVar('login_redirect');
+        $returnpage     = $this->request->query->get('returnpage', isset($args['returnpage']) ? $args['returnpage'] : System::getHomepageUrl());
 
         // start logout event
         $uid = UserUtil::getVar('uid');
@@ -1417,10 +1421,10 @@ class UserController extends \Zikula_AbstractController
             if ($login_redirect == 1) {
                 // WCAG compliant logout - we redirect to index.php because
                 // we might no have the permission for the recent site any longer
-                return $this->redirect(System::getHomepageUrl());
+                return $this->redirect($returnpage);
             } else {
                 // meta refresh
-                $this->printRedirectPage($this->__('Done! You have been logged out.'), System::getHomepageUrl());
+                $this->printRedirectPage($this->__('Done! You have been logged out.'), $returnpage);
             }
         } else {
             $this->registerError($this->__('Error! You have not been logged out.'))
