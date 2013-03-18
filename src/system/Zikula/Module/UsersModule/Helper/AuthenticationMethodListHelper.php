@@ -74,7 +74,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
     {
         parent::__construct($base);
 
-        $this->name = 'UsersModule';
+        $this->name = 'ZikulaUsersModule';
 
         $authenticationModules = ModUtil::getModulesCapableOf('authentication');
         if (!is_array($authenticationModules)) {

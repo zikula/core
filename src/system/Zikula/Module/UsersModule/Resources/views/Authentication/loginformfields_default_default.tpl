@@ -1,6 +1,6 @@
 {strip}
     {gt text="User account" assign='legend_text'}
-    {if isset($change_password) && ($change_password == 1) && ($modvars.Users.use_password_strength_meter == 1)}
+    {if isset($change_password) && ($change_password == 1) && ($modvars.ZikulaUsersModule.use_password_strength_meter == 1)}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
@@ -9,7 +9,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('users_login_newpass', 'users_login_passmeter', {
                         username:'users_login_login_id',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
                     });
                 });
             </script>
@@ -54,7 +54,7 @@
     <label for="users_newpass">{gt text="New password"}</label>
     <input type="password" id="users_login_newpass" name="authentication_info[new_pass]" size="20" maxlength="20" value="" />
 </div>
-{if $modvars.Users.use_password_strength_meter eq 1}
+{if $modvars.ZikulaUsersModule.use_password_strength_meter eq 1}
 <div id="users_login_passmeter">
 </div>
 {/if}

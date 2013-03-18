@@ -1011,9 +1011,6 @@ class ModUtil
             }
 
             $object = $r->newInstanceArgs(array($sm, $module));
-            if ($modname== "ZikulaMailerModule") {
-//            var_dump($module);
-            }
 
             $sm->set($serviceId, $object);
         }
@@ -1077,7 +1074,7 @@ class ModUtil
 
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
             $modname = 'ZikulaExtensionsModule';
         }
 
@@ -1285,7 +1282,7 @@ class ModUtil
 
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "ZikulaExtensionsModule".'));
             $modname = 'ZikulaExtensionsModule';
         }
 
@@ -1485,7 +1482,7 @@ class ModUtil
         }
 
         if ((isset(self::$cache['modstate'][$modname]) &&
-                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensionsmodule|adminmodule|thememodule|blockmodule|groupsmodule|permissionsmodule|usersmodule)$/i', $modname) &&
+                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(zikulaextensionsmodule|admin|zikulathememodule|zikulablockmodule|zikulagroupsmodule|zikulapermissionsmodule|zikulausersmodule)$/i', $modname) &&
                 (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
 

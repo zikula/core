@@ -38,7 +38,7 @@ function ZikulaUsersModule_tables($forVersion = null)
         }
 
         // Remaining cases - this should be deleted.
-        $usersModInfo = ModUtil::getInfoFromName('UsersModule');
+        $usersModInfo = ModUtil::getInfoFromName('ZikulaUsersModule');
         $forVersion = $usersModInfo['version'];
     }
 

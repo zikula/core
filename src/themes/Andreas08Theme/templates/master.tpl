@@ -4,7 +4,7 @@
     {if empty($topnavblock)}
     <ul class="z-floatleft">
         <li><a href="{homepage}" title="{gt text="Go to the site's home page"}">{gt text='Home'}</a></li>
-        <li><a href="{modurl modname='UsersModule' type='user' func='main'}" title="{gt text='Go to your account panel'}">{gt text="My Account"}</a></li>
+        <li><a href="{modurl modname='ZikulaUsersModule' type='user' func='main'}" title="{gt text='Go to your account panel'}">{gt text="My Account"}</a></li>
         <li><a href="{modurl modname='ZikulaSearchModule' type='user' func='main'}" title="{gt text='Search this site'}">{gt text="Site search"}</a></li>
     </ul>
     {else}

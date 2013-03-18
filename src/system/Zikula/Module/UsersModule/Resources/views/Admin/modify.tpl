@@ -2,7 +2,7 @@
     {gt text='Edit user account of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname') assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
-    {if $modvars.Users.use_password_strength_meter == 1}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
@@ -11,7 +11,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
                         username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
                     });
                 });
             </script>
@@ -76,7 +76,7 @@
 {if $editingSelf}
 <div class="z-informationmsg">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
 {/if}
-<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='UsersModule' type='admin' func='modify'}" method="post">
+<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='modify'}" method="post">
     <div>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_user" />
@@ -153,7 +153,7 @@
                 <div class="z-formrow">
                     <label for="{$formData->getFieldId($fieldName)}">{if $usersAuth}{gt text='New password'}{else}{gt text='Create a password'}{/if}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="password" name="{$fieldName}" size="30" maxlength="20" />
-                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.Users.minpass}</em>
+                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
                 <div id="{$formData->getFormId()}_passmeter">
@@ -216,7 +216,7 @@
                 {img id=$formData->getFormId()|cat:'_ajax_indicator' class='z-hide z-center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
                 {button id=$formData->getFormId()|cat:'_submit' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
                 {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='z-hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                <a href="{modurl modname='UsersModule' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </fieldset>
     </div>
@@ -228,8 +228,8 @@
 </div>
 
 <div class="z-center z-buttons">
-    {if !$editingSelf}<a href="{modurl modname='UsersModule' type='admin' func='deleteusers' userid=$formData->getFieldData('uid')}">{img modname='core' set='icons/extrasmall' src="delete_user.png" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
-    <a href="{modurl modname='UsersModule' type='admin' func='lostUsername' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
-    <a href="{modurl modname='UsersModule' type='admin' func='lostPassword' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
+    {if !$editingSelf}<a href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteusers' userid=$formData->getFieldData('uid')}">{img modname='core' set='icons/extrasmall' src="delete_user.png" __alt='Delete' __title='Delete'} {gt text='Delete'}</a>{/if}
+    <a href="{modurl modname='ZikulaUsersModule' type='admin' func='lostUsername' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostusername.png" __alt='Send user name' __title='Send user name'} {gt text='Send user name'}</a>
+    <a href="{modurl modname='ZikulaUsersModule' type='admin' func='lostPassword' userid=$formData->getFieldData('uid') csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src="lostpassword.png" __alt='Send password recovery code' __title='Send password recovery code'} {gt text='Send password recovery code'}</a>
 </div>
 {adminfooter}

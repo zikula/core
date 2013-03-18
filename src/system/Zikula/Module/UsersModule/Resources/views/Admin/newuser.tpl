@@ -2,7 +2,7 @@
     {gt text='Create new user' assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
-    {if $modvars.Users.use_password_strength_meter == 1}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
@@ -12,7 +12,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
                         username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
                     });
                 });
             </script>
@@ -68,7 +68,7 @@
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='UsersModule' type='admin' func='newUser'}" method="post">
+<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='newUser'}" method="post">
     <div>
         <input type="hidden" id="{$formData->getFormId()}_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_user" />
@@ -121,7 +121,7 @@
                 <div class="z-formrow">
                     <label for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="password" name="{$fieldName}" size="30" maxlength="20" />
-                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.Users.minpass}</em>
+                    <em class="z-sub z-formnote">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
                 <div id="{$formData->getFormId()}_passmeter">
@@ -148,7 +148,7 @@
             </div>
             <div id="{$formData->getFormId()}_password_not_set_wrap" class="z-formrow z-hide">
 
-                {if $modvars.Users.reg_verifyemail == 'UsersModule\Constant::VERIFY_NO'|constant}
+                {if $modvars.ZikulaUsersModule.reg_verifyemail == 'UsersModule\Constant::VERIFY_NO'|constant}
                 <p class="z-formnote z-warningmsg">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
                 {else}
                 <p class="z-formnote z-informationmsg">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
@@ -183,12 +183,12 @@
                 {img id=$formData->getFormId()|cat:'_ajax_indicator' class='z-hide z-center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
                 {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
                 {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='z-hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                <a href="{modurl modname='UsersModule' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
             </div>
         </fieldset>
     </div>
 </form>
 {adminfooter}
 {* Script blocks should remain at the end of the file so that it does not block progressive rendering of the page. *}
-{if $modvars.Users.use_password_strength_meter == 1}
+{if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
 {/if}

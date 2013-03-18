@@ -59,8 +59,8 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         // create hook provider table.
         Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
         
-        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('ZikulaExtensionsModule\Listener\HookUiListener', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
+        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'hooks'));
+        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
 
         // populate default data
         $this->defaultdata();

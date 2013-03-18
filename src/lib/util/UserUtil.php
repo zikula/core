@@ -1665,7 +1665,7 @@ class UserUtil
             }
 
         } else {
-            $hashAlgorithmName = ModUtil::getVar('UsersModule', 'hash_method', '');
+            $hashAlgorithmName = ModUtil::getVar('ZikulaUsersModule', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
                 return LogUtil::registerArgsError();
@@ -1688,7 +1688,7 @@ class UserUtil
      */
     public static function generatePassword()
     {
-        $minLength = ModUtil::getVar('UsersModule', 'minpass', 5);
+        $minLength = ModUtil::getVar('ZikulaUsersModule', 'minpass', 5);
         if (!is_numeric($minLength) || ((int)$minLength != $minLength) || ($minLength < 5)) {
             $minLength = 5;
         }

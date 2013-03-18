@@ -1,7 +1,7 @@
 {strip}{gt text='New account registration' assign='templatetitle'}
 {pagesetvar name='title' value=$templatetitle}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
-{if ('UsersModule' != $authentication_method.modname)}
+{if ('ZikulaUsersModule' != $authentication_method.modname)}
     {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.Login.js'}
 {/if}
 {/foreach}
@@ -13,7 +13,7 @@
 <div>
     <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Choose how you would like to log in."}</h5>
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in."}</h5>
-    {modurl modname='UsersModule' type='user' func='register' assign='form_action'}
+    {modurl modname='ZikulaUsersModule' type='user' func='register' assign='form_action'}
     <div>
         <div class="z-w40 z-floatright">
             {gt text='If you prefer, you can create an account and password for use only with this site by clicking below...'}

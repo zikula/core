@@ -1,6 +1,6 @@
 {strip}
     {gt text='Enter verification code' assign='templatetitle'}
-    {if $modvars.Users.use_password_strength_meter == 1}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
@@ -9,7 +9,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('users_newpass', 'users_verifyregistration_passmeter',{
                         username:'users_uname',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
                     });
                 });
             </script>
@@ -17,7 +17,7 @@
     {/if}
 {/strip}
             
-{modulelinks modname='UsersModule' type='user'}
+{modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 
 {if !empty($errormessages)}
@@ -31,7 +31,7 @@
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='UsersModule' type='user' func='verifyRegistration'}" method="post">
+<form class="z-form" action="{modurl modname='ZikulaUsersModule' type='user' func='verifyRegistration'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_setpass" name="setpass" value="{$setpass}" />
@@ -55,7 +55,7 @@
                 <label for="users_newpass">{gt text='Password'}</label>
                 <input id="users_newpass" type="password" name="newpass" size="25" maxlength="60" value="" />
             </div>
-            {if $modvars.Users.use_password_strength_meter == 1}
+            {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
             <div id="users_verifyregistration_passmeter">
             </div>
             {/if}

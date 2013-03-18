@@ -62,13 +62,13 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
 
         // Register persistent event listeners (handlers)
         EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content',
-            array('UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
+            array('Zikula\Module\UsersModule\Listener\PendingContentListener', 'pendingContentListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto',
-            array('UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
+            array('Zikula\Module\UsersModule\Listener\ForcedPasswordChangeListener', 'forcedPasswordChangeListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded',
-            array('UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
+            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
         EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception',
-            array('UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
+            array('Zikula\Module\UsersModule\Listener\ClearUsersNamespaceListener', 'clearUsersNamespaceListener'));
 
         // Register persistent hook bundles
         HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
@@ -152,10 +152,10 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
                     return '1.13';
                 }
 
-                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('UsersModule\Listener\PendingContent', 'pendingContentListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('UsersModule\Listener\ForcedPasswordChange', 'forcedPasswordChangeListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('UsersModule\Listener\ClearUsersNamespace', 'clearUsersNamespaceListener'));
-                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('UsersModule\Listener\ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'get.pending_content', array('Zikula\Module\UsersModule\Listener\PendingContent', 'pendingContentListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.login.veto', array('Zikula\Module\UsersModule\Listener\ForcedPasswordChange', 'forcedPasswordChangeListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'user.logout.succeeded', array('Zikula\Module\UsersModule\Listener\ClearUsersNamespace', 'clearUsersNamespaceListener'));
+                EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.exception', array('Zikula\Module\UsersModule\Listener\ClearUsersNamespace', 'clearUsersNamespaceListener'));
                 HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
                 HookUtil::registerProviderBundles($this->version->getHookProviderBundles());
             case '2.2.0':
@@ -339,7 +339,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         }
 
         // Get the dbinfo for the new version
-        ModUtil::dbInfoLoad('UsersModule', 'UsersModule');
+        ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
 
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);

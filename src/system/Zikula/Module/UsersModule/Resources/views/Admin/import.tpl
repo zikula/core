@@ -10,7 +10,7 @@
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='UsersModule' type='admin' func='import'}" method="post" enctype="multipart/form-data">
+<form class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='import'}" method="post" enctype="multipart/form-data">
     <div>
         <input type="hidden" name="confirmed" value="1" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -32,7 +32,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Import' __title='Import' __text='Import'}
-            <a href="{modurl modname='UsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>
@@ -47,7 +47,7 @@
         <dt>{gt text="where:"}</dt>
 
         <dd>* uname{gt text=" (mandatory) - The user name. This value must be unique."}</dd>
-        <dd>* pass{gt text=" (mandatory) - The user password. It must have %s characters or more. Preferentially containing letters and numbers." tag1=$modvars.Users.minpass}</dd>
+        <dd>* pass{gt text=" (mandatory) - The user password. It must have %s characters or more. Preferentially containing letters and numbers." tag1=$modvars.ZikulaUsersModule.minpass}</dd>
         <dd>* email{gt text=" (mandatory) - The user email. If the validation method is based on the user email this value must be unique."}</dd>
         <dd>* activated{gt text=" - Type 0 if user is not active, 1 if the user must be active. The default value is 1."}</dd>
         <dd>* sendmail{gt text=" - Type 1 if the system must send the password to the user via email and 0 otherwise. The default value is 1. The module Mailer must be active and correctly configured. The email is sent only if user activated value is upper than 0."}</dd>

@@ -746,7 +746,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Logout', $dom),
-                            'href' => ModUtil::url('UsersModule','user','logout'),
+                            'href' => ModUtil::url('ZikulaUsersModule','user','logout'),
                             'title' => __('Logout', $dom),
                             'className' => '',
                             'state' => 1,
@@ -767,7 +767,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Login', $dom),
-                            'href' => ModUtil::url('UsersModule', 'user', 'login', $loginArgs),
+                            'href' => ModUtil::url('ZikulaUsersModule', 'user', 'login', $loginArgs),
                             'title' =>__('Login', $dom),
                             'className' => '',
                             'state' => 1,
@@ -780,7 +780,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Register', $dom),
-                            'href' => ModUtil::url('UsersModule','user','register'),
+                            'href' => ModUtil::url('ZikulaUsersModule','user','register'),
                             'title' => __('Register', $dom),
                             'className' => '',
                             'state' => 1,
@@ -793,7 +793,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => __('Lost password', $dom),
-                            'href' => ModUtil::url('UsersModule','user','lostpassword'),
+                            'href' => ModUtil::url('ZikulaUsersModule','user','lostpassword'),
                             'title' => __('Lost password', $dom),
                             'className' => '',
                             'state' => 1,

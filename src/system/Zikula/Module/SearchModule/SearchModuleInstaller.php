@@ -42,7 +42,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('limitsummary', 255);
 
         // register event handler to activate new modules in the search block
-        EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('SearchModule\Listener\ModuleListener', 'moduleInstall'));
+        EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('Zikula\Module\SearchModule\Listener\ModuleListener', 'moduleInstall'));
 
         // Initialisation successful
         return true;
@@ -63,7 +63,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         switch ($oldversion) {
             case '1.5.1':
                 // register event handler to activate new modules in the search block
-                EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('SearchModule\Listener\ModuleListener', 'moduleInstall'));
+                EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('Zikula\Module\SearchModule\Listener\ModuleListener', 'moduleInstall'));
 
             case '1.5.2':
             // future upgrade routines

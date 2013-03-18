@@ -17,7 +17,7 @@
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\Module\\ErrorsModule\\ZikulaErrorsModule"
+            "class": "Zikula\\Module\\ErrorsModule\\ZikulaErrorsModule"
         }
     }
 }

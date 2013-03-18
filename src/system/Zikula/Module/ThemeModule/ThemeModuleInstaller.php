@@ -18,7 +18,7 @@ use DBUtil;
 use ModUtil;
 use DoctrineHelper;
 
-class ZikulaThemeModuleInstaller extends \Zikula_AbstractInstaller
+class ThemeModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the theme module

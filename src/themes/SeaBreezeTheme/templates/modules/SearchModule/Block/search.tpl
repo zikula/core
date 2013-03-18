@@ -9,7 +9,7 @@
             {$plugin_option}
             {/foreach}
         </div>
-        {searchvartofieldnames data=$modvars.Search prefix="modvar" assign="modvariables"}
+        {searchvartofieldnames data=$modvars.ZikulaSearchModule prefix="modvar" assign="modvariables"}
         {foreach item="value" key="name" from=$modvariables}
         <input type="hidden" name="{$name|safetext}" value="{$value|safetext}" />
         {/foreach}

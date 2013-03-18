@@ -21,7 +21,7 @@
  *   - assign:   If set, the results are assigned to the corresponding variable instead of printed out
  *
  * Example
- * <input type="hidden" name="authid" value="{insert name='generateauthkey' module='UsersModule'}" />
+ * <input type="hidden" name="authid" value="{insert name='generateauthkey' module='ZikulaUsersModule'}" />
  *
  * @param array       $params All attributes passed to this function from the template.
  * @param Zikula_View $view   Reference to the Zikula_View object.

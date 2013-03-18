@@ -1,7 +1,7 @@
 {strip}
     {gt text='New account registration' assign='templatetitle'}
-    {ajaxheader modname='UsersModule' filename='Zikula.Users.NewUser.js'}
-    {if $modvars.Users.use_password_strength_meter && ($authentication_method.modname == 'UsersModule')}
+    {ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.NewUser.js'}
+    {if $modvars.ZikulaUsersModule.use_password_strength_meter && ($authentication_method.modname == 'ZikulaUsersModule')}
         {pageaddvar name='javascript' value='prototype'}
         {pageaddvar name='javascript' value='system/Users/Resources/public/js/Zikula.Users.PassMeter.js'}
         {pageaddvarblock}
@@ -10,7 +10,7 @@
                 document.observe("dom:loaded", function() {
                     passmeter = new Zikula.Users.PassMeter('{{$formData->getFieldId('pass')}}', '{{$formData->getFormId()}}_passmeter',{
                         username:'{{$formData->getFieldId('uname')}}',
-                        minLength: '{{$modvars.Users.minpass}}'
+                        minLength: '{{$modvars.ZikulaUsersModule.minpass}}'
                     });
                 });
             </script>
@@ -42,15 +42,15 @@
     {gt text='During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.'}
 </p>
 
-{if $modvars.Users.moderation && ($modvars.Users.reg_verifyemail != 'UsersModule\Constant::VERIFY_NO'|constant)}
-    {if $modvars.Users.moderation_order == 'UsersModule\Constant::APPROVAL_BEFORE'|constant}
+{if $modvars.ZikulaUsersModule.moderation && ($modvars.ZikulaUsersModule.reg_verifyemail != 'UsersModule\Constant::VERIFY_NO'|constant)}
+    {if $modvars.ZikulaUsersModule.moderation_order == 'UsersModule\Constant::APPROVAL_BEFORE'|constant}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request and you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after an administrator has approved your request."}</p>
     {else}
-    <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $modvars.Users.moderation_order == 'UsersModule\Constant::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
+    <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address and an administrator must approve your registration request. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}{if $modvars.ZikulaUsersModule.moderation_order == 'UsersModule\Constant::APPROVAL_AFTER'|constant} {gt text="You must verify your e-mail address before an administrator will approve your registration request."}{/if}</p>
     {/if}
-{elseif $modvars.Users.moderation}
+{elseif $modvars.ZikulaUsersModule.moderation}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below."}</p>
-{elseif $modvars.Users.reg_verifyemail != 'UsersModule\Constant::VERIFY_NO'|constant}
+{elseif $modvars.ZikulaUsersModule.reg_verifyemail != 'UsersModule\Constant::VERIFY_NO'|constant}
     <p class="z-informationmsg">{gt text="Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below."}</p>
 {/if}
 
@@ -65,7 +65,7 @@
 
 <p class="z-warningmsg">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
-<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='UsersModule' type='user' func='register'}" method="post">
+<form id="{$formData->getFormId()}" class="z-form" action="{modurl modname='ZikulaUsersModule' type='user' func='register'}" method="post">
     <div>
         <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_registration" />
@@ -81,7 +81,7 @@
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
 
-                {if ($authentication_method.modname != 'UsersModule') || (($authentication_method.modname == 'UsersModule') && ($modvars.Users.loginviaoption == 'UsersModule\Constant::LOGIN_METHOD_EMAIL'|constant))}
+                {if ($authentication_method.modname != 'ZikulaUsersModule') || (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'UsersModule\Constant::LOGIN_METHOD_EMAIL'|constant))}
                 <em class="z-formnote z-sub">{gt text='Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -89,14 +89,14 @@
         </fieldset>
 {/capture}
 {capture name='pass'}
-        {if $authentication_method.modname == 'UsersModule'}
+        {if $authentication_method.modname == 'ZikulaUsersModule'}
         <fieldset>
             <legend>{gt text="Set a password"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='pass'}
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} size="25" maxlength="60" />
-                <em class="z-formnote z-sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.Users.minpass}</em>
+                <em class="z-formnote z-sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
             <div id="{$formData->getFormId()}_passmeter">
@@ -130,7 +130,7 @@
                 <label for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
 
-                {if (($authentication_method.modname == 'UsersModule') && ($modvars.Users.loginviaoption == 'UsersModule\Constant::LOGIN_METHOD_EMAIL'|constant))}
+                {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'UsersModule\Constant::LOGIN_METHOD_EMAIL'|constant))}
                 <em class="z-formnote z-sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -145,7 +145,7 @@
 {/capture}
 
         {* Order the fieldsets based on whether e-mail is the exclusive log-in id or not. *}
-        {if (($authentication_method.modname == 'UsersModule') && ($modvars.Users.loginviaoption == 'UsersModule\Constant::LOGIN_METHOD_EMAIL'|constant))}
+        {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'UsersModule\Constant::LOGIN_METHOD_EMAIL'|constant))}
             {$smarty.capture.email}
             {$smarty.capture.pass}
             {$smarty.capture.uname}
@@ -162,12 +162,12 @@
             
         {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null}
             
-        {if !empty($modvars.Users.reg_question)}
+        {if !empty($modvars.ZikulaUsersModule.reg_question)}
         <fieldset>
             <legend>{gt text="Answer the security question"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='antispamanswer'}
-                <label for="{$formData->getFieldId($fieldName)}">{$modvars.Users.reg_question|safehtml}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>

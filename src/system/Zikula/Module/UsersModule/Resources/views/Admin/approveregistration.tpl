@@ -7,14 +7,14 @@
 {if !$reginfo.isverified}
 {if $force}
 <p class="z-warningmsg">{gt text="Warning! The e-mail address for this registration has not been verified. Approving this registration will create a new user record without completing the e-mail verification process."}</p>
-{elseif isset($modvars.Users.moderation_order) && ($modvars.Users.moderation_order == 'UsersModule\Constant::APPROVAL_AFTER'|const)}
+{elseif isset($modvars.ZikulaUsersModule.moderation_order) && ($modvars.ZikulaUsersModule.moderation_order == 'UsersModule\Constant::APPROVAL_AFTER'|const)}
 <p class="z-warningmsg">{gt text="Warning! The e-mail address for this registration has not been verified. You are pre-approving this registration, and a new user record will be created upon completion of the e-mail verification process."}</p>
 {/if}
 {/if}
 
 {include file='Admin/includeregistration.tpl'}
 
-<form id="users_approveregistration" class="z-form" action="{modurl modname='UsersModule' type='admin' func='approveRegistration'}" method="post">
+<form id="users_approveregistration" class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='approveRegistration'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uid" name="uid" value="{$reginfo.uid}" />

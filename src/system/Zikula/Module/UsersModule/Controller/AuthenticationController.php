@@ -170,7 +170,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      * -------------------------------------
      * - array $args['authenticationMethod'] The authentication method (selected either by the user or by the system) for which
      *                                          the credentials in $authenticationInfo were entered by the user. For the Users
-     *                                          module, the 'modname' element should contain 'UsersModule' and the 'method' element
+     *                                          module, the 'modname' element should contain 'ZikulaUsersModule' and the 'method' element
      *                                          should contain either 'uname' or 'email'.
      * - array $args['authenticationInfo']   The user's credentials, as supplied by him on a log-in form on the log-in screen,
      *                                          log-in block, or some other equivalent control. For the Users module, it should
@@ -193,7 +193,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
 
         if (!is_array($authenticationMethod) || empty($authenticationMethod) || !isset($authenticationMethod['modname'])) {
             throw new Zikula_Exception_Fatal($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
-        } elseif ($authenticationMethod['modname'] != 'UsersModule') {
+        } elseif ($authenticationMethod['modname'] != 'ZikulaUsersModule') {
             throw new Zikula_Exception_Fatal($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
         }
 

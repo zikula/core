@@ -227,7 +227,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      */
     public function register(array $args)
     {
-        throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'UsersModule')));
+        throw new Zikula_Exception_Fatal($this->__f('The %1$s function is not implemented for the %1$s module. This core module handles registration of authentication information as part of the core registration process.', array('register()', 'ZikulaUsersModule')));
     }
 
     /**
@@ -259,7 +259,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                                              password entered by the user.
      * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                              module's module name), and the 'method' method name. For the Users module, 'modname' would
-     *                                              be 'UsersModule' and 'method' would contain either 'email' or 'uname'.
+     *                                              be 'ZikulaUsersModule' and 'method' would contain either 'email' or 'uname'.
      *
      * @param array $args All arguments passed to this function.
      *
@@ -461,7 +461,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                                          password entered by the user.
      * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                          module's module name), and the 'method' method name. For the Users module, 'modname' would
-     *                                          be 'UsersModule' and 'method' would contain either 'email' or 'uname'.
+     *                                          be 'ZikulaUsersModule' and 'method' would contain either 'email' or 'uname'.
      *
      * @param array $args All arguments passed to this function.
      *                      array   authenticationInfo  The authentication information uniquely associated with a user.
@@ -552,7 +552,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                                          password entered by the user.
      * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                          module's module name), and the 'method' method name. For the Users module, 'modname' would
-     *                                          be 'UsersModule' and 'method' would contain either 'email' or 'uname'.
+     *                                          be 'ZikulaUsersModule' and 'method' would contain either 'email' or 'uname'.
      *
      * @param array $args All arguments passed to this function.
      *

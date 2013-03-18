@@ -33,7 +33,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('SecurityCenterModule\Entity\IntrusionEntity'));
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity'));
         } catch (\Exception $e) {
             return false;
         }

@@ -173,8 +173,8 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
                 // This may have been set by the Users module upgrade already, so only set it if it does not exist.
                 $systemIdnSetting = System::getVar('idnnames', null);
                 if (isset($systemIdnSetting)) {
-                    if (ModUtil::available('UsersModule')) {
-                        $usersIdnSetting = ModUtil::getVar('UsersModule', 'idnnames', null);
+                    if (ModUtil::available('ZikulaUsersModule')) {
+                        $usersIdnSetting = ModUtil::getVar('ZikulaUsersModule', 'idnnames', null);
                     }
                     System::setVar('idnnames', isset($usersIdnSetting) ? (bool)$usersIdnSetting : true);
                 }

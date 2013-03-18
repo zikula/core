@@ -1,5 +1,5 @@
 // Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).
-Zikula.define('UsersModule');
+Zikula.define('ZikulaUsersModule');
 
 Zikula.Users._PassMeter = Class.create({
     initialize: function(options) {

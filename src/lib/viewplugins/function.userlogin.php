@@ -66,7 +66,7 @@ function smarty_function_userlogin($params, Zikula_View $view)
 
         $csrftoken = SecurityUtil::generateCsrfToken();
 
-        $loginbox = '<form'.$class.' style="display:inline" action="'.DataUtil::formatForDisplay(ModUtil::url('UsersModule', 'user', 'login')).'" method="post"><div>'."\n"
+        $loginbox = '<form'.$class.' style="display:inline" action="'.DataUtil::formatForDisplay(ModUtil::url('ZikulaUsersModule', 'user', 'login')).'" method="post"><div>'."\n"
                    .'<input type="hidden" name="csrftoken" value="' . $csrftoken .'" />'."\n"
                    .'<input type="hidden" name="authentication_method[modname]" value="Users" />'."\n"
                    .'<input type="hidden" name="authentication_method[method]" value="'. $methodName .'" />'."\n"

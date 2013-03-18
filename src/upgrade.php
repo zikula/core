@@ -23,7 +23,7 @@ ini_set('max_execution_time', 86400);
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
-ZLoader::addPrefix('UsersModule', 'system');
+ZLoader::addPrefix('ZikulaUsersModule', 'system');
 
 // check if the config.php was renewed
 if (!isset($GLOBALS['ZConfig']['Log']['log.to_debug_toolbar'])) {
@@ -94,7 +94,7 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
         'pass'      => $password
     );
     $authenticationMethod = array(
-        'modname'   => 'UsersModule',
+        'modname'   => 'ZikulaUsersModule',
         'method'    => 'uname',
     );
     if (!UserUtil::loginUsing($authenticationMethod, $authenticationInfo)) {
@@ -366,7 +366,7 @@ function _upg_upgrademodules($username, $password)
         'pass'      => $password
     );
     $authenticationMethod = array(
-        'modname'   => 'UsersModule',
+        'modname'   => 'ZikulaUsersModule',
         'method'    => 'uname',
     );
 

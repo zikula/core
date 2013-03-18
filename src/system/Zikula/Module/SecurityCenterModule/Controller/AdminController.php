@@ -324,7 +324,7 @@ class AdminController extends \Zikula_AbstractController
             UserUtil::logout();
             $this->registerStatus($this->__('Session handling variables have changed. You must log in again.'));
             $returnPage = urlencode(ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
-            return $this->redirect(ModUtil::url('UsersModule', 'user', 'login', array('returnpage' => $returnPage)));
+            return $this->redirect(ModUtil::url('ZikulaUsersModule', 'user', 'login', array('returnpage' => $returnPage)));
         }
 
         // This function generated no output, and so now it is complete we redirect

@@ -1,7 +1,7 @@
 {strip}
-{ajaxheader modname='UsersModule' filename='Zikula.Users.LoginBlock.js'}
+{ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.LoginBlock.js'}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
-    {if ('UsersModule' != $authentication_method.modname)}
+    {if ('ZikulaUsersModule' != $authentication_method.modname)}
         {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.LoginBlock.js'}
     {/if}
 {/foreach}
@@ -75,8 +75,8 @@
     </div>
 
     <h5>{gt text="Do you need to..."}</h5>
-    {if $modvars.Users.reg_allowreg}
-    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='UsersModule' type='user' func='register'}">{gt text="Create an account?"}</a>
+    {if $modvars.ZikulaUsersModule.reg_allowreg}
+    <a class="user-icon-adduser" style="display:block;" href="{modurl modname='ZikulaUsersModule' type='user' func='register'}">{gt text="Create an account?"}</a>
     {/if}
-    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='UsersModule' type='user' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
+    <a class="user-icon-lostusername" style="display:block;" href="{modurl modname='ZikulaUsersModule' type='user' func='lostpwduname'}">{gt text="Recover your account information?"}</a>
 </div>

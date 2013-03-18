@@ -1,12 +1,12 @@
 {* TODO - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
-{* ajaxheader modname='UsersModule' filename='Zikula.Users.Login.js' *}
+{* ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Login.js' *}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
-{if ('UsersModule' != $authentication_method.modname)}
+{if ('ZikulaUsersModule' != $authentication_method.modname)}
     {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.Login.js'}
 {/if}
 {/foreach}
 {gt text='User log-in' assign='templatetitle'}
-{modulelinks modname='UsersModule' type='user'}
+{modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
 <div>
@@ -14,7 +14,7 @@
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5" class="z-hide"></h5>
     <div class="authentication_select_method_bigbutton">
-    {modurl modname='UsersModule' type='user' func='login' assign='form_action'}
+    {modurl modname='ZikulaUsersModule' type='user' func='login' assign='form_action'}
     {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
         {if $smarty.foreach.authentication_method_display_order.iteration == 6}
             </div>

@@ -28,4 +28,4 @@ include_once __DIR__.'/vendor/htmlpurifier/HTMLPurifier.php';
 
 // register event handlers
 //EventUtil::attachCustomHandlers('system/SecurityCenter/lib/SecurityCenter/EventHandler');
-EventUtil::attachEventHandler('SecurityCenterModule\Listener\FilterListener');
+EventUtil::attachEventHandler('Zikula\Module\SecurityCenterModule\Listener\FilterListener');

@@ -237,7 +237,7 @@ class UserController extends \Zikula_AbstractController
                         // There are no (non-Users module) methods available for registration, so just default to Users.
                         // Note that the method name is 'uname' here no matter what loginviaoption says. This is on purpose.
                         $selectedAuthenticationMethod = array(
-                            'modname' => 'UsersModule',
+                            'modname' => 'ZikulaUsersModule',
                             'method'  => 'uname',
                         );
 
@@ -289,7 +289,7 @@ class UserController extends \Zikula_AbstractController
                     }
 
                     $usersAuthenticationMethod = array(
-                        'modname' => 'UsersModule',
+                        'modname' => 'ZikulaUsersModule',
                         'method'  => 'uname',
                     );
 
@@ -2267,6 +2267,6 @@ class UserController extends \Zikula_AbstractController
     {
         LogUtil::log(__f('Warning! %1$s is deprecated.', array(__CLASS__ . '::' . __FUNCTION__)), E_USER_DEPRECATED);
 
-        return $this->redirect(ModUtil::url('UsersModule', 'user', 'login'), 301);
+        return $this->redirect(ModUtil::url('ZikulaUsersModule', 'user', 'login'), 301);
     }
 }

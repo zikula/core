@@ -1,7 +1,7 @@
 // Copyright Zikula Foundation 2011 - license GNU/LGPLv3 (or at your option, any later version).
 
 // Create the Zikula.Users object if needed
-Zikula.define('UsersModule');
+Zikula.define('ZikulaUsersModule');
 
 // Create the Zikula.Users.ModifyConfig object
 Zikula.Users.Login =

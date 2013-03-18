@@ -22,5 +22,5 @@
 {if $coredata.logged_in eq true}
     <td>{gt text='Private'}</td>
 {else}
-    <td><a href="{modurl modname='UsersModule' type='user' func='view'}" title="{gt text="Sorry! You must register for a user account on this site before you can apply for membership of a group."}"> {gt text="Log in or register"}</a></td>
+    <td><a href="{modurl modname='ZikulaUsersModule' type='user' func='view'}" title="{gt text="Sorry! You must register for a user account on this site before you can apply for membership of a group."}"> {gt text="Log in or register"}</a></td>
 {/if}

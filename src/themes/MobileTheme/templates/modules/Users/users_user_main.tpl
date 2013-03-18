@@ -5,7 +5,7 @@
 {foreach item='accountLink' from=$accountLinks}
     <li style="height:54px;padding:4px">
         <a href="{$accountLink.url|safetext}">
-            {if $modvars.Users.accountdisplaygraphics eq 1}
+            {if $modvars.ZikulaUsersModule.accountdisplaygraphics eq 1}
                 {if isset($accountLink.set) && !empty($accountLink.set)}
                     {assign var="iconset" value=$accountLink.set}
                 {else}

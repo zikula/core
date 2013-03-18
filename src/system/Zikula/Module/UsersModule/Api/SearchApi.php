@@ -36,9 +36,9 @@ class SearchApi extends \Zikula_AbstractApi
     public function info()
     {
         return array(
-            'title'     => 'UsersModule',
+            'title'     => 'ZikulaUsersModule',
             'functions' => array(
-                'UsersModule'     => 'search'
+                'ZikulaUsersModule'     => 'search'
             )
         );
     }
@@ -62,7 +62,7 @@ class SearchApi extends \Zikula_AbstractApi
             // Create output object - this object will store all of our output so that
             // we can return it easily when required
             $renderer = Zikula_View::getInstance($this->name);
-            $options = $renderer->assign('active', !isset($args['active']) || isset($args['active']['UsersModule']))
+            $options = $renderer->assign('active', !isset($args['active']) || isset($args['active']['ZikulaUsersModule']))
                     ->fetch('users_search_options.tpl');
         }
 
@@ -141,7 +141,7 @@ class SearchApi extends \Zikula_AbstractApi
                 $items = array('title' => $user['uname'],
                                'text' => $qtext,
                                'extra' => $user['uid'],
-                               'module' => 'UsersModule',
+                               'module' => 'ZikulaUsersModule',
                                'created' => null,
                                'session' => $sessionId);
                 $insertResult = DBUtil::insertObject($items, 'search_result');

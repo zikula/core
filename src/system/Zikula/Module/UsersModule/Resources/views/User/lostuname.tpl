@@ -1,10 +1,10 @@
 {gt text='Account information recovery' assign='templatetitle'}
-{modulelinks modname='UsersModule' type='user'}
+{modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 
 <p class="z-informationmsg">{gt text="Please enter your e-mail address below and click the 'Submit' button. You will be sent an e-mail with your account information."}</p>
 
-<form class="z-form" action="{modurl modname='UsersModule' type='user' func='lostUname'}" method="post">
+<form class="z-form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostUname'}" method="post">
     <div>
         <input type="hidden" id="lostunamecsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>

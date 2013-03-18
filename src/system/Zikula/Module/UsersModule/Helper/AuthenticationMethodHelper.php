@@ -129,7 +129,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     private function setModule($modname)
     {
         $modname = trim($modname);
-        if (System::isInstalling() && ($modname == 'UsersModule')) {
+        if (System::isInstalling() && ($modname == 'ZikulaUsersModule')) {
             $this->modname = $modname;
         } elseif (!empty($modname) && is_string($modname) && ModUtil::available($modname, true) && ModUtil::isCapable($modname, 'authentication')) {
             $this->modname = $modname;
