@@ -80,7 +80,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
             $this->dispatcher->dispatch('doctrine.cache', $internalEvent);
         }
 
-        $lazyConnect = isset($event['lazy']) ? $event['lazy'] : false;
+        $lazyConnect = isset($event['lazy']) ? $event['lazy'] : true;
         $name = isset($event['name']) ? $event['name'] : 'default';
 
         $connectionInfo = $this->container['databases'][$name];
