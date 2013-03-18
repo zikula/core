@@ -431,7 +431,7 @@ class AdminApi extends \Zikula_AbstractApi
         $filemodules = array();
 
         $scanner = new Zikula\Bundle\CoreBundle\Bundle\Scanner();
-        $scanner->scan(array('system'), 4);
+        $scanner->scan(array('system', 'modules'), 4);
         $newModules = $scanner->getModulesMetaData();
 
         foreach ($newModules as $name => $module) {
@@ -442,8 +442,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             /** @var $bundle \Zikula\Core\AbstractModule */
             $bundle = new $class;
-            $ns = $bundle->getNamespace();
-            $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
+            $class = $bundle->getVersionClass();
 
             $version = new $class($bundle);
             $version['name'] = $bundle->getName();
