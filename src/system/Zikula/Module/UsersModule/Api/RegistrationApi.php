@@ -895,11 +895,11 @@ class RegistrationApi extends \Zikula_AbstractApi
             $userObj['activated'] = UsersConstant::ACTIVATED_ACTIVE;
 
             // Add user to default group
-            $defaultGroup = ModUtil::getVar('GroupsModule', 'defaultgroup', false);
+            $defaultGroup = ModUtil::getVar('ZikulaGroupsModule', 'defaultgroup', false);
             if (!$defaultGroup) {
                 $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
-            $groupAdded = ModUtil::apiFunc('GroupsModule', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
+            $groupAdded = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', array('gid' => $defaultGroup, 'uid' => $userObj['uid']));
             if (!$groupAdded) {
                 $this->registerError($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }

@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\Module\\SecurityCenter\\": "" }
+        "psr-0": { "Zikula\\Module\\SecurityCenterModule\\": "" }
     },
     "require": {
         "php": ">5.3.3"
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\Module\\SecurityCenter\\ZikulaSecurityCenterModule"
+            "class": "Zikula\\Module\\SecurityCenterModule\\ZikulaSecurityCenterModule"
         }
     }
 }

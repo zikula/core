@@ -11,7 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\Extensions\Listener;
+namespace Zikula\Module\ExtensionsModule\Listener;
 
 use Zikula_View;
 use LogUtil;
@@ -261,7 +261,7 @@ class HookUiListener
             return LogUtil::registerPermissionError();
         }
 
-        $view = Zikula_View::getInstance('ExtensionsModule', false);
+        $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
         $view->assign('currentmodule', $moduleName);
 
         // notify EVENT here to gather any system service links

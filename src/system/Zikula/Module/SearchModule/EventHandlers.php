@@ -13,7 +13,6 @@
 /**
  * BC class
  */
-class Search_EventHandler extends SearchModule\Listener\ModuleListener
+class Search_EventHandler extends Zikula\Module\SearchModule\Listener\ModuleListener
 {
-
 }

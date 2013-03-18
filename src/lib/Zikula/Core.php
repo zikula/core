@@ -456,13 +456,13 @@ class Zikula_Core
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
-            ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule');
+            ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
             ModUtil::initCoreVars();
-            ModUtil::dbInfoLoad('SettingsModule', 'SettingsModule');
-            ModUtil::dbInfoLoad('ThemeModule', 'ThemeModule');
+            ModUtil::dbInfoLoad('ZikulaSettingsModule', 'ZikulaSettingsModule');
+            ModUtil::dbInfoLoad('ZikulaThemeModule', 'ZikulaThemeModule');
             ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-            ModUtil::dbInfoLoad('GroupsModule', 'GroupsModule');
-            ModUtil::dbInfoLoad('PermissionsModule', 'PermissionsModule');
+            ModUtil::dbInfoLoad('ZikulaGroupsModule', 'ZikulaGroupsModule');
+            ModUtil::dbInfoLoad('ZikulaPermissionsModule', 'ZikulaPermissionsModule');
             ModUtil::dbInfoLoad('Categories', 'Categories');
 
             if (!System::isInstalling()) {

@@ -50,13 +50,13 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
     }
 
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
     }
 
     /**
@@ -73,10 +73,10 @@ class AdminController extends \Zikula_AbstractController
             // only the main site can regenerate the themes list
             if ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)) {
                 //return true but any action has been made
-                ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
+                ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
             }
         } else {
-            ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
+            ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
         }
 
         // get our input
@@ -141,7 +141,7 @@ class AdminController extends \Zikula_AbstractController
         // check if we can edit the theme and, if not, create the running config
         if (!is_writable($tpath.'/pageconfigurations.ini')) {
             if (!file_exists($zpath) || is_writable($zpath)) {
-                ModUtil::apiFunc('ThemeModule', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
+                ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'createrunningconfig', array('themename' => $themeinfo['name']));
 
                 LogUtil::registerStatus($this->__f('Notice: The changes made via Admin Panel will be saved on \'%1$s\' because it seems that the .ini files on \'%2$s\' are not writable.', array($zpath, $tpath)));
             } else {
@@ -164,7 +164,7 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -200,7 +200,7 @@ class AdminController extends \Zikula_AbstractController
         // check our input
         if (!isset($themename) || empty($themename)) {
             LogUtil::registerArgsError();
-            return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -220,13 +220,13 @@ class AdminController extends \Zikula_AbstractController
         $newthemeinfo = array_merge($curthemeinfo, $themeinfo);
 
         // rewrite the variables to the running config
-        $updatesettings = ModUtil::apiFunc('ThemeModule', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
+        $updatesettings = ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'updatesettings', array('theme' => $themename, 'themeinfo' => $newthemeinfo));
         if ($updatesettings) {
             LogUtil::registerStatus($this->__('Done! Updated theme settings.'));
         }
 
         // redirect back to the variables page
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
     }
 
     /**
@@ -241,13 +241,13 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -256,10 +256,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if ($filename) {
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
+            $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'formatvariables', array('theme' => $themename, 'variables' => $variables, 'formatting' => true));
         } else {
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
+            $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $themename, 'formatting' => true));
         }
 
         // load the language file
@@ -295,12 +295,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -310,12 +310,12 @@ class AdminController extends \Zikula_AbstractController
 
         // get the original file source
         if ($filename) {
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
-            $returnurl = ModUtil::url('ThemeModule', 'admin', 'variables', array('themename' => $themename, 'filename' => $filename));
+            $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+            $returnurl = ModUtil::url('ZikulaThemeModule', 'admin', 'variables', array('themename' => $themename, 'filename' => $filename));
         } else {
             $filename = 'themevariables.ini';
-            $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename));
-            $returnurl = ModUtil::url('ThemeModule', 'admin', 'variables', array('themename' => $themename));
+            $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $themename));
+            $returnurl = ModUtil::url('ZikulaThemeModule', 'admin', 'variables', array('themename' => $themename));
         }
 
         // form our existing variables
@@ -346,7 +346,7 @@ class AdminController extends \Zikula_AbstractController
         $variables['variables'] = $newvariables;
 
         // rewrite the variables to the running config
-        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
@@ -366,12 +366,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -383,7 +383,7 @@ class AdminController extends \Zikula_AbstractController
         $this->checkRunningConfig($themeinfo);
 
         // assign palettes, themename, themeinfo and return output
-        return $this->response($this->view->assign('palettes', ModUtil::apiFunc('ThemeModule', 'user', 'getpalettes',
+        return $this->response($this->view->assign('palettes', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettes',
             array('theme' => $themename)))
                 ->assign('themename', $themename)
                 ->assign('themeinfo', $themeinfo)
@@ -419,7 +419,7 @@ class AdminController extends \Zikula_AbstractController
         // check if this is a valid theme
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -449,17 +449,17 @@ class AdminController extends \Zikula_AbstractController
                 'sepcolor' => $sepcolor, 'link' => $link, 'vlink' => $vlink, 'hover' => $hover);
         } else {
             LogUtil::registerError($this->__('Notice: Please make sure you type an entry in every field. Your palette cannot be saved if you do not.'));
-            return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // rewrite the settings to the running config
-        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // redirect back to the settings page
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'palettes', array('themename' => $themename)));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'palettes', array('themename' => $themename)));
     }
 
     /**
@@ -473,12 +473,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -494,7 +494,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // assign the page configuration assignments
-        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
 
         // defines the default types and master
         $pagetypes = array(
@@ -521,7 +521,7 @@ class AdminController extends \Zikula_AbstractController
         ksort($pageconfigfiles);
 
         // gets the available page configurations on the theme
-        $existingconfigs = ModUtil::apiFunc('ThemeModule', 'user', 'getconfigurations', array('theme' => $themename));
+        $existingconfigs = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getconfigurations', array('theme' => $themename));
 
         // check that we have writable files
         $this->checkRunningConfig($themeinfo);
@@ -551,12 +551,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -565,9 +565,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // read our configuration file
-        $pageconfiguration = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+        $pageconfiguration = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
         if (empty($pageconfiguration)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // get all block positions
@@ -628,9 +628,9 @@ class AdminController extends \Zikula_AbstractController
         return $this->response($this->view->assign('filename', $filename)
                 ->assign('themename', $themename)
                 ->assign('themeinfo', $themeinfo)
-                ->assign('moduletemplates', ModUtil::apiFunc('ThemeModule', 'user', 'gettemplates', array('theme' => $themename)))
-                ->assign('blocktemplates', ModUtil::apiFunc('ThemeModule', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
-                ->assign('palettes', ModUtil::apiFunc('ThemeModule', 'user', 'getpalettenames', array('theme' => $themename)))
+                ->assign('moduletemplates', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'gettemplates', array('theme' => $themename)))
+                ->assign('blocktemplates', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'gettemplates', array('theme' => $themename, 'type' => 'blocks')))
+                ->assign('palettes', ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettenames', array('theme' => $themename)))
                 ->assign('blockpositions', $blockpositions)
                 ->assign('allblocks', $allblocks)
                 ->assign('blocks', $blocks)
@@ -663,12 +663,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (empty($themename) || empty($pagetemplate)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -677,9 +677,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // read our configuration file
-        $pageconfiguration = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
+        $pageconfiguration = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $filename));
         if (empty($pageconfiguration)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // form the new page configuration
@@ -699,13 +699,13 @@ class AdminController extends \Zikula_AbstractController
         $pageconfiguration['filters'] = $filters;
 
         // write the page configuration
-        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfiguration, 'has_sections' => true, 'file' => $filename));
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfiguration, 'has_sections' => true, 'file' => $filename));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // return the user to the correct place
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     /**
@@ -752,12 +752,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -773,10 +773,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get all pageconfigurations
-        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
         if (!isset($pageconfigurations[$pcname])) {
             LogUtil::registerError($this->__('Error! No such page configuration assignment found.'));
-            return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // defines the default types and master
@@ -815,7 +815,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // gets the available page configurations on the theme
-        $existingconfigs = ModUtil::apiFunc('ThemeModule', 'user', 'getconfigurations', array('theme' => $themename));
+        $existingconfigs = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getconfigurations', array('theme' => $themename));
 
         // assign the page config assignment name, theme name and theme info
         $this->view->assign($pageconfigassignment)
@@ -851,12 +851,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -865,7 +865,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // read the list of existing page config assignments
-        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
+        $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
 
         // form the new page configuration
         $newpageconfiguration = $pagemodule;
@@ -903,13 +903,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // write the page configurations back to the running config
-        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         // set a status message
         LogUtil::registerStatus($this->__('Done! Saved your changes.'));
 
         // return the user to the correct place
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     /**
@@ -952,13 +952,13 @@ class AdminController extends \Zikula_AbstractController
 
         // Delete the admin message
         // The return value of the function is checked
-        if (ModUtil::apiFunc('ThemeModule', 'admin', 'deletepageconfigurationassignment', array('themename' => $themename, 'pcname' => $pcname))) {
+        if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deletepageconfigurationassignment', array('themename' => $themename, 'pcname' => $pcname))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted it.'));
         }
 
         // return the user to the correct place
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'pageconfigurations', array('themename' => $themename)));
     }
 
     /**
@@ -973,12 +973,12 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', "$themename::credits", ACCESS_EDIT)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // assign the theme info and return output
@@ -999,7 +999,7 @@ class AdminController extends \Zikula_AbstractController
 
         // check our input
         if (!isset($themename) || empty($themename)) {
-            return LogUtil::registerArgsError(ModUtil::url('ThemeModule', 'admin', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
         // Security check
@@ -1024,12 +1024,12 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Set the default theme
-        if (ModUtil::apiFunc('ThemeModule', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
+        if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'setasdefault', array('themename' => $themename, 'resetuserselected' => $resetuserselected))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Changed default theme.'));
         }
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
     }
 
     /**
@@ -1070,14 +1070,14 @@ class AdminController extends \Zikula_AbstractController
 
         // Delete the admin message
         // The return value of the function is checked
-        if (ModUtil::apiFunc('ThemeModule', 'admin', 'delete', array('themename' => $themename, 'deletefiles' => $deletefiles))) {
+        if (ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'delete', array('themename' => $themename, 'deletefiles' => $deletefiles))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted it.'));
         }
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
     }
 
     /**
@@ -1238,7 +1238,7 @@ class AdminController extends \Zikula_AbstractController
         // the module configuration has been updated successfuly
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1266,7 +1266,7 @@ class AdminController extends \Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear theme engine compiled templates.'));
         }
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1312,7 +1312,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1335,7 +1335,7 @@ class AdminController extends \Zikula_AbstractController
         $theme->clear_cssjscombinecache();
 
         LogUtil::registerStatus($this->__('Done! Deleted CSS/JS combination cached files.'));
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1363,7 +1363,7 @@ class AdminController extends \Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear theme engine configurations.'));
         }
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1390,7 +1390,7 @@ class AdminController extends \Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear rendering engine compiled templates.'));
         }
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1417,7 +1417,7 @@ class AdminController extends \Zikula_AbstractController
             LogUtil::registerError($this->__('Error! Failed to clear rendering engine cached pages.'));
         }
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -1433,10 +1433,10 @@ class AdminController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        ModUtil::apiFunc('SettingsModule', 'admin', 'clearallcompiledcaches');
+        ModUtil::apiFunc('ZikulaSettingsModule', 'admin', 'clearallcompiledcaches');
 
         LogUtil::registerStatus($this->__('Done! Cleared all cache and compile directories.'));
-        return $this->redirect(ModUtil::url('ThemeModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'));
     }
 
 }

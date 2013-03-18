@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use ThemeModule\Entity\ThemeEntity;
+use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 use Doctrine\ORM\Query;
 
 /**
@@ -120,7 +120,7 @@ class ThemeUtil
 
             $where = $whereargs ? 'WHERE '.implode($whereargs, ' AND ') : '';
             $orderBy = "ORDER BY t.name ASC";
-            $query = $em->createQuery('SELECT t FROM ThemeModule\Entity\ThemeEntity t '.$where.' '.$orderBy);
+            $query = $em->createQuery('SELECT t FROM Zikula\Module\ThemeModule\Entity\ThemeEntity t '.$where.' '.$orderBy);
             $array = $query->execute();
             foreach ($array as $value) {
                 $themesarray[$key][$value['directory']] = $value->toArray();
@@ -242,7 +242,7 @@ class ThemeUtil
         if (!isset($themestable) || System::isInstalling()) {
             /** @var $em Doctrine\ORM\EntityManager */
             $em = ServiceUtil::get('doctrine.entitymanager');
-            $array = $em->getRepository('ThemeModule\Entity\ThemeEntity')->findAll();
+            $array = $em->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
             foreach ($array as $theme) {
                 $theme = $theme->toArray();
                 $theme['i18n'] = (is_dir("themes/$theme[name]/locale") ? 1 : 0);

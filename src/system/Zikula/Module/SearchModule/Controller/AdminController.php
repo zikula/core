@@ -51,7 +51,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in modifyconfig()
-        return $this->redirect(ModUtil::url('SearchModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -69,7 +69,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get the list of available plugins
-        $plugins = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins', array('loadall' => true));
+        $plugins = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins', array('loadall' => true));
         $plugins = false === $plugins ? array() : $plugins;
 
         // get the disabled status
@@ -115,7 +115,7 @@ class AdminController extends \Zikula_AbstractController
 
         $disable = FormUtil::getPassedValue('disable', null, 'REQUEST');
         // get the list of available plugins
-        $plugins = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins', array('loadall' => true));
+        $plugins = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins', array('loadall' => true));
         // loop round the plugins
         foreach ($plugins as $searchplugin) {
             // set the disabled flag
@@ -131,6 +131,6 @@ class AdminController extends \Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('SearchModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'));
     }
 }

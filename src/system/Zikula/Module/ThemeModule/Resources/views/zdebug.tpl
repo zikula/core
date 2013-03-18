@@ -47,7 +47,7 @@
     <dl class='zdebug-summary'>
         <dt>Smarty</dt>
           <dd>v{$_smartyversion}</dd>
-        <dt>{gt text='ThemeModule'}</dt>
+        <dt>{gt text='ZikulaThemeModule'}</dt>
           <dd>v{$_themeversion}</dd>
 
         <dt class="zdebug-clearer">{gt text='Compile check'}:</dt>

@@ -252,7 +252,7 @@ function install(Zikula_Core $core)
                                 }
                             }
                             ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-                            ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule');
+                            ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
                             ModUtil::initCoreVars(true);
                             createuser($username, $password, $email);
                             $installedOk = true;
@@ -284,7 +284,7 @@ function install(Zikula_Core $core)
                     System::setVar('adminmail', $email);
 
                     if (!$installbySQL) {
-                        ThemeModule\Util::regenerate();
+                        Zikula\Module\ThemeModule\Util::regenerate();
                     }
 
                     // set site status as installed and protect config.php file
@@ -367,7 +367,7 @@ function createuser($username, $password, $email)
 
     // get the database connection
     ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-    ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule');
+    ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
     $dbtables = DBUtil::getTables();
 
     // create the password hash
@@ -409,12 +409,12 @@ function installmodules($lang = 'en')
     $sm = ServiceUtil::getManager();
     $em = EventUtil::getManager();
 
-    $coremodules = array('ExtensionsModule',
-            'SettingsModule',
-            'ThemeModule',
+    $coremodules = array('ZikulaExtensionsModule',
+            'ZikulaSettingsModule',
+            'ZikulaThemeModule',
             'Admin',
-            'PermissionsModule',
-            'GroupsModule',
+            'ZikulaPermissionsModule',
+            'ZikulaGroupsModule',
             'ZikulaBlocksModule',
             'ZikulaUsersModule',
     );
@@ -443,32 +443,32 @@ function installmodules($lang = 'en')
     }
 
     // regenerate modules list
-    $filemodules = ModUtil::apiFunc('ExtensionsModule', 'admin', 'getfilemodules');
-    ModUtil::apiFunc('ExtensionsModule', 'admin', 'regenerate',
+    $filemodules = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules');
+    ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate',
                     array('filemodules' => $filemodules));
 
     // set each of the core modules to active
     reset($coremodules);
     foreach ($coremodules as $coremodule) {
         $mid = ModUtil::getIdFromName($coremodule, true);
-        ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate',
+        ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
                         array('id' => $mid,
                                 'state' => ModUtil::STATE_INACTIVE));
-        ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate',
+        ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
                         array('id' => $mid,
                                 'state' => ModUtil::STATE_ACTIVE));
     }
     // Add them to the appropriate category
     reset($coremodules);
 
-    $coremodscat = array('ExtensionsModule' => __('System'),
-            'PermissionsModule' => __('Users'),
-            'GroupsModule' => __('Users'),
+    $coremodscat = array('ZikulaExtensionsModule' => __('System'),
+            'ZikulaPermissionsModule' => __('Users'),
+            'ZikulaGroupsModule' => __('Users'),
             'ZikulaBlocksModule' => __('Layout'),
             'ZikulaUsersModule' => __('Users'),
-            'ThemeModule' => __('Layout'),
+            'ZikulaThemeModule' => __('Layout'),
             'Admin' => __('System'),
-            'SettingsModule' => __('System'));
+            'ZikulaSettingsModule' => __('System'));
 
     $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
     $modscat = array();
@@ -496,11 +496,11 @@ function installmodules($lang = 'en')
                     'category' => __('Content')),
             array('module' => 'ZikulaMailerModule',
                     'category' => __('System')),
-            array('module' => 'ErrorsModule',
+            array('module' => 'ZikulaErrorsModule',
                     'category' => __('System')),
-            array('module' => 'ThemeModule',
+            array('module' => 'ZikulaThemeModule',
                     'category' => __('Layout')),
-            array('module' => 'SearchModule',
+            array('module' => 'ZikulaSearchModule',
                     'category' => __('Content')));
 
     foreach ($modules as $module) {
@@ -531,10 +531,10 @@ function installmodules($lang = 'en')
         $mid = ModUtil::getIdFromName($moduleName);
 
         // init it
-        if (ModUtil::apiFunc('ExtensionsModule', 'admin', 'initialise',
+        if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'initialise',
                         array('id' => $mid)) == true) {
             // activate it
-            if (ModUtil::apiFunc('ExtensionsModule', 'admin', 'setstate',
+            if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate',
                             array('id' => $mid,
                                     'state' => ModUtil::STATE_ACTIVE))) {
                 $results[$module['module']] = true;

@@ -24,10 +24,10 @@
         <td><strong>{gt text="Pending"}</strong> | <a href="{modurl modname="Groups" type="user" func="membership" action="cancel" gid=$gid}" title="{gt text="Cancel"}">{gt text="Cancel"}</a></td>
     {else}
         {if $ismember eq true}
-            <td><a href="{modurl modname='GroupsModule' type='user' func='membership' action='unsubscribe' gid=$gid}" title="{gt text="Resign"}">{gt text="Resign"}</a></td>
+            <td><a href="{modurl modname='ZikulaGroupsModule' type='user' func='membership' action='unsubscribe' gid=$gid}" title="{gt text="Resign"}">{gt text="Resign"}</a></td>
         {else}
             {if $nbumax == 0 OR $nbumax gt $nbuser}
-                <td><a href="{modurl modname='GroupsModule' type='user' func='membership' action='subscribe' gid=$gid}" title="{gt text="Apply"}">{gt text="Apply"}</a></td>
+                <td><a href="{modurl modname='ZikulaGroupsModule' type='user' func='membership' action='subscribe' gid=$gid}" title="{gt text="Apply"}">{gt text="Apply"}</a></td>
             {else}
                 <td>{gt text='Group has reached its maximum capacity'}</td>
             {/if}

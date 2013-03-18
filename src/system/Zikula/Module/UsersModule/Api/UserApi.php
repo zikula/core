@@ -535,7 +535,7 @@ class UserApi extends \Zikula_AbstractApi
 
         foreach ($mods as $mod) {
             // saves 17 system checks
-            if ($mod['type'] == 3 && !in_array($mod['name'], array('Admin', 'Categories', 'GroupsModule', 'ThemeModule', $this->name))) {
+            if ($mod['type'] == 3 && !in_array($mod['name'], array('Admin', 'Categories', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name))) {
                 continue;
             }
 

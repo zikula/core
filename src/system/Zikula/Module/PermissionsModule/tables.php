@@ -26,7 +26,7 @@
  *
  * @return       array       The table information.
  */
-function PermissionsModule_tables()
+function ZikulaPermissionsModule_tables()
 {
     // Initialise table array
     $dbtable = array();

@@ -18,7 +18,7 @@ use DBUtil;
 use ModUtil;
 use DoctrineHelper;
 
-class ThemeModuleInstaller extends \Zikula_AbstractInstaller
+class ZikulaThemeModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the theme module
@@ -32,14 +32,14 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create the table
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('ThemeModule\Entity\ThemeEntity'));
+            DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\ThemeModule\Entity\ThemeEntity'));
         } catch (\Exception $e) {
             return false;
         }
 
         // detect all themes on install
-        ModUtil::loadApi('ThemeModule', 'admin', true);
-        ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
+        ModUtil::loadApi('ZikulaThemeModule', 'admin', true);
+        ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
 
         // define defaults for module vars
         $this->setVar('modulesnocache', '');

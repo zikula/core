@@ -39,7 +39,7 @@ class UserController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in view()
-        return $this->redirect(ModUtil::url('GroupsModule', 'user', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         // get groups (not core, only private and public ones)
-        $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getallgroups',
+        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getallgroups',
                 array('startnum' => $startnum,
                       'numitems' => $itemsperpage));
 
@@ -110,7 +110,7 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('nogroups', false)
                    ->assign('items', $groupitems);
 
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('GroupsModule', 'user', 'countitems'),
+        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countitems'),
                                            'itemsperpage' => $itemsperpage));
 
         return $this->response($this->view->fetch('User/view.tpl'));
@@ -132,7 +132,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($action != 'subscribe' && $action != 'unsubscribe' && $action != 'cancel') {
-            return LogUtil::registerArgsError(ModUtil::url('GroupsModule', 'user', 'view'));
+            return LogUtil::registerArgsError(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
         }
 
         if (!UserUtil::isLoggedIn()) {
@@ -142,7 +142,7 @@ class UserController extends \Zikula_AbstractController
         $uid = UserUtil::getVar('uid');
 
         // Check if the group exists
-        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!$group) {
             return DataUtil::formatForDisplay($this->__("Error! That group does not exist."));
@@ -150,9 +150,9 @@ class UserController extends \Zikula_AbstractController
 
         // And lastly, we must check if he didn't rewrote the url,
         // that is he applying to an open group and that the group is open
-        // $isopen = ModUtil::apiFunc('GroupsModule', 'user', 'getginfo', array('gid' => $gid));
+        // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
-            if (ModUtil::apiFunc('GroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
+            if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
                 return DataUtil::formatForDisplay($this->__('Error! You are already a member of this group.'));
             }
 
@@ -207,7 +207,7 @@ class UserController extends \Zikula_AbstractController
             $applytext = $this->request->request->get('applytext', null);
         }
 
-        $result = ModUtil::apiFunc('GroupsModule', 'user', 'userupdate',
+        $result = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'userupdate',
                 array('gid'       => $gid,
                       'action'    => $action,
                       'gtype'     => $gtype,
@@ -219,7 +219,7 @@ class UserController extends \Zikula_AbstractController
 
         $this->view->clear_cache('User/memberslist.tpl');
 
-        return $this->redirect(ModUtil::url('GroupsModule', 'user', 'view'));
+        return $this->redirect(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
     }
 
     /**
@@ -239,7 +239,7 @@ class UserController extends \Zikula_AbstractController
 
         $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW));
 
-        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid,
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid,
                 'numitems' => $itemsperpage,
                 'startnum' => $startnum));
 
@@ -264,7 +264,7 @@ class UserController extends \Zikula_AbstractController
         $this->view->assign('group', $group);
 
         if ($group['members']) {
-            $onlines = ModUtil::apiFunc('GroupsModule', 'user', 'whosonline');
+            $onlines = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'whosonline');
 
             $members = array();
             foreach ($group['members'] as $userid) {
@@ -304,12 +304,12 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (UserUtil::isLoggedIn()) {
-            $this->view->assign('ismember', ModUtil::apiFunc('GroupsModule', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
+            $this->view->assign('ismember', ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember', array('gid' => $gid, 'uid' => $uid)));
         } else {
             $this->view->assign('ismember', false);
         }
 
-        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('GroupsModule', 'user', 'countgroupmembers', array('gid' => $gid)),
+        $this->view->assign('pager', array('numitems'     => ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'countgroupmembers', array('gid' => $gid)),
                                            'itemsperpage' => $itemsperpage));
 
         return $this->response($this->view->fetch('User/memberslist.tpl'));

@@ -96,10 +96,10 @@ class UserController extends \Zikula_AbstractController
      */
     public function resettodefaultAction()
     {
-        ModUtil::apiFunc('ThemeModule', 'user', 'resettodefault');
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'resettodefault');
         LogUtil::registerStatus($this->__('Done! Theme has been reset to the default site theme.'));
 
-        return $this->redirect(ModUtil::url('ThemeModule', 'user', 'index'));
+        return $this->redirect(ModUtil::url('ZikulaThemeModule', 'user', 'index'));
     }
         
     /**

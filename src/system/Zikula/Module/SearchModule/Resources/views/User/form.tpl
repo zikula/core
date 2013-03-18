@@ -2,7 +2,7 @@
 {gt text='Site search' assign='templatetitle' domain='zikula'}
 {include file='User/menu.tpl'}
 
-<form class="z-form" id="search_form" method="post" action="{modurl modname='SearchModule' type='user' func='search'}">
+<form class="z-form" id="search_form" method="post" action="{modurl modname='ZikulaSearchModule' type='user' func='search'}">
     <fieldset>
         <div class="z-formrow">
             <label for="search_q" id="search_q_label">{gt text='Search keywords' domain='zikula'}</label>

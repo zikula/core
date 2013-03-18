@@ -2701,7 +2701,7 @@ function theme_userapi_clear_compiled()
     }
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_compiled', 'Theme::clear_compiled()')), E_USER_DEPRECATED);
-    $Theme = Theme::getInstance('ThemeModule');
+    $Theme = Theme::getInstance('ZikulaThemeModule');
     $res   = $Theme->clear_compiled();
 
     return $res;
@@ -2722,7 +2722,7 @@ function theme_userapi_clear_cache()
     }
 
     LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use %2$s instead.', array('theme_userapi_clear_cache', 'Theme::clear_all_cache()')), E_USER_DEPRECATED);
-    $Theme = Theme::getInstance('ThemeModule');
+    $Theme = Theme::getInstance('ZikulaThemeModule');
     $res   = $Theme->clear_all_cache();
 
     return $res;

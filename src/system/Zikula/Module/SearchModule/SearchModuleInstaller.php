@@ -30,8 +30,8 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         // create schema
         try {
             DoctrineHelper::createSchema($this->entityManager, array(
-                'SearchModule\Entity\SearchResultEntity',
-                'SearchModule\Entity\SearchStatEntity',
+                'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                'Zikula\Module\SearchModule\Entity\SearchStatEntity',
             ));
         } catch (\Exception $e) {
             return false;
@@ -42,7 +42,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         $this->setVar('limitsummary', 255);
 
         // register event handler to activate new modules in the search block
-        EventUtil::registerPersistentModuleHandler('SearchModule', 'installer.module.installed', array('SearchModule\Listener\ModuleListener', 'moduleInstall'));
+        EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('SearchModule\Listener\ModuleListener', 'moduleInstall'));
 
         // Initialisation successful
         return true;
@@ -63,7 +63,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         switch ($oldversion) {
             case '1.5.1':
                 // register event handler to activate new modules in the search block
-                EventUtil::registerPersistentModuleHandler('SearchModule', 'installer.module.installed', array('SearchModule\Listener\ModuleListener', 'moduleInstall'));
+                EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('SearchModule\Listener\ModuleListener', 'moduleInstall'));
 
             case '1.5.2':
             // future upgrade routines
@@ -82,8 +82,8 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
     {
         try {
             DoctrineHelper::dropSchema($this->entityManager, array(
-                'SearchModule\Entity\SearchResultEntity',
-                'SearchModule\Entity\SearchStatEntity',
+                'Zikula\Module\SearchModule\Entity\SearchResultEntity',
+                'Zikula\Module\SearchModule\Entity\SearchStatEntity',
             ));
         } catch (\Exception $e) {
             return false;
@@ -93,7 +93,7 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         $this->delVars();
 
         // unregister event handlers
-        EventUtil::unregisterPersistentModuleHandlers('SearchModule');
+        EventUtil::unregisterPersistentModuleHandlers('ZikulaSearchModule');
 
         // Deletion successful
         return true;

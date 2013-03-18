@@ -13,7 +13,7 @@
     {modavailable modname=Search assign=search}
     {if $search}
     <h2>{gt text="Search"}</h2>
-    {modurl modname='SearchModule' type='user' func='index' assign='url'}
+    {modurl modname='ZikulaSearchModule' type='user' func='index' assign='url'}
     <p>{gt text='You could try a search from the <a href="%s">site search page</a>.' tag1=$url|safetext}</p>
     {/if}
 

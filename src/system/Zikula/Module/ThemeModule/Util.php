@@ -87,7 +87,7 @@ class Util
 
         // Get all themes in DB
         $dbthemes = array();
-        $themes = $entityManager->getRepository('ThemeModule\Entity\ThemeEntity')->findAll();
+        $themes = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
 
         foreach ($themes as $theme) {
             $theme = $theme->toArray();
@@ -98,10 +98,10 @@ class Util
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($filethemes[$name])) {
                 // delete a running configuration
-                ModUtil::apiFunc('ThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
+                ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $name));
 
                 // delete item from db
-                $item = $entityManager->getRepository('ThemeModule\Entity\ThemeEntity')->findOneBy(array('name' => $name));
+                $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findOneBy(array('name' => $name));
                 $entityManager->remove($item);
 
                 unset($dbthemes[$name]);
@@ -137,7 +137,7 @@ class Util
 
                     // update item
                     /** @var $item ThemeEntity */
-                    $item = $entityManager->getRepository('ThemeModule\Entity\ThemeEntity')->find($themeinfo['id']);
+                    $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->find($themeinfo['id']);
                     $item->merge($themeinfo);
                 }
             }

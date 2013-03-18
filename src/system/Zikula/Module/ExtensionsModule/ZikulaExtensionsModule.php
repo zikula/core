@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Module\Extensions;
+namespace Zikula\Module\ExtensionsModule;
 
 use Zikula\Core\AbstractModule;
 

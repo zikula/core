@@ -58,7 +58,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // Pass to API
-        ModUtil::apiFunc('PermissionsModule', 'admin', 'update',
+        ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'update',
                 array('pid'       => $pid,
                       'seq'       => $seq,
                       'oldseq'    => $seq,
@@ -85,7 +85,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 break;
 
             default:
-                $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
+                $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
                 $permission['groupname'] = $group['name'];
         }
 
@@ -133,7 +133,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'insseq'    => -1
         );
 
-        $newperm = ModUtil::apiFunc('PermissionsModule', 'admin', 'create', $dummyperm);
+        $newperm = ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create', $dummyperm);
         if ($newperm == false) {
             AjaxUtil::error($this->__('Error! Could not create new permission rule.'));
         }
@@ -166,7 +166,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             throw new Zikula_Exception_Fatal($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
 
-        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'delete', array('pid' => $pid)) == true) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete', array('pid' => $pid)) == true) {
             if ($pid == $this->getVar('adminid')) {
                 $this->setVar('adminid', 0);
                 $this->setVar('lockadmin', false);

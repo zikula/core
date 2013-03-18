@@ -1,1 +1,1 @@
-{modfunc modname='GroupsModule' type='user' func='view'}
+{modfunc modname='ZikulaGroupsModule' type='user' func='view'}

@@ -101,7 +101,7 @@ class ModUtil
         self::$modvars = new ArrayObject(array(
                 EventUtil::HANDLERS => array(),
                 ServiceUtil::HANDLERS => array(),
-                'SettingsModule'          => array(),
+                'ZikulaSettingsModule'          => array(),
         ));
 
         // don't init vars during the installer or upgrader
@@ -626,6 +626,7 @@ class ModUtil
      */
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
+        $moduleName = $modname;
         // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modname = static::convertModuleName($modname);
@@ -637,6 +638,7 @@ class ModUtil
         }
 
         $serviceManager = ServiceUtil::getManager();
+        $kernel = $serviceManager->get('kernel');
 
         if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
             $serviceManager['modutil.dbinfoload.loaded'] = array();
@@ -666,6 +668,12 @@ class ModUtil
 
         // Load the database definition if required
         $files = array();
+        try {
+            $module = $kernel->getModule($moduleName);
+            $files[] = $module->getPath().'/tables.php';
+        } catch (\InvalidArgumentException $e) {
+        }
+
         $files[] = "$modpath/$directory/tables.php";
         $files[] = "$modpath/$directory/pntables.php";
 
@@ -1070,7 +1078,7 @@ class ModUtil
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
-            $modname = 'ExtensionsModule';
+            $modname = 'ZikulaExtensionsModule';
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
@@ -1277,8 +1285,8 @@ class ModUtil
 
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "ExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
-            $modname = 'ExtensionsModule';
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
+            $modname = 'ZikulaExtensionsModule';
         }
 
         //get the module info

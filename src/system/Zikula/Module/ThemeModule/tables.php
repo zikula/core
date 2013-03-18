@@ -22,7 +22,7 @@
  *
  * @return       array       The table information.
  */
-function ThemeModule_tables()
+function ZikulaThemeModule_tables()
 {
     // Initialise table array
     $dbtables = array();

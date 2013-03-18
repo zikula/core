@@ -150,7 +150,7 @@ class UserUtil
      */
     public static function getGroup($gid)
     {
-        return ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
+        return ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
     }
 
     /**
@@ -294,7 +294,7 @@ class UserUtil
             return array();
         }
 
-        return ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
+        return ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups', array('uid' => $uid, 'clean' => true));
     }
 
     /**
@@ -342,7 +342,7 @@ class UserUtil
             return array();
         }
 
-        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $gid));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         $members = $group['members'];
 
@@ -1904,13 +1904,13 @@ class UserUtil
             // theme passed as parameter takes priority, can be RSS, Atom, Printer or other
             $pagetheme = $theme;
         } else {
-            $thememobile = ModUtil::getVar('ThemeModule', 'mobile_theme_name', 'Mobile');
+            $thememobile = ModUtil::getVar('ZikulaThemeModule', 'mobile_theme_name', 'Mobile');
             if (empty($thememobile)) {
                 $thememobile = 'Mobile';
             }
-            if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('ThemeModule', 'enable_mobile_theme', 0)) {
+            if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
                 $pagetheme = $thememobile;
-            } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('ThemeModule', 'enable_mobile_theme', 0)) {
+            } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
                 include_once("system/Theme/vendor/Mobile_Detect.php");
                 $detect = new Mobile_Detect();
                 if ($detect->isMobile()) {
@@ -1918,14 +1918,14 @@ class UserUtil
                 }
             }
             // check for specified mobile domain to force mobile theme
-            $themedomain = ModUtil::getVar('ThemeModule', 'mobile_theme_domain', '');
+            $themedomain = ModUtil::getVar('ZikulaThemeModule', 'mobile_theme_domain', '');
             if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain) {
                 $pagetheme = $thememobile;
             }
             // check for specified alternative site view domain and theme
-            $themedomain = ModUtil::getVar('ThemeModule', 'alt_theme_domain', '');
-            if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('ThemeModule', 'alt_theme_name', '')) {
-                $pagetheme = ModUtil::getVar('ThemeModule', 'alt_theme_name');
+            $themedomain = ModUtil::getVar('ZikulaThemeModule', 'alt_theme_domain', '');
+            if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('ZikulaThemeModule', 'alt_theme_name', '')) {
+                $pagetheme = ModUtil::getVar('ZikulaThemeModule', 'alt_theme_name');
             }
         }
 

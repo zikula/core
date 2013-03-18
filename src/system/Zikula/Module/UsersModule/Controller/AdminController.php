@@ -134,7 +134,7 @@ class AdminController extends \Zikula_AbstractController
         $userList = ModUtil::apiFunc($this->name, 'user', 'getAll', $getAllArgs);
 
         // Get all groups
-        $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
+        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
 
         // check what groups can access the user
         $userGroupsAccess = array();
@@ -189,7 +189,7 @@ class AdminController extends \Zikula_AbstractController
             } else {
                 // get user groups
 
-                $userGroups = ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups', array(
+                $userGroups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups', array(
                     'uid' => $userObj['uid'],
                     'clean' => 1
                 ));
@@ -370,7 +370,7 @@ class AdminController extends \Zikula_AbstractController
     protected function renderSearchForm($callbackFunc = 'search')
     {
         // get group items
-        $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getAll');
+        $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getAll');
 
         return $this->response($this->view->assign('groups', $groups)
                 ->assign('callbackFunc', $callbackFunc)
@@ -671,8 +671,8 @@ class AdminController extends \Zikula_AbstractController
                 // TODO - This all needs to move to a Groups module hook.
                 if (isset($accessPermissions)) {
                     // Fixing a high numitems to be sure to get all groups
-                    $groups = ModUtil::apiFunc('GroupsModule', 'user', 'getAll', array('numitems' => 10000));
-                    $curUserGroupMembership = ModUtil::apiFunc('GroupsModule', 'user', 'getUserGroups', array('uid' => $user['uid']));
+                    $groups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getAll', array('numitems' => 10000));
+                    $curUserGroupMembership = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getUserGroups', array('uid' => $user['uid']));
 
                     foreach ($groups as $group) {
                         if (in_array($group['gid'], $accessPermissions)) {
@@ -688,7 +688,7 @@ class AdminController extends \Zikula_AbstractController
                             }
                             if ($userIsMember == false) {
                                 // User is not in this group
-                                ModUtil::apiFunc('GroupsModule', 'admin', 'addUser', array(
+                                ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'addUser', array(
                                     'gid' => $group['gid'],
                                     'uid' => $user['uid']
                                 ));
@@ -697,7 +697,7 @@ class AdminController extends \Zikula_AbstractController
                         } else {
                             // We don't need to do a complex check, if the user is not in the group, the SQL will not return
                             // an error anyway.
-                            ModUtil::apiFunc('GroupsModule', 'admin', 'removeUser', array(
+                            ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'removeUser', array(
                                 'gid' => $group['gid'],
                                 'uid' => $user['uid']
                             ));
@@ -761,13 +761,13 @@ class AdminController extends \Zikula_AbstractController
 
             // groups
             $gidsUserMemberOf = array();
-            $allGroups = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
+            $allGroups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
 
             if (!empty($accessPermissions)) {
                 $gidsUserMemberOf = $accessPermissions;
                 $accessPermissions = array();
             } else {
-                $groupsUserMemberOf = ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups', array('uid' => $originalUser['uid']));
+                $groupsUserMemberOf = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups', array('uid' => $originalUser['uid']));
                 foreach ($groupsUserMemberOf as $user_group) {
                     $gidsUserMemberOf[] = $user_group['gid'];
                 }
@@ -791,8 +791,8 @@ class AdminController extends \Zikula_AbstractController
             }
             return $this->response($this->view->assign_by_ref('formData', $formData)
                 ->assign('user_attributes', $userAttributes)
-                ->assign('defaultGroupId', ModUtil::getVar('GroupsModule', 'defaultgroup', 1))
-                ->assign('primaryAdminGroupId', ModUtil::getVar('GroupsModule', 'primaryadmingroup', 2))
+                ->assign('defaultGroupId', ModUtil::getVar('ZikulaGroupsModule', 'defaultgroup', 1))
+                ->assign('primaryAdminGroupId', ModUtil::getVar('ZikulaGroupsModule', 'primaryadmingroup', 2))
                 ->assign('accessPermissions', $accessPermissions)
                 ->assign('errorFields', $errorFields)
                 ->fetch('Admin/modify.tpl'));
@@ -1985,7 +1985,7 @@ class AdminController extends \Zikula_AbstractController
 
         // set default parameters
         $minpass = $this->getVar('minpass');
-        $defaultGroup = ModUtil::getVar('GroupsModule', 'defaultgroup');
+        $defaultGroup = ModUtil::getVar('ZikulaGroupsModule', 'defaultgroup');
 
         if ($confirmed) {
             // get other import values
@@ -2002,7 +2002,7 @@ class AdminController extends \Zikula_AbstractController
         // shows the form
         $post_max_size = ini_get('post_max_size');
         // get default group
-        $group = ModUtil::apiFunc('GroupsModule','user','get', array('gid' => $defaultGroup));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule','user','get', array('gid' => $defaultGroup));
         $defaultGroup = $defaultGroup . ' (' . $group['name'] . ')';
 
         return $this->response($this->view->assign('importResults', isset($importResults) ? $importResults : '')
@@ -2156,7 +2156,7 @@ class AdminController extends \Zikula_AbstractController
             $users = ModUtil::apiFunc($this->name, 'user', 'getAll');
 
             // get all groups
-            $allgroups = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
+            $allgroups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
             $groupnames = array();
             foreach ($allgroups as $groupitem) {
                 $groupnames[$groupitem['gid']] = $groupitem['name'];
@@ -2185,7 +2185,7 @@ class AdminController extends \Zikula_AbstractController
                 }
 
                 if ($groups == 1) {
-                    $usergroups = ModUtil::apiFunc('GroupsModule', 'user', 'getusergroups',
+                    $usergroups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getusergroups',
                                             array('uid'   => $uservars['uid'],
                                                   'clean' => true));
 
@@ -2248,7 +2248,7 @@ class AdminController extends \Zikula_AbstractController
         // get needed values
         $is_admin = (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) ? true : false;
         $minpass = $this->getVar('minpass');
-        $defaultGroup = ModUtil::getVar('GroupsModule', 'defaultgroup'); // Create output object;
+        $defaultGroup = ModUtil::getVar('ZikulaGroupsModule', 'defaultgroup'); // Create output object;
         // calcs $pregcondition needed to verify illegal usernames
         $reg_illegalusername = $this->getVar('reg_Illegalusername');
         $pregcondition = '';
@@ -2266,7 +2266,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get available groups
-        $allGroups = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
+        $allGroups = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
 
         // create an array with the groups identities where the user can add other users
         $allGroupsArray = array();

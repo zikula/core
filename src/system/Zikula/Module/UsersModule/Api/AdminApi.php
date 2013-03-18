@@ -510,7 +510,7 @@ class AdminApi extends \Zikula_AbstractApi
         foreach ($importValues as $value) {
             $groupsArray = explode('|', $value['groups']);
             foreach ($groupsArray as $group) {
-                $adduser = ModUtil::apiFunc('GroupsModule', 'user', 'adduser', array('gid' => $group, 'uid' => $usersInDB[$value['uname']]['uid'], 'verbose' => false));
+                $adduser = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'adduser', array('gid' => $group, 'uid' => $usersInDB[$value['uname']]['uid'], 'verbose' => false));
                 if (!$adduser) {
                     $error_membership = true;
                 }

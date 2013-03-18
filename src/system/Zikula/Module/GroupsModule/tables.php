@@ -15,7 +15,7 @@
  *
  * This function is called internally by the core whenever the module is loaded.  It adds in the information.
  */
-function GroupsModule_tables()
+function ZikulaGroupsModule_tables()
 {
     $dbtable = array();
 

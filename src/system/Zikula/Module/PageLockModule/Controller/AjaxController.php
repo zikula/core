@@ -32,7 +32,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $uname = UserUtil::getVar('uname');
 
-        $lockInfo = ModUtil::apiFunc('PageLockModule', 'user', 'requireLock',
+        $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
                 array('lockName'      => $lockName,
                 'sessionId'     => session_id(),
                 'lockedByTitle' => $uname,
@@ -58,7 +58,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $uname = UserUtil::getVar('uname');
 
-        $lockInfo = ModUtil::apiFunc('PageLockModule', 'user', 'requireLock',
+        $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
                 array('lockName'      => $lockName,
                 'sessionId'     => session_id(),
                 'lockedByTitle' => $uname,

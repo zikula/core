@@ -16,7 +16,7 @@
  *
  * @deprecated
  */
-class Extensions_HookUI extends ExtensionsModule\Listener\HookUiListener
+class Extensions_HookUI extends Zikula\Module\ExtensionsModule\Listener\HookUiListener
 {
 
 }

@@ -10,10 +10,10 @@
                 <a href="{homepage}"><span>{gt text="Home"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='SettingsModule' type='admin' func='index'}"><span>{gt text="Settings"}</span></a>
+                <a href="{modurl modname='ZikulaSettingsModule' type='admin' func='index'}"><span>{gt text="Settings"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='ExtensionsModule' type='admin' func='index'}"><span>{gt text="Extensions"}</span></a>
+                <a href="{modurl modname='ZikulaExtensionsModule' type='admin' func='index'}"><span>{gt text="Extensions"}</span></a>
             </li>
             <li class="page_item">
                 <a href="{modurl modname='ZikulaBlocksModule' type='admin' func='index'}"><span>{gt text="Blocks"}</span></a>
@@ -22,13 +22,13 @@
                 <a href="{modurl modname='UsersModule' type='admin' func='index'}"><span>{gt text="Users"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='GroupsModule' type='admin' func='index'}"><span>{gt text="Groups"}</span></a>
+                <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='index'}"><span>{gt text="Groups"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='PermissionsModule' type=admin func='index'}"><span>{gt text="Permission rules"}</span></a>
+                <a href="{modurl modname='ZikulaPermissionsModule' type=admin func='index'}"><span>{gt text="Permission rules"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='ThemeModule' type='admin' func='index'}"><span>{gt text="Themes"}</span></a>
+                <a href="{modurl modname='ZikulaThemeModule' type='admin' func='index'}"><span>{gt text="Themes"}</span></a>
             </li>
             <li class="page_item">
                 <a href="{modurl modname='Categories' type='admin' func='index'}"><span>{gt text="Categories"}</span></a>

@@ -693,7 +693,7 @@ class Admin_Controller_Admin extends Zikula_AbstractController
     {
         global $ZConfig;
 
-        $modvars = ModUtil::getVar('ThemeModule');
+        $modvars = ModUtil::getVar('ZikulaThemeModule');
 
         $data = array();
         $data['devmode']                     = (bool) $ZConfig['System']['development'];

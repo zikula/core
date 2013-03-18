@@ -179,7 +179,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Other check
-        $checkname = ModUtil::apiFunc('GroupsModule', 'admin', 'getgidbyname',
+        $checkname = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname',
                         array('name' => $args['name'],
                               'checkgid' => $args['gid']));
 
@@ -223,7 +223,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -265,7 +265,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get group
-        $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $args['gid']));
+        $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -351,7 +351,7 @@ class AdminApi extends \Zikula_AbstractApi
         $items = array();
 
         foreach ($objArray as $obj) {
-            $group = ModUtil::apiFunc('GroupsModule', 'user', 'get', array('gid' => $obj['gid']));
+            $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $obj['gid']));
             if ($group) {
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $group['gid'] . '::', ACCESS_EDIT) && $group <> false) {
                     $items[] = array(
@@ -413,7 +413,7 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         if ($args['action'] == 'accept') {
-            $adduser = ModUtil::apiFunc('GroupsModule', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
+            $adduser = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'adduser', array('gid' => $args['gid'], 'uid' => $args['userid']));
         }
 
         // Send message part
@@ -456,13 +456,13 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'class' => 'z-icon-es-new');
         }
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('GroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'class' => 'z-icon-es-config');
         }
 
         return $links;

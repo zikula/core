@@ -67,7 +67,7 @@ if (in_array('pn_id', array_keys($columns))) {
 
 if (!isset($columns['capabilities'])) {
     Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-    ModUtil::dbInfoLoad('ExtensionsModule', 'ExtensionsModule', true);
+    ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule', true);
     DBUtil::changeTable('modules');
     ModUtil::dbInfoLoad('ZikulaBlocksModule', 'ZikulaBlocksModule', true);
     DBUtil::changeTable('blocks');
@@ -315,7 +315,7 @@ function _upg_upgrademodules($username, $password)
     }
 
     // force load the modules admin API
-    ModUtil::loadApi('ExtensionsModule', 'admin', true);
+    ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
 
     echo '<h2>' . __('Starting upgrade') . '</h2>' . "\n";
     echo '<ul id="upgradelist" class="check">' . "\n";
@@ -323,7 +323,7 @@ function _upg_upgrademodules($username, $password)
     // reset for User module
     //$GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x'] = false;
 
-    $results = ModUtil::apiFunc('ExtensionsModule', 'admin', 'upgradeall');
+    $results = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
     if ($results) {
         foreach ($results as $modname => $result) {
             if ($result) {
@@ -346,11 +346,11 @@ function _upg_upgrademodules($username, $password)
     // store localized displayname and description for Extensions module
     $extensionsDisplayname = __('Extensions');
     $extensionsDescription = __('Manage your modules and plugins.');
-    $sql = "UPDATE modules SET name = 'ExtensionsModule', displayname = '{$extensionsDisplayname}', description = '{$extensionsDescription}' WHERE modules.name = 'Extensions'";
+    $sql = "UPDATE modules SET name = 'ZikulaExtensionsModule', displayname = '{$extensionsDisplayname}', description = '{$extensionsDescription}' WHERE modules.name = 'Extensions'";
     DBUtil::executeSQL($sql);
 
     // regenerate the themes list
-    ModUtil::apiFunc('ThemeModule', 'admin', 'regenerate');
+    ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
 
     // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
     System::setVar('Version_Num', Zikula_Core::VERSION_NUM);
@@ -699,14 +699,14 @@ function upgrade_columns($connection)
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_help help VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_license license VARCHAR(255) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_modules CHANGE pn_securityschema securityschema TEXT NOT NULL";
-    $commands[] = "UPDATE {$prefix}_modules SET name = 'ExtensionsModule', displayname = 'Extensions', url = 'extensions', description = 'Manage your modules and plugins.', directory =  'ExtensionsModule', securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.name = 'Modules'";
+    $commands[] = "UPDATE {$prefix}_modules SET name = 'ZikulaExtensionsModule', displayname = 'Extensions', url = 'extensions', description = 'Manage your modules and plugins.', directory =  'ZikulaExtensionsModule', securityschema = 'a:1:{s:9:\"Extensions::\";s:2:\"::\";}' WHERE {$prefix}_modules.name = 'Modules'";
     $commands[] = "RENAME TABLE {$prefix}_modules TO modules";
 
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_id id INT(11) AUTO_INCREMENT";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_modname modname VARCHAR(64) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_name name VARCHAR(64) NOT NULL";
     $commands[] = "ALTER TABLE {$prefix}_module_vars CHANGE pn_value value LONGTEXT";
-    $commands[] = "UPDATE {$prefix}_module_vars SET modname='ExtensionsModule' WHERE modname='Modules'";
+    $commands[] = "UPDATE {$prefix}_module_vars SET modname='ZikulaExtensionsModule' WHERE modname='Modules'";
     $commands[] = "RENAME TABLE {$prefix}_module_vars TO module_vars";
 
     $commands[] = "ALTER TABLE {$prefix}_module_deps CHANGE pn_id id INT(11) AUTO_INCREMENT";

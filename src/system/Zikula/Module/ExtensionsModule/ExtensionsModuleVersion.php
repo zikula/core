@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\Extensions;
+namespace Zikula\Module\ExtensionsModule;
 
 class ExtensionsModuleVersion extends \Zikula_AbstractVersion
 {

@@ -18,7 +18,7 @@
  * define table information for the module
  *
  */
-function PageLockModule_tables()
+function ZikulaPageLockModule_tables()
 {
   $dbtable = array();
 

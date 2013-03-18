@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\Extensions\Controller;
+namespace Zikula\Module\ExtensionsModule\Controller;
 
 use LogUtil;
 use SecurityUtil;

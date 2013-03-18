@@ -49,10 +49,10 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ThemeModule', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('ZikulaThemeModule', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ThemeModule', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'z-icon-es-config');
         }
 
         return $links;
@@ -77,7 +77,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         unset($args['themeinfo']['i18n']);
 
-        $item = $this->entityManager->find('ThemeModule\Entity\ThemeEntity', $args['themeinfo']['id']);
+        $item = $this->entityManager->find('Zikula\Module\ThemeModule\Entity\ThemeEntity', $args['themeinfo']['id']);
         $item->merge($args['themeinfo']);
         $this->entityManager->flush();
 
@@ -146,24 +146,24 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get the theme settings and write them back to the running config directory
-        $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $themename));
+        $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $themename));
         if (is_array($variables)) {
-            ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => 'themevariables.ini'));
+            ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $variables, 'has_sections' => true, 'file' => 'themevariables.ini'));
         }
 
         // get the theme palettes and write them back to the running config directory
-        $palettes = ModUtil::apiFunc('ThemeModule', 'user', 'getpalettes', array('theme' => $themename));
+        $palettes = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettes', array('theme' => $themename));
         if (is_array($palettes)) {
-            ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
+            ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $palettes, 'has_sections' => true, 'file' => 'themepalettes.ini'));
         }
 
         // get the theme page configurations and write them back to the running config directory
-        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
-        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+        $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         foreach ($pageconfigurations as $pageconfiguration) {
-            $fullpageconfiguration = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
-            ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
+            $fullpageconfiguration = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $themename, 'filename' => $pageconfiguration['file']));
+            ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $themename, 'assoc_arr' => $fullpageconfiguration, 'has_sections' => true, 'file' => $pageconfiguration['file']));
         }
 
         return true;
@@ -202,7 +202,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete theme
-        $dql = "DELETE FROM ThemeModule\Entity\ThemeEntity t WHERE t.id = {$themeid}";
+        $dql = "DELETE FROM Zikula\Module\ThemeModule\Entity\ThemeEntity t WHERE t.id = {$themeid}";
         $query = $this->entityManager->createQuery($dql);
         $result = $query->getResult();
         if (!$result) {
@@ -210,7 +210,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete the running config
-        ModUtil::apiFunc('ThemeModule', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
+        ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleterunningconfig', array('themename' => $themeinfo['name']));
 
         // clear the compiled and cached templates
         // Note: This actually clears ALL compiled and cached templates but there doesn't seem to be
@@ -218,12 +218,12 @@ class AdminApi extends \Zikula_AbstractApi
         // names used by that theme.
         // see http://smarty.php.net/manual/en/api.clear.cache.php
         // and http://smarty.php.net/manual/en/api.clear.compiled.tpl.php
-        ModUtil::apiFunc('ThemeModule', 'user', 'clear_compiled');
-        ModUtil::apiFunc('ThemeModule', 'user', 'clear_cached');
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'clear_compiled');
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'clear_cached');
 
         // try to delete the files
         if ($args['deletefiles'] == 1) {
-            ModUtil::apiFunc('ThemeModule', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
+            ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deletefiles', array('themename' => $themeinfo['name'], 'themedirectory' => $themeinfo['directory']));
         }
 
         // Let the calling process know that we have finished successfully
@@ -290,7 +290,7 @@ class AdminApi extends \Zikula_AbstractApi
         // get the theme info to identify further files to delete
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
         if ($themeinfo) {
-            $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
+            $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $themename));
             if (is_array($pageconfigurations)) {
                 foreach ($pageconfigurations as $pageconfiguration) {
                     $files[] = $pageconfiguration['file'];
@@ -300,7 +300,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // delete each file
         foreach ($files as $file) {
-            ModUtil::apiFunc('ThemeModule', 'admin', 'deleteinifile', array('file' => $file, 'themename' => $themename));
+            ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'deleteinifile', array('file' => $file, 'themename' => $themename));
         }
 
         return true;
@@ -360,13 +360,13 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // read the list of existing page config assignments
-        $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $args['themename']));
+        $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $args['themename']));
 
         // remove the requested page configuration
         unset($pageconfigurations[$args['pcname']]);
 
         // write the page configurations back to the running config
-        ModUtil::apiFunc('ThemeModule', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
+        ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
 
         return true;
     }
@@ -378,7 +378,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['themeinfo']) || !isset($args['themeinfo']['name']) || empty($args['themeinfo']) || empty($args['themeinfo']['name'])) {
-            $url = ModUtil::url('ThemeModule', 'admin', 'new');
+            $url = ModUtil::url('ZikulaThemeModule', 'admin', 'new');
 
             return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
         }

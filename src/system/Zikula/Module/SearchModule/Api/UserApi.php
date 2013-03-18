@@ -76,12 +76,12 @@ class UserApi extends \Zikula_AbstractApi
         if ($firstPage) {
             // Clear current search result for current user - before showing the first page
             // Clear also older searches from other users.
-            $query = $this->entityManager->createQuery("DELETE SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
+            $query = $this->entityManager->createQuery("DELETE Zikula\Module\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid OR DATE_ADD(s.found, 1, 'DAY') < CURRENT_TIMESTAMP()");
             $query->setParameter('sid', $sessionId);
             $query->execute();
 
             // get all the search plugins
-            $search_modules = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins');
+            $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
 
             // Ask active modules to find their items and put them into $searchTable for the current user
             // At the same time convert modules list from numeric index to modname index
@@ -101,14 +101,14 @@ class UserApi extends \Zikula_AbstractApi
                         if (!$ok) {
                             LogUtil::registerError($this->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', array($mod['title'], $function)));
 
-                            return System::redirect(ModUtil::url('SearchModule', 'user', 'index'));
+                            return System::redirect(ModUtil::url('ZikulaSearchModule', 'user', 'index'));
                         }
                     }
                 }
             }
 
             // Count number of found results (pointless, this will alays be 0 as we just deleted these! - drak)
-            $query = $this->entityManager->createQuery("SELECT COUNT(s.sesid) FROM SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid");
+            $query = $this->entityManager->createQuery("SELECT COUNT(s.sesid) FROM Zikula\Module\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid");
             $query->setParameter('sid', $sessionId);
             $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
@@ -141,7 +141,7 @@ class UserApi extends \Zikula_AbstractApi
         // 2) let the modules add "url" to the found (and viewed) items
         $checker = new ResultHelper($searchModulesByName);
 
-        $dql = "SELECT s FROM SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid ORDER BY s.created ASC";
+        $dql = "SELECT s FROM Zikula\Module\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid ORDER BY s.created ASC";
         $query = $this->entityManager->createQuery($dql);
         $query->setParameter('sid', $sessionId);
         $query->setMaxResults($vars['numlimit']);
@@ -202,7 +202,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Get items
         $sort = isset($args['sortorder']) ? "ORDER BY s.{$args['sortorder']} DESC" : '';
-        $dql = "SELECT s SearchModule\Entity\SearchStatEntity s $sort";
+        $dql = "SELECT s Zikula\Module\SearchModule\Entity\SearchStatEntity s $sort";
         $query = $this->entityManager->createQuery($dql);
         $query->setMaxResults($args['numitems']);
         $query->setFirstResult($args['startnum'] - 1);
@@ -260,7 +260,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $searchterms = DataUtil::formatForStore($args['q']);
 
-        $obj = $this->entityManager->getRepository('SearchModule\Entity\SearchStatEntity')->findOneBy(array('search' => $searchterms));
+        $obj = $this->entityManager->getRepository('Zikula\Module\SearchModule\Entity\SearchStatEntity')->findOneBy(array('search' => $searchterms));
 
         if (!$obj) {
             $obj = new SearchStatEntity();
@@ -454,12 +454,12 @@ class UserApi extends \Zikula_AbstractApi
     public function getlinks($args)
     {
         $links = array();
-        $search_modules = ModUtil::apiFunc('SearchModule', 'user', 'getallplugins');
+        $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('SearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
+            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
             if ((count($search_modules) > 0) && UserUtil::isLoggedIn()) {
-                $links[] = array('url' => ModUtil::url('SearchModule', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');
+                $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');
             }
         }
 

@@ -193,18 +193,18 @@ class Zikula_View_Theme extends Zikula_View
         // change some base settings from our parent class
         // template compilation
         $this->compile_dir   = CacheUtil::getLocalDir('Theme_compiled');
-        $this->compile_check = ModUtil::getVar('ThemeModule', 'compile_check');
-        $this->force_compile = ModUtil::getVar('ThemeModule', 'force_compile');
+        $this->compile_check = ModUtil::getVar('ZikulaThemeModule', 'compile_check');
+        $this->force_compile = ModUtil::getVar('ZikulaThemeModule', 'force_compile');
         // template caching
         $this->cache_dir = CacheUtil::getLocalDir('Theme_cache');
-        $this->caching   = (int)ModUtil::getVar('ThemeModule', 'enablecache');
+        $this->caching   = (int)ModUtil::getVar('ZikulaThemeModule', 'enablecache');
         //if ($this->caching) {
         //    $this->cache_modified_check = true;
         //}
 
         // if caching and is not an admin controller
         if ($this->caching && strpos($this->type, 'admin') !== 0) {
-            $modulesnocache = explode(',', ModUtil::getVar('ThemeModule', 'modulesnocache'));
+            $modulesnocache = explode(',', ModUtil::getVar('ZikulaThemeModule', 'modulesnocache'));
             if (in_array($this->toplevelmodule, $modulesnocache)) {
                 $this->caching = Zikula_View::CACHE_DISABLED;
             }
@@ -221,9 +221,9 @@ class Zikula_View_Theme extends Zikula_View
             $this->caching = Zikula_View::CACHE_DISABLED;
         }
 
-        $this->cache_lifetime = ModUtil::getVar('ThemeModule', 'cache_lifetime');
+        $this->cache_lifetime = ModUtil::getVar('ZikulaThemeModule', 'cache_lifetime');
         if (!$this->homepage) {
-            $this->cache_lifetime = ModUtil::getVar('ThemeModule', 'cache_lifetime_mods');
+            $this->cache_lifetime = ModUtil::getVar('ZikulaThemeModule', 'cache_lifetime_mods');
         }
 
         // assign all our base template variables
@@ -252,7 +252,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         // register trim whitespace output filter if requried
-        if (ModUtil::getVar('ThemeModule', 'trimwhitespace')) {
+        if (ModUtil::getVar('ZikulaThemeModule', 'trimwhitespace')) {
             $this->load_filter('output', 'trimwhitespace');
         }
 
@@ -659,7 +659,7 @@ class Zikula_View_Theme extends Zikula_View
              ->assign('scriptpath', $this->scriptpath);
 
         // load the theme variables
-        $variables = ModUtil::apiFunc('ThemeModule', 'user', 'getvariables', array('theme' => $this->name));
+        $variables = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getvariables', array('theme' => $this->name));
         $this->assign($variables['variables']);
     }
 
@@ -713,7 +713,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         if (!$this->themeconfig) {
             // load the page configurations
-            $pageconfigurations = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfigurations', array('theme' => $this->name));
+            $pageconfigurations = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfigurations', array('theme' => $this->name));
 
             // identify and load the correct module configuration
 
@@ -761,12 +761,12 @@ class Zikula_View_Theme extends Zikula_View
             }
 
             // load the page configuration
-            $this->themeconfig = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+            $this->themeconfig = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
 
             // check if we've not got a valid theme configation
             if (!$this->themeconfig['page']) {
                 $file = 'master.ini';
-                $this->themeconfig = ModUtil::apiFunc('ThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
+                $this->themeconfig = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpageconfiguration', array('theme' => $this->name, 'filename' => $file));
             }
         }
 
@@ -809,7 +809,7 @@ class Zikula_View_Theme extends Zikula_View
 
         // load the palette if set
         if (!empty($this->themeconfig['palette'])) {
-            $palette = ModUtil::apiFunc('ThemeModule', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
+            $palette = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalette', array('theme' => $this->name, 'palette' => $this->themeconfig['palette']));
             $this->assign('palette', $palette);
         }
 

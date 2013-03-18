@@ -48,7 +48,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
     protected function setView(Zikula_View $view = null)
     {
         if (is_null($view)) {
-            $view = Zikula_View::getInstance($this->rmodule ? $this->rmodule : 'ThemeModule');
+            $view = Zikula_View::getInstance($this->rmodule ? $this->rmodule : 'ZikulaThemeModule');
         }
 
         $this->view = $view;
@@ -71,7 +71,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
      */
     public function info()
     {
-        return array('module'         => 'ThemeModule',
+        return array('module'         => 'ZikulaThemeModule',
                      'text_type'      => $this->__('Rendering engine'),
                      'text_type_long' => $this->__('Custom rendering engine block'),
                      'allow_multiple' => true,

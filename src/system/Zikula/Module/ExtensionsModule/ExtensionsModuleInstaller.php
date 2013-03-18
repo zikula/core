@@ -12,14 +12,14 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\Extensions;
+namespace Zikula\Module\ExtensionsModule;
 
 use DBUtil;
 use Doctrine_Core;
 use EventUtil;
 use System;
 use Zikula_Event;
-use Zikula\Module\Extensions\ExtensionsModuleVersion;
+use Zikula\Module\ExtensionsModule\ExtensionsModuleVersion;
 use ModUtil;
 use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 
@@ -59,8 +59,8 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         // create hook provider table.
         Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
         
-        EventUtil::registerPersistentModuleHandler('ExtensionsModule', 'controller.method_not_found', array('ExtensionsModule\Listener\HookUiListener', 'hooks'));
-        EventUtil::registerPersistentModuleHandler('ExtensionsModule', 'controller.method_not_found', array('ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
+        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('ZikulaExtensionsModule\Listener\HookUiListener', 'hooks'));
+        EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
 
         // populate default data
         $this->defaultdata();
@@ -95,8 +95,8 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
             case '3.7.8':
                 // create the new hooks tables
                 Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-                EventUtil::registerPersistentModuleHandler('ExtensionsModule', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
-                EventUtil::registerPersistentModuleHandler('ExtensionsModule', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
+                EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Extensions_HookUI', 'hooks'));
+                EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Extensions_HookUI', 'moduleservices'));
             case '3.7.9':
                 // increase length of some hook table fields from 60 to 100
                 $commands = array();

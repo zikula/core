@@ -43,7 +43,7 @@ class ModuleListener
 
                 $block = $block->toArray();
 
-                if ($block['bkey'] != 'SearchModule') {
+                if ($block['bkey'] != 'ZikulaSearchModule') {
                     continue;
                 }
 

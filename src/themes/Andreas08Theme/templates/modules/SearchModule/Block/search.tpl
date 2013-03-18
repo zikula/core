@@ -1,5 +1,5 @@
 {gt text="Search keywords" domain='zikula' assign=searchtxt}
-<form id="theme_search" class="z-floatright" method="post" action="{modurl modname='SearchModule' type='user' func='search'}">
+<form id="theme_search" class="z-floatright" method="post" action="{modurl modname='ZikulaSearchModule' type='user' func='search'}">
     <div>
         <input class="theme_search_input" id="block_search_q" type="text" name="q" size="20" maxlength="255" value="{$searchtxt}" onfocus="if(this.value=='{$searchtxt}')this.value=''" />
         {if $vars.displaySearchBtn eq 1}

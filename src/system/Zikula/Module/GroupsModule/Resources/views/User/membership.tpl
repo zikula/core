@@ -36,7 +36,7 @@
         </fieldset>
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall value="Apply" __alt="Apply" __title="Apply" __text="Apply"}
-            <a href="{modurl modname='GroupsModule' type='user' func='view'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a href="{modurl modname='ZikulaGroupsModule' type='user' func='view'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
         </div>
     </div>
 </form>

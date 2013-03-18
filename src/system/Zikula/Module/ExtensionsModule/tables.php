@@ -20,7 +20,7 @@
  *
  * @return  array The table information.
  */
-function ExtensionsModule_tables()
+function ZikulaExtensionsModule_tables()
 {
     // Initialise table array
     $dbtable = array();

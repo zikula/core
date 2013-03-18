@@ -24,7 +24,7 @@
  *
  * @return array The table information.
  */
-function UsersModule_tables($forVersion = null)
+function ZikulaUsersModule_tables($forVersion = null)
 {
     if (!isset($forVersion)) {
         if (isset($GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) && $GLOBALS['_ZikulaUpgrader']['_ZikulaUpgradeFrom12x']) {

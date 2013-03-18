@@ -6,7 +6,7 @@
     <h3>{gt text='Imagine plugin settings'}</h3>
 </div>
 
-<form id="imagine-configuration" class="z-form" action="{modurl modname='ExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='updateConfig'}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="imagine-configuration" class="z-form" action="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='updateConfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
@@ -26,7 +26,7 @@
             </div>
 
             <div class="z-formbuttons">
-                <a class="z-action-icon z-icon-es-regenerate" href="{modurl modname='ExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
+                <a class="z-action-icon z-icon-es-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
             </div>
         </fieldset>
 
@@ -99,7 +99,7 @@
 
         <div class="z-buttons z-formbuttons">
         {button src=button_ok.png set=icons/extrasmall __alt='Save' __title='Save' __text='Save'}
-            <a href="{modurl modname='ExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='configure'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='configure'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
         </div>
     </div>
 </form>

@@ -55,7 +55,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in view()
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view'));
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
     }
 
     /**
@@ -145,12 +145,12 @@ class AdminController extends \Zikula_AbstractController
 
             foreach ($objArray as $obj) {
                 $id = $obj['gid'];
-                $up = array('url' => ModUtil::url('PermissionsModule', 'admin', 'inc',
+                $up = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'inc',
                                 array('pid' => $obj['pid'],
                                       'permgrp' => $permgrp,
                                       'csrftoken' => $csrftoken)),
                             'title' => $this->__('Up'));
-                $down = array('url' => ModUtil::url('PermissionsModule', 'admin', 'dec',
+                $down = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'dec',
                                 array('pid' => $obj['pid'],
                                        'permgrp' => $permgrp,
                                        'csrftoken' => $csrftoken)),
@@ -169,15 +169,15 @@ class AdminController extends \Zikula_AbstractController
                 $rownum++;
 
                 $options = array();
-                $inserturl = ModUtil::url('PermissionsModule', 'admin', 'listedit',
+                $inserturl = ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit',
                                 array('permgrp' => $permgrp,
                                       'action' => 'insert',
                                       'insseq' => $obj['sequence']));
-                $editurl = ModUtil::url('PermissionsModule', 'admin', 'listedit',
+                $editurl = ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit',
                                 array('chgpid' => $obj['pid'],
                                       'permgrp' => $permgrp,
                                       'action' => 'modify'));
-                $deleteurl = ModUtil::url('PermissionsModule', 'admin', 'delete',
+                $deleteurl = ModUtil::url('ZikulaPermissionsModule', 'admin', 'delete',
                                 array('pid' => $obj['pid'],
                                       'permgrp' => $permgrp));
 
@@ -251,13 +251,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'inc', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Incremented permission rule.'));
         }
 
         // Redirect
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view',
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view',
                         array('permgrp' => $permgrp)));
     }
 
@@ -288,13 +288,13 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'dec', array('pid' => $pid, 'permgrp' => $permgrp))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Decremented permission rule.'));
         }
 
         // Redirect
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view',
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view',
                         array('permgrp' => $permgrp)));
     }
 
@@ -336,7 +336,7 @@ class AdminController extends \Zikula_AbstractController
 
         if ($action == 'modify') {
             // Form-start
-            $this->view->assign('formurl', ModUtil::url('PermissionsModule', 'admin', 'update'))
+            $this->view->assign('formurl', ModUtil::url('ZikulaPermissionsModule', 'admin', 'update'))
                        ->assign('permgrp', $permgrp)
                        ->assign('chgpid', $chgpid);
 
@@ -345,7 +345,7 @@ class AdminController extends \Zikula_AbstractController
                        ->assign('insseq', $chgpid)
                        ->assign('submit', $this->__('Edit permission rule'));
         } elseif ($action == 'insert') {
-            $this->view->assign('formurl', ModUtil::url('PermissionsModule', 'admin', 'create'))
+            $this->view->assign('formurl', ModUtil::url('ZikulaPermissionsModule', 'admin', 'create'))
                        ->assign('permgrp', $permgrp)
                        ->assign('insseq', $insseq);
 
@@ -354,7 +354,7 @@ class AdminController extends \Zikula_AbstractController
                        ->assign('submit', $this->__('Create new permission rule'));
         } elseif ($action == 'add') {
             // Form-start
-            $this->view->assign('formurl', ModUtil::url('PermissionsModule', 'admin', 'create'))
+            $this->view->assign('formurl', ModUtil::url('ZikulaPermissionsModule', 'admin', 'create'))
                        ->assign('permgrp', $permgrp)
                        ->assign('insseq', -1);
 
@@ -431,7 +431,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'update',
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'update',
                         array('pid' => $pid,
                               'seq' => $seq,
                               'oldseq' => $oldseq,
@@ -448,7 +448,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view'));
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
     }
 
     /**
@@ -492,7 +492,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Pass to API
-        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'create',
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create',
                         array('realm' => $realm,
                               'id' => $id,
                               'component' => $component,
@@ -507,7 +507,7 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view'));
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
     }
 
     /**
@@ -546,13 +546,13 @@ class AdminController extends \Zikula_AbstractController
         $this->checkCsrfToken();
 
         // Pass to API
-        if (ModUtil::apiFunc('PermissionsModule', 'admin', 'delete',
+        if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete',
                         array('pid' => $pid))) {
             // Success
             LogUtil::registerStatus($this->__('Done! Deleted permission rule.'));
         }
 
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view',
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view',
                         array('permgrp' => $permgrp)));
     }
 
@@ -569,7 +569,7 @@ class AdminController extends \Zikula_AbstractController
         $groups[SecurityUtil::PERMS_ALL] = $this->__('All groups');
         $groups[SecurityUtil::PERMS_UNREGISTERED] = $this->__('Unregistered');
 
-        $objArray = ModUtil::apiFunc('GroupsModule', 'user', 'getall');
+        $objArray = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getall');
         foreach ($objArray as $group) {
             $groups[$group['gid']] = $group['name'];
         }
@@ -591,7 +591,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Get all permissions schemas, sort and assign to the template
-        $this->view->assign('schemas', ModUtil::apiFunc('PermissionsModule', 'admin', 'getallschemas'));
+        $this->view->assign('schemas', ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'getallschemas'));
 
         // we don't return the output back to the core here since this template is a full page
         // template i.e. we don't want this output wrapped in the theme.
@@ -659,10 +659,10 @@ class AdminController extends \Zikula_AbstractController
         // the module configuration has been updated successfuly
         if ($error == true) {
             LogUtil::registerStatus($this->__('Error! Could not save configuration: unknown permission rule ID.'));
-            $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'modifyconfig'));
+            $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'));
         }
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
-        $this->redirect(ModUtil::url('PermissionsModule', 'admin', 'view'));
+        $this->redirect(ModUtil::url('ZikulaPermissionsModule', 'admin', 'view'));
     }
 
     /**

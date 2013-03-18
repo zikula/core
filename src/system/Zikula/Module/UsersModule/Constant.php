@@ -26,7 +26,7 @@ namespace Zikula\Module\UsersModule
         /**
          * The name of the module.
          */
-        const MODNAME = 'UsersModule';
+        const MODNAME = 'ZikulaUsersModule';
         /**
          * The identifier for the 'authentication' capability.
          */
@@ -388,7 +388,7 @@ namespace Zikula\Module\UsersModule
     }
 }
 namespace {
-    class Users_Constant extends UsersModule\Constant
+    class Users_Constant extends Zikula\Module\UsersModule\Constant
     {
     }
 }

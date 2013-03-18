@@ -24,10 +24,10 @@
     <thead>
         <tr>
             <th>
-                {sortlink __linktext='Internal name' sort='name' currentsort=$sort sortdir=$sortdir modname='ExtensionsModule' type='admin' func='view'}
+                {sortlink __linktext='Internal name' sort='name' currentsort=$sort sortdir=$sortdir modname='ZikulaExtensionsModule' type='admin' func='view'}
             </th>
             <th>
-                {sortlink __linktext='Display name' sort='displayname' currentsort=$sort sortdir=$sortdir modname='ExtensionsModule' type='admin' func='view'}
+                {sortlink __linktext='Display name' sort='displayname' currentsort=$sort sortdir=$sortdir modname='ZikulaExtensionsModule' type='admin' func='view'}
             </th>
             <th>{gt text="Module URL"}</th>
             <th>{gt text="Description"}</th>
