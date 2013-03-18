@@ -140,7 +140,7 @@ class SecurityUtil
             throw new \Exception(__f('Invalid security level [%1$s] received in %2$s', array($level, 'SecurityUtil::checkPermission')));
         }
 
-        if (!$user) {
+        if (!isset($user)) {
             $user = UserUtil::getVar('uid');
         }
 
@@ -352,12 +352,10 @@ class SecurityUtil
             return $groupperms;
         }
 
-        static $usergroups = array();
-        if (!$usergroups) {
-            $usergroups[] = -1;
-            if (!UserUtil::isLoggedIn()) {
-                $usergroups[] = 0; // Unregistered GID
-            }
+        $usergroups = array();
+        $usergroups[] = -1;
+        if ($user == 0 || !UserUtil::isLoggedIn()) {
+            $usergroups[] = 0; // Unregistered GID
         }
 
         $allgroups = array_merge($usergroups, $fldArray);
