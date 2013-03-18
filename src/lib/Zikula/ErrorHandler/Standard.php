@@ -62,7 +62,7 @@ class Zikula_ErrorHandler_Standard extends Zikula_AbstractErrorHandler
         }
 
         // if we get this far, display template
-        $return = ModUtil::func('Errors', 'user', 'system',
+        $return = ModUtil::func('ZikulaErrorsModule', 'user', 'system',
                            array('type' => $this->errno,
                                  'message' => $this->errstr,
                                  'file' => $this->errfile,

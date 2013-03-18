@@ -42,12 +42,12 @@ class Users_EventHandlers_Extensions extends Zikula_AbstractEventHandler
             return;
         }
 
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
         // Zikula Modules and Themes versions
-        $view = Zikula_View::getInstance('Users');
+        $view = Zikula_View::getInstance('ZikulaUsersModule');
         $view->assign('mods', ModuleUtil::getModules());
         $view->assign('themes', ThemeUtil::getAllThemes());
 

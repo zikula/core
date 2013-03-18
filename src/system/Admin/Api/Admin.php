@@ -63,7 +63,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         }
 
         // Security check (old item)
-        if (!SecurityUtil::checkPermission('Admin::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError ();
         }
 
@@ -136,7 +136,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         $items = array();
 
         // Security check
-        if (!SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
             return $items;
         }
 
@@ -199,7 +199,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
 
         // this function is called durung the init process so we have to check in installing
         // is set as alternative to the correct permission check
-        if (!System::isInstalling() && !SecurityUtil::checkPermission('Admin::Category', "::", ACCESS_ADD)) {
+        if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
             return LogUtil::registerPermissionError ();
         }
 
@@ -345,13 +345,13 @@ class Admin_Api_Admin extends Zikula_AbstractApi
     {
         $links = array();
 
-        if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_READ)) {
+        if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('Admin', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'z-icon-es-view');
         }
-        if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADD)) {
+        if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADD)) {
             $links[] = array('url' => ModUtil::url('Admin', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'z-icon-es-new');
         }
-        if (SecurityUtil::checkPermission('Admin::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('Admin', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'z-icon-es-help');
             $links[] = array('url' => ModUtil::url('Admin', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }

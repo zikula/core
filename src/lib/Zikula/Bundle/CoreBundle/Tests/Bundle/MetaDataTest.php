@@ -32,6 +32,14 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getShortName
+     */
+    public function testShortName()
+    {
+        $this->assertEmpty($this->metaData->getShortName());
+    }
+
+    /**
      * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getPsr0
      */
     public function testGetPsr0()
@@ -44,7 +52,15 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBasePath()
     {
-        $this->assertEquals('', $this->metaData->getBasePath());
+        $this->assertEmpty($this->metaData->getBasePath());
+    }
+
+    /**
+     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getRootPath
+     */
+    public function testGetRootPath()
+    {
+        $this->assertEmpty($this->metaData->getRootPath());
     }
 
     /**
@@ -52,7 +68,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClass()
     {
-        $this->assertEquals('Admin\\AdminModule', $this->metaData->getClass());
+        $this->assertEquals('Zikula\\Module\\AdminModule\\ZikulaAdminModule', $this->metaData->getClass());
     }
 
     /**
@@ -60,7 +76,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNamespace()
     {
-        $this->assertEquals('Admin\\', $this->metaData->getNamespace());
+        $this->assertEquals('Zikula\\Module\\AdminModule\\', $this->metaData->getNamespace());
     }
 
     private function getJson()
@@ -78,15 +94,17 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
         }
     ],
     "autoload": {
-        "psr-0": { "Admin\\": "" }
+        "psr-0": { "Zikula\\Module\\AdminModule\\": "" }
     },
     "require": {
         "php": ">5.3.3"
     },
     "extra": {
         "zikula": {
-            "class": "Admin\\AdminModule",
-            "base-path": ""
+            "class": "Zikula\\Module\\AdminModule\\ZikulaAdminModule",
+            "base-path": "",
+            "root-path": "",
+            "short-name": ""
         }
     }
 }

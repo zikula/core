@@ -1,4 +1,4 @@
-{checkpermissionblock component='Admin::' instance='::' level=ACCESS_ADMIN}
+{checkpermissionblock component='ZikulaAdminModule::' instance='::' level=ACCESS_ADMIN}
     {if $notices.update.update_show}
         <div id="z-updatechecker">
             <strong>{gt text="Upgrade found!"}</strong>

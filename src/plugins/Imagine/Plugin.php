@@ -95,7 +95,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function clearCacheObserver(Zikula_Event $event)
     {
-        if ($event['modname'] == 'Theme') {
+        if ($event['modname'] == 'ZikulaThemeModule') {
             // clear thumb when render cache is cleared
             // what with theme cache?
             $themeClearMethods = array('clear_cache', 'render_clear_cache', 'clearallcompiledcaches');

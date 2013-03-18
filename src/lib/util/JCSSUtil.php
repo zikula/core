@@ -492,7 +492,7 @@ class JCSSUtil
      */
     private static function save($files, $ext, $cache_dir)
     {
-        $themevars = ModUtil::getVar('Theme');
+        $themevars = ModUtil::getVar('ZikulaThemeModule');
 
         $lifetime = $themevars['cssjscombine_lifetime'];
         $hash = md5(serialize($files) . UserUtil::getTheme());

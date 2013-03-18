@@ -1,0 +1,23 @@
+{
+    "name": "zikula/seabreeze-theme",
+    "description": "SeaBreeze Theme",
+    "type": "zikula-theme",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "SeaBreezeTheme\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula" : {
+            "class": "SeaBreezeTheme\\SeaBreezeTheme"
+        }
+    }
+}

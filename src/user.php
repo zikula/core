@@ -18,4 +18,4 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 $core->init();
-System::redirect(ModUtil::url('Users', 'user', 'main'));
+System::redirect(ModUtil::url('ZikulaUsersModule', 'user', 'main'));

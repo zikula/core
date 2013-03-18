@@ -6,24 +6,17 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
+            "Zikula\\Module": "src/system",
             "Zikula": "src/lib",
             "DoctrineExtensions\\StandardFields": "src/lib",
             "Admin\\": "src/system",
-            "Blocks\\": "src/system",
             "Categories\\": "src/system",
-            "Errors\\": "src/system",
-            "Extensions\\": "src/system",
-            "Groups\\": "src/system",
-            "Mailer\\": "src/system",
-            "PageLock\\": "src/system",
-            "Permissions\\": "src/system",
-            "Search\\": "src/system",
-            "SecurityCenter\\": "src/system",
-            "Settings\\": "src/system",
-            "Theme\\": "src/system",
-            "Users\\": "src/system",
             "CustomBundle\\": "src/app/custom",
-            "Andreas08\\": "src/themes"
+            "Andreas08Theme\\": "src/themes",
+            "MobileTheme\\": "src/themes",
+            "PrinterTheme\\": "src/themes",
+            "RSSTheme\\": "src/themes",
+            "SeaBreezeTheme\\": "src/themes"
 
         },
         "classmap": [

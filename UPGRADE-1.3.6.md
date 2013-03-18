@@ -37,51 +37,67 @@ Namespaces
 ----------
 
 Zikula Core 1.3.6 supports PHP namespaces and module should be refactored
-for namespace compliance which should MUST be in line with PSR-0 and PSR-1.
+for namespace compliance which should MUST be in line with PSR-0, PSR-1 and
+PSR-2.
 
 In order to be PSR-0 compliant, module the PHP assets in `lib/Modname/*`
 need to moved into the module root (see below).
 
 The current specification mandates: (still in dev)
-'Foo' is the module name in the examples below and give a few examples of
-how module classes should look like:
+Vendor - PSR-0 mandates a class must contain a vendor. The examples will
+illustrate this.
+
+`Foo` is the vendor and 'MyModule' is the module name (`Module` suffic required).
+Here are a a few examples of how module classes should look like:
 
 Controllers:
-  - Named like `FooModule\Controller\UserController`
-  - Stored in `FooModule/Controller/UserController.php`
+  - Named like `Foo\MyModule\Controller\UserController`
+  - Stored in `Foo\MyModule/Controller/UserController.php`
   - Example:
 
         <?php
-        namespace FooModule\Controller;
+        namespace Foo\MyModule\Controller;
 
         class UserController extends \Zikula_AbstractController
         {
         }
 
 Apis:
-  - Named like `FooModule\Api\UserApi`
-  - Stored in `FooModule/Api/UserApi.php`
+  - Named like `Foo\MyModule\Api\UserApi`
+  - Stored in `Foo/MyModule/Api/UserApi.php`
   - Example:
 
         <?php
-        namespace FooModule\Api;
+        namespace Foo\MyModule\Api;
 
         class UserApi extends \Zikula_AbstractApi
         {
         }
 
 Entities:
-  - Named like `FooModule\Entity\BarEntity`
-  - Stored in `FooModule/Entity/BarEntity.php`
+  - Named like `Foo\MyModule\Entity\BarEntity`
+  - Stored in `Foo\MyModule/Entity/BarEntity.php`
   - Example:
 
         <?php
-        namespace FooModule\Entity;
+        namespace Foo\MyModule\Entity;
 
         class BarEntity
         {
         }
 
+.. note::
+
+    The namespace can be as deep as required, e.g
+    `Zikula\Module\AdminModule` so you might have a class like
+    called `Zikula\Module\AdminModule\Controller\AdminController`
+
+            <?php
+            namespace Zikula\Module\AdminModule\Controller;
+
+            class AdminController
+            {
+            }
 
 There is a script to do some of the refactoring for you:
 
@@ -109,57 +125,65 @@ Module Structure
 
 The final structure looks as follows:
 
-    FooModule/
-        Api/
-            AdminApi.php (was Admin.php)
-            UserApi.php (was User.php)
-        Controller/
-            AdminController.php (was Admin.php)
-            UserController.php (was User.php)
-        Entity/
-            FooEntity.php
-        Listener/
-            FooListener.php
-        Hook/
-            FooHook.php
-        Resources/
-            config/
-            docs/
-            locale/
-                foo_module.pot
-            public/
-                css/
-                images/
-                js/
-            views/
-                Admin/
-                    view.tpl
-                User/
-                    list.tpl
-                    view.tpl
-                plugins/
-        Tests/
-            AdminControllerTest.php
-        vendor/
-        FooInstaller.php (was Installer.php)
-        FooVersion.php (was Version.php)
-        FooModule.php
-        CHANGELOG.md
-        LICENSE
-        README.md
-        composer.json
-        phpunit.xml.dist
+    Foo/
+        MyModule/
+            Api/
+                AdminApi.php (was Admin.php)
+                UserApi.php (was User.php)
+            Controller/
+                AdminController.php (was Admin.php)
+                UserController.php (was User.php)
+            Entity/
+                FooEntity.php
+            Listener/
+                FooListener.php
+            Hook/
+                FooHook.php
+            Resources/
+                config/
+                docs/
+                locale/
+                    foo_module.pot
+                public/
+                    css/
+                    images/
+                    js/
+                views/
+                    Admin/
+                        view.tpl
+                    User/
+                        list.tpl
+                        view.tpl
+                    plugins/
+            Tests/
+                AdminControllerTest.php
+            vendor/
+            MyModuleInstaller.php (was Installer.php)
+            MyModuleVersion.php (was Version.php) (todo - this file will go away)
+            FooMyModule.php
+            CHANGELOG.md
+            LICENSE
+            README.md
+            composer.json       (this file is required, see example)
+            phpunit.xml.dist
 
-The last file `FooModule.php` is new and should look like this:
+The last file `FooMyModule.php` is new and should look like this
+combining the vendor name (`Foo` with the class name).
 
     <?php
-    namespace FooModule;
+    namespace Foo\MyModule;
 
-    use Zikula\Bundle\CoreBundle\AbstractModule;
+    use Zikula\Core\AbstractModule;
 
-    class FooModule extends AbstractModule
+    class FooMyModule extends AbstractModule
     {
     }
+
+.. note::
+
+    The namespace can be as deep as required, e.g
+    `Zikula\Module\AdminModule` would result in a class
+    called `Zikula\Module\AdminModule\ZikulaAdminModule`
 
 There is a script to restructure the module for you:
 
@@ -189,6 +213,38 @@ This necessitates a change in template calls such as:
     $this->view->fetch('Admin/view.tpl');
 
 
+Composer
+--------
+
+Modules and themes must have a `composer.json` manifest which looks like the following:
+
+    {
+        "name": "zikula/mailer-module",
+        "description": "Mailer Module",
+        "type": "zikula-module",
+        "license": "LGPL-3.0+",
+        "authors": [
+            {
+                "name": "Zikula",
+                "homepage": "http://zikula.org/"
+            }
+        ],
+        "autoload": {
+            "psr-0": { "Zikula\\Module\\MailerModule\\": "" }
+        },
+        "require": {
+            "php": ">5.3.3"
+        },
+        "extra": {
+            "zikula": {
+                "class": "Zikula\\Module\\MailerModule\\ZikulaMailerModule"
+            }
+        }
+    }
+
+PhpStorm 6 and MOST 0.6.1 have create tools for this.
+
+
 Controller Methods
 ------------------
 
@@ -200,6 +256,9 @@ There is a script to automate this change:
     zikula-tools module:controller_actions --dir=module/MyModule/Controller
 
 Old method names will continue to work for the time being.
+
+The default action should be named `indexAction()` however please not that all routes
+must be explicitly referenced so there is in fact no default route any more for a module.
 
 
 Controller Response

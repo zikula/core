@@ -1,1 +1,0 @@
-<ul><li><a href="{modurl modname='Users' type='user' func='login' returnpage=$returnpage|urlencode}">Log in</a></li></ul>

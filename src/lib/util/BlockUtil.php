@@ -42,7 +42,7 @@ class BlockUtil
 
         // get the block position
         if (empty($positions)) {
-            $positions = ModUtil::apiFunc('Blocks', 'user', 'getallpositions');
+            $positions = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallpositions');
         }
 
         if (!isset($positions[$side])) {
@@ -55,7 +55,7 @@ class BlockUtil
 
         // get all block placements
         if (empty($blockplacements)) {
-            $blockplacements = ModUtil::apiFunc('Blocks', 'user', 'getallplacements');
+            $blockplacements = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallplacements');
         }
 
         // get variables from input
@@ -232,7 +232,7 @@ class BlockUtil
             $blockinfo['title'] = '';
         }
 
-        if (UserUtil::isLoggedIn() && ModUtil::getVar('Blocks', 'collapseable') == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')) {
+        if (UserUtil::isLoggedIn() && ModUtil::getVar('ZikulaBlocksModule', 'collapseable') == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')) {
             if (!isset($themeinfo)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 $themedir = DataUtil::formatForOS($themeinfo['directory']);
@@ -261,12 +261,12 @@ class BlockUtil
             $checkUserBlock = self::checkUserBlock($blockinfo);
             if ($checkUserBlock) {
                 if (!empty($blockinfo['title'])) {
-                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
+                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('ZikulaBlocksModule', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
                 }
             } else {
                 $blockinfo['content'] = '';
                 if (!empty($blockinfo['title'])) {
-                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('Blocks', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $downb . '</a>';
+                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('ZikulaBlocksModule', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $downb . '</a>';
                 }
             }
             // end collapseable menu config
@@ -320,12 +320,24 @@ class BlockUtil
 
         // get the block info
         if ($isOO) {
-            $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
-            $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
-            $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
-            $className = class_exists($className) ? $className :$classNameOld;
+            $kernel = $sm->get('kernel');
+            $module = null;
+            try {
+                /** @var $module \Zikula\Core\AbstractModule */
+                $module = $kernel->getModule($modinfo['name']);
+                $className = $module->getNamespace().'\\Block\\'.ucwords($block);
+                $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
+            } catch (\InvalidArgumentException $e) {
+            }
+
+            if (!isset($className)) {
+                $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
+                $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
+                $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
+                $className = class_exists($className) ? $className :$classNameOld;
+            }
             $r = new ReflectionClass($className);
-            $blockInstance = $r->newInstanceArgs(array($sm));
+            $blockInstance = $r->newInstanceArgs(array($sm, $module));
             try {
                 if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
                     throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
@@ -509,7 +521,7 @@ class BlockUtil
      */
     public static function getBlocksInfo()
     {
-        return ModUtil::apiFunc('Blocks', 'user', 'getall');
+        return ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getall');
     }
 
     /**

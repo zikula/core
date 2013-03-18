@@ -54,8 +54,8 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
             return;
         }
 
-        if (SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
-            $event->data[] = array('url' => ModUtil::url('Users', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
+        if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+            $event->data[] = array('url' => ModUtil::url('ZikulaUsersModule', 'admin', 'anotherfunction'), 'text' => $this->__('Here is another link'));
         }
     }
 
@@ -74,7 +74,7 @@ class ModulePlugin_Users_Example_Plugin extends Zikula_AbstractPlugin implements
             return;
         }
 
-        if (!SecurityUtil::checkPermission('Users::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

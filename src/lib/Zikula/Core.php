@@ -456,13 +456,13 @@ class Zikula_Core
 
         if ($stage & self::STAGE_TABLES) {
             // Initialise dbtables
-            ModUtil::dbInfoLoad('Extensions', 'Extensions');
+            ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
             ModUtil::initCoreVars();
-            ModUtil::dbInfoLoad('Settings', 'Settings');
-            ModUtil::dbInfoLoad('Theme', 'Theme');
-            ModUtil::dbInfoLoad('Users', 'Users');
-            ModUtil::dbInfoLoad('Groups', 'Groups');
-            ModUtil::dbInfoLoad('Permissions', 'Permissions');
+            ModUtil::dbInfoLoad('ZikulaSettingsModule', 'ZikulaSettingsModule');
+            ModUtil::dbInfoLoad('ZikulaThemeModule', 'ZikulaThemeModule');
+            ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
+            ModUtil::dbInfoLoad('ZikulaGroupsModule', 'ZikulaGroupsModule');
+            ModUtil::dbInfoLoad('ZikulaPermissionsModule', 'ZikulaPermissionsModule');
             ModUtil::dbInfoLoad('Categories', 'Categories');
 
             if (!System::isInstalling()) {
@@ -503,7 +503,7 @@ class Zikula_Core
                 //ob_start("ob_gzhandler");
             }
 
-            ModUtil::load('SecurityCenter');
+            ModUtil::load('SecurityCenterModule');
 
             $coreInitEvent->setArgument('stage', self::STAGE_MODS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
@@ -541,7 +541,7 @@ class Zikula_Core
                 //        then a new one is created on the reentry into index.php. The message
                 //        set by the registerStatus call below gets lost.
                 LogUtil::registerStatus(__('You have been logged out.'));
-                System::redirect(ModUtil::url('Users', 'user', 'login'));
+                System::redirect(ModUtil::url('ZikulaUsersModule', 'user', 'login'));
             }
         }
 

@@ -240,7 +240,7 @@ class LogUtil
                 if ($request->isGet()) {
                     $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
                 }
-                $url = ModUtil::url('Users', 'user', 'login', $loginArgs);
+                $url = ModUtil::url('ZikulaUsersModule', 'user', 'login', $loginArgs);
             }
             $code = null;
         }

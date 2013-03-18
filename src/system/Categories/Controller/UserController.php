@@ -35,7 +35,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function mainAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -60,7 +60,7 @@ class UserController extends \Zikula_AbstractController
         $cid = $this->request->get('cid', 0);
         $url = ModUtil::url('Categories', 'user', 'edit', array('dr' => $docroot));
 
-        if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$docroot", ACCESS_EDIT)) {
             return LogUtil::registerPermissionError($url);
         }
 
@@ -97,7 +97,7 @@ class UserController extends \Zikula_AbstractController
                 $userRootCatIPath = $userRootCat['ipath'];
                 $rootCatIPath = $rootCat['ipath'];
                 if (strpos($rootCatIPath, $userRootCatIPath) !== false) {
-                    if (!SecurityUtil::checkPermission('Categories::category', "ID::$docroot", ACCESS_ADMIN)) {
+                    if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', "ID::$docroot", ACCESS_ADMIN)) {
                         $thisUserRootCategoryName = ModUtil::apiFunc('Categories', 'user', 'getusercategoryname');
                         $thisUserRootCatPath = $userRootCat['path'] . '/' . $thisUserRootCategoryName;
                         $userRootCatPath = $userRootCat['path'];
@@ -153,7 +153,7 @@ class UserController extends \Zikula_AbstractController
      */
     public function edituserAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::category', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -201,7 +201,7 @@ class UserController extends \Zikula_AbstractController
                     'name' => $userCatName,
                     'display_name' => unserialize($installer->makeDisplayName($userCatName)),
                     'display_desc' => unserialize($installer->makeDisplayDesc()),
-                    'security_domain' => 'Categories::',
+                    'security_domain' => 'ZikulaCategoriesModule::',
                     'path' => $thisUserRootCatPath,
                     'status' => 'A');
 
@@ -221,7 +221,7 @@ class UserController extends \Zikula_AbstractController
                         'name' => $userdefaultcatname,
                         'display_name' => unserialize($installer->makeDisplayName($userdefaultcatname)),
                         'display_desc' => unserialize($installer->makeDisplayDesc()),
-                        'security_domain' => 'Categories::',
+                        'security_domain' => 'ZikulaCategoriesModule::',
                         'path' => $thisUserRootCatPath . '/' . $userdefaultcatname,
                         'status' => 'A');
                 $obj->setData($cat);

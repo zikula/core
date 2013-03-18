@@ -1,0 +1,5 @@
+## YAML Override template
+## original/file.tpl: override/file.tpl
+---
+system/Zikula/Module/SearchModule/Resources/views/Block/search.tpl: themes/SeaBreezeTheme/templates/modules/SearchModule/Block/search.tpl
+system/Zikula/Module/BlocksModule/Resources/views/blocks_block_extmenu_topnav.tpl: themes/SeaBreeze/templates/modules/BlocksModule/blocks_block_extmenu_topnav.tpl

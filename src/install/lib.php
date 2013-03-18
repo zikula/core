@@ -22,7 +22,7 @@ function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
-    ZLoader::addPrefix('Users', 'system');
+    ZLoader::addPrefix('ZikulaUsersModule', 'system');
 
     $serviceManager = $core->getContainer();
     $eventManager = $core->getDispatcher();
@@ -247,8 +247,8 @@ function install(Zikula_Core $core)
                                     $exec = '';
                                 }
                             }
-                            ModUtil::dbInfoLoad('Users', 'Users');
-                            ModUtil::dbInfoLoad('Extensions', 'Extensions');
+                            ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
+                            ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
                             ModUtil::initCoreVars(true);
                             createuser($username, $password, $email);
                             $installedOk = true;
@@ -271,7 +271,7 @@ function install(Zikula_Core $core)
                         'pass'      => $password
                     );
                     $authenticationMethod = array(
-                        'modname'   => 'Users',
+                        'modname'   => 'ZikulaUsersModule',
                         'method'    => 'uname',
                     );
                     UserUtil::loginUsing($authenticationMethod, $authenticationInfo);
@@ -280,7 +280,7 @@ function install(Zikula_Core $core)
                     System::setVar('adminmail', $email);
 
                     if (!$installbySQL) {
-                        Theme\Util::regenerate();
+                        Zikula\Module\ThemeModule\Util::regenerate();
                     }
 
                     // set site status as installed and protect config.php file
@@ -357,13 +357,13 @@ function install(Zikula_Core $core)
 function createuser($username, $password, $email)
 {
     if (!class_exists('Users_Constant')) {
-        require_once 'system/Users/Constant.php';
+        require_once 'system/Zikula/Module/UsersModule/Constant.php';
     }
     $connection = Doctrine_Manager::connection();
 
     // get the database connection
-    ModUtil::dbInfoLoad('Users', 'Users');
-    ModUtil::dbInfoLoad('Extensions', 'Extensions');
+    ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
+    ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
     $dbtables = DBUtil::getTables();
 
     // create the password hash
@@ -403,68 +403,87 @@ function installmodules($lang = 'en')
     $results = array();
 
     $sm = ServiceUtil::getManager();
+    $kernel = $sm->get('kernel');
     $em = EventUtil::getManager();
 
-    $coremodules = array('Extensions',
-            'Settings',
-            'Theme',
-            'Admin',
-            'Permissions',
-            'Groups',
-            'Blocks',
-            'Users',
+    $coremodules = array(
+        'ZikulaExtensionsModule',
+        'ZikulaSettingsModule',
+        'ZikulaThemeModule',
+        'Admin',
+        'ZikulaPermissionsModule',
+        'ZikulaGroupsModule',
+        'ZikulaBlocksModule',
+        'ZikulaUsersModule',
+        'ZikulaSecurityCenterModule',
+        'Categories',
+        'ZikulaMailerModule',
+        'ZikulaSearchModule',
+        'ZikulaErrorsModule',
     );
 
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
-        $modpath = 'system';
-        if (is_dir("$modpath/$coremodule")) {
-            ZLoader::addAutoloader($coremodule, $modpath);
-            ZLoader::addPrefix($coremodule, $modpath);
+        $className = null;
+        $module = null;
+        try {
+            $module = $kernel->getModule($coremodule);
+            $className = $module->getInstallerClass();
+            $bootstrap = $module->getPath().'/bootstrap.php';
+            if (file_exists($bootstrap)) {
+                include_once $bootstrap;
+            }
+        } catch (\InvalidArgumentException $e) {
         }
-
-        $bootstrap = "$modpath/$coremodule/bootstrap.php";
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
+//        $bootstrap = "$modpath/$coremodule/bootstrap.php";
+//        if (file_exists($bootstrap)) {
+//            include_once $bootstrap;
+//        }
 
         ModUtil::dbInfoLoad($coremodule, $coremodule);
-        $className = "{$coremodule}\\{$coremodule}Installer";
-        $classNameOld = "{$coremodule}_Installer";
-        $className = class_exists($className) ? $className : $classNameOld;
-        $instance = new $className($sm);
+        if (null === $className) {
+            if (is_dir("system/$coremodule")) {
+                ZLoader::addAutoloader($coremodule, 'system');
+                ZLoader::addPrefix($coremodule, 'system');
+            }
+            $className = "{$coremodule}\\{$coremodule}Installer";
+            $classNameOld = "{$coremodule}_Installer";
+            $className = class_exists($className) ? $className : $classNameOld;
+        }
+        $instance = new $className($sm, $module);
         if ($instance->install()) {
             $results[$coremodule] = true;
         }
     }
 
     // regenerate modules list
-    $filemodules = ModUtil::apiFunc('Extensions', 'admin', 'getfilemodules');
-    ModUtil::apiFunc('Extensions', 'admin', 'regenerate',
-                    array('filemodules' => $filemodules));
+    $modApi = new Zikula\Module\ExtensionsModule\Api\AdminApi($sm, new \Zikula\Module\ExtensionsModule\ZikulaExtensionsModule());
+    $modApi->regenerate(array('filemodules' => $modApi->getfilemodules()));
 
     // set each of the core modules to active
     reset($coremodules);
     foreach ($coremodules as $coremodule) {
         $mid = ModUtil::getIdFromName($coremodule, true);
-        ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                        array('id' => $mid,
+        $modApi->setstate(array('id' => $mid,
                                 'state' => ModUtil::STATE_INACTIVE));
-        ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                        array('id' => $mid,
+        $modApi->setstate(array('id' => $mid,
                                 'state' => ModUtil::STATE_ACTIVE));
     }
     // Add them to the appropriate category
     reset($coremodules);
-
-    $coremodscat = array('Extensions' => __('System'),
-            'Permissions' => __('Users'),
-            'Groups' => __('Users'),
-            'Blocks' => __('Layout'),
-            'Users' => __('Users'),
-            'Theme' => __('Layout'),
+    $coremodscat = array('ZikulaExtensionsModule' => __('System'),
+            'ZikulaPermissionsModule' => __('Users'),
+            'ZikulaGroupsModule' => __('Users'),
+            'ZikulaBlocksModule' => __('Layout'),
+            'ZikulaUsersModule' => __('Users'),
+            'ZikulaThemeModule' => __('Layout'),
+            'ZikulaSecurityCenterModule' => __('Security'),
+            'Categories' => __('Content'),
+            'ZikulaMailerModule' => __('System'),
+            'ZikulaErrorsModule' => __('System'),
+            'ZikulaSearchModule' => __('Content'),
             'Admin' => __('System'),
-            'Settings' => __('System'));
+            'ZikulaSettingsModule' => __('System'));
 
     $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
     $modscat = array();
@@ -478,71 +497,11 @@ function installmodules($lang = 'en')
                                 'category' => $modscat[$category]));
     }
     // create the default blocks.
-    $blockInstance = new Blocks\BlocksInstaller($sm);
+    $blockInstance = new Zikula\Module\BlocksModule\BlocksModuleInstaller($sm, $kernel->getModule('ZikulaBlocksModule'));
     $blockInstance->defaultdata();
 
-    // install all the basic modules
-    $modules = array(array('module' => 'SecurityCenter',
-                    'category' => __('Security')),
-            array('module' => 'Tour',
-                    'category' => __('Content')),
-            array('module' => 'Categories',
-                    'category' => __('Content')),
-            array('module' => 'Legal',
-                    'category' => __('Content')),
-            array('module' => 'Mailer',
-                    'category' => __('System')),
-            array('module' => 'Errors',
-                    'category' => __('System')),
-            array('module' => 'Theme',
-                    'category' => __('Layout')),
-            array('module' => 'Search',
-                    'category' => __('Content')));
-
-    foreach ($modules as $module) {
-        // sanity check - check if module is already installed
-        if (ModUtil::available($module['module'])) {
-            continue;
-        }
-        $modpath = 'modules';
-        $moduleName = $module['module'];
-        if (is_dir("$modpath/$moduleName")) {
-            ZLoader::addAutoloader($moduleName, array($modpath, "$modpath/$moduleName/lib"));
-            ZLoader::addPrefix($moduleName, $modpath);
-        }
-        $bootstrap = "$modpath/$moduleName/bootstrap.php";
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
-
-        ZLanguage::bindModuleDomain($moduleName);
-
-        $results[$moduleName] = false;
-
-        // #6048 - prevent trying to install modules which are contained in an install type, but are not available physically
-        if (!file_exists('system/' . $moduleName . '/') && !file_exists('modules/' . $moduleName . '/')) {
-            continue;
-        }
-
-        $mid = ModUtil::getIdFromName($moduleName);
-
-        // init it
-        if (ModUtil::apiFunc('Extensions', 'admin', 'initialise',
-                        array('id' => $mid)) == true) {
-            // activate it
-            if (ModUtil::apiFunc('Extensions', 'admin', 'setstate',
-                            array('id' => $mid,
-                                    'state' => ModUtil::STATE_ACTIVE))) {
-                $results[$module['module']] = true;
-            }
-            // Set category
-            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
-                            array('module' => $moduleName,
-                                    'category' => $modscat[$module['category']]));
-        }
-    }
-
     System::setVar('language_i18n', $lang);
+
     return $results;
 }
 

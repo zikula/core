@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Zikula\Core\AbstractModule;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
@@ -85,7 +86,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     protected $eventManager;
 
     /**
-     * @var EventDispatcher
+     * @var ContainerAwareEventDispatcher
      */
     private $dispatcher;
 
@@ -111,18 +112,24 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     protected $reflection;
 
     /**
+     * @var \Zikula\Core\AbstractModule
+     */
+    protected $bundle;
+
+    /**
      * Constructor.
      *
      * @param Zikula_ServiceManager $serviceManager ServiceManager instance.
+     * @param AbstractModule        $bundle
      */
-    public function __construct(Zikula_ServiceManager $serviceManager)
+    public function __construct(Zikula_ServiceManager $serviceManager, AbstractModule $bundle = null)
     {
         $this->setContainer($serviceManager);
         $this->dispatcher = $this->getContainer()->get('event_dispatcher');
         $this->eventManager = $this->dispatcher;
         $this->request =  $this->getContainer()->get('request');
         $this->entityManager = $this->getContainer()->get('doctrine.entitymanager');
-        $this->_configureBase();
+        $this->_configureBase($bundle);
         $this->initialize();
         $this->postInitialize();
     }
@@ -130,22 +137,32 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Configure base properties, invoked from the constructor.
      *
+     * @param $bundle
+     *
      * @return void
      */
-    protected function _configureBase()
+    protected function _configureBase($bundle)
     {
         $this->systemBaseDir = realpath('.');
-        $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
-        $parts = explode($separator, get_class($this));
-        $this->name = $parts[0];
-        $baseDir = ModUtil::getModuleBaseDir($this->name);
-        $this->baseDir = $this->libBaseDir = realpath("{$this->systemBaseDir}/$baseDir/" . $this->name);
-        if (realpath("{$this->baseDir}/lib/" . $this->name)) {
-            $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
-        }
-        if ($baseDir == 'modules') {
+
+        if (null !== $bundle) {
+            $this->name = $bundle->getName();
             $this->domain = ZLanguage::getModuleDomain($this->name);
+            $this->baseDir = $bundle->getPath();
+        } else {
+            $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
+            $parts = explode($separator, get_class($this));
+            $this->name = $parts[0];
+            $baseDir = ModUtil::getModuleBaseDir($this->name);
+            $this->baseDir = $this->libBaseDir = realpath("{$this->systemBaseDir}/$baseDir/" . $this->name);
+            if (realpath("{$this->baseDir}/lib/" . $this->name)) {
+                $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
+            }
+            if ($baseDir == 'modules') {
+                $this->domain = ZLanguage::getModuleDomain($this->name);
+            }
         }
+
     }
 
     /**

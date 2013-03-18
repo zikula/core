@@ -41,19 +41,20 @@ class ZikulaKernel extends Kernel
 
     private function registerCoreModules(array &$bundles)
     {
-        $bundles[] = new Blocks\BlocksModule();
+        //$bundles[] = new AdminModule\AdminModule();
+        $bundles[] = new Zikula\Module\BlocksModule\ZikulaBlocksModule();
         $bundles[] = new Categories\CategoriesModule();
-        $bundles[] = new Errors\ErrorsModule();
-        $bundles[] = new Extensions\ExtensionsModule();
-        $bundles[] = new Groups\GroupsModule();
-        $bundles[] = new Mailer\MailerModule();
-        $bundles[] = new PageLock\PageLockModule();
-        $bundles[] = new Permissions\PermissionsModule();
-        $bundles[] = new Search\SearchModule();
-        $bundles[] = new SecurityCenter\SecurityCenterModule();
-        $bundles[] = new Settings\SettingsModule();
-        $bundles[] = new Theme\ThemeModule();
-        $bundles[] = new Users\UsersModule();
-        $bundles[] = new Andreas08\Andreas08Theme();
+        $bundles[] = new Zikula\Module\ErrorsModule\ZikulaErrorsModule();
+        $bundles[] = new Zikula\Module\ExtensionsModule\ZikulaExtensionsModule();
+        $bundles[] = new Zikula\Module\GroupsModule\ZikulaGroupsModule();
+        $bundles[] = new Zikula\Module\MailerModule\ZikulaMailerModule();
+        $bundles[] = new Zikula\Module\PageLockModule\ZikulaPageLockModule();
+        $bundles[] = new Zikula\Module\PermissionsModule\ZikulaPermissionsModule();
+        $bundles[] = new Zikula\Module\SearchModule\ZikulaSearchModule();
+        $bundles[] = new Zikula\Module\SecurityCenterModule\ZikulaSecurityCenterModule();
+        $bundles[] = new Zikula\Module\SettingsModule\ZikulaSettingsModule();
+        $bundles[] = new Zikula\Module\ThemeModule\ZikulaThemeModule();
+        $bundles[] = new Zikula\Module\UsersModule\ZikulaUsersModule();
+        $bundles[] = new Andreas08Theme\Andreas08Theme();
     }
 }

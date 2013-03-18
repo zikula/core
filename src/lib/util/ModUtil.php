@@ -91,6 +91,8 @@ class ModUtil
      *
      * Preloads module vars for a number of key modules to reduce sql statements.
      *
+     * @param boolean $force
+     *
      * @return void
      */
     public static function initCoreVars($force=false)
@@ -99,7 +101,7 @@ class ModUtil
         self::$modvars = new ArrayObject(array(
                 EventUtil::HANDLERS => array(),
                 ServiceUtil::HANDLERS => array(),
-                'Settings'          => array(),
+                'ZikulaSettingsModule'          => array(),
         ));
 
         // don't init vars during the installer or upgrader
@@ -143,10 +145,7 @@ class ModUtil
     public static function hasVar($modname, $name)
     {
         // define input, all numbers and booleans to strings
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
-        $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName(isset($modname) ? ((string)$modname) : '');
         $name = isset($name) ? ((string)$name) : '';
 
         // make sure we have the necessary parameters
@@ -192,9 +191,7 @@ class ModUtil
             $modname = self::getName();
         }
 
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
+        $modname = static::convertModuleName($modname);
 
         // if we haven't got vars for this module (or pseudo-module) yet then lets get them
         if (!array_key_exists($modname, self::$modvars)) {
@@ -263,10 +260,8 @@ class ModUtil
     public static function setVar($modname, $name, $value = '')
     {
         // define input, all numbers and booleans to strings
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
 
         // validate
         if (!System::varValidate($modname, 'mod') || !isset($name)) {
@@ -324,10 +319,8 @@ class ModUtil
     public static function delVar($modname, $name = '')
     {
         // define input, all numbers and booleans to strings
-        //if ('ZConfig' !== $modname) {
-        //    $modname = preg_match('/\w+Module$/', $modname) || !$modname ? $modname : $modname.'Module';
-        //}
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
 
         // validate
         if (!System::varValidate($modname, 'modvar')) {
@@ -358,9 +351,9 @@ class ModUtil
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
         if (empty($name)) {
-            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
+            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
         } else {
-            $dql = "DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
+            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
         }
 
         $query = $em->createQuery($dql);
@@ -392,7 +385,7 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $alias = (isset($module) ? strtolower((string)$module) : '');
-        //$module = preg_match('/\w+Module$/i', $module) || !$module ? $module : $module.'Module';
+        $module = static::convertModuleName($module);
         $module = (isset($module) ? strtolower((string)$module) : '');
 
         // validate
@@ -612,7 +605,7 @@ class ModUtil
             foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
                 if (($mod['state'] == self::STATE_ACTIVE)
-                    || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $mod['name'])
+                    || (preg_match('/^(zikulaextensionsmodule|admin|zikulathememodule|zikulablockmodule|zikulagroupsmodule|zikulapermissionsmodule|zikulausersmodule)$/i', $mod['name'])
                         && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
                     self::$cache['modsarray'][$mod['name']] = $mod;
                 }
@@ -633,8 +626,11 @@ class ModUtil
      */
     public static function dbInfoLoad($modname, $directory = '', $force = false)
     {
+        $moduleName = $modname;
         // define input, all numbers and booleans to strings
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
+        $modname = static::convertModuleName($modname);
+        $directory = static::convertModuleName($directory);
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -642,6 +638,7 @@ class ModUtil
         }
 
         $serviceManager = ServiceUtil::getManager();
+        $kernel = $serviceManager->get('kernel');
 
         if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
             $serviceManager['modutil.dbinfoload.loaded'] = array();
@@ -671,6 +668,12 @@ class ModUtil
 
         // Load the database definition if required
         $files = array();
+        try {
+            $module = $kernel->getModule($moduleName);
+            $files[] = $module->getPath().'/tables.php';
+        } catch (\InvalidArgumentException $e) {
+        }
+
         $files[] = "$modpath/$directory/tables.php";
         $files[] = "$modpath/$directory/pntables.php";
 
@@ -767,8 +770,8 @@ class ModUtil
     {
         // define input, all numbers and booleans to strings
         $osapi = ($api ? 'api' : '');
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
         $modtype = strtolower("$modname{$type}{$osapi}");
 
         if (!isset(self::$cache['loaded'])) {
@@ -918,9 +921,18 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
-        $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
-        $className = class_exists($className) ? $className : $classNameOld;
+        /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+        $kernel = ServiceUtil::getManager()->get('kernel');
+        try {
+            /** @var $module \Zikula\Core\AbstractModule */
+            $module = $kernel->getBundle($modname);
+            $ns = $module->getNamespace();
+            $className = ($api) ? $ns.'\\Api\\'.ucwords($type).'Api' : $ns.'\\Controller\\'.ucwords($type).'Controller';
+        } catch (\InvalidArgumentException $e) {
+            $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
+            $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
+            $className = class_exists($className) ? $className : $classNameOld;
+        }
 
         // allow overriding the OO class (to override existing methods using inheritance).
         $event = new GenericEvent(null, array('modname', 'modinfo' => $modinfo, 'type' => $type, 'api' => $api), $className);
@@ -975,7 +987,7 @@ class ModUtil
      * @throws LogicException If $className is neither a Zikula_AbstractApi nor a Zikula_AbstractController.
      * @return object         Module object.
      */
-    public static function getObject($className)
+    public static function getObject($className, $modname)
     {
         if (!$className) {
             return false;
@@ -988,7 +1000,18 @@ class ModUtil
             $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
-            $object = $r->newInstanceArgs(array($sm));
+
+            /** @var $kernel \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+            $kernel = $sm->get('kernel');
+            $module = null;
+            try {
+                /** @var $module \Zikula\Core\AbstractBundle */
+                $module = $kernel->getModule($modname);
+            } catch (\InvalidArgumentException $e) {
+            }
+
+            $object = $r->newInstanceArgs(array($sm, $module));
+
             $sm->set($serviceId, $object);
         }
 
@@ -1013,7 +1036,7 @@ class ModUtil
             return false;
         }
 
-        $object = self::getObject($className);
+        $object = self::getObject($className, $modname);
         $action = $api ? '' : 'Action';
         if (is_callable(array($object, $func.$action))) {
             return array('serviceid' => strtolower("module.$className"), 'classname' => $className, 'callable' => array($object, $func.$action));
@@ -1040,10 +1063,9 @@ class ModUtil
     public static function exec($modname, $type = 'user', $func = 'main', $args = array(), $api = false, $instanceof = null)
     {
         // define input, all numbers and booleans to strings
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
         $ftype = ($api ? 'api' : '');
-        $loadfunc = ($api ? 'ModUtil::loadApi' : 'ModUtil::load');
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -1052,8 +1074,8 @@ class ModUtil
 
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
-            $modname = 'Extensions';
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
+            $modname = 'ZikulaExtensionsModule';
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
@@ -1061,7 +1083,7 @@ class ModUtil
 
         $controller = null;
         $modfunc = null;
-        $loaded = call_user_func_array($loadfunc, array($modname, $type));
+        $loaded = call_user_func_array($api ? 'ModUtil::loadApi' : 'ModUtil::load', array($modname, $type));
         if (self::isOO($modname)) {
             $result = self::getCallable($modname, $type, $func, $api);
             if ($result) {
@@ -1230,8 +1252,8 @@ class ModUtil
     public static function url($modname, $type = null, $func = null, $args = array(), $ssl = null, $fragment = null, $fqurl = null, $forcelongurl = false, $forcelang=false)
     {
         // define input, all numbers and booleans to strings
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = isset($modname) ? ((string)$modname) : '';
+        $modname = static::convertModuleName($modname);
 
         // note - when this legacy is to be removed, change method signature $type = null to $type making it a required argument.
         if (!$type) {
@@ -1260,8 +1282,8 @@ class ModUtil
 
         // Remove from 1.4
         if (System::isLegacyMode() && $modname == 'Modules') {
-            LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update your ModUtil::url() or {modurl} calls with $module = "Extensions".'));
-            $modname = 'Extensions';
+            LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "ZikulaExtensionsModule".'));
+            $modname = 'ZikulaExtensionsModule';
         }
 
         //get the module info
@@ -1436,8 +1458,8 @@ class ModUtil
     public static function available($modname = null, $force = false)
     {
         // define input, all numbers and booleans to strings
-        //$modname = preg_match('/\w+Module$/i', $modname) || !$modname ? $modname : $modname.'Module';
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
+        $modname = static::convertModuleName($modname);
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -1460,7 +1482,7 @@ class ModUtil
         }
 
         if ((isset(self::$cache['modstate'][$modname]) &&
-                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(extensions|admin|theme|block|groups|permissions|users)$/i', $modname) &&
+                self::$cache['modstate'][$modname] == self::STATE_ACTIVE) || (preg_match('/^(zikulaextensionsmodule|admin|zikulathememodule|zikulablockmodule|zikulagroupsmodule|zikulapermissionsmodule|zikulausersmodule)$/i', $modname) &&
                 (isset(self::$cache['modstate'][$modname]) && (self::$cache['modstate'][$modname] == self::STATE_UPGRADED || self::$cache['modstate'][$modname] == self::STATE_INACTIVE)))) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
 
@@ -1931,14 +1953,23 @@ class ModUtil
                 return false;
             }
 
-            if (is_dir("$modpath/$osdir/lib")) {
+            if (file_exists("$modpath/$osdir/$osdir.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
-            }
-            if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
+            } else if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
-            }
-            if (file_exists("$modpath/$osdir/Version.php")) {
+            } else if (is_dir("$modpath/$osdir/lib")) {
                 self::$ooModules[$moduleName]['oo'] = true;
+            } else if (file_exists("$modpath/$osdir/Version.php")) {
+                self::$ooModules[$moduleName]['oo'] = true;
+            } else {
+                /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+                $kernel = ServiceUtil::getManager()->get('kernel');
+                try {
+                    /** @var $module \Zikula\Core\AbstractModule */
+                    $module = $kernel->getBundle($moduleName);
+                    self::$ooModules[$moduleName]['oo'] = true;
+                } catch (\InvalidArgumentException $e) {
+                }
             }
         }
 
@@ -1978,7 +2009,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'blocks', 'categories', 'errors', 'extensions', 'groups', 'mailer', 'pagelock', 'permissions', 'search', 'securitycenter', 'settings', 'theme', 'users'))) {
+        if (in_array(strtolower($moduleName), array('admin', 'zikulablocksmodule', 'categories', 'zikulaerrorsmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';
@@ -2029,5 +2060,31 @@ class ModUtil
         }
 
         return $path;
+    }
+
+    /**
+     * Internal function to help migration from old module references.
+     *
+     * @todo remove in 1.4+ (drak)
+     *
+     * @param $name
+     *
+     * @return string
+     *
+     * @return string
+     *
+     * @internal
+     */
+    public static function convertModuleName($name)
+    {
+        if (in_array($name, array(
+            'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
+            'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
+            //'Admin', 'Categories' // todo
+        ))) {
+            $name = 'Zikula'.$name.'Module';
+        }
+
+        return $name;
     }
 }

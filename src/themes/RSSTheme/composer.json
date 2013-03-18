@@ -1,0 +1,23 @@
+{
+    "name": "zikula/rss-theme",
+    "description": "RSS Theme",
+    "type": "zikula-theme",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "http://zikula.org/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "RSSTheme\\": "" }
+    },
+    "require": {
+        "php": ">5.3.3"
+    },
+    "extra": {
+        "zikula" : {
+            "class": "RSSTheme\\RSSTheme"
+        }
+    }
+}

@@ -259,7 +259,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         if ($caching && in_array((int)$caching, array(0, 1, 2))) {
             $this->caching = (int)$caching;
         } else {
-            $this->caching = (int)ModUtil::getVar('Theme', 'render_cache');
+            $this->caching = (int)ModUtil::getVar('ZikulaThemeModule', 'render_cache');
         }
 
         $this->compile_id  = '';
@@ -267,13 +267,13 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // template compilation
         $this->compile_dir    = CacheUtil::getLocalDir('view_compiled');
-        $this->compile_check  = ModUtil::getVar('Theme', 'render_compile_check');
-        $this->force_compile  = ModUtil::getVar('Theme', 'render_force_compile');
+        $this->compile_check  = ModUtil::getVar('ZikulaThemeModule', 'render_compile_check');
+        $this->force_compile  = ModUtil::getVar('ZikulaThemeModule', 'render_force_compile');
         // template caching
         $this->cache_dir      = CacheUtil::getLocalDir('view_cache');
-        $this->cache_lifetime = ModUtil::getVar('Theme', 'render_lifetime');
+        $this->cache_lifetime = ModUtil::getVar('ZikulaThemeModule', 'render_lifetime');
 
-        $this->expose_template = (ModUtil::getVar('Theme', 'render_expose_template') == true) ? true : false;
+        $this->expose_template = (ModUtil::getVar('ZikulaThemeModule', 'render_expose_template') == true) ? true : false;
 
         // register resource type 'z' this defines the way templates are searched
         // during {include file='my_template.tpl'} this enables us to store selected module
@@ -578,10 +578,17 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template);
+            try {
+                $bundle = $this->getContainer()->get('kernel')->getBundle($module);
+                $bundlePath = $relativepath = $bundle->getPath().'/Resources/views';
+            } catch (\InvalidArgumentException $e) {
+            }
 
-            $relativepath = "$os_dir/$os_module/Resources/views";
-            if (!is_dir($relativepath)) {
-                $relativepath = "$os_dir/$os_module/templates";
+            if (!isset($bundlePath)) {
+                $relativepath = "$os_dir/$os_module/Resources/views";
+                if (!is_dir($relativepath)) {
+                    $relativepath = "$os_dir/$os_module/templates";
+                }
             }
 
             $templatefile = "$relativepath/$ostemplate";

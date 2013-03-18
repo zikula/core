@@ -36,7 +36,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -113,7 +113,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -173,7 +173,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_DELETE)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_DELETE)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -206,7 +206,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADD)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -233,7 +233,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_EDIT)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_EDIT)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -257,7 +257,7 @@ class AdminformController extends \Zikula_AbstractController
      */
     public function rebuild_pathsAction()
     {
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -273,7 +273,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
@@ -317,7 +317,7 @@ class AdminformController extends \Zikula_AbstractController
     {
         $this->checkCsrfToken();
 
-        if (!SecurityUtil::checkPermission('Categories::', '::', ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 

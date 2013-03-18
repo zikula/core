@@ -159,7 +159,7 @@ class CategoryUtil
             }
 
             if (!$enablePermissionFilter) {
-                $cats[$arraykey]['accessible'] = SecurityUtil::checkPermission('Categories::Category', $cats[$arraykey]['id'] . ':' . $cats[$arraykey]['path'] . ':' . $cats[$arraykey]['ipath'], ACCESS_OVERVIEW);
+                $cats[$arraykey]['accessible'] = SecurityUtil::checkPermission('ZikulaCategoriesModule::Category', $cats[$arraykey]['id'] . ':' . $cats[$arraykey]['path'] . ':' . $cats[$arraykey]['ipath'], ACCESS_OVERVIEW);
             }
         }
 
@@ -1511,7 +1511,7 @@ class CategoryUtil
      * Check for access to a certain set of categories.
      *
      * For each category property in the list, check if we have access to that category in that property.
-     * Check is done as "Categories:Property:$propertyName", "$cat[id]::"
+     * Check is done as "ZikulaCategoriesModule:Property:$propertyName", "$cat[id]::"
      *
      * @param array   $categories Array of category data (as returned from ObjectUtil::expandObjectWithCategories).
      * @param string  $module     Not Used!.
@@ -1528,14 +1528,14 @@ class CategoryUtil
             // Access is required for all categories
             $ok = true;
             foreach ($categories as $propertyName => $cat) {
-                $ok = $ok && SecurityUtil::checkPermission("Categories:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
+                $ok = $ok && SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
             }
 
             return $ok;
         } else {
             // Access is required for at least one category
             foreach ($categories as $propertyName => $cat) {
-                if (SecurityUtil::checkPermission("Categories:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel))
+                if (SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel))
 
                         return true;
             }
