@@ -158,8 +158,8 @@ The final structure looks as follows:
             Tests/
                 AdminControllerTest.php
             vendor/
-            ModuleInstaller.php (was Installer.php)
-            ModuleVersion.php (was Version.php) (todo - this file will go away)
+            MyModuleInstaller.php (was Installer.php)
+            MyModuleVersion.php (was Version.php) (todo - this file will go away)
             FooMyModule.php
             CHANGELOG.md
             LICENSE
