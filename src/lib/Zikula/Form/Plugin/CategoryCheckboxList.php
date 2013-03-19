@@ -104,7 +104,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
         $result = parent::render($view);
 
         if ($this->editLink && !empty($this->category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "{$this->category['id']}::", ACCESS_EDIT)) {
-            $url = DataUtil::formatForDisplay(ModUtil::url ('Categories', 'user', 'edit', array('dr' => $this->category['id'])));
+            $url = DataUtil::formatForDisplay(ModUtil::url ('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $this->category['id'])));
             $result .= "<a class=\"z-formnote\" href=\"{$url}\">" . __('Edit') . '</a>';
         }
 

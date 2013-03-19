@@ -10,7 +10,6 @@
             "Zikula": "src/lib",
             "DoctrineExtensions\\StandardFields": "src/lib",
             "Admin\\": "src/system",
-            "Categories\\": "src/system",
             "CustomBundle\\": "src/app/custom",
             "Andreas08Theme\\": "src/themes",
             "MobileTheme\\": "src/themes",
@@ -22,7 +21,7 @@
         "classmap": [
             "src/lib/util/",
             "src/lib/i18n/",
-            "src/lib/dbobject/"
+            "src/lib/legacy/dbobject"
         ],
         "files": [
             "src/lib/i18n/ZGettextFunctions.php",

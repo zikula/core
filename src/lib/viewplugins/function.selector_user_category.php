@@ -51,12 +51,12 @@ function smarty_function_selector_user_category($params, Zikula_View $view)
     $doReplaceRootCat = false;
 
 
-    $userCats= ModUtil::apiFunc ('Categories', 'user', 'getusercategories', array('returnCategory'=>1, 'relative'=>$relative));
+    $userCats= ModUtil::apiFunc ('ZikulaCategoriesModule', 'user', 'getusercategories', array('returnCategory'=>1, 'relative'=>$relative));
     $html = CategoryUtil::getSelector_Categories ($userCats, $field, $selectedValue, $name, $defaultValue, $defaultText,
                                                   $submit, $displayPath, $doReplaceRootCat, $multipleSize);
 
     if ($editLink && $allowUserEdit && UserUtil::isLoggedIn() && SecurityUtil::checkPermission( 'ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
-        $url = ModUtil::url ('Categories', 'user', 'edituser');
+        $url = ModUtil::url ('ZikulaCategoriesModule', 'user', 'edituser');
         $html .= "&nbsp;&nbsp;<a href=\"$url\">" . __('Edit sub-categories') . '</a>';
     }
 

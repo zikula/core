@@ -79,9 +79,9 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
             file_put_contents(CacheUtil::getLocalDir().'/'.$dir.'/'.$fileName, $fileContents);
 
             // save required data for later use
-            $modelsInfo = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
+            $modelsInfo = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', array());
             $modelsInfo[$subclassName] = array('module' => $module, 'table' => $tableName);
-            ModUtil::setVar('Categories', 'EntityCategorySubclasses', $modelsInfo);
+            ModUtil::setVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', $modelsInfo);
         } else {
             throw new Exception('Creation of the cache directory '.$dir.' failed');
         }

@@ -37,7 +37,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
         $this->hasColumn('reg_property as reg_property', 'string', 60);
         $this->hasColumn('modname as module', 'string', 60);
 
-        $this->setSubclasses(ModUtil::getVar('Categories', 'EntityCategorySubclasses', array()));
+        $this->setSubclasses(ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', array()));
     }
 
     /**
@@ -69,7 +69,7 @@ class Zikula_Doctrine_Model_EntityCategory extends Doctrine_Record
      */
     public function preSave($event)
     {
-        $subclasses = ModUtil::getVar('Categories', 'EntityCategorySubclasses', array());
+        $subclasses = ModUtil::getVar('ZikulaCategoriesModule', 'EntityCategorySubclasses', array());
 
         // get the registry object
         $registry = Doctrine::getTable('Zikula_Doctrine_Model_Registry')

@@ -1986,7 +1986,7 @@ class ModUtil
      */
     public static function getModuleBaseDir($moduleName)
     {
-        if (in_array(strtolower($moduleName), array('admin', 'zikulablocksmodule', 'categories', 'zikulaerrorsmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
+        if (in_array(strtolower($moduleName), array('admin', 'zikulablocksmodule', 'zikulacategoriesmodule', 'zikulaerrorsmodule', 'zikulaextensionsmodule', 'zikulagroupsmodule', 'zikulamailermodule', 'zikulapagelockmodule', 'zikulapermissionsmodule', 'zikulasearchmodule', 'zikulasecuritycentermodule', 'zikulasettingsmodule', 'zikulathememodule', 'zikulausersmodule'))) {
             $directory = 'system';
         } else {
             $directory = 'modules';
@@ -2057,7 +2057,8 @@ class ModUtil
         if (in_array($name, array(
             'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
-            //'Admin', 'Categories' // todo
+            'ZikulaCategoriesModule',
+            //'Admin',  // todo
         ))) {
             $name = 'Zikula'.$name.'Module';
         }

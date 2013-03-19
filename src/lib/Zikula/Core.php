@@ -464,7 +464,7 @@ class Zikula_Core
             ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
             ModUtil::dbInfoLoad('ZikulaGroupsModule', 'ZikulaGroupsModule');
             ModUtil::dbInfoLoad('ZikulaPermissionsModule', 'ZikulaPermissionsModule');
-            ModUtil::dbInfoLoad('Categories', 'Categories');
+            ModUtil::dbInfoLoad('ZikulaCategoriesModule', 'ZikulaCategoriesModule');
 
             if (!System::isInstalling()) {
                 ModUtil::registerAutoloaders();

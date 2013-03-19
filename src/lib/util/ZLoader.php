@@ -36,7 +36,7 @@ class ZLoader
         spl_autoload_register(array('ZLoader', 'autoload'));
         self::$autoloader = new ClassLoader();
         self::$autoloader->register();
-        self::addAutoloader('Categories', 'system');
+        self::addAutoloader('ZikulaCategoriesModule', 'system');
     }
 
     /**

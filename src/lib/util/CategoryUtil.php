@@ -95,7 +95,7 @@ class CategoryUtil
         $permFilter = array();
         $permFilter[] = array(
             'realm' => 0,
-            'component_left' => 'Categories',
+            'component_left' => 'ZikulaCategoriesModule',
             'component_middle' => '',
             'component_right' => 'Category',
             'instance_left' => 'id',
@@ -126,7 +126,7 @@ class CategoryUtil
      */
     public static function getCategories($where = '', $sort = '', $assocKey = '', $enablePermissionFilter = true, $columnArray = null)
     {
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         if (!$sort) {
             $dbtables = DBUtil::getTables();
             $category_column = $dbtables['categories_category_column'];
@@ -137,7 +137,7 @@ class CategoryUtil
         if ($enablePermissionFilter) {
             $permFilter[] = array(
                 'realm' => 0,
-                'component_left' => 'Categories',
+                'component_left' => 'ZikulaCategoriesModule',
                 'component_middle' => '',
                 'component_right' => 'Category',
                 'instance_left' => 'id',
@@ -176,7 +176,7 @@ class CategoryUtil
      */
     public static function getCategoryByPath($apath, $field = 'path')
     {
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_column = $dbtables['categories_category_column'];
         if (!is_array($apath)) {
@@ -208,7 +208,7 @@ class CategoryUtil
     {
         if (!$registry || !is_array($registry)) return false;
 
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_column = $dbtables['categories_category_column'];
 
@@ -249,7 +249,7 @@ class CategoryUtil
             return false;
         }
 
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_column = $dbtables['categories_category_column'];
 
@@ -294,7 +294,7 @@ class CategoryUtil
             return false;
         }
 
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_column = $dbtables['categories_category_column'];
 
@@ -332,7 +332,7 @@ class CategoryUtil
      */
     public static function getCategoriesByPath($apath, $sort = '', $field = 'ipath', $includeLeaf = true, $all = false, $exclPath = '', $assocKey = '', $attributes = null, $columnArray = null)
     {
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_column = $dbtables['categories_category_column'];
 
@@ -508,7 +508,7 @@ class CategoryUtil
      */
     public static function deleteCategoryByID($cid)
     {
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_table = $dbtables['categories_category'];
         $category_column = $dbtables['categories_category_column'];
@@ -534,7 +534,7 @@ class CategoryUtil
             return false;
         }
 
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_table = $dbtables['categories_category'];
         $category_column = $dbtables['categories_category_column'];
@@ -616,7 +616,7 @@ class CategoryUtil
         $oldParentIPath = $oldParent['ipath'] . '/';
         $oldParentPath = $oldParent['path'] . '/';
 
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
         $dbtables = DBUtil::getTables();
         $category_table = $dbtables['categories_category'];
         $category_column = $dbtables['categories_category_column'];
@@ -934,7 +934,7 @@ class CategoryUtil
         $params = array();
         $params['mode'] = 'edit';
         $params['cid'] = $category['id'];
-        $url = ModUtil::url('Categories', 'admin', 'edit', $params);
+        $url = ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params);
 
         if (FormUtil::getPassedValue('type') == 'admin') {
             $url .= '#top';
@@ -1142,7 +1142,7 @@ class CategoryUtil
             $ds = str_repeat('.', $depth);
 
             $params['cid'] = $c['id'];
-            $url = DataUtil::formatForDisplay(ModUtil::url('Categories', 'admin', 'edit', $params));
+            $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'admin', 'edit', $params));
 
             if (FormUtil::getPassedValue('type') == 'admin') {
                 $url .= '#top';
@@ -1485,7 +1485,7 @@ class CategoryUtil
      */
     public static function rebuildPaths($field = 'path', $sourceField = 'name', $leaf_id = 0)
     {
-        ModUtil::dbInfoLoad('Categories');
+        ModUtil::dbInfoLoad('ZikulaCategoriesModule');
 
         //if ($leaf_id)
         //$cats  = self::getParentCategories ($leaf_id, 'id');
@@ -1524,7 +1524,7 @@ class CategoryUtil
         // Always allow access to content with no categories associated
         if (count($categories) == 0) return true;
 
-        if (ModUtil::getVar('Categories', 'permissionsall', 0)) {
+        if (ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0)) {
             // Access is required for all categories
             $ok = true;
             foreach ($categories as $propertyName => $cat) {

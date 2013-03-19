@@ -979,7 +979,7 @@ class ObjectUtil
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('idcolumn', __CLASS__ . '::' . __FUNCTION__)));
         }
 
-        if (!ModUtil::dbInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
 
@@ -1051,7 +1051,7 @@ class ObjectUtil
      */
     public static function deleteObjectCategories($obj, $tablename, $idcolumn = 'obj_id')
     {
-        if (!ModUtil::dbInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
 
@@ -1084,7 +1084,7 @@ class ObjectUtil
             return $cache[$key];
         }
 
-        if (!ModUtil::dbInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
 
@@ -1148,7 +1148,7 @@ class ObjectUtil
      */
     public static function expandObjectArrayWithCategories(&$objArray, $tablename, $idcolumn = 'id', $field = 'id', $locale = 'en')
     {
-        if (!ModUtil::dbInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
 
@@ -1237,7 +1237,7 @@ class ObjectUtil
             throw new \Exception(__f('Unable to determine a valid ID in object [%1$s, %2$s]', array($type, $idcolumn)));
         }
 
-        if (!ModUtil::dbInfoLoad('Categories')) {
+        if (!ModUtil::dbInfoLoad('ZikulaCategoriesModule')) {
             return false;
         }
 
