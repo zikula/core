@@ -175,30 +175,25 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
     /**
      * Determine whether a default authentication method is appropriate, and if it is, return it.
      *
-     * A default is valid if there is only one enabled authentication method in the list.
-     *
      * @return AuthenticationMethodHelper|void If a default authentication method is appropriate, then that definition; otherwise null.
      *
      * @throws Zikula_Exception_Fatal Thrown if the collection is in an inconsistent state.
      */
     public function getAuthenticationMethodForDefault()
     {
-        // If there is more than one authentication method in the list, then no "default" is possible.
+        // If there is more than one authentication method in the list, then first is selected.
         $authenticationMethodForDefault = null;
-        if ($this->countEnabledForAuthentication() <= 1) {
-            // There is only one (or there is none), so select it.
-            foreach ($this->authenticationMethods as $authenticationMethod) {
-                if ($authenticationMethod->isEnabledForAuthentication()) {
-                    $authenticationMethodForDefault = $authenticationMethod;
-                    break;
-                }
+        foreach ($this->authenticationMethods as $authenticationMethod) {
+            if ($authenticationMethod->isEnabledForAuthentication()) {
+                $authenticationMethodForDefault = $authenticationMethod;
+                break;
             }
+        }
 
-            if (!$authenticationMethodForDefault) {
-                // Nothing in the list at all! Because the constructor forces Users-uname if the list would otherwise be
-                // empty this should not happen.
-                throw new Zikula_Exception_Fatal($this->__('The authentication method list is in an inconsistent state. No authentication modules.'));
-            }
+        if (!$authenticationMethodForDefault) {
+            // Nothing in the list at all! Because the constructor forces Users-uname if the list would otherwise be
+            // empty this should not happen.
+            throw new Zikula_Exception_Fatal($this->__('The authentication method list is in an inconsistent state. No authentication modules.'));
         }
 
         return $authenticationMethodForDefault;
