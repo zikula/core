@@ -4,8 +4,9 @@ namespace Zikula\Core;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-abstract class AbstractBundle extends AbstractBundle
+abstract class AbstractBundle extends Bundle
 {
     protected static $staticPath;
 
