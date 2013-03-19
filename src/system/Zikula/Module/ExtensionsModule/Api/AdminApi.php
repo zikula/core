@@ -354,14 +354,19 @@ class AdminApi extends \Zikula_AbstractApi
             }
 
             if ($oomod) {
-                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-                $classNameOld = ucwords($modinfo['name']) . '_Installer';
-                $className = class_exists($className) ? $className : $classNameOld;
+                $module = ModUtil::getModule($modinfo['name']);
+                if (null === $module) {
+                    $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+                    $classNameOld = ucwords($modinfo['name']) . '_Installer';
+                    $className = class_exists($className) ? $className : $classNameOld;
+                } else {
+                    $className = $module->getInstallerClass();
+                }
                 $reflectionInstaller = new ReflectionClass($className);
                 if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                     LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
                 }
-                $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+                $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
             }
 
             // perform the actual deletion of the module
@@ -904,14 +909,19 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if ($oomod) {
-            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-            $classNameOld = ucwords($modinfo['name']) . '_Installer';
-            $className = class_exists($className) ? $className : $classNameOld;
+            $module = ModUtil::getModule($modinfo['name']);
+            if (null === $module) {
+                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+                $classNameOld = ucwords($modinfo['name']) . '_Installer';
+                $className = class_exists($className) ? $className : $classNameOld;
+            } else {
+                $className = $module->getInstallerClass();
+            }
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstance($this->serviceManager);
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
         }
 
         // perform the actual install of the module
@@ -1007,14 +1017,19 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if ($oomod) {
-            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-            $classNameOld = ucwords($modinfo['name']) . '_Installer';
-            $className = class_exists($className) ? $className : $classNameOld;
+            $module = ModUtil::getModule($modinfo['name']);
+            if (null === $module) {
+                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+                $classNameOld = ucwords($modinfo['name']) . '_Installer';
+                $className = class_exists($className) ? $className : $classNameOld;
+            } else {
+                $className = $module->getInstallerClass();
+            }
             $reflectionInstaller = new ReflectionClass($className);
             if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
                 LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager));
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
         }
 
         // perform the actual upgrade of the module
