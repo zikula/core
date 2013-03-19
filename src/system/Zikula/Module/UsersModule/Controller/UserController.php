@@ -1047,6 +1047,7 @@ class UserController extends \Zikula_AbstractController
      * array   authentication_info   An array containing the authentication information entered by the user.
      * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
      *                                      selected authentication method as defined by the module.
+     * boolean firstmethodisdefault  If to display first of authentication methods as preselected in login form, when more then one are specified (default is true).
      * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
      * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
      *
@@ -1085,6 +1086,7 @@ class UserController extends \Zikula_AbstractController
         $loggedIn = false;
         $isFunctionCall = false;
         $isReentry = false;
+        $firstmethodisdefault = isset($args['firstmethodisdefault']) ? $args['firstmethodisdefault'] : true;
 
         // Need to check for $args first, since isPost() and isGet() will have been set on the original call
         if (isset($args) && is_array($args) && !empty($args)) {
@@ -1329,7 +1331,7 @@ class UserController extends \Zikula_AbstractController
             // Either a GET request type to initially display the login form, or a failed login attempt
             // which means the login form should be displayed anyway.
             if ((!isset($selectedAuthenticationMethod) || empty($selectedAuthenticationMethod))
-                    && ($authenticationMethodList->countEnabledForAuthentication() <= 1)
+                    && ($firstmethodisdefault || $authenticationMethodList->countEnabledForAuthentication() <= 1)
                     ) {
                 /* @var AuthenticationMethodHelper $authenticationMethod */
                 $authenticationMethod = $authenticationMethodList->getAuthenticationMethodForDefault();
