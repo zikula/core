@@ -3,8 +3,11 @@
 namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-abstract class AbstractModulePlugin extends Bundle
+abstract class AbstractModulePlugin extends AbstractBundle
 {
+    public function getNameType()
+    {
+        return 'ModulePlugin';
+    }
 }

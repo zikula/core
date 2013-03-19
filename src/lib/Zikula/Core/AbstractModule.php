@@ -3,12 +3,15 @@
 namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-abstract class AbstractModule extends Bundle
+abstract class AbstractModule extends AbstractBundle
 {
     private $serviceIds = array();
 
+    public function getNameType()
+    {
+        return 'Module';
+    }
 //    abstract public function getVersion();
 //    public function getVersion()
 //    {

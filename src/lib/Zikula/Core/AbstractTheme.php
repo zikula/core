@@ -2,12 +2,14 @@
 
 namespace Zikula\Core;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-abstract class AbstractTheme extends Bundle
+abstract class AbstractTheme extends AbstractBundle
 {
 //    public abstract function getVersion();
 
+    public function getNameType()
+    {
+        return 'Theme';
+    }
     public function getServiceIds()
     {
         return array();

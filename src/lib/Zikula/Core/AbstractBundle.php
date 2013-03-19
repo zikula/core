@@ -4,18 +4,17 @@ namespace Zikula\Core;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpKernel\Bundle\Bundle as BaseBundle;
 
-abstract class AbstractBundle extends BaseBundle
+abstract class AbstractBundle extends AbstractBundle
 {
     protected static $staticPath;
 
-    public function __construct()
-    {
-        $name = get_class($this);
-        $posNamespaceSeperator = strrpos($name, '\\');
-        $this->name = substr($name, $posNamespaceSeperator + 1);
-    }
+//    public function __construct()
+//    {
+//        $name = get_class($this);
+//        $posNamespaceSeperator = strrpos($name, '\\');
+//        $this->name = substr($name, $posNamespaceSeperator + 1);
+//    }
 
     /**
      * Gets the base path of the module.
