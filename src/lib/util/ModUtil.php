@@ -638,7 +638,6 @@ class ModUtil
         }
 
         $serviceManager = ServiceUtil::getManager();
-        $kernel = $serviceManager->get('kernel');
 
         if (!isset($serviceManager['modutil.dbinfoload.loaded'])) {
             $serviceManager['modutil.dbinfoload.loaded'] = array();
@@ -668,10 +667,8 @@ class ModUtil
 
         // Load the database definition if required
         $files = array();
-        try {
-            $module = $kernel->getModule($moduleName);
+        if ($module = self::getModule($moduleName)) {
             $files[] = $module->getPath().'/tables.php';
-        } catch (\InvalidArgumentException $e) {
         }
 
         $files[] = "$modpath/$directory/tables.php";
@@ -921,14 +918,10 @@ class ModUtil
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
 
-        /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
-        $kernel = ServiceUtil::getManager()->get('kernel');
-        try {
-            /** @var $module \Zikula\Core\AbstractModule */
-            $module = $kernel->getBundle($modname);
+        if ($module = self::getModule($modname)) {
             $ns = $module->getNamespace();
             $className = ($api) ? $ns.'\\Api\\'.ucwords($type).'Api' : $ns.'\\Controller\\'.ucwords($type).'Controller';
-        } catch (\InvalidArgumentException $e) {
+        } else {
             $className = ($api) ? ucwords($modname).'\\Api\\'.ucwords($type).'Api' : ucwords($modname).'\\Controller\\'.ucwords($type).'Controller';
             $classNameOld = ($api) ? ucwords($modname).'_Api_'.ucwords($type) : ucwords($modname).'_Controller_'.ucwords($type);
             $className = class_exists($className) ? $className : $classNameOld;
@@ -1001,16 +994,7 @@ class ModUtil
         } else {
             $r = new ReflectionClass($className);
 
-            /** @var $kernel \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
-            $kernel = $sm->get('kernel');
-            $module = null;
-            try {
-                /** @var $module \Zikula\Core\AbstractBundle */
-                $module = $kernel->getModule($modname);
-            } catch (\InvalidArgumentException $e) {
-            }
-
-            $object = $r->newInstanceArgs(array($sm, $module));
+            $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
 
             $sm->set($serviceId, $object);
         }
@@ -1961,15 +1945,8 @@ class ModUtil
                 self::$ooModules[$moduleName]['oo'] = true;
             } else if (file_exists("$modpath/$osdir/Version.php")) {
                 self::$ooModules[$moduleName]['oo'] = true;
-            } else {
-                /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
-                $kernel = ServiceUtil::getManager()->get('kernel');
-                try {
-                    /** @var $module \Zikula\Core\AbstractModule */
-                    $module = $kernel->getBundle($moduleName);
-                    self::$ooModules[$moduleName]['oo'] = true;
-                } catch (\InvalidArgumentException $e) {
-                }
+            } else if (self::getModule($moduleName)) {
+                self::$ooModules[$moduleName]['oo'] = true;
             }
         }
 
@@ -2086,5 +2063,23 @@ class ModUtil
         }
 
         return $name;
+    }
+
+    /**
+     * @param $moduleName
+     *
+     * @return null|\Zikula\Core\AbstractModule
+     */
+    public function getModule($moduleName)
+    {
+        /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+        $kernel = ServiceUtil::getManager()->get('kernel');
+        try {
+            /** @var $module \Zikula\Core\AbstractModule */
+            return $kernel->getModule($moduleName);
+        } catch (\InvalidArgumentException $e) {
+        }
+
+        return null;
     }
 }
