@@ -14,7 +14,7 @@
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
     <h5 id="users_login_h5" class="z-hide"></h5>
     <div class="authentication_select_method_bigbutton">
-    {modurl modname='ZikulaUsersModule' type='user' func='login' assign='form_action'}
+    {modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode assign='form_action'}
     {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
         {if $smarty.foreach.authentication_method_display_order.iteration == 6}
             </div>
