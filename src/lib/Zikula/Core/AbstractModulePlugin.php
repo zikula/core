@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class AbstractModulePlugin extends AbstractBundle
 {
-    public function getNameType()
+    protected function getNameType()
     {
         return 'ModulePlugin';
     }

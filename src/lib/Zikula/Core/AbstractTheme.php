@@ -6,7 +6,7 @@ abstract class AbstractTheme extends AbstractBundle
 {
 //    public abstract function getVersion();
 
-    public function getNameType()
+    protected function getNameType()
     {
         return 'Theme';
     }
