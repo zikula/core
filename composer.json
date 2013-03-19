@@ -6,17 +6,12 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
-            "Zikula\\Module": "src/system",
             "Zikula": "src/lib",
+            "Zikula\\Module": "src/system",
+            "Zikula\\Theme": "src/themes",
             "DoctrineExtensions\\StandardFields": "src/lib",
             "Admin\\": "src/system",
-            "CustomBundle\\": "src/app/custom",
-            "Andreas08Theme\\": "src/themes",
-            "MobileTheme\\": "src/themes",
-            "PrinterTheme\\": "src/themes",
-            "RSSTheme\\": "src/themes",
-            "SeaBreezeTheme\\": "src/themes"
-
+            "CustomBundle\\": "src/app/custom"
         },
         "classmap": [
             "src/lib/util/",

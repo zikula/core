@@ -29,22 +29,6 @@ abstract class AbstractModule extends AbstractBundle
 //     */
 //    abstract public function createInstaller();
 
-    public function getInstallerClass()
-    {
-        $ns = $this->getNamespace();
-        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Installer';
-
-        return $class;
-    }
-
-    public function getVersionClass()
-    {
-        $ns = $this->getNamespace();
-        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
-
-        return $class;
-    }
-
     public function build(ContainerBuilder $container)
     {
         // modules have to use DI Extensions

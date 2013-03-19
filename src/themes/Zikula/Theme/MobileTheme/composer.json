@@ -1,6 +1,6 @@
 {
-    "name": "zikula/seabreeze-theme",
-    "description": "SeaBreeze Theme",
+    "name": "zikula/mobile-theme",
+    "description": "Mobile Theme",
     "type": "zikula-theme",
     "license": "LGPL-3.0+",
     "authors": [
@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "SeaBreezeTheme\\": "" }
+        "psr-0": { "Zikula\\Theme\\MobileTheme\\": "" }
     },
     "require": {
         "php": ">5.3.3"
     },
     "extra": {
         "zikula" : {
-            "class": "SeaBreezeTheme\\SeaBreezeTheme"
+            "class": "Zikula\\Theme\\MobileTheme\\ZikulaMobileTheme"
         }
     }
 }

@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "PrinterTheme\\": "" }
+        "psr-0": { "Zikula\\Theme\\PrinterTheme\\": "" }
     },
     "require": {
         "php": ">5.3.3"
     },
     "extra": {
         "zikula" : {
-            "class": "PrinterTheme\\PrinterTheme"
+            "class": "Zikula\\Theme\\PrinterTheme\\ZikulaPrinterTheme"
         }
     }
 }

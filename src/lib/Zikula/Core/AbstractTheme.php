@@ -10,6 +10,7 @@ abstract class AbstractTheme extends AbstractBundle
     {
         return 'Theme';
     }
+
     public function getServiceIds()
     {
         return array();

@@ -1,6 +1,6 @@
 {
-    "name": "zikula/atom-theme",
-    "description": "Atom Theme",
+    "name": "zikula/andreas08-theme",
+    "description": "Andreas08 Theme",
     "type": "zikula-theme",
     "license": "LGPL-3.0+",
     "authors": [
@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "AtomTheme\\": "" }
+        "psr-0": { "Zikula\\Theme\\Andreas08Theme\\": "" }
     },
     "require": {
         "php": ">5.3.3"
     },
     "extra": {
         "zikula" : {
-            "class": "AtomTheme\\AtomTheme"
+            "class": "Zikula\\Theme\\Andreas08Theme\\ZikulaAndreas08Theme"
         }
     }
 }

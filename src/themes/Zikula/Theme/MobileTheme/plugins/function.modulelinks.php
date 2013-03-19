@@ -49,7 +49,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 
     if (empty($menuLinks)) {
         if (!isset($params['modname']) || !ModUtil::available($params['modname'])) {
-            $params['modname'] = ModUtil::getName();
+            $params['modname' => ModUtil::getName();
         }
 
         // check our module name
@@ -58,7 +58,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             return false;
         }
 
-        $params['type'] = isset($params['type']) ? $params['type'] : 'admin';
+        $params['type' => isset($params['type']) ? $params['type'] : 'admin';
 
         // get the links from the module API
         $menuLinks = ModUtil::apiFunc($params['modname'], $params['type'], 'getlinks', $params);
@@ -90,7 +90,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             $class[] = ($i == 1 && $size > 1) ? $menuItemFirst : '';
             $class[] = ($i == $size && $size > 1) ? $menuItemLast : '';
             $class[] = !empty($menuItemClass) ? $menuItemClass : '';
-            $class[] = (isset($menuitem['disabled']) && $menuitem['disabled'] == true) ? 'z-ml-disabled' : '';
+            $class[] = (isset($menuitem['disabled']) && $menuitem['disabled' =>= true) ? 'z-ml-disabled' : '';
             $class = trim(implode(' ', $class));
             $i++;
 
