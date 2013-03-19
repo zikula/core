@@ -75,13 +75,13 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // include php mailer class file
-        require_once "system/MailerModule/vendor/class.phpmailer.php";
+        require_once "system/Zikula/Module/MailerModule/vendor/class.phpmailer.php";
 
         // create new instance of mailer class
         $mail = new PHPMailer();
 
         // set default message parameters
-        $mail->PluginDir = "system/MailerModule/vendor/";
+        $mail->PluginDir = "system/Zikula/Module/MailerModule/vendor/";
         $mail->ClearAllRecipients();
         $mail->ContentType = isset($args['contenttype']) ? $args['contenttype'] : $this->getVar('contenttype');
         $mail->CharSet     = isset($args['charset'])     ? $args['charset']     : $this->getVar('charset');

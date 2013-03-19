@@ -1,5 +1,5 @@
 {if $pagerPluginArray.includeStylesheet}
-{pageaddvar name="stylesheet" value="system/Theme/Resources/public/css/pagercss.css"}
+{pageaddvar name="stylesheet" value="system/Zikula/Module/ThemeModule/Resources/public/css/pagercss.css"}
 {/if}
 {assign var="separator" value="&ndash;"}
 

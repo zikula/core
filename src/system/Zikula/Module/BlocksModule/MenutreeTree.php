@@ -137,7 +137,7 @@ class MenutreeTree extends \Zikula_Tree
         PageUtil::addVar('javascript', 'prototype');
         PageUtil::addVar('javascript', 'livepipe');
         PageUtil::addVar('javascript', 'zikula.tree');
-        PageUtil::addVar('javascript', 'system/Blocks/Resources/public/js/Zikula.Menutree.Tree.js');
+        PageUtil::addVar('javascript', 'system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js');
         $jsClass = 'Zikula.Menutree.Tree';
         $initScript = "
         <script type=\"text/javascript\">

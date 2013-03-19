@@ -39,7 +39,7 @@ class MenutreeUtil
 
         // module templates
         $modulesTpls = FileUtil::getFiles('system/Zikula/Module/BlocksModule/Resources/views/menutree', false, true, 'tpl', false);
-        $configTpls = FileUtil::getFiles('config/templates/Blocks/menutree', false, true, 'tpl', false);
+        $configTpls = FileUtil::getFiles('config/templates/ZikulaBlocksModule/menutree', false, true, 'tpl', false);
         $tpls['modules'] = array_merge($modulesTpls, $configTpls);
 
         // themes templates - get user and admin themes
@@ -47,11 +47,11 @@ class MenutreeUtil
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesTpls = array();
         foreach ($userThemes as $ut) {
-            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
+            $themesTpls[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/templates/modules/ZikulaBlocksModule/menutree', false, true, 'tpl', false);
         }
         foreach ($adminThemes as $at) {
             if (!array_key_exists($at['name'], $themesTpls)) {
-                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/Blocks/menutree', false, true, 'tpl', false);
+                $themesTpls[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/templates/modules/ZikulaBlocksModule/menutree', false, true, 'tpl', false);
             }
         }
 
@@ -104,7 +104,7 @@ class MenutreeUtil
 
         // module stylesheets
         $modulesStyles = FileUtil::getFiles('system/Zikula/Module/BlocksModule/Resources/public/css/menutree', false, false, 'css', false);
-        $configStyles = FileUtil::getFiles('config/style/Blocks/menutree', false, false, 'css', false);
+        $configStyles = FileUtil::getFiles('config/style/ZikulaBlocksModule/menutree', false, false, 'css', false);
         $styles['modules'] = array_merge($modulesStyles, $configStyles);
 
         // themes stylesheets - get user and admin themes
@@ -112,11 +112,11 @@ class MenutreeUtil
         $adminThemes = ThemeUtil::getAllThemes(ThemeUtil::FILTER_ADMIN);
         $themesStyles = array();
         foreach ($userThemes as $ut) {
-            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/Blocks/menutree', false, false, 'css', false);
+            $themesStyles[$ut['name']] = FileUtil::getFiles('themes/'.$ut['name'].'/style/ZikulaBlocksModule/menutree', false, false, 'css', false);
         }
         foreach ($adminThemes as $at) {
             if (!array_key_exists($at['name'], $themesStyles)) {
-                $themesStyles[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/Blocks/menutree', false, false, 'css', false);
+                $themesStyles[$at['name']] = FileUtil::getFiles('themes/'.$at['name'].'/style/ZikulaBlocksModule/menutree', false, false, 'css', false);
             }
         }
 

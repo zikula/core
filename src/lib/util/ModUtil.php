@@ -2057,7 +2057,7 @@ class ModUtil
         if (in_array($name, array(
             'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
-            'ZikulaCategoriesModule',
+            'Categories',
             //'Admin',  // todo
         ))) {
             $name = 'Zikula'.$name.'Module';

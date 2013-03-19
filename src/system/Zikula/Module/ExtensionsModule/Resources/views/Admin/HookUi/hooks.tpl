@@ -1,5 +1,5 @@
 {ajaxheader modname='ZikulaExtensionsModule' filename='hookui.js' ui=true}
-{pageaddvar name='stylesheet' value='system/Extensions/Resources/public/css/hooks.css'}
+{pageaddvar name='stylesheet' value='system/Zikula/Module/ExtensionsModule/Resources/public/css/hooks.css'}
 {pageaddvarblock}
 <script type="text/javascript">
     var subscriber_areas = new Array();
