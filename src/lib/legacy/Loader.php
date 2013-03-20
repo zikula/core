@@ -41,7 +41,7 @@ class Loader
             $file = $fileName;
         }
 
-        $file = DataUtil::formatForOS($file);
+        $file = DataUtil::formatForOS($file, true);
 
         if (is_file($file) && is_readable($file)) {
             if (include_once ($file)) {
