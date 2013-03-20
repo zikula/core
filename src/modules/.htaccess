@@ -1,9 +1,5 @@
-# ----------------------------------------------------------------------
-# Purpose of file: block web access to not allowed files
-#                  stored under the modules/ directory
-# ----------------------------------------------------------------------
 deny from all
-<FilesMatch "(?i)\.(css|js|jpg|gif|png|swf)$">
+<FilesMatch "(?i)\.(css|js|jpg|jpeg|gif|png|swf)$">
 order allow,deny
 allow from all
 </filesmatch>

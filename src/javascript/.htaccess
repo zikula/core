@@ -1,9 +1,5 @@
-# ----------------------------------------------------------------------
-# Purpose of file: block any web access to files stored under
-#                  the javascript/ directory
-# ----------------------------------------------------------------------
 deny from all
-<FilesMatch "(?i)\.(css|js|jpg|gif|png)$">
+<FilesMatch "(?i)\.(css|js|jpg|jpeg|gif|png)$">
 order allow,deny
 allow from all
 </filesmatch>
