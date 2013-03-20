@@ -2071,7 +2071,7 @@ class ModUtil
      *
      * @return null|\Zikula\Core\AbstractModule
      */
-    public function getModule($moduleName)
+    public static function getModule($moduleName)
     {
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
