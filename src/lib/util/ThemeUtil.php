@@ -121,6 +121,7 @@ class ThemeUtil
             $where = $whereargs ? 'WHERE '.implode($whereargs, ' AND ') : '';
             $orderBy = "ORDER BY t.name ASC";
             $query = $em->createQuery('SELECT t FROM Zikula\Module\ThemeModule\Entity\ThemeEntity t '.$where.' '.$orderBy);
+            /** @var $array ThemeEntity[] */
             $array = $query->execute();
             foreach ($array as $value) {
                 $themesarray[$key][$value['directory']] = $value->toArray();
@@ -242,6 +243,7 @@ class ThemeUtil
         if (!isset($themestable) || System::isInstalling()) {
             /** @var $em Doctrine\ORM\EntityManager */
             $em = ServiceUtil::get('doctrine.entitymanager');
+            /** @var $array ThemeEntity[] */
             $array = $em->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
             foreach ($array as $theme) {
                 $theme = $theme->toArray();
@@ -276,30 +278,38 @@ class ThemeUtil
             }
         }
 
+        $module = ModUtil::getModule($modname);
+
         $osstylesheet = DataUtil::formatForOS($stylesheet);
         $osmodname = DataUtil::formatForOS($modname);
 
+        $paths = array();
+
         // config directory
         $configstyledir = 'config/style';
-        $configpath = "$configstyledir/$osmodname";
+        $paths[] = "$configstyledir/$osmodname";
 
         // theme directory
-        $theme = DataUtil::formatForOS(UserUtil::getTheme());
-        $themepath = "themes/$theme/style/$osmodname";
+        $themeName = DataUtil::formatForOS(UserUtil::getTheme());
+        $theme = self::getTheme($themeName);
+        $paths[] = null === $theme ?
+            "themes/$themeName/style/$osmodname" : $theme->getPath().'/Resources/css/'.$theme->getName();
 
         // module directory
         $modinfo = ModUtil::getInfoFromName($modname);
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $modpath = "modules/$osmoddir/Resources/public/css";
-        $syspath = "system/$osmoddir/Resources/public/css";
-        $modpathOld = "modules/$osmoddir/style";
-        $syspathOld = "system/$osmoddir/style";
-        $modpathOld2 = "modules/$osmoddir/pnstyle";
-        $syspathOld2 = "system/$osmoddir/pnstyle";
+
+        if (null !== $module) {
+            $paths[] = $theme->getPath()."/Resources/public/css";
+        }
+        $paths[] = "modules/$osmoddir/style";
+        $paths[] = "system/$osmoddir/style";
+        $paths[] = "modules/$osmoddir/pnstyle";
+        $paths[] = "system/$osmoddir/pnstyle";
 
         // search for the style sheet
         $csssrc = '';
-        foreach (array($configpath, $themepath, $modpath, $syspath, $modpathOld, $syspathOld, $modpathOld2, $syspathOld2) as $path) {
+        foreach ($paths as $path) {
             if (is_readable("$path/$osstylesheet")) {
                 $csssrc = "$path/$osstylesheet";
                 break;
@@ -307,6 +317,23 @@ class ThemeUtil
         }
 
         return $csssrc;
+    }
+
+    /**
+     * @param $themeName
+     *
+     * @return null|\Zikula\Core\AbstractTheme
+     */
+    public static function getTheme($themeName)
+    {
+        /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
+        $kernel = ServiceUtil::getManager()->get('kernel');
+        try {
+            return $kernel->getTheme($themeName);
+        } catch (\InvalidArgumentException $e) {
+        }
+
+        return null;
     }
 
 }

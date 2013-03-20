@@ -2048,8 +2048,6 @@ class ModUtil
      *
      * @return string
      *
-     * @return string
-     *
      * @internal
      */
     public static function convertModuleName($name)
@@ -2076,7 +2074,6 @@ class ModUtil
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
         try {
-            /** @var $module \Zikula\Core\AbstractModule */
             return $kernel->getModule($moduleName);
         } catch (\InvalidArgumentException $e) {
         }

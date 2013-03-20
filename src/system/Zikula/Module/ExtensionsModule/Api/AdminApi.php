@@ -35,6 +35,7 @@ use Zikula_Core;
 use PluginUtil;
 use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 use Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 
 /**
  * Administrative API functions for the Extensions module.
@@ -435,7 +436,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get all modules on filesystem
         $filemodules = array();
 
-        $scanner = new Zikula\Bundle\CoreBundle\Bundle\Scanner();
+        $scanner = new Scanner();
         $scanner->scan(array('system', 'modules'), 4);
         $newModules = $scanner->getModulesMetaData();
 

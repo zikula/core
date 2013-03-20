@@ -21,6 +21,7 @@ use ThemeUtil;
 use DBUtil;
 use ServiceUtil;
 use Zikula\Module\ThemeModule\Entity\ThemeEntity;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 
 /**
  * Theme_Util class.
@@ -35,50 +36,72 @@ class Util
         // Get all themes on filesystem
         $filethemes = array();
 
-        if (is_dir('themes')) {
-            $dirArray = FileUtil::getFiles('themes', false, true, null, 'd');
-            foreach ($dirArray as $dir) {
-                // Work out the theme type
-                if (file_exists("themes/$dir/version.php") && !file_exists("themes/$dir/theme.php")) {
-                    $themetype = 3;
-                } else {
-                    // anything else isn't a theme
-                    continue;
-                }
+        $scanner = new Scanner();
+        $scanner->scan(array('themes'), 4);
+        $newThemes = $scanner->getModulesMetaData();
 
-                // Get some defaults in case we don't have a theme version file
-                $themeversion['name'] = preg_replace('/_/', ' ', $dir);
-                $themeversion['displayname'] = preg_replace('/_/', ' ', $dir);
-                $themeversion['version'] = '0';
-                $themeversion['description'] = '';
-
-                // include the correct version file based on theme type and
-                // manipulate the theme version information
-                if (file_exists($file = "themes/$dir/version.php")) {
-                    if (!include($file)) {
-                        LogUtil::registerError(__f('Error! Could not include theme version file: %s', $file));
-                    }
-                }
-
-                $filethemes[$themeversion['name']] = array('directory' => $dir,
-                        'name' => $themeversion['name'],
-                        'type' => $themetype,
-                        'displayname' => (isset($themeversion['displayname']) ? $themeversion['displayname'] : $themeversion['name']),
-                        'version' => (isset($themeversion['version']) ? $themeversion['version'] : '1.0'),
-                        'description' => (isset($themeversion['description']) ? $themeversion['description'] : $themeversion['displayname']),
-                        'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
-                        'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
-                        'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
-                        'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeUtil::STATE_ACTIVE),
-                        'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
-                        'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1));
-
-                // important: unset themeversion otherwise all following themes will have
-                // at least the same regid or other values not defined in
-                // the next version.php files to be read
-                unset($themeversion);
-                unset($themetype);
+        foreach ($newThemes as $name => $theme) {
+            foreach ($theme->getPsr0() as $ns => $path) {
+                ZLoader::addPrefix($ns, $path);
             }
+            $class = $theme->getClass();
+
+            /** @var $bundle \Zikula\Core\AbstractTheme */
+            $bundle = new $class;
+            $class = $bundle->getVersionClass();
+
+            $version = new $class($bundle);
+            $version['name'] = $bundle->getName();
+
+            $array = $version->toArray();
+            unset($array['id']);
+
+            $array['directory'] = str_replace('\\', '/', $bundle->getNamespace());
+            $filethemes[$bundle->getName()] = $array;
+        }
+
+        $dirArray = FileUtil::getFiles('themes', false, true, null, 'd');
+        foreach ($dirArray as $dir) {
+            // Work out the theme type
+            if (file_exists("themes/$dir/version.php") && !file_exists("themes/$dir/theme.php")) {
+                $themetype = 3;
+            } else {
+                // anything else isn't a theme
+                continue;
+            }
+
+            // Get some defaults in case we don't have a theme version file
+            $themeversion['name'] = preg_replace('/_/', ' ', $dir);
+            $themeversion['displayname'] = preg_replace('/_/', ' ', $dir);
+            $themeversion['version'] = '0';
+            $themeversion['description'] = '';
+
+            // include the correct version file based on theme type and
+            // manipulate the theme version information
+            if (file_exists($file = "themes/$dir/version.php")) {
+                if (!include($file)) {
+                    LogUtil::registerError(__f('Error! Could not include theme version file: %s', $file));
+                }
+            }
+
+            $filethemes[$themeversion['name']] = array('directory' => $dir,
+                    'name' => $themeversion['name'],
+                    'type' => $themetype,
+                    'displayname' => (isset($themeversion['displayname']) ? $themeversion['displayname'] : $themeversion['name']),
+                    'version' => (isset($themeversion['version']) ? $themeversion['version'] : '1.0'),
+                    'description' => (isset($themeversion['description']) ? $themeversion['description'] : $themeversion['displayname']),
+                    'admin' => (isset($themeversion['admin']) ? (int)$themeversion['admin'] : '0'),
+                    'user' => (isset($themeversion['user']) ? (int)$themeversion['user'] : '1'),
+                    'system' => (isset($themeversion['system']) ? (int)$themeversion['system'] : '0'),
+                    'state' => (isset($themeversion['state']) ? $themeversion['state'] : ThemeUtil::STATE_ACTIVE),
+                    'contact' => (isset($themeversion['contact']) ? $themeversion['contact'] : ''),
+                    'xhtml' => (isset($themeversion['xhtml']) ? (int)$themeversion['xhtml'] : 1));
+
+            // important: unset themeversion otherwise all following themes will have
+            // at least the same regid or other values not defined in
+            // the next version.php files to be read
+            unset($themeversion);
+            unset($themetype);
         }
 
         // get entityManager
@@ -87,11 +110,11 @@ class Util
 
         // Get all themes in DB
         $dbthemes = array();
-        $themes = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
+        $themeEntities = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findAll();
 
-        foreach ($themes as $theme) {
-            $theme = $theme->toArray();
-            $dbthemes[$theme['directory']] = $theme;
+        foreach ($themeEntities as $entity) {
+            $entity = $entity->toArray();
+            $dbthemes[$entity['name']] = $entity;
         }
 
         // See if we have lost any themes since last generation

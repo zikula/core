@@ -6,7 +6,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
-            "Zikula": "src/lib",
+            "Zikula": ["src/lib", "src/lib/legacy"],
             "Zikula\\Module": "src/system",
             "Zikula\\Theme": "src/themes",
             "DoctrineExtensions\\StandardFields": "src/lib",

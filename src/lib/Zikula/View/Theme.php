@@ -423,17 +423,11 @@ class Zikula_View_Theme extends Zikula_View
         $themeDir = DataUtil::formatForOS($this->directory);
         $osTemplate = DataUtil::formatForOS($template);
 
-        try {
-            $bundle = $this->getContainer()->get('kernel')->getBundle($this->name);
-            $bundlePath = $relativePath = $bundle->getPath().'/Resources/views';
-        } catch (\InvalidArgumentException $e) {
-        }
-
-        if (!isset($bundlePath)) {
-            $relativePath = "themes/$themeDir/Resources/views";
-            if (!is_dir($relativePath)) {
-                $relativePath = "themes/$themeDir/templates";
-            }
+        $theme = ThemeUtil::getTheme($this->name);
+        if (null !== $theme) {
+            $relativePath = $theme->getPath().'/Resources/views';
+        } else {
+            $relativePath = "themes/$themeDir/templates";
         }
 
         $templateFile = "$relativePath/$osTemplate";
@@ -459,17 +453,18 @@ class Zikula_View_Theme extends Zikula_View
 
         // The rest of this code is scheduled for removal from 1.4.0 - drak
 
-        // Define the locations in which we will look for templates
-        // (in this order)
-        // 1. Master template path
-        $masterPath = "themes/$themeDir/templates";
-        // 2. The module template path
-        $modulePath = "themes/$themeDir/templates/modules";
-        // 4. The block template path
-        $blockPath = "themes/$themeDir/templates/blocks";
+        $paths = array();
+        if ($theme) {
+            $paths[] = $theme->getPath().'/Resources/views';
+            $paths[] = $theme->getPath().'/Resources/views/modules';
+            $paths[] = $theme->getPath().'/Resources/views/blocks';
+        } else {
+            $paths[] = "themes/$themeDir/templates";
+            $paths[] = "themes/$themeDir/templates/modules";
+            $paths[] = "themes/$themeDir/templates/blocks";
+        }
 
-        $search_path = array($masterPath, $modulePath, $blockPath);
-        foreach ($search_path as $path) {
+        foreach ($paths as $path) {
             if (is_readable("$path/$osTemplate")) {
                 $this->templateCache[$template] = $path;
 
@@ -642,10 +637,18 @@ class Zikula_View_Theme extends Zikula_View
         $this->template_dir  = $this->themepath . '/templates'; // default directory for templates
 
         $this->themepath     = 'themes/' . $this->directory;
-        $this->imagepath     = $this->themepath . '/images';
-        $this->imagelangpath = $this->themepath . '/images/' . $this->language;
-        $this->stylepath     = $this->themepath . '/style';
-        $this->scriptpath    = $this->themepath . '/javascript';
+        $theme = ThemeUtil::getTheme($this->name);
+        if (null === $theme) {
+            $this->imagepath     = $this->themepath . '/images';
+            $this->imagelangpath = $this->themepath . '/images/' . $this->language;
+            $this->stylepath     = $this->themepath . '/style';
+            $this->scriptpath    = $this->themepath . '/javascript';
+        } else {
+            $this->imagepath     = $this->themepath . '/Resources/public/images';
+            $this->imagelangpath = $this->themepath . '/Resources/public/images/' . $this->language;
+            $this->stylepath     = $this->themepath . '/Resources/public/css';
+            $this->scriptpath    = $this->themepath . '/Resources/public/js';
+        }
 
         // make the base vars available to all templates
         $this->assign('module', $this->toplevelmodule)

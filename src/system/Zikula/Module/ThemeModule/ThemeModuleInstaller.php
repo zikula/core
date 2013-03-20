@@ -14,20 +14,11 @@
 
 namespace Zikula\Module\ThemeModule;
 
-use DBUtil;
 use ModUtil;
 use DoctrineHelper;
 
 class ThemeModuleInstaller extends \Zikula_AbstractInstaller
 {
-    /**
-     * initialise the theme module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance.
-     *
-     * @return bool true on success, false otherwise
-     */
     public function install()
     {
         // create the table
@@ -69,15 +60,6 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
-    /**
-     * upgrade the theme module from an old version
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param        string   $oldVersion   version number string to upgrade from
-     * @return       mixed    true on success, last valid version string or false if fails
-     */
     public function upgrade($oldversion)
     {
         switch ($oldversion) {
@@ -90,15 +72,6 @@ class ThemeModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
-    /**
-     * delete the theme module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * Since the theme module should never be deleted we'all always return false here
-     * @return bool false
-     */
     public function uninstall()
     {
         // Deletion not allowed

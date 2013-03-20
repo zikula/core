@@ -234,7 +234,11 @@ class UserApi extends \Zikula_AbstractApi
         $args['type'] = isset($args['type']) ? DataUtil::formatForOS($args['type']) : 'modules';
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
-        $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates';
+        if ($theme = ThemeUtil::getTheme($themeinfo['name'])) {
+            $templatedir = $theme->getPath().'/Resources/views';
+        } else {
+            $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates';
+        }
 
         if ($args['type'] == 'modules') {
             // for module templates also search on the theme/templates folder
@@ -279,6 +283,8 @@ class UserApi extends \Zikula_AbstractApi
             return parse_ini_file($ostemp.'/Theme_Config/'.$ostheme.'/'.$osfile, $args['sections']);
         } elseif (file_exists('themes/'.$ostheme.'/templates/config/'.$osfile)) {
             return parse_ini_file('themes/'.$ostheme.'/templates/config/'.$osfile, $args['sections']);
+        } elseif ($theme = ThemeUtil::getTheme($themeinfo['name'])) {
+            return parse_ini_file($theme->getPath().'/Resources/config/'.$osfile, $args['sections']);
         }
     }
 
@@ -308,7 +314,11 @@ class UserApi extends \Zikula_AbstractApi
         $osfile  = DataUtil::formatForOS($args['file']);
 
         // verify the writable paths
-        $tpath = 'themes/'.$ostheme.'/templates/config';
+        if ($theme = ThemeUtil::getTheme($themeinfo['name'])) {
+            $tpath = $theme->getPath().'/Resources/config';
+        } else {
+            $tpath = 'themes/'.$ostheme.'/templates/config';
+        }
 
         if (is_writable($tpath.'/'.$osfile)) {
             $handle = fopen($tpath.'/'.$osfile, 'w+');
