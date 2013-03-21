@@ -205,7 +205,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         } else {
             $result .= '<span id="permissiontestinfogreen">';
             if ($uid == 0) {
-                $result .= 'unregistered user';
+                $result .= $this->__('unregistered user');
             } else {
                 $result .= $uname;
             }
