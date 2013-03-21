@@ -120,7 +120,7 @@ class Zikula_View_Resource
         $tpl_path = $view->get_template_path($tpl_name);
 
         if ($tpl_path !== false) {
-            $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name, true));
+            $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
 
             return true;
         }
