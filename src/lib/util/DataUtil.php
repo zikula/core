@@ -380,7 +380,7 @@ class DataUtil
      *
      * @return string The formatted variable.
      */
-    public static function formatForOS($var, $absolute = false)
+    public static function formatForOS($var, $absolute = true)
     {
         if (is_array($var)) {
             foreach ($var as $k => $v) {
