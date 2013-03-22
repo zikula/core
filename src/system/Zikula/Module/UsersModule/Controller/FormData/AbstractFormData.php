@@ -16,6 +16,7 @@ namespace Zikula\Module\UsersModule\Controller\FormData;
 
 use ServiceUtil;
 use InvalidArgumentException;
+use ModUtil;
 
 /**
  * A form data container and validator.
@@ -56,7 +57,8 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
         if (!isset($serviceManager)) {
             $serviceManager = ServiceUtil::getManager();
         }
-        parent::__construct($serviceManager);
+        $bundle = ModUtil::getModule('ZikulaUsersModule');
+        parent::__construct($serviceManager, $bundle);
 
         $formId = trim($formId);
         if (!isset($formId) || !is_string($formId) || empty($formId)) {
