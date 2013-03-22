@@ -110,8 +110,8 @@
                 <input type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)}" />
                 {/if}
                 <select id="{$formData->getFieldId($fieldName)}" name="{$fieldName}{if $editingSelf}_displayonly" disabled="disabled{/if}">
-                    <option value="{'UsersModule\Constant::ACTIVATED_INACTIVE'|constant}" {if $formData->getFieldData($fieldName) != 'UsersModule\Constant::ACTIVATED_ACTIVE'|constant}selected="selected"{/if}>{gt text="Inactive"}</option>
-                    <option value="{'UsersModule\Constant::ACTIVATED_ACTIVE'|constant}" {if $formData->getFieldData($fieldName) == 'UsersModule\Constant::ACTIVATED_ACTIVE'|constant}selected="selected"{/if}>{gt text="Active"}</option>
+                    <option value="{'Zikula\Module\UsersModule\Constant::ACTIVATED_INACTIVE'|const}" {if $formData->getFieldData($fieldName) != 'Zikula\Module\UsersModule\Constant::ACTIVATED_ACTIVE'|const}selected="selected"{/if}>{gt text="Inactive"}</option>
+                    <option value="{'Zikula\Module\UsersModule\Constant::ACTIVATED_ACTIVE'|const}" {if $formData->getFieldData($fieldName) == 'Zikula\Module\UsersModule\Constant::ACTIVATED_ACTIVE'|const}selected="selected"{/if}>{gt text="Active"}</option>
                 </select>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -127,7 +127,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text='Log-in information'}</legend>
-            {if ($formData->getFieldData('pass') == 'UsersModule\Constant::PWD_NO_USERS_AUTHENTICATION'|constant)}
+            {if ($formData->getFieldData('pass') == 'Zikula\Module\UsersModule\Constant::PWD_NO_USERS_AUTHENTICATION'|const)}
                 {assign var='usersAuth' value=false}
             {else}
                 {assign var='usersAuth' value=true}
