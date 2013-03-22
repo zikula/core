@@ -31,7 +31,7 @@
                 <a href="{modurl modname='ZikulaThemeModule' type='admin' func='index'}"><span>{gt text="Themes"}</span></a>
             </li>
             <li class="page_item">
-                <a href="{modurl modname='Categories' type='admin' func='index'}"><span>{gt text="Categories"}</span></a>
+                <a href="{modurl modname='ZikulaCategoriesModule' type='admin' func='index'}"><span>{gt text="Categories"}</span></a>
             </li>
         </ul>
     </div>
