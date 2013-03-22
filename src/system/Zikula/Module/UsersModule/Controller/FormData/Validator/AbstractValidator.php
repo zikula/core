@@ -14,6 +14,8 @@
 
 namespace Zikula\Module\UsersModule\Controller\FormData\Validator;
 
+use ModUtil;
+
 /**
  * Validates a field's data against specified criteria.
  */
@@ -36,7 +38,7 @@ abstract class AbstractValidator extends \Zikula_AbstractBase
      */
     public function __construct(\Zikula_ServiceManager $serviceManager, $errorMessage = null)
     {
-        parent::__construct($serviceManager);
+        parent::__construct($serviceManager, ModUtil::getModule('ZikulaUsersModule'));
 
         if (isset($errorMessage)) {
             if (is_string($errorMessage) && !empty($errorMessage)) {
