@@ -194,16 +194,28 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $level = $this->request->request->get('test_level', ACCESS_READ);
 
         $result = $this->__('Permission check result:') . ' ';
-        $uid = UserUtil::getIdFromName($uname);
+        if (empty($uname)) {
+            $uid = 0;
+        } else {
+            $uid = UserUtil::getIdFromName($uname);
+        }
 
-        if ($uid == false) {
+        if ($uid === false) {
             $result .= '<span id="permissiontestinfored">' . $this->__('unknown user.') . '</span>';
         } else {
-            if (SecurityUtil::checkPermission($comp, $inst, $level, $uid)) {
-                $result .= '<span id="permissiontestinfogreen">' . $this->__('permission granted.') . '</span>';
+            $result .= '<span id="permissiontestinfogreen">';
+            if ($uid == 0) {
+                $result .= $this->__('unregistered user');
             } else {
-                $result .= '<span id="permissiontestinfored">' . $this->__('permission not granted.') . '</span>';
+                $result .= $uname;
             }
+            $result .= ': ';
+            if (SecurityUtil::checkPermission($comp, $inst, $level, $uid)) {
+                $result .= $this->__('permission granted.');
+            } else {
+                $result .= $this->__('permission not granted.');
+            }
+            $result .= '</span>';
         }
 
         return new Zikula_Response_Ajax(array('testresult' => $result));
