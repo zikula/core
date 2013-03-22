@@ -230,7 +230,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // add standard plugin search path
         $this->plugins_dir = array();
         $this->addPluginDir('config/plugins'); // Official override
-        $this->addPluginDir('lib/viewplugins'); // Core plugins
+        $this->addPluginDir('lib/legacy/viewplugins'); // Core plugins
         $this->addPluginDir("themes/$theme/plugins"); // Theme plugins
         $this->addPluginDir('plugins'); // Smarty core plugins
         $this->addPluginDir($mpluginPathNew); // Plugins for current module

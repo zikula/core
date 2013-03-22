@@ -400,8 +400,8 @@ class SystemListeners extends Zikula_AbstractEventHandler
         if ($handler instanceof Zikula_ErrorHandler_Ajax) {
             if ($type <= $this->serviceManager['log.display_ajax_level']) {
                 // autoloaders don't work inside error handlers!
-                include_once 'lib/Zikula/Exception.php';
-                include_once 'lib/Zikula/Exception/Fatal.php';
+                include_once 'lib/legacy/Zikula/Exception.php';
+                include_once 'lib/legacy/Zikula/Exception/Fatal.php';
                 throw new Zikula_Exception_Fatal($message);
             }
         }
@@ -446,7 +446,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
             // autoloaders don't work inside error handlers!
-            include_once 'lib/Zikula/DebugToolbar/Panel/Log.php';
+            include_once 'lib/legacy/Zikula/DebugToolbar/Panel/Log.php';
 
             // create definitions
             $toolbar = new Definition('Zikula_DebugToolbar',  array(new Reference('event_dispatcher')));

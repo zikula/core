@@ -157,7 +157,7 @@ class Zikula_Form_View extends Zikula_View
 
         // construct and use the available methods
         parent::__construct($serviceManager, $module, false);
-        $this->addPluginDir('lib/viewplugins/formplugins', false);
+        $this->addPluginDir('lib/legacy/viewplugins/formplugins', false);
         $this->setCaching(Zikula_View::CACHE_DISABLED);
 
         // custom Form setup
