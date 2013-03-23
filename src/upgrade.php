@@ -375,7 +375,7 @@ function _upg_upgrademodules($username, $password)
         echo __f('Go to the startpage for %s', $url);
     } else {
         upgrade_clear_caches();
-        $url = sprintf('<a href="%s">%s</a>', ModUtil::url('Admin', 'admin', 'adminpanel'), DataUtil::formatForDisplay(System::getVar('sitename')));
+        $url = sprintf('<a href="%s">%s</a>', ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'), DataUtil::formatForDisplay(System::getVar('sitename')));
         echo __f('Go to the admin panel for %s', $url);
     }
     echo "</p>\n";

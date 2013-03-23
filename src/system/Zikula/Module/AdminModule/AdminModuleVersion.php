@@ -12,7 +12,9 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Version extends Zikula_AbstractVersion
+namespace Zikula\Module\AdminModule;
+
+class AdminModuleVersion extends \Zikula_AbstractVersion
 {
     public function getMetaData()
     {
@@ -26,4 +28,5 @@ class Admin_Version extends Zikula_AbstractVersion
 
         return $meta;
     }
+
 }

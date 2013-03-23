@@ -12,7 +12,15 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
+namespace Zikula\Module\AdminModule\Block;
+
+use Zikula_View;
+use SecurityUtil;
+use BlockUtil;
+use ModUtil;
+use DataUtil;
+
+class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * Post initialise.
@@ -39,7 +47,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
     public function info()
     {
         // Values
-        return array('module'         => 'Admin',
+        return array('module'         => 'ZikulaAdminModule',
                      'text_type'      => $this->__('Administration panel manager'),
                      'text_type_long' => $this->__('Display administration categories and modules'),
                      'allow_multiple' => false,
@@ -62,11 +70,11 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // Call the modules API to get the items
-        if (!ModUtil::available('Admin')) {
+        if (!ModUtil::available('ZikulaAdminModule')) {
             return;
         }
 
-        $items = ModUtil::apiFunc('Admin', 'admin', 'getall');
+        $items = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
 
         // Check for no items returned
         if (empty($items)) {
@@ -84,7 +92,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
                 $adminlinks = array();
                 foreach ($adminmodules as $adminmodule) {
                     // Get all modules in the category
-                    $catid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
+                    $catid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory',
                                               array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
 
                     if (($catid == $item['cid']) || (($catid == false) && ($item['cid'] == $this->getVar('defaultcategory')))) {
@@ -95,7 +103,7 @@ class Admin_Block_Adminnav extends Zikula_Controller_AbstractBlock
                                               'menutexttitle' => $menutexttitle);
                     }
                 }
-                $admincategories[] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel', array('cid' => $item['cid'])),
+                $admincategories[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel', array('cid' => $item['cid'])),
                                            'title' => DataUtil::formatForDisplay($item['name']),
                                            'modules' => $adminlinks);
             }

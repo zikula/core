@@ -17,8 +17,8 @@ Here is an exmaple handler:
         public static function handler(Zikula_Event $event)
         {
             $collection = new Zikula_Collection_Container('News');
-            $collection->add(new Zikula_Provider_AggregateItem('submission', __('pending news'), 5, 'Admin', 'viewsubmissions'));
-            $collection->add(new Zikula_Provider_AggregateItem('comments', __('pending comments'), 7, 'Admin', 'viewcomments'));
+            $collection->add(new Zikula_Provider_AggregateItem('submission', __('pending news'), 5, 'ZikulaAdminModule', 'viewsubmissions'));
+            $collection->add(new Zikula_Provider_AggregateItem('comments', __('pending comments'), 7, 'ZikulaAdminModule', 'viewcomments'));
             $event->getSubject()->add($collection);
         }
     }
@@ -72,8 +72,8 @@ The following is a full example you can use to run and see how this would work i
         public function handler(Zikula_Event $event)
         {
             $collection = new Zikula_Collection_Container('News');
-            $collection->add(new Zikula_Provider_AggregateItem('submission', __('pending news'), 5, 'Admin', 'viewsubmissions'));
-            $collection->add(new Zikula_Provider_AggregateItem('comments', __('pending comments'), 7, 'Admin', 'viewcomments'));
+            $collection->add(new Zikula_Provider_AggregateItem('submission', __('pending news'), 5, 'ZikulaAdminModule', 'viewsubmissions'));
+            $collection->add(new Zikula_Provider_AggregateItem('comments', __('pending comments'), 7, 'ZikulaAdminModule', 'viewcomments'));
             $event->getSubject()->add($collection);
         }
     }

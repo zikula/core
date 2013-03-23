@@ -1942,7 +1942,7 @@ class UserUtil
 
         // check for an admin theme
         if (($type == 'admin' || $type == 'adminplugin') && SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
-            $admintheme = ModUtil::getVar('Admin', 'admintheme');
+            $admintheme = ModUtil::getVar('ZikulaAdminModule', 'admintheme');
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
                 if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {

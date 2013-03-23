@@ -112,7 +112,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function cleanupThumbnails(Zikula_Event $event)
     {
-        if ($event['modinfo']['name'] == 'Admin') {
+        if ($event['modinfo']['name'] == 'ZikulaAdminModule') {
             // check thumb validity
             $lastCleanup = new DateTime($this->getVar('last_cleanup'));
             $nextCleanup = $lastCleanup->setTime(0,0,0)->add(new DateInterval('P1D'));

@@ -59,7 +59,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $flag['category'] = in_array("category", $extrainfo);  //now true or false
 
         // Make sure admin API is loaded
-        if (!ModUtil::loadApi('Admin','admin',true)) {
+        if (!ModUtil::loadApi('ZikulaAdminModule','admin',true)) {
             return false;
         }
 
@@ -79,7 +79,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $lang => array(
                             'id' => $idoffset++,
                             'name' => $item['name'],
-                            'href' => ModUtil::url('Admin', 'admin', 'adminpanel'),
+                            'href' => ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'),
                             'title' => $item['title'],
                             'className' => $item['className'],
                             'state' => $item['state'],
@@ -100,7 +100,7 @@ class MenutreeApi extends \Zikula_AbstractApi
 
         if ($flag['category']) {
             // Get all the Categories
-            $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
+            $categories = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
 
             foreach ($categories as $item) {
                 if (SecurityUtil::checkPermission('ZikulaAdminModule::', "$item[catname]::$item[cid]", ACCESS_EDIT)) {
@@ -113,7 +113,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                             $lang => array(
                                     'id'        => $idoffset++,
                                     'name'      => $item['catname'],
-                                    'href'      => ModUtil::url('Admin','admin','adminpanel', array('acid' => $item['cid'])),
+                                    'href'      => ModUtil::url('ZikulaAdminModule','admin','adminpanel', array('acid' => $item['cid'])),
                                     'title'     => $item['description'],
                                     'className' => '',
                                     'state'     => 1,
@@ -128,13 +128,13 @@ class MenutreeApi extends \Zikula_AbstractApi
 
         // Now work on admin capable modules
         $adminmodules    = ModUtil::getAdminMods();
-        $displayNameType = ModUtil::getVar('Admin', 'displaynametype', 1);
-        $default_cid     = ModUtil::getVar('Admin', 'startcategory');
+        $displayNameType = ModUtil::getVar('ZikulaAdminModule', 'displaynametype', 1);
+        $default_cid     = ModUtil::getVar('ZikulaAdminModule', 'startcategory');
         $adminlinks      = array();
 
         foreach ($adminmodules as $adminmodule) {
             if (SecurityUtil::checkPermission("$adminmodule[name]::", '::', ACCESS_EDIT)) {
-                $cid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory',
+                $cid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory',
                         array('mid' => ModUtil::getIdFromName($adminmodule['name'])));
                 $cid = (isset($catinfo[$cid])) ? $cid : $default_cid;  // make sure each module is assigned a category
 

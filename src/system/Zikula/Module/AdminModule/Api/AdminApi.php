@@ -12,7 +12,16 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Api_Admin extends Zikula_AbstractApi
+namespace Zikula\Module\AdminModule\Api;
+
+use LogUtil;
+use ModUtil;
+use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
+use SecurityUtil;
+use System;
+use DataUtil;
+
+class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * create a admin category
@@ -28,9 +37,9 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $args['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countitems');
+        $args['sortorder'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countitems');
 
-        $item = new Admin_Entity_AdminCategory();
+        $item = new AdminCategoryEntity();
         $item->merge($args);
         $this->entityManager->persist($item);
         $this->entityManager->flush();
@@ -56,7 +65,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         }
 
         // Get the existing item
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
 
         if (empty($item)) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -85,7 +94,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $item = ModUtil::apiFunc('Admin', 'admin', 'get', array('cid' => $args['cid']));
+        $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
         if (empty($item)) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
         }
@@ -152,7 +161,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
      */
     public function countitems()
     {
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
         $dql = "SELECT count(c.cid) FROM $entity c";
         $query = $this->entityManager->createQuery($dql);
         $numitems = $query->getSingleScalarResult();
@@ -173,7 +182,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         }
 
         // retrieve the category object
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
         $category = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => (int)$args['cid']));
 
         if (!$category) {
@@ -203,7 +212,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerPermissionError ();
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
 
         // get module id
         $mid = (int)ModUtil::getIdFromName($args['module']);
@@ -216,7 +225,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         $values = array();
         $values['cid'] = (int)$args['category'];
         $values['mid'] = $mid;
-        $values['sortorder'] = ModUtil::apiFunc('Admin', 'admin', 'countModsInCat', array('cid' => $args['category']));
+        $values['sortorder'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countModsInCat', array('cid' => $args['category']));
 
         $item->merge($values);
         $this->entityManager->persist($item);
@@ -246,7 +255,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return $catitems[$args['mid']];
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
 
         // retrieve the admin module object array
         $associations = $this->entityManager->getRepository($entity)->findAll();
@@ -281,7 +290,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         static $associations = array();
 
         if (empty($associations)) {
-            $associations = $this->entityManager->getRepository($this->name . '_Entity_AdminModule')->findAll();
+            $associations = $this->entityManager->getRepository('Zikula\Module\AdminModule\Entity\AdminModuleEntity')->findAll();
         }
 
         $sortorder = -1;
@@ -346,14 +355,14 @@ class Admin_Api_Admin extends Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'z-icon-es-view');
         }
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'z-icon-es-new');
         }
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'z-icon-es-help');
-            $links[] = array('url' => ModUtil::url('Admin', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'z-icon-es-help');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
 
         return $links;
@@ -365,7 +374,7 @@ class Admin_Api_Admin extends Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminModulentity';
         $dql = "SELECT count(m.amid) FROM $entity m WHERE m.cid = {$args['cid']}";
         $query = $this->entityManager->createQuery($dql);
         $count = $query->getSingleScalarResult();

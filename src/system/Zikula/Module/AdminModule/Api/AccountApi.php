@@ -12,7 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Api_Account extends Zikula_AbstractApi
+namespace Zikula\Module\AdminModule\Api;
+
+use ModUtil;
+use SecurityUtil;
+
+class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.
@@ -26,8 +31,8 @@ class Admin_Api_Account extends Zikula_AbstractApi
         $items = array();
 
         if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN)) {
-            $items['0'] = array('url' => ModUtil::url('Admin', 'admin', 'adminpanel'),
-                    'module' => 'Admin',
+            $items['0'] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'),
+                    'module' => 'ZikulaAdminModule',
                     'title' => $this->__('Administration panel'),
                     'icon' => 'admin.png');
         }

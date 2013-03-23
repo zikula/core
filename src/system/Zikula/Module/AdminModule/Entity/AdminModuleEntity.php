@@ -1,5 +1,4 @@
-<?php
-/**
+<?php/**
  * Copyright Zikula Foundation 2009 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
@@ -12,6 +11,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Module\AdminModule\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,10 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Admin_Entity_Repository_AdminModule")
  * @ORM\Table(name="admin_module",indexes={@ORM\index(name="mid_cid",columns={"mid","cid"})})
  */
-class Admin_Entity_AdminModule extends Zikula_EntityAccess
+class AdminModuleEntity extends \Zikula_EntityAccess
 {
     /**
      * @ORM\Id

@@ -23,11 +23,11 @@
  */
 function smarty_function_admincategorymenu($params, $view)
 {
-    PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('Admin'));
+    PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
 
     $modinfo = ModUtil::getInfoFromName($view->getTplVar('toplevelmodule'));
 
-    $acid = ModUtil::apiFunc('Admin', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
+    $acid = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodcategory', array('mid' => $modinfo['id']));
 
-    return ModUtil::func('Admin', 'admin', 'categorymenu', array('acid' => $acid));
+    return ModUtil::func('ZikulaAdminModule', 'admin', 'categorymenu', array('acid' => $acid));
 }

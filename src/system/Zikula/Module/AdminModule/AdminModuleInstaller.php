@@ -12,7 +12,13 @@
  * information regarding copyright and licensing.
  */
 
-class Admin_Installer extends Zikula_AbstractInstaller
+namespace Zikula\Module\AdminModule;
+
+use DoctrineHelper;
+use DBUtil;
+use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
+
+class AdminModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the Admin module.
@@ -25,8 +31,11 @@ class Admin_Installer extends Zikula_AbstractInstaller
     {
         // create tables
         try {
-            DoctrineHelper::createSchema($this->entityManager, array('Admin_Entity_AdminCategory', 'Admin_Entity_AdminModule'));
-        } catch (Exception $e) {
+            DoctrineHelper::createSchema($this->entityManager, array(
+                'Zikula\Module\AdminModule\Entity\AdminCategoryEntity',
+                'Zikula\Module\AdminModule\Entity\AdminModuleEntity',
+            ));
+        } catch (\Exception $e) {
             return false;
         }
 
@@ -101,17 +110,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        // drop tables
-        try {
-            DoctrineHelper::dropSchema($this->entityManager, array('Admin_Entity_AdminCategory', 'Admin_Entity_AdminModule'));
-        } catch (Exception $e) {
-            return false;
-        }
-
-        $this->delVars();
-
-        // Deletion successful
-        return true;
+        return false;
     }
 
     /**
@@ -139,7 +138,7 @@ class Admin_Installer extends Zikula_AbstractInstaller
                           'description' => $this->__('Modules for managing the site\'s security.')));
 
         foreach ($records as $record) {
-            $item = new Admin_Entity_AdminCategory;
+            $item = new AdminCategoryEntity;
             $item->merge($record);
             $this->entityManager->persist($item);
         }

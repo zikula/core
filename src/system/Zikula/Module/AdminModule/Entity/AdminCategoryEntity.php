@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Module\AdminModule\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,10 +21,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
- * @ORM\Entity(repositoryClass="Admin_Entity_Repository_AdminCategory")
  * @ORM\Table(name="admin_category")
  */
-class Admin_Entity_AdminCategory extends Zikula_EntityAccess
+class AdminCategoryEntity extends \Zikula_EntityAccess
 {
     /**
      * @ORM\Id

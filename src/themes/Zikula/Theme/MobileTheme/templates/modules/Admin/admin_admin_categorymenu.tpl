@@ -1,10 +1,10 @@
 <div class="z-admin-breadcrumbs">
     <span class="z-sub">{gt text='You are in:'}</span>
-    <span class="z-breadcrumb"><a href="{modurl modname='Admin' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
+    <span class="z-breadcrumb"><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
 
     <span class="z-sub">&raquo;</span>
     {if $func neq 'adminpanel'}
-        <span class="z-breadcrumb"><a href="{modurl modname='Admin' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></span>
+        <span class="z-breadcrumb"><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></span>
     {else}
         <span class="z-breadcrumb">{$menuoptions.$currentcat.title|safetext}</span>
     {/if}

@@ -300,7 +300,7 @@ function install(Zikula_Core $core)
 
                     LogUtil::registerStatus(__('Congratulations! Zikula has been successfully installed.'));
                     System::setInstalling(false);
-                    $response = new RedirectResponse(ModUtil::url('Admin', 'admin', 'adminpanel'));
+                    $response = new RedirectResponse(ModUtil::url('ZikulaAdminModule', 'admin', 'adminpanel'));
                     $response->send();
                     exit;
                 }
@@ -410,7 +410,7 @@ function installmodules($lang = 'en')
         'ZikulaExtensionsModule',
         'ZikulaSettingsModule',
         'ZikulaThemeModule',
-        'Admin',
+        'ZikulaAdminModule',
         'ZikulaPermissionsModule',
         'ZikulaGroupsModule',
         'ZikulaBlocksModule',
@@ -482,17 +482,17 @@ function installmodules($lang = 'en')
             'ZikulaMailerModule' => __('System'),
             'ZikulaErrorsModule' => __('System'),
             'ZikulaSearchModule' => __('Content'),
-            'Admin' => __('System'),
+            'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'));
 
-    $categories = ModUtil::apiFunc('Admin', 'admin', 'getall');
+    $categories = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getall');
     $modscat = array();
     foreach ($categories as $category) {
         $modscat[$category['name']] = $category['cid'];
     }
     foreach ($coremodules as $coremodule) {
         $category = $coremodscat[$coremodule];
-        ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory',
+        ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory',
                         array('module' => $coremodule,
                                 'category' => $modscat[$category]));
     }

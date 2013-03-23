@@ -535,18 +535,19 @@ class UserApi extends \Zikula_AbstractApi
 
         foreach ($mods as $mod) {
             // saves 17 system checks
-            if ($mod['type'] == 3 && !in_array($mod['name'], array('Admin', 'Categories', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name))) {
+            if ($mod['type'] == 3 && !in_array($mod['name'], array('ZikulaAdminModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name))) {
                 continue;
             }
 
             $modpath = ($mod['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
+            $module = ModUtil::getModule($this->name);
 
             $ooAccountApiFileNs = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/Api/AccountApi.php");
             $ooAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/Api/Account.php");
             $ooAccountApiFileOld = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/lib/{$mod['directory']}/Api/Account.php");
             $legacyAccountApiFile = DataUtil::formatForOS("{$modpath}/{$mod['directory']}/pnaccountapi.php");
-            if (file_exists($ooAccountApiFileNs) || file_exists($ooAccountApiFile) || file_exists($ooAccountApiFileOld) || file_exists($legacyAccountApiFile)) {
+            if ((isset($module) && class_exists($module->getClass())) || file_exists($ooAccountApiFileNs) || file_exists($ooAccountApiFile) || file_exists($ooAccountApiFileOld) || file_exists($legacyAccountApiFile)) {
                 $items = ModUtil::apiFunc($mod['name'], 'account', 'getAll');
                 if ($items) {
                     foreach ($items as $k => $item) {

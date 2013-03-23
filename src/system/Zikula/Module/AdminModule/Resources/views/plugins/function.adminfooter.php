@@ -10,17 +10,17 @@
 
 
 /**
- * Smarty function to open the admin container.
+ * Smarty function to close the admin container.
  *
  * Admin
- * {adminheader}
+ * {adminfooter}
  *
- * @see          function.adminheader.php::smarty_function_adminheader()
+ * @see          function.adminfooter.php::smarty_function_adminfooter()
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      $view        Reference to the Zikula_View object
  * @return       string      the results of the module function
  */
-function smarty_function_adminheader($params, $view)
+function smarty_function_adminfooter($params, $view)
 {
-    return ModUtil::func('Admin', 'admin', 'adminheader');
+    return ModUtil::func('ZikulaAdminModule', 'admin', 'adminfooter');
 }

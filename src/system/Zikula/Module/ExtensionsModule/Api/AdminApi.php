@@ -942,8 +942,8 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (!System::isInstalling()) {
             // This should become an event handler - drak
-            $category = ModUtil::getVar('Admin', 'defaultcategory');
-            ModUtil::apiFunc('Admin', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
+            $category = ModUtil::getVar('ZikulaAdminModule', 'defaultcategory');
+            ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'addmodtocategory', array('module' => $modinfo['name'], 'category' => $category));
         }
 
         // All went ok so issue installed event
@@ -1095,7 +1095,7 @@ class AdminApi extends \Zikula_AbstractApi
             $newmods = $this->listmodules(array('state' => ModUtil::STATE_UPGRADED));
 
             // Sort upgrade order according to this list.
-            $priorities = array('ZikulaExtensionsModule', 'ZikulaUsersModule' , 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'Admin', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'Categories', 'SecurityCenterModule', 'ZikulaErrorsModule');
+            $priorities = array('ZikulaExtensionsModule', 'ZikulaUsersModule' , 'ZikulaGroupsModule', 'ZikulaPermissionsModule', 'ZikulaAdminModule', 'ZikulaBlocksModule', 'ZikulaThemeModule', 'ZikulaSettingsModule', 'ZikulaCategoriesModule', 'SecurityCenterModule', 'ZikulaErrorsModule');
             $sortedList = array();
             foreach ($priorities as $priority) {
                 foreach ($newmods as $key => $modinfo) {
