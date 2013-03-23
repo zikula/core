@@ -1,6 +1,6 @@
 <?php
 
-namespace Zikula\Theme\RSSTheme;
+namespace Zikula\Theme\RssTheme;
 
 use Zikula\Core\AbstractTheme;
 
