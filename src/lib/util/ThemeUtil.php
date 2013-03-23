@@ -284,7 +284,7 @@ class ThemeUtil
         $themeName = DataUtil::formatForOS(UserUtil::getTheme());
         $theme = self::getTheme($themeName);
         if ($theme) {
-            $bundleRelativePath = substr($theme->getPath(), strpos($theme->getPath(), 'theme'), strlen($theme->getPath()));
+            $bundleRelativePath = substr($theme->getPath(), strpos($theme->getPath(), 'themes'), strlen($theme->getPath()));
             $bundleRelativePath = str_replace('\\', '/', $bundleRelativePath);
         }
         $paths[] = null === $theme ?
@@ -304,10 +304,7 @@ class ThemeUtil
         $paths[] = "system/$osmoddir/style";
         $paths[] = "modules/$osmoddir/pnstyle";
         $paths[] = "system/$osmoddir/pnstyle";
-if ($modname=='ZikulaAdminModule') {
 
-//    var_dump($module->getClass(), $paths);
-}
         // search for the style sheet
         $csssrc = '';
         foreach ($paths as $path) {
@@ -337,4 +334,20 @@ if ($modname=='ZikulaAdminModule') {
         return null;
     }
 
+    /**
+     * @param $themeName
+     *
+     * @return bool|mixed False or path
+     */
+    public static function getThemeRelativePath($themeName)
+    {
+        $theme = self::getTheme($themeName);
+        $path = false;
+        if ($theme) {
+            $path = substr($theme->getPath(), strpos($theme->getPath(), 'themes'), strlen($theme->getPath()));
+            $path = str_replace('\\', '/', $path);
+        }
+
+        return $path;
+    }
 }

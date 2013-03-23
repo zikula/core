@@ -2015,28 +2015,23 @@ class ModUtil
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $module = self::getModule($modinfo['name']);
+        $modulePath = self::getModuleRelativePath($modinfo['name']);
 
         $paths = array();
-        if ($module) {
-            $path = $module->getPath();
-            $bundleRelativePath = substr($path, strpos($path, self::getModuleBaseDir($moduleName)), strlen($path));
-            $bundleRelativePath = str_replace('\\', '/', $bundleRelativePath);
-            $paths[] = $bundleRelativePath.'/Resources/public/images/admin.png';
-            $paths[] = $bundleRelativePath.'/Resources/public/images/admin.jpg';
-            $paths[] = $bundleRelativePath.'/Resources/public/images/admin.gif';
+        if ($modulePath) {
+            $paths[] = $modulePath.'/Resources/public/images/admin.png';
+            $paths[] = $modulePath.'/Resources/public/images/admin.jpg';
+            $paths[] = $modulePath.'/Resources/public/images/admin.gif';
         }
 
-        $paths = array(
-                $modpath . '/' . $osmoddir . '/images/admin.png',
-                $modpath . '/' . $osmoddir . '/images/admin.jpg',
-                $modpath . '/' . $osmoddir . '/images/admin.gif',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.gif',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
-                $modpath . '/' . $osmoddir . '/pnimages/admin.png',
-                'system/Zikula/Module/AdminModule/Resources/public/images/default.gif'
-        );
+        $paths[] = $modpath . '/' . $osmoddir . '/images/admin.png';
+        $paths[] = $modpath . '/' . $osmoddir . '/images/admin.jpg';
+        $paths[] = $modpath . '/' . $osmoddir . '/images/admin.gif';
+        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.gif';
+        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.jpg';
+        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg';
+        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.png';
+        $paths[] = 'system/Zikula/Module/AdminModule/Resources/public/images/default.gif';
 
         foreach ($paths as $path) {
             if (is_readable($path)) {
@@ -2086,5 +2081,22 @@ class ModUtil
         }
 
         return null;
+    }
+
+    /**
+     * @param $modName
+     *
+     * @return bool|mixed False or path
+     */
+    public static function getModuleRelativePath($modName)
+    {
+        $module = self::getModule($modName);
+        $path = false;
+        if ($module) {
+            $path = substr($module->getPath(), strpos($module->getPath(), self::getModuleBaseDir($modName)), strlen($module->getPath()));
+            $path = str_replace('\\', '/', $path);
+        }
+
+        return $path;
     }
 }
