@@ -374,7 +374,7 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerArgsError();
         }
 
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminModulentity';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
         $dql = "SELECT count(m.amid) FROM $entity m WHERE m.cid = {$args['cid']}";
         $query = $this->entityManager->createQuery($dql);
         $count = $query->getSingleScalarResult();
