@@ -1392,6 +1392,11 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function iscoremodule($args)
     {
+        // todo: get rid of this when we remove Forms
+        if ($args['modulename'] === 'ZikulaPageLockModule') {
+            return false;
+        }
+
         return ModUtil::getModuleBaseDir($args['modulename']) === 'system' ? true : false;
     }
 
