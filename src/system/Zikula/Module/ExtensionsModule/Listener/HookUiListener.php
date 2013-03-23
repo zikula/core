@@ -19,6 +19,7 @@ use SecurityUtil;
 use HookUtil;
 use EventUtil;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\Module\ExtensionsModule\Util;
 
 /**
  * HooksUI class.
@@ -35,7 +36,7 @@ class HookUiListener
         }
 
         // get view
-        $view = Zikula_View::getInstance('ExtensionsModule', false);
+        $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
 
         // get module's name and assign it to template
         $moduleName = $subject->getName();
@@ -48,10 +49,8 @@ class HookUiListener
 
         // create an instance of the module's version
         // we will use it to get the bundles
-        $moduleVersion = "$moduleName\\{$moduleName}Version";
-        $moduleVersionOld = $moduleName.'_Version';
-        $moduleVersion = class_exists($moduleVersion) ? $moduleVersion : $moduleVersionOld;
-        $moduleVersionObj = new $moduleVersion;
+
+        $moduleVersionObj = Util::getVersionMeta($moduleName);
 
         // find out the capabilities of the module
         $isProvider = (HookUtil::isProviderCapable($moduleName)) ? true : false;
