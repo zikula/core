@@ -10,14 +10,14 @@
         }
     ],
     "autoload": {
-        "psr-0": { "Admin\\": "" }
+        "psr-0": { "Zikula\\Module\\AdminModule\\": "" }
     },
     "require": {
         "php": ">5.3.3"
     },
     "extra": {
         "zikula": {
-            "class": "Admin\\AdminModule"
+            "class": "Zikula\\Module\\AdminModule\\ZikulaAdminModule"
         }
     }
 }

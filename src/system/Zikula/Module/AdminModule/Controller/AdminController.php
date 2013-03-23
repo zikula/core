@@ -357,7 +357,7 @@ class AdminController extends \Zikula_AbstractController
                 }
             }
         }
-        usort($adminlinks, '_sortAdminModsByOrder');
+        usort($adminlinks, 'Zikula\Module\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
         $this->view->assign('adminlinks', $adminlinks);
 
         return $this->view->fetch('admin_admin_adminpanel.tpl');
@@ -522,7 +522,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         foreach ($adminlinks as &$item) {
-            usort($item, '_sortAdminModsByOrder');
+            usort($item, 'Zikula\Module\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
         }
 
         $menuoptions = array();
@@ -811,13 +811,17 @@ class AdminController extends \Zikula_AbstractController
             return false;
         }
     }
-}
 
-function _sortAdminModsByOrder($a,$b)
-{
-    if ((int)$a['order'] == (int)$b['order']) {
-        return strcmp($a['modname'], $b['modname']);
+    public static function _sortAdminModsByOrder($a,$b)
+    {
+        if ((int)$a['order'] == (int)$b['order']) {
+            return strcmp($a['modname'], $b['modname']);
+        }
+        if((int)$a['order'] > (int)$b['order']) {
+            return 1;
+        }
+        if((int)$a['order'] < (int)$b['order']) {
+            return -1;
+        }
     }
-    if((int)$a['order']  > (int)$b['order']) return 1;
-    if((int)$a['order']  < (int)$b['order']) return -1;
 }

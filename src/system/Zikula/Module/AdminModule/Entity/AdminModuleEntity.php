@@ -1,18 +1,8 @@
-<?php/**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
- *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
- *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
- */
+<?php
 
 namespace Zikula\Module\AdminModule\Entity;
 
+use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,11 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
+ * @ORM\Entity
  * @ORM\Table(name="admin_module",indexes={@ORM\index(name="mid_cid",columns={"mid","cid"})})
  */
-class AdminModuleEntity extends \Zikula_EntityAccess
+class AdminModuleEntity extends EntityAccess
 {
-    /**
+   /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")

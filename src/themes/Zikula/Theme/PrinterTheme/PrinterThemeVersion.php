@@ -14,5 +14,7 @@ class PrinterThemeVersion extends \Zikula_AbstractThemeVersion
             'user'        => 0,
             'system'      => 1,
         );
+
+        return $meta;
     }
 }

@@ -113,7 +113,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // move all modules from the category to be deleted into the
         // default category.
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
         $dql = "UPDATE $entity m SET m.cid = {$defaultcategory} WHERE m.cid = {$item['cid']}";
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
@@ -149,7 +149,7 @@ class AdminApi extends \Zikula_AbstractApi
             return $items;
         }
 
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
         $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'), $args['numitems'], $args['startnum']);
 
         return $items;

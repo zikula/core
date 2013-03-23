@@ -2015,11 +2015,19 @@ class ModUtil
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
+        $module = self::getModule($modinfo['name']);
+
+        $paths = array();
+        if ($module) {
+            $path = $module->getPath();
+            $bundleRelativePath = substr($path, strpos($path, self::getModuleBaseDir($moduleName)), strlen($path));
+            $bundleRelativePath = str_replace('\\', '/', $bundleRelativePath);
+            $paths[] = $bundleRelativePath.'/Resources/public/images/admin.png';
+            $paths[] = $bundleRelativePath.'/Resources/public/images/admin.jpg';
+            $paths[] = $bundleRelativePath.'/Resources/public/images/admin.gif';
+        }
 
         $paths = array(
-                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.png',
-                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.jpg',
-                $modpath . '/' . $osmoddir . '/Resources/public/images/admin.gif',
                 $modpath . '/' . $osmoddir . '/images/admin.png',
                 $modpath . '/' . $osmoddir . '/images/admin.jpg',
                 $modpath . '/' . $osmoddir . '/images/admin.gif',
@@ -2027,7 +2035,7 @@ class ModUtil
                 $modpath . '/' . $osmoddir . '/pnimages/admin.jpg',
                 $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg',
                 $modpath . '/' . $osmoddir . '/pnimages/admin.png',
-                'system/Admin/Resources/public/images/default.gif'
+                'system/Zikula/Module/AdminModule/Resources/public/images/default.gif'
         );
 
         foreach ($paths as $path) {
@@ -2055,8 +2063,7 @@ class ModUtil
         if (in_array($name, array(
             'Blocks', 'Errors', 'Extensions', 'Groups', 'Mailer', 'Permissions',
             'PageLock', 'Search', 'SecurityCenter', 'Settings', 'Theme', 'Users',
-            'Categories',
-            //'ZikulaAdminModule',  // todo
+            'Categories', 'Admin'
         ))) {
             $name = 'Zikula'.$name.'Module';
         }

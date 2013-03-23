@@ -268,7 +268,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $data = $this->request->request->get('admintabs');
 
-        $entity = $this->name . '_Entity_AdminCategory';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
 
         foreach ($data as $order => $cid) {
             $item = $this->entityManager->getRepository($entity)->findOneBy(array('cid' => $cid));
@@ -289,7 +289,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $data = $this->request->request->get('modules');
 
-        $entity = $this->name . '_Entity_AdminModule';
+        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
 
         foreach ($data as $order => $mid) {
             $item = $this->entityManager->getRepository($entity)->findOneBy(array('mid' => $mid));

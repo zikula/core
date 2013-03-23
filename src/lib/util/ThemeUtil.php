@@ -133,16 +133,7 @@ class ThemeUtil
         }
 
         foreach ($themesarray[$key] as $theme => $values) {
-            if (file_exists('themes/'.$theme.'/templates/master.tpl')) {
-                $themesarray[$key][$theme]['structure'] = true;
-            } else {
-                if (FormUtil::getPassedValue('type', 'POST') == 'admin') {
-                    LogUtil::registerError(__f('The structure of the theme %s is not valid!', $values['name']));
-                    $themesarray[$key][$theme]['structure'] = false;
-                } else {
-                    unset($themesarray[$key][$theme]);
-                }
-            }
+            $themesarray[$key][$theme]['structure'] = true;
         }
 
         return $themesarray[$key];
@@ -292,21 +283,31 @@ class ThemeUtil
         // theme directory
         $themeName = DataUtil::formatForOS(UserUtil::getTheme());
         $theme = self::getTheme($themeName);
+        if ($theme) {
+            $bundleRelativePath = substr($theme->getPath(), strpos($theme->getPath(), 'theme'), strlen($theme->getPath()));
+            $bundleRelativePath = str_replace('\\', '/', $bundleRelativePath);
+        }
         $paths[] = null === $theme ?
-            "themes/$themeName/style/$osmodname" : $theme->getPath().'/Resources/css/'.$theme->getName();
+            "themes/$themeName/style/$osmodname" : $bundleRelativePath.'/Resources/css/'.$theme->getName();
 
         // module directory
         $modinfo = ModUtil::getInfoFromName($modname);
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
 
-        if (null !== $module) {
-            $paths[] = $theme->getPath()."/Resources/public/css";
+        if ($module) {
+            $dir = ModUtil::getModuleBaseDir($modname);
+            $bundleRelativePath = substr($module->getPath(), strpos($module->getPath(), $dir), strlen($module->getPath()));
+            $bundleRelativePath = str_replace('\\', '/', $bundleRelativePath);
+            $paths[] = $bundleRelativePath."/Resources/public/css";
         }
         $paths[] = "modules/$osmoddir/style";
         $paths[] = "system/$osmoddir/style";
         $paths[] = "modules/$osmoddir/pnstyle";
         $paths[] = "system/$osmoddir/pnstyle";
+if ($modname=='ZikulaAdminModule') {
 
+//    var_dump($module->getClass(), $paths);
+}
         // search for the style sheet
         $csssrc = '';
         foreach ($paths as $path) {

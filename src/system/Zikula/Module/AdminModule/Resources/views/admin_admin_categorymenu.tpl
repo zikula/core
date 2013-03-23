@@ -44,7 +44,7 @@
         </li>
         {/foreach}
         <li id="addcat">
-            <a id="addcatlink" href="{modurl modname=Admin type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
+            <a id="addcatlink" href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
             {include file='admin_admin_ajaxAddCategory.tpl'}
         </li>
     </ul>

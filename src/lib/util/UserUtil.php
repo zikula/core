@@ -17,6 +17,7 @@ use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula_Exception_Fatal as FatalException;
 use Zikula_Exception_Redirect as RedirectException;
 use Zikula_Exception_Forbidden as ForbiddenException;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * UserUtil
@@ -1894,7 +1895,9 @@ class UserUtil
     {
         static $pagetheme;
 
+        /** @var $request Request */
         $request = ServiceUtil::get('request');
+
         if (isset($pagetheme) && !$force) {
             return $pagetheme;
         }
@@ -1908,11 +1911,11 @@ class UserUtil
             if (empty($thememobile)) {
                 $thememobile = 'Mobile';
             }
-            if (CookieUtil::getCookie('zikulaMobileTheme') == '1' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
+            if (CookieUtil::getCookie('zikula_mobile_theme') == '1' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
                 $pagetheme = $thememobile;
-            } else if (CookieUtil::getCookie('zikulaMobileTheme') != '2' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
+            } else if (CookieUtil::getCookie('zikula_mobile_theme') != '2' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
                 include_once("system/Zikula/Module/ThemeModule/vendor/Mobile_Detect.php");
-                $detect = new Mobile_Detect();
+                $detect = new \Mobile_Detect();
                 if ($detect->isMobile()) {
                     $pagetheme = $thememobile;
                 }
@@ -1936,7 +1939,11 @@ class UserUtil
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($pagetheme));
             if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE && ($themeinfo['user'] || $themeinfo['system'] || ($themeinfo['admin'] && ($type == 'admin'))) && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 $pagetheme = $themeinfo['name'];
-                return self::_getThemeFilterEvent($themeinfo['name'], 'page-specific');
+
+                $themeName = self::_getThemeFilterEvent($themeinfo['name'], 'page-specific');
+                $request->attributes->set('_theme', $themeName);
+
+                return $themeName;
             }
         }
 
@@ -1947,7 +1954,11 @@ class UserUtil
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
                 if ($themeinfo && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                     $pagetheme = $themeinfo['name'];
-                    return self::_getThemeFilterEvent($themeinfo['name'], 'admin-theme');
+
+                    $themeName = self::_getThemeFilterEvent($themeinfo['name'], 'admin-theme');
+                    $request->attributes->set('_theme', $themeName);
+
+                    return $themeName;
                 }
             }
         }
@@ -2002,6 +2013,8 @@ class UserUtil
         }
 
         if (!System::isInstalling()) {
+//            $request->attributes->set('_theme', $themeName = 'ZikulaAndreas08Theme');
+//            return $themeName;
             throw new RuntimeException(__('UserUtil::getTheme() is unable to calculate theme name.'));
         }
     }

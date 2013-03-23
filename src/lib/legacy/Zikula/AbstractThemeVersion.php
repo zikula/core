@@ -74,6 +74,10 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
      */
     protected $type;
 
+    protected $user;
+    protected $admin;
+    protected $system;
+
     /**
      * The state of the module, set when the Modules module regenerates its list.
      *
@@ -119,9 +123,11 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
         $meta['name'] = $this->name;
         $meta['description'] = $this->description;
         $meta['displayname'] = $this->displayname;
-        $meta['url'] = $this->url;
         $meta['version'] = $this->version;
         $meta['type'] = $this->type;
+        $meta['user'] = $this->user;
+        $meta['admin'] = $this->admin;
+        $meta['system'] = $this->system;
         $meta['directory'] = $this->directory;
 
         return $meta;
@@ -195,28 +201,6 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     }
 
     /**
-     * Return the string used in the module's URL.
-     *
-     * @return string The URL fragment.
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * Set the string used in URLs to access the module.
-     *
-     * @param string $url The URL fragment.
-     *
-     * @return void
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-    }
-
-    /**
      * Retrieve the module's brief description.
      *
      * @return string The description.
@@ -263,6 +247,162 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
             throw new InvalidArgumentException($this->__f('Version numbers must be in the format "a.b.c" in class %s', get_class($this)));
         }
         $this->version = $version;
+    }
+
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    public function getAdmin()
+    {
+        return $this->admin;
+    }
+
+    /**
+     * Sets Directory
+     *
+     * @param string $directory
+     *
+     * @return Zikula_AbstractThemeVersion
+     */
+    public function setDirectory($directory)
+    {
+        $this->directory = $directory;
+
+        return $this;
+    }
+
+    /**
+     * Gets Directory
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
+
+    /**
+     * Sets Domain
+     *
+     * @param string $domain
+     *
+     * @return Zikula_AbstractThemeVersion
+     */
+    public function setDomain($domain)
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Gets Domain
+     *
+     * @return string
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Sets Reflection
+     *
+     * @param \ReflectionObject $reflection
+     *
+     * @return Zikula_AbstractThemeVersion
+     */
+    public function setReflection($reflection)
+    {
+        $this->reflection = $reflection;
+
+        return $this;
+    }
+
+    /**
+     * Gets Reflection
+     *
+     * @return \ReflectionObject
+     */
+    public function getReflection()
+    {
+        return $this->reflection;
+    }
+
+    /**
+     * Sets State
+     *
+     * @param int $state
+     *
+     * @return Zikula_AbstractThemeVersion
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Gets State
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setSystem($system)
+    {
+        $this->system = $system;
+
+        return $this;
+    }
+
+    public function getSystem()
+    {
+        return $this->system;
+    }
+
+    /**
+     * Sets Type
+     *
+     * @param int $type
+     *
+     * @return Zikula_AbstractThemeVersion
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets Type
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**

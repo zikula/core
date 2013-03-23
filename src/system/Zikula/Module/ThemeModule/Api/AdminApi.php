@@ -202,7 +202,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete theme
-        $dql = "DELETE FROM Zikula\Module\ThemeModule\Entity\ThemeEntity t WHERE t.id = {$themeid}";
+        $dql = "DELETE FROM Zikula\\Module\\ThemeModule\\Entity\\ThemeEntity t WHERE t.id = {$themeid}";
         $query = $this->entityManager->createQuery($dql);
         $result = $query->getResult();
         if (!$result) {
@@ -367,97 +367,6 @@ class AdminApi extends \Zikula_AbstractApi
 
         // write the page configurations back to the running config
         ModUtil::apiFunc('ZikulaThemeModule', 'user', 'writeinifile', array('theme' => $args['themename'], 'assoc_arr' => $pageconfigurations, 'has_sections' => true, 'file' => 'pageconfigurations.ini'));
-
-        return true;
-    }
-
-    /**
-     * create theme
-     */
-    public function create($args)
-    {
-        // Argument check
-        if (!isset($args['themeinfo']) || !isset($args['themeinfo']['name']) || empty($args['themeinfo']) || empty($args['themeinfo']['name'])) {
-            $url = ModUtil::url('ZikulaThemeModule', 'admin', 'new');
-
-            return LogUtil::registerError(__("Error: You must enter at least the theme name."), null, $url);
-        }
-
-        $themeinfo = DataUtil::formatForOS($args['themeinfo']);
-
-        // check for some invalid input
-        if (!isset($themeinfo['displayname']) || empty($themeinfo['displayname'])) {
-            $themeinfo['displayname'] = $themeinfo['name'];
-        }
-        if (!isset($themeinfo['description']) || empty($themeinfo['description'])) {
-            $themeinfo['description'] = $themeinfo['name'];
-        }
-
-        // strip the theme name of any unwanted characters
-        $themeinfo['name'] = preg_replace('/[^a-z0-9_]/i', '_', $themeinfo['name']);
-
-        // check if theme already exists
-        if (ThemeUtil::getIDFromName($themeinfo['name'])) {
-            return LogUtil::registerError(__('Error! Could not create the new item.'));
-        }
-
-        // create the directory structure
-        $dirs = array(
-                '',
-                '/docs',
-                '/images',
-                '/plugins',
-                '/locale',
-                '/locale/en',
-                '/locale/en/LC_MESSAGES',
-                '/style',
-                '/templates',
-                '/templates/blocks',
-                '/templates/config',
-                '/templates/modules'
-        );
-
-        foreach ($dirs as $dir) {
-            if (!mkdir("themes/{$themeinfo['name']}/{$dir}") || !touch("themes/{$themeinfo['name']}/{$dir}/index.html")) {
-                return LogUtil::registerError(__('Error! Could not create the new item.'));
-            }
-        }
-
-        $versionfile = $args['versionfile'];
-        $potfile = $args['potfile'];
-        $palettesfile = $args['palettesfile'];
-        $variablesfile = $args['variablesfile'];
-        $pageconfigurationsfile = $args['pageconfigurationsfile'];
-        $pageconfigurationfile = $args['pageconfigurationfile'];
-        $pagetemplatefile = $args['pagetemplatefile'];
-        $cssfile = $args['cssfile'];
-        $blockfile = $args['blockfile'];
-
-        $files = array(
-                "themes/$themeinfo[name]/version.php" => 'versionfile',
-                "themes/$themeinfo[name]/locale/theme_".$themeinfo['name'].".pot" => 'potfile',
-                "themes/$themeinfo[name]/templates/config/themepalettes.ini" => 'palettesfile',
-                "themes/$themeinfo[name]/templates/config/themevariables.ini" => 'variablesfile',
-                "themes/$themeinfo[name]/templates/config/pageconfigurations.ini" => 'pageconfigurationsfile',
-                "themes/$themeinfo[name]/templates/config/master.ini" => 'pageconfigurationfile',
-                "themes/$themeinfo[name]/templates/master.tpl" => 'pagetemplatefile',
-                "themes/$themeinfo[name]/templates/blocks/block.tpl" => 'blockfile',
-                "themes/$themeinfo[name]/style/style.css" => 'cssfile'
-        );
-
-        // write the files
-        foreach ($files as $filename => $filevar) {
-            $handle = fopen($filename, 'w');
-            if (!$handle) {
-                return LogUtil::registerError(__f('Error! Could not open file so that it could be written to: %s', $filename));
-            }
-            if (!fwrite($handle, $$filevar)) {
-                fclose($handle);
-
-                return LogUtil::registerError(__f('Error! could not write to file: %s', $filename));
-            }
-            fclose($handle);
-        }
 
         return true;
     }

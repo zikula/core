@@ -10,7 +10,6 @@
             "Zikula\\Module": "src/system",
             "Zikula\\Theme": "src/themes",
             "DoctrineExtensions\\StandardFields": "src/lib",
-            "Admin\\": "src/system",
             "CustomBundle\\": "src/app/custom"
         },
         "classmap": [

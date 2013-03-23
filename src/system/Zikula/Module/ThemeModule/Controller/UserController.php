@@ -109,7 +109,8 @@ class UserController extends \Zikula_AbstractController
      */
     public function enableMobileTheme()
     {
-        CookieUtil::setCookie('zikulaMobileTheme', '1', time()+3600*24*365, '/');
+        CookieUtil::setCookie('zikula_mobile_theme', '1', time()+3600*24*365, '/');
+
         return $this->redirect(System::getHomepageUrl());
     }
     
@@ -121,7 +122,8 @@ class UserController extends \Zikula_AbstractController
      */
     public function disableMobileTheme()
     {
-        CookieUtil::setCookie('zikulaMobileTheme', '2', time()+3600*24*365, '/');
+        CookieUtil::setCookie('zikula_mobile_theme', '2', time()+3600*24*365, '/');
+
         return $this->redirect(System::getHomepageUrl());
     }
 

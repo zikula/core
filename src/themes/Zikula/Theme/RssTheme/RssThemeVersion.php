@@ -9,7 +9,7 @@ class RssThemeVersion extends \Zikula_AbstractThemeVersion
         $meta = array(
             'displayname' => $this->__('RSS'),
             'description' => $this->__('The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.'),
-            'version'     => '1.0.0',
+            //! URL for display in the request.
             'admin'       => 0,
             'user'        => 0,
             'system'      => 1,

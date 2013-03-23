@@ -1,29 +1,19 @@
 <?php
-/**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
- *
- * This work is contributed to the Zikula Foundation under one or more
- * Contributor Agreements and licensed to You under the following license:
- *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
- */
 
 namespace Zikula\Module\AdminModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * AdminCategory entity class.
  *
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
+ * @ORM\Entity
  * @ORM\Table(name="admin_category")
  */
-class AdminCategoryEntity extends \Zikula_EntityAccess
+class AdminCategoryEntity extends EntityAccess
 {
     /**
      * @ORM\Id

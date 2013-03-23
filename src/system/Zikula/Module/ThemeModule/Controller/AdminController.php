@@ -27,6 +27,7 @@ use DataUtil;
 use ZLanguage;
 use BlockUtil;
 use Zikula_View_Theme;
+use Zikula\Module\ThemeModule\Util;
 
 class AdminController extends \Zikula_AbstractController
 {
@@ -73,10 +74,10 @@ class AdminController extends \Zikula_AbstractController
             // only the main site can regenerate the themes list
             if ($this->container['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)) {
                 //return true but any action has been made
-                ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
+                Util::regenerate();
             }
         } else {
-            ModUtil::apiFunc('ZikulaThemeModule', 'admin', 'regenerate');
+            Util::regenerate();
         }
 
         // get our input

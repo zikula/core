@@ -240,9 +240,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // include system/Admin/templates/plugins to the plugins_dir array
         if ($type === 'admin') {
             if (!$this instanceof Zikula_View_Theme) {
-                $this->addPluginDir('system/Admin/Resources/views/plugins');
-                // todo - remove this line
-                $this->addPluginDir('system/Admin/templates/plugins');
+                $this->addPluginDir('system/Zikula/Module/AdminModule/Resources/views/plugins');
             } else {
                 $this->load_filter('output', 'admintitle');
             }
