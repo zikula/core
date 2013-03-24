@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
 use Zikula\Core\AbstractModule;
+use Zikula\Core\AbstractTheme;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -18,6 +19,16 @@ abstract class ZikulaKernel extends Kernel
     private $dump = true;
 
     /**
+     * @var array
+     */
+    private $moduleMap = array();
+
+    /**
+     * @var array
+     */
+    private $themeMap = array();
+
+    /**
      * Flag determines if container is dumped or not
      *
      * @param $flag
@@ -25,6 +36,19 @@ abstract class ZikulaKernel extends Kernel
     public function setDump($flag)
     {
         $this->dump = $flag;
+    }
+
+    public function boot()
+    {
+        parent::boot();
+
+        foreach ($this->bundleMap as $name => $bundles) {
+            if ($bundles[0] instanceof AbstractModule) {
+                $this->moduleMap[$name] = $bundles;
+            } elseif ($bundles[0] instanceof AbstractTheme) {
+                $this->themeMap[$name] = $bundles;
+            }
+        }
     }
 
     /**
@@ -38,29 +62,46 @@ abstract class ZikulaKernel extends Kernel
     /**
      * Get named module bundle.
      *
-     * @param $moduleName
+     * @param string  $moduleName
+     * @param boolean $first
      *
+     * @throws \InvalidArgumentException when the bundle is not enabled
      * @return \Zikula\Core\AbstractModule|\Zikula\Core\AbstractModule[]
      */
-    public function getModule($moduleName)
+    public function getModule($moduleName, $first = true)
     {
-        // todo - only return a module bundle
+        if (!isset($this->moduleMap[$moduleName])) {
+            throw new \InvalidArgumentException(sprintf('Module "%s" does not exist or it is not enabled.', $moduleName, get_class($this)));
+        }
 
-        return $this->getBundle($moduleName);
+        if (true === $first) {
+            return $this->moduleMap[$moduleName][0];
+        }
+
+        return $this->moduleMap[$moduleName];
     }
 
     /**
      * Get named theme bundle.
      *
-     * @param $themeName
+     * @param string  $themeName
+     * @param boolean $first
+     *
+     * @throws \InvalidArgumentException when the bundle is not enabled
      *
      * @return \Zikula\Core\AbstractTheme|\Zikula\Core\AbstractTheme[]
      */
-    public function getTheme($themeName)
+    public function getTheme($themeName, $first = true)
     {
-        // todo - only return a theme bundle
+        if (!isset($this->themeMap[$themeName])) {
+            throw new \InvalidArgumentException(sprintf('Theme "%s" does not exist or it is not enabled.', $themeName, get_class($this)));
+        }
 
-        return $this->getBundle($themeName);
+        if (true === $first) {
+            return $this->themeMap[$themeName][0];
+        }
+
+        return $this->themeMap[$themeName];
     }
 
     /**
