@@ -128,6 +128,7 @@ function smarty_function_img($params, Zikula_View $view)
         $modinfo   = ModUtil::getInfoFromName($modname);
         $osmoddir  = DataUtil::formatForOS($modinfo['directory']);
         $moduleDir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
+        $module = ModUtil::getModule($modinfo['name']);
 
         if ($modplugin) {
             $osmodplugdir    = DataUtil::formatForOS($modplugin);
@@ -152,8 +153,11 @@ function smarty_function_img($params, Zikula_View $view)
             if ($modname == 'core') {
                 $modpath        = "images";
             } else {
-                $modlangpath    = "$moduleDir/$osmoddir/Resources/public/images/$lang";
-                $modpath        = "$moduleDir/$osmoddir/Resources/public/images";
+                $module = ModUtil::getModule($modinfo['name']);
+                $moduleBasePath = $module->getRelativePath().'/Resources/public/images';
+                vat_dump($moduleBasePath);
+                $modlangpath    = "$moduleBasePath/$lang";
+                $modpath        = $moduleBasePath;
                 $modlangpathOld = "$moduleDir/$osmoddir/images/$lang";
                 $modpathOld     = "$moduleDir/$osmoddir/images";
                 $modlangpathOld2 = "$moduleDir/$osmoddir/pnimages/$lang";

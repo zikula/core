@@ -71,7 +71,7 @@ abstract class AbstractBundle extends Bundle
     public function getRelativePath()
     {
         $path = str_replace('\\', '/', $this->getPath());
-        preg_match('#/(modules|system|theme)/#', $path, $matches);
+        preg_match('#/(modules|system|themes)/#', $path, $matches);
 
         return substr($path, strpos($path, $matches[1]), strlen($path));
     }

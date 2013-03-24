@@ -56,6 +56,7 @@ class ZikulaKernel extends Kernel
         $bundles[] = new Zikula\Module\ThemeModule\ZikulaThemeModule();
         $bundles[] = new Zikula\Module\UsersModule\ZikulaUsersModule();
         $bundles[] = new Zikula\Theme\Andreas08Theme\ZikulaAndreas08Theme();
+        $bundles[] = new Zikula\Theme\AtomTheme\ZikulaAtomTheme();
         $bundles[] = new Zikula\Theme\RssTheme\ZikulaRssTheme();
         $bundles[] = new Zikula\Theme\PrinterTheme\ZikulaPrinterTheme();
         $bundles[] = new Zikula\Theme\MobileTheme\ZikulaMobileTheme();
