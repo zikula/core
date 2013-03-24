@@ -247,7 +247,7 @@ class AdminController extends \Zikula_AbstractController
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -300,7 +300,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -371,7 +371,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -419,7 +419,7 @@ class AdminController extends \Zikula_AbstractController
 
         // check if this is a valid theme
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -478,7 +478,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/version.php')) {
+         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -556,7 +556,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -668,7 +668,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']) . '/version.php')) {
+         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -757,7 +757,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
@@ -856,7 +856,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError(ModUtil::url('ZikulaThemeModule', 'admin', 'view'));
         }
 
