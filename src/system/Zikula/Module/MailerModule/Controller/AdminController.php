@@ -63,7 +63,7 @@ class AdminController extends \Zikula_AbstractController
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
-        return $form->execute('mailer_admin_modifyconfig.tpl', new ModifyConfigHandler());
+        return $form->execute('Admin/modifyconfig.tpl', new ModifyConfigHandler());
     }
 
     /**
@@ -76,6 +76,6 @@ class AdminController extends \Zikula_AbstractController
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
-        return $form->execute('mailer_admin_testconfig.tpl', new TestConfigHandler());
+        return $form->execute('Admin/testconfig.tpl', new TestConfigHandler());
     }
 }
