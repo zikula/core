@@ -135,10 +135,16 @@ class AdminController extends \Zikula_AbstractController
      */
     private function checkRunningConfig($themeinfo)
     {
+        $theme = ThemeUtil::getTheme($themeinfo['name']);
         $ostemp = CacheUtil::getLocalDir();
-        $zpath  = $ostemp.'/Theme_Config/'.DataUtil::formatForOS($themeinfo['directory']);
-        $tpath  = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
-
+        if ($theme) {
+            $themePath = $theme->getRelativePath().'/Resources/config';
+            $zpath  = $ostemp.'/Theme_Config/'.DataUtil::formatForOS($themeinfo['directory']);
+            $tpath  = $themePath;
+        } else {
+            $zpath  = $ostemp.'/Theme_Config/'.DataUtil::formatForOS($themeinfo['directory']);
+            $tpath  = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates/config';
+        }
         // check if we can edit the theme and, if not, create the running config
         if (!is_writable($tpath.'/pageconfigurations.ini')) {
             if (!file_exists($zpath) || is_writable($zpath)) {
