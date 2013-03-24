@@ -136,7 +136,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
-        if (!file_exists('themes/'.DataUtil::formatForOS($themeinfo['directory']).'/version.php')) {
+        if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
             return LogUtil::registerArgsError();
         }
 
