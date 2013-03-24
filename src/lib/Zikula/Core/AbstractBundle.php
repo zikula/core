@@ -8,9 +8,15 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class AbstractBundle extends Bundle
 {
+    protected $booted = false;
     protected static $staticPath;
 
     private $basePath;
+
+    public function isBooted()
+    {
+        return $this->booted;
+    }
 
 //    public function __construct()
 //    {
@@ -33,6 +39,41 @@ abstract class AbstractBundle extends Bundle
         $class = $ns.'\\'.substr($ns, strrpos($ns, '\\')+1, strlen($ns)).'Version';
 
         return $class;
+    }
+
+    /**
+     * Gets the translation domain path
+     *
+     * @return string
+     */
+    public function getLocalePath()
+    {
+        return $this->getPath().'/Resources/locale';
+    }
+
+    /**
+     * Gets the translation domain path
+     *
+     * @return string
+     */
+    public function getViewsPath()
+    {
+        return $this->getPath().'/Resources/views';
+    }
+
+    /**
+     * @return string
+     *
+     * @todo remove (drak)
+     *
+     * @internal This is just required until the transition is over fully to Symfony
+     */
+    public function getRelativePath()
+    {
+        $path = str_replace('\\', '/', $this->getPath());
+        preg_match('#/(modules|system|theme)/#', $path, $matches);
+
+        return substr($path, strpos($path, $matches[1]), strlen($path));
     }
 
     /**
