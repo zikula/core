@@ -384,7 +384,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
 
         $type = Zikula_AbstractErrorHandler::$configConversion[abs($handler->getType())];
-//var_dump($handler->getType(), abs($handler->getType()), $type, $event['type']);
         if ($this->serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
             if (abs($handler->getType()) <= $this->serviceManager['log.display_level']) {
                 $this->serviceManager->get('zend.logger.display')->log(abs($event['type']), $message);

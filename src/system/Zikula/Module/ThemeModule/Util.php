@@ -112,8 +112,8 @@ class Util
 
                 // delete item from db
                 $item = $entityManager->getRepository('Zikula\Module\ThemeModule\Entity\ThemeEntity')->findOneBy(array('name' => $name));
-                //$entityManager->remove($item);
-var_dump($name);
+                $entityManager->remove($item);
+
                 unset($dbthemes[$name]);
             }
         }
