@@ -155,7 +155,6 @@ function smarty_function_img($params, Zikula_View $view)
             } else {
                 $module = ModUtil::getModule($modinfo['name']);
                 $moduleBasePath = $module->getRelativePath().'/Resources/public/images';
-                vat_dump($moduleBasePath);
                 $modlangpath    = "$moduleBasePath/$lang";
                 $modpath        = $moduleBasePath;
                 $modlangpathOld = "$moduleDir/$osmoddir/images/$lang";
