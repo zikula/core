@@ -1,9 +1,9 @@
 ## YAML Override template
 ## original/file.tpl: override/file.tpl
 ---
-system/Blocks/templates/blocks_block_extmenu.tpl: themes/Mobile/templates/modules/Blocks/blocks_block_extmenu.tpl
-system/Users/templates/users_user_main.tpl: themes/Mobile/templates/modules/Users/users_user_main.tpl
-system/Admin/templates/admin_admin_adminpanel.tpl: themes/Mobile/templates/modules/Admin/admin_admin_adminpanel.tpl
-system/Admin/templates/admin_admin_categorymenu.tpl: themes/Mobile/templates/modules/Admin/admin_admin_categorymenu.tpl
-system/Admin/templates/admin_admin_footer.tpl: themes/Mobile/templates/modules/Admin/admin_admin_footer.tpl
-system/Admin/templates/admin_admin_header.tpl: themes/Mobile/templates/modules/Admin/admin_admin_header.tpl
+system/Zikula/Module/BlocksModule/Resources/views/blocks_block_extmenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/Resources/views/zikulaBlocksModule/blocks_block_extmenu.tpl
+system/Zikula/Module/UsersModule/Resources/views/Users/main.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaUsersModule/Users/main.tpl
+system/Zikula/Module/AdminModule/Resources/views/admin_admin_adminpanel.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_adminpanel.tpl
+system/Zikula/Module/AdminModule/Resources/views/admin_admin_categorymenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_categorymenu.tpl
+system/Zikula/Module/AdminModule/Resources/views/admin_admin_footer.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_footer.tpl
+system/Zikula/Module/AdminModule/Resources/views/admin_admin_header.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_header.tpl
