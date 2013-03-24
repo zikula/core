@@ -11,5 +11,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
+/**
+ * @depracted remove in 1.4
+ */
 include 'index.php';
 
