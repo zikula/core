@@ -69,17 +69,14 @@ function install(Zikula_Core $core)
     $notinstalled = isset($_GET['notinstalled']);
     $installedState = (isset($GLOBALS['ZConfig']['System']['installed']) ? $GLOBALS['ZConfig']['System']['installed'] : 0);
 
+    // if the system is already installed, halt.
+    if ($GLOBALS['ZConfig']['System']['installed']) {
+        _installer_alreadyinstalled($smarty);
+    }
+
     // If somehow we are browsing the not installed page but installed, redirect back to homepage
     if ($installedState && $notinstalled) {
         $response = new RedirectResponse(System::getHomepageUrl());
-        $response->send();
-        return;
-    }
-
-    // see if the language was already selected
-    $languageAlreadySelected = ($lang) ? true : false;
-    if (!$notinstalled && $languageAlreadySelected && empty($action)) {
-        $response = new RedirectResponse(System::getBaseUri() . "/install.php?action=requirements&lang=$lang");
         $response->send();
         return;
     }
@@ -136,11 +133,6 @@ function install(Zikula_Core $core)
 
     // assign the values from config.php
     $smarty->assign($GLOBALS['ZConfig']['System']);
-
-    // if the system is already installed, halt.
-    if ($GLOBALS['ZConfig']['System']['installed']) {
-        _installer_alreadyinstalled($smarty);
-    }
 
     // check for an empty action - if so then show the first installer page
     if (empty($action)) {
