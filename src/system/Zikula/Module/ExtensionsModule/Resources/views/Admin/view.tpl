@@ -7,8 +7,8 @@
 </script>
 {/pageaddvarblock}
 
-{gt text="Extension database" assign=extdbtitle}
-{assign value="<strong><a href=\"http://community.zikula.org/module-Extensions-view.htm\">`$extdbtitle`</a></strong>" var=extdblink}
+{gt text="Extensions database" assign=extdbtitle}
+{assign value="<strong><a href=\"http://go.zikula.org/inappstore\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
 <div class="z-admin-content-pagetitle">
