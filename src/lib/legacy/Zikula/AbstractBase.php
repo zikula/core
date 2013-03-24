@@ -798,7 +798,6 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     protected function get($id)
     {
-        echo 1;
         return $this->container->get($id);
     }
 
