@@ -144,7 +144,7 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function defaultdata()
     {
-        $version = new ExtensionsModuleVersion();
+        $version = new ExtensionsModuleVersion(new ZikulaExtensionsModule());
         $meta = $version->toArray();
         $meta['state'] = \ModUtil::STATE_ACTIVE;
 

@@ -386,17 +386,11 @@ function createuser($username, $password, $email)
 
 function installmodules($lang = 'en')
 {
-    $connection = Doctrine_Manager::connection();
-
-    // Lang validation
-    $lang = DataUtil::formatForOS($lang);
-
     // create a result set
     $results = array();
 
     $sm = ServiceUtil::getManager();
     $kernel = $sm->get('kernel');
-    $em = EventUtil::getManager();
 
     $coremodules = array(
         'ZikulaExtensionsModule',

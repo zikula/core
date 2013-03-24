@@ -194,6 +194,7 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         if (null !== $bundle) {
             $this->name = $bundle->getName();
             $this->baseDir = $bundle->getPath();
+            $this->directory = $bundle->getNamespace();
         } else {
             $this->reflection = new ReflectionObject($this);
             $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
