@@ -144,8 +144,10 @@ function smarty_function_img($params, Zikula_View $view)
             // theme directory
             $ostheme       = DataUtil::formatForOS(UserUtil::getTheme());
             $osmodname     = DataUtil::formatForOS($modname);
-            $themelangpath = "themes/$ostheme/templates/modules/$osmodname/Resources/public/images/$lang";
-            $themepath     = "themes/$ostheme/templates/modules/$osmodname/Resources/public/images";
+            $theme = ThemeUtil::getTheme($ostheme);
+            $themePath = null === $theme ? '' : $theme->getRelativePath().'/Resources/public/images';
+            $themelangpath = "$themePath/$lang";
+            $themepath     = $themePath;
             $themelangpathOld = "themes/$ostheme/templates/modules/$osmodname/images/$lang";
             $themepathOld     = "themes/$ostheme/templates/modules/$osmodname/images";
             $corethemepath = "themes/$ostheme/images";
@@ -154,7 +156,7 @@ function smarty_function_img($params, Zikula_View $view)
                 $modpath        = "images";
             } else {
                 $module = ModUtil::getModule($modinfo['name']);
-                $moduleBasePath = $module->getRelativePath().'/Resources/public/images';
+                $moduleBasePath = null === $module ? '' : $module->getRelativePath().'/Resources/public/images';
                 $modlangpath    = "$moduleBasePath/$lang";
                 $modpath        = $moduleBasePath;
                 $modlangpathOld = "$moduleDir/$osmoddir/images/$lang";
