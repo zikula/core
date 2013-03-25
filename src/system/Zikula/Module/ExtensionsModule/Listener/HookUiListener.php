@@ -49,7 +49,6 @@ class HookUiListener
 
         // create an instance of the module's version
         // we will use it to get the bundles
-
         $moduleVersionObj = Util::getVersionMeta($moduleName);
 
         // find out the capabilities of the module
@@ -118,11 +117,7 @@ class HookUiListener
                 }
 
                 // create an instance of the subscriber's version
-                $hooksubscriberVersionOld = $hooksubscribers[$i]['name'].'_Version';
-                $hooksubscriberVersion = $hooksubscribers[$i]['name'].'\\'. $hooksubscribers[$i]['name'].'Version';
-                $hooksubscriberVersion = class_exists($hooksubscriberVersion) ? $hooksubscriberVersion : $hooksubscriberVersionOld;
-
-                $hooksubscriberVersionObj = new $hooksubscriberVersion;
+                $hooksubscriberVersionObj = Util::getVersionMeta($hooksubscribers[$i]['name']);
 
                 // get the areas of the subscriber
                 $hooksubscriberAreas = HookUtil::getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
