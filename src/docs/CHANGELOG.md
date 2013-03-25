@@ -41,6 +41,7 @@ Features:
 - [BC BREAK] Removed interactive installer from module specification.
 - Update JqueryMobile to 1.3.0
 - Update Mapstraction to 3.0.0
+- Mobile Theme now has an configurable block position for startpage.
 
 
 CHANGELOG - ZIKULA 1.3.5
