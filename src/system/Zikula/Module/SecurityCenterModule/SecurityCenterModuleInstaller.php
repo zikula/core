@@ -111,24 +111,6 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         $fullcontent = implode('', __DIR__.'/vendor/full.txt');
         System::setVar('fullcontent', $fullcontent);
 
-        // cci vars, see pndocs/ccisecuritystrings.txt
-        System::setVar('usehtaccessbans', 0);
-        System::setVar('extrapostprotection', 0);
-        System::setVar('extragetprotection', 0);
-        System::setVar('checkmultipost', 0);
-        System::setVar('maxmultipost', 4);
-        System::setVar('cpuloadmonitor', 0);
-        System::setVar('cpumaxload', 10.0);
-        System::setVar('ccisessionpath', '');
-        System::setVar('htaccessfilelocation', '.htaccess');
-        System::setVar('nocookiebanthreshold', 10);
-        System::setVar('nocookiewarningthreshold', 2);
-        System::setVar('fastaccessbanthreshold', 40);
-        System::setVar('fastaccesswarnthreshold', 10);
-        System::setVar('javababble', 0);
-        System::setVar('javaencrypt', 0);
-        System::setVar('preservehead', 0);
-        System::setVar('filterarrays', 1);
         System::setVar('htmlentities', '1');
 
         // default values for AllowableHTML
