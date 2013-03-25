@@ -19,6 +19,7 @@ use LogUtil;
 use InvalidArgumentException;
 use Zikula_AbstractVersion;
 use ServiceUtil;
+use ModUtil;
 use System;
 
 class Util
@@ -29,24 +30,19 @@ class Util
      * @param string $moduleName Module Name.
      * @param string $rootdir    Root directory of the module (default: modules).
      *
+     * @throws \InvalidArgumentException
+     *
      * @return Zikula_AbstractVersion|array
      */
     public static function getVersionMeta($moduleName, $rootdir = 'modules')
     {
         $modversion = array();
-        $bundle = null;
+        $module = ModUtil::getModule($moduleName);
 
-        try {
-            $bundle = ServiceUtil::get('kernel')->getModule($moduleName);
-        } catch (\InvalidArgumentException $e) {
-        }
-
-        $class = "{$moduleName}\\{$moduleName}Version";
-        $classOld = "{$moduleName}_Version";
-        $class = class_exists($class) ? $class : $classOld;
+        $class = null === $module ? "{$moduleName}_Version" : $module->getVersionClass();
         if (class_exists($class)) {
             try {
-                $modversion = new $class($bundle);
+                $modversion = new $class($module);
             } catch (\Exception $e) {
                 LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_AbstractErrorHandler::CRIT);
                 throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);

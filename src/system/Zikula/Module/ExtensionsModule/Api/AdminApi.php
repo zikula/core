@@ -325,7 +325,7 @@ class AdminApi extends \Zikula_AbstractApi
             ZLoader::addPrefix($osdir, $modpath);
         }
 
-        $version = ExtensionsUtil::getVersionMeta($osdir, $modpath);
+        $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
         if (file_exists($bootstrap)) {
@@ -1053,7 +1053,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
         $modversion['version'] = '0';
 
-        $modversion = ExtensionsUtil::getVersionMeta($osdir, $modpath);
+        $modversion = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
         $version = $modversion['version'];
 
         // Update state of module

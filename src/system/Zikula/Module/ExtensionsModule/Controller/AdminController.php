@@ -102,7 +102,7 @@ class AdminController extends \Zikula_AbstractController
                 ZLanguage::bindModuleDomain($obj['directory']);
             }
 
-            $modversion = ExtensionsUtil::getVersionMeta($obj['directory'], $baseDir);
+            $modversion = ExtensionsUtil::getVersionMeta($obj['name'], $baseDir);
 
             // load defaults
             $name = (isset($modversion['name']) ? $modversion['name'] : '');
