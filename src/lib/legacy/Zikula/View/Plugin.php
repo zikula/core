@@ -178,7 +178,7 @@ class Zikula_View_Plugin extends Zikula_View
             $search_path = array();
             try {
                 $bundle = $this->getContainer()->get('kernel')->getBundle($module);
-                $bundlePath = $relativepath = $bundle->getPath().'/Resources/views';
+                $bundlePath = $relativepath = $bundle->getRelalativePath().'/Resources/views';
                 $search_path[] = $bundlePath;
             } catch (\InvalidArgumentException $e) {
             }
