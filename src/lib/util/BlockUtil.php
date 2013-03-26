@@ -495,7 +495,7 @@ class BlockUtil
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine.entitymanager');
 
-            $entity = 'Blocks_Entity_UserBlock';
+            $entity = 'Zikula\Module\BlocksModule\Entity\UserBlockEntity';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
 
             if (!$item) {
