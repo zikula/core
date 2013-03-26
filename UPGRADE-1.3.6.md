@@ -139,7 +139,7 @@ The final structure looks as follows:
                 config/
                 docs/
                 locale/
-                    foo_module.pot
+                    foomymodule.pot
                 public/
                     css/
                     images/
@@ -209,31 +209,31 @@ This necessitates a change in template calls such as:
     $this->view->fetch('Admin/view.tpl');
 
 
-Composer
---------
+Module composer.json
+--------------------
 
-Modules and themes must have a `composer.json` manifest which looks like the following:
+Modules must have a `composer.json` manifest which looks like the following:
 
     {
-        "name": "zikula/mailer-module",
-        "description": "Mailer Module",
+        "name": "foo/my-module",
+        "description": "My Module",
         "type": "zikula-module",
         "license": "LGPL-3.0+",
         "authors": [
             {
-                "name": "Zikula",
-                "homepage": "http://zikula.org/"
+                "name": "Example",
+                "homepage": "http://example.com/"
             }
         ],
         "autoload": {
-            "psr-0": { "Zikula\\Module\\MailerModule\\": "" }
+            "psr-0": { "Foo\\MyModule\\": "" }
         },
         "require": {
             "php": ">5.3.3"
         },
         "extra": {
             "zikula": {
-                "class": "Zikula\\Module\\MailerModule\\ZikulaMailerModule"
+                "class": "Foo\\MyModule\\FooMyModule"
             }
         }
     }
@@ -410,3 +410,80 @@ Version.php
 -----------
 
 Modules should have `core_min = 1.3.6`.
+
+
+Theme Standard
+--------------
+
+Theme's look very similar to modules.
+
+    Foo/
+        MyTheme/
+            Resources/
+                config/
+                    admin.ini
+                    home.ini
+                    master.ini
+                    overrides.yml
+                    pageconfigurations.ini
+                    themepalettes.ini
+                    themevariables.ini
+                docs/
+                locale/
+                    foomytheme.pot
+                public/
+                    css/
+                    images/
+                    js/
+                views/
+                    blocks/
+                    includes/
+                    modules/
+                        ZikulaSearchModule/
+                            Block/
+                                search.tpl
+                    admin.tpl
+                    home.tpl
+                    master.tpl
+                    plugins/
+            Tests/
+            MyThemeVersion.php (was Version.php) (todo - this file may go away)
+            FooMyTheme.php
+            CHANGELOG.md
+            LICENSE
+            README.md
+            composer.json       (this file is required, see example)
+            phpunit.xml.dist
+
+Theme composer.json
+-------------------
+
+Themes must have a `composer.json` manifest which looks like the following:
+
+    {
+        "name": "foo/my-theme",
+        "description": "My Theme",
+        "type": "zikula-theme",
+        "license": "LGPL-3.0+",
+        "authors": [
+            {
+                "name": "Zikula",
+                "homepage": "http://zikula.org/"
+            }
+        ],
+        "autoload": {
+            "psr-0": { "Foo\\Theme\\MyTheme\\": "" }
+        },
+        "require": {
+            "php": ">5.3.3"
+        },
+        "extra": {
+            "zikula": {
+                "class": "Foo\\Theme\\MyTheme\\FooMyTheme"
+            }
+        }
+    }
+
+.. note::
+
+The chosen namespace can be simplified to Foo\\MyTheme\\
