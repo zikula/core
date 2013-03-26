@@ -85,8 +85,19 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '3.7.10':
-                // future upgrade routines
+                // Load DB connection
+                $connection = $this->entityManager->getConnection();
 
+                // increase length of some hook table fields from 20 to 60
+                $commands = array();
+                $commands[] = "ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL";
+                $commands[] = "ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL";
+
+                foreach ($commands as $sql) {
+                    $stmt = $connection->executeQuery($sql);
+                }
+            case '3.7.11':
+                // future upgrade routines
         }
 
         // Update successful
