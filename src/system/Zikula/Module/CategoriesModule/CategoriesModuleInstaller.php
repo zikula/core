@@ -94,14 +94,6 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     public function upgrade($oldversion)
     {
         switch ($oldversion) {
-            case '1.04':
-                $this->upgrade_fixSerializedData();
-                $this->upgrade_MigrateLanguageCodes();
-            case '1.1':
-            case '1.2':
-                // new column used in doctrine categorisable template
-                DoctrineUtil::createColumn('categories_mapobj', 'reg_property', array('type' => 'string',
-                        'length' => 60), false);
             case '1.2.1':
             // future upgrade routines
         }

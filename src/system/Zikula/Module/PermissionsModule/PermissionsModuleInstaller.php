@@ -19,15 +19,6 @@ use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
 
 class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
 {
-    /**
-     * initialise the permissions module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance.
-     * This function MUST exist in the pninit file for a module
-     *
-     * @return bool true on success, false otherwise
-     */
     public function install()
     {
         // create the table
@@ -44,15 +35,6 @@ class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
-    /**
-     * upgrade the permissions module from an old version
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
-     */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number

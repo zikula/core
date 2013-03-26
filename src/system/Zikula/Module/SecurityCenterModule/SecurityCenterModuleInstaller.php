@@ -241,50 +241,6 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
     public function upgrade($oldversion)
     {
         switch ($oldversion) {
-            case '1.3':
-                // create cache directory for HTML Purifier
-                $purifierCacheDir = CacheUtil::getLocalDir() . '/purifierCache';
-                if (!file_exists($purifierCacheDir)) {
-                    CacheUtil::clearLocalDir('purifierCache');
-                }
-
-                // create ids intrusions table
-                if (!DBUtil::createTable('sc_intrusion')) {
-                    return false;
-                }
-
-                // create vars for phpids usage
-                System::setVar('useids', 0);
-                System::setVar('idsmail', 0);
-                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
-                System::setVar('idssoftblock', 1);                // do not block requests, but warn for debugging
-                System::setVar('idsfilter', 'xml');               // filter type
-                System::setVar('idsimpactthresholdone', 1);       // db logging
-                System::setVar('idsimpactthresholdtwo', 10);      // mail admin
-                System::setVar('idsimpactthresholdthree', 25);    // block request
-                System::setVar('idsimpactthresholdfour', 75);     // kick user, destroy session
-                System::setVar('idsimpactmode', 1);               // per request per default
-                System::setVar('idshtmlfields', array('POST.__wysiwyg'));
-                System::setVar('idsjsonfields', array('POST.__jsondata'));
-
-                // Location of HTML Purifier
-                System::setVar('idsrulepath', 'config/phpids_zikula_default.xml');
-                System::setVar('idsexceptions', array('GET.__utmz',
-                                'GET.__utmc',
-                                'REQUEST.linksorder', 'POST.linksorder',
-                                'REQUEST.fullcontent', 'POST.fullcontent',
-                                'REQUEST.summarycontent', 'POST.summarycontent',
-                                'REQUEST.filter.page', 'POST.filter.page',
-                                'REQUEST.filter.value', 'POST.filter.value'));
-                System::delVar('htmlpurifierConfig');
-                // HTML Purifier default settings
-                $purifierDefaultConfig = SecurityCenterUtil::getpurifierconfig(array('forcedefault' => true));
-                $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
-                if (!DBUtil::changeTable('sc_intrusion')) {
-                    return false;
-                }
-                System::setVar('sessioncsrftokenonetime', 0);
-
             case '1.4.4':
             // future upgrade routines
         }

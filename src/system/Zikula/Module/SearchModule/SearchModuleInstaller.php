@@ -48,23 +48,10 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
-    /**
-     * upgrade the Search module from an old version
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
-     */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
         switch ($oldversion) {
-            case '1.5.1':
-                // register event handler to activate new modules in the search block
-                EventUtil::registerPersistentModuleHandler('ZikulaSearchModule', 'installer.module.installed', array('Zikula\Module\SearchModule\Listener\ModuleListener', 'moduleInstall'));
-
             case '1.5.2':
             // future upgrade routines
         }

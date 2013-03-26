@@ -30,14 +30,6 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
-    /**
-     * upgrades the module
-     *
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param  string $oldVersion version number string to upgrade from
-     * @return mixed  true on success, last valid version string or false if fails
-     */
     public function upgrade($oldversion)
     {
         return true;
