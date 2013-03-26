@@ -97,7 +97,7 @@ Entities:
 
 There is a script to do some of the refactoring for you:
 
-    zikula-tools module:ns --dir=module/MyModule --module=MyModule
+    zikula-tools module:ns --dir=module/MyModule --vendor=Foo --module=MyModule
 
 Module code must be PSR-1 and PSR-2 compliant. You can fix formatting
 with PHP-CS-Fixer: https://github.com/fabpot/PHP-CS-Fixer
@@ -183,7 +183,7 @@ combining the vendor name (`Foo` with the class name).
 
 There is a script to restructure the module for you:
 
-    zikula-tools module:restructure --dir=module/MyModule --module=MyModule
+    zikula-tools module:restructure --dir=module/MyModule --vendor=Foo --module=MyModule
 
 You should commit these changes immediately. Your module will continue to work
 with the interrim structure created, and you can begin refactoring to namespaces.
