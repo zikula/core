@@ -71,7 +71,7 @@ class HookBindingEntity
     private $category;
 
     /**
-     * @var smallint $sortorder
+     * @var integer $sortorder
      *
      * @ORM\Column(name="sortorder", type="smallint", nullable=false)
      */

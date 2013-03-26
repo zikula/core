@@ -80,7 +80,7 @@ class HookRuntimeEntity
     /**
      * @var string $method
      *
-     * @ORM\Column(name="method", type="string", length=20, nullable=false)
+     * @ORM\Column(name="method", type="string", length=60, nullable=false)
      */
     private $method;
 
