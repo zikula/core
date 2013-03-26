@@ -1,22 +1,18 @@
 Module Specification from Zikula Core 1.3.6
 ===========================================
 
-.. note::
-
-    **The following document is for guidance only at this
-      time and has not been fixed.**
-
-
 User Upgrade Tasks
 ------------------
 
 Zikula Core 1.3.6 introduces a lot of forward compatibility for new features
-that will come in Zikula 1.4.0.
+that will come in Zikula 1.4.0. For safety sake, please only upgrade from
+Zikula Core 1.3.5
 
   - Before uploading the new files please delete the `plugins/`, `lib/`, `system/`,
      and `themes/` folders entirely (replacing any custom themes afterwards.
   - Upload new files.
   - Make `app/cache` and `app/logs` writable.
+  - Run `http://yoursiteurl/136upgrade.php`.
   - Run `http://yoursiteurl/upgrade.php`
 
 
@@ -159,7 +155,7 @@ The final structure looks as follows:
                 AdminControllerTest.php
             vendor/
             MyModuleInstaller.php (was Installer.php)
-            MyModuleVersion.php (was Version.php) (todo - this file will go away)
+            MyModuleVersion.php (was Version.php) (todo - this file may go away)
             FooMyModule.php
             CHANGELOG.md
             LICENSE
