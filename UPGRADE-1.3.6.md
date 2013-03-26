@@ -12,8 +12,7 @@ Zikula Core 1.3.5
      and `themes/` folders entirely (replacing any custom themes afterwards.
   - Upload new files.
   - Make `app/cache` and `app/logs` writable.
-  - Run `http://yoursiteurl/136upgrade.php`.
-  - Run `http://yoursiteurl/upgrade.php`
+  - Run `http://yoursiteurl/upgrade.php`.
 
 
 **The following is for module developers only.**

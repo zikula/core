@@ -25,6 +25,7 @@ $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 
 $eventManager = $core->getDispatcher();
+$container = $core->getContainer();
 $eventManager->addListener('core.init', 'upgrade_suppressErrors');
 
 // load zikula core
@@ -33,12 +34,15 @@ define('_Z_MINUPGVER', '1.3.5');
 
 // Signal that upgrade is running.
 $GLOBALS['_ZikulaUpgrader'] = array();
+$dbname = $container['databases']['default']['dbname'];
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
 $eventManager->dispatch('doctrine.boot', new GenericEvent());
 /** @var $em EntityManager */
-$em = $core->getContainer()->get('doctrine.entitymanager');
+$em = $container->get('doctrine.entitymanager');
 $connection = $em->getConnection();
+
+upgrade_136($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -430,4 +434,45 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
     $result = $stmt->fetch(PDO::FETCH_NUM);
 
     return unserialize($result[0]);
+}
+
+/**
+ * Upgrade tables from 1.3.5
+ *
+ * @param                           $dbname
+ * @param \Doctrine\DBAL\Connection $conn
+ */
+function upgrade_136($dbname, \Doctrine\DBAL\Connection $conn)
+{
+    $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
+    if ($res->fetch()) {
+        // nothing to do, already converted.
+        return;
+    }
+
+    $modules = array(
+        'Admin', 'Blocks', 'Categories', 'Errors', 'Extensions', 'Groups',
+        'Mailer', 'PageLock', 'Permissions', 'Search', 'SecurityCenter',
+        'Settings', 'Theme', 'Users',
+    );
+
+    foreach ($modules as $module) {
+        $conn->executeQuery("UPDATE $dbname.modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
+        $conn->executeQuery("UPDATE $dbname.module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
+        echo "Updated module: $module<br />\n";
+    }
+    echo "<br />\n";
+
+    $themes = array(
+        'Andreas08', 'Atom', 'SeaBreeze', 'Mobile', 'Printer',
+    );
+    foreach ($themes as $theme) {
+        $conn->executeQuery("UPDATE $dbname.themes SET name = 'Zikula{$theme}Theme', directory = 'Zikula/Theme/{$theme}Theme' WHERE name = '$theme'");
+        echo "Updated theme: $theme<br />\n";
+    }
+    $conn->executeQuery("UPDATE $dbname.themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
+    echo "Updated theme: RSS<br />\n";
+
+//$conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
+//echo "Updated default theme to Andreas08<br />\n";
 }
