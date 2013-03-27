@@ -81,7 +81,7 @@ class ZLocale implements ArrayAccess
     {
         $lang = ZLanguage::transformFS($this->locale);
         $override = "config/locale/$lang/locale.ini";
-        $file = (file_exists($override) ? $override : "locale/$lang/locale.ini");
+        $file = (file_exists($override) ? $override : "app/Resources/locale/$lang/locale.ini");
         if (is_readable($file)) {
             $array = parse_ini_file($file, false);
             foreach ($array as $k => $v) {

@@ -632,7 +632,7 @@ class ZLanguage
 
         // search for locale and config overrides
         $localeArray = array();
-        $search = array('config/locale', 'locale');
+        $search = array('config/locale', 'app/Resources/locale');
         foreach ($search as $k) {
             // get only the directories of the search paths
             $locales = FileUtil::getFiles($k, false, true, null, 'd');
