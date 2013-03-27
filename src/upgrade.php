@@ -12,7 +12,7 @@
 
 use Zikula_Request_Http as Request;
 use Zikula\Core\Event\GenericEvent;
-use Doctrine\ORM\EntityManager;
+use Doctrine\DBAL\Connection;
 
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
@@ -38,9 +38,8 @@ $dbname = $container['databases']['default']['dbname'];
 
 // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
 $eventManager->dispatch('doctrine.boot', new GenericEvent());
-/** @var $em EntityManager */
-$em = $container->get('doctrine.entitymanager');
-$connection = $em->getConnection();
+/** @var $connection Connection */
+$connection = $container->get('doctrine.dbal.default_connection');
 
 upgrade_136($dbname, $connection);
 
@@ -440,9 +439,9 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
  * Upgrade tables from 1.3.5
  *
  * @param                           $dbname
- * @param \Doctrine\DBAL\Connection $conn
+ * @param Connection $conn
  */
-function upgrade_136($dbname, \Doctrine\DBAL\Connection $conn)
+function upgrade_136($dbname, Connection $conn)
 {
     $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
     if ($res->fetch()) {
