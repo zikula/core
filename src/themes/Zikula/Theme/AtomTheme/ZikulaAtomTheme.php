@@ -2,8 +2,8 @@
 
 namespace Zikula\Theme\AtomTheme;
 
-use Zikula\Core\AbstractTheme;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
-class ZikulaAtomTheme extends AbstractTheme
+class ZikulaAtomTheme extends AbstractCoreTheme
 {
 }

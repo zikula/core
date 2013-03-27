@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\AdminModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaAdminModule extends AbstractModule
+class ZikulaAdminModule extends AbstractCoreModule
 {
 }

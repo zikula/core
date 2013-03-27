@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\SearchModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaSearchModule extends AbstractModule
+class ZikulaSearchModule extends AbstractCoreModule
 {
 }

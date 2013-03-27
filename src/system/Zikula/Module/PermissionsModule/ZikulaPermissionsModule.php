@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\PermissionsModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaPermissionsModule extends AbstractModule
+class ZikulaPermissionsModule extends AbstractCoreModule
 {
 }

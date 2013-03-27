@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\MailerModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaMailerModule extends AbstractModule
+class ZikulaMailerModule extends AbstractCoreModule
 {
 }

@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\GroupsModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaGroupsModule extends AbstractModule
+class ZikulaGroupsModule extends AbstractCoreModule
 {
 }

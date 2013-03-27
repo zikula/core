@@ -2,8 +2,8 @@
 
 namespace Zikula\Theme\RssTheme;
 
-use Zikula\Core\AbstractTheme;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
-class ZikulaRSSTheme extends AbstractTheme
+class ZikulaRSSTheme extends AbstractCoreTheme
 {
 }

@@ -41,6 +41,11 @@ abstract class AbstractBundle extends Bundle
         return $class;
     }
 
+    public function getTranslationDomain()
+    {
+        return strtolower($this->getName());
+    }
+
     /**
      * Gets the translation domain path
      *

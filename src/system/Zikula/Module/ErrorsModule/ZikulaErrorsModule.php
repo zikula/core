@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\ErrorsModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaErrorsModule extends AbstractModule
+class ZikulaErrorsModule extends AbstractCoreModule
 {
 }

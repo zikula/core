@@ -2,8 +2,8 @@
 
 namespace Zikula\Theme\MobileTheme;
 
-use Zikula\Core\AbstractTheme;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
-class ZikulaMobileTheme extends AbstractTheme
+class ZikulaMobileTheme extends AbstractCoreTheme
 {
 }

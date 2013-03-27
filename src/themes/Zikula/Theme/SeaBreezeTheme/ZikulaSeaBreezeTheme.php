@@ -2,8 +2,8 @@
 
 namespace Zikula\Theme\SeaBreezeTheme;
 
-use Zikula\Core\AbstractTheme;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
-class ZikulaSeaBreezeTheme extends AbstractTheme
+class ZikulaSeaBreezeTheme extends AbstractCoreTheme
 {
 }

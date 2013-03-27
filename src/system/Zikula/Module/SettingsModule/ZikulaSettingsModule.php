@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\SettingsModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaSettingsModule extends AbstractModule
+class ZikulaSettingsModule extends AbstractCoreModule
 {
 }

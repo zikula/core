@@ -2,8 +2,8 @@
 
 namespace Zikula\Module\SecurityCenterModule;
 
-use Zikula\Core\AbstractModule;
+use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaSecurityCenterModule extends AbstractModule
+class ZikulaSecurityCenterModule extends AbstractCoreModule
 {
 }
