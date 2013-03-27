@@ -31,9 +31,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getModuleName()
     {
-        $array = $this->requests->current();
-
-        return $array['module'];
+        return FormUtil::getPassedValue('module', '');
     }
 
     /**
@@ -45,9 +43,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getControllerName()
     {
-        $array = $this->requests->current();
-
-        return $array['controller'];
+        return FormUtil::getPassedValue('func', '');
     }
 
     /**
@@ -59,9 +55,7 @@ abstract class Zikula_Request_AbstractRequest extends Request
      */
     public function getActionName()
     {
-        $array = $this->requests->current();
-
-        return $array['action'];
+        return FormUtil::getPassedValue('type', '');
     }
 
     /**
