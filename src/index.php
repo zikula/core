@@ -15,6 +15,8 @@ use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\HttpKernel\Exception;
 
 include 'lib/bootstrap.php';
 
@@ -30,7 +32,7 @@ $core->init();
 if ($request->isXmlHttpRequest()) {
     __frontcontroller_ajax($request);
 }
-$core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
+$core->getDispatcher()->dispatch('frontcontroller.predispatch', new GenericEvent());
 
 $module = $request->attributes->get('_module');
 $type = $request->attributes->get('_type');
@@ -71,8 +73,8 @@ try {
         $response = new Response('Something unexpected happened', 500);
     }
 
-} catch (Exception $e) {
-    $event = new \Zikula\Core\Event\GenericEvent($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
+} catch (\Exception $e) {
+    $event = new GenericEvent($e, array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
     $core->getDispatcher()->dispatch('frontcontroller.exception', $event);
 
     if ($event->isPropagationStopped()) {
@@ -81,7 +83,7 @@ try {
         if ($e instanceof Zikula_Exception_NotFound) {
             $response = new Response($e->getMessage(), 404);
             $debug = array_merge($e->getDebug(), $e->getTrace());
-        } elseif ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+        } elseif ($e instanceof \NotFoundHttpException) {
             $response = new Response($e->getMessage(), 404);
         } elseif ($e instanceof Zikula_Exception_Forbidden) {
             $response = new Response($e->getMessage(), 403);
@@ -122,14 +124,14 @@ switch (true) {
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), 404, null);
         }
-        $response->setContent(ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => $e->getMessage(), 'exception' => $e)));
+        $response->setContent(ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e: null)));
         break;
 
     case ($response->getStatusCode() == 500):
 
     default:
         LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), 500, null);
-        $response = ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => $e->getMessage(), 'exception' => $e));
+        $response = ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e : null));
         break;
 }
 
