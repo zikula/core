@@ -392,18 +392,19 @@ class ZLanguage
     /**
      * Bind theme domain.
      *
-     * @param string $modName Theme name.
+     * @param string $themeName Theme name.
      *
      * @return boolean
      */
-    public static function bindThemeDomain($modName)
+    public static function bindThemeDomain($themeName)
     {
         $_this  = self::getInstance();
-        $domain = self::getThemeDomain($modName);
-        if (is_dir("themes/$modName/Resources/locale")) {
-            $path = $_this->searchOverrides($domain, "themes/$modName/Resources/locale");
+        $domain = self::getThemeDomain($themeName);
+        $theme = ModUtil::getModule($themeName);
+        if (null !== $theme) {
+            $path = $_this->searchOverrides($domain, $theme->getPath().'/Resources/locale');
         } else {
-            $path = $_this->searchOverrides($domain, "themes/$modName/locale");
+            $path = $_this->searchOverrides($domain, "themes/$themeName/locale");
         }
 
         return self::bindDomain($domain, $path);
@@ -420,7 +421,7 @@ class ZLanguage
     {
         // system modules are in the zikula domain
         $module = ModUtil::getInfoFromName($modName);
-        if ($module['type'] == ModUtil::TYPE_SYSTEM) {
+        if (ModUtil::isCore($modName)) {
             return 'zikula';
         }
 
@@ -432,8 +433,9 @@ class ZLanguage
         }
 
         $domain = self::getModuleDomain($modName);
-        if (is_dir("modules/$modName/Resources/locale")) {
-            $path = $_this->searchOverrides($domain, "modules/$modName/Resources/locale");
+        $module = ModUtil::getModule($modName);
+        if (null !== $module) {
+            $path = $_this->searchOverrides($domain, $module->getPath().'/Resources/locale');
         } else {
             $path = $_this->searchOverrides($domain, "modules/$modName/locale");
         }
@@ -496,7 +498,7 @@ class ZLanguage
     public static function bindCoreDomain()
     {
         $_this = self::getInstance();
-        $_this->bindDomain('zikula', $_this->searchOverrides('zikula', 'locale')); // bind system domain
+        $_this->bindDomain('zikula', $_this->searchOverrides('zikula', 'app/Resources/locale')); // bind system domain
         $_this->setTextDomain('zikula');
     }
 
@@ -528,7 +530,9 @@ class ZLanguage
      */
     public static function getModuleDomain($name)
     {
-        return strtolower("module_$name");
+        $module = ModUtil::getModule($name);
+
+        return (null === $module) ? strtolower("module_$name") : $module->getTranslationDomain();
     }
 
     /**
@@ -565,7 +569,9 @@ class ZLanguage
      */
     public static function getThemeDomain($name)
     {
-        return strtolower("theme_$name");
+        $theme = ThemeUtil::getTheme($name);
+
+        return (null === $theme) ? strtolower("theme_$name") : $theme->getTranslationDomain();
     }
 
     /**
@@ -685,9 +691,9 @@ class ZLanguage
      *
      * @return void
      */
-    private function setDBCharset()
+    private function setDBCharset($charset = 'utf8')
     {
-        $this->dbCharset = (System::isInstalling() ? 'utf8' : strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getCharset()));
+        $this->dbCharset = $charset;
     }
 
     /**

@@ -2099,4 +2099,10 @@ class ModUtil
 
         return $path;
     }
+
+    public static function isCore($module)
+    {
+        return ('system' === self::getModuleBaseDir($module)) ? true : false;
+    }
+
 }
