@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\HttpKernel\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 include 'lib/bootstrap.php';
 
@@ -83,7 +84,7 @@ try {
         if ($e instanceof Zikula_Exception_NotFound) {
             $response = new Response($e->getMessage(), 404);
             $debug = array_merge($e->getDebug(), $e->getTrace());
-        } elseif ($e instanceof \NotFoundHttpException) {
+        } elseif ($e instanceof NotFoundHttpException) {
             $response = new Response($e->getMessage(), 404);
         } elseif ($e instanceof Zikula_Exception_Forbidden) {
             $response = new Response($e->getMessage(), 403);
@@ -92,7 +93,7 @@ try {
             $response = new RedirectResponse(System::normalizeUrl($e->getUrl()), $e->getType());
         } elseif ($e instanceof PDOException) {
             $response = new Response($e->getMessage(), 500);
-        } elseif ($e instanceof Exception) {
+        } elseif ($e instanceof \Exception) {
             // general catch all
             $response = new Response($e->getMessage(), 500);
             $debug = $e->getTrace();
@@ -180,13 +181,13 @@ function __frontcontroller_ajax(Request $request)
         $response = new \Zikula\Core\Response\Ajax\NotFoundResponse($e->getMessage());
     } catch (Zikula_Exception_Forbidden $e) {
         $response = new \Zikula\Core\Response\Ajax\ForbiddenResponse($e->getMessage());
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
     }
 
     // Process final response.
     // If response is not instanceof Response provide compat solution
-    if (!$response instanceof \Symfony\Component\HttpFoundation\Response) {
+    if (!$response instanceof Response) {
         $response = !is_array($response) ? array('data' => $response) : $response;
         $response['statusmsg'] = LogUtil::getStatusMessages();
         $response = json_encode($response);
