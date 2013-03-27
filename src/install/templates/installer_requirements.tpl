@@ -65,12 +65,17 @@
         </fieldset>
 
         <fieldset>
-            <legend>{gt text="Personal configuration file"}</legend>
+            <legend>{gt text="Personal configuration files"}</legend>
             <ul class="systemrequirements">
                 {if $checks.config_personal_config_php eq true}
                 <li class="passed">{gt text="'%s' is not present.  This is OK." tag1="config/personal_config.php"}</li>
                 {else}
                 <li class="failed">{gt text="'%s' has been found. This is not OK: please rename this file before continuing the installation process." tag1="config/personal_config.php"}</li>{assign var=checkfailed value=true}
+                {/if}
+                {if $checks.custom_parameters_yml eq true}
+                <li class="passed">{gt text="'%s' is not present.  This is OK." tag1="app/config/custom_parameters.yml"}</li>
+                {else}
+                <li class="failed">{gt text="'%s' has been found. This is not OK: please rename this file before continuing the installation process." tag1="app/config/custom_parameters.yml"}</li>{assign var=checkfailed value=true}
                 {/if}
             </ul>
         </fieldset>

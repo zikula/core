@@ -529,8 +529,20 @@ function _check_requirements()
     $temp = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
     $datadir = (isset($GLOBALS['ZConfig']['System']['datadir']) ? $GLOBALS['ZConfig']['System']['datadir'] : 'data');
     $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
-    $files = array('config/config.php', 'app/config/parameters.yml', "$datadir/", "$temp/", "$temp/error_logs/", "$temp/view_compiled/",
-            "$temp/view_cache/", "$temp/Theme_compiled/", "$temp/Theme_cache/", "$temp/Theme_Config/");
+    $results['custom_parameters_yml'] = !is_writable('app/config/custom_parameters.yml');
+    $files = array(
+        'config/config.php',
+        'app/cache/',
+        'app/config/parameters.yml',
+        "$datadir/",
+        "$temp/",
+        "$temp/error_logs/",
+        "$temp/view_compiled/",
+        "$temp/view_cache/",
+        "$temp/Theme_compiled/",
+        "$temp/Theme_cache/",
+        "$temp/Theme_Config/",
+    );
     $results['files'] = array();
     foreach ($files as $file) {
         $results['files'][] = array('filename' => $file, 'writable' => is_writable($file));
