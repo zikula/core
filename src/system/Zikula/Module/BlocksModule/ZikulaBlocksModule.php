@@ -4,6 +4,6 @@ namespace Zikula\Module\BlocksModule;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
-class ZikulaBlocksModule extends CoreModulde
+class ZikulaBlocksModule extends AbstractCoreModule
 {
 }
