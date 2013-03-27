@@ -14,6 +14,7 @@
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
+use Symfony\Component\Yaml\Yaml;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
@@ -556,6 +557,14 @@ function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver
     $file = _installer_replace_keys('host', $dbhost, $file);
     $file = _installer_replace_keys('dbname', $dbname, $file);
     file_put_contents('config/config.php', $file);
+
+    $array = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
+    $array['parameters']['database_driver'] = 'pdo_'.$dbdriver;
+    $array['parameters']['database_host'] = $dbhost;
+    $array['parameters']['database_name'] = $dbname;
+    $array['parameters']['database_user'] = $dbusername;
+    $array['parameters']['database_password'] = $dbpassword;
+    file_put_contents(__DIR__.'/../app/config/parameters.yml', Yaml::dump($array));
 }
 
 function update_installed_status($state)

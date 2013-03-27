@@ -39,6 +39,28 @@ class ZikulaKernel extends Kernel
         }
     }
 
+    public function init()
+    {
+        // this is all to be deprecated
+        if (is_readable('config/config.php')) {
+            include __DIR__.'/../config/config.php';
+        }
+
+        if (is_readable(__DIR__.'/../config/personal_config.php')) {
+            include __DIR__.'config/personal_config.php';
+        }
+
+        if (is_readable(__DIR__.'/../config/multisites_config.php')) {
+            include __DIR__.'/../config/multisites_config.php';
+        }
+
+        if (is_readable(__DIR__.'/../config/personal_config.php')) {
+            include __DIR__.'/../config/personal_config.php';
+        }
+
+        parent::init();
+    }
+
     private function registerCoreModules(array &$bundles)
     {
         $bundles[] = new Zikula\Module\AdminModule\ZikulaAdminModule();

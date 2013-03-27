@@ -5,6 +5,8 @@ parameters:
     database_name:     zikula
     database_user:     root
     database_password: ~
+    database_path:     ~
+    database_socket:   ~
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1

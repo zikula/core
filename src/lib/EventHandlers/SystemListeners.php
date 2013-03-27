@@ -655,18 +655,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function getConfigFile(Zikula_Event $event)
     {
-        if (is_readable('config/config.php')) {
-            include 'config/config.php';
-        }
-
-        if (is_readable('config/personal_config.php')) {
-            include 'config/personal_config.php';
-        }
-
-        if (is_readable('config/multisites_config.php')) {
-            include 'config/multisites_config.php';
-        }
-
         foreach ($GLOBALS['ZConfig'] as $config) {
             $event->getSubject()->getContainer()->loadArguments($config);
         }
