@@ -42,20 +42,17 @@ class ZikulaKernel extends Kernel
     public function init()
     {
         // this is all to be deprecated
-        if (is_readable('config/config.php')) {
-            include __DIR__.'/../config/config.php';
-        }
+        $paths = array(
+            __DIR__ .'/../config/config.php',
+            __DIR__.'/../config/personal_config.php',
+            __DIR__.'/../config/multisites_config.php',
 
-        if (is_readable(__DIR__.'/../config/personal_config.php')) {
-            include __DIR__.'config/personal_config.php';
-        }
+        );
 
-        if (is_readable(__DIR__.'/../config/multisites_config.php')) {
-            include __DIR__.'/../config/multisites_config.php';
-        }
-
-        if (is_readable(__DIR__.'/../config/personal_config.php')) {
-            include __DIR__.'/../config/personal_config.php';
+        foreach ($paths as $path) {
+            if (is_readable($path)) {
+                include $path;
+            }
         }
 
         parent::init();
