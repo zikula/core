@@ -1,0 +1,53 @@
+<?php
+
+namespace {{ namespace }}\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+{% if 'new' in actions or 'edit' in actions or 'delete' in actions %}
+use Symfony\Component\HttpFoundation\Request;
+{%- endif %}
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+{% if 'annotation' == format -%}
+use Zikula\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Zikula\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Zikula\Bundle\FrameworkExtraBundle\Configuration\Template;
+{%- endif %}
+
+use {{ namespace }}\Entity\{{ entity }};
+{% if 'new' in actions or 'edit' in actions %}
+use {{ namespace }}\Form\{{ entity }}Type;
+{% endif %}
+
+/**
+ * {{ entity }} controller.
+ *
+{% if 'annotation' == format %}
+ * @Route("/{{ route_prefix }}")
+{% endif %}
+ */
+class {{ entity_class }}Controller extends Controller
+{
+
+    {%- if 'index' in actions %}
+        {%- include 'actions/index.php.twig' %}
+    {%- endif %}
+
+    {%- if 'new' in actions %}
+        {%- include 'actions/create.php.twig' %}
+        {%- include 'actions/new.php.twig' %}
+    {%- endif %}
+
+    {%- if 'show' in actions %}
+        {%- include 'actions/show.php.twig' %}
+    {%- endif %}
+
+    {%- if 'edit' in actions %}
+        {%- include 'actions/edit.php.twig' %}
+        {%- include 'actions/update.php.twig' %}
+    {%- endif %}
+
+    {%- if 'delete' in actions %}
+        {%- include 'actions/delete.php.twig' %}
+    {%- endif %}
+
+}
