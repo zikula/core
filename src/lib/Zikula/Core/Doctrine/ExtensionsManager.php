@@ -42,10 +42,11 @@ class ExtensionsManager
             throw new \InvalidArgumentException(sprintf('No such behaviour %s', $type));
         }
 
-        $annotationReader = $this->serviceManager->get('doctrine.annotationreader');
-        $annotationDriver = $this->serviceManager->get('doctrine.annotationdriver');
-        
-        $chain = $this->serviceManager->get('doctrine.driverchain');
+        $annotationReader = $this->serviceManager->get('doctrine.annotation_reader');
+        $annotationDriver = $this->serviceManager->get('doctrine.annotation_driver');
+
+
+        $chain = $this->serviceManager->get('doctrine.driver_chain');
         
         // specific behaviour required for certain drivers.
         $entityName = null;

@@ -62,7 +62,7 @@ doctrine:
         proxy_namespace: DoctrineProxy
         proxy_dir: %kernel.cache_dir%/doctrine/orm/DoctrineProxy
         default_entity_manager: default
-        auto_generate_proxy_classes: false
+        auto_generate_proxy_classes: true
         entity_managers:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:

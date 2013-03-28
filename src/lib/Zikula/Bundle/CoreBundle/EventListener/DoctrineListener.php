@@ -59,21 +59,22 @@ class DoctrineListener implements EventSubscriberInterface
         // setup annotation reader
         $reader = new \Doctrine\Common\Annotations\AnnotationReader();
         $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
-        $this->container->set('doctrine.annotationreader', $cacheReader);
+        $this->container->set('doctrine.annotation_reader', $cacheReader);
 
         // setup annotation driver
         $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
-        $this->container->set('doctrine.annotationdriver', $annotationDriver);
+        $this->container->set('doctrine.annotation_driver', $annotationDriver);
 
         // add annotations as default driver
         $ORMConfig->getMetadataDriverImpl()->setDefaultDriver($annotationDriver);
+        $this->container->set('doctrine.driver_chain', $ORMConfig->getMetadataDriverImpl());
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
             $ORMConfig->setSQLLogger(new ZikulaSqlLogger());
         }
 
         // setup doctrine eventmanager
-        $eventManager = $em->getEventManager();
+        $this->container->set('doctrine.event_manager', $eventManager = $em->getEventManager());
 
        // setup MySQL specific listener (storage engine and encoding)
         if ($config['dbdriver'] == 'mysql') {
@@ -84,12 +85,12 @@ class DoctrineListener implements EventSubscriberInterface
         }
 
         $this->container->setAlias('doctrine.entitymanager', 'doctrine.orm.default_entity_manager');
-        $this->container->setAlias('doctrine.eventmanager', 'doctrine.dbal.connection.event_manager');
+        $this->container->setAlias('doctrine.eventmanager', 'doctrine.event_manager');
     }
 
     public function initDoctrineExtensions(GenericEvent $event)
     {
-        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.dbal.connection.event_manager'), new Reference('service_container')));
+        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.event_manager'), new Reference('service_container')));
         $this->container->setDefinition('doctrine_extensions', $definition);
 
         $types = array(
