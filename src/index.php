@@ -193,9 +193,11 @@ function __frontcontroller_ajax(Request $request)
         $response = json_encode($response);
         header("HTTP/1.1 200 OK");
         header('Content-type: application/json');
+        echo $response;
+    } else {
+        // Issue response.
+        $response->send();
     }
 
-    // Issue response.
-    $response->send();
     System::shutdown();
 }
