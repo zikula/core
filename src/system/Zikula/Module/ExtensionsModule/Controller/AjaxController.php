@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Module\Extensions\Controller;
+namespace Zikula\Module\ExtensionsModule\Controller;
 
 use Zikula_Exception_Fatal;
 use HookUtil;
@@ -33,7 +33,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function togglesubscriberareastatusAction()
     {
         $this->checkAjaxToken();
-
+        
         // get subscriberarea from POST
         $subscriberArea = $this->request->request->get('subscriberarea','');
         if (empty($subscriberArea)) {
