@@ -349,15 +349,7 @@ function install(Zikula_Core $core)
  */
 function createuser($username, $password, $email)
 {
-    if (!class_exists('Users_Constant')) {
-        require_once 'system/Zikula/Module/UsersModule/Constant.php';
-    }
     $connection = Doctrine_Manager::connection();
-
-    // get the database connection
-    ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-    ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
-    $dbtables = DBUtil::getTables();
 
     // create the password hash
     $password = UserUtil::getHashedPassword($password);
@@ -371,7 +363,7 @@ function createuser($username, $password, $email)
     $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
     // create the admin user
-    $sql = "UPDATE {$dbtables['users']}
+    $sql = "UPDATE users
             SET   uname        = '{$username}',
                   email        = '{$email}',
                   pass         = '{$password}',
@@ -380,7 +372,7 @@ function createuser($username, $password, $email)
                   lastlogin    = '{$nowUTCStr}'
             WHERE uid   = 2";
 
-    $result = DBUtil::executeSQL($sql);
+    $result = $connection->exec($sql);
 
     return ($result) ? true : false;
 }
@@ -397,6 +389,9 @@ function installmodules($lang = 'en')
     $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
     $helper->createSchema();
     $helper->load();
+    $bundles = array();
+    // this neatly autoloads
+    $boot->getPersistedBundles($kernel, $bundles);
 
     $coremodules = array(
         'ZikulaExtensionsModule',
@@ -417,31 +412,18 @@ function installmodules($lang = 'en')
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
         $className = null;
-        $module = null;
-        try {
-            $module = $kernel->getModule($coremodule);
-            $className = $module->getInstallerClass();
-            $bootstrap = $module->getPath().'/bootstrap.php';
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-        } catch (\InvalidArgumentException $e) {
+        $module = $kernel->getModule($coremodule);
+        $className = $module->getInstallerClass();
+        $bootstrap = $module->getPath().'/bootstrap.php';
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
         }
 //        $bootstrap = "$modpath/$coremodule/bootstrap.php";
 //        if (file_exists($bootstrap)) {
 //            include_once $bootstrap;
 //        }
 
-        ModUtil::dbInfoLoad($coremodule, $coremodule);
-        if (null === $className) {
-            if (is_dir("system/$coremodule")) {
-                ZLoader::addAutoloader($coremodule, 'system');
-                ZLoader::addPrefix($coremodule, 'system');
-            }
-            $className = "{$coremodule}\\{$coremodule}Installer";
-            $classNameOld = "{$coremodule}_Installer";
-            $className = class_exists($className) ? $className : $classNameOld;
-        }
+        //ModUtil::dbInfoLoad($coremodule, $coremodule);
         $instance = new $className($sm, $module);
         if ($instance->install()) {
             $results[$coremodule] = true;

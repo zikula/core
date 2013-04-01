@@ -17,7 +17,7 @@ class BootstrapHelper
     public function load()
     {
         $scanner = new Scanner();
-        $scanner->scan(array('system', 'modules', 'themes'), 4);
+        $scanner->scan(array('modules', 'themes'), 4);
 
         $this->truncate();
         $this->insert($scanner->getModulesMetaData(), 'M');
