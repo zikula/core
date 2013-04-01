@@ -34,6 +34,11 @@ class Util
      */
     public static function regenerate()
     {
+        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection(ServiceUtil::getManager()->get('kernel')));
+
+        $helper->load();
+
         // Get all themes on filesystem
         $filethemes = array();
 

@@ -393,6 +393,11 @@ function installmodules($lang = 'en')
     $sm = ServiceUtil::getManager();
     $kernel = $sm->get('kernel');
 
+    $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+    $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
+    $helper->createSchema();
+    $helper->load();
+
     $coremodules = array(
         'ZikulaExtensionsModule',
         'ZikulaSettingsModule',
