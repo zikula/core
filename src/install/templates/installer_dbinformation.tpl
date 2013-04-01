@@ -23,7 +23,7 @@
             </div>
             <div class="z-formrow">
                 <label for="dbhost">{gt text="Host"}</label>
-                <input type="text" name="dbhost" id="dbhost" maxlength="80" value="{$dbhost|default:'127.0.0.1'}" />
+                <input type="text" name="dbhost" id="dbhost" maxlength="80" value="{$dbhost|default:'localhost'}" />
             </div>
             <div class="z-formrow">
                 <label for="dbport">{gt text="Port"}</label>
