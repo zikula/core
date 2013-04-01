@@ -19,18 +19,22 @@
             <legend>{gt text="Database information"}</legend>
             <div class="z-formrow">
                 <label for="dbdriver">{gt text="Database type"}</label>
-                {dbtypes name=dbdriver selectedValue=$dbdriver id=dbdriver}
+                {dbtypes name='dbdriver' selectedValue=$dbdriver id='dbdriver'}
             </div>
             <div class="z-formrow">
                 <label for="dbtabletype">{gt text="Database table type (MySQL only)"}</label>
                 <select name="dbtabletype" id="dbtabletype">
-                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>MyISAM</option>
                     <option value="innodb"{if $dbtabletype eq innodb} selected="selected"{/if}>InnoDB</option>
+                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>MyISAM</option>
                 </select>
             </div>
             <div class="z-formrow">
                 <label for="dbhost">{gt text="Host"}</label>
                 <input type="text" name="dbhost" id="dbhost" maxlength="80" value="{$dbhost|default:'localhost'}" />
+            </div>
+            <div class="z-formrow">
+                <label for="dbport">{gt text="Port"}</label>
+                <input type="text" name="dbport" id="dbport" maxlength="5" value="{$dbport|default:'3306'}" />
             </div>
             <div class="z-formrow">
                 <label for="dbusername">{gt text="User name"}</label>
