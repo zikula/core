@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
 use Zikula\Core\AbstractModule;
 use Zikula\Core\AbstractTheme;
+use Composer\Autoload\ClassLoader;
+use Symfony\Component\Yaml\Yaml;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -29,6 +31,11 @@ abstract class ZikulaKernel extends Kernel
     private $themeMap = array();
 
     /**
+     * @var ClassLoader
+     */
+    private $autoloader;
+
+    /**
      * Flag determines if container is dumped or not
      *
      * @param $flag
@@ -40,6 +47,10 @@ abstract class ZikulaKernel extends Kernel
 
     public function boot()
     {
+        if (null === $this->autoloader) {
+            throw new \RuntimeException('Autoloader was not injected into Kernel before boot.');
+        }
+
         parent::boot();
 
         foreach ($this->bundleMap as $name => $bundles) {
@@ -102,6 +113,23 @@ abstract class ZikulaKernel extends Kernel
         }
 
         return $this->themeMap[$themeName];
+    }
+
+    public function setAutoloader(ClassLoader $autoloader)
+    {
+        $this->autoloader = $autoloader;
+    }
+
+    public function getAutoloader()
+    {
+        return $this->autoloader;
+    }
+
+    public function getConnectionConfig()
+    {
+        $dir = is_readable($dir = $this->rootDir.'/config/custom_parameters.yml') ? $dir : $this->rootDir.'/config/parameters.yml';
+
+        return Yaml::parse(file_get_contents($dir));
     }
 
     /**

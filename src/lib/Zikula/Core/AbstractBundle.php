@@ -18,12 +18,10 @@ abstract class AbstractBundle extends Bundle
         return $this->booted;
     }
 
-//    public function __construct()
-//    {
-//        $name = get_class($this);
-//        $posNamespaceSeperator = strrpos($name, '\\');
-//        $this->name = substr($name, $posNamespaceSeperator + 1);
-//    }
+    //public function getClass()
+    //{
+    //    return get_class($this);
+    //}
 
     public function getInstallerClass()
     {
