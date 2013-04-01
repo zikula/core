@@ -88,10 +88,10 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         // test the DB connection works or just set lazy
         try {
             if ($lazyConnect) {
-                $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]/$connectionInfo[dbname]";
+                $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]:$connectionInfo[port]/$connectionInfo[dbname]";
                 $connection = Doctrine_Manager::connection($dsn, $name);
             } else {
-                $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];port=$connectionInfo[port];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
                 $connection = Doctrine_Manager::connection($dbh, $name);
                 $connection->setOption('username', $connectionInfo['user']);
                 $connection->setOption('password', $connectionInfo['password']);
