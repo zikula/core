@@ -28,6 +28,9 @@
             <div class="z-formrow">
                 <label for="dbport">{gt text="Port"}</label>
                 <input type="text" name="dbport" id="dbport" maxlength="5" value="{$dbport|default:'3306'}" />
+                <p class="z-formnote z-informationmsg">
+                    <strong>{gt text="If the host is \"localhost\", then the port number is ignored and \"3306\" is assumed by default. If the MySQL server is running on any port other than the default port \"3306\", use the IP address \"127.0.0.1\" in place of \"localhost\" in the host argument."}</strong>
+                </p>
             </div>
             <div class="z-formrow">
                 <label for="dbname">{gt text="Database name"}</label>
