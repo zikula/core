@@ -27,6 +27,7 @@ $ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new dir
 // It must be named 'default'
 // ----------------------------------------------------------------------
 $ZConfig['DBInfo']['databases']['default']['host'] = 'localhost';
+$ZConfig['DBInfo']['databases']['default']['port'] = '3306';
 $ZConfig['DBInfo']['databases']['default']['user'] = 'root';
 $ZConfig['DBInfo']['databases']['default']['password'] = '';
 $ZConfig['DBInfo']['databases']['default']['dbname'] = 'test';
