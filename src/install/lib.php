@@ -57,6 +57,7 @@ function install(Zikula_Core $core)
     $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
     $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
     $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
+    $port = FormUtil::getPassedValue('port', '3306', 'GETPOST');
     $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
     $dbprefix = '';
     $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
@@ -156,7 +157,7 @@ function install(Zikula_Core $core)
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype);
                 update_installed_status(0);
                 try {
-                    $dbh = new PDO("$dbdriver:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
+                    $dbh = new PDO("$dbdriver:host=$dbhost;port=$port;dbname=$dbname", $dbusername, $dbpassword);
                 } catch (PDOException $e) {
                     $action = 'dbinformation';
                     $smarty->assign('reason', $e->getMessage());
