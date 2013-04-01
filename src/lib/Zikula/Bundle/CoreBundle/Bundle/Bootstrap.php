@@ -8,16 +8,9 @@ use Doctrine\DBAL\DriverManager;
   
 class Bootstrap
 {
-    private $connection;
-
     public function getConnection($kernel)
     {
-        if (null !== $this->connection) {
-            return $this->connection;
-        }
-
         // get bundles from persistence
-        $config = new Configuration();
         $connectionParams = $kernel->getConnectionConfig();
         $connectionParams['dbname'] = $connectionParams['parameters']['database_name'];
         $connectionParams['user'] = $connectionParams['parameters']['database_user'];
@@ -25,9 +18,7 @@ class Bootstrap
         $connectionParams['host'] = $connectionParams['parameters']['database_host'];
         $connectionParams['driver'] = $connectionParams['parameters']['database_driver'];
 
-        $this->connection = DriverManager::getConnection($connectionParams, $config);
-
-        return $this->connection;
+        return DriverManager::getConnection($connectionParams, new Configuration());
     }
 
     public function getPersistedBundles(ZikulaKernel $kernel, array &$bundles)
@@ -35,15 +26,15 @@ class Bootstrap
         try {
             $this->doGetPersistedBundles($kernel, $bundles);
         } catch (\Exception $e) {
-
+            // fail silently on purpose (drak)
         }
     }
 
-    public function doGetPersistedBundles(ZikulaKernel $kernel, array &$bundles)
+    private function doGetPersistedBundles(ZikulaKernel $kernel, array &$bundles)
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
-        $res = $conn->executeQuery('SELECT name, class, autoload FROM bundles');
+        $res = $conn->executeQuery('SELECT class, autoload FROM bundles');
         foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             $autoload = unserialize($row['autoload']);
             if (isset($autoload['psr-0'])) {
