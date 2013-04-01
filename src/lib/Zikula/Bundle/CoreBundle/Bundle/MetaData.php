@@ -10,24 +10,23 @@ class MetaData
     private $namespace;
     private $basePath;
     private $rootPath;
-    private $psr0;
+    private $autoload;
 
     public function __construct($json)
     {
-        $this->name = $json->name;
-        $this->shortName = $json->extra->zikula->{'short-name'};
-        $this->class = $json->extra->zikula->class;
+        $this->name = $json['name'];
+        $this->shortName = $json['extra']['zikula']['short-name'];
+        $this->class = $json['extra']['zikula']['class'];
         $this->namespace = substr($this->class, 0, strrpos($this->class, '\\')+1);
-        $this->basePath = $json->extra->zikula->{'base-path'};
-        $this->rootPath = $json->extra->zikula->{'root-path'};
-        $this->psr0 = $json->autoload->{'psr-0'};
+        $this->basePath = $json['extra']['zikula']['base-path'];
+        $this->rootPath = $json['extra']['zikula']['root-path'];
+        $this->autoload = $json['autoload'];
     }
 
     public function getName()
     {
         return $this->name;
     }
-
 
     public function getShortName()
     {
@@ -36,7 +35,12 @@ class MetaData
 
     public function getPsr0()
     {
-        return $this->psr0;
+        return $this->autoload['psr-0'];
+    }
+
+    public function getAutoload()
+    {
+        return $this->autoload;
     }
 
     public function getBasePath()

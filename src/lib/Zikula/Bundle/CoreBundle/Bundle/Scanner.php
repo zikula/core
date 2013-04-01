@@ -30,7 +30,7 @@ class Scanner
         foreach ($finder as $f) {
             $json = $this->decode($f->getRealPath());
             if (false !== $json) {
-                $this->jsons[$json->name] = $json;
+                $this->jsons[$json['name']] = $json;
             }
         }
     }
@@ -45,21 +45,21 @@ class Scanner
     public function decode($file)
     {
         $base = str_replace('\\', '/', dirname($file));
-        $json = json_decode($this->getFileContents($file));
+        $json = json_decode($this->getFileContents($file), true);
         if (\JSON_ERROR_NONE === json_last_error() && true === $this->validateBasic($json)) {
             // add base-path for future use
-            $json->extra->zikula->{'base-path'} = $base;
+            $json['extra']['zikula']['base-path'] = $base;
 
             // calculate PSR-0 autoloading path for this namespace
-            $class = $json->extra->zikula->class;
+            $class = $json['extra']['zikula']['class'];
             $ns = substr($class, 0, strrpos($class, '\\') + 1);
-            if (false === isset($json->autoload->{'psr-0'}->$ns)) {
+            if (false === isset($json['autoload']['psr-0'][$ns])) {
                 return false;
             }
 
             $nsShort = str_replace('\\', '/', substr($class, 0, strrpos($class, '\\')));
-            $json->autoload->{'psr-0'}->$ns = $json->extra->zikula->{'root-path'} = substr($base, 0, strpos($base, $nsShort) - 1);
-            $json->extra->zikula->{'short-name'} = substr($class, strrpos($class, '\\') + 1, strlen($class));
+            $json['autoload']['psr-0'][$ns] = $json['extra']['zikula']['root-path'] = substr($base, 0, strpos($base, $nsShort) - 1);
+            $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
 
             return $json;
         }
@@ -89,11 +89,11 @@ class Scanner
 
     private function validateBasic($json)
     {
-        if (!isset($json->type)) {
+        if (!isset($json['type'])) {
             return false;
         }
 
-        switch ($json->type) {
+        switch ($json['type']) {
             case 'zikula-module':
             case 'zikula-theme':
             case 'zikula-plugin':
@@ -102,11 +102,11 @@ class Scanner
                 return false;
         }
 
-        if (!isset($json->autoload->{'psr-0'})) {
+        if (!isset($json['autoload']['psr-0'])) {
             return false;
         }
 
-        if (!isset($json->extra->zikula->class)) {
+        if (!isset($json['extra']['zikula']['class'])) {
             return false;
         }
 
@@ -117,8 +117,8 @@ class Scanner
     {
         $array = array();
         foreach ($this->jsons as $json) {
-            if ($json->type === $type && true) {
-                $array[$json->name] = new MetaData($json);
+            if ($json['type'] === $type && true) {
+                $array[$json['name']] = new MetaData($json);
             }
         }
 
