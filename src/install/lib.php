@@ -15,6 +15,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\DBAL\Connection;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
@@ -23,14 +24,11 @@ function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
-    ZLoader::addPrefix('ZikulaUsersModule', 'system');
+    $container = $core->getContainer();
+    $dispatcher = $core->getDispatcher();
 
-    $serviceManager = $core->getContainer();
-    $eventManager = $core->getDispatcher();
-
-    // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-    $dbEvent = new GenericEvent(null, array('lazy' => true));
-    $eventManager->dispatch('doctrine.init_connection', $dbEvent);
+    /** @var $connection Connection */
+    $connection = $container->get('doctrine.dbal.default_connection');
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 
@@ -108,7 +106,7 @@ function install(Zikula_Core $core)
     $GLOBALS['ZConfig']['System']['multilingual'] = true;
     $GLOBALS['ZConfig']['System']['languageurl'] = true;
     $GLOBALS['ZConfig']['System']['language_detect'] = false;
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
+    $container->loadArguments($GLOBALS['ZConfig']['System']);
 
     $_lang = ZLanguage::getInstance();
     $request = $core->getContainer()->get('request');
@@ -211,7 +209,7 @@ function install(Zikula_Core $core)
                     $exec = ($dbdriver == 'mysql' || $dbdriver == 'mysqli') ?
                             "SHOW TABLES FROM `$dbnameConfig` LIKE '%'" :
                             "SHOW TABLES FROM $dbnameConfig LIKE '%'";
-                    $tables = DBUtil::executeSQL($exec);
+                    $tables = $connection->exec($exec);
                     if ($tables->rowCount() > 0) {
                         $proceed = false;
                         $action = 'dbinformation';
@@ -232,7 +230,7 @@ function install(Zikula_Core $core)
                                         continue;
                                 $exec .= $line;
                                 if (strrpos($line, ';') === strlen($line) - 1) {
-                                    if (!DBUtil::executeSQL($exec)) {
+                                    if (!$connection->executeUpdate($exec)) {
                                         $action = 'dbinformation';
                                         $smarty->assign('dbdumpfailed', true);
                                         break;
@@ -240,8 +238,6 @@ function install(Zikula_Core $core)
                                     $exec = '';
                                 }
                             }
-                            ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-                            ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
                             ModUtil::initCoreVars(true);
                             createuser($username, $password, $email);
                             $installedOk = true;
@@ -257,7 +253,7 @@ function install(Zikula_Core $core)
 
                     // create our new site admin
                     // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
-                    $serviceManager->get('session')->start();
+                    $container->get('session')->start();
 
                     $authenticationInfo = array(
                         'login_id'  => $username,
@@ -278,13 +274,16 @@ function install(Zikula_Core $core)
 
                     // set site status as installed and protect config.php file
                     update_installed_status(1);
-                    @chmod('config/config.php', 0400);
-                    if (!is_readable('config/config.php')) {
-                        @chmod('config/config.php', 0440);
-                        if (!is_readable('config/config.php')) {
-                            @chmod('config/config.php', 0444);
+                    foreach (array('config/config.php', 'app/config/parameters.yml') as $file) {
+                        @chmod($file, 0400);
+                        if (!is_readable($file)) {
+                            @chmod($file, 0440);
+                            if (!is_readable($file)) {
+                                @chmod($file, 0444);
+                            }
                         }
                     }
+
                     // install all plugins
                     $systemPlugins = PluginUtil::loadAllSystemPlugins();
                     foreach ($systemPlugins as $plugin) {
@@ -349,15 +348,7 @@ function install(Zikula_Core $core)
  */
 function createuser($username, $password, $email)
 {
-    if (!class_exists('Users_Constant')) {
-        require_once 'system/Zikula/Module/UsersModule/Constant.php';
-    }
     $connection = Doctrine_Manager::connection();
-
-    // get the database connection
-    ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-    ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
-    $dbtables = DBUtil::getTables();
 
     // create the password hash
     $password = UserUtil::getHashedPassword($password);
@@ -371,7 +362,7 @@ function createuser($username, $password, $email)
     $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
     // create the admin user
-    $sql = "UPDATE {$dbtables['users']}
+    $sql = "UPDATE users
             SET   uname        = '{$username}',
                   email        = '{$email}',
                   pass         = '{$password}',
@@ -380,7 +371,7 @@ function createuser($username, $password, $email)
                   lastlogin    = '{$nowUTCStr}'
             WHERE uid   = 2";
 
-    $result = DBUtil::executeSQL($sql);
+    $result = $connection->exec($sql);
 
     return ($result) ? true : false;
 }
@@ -392,6 +383,14 @@ function installmodules($lang = 'en')
 
     $sm = ServiceUtil::getManager();
     $kernel = $sm->get('kernel');
+
+    $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+    $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($kernel));
+    $helper->createSchema();
+    $helper->load();
+    $bundles = array();
+    // this neatly autoloads
+    $boot->getPersistedBundles($kernel, $bundles);
 
     $coremodules = array(
         'ZikulaExtensionsModule',
@@ -412,31 +411,18 @@ function installmodules($lang = 'en')
     // manually install the modules module
     foreach ($coremodules as $coremodule) {
         $className = null;
-        $module = null;
-        try {
-            $module = $kernel->getModule($coremodule);
-            $className = $module->getInstallerClass();
-            $bootstrap = $module->getPath().'/bootstrap.php';
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-        } catch (\InvalidArgumentException $e) {
+        $module = $kernel->getModule($coremodule);
+        $className = $module->getInstallerClass();
+        $bootstrap = $module->getPath().'/bootstrap.php';
+        if (file_exists($bootstrap)) {
+            include_once $bootstrap;
         }
 //        $bootstrap = "$modpath/$coremodule/bootstrap.php";
 //        if (file_exists($bootstrap)) {
 //            include_once $bootstrap;
 //        }
 
-        ModUtil::dbInfoLoad($coremodule, $coremodule);
-        if (null === $className) {
-            if (is_dir("system/$coremodule")) {
-                ZLoader::addAutoloader($coremodule, 'system');
-                ZLoader::addPrefix($coremodule, 'system');
-            }
-            $className = "{$coremodule}\\{$coremodule}Installer";
-            $classNameOld = "{$coremodule}_Installer";
-            $className = class_exists($className) ? $className : $classNameOld;
-        }
+        //ModUtil::dbInfoLoad($coremodule, $coremodule);
         $instance = new $className($sm, $module);
         if ($instance->install()) {
             $results[$coremodule] = true;

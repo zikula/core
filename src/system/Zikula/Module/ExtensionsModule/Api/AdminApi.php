@@ -433,6 +433,11 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
+        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+
+        $helper->load();
+
         // Get all modules on filesystem
         $filemodules = array();
 
@@ -631,6 +636,11 @@ class AdminApi extends \Zikula_AbstractApi
                 return LogUtil::registerPermissionError();
             }
         }
+
+        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+        $helper = new \Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper($boot->getConnection($this->getContainer()->get('kernel')));
+
+        $helper->load();
 
         // Argument check
         if (!isset($args['filemodules']) || !is_array($args['filemodules'])) {

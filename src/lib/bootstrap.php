@@ -33,6 +33,7 @@ $file = is_readable($file = __DIR__.'/../app/config/custom_kernel.yml') ? $file 
 $kernelConfig = Yaml::parse(file_get_contents($file));
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
+$kernel->setAutoloader($loader);
 $kernel->boot();
 
 $core = new Zikula_Core();

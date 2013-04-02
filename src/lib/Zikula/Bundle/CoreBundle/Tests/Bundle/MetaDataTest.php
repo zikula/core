@@ -44,7 +44,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPsr0()
     {
-        $this->assertEquals($this->json->autoload->{'psr-0'}, $this->metaData->getPsr0());
+        $this->assertEquals($this->json['autoload']['psr-0'], $this->metaData->getPsr0());
     }
 
     /**
@@ -81,7 +81,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
 
     private function getJson()
     {
-        return json_decode(<<<'EOF'
+        $json = <<<'EOF'
 {
     "name": "zikula/admin-module",
     "description": "Backend Administration Module",
@@ -109,6 +109,8 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 }
 EOF
-);
+        ;
+
+        return json_decode($json, true);
     }
 }

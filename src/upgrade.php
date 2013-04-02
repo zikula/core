@@ -36,8 +36,6 @@ define('_Z_MINUPGVER', '1.3.5');
 $GLOBALS['_ZikulaUpgrader'] = array();
 $dbname = $container['databases']['default']['dbname'];
 
-// Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-$eventManager->dispatch('doctrine.boot', new GenericEvent());
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
