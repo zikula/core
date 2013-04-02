@@ -15,6 +15,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\Yaml\Yaml;
+use Doctrine\DBAL\Connection;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
@@ -23,14 +24,11 @@ function install(Zikula_Core $core)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
-    ZLoader::addPrefix('ZikulaUsersModule', 'system');
+    $container = $core->getContainer();
+    $dispatcher = $core->getDispatcher();
 
-    $serviceManager = $core->getContainer();
-    $eventManager = $core->getDispatcher();
-
-    // Lazy load DB connection to avoid testing DSNs that are not yet valid (e.g. no DB created yet)
-    $dbEvent = new GenericEvent(null, array('lazy' => true));
-    $eventManager->dispatch('doctrine.init_connection', $dbEvent);
+    /** @var $connection Connection */
+    $connection = $container->get('doctrine.dbal.default_connection');
 
     $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
 
@@ -108,7 +106,7 @@ function install(Zikula_Core $core)
     $GLOBALS['ZConfig']['System']['multilingual'] = true;
     $GLOBALS['ZConfig']['System']['languageurl'] = true;
     $GLOBALS['ZConfig']['System']['language_detect'] = false;
-    $serviceManager->loadArguments($GLOBALS['ZConfig']['System']);
+    $container->loadArguments($GLOBALS['ZConfig']['System']);
 
     $_lang = ZLanguage::getInstance();
     $request = $core->getContainer()->get('request');
@@ -211,7 +209,7 @@ function install(Zikula_Core $core)
                     $exec = ($dbdriver == 'mysql' || $dbdriver == 'mysqli') ?
                             "SHOW TABLES FROM `$dbnameConfig` LIKE '%'" :
                             "SHOW TABLES FROM $dbnameConfig LIKE '%'";
-                    $tables = DBUtil::executeSQL($exec);
+                    $tables = $connection->exec($exec);
                     if ($tables->rowCount() > 0) {
                         $proceed = false;
                         $action = 'dbinformation';
@@ -232,7 +230,7 @@ function install(Zikula_Core $core)
                                         continue;
                                 $exec .= $line;
                                 if (strrpos($line, ';') === strlen($line) - 1) {
-                                    if (!DBUtil::executeSQL($exec)) {
+                                    if (!$connection->executeUpdate($exec)) {
                                         $action = 'dbinformation';
                                         $smarty->assign('dbdumpfailed', true);
                                         break;
@@ -240,8 +238,6 @@ function install(Zikula_Core $core)
                                     $exec = '';
                                 }
                             }
-                            ModUtil::dbInfoLoad('ZikulaUsersModule', 'ZikulaUsersModule');
-                            ModUtil::dbInfoLoad('ZikulaExtensionsModule', 'ZikulaExtensionsModule');
                             ModUtil::initCoreVars(true);
                             createuser($username, $password, $email);
                             $installedOk = true;
@@ -257,7 +253,7 @@ function install(Zikula_Core $core)
 
                     // create our new site admin
                     // TODO: Email username/password to administrator email address.  Cannot use ModUtil::apiFunc for this.
-                    $serviceManager->get('session')->start();
+                    $container->get('session')->start();
 
                     $authenticationInfo = array(
                         'login_id'  => $username,
@@ -278,13 +274,16 @@ function install(Zikula_Core $core)
 
                     // set site status as installed and protect config.php file
                     update_installed_status(1);
-                    @chmod('config/config.php', 0400);
-                    if (!is_readable('config/config.php')) {
-                        @chmod('config/config.php', 0440);
-                        if (!is_readable('config/config.php')) {
-                            @chmod('config/config.php', 0444);
+                    foreach (array('config/config.php', 'app/config/parameters.yml') as $file) {
+                        @chmod($file, 0400);
+                        if (!is_readable($file)) {
+                            @chmod($file, 0440);
+                            if (!is_readable($file)) {
+                                @chmod($file, 0444);
+                            }
                         }
                     }
+
                     // install all plugins
                     $systemPlugins = PluginUtil::loadAllSystemPlugins();
                     foreach ($systemPlugins as $plugin) {
