@@ -45,7 +45,7 @@
                 {/if}
                 <ul>
                     <li><strong>{gt text="Useful resources"}:</strong></li>
-                    <li><a href="docs/{$lang}/INSTALL" onclick="window.open('docs/{$lang}/INSTALL');return false;">{gt text="Installation guide"}</a></li>
+                    <li><a href="docs/{$lang}/INSTALL.md" onclick="window.open('docs/{$lang}/INSTALL.md');return false;">{gt text="Installation guide"}</a></li>
                     <li><a href="{gt text="http://community.zikula.org/module-Wiki.htm"}">{gt text="Zikula documentation"}</a></li>
                     <li><a href="{gt text="http://community.zikula.org/module-Forum.htm"}">{gt text="Support forums"}</a></li>
                     {* custom links for each action go here*}
