@@ -36,6 +36,7 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "drak/doctrine1": "dev-master",
         "drak/smarty": "dev-master",
+        "phpids/phpids": "dev-master",
         "gedmo/doctrine-extensions": "dev-master",
         "imagine/Imagine": "dev-master",
         "michelf/php-markdown": "1.3.*@dev",
