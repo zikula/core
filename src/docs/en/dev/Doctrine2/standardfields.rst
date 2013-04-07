@@ -12,7 +12,7 @@ Use @StandardFields and @Timestampable annotations to automatically update user 
 
     use Doctrine\ORM\Mapping as ORM;
     use Gedmo\Mapping\Annotation as Gedmo; 
-    use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+    use Zikula\Core\Doctrine\StandardFields\Mapping\Annotation as ZK;
 
     /**
      * @ORM\Entity

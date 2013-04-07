@@ -90,21 +90,7 @@ class DoctrineListener implements EventSubscriberInterface
 
     public function initDoctrineExtensions(GenericEvent $event)
     {
-        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.event_manager'), new Reference('service_container')));
-        $this->container->setDefinition('doctrine_extensions', $definition);
-
-        $types = array(
-            'Loggable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree',
-            'Sortable', 'SoftDeleteable', 'Blameable', 'Uploadable'
-        );
-        foreach ($types as $type) {
-            $definition = new Definition("Gedmo\\$type\\{$type}Listener");
-            $this->container->setDefinition(strtolower("doctrine_extensions.listener.$type"), $definition);
-        }
-
-        $config = $this->container->get('doctrine.configuration');
-        $config->addFilter('soft-deleteable', 'Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter');
-
+        // todo - migrate to XML
         $definition = new Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
         $this->container->setDefinition(strtolower("doctrine_extensions.listener.standardfields"), $definition);
     }

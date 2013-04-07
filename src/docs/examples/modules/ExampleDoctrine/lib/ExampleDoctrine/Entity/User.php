@@ -14,7 +14,7 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo; // Add a behavous
-use DoctrineExtensions\StandardFields\Mapping\Annotation as ZK;
+use Zikula\Core\Doctrine\StandardFields\Mapping\Annotation as ZK;
 
 
 /**

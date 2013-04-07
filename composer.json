@@ -9,7 +9,7 @@
             "Zikula": ["src/lib", "src/lib/legacy"],
             "Zikula\\Module": "src/system",
             "Zikula\\Theme": "src/themes",
-            "DoctrineExtensions\\StandardFields": "src/lib",
+            "DoctrineExtensions\\StandardFields": "src/lib/legacy",
             "CustomBundle\\": "src/app/custom"
         },
         "classmap": [
