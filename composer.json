@@ -66,5 +66,10 @@
     "config": {
         "vendor-dir": "src/vendor",
         "bin-dir": "bin"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "symfony-app-dir": "src/app",
+        "symfony-web-dir": "src/web"
     }
 }
