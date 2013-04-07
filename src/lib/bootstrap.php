@@ -24,7 +24,7 @@ if (isset($_SERVER['HTTP_HOST']) && !extension_loaded('xdebug')) {
 
 $loader = require __DIR__.'/../vendor/autoload.php';
 include __DIR__.'/../app/ZikulaKernel.php';
-ZLoader::register();
+ZLoader::register($loader);
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 

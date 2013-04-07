@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\ClassLoader\ClassLoader;
+use Composer\Autoload\ClassLoader;
 
 /**
  * ZLoader.
@@ -29,35 +29,36 @@ class ZLoader
     /**
      * Base setup.
      *
+     * @param $autoloader
+     *
      * @return void
      */
-    public static function register()
+    public static function register($autoloader)
     {
         spl_autoload_register(array('ZLoader', 'autoload'));
-        self::$autoloader = new ClassLoader();
-        self::$autoloader->register();
-        self::addAutoloader('ZikulaCategoriesModule', 'system');
+        self::$autoloader = $autoloader;
     }
 
     /**
      * Add new autoloader to the stack.
      *
      * @param string $namespace Namespace.
-     * @param string $path      Path.
+     * @param string $paths
      * @param string $separator Separator, _ or \\.
      *
+     * @internal param string $path Path.
      * @return void
      */
     public static function addAutoloader($namespace, $paths = '', $separator = '_')
     {
         $separator = $separator === '\\' ? '' : $separator;
 
-        self::$autoloader->addPrefix($namespace.$separator, $paths);
+        self::$autoloader->add($namespace.$separator, $paths);
     }
 
     public static function addPrefix($prefix, $paths)
     {
-        self::$autoloader->addPrefix($prefix, $paths);
+        self::$autoloader->add($prefix, $paths);
     }
 
     /**
