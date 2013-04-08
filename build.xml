@@ -87,14 +87,7 @@
         <mkdir dir="${builddir}/tmp"/>
         <mkdir dir="${builddir}/jsdoc"/>
         <exec command="curl -s https://getcomposer.org/installer | php;mv composer.phar ${workspace}/source"/>
-        <exec command="${workspace}/source/composer.phar install --prefer-dist"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/dev"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/prod"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/de_"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/pro_"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/web/bundles"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/web/modules"/>
-        <exec command="rm -rf ${workspace}/source/src/app/cache/web/themes"/>
+        <exec command="${workspace}/source/composer.phar install --prefer-dist --no-scripts"/>
     </target>
 
     <!-- Build archives -->
