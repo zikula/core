@@ -41,24 +41,6 @@ class ZikulaKernel extends Kernel
         }
     }
 
-    public function init()
-    {
-        // this is all to be deprecated
-        $paths = array(
-            $this->rootDir .'/../config/config.php',
-            $this->rootDir.'/../config/personal_config.php',
-            $this->rootDir.'/../config/multisites_config.php',
-        );
-
-        foreach ($paths as $path) {
-            if (is_readable($path)) {
-                include $path;
-            }
-        }
-
-        parent::init();
-    }
-
     private function registerCoreModules(array &$bundles)
     {
         $bundles[] = new Zikula\Module\AdminModule\ZikulaAdminModule();

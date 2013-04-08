@@ -56,6 +56,24 @@ abstract class ZikulaKernel extends Kernel
         $this->dump = $flag;
     }
 
+    public function __construct($env, $debug)
+    {
+        parent::__construct($env, $debug);
+
+        // this is all to be deprecated (todo drak)
+        $paths = array(
+            $this->rootDir .'/../config/config.php',
+            $this->rootDir.'/../config/personal_config.php',
+            $this->rootDir.'/../config/multisites_config.php',
+        );
+
+        foreach ($paths as $path) {
+            if (is_readable($path)) {
+                include $path;
+            }
+        }
+    }
+
     public function boot()
     {
         if (null === $this->autoloader) {
@@ -79,14 +97,6 @@ abstract class ZikulaKernel extends Kernel
                 $this->themeMap[$name] = $bundles;
             }
         }
-    }
-
-    /**
-     * Overridden to prevent error-reporting being overridden
-     */
-    public function init()
-    {
-        // todo - switch out Zikula's error reporting for Sf
     }
 
     /**
