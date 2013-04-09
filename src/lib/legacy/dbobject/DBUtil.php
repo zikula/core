@@ -2317,7 +2317,7 @@ class DBUtil
         $tableCols = $tables["{$table}_column"];
         $fieldName = $tableCols['id'];
         $where     = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
-        $sql       = 'SELECT ' . implode (',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
+        $sql       = 'SELECT ' . implode(',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
         $res       = DBUtil::executeSQL ($sql, 0, 1);
 
         if ($res === false) {
@@ -2325,6 +2325,7 @@ class DBUtil
         }
 
         $res = DBUtil::marshallObjects ($res, $columns);
+
         return $res[0];
     }
 
