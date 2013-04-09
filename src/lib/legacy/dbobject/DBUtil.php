@@ -303,6 +303,40 @@ class DBUtil
         return false;
     }
 
+
+    /**
+     * Transform a value for DB-storage-safe formatting, taking into account the columnt type. 
+     * Numeric values are not enclosed in single-quotes, anything else is. 
+     *
+     * @param string $table   The treated table reference.
+     * @param string $field   The table field the value needs to be stored in
+     * @param array  $value   The value which needs to be stored
+     *
+     * @return string    The generated sql string.
+     * @throws Exception If invalid table key retreived or empty query generated.
+     */
+    public static function _typesafeQuotedValue ($table, $field, $value)
+    {
+        $tables     = self::getTables();
+        $columns    = $tables["{$table}_column"];
+        $columnsDef = $tables["{$table}_column_def"];
+        $fieldType  = $columnsDef[$field];
+        $fieldTypes = explode (' ', $fieldType);
+        $fieldType  = $fieldTypes[0];
+
+        static $numericFields = null;
+        if (!$numericFields) {
+            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'N'=>'N');
+        }
+
+        if (isset($numericFields[$fieldType])) {
+            return DataUtil::formatForStore($value);
+        }
+
+        return "'" . DataUtil::formatForStore($value) . "'";
+    }
+
+
     /**
      * Same as Api function but without AS aliasing.
      *
@@ -801,7 +835,7 @@ class DBUtil
 
         if ($tArray) {
             if (!$where) {
-                $_where = " WHERE $columnList[$idfield] = '" . DataUtil::formatForStore($object[$idfield]) . "'";
+                $_where = " WHERE $columnList[$idfield] = " . self::_typesafeQuotedValue ($table, $idfield, $object[$idfield]); 
             } else {
                 $_where = self::_checkWhereClause($where);
             }
@@ -968,8 +1002,8 @@ class DBUtil
         $incFieldName = $columns[$incfield];
         $column = $tables["{$table}_column"];
 
-        $sql = 'UPDATE ' . $tableName . " SET $incFieldName = $column[$incfield] + $inccount";
-        $sql .= " WHERE $idFieldName = '" . DataUtil::formatForStore($id) . "'";
+        $sql  = 'UPDATE ' . $tableName . " SET $incFieldName = $column[$incfield] + $inccount";
+        $sql .= " WHERE $idFieldName = " . self::_typesafeQuotedValue ($table, $idfield, $id);
 
         $res = self::executeSQL($sql);
         if ($res === false) {
@@ -1030,7 +1064,7 @@ class DBUtil
             if (!$object[$idfield]) {
                 throw new Exception(__('Object does not have an ID'));
             }
-            $sql .= "WHERE $fieldName = '" . DataUtil::formatForStore($object[$idfield]) . "'";
+            $sql .= "WHERE $fieldName = " . self::_typesafeQuotedValue ($table, $idfield, $object[$idfield]);
         } else {
             $sql .= self::_checkWhereClause($where);
             $object['__fake_field__'] = 'Fake entry to mark deleteWhere() return as valid object';
@@ -1610,7 +1644,7 @@ class DBUtil
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
-        $where = $idFieldName . " = '" . DataUtil::formatForStore($id) . "'";
+        $where = $idFieldName . " = " . self::_typesafeQuotedValue ($tableName, $idfield, $id);
 
         return self::selectField($tableName, $field, $where);
     }
@@ -1685,7 +1719,7 @@ class DBUtil
         $cols = $tables["{$tableName}_column"];
         $idFieldName = $cols[$idfield];
 
-        $where = $idFieldName . " = '" . DataUtil::formatForStore($id) . "'";
+        $where = $idFieldName . " = " . self::_typesafeQuotedValue ($table, $idfield, $id);
 
         return self::selectFieldArray($tableName, $field, $where);
     }
@@ -1985,7 +2019,7 @@ class DBUtil
         $cols = $tables["{$table}_column"];
         $fieldName = $cols[$field];
 
-        $where = (($transformFunc) ? "$transformFunc($fieldName)" : $fieldName) . ' = \'' . DataUtil::formatForStore($id) . '\'';
+        $where = (($transformFunc) ? "$transformFunc($fieldName)" : $fieldName) . ' = ' . self::_typesafeQuotedValue ($table, $field, $id);
 
         $obj = self::selectObject($table, $where, $columnArray, $permissionFilter, $categoryFilter, $cacheObject);
         // _selectPostProcess is already called in selectObject()
@@ -2240,13 +2274,61 @@ class DBUtil
         $fieldName = $columns[$field];
 
         if ($transformFunc) {
-            $where = "$transformFunc($fieldName) = '" . DataUtil::formatForStore($id) . "'";
+            $where = "$transformFunc($fieldName) = " . self::_typesafeQuotedValue ($table, $field, $id);
         } else {
-            $where = $fieldName . " = '" . DataUtil::formatForStore($id) . "'";
+            $where = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
         }
 
         return self::selectObjectCount($table, $where, $field);
     }
+
+
+    /**
+     * Construct and execute a select statement from a nested set of expressions
+     *
+     * @param string  $table              The treated table reference.
+     * @param string  $sqlExpressionArray An array of expressions
+     * @param string  $columns            The column array we use to marshall the result set
+     * @param integer $id                 The id value to match (optional) (default=1)
+     * @param string  $field              The field to match the ID against (optional) (default='id').
+     *
+     * @return integer The resulting object
+     */
+    public static function selectNestedExpressionsObject ($table, $sqlExpressionArray, $columns, $id=1, $field='id')
+    {
+        if (!is_array($sqlExpressionArray)) {
+            throw new Exception(__f('The parameter %s must be an array', 'sqlExpressionArray'));
+        }
+
+        if (!$sqlExpressionArray) {
+            throw new Exception(__f('The parameter %s must not be an empty array', 'sqlExpressionArray'));
+        }
+
+        if (!is_array($columns)) {
+            throw new Exception(__f('The parameter %s must be an array', 'columns'));
+        }
+
+        if (!$columns) {
+            throw new Exception(__f('The parameter %s must not be an empty array', 'columns'));
+        }
+
+        $tables    = self::getTables();
+        $tableName = $tables[$table];
+        $tableCols = $tables["{$table}_column"];
+        $fieldName = $tableCols['id'];
+        $where     = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
+        $sql       = 'SELECT ' . implode(',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
+        $res       = DBUtil::executeSQL ($sql, 0, 1);
+
+        if ($res === false) {
+            return $res;
+        }
+
+        $res = DBUtil::marshallObjects ($res, $columns);
+
+        return $res[0];
+    }
+
 
     /**
      * Select & return an expanded field array.
@@ -2348,9 +2430,9 @@ class DBUtil
         $fieldName = $columns[$field];
 
         if ($transformFunc) {
-            $where = "tbl.$transformFunc($fieldName) = '" . DataUtil::formatForStore($id) . "'";
+            $where = "tbl.$transformFunc($fieldName) = " . self::_typesafeQuotedValue ($table, $field, $id);
         } else {
-            $where = "tbl.$fieldName = '" . DataUtil::formatForStore($id) . "'";
+            $where = "tbl.$fieldName = " . self::_typesafeQuotedValue ($table, $field, $id);
         }
 
         $object = self::selectExpandedObject($table, $joinInfo, $where, $columnArray, $permissionFilter, $categoryFilter);
