@@ -25,6 +25,7 @@ use Zikula\Core\Doctrine\Logger\ZikulaSqlLogger;
 use Zikula\Core\Doctrine\Listener\MySqlGenerateSchemaListener;
 use Doctrine\ORM\EntityManager;
 use Zikula\Core\Doctrine\ExtensionsManager;
+use Doctrine\ORM\Configuration;
 
 /**
  * Event handler to override templates.
@@ -46,28 +47,17 @@ class DoctrineListener implements EventSubscriberInterface
 
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
 
-        $r = new \ReflectionClass('Doctrine\Common\Cache\\' . $this->container['dbcache.type'] . 'Cache');
-
         /** @var $em EntityManager */
         $em = $this->container->get('doctrine.orm.entity_manager');
+        /** @var $ORMConfig Configuration */
         $ORMConfig = $em->getConfiguration();
-        $this->container->set('doctrine.configuration', $ORMConfig); // to deprecated (drak)
 
-        // create proxy cache dir
-        CacheUtil::createLocalDir('doctrinemodels');
+        $chain = $ORMConfig->getMetadataDriverImpl(); // driver chain
+        $defaultAnnotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
+            $this->container->get('annotation_reader')
+        );
+        $chain->setDefaultDriver($defaultAnnotationDriver);
 
-        // setup annotation reader
-        $reader = new \Doctrine\Common\Annotations\AnnotationReader();
-        $cacheReader = new \Doctrine\Common\Annotations\CachedReader($reader, new \Doctrine\Common\Cache\ArrayCache());
-        $this->container->set('doctrine.annotation_reader', $cacheReader);
-
-        // setup annotation driver
-        $annotationDriver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($cacheReader);
-        $this->container->set('doctrine.annotation_driver', $annotationDriver);
-
-        // add annotations as default driver
-        $ORMConfig->getMetadataDriverImpl()->setDefaultDriver($annotationDriver);
-        $this->container->set('doctrine.driver_chain', $ORMConfig->getMetadataDriverImpl());
 
         if (isset($serviceManager['log.enabled']) && $serviceManager['log.enabled']) {
             $ORMConfig->setSQLLogger(new ZikulaSqlLogger());
@@ -76,7 +66,7 @@ class DoctrineListener implements EventSubscriberInterface
         // setup doctrine eventmanager
         $this->container->set('doctrine.event_manager', $eventManager = $em->getEventManager());
 
-       // setup MySQL specific listener (storage engine and encoding)
+        // setup MySQL specific listener (storage engine and encoding)
         if ($config['dbdriver'] == 'mysql') {
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $eventManager->addEventSubscriber($mysqlSessionInit);
@@ -91,7 +81,7 @@ class DoctrineListener implements EventSubscriberInterface
     public function initDoctrineExtensions(GenericEvent $event)
     {
         // todo - migrate to XML
-        $definition = new Definition("DoctrineExtensions\\StandardFields\\StandardFieldsListener");
+        $definition = new Definition("Zikula\\Core\\Doctrine\\StandardFields\\StandardFieldsListener");
         $this->container->setDefinition(strtolower("doctrine_extensions.listener.standardfields"), $definition);
     }
 

@@ -53,9 +53,7 @@ doctrine:
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: %kernel.root_dir%/data/data.db3
-        # path:     %database_path%
+                path:     %database_path%
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -66,10 +64,17 @@ doctrine:
         entity_managers:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
+                auto_mapping: true
                 metadata_cache_driver: array
                 query_cache_driver: array
                 result_cache_driver: array
                 mappings:
+                    zikula_core:
+                        type: annotation
+                        prefix: Zikula\Core\Doctrine\Entity
+                        dir: "%kernel.root_dir%/../lib/Zikula/Core/Doctrine/Entity"
+                        alias: ZikulaCore # this one is optional and will default to the name set for the mapping
+                        is_bundle: false
                     gedmo_translatable:
                         type: annotation
                         prefix: Gedmo\Translatable\Entity
@@ -94,6 +99,22 @@ doctrine:
                         dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
+
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            # if removed these values default to false
+            translatable: false
+            timestampable: true
+            blameable: false
+            sluggable: true
+            tree: true
+            loggable: true
+            sortable: false
+            softdeleteable: false
+            uploadable: false
+            reference_integrity: false
 
 # Swiftmailer Configuration
 swiftmailer:

@@ -19,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine_Manager,
     Doctrine_Core,
+    CacheUtil,
     Zikula_Event,
     System;
 use Zikula\Core\Event\GenericEvent;
@@ -79,6 +80,9 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
             $internalEvent = new GenericEvent($this->doctrineManager);
             $this->dispatcher->dispatch('doctrine.cache', $internalEvent);
         }
+
+        // create proxy cache dir
+        CacheUtil::createLocalDir('doctrinemodels');
 
         $lazyConnect = isset($event['lazy']) ? $event['lazy'] : true;
         $name = isset($event['name']) ? $event['name'] : 'default';
