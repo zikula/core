@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-set_time_limit(0);
-
-require_once __DIR__.'/../lib/bootstrap.php';
-require_once __DIR__.'/ZikulaKernel.php';
-
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+
+set_time_limit(0);
+
+$loader = require __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/ZikulaKernel.php';
 
 $input = new ArgvInput();
 $env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
