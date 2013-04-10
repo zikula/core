@@ -64,14 +64,6 @@
         "twig/twig": "<2.0",
         "zikula/filesystem": "dev-master"
     },
-    "scripts": {
-        "post-install-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache"
-        ],
-        "post-update-cmd": [
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache"
-        ]
-    },
     "config": {
         "vendor-dir": "src/vendor",
         "bin-dir": "bin"

@@ -77,7 +77,7 @@ abstract class ZikulaKernel extends Kernel
     public function boot()
     {
         if (null === $this->autoloader) {
-            throw new \RuntimeException('Autoloader was not injected into Kernel before boot.');
+            $this->getAutoloader();
         }
 
         parent::boot();
@@ -173,6 +173,11 @@ abstract class ZikulaKernel extends Kernel
 
     public function getAutoloader()
     {
+        if (null === $this->autoloader) {
+            $loaders = spl_autoload_functions();
+            $this->autoloader = $loaders[0][0];
+        }
+
         return $this->autoloader;
     }
 
@@ -243,7 +248,6 @@ abstract class ZikulaKernel extends Kernel
                 array_pop($bundleMap);
             }
         }
-
     }
 
     /**
@@ -296,7 +300,8 @@ abstract class ZikulaKernel extends Kernel
     protected function getContainerBaseClass()
     {
         return 'Zikula_ServiceManager';
-        //return 'Zikula\Bridge\DependencyInjection\ContainerBuilder';
+        //return 'Symfony\Component\DependencyInjection\Container';
+        // return 'Zikula\Bridge\DependencyInjection\ContainerBuilder';
     }
 
     /**
