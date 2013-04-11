@@ -2547,8 +2547,9 @@ class DBUtil
         //$dst = ($distinct ? 'DISTINCT' : '');
         $sqlStart = "SELECT COUNT(*) ";
         $sqlFrom = "FROM $tableName AS tbl ";
+        $sqlGroupBy = 'GROUP BY ' . implode (', ', $sqlJoinArray[3]);
 
-        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where";
+        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $sqlGroupBy";
         $res = self::executeSQL($sql);
         if ($res === false) {
             return $res;
@@ -2589,6 +2590,7 @@ class DBUtil
         $alias = 'a';
         $sqlJoin = '';
         $sqlJoinFieldList = '';
+        $sqlJoinFieldArray = array();
         foreach (array_keys($joinInfo) as $k) {
             $jt = $joinInfo[$k]['join_table'];
             $jf = $joinInfo[$k]['join_field'];
@@ -2624,6 +2626,7 @@ class DBUtil
 
                 $line = ", $alias.$currentColumn AS \"$ofn[$k]\" ";
                 $sqlJoinFieldList .= $line;
+                $sqlJoinFieldArray[] = "$alias.$currentColumn";
 
                 $ca[] = $ofn[$k];
             }
@@ -2646,7 +2649,7 @@ class DBUtil
             ++$alias;
         }
 
-        return array($sqlJoin, $sqlJoinFieldList, $ca);
+        return array($sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray);
     }
 
     /**
