@@ -2575,7 +2575,7 @@ class DBUtil
      * @param array  $joinInfo    The array containing the extended join information.
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
-     * @return array $sqlJoin, $sqlJoinFieldList, $ca.
+     * @return array $sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray.
      * @deprecated
      * @see    Doctrine_Record
      */
