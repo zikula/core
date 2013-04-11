@@ -2565,6 +2565,63 @@ class DBUtil
     }
 
     /**
+     * Take a basic orderby clause and transform it to it's fully qualified column equivalent.
+     *
+     * This method exists to ensure that sort-clauses fully qualified (duh!) and thus cross-database compatible.
+     *
+     * @param string $sort    The plain column sort clause
+     * @param array  $table   The table we are sorting against
+     *
+     * @return string 
+     */
+    public static function convertSortClauseToFullyQualified ($sort, $table)
+    {
+        if (!$table) {
+            return ZWebstore_DBObject_Compat::registerError ('Invalid [table] received for sort qualification');
+        }
+
+        $sort = trim(str_replace (array("\t", '  ', ' +0'), array(' ', ' ', '+0'), $sort));
+        if (!$sort) {
+            return $sort;
+        }
+
+        $tables    = self::getTables();
+        $tableName = $tables[$table];
+        $columns   = $tables["{$table}_column"];
+
+        $sortFields = explode (',', $sort);
+        foreach ($sortFields as $k=>$v) {
+            $fields = explode (' ', trim($v));
+            if ($fields) {
+                $left         = $fields[0];
+                $havePlusZero = false;
+                if (strpos ($left, '+0')) {
+                    $left = substr ($left, 0, -2);
+                    $havePlusZero = true;
+                }
+
+                $fullColumnName = $columns[$left];
+                if ($fullColumnName) {
+                    $fullColumnName = "tbl.$fullColumnName";
+                } else {
+                    $fullColumnName = $left;
+                }
+
+                if ($havePlusZero) {
+                    $fullColumnName .= '+0';
+                }
+
+                $sortFields[$k] = $fullColumnName;
+                if (count($fields)>1) {
+                    $sortFields[$k] .= " $fields[1]";
+                }
+            }
+        }
+
+        return ' ' . implode (',', $sortFields);
+    }
+
+    /**
      * Joining string creation.
      *
      * This method creates the necessary sql information for retrieving
