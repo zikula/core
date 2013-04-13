@@ -66,8 +66,8 @@ class ModuleGenerator extends Generator
         $this->filesystem->copy($this->skeletonDir.'/.travis.yml', $dir.'/.travis.yml');
         $this->renderFile($this->skeletonDir, 'composer.json.twig', $dir.'/composer.json', $parameters);
         $this->renderFile($this->skeletonDir, 'Module.php.twig', $dir.'/'.$module.'.php', $parameters);
-        $this->renderFile($this->skeletonDir, 'Version.php.twig', $dir.'/'.$basename.'Version.php', $parameters);
-        $this->renderFile($this->skeletonDir, 'Installer.php.twig', $dir.'/'.$basename.'Installer.php', $parameters);
+        $this->renderFile($this->skeletonDir, 'Version.php.twig', $dir.'/'.$moduleName.'Version.php', $parameters);
+        $this->renderFile($this->skeletonDir, 'Installer.php.twig', $dir.'/'.$moduleName.'Installer.php', $parameters);
         $this->renderFile($this->skeletonDir, 'phpunit.xml.dist.twig', $dir.'/phpunit.xml.dist', $parameters);
         $this->renderFile($this->skeletonDir, 'README.md.twig', $dir.'/README.md', $parameters);
         $this->renderFile($this->skeletonDir, 'LICENSE-'.$license.'.twig', $dir.'/LICENSE.md', $parameters);
