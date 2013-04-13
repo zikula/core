@@ -34,7 +34,7 @@ class Bootstrap
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
-        $res = $conn->executeQuery('SELECT class, autoload FROM bundles');
+        $res = $conn->executeQuery('SELECT name, class, autoload FROM bundles');
         foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             $autoload = unserialize($row['autoload']);
             if (isset($autoload['psr-0'])) {
@@ -51,7 +51,12 @@ class Bootstrap
                 }
             }
             $class = $row['class'];
-            $bundles[] = new $class;
+
+            if (class_exists($class)) {
+                $bundles[] = new $class;
+            } else {
+                throw new \RuntimeException(sprintf('Looks like the bundle %s files are missing', $row['name']));
+            }
         }
         $conn->close();
     }
