@@ -27,6 +27,7 @@ class GettextExtension extends \Twig_Extension
     {
         return array(
             '__' => new \Twig_Function_Method($this, '__', array('needs_environment' => true)),
+            '_n' => new \Twig_Function_Method($this, '_n', array('needs_environment' => true)),
             '__f' => new \Twig_Function_Method($this, '__f', array('needs_environment' => true)),
             '_fn' => new \Twig_Function_Method($this, '_fn', array('needs_environment' => true)),
             '__p' => new \Twig_Function_Method($this, '__p', array('needs_environment' => true)),

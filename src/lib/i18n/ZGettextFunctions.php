@@ -36,7 +36,7 @@ if (!defined('LC_MESSAGES')) {
  * @throws Exception If $domain is an array.
  * @return string
  */
-function __f($msgid, $params, $domain=null)
+function __f($msgid, $params, $domain = null)
 {
     $msgstr = (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
     $params = (is_array($params) ? $params : array($params));
@@ -65,7 +65,7 @@ function __f($msgid, $params, $domain=null)
  * @throws Exception If $domain is an array.
  * @return string
  */
-function _fn($sin, $plu, $n, $params, $domain=null)
+function _fn($sin, $plu, $n, $params, $domain = null)
 {
     $msgstr = (isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n));
     $params = (is_array($params) ? $params : array($params));
@@ -82,7 +82,7 @@ function _fn($sin, $plu, $n, $params, $domain=null)
  * @return string
  * @throws Exception If $domain is an array.
  */
-function __($msgid, $domain=null)
+function __($msgid, $domain = null)
 {
     return (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
 }
@@ -98,7 +98,7 @@ function __($msgid, $domain=null)
  * @throws Exception If $domain is an array.
  * @return string
  */
-function _n($singular, $plural, $count, $domain=null)
+function _n($singular, $plural, $count, $domain = null)
 {
     return (isset($domain) ? _dngettext($domain, $singular, $plural, (int)$count) : _ngettext($singular, $plural, (int)$count));
 }
