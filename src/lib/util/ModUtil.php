@@ -1007,7 +1007,9 @@ class ModUtil
             }
 
             if (method_exists($object, 'setTranslator')) {
-                $object->setTranslator(self::getModule($modname)->getTranslationDomain());
+                $object->setTranslator(
+                    new \Zikula\Common\I18n\Translator(self::getModule($modname)->getTranslationDomain())
+                );
             }
 
             $sm->set($serviceId, $object);
