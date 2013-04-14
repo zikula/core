@@ -993,9 +993,11 @@ class ModUtil
             $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
-            if ($r->hasMethod('__construct')) {
+            if ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula_AbstractBase')) {
                 // todo (drak) - build the constructor according to it's signature
                 $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
+            } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Controller\AbstractController')) {
+                $object = $r->newInstanceArgs(array(self::getModule($modname)));
             } else {
                 $object = $r->newInstance();
             }
@@ -1004,8 +1006,8 @@ class ModUtil
                 $object->setContainer(ServiceUtil::getManager());
             }
 
-            if (method_exists($object, 'setModule')) {
-                $object->setModule(self::getModule($modname));
+            if (method_exists($object, 'setTranslator')) {
+                $object->setTranslator(self::getModule($modname)->getTranslationDomain());
             }
 
             $sm->set($serviceId, $object);

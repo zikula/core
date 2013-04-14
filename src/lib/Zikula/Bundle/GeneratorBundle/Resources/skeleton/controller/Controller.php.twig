@@ -2,7 +2,7 @@
 
 namespace {{ namespace }}\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Zikula\Core\Controller\AbstractController;
 {% if 'annotation' == format.routing -%}
 use Zikula\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Bundle\FrameworkExtraBundle\Configuration\Template;

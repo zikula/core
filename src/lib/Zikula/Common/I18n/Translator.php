@@ -5,36 +5,35 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
+ * @license    GNU/LGPLv3 (or at your option, any later version).
+ * @package    Zikula
  * @subpackage Zikula_Translate
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Common\I18n;
 
 /**
  * Zikula Translate helper.
  */
-class Translate implements TranslatableInterface
+class Translator implements TranslatableInterface
 {
     /**
      * Translation domain.
      *
      * @var string
      */
-    protected $domain;
+    private $domain;
 
     /**
      * Constructor.
      *
      * @param string $domain Gettext domain.
      */
-    private function __construct($domain=null)
+    public function __construct($domain = null)
     {
-        $this->domain = $domain;
+        $this->domain = strtolower($domain);
     }
 
     /**
@@ -44,7 +43,7 @@ class Translate implements TranslatableInterface
      *
      * @return void
      */
-    public function setDomain($domain=null)
+    public function setDomain($domain = null)
     {
         $this->domain = $domain;
     }
@@ -68,7 +67,7 @@ class Translate implements TranslatableInterface
      */
     public function __($msg)
     {
-        return __($this->domain, $msg);
+        return __($msg, $this->domain);
     }
 
     /**
@@ -82,7 +81,7 @@ class Translate implements TranslatableInterface
      */
     public function _n($m1, $m2, $n)
     {
-        return _n($this->domain, $m1, $m2, $n);
+        return _n($m1, $m2, $n, $this->domain);
     }
 
     /**
@@ -112,5 +111,4 @@ class Translate implements TranslatableInterface
     {
         return _fn($m1, $m2, $n, $param, $this->domain);
     }
-
 }

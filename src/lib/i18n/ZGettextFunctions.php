@@ -38,9 +38,6 @@ if (!defined('LC_MESSAGES')) {
  */
 function __f($msgid, $params, $domain=null)
 {
-    if (is_array($domain)) {
-        throw new Exception(__('$domain cannot be an array.'));
-    }
     $msgstr = (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
     $params = (is_array($params) ? $params : array($params));
 
@@ -70,9 +67,6 @@ function __f($msgid, $params, $domain=null)
  */
 function _fn($sin, $plu, $n, $params, $domain=null)
 {
-    if (is_array($domain)) {
-        throw new Exception(__('$domain cannot be an array.'));
-    }
     $msgstr = (isset($domain) ? _dngettext($domain, $sin, $plu, (int)$n) : _ngettext($sin, $plu, (int)$n));
     $params = (is_array($params) ? $params : array($params));
 
@@ -85,14 +79,11 @@ function _fn($sin, $plu, $n, $params, $domain=null)
  * @param string $msgid  The message.
  * @param string $domain Gettext domain.
  *
+ * @return string
  * @throws Exception If $domain is an array.
  */
 function __($msgid, $domain=null)
 {
-    if (is_array($domain)) {
-        throw new Exception(__('$domain cannot be an array.'));
-    }
-
     return (isset($domain) ? _dgettext($domain, $msgid) : _gettext($msgid));
 }
 
@@ -109,10 +100,6 @@ function __($msgid, $domain=null)
  */
 function _n($singular, $plural, $count, $domain=null)
 {
-    if (is_array($domain)) {
-        throw new Exception(__('$domain cannot be an array.'));
-    }
-
     return (isset($domain) ? _dngettext($domain, $singular, $plural, (int)$count) : _ngettext($singular, $plural, (int)$count));
 }
 
@@ -166,6 +153,7 @@ function _dgettext($domain, $msgid)
 {
     return ZGettext::getReader($domain)->translate($msgid);
 }
+
 /**
  * Plural version of dgettext.
  *
@@ -184,9 +172,9 @@ function _dngettext($domain, $single, $plural, $number)
 /**
  * Overrides the domain and category for a single lookup.
  *
- * @param string   $domain   Gettext domain.
- * @param string   $msgid    The message.
- * @param constant $category LC_CONSTANT.
+ * @param string  $domain   Gettext domain.
+ * @param string  $msgid    The message.
+ * @param integer $category LC_CONSTANT.
  *
  * @return string
  */
@@ -198,11 +186,11 @@ function _dcgettext($domain, $msgid, $category)
 /**
  * Plural version of dcgettext.
  *
- * @param string   $domain   Gettext domain.
- * @param string   $single   Singular.
- * @param string   $plural   Plural.
- * @param integer  $number   Count.
- * @param constant $category LC_CONSTANT.
+ * @param string  $domain   Gettext domain.
+ * @param string  $single   Singular.
+ * @param string  $plural   Plural.
+ * @param integer $number   Count.
+ * @param integer $category LC_CONSTANT.
  *
  * @return string
  */
