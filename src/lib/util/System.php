@@ -871,6 +871,12 @@ class System
             $request->query->replace($_GET);
         }
 
+        foreach ($arguments as $key => $value) {
+            $request->attributes->set($key, $value);
+        }
+        //foreach ($_POST as $key => $value) {
+        //    $request->attributes->set($key, $value);
+        //}
         $request->attributes->set('_controller', "$module:$type:$func");
         $request->attributes->set('_module', strtolower($module)); // legacy - this is how they are received originally
         $request->attributes->set('_type', strtolower($type)); // legacy - this is how they are received originally

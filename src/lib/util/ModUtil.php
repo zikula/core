@@ -11,7 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Zikula\Core\Event\GenericEvent;
 
 /**
@@ -976,9 +976,9 @@ class ModUtil
      * Get class object.
      *
      * @param string $className Class name.
+     * @param string $modname
      *
-     * @throws LogicException If $className is neither a Zikula_AbstractApi nor a Zikula_AbstractController.
-     * @return object         Module object.
+     * @return object Module object.
      */
     public static function getObject($className, $modname)
     {
@@ -993,8 +993,20 @@ class ModUtil
             $object = $sm->get($serviceId);
         } else {
             $r = new ReflectionClass($className);
+            if ($r->hasMethod('__construct')) {
+                // todo (drak) - build the constructor according to it's signature
+                $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
+            } else {
+                $object = $r->newInstance();
+            }
 
-            $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
+            if ($object instanceof ContainerAware) {
+                $object->setContainer(ServiceUtil::getManager());
+            }
+
+            if (method_exists($object, 'setModule')) {
+                $object->setModule(self::getModule($modname));
+            }
 
             $sm->set($serviceId, $object);
         }
@@ -1092,6 +1104,13 @@ class ModUtil
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
+                    if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase) {
+                        // resolve request args
+                        $resolver = new \Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver(
+                            ServiceUtil::getManager(), new \Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser(ServiceUtil::get('kernel')));
+                        $methodArgs = $resolver->getArguments($request = ServiceUtil::get('request'), $modfunc);
+                    }
+
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
                         $reflection = call_user_func(array($modfunc[0], 'getReflection'));
                         $subclassOfReflection = new ReflectionClass($reflection->getParentClass());
@@ -1102,7 +1121,12 @@ class ModUtil
                         $modfunc[0]->preDispatch();
                     }
 
-                    $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                    if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase && isset($methodArgs)) {
+                        $postExecuteEvent->setData(call_user_func_array($modfunc, $methodArgs));
+                    } else {
+                        $postExecuteEvent->setData(call_user_func($modfunc, $args));
+                    }
+
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
                         $modfunc[0]->postDispatch();
                     }
