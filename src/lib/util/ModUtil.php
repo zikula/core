@@ -994,7 +994,6 @@ class ModUtil
         } else {
             $r = new ReflectionClass($className);
             if ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula_AbstractBase')) {
-                // todo (drak) - build the constructor according to it's signature
                 $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
             } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Controller\AbstractController')) {
                 $object = $r->newInstanceArgs(array(self::getModule($modname)));
