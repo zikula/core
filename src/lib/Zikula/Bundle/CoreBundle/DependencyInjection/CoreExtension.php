@@ -4,6 +4,7 @@ namespace Zikula\Bundle\CoreBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
@@ -23,9 +24,8 @@ class CoreExtension extends Extension
 
         $loader->load('session.xml');
         $loader->load('services.xml');
-
-//        $loader->load('web.xml');
         $loader->load('core.xml');
+        $loader->load('twig.xml');
 
 //        $config = Yaml::parse(file_get_contents(ZIKULA_ROOT.'/../app/config/core_legacy.yml'));
 //        foreach ($config as $key => $array) {
@@ -43,14 +43,14 @@ class CoreExtension extends Extension
 
         // todo - temporary - remove when Smarty is removed, also need to redeligate some
         // of this to other's responsibility
-//        $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
-//        $dirs = array('doctrinemodels', 'idsTmp', 'purifierCache', 'doctrinemodels',
-//        'Theme_cache', 'Theme_compiled', 'Theme_Config', 'view_cache', 'view_compiled');
-//        foreach ($dirs as $dir) {
-//            if (!is_dir($cacheDir.'/'.$dir)) {
-//                mkdir($cacheDir.'/'.$dir, 0777, true);
-//            }
-//        }
+        $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
+        $dirs = array('doctrinemodels', 'idsTmp', 'purifierCache', 'doctrinemodels',
+        'Theme_cache', 'Theme_compiled', 'Theme_Config', 'view_cache', 'view_compiled');
+        foreach ($dirs as $dir) {
+            if (!is_dir($cacheDir.'/'.$dir)) {
+                mkdir($cacheDir.'/'.$dir, 0777, true);
+            }
+        }
     }
 
     public function getNamespace()
