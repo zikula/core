@@ -72,6 +72,9 @@ abstract class ZikulaKernel extends Kernel
                 include $path;
             }
         }
+
+        // relocate ztemp to cache dir
+        $GLOBALS['ZConfig']['System']['temp'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['System']['temp'];
     }
 
     public function boot()
