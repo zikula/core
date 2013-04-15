@@ -8,8 +8,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class AbstractBundle extends Bundle
 {
+    const STATE_DISABLED = 2;
+    const STATE_ACTIVE = 3;
+    const STATE_MISSING = 6;
+
+    protected $state;
     protected $booted = false;
-    protected static $staticPath;
 
     private $basePath;
 
@@ -18,10 +22,21 @@ abstract class AbstractBundle extends Bundle
         return $this->booted;
     }
 
-    //public function getClass()
-    //{
-    //    return get_class($this);
-    //}
+    public function setState($state)
+    {
+        if (!in_array($state, array(self::STATE_ACTIVE, self::STATE_DISABLED))) {
+            throw new \InvalidArgumentException(sprintf('Invalid state %s', $state));
+        }
+
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getState()
+    {
+        return $this->state;
+    }
 
     public function getInstallerClass()
     {
@@ -77,23 +92,6 @@ abstract class AbstractBundle extends Bundle
         preg_match('#/(modules|system|themes)/#', $path, $matches);
 
         return substr($path, strpos($path, $matches[1]), strlen($path));
-    }
-
-    /**
-     * Gets the base path of the module.
-     *
-     * @return string Base path of the final child class
-     */
-    public static function getStaticPath()
-    {
-        if (null !== self::$staticPath) {
-            return self::$staticPath;
-        }
-
-        $reflection = new \ReflectionClass(get_called_class());
-        self::$staticPath = dirname($reflection->getFileName());
-
-        return self::$staticPath;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 class MetaData
 {
     private $name;
+    private $type;
     private $shortName;
     private $class;
     private $namespace;
@@ -15,6 +16,7 @@ class MetaData
     public function __construct($json)
     {
         $this->name = $json['name'];
+        $this->type = $json['type'];
         $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
         $this->namespace = substr($this->class, 0, strrpos($this->class, '\\')+1);
@@ -61,5 +63,10 @@ class MetaData
     public function getNamespace()
     {
         return $this->namespace;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

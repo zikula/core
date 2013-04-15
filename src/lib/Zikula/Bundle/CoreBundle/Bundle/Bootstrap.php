@@ -5,6 +5,7 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Zikula\Core\AbstractBundle;
   
 class Bootstrap
 {
@@ -34,9 +35,10 @@ class Bootstrap
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
-        $res = $conn->executeQuery('SELECT name, class, autoload FROM bundles');
-        foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
-            $autoload = unserialize($row['autoload']);
+        $res = $conn->executeQuery('SELECT bundlename, bundleclass, autoload, bundlestate FROM bundles');
+        foreach ($res->fetchAll(\PDO::FETCH_NUM) as $row) {
+            list($name, $class, $autoload, $state) = $row;
+            $autoload = unserialize($autoload);
             if (isset($autoload['psr-0'])) {
                 foreach($autoload['psr-0'] as $prefix => $path) {
                     $kernel->getAutoloader()->add($prefix, $path);
@@ -50,12 +52,13 @@ class Bootstrap
                     include $path;
                 }
             }
-            $class = $row['class'];
 
             if (class_exists($class)) {
-                $bundles[] = new $class;
+                $bundle = new $class;
+                $bundle->setState($state);
+                $bundles[] = $bundle;
             } else {
-                throw new \RuntimeException(sprintf('Looks like the bundle %s files are missing', $row['name']));
+                throw new \RuntimeException(sprintf('Looks like the bundle %s files are missing', $name));
             }
         }
         $conn->close();
