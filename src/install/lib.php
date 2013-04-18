@@ -521,13 +521,6 @@ function _check_requirements()
         'app/cache/',
         'app/config/parameters.yml',
         "$datadir/",
-        "$temp/",
-        "$temp/error_logs/",
-        "$temp/view_compiled/",
-        "$temp/view_cache/",
-        "$temp/Theme_compiled/",
-        "$temp/Theme_cache/",
-        "$temp/Theme_Config/",
     );
     $results['files'] = array();
     foreach ($files as $file) {
