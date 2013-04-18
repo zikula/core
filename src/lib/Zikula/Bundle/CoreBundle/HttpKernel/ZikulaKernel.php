@@ -13,6 +13,7 @@ use Zikula\Core\AbstractModule;
 use Zikula\Core\AbstractTheme;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 abstract class ZikulaKernel extends Kernel
 {
@@ -189,6 +190,34 @@ abstract class ZikulaKernel extends Kernel
         $dir = is_readable($dir = $this->rootDir.'/config/custom_parameters.yml') ? $dir : $this->rootDir.'/config/parameters.yml';
 
         return Yaml::parse(file_get_contents($dir));
+    }
+
+    public function isClassInBundle($class)
+    {
+        /* @var BundleInterface $bundle */
+        foreach ($this->getBundles() as $bundle) {
+            if (0 === strpos($class, $bundle->getNamespace())) {
+                return $bundle instanceof AbstractBundle;
+            }
+        }
+
+        return false;
+    }
+
+    public function isClassInActiveBundle($class)
+    {
+        /* @var AbstractBundle $bundle */
+        foreach ($this->getBundles() as $bundle) {
+            if (0 === strpos($class, $bundle->getNamespace())) {
+                if ($bundle->getState() == AbstractBundle::STATE_ACTIVE) {
+                    return true;
+                } elseif (!method_exists($bundle, 'getState')) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
