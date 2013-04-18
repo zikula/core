@@ -52,14 +52,14 @@
             <argument type="service" id="theme.assets_css" />
         </service>
 
-        <!--<service id="theme.asset.packagepath" scope="request" class="%theme.asset.packagepath.class%">-->
-            <!--<argument type="service" id="request" />-->
-            <!--&lt;!&ndash; todo, version and format args &ndash;&gt;-->
-        <!--</service>-->
+        <service id="theme.asset.packagepath" scope="request" class="%theme.asset.packagepath.class%">
+            <argument type="service" id="request" strict="false" />
+            <!-- todo, version and format args -->
+        </service>
 
-        <!--<service id="theme.asset_helper" scope="request" class="%theme.asset_helper.class%">-->
-            <!--<argument type="service" id="kernel" />-->
-            <!--<argument type="service" id="theme.asset.packagepath" />-->
-        <!--</service>-->
+        <service id="theme.asset_helper" scope="request" class="%theme.asset_helper.class%">
+            <argument type="service" id="kernel" strict="false" />
+            <argument type="service" id="theme.asset.packagepath" />
+        </service>
     </services>
 </container>
