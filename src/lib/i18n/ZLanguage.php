@@ -744,7 +744,7 @@ class ZLanguage
     /**
      * Translate old lang requests into new code.
      *
-     * TODO D [deprecate along with self::hangleLegacy() when language defines deprecate] (drak).
+     * TODO D [deprecate along with self::handleLegacy() when language defines deprecate] (drak).
      *
      * @param string $code Legacy language $code.
      *
