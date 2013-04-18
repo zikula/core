@@ -14,9 +14,6 @@
  */
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
-use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * Zikula_Session class.
@@ -37,26 +34,7 @@ class Zikula_Session extends Session
      */
     const MESSAGE_ERROR = 'error';
 
-    /**
-     * Storage engine.
-     *
-     * @var Zikula_Session_StorageInterface
-     */
-    protected $storage;
-
-    /**
-     * Flag.
-     *
-     * @var boolean
-     */
-    protected $started;
-
-    /**
-     * Constructor.
-     *
-     * @param Zikula_Session_StorageInterface $storage Storage engine.
-     */
-    public function __construct(SessionStorageInterface $storage, $attributeBag, $flashBag = null)
+    public function start()
     {
         $config = array(
             'gc_probability' => System::getVar('gc_probability'),
@@ -104,8 +82,8 @@ class Zikula_Session extends Session
 
         $config['cookie_lifetime'] = $lifetime;
 
-        $storage->setOptions($config);
-        parent::__construct($storage, $attributeBag, $flashBag);
+        $this->storage->setOptions($config);
+        return parent::start();
     }
 
 
