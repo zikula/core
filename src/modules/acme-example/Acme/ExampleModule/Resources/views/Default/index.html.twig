@@ -1,0 +1,10 @@
+Hello {{ name }}! <br /><br />
+
+{# manual translation domain with replacement#}
+{{ __f('Hello %s!', name, d) }}<br /><br />
+
+{# automatic translation domain with multiple replacement #}
+{{ __f('Hello %1$s %2$s!', [name, 'ok'], d) }}<br /><br />
+
+{# automatic translation domain with replacement #}
+{{ p.__f('Hello %s!', name) }} <br /><br />
