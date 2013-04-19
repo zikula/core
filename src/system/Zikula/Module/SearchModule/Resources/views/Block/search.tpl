@@ -4,6 +4,7 @@
             <legend>{gt text="Search keyword"}</legend>
             <div class="z-formrow">
                 <input id="block_search_q" type="text" name="q" size="20" maxlength="255" />
+                <input id="block_search_q" type="search" name="q" size="20" maxlength="255" results="10" autosave="Search" />
             </div>
             {if $vars.displaySearchBtn eq 1}
             <div class="z-buttons">

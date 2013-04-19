@@ -1,6 +1,6 @@
 <form id="theme_search" method="post" action="{modurl modname="Search" type="user" func="search"}">
     <div>
-        <input class="theme_search_input" id="block_search_q" type="text" name="q" size="20" maxlength="255" />
+        <input id="block_search_q" type="search" name="q" size="20" maxlength="255" results="10" autosave="Search" class="theme_search_input" />
         {if $vars.displaySearchBtn eq 1}
         <input class="theme_search_button" type="submit" value="{gt text="Search" domain='zikula'}" />
         {/if}
