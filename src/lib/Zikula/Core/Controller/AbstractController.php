@@ -10,7 +10,7 @@ use Zikula\Core\AbstractBundle;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class AbstractController extends Controller implements TranslatorAwareInterface
+abstract class AbstractController extends Controller implements TranslatorAwareInterface
 {
     protected $name;
 
