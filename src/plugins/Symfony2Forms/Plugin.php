@@ -37,9 +37,7 @@ class SystemPlugin_Symfony2Forms_Plugin extends Zikula_AbstractPlugin implements
     
     public function initialize()
     {
-        //return;// disabled temporarily
-
-        // register symfony validation annorations
+         // register symfony validation annorations
         Doctrine\Common\Annotations\AnnotationRegistry::registerAutoloadNamespace('Symfony\\Component\\Validator\\Constraints', __DIR__ . '/../../vendor/symfony/validator');
 
         // register validator service
