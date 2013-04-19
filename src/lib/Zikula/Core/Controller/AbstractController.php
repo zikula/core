@@ -29,7 +29,7 @@ class AbstractController extends Controller implements TranslatorAwareInterface
     public function setTranslator(Translator $translator)
     {
         $this->trans = $translator;
-        $translator->setDomain($this->name);
+        $translator->setDomain(strtolower($this->name));
     }
 
     /**
