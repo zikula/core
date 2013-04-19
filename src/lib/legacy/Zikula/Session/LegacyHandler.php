@@ -1,5 +1,5 @@
 <?php
-
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 
 class Zikula_Session_LegacyHandler extends NativeSessionHandler
@@ -8,10 +8,19 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
      * @var Zikula_Session_Storage_Legacy
      */
     private $storage;
+    /**
+     * @var Connection
+     */
+    private $conn;
 
     public function setStorage(Zikula_Session_Storage_Legacy $storage)
     {
         $this->storage = $storage;
+    }
+
+    public function setConnection(Connection $conn)
+    {
+        $this->conn = $conn;
     }
 
     /**
@@ -39,10 +48,7 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
             return '';
         }
 
-        $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
-        if (!$result) {
-            return false;
-        }
+        $result = $this->conn->executeQuery('SELECT vars FROM session_info WHERE sessid=:id', array('id' => $sessionId))->fetch();
 
         return isset($result['vars']) ? $result['vars'] : '';
     }
@@ -61,18 +67,34 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
         $obj['vars'] = $vars;
         $obj['remember'] = $this->storage->getBag('attributes')->get('rememberme', 0);
         $obj['uid'] = $this->storage->getBag('attributes')->get('uid', 0);
-        $obj['ipaddr'] = $this->storage->getBag('attributes')->get('obj/ipaddr');
+        $obj['ipaddr'] = $this->storage->getBag('attributes')->get('obj/ipaddr', $_SERVER['HTTP_HOST']);
         $obj['lastused'] = date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed());
 
-        $result = DBUtil::selectObjectByID('session_info', $sessionId, 'sessid');
-        if (!$result) {
-            $res = DBUtil::insertObject($obj, 'session_info', 'sessid', true);
+        $query = $this->conn->executeQuery('SELECT * FROM session_info WHERE sessid=:id', array('id' => $sessionId));
+        if (!$res = $query->fetch(\PDO::FETCH_ASSOC)) {
+            $res = $this->conn->executeUpdate('INSERT INTO session_info (sessid, ipaddr, lastused, uid, remember, vars)
+            VALUES (:sessid, :ipaddr, :lastused, :uid, :remember, :vars)',
+                array(
+                     'sessid' => $obj['sessid'],
+                     'ipaddr' => $obj['ipaddr'],
+                     'lastused' => $obj['lastused'],
+                     'uid' => $obj['uid'],
+                     'remember' => $obj['remember'],
+                     'uid' => $obj['uid'],
+                     'vars' => $obj['vars'],
+                ));
         } else {
             // check for regenerated session and update ID in database
-            $sessiontable = DBUtil::getTables();
-            $columns = $sessiontable['session_info_column'];
-            $where = "WHERE $columns[sessid] = '".$sessionId."'";
-            $res = DBUtil::updateObject($obj, 'session_info', $where, 'sessid', true, true);
+            $res = $this->conn->executeUpdate('UPDATE session_info SET ipaddr = :ipaddr, lastused = :lastused, uid = :uid, remember = :remember, vars = :vars WHERE sessid = :sessid',
+                array(
+                     'sessid' => $obj['sessid'],
+                     'ipaddr' => $obj['ipaddr'],
+                     'lastused' => $obj['lastused'],
+                     'uid' => $obj['uid'],
+                     'remember' => $obj['remember'],
+                     'uid' => $obj['uid'],
+                     'vars' => $obj['vars'],
+                ));
         }
 
         return (bool) $res;
@@ -86,7 +108,7 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
         // expire the cookie
         setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
 
-        $res = DBUtil::deleteObjectByID('session_info', $sessionId, 'sessid');
+        $this->conn->executeUpdate('DELETE FROM session_info WHERE sessid=:id', array('id' => $sessionId));
     }
 
     /**
@@ -98,10 +120,6 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
         $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
         $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
 
-
-        // DB based GC
-        $dbtable = DBUtil::getTables();
-        $sessioninfocolumn = $dbtable['session_info_column'];
         $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
         $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
 
@@ -109,28 +127,27 @@ class Zikula_Session_LegacyHandler extends NativeSessionHandler
             case 'Low':
                 // Low security - delete session info if user decided not to
                 //                remember themself and inactivity timeout
-                $where = "WHERE $sessioninfocolumn[remember] = 0
-                          AND $sessioninfocolumn[lastused] < '$inactive'";
+                $where = "WHERE remember = 0
+                          AND lastused < '$inactive'";
                 break;
             case 'Medium':
                 // Medium security - delete session info if session cookie has
                 // expired or user decided not to remember themself and inactivity timeout
                 // OR max number of days have elapsed without logging back in
-                $where = "WHERE ($sessioninfocolumn[remember] = 0
-                          AND $sessioninfocolumn[lastused] < '$inactive')
-                          OR ($sessioninfocolumn[lastused] < '$daysold')
-                          OR ($sessioninfocolumn[uid] = 0 AND $sessioninfocolumn[lastused] < '$inactive')";
+                $where = "WHERE (remember = 0
+                          AND lastused < '$inactive')
+                          OR (lastused < '$daysold')
+                          OR (uid = 0 AND lastused < '$inactive')";
                 break;
             case 'High':
             default:
                 // High security - delete session info if user is inactive
-                $where = "WHERE $sessioninfocolumn[lastused] < '$inactive'";
+                $where = "WHERE lastused < '$inactive'";
                 break;
         }
 
-        $res = DBUtil::deleteWhere('session_info', $where);
+        $res = $this->conn->executeUpdate('DELETE FROM session_info WHERE '.$where);
 
         return (bool) $res;
     }
-
 }

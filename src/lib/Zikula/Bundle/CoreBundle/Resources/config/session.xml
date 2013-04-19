@@ -26,6 +26,9 @@
             <call method="setStorage">
                 <argument type="service" id="session.storage.legacy" />
             </call>
+            <call method="setConnection">
+                <argument type="service" id="doctrine.dbal.default_connection" />
+            </call>
         </service>
     </services>
 </container>
