@@ -44,6 +44,7 @@
         "sensio/framework-extra-bundle": "2.2.*",
         "stof/doctrine-extensions-bundle": "1.1.*",
         "symfony/swiftmailer-bundle": "2.2.*",
+        "symfony/symfony": "2.3.*",
         "symfony/assetic-bundle": "2.1.*",
         "symfony/monolog-bundle": "~2.2",
         "zikula/filesystem": "dev-master"
