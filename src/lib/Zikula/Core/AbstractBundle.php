@@ -4,6 +4,7 @@ namespace Zikula\Core;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class AbstractBundle extends Bundle
@@ -154,5 +155,15 @@ abstract class AbstractBundle extends Bundle
         if ($this->hasCommands()) {
             parent::registerCommands($application);
         }
+    }
+
+    /**
+     * Get container.
+     *
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 }
