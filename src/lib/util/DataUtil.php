@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * DataUtil is the class used to manage datas and variables.
  */
@@ -22,14 +21,13 @@ class DataUtil
      *
      * @param string $var The variable to clean.
      *
-     * @return The formatted variable
+     * @return string formatted variable
      */
     public static function cleanVar($var)
     {
         if (!get_magic_quotes_gpc()) {
             return $var;
         }
-
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::cleanVar($v);
@@ -46,7 +44,7 @@ class DataUtil
      *
      * @param string $value The value we wish to encode.
      *
-     * @return The decoded value.
+     * @return string decoded value.
      */
     public static function decode($value)
     {
@@ -62,14 +60,14 @@ class DataUtil
      *
      * @return array Assoc is associative array.
      */
-    public static function decodeNVP ($nvpstr, $separator='&', $urldecode=true)
+    public static function decodeNVP($nvpstr, $separator = '&', $urldecode = true)
     {
         $assoc = array();
-        $items = explode ($separator, $nvpstr);
+        $items = explode($separator, $nvpstr);
         foreach ($items as $item) {
-            $fields = explode ('=', $item);
-            $key    = $urldecode ? urldecode($fields[0]) : $fields[0];
-            $value  = $urldecode ? urldecode($fields[1]) : $fields[1];
+            $fields = explode('=', $item);
+            $key = $urldecode ? urldecode($fields[0]) : $fields[0];
+            $value = $urldecode ? urldecode($fields[1]) : $fields[1];
             $assoc[$key] = $value;
         }
 
@@ -79,13 +77,12 @@ class DataUtil
     /**
      * Decrypt the given value using the mcrypt library function.
      *
-     * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
-     *
      * @param string  $value   The value we wish to decrypt.
      * @param string  $key     The encryption key to use (optional) (default=null).
-     * @param string  $alg     The encryption algirthm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128).
+     * @param string  $alg     The encryption algorithm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128).
      * @param boolean $encoded Whether or not the value is base64 encoded (optional) (default=true).
      *
+     * @throws RuntimeException
      * @return string The decrypted value.
      */
     public static function decrypt($value, $key = null, $alg = null, $encoded = true)
@@ -93,14 +90,12 @@ class DataUtil
         $res = false;
         $key = ($key ? $key : 'ZikulaEncryptionKey');
         $val = ($encoded ? self::decode($value) : $value);
-
         if (function_exists('mcrypt_create_iv') && function_exists('mcrypt_decrypt')) {
             $alg = ($alg ? $alg : MCRYPT_RIJNDAEL_128);
             $iv = mcrypt_create_iv(mcrypt_get_iv_size($alg, MCRYPT_MODE_ECB), crc32($key));
             $res = mcrypt_decrypt($alg, $key, $val, MCRYPT_MODE_CBC);
         } else {
-            require_once 'lib/vendor/encryption/rc4crypt.class.php';
-            $res = rc4crypt::decrypt($key, $val);
+            throw new RuntimeException('PHP MCrypt extension is not installed');
         }
 
         return $res;
@@ -128,14 +123,13 @@ class DataUtil
      *
      * @return string String-encoded NVP or an empty string.
      */
-    public static function encodeNVP ($key, $value, $separator='&', $includeEmpty=true)
+    public static function encodeNVP($key, $value, $separator = '&', $includeEmpty = true)
     {
         if (!$key) {
-            return LogUtil::registerError ('Invalid NVP key received');
+            return LogUtil::registerError('Invalid NVP key received');
         }
-
         if ($includeEmpty || ($value != null && strlen($value) > 1)) {
-            return ("&".urlencode($key) ."=" .urlencode($value));
+            return ("&" . urlencode($key) . "=" . urlencode($value));
         }
 
         return '';
@@ -150,15 +144,14 @@ class DataUtil
      *
      * @return string String-encoded NVP or an empty string.
      */
-    public static function encodeNVPArray ($nvps, $separator='&', $includeEmpty=true)
+    public static function encodeNVPArray($nvps, $separator = '&', $includeEmpty = true)
     {
         if (!is_array($nvps)) {
-            return LogUtil::registerError ('NVPS array is not an array');
+            return LogUtil::registerError('NVPS array is not an array');
         }
-
         $str = '';
         foreach ($nvps as $k => $v) {
-            $str .= self::encodeNVP ($k, $v, $separator, $includeEmpty);
+            $str .= self::encodeNVP($k, $v, $separator, $includeEmpty);
         }
 
         return $str;
@@ -167,27 +160,24 @@ class DataUtil
     /**
      * Encrypt the given value using the mcrypt library function.
      *
-     * If the mcrypt functions do not exist, we fallback to the RC4 implementation which is shipped with Zikula.
-     *
      * @param string  $value   The value we wish to decrypt.
      * @param string  $key     The encryption key to use (optional) (default=null).
-     * @param string  $alg     The encryption algirthm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128).
+     * @param string  $alg     The encryption algorithm to use (only used with mcrypt functions) (optional) (default=null, signifies MCRYPT_RIJNDAEL_128).
      * @param boolean $encoded Whether or not the value is base64 encoded (optional) (default=true).
      *
+     * @throws RuntimeException
      * @return string The encrypted value.
      */
     public static function encrypt($value, $key = null, $alg = null, $encoded = true)
     {
         $res = false;
         $key = ($key ? $key : 'ZikulaEncryptionKey');
-
         if (function_exists('mcrypt_create_iv') && function_exists('mcrypt_decrypt')) {
             $alg = ($alg ? $alg : MCRYPT_RIJNDAEL_128);
             $iv = mcrypt_create_iv(mcrypt_get_iv_size($alg, MCRYPT_MODE_ECB), crc32($key));
             $res = mcrypt_encrypt($alg, $key, $value, MCRYPT_MODE_CBC);
         } else {
-            require_once 'lib/vendor/encryption/rc4crypt.class.php';
-            $res = rc4crypt::encrypt($key, $value);
+            throw new \RuntimeException('PHP MCrypt extension is not installed');
         }
 
         return ($encoded && $res ? self::encode($res) : $res);
@@ -206,18 +196,16 @@ class DataUtil
         // it with HTML entities, this provides protection against
         // email harvesters
         static $search = array('/(.)@(.)/se');
-
         static $replace = array('"&#" .
                                 sprintf("%03d", ord("\\1")) .
                                 ";&#064;&#" .
                                 sprintf("%03d", ord("\\2")) . ";";');
-
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForDisplay($v);
             }
         } else {
-            $var = htmlspecialchars((string)$var);
+            $var = htmlspecialchars((string) $var);
             $var = preg_replace($search, $replace, $var);
         }
 
@@ -241,20 +229,17 @@ class DataUtil
         // this does not break HTML tags that might be around either
         // the username or the domain name
         static $search = array(
-        '/([^\024])@([^\022])/se');
-
+            '/([^\024])@([^\022])/se');
         static $replace = array('"&#" .
                                 sprintf("%03d", ord("\\1")) .
                                 ";&#064;&#" .
                                 sprintf("%03d", ord("\\2")) . ";";');
-
         static $allowedtags = null;
         static $outputfilter;
         static $event;
         if (!$event) {
             $event = new \Zikula\Core\Event\GenericEvent();
         }
-
         if (!isset($allowedtags)) {
             $allowedHTML = array();
             $allowableHTML = System::getVar('AllowableHTML');
@@ -278,14 +263,12 @@ class DataUtil
                     }
                 }
             }
-
             if (count($allowedHTML) > 0) {
                 $allowedtags = '~<\s*(' . implode('|', $allowedHTML) . ')\s*>~is';
             } else {
                 $allowedtags = '';
             }
         }
-
         if (!isset($outputfilter)) {
             if (ModUtil::available('SecurityCenterModule') && !System::isInstalling()) {
                 $outputfilter = System::getVar('outputfilter');
@@ -293,7 +276,6 @@ class DataUtil
                 $outputfilter = 0;
             }
         }
-
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForDisplayHTML($v);
@@ -304,21 +286,16 @@ class DataUtil
                 $event->setData($var)->setArg('filter', $outputfilter);
                 $var = EventUtil::dispatch('system.outputfilter', $event)->getData();
             }
-
             // Preparse var to mark the HTML that we want
             if (!empty($allowedtags)) {
                 $var = preg_replace($allowedtags, "\022\\1\024", $var);
             }
-
             // Encode email addresses
             $var = preg_replace($search, $replace, $var);
-
             // Fix html entities
             $var = htmlspecialchars($var);
-
             // Fix the HTML that we want
             $var = preg_replace_callback('#\022([^\024]*)\024#', create_function('$m', 'return DataUtil::formatForDisplayHTML_callback($m);'), $var);
-
             // Fix entities if required
             if (System::getVar('htmlentities')) {
                 $var = preg_replace('/&amp;([a-z#0-9]+);/i', "&\\1;", $var);
@@ -342,10 +319,10 @@ class DataUtil
         if (!$m) {
             return;
         }
+
         //return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"', '&amp;' => '&')) . '>';
         return '<' . strtr($m[1], array('&gt;' => '>', '&lt;' => '<', '&quot;' => '"')) . '>';
     }
-
 
     /**
      * Format a variable for DB-storage. This method is recursive array safe.
@@ -391,28 +368,21 @@ class DataUtil
             if ($cached == null) {
                 $cached = array();
             }
-
             if (isset($cached[$var])) {
                 return $cached[$var];
             }
             $orgVar = $var;
-
             $clean_array = array();
-
             //Check if it is a windows absolute path beginning with "c:" or similar
             $windowsAbsolutePath = preg_match("#^[A-Za-z]:#", $var);
-
             //Check if it is a linux absolute path beginning "/"
             $linuxAbsolutePath = (substr($var, 0, 1) == '/') ? true : false;
-
             //if we're supporting absolute paths and the first charater is a slash and , then
             //an absolute path is passed
             $absolutepathused = ($absolute && ($linuxAbsolutePath || $windowsAbsolutePath));
-
             // Split the path at possible path delimiters.
             // Setting PREG_SPLIT_NOEMPTY eliminates double delimiters on the fly.
             $dirty_array = preg_split('#[/\\\\]#', $var, -1, PREG_SPLIT_NO_EMPTY);
-
             // now walk the path and do the relevant things
             foreach ($dirty_array as $current) {
                 if ($current == '.') {
@@ -427,24 +397,20 @@ class DataUtil
                     $clean_array[] = $current;
                 }
             }
-
             // Build the path
             // Rather than use DIRECTORY_SEPARATOR, normalise the $var because we cannot be sure what we got
             // and since we cannot use realpath() because this will turn paths into absolute - for legacy reasons
             // recipient's of the call may not be expecting absolute values (drak).
             $var = str_replace('\\', '/', $var);
             $var = implode('/', $clean_array);
-
             // If an absolute linux path was passed to the function, we need to make it absolute again
             // An absolute windows path is still absolute.
             if ($absolutepathused && !$windowsAbsolutePath) {
                 $var = '/' . $var;
             }
-
             // Prepare var
             // needed for magic_quotes_runtime = 0
             $var = addslashes($var);
-
             $cached[$orgVar] = $var;
         }
 
@@ -478,13 +444,11 @@ class DataUtil
         foreach ($permasearch as $key => $value) {
             $var = mb_ereg_replace($value, $permareplace[$key], $var);
         }
-
         $var = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($var));
-
         // final clean
         $permalinksseparator = System::getVar('shorturlsseparator');
         $var = mb_ereg_replace("[^a-z0-9_{$permalinksseparator}]", '', $var, "imsr");
-        $var = preg_replace('/'.$permalinksseparator.'+/', $permalinksseparator, $var); // remove replicated separator
+        $var = preg_replace('/' . $permalinksseparator . '+/', $permalinksseparator, $var); // remove replicated separator
         $var = trim($var, $permalinksseparator);
 
         return $var;
@@ -506,7 +470,9 @@ class DataUtil
         foreach ($permasearch as $key => $value) {
             $var = mb_ereg_replace($value, $permareplace[$key], $var);
         }
-        if ($strIsUpper) $var = mb_strtoupper($var);
+        if ($strIsUpper) {
+            $var = mb_strtoupper($var);
+        }
 
         return $var;
     }
@@ -524,11 +490,9 @@ class DataUtil
         if (!isset($doCensor)) {
             $doCensor = ModUtil::available('MultiHook');
         }
-
         if (!$doCensor) {
             return $var;
         }
-
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::censor($v);
@@ -611,7 +575,6 @@ class DataUtil
         if ($string == 'b:0;') {
             return true;
         }
-
         if ($checkmb) {
             return (self::mb_unserialize($string) === false ? false : true);
         } else {
@@ -708,7 +671,6 @@ class DataUtil
         }
     }
 
-
     /**
      * Take user input and transform to a number according to locale.
      *
@@ -759,7 +721,7 @@ class DataUtil
      *
      * @return mixed
      */
-    public static function formatNumber($number, $decimal_points=null)
+    public static function formatNumber($number, $decimal_points = null)
     {
         $i18n = ZI18n::getInstance();
 
@@ -811,9 +773,8 @@ class DataUtil
     public static function urlsafeJsonDecode($data, $json = true)
     {
         $data = urldecode($data);
-
         if ($json) {
-            $data = json_decode($data,true);
+            $data = json_decode($data, true);
         }
 
         return $data;

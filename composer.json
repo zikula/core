@@ -6,10 +6,11 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-0": {
-            "Zikula": ["src/lib", "src/lib/legacy"],
-            "Zikula\\Module": "src/system",
-            "Zikula\\Theme": "src/themes",
-            "DoctrineExtensions\\StandardFields": "src/lib/legacy",
+            "Zikula\\Module\\": "src/system",
+            "Zikula\\Theme\\": "src/themes",
+            "Zikula\\": "src/lib",
+            "Zikula_": "src/lib/legacy",
+            "DoctrineExtensions\\StandardFields\\": "src/lib/legacy",
             "CustomBundle\\": "src/app/custom"
         },
         "classmap": [
@@ -20,7 +21,6 @@
         "files": [
             "src/lib/i18n/ZGettextFunctions.php",
             "src/lib/vendor/idn/idna_convert.class.php",
-            "src/lib/vendor/encryption/rc4crypt.class.php",
             "src/lib/legacy/Loader.php"
         ]
     },
