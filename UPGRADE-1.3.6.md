@@ -120,47 +120,48 @@ Module Structure
 
 The final structure looks as follows:
 
-    Foo/
-        MyModule/
-            Api/
-                AdminApi.php (was Admin.php)
-                UserApi.php (was User.php)
-            Controller/
-                AdminController.php (was Admin.php)
-                UserController.php (was User.php)
-            Entity/
-                FooEntity.php
-            Listener/
-                FooListener.php
-            Hook/
-                FooHook.php
-            Resources/
-                config/
-                docs/
-                locale/
-                    foomymodule.pot
-                public/
-                    css/
-                    images/
-                    js/
-                views/
-                    Admin/
-                        view.tpl
-                    User/
-                        list.tpl
-                        view.tpl
-                    plugins/
-            Tests/
-                AdminControllerTest.php
-            vendor/
-            MyModuleInstaller.php (was Installer.php)
-            MyModuleVersion.php (was Version.php) (todo - this file may go away)
-            FooMyModule.php
-            CHANGELOG.md
-            LICENSE
-            README.md
-            composer.json       (this file is required, see example)
-            phpunit.xml.dist
+    foo-my/
+        Foo/
+            MyModule/
+                Api/
+                    AdminApi.php (was Admin.php)
+                    UserApi.php (was User.php)
+                Controller/
+                    AdminController.php (was Admin.php)
+                    UserController.php (was User.php)
+                Entity/
+                    FooEntity.php
+                Listener/
+                    FooListener.php
+                Hook/
+                    FooHook.php
+                Resources/
+                    config/
+                    docs/
+                    locale/
+                        foomymodule.pot
+                    public/
+                        css/
+                        images/
+                        js/
+                    views/
+                        Admin/
+                            view.tpl
+                        User/
+                            list.tpl
+                            view.tpl
+                        plugins/
+                Tests/
+                    AdminControllerTest.php
+                vendor/
+                MyModuleInstaller.php (was Installer.php)
+                MyModuleVersion.php (was Version.php) (todo - this file may go away)
+                FooMyModule.php
+                CHANGELOG.md
+                LICENSE
+                README.md
+                composer.json       (this file is required, see example)
+                phpunit.xml.dist
 
 The last file `FooMyModule.php` is new and should look like this
 combining the vendor name (`Foo` with the class name).
@@ -416,43 +417,44 @@ Theme Standard
 
 Theme's look very similar to modules.
 
-    Foo/
-        MyTheme/
-            Resources/
-                config/
-                    admin.ini
-                    home.ini
-                    master.ini
-                    overrides.yml
-                    pageconfigurations.ini
-                    themepalettes.ini
-                    themevariables.ini
-                docs/
-                locale/
-                    foomytheme.pot
-                public/
-                    css/
-                    images/
-                    js/
-                views/
-                    blocks/
-                    includes/
-                    modules/
-                        ZikulaSearchModule/
-                            Block/
-                                search.tpl
-                    admin.tpl
-                    home.tpl
-                    master.tpl
-                    plugins/
-            Tests/
-            MyThemeVersion.php (was Version.php) (todo - this file may go away)
-            FooMyTheme.php
-            CHANGELOG.md
-            LICENSE
-            README.md
-            composer.json       (this file is required, see example)
-            phpunit.xml.dist
+    foo-my/
+        Foo/
+            MyTheme/
+                Resources/
+                    config/
+                        admin.ini
+                        home.ini
+                        master.ini
+                        overrides.yml
+                        pageconfigurations.ini
+                        themepalettes.ini
+                        themevariables.ini
+                    docs/
+                    locale/
+                        foomytheme.pot
+                    public/
+                        css/
+                        images/
+                        js/
+                    views/
+                        blocks/
+                        includes/
+                        modules/
+                            ZikulaSearchModule/
+                                Block/
+                                    search.tpl
+                        admin.tpl
+                        home.tpl
+                        master.tpl
+                        plugins/
+                Tests/
+                MyThemeVersion.php (was Version.php) (todo - this file may go away)
+                FooMyTheme.php
+                CHANGELOG.md
+                LICENSE
+                README.md
+                composer.json       (this file is required, see example)
+                phpunit.xml.dist
 
 Theme composer.json
 -------------------
