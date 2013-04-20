@@ -1241,32 +1241,38 @@ class DBUtil
      * Convenience function to ensure that the order-by-clause starts with "ORDER BY".
      *
      * @param string $orderby The original order-by clause.
-     * @param string $table   The table reference, only used for oracle quote determination (optional) (default=null).
+     * @param string $table   The table reference
      *
      * @return string The (potentially) altered order-by-clause.
      */
-    public static function _checkOrderByClause($orderby, $table = null)
+    public static function _checkOrderByClause($orderby, $table)
     {
-        if (!strlen(trim($orderby))) {
+        $orderby = trim($orderby);
+        if (!strlen($orderby)) {
             return $orderby;
         }
 
-        $tables = self::getTables();
+        if (!$table) {
+            throw new Exception(__f('The parameter %s must not be empty', 'table'));
+        }
+
+        $orderby      = str_ireplace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
+        $orderby      = trim(str_replace(array("\t", "\n", '  ', ' +0', '+ 0'), array(' ', ' ', ' ', '+0', '+0'), $orderby));
+        $tables       = self::getTables();
+        $columns      = $tables["{$table}_column"];
         $dbDriverName = Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName();
+        $tokens       = explode(',', $orderby); // split on comma
+
+        if (!$columns) {
+            throw new Exception(__f('The parameter %s does not seem to point towards a valid table definition', 'table'));
+        }
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
         if ($dbDriverName == 'oracle') {
-            $t = str_replace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
-            $t = str_replace('order by ', '', $t); // remove "order by" for easier parsing
-
-
-            $columns = $tables["{$table}_column"];
 
             // anything which doesn't look like a basic ORDER BY clause (with possibly an ASC/DESC modifier)
             // we don't touch. To use such stuff with Oracle, you'll have to apply the quotes yourself.
 
-
-            $tokens = explode(',', $t); // split on comma
             foreach ($tokens as $k => $v) {
                 $v = trim($v);
                 if (strpos($v, ' ') === false) {
@@ -1299,14 +1305,59 @@ class DBUtil
                 }
             }
 
-            $orderby = implode(', ', $tokens);
+        } else {
+
+            $search  = array( '+', '-', '*', '/', '%');
+            $replace = array( '');
+
+            foreach ($tokens as $k=>$v) {
+                $hasMath  = (bool)(strcmp($v, str_replace($search, $replace, $v)));
+                $hasFunc  = (bool)(strpos($v, '('));
+                $hasPlus0 = (bool)(strpos ($v, '+0'));
+
+                if ($hasMath) {
+                    if ($hasPlus0) {
+                        $hasMath = false;
+                    }
+                }
+
+                if (!$hasFunc && !$hasMath) {
+                    $fields = explode (' ', trim($v));
+                    if ($fields) {
+                        $left = $fields[0];
+                        if ($hasPlus0) {
+                            $left = substr ($left, 0, -2);
+                        }
+
+                        $hasTablePrefix = (bool)strpos($left, '.');
+                        $fullColumnName = isset($columns[$left]) ? $columns[$left] : $left;
+
+                        // if the resolved column is a math definition, revert back to the original column spec
+                        if ($fullColumnName != $left) {
+                            $hasMath = (bool)(strcmp($fullColumnName, str_replace($search, $replace, $fullColumnName)));
+                            if ($hasMath) {
+                                $fullColumnName = "'$left'";
+                            }
+                        } else {
+                            if (!$hasTablePrefix) {
+                                $fullColumnName = "tbl.$fullColumnName";
+                            }
+                        }
+
+                        if ($hasPlus0) {
+                            $fullColumnName .= '+0';
+                        }
+
+                        $tokens[$k] = $fullColumnName;
+                        if (count($fields)>1) {
+                            $tokens[$k] .= " $fields[1]";
+                        }
+                    }
+                }
+            }
         }
 
-        if (stristr($orderby, 'ORDER BY') === false) {
-            $orderby = 'ORDER BY ' . $orderby;
-        }
-
-        return $orderby;
+        return ' ORDER BY ' . implode (',', $tokens);
     }
 
     /**
@@ -2562,63 +2613,6 @@ class DBUtil
         }
 
         return $count;
-    }
-
-    /**
-     * Take a basic orderby clause and transform it to it's fully qualified column equivalent.
-     *
-     * This method exists to ensure that sort-clauses fully qualified (duh!) and thus cross-database compatible.
-     *
-     * @param string $sort    The plain column sort clause
-     * @param array  $table   The table we are sorting against
-     *
-     * @return string 
-     */
-    public static function convertSortClauseToFullyQualified ($sort, $table)
-    {
-        if (!$table) {
-            return ZWebstore_DBObject_Compat::registerError ('Invalid [table] received for sort qualification');
-        }
-
-        $sort = trim(str_replace (array("\t", '  ', ' +0'), array(' ', ' ', '+0'), $sort));
-        if (!$sort) {
-            return $sort;
-        }
-
-        $tables    = self::getTables();
-        $tableName = $tables[$table];
-        $columns   = $tables["{$table}_column"];
-
-        $sortFields = explode (',', $sort);
-        foreach ($sortFields as $k=>$v) {
-            $fields = explode (' ', trim($v));
-            if ($fields) {
-                $left         = $fields[0];
-                $havePlusZero = false;
-                if (strpos ($left, '+0')) {
-                    $left = substr ($left, 0, -2);
-                    $havePlusZero = true;
-                }
-
-                $fullColumnName = $columns[$left];
-                if ($fullColumnName) {
-                    $fullColumnName = "tbl.$fullColumnName";
-                } else {
-                    $fullColumnName = $left;
-                }
-
-                if ($havePlusZero) {
-                    $fullColumnName .= '+0';
-                }
-
-                $sortFields[$k] = $fullColumnName;
-                if (count($fields)>1) {
-                    $sortFields[$k] .= " $fields[1]";
-                }
-            }
-        }
-
-        return ' ' . implode (',', $sortFields);
     }
 
     /**
