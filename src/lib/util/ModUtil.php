@@ -1904,12 +1904,13 @@ class ModUtil
 
         $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        ZLoader::addAutoloader($moduleName, array(
-                               realpath("$modpath"),
-                               realpath("$modpath/$osdir/lib"),
-            )
-        );
-        ZLoader::addPrefix($moduleName, $modpath);
+        if (false === strpos($modinfo['directory'], '/')) {
+            ZLoader::addAutoloader($moduleName, array(
+                                   realpath("$modpath"),
+                                   realpath("$modpath/$osdir/lib"),
+                )
+            );
+        }
 
         // load optional bootstrap
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -1978,26 +1979,6 @@ class ModUtil
         }
 
         return self::$ooModules[$moduleName]['oo'];
-    }
-
-    /**
-     * Register all autoloaders for all modules.
-     *
-     * @internal
-     *
-     * @return void
-     */
-    public static function registerAutoloaders()
-    {
-        $modules = self::getModsTable();
-        unset($modules[0]);
-        foreach ($modules as $module) {
-            $base = ($module['type'] == self::TYPE_MODULE) ? 'modules' : 'system';
-            $paths[] = "$base";
-            $paths[] = "$base/$module[directory]/lib";
-            ZLoader::addAutoloader($module['directory'], $paths);
-            ZLoader::addPrefix($module['directory'], $base);
-        }
     }
 
     /**

@@ -466,9 +466,6 @@ class Zikula_Core
             ModUtil::dbInfoLoad('ZikulaPermissionsModule', 'ZikulaPermissionsModule');
             ModUtil::dbInfoLoad('ZikulaCategoriesModule', 'ZikulaCategoriesModule');
 
-            if (!System::isInstalling()) {
-                ModUtil::registerAutoloaders();
-            }
             $coreInitEvent->setArg('stage', self::STAGE_TABLES);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }

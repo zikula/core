@@ -195,8 +195,6 @@ class AdminApi extends \Zikula_AbstractApi
         // convert querybuilder instance into a Query object
         $query = $qb->getQuery();
 
-        //echo $query->getSQL();
-
         // execute query
         $result = $query->getResult();
 
@@ -236,11 +234,6 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        $name = $module['name'];
-        $directory = $module['directory'];
-        $oldstate = $module['state'];
-
-        $modinfo = ModUtil::getInfo($args['id']);
         // Check valid state transition
         switch ($args['state']) {
             case ModUtil::STATE_UNINITIALISED:
@@ -320,9 +313,8 @@ class AdminApi extends \Zikula_AbstractApi
 
         $oomod = ModUtil::isOO($modinfo['name']);
 
-        if ($oomod) {
+        if ($oomod && false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
-            ZLoader::addPrefix($osdir, $modpath);
         }
 
         $version = ExtensionsUtil::getVersionMeta($modinfo['name'], $modpath);
@@ -897,9 +889,8 @@ class AdminApi extends \Zikula_AbstractApi
         // load module maintainence functions
         $oomod = ModUtil::isOO($modinfo['name']);
 
-        if ($oomod) {
+        if ($oomod && false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
-            ZLoader::addPrefix($osdir, $modpath);
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
@@ -1005,9 +996,8 @@ class AdminApi extends \Zikula_AbstractApi
         // load module maintainence functions
         $oomod = ModUtil::isOO($modinfo['name']);
 
-        if ($oomod) {
+        if ($oomod && false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
-            ZLoader::addPrefix($osdir, $modpath);
         }
 
         $bootstrap = "$modpath/$osdir/bootstrap.php";
