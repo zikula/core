@@ -417,12 +417,7 @@ function installmodules($lang = 'en')
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-//        $bootstrap = "$modpath/$coremodule/bootstrap.php";
-//        if (file_exists($bootstrap)) {
-//            include_once $bootstrap;
-//        }
 
-        //ModUtil::dbInfoLoad($coremodule, $coremodule);
         $instance = new $className($sm, $module);
         if ($instance->install()) {
             $results[$coremodule] = true;
@@ -512,7 +507,6 @@ function _check_requirements()
     $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
     $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
     $results['json_encode'] = function_exists('json_encode');
-    $temp = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
     $datadir = (isset($GLOBALS['ZConfig']['System']['datadir']) ? $GLOBALS['ZConfig']['System']['datadir'] : 'data');
     $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
     $results['custom_parameters_yml'] = !is_writable('app/config/custom_parameters.yml');
