@@ -22,11 +22,9 @@ if (isset($_SERVER['HTTP_HOST']) && !extension_loaded('xdebug')) {
     });
 }
 
-$loader = require __DIR__.'/../vendor/autoload.php';
-include __DIR__.'/../app/ZikulaKernel.php';
+$loader = require __DIR__.'/../app/autoload.php';
+require __DIR__.'/../app/ZikulaKernel.php';
 ZLoader::register($loader);
-
-AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 $file = is_readable($file = __DIR__.'/../app/config/custom_kernel.yml') ? $file : __DIR__.'/../app/config/kernel.yml';
 

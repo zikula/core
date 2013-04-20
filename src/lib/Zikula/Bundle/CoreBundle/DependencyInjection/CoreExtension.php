@@ -45,7 +45,7 @@ class CoreExtension extends Extension
         // of this to other's responsibility
         $cacheDir = $container->getParameterBag()->resolveValue('%kernel.cache_dir%/ztemp');
         $dirs = array('doctrinemodels', 'idsTmp', 'purifierCache', 'doctrinemodels',
-        'Theme_cache', 'Theme_compiled', 'Theme_Config', 'view_cache', 'view_compiled');
+        'Theme_cache', 'Theme_compiled', 'Theme_Config', 'view_cache', 'view_compiled', 'error_logs');
         foreach ($dirs as $dir) {
             if (!is_dir($cacheDir.'/'.$dir)) {
                 mkdir($cacheDir.'/'.$dir, 0777, true);
