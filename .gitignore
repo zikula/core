@@ -8,7 +8,8 @@
 /src/app/logs/
 /src/config/personal_config.php
 /src/config/multisites_config.php
-/src/modules/
+/src/modules/*
+!/src/modules/acme-example
 /src/plugins/
 /src/userdata/
 /src/vendor/

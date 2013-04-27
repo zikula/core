@@ -11,6 +11,8 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Zikula\Core\Event\GenericEvent;
 
@@ -997,6 +999,8 @@ class ModUtil
                 $object = $r->newInstanceArgs(array($sm, self::getModule($modname)));
             } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Controller\AbstractController')) {
                 $object = $r->newInstanceArgs(array(self::getModule($modname)));
+            } elseif ($r->hasMethod('__construct') && $r->isSubclassOf('Zikula\Core\Api\AbstractApi')) {
+                $object = $r->newInstanceArgs(array(self::getModule($modname)));
             } else {
                 $object = $r->newInstance();
             }
@@ -1098,6 +1102,7 @@ class ModUtil
 
         $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
+        $sm = ServiceUtil::getManager();
         if ($loaded) {
             $preExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
             $postExecuteEvent = new \Zikula\Core\Event\GenericEvent($controller, array('modname' => $modname, 'modfunc' => $modfunc, 'args' => $args, 'modinfo' => $modinfo, 'type' => $type, 'api' => $api));
@@ -1109,9 +1114,8 @@ class ModUtil
                 if (is_array($modfunc)) {
                     if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase) {
                         // resolve request args
-                        $resolver = new \Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver(
-                            ServiceUtil::getManager(), new \Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser(ServiceUtil::get('kernel')));
-                        $methodArgs = $resolver->getArguments($request = ServiceUtil::get('request'), $modfunc);
+                        $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
+                        $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
                     }
 
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
@@ -1141,7 +1145,7 @@ class ModUtil
             }
 
             // get the theme
-            if (ServiceUtil::getManager()->get('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
+            if ($sm->get('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
                 $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
                     include_once $file;
