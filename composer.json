@@ -47,6 +47,7 @@
         "symfony/symfony": "2.3.*",
         "symfony/assetic-bundle": "2.1.*",
         "symfony/monolog-bundle": "~2.2",
+        "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master"
     },
     "config": {
