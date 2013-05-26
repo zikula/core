@@ -6,7 +6,7 @@
     <fieldset>
         <div class="z-formrow">
             <label for="search_q" id="search_q_label">{gt text='Search keywords' domain='zikula'}</label>
-            <input type="text" id="search_q" name="q" size="20" maxlength="255" value="{$q|safetext}" />
+            <input type="search" id="search_q" name="q" size="20" maxlength="255" results="10" autosave="Search" value="{$q|safetext}" />
         </div>
         <div class="z-formrow">
             <label for="searchtype">{gt text='Keyword settings' domain='zikula'}</label>
