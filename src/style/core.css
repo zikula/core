@@ -79,6 +79,12 @@ img.z-floatright {
     background-color: blue;
 }
 
+.z-menutexttitle {
+    word-wrap: break-word;
+    margin-left: 63px;
+    margin-right: 5px;
+}
+
 /******************************************************************************
 * Class to show a sortable li or div. Has to be set in the js code to avoid
 * wrong css in non javascript environments
