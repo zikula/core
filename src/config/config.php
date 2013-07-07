@@ -107,7 +107,7 @@ $ZConfig['System']['dbcache.servers'][] = array('host' => 'localhost', 'port' =>
 $ZConfig['System']['dbcache.compression'] = true; // true/false valid for dbcache.type = Memcache/d
 
 // For pure Doctrine Queries only. Effective only when dbcache.enable = true and dbcache.cache_result = 1
-// http://www.doctrine-project.org/projects/orm/1.2/docs/manual/caching/en#query-cache-result-cache:result-cache
+// http://docs.doctrine-project.org/projects/doctrine1/en/latest/en/manual/caching.html#result-cache
 $ZConfig['System']['dbcache.cache_result'] = 0;      // 1 to enable or 0 to disable.
 $ZConfig['System']['dbcache.cache_result_ttl'] = 30; // seconds, 3600 = 1 hour.
 
