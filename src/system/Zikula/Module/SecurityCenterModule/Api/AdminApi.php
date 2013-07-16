@@ -42,7 +42,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('i')
-           ->from('SecurityCenterModule\Entity\IntrusionEntity', 'i');
+           ->from('Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity', 'i');
 
         // add clause for user
         if (isset($args['where']['uid'])) {
@@ -117,7 +117,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('count(i.id)')
-           ->from('SecurityCenterModule\Entity\IntrusionEntity', 'i');
+           ->from('Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity', 'i');
 
         // add clause for user
         if (isset($args['where']['uid'])) {
