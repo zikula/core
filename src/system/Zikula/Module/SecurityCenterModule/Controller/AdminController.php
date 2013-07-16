@@ -61,7 +61,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        return $this->redirect(ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -70,7 +70,7 @@ class AdminController extends \Zikula_AbstractController
     public function mainAction()
     {
         // Security check will be done in modifyconfig()
-        return $this->redirect(ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
     }
 
     /**
