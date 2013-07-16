@@ -501,7 +501,7 @@ class Zikula_Core
                 //ob_start("ob_gzhandler");
             }
 
-            ModUtil::load('SecurityCenterModule');
+            ModUtil::load('ZikulaSecurityCenterModule');
 
             $coreInitEvent->setArgument('stage', self::STAGE_MODS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);

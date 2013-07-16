@@ -61,7 +61,7 @@ class AdminController extends \Zikula_AbstractController
     public function indexAction()
     {
         // Security check will be done in modifyconfig()
-        return $this->redirect(ModUtil::url('SecurityCenter', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -323,13 +323,13 @@ class AdminController extends \Zikula_AbstractController
         if ($cause_logout == true) {
             UserUtil::logout();
             $this->registerStatus($this->__('Session handling variables have changed. You must log in again.'));
-            $returnPage = urlencode(ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
+            $returnPage = urlencode(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
             return $this->redirect(ModUtil::url('ZikulaUsersModule', 'user', 'login', array('returnpage' => $returnPage)));
         }
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -567,7 +567,7 @@ class AdminController extends \Zikula_AbstractController
 
         // This function generated no output, and so now it is complete we redirect
         // the user to an appropriate page for them to carry on their work
-        return $this->redirect(ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
+        return $this->redirect(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
     }
 
     /**
@@ -618,7 +618,7 @@ class AdminController extends \Zikula_AbstractController
             'limit' => $pagesize,
             'offset' => $startnum
         );
-        $items = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
+        $items = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
 
         $data = array();
         foreach ($items as $item) {
@@ -636,7 +636,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Assign the values for the smarty plugin to produce a pager.
         $pager = array();
-        $pager['numitems'] = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'countAllIntrusions', $item_params);
+        $pager['numitems'] = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'countAllIntrusions', $item_params);
         $pager['itemsperpage'] = $pagesize;
 
         $this->view->assign('startnum', $startnum)
@@ -719,7 +719,7 @@ class AdminController extends \Zikula_AbstractController
             $item_params = array(
                 'sorting' => array('date' => 'DESC')
             );
-            $items = ModUtil::apiFunc('SecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
+            $items = ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'getAllIntrusions', $item_params);
 
             $objData = array();
             foreach ($items as $item) {
@@ -787,10 +787,10 @@ class AdminController extends \Zikula_AbstractController
         // Confirm authorisation code
         $this->checkCsrfToken();
 
-        $redirect_url = ModUtil::url('SecurityCenterModule', 'admin', 'viewidslog');
+        $redirect_url = ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'viewidslog');
 
         // delete all entries
-        if (ModUtil::apiFunc('SecurityCenterModule', 'admin', 'purgeidslog')) {
+        if (ModUtil::apiFunc('ZikulaSecurityCenterModule', 'admin', 'purgeidslog')) {
             LogUtil::registerStatus($this->__('Done! Purged IDS Log.'));
         }
 
@@ -817,7 +817,7 @@ class AdminController extends \Zikula_AbstractController
         $htmlpurifier = (bool)(System::getVar('outputfilter') == 1);
         $this->view->assign('htmlpurifier', $htmlpurifier);
 
-        $this->view->assign('configurl', ModUtil::url('SecurityCenterModule', 'admin', 'modifyconfig'));
+        $this->view->assign('configurl', ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'));
 
         return $this->response($this->view->fetch('Admin/allowedhtml.tpl'));
     }
@@ -859,7 +859,7 @@ class AdminController extends \Zikula_AbstractController
         // all done successfully
         LogUtil::registerStatus($this->__('Done! Saved module configuration.'));
 
-        return $this->redirect(ModUtil::url('SecurityCenterModule', 'admin', 'allowedhtml'));
+        return $this->redirect(ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'allowedhtml'));
     }
 
     /**

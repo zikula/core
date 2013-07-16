@@ -105,7 +105,7 @@ class Util
         } else {
             // don't change the following statement to getVar()
             // $this is not allowed in functions declared as static
-            $currentconfig = ModUtil::getVar('SecurityCenterModule', 'htmlpurifierConfig');
+            $currentconfig = ModUtil::getVar('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
 
             if (!is_null($currentconfig) && ($currentconfig !== false)) {
                 $config = unserialize($currentconfig);
