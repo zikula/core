@@ -175,12 +175,12 @@ class RandomUtil
      */
     public static function getSentence($nWords, $dictArray)
     {
-        if (!$nWords) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('nWords', 'RandomUtil::getSentence')));
-        }
-
         if (!$dictArray) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('dictArray', 'RandomUtil::getSentence')));
+        }
+        
+        if (!$nWords) {
+            $nWords = self::getInteger(5, 10);
         }
 
         //$dictArray = explode (' ', $dict);
@@ -227,12 +227,12 @@ class RandomUtil
      */
     public static function getParagraphs($nParas, $dict = '', $irndS = 0, $irndW = 0, $startCustomary = false)
     {
-        if (!$nParas) {
-            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('nParas', 'RandomUtil::getParagraphs')));
-        }
-
         if (!$dict) {
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('dictionary', 'RandomUtil::getParagraphs')));
+        }
+        
+        if (!$nParas) {
+            $nParas = self::getInteger(3, 7);
         }
 
         $dictArray = explode(' ', $dict);
