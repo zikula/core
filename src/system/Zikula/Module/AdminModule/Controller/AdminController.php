@@ -650,10 +650,10 @@ class AdminController extends \Zikula_AbstractController
         }
         $data['temp_htaccess'] = $temp_htaccess;
 
-        $data['scactive']  = (bool)ModUtil::available('SecurityCenterModule');
+        $data['scactive']  = (bool)ModUtil::available('ZikulaSecurityCenterModule');
 
         // check for outputfilter
-        $data['useids'] = (bool)(ModUtil::available('SecurityCenterModule') && System::getVar('useids') == 1);
+        $data['useids'] = (bool)(ModUtil::available('ZikulaSecurityCenterModule') && System::getVar('useids') == 1);
         $data['idssoftblock'] = System::getVar('idssoftblock');
 
         return $data;
