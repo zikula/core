@@ -395,7 +395,7 @@ class UserApi extends \Zikula_AbstractApi
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($hashedConfirmationCode !== false) {
-                $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
 
@@ -489,7 +489,7 @@ class UserApi extends \Zikula_AbstractApi
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-                $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
+                $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
                 $query = $this->entityManager->createQuery($dql);
                 $query->getResult();
             }
@@ -658,7 +658,7 @@ class UserApi extends \Zikula_AbstractApi
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-            $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+            $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
             $query = $this->entityManager->createQuery($dql);
             $query->getResult();
         }
@@ -719,7 +719,7 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        $dql = "DELETE FROM UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $uid;
+        $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $uid;
         if (isset($changeType)) {
             $dql .= " AND v.changetype IN (" . implode(', ', $changeType) . ")";
         }
