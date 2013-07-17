@@ -279,7 +279,7 @@ class AdminController extends \Zikula_AbstractController
             $this->checkCsrfToken();
 
             $formData->setFromRequestCollection($this->request->request->all());
-
+        
             $registrationArgs = array(
                 'checkMode'         => 'new',
                 'emailagain'        => $formData->getField('emailagain')->getData(),
@@ -321,8 +321,8 @@ class AdminController extends \Zikula_AbstractController
                 $registeredObj = ModUtil::apiFunc($this->name, 'registration', 'registerNewUser', array(
                     'reginfo'           => $registrationInfo,
                     'sendpass'          => $sendPass,
-                    'usernotification'  => true,
-                    'adminnotification' => true,
+                    'usernotification'  => $this->request->request->get('usernotification'),
+                    'adminnotification' => $this->request->request->get('adminnotification')
                 ));
 
                 if (isset($registeredObj) && $registeredObj) {

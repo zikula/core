@@ -42,6 +42,7 @@ Features:
 - Update JqueryMobile to 1.3.0
 - Update Mapstraction to 3.0.0
 - Mobile Theme now has an configurable block position for startpage.
+- Dont send an welcome email to new users function added, #731.
 
 
 CHANGELOG - ZIKULA 1.3.5
