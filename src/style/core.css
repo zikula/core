@@ -669,6 +669,12 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
     border: 1px solid #f34f4f;
 }
 
+.z-form .z-formrow input[type=checkbox].z-form-error {
+    /* border does not work in most browsers. Use outline instead. */
+    outline: 1px solid #f34f4f;
+    border: none;
+}
+
 .z-form-validationSummary label {
     cursor: pointer;
 }
