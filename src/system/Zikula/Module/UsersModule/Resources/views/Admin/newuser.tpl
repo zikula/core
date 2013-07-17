@@ -154,6 +154,24 @@
                 <p class="z-formnote z-informationmsg">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
                 {/if}
             </div>
+            <div class="z-formrow">
+                <label>{gt text="Send welcome message to user?"}</label>
+                <div class="z-formlist">
+                    <input id="usernotification_yes" type="radio" name="usernotification" value="1" />
+                    <label for="usernotification_yes">{gt text="Yes"}</label>
+                    <input id="usernotification_no" type="radio" name="usernotification" value="0" checked="checked" />
+                    <label for="usernotification_no">{gt text="No"}</label>
+                </div>
+            </div>
+            <div class="z-formrow">
+                <label>{gt text="Send info message to adminstrators?"}</label>
+                <div class="z-formlist">
+                    <input id="adminnotification_yes" type="radio" name="adminnotification" value="1" />
+                    <label for="adminnotification_yes">{gt text="Yes"}</label>
+                    <input id="adminnotification_no" type="radio" name="adminnotification" value="0" checked="checked" />
+                    <label for="adminnotification_no">{gt text="No"}</label>
+                </div>
+            </div>
             <div id="{$formData->getFormId()}_password_is_set_wrap" class="z-formrow">
                 {assign var='fieldName' value='usermustverify'}
                 <label>{gt text="Verify user's e-mail address?"}</label>
