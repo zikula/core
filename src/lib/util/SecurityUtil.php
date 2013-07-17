@@ -337,12 +337,15 @@ class SecurityUtil
                 $uids[] = 0;
                 $vars['Active User'] = 'unregistered';
             } else {
-                $uids[] = UserUtil::getVar('uid');
-                $vars['Active User'] = UserUtil::getVar('uid');
+                $_uid = (int)UserUtil::getVar('uid');
+                if ($_uid) {
+                    $uids[] = $_uid;
+                    $vars['Active User'] = $_uid;
+                }
             }
         } else {
-            $uids[] = $user;
-            $vars['Active User'] = $user;
+            $uids[] = (int)$user;
+            $vars['Active User'] = (int)$user;
         }
         $uids = implode(',', $uids);
 
