@@ -4,6 +4,7 @@ CHANGELOG - ZIKULA 1.3.6
 Fixes:
 - Fixed Zikula_Doctrine2_Entity_Category::toArray fails when used on proxied category
 - Fixed not working password recovery process if using your email adress
+- Fixed System::queryStringSetVar() does not update the request object, #753.
 
 Features:
 - Added garbage collection to CSRF token generator

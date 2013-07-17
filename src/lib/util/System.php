@@ -900,6 +900,10 @@ class System
         if (!isset($name)) {
             return false;
         }
+        
+        $serviceManager = ServiceUtil::getManager();
+        $request = $serviceManager->get('request');                
+        $request->query->set($name, $value);         
 
         // add the variable into the get superglobal
         $res = preg_match('/(.*)\[(.*)\]/i', $name, $match);
