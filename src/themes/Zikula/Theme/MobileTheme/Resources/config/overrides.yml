@@ -1,7 +1,7 @@
 ## YAML Override template
 ## original/file.tpl: override/file.tpl
 ---
-system/Zikula/Module/BlocksModule/Resources/views/blocks_block_extmenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/Resources/views/zikulaBlocksModule/blocks_block_extmenu.tpl
+system/Zikula/Module/BlocksModule/Resources/views/blocks_block_extmenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaBlocksModule/blocks_block_extmenu.tpl
 system/Zikula/Module/UsersModule/Resources/views/Users/main.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaUsersModule/Users/main.tpl
 system/Zikula/Module/AdminModule/Resources/views/admin_admin_adminpanel.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_adminpanel.tpl
 system/Zikula/Module/AdminModule/Resources/views/admin_admin_categorymenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_categorymenu.tpl
