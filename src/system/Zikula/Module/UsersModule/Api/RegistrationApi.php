@@ -1345,7 +1345,6 @@ class RegistrationApi extends \Zikula_AbstractApi
             $uid = $args['reginfo']['uid'];
         }
 
-        $deleted = false;
         $registration = UserUtil::getVars($uid, true, 'uid', true);
 
         if (isset($registration) && $registration) {
@@ -1360,10 +1359,11 @@ class RegistrationApi extends \Zikula_AbstractApi
 
             $deleteEvent = new GenericEvent($registration);
             $this->getDispatcher()->dispatch('user.registration.delete', $deleteEvent);
+            
+            return true;
         }
 
-
-        return $deleted;
+        return false;
     }
 
     /**
