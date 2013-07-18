@@ -1015,7 +1015,7 @@ class UserController extends \Zikula_AbstractController
                     ->fetch('User/lostpasswordcode.tpl'));
         } elseif ($formStage == 'setpass') {
             $templateVariables = array(
-                'uname'             => $uname,
+                'uname'             => $userObj['uname'],
                 'passreminder'      => $passreminder,
                 'newpassreminder'   => $newpassreminder,
                 'errormessages'     => (isset($errorInfo['errorMessages']) && !empty($errorInfo['errorMessages'])) ? $errorInfo['errorMessages'] : array(),
