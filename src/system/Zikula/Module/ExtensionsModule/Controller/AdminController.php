@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\ExtensionsModule\Controller;
 
+use Zikula\Core\Event\GenericEvent;
 use Zikula_View;
 use ModUtil;
 use FormUtil;
@@ -800,11 +801,6 @@ class AdminController extends \Zikula_AbstractController
             return LogUtil::registerError($this->__('Error! No such module ID exists.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
         }
 
-        $startmod = System::getVar('startpage');
-        if ($startmod == $modinfo['name']) {
-            return LogUtil::registerError($this->__('Error! This module is currently set as the site\'s home page. You must choose another module for the home page before you can deactivate this one.'), null, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
-        }
-
         if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
             return LogUtil::registerError($this->__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'), null, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
         }
@@ -813,6 +809,10 @@ class AdminController extends \Zikula_AbstractController
         $setstate = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_INACTIVE));
         if ($setstate) {
             // Success
+            
+            $event = new GenericEvent(null, $modinfo);
+            $this->getDispatcher()->dispatch('installer.module.deactivated', $event);
+            
             LogUtil::registerStatus($this->__('Done! Deactivated module.'));
         }
 

@@ -20,6 +20,7 @@ use ModUtil;
 use ZLanguage;
 use DBUtil;
 use DoctrineHelper;
+use EventUtil;
 
 /**
  * Settings_Installer class.
@@ -112,6 +113,9 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
+        // register event handler to remove the startpage module if it is deactivated.
+        EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
+
         // Initialisation successful
         return true;
     }
@@ -125,8 +129,10 @@ class SettingsModuleInstaller extends \Zikula_AbstractInstaller
 
         // Upgrade dependent on old version number
         switch ($oldversion) {
-            // future upgrade routines
             case '2.9.7':
+                EventUtil::registerPersistentModuleHandler($this->name, 'installer.module.deactivated', array('Zikula\Module\SettingsModule\Listener\ModuleListener', 'moduleDeactivated'));
+            // future upgrade routines
+            case '2.9.8':
         }
 
         // Update successful
