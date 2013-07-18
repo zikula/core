@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
  * @ORM\Entity
- * @ORM\Table(name="admin_module",indexes={@ORM\index(name="mid_cid",columns={"mid","cid"})})
+ * @ORM\Table(name="admin_module",indexes={@ORM\Index(name="mid_cid",columns={"mid","cid"})})
  */
 class AdminModuleEntity extends EntityAccess
 {
