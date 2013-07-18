@@ -137,7 +137,7 @@ class UserController extends \Zikula_AbstractController
 
         $this->view->setCaching(Zikula_View::CACHE_DISABLED);
 
-        return $this->view->assign('rootCat', $rootCat)
+        $this->view->assign('rootCat', $rootCat)
                     ->assign('category', $editCat)
                     ->assign('attributes', $attributes)
                     ->assign('allCats', $allCats)
