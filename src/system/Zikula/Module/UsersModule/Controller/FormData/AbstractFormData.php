@@ -17,6 +17,7 @@ namespace Zikula\Module\UsersModule\Controller\FormData;
 use ServiceUtil;
 use InvalidArgumentException;
 use ModUtil;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * A form data container and validator.
@@ -285,15 +286,15 @@ abstract class AbstractFormData extends \Zikula_AbstractBase
      * The request variables should be named the same as the field names. Request variables within the namespace that
      * do not represent known fields are ignored. The validation status of the form data container is reset by this function.
      *
-     * @param array $requestCollection The request collection (e.g. $this->request->request) from which to set field data.
+     * @param ParameterBag $requestCollection The request collection (e.g. $this->request->request) from which to set field data.
      *
      * @return void
      */
-    public function setFromRequestCollection(array $requestCollection)
+    public function setFromRequestCollection(ParameterBag $requestCollection)
     {
         foreach ($this->formFields as $fieldName => $formField) {
-            if (array_key_exists($fieldName, $requestCollection)) {
-                $this->formFields[$fieldName]->setData($requestCollection[$fieldName]);
+            if ($requestCollection->has($fieldName)) {
+                $this->formFields[$fieldName]->setData($requestCollection->get($fieldName));
             }
         }
         $this->clearValidation();

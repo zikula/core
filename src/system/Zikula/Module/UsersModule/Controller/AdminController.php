@@ -278,7 +278,7 @@ class AdminController extends \Zikula_AbstractController
             // Returning from a form POST operation. Process the input.
             $this->checkCsrfToken();
 
-            $formData->setFromRequestCollection($this->request->request->all());
+            $formData->setFromRequestCollection($this->request->request);
         
             $registrationArgs = array(
                 'checkMode'         => 'new',
@@ -1333,7 +1333,7 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Display a form to edit one tegistration account.
+     * Display a form to edit one registration account.
      *
      * Parameters passed via GET:
      * --------------------------
@@ -1364,7 +1364,7 @@ class AdminController extends \Zikula_AbstractController
 
         $proceedToForm = true;
 
-        $formData = new Users_Controller_FormData_ModifyRegistrationForm('users_modifyreg', $this->getContainer());
+        $formData = new FormData\ModifyRegistrationForm('users_modifyreg', $this->getContainer());
         $errorFields = array();
         $errorMessages = array();
 
