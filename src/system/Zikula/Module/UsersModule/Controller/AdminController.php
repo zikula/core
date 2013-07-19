@@ -25,7 +25,6 @@ use DataUtil;
 use DateUtil;
 use System;
 use Zikula\Module\UsersModule\Controller\FormData\NewUserForm;
-use Zikula_Hook_ValidationProviders;
 use Zikula_Exception_Fatal;
 use Zikula\Module\UsersModule\Controller\FormData\ModifyUserForm;
 use DBUtil;
@@ -279,7 +278,7 @@ class AdminController extends \Zikula_AbstractController
             $this->checkCsrfToken();
 
             $formData->setFromRequestCollection($this->request->request);
-        
+
             $registrationArgs = array(
                 'checkMode'         => 'new',
                 'emailagain'        => $formData->getField('emailagain')->getData(),
@@ -1217,7 +1216,7 @@ class AdminController extends \Zikula_AbstractController
                 $reset = (($regCount == 0) && ($startNum != 1));
             } elseif (($startNum % $limitNumRows) != 1) {
                 // Reset to page boundary
-                $limitOffset = $startNum - ($startNum % $limitOffset);
+                $limitOffset = $startNum - ($startNum % $limitNumRows) + 1;
                 $reset = true;
             } else {
                 $limitOffset = $startNum - 1;
@@ -2310,6 +2309,9 @@ class AdminController extends \Zikula_AbstractController
         $expectedFields = array('uname', 'pass', 'email', 'activated', 'sendmail', 'groups');
         $counter = 0;
         $importValues = array();
+        $usersArray = array();
+        $emailsArray = array();
+
         // read the lines and create an array with the values. Check if the values passed are correct and set the default values if it is necessary
         foreach ($lines as $line_num => $line) {
             $line = str_replace('"', '', trim($line));
