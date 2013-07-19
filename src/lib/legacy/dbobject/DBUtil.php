@@ -1241,32 +1241,38 @@ class DBUtil
      * Convenience function to ensure that the order-by-clause starts with "ORDER BY".
      *
      * @param string $orderby The original order-by clause.
-     * @param string $table   The table reference, only used for oracle quote determination (optional) (default=null).
+     * @param string $table   The table reference
      *
      * @return string The (potentially) altered order-by-clause.
      */
-    public static function _checkOrderByClause($orderby, $table = null)
+    public static function _checkOrderByClause($orderby, $table)
     {
-        if (!strlen(trim($orderby))) {
+        $orderby = trim($orderby);
+        if (!strlen($orderby)) {
             return $orderby;
         }
 
-        $tables = self::getTables();
+        if (!$table) {
+            throw new Exception(__f('The parameter %s must not be empty', 'table'));
+        }
+
+        $orderby      = str_ireplace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
+        $orderby      = trim(str_replace(array("\t", "\n", '  ', ' +0', '+ 0'), array(' ', ' ', ' ', '+0', '+0'), $orderby));
+        $tables       = self::getTables();
+        $columns      = $tables["{$table}_column"];
         $dbDriverName = Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName();
+        $tokens       = explode(',', $orderby); // split on comma
+
+        if (!$columns) {
+            throw new Exception(__f('The parameter %s does not seem to point towards a valid table definition', 'table'));
+        }
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
         if ($dbDriverName == 'oracle') {
-            $t = str_replace('ORDER BY ', '', $orderby); // remove "ORDER BY" for easier parsing
-            $t = str_replace('order by ', '', $t); // remove "order by" for easier parsing
-
-
-            $columns = $tables["{$table}_column"];
 
             // anything which doesn't look like a basic ORDER BY clause (with possibly an ASC/DESC modifier)
             // we don't touch. To use such stuff with Oracle, you'll have to apply the quotes yourself.
 
-
-            $tokens = explode(',', $t); // split on comma
             foreach ($tokens as $k => $v) {
                 $v = trim($v);
                 if (strpos($v, ' ') === false) {
@@ -1299,14 +1305,59 @@ class DBUtil
                 }
             }
 
-            $orderby = implode(', ', $tokens);
+        } else {
+
+            $search  = array( '+', '-', '*', '/', '%');
+            $replace = array( '');
+
+            foreach ($tokens as $k=>$v) {
+                $hasMath  = (bool)(strcmp($v, str_replace($search, $replace, $v)));
+                $hasFunc  = (bool)(strpos($v, '('));
+                $hasPlus0 = (bool)(strpos ($v, '+0'));
+
+                if ($hasMath) {
+                    if ($hasPlus0) {
+                        $hasMath = false;
+                    }
+                }
+
+                if (!$hasFunc && !$hasMath) {
+                    $fields = explode (' ', trim($v));
+                    if ($fields) {
+                        $left = $fields[0];
+                        if ($hasPlus0) {
+                            $left = substr ($left, 0, -2);
+                        }
+
+                        $hasTablePrefix = (bool)strpos($left, '.');
+                        $fullColumnName = isset($columns[$left]) ? $columns[$left] : $left;
+
+                        // if the resolved column is a math definition, revert back to the original column spec
+                        if ($fullColumnName != $left) {
+                            $hasMath = (bool)(strcmp($fullColumnName, str_replace($search, $replace, $fullColumnName)));
+                            if ($hasMath) {
+                                $fullColumnName = "'$left'";
+                            }
+                        } else {
+                            if (!$hasTablePrefix) {
+                                $fullColumnName = "tbl.$fullColumnName";
+                            }
+                        }
+
+                        if ($hasPlus0) {
+                            $fullColumnName .= '+0';
+                        }
+
+                        $tokens[$k] = $fullColumnName;
+                        if (count($fields)>1) {
+                            $tokens[$k] .= " $fields[1]";
+                        }
+                    }
+                }
+            }
         }
 
-        if (stristr($orderby, 'ORDER BY') === false) {
-            $orderby = 'ORDER BY ' . $orderby;
-        }
-
-        return $orderby;
+        return ' ORDER BY ' . implode (',', $tokens);
     }
 
     /**
@@ -2547,8 +2598,9 @@ class DBUtil
         //$dst = ($distinct ? 'DISTINCT' : '');
         $sqlStart = "SELECT COUNT(*) ";
         $sqlFrom = "FROM $tableName AS tbl ";
+        $sqlGroupBy = 'GROUP BY ' . implode (', ', $sqlJoinArray[3]);
 
-        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where";
+        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $sqlGroupBy";
         $res = self::executeSQL($sql);
         if ($res === false) {
             return $res;
@@ -2574,7 +2626,7 @@ class DBUtil
      * @param array  $joinInfo    The array containing the extended join information.
      * @param array  $columnArray The columns to marshall into the resulting object (optional) (default=null).
      *
-     * @return array $sqlJoin, $sqlJoinFieldList, $ca.
+     * @return array $sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray.
      * @deprecated
      * @see    Doctrine_Record
      */
@@ -2589,6 +2641,7 @@ class DBUtil
         $alias = 'a';
         $sqlJoin = '';
         $sqlJoinFieldList = '';
+        $sqlJoinFieldArray = array();
         foreach (array_keys($joinInfo) as $k) {
             $jt = $joinInfo[$k]['join_table'];
             $jf = $joinInfo[$k]['join_field'];
@@ -2624,6 +2677,7 @@ class DBUtil
 
                 $line = ", $alias.$currentColumn AS \"$ofn[$k]\" ";
                 $sqlJoinFieldList .= $line;
+                $sqlJoinFieldArray[] = "$alias.$currentColumn";
 
                 $ca[] = $ofn[$k];
             }
@@ -2646,7 +2700,7 @@ class DBUtil
             ++$alias;
         }
 
-        return array($sqlJoin, $sqlJoinFieldList, $ca);
+        return array($sqlJoin, $sqlJoinFieldList, $ca, $sqlJoinFieldArray);
     }
 
     /**
