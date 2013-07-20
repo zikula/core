@@ -344,11 +344,11 @@ function install(Zikula_Core $core)
 }
 
 /**
- * This function inserts the default data on new installs
+ * This function inserts the admin's user data on new installs.
  */
 function createuser($username, $password, $email)
 {
-    $connection = Doctrine_Manager::connection();
+    $em = ServiceUtil::get('doctrine.entitymanager');
 
     // create the password hash
     $password = UserUtil::getHashedPassword($password);
@@ -361,19 +361,16 @@ function createuser($username, $password, $email)
     $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
     $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
 
-    // create the admin user
-    $sql = "UPDATE users
-            SET   uname        = '{$username}',
-                  email        = '{$email}',
-                  pass         = '{$password}',
-                  activated    = 1,
-                  user_regdate = '{$nowUTCStr}',
-                  lastlogin    = '{$nowUTCStr}'
-            WHERE uid   = 2";
+    $entity = $em->find('\Zikula\Module\UsersModule\Entity\UserEntity', 2);
+    $entity->setUname($username);
+    $entity->setEmail($email);
+    $entity->setPass($password);
+    $entity->setActivated(1);
+    $entity->setUser_Regdate($nowUTCStr);
+    $entity->setLastlogin($nowUTCStr);
+    $em->persist($entity);
 
-    $result = $connection->exec($sql);
-
-    return ($result) ? true : false;
+    $em->flush();
 }
 
 function installmodules($lang = 'en')
