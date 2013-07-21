@@ -2845,7 +2845,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                     smarty_core_load_plugins($_params, $this);
                     $_params = array('results' => $_smarty_results);
                     // ZIKULA OVERRIDE
-                    require_once('lib/viewplugins/zikula.process_cached_inserts.php');
+                    require_once('lib/legacy/viewplugins/zikula.process_cached_inserts.php');
                     $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
                 }
                 if (!empty($this->_cache_info['cache_serials'])) {
@@ -2943,7 +2943,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             require_once(SMARTY_CORE_DIR . 'core.write_cache_file.php');
             smarty_core_write_cache_file($_params, $this);
             // ZIKULA OVERRIDE
-            require_once('lib/viewplugins/zikula.process_cached_inserts.php');
+            require_once('lib/legacy/viewplugins/zikula.process_cached_inserts.php');
             $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
 
             if ($this->_cache_serials) {
