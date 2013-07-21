@@ -53,7 +53,7 @@
                     <li class="highlight"><a href="{gt text="http://www.wikipedia.org/wiki/File_system_permissions"}">{gt text="File system permissions"}</a></li>
                     {/if}
                     {if $action eq selecttheme}
-                    <li class="highlight"><a href="http://community.zikula.org/module-Extensions-view-comptype-2.htm">{gt text="Theme extensions database"}</a></li>
+                    <li class="highlight"><a href="https://github.com/zikula/themes">{gt text="Theme extensions database"}</a></li>
                     {/if}
                 </ul>
             </div>
