@@ -689,6 +689,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
      * Implements 'core.postinit' event.
      *
      * @param Zikula_Event $event The event handler.
+     * 
+     * @deprecated since 1.3.6 
+     * @todo remove in 1.4.0
      *
      * @return void
      */
@@ -703,7 +706,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $definition = new Definition('\Doctrine\ORM\Mapping\Driver\DriverChain');
         $this->serviceManager->setDefinition('doctrine.driver_chain', $definition);
 
-        $definition = new Definition('\Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('zikula.servicemanager')));
+        $definition = new Definition('\Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
         $this->serviceManager->setDefinition('doctrine_extensions', $definition);
 
         $types = array('Blameable', 'Exception', 'Loggable', 'Mapping', 'SoftDeleteable', 'Uploadable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
