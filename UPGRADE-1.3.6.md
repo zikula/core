@@ -405,6 +405,9 @@ to:
      */
     private $slug;
 
+Paginate (Doctrine Extensions)
+-----------------------------
+The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
 
 Version.php
 -----------
