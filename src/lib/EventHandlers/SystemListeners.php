@@ -697,16 +697,16 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function doctrineExtensions(Zikula_Event $event)
     {
-        $definition = new Definition('\Doctrine\Common\Annotations\AnnotationReader');
+        $definition = new Definition('Doctrine\Common\Annotations\AnnotationReader');
         $this->serviceManager->setDefinition('doctrine.annotation_reader', $definition);
 
-        $definition = new Definition('\Doctrine\ORM\Mapping\Driver\AnnotationDriver');
+        $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver');
         $this->serviceManager->setDefinition('doctrine.annotation_driver', $definition);
         
-        $definition = new Definition('\Doctrine\ORM\Mapping\Driver\DriverChain');
+        $definition = new Definition('Doctrine\ORM\Mapping\Driver\DriverChain');
         $this->serviceManager->setDefinition('doctrine.driver_chain', $definition);
 
-        $definition = new Definition('\Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
+        $definition = new Definition('Zikula\Core\Doctrine\ExtensionsManager', array(new Reference('doctrine.eventmanager'), new Reference('service_container')));
         $this->serviceManager->setDefinition('doctrine_extensions', $definition);
 
         $types = array('Blameable', 'Exception', 'Loggable', 'Mapping', 'SoftDeleteable', 'Uploadable', 'Sluggable', 'Timestampable', 'Translatable', 'Tree', 'Sortable');
