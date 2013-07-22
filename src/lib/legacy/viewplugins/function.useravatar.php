@@ -60,10 +60,15 @@ function smarty_function_useravatar($params, Zikula_View $view)
             $params['rating'] = false;
         }
         if (!isset($params['size'])) {
-            if (isset($params['width'])) {
-                $params['size'] = $params['width'];
+            if(isset($params['width']) || isset($params['height'])) {
+                if ((isset($params['width']) && !isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] < $params['size'])) {
+                    $params['size'] = $params['width'];
+                } elseif((!isset($params['width']) && isset($params['height'])) || (isset($params['width']) && isset($params['height']) && $params['width'] > $params['size'])) {
+                    $params['size'] = $params['height'];
+                } else {
+                    $params['size'] = 80;
+                }
             }
-            $params['size'] = 80;
         }
         $params['width']  = $params['size'];
         $params['height'] = $params['size'];
