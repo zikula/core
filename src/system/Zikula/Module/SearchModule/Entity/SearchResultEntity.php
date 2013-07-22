@@ -66,7 +66,7 @@ class SearchResultEntity
      *
      * @var string $extra
      *
-     * @ORM\Column(name="extra", type="string", length=100, nullable=true)
+     * @ORM\Column(name="extra", type="string", length=1000, nullable=true)
      */
     private $extra;
 
