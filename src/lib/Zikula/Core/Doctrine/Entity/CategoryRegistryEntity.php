@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Category registry entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="categories_registry",indexes={@ORM\index(name="idx_categories_registry",columns={"modname","entityname"})})
+ * @ORM\Table(name="categories_registry",indexes={@ORM\Index(name="idx_categories_registry",columns={"modname","entityname"})})
  */
 class CategoryRegistryEntity extends EntityAccess
 {
