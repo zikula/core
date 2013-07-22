@@ -22,11 +22,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Category entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="categories_category",indexes={@ORM\index(name="idx_categories_is_leaf",columns={"is_leaf"}),
- *                                                @ORM\index(name="idx_categories_name",columns={"name"}),
- *                                                @ORM\index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),
- *                                                @ORM\index(name="idx_categories_status",columns={"status"}),
- *                                                @ORM\index(name="idx_categories_ipath_status",columns={"ipath","status"})})
+ * @ORM\Table(name="categories_category",indexes={@ORM\Index(name="idx_categories_is_leaf",columns={"is_leaf"}),
+ *                                                @ORM\Index(name="idx_categories_name",columns={"name"}),
+ *                                                @ORM\Index(name="idx_categories_ipath",columns={"ipath","is_leaf","status"}),
+ *                                                @ORM\Index(name="idx_categories_status",columns={"status"}),
+ *                                                @ORM\Index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
 class CategoryEntity extends EntityAccess
 {

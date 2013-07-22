@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * We use annotations to define the entity mappings to database (see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html).
  *
  * @ORM\Entity
- * @ORM\Table(name="users",indexes={@ORM\index(name="uname",columns={"uname"}), @ORM\index(name="email",columns={"email"})})
+ * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
  *
  * Main Users table.
  * Stores core information about each user account.

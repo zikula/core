@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * We use annotations to define the entity mappings to database (see http://www.doctrine-project.org/docs/orm/2.1/en/reference/basic-mapping.html).
  *
  * @ORM\Entity
- * @ORM\Table(name="block_positions",indexes={@ORM\index(name="name_idx",columns={"name"})})
+ * @ORM\Table(name="block_positions",indexes={@ORM\Index(name="name_idx",columns={"name"})})
  */
 class BlockPositionEntity extends EntityAccess
 {

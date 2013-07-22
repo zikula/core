@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Hook area doctrine2 entity.
  *
  * @ORM\Entity
- * @ORM\Table(name="hook_area",indexes={@ORM\index(name="areaidx", columns={"areaname"})})
+ * @ORM\Table(name="hook_area",indexes={@ORM\Index(name="areaidx", columns={"areaname"})})
  *
  * @deprecated since 1.3.6
  */
