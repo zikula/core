@@ -1270,9 +1270,26 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @param array $args All parameters sent to this function (not currently used).
      *
+     * @deprecated since 1.3.6 
+     * @todo remove in 1.4.0
+     *
+     * @use $this->getalldependencies instead.
+     *
      * @return array Array of dependencies.
      */
     public function getdallependencies()
+    {
+        return $this->getalldependencies();
+    }
+
+    /**
+     * Get all module dependencies.
+     *
+     * @param array $args All parameters sent to this function (not currently used).
+     *
+     * @return array Array of dependencies.
+     */
+    public function getalldependencies()
     {
         $dependencies = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionDependencyEntity')->findBy(array(), array('modid' => 'ASC'));
 
