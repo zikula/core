@@ -256,7 +256,7 @@
     <!-- Compress own JS -->
     <target name="compressownjs">
         <echo msg="YUI_Compressor for JS files..."/>
-        <!-- <exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.2.jar -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" /> -->
-        <exec command="/usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.2.jar -o ${packagepath}/${filename}.tmp ${packagepath}/${filename};echo '// Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).' > ${packagepath}/${filename};cat ${packagepath}/${filename}.tmp >> ${packagepath}/${filename};rm -f ${packagepath}/${filename}.tmp"/>
+        <!-- <exec command="BAREFILENAME=`echo ${filename}|sed 's/.js//g'`; /usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.8.jar -o ${packagepath}/$BAREFILENAME-min.js ${packagepath}/${filename}" /> -->
+        <exec command="/usr/bin/java -jar /var/lib/jenkins/yuicompressor-2.4.8.jar -o ${packagepath}/${filename}.tmp ${packagepath}/${filename};echo '// Copyright Zikula Foundation 2010 - license GNU/LGPLv3 (or at your option, any later version).' > ${packagepath}/${filename};cat ${packagepath}/${filename}.tmp >> ${packagepath}/${filename};rm -f ${packagepath}/${filename}.tmp"/>
     </target>
 </project>
