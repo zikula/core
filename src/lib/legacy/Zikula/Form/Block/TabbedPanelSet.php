@@ -32,7 +32,7 @@
  * {/formtabbedpanelset}
  * </code>
  * You can place any Zikula_Form_View plugins inside the individual panels. The tabs
- * require some special styling which is handled by the styles in system/Theme/Resources/public/css/form/style.css.
+ * require some special styling which is handled by the styles in system/Zikula/Module/ThemeModule/Resources/public/css/form/style.css.
  * If you want to override this styling then either copy the styles to another stylesheet in the
  * templates directory or change the cssClass attribute to something different than the default
  * class name.
@@ -94,7 +94,7 @@ class Zikula_Form_Block_TabbedPanelSet extends Zikula_Form_AbstractPlugin
         static $firstTime = true;
         if ($firstTime) {
             PageUtil::addVar('javascript', 'javascript/ajax/prototype.js');
-            PageUtil::addVar('javascript', 'system/Theme/Resources/public/js/form/form_tabbedpanelset.js');
+            PageUtil::AddVar('javascript', 'system/Zikula/Module/ThemeModule/Resources/public/js/form/form_tabbedpanelset.js');
             PageUtil::addVar('footer', "<script type=\"text/javascript\">$$('.tabsToHide').invoke('hide')</script>");
         }
         $firstTime = false;
