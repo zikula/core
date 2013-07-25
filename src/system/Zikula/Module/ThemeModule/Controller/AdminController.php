@@ -1118,6 +1118,8 @@ class AdminController extends \Zikula_AbstractController
         return $this->response($this->view->assign('mods', $mods)
                 // assign all module vars
                 ->assign($this->getVars())
+                // assign admintheme var
+                ->assign('admintheme', ModUtil::getVar('Admin', 'admintheme', ''))
                 // assign an csrftoken for the clear cache/compile links
                 ->assign('csrftoken', SecurityUtil::generateCsrfToken($this->container, true))
                 // assign the core config var
@@ -1179,8 +1181,11 @@ class AdminController extends \Zikula_AbstractController
 
         $theme_change = (bool)$this->request->request->get('theme_change', isset($args['theme_change']) ? $args['theme_change'] : false);
         System::setVar('theme_change', $theme_change);
-        
-        $enable_mobile_theme = (bool)FormUtil::getPassedValue('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false, 'POST');
+
+        $admintheme = (string)FormUtil::getPassedValue('admintheme', isset($args['admintheme']) ? $args['admintheme'] : '', 'POST');
+        ModUtil::setVar('Admin', 'admintheme', $admintheme);
+
+        $enable_mobile_theme = (int)FormUtil::getPassedValue('enable_mobile_theme', isset($args['enable_mobile_theme']) ? $args['enable_mobile_theme'] : false, 'POST');
         $this->setVar('enable_mobile_theme', $enable_mobile_theme);
 
         $mobile_theme_name = (string)FormUtil::getPassedValue('mobile_theme_name', isset($args['mobile_theme_name']) ? $args['mobile_theme_name'] : '', 'POST');

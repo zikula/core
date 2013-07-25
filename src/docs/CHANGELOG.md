@@ -34,6 +34,7 @@ Features:
 - Give possibility to set timezone_adjust default value global.
 - Theme settings: mobile theme different then default; mobile domain; alternative site view
   theme and domain; set admin theme in theme settings section.
+- Select if the mobile theme shall be applied for smartphones, tablets or both of them.
 - Give the profile module the possibility to change the profilelink.
 - Added viewplugin `nl2html`.
 - Added hook to Blocks module to allow for use with Html Block (only).

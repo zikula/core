@@ -1911,13 +1911,26 @@ class UserUtil
             if (empty($thememobile)) {
                 $thememobile = 'Mobile';
             }
-            if (CookieUtil::getCookie('zikula_mobile_theme') == '1' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
+
+            $enableMobileTheme = ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0);
+            if (CookieUtil::getCookie('zikula_mobile_theme') == '1' && $enableMobileTheme) {
+                // Mobile theme has been manually chosen by the user.
                 $pagetheme = $thememobile;
-            } else if (CookieUtil::getCookie('zikula_mobile_theme') != '2' && ModUtil::getVar('ZikulaThemeModule', 'enable_mobile_theme', 0)) {
-                include_once("system/Zikula/Module/ThemeModule/vendor/Mobile_Detect.php");
+            } else if (CookieUtil::getCookie('zikula_mobile_theme') != '2' && $enableMobileTheme) {
+                // Mobile theme has not been manually disabled by the user.
                 $detect = new \Mobile_Detect();
                 if ($detect->isMobile()) {
-                    $pagetheme = $thememobile;
+                    // Smartphone, tablet or other mobile device.
+                    if ($enableMobileTheme == 1) {
+                        // Enable for every mobile device.
+                        $pagetheme = $thememobile;
+                    } else if ($enableMobileTheme == 2 && !$detect->isTablet()) {
+                        // Enable for smartphones only
+                        $pagetheme = $thememobile;
+                    } else if ($enableMobileTheme == 3 && $detect->isTablet()) {
+                        // Enable for tablets only
+                        $pagetheme = $thememobile;
+                    }
                 }
             }
             // check for specified mobile domain to force mobile theme
@@ -1925,6 +1938,7 @@ class UserUtil
             if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain) {
                 $pagetheme = $thememobile;
             }
+
             // check for specified alternative site view domain and theme
             $themedomain = ModUtil::getVar('ZikulaThemeModule', 'alt_theme_domain', '');
             if ($themedomain && $_SERVER['SERVER_NAME'] == $themedomain && ModUtil::getVar('ZikulaThemeModule', 'alt_theme_name', '')) {
