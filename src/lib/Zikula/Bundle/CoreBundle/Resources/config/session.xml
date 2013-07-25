@@ -10,7 +10,6 @@
         <parameter key="session.attribute_bag.class">Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag</parameter>
         <parameter key="session.storage.legacy.class">Zikula_Session_Storage_Legacy</parameter>
         <parameter key="session.handler.legacy.class">Zikula_Session_LegacyHandler</parameter>
-        <parameter key="session.storage.legacy.class">Zikula_Session_Storage_Legacy</parameter>
     </parameters>
 
     <services>
