@@ -1,5 +1,6 @@
 {adminheader}
 {ajaxheader modname=Theme filename=theme_admin_modifyconfig.js noscriptaculous=true effects=true}
+{pageaddvar name='javascript' value='jquery'}
 
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
@@ -20,8 +21,48 @@
                 <input id="theme_change" name="theme_change" type="checkbox" value="1" {if $theme_change}checked="checked"{/if} />
             </div>
             <div class="z-formrow">
-                <label for="enable_mobile_theme">{gt text="Enable mobile theme"}</label>
-                <input id="enable_mobile_theme" name="enable_mobile_theme" type="checkbox" value="1" {if $enable_mobile_theme}checked="checked"{/if} />
+                <label for="admintheme">{gt text="Admin theme"}</label>
+                <select id="admintheme" name="admintheme">
+                    <option value="">{gt text="Use site's theme"}</option>
+                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$admintheme}
+                </select>
+                <em class="z-sub z-formnote">{gt text='This theme will be used in the admin interface of Zikula. This setting does not override the mobile theme setting in admin area.'}</em>
+            </div>
+            <div class="z-formrow">
+                <label for="alt_theme_name">{gt text="Theme for alternative site view"}</label>
+                <select id="alt_theme_name" name="alt_theme_name">
+                    <option value="">{gt text="Not set"}</option>
+                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$alt_theme_name}
+                </select>
+            </div>
+            <div class="z-formrow">
+                <label for="alt_theme_domain">{gt text="Domain for alternative site view"}</label>
+                <input id="alt_theme_domain" type="text" name="alt_theme_domain" value="{$alt_theme_domain|safetext}" size="50" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>{gt text="Mobile theme"}</legend>
+            <div class="z-formrow">
+                <label for="mobile_theme_name">{gt text="Mobile theme"}</label>
+                <select id="mobile_theme_name" name="mobile_theme_name">
+                    <option value="">{gt text="Use default mobile theme"}</option>
+                    {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$mobile_theme_name}
+                </select>
+            </div>
+            <div class="z-formrow">
+                <label for="mobile_theme_domain">{gt text="Mobile theme domain"}</label>
+                <input id="mobile_theme_domain" type="text" name="mobile_theme_domain" value="{$mobile_theme_domain|safetext}" size="50" />
+                <em class="z-sub z-formnote">{gt text='This forces the mobile theme if your server is visited via the specified url, e.g. m.example.com'}</em>
+            </div>
+            <div class="z-formrow">
+                <label for="enable_mobile_theme">{gt text="Mobile device detection"}</label>
+                <select id="enable_mobile_theme" name="enable_mobile_theme">
+                    <option value="0">{gt text="Disabled"}</option>
+                    <option value="1"{if $enable_mobile_theme == 1} selected="selected"{/if}>{gt text="Enabled: force for smartphones and tablets"}</option>
+                    <option value="2"{if $enable_mobile_theme == 2} selected="selected"{/if}>{gt text="Enabled: force for smartphones only"}</option>
+                    <option value="3"{if $enable_mobile_theme == 3} selected="selected"{/if}>{gt text="Enabled: force for tablets only"}</option>
+                </select>
+                <em class="z-sub z-formnote">{gt text='Here you can decide if you want to automatically enable the mobile theme for mobile devices.'}</em>
             </div>
         </fieldset>
         <fieldset>

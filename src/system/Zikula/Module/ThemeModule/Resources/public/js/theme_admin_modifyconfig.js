@@ -1,5 +1,23 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
+(function($) {
+    $(function() { 
+        if ($('#alt_theme_name').val() == "") {
+            // Not set
+            $('#alt_theme_domain').parent().hide();
+        }
+
+        $("#alt_theme_name").click(function() {
+            if ($('#alt_theme_name').val() == "") {
+                $('#alt_theme_domain').parent().fadeOut();
+            } else {
+                $('#alt_theme_domain').parent().fadeIn();
+            }
+        });
+    });
+})(jQuery);
+
+
 document.observe('dom:loaded', theme_modifyconfig_init);
 
 function theme_modifyconfig_init()
