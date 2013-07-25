@@ -33,7 +33,7 @@ function smarty_outputfilter_shorturls($source, $view)
     $baseurl = System::getBaseUrl();
 
     $prefix = '[(<[^>]*?)[\'"](?:'.$baseurl.'|'.$baseurl.')?(?:[./]{0,2})'; // Match local URLs in HTML tags, removes / and ./
-    $in = array('[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype)(?!xmpp)(?!icq)(?!mailto)(?!tel)(?!javascript:)(?![/"\'\s#]+)]Ui');
+    $in = array('[<([^>]+)\s(src|href|background|action)\s*=\s*((["\'])?)(?!http)(?!skype:)(?!xmpp:)(?!icq:)(?!mailto:)(?!tel:)(?!javascript:)(?!bitcoin:)(?!geo:)(?!im:)(?!irc:)(?!ircs:)(?!sms:)(?!ssh:)(?!urn:)(?!wtai:)(?!smsto:)(?!sms:)(?!sip:)(?!magnet:)(?!webcal:)(?![/"\'\s#]+)]Ui');
     $out = array('<$1 $2=$3'.$baseurl);
 
     // perform the replacement
