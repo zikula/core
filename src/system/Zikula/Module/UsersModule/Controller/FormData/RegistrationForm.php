@@ -15,6 +15,7 @@
 namespace Zikula\Module\UsersModule\Controller\FormData;
 
 use Zikula\Module\UsersModule\Constant as UsersConstant;
+use ModUtil;
 
 /**
  * Contains and validates the data found on the Users module's user registration form.
@@ -24,10 +25,11 @@ class RegistrationForm extends AbstractFormData
     /**
      * Create a new instance of the form data container, intializing the fields and validators.
      *
-     * @param string                $formId         The id value to use for the form.
-     * @param \Zikula_ServiceManager $serviceManager The current service manager instance.
+     * @param string                 $formId                       The id value to use for the form.
+     * @param \Zikula_ServiceManager $serviceManager               The current service manager instance.
+     * @param bool                   $passwordReminderNotMandatory Set it to true to remove the mandatory validation of the password reminder. Overwrites modvar.
      */
-    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null)
+    public function __construct($formId, \Zikula_ServiceManager $serviceManager = null, $passwordReminderNotMandatory = false)
     {
         parent::__construct($formId, $serviceManager);
 
@@ -80,20 +82,25 @@ class RegistrationForm extends AbstractFormData
                 $this->serviceManager,
                 $this->__('The value must be a string.')));
 
-        $this->addField(new Field(
+        $passReminderField = new Field(
                 $this,
                 'passreminder',
                 false,
                 false,
-                $this->serviceManager))
-            ->setNullAllowed(false)
+                $this->serviceManager);
+        $passReminderField->setNullAllowed(false)
             ->addValidator(new Validator\StringType(
-                $this->serviceManager,
-                $this->__('The value must be a string.')))
-            ->addValidator(new Validator\StringMinimumLength(
+                    $this->serviceManager,
+                    $this->__('The value must be a string.')));
+
+        if (ModUtil::getVar(UsersConstant::MODNAME, UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY) && !$passwordReminderNotMandatory) {
+            $passReminderField->addValidator(new Validator\StringMinimumLength(
                 $this->serviceManager,
                 1,
                 $this->__('A password reminder is required, and cannot be left blank.')));
+        }
+
+        $this->addField($passReminderField);
 
         $this->addField(new Field(
                 $this,
