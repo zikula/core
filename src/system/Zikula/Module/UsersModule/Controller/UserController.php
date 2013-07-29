@@ -354,13 +354,6 @@ class UserController extends \Zikula_AbstractController
                     );
                     $checkPasswordResult = ModUtil::apiFunc($selectedAuthenticationMethod['modname'], 'authentication', 'checkPasswordForRegistration', $arguments, 'Zikula_Api_AbstractAuthentication');
 
-                    // If we have gotten to this point in the same call to registrationMethod(), then the authentication method was not external
-                    // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
-                    // user was required to exit the Zikula system for authentication on the external system, then we will not get
-                    // to this point until the reentrant callback (at which point the variable should, again, not be needed
-                    // anymore).
-                    $this->request->getSession()->del('Users_Controller_User_register', 'Zikula_Users');
-
                     // Did we get a good user? If so, then we can proceed to hook-like event and hook validation.
                     if (isset($checkPasswordResult) && $checkPasswordResult && is_array($checkPasswordResult)) {
                         if (isset($checkPasswordResult['authentication_info'])) {
@@ -390,12 +383,21 @@ class UserController extends \Zikula_AbstractController
                             $this->registerError($this->__('The credentials you provided are already associated with an existing user account or registration request.'));
                             $state = 'display_method_selector';
                         }
+
                     } else {
                         if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                             $this->registerError($this->__('We were unable to confirm your credentials with the selected service.'));
                         }
                         $state = 'display_method_selector';
                     }
+
+                    // If we have gotten to this point in the same call to registrationMethod(), then the authentication method was not external
+                    // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
+                    // user was required to exit the Zikula system for authentication on the external system, then we will not get
+                    // to this point until the reentrant callback (at which point the variable should, again, not be needed
+                    // anymore).
+                    $this->request->getSession()->del('Users_Controller_User_register', 'Zikula_Users');
+
                     break;
 
                 case 'validate':
