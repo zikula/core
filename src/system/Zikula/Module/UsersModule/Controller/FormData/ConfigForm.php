@@ -311,6 +311,17 @@ class ConfigForm extends AbstractFormData
 
         $this->addField(new Field(
                 $this,
+                UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY,
+                $modVars[UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY],
+                UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY,
+                $this->serviceManager))
+            ->setNullAllowed(false)
+            ->addValidator(new Validator\BooleanType(
+                    $this->serviceManager,
+                    $this->__('The value must be a boolean.')));
+
+        $this->addField(new Field(
+                $this,
                 UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL,
                 $modVars[UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL],
                 '',
