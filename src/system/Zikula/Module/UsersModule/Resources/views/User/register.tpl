@@ -77,7 +77,7 @@
             <legend>{gt text="Choose a user name"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='uname'}
-                <label for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">*</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
 
@@ -94,7 +94,7 @@
             <legend>{gt text="Set a password"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='pass'}
-                <label for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">*</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} size="25" maxlength="60" />
                 <em class="z-formnote z-sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
@@ -103,13 +103,14 @@
             </div>
             <div class="z-formrow">
                 {assign var='fieldName' value='passagain'}
-                <label for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="z-form-mandatory-flag">*</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="password" size="25" maxlength="60" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
+            {assign var='modvar_password_reminder_mandatory' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
             <div class="z-formrow">
                 {assign var='fieldName' value='passreminder'}
-                <label for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="z-form-mandatory-flag">*</span>{/if}</label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <div class="z-sub z-formnote">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="z-formnote z-informationmsg">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
@@ -127,7 +128,7 @@
             <legend>{gt text="Enter your e-mail address"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='email'}
-                <label for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">*</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
 
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
@@ -137,7 +138,7 @@
             </div>
             <div class="z-formrow">
                 {assign var='fieldName' value='emailagain'}
-                <label for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="z-form-mandatory-flag">*</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -159,15 +160,15 @@
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
-            
+
         {notifydisplayhooks eventname='users.ui_hooks.registration.form_edit' id=null}
-            
+
         {if !empty($modvars.ZikulaUsersModule.reg_question)}
         <fieldset>
             <legend>{gt text="Answer the security question"}</legend>
             <div class="z-formrow">
                 {assign var='fieldName' value='antispamanswer'}
-                <label for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="z-form-mandatory-flag">*</span></label>
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                 <em class="z-formnote z-sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="z-formnote z-errormsg{if !isset($errorFields.$fieldName)} z-hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>

@@ -18,8 +18,8 @@ Features:
 - [FORWARD COMPAT] Added forward compatibility layer with Symfony2 HttpFoundation
 
   - `$request->isGet/Post()` should be replaced with `$request->isMethod('GET/POST')`.
-  - The GET request is available from `$request->query->get()` and POST from 
-    `$request->request->get()`. 
+  - The GET request is available from `$request->query->get()` and POST from
+    `$request->request->get()`.
   - The routing request can be retrieved with `$request->attributes->get($key)`
     using the keys `_controller`, `_module`, `_type`, and `_func`.
 
@@ -38,7 +38,7 @@ Features:
 - Give the profile module the possibility to change the profilelink.
 - Added viewplugin `nl2html`.
 - Added hook to Blocks module to allow for use with Html Block (only).
-- [BC BREAK] DoctrineExtensions Paginator has been removed, use Doctrine ORM paginator 
+- [BC BREAK] DoctrineExtensions Paginator has been removed, use Doctrine ORM paginator
   instead http://docs.doctrine-project.org/en/latest/tutorials/pagination.html
 - Blocks: added display function and preview button in blocks list.
 - [BC BREAK] Removed interactive installer from module specification.
@@ -46,6 +46,8 @@ Features:
 - Update Mapstraction to 3.0.0
 - Mobile Theme now has an configurable block position for startpage.
 - Dont send an welcome email to new users function added, #731.
+- The password reminder can be turned off now.
+- The password reminder is turned of if a third-party auth-module is used.
 
 
 CHANGELOG - ZIKULA 1.3.5
@@ -337,7 +339,7 @@ system.
 - Fixed problem with deleting group via ajax with insufficient permissions
 (issue #1568).
 
-- Fixed an issue where an incorrect group type was displayed when editing a 
+- Fixed an issue where an incorrect group type was displayed when editing a
 group through the administration panel (issue #2993).
 
 - Allow module to specify core version requirements.

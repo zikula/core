@@ -250,6 +250,17 @@
                 {if isset($errorFields.$fieldName)}<p class="z-formnote z-errormsg">{$errorFields.$fieldName}</p>{/if}
             </div>
             <div class="z-formrow">
+                {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
+                <label>{gt text="The password reminder is mandatory"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <div id="{$configData->getFieldId($fieldName)}">
+                    <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
+                    <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
+                    <input id="{$configData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$configData->getFieldData($fieldName)} checked="checked"{/if} />
+                    <label for="{$configData->getFieldId($fieldName)}_no">{gt text="No"}</label>
+                </div>
+                {if isset($errorFields.$fieldName)}<p class="z-formnote z-errormsg">{$errorFields.$fieldName}</p>{/if}
+            </div>
+            <div class="z-formrow">
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED'|const}
                 <label>{gt text="User registration is moderated"}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                 <div id="{$configData->getFieldId($fieldName)}">

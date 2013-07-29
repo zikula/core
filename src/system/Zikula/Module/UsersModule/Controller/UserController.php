@@ -366,7 +366,11 @@ class UserController extends \Zikula_AbstractController
                                 $authenticationInfo = $checkPasswordResult['authentication_info'];
                             }
 
-                            $formData = new FormData\RegistrationForm('users_register', $this->getContainer());
+                            $removePasswordReminderValidation = false;
+                            if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
+                                $removePasswordReminderValidation = true;
+                            }
+                            $formData = new FormData\RegistrationForm('users_register', $this->getContainer(), $removePasswordReminderValidation);
 
                             $registrationInfo = (isset($checkPasswordResult['registration_info']) && is_array($checkPasswordResult['registration_info'])) ? $checkPasswordResult['registration_info'] : array();
                             if (!empty($registrationInfo)) {

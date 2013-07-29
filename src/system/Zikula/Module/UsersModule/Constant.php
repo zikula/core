@@ -285,6 +285,14 @@ namespace Zikula\Module\UsersModule
          */
         const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
         /**
+         * Module variable key for the flag indicating whether the password reminder should be mandatory or not.
+         */
+        const MODVAR_PASSWORD_REMINDER_MANDATORY = 'password_reminder_mandatory';
+        /**
+         * Default value for the flag indicating whether the password reminder should be mandatory or not.
+         */
+        const DEFAULT_PASSWORD_REMINDER_MANDATORY = true;
+        /**
          * Module variable key for the admin notification e-mail address.
          */
         const MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL = 'reg_notifyemail';
