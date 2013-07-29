@@ -1762,6 +1762,26 @@ class ModUtil
     }
 
     /**
+     * Register all autoloaders for all modules in /modules
+     * modules in /system should be Symfony structure based, so no manual autoloading needed
+     *
+     * @internal
+     *
+     * @return void
+     */
+    public static function registerAutoloaders()
+    {
+        $modules = self::getModsTable();
+        unset($modules[0]);
+        foreach ($modules as $module) {
+            if ($module['type'] == self::TYPE_MODULE) {
+                $path = "modules/$module[directory]/lib";
+                ZLoader::addAutoloader($module['directory'], $path);
+            }
+        }
+    }
+
+    /**
      * Get the base directory for a module.
      *
      * Example: If the webroot is located at
