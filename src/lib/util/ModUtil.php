@@ -680,6 +680,7 @@ class ModUtil
             // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
             $tablefuncOld = $modname . '_pntables';
+            $data = array();
             if (function_exists($tablefunc)) {
                 $data = call_user_func($tablefunc);
             } elseif (function_exists($tablefuncOld)) {
