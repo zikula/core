@@ -246,9 +246,8 @@ class HookUiListener
     {
         // check if this is for this handler
         $subject = $event->getSubject();
-        if (!($event['method'] == 'moduleservices' &&
-            (strrpos(get_class($subject), '_Controller_Admin' || strrpos(get_class($subject), '\\Controller\\AdminController')))
-        )) {
+        if (!($event['method'] == 'moduleservices' && (strrpos(get_class($subject), '_Controller_Admin')) ||
+                                                       strrpos(get_class($subject), '\\AdminController'))) {
            return;
         }
 
