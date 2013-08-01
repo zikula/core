@@ -140,6 +140,16 @@ abstract class Zikula_AbstractEventHandler
      *
      * @return Zikula_ServiceManager
      */
+    public function getContainer()
+    {
+        return $this->serviceManager;
+    }
+    
+    /**
+     * Get servicemanager.
+     *
+     * @return Zikula_ServiceManager
+     */
     public function getServiceManager()
     {
         return $this->serviceManager;
