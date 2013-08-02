@@ -6,6 +6,7 @@ Fixes:
 - Fixed not working password recovery process if using your email adress
 - Fixed System::queryStringSetVar() does not update the request object, #753.
 - Fixed category tree html encoding problem, #681
+- Fixed extmenu drag and drop problem, #801.
 
 Features:
 - Added garbage collection to CSRF token generator
