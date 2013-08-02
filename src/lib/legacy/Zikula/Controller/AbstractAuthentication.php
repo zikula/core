@@ -51,23 +51,26 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @param array $args All parameters passed to this function.
      *
+     * @todo In 1.4.0, throw exception here and do not allow the "getLoginFormFields" method.
+     *
      * @return string the rendered HTML fragment containing the authentication module fields for the login form or block.
      */
     public function getLoginFormFieldsAction(array $args)
     {
-        throw new \LogicException('This method must be overridden in concrete class');
+        return $this->getLoginFormFields($args);
+        //throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
      * @param array $args
      *
-     * @deprecated
+     * @deprecated Use "getLoginFormFieldsAction" instead.
      *
      * @return string
      */
     public function getLoginFormFields(array $args)
     {
-        return $this->getLoginFormFieldsAction($args);
+        throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
@@ -75,23 +78,26 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @param array $args All parameters passed to this function.
      *
+     * @todo In 1.4.0, throw exception here and do not allow the "getAuthenticationMethodSelector" method.
+     *
      * @return string The rendered authentication method selector for the login page or block.
      */
     public function getAuthenticationMethodSelectorAction(array $args)
     {
-        throw new \LogicException('This method must be overridden in concrete class');
+        return $this->getAuthenticationMethodSelector($args);
+        // throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
      * @param array $args
      *
-     * @deprecated
+     * @deprecated Use "getAuthenticationMethodSelectorAction" instead.
      *
      * @return string
      */
     public function getAuthenticationMethodSelector(array $args)
     {
-        return $this->getAuthenticationMethodSelectorAction($args);
+        throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
@@ -130,21 +136,24 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
      *
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
+     *
+     * @todo In 1.4.0, throw exception here and do not allow the "validateAuthenticationInformation" method.
      */
     public function validateAuthenticationInformationAction(array $args)
     {
-        throw new \LogicException('This method must be overridden in concrete class');
+        return $this->validateAuthenticationInformation($args);
+        // throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
      * @param array $args
      *
-     * @deprecated
+     * @deprecated Use "validateAuthenticationInformationAction" instead.
      *
      * @return bool
      */
     public function validateAuthenticationInformation(array $args)
     {
-        return $this->validateAuthenticationInformationAction($args);
+        throw new \LogicException('This method must be overridden in concrete class');
     }
 }

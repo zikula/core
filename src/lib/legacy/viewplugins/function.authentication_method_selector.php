@@ -1,4 +1,6 @@
 <?php
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Copyright Zikula Foundation 2011 - Zikula Application Framework
  *
@@ -90,6 +92,10 @@ function smarty_function_authentication_method_selector($params, $view)
         'is_selected' => $isSelected,
     );
     $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getAuthenticationMethodSelector', $getSelectorArgs, 'Zikula_Controller_AbstractAuthentication');
+    if ($content instanceof Response) {
+        // Forward compatability. TODO Remove check in 1.4.0
+        $content = $content->getContent();
+    }
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $content);

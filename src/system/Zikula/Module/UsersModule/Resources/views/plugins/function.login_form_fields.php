@@ -1,4 +1,6 @@
 <?php
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Copyright Zikula Foundation 2011 - Zikula Application Framework
  *
@@ -59,7 +61,10 @@ function smarty_function_login_form_fields($params, $view)
         'method'        => $authenticationMethod['method'],
     );
     $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getLoginFormFields', $args, 'Zikula_Controller_AbstractAuthentication');
-    $content = $content->getContent();
+    if ($content instanceof Response) {
+        // Forward compatability. TODO Remove check in 1.4.0
+        $content = $content->getContent();
+    }
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $content);
