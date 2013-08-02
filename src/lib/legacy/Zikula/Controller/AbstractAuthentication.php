@@ -58,7 +58,6 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     public function getLoginFormFieldsAction(array $args)
     {
         return $this->getLoginFormFields($args);
-        //throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
@@ -85,7 +84,6 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     public function getAuthenticationMethodSelectorAction(array $args)
     {
         return $this->getAuthenticationMethodSelector($args);
-        // throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**
@@ -142,7 +140,6 @@ abstract class Zikula_Controller_AbstractAuthentication extends Zikula_AbstractC
     public function validateAuthenticationInformationAction(array $args)
     {
         return $this->validateAuthenticationInformation($args);
-        // throw new \LogicException('This method must be overridden in concrete class');
     }
 
     /**

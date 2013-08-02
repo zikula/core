@@ -203,7 +203,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'method'    => $method,
         ));
         if ($loginFormFields instanceof Response) {
-            // Forward compatability. TODO Remove check in 1.4.0
+            // Forward compatability. @todo Remove check in 1.4.0
             $loginFormFields = $loginFormFields->getContent();
         }
 
