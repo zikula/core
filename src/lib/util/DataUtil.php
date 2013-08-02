@@ -192,21 +192,21 @@ class DataUtil
      */
     public static function formatForDisplay($var)
     {
-        // This search and replace finds the text 'x@y' and replaces
-        // it with HTML entities, this provides protection against
-        // email harvesters
-        static $search = array('/(.)@(.)/se');
-        static $replace = array('"&#" .
-                                sprintf("%03d", ord("\\1")) .
-                                ";&#064;&#" .
-                                sprintf("%03d", ord("\\2")) . ";";');
         if (is_array($var)) {
             foreach ($var as $k => $v) {
                 $var[$k] = self::formatForDisplay($v);
             }
         } else {
             $var = htmlspecialchars((string) $var);
-            $var = preg_replace($search, $replace, $var);
+            // This search and replace finds the text 'x@y' and replaces
+            // it with HTML entities, this provides protection against
+            // email harvesters
+            $var = preg_replace_callback(
+                '/(.)@(.)/s',
+                function($m) {
+                    return "&#".sprintf("%03d", ord($m[1])).";&#064;&#" .sprintf("%03d", ord($m[2])) . ";";
+                },
+                $var);
         }
 
         return $var;
@@ -221,19 +221,6 @@ class DataUtil
      */
     public static function formatForDisplayHTML($var)
     {
-        // This search and replace finds the text 'x@y' and replaces
-        // it with HTML entities, this provides protection against
-        // email harvesters
-        //
-        // Note that the use of \024 and \022 are needed to ensure that
-        // this does not break HTML tags that might be around either
-        // the username or the domain name
-        static $search = array(
-            '/([^\024])@([^\022])/se');
-        static $replace = array('"&#" .
-                                sprintf("%03d", ord("\\1")) .
-                                ";&#064;&#" .
-                                sprintf("%03d", ord("\\2")) . ";";');
         static $allowedtags = null;
         static $outputfilter;
         static $event;
@@ -291,7 +278,20 @@ class DataUtil
                 $var = preg_replace($allowedtags, "\022\\1\024", $var);
             }
             // Encode email addresses
-            $var = preg_replace($search, $replace, $var);
+            // This search and replace finds the text 'x@y' and replaces
+            // it with HTML entities, this provides protection against
+            // email harvesters
+            //
+            // Note that the use of \024 and \022 are needed to ensure that
+            // this does not break HTML tags that might be around either
+            // the username or the domain name
+            $var = preg_replace_callback(
+                '/([^\024])@([^\022])/s',
+                function($m) {
+                    return "&#".sprintf("%03d", ord($m[1])).";&#064;&#" .sprintf("%03d", ord($m[2])) . ";";
+                }, 
+                $var
+             );
             // Fix html entities
             $var = htmlspecialchars($var);
             // Fix the HTML that we want
