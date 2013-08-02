@@ -633,3 +633,9 @@ Object.extend(Zikula.TreeSortable,/** @lends Zikula.TreeSortable.prototype */
         }
     }
 });
+
+Event.observe(window, 'load', function() { 
+    $$('a.leaf').each(function(s) {
+        s.innerHTML = s.innerText}
+    );
+});
