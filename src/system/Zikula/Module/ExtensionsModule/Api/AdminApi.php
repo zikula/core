@@ -778,6 +778,21 @@ class AdminApi extends \Zikula_AbstractApi
                 $modinfo['state'] = ModUtil::STATE_UNINITIALISED;
                 if (!$modinfo['version']) {
                     $modinfo['state'] = ModUtil::STATE_INVALID;
+                } else {
+                    // check if module is compatible with core version
+                    $minok = 0;
+                    $maxok = 0;
+                    // strip any -dev, -rcN etc from version number
+                    $coreVersion = preg_replace('#(\d+\.\d+\.\d+).*#', '$1', Zikula_Core::VERSION_NUM);
+                    if (!empty($modinfo['core_min'])) {
+                        $minok = version_compare($coreVersion, $modinfo['core_min']);
+                    }
+                    if (!empty($modinfo['core_max'])) {
+                        $maxok = version_compare($modinfo['core_max'], $coreVersion);
+                    }
+                    if ($minok == -1 || $maxok == -1) {
+                        $modinfo['state'] = ModUtil::STATE_NOTALLOWED;
+                    }
                 }
 
                 // unset some vars
