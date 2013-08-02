@@ -8,6 +8,7 @@ Fixes:
 - Fixed category tree html encoding problem, #681
 - Fixed extmenu drag and drop problem, #801.
 - Fixed setState module problem, #843.
+- Deprecated preg_replace() /e modifier in DataUtil replaced, #889.
 
 Features:
 - Added garbage collection to CSRF token generator
