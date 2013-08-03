@@ -14,8 +14,6 @@
 
 namespace Zikula\Module\SecurityCenterModule\Listener;
 
-use IDS_Init;
-use IDS_Monitor;
 use Zikula_Core;
 use System;
 use CacheUtil;
@@ -88,20 +86,20 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 */
 
                 // initialise configuration object
-                $init = IDS_Init::init();
+                $init = \IDS\Init::init();
 
                 // set configuration options
                 $init->config = $this->_getidsconfig();
 
                 // create new IDS instance
-                $ids = new IDS_Monitor($request, $init);
+                $ids = new \IDS\Monitor($init);
 
                 // run the request check and fetch the results
                 $result = $ids->run();
 
                 // analyze the results
                 if (!$result->isEmpty()) {
-                    // process the IDS_Report object
+                    // process the \IDS\Report object
                     $this->_processIdsResult($init, $result);
                 } else {
                     // no attack detected
@@ -188,17 +186,17 @@ class FilterListener extends \Zikula_AbstractEventHandler
     /**
      * Process results from IDS scan.
      *
-     * @param \IDS_Init   $init   PHPIDS init object reference.
-     * @param \IDS_Report $result The result object from PHPIDS.
+     * @param \IDS\Init   $init   PHPIDS init object reference.
+     * @param \IDS\Report $result The result object from PHPIDS.
      *
      * @return void
      */
-    private function _processIdsResult(\IDS_Init $init, \IDS_Report $result)
+    private function _processIdsResult(\IDS\Init $init, \IDS\Report $result)
     {
         // $result contains any suspicious fields enriched with additional info
 
         // Note: it is moreover possible to dump this information by simply doing
-        //"echo $result", calling the IDS_Report::$this->__toString() method implicitely.
+        //"echo $result", calling the \IDS\Report::$this->__toString() method implicitely.
 
         $requestImpact = $result->getImpact();
         if ($requestImpact < 1) {
