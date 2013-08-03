@@ -78,10 +78,6 @@ class CacheUtil
     /**
      * Clear the contents of a directory from zikula's local cache directory.
      *
-     * THIS DOES WORK ONLY ONCE ON SOME CONFIGURATIONS, A SECOND CLEARING OF COMPILED TEMPLATES
-     * FAILS. SO BETTER DO NOT USE THIS ATM.
-     * ToDo: Check why and fix this.
-     *
      * @param string $dir The name of the directory to remove.
      *
      * @return void
