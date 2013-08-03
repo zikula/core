@@ -501,7 +501,7 @@ class AdminApi extends \Zikula_AbstractApi
                     try {
                         $modversion = ExtensionsUtil::getVersionMeta($dir, $rootdir);
                     } catch (\Exception $e) {
-                        // LogUtil::registerError($e->getMessage());
+                        LogUtil::registerError($e->getMessage());
                         continue;
                     }
 
