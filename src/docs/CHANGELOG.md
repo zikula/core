@@ -11,6 +11,7 @@ Fixes:
 - Deprecated preg_replace() /e modifier in DataUtil replaced, #889.
 
 Features:
+- Show an error message if version number of a module is incorrect.
 - Added garbage collection to CSRF token generator
 - Introduced Symfony2 Forms
 
