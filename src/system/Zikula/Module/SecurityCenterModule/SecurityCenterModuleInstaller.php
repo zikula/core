@@ -104,13 +104,6 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
                         'REQUEST.filter.page', 'POST.filter.page',
                         'REQUEST.filter.value', 'POST.filter.value'));
 
-        // now lets set the default mail message contents
-        // file is read from includes directory
-        $summarycontent = implode('', __DIR__.'/vendor/summary.txt');
-        System::setVar('summarycontent', $summarycontent);
-        $fullcontent = implode('', __DIR__.'/vendor/full.txt');
-        System::setVar('fullcontent', $fullcontent);
-
         System::setVar('htmlentities', '1');
 
         // default values for AllowableHTML
