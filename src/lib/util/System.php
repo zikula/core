@@ -706,7 +706,7 @@ class System
 
             // check if entry point is part of the URL expectation.  If so throw error if it's not present
             // since this URL is technically invalid.
-            if ($expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+            if (self::getCurrentUrl() != self::getBaseUrl() && $expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
                 $protocol = self::serverGetVar('SERVER_PROTOCOL');
                 header("{$protocol} 404 Not Found");
                 echo __('The requested URL cannot be found');
