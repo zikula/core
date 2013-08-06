@@ -12,6 +12,7 @@ Fixes:
 - Fixed SecurityCenter - warnings during installation, #880.
 - Fix ModUtil::getName() inconsistencies, #848.
 - Fixed strip entry point root access, #936.
+- Fix block filtering by module does an incorrect comparison, #339.
 
 Features:
 - Show an error message if version number of a module is incorrect.
