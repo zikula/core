@@ -10,6 +10,7 @@ Fixes:
 - Fixed setState module problem, #843.
 - Deprecated preg_replace() /e modifier in DataUtil replaced, #889.
 - Fixed SecurityCenter - warnings during installation, #880.
+- Fixed strip entry point root access, #936.
 
 Features:
 - Show an error message if version number of a module is incorrect.
