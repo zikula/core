@@ -206,7 +206,7 @@ Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
         this.setupSortable();
     },
     init: function() {
-        this.menusData = $('admintabs-menuoptions').getValue().unescapeHTML().evalJSON();
+        this.menusData = $('admintabs-menuoptions').value.unescapeHTML().evalJSON();
         this.setupSortable();
         // prevent clicks on links during dragging tabs
         var preventDefault = function(event) {
@@ -279,7 +279,7 @@ Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
     },
     addTabSave: function(event) {
         event.stop();
-        var name = this.addTabForm.down('[name=name]').getValue();
+        var name = this.addTabForm.down('[name=name]').value;
         if (name === '') {
             Zikula.showajaxerror(Zikula.__('You must enter a name for the new category'));
             return this;
@@ -323,7 +323,7 @@ Zikula.AdminPanel.Module = Class.create(/** @lends Zikula.AdminPanel.Module.prot
         this.module.store('module', this);
     },
     attachMenu: function() {
-        var modLinks = this.module.down('input.modlinks').getValue().unescapeHTML().evalJSON() || [],
+        var modLinks = this.module.down('input.modlinks').value.unescapeHTML().evalJSON() || [],
             menu;
         if (modLinks.size() > 0) {
             menu = new Zikula.UI.ContextMenu(this.module.down('.module-context'), {
