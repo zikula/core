@@ -13,6 +13,7 @@ Fixes:
 - Fix ModUtil::getName() inconsistencies, #848.
 - Fixed strip entry point root access, #936.
 - Fix block filtering by module does an incorrect comparison, #339.
+- Fix admin-tab problem with content module, #940.
 
 Features:
 - Show an error message if version number of a module is incorrect.
