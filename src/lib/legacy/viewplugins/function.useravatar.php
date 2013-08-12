@@ -68,6 +68,8 @@ function smarty_function_useravatar($params, Zikula_View $view)
                 } else {
                     $params['size'] = 80;
                 }
+            } else {
+                $params['size'] = 80;
             }
         }
         $params['width']  = $params['size'];
