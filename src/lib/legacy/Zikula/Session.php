@@ -74,9 +74,8 @@ class Zikula_Session extends Session
                 break;
             case 'Low':
             default:
-                // Session lasts unlimited number of days (well, lots, anyway)
-                // (Currently set to 25 years)
-                $lifetime = 788940000;
+                // (Currently set to 1 year)
+                $lifetime = 31536000;
                 break;
         }
 
