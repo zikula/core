@@ -1773,7 +1773,7 @@ class ModUtil
                 if (is_dir($path)) {
                     ZLoader::addAutoloader($module['directory'], $path);
                 } else if (file_exists("modules/$module[directory]/Version.php")) {
-                    ZLoader::addAutoloader($module['directory'], "modules/$module[directory]");
+                    ZLoader::addAutoloader($module['directory'], 'modules');
                 }
             }
         }
