@@ -55,7 +55,7 @@ class Zikula_Core
     /**
      * The minimum required PHP version for this release of core.
      */
-    const PHP_MINIMUM_VERSION = '5.3.2';
+    const PHP_MINIMUM_VERSION = '5.3.3';
 
     const STAGE_NONE = 0;
     const STAGE_PRE = 1;
