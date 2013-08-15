@@ -1769,9 +1769,14 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $path = "modules/$module[directory]/lib";
-            if ($module['type'] == self::TYPE_MODULE && is_dir($path)) {
-                ZLoader::addAutoloader($module['directory'], $path);
+            if ($module['type'] == self::TYPE_MODULE) {
+                if (is_dir($path)) {
+                    ZLoader::addAutoloader($module['directory'], $path);
+                } else if (file_exists("modules/$module[directory]/Version.php")) {
+                    ZLoader::addAutoloader($module['directory'], $module['directory']);
+                }
             }
+
         }
     }
 
