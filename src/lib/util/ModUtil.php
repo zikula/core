@@ -1756,7 +1756,7 @@ class ModUtil
     }
 
     /**
-     * Register all autoloaders for all modules in /modules
+     * Register all autoloaders for all modules in /modules containing a lib subdir
      * modules in /system should be Symfony structure based, so no manual autoloading needed
      *
      * @internal
@@ -1768,8 +1768,8 @@ class ModUtil
         $modules = self::getModsTable();
         unset($modules[0]);
         foreach ($modules as $module) {
-            if ($module['type'] == self::TYPE_MODULE) {
-                $path = "modules/$module[directory]/lib";
+            $path = "modules/$module[directory]/lib";
+            if ($module['type'] == self::TYPE_MODULE && is_dir($path)) {
                 ZLoader::addAutoloader($module['directory'], $path);
             }
         }

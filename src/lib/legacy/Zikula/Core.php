@@ -467,9 +467,7 @@ class Zikula_Core
             ModUtil::dbInfoLoad('ZikulaCategoriesModule', 'ZikulaCategoriesModule');
 
             // Add AutoLoading for non-symfony 1.3 modules in /modules
-            // isLegacyMode check added to avoid this call being done when somebody
-            // only has Symfony structure modules installed. Check if this is ok.
-            if (!System::isInstalling() && System::isLegacyMode()) {
+            if (!System::isInstalling()) {
                 ModUtil::registerAutoloaders();
             }
 
