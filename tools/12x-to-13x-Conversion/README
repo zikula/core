@@ -27,5 +27,5 @@ INSTRUCTIONS
 2. chmod 755 replace.sh
 
 Example usage from inside Zikula root.
-./replace.sh modules/Foo
-./replace.sh themes/Foo
+php tools/12x-to-13x-Conversion/replace.php src/modules/Foo
+php tools/12x-to-13x-Conversion/replace.php src/themes/Foo
