@@ -689,6 +689,10 @@ class AdminController extends \Zikula_AbstractController
         $setstate = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_ACTIVE));
         if ($setstate) {
             // Success
+
+            $event = new GenericEvent(null, $moduleinfo);
+            $this->getDispatcher()->dispatch('installer.module.activated', $event);
+
             LogUtil::registerStatus($this->__('Done! Activated module.'));
         }
 
