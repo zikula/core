@@ -79,6 +79,10 @@ Receives `$modinfo` as args
 Called after a module is successfully upgraded.
 Receives `$modinfo` as args
 
+#### `installer.module.deactivated`
+Called after a module is successfully deactivated.
+Receives `$modinfo` as args
+
 #### `installer.module.uninstalled`
 Called after a module is successfully uninstalled.
 Receives `$modinfo` as args

@@ -59,7 +59,7 @@ Features:
 - The password reminder can be turned off now.
 - The password reminder is turned of if a third-party auth-module is used.
 - 1.2.x to 1.3.x migration script converted to pure php script.
-
+- Reset start page module to static frontpage if it is deactivated, #104.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
