@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpFoundation\Response;
+
 function smarty_function_authentication_method_selector($params, $view)
 {
     if (!isset($params) || !is_array($params) || empty($params)) {
@@ -90,6 +92,10 @@ function smarty_function_authentication_method_selector($params, $view)
         'is_selected' => $isSelected,
     );
     $content = ModUtil::func($authenticationMethod['modname'], 'Authentication', 'getAuthenticationMethodSelector', $getSelectorArgs, 'Zikula_Controller_AbstractAuthentication');
+    if ($content instanceof Response) {
+        // Forward compatability. @todo Remove check in 1.4.0
+        $content = $content->getContent();
+    }
 
     if (isset($params['assign'])) {
         $view->assign($params['assign'], $content);

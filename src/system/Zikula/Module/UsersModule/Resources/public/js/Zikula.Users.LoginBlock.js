@@ -8,11 +8,11 @@ Zikula.Users.LoginBlock =
 {
     init: function()
     {
-        if ($('authentication_select_method_form_users_uname') != null) {
-            $('authentication_select_method_form_users_uname').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_users_uname');});
+        if ($('authentication_select_method_form_zikulausersmodule_uname') != null) {
+            $('authentication_select_method_form_zikulausersmodule_uname').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_zikulausersmodule_uname');});
         }
-        if ($('authentication_select_method_form_users_email') != null) {
-            $('authentication_select_method_form_users_email').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_users_email');});
+        if ($('authentication_select_method_form_zikulausersmodule_email') != null) {
+            $('authentication_select_method_form_zikulausersmodule_email').observe('submit', function(event){Zikula.Users.LoginBlock.onSubmitSelectAuthenticationMethod(event, 'authentication_select_method_form_zikulausersmodule_email');});
         }
     },
 
@@ -126,7 +126,6 @@ Zikula.Users.LoginBlock =
         // Prevent form from sumitting itself. We just did it here.
         event.stop();
     },
-
     getSelectAuthenticationMethodResponse: function(req)
     {
         var data = req.getData();

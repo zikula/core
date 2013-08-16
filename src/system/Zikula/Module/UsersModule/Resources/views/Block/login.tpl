@@ -43,7 +43,7 @@
             {foreach item='eventDisplay' from=$eventData}
                 {$eventDisplay}
             {/foreach}
-            
+
             {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
 
             {/if}

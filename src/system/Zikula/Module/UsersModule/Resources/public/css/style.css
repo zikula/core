@@ -229,27 +229,27 @@ div.authentication_select_method_smallbutton .authentication_select_method_selec
     padding: 3px 3px 3px 3px;
 }
 
-div.authentication_select_method_bigbutton #authentication_select_method_submit_users_uname {
+div.authentication_select_method_bigbutton #authentication_select_method_submit_zikulausersmodule_uname {
     background-image: url("../../../../../../../images/icons/medium/user.png");
 }
 
-div.authentication_select_method_smallbutton #authentication_select_method_submit_users_uname {
+div.authentication_select_method_smallbutton #authentication_select_method_submit_zikulausersmodule_uname {
     background-image: url("../../../../../../../images/icons/small/user.png");
 }
 
-div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_users_uname {
+div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_zikulausersmodule_uname {
     background-image: url("../../../../../../../images/icons/extrasmall/user.png");
 }
 
-div.authentication_select_method_bigbutton #authentication_select_method_submit_users_email {
+div.authentication_select_method_bigbutton #authentication_select_method_submit_zikulausersmodule_email {
     background-image: url("../../../../../../../images/icons/medium/mail_generic.png");
 }
 
-div.authentication_select_method_smallbutton #authentication_select_method_submit_users_email {
+div.authentication_select_method_smallbutton #authentication_select_method_submit_zikulausersmodule_email {
     background-image: url("../../../../../../../images/icons/small/mail_generic.png");
 }
 
-div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_users_email {
+div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_zikulausersmodule_email {
     background-image: url("../../../../../../../images/icons/extrasmall/mail_generic.png");
 }
 
