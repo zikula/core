@@ -14,6 +14,7 @@ Fixes:
 - Fixed strip entry point root access, #936.
 - Fix block filtering by module does an incorrect comparison, #339.
 - Fix admin-tab problem with content module, #940.
+- Fixed Extensions module pager, #961.
 
 Features:
 - Show an error message if version number of a module is incorrect.
