@@ -50,11 +50,14 @@
         "symfony/assetic-bundle": "2.1.*",
         "symfony/monolog-bundle": "~2.2",
         "zikula/generator-bundle": "dev-master",
-        "zikula/filesystem": "dev-master"
+        "zikula/filesystem": "dev-master",
+        "zikula/jquery-bundle": "dev-master",
+        "zikula/jquery-ui-bundle": "dev-master"
     },
     "config": {
         "vendor-dir": "src/vendor",
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "component-dir": "src/web"
     },
     "extra": {
         "symfony-app-dir": "src/app",

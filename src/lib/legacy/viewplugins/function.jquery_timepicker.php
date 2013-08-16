@@ -129,7 +129,11 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
     PageUtil::addVar("javascript", "jquery-ui");
     PageUtil::addVar("javascript", "javascript/jquery-plugins/jQuery-Timepicker-Addon/jquery-ui-timepicker-addon.js");
     if (!empty($lang) && ($lang <> 'en')) {
-        PageUtil::addVar("javascript", "javascript/jquery-plugins/jQuery-Timepicker-Addon/localization/jquery-ui-timepicker-$lang.js");
+        if (!System::isDevelopmentMode()) {
+            PageUtil::addVar("javascript", "web/jquery-ui/ui/minified/i18n/jquery.ui.datepicker-$lang.min.js");
+        } else {
+            PageUtil::addVar("javascript", "web/jquery-ui/ui/i18n/jquery.ui.datepicker-$lang.min.js");
+        }
     }
     $jQueryTheme = is_dir("javascript/jquery-ui/themes/$jQueryTheme") ? $jQueryTheme : 'base';
     PageUtil::addVar("stylesheet", "javascript/jquery-ui/themes/$jQueryTheme/jquery-ui.css");
