@@ -290,6 +290,27 @@ class PageUtil
     }
 
     /**
+     * Converts the <1.3.5 location of jQuery themes to the new one as of 1.3.6.
+     *
+     * @param array|string $path The path to check for a replacement. This is recursive array-safe.
+     *
+     * @return The changed path.
+     *
+     * @todo Remove in 1.4.0.
+     */
+    private static function fixJQueryThemesPath($path) {
+        if (is_array($path)) {
+            $return = array();
+            foreach ($path as $key => $value) {
+                $return[$key] = self::fixJQueryThemesPath($value);
+            }
+            return $return;
+        } else {
+            return str_replace('javascript/jquery-ui/themes/', 'web/jquery-ui/themes/', $path);
+        }
+    }
+
+    /**
      * Add var.
      *
      * Adds a new vaule to a page variable. In the case of a single
@@ -328,6 +349,10 @@ class PageUtil
         if (is_array($value)) {
             $value = array_unique($value);
         }
+        
+        // @todo Remove in 1.4.0.
+        $value = self::fixJQueryThemesPath($value);
+
 
         $event = new \Zikula\Core\Event\GenericEvent($varname, array(), $value);
         $value = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();

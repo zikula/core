@@ -335,15 +335,18 @@ class JCSSUtil
     {
         $scripts = array(
                 'jquery' => array(
-                        'path' => 'javascript/jquery/jquery-1.8.3.min.js',
-                        'require' => array('noconflict'),
+                        'path' => 'web/jquery/jquery.min.js',
+                        'require' => array('noconflict', 'jquery-migrate'),
                 ),
                 'jquery-ui' => array(
-                        'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.min.js',
+                        'path' => 'web/jquery-ui/ui/minified/jquery-ui.min.js',
                         'require' => array('jquery'),
                 ),
                 'noconflict' => array(
-                        'path' => 'javascript/jquery/noconflict.js',
+                        'path' => 'javascript/jquery_config.js',
+                ),
+                'jquery-migrate' => array(
+                        'path' => 'web/jquery/jquery-migrate.min.js',
                 ),
                 'prototype' => array(
                         'path' => 'javascript/ajax/proto_scriptaculous.combined.min.js',
@@ -462,16 +465,19 @@ class JCSSUtil
             );
             $jQueryUncompressed = array(
                     'jquery' => array(
-                            'path' => 'javascript/jquery/jquery-1.8.3.js',
-                            'require' => array('noconflict'),
+                            'path' => 'web/jquery/jquery.js',
+                            'require' => array('noconflict', 'jquery-migrate'),
                     ),
                     'noconflict' => array(
-                            'path' => 'javascript/jquery/noconflict.js',
+                        'path' => 'javascript/jquery_config.js',
+                    ),
+                    'jquery-migrate' => array(
+                            'path' => 'web/jquery/jquery-migrate.min.js',
                     ),
             );
             $jQueryUiUncompressed = array(
                     'jquery-ui' => array(
-                            'path' => 'javascript/jquery-ui/jquery-ui-1.9.2.custom.js', // the 'custom' designation is meaningless
+                            'path' => 'web/jquery-ui/ui/jquery-ui.js',
                             'require' => array('jquery'),
                     ),
             );
