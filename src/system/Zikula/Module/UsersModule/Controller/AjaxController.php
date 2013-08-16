@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Hook\ValidationHook;
@@ -201,11 +202,25 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             'form_type' => $formType,
             'method'    => $method,
         ));
+        if ($loginFormFields instanceof Response) {
+            // Forward compatability. @todo Remove check in 1.4.0
+            $loginFormFields = $loginFormFields->getContent();
+        }
 
         return new AjaxResponse(array(
             'content'   => $loginFormFields,
             'modname'   => $modname,
             'method'    => $method,
         ));
+    }
+
+    /**
+     * @deprecated
+     *
+     * @todo Remove in 1.4.0
+     */
+    public function getLoginFormFields()
+    {
+        return $this->getLoginFormFieldsAction();
     }
 }
