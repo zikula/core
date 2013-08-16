@@ -215,7 +215,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Get parameters from whatever input we need.
         $modinfo = $this->getModInfo();
-        $startnum = (int) $this->request->query->get('startnum', null);
+        $startnum = (int) $this->request->query->get('startnum', 1) - 1;
         $letter = $this->request->query->get('letter', null);
         $state = FormUtil::getPassedValue('state', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('state', null), 'GETPOST');
         $sort = FormUtil::getPassedValue('sort', (!strstr(System::serverGetVar('HTTP_REFERER'), 'module='.$modinfo['url'])) ? null : SessionUtil::getVar('sort', null), 'GET');
