@@ -61,6 +61,7 @@ Features:
 - 1.2.x to 1.3.x migration script converted to pure php script.
 - Reset start page module to static frontpage if it is deactivated, #104.
 - jQuery and jQuery UI are now outsourced to their own bundles.
+- Added events if a module is activated and if a module is deactivated.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
