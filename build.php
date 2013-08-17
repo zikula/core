@@ -99,7 +99,10 @@ class FixAutoloaderCommand extends \Symfony\Component\Console\Command\Command
     {
         // fix paths in composer autoloader files removing src/ from paths
         $composerFiles = array(
-            'autoload_classmap.php', 'autoload_namespaces.php', 'autoload_real.php',
+            'autoload_classmap.php',
+            'autoload_namespaces.php', 
+            'autoload_real.php',
+            'autoload_files.php',
         );
         foreach ($composerFiles as $file) {
             $file = "$dir/composer/$file";
