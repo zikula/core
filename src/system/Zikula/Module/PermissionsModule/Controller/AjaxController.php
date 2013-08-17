@@ -69,8 +69,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                       'level'     => $level));
 
         // read current settings and return them
-        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $pid);
-        $permission = $permission->toArray();
+        $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $pid)->toArray();
 
         $accesslevels = SecurityUtil::accesslevelnames();
         $permission['levelname'] = $accesslevels[$permission['level']];
@@ -89,7 +88,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 $permission['groupname'] = $group['name'];
         }
 
-        return new Zikula_Response_Ajax($perm);
+        return new Zikula_Response_Ajax($permission);
     }
 
     /**
