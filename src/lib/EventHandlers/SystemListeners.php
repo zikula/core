@@ -682,15 +682,15 @@ class SystemListeners extends Zikula_AbstractEventHandler
         //header("X-Content-Security-Policy: frame-ancestors 'self'");
         header('X-XSS-Protection: 1');
     }
-    
+
     /**
      * Adds Doctrine extensions.
      *
      * Implements 'core.postinit' event.
      *
      * @param Zikula_Event $event The event handler.
-     * 
-     * @deprecated since 1.3.6 
+     *
+     * @deprecated since 1.3.6
      * @todo remove in 1.4.0
      *
      * @return void
@@ -700,9 +700,9 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $definition = new Definition('Doctrine\Common\Annotations\AnnotationReader');
         $this->serviceManager->setDefinition('doctrine.annotation_reader', $definition);
 
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver');
+        $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', array(new Reference('doctrine.annotation_reader')));
         $this->serviceManager->setDefinition('doctrine.annotation_driver', $definition);
-        
+
         $definition = new Definition('Doctrine\ORM\Mapping\Driver\DriverChain');
         $this->serviceManager->setDefinition('doctrine.driver_chain', $definition);
 
