@@ -436,7 +436,7 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
 /**
  * Upgrade tables from 1.3.5
  *
- * @param                           $dbname
+ * @param $dbname
  * @param Connection $conn
  */
 function upgrade_136($dbname, Connection $conn)
@@ -456,6 +456,8 @@ function upgrade_136($dbname, Connection $conn)
     foreach ($modules as $module) {
         $conn->executeQuery("UPDATE $dbname.modules SET name = 'Zikula{$module}Module', directory = 'Zikula/Module/{$module}Module' WHERE name = '$module'");
         $conn->executeQuery("UPDATE $dbname.module_vars SET modname = 'Zikula{$module}Module' WHERE modname = '$module'");
+        $strlen = strlen($module) + 1;
+        $conn->executeQuery("UPDATE $dbname.group_perms SET component = CONCAT('Zikula{$module}Module', SUBSTRING(component, $strlen)) WHERE component LIKE '{$module}%'");
         echo "Updated module: $module<br />\n";
     }
     echo "<br />\n";
