@@ -47,10 +47,8 @@ class BootstrapHelper
         $res = $this->conn->executeQuery('SELECT id, bundlename, bundleclass, autoload, bundletype, bundlestate FROM bundles');
         foreach ($res->fetchAll() as $row) {
             if (!in_array($row['bundlename'], array_keys($array))
-                && $row['bundlestate'] !== AbstractBundle::STATE_MISSING )
-            {
+                && (int)$row['bundlestate'] !== AbstractBundle::STATE_MISSING ) {
                 $this->updateState($row['id'], AbstractBundle::STATE_MISSING);
-                echo 'UPDATE bundles SET bundlestate = ' . AbstractBundle::STATE_MISSING . " WHERE id = $row[id]\n<br />";
             }
         }
     }
