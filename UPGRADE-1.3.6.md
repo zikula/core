@@ -10,6 +10,8 @@ Zikula Core 1.3.5
 
   - Before uploading the new files please delete the `plugins/`, `lib/`, `system/`,
      and `themes/` folders entirely (replacing any custom themes afterwards.
+  - If you are not using `config/config_personal.php` already, copy `config/config.php` tp
+    `config/config_personal.php`.
   - Upload new files.
   - Copy `app/config/parameters.yml` to `app/config/custom_parameters.yml` and update
   - Make `app/cache` and `app/logs` writable.
