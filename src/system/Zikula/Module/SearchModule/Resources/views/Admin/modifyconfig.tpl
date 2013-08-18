@@ -30,6 +30,20 @@
             {/if}
             {/foreach}
         </fieldset>
+        <fieldset>
+            <legend>OpenSearch</legend>
+            <div class="z-informationmsg">
+                {gt text='%1$s OpenSearch %2$s makes it possible for your site\'s users to use your site\'s search function as a search engine.' tag1='<a href="http://en.wikipedia.org/wiki/OpenSearch">' tag2='</a>'}
+            </div>
+            <div class="z-formrow">
+                <label for="search_opensearch_enable">{gt text='Enable OpenSearch'}</label>
+                <input id="search_opensearch_enable" type="checkbox" name="opensearch_enable" {if $opensearch_enable|default:true}checked="checked" {/if}/>
+            </div>
+            <div class="z-formrow">
+                <label for="search_opensearch_adult_content">{gt text='Does this page contain adult content?'}</label>
+                <input id="search_opensearch_adult_content" type="checkbox" name="opensearch_adult_content" {if $opensearch_adult_content|default:false}checked="checked" {/if}/>
+            </div>
+        </fieldset>
 
         <div class="z-buttons z-formbuttons">
             {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
