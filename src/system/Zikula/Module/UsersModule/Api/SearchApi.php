@@ -103,7 +103,7 @@ class SearchApi extends \Zikula_AbstractApi
         $where   = array();
         $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
 
-        $unameClause = \Search\Api\UserApi::construct_where($args, array('u.uname'));
+        $unameClause = \Zikula\Module\SearchModule\Api\UserApi::construct_where($args, array('u.uname'));
 
         // invoke the current profilemodule search query
         if ($useProfileMod) {

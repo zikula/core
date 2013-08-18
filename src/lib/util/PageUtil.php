@@ -294,7 +294,7 @@ class PageUtil
      *
      * @param array|string $path The path to check for a replacement. This is recursive array-safe.
      *
-     * @return The changed path.
+     * @return string The changed path.
      *
      * @todo Remove in 1.4.0.
      */

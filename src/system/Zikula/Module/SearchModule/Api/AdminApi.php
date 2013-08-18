@@ -31,6 +31,8 @@ class AdminApi extends \Zikula_AbstractApi
     {
         $links = array();
 
+        $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index'), 'text' => $this->__('Frontend'), 'class' => 'z-icon-es-home');
+
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
         }
