@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -19,6 +19,7 @@ use ModUtil;
 use LogUtil;
 use SecurityUtil;
 use FormUtil;
+use EventUtil;
 
 /**
  * Search_Controller_Admin class.
@@ -108,12 +109,23 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // Update module variables.
-        $itemsperpage = (int)FormUtil::getPassedValue('itemsperpage', 10, 'POST');
+        $itemsperpage = $this->request->request->filter('itemsperpage', 10, false, FILTER_VALIDATE_INT);
         $this->setVar('itemsperpage', $itemsperpage);
-        $limitsummary = (int)FormUtil::getPassedValue('limitsummary', 255, 'POST');
+        $limitsummary = $this->request->request->filter('limitsummary', 255, false, FILTER_VALIDATE_INT);
         $this->setVar('limitsummary', $limitsummary);
+        $opensearchAdultContent = $this->request->request->filter('opensearch_adult_content', false, false, FILTER_VALIDATE_BOOLEAN);
+        $this->setVar('opensearch_adult_content', $opensearchAdultContent);
+        $opensearchEnable = $this->request->request->filter('opensearch_enable', false, false, FILTER_VALIDATE_BOOLEAN);
 
-        $disable = FormUtil::getPassedValue('disable', null, 'REQUEST');
+        if ($opensearchEnable && !$this->getVar('opensearch_enable')) {
+            EventUtil::registerPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
+        } elseif (!$opensearchEnable && $this->getVar('opensearch_enable')) {
+            EventUtil::unregisterPersistentModuleHandler($this->name, 'frontcontroller.predispatch', array('Zikula\Module\SearchModule\Listener\PageloadListener', 'pageload'));
+        }
+
+        $this->setVar('opensearch_enable', $opensearchEnable);
+
+        $disable = $this->request->request->get('disable', null);
         // get the list of available plugins
         $plugins = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins', array('loadall' => true));
         // loop round the plugins

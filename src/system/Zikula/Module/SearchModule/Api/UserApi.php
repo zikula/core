@@ -148,7 +148,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $query->setFirstResult($vars['startnum'] - 1);
 
-        $results = $query->execute();
+        $results = $query->getArrayResult();
 
         // add displayname of modules found
         $sqlResult = array();
@@ -202,7 +202,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Get items
         $sort = isset($args['sortorder']) ? "ORDER BY s.{$args['sortorder']} DESC" : '';
-        $dql = "SELECT s Zikula\Module\SearchModule\Entity\SearchStatEntity s $sort";
+        $dql = "SELECT s FROM Zikula\\Module\\SearchModule\\Entity\\SearchStatEntity s $sort";
         $query = $this->entityManager->createQuery($dql);
         $query->setMaxResults($args['numitems']);
         $query->setFirstResult($args['startnum'] - 1);
@@ -403,7 +403,7 @@ class UserApi extends \Zikula_AbstractApi
     }
 
     /**
-     * Contruct part of a where clause out of the supplied search parameters
+     * Construct part of a where clause out of the supplied search parameters.
      */
     public static function construct_where($args, $fields, $mlfield = null)
     {
@@ -455,6 +455,10 @@ class UserApi extends \Zikula_AbstractApi
     {
         $links = array();
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
+
+        if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
+            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'admin', 'index'), 'text' => $this->__('Backend'), 'class' => 'z-icon-es-config');
+        }
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
