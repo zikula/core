@@ -45,7 +45,7 @@ function smarty_function_zpopup($params, Zikula_View $view)
     $params['popup'] = true;
 
     // invoke zdebug to add the popup to the page header
-    include_once('lib/viewplugins/function.zdebug.php');
+    include_once('lib/legacy/viewplugins/function.zdebug.php');
     smarty_function_zdebug($params, $view);
 
     return;
