@@ -849,16 +849,4 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     {
         return $this->container->has($id);
     }
-
-    /**
-     * Convenience debug shortcut
-     * functions as var_dump for non-doctrine vars
-     *
-     * @param unknown $var
-     * @return string
-     */
-    public function dump($var)
-    {
-        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var); echo "</pre>";
-    }
 }
