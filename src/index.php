@@ -125,7 +125,8 @@ switch (true) {
         if (!LogUtil::hasErrors()) {
             LogUtil::registerError(__f('Could not load the \'%1$s\' module at \'%2$s\'.', array($module, $func)), 404, null);
         }
-        $response->setContent(ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e: null)));
+        $errorResponse = ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e: null));
+        $response->setContent($errorResponse->getContent());
         break;
 
     case ($response->getStatusCode() == 500):
