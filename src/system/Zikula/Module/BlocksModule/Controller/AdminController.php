@@ -656,7 +656,7 @@ class AdminController extends \Zikula_AbstractController
                    ->assign('description', $position['description']);
 
         // get all blocks in the position
-        $block_placements = ModUtil::apiFunc('blocks', 'user', 'getblocksinposition', array('pid' => $pid));
+        $block_placements = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getblocksinposition', array('pid' => $pid));
 
         // get all defined blocks
         $allblocks = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getall', array('active_status' => 0));
