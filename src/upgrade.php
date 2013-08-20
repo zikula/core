@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('default_charset', 'UTF-8');
 mb_regex_encoding('UTF-8');
-ini_set('memory_limit', '64M');
+ini_set('memory_limit', '128M');
 ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
