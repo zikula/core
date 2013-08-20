@@ -621,34 +621,34 @@ class AdminController extends \Zikula_AbstractController
         // check for register_globals
         $data['register_globals'] = DataUtil::getBooleanIniValue('register_globals');
 
-        // check for config.php beeing writable
+        // check for config.php being writable
         $data['config_php'] = (bool)is_writable('config/config.php');
 
         // check for .htaccess in temp directory
-        $temp_htaccess = false;
-        $tempDir = $GLOBALS['ZConfig']['System']['temp'];
-        if ($tempDir) {
+        $app_htaccess = false;
+        $appDir = $this->getContainer()->get('kernel')->getRootDir();
+        if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = System::serverGetVar('DOCUMENT_ROOT');
-            if (StringUtil::left($tempDir, 1) == '/' && (strpos($tempDir, $docRoot) === false)) {
+            if (StringUtil::left($appDir, 1) == '/' && (strpos($appDir, $docRoot) === false)) {
                 // temp dir is outside the webroot, no .htaccess file needed
-                $temp_htaccess = true;
+                $app_htaccess = true;
             } else {
-                if (strpos($tempDir, $docRoot) === false) {
+                if (strpos($appDir, $docRoot) === false) {
                     $ldir = dirname(__FILE__);
                     $p = strpos($ldir, DIRECTORY_SEPARATOR.'system'); // we are in system/Admin
-                    $b = substr($ldir,0,$p);
-                    $filePath = $b.'/'.$tempDir.'/.htaccess';
+                    $b = substr($ldir,0 , $p);
+                    $filePath = $b.'/'.$appDir.'/.htaccess';
                 } else {
-                    $filePath = $tempDir.'/.htaccess';
+                    $filePath = $appDir.'/.htaccess';
                 }
-                $temp_htaccess = (bool) file_exists($filePath);
+                $app_htaccess = (bool) file_exists($filePath);
             }
         } else {
             // already customized, admin should know about what he's doing...
-            $temp_htaccess = true;
+            $app_htaccess = true;
         }
-        $data['temp_htaccess'] = $temp_htaccess;
+        $data['app_htaccess'] = $app_htaccess;
 
         $data['scactive']  = (bool)ModUtil::available('ZikulaSecurityCenterModule');
 
@@ -679,8 +679,7 @@ class AdminController extends \Zikula_AbstractController
             // dont get an update because TTL not expired yet
             $onlineVersion = $updateversion;
         } else {
-            $s = (extension_loaded('openssl') ? 's' : '');
-            $onlineVersion = trim($this->_zcurl("http$s://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
+            $onlineVersion = trim($this->_zcurl("https://update.zikula.org/cgi-bin/engine/checkcoreversion13.cgi"));
             if ($onlineVersion === false) {
                 return array('update_show' => false);
             }

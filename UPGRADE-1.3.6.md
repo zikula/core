@@ -9,7 +9,7 @@ that will come in Zikula 1.4.0. For safety sake, please only upgrade from
 Zikula Core 1.3.5
 
   - Before uploading the new files please delete the `plugins/`, `lib/`, `system/`,
-     and `themes/` folders entirely (replacing any custom themes afterwards.
+    `themes/` and `ztemp/` folders entirely (replace any custom themes afterwards).
   - If you are not using `config/personal_config.php` already, copy `config/config.php` to
     `config/personal_config.php`.
   - Upload new files.
@@ -17,6 +17,9 @@ Zikula Core 1.3.5
   - Make `app/cache` and `app/logs` writable.
   - Run `http://yoursiteurl/upgrade.php`.
 
+Note:
+
+`ztemp` is now located in the `app/cache/<kernel-mode>/ztemp` location automatically.
 
 **The following is for module developers only.**
 

@@ -19,9 +19,9 @@
             <a href="{$adminhelpurl|safetext}#admin_register_globals_warning">{gt text="PHP 'register_globals' setting is ON, but should be OFF." domain="zikula"}</a>
         </li>
         {/if}
-        {if !$notices.security.temp_htaccess}
+        {if !$notices.security.app_htaccess}
         <li>
-            <a href="{$adminhelpurl|safetext}#admin_ztemp_htaccess_warning">{gt text="There is no '.htaccess' file in the temporary directory ('/ztemp' or other location), but one should be present." domain="zikula"}</a>
+            <a href="{$adminhelpurl|safetext}#admin_app_htaccess_warning">{gt text="There is no '.htaccess' file in the application directory '/app', but one should be present." domain="zikula"}</a>
         </li>
         {/if}
         {if !$notices.security.scactive}
