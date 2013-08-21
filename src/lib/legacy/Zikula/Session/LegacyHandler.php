@@ -2,7 +2,7 @@
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 
-class Zikula_Session_LegacyHandler extends NativeSessionHandler
+class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
 {
     /**
      * @var Zikula_Session_Storage_Legacy
