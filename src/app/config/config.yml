@@ -19,6 +19,7 @@ framework:
     trusted_proxies: ~
     session:
         name: _zsid
+        save_path: "%kernel.root_dir%"
         handler_id: session.handler.legacy
         storage_id: session.storage.legacy
     fragments:       ~
