@@ -236,6 +236,8 @@ class HookUiListener
             }
             $view->assign('hookproviders', $hookproviders);
             $view->assign('total_available_provider_areas', $total_available_provider_areas);
+        } else {
+            $view->assign('hookproviders', array());
         }
 
         $event->setData($view->fetch('Admin/HookUi/hooks.tpl'));
