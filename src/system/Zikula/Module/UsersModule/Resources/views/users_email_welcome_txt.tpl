@@ -8,7 +8,7 @@
 {gt text="The information that was registered is as follows:"}
 
 {gt text="User name"}: {$reginfo.uname}
-{if !empty($createdpassword)}{gt text="Password"}: {$createdpassword}{else}{gt text="Password reminder"}: {$reginfo.passreminder}{/if}
+{if !empty($createdpassword)}{gt text="Password"}: {$createdpassword}{elseif !empty($reginfo.passreminder)}{gt text="Password reminder"}: {$reginfo.passreminder}{/if}
 
 {if !empty($createdpassword)}{gt text="(This is the only time you will receive your password. Please keep it in a safe place.)"}{/if}
 
@@ -16,4 +16,4 @@
 {elseif !$admincreated}{gt text="Your account application has been approved. Thank you for your patience during the new account application review process."}
 {elseif $admincreated}{gt text="The web site administrator has created this new account for you."}{/if}
 
-{if $reginfo.isapproved}{gt text="You may now log into the web site with your user name and password."}{/if}
+{if $reginfo.isapproved && $reginfo.pass != $PWD_NO_USERS_AUTHENTICATION}{gt text="You may now log into the web site with your user name and password."}{elseif $reginfo.isapproved && $reginfo.pass == $PWD_NO_USERS_AUTHENTICATION}{gt text="You may now log into the web site."}{/if}
