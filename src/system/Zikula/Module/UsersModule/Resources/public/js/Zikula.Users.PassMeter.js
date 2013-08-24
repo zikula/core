@@ -205,7 +205,8 @@ Zikula.Users.PassMeter = Class.create({
         this.passindicatorBarContainer = new Element('div',{'class':'passindicatorbarcontainer'}).setStyle({width:'200px'});
         this.passindicatorBar = new Element('div',{'class':'passindicatorbar'}).setStyle({
                 backgroundColor: this.options.colors[0],
-                backgroundPosition: '0 0'
+                backgroundPosition: '0 0',
+                height: '3px'
         });
         this.passindicatorScore = new Element('div',{'class':'passindicatorscore'});
         this.passindicatorMsg = new Element('div',{'class':'passindicatormsg'});
