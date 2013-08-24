@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /app
 Disallow: /config
 Disallow: /docs
 Disallow: /images
@@ -10,7 +11,7 @@ Disallow: /modules
 Disallow: /plugins
 Disallow: /system
 Disallow: /themes
-Disallow: /ztemp
+Disallow: /web
 Disallow: /admin.php
 Disallow: /ajax.php
 Disallow: /install.php

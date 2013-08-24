@@ -141,6 +141,8 @@ class HookUiListener
             }
             $view->assign('hooksubscribers', $hooksubscribers);
             $view->assign('total_available_subscriber_areas', $total_available_subscriber_areas);
+        } else {
+            $view->assign('total_available_subscriber_areas',0);
         }
 
         // get providers that are already attached to the subscriber
@@ -236,6 +238,8 @@ class HookUiListener
             }
             $view->assign('hookproviders', $hookproviders);
             $view->assign('total_available_provider_areas', $total_available_provider_areas);
+        } else {
+            $view->assign('hookproviders', array());
         }
 
         $event->setData($view->fetch('Admin/HookUi/hooks.tpl'));

@@ -41,7 +41,7 @@
                 </div>
             </div>
         </fieldset>
-        {if $modvars.Blocks.collapseable eq 1}
+        {if $modvars.ZikulaBlocksModule.collapseable eq 1}
         <fieldset>
             <legend>{gt text="Collapsibility"}</legend>
             <div class="z-formrow">
