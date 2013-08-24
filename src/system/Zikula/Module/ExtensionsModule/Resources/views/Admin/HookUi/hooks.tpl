@@ -109,7 +109,8 @@
 
                 {/foreach}
             </fieldset>
-
+            {foreachelse}
+                <p class="z-warningmsg">{gt text='There are no subscribers available for %s.' tag1=$currentmodule}</p>
             {/foreach}
         </fieldset>
     </div>
@@ -258,4 +259,9 @@
     </fieldset>
 </div>
 {/if}
+
+{if $total_available_subscriber_areas == 0 && !$isSubscriber}
+    <p class="z-warningmsg">{gt text='There are no subscribers available for %s.' tag1=$currentmodule}</p>
+{/if}
+
 {adminfooter}
