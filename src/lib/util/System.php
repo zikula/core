@@ -1064,8 +1064,8 @@ class System
      * @param unknown $var
      * @return string
      */
-    public static function dump($var)
+    public static function dump($var, $maxDepth = 2, $stripTags = true)
     {
-        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var); echo "</pre>";
+        echo "<pre style='text-align:left'>"; Doctrine\Common\Util\Debug::dump($var, $maxDepth = 2, $stripTags = true); echo "</pre>";
     }
 }
