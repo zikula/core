@@ -49,6 +49,12 @@ use Zikula_Api_AbstractAuthentication;
  */
 class UserController extends \Zikula_AbstractController
 {
+
+    private function getNamespace()
+    {
+        return str_replace('\\', '_', __NAMESPACE__);
+    }
+
     /**
      * Post initialise.
      *
@@ -151,7 +157,7 @@ class UserController extends \Zikula_AbstractController
             $reentrantTokenReceived = $this->request->query->get('reentranttoken', false);
             if ($reentrantTokenReceived) {
                 // We got here by reentering from an external authenticator. Grab the data we stored in session variables.
-                $sessionVars = $this->request->getSession()->get('User_register', false, 'Zikula_Users');
+                $sessionVars = $this->request->getSession()->get('User_register', false, $this->getNamespace());
                 if ($sessionVars) {
                     $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
                     $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
@@ -196,9 +202,14 @@ class UserController extends \Zikula_AbstractController
                 $state = 'authenticate';
             } elseif ($this->request->request->get('registration_info', false)) {
                 // The user submitted the acutal registration form, so we need to validate the entries and register him.
-                $formData = new FormData\RegistrationForm('users_register', $this->getContainer());
-                $formData->setFromRequestCollection($this->request->request);
                 $selectedAuthenticationMethod = unserialize($this->request->request->get('authentication_method_ser', false));
+
+                $removePasswordReminderValidation = false;
+                if ($selectedAuthenticationMethod['modname'] != 'ZikulaUsersModule') {
+                    $removePasswordReminderValidation = true;
+                }
+                $formData = new FormData\RegistrationForm('users_register', $this->getContainer(), $removePasswordReminderValidation);
+                $formData->setFromRequestCollection($this->request->request);
                 $authenticationInfo = unserialize($this->request->request->get('authentication_info_ser', false));
 
                 $state = 'validate';
@@ -338,7 +349,7 @@ class UserController extends \Zikula_AbstractController
                         'authentication_method' => $selectedAuthenticationMethod,
                         'reentranttoken'        => $reentrantToken,
                     );
-                    $this->request->getSession()->set('Users_Controller_User_register', $sessionVars, 'Zikula_Users');
+                    $this->request->getSession()->set('User_register', $sessionVars, $this->getNamespace());
 
                     // The authentication method selected might be reentrant (it might send the user out to an external web site
                     // for authentication, and then send us back to finish the job). We need to tell the external system to where
@@ -400,7 +411,7 @@ class UserController extends \Zikula_AbstractController
                     // user was required to exit the Zikula system for authentication on the external system, then we will not get
                     // to this point until the reentrant callback (at which point the variable should, again, not be needed
                     // anymore).
-                    $this->request->getSession()->del('Users_Controller_User_register', 'Zikula_Users');
+                    $this->request->getSession()->del('Users_register', $this->getNamespace());
 
                     break;
 
@@ -1048,15 +1059,6 @@ class UserController extends \Zikula_AbstractController
      *
      * If the user is already logged in, then he is redirected the main Users module page.
      *
-     * Parameters passed via the $args array:
-     * --------------------------------------
-     * array   authentication_info   An array containing the authentication information entered by the user.
-     * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
-     *                                      selected authentication method as defined by the module.
-     * boolean firstmethodisdefault  If to display first of authentication methods as preselected in login form, when more then one are specified (default is true).
-     * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
-     * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
-     *
      * Parameters passed via GET:
      * --------------------------
      * string returnpage The urlencoded URL of the page to return to if the log-in attempt is successful.
@@ -1094,22 +1096,7 @@ class UserController extends \Zikula_AbstractController
         $isReentry = false;
         $firstmethodisdefault = isset($args['firstmethodisdefault']) ? $args['firstmethodisdefault'] : true;
 
-        // Need to check for $args first, since isPost() and isGet() will have been set on the original call
-        if (isset($args) && is_array($args) && !empty($args)) {
-            // We are coming in or back (reentering) from someplace else via a direct call to this function. It is likely that
-            // we are coming back from a user.login.veto event handler that redirected the user to a page where he had to provide
-            // more information.
-            $authenticationInfo = isset($args['authentication_info']) ? $args['authentication_info'] : array();
-            $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
-            $rememberMe         = isset($args['rememberme']) ? $args['rememberme'] : false;
-            $returnPage         = isset($args['returnpage']) ? $args['returnpage'] : $this->request->query->get('returnpage', '');
-            $eventType          = isset($args['event_type']) ? $args['event_type'] : false;
-
-            $isFunctionCall = true;
-        } elseif (isset($args) && !is_array($args)) {
-            // Coming from a function call, but bad $args
-            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
-        } elseif ($this->request->isMethod('POST')) {
+        if ($this->request->isMethod('POST')) {
             // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
             if (System::getVar('anonymoussessions', false)) {
                 $this->checkCsrfToken();
@@ -1128,8 +1115,8 @@ class UserController extends \Zikula_AbstractController
             $reentry = false;
             $reentrantTokenReceived = $this->request->query->get('reentranttoken', '');
 
-            $sessionVars = $this->request->getSession()->get('users/User_login', array());
-            $this->request->getSession()->remove('users/User_login');
+            $sessionVars = $this->request->getSession()->get('User_login', array(), $this->getNamespace());
+            $this->request->getSession()->del('User_login', $this->getNamespace());
 
             $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
 
@@ -1164,7 +1151,7 @@ class UserController extends \Zikula_AbstractController
 
         // Any authentication information for use in this pass through login is gathered, so ensure any session variable
         // is cleared, even if we are coming in through a post or a function call that didn't gather info from the session.
-        $this->request->getSession()->remove('users/User_login');
+        $this->request->getSession()->del('User_login', $this->getNamespace());
 
         $authenticationMethodList = new AuthenticationMethodListHelper($this);
 
@@ -1205,7 +1192,7 @@ class UserController extends \Zikula_AbstractController
                             'rememberme'            => $rememberMe,
                             'reentranttoken'        => $reentrantToken,
                         );
-                        $this->request->getSession()->set('Users_Controller_User_login', $sessionVars, 'Zikula_Users');
+                        $this->request->getSession()->set('User_login', $sessionVars, $this->getNamespace());
 
                         // The authentication method selected might be reentrant (it might send the user out to an external web site
                         // for authentication, and then send us back to finish the job). We need to tell the external system to where
@@ -1225,7 +1212,7 @@ class UserController extends \Zikula_AbstractController
                         // user was required to exit the Zikula system for authentication on the external system, then we will not get
                         // to this point until the reentrant call back to login() (at which point the variable should, again, not be needed
                         // anymore).
-                        $this->request->getSession()->del('Users_Controller_User_login', 'Zikula_Users');
+                        $this->request->getSession()->del('User_login', $this->getNamespace());
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
@@ -1553,6 +1540,8 @@ class UserController extends \Zikula_AbstractController
                                     $this->view->assign('regErrors', $verified['regErrors']);
                                 }
 
+                                $extAuthModuleUsed = ($verified['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION);
+
                                 switch ($verified['activated']) {
                                     case UsersConstant::ACTIVATED_PENDING_REG:
                                         if (empty($verified['approved_by'])) {
@@ -1567,7 +1556,13 @@ class UserController extends \Zikula_AbstractController
                                         return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
                                         break;
                                     case UsersConstant::ACTIVATED_ACTIVE:
-                                        $this->registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
+                                        if (!$extAuthModuleUsed) {
+                                            // The users module was used to register that account.
+                                            $this->registerStatus($this->__('Done! Your account has been verified. You may now log in with your user name and password.'));
+                                        } else {
+                                            // A third party module was used to register that account.
+                                            $this->registerStatus($this->__('Done! Your account has been verified. You may now log in.'));
+                                        }
                                         if (isset($verified['regErrors']) && count($verified['regErrors']) > 0) {
                                             $this->registerStatus($regErrorsMessage);
                                             return $this->response($this->view->fetch('User/displaystatusmsg.tpl'));
@@ -1926,8 +1921,8 @@ class UserController extends \Zikula_AbstractController
     {
         // Retrieve and delete any session variables being sent in before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
-        $sessionVars = $this->request->getSession()->get('Users_Controller_User_changePassword', null, 'Zikula_Users');
-        $this->request->getSession()->del('Users_Controller_User_changePassword', 'Zikula_Users');
+        $sessionVars = $this->request->getSession()->get('User_changePassword', null, $this->getNamespace());
+        $this->request->getSession()->del('User_changePassword', $this->getNamespace());
 
         // The check for $args must be first, because isPost() and isGet() will be set for the function that called this one
         if (isset($args) && !empty($args) && is_array($args)) {
@@ -1982,7 +1977,7 @@ class UserController extends \Zikula_AbstractController
             // /Users_Controller_User_changePassword because if we hit an exception or got redirected, then the data
             // would have been orphaned, and it contains some sensitive information.
             SessionUtil::requireSession();
-            $this->request->getSession()->set('Users_Controller_User_updatePassword', $sessionVars, 'Zikula_Users');
+            $this->request->getSession()->set('User_updatePassword', $sessionVars, $this->getNamespace());
         }
 
         // Return the output that has been generated by this function
@@ -2021,8 +2016,8 @@ class UserController extends \Zikula_AbstractController
      */
     public function updatePasswordAction()
     {
-        $sessionVars = $this->request->getSession()->get('Users_Controller_User_updatePassword', null, 'Zikula_Users');
-        $this->request->getSession()->del('Users_Controller_User_updatePassword', 'Zikula_Users');
+        $sessionVars = $this->request->getSession()->get('User_updatePassword', null, $this->getNamespace());
+        $this->request->getSession()->del('User_updatePassword', $this->getNamespace());
 
         if (!$this->request->isMethod('POST')) {
             throw new Zikula_Exception_Forbidden();
@@ -2098,7 +2093,7 @@ class UserController extends \Zikula_AbstractController
 
         if ($passwordChanged) {
             if ($login) {
-                $loginArgs = $this->request->getSession()->get('users/User_login', array());
+                $loginArgs = $this->request->getSession()->get('User_login', array(), $this->getNamespace());
                 $loginArgs['authentication_method'] = $sessionVars['authentication_method'];
                 $loginArgs['authentication_info']   = $sessionVars['authentication_info'];
                 $loginArgs['rememberme']            = $sessionVars['rememberme'];
@@ -2110,7 +2105,7 @@ class UserController extends \Zikula_AbstractController
         } else {
             $sessionVars['password_errors'] = $passwordErrors;
             SessionUtil::requireSession();
-            $this->request->getSession()->set('User_changePassword', $sessionVars, 'Zikula_Users');
+            $this->request->getSession()->set('User_changePassword', $sessionVars, $this->getNamespace());
             return $this->redirect(ModUtil::url($this->name, 'user', 'changePassword', array('login' => $login)));
         }
     }
