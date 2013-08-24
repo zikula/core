@@ -1,6 +1,6 @@
 {modurl modname='ZikulaAdminModule' type='admin' func='help' assign='adminhelpurl'}
 {checkpermissionblock component='ZikulaAdminModule::' instance='::' level=ACCESS_ADMIN}
-{if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.temp_htaccess or !$notices.security.scactive}
+{if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.app_htaccess or !$notices.security.scactive}
 <div id="z-securityanalyzer">
     <strong>{gt text="Security analyser warnings" domain="zikula"}</strong>
     <ul>

@@ -928,6 +928,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $rendererArgs['createdpassword'] = $passwordCreatedForUser;
                 $rendererArgs['admincreated'] = $createdByAdminOrSubAdmin;
                 $rendererArgs['approvalorder'] = $approvalOrder;
+                $rendererArgs['PWD_NO_USERS_AUTHENTICATION'] = UsersConstant::PWD_NO_USERS_AUTHENTICATION;
 
                 if ($userNotification || !empty($passwordCreatedForUser)) {
                     $notificationSent = ModUtil::apiFunc($this->name, 'user', 'sendNotification',

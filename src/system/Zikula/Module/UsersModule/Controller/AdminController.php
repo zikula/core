@@ -1256,6 +1256,10 @@ class AdminController extends \Zikula_AbstractController
             );
         }
 
+        foreach ($reglist as $key => $user) {
+            $reglist[$key]['user_regdate'] = DateUtil::formatDatetime($user['user_regdate'], $this->__('%m-%d-%Y'));
+        }
+
         return $this->response($this->view->assign('reglist', $reglist)
                           ->assign('actions', $actions)
                           ->assign('pager', $pager)
