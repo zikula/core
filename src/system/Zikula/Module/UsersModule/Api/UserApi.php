@@ -309,7 +309,7 @@ class UserApi extends \Zikula_AbstractApi
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         if ($args['idfield'] == 'email') {
-            $dql = "SELECT count(u.uid) FROM UsersModule\\Entity\\UserEntity u WHERE u.email = '{$args['id']}'";
+            $dql = "SELECT count(u.uid) FROM Zikula\\Module\\UsersModule\\Entity\\UserEntity u WHERE u.email = '{$args['id']}'";
             $query = $this->entityManager->createQuery($dql);
             $ucount = (int)$query->getSingleScalarResult();
 

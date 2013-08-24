@@ -127,7 +127,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text='Log-in information'}</legend>
-            {if ($formData->getFieldData('pass') == 'Zikula\Module\UsersModule\Constant::PWD_NO_USERS_AUTHENTICATION'|const)}
+            {if $hasNoPassword}
                 {assign var='usersAuth' value=false}
             {else}
                 {assign var='usersAuth' value=true}

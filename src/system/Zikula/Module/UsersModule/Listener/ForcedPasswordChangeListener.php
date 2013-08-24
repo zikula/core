@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Listener;
 
-use Users_Constant;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 use UserUtil;
 use LogUtil;
 
@@ -27,7 +27,7 @@ class ForcedPasswordChangeListener
      *
      * @var string
      */
-    protected static $modname = Users_Constant::MODNAME;
+    protected static $modname = UsersConstant::MODNAME;
 
     /**
      * Vetos (denies) a login attempt, and forces the user to change his password.
@@ -48,7 +48,7 @@ class ForcedPasswordChangeListener
 
         $userMustChangePassword = UserUtil::getVar('_Users_mustChangePassword', $userObj['uid'], false);
 
-        if ($userMustChangePassword && ($userObj['pass'] != Users_Constant::PWD_NO_USERS_AUTHENTICATION)) {
+        if ($userMustChangePassword && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
             $event->stopPropagation();
             $event->setData(array(
                                 'redirect_func' => array(
@@ -59,8 +59,8 @@ class ForcedPasswordChangeListener
                                         'login' => true,
                                     ),
                                     'session' => array(
-                                        'var'       => 'Users_Controller_User_changePassword',
-                                        'namespace' => 'Zikula_Users',
+                                        'var'       => 'User_changePassword',
+                                        'namespace' => UsersConstant::SESSION_VAR_NAMESPACE,
                                     )
                                 ),
                             ));

@@ -21,7 +21,7 @@
 {if $login}
 <div class="z-warningmsg">
     <p>{gt text="Before logging in, the site administrator has asked that you change the password for your account."}</p>
-    {if $authentication_method.modname != 'ZikulaUsersModule'}<p>{gt text="Note: This changes the password for your account with the user name of '%1$s', here on this web site. It does not affect the password for any other method of logging in, such as the method you just used."  tag1=$user_obj.uname}</p>{/if}
+    {if $authentication_method.modname != 'ZikulaUsersModule'}<p>{gt text='Note: This changes the password for your account with the user name of \'%1$s\', here on this web site. It does not affect the password for any other method of logging in, such as the method you just used.'  tag1=$user_obj.uname}</p>{/if}
     <p>{gt text="If you leave this page without successfully changing your password, then you will not be logged in."}</p>
 </div>
 {/if}
@@ -83,10 +83,10 @@
             </div>
             <div class="z-formrow">
                 <label for="passreminder">{gt text="New password reminder"}</label>
-                <input type="text" id="passreminder" name="passreminder" value="" {if isset($password_errors.reginfo_passreminder) && !empty($password_errors.reginfo_passreminder)}class="z-form-error"{/if} size="25" maxlength="128" />
-                {if isset($password_errors.reginfo_passreminder) && !empty($password_errors.reginfo_passreminder)}
+                <input type="text" id="passreminder" name="passreminder" value="" {if isset($password_errors.passreminder) && !empty($password_errors.passreminder)}class="z-form-error"{/if} size="25" maxlength="128" />
+                {if isset($password_errors.passreminder) && !empty($password_errors.passreminder)}
                 <div class="z-formnote z-errormsg">
-                    {foreach from=$password_errors.reginfo_passreminder item='message' name='messages'}
+                    {foreach from=$password_errors.passreminder item='message' name='messages'}
                     <p>{$message}</p>
                     {/foreach}
                 </div>
