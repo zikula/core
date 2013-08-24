@@ -117,7 +117,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             }
 
             if (!$this->currentUserIsAdminOrSubAdmin()) {
-                if (!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) {
+                if ((!isset($reginfo['passreminder']) || empty($reginfo['passreminder'])) && $this->getVar(UsersConstant::MODVAR_PASSWORD_REMINDER_MANDATORY, UsersConstant::DEFAULT_PASSWORD_REMINDER_MANDATORY)) {
                     $passwordErrors['passreminder'] = $this->__('Please enter a password reminder.');
                 } else {
                     $testPass = mb_strtolower(trim($reginfo['pass']));
