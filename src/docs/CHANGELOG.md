@@ -15,6 +15,7 @@ Fixes:
 - Fix block filtering by module does an incorrect comparison, #339.
 - Fix admin-tab problem with content module, #940.
 - Fixed Extensions module pager, #961.
+- Pass-meter was hidden, because no height was set, #997.
 
 Features:
 - Show an error message if version number of a module is incorrect.
@@ -64,6 +65,7 @@ Features:
 - jQuery and jQuery UI are now outsourced to their own bundles.
 - Added events if a module is activated and if a module is deactivated.
 - Implemented OpenSearch.
+- Added "hybrid" login option. The user can either provide his email address or user name and will be logged in.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
