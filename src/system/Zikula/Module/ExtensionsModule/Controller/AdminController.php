@@ -470,7 +470,7 @@ class AdminController extends \Zikula_AbstractController
 
                 // get new version number for ModUtil::STATE_UPGRADED
                 if ($mod['state'] == ModUtil::STATE_UPGRADED) {
-                    $mod['newversion'] = $filemodules[$mod['directory']]['version'];
+                    $mod['newversion'] = $filemodules[$mod['name']]['version'];
                 }
 
                 $moduleinfo[] = array(
