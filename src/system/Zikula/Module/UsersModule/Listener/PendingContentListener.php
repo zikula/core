@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Listener;
 
-use Users_Constant;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 use ModUtil;
 use Zikula_Collection_Container;
 use Zikula_Provider_AggregateItem;
@@ -57,8 +57,8 @@ class PendingContentListener
     public static function pendingContentListener(\Zikula_Event $event)
     {
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', Users_Constant::APPROVAL_ANY);
-            if ($approvalOrder == Users_Constant::APPROVAL_AFTER) {
+            $approvalOrder = ModUtil::getVar(self::$modname, 'moderation_order', UsersConstant::APPROVAL_ANY);
+            if ($approvalOrder == UsersConstant::APPROVAL_AFTER) {
                 $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0, 'isverified' => true)));
             } else {
                 $numPendingApproval = ModUtil::apiFunc(self::$modname, 'registration', 'countAll', array('filter' => array('approved_by' => 0)));
