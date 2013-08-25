@@ -367,7 +367,8 @@ class Zikula_Workflow_Util
             //build the query and execute
             $dql = "SELECT w FROM Zikula\Core\Doctrine\Entity\WorkflowEntity w WHERE w.module = '$module' AND w.objIdcolumn = '$idcolumn' AND w.objTable = '$obj_table' AND w.objId = $obj_id";
             $query = $em->createQuery($dql);
-            $workflow = $query->getResult();
+            $workflow = $query->getArrayResult();
+            $workflow = $workflow[0];
         }
 
         if (!$workflow) {
