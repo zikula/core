@@ -15,9 +15,53 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula\Common\Collection\Container;
+
 /**
  * Hook validation collection
  */
-class ValidationProviders extends \Zikula_Hook_ValidationProviders
+class ValidationProviders extends Container
 {
+   /**
+     * Constructor.
+     *
+     * @param string      $name       The name of the collection.
+     * @param ArrayObject $collection The collection (optional).
+     */
+    public function __construct($name='validation', ArrayObject $collection = null)
+    {
+        parent::__construct($name, $collection);
+    }
+
+    /**
+     * Set response.
+     *
+     * @param string                         $name     Name.
+     * @param Zikula_Hook_ValidationResponse $response Validation response.
+     *
+     * @return void
+     */
+    public function set($name, $response)
+    {
+        if (!$response instanceof Zikula_Hook_ValidationResponse) {
+            throw new InvalidArgumentException('$response must be an instance of Zikula_Hook_ValidationResponse');
+        }
+        $this->collection[$name] = $response;
+    }
+
+    /**
+     * Check if there are any errors in any of the validation responses.
+     *
+     * @return boolean
+     */
+    public function hasErrors()
+    {
+        foreach ($this->collection as $response) {
+            if ($response->hasErrors()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
