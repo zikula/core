@@ -115,6 +115,7 @@ class Zikula_Workflow_Util
         }
 
         $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
+        $themedir = $themedir['directory'];
         $themepath = DataUtil::formatForOS("themes/$themedir/workflows/$moduledir/$file");
         $configpath = DataUtil::formatForOS("config/workflows/$moduledir/$file");
         $modulepath = DataUtil::formatForOS("$modulepath/workflows/$file");
