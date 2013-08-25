@@ -115,6 +115,7 @@ class Zikula_Workflow_Util
         }
 
         $themedir = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
+        $themedir = $themedir['directory'];
         $themepath = DataUtil::formatForOS("themes/$themedir/workflows/$moduledir/$file");
         $configpath = DataUtil::formatForOS("config/workflows/$moduledir/$file");
         $modulepath = DataUtil::formatForOS("$modulepath/workflows/$file");
@@ -366,7 +367,8 @@ class Zikula_Workflow_Util
             //build the query and execute
             $dql = "SELECT w FROM Zikula\Core\Doctrine\Entity\WorkflowEntity w WHERE w.module = '$module' AND w.objIdcolumn = '$idcolumn' AND w.objTable = '$obj_table' AND w.objId = $obj_id";
             $query = $em->createQuery($dql);
-            $workflow = $query->getResult();
+            $workflow = $query->getArrayResult();
+            $workflow = $workflow[0];
         }
 
         if (!$workflow) {
