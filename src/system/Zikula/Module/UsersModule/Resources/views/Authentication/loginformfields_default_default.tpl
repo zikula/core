@@ -24,9 +24,11 @@
 <div class="z-formrow">
     <label for="users_login_login_id">{strip}
         {if $authentication_method == 'email'}
-            {gt text='E-mail address'}
-        {else}
+            {gt text='Email address'}
+        {elseif $authentication_method == 'uname'}
             {gt text='User name'}
+        {elseif $authentication_method == 'unameoremail'}
+            {gt text='User name or e-mail address'}
         {/if}
     {/strip}</label>
     <input id="users_login_login_id" type="text" name="authentication_info[login_id]" maxlength="64" value="{if isset($authentication_info.login_id)}{$authentication_info.login_id}{/if}" />
@@ -37,9 +39,9 @@
         kc = e.keyCode?e.keyCode:e.which;
         sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
         if ((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)) && !Boolean(window.chrome) && !Boolean(window.webkit))
-    	    document.getElementById('capsLok').style.visibility = 'visible';
+            document.getElementById('capsLok').style.visibility = 'visible';
         else
-    	    document.getElementById('capsLok').style.visibility = 'hidden';
+            document.getElementById('capsLok').style.visibility = 'hidden';
         }
 </script>
 

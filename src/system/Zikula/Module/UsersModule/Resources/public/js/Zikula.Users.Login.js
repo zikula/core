@@ -14,6 +14,9 @@ Zikula.Users.Login =
         if ($('users_login_select_authentication_form_users_email') != null) {
             $('users_login_select_authentication_form_users_email').observe('submit', function(event) { Zikula.Users.Login.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_email'); });
         }
+        if ($('users_login_select_authentication_form_users_unameoremail') != null) {
+            $('users_login_select_authentication_form_users_unameoremail').observe('submit', function(event) { Zikula.Users.Login.onSubmitSelectAuthenticationMethod(event, 'users_login_select_authentication_form_users_unameoremail'); });
+        }
     },
 
     showAjaxInProgress: function()

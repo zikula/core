@@ -28,6 +28,10 @@ namespace Zikula\Module\UsersModule
          */
         const MODNAME = 'ZikulaUsersModule';
         /**
+         * The namespace of the module to use for session variables.
+         */
+        const SESSION_VAR_NAMESPACE = 'Zikula_Module_UsersModule';
+        /**
          * The identifier for the 'authentication' capability.
          */
         const CAPABILITY_AUTHENTICATION = 'authentication';
