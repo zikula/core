@@ -164,7 +164,7 @@ div.authentication_select_method_bigbutton .authentication_select_method_button 
     margin: 3px;
     padding: 36px 5px 5px 5px;
     width: 132px;
-    height: 72px;
+    height: 82px;
     font-size: 100%;
     text-align: center;
     background-color: #f2f2f2;
@@ -251,6 +251,18 @@ div.authentication_select_method_smallbutton #authentication_select_method_submi
 
 div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_zikulausersmodule_email {
     background-image: url("../../../../../../../images/icons/extrasmall/mail_generic.png");
+}
+
+div.authentication_select_method_bigbutton #authentication_select_method_submit_zikulausersmodule_unameoremail {
+    background-image: url("../../../../../../../images/icons/medium/user.png");
+}
+
+div.authentication_select_method_smallbutton #authentication_select_method_submit_zikulausersmodule_unameoremail {
+    background-image: url("../../../../../../../images/icons/small/user.png");
+}
+
+div#users_loginblock_authentication_method_selectors #authentication_select_method_submit_zikulausersmodule_unameoremail {
+    background-image: url("../../../../../../../images/icons/extrasmall/user.png");
 }
 
 table.z-datatable td.users_activated {

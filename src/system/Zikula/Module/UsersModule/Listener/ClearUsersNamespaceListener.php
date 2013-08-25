@@ -13,7 +13,7 @@
 
 namespace Zikula\Module\UsersModule\Listener;
 
-use Users_Constant;
+use Zikula\Module\UsersModule\Constant as UsersConstant;
 use ServiceUtil;
 
 /**
@@ -26,7 +26,7 @@ class ClearUsersNamespaceListener
      *
      * @var string
      */
-    protected static $modname = Users_Constant::MODNAME;
+    protected static $modname = UsersConstant::MODNAME;
 
     /**
      * Clears the session variable namespace used by the Users module.
@@ -51,7 +51,7 @@ class ClearUsersNamespaceListener
         if ($doClear) {
             $serviceManager = ServiceUtil::getManager();
             $session = $serviceManager->get('session');
-            $session->clearNamespace('Zikula_Users');
+            $session->clearNamespace(UsersConstant::SESSION_VAR_NAMESPACE);
             //Do not setNotified. Not handling the exception, just reacting to it.
         }
     }

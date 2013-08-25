@@ -177,7 +177,7 @@ class AdminController extends \Zikula_AbstractController
 
             $userList[$key]['options'] = array(
                 'lostUsername' => $currentUserHasModerateAccess,
-                'lostPassword' => $currentUserHasModerateAccess,
+                'lostPassword' => $hasUsersPassword && $currentUserHasModerateAccess,
                 'toggleForcedPasswordChange'=> $hasUsersPassword && $currentUserHasEditAccess,
                 'modify' => $currentUserHasEditAccess,
                 'deleteUsers' => $currentUserHasDeleteAccess,
@@ -794,6 +794,7 @@ class AdminController extends \Zikula_AbstractController
                 ->assign('primaryAdminGroupId', ModUtil::getVar('ZikulaGroupsModule', 'primaryadmingroup', 2))
                 ->assign('accessPermissions', $accessPermissions)
                 ->assign('errorFields', $errorFields)
+                ->assign('hasNoPassword', $originalUser['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION)
                 ->fetch('Admin/modify.tpl'));
         } else {
             return $this->redirect(ModUtil::url($this->name, 'admin', 'view'));
@@ -902,6 +903,12 @@ class AdminController extends \Zikula_AbstractController
             $this->registerError($this->__('Sorry! Unable to retrieve information for that user id.'));
 
             return false;
+        }
+
+        if ($user['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
+            // User has no password set -> Sending a recovery code is useless.
+            $this->registerError(LogUtil::getErrorMsgArgs())
+                ->redirect(ModUtil::url($this->name, 'admin', 'view'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaUsersModule::', "{$user['uname']}::{$user['uid']}", ACCESS_MODERATE)) {
@@ -1182,8 +1189,8 @@ class AdminController extends \Zikula_AbstractController
         $backFromAction = $this->request->query->get('restoreview', false);
 
         if ($backFromAction) {
-            $returnArgs = $this->request->getSession()->get('Users_Controller_Admin_viewRegistrations', array('startnum' => 1), 'Zikula_Users');
-            $this->request->getSession()->del('Users_admin_viewRegistrations', 'Zikula_Users');
+            $returnArgs = $this->request->getSession()->get('Admin_viewRegistrations', array('startnum' => 1), UsersConstant::SESSION_VAR_NAMESPACE);
+            $this->request->getSession()->del('Admin_viewRegistrations', UsersConstant::SESSION_VAR_NAMESPACE);
 
             if ($limitNumRows < 1) {
                 unset($returnArgs['startnum']);
@@ -1234,7 +1241,7 @@ class AdminController extends \Zikula_AbstractController
         $sessionVars = array(
             'startnum'  => ($limitOffset + 1),
         );
-        $this->request->getSession()->set('Users_Controller_Admin_viewRegistrations', $sessionVars, 'Zikula_Users');
+        $this->request->getSession()->set('Admin_viewRegistrations', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
         $reglist = ModUtil::apiFunc($this->name, 'registration', 'getAll', array('limitoffset' => $limitOffset, 'limitnumrows' => $limitNumRows));
 
@@ -2501,7 +2508,7 @@ class AdminController extends \Zikula_AbstractController
 
             $userObj = UserUtil::getVars($uid);
 
-            if (!isset($userObj) || !$userObj || !is_array($userObj) || empty($userObj)) {
+            if (!isset($userObj) || !$userObj || !is_array($userObj) || empty($userObj) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
                 throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
 
@@ -2520,7 +2527,7 @@ class AdminController extends \Zikula_AbstractController
             $uid = $this->request->request->get('userid', false);
             $userMustChangePassword = $this->request->request->get('user_must_change_password', false);
 
-            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid)) {
+            if (!$uid || !is_numeric($uid) || ((int)$uid != $uid) || $userObj['pass'] == UsersConstant::PWD_NO_USERS_AUTHENTICATION) {
                 throw new \Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
             }
 

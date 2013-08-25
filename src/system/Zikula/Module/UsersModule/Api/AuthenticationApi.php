@@ -57,7 +57,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 $this->__('User name and password'),
                 false
         );
-        if (($loginViaOption == UsersConstant::LOGIN_METHOD_UNAME) || ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY)) {
+        if (($loginViaOption == UsersConstant::LOGIN_METHOD_UNAME)) {
             $authenticationMethod->enableForAuthentication();
         } else {
             $authenticationMethod->disableForAuthentication();
@@ -72,12 +72,27 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 $this->__('E-mail address and password'),
                 false
         );
-        if (($loginViaOption == UsersConstant::LOGIN_METHOD_EMAIL) || ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY)) {
+        if (($loginViaOption == UsersConstant::LOGIN_METHOD_EMAIL)) {
             $authenticationMethod->enableForAuthentication();
         } else {
             $authenticationMethod->disableForAuthentication();
         }
         $this->authenticationMethods['email'] = $authenticationMethod;
+
+        // Register the unameoremail authentication method
+        $authenticationMethod = new AuthenticationMethodHelper(
+            $this->name,
+            'unameoremail',
+            $this->__('User name or e-mail address'),
+            $this->__('User name / e-mail address and password'),
+            false
+        );
+        if ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY) {
+            $authenticationMethod->enableForAuthentication();
+        } else {
+            $authenticationMethod->disableForAuthentication();
+        }
+        $this->authenticationMethods['unameoremail'] = $authenticationMethod;
     }
 
     /**
@@ -259,7 +274,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                                              password entered by the user.
      * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                              module's module name), and the 'method' method name. For the Users module, 'modname' would
-     *                                              be 'ZikulaUsersModule' and 'method' would contain either 'email' or 'uname'.
+     *                                              be 'ZikulaUsersModule' and 'method' would contain either 'email', 'uname' or 'unameoremail'.
      *
      * @param array $args All arguments passed to this function.
      *
@@ -319,12 +334,12 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
             }
 
             // Check for an empty password, or the special marker indicating that the account record does not
-            // authenticate with a uname/password (or email/password, depending on the 'loginviaoption' setting) from
+            // authenticate with a uname/password (or email/password or unameoremail/password, depending on the 'loginviaoption' setting) from
             // the Users module. An empty password can be created when an administrator creates a user registration
             // record pending e-mail verification and does not set a password for the user (the user will set it
             // upon verifying his email address). The special marker indicating that the account does not authenticate
             // with the Users module is used when a user registers a new account with the system using an authentication
-            // method other than uname/pass or email/pass. In both cases, authentication automatically fails.
+            // method other than uname/pass, email/pass or unameoremail/pass. In both cases, authentication automatically fails.
             if (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION)) {
                 // The following check for non-salted passwords and the old 'hash_method' field is to allow the admin to log in
                 // during an upgrade from 1.2.
@@ -461,7 +476,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                                          password entered by the user.
      * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                          module's module name), and the 'method' method name. For the Users module, 'modname' would
-     *                                          be 'ZikulaUsersModule' and 'method' would contain either 'email' or 'uname'.
+     *                                          be 'ZikulaUsersModule' and 'method' would contain either 'email', 'uname' or 'unameoremail'.
      *
      * @param array $args All arguments passed to this function.
      *                      array   authenticationInfo  The authentication information uniquely associated with a user.
@@ -516,7 +531,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         //
         // Note: the following is a bad example for custom modules because there no mapping table for the Users module.
         // A custom authentication module would look up a uid using its own mapping tables, not the users table or UserUtil.
-        if ($authenticationMethod['method'] == 'email') {
+        if ($authenticationMethod['method'] == 'email' || ($authenticationMethod['method'] == 'unameoremail' && preg_match('/^'. UsersConstant::EMAIL_VALIDATION_PATTERN .'$/Di', $loginID))) {
             $authenticatedUid = UserUtil::getIdFromEmail($loginID);
             if (!$authenticatedUid) {
                 // Might be a registration. Acting as an authenticationModule, we should not care at this point about the user's
@@ -524,7 +539,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 // tell it whether the account authenticates or not.
                 $authenticatedUid = UserUtil::getIdFromEmail($loginID, true);
             }
-        } else {
+        } elseif ($authenticationMethod['method'] == 'uname' || ($authenticationMethod['method'] == 'unameoremail' && preg_match('/^'. UsersConstant::UNAME_VALIDATION_PATTERN .'$/uD', $loginID))) {
             $authenticatedUid = UserUtil::getIdFromName($loginID);
             if (!$authenticatedUid) {
                 // Might be a registration. See above.
@@ -552,7 +567,7 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
      *                                          password entered by the user.
      * array $args['authentication_method'] An array containing the authentication method, including the 'modname' (which should match this
      *                                          module's module name), and the 'method' method name. For the Users module, 'modname' would
-     *                                          be 'ZikulaUsersModule' and 'method' would contain either 'email' or 'uname'.
+     *                                          be 'ZikulaUsersModule' and 'method' would contain either 'email', 'uname' or 'unameoremail'.
      *
      * @param array $args All arguments passed to this function.
      *

@@ -49,12 +49,6 @@ use Zikula_Api_AbstractAuthentication;
  */
 class UserController extends \Zikula_AbstractController
 {
-
-    private function getNamespace()
-    {
-        return str_replace('\\', '_', __NAMESPACE__);
-    }
-
     /**
      * Post initialise.
      *
@@ -157,7 +151,7 @@ class UserController extends \Zikula_AbstractController
             $reentrantTokenReceived = $this->request->query->get('reentranttoken', false);
             if ($reentrantTokenReceived) {
                 // We got here by reentering from an external authenticator. Grab the data we stored in session variables.
-                $sessionVars = $this->request->getSession()->get('User_register', false, $this->getNamespace());
+                $sessionVars = $this->request->getSession()->get('User_register', false, UsersConstant::SESSION_VAR_NAMESPACE);
                 if ($sessionVars) {
                     $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
                     $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
@@ -349,7 +343,7 @@ class UserController extends \Zikula_AbstractController
                         'authentication_method' => $selectedAuthenticationMethod,
                         'reentranttoken'        => $reentrantToken,
                     );
-                    $this->request->getSession()->set('User_register', $sessionVars, $this->getNamespace());
+                    $this->request->getSession()->set('User_register', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
                     // The authentication method selected might be reentrant (it might send the user out to an external web site
                     // for authentication, and then send us back to finish the job). We need to tell the external system to where
@@ -411,7 +405,7 @@ class UserController extends \Zikula_AbstractController
                     // user was required to exit the Zikula system for authentication on the external system, then we will not get
                     // to this point until the reentrant callback (at which point the variable should, again, not be needed
                     // anymore).
-                    $this->request->getSession()->del('Users_register', $this->getNamespace());
+                    $this->request->getSession()->del('Users_register', UsersConstant::SESSION_VAR_NAMESPACE);
 
                     break;
 
@@ -1058,6 +1052,15 @@ class UserController extends \Zikula_AbstractController
      * such as the log-in block, this processes the credentials as a log-in request.
      *
      * If the user is already logged in, then he is redirected the main Users module page.
+     * Parameters passed via the $args array:
+     * --------------------------------------
+     * array   authentication_info   An array containing the authentication information entered by the user.
+     * array   authentication_method An array containing two elements: 'modname', the authentication module name, and 'method', the
+     *                                      selected authentication method as defined by the module.
+     * boolean firstmethodisdefault  If to display first of authentication methods as preselected in login form, when more then one are specified (default is true).
+     * boolean rememberme            True if the user should remain logged in at that computer for future visits; otherwise false.
+     * string  returnpage            The URL of the page to return to if the log-in attempt is successful. (This URL must not be urlencoded.)
+     * boolean from_password_change  Always true.
      *
      * Parameters passed via GET:
      * --------------------------
@@ -1096,53 +1099,74 @@ class UserController extends \Zikula_AbstractController
         $isReentry = false;
         $firstmethodisdefault = isset($args['firstmethodisdefault']) ? $args['firstmethodisdefault'] : true;
 
-        if ($this->request->isMethod('POST')) {
-            // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
-            if (System::getVar('anonymoussessions', false)) {
-                $this->checkCsrfToken();
-            }
+        // Need to check for $args first, since isPost() and isGet() will have been set on the original call
+        if (isset($args) && is_array($args) && !empty($args) && isset($args['from_password_change'])) {
+            // We are coming in or back (reentering) from someplace else via a direct call to this function. It is likely that
+            // we are coming back from a user.login.veto event handler that redirected the user to a page where he had to provide
+            // more information.
+            $authenticationInfo = isset($args['authentication_info']) ? $args['authentication_info'] : array();
+            $selectedAuthenticationMethod = isset($args['authentication_method']) ? $args['authentication_method'] : array();
+            $rememberMe         = isset($args['rememberme']) ? $args['rememberme'] : false;
+            $returnPage         = isset($args['returnpage']) ? $args['returnpage'] : $this->request->query->get('returnpage', '');
+            $eventType          = isset($args['event_type']) ? $args['event_type'] : false;
 
-            $authenticationInfo = $this->request->request->get('authentication_info', array());
-            $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
-            $rememberMe         = $this->request->request->get('rememberme', false);
-            $returnPage         = $this->request->request->get('returnpage', urldecode($this->request->query->get('returnpage', '')));
-            if (empty($returnPage)) {
-                // Check if returnurl was set instead of returnpage
-                $returnPage     = $this->request->request->get('returnurl', urldecode($this->request->query->get('returnurl', '')));
-            }
-            $eventType          = $this->request->request->get('event_type', false);
-        } elseif ($this->request->isMethod('GET')) {
-            $reentry = false;
-            $reentrantTokenReceived = $this->request->query->get('reentranttoken', '');
-
-            $sessionVars = $this->request->getSession()->get('User_login', array(), $this->getNamespace());
-            $this->request->getSession()->del('User_login', $this->getNamespace());
-
-            $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
-
-            if (!empty($reentrantTokenReceived) && ($reentrantTokenReceived == $reentrantToken)) {
-                // We are coming back (reentering) from someplace else. It is likely that we are coming back from an external
-                // authentication process initiated by an authentication module such as OpenID.
-                $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
-                $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
-                $rememberMe         = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
-                $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->query->get('returnpage', '');
-                $eventType          = isset($sessionVars['event_type']) ? $sessionVars['event_type'] : false;
-                $user               = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
-
-                $isReentry = true;
-            } else {
-                $authenticationInfo = array();
-                $selectedAuthenticationMethod = array();
-                $rememberMe         = false;
-                $returnPage         = urldecode($this->request->query->get('returnpage', $this->request->query->get('returnurl', '')));
-                $eventType          = 'login_screen';
-                $user               = array();
-
-                $this->getDispatcher()->dispatch('module.users.ui.login.started', new GenericEvent());
-            }
+            $isFunctionCall = true;
+        } elseif (isset($args) && !is_array($args)) {
+            // Coming from a function call, but bad $args
+            throw new Zikula_Exception_Fatal(LogUtil::getErrorMsgArgs());
         } else {
-            throw new Zikula_Exception_Forbidden();
+            $args['from_password_change'] = false;
+        }
+
+        if (!$args['from_password_change']) {
+            if ($this->request->isMethod('POST')) {
+                // We got here from a POST, either from the login, the login block, or some reasonable facsimile thereof.
+                if (System::getVar('anonymoussessions', false)) {
+                    $this->checkCsrfToken();
+                }
+
+                $authenticationInfo = $this->request->request->get('authentication_info', array());
+                $selectedAuthenticationMethod = $this->request->request->get('authentication_method', array());
+                $rememberMe         = $this->request->request->get('rememberme', false);
+                $returnPage         = $this->request->request->get('returnpage', urldecode($this->request->query->get('returnpage', '')));
+                if (empty($returnPage)) {
+                    // Check if returnurl was set instead of returnpage
+                    $returnPage     = $this->request->request->get('returnurl', urldecode($this->request->query->get('returnurl', '')));
+                }
+                $eventType          = $this->request->request->get('event_type', false);
+            } elseif ($this->request->isMethod('GET')) {
+                $reentry = false;
+                $reentrantTokenReceived = $this->request->query->get('reentranttoken', '');
+
+                $sessionVars = $this->request->getSession()->get('User_login', array(), UsersConstant::SESSION_VAR_NAMESPACE);
+                $this->request->getSession()->del('User_login', UsersConstant::SESSION_VAR_NAMESPACE);
+
+                $reentrantToken = isset($sessionVars['reentranttoken']) ? $sessionVars['reentranttoken'] : false;
+
+                if (!empty($reentrantTokenReceived) && ($reentrantTokenReceived == $reentrantToken)) {
+                    // We are coming back (reentering) from someplace else. It is likely that we are coming back from an external
+                    // authentication process initiated by an authentication module such as OpenID.
+                    $authenticationInfo = isset($sessionVars['authentication_info']) ? $sessionVars['authentication_info'] : array();
+                    $selectedAuthenticationMethod = isset($sessionVars['authentication_method']) ? $sessionVars['authentication_method'] : array();
+                    $rememberMe         = isset($sessionVars['rememberme']) ? $sessionVars['rememberme'] : false;
+                    $returnPage         = isset($sessionVars['returnpage']) ? $sessionVars['returnpage'] : $this->request->query->get('returnpage', '');
+                    $eventType          = isset($sessionVars['event_type']) ? $sessionVars['event_type'] : false;
+                    $user               = isset($sessionVars['user_obj']) ? $sessionVars['user_obj'] : null;
+
+                    $isReentry = true;
+                } else {
+                    $authenticationInfo = array();
+                    $selectedAuthenticationMethod = array();
+                    $rememberMe         = false;
+                    $returnPage         = urldecode($this->request->query->get('returnpage', $this->request->query->get('returnurl', '')));
+                    $eventType          = 'login_screen';
+                    $user               = array();
+
+                    $this->getDispatcher()->dispatch('module.users.ui.login.started', new GenericEvent());
+                }
+            } else {
+                throw new Zikula_Exception_Forbidden();
+            }
         }
 
         if (!isset($reentrantToken)) {
@@ -1151,7 +1175,7 @@ class UserController extends \Zikula_AbstractController
 
         // Any authentication information for use in this pass through login is gathered, so ensure any session variable
         // is cleared, even if we are coming in through a post or a function call that didn't gather info from the session.
-        $this->request->getSession()->del('User_login', $this->getNamespace());
+        $this->request->getSession()->del('User_login', UsersConstant::SESSION_VAR_NAMESPACE);
 
         $authenticationMethodList = new AuthenticationMethodListHelper($this);
 
@@ -1192,7 +1216,7 @@ class UserController extends \Zikula_AbstractController
                             'rememberme'            => $rememberMe,
                             'reentranttoken'        => $reentrantToken,
                         );
-                        $this->request->getSession()->set('User_login', $sessionVars, $this->getNamespace());
+                        $this->request->getSession()->set('User_login', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
 
                         // The authentication method selected might be reentrant (it might send the user out to an external web site
                         // for authentication, and then send us back to finish the job). We need to tell the external system to where
@@ -1206,13 +1230,6 @@ class UserController extends \Zikula_AbstractController
                         // The chosen authentication method might be reentrant, and this is the point were the user might be directed
                         // outside the Zikula system for external authentication.
                         $user = UserUtil::authenticateUserUsing($selectedAuthenticationMethod, $authenticationInfo, $reentrantUrl, true);
-
-                        // If we have gotten to this point in the same call to login(), then the authentication method was not external
-                        // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
-                        // user was required to exit the Zikula system for authentication on the external system, then we will not get
-                        // to this point until the reentrant call back to login() (at which point the variable should, again, not be needed
-                        // anymore).
-                        $this->request->getSession()->del('User_login', $this->getNamespace());
 
                         // Did we get a good user? If so, then we can proceed to hook validation.
                         if (isset($user) && $user && is_array($user) && isset($user['uid']) && is_numeric($user['uid'])) {
@@ -1303,6 +1320,14 @@ class UserController extends \Zikula_AbstractController
                                 return $this->redirect($redirectUrl);
                             }
                         }
+
+                        // If we have gotten to this point in the same call to login(), then the authentication method was not external
+                        // and reentrant, so we should not need the session variable any more. If it is external and reentrant, and the
+                        // user was required to exit the Zikula system for authentication on the external system, then we will not get
+                        // to this point until the reentrant call back to login() (at which point the variable should, again, not be needed
+                        // anymore).
+                        $this->request->getSession()->del('User_login', UsersConstant::SESSION_VAR_NAMESPACE);
+
                     } else {
                         if (!$this->request->getSession()->hasMessages(Zikula_Session::MESSAGE_ERROR)) {
                             $this->registerError($this->__('The credentials you entered were not valid. Please reenter the requested information and try again.'));
@@ -1405,7 +1430,7 @@ class UserController extends \Zikula_AbstractController
         // start logout event
         $uid = UserUtil::getVar('uid');
         $userObj = UserUtil::getVars($uid);
-        $authenticationMethod = SessionUtil::getVar('authentication_method', array('modname' => '', 'method' => ''), 'Zikula_Users');
+        $authenticationMethod = SessionUtil::getVar('authentication_method', array('modname' => '', 'method' => ''), UsersConstant::SESSION_VAR_NAMESPACE);
         if (UserUtil::logout()) {
             $event = new GenericEvent($userObj, array(
                 'authentication_method' => $authenticationMethod,
@@ -1906,7 +1931,7 @@ class UserController extends \Zikula_AbstractController
      *
      * Parameters passed via SESSION:
      * ------------------------------
-     * Namespace: Zikula_Users
+     * Namespace: UsersConstant::SESSION_VAR_NAMESPACE
      * Variable:  User_changePassword
      * Type:      array
      * Contents:  An array containing the information saved from the log-in attempt in order to re-enter it, including:
@@ -1921,8 +1946,8 @@ class UserController extends \Zikula_AbstractController
     {
         // Retrieve and delete any session variables being sent in before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
-        $sessionVars = $this->request->getSession()->get('User_changePassword', null, $this->getNamespace());
-        $this->request->getSession()->del('User_changePassword', $this->getNamespace());
+        $sessionVars = $this->request->getSession()->get('User_changePassword', null, UsersConstant::SESSION_VAR_NAMESPACE);
+        $this->request->getSession()->del('User_changePassword', UsersConstant::SESSION_VAR_NAMESPACE);
 
         // The check for $args must be first, because isPost() and isGet() will be set for the function that called this one
         if (isset($args) && !empty($args) && is_array($args)) {
@@ -1977,7 +2002,7 @@ class UserController extends \Zikula_AbstractController
             // /Users_Controller_User_changePassword because if we hit an exception or got redirected, then the data
             // would have been orphaned, and it contains some sensitive information.
             SessionUtil::requireSession();
-            $this->request->getSession()->set('User_updatePassword', $sessionVars, $this->getNamespace());
+            $this->request->getSession()->set('User_updatePassword', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
         }
 
         // Return the output that has been generated by this function
@@ -2003,7 +2028,7 @@ class UserController extends \Zikula_AbstractController
      *
      * Parameters passed via SESSION:
      * ------------------------------
-     * Namespace: Zikula_Users
+     * Namespace: UsersConstant::SESSION_VAR_NAMESPACE
      * Variable:  User_updatePassword
      * Type:      array
      * Contents:  An array containing the information saved from the log-in attempt in order to re-enter it, including:
@@ -2016,8 +2041,8 @@ class UserController extends \Zikula_AbstractController
      */
     public function updatePasswordAction()
     {
-        $sessionVars = $this->request->getSession()->get('User_updatePassword', null, $this->getNamespace());
-        $this->request->getSession()->del('User_updatePassword', $this->getNamespace());
+        $sessionVars = $this->request->getSession()->get('User_updatePassword', null, UsersConstant::SESSION_VAR_NAMESPACE);
+        $this->request->getSession()->del('User_updatePassword', UsersConstant::SESSION_VAR_NAMESPACE);
 
         if (!$this->request->isMethod('POST')) {
             throw new Zikula_Exception_Forbidden();
@@ -2077,7 +2102,7 @@ class UserController extends \Zikula_AbstractController
                     $this->registerStatus($this->__('Done! Saved your new password.'));
                 }
 
-                $userObj = UserUtil::getVars(UserUtil::getVar('uid'), true);
+                $userObj = UserUtil::getVars($uid, true);
                 if ($login) {
                     $sessionVars['user_obj'] = $userObj;
                     if ($sessionVars['authentication_method']['modname'] == $this->name) {
@@ -2093,10 +2118,11 @@ class UserController extends \Zikula_AbstractController
 
         if ($passwordChanged) {
             if ($login) {
-                $loginArgs = $this->request->getSession()->get('User_login', array(), $this->getNamespace());
+                $loginArgs = $this->request->getSession()->get('User_login', array(), UsersConstant::SESSION_VAR_NAMESPACE);
                 $loginArgs['authentication_method'] = $sessionVars['authentication_method'];
                 $loginArgs['authentication_info']   = $sessionVars['authentication_info'];
                 $loginArgs['rememberme']            = $sessionVars['rememberme'];
+                $loginArgs['from_password_change']  = true;
 
                 return ModUtil::func($this->name, 'user', 'login', $loginArgs);
             } else {
@@ -2105,7 +2131,7 @@ class UserController extends \Zikula_AbstractController
         } else {
             $sessionVars['password_errors'] = $passwordErrors;
             SessionUtil::requireSession();
-            $this->request->getSession()->set('User_changePassword', $sessionVars, $this->getNamespace());
+            $this->request->getSession()->set('User_changePassword', $sessionVars, UsersConstant::SESSION_VAR_NAMESPACE);
             return $this->redirect(ModUtil::url($this->name, 'user', 'changePassword', array('login' => $login)));
         }
     }

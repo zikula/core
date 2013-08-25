@@ -132,7 +132,9 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
         }
         // End parameter extraction and error checking
 
-        if ($this->authenticationMethodIsEnabled($args['method'])) {
+        if ($this->authenticationMethodIsEnabled($args['method']) || ($args['form_type'] == 'registration' && $args['method'] == 'uname')) {
+            // A hacky way to force displaying the uname/pass button for registration even if it is not activated.
+
             $templateVars = array(
                 'authentication_method' => array(
                     'modname'   => $this->name,
@@ -171,7 +173,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      * - array $args['authenticationMethod'] The authentication method (selected either by the user or by the system) for which
      *                                          the credentials in $authenticationInfo were entered by the user. For the Users
      *                                          module, the 'modname' element should contain 'ZikulaUsersModule' and the 'method' element
-     *                                          should contain either 'uname' or 'email'.
+     *                                          should contain either 'uname', 'email' or 'unameoremail'.
      * - array $args['authenticationInfo']   The user's credentials, as supplied by him on a log-in form on the log-in screen,
      *                                          log-in block, or some other equivalent control. For the Users module, it should
      *                                          contain the elements 'login_id' and 'pass'.
@@ -199,7 +201,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
 
         if (!isset($authenticationMethod['method'])) {
             throw new Zikula_Exception_Fatal($this->__('The authentication method name was not specified during an attempt to validate user authentication information.'));
-        } elseif (($authenticationMethod['method'] != 'uname') && ($authenticationMethod['method'] != 'email')) {
+        } elseif (($authenticationMethod['method'] != 'uname') && ($authenticationMethod['method'] != 'email') && ($authenticationMethod['method'] != 'unameoremail')) {
             throw new Zikula_Exception_Fatal($this->__f('Unknown authentication method (\'%1$s\') while attempting to validate user authentication information in the Users module.', array($authenticationMethod['method'])));
         }
 
@@ -209,8 +211,10 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             // This is an internal error that the user cannot recover from, and should not happen (it is an exceptional situation).
             if ($authenticationMethod['method'] == 'uname') {
                 throw new Zikula_Exception_Fatal($this->__('A user name was not specified, or the user name provided was invalid.'));
-            } else {
+            } elseif ($authenticationMethod['method'] == 'email') {
                 throw new Zikula_Exception_Fatal($this->__('An e-mail address was not specified, or the e-mail address provided was invalid.'));
+            } elseif ($authenticationMethod['method'] == 'unameoremail') {
+                throw new Zikula_Exception_Fatal($this->__('An user name / e-mail address was not specified, or the user name / e-mail address provided was invalid.'));
             }
         }
 
@@ -230,15 +234,19 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
             }
         } elseif (empty($authenticationInfo['pass'])) {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->registerError($this->__('Please provide a user name and password.'));
-            } else {
+                $this->registerError($this->__('Please provide an user name and password.'));
+            } elseif ($authenticationMethod['method'] == 'email') {
                 $this->registerError($this->__('Please provide an e-mail address and password.'));
+            } elseif ($authenticationMethod['method'] == 'unameoremail') {
+                $this->registerError($this->__('Please provide an user name / e-mail address and password.'));
             }
         } else {
             if ($authenticationMethod['method'] == 'uname') {
-                $this->registerError($this->__('Please provide a user name.'));
-            } else {
+                $this->registerError($this->__('Please provide an user name.'));
+            } elseif ($authenticationMethod['method'] == 'email') {
                 $this->registerError($this->__('Please provide an e-mail address.'));
+            } elseif ($authenticationMethod['method'] == 'unameoremail') {
+                $this->registerError($this->__('Please provide an user name / e-mail address.'));
             }
         }
 
