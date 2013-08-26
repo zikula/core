@@ -15,16 +15,65 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula\Component\HookDispatcher\Hook;
 use Zikula\Core\ModUrl;
 use Zikula\Core\Hook\DisplayHookResponse;
 
 /**
  * DisplayHook class.
  */
-class DisplayHook extends \Zikula_DisplayHook
+class DisplayHook extends Hook
 {
-    public function __construct($id, ModUrl $url = null)
+    /**
+     * Responses.
+     *
+     * @var array
+     */
+    private $responses = array();
+
+    /**
+     * The return url.
+     *
+     * @var ModUrl
+     */
+    private $url;
+
+    public function __construct($name, $id, ModUrl $url = null)
     {
-        parent::__construct(null, $id, $url);
+        $this->setName($name);
+        $this->id = $id;
+        $this->url = $url;
+    }
+
+    /**
+     * Add response.
+     *
+     * @param DisplayHookResponse $response
+     *
+     * @return mixed Data property.
+     */
+    public function setResponse(DisplayHookResponse $response)
+    {
+        return $this->responses[$response->getArea()] = $response;
+    }
+
+    /**
+     * Set data.
+     *
+     * @return array of DisplayHookResponse
+     */
+    public function getResponses()
+    {
+        return $this->responses;
+    }
+
+    /**
+     * Url getter.
+     *
+     * @return ModUrl
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
