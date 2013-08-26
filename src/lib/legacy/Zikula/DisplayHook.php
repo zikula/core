@@ -26,6 +26,7 @@ class Zikula_DisplayHook extends Zikula\Core\Hook\DisplayHook
     function __construct($name, $id, ModUrl $url = null)
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
-        parent::__construct($name, $id, $url);
+        $this->setName($name);
+        parent::__construct($id, $url);
     }
 }
