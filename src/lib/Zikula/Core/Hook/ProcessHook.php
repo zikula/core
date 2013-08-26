@@ -15,6 +15,7 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula\Component\HookDispatcher\Hook;
 use Zikula\Core\ModUrl;
 
 /**
@@ -23,14 +24,29 @@ use Zikula\Core\ModUrl;
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
  */
-class ProcessHook extends \Zikula_ProcessHook
+class ProcessHook extends Hook
 {
     /**
-     * @param string $id
-     * @param ModUrl $url
+     * Url container.
+     *
+     * @var ModUrl
      */
-    public function __construct($id, ModUrl $url=null)
+    protected $url;
+
+    public function __construct($name, $id, Zikula_ModUrl $url=null)
     {
-        parent::__construct(null, $id, $url);
+        $this->setName($name);
+        $this->id = $id;
+        $this->url = $url;
+    }
+
+    /**
+     * Gets the ModUrl
+     *
+     * @return ModUrl
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
