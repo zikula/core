@@ -13,28 +13,14 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\HookDispatcher\Hook;
-
 /**
  * Content filter hook.
  */
-class Zikula_FilterHook extends Hook
+class Zikula_FilterHook extends Zikula\Core\Hook\FilterHook
 {
-    private $data;
-
     public function __construct($name, $data=null)
     {
         $this->setName($name);
-        $this->data = $data;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    public function setData($data)
-    {
-        $this->data = $data;
+        parent::__construct($data);
     }
 }

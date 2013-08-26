@@ -15,13 +15,27 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula\Component\HookDispatcher\Hook;
+
 /**
  * Content filter hook.
  */
-class FilterHook extends \Zikula_FilterHook
+class FilterHook extends Hook
 {
+    private $data;
+
     public function __construct($data=null)
     {
         $this->setData($data);
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function setData($data)
+    {
+        $this->data = $data;
     }
 }
