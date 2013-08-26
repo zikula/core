@@ -13,8 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use LogUtil;
-
 /**
  * Zikula display hook response class.
  *

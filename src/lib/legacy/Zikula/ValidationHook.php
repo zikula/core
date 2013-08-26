@@ -14,7 +14,6 @@
  */
 
 use Zikula\Core\Hook\ValidationProviders;
-use LogUtil;
 
 /**
  * Content validation hook.
