@@ -31,7 +31,11 @@ class ValidationHook extends Hook
 
     public function __construct(ValidationProviders $validators)
     {
-        $this->validators = $validators;
+        if (isset($validators)) {
+            $this->validators = $validators;
+        } else {
+            $this->validators = new ValidationProviders();
+        }
     }
     /**
      * Sets the validation response.

@@ -30,6 +30,6 @@ class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
     {
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);
-        $this->validators = $validators;
+        parent::__construct($validators);
     }
 }
