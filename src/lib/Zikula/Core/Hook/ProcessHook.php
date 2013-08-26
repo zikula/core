@@ -33,9 +33,8 @@ class ProcessHook extends Hook
      */
     protected $url;
 
-    public function __construct($name, $id, ModUrl $url=null)
+    public function __construct($id, ModUrl $url=null)
     {
-        $this->setName($name);
         $this->id = $id;
         $this->url = $url;
     }
