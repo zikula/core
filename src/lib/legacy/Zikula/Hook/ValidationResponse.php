@@ -13,8 +13,6 @@
  * information regarding copyright and licensing.
  */
 
-use LogUtil;
-
 /**
  * Validation object for hooks.
  *

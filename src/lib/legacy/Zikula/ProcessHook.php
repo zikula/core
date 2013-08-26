@@ -14,7 +14,6 @@
  */
 
 use Zikula\Core\ModUrl;
-use LogUtil;
 
 /**
  * Process Hook.
