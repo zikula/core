@@ -15,6 +15,8 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula_View;
+
 /**
  * Zikula display hook response class.
  *
