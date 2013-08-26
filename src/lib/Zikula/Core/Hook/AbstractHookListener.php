@@ -15,6 +15,8 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula_TranslatableInterface;
+
 /**
  * Custom Hook Handler interface.
  */
