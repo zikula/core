@@ -62,8 +62,6 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
      * Constructor.
      *
      * @param Zikula_EventManager $eventManager ServiceManager.
-     *
-     * @throws InvalidArgumentException If $this->eventNames is invalid.
      */
     public function __construct(Zikula_EventManager $eventManager)
     {
