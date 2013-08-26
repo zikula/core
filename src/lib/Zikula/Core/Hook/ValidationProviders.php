@@ -16,6 +16,7 @@
 namespace Zikula\Core\Hook;
 
 use Zikula\Common\Collection\Container;
+use Zikula\Core\Hook\ValidationResponse;
 
 /**
  * Hook validation collection
@@ -43,8 +44,8 @@ class ValidationProviders extends Container
      */
     public function set($name, $response)
     {
-        if (!$response instanceof Zikula_Hook_ValidationResponse) {
-            throw new InvalidArgumentException('$response must be an instance of Zikula_Hook_ValidationResponse');
+        if (!$response instanceof ValidationResponse) {
+            throw new \InvalidArgumentException('$response must be an instance of ValidationResponse');
         }
         $this->collection[$name] = $response;
     }
