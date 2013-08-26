@@ -15,11 +15,15 @@
 
 /**
  * Content filter hook.
+ *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\DisplayHook
  */
 class Zikula_FilterHook extends Zikula\Core\Hook\FilterHook
 {
     public function __construct($name, $data=null)
     {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);
         parent::__construct($data);
     }

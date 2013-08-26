@@ -17,6 +17,9 @@ use Zikula\Core\Hook\ValidationProviders;
 
 /**
  * Content validation hook.
+ *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\DisplayHook
  */
 class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
 {
@@ -25,6 +28,7 @@ class Zikula_ValidationHook extends Zikula\Core\Hook\ValidationHook
      */
     public function __construct($name, ValidationProviders $validators)
     {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);
         $this->validators = $validators;
     }
