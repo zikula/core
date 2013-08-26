@@ -13,9 +13,19 @@
  * information regarding copyright and licensing.
  */
 
+use LogUtil;
+
 /**
  * Custom Hook Handler interface.
+ *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\AbstractHookListener
  */
 abstract class Zikula_Hook_AbstractHandler extends Zikula\Core\Hook\AbstractHookListener
 {
+    function __construct(Zikula_EventManager $eventManager)
+    {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
+        parent::__construct($eventManager);
+    }
 }

@@ -13,12 +13,19 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Core\ModUrl;
+
 /**
- * Zikula_Event encapsulation class.
+ * Process Hook.
  *
- * Encapsulates events thus decoupling the observer from the subject they encapsulate.
- *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\DisplayHook
  */
 class Zikula_ProcessHook extends Zikula\Core\Hook\ProcessHook
 {
+    function __construct($name, $id, ModUrl $url=null)
+    {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
+        parent::__construct($name, $id, $url);
+    }
 }

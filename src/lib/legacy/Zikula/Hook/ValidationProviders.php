@@ -15,7 +15,15 @@
 
 /**
  * Hook validation collection
+ *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\ValidationProviders
  */
 class Zikula_Hook_ValidationProviders extends Zikula\Core\Hook\ValidationProviders
 {
+    function __construct($name='validation', ArrayObject $collection = null)
+    {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
+        parent::__construct($name, $collection);
+    }
 }
