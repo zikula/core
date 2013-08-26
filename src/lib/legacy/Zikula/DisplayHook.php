@@ -15,7 +15,7 @@
 
 use Zikula\Component\HookDispatcher\Hook;
 use Zikula\Core\ModUrl;
-use Zikula\Core\Hook\Response\DisplayHookResponse;
+use Zikula\Core\Hook\DisplayHookResponse;
 
 /**
  * DisplayHook class.
