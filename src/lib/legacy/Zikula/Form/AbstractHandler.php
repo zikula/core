@@ -255,11 +255,11 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Notify any hookable events.
      *
-     * @param Zikula_HookInterface $hook Hook interface.
+     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
      *
      * @return mixed Notification result.
      */
-    public function notifyHooks(Zikula_AbstractHook $hook)
+    public function notifyHooks(Hook $hook)
     {
         return $this->view->getContainer()->get('hook_dispatcher')->dispatch($hook->getName(), $hook);
     }
@@ -267,7 +267,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
     /**
      * Dispatch hooks.
      *
-     * @param Zikula_AbstractHook $hook Hook interface.
+     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
      *
      * @return Zikula_AbstractHook
      */
