@@ -80,14 +80,14 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @param Zikula_AbstractHook $hook Hook interface.
+     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
      *
      * @deprecated since 1.3.6
      * @use self::dispatchHooks()
      *
      * @return Zikula_AbstractHook
      */
-    public function notifyHooks(Zikula_AbstractHook $hook)
+    public function notifyHooks(Hook $hook)
     {
         return $this->get('hook_dispatcher')->dispatch($hook->getName(), $hook);
     }
@@ -95,7 +95,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Dispatch hooks.
      *
-     * @param Zikula_AbstractHook $hook Hook interface.
+     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
      *
      * @return Zikula_AbstractHook
      */
