@@ -13,6 +13,8 @@
  * information regarding copyright and licensing.
  */
 
+use LogUtil;
+
 /**
  * Url class.
  *

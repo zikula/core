@@ -14,6 +14,7 @@
  */
 
 use Zikula\Core\ModUrl;
+use LogUtil;
 
 /**
  * DisplayHook class.
