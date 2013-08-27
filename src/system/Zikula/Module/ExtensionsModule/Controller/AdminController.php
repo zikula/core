@@ -1117,11 +1117,10 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // get the module information from the files system
-        $moduleInfo = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules',
-                array('name' => $modinfo['name']));
+        $moduleInfo = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules');
 
         // assign the module information and other variables to the template
-        $this->view->assign('moduleInfo', $moduleInfo)
+        $this->view->assign('moduleInfo', $moduleInfo[($modinfo['name'])])
                    ->assign('id', $id)
                    ->assign('startnum', $startnum)
                    ->assign('letter', $letter)
