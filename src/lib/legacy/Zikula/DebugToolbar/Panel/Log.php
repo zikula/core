@@ -225,7 +225,9 @@ class Zikula_DebugToolbar_Panel_Log implements Zikula_DebugToolbar_PanelInterfac
                         // need to truncate object entry in trace items because it's generating enormous amount of data
                         $v['trace'][$kt]['object'] = Zikula_DebugToolbar::prepareData($vt['object'], -1);
                     }
-                    $v['trace'][$kt]['args'] = Zikula_DebugToolbar::prepareData($vt['args']);
+                    if (isset($vt['args'])) {
+                        $v['trace'][$kt]['args'] = Zikula_DebugToolbar::prepareData($vt['args']);
+                    }
                 }
             }
             $data[$k] = $v;
