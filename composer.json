@@ -32,7 +32,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "beberlei/DoctrineExtensions": "dev-master",
+        "beberlei/DoctrineExtensions": "dev-master#d726b291d534ee33611e2ef9f731fa66a7822590",
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
         "drak/doctrine1": "dev-master",
