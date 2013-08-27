@@ -207,7 +207,7 @@ class Zikula_DebugToolbar_Panel_Exec implements Zikula_DebugToolbar_PanelInterfa
             $html =  "<strong>" . $key . '</strong>  <span style="color:#666666;font-style:italic;">('.
                        get_class($var).')</span>: <ul>';
 
-            if (get_class($var) == 'Doctrine_Record' || get_class($var) == 'Doctrine_Collection') {
+            if (get_class($var) == 'Doctrine_Record' || get_class($var) == 'Doctrine_Collection' || get_class($var) == 'Doctrine\ORM\PersistentCollection') {
                 $var = $var->toArray();
                 foreach ($var as $akey => $avar) {
                     $html .= $this->formatVar($akey, $avar, $level + 1);
