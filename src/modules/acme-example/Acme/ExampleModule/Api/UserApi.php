@@ -2,9 +2,7 @@
 
 namespace Acme\ExampleModule\Api;
 
-use Zikula\Core\Api\AbstractApi;
-
-class UserApi extends AbstractApi
+class UserApi extends \Zikula_AbstractApi
 {
     public function view(array $array = array())
     {
