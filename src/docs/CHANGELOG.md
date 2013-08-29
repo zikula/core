@@ -66,6 +66,7 @@ Features:
 - Added events if a module is activated and if a module is deactivated.
 - Implemented OpenSearch.
 - Added "hybrid" login option. The user can either provide his email address or user name and will be logged in.
+- Added system information page using `phpinfo()` to the settings module.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------

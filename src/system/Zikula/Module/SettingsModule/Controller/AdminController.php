@@ -240,4 +240,26 @@ class AdminController extends \Zikula_AbstractController
 
         return $this->redirect($url);
     }
+
+    /**
+     * Displays the content of {@link phpinfo()}.
+     *
+     * @throws \Zikula_Exception_Forbidden If the user doesn't has access to that page.
+     *
+     * @return \Symfony\Component\HttpFoundation\Response The html output.
+     */
+    public function phpinfoAction()
+    {
+        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN));
+
+        ob_start();
+        phpinfo();
+        $phpinfo = ob_get_contents();
+        ob_end_clean();
+        $phpinfo = str_replace("module_Zend Optimizer", "module_Zend_Optimizer", preg_replace ('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
+
+        $this->view->assign('phpinfo', $phpinfo);
+
+        return $this->response($this->view->fetch('Admin/phpinfo.tpl'));
+    }
 }
