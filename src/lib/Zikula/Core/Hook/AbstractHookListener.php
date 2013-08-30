@@ -40,21 +40,21 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Display hook response object.
      *
-     * @var Zikula_Response_DisplayHook
+     * @var Zikula\Core\Hook\DisplayHookResponse
      */
     protected $display;
 
     /**
      * Validation object.
      *
-     * @var Zikula_Hook_ValidationResponse
+     * @var Zikula\Core\Hook\ValidationResponse
      */
     protected $validation;
 
     /**
      * This object's reflection.
      *
-     * @var ReflectionObject
+     * @var \ReflectionObject
      */
     protected $reflection;
 
@@ -72,12 +72,12 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Get reflection of this object.
      *
-     * @return ReflectionObject
+     * @return \ReflectionObject
      */
     public function getReflection()
     {
         if (!$this->reflection) {
-            $this->reflection = new ReflectionObject($this);
+            $this->reflection = new \ReflectionObject($this);
         }
 
         return $this->reflection;
