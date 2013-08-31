@@ -26,4 +26,14 @@ abstract class Zikula_Hook_AbstractHandler extends Zikula\Core\Hook\AbstractHook
         LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         parent::__construct($eventManager);
     }
+
+    /**
+     * Get eventManager.
+     *
+     * @return Zikula_EventManager
+     */
+    public function getEventManager()
+    {
+        return $this->getDispatcher();
+    }
 }

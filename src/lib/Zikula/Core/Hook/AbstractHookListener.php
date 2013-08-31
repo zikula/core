@@ -16,7 +16,7 @@
 namespace Zikula\Core\Hook;
 
 use Zikula_TranslatableInterface;
-use Zikula_EventManager;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
 
 /**
  * Custom Hook Handler interface.
@@ -24,11 +24,11 @@ use Zikula_EventManager;
 abstract class AbstractHookListener implements Zikula_TranslatableInterface
 {
     /**
-     * EventManager instance.
+     * Dispatcher instance.
      *
-     * @var Zikula_EventManager
+     * @var EventDispatcher
      */
-    protected $eventManager;
+    protected $dispatcher;
 
     /**
      * Translation domain.
@@ -61,11 +61,11 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Constructor.
      *
-     * @param Zikula_EventManager $eventManager ServiceManager.
+     * @param EventDispatcher $dispatcher ServiceManager.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    public function __construct(EventDispatcher $dispatcher)
     {
-        $this->eventManager = $eventManager;
+        $this->dispatcher = $dispatcher;
         $this->setup();
     }
 
@@ -84,13 +84,13 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     }
 
     /**
-     * Get eventManager.
+     * Get dispatcher.
      *
-     * @return Zikula_EventManager
+     * @return EventDispatcher
      */
-    public function getEventManager()
+    public function getDispatcher()
     {
-        return $this->eventManager;
+        return $this->dispatcher;
     }
 
     /**
