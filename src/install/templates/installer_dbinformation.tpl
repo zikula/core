@@ -19,18 +19,25 @@
             <legend>{gt text="Database information"}</legend>
             <div class="z-formrow">
                 <label for="dbdriver">{gt text="Database type"}</label>
-                {dbtypes name=dbdriver selectedValue=$dbdriver id=dbdriver}
-            </div>
-            <div class="z-formrow">
-                <label for="dbtabletype">{gt text="Database table type (MySQL only)"}</label>
-                <select name="dbtabletype" id="dbtabletype">
-                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>MyISAM</option>
-                    <option value="innodb"{if $dbtabletype eq innodb} selected="selected"{/if}>InnoDB</option>
-                </select>
+                {dbtypes name='dbdriver' selectedValue=$dbdriver id='dbdriver'}
             </div>
             <div class="z-formrow">
                 <label for="dbhost">{gt text="Host"}</label>
                 <input type="text" name="dbhost" id="dbhost" maxlength="80" value="{$dbhost|default:'localhost'}" />
+            </div>
+            <div class="z-formrow">
+                <label for="dbport">{gt text="Port"}</label>
+                <input type="text" name="dbport" id="dbport" maxlength="5" value="{$dbport|default:'3306'}" />
+                <p class="z-formnote z-informationmsg">
+                    <strong>{gt text="If the host is \"localhost\", then the port number is ignored and \"3306\" is assumed by default. If the MySQL server is running on any port other than the default port \"3306\", use the IP address \"127.0.0.1\" in place of \"localhost\" in the host argument."}</strong>
+                </p>
+            </div>
+            <div class="z-formrow">
+                <label for="dbname">{gt text="Database name"}</label>
+                <input type="text" name="dbname" id="dbname" maxlength="80" value="{$dbname}" />
+                <p class="z-formnote z-informationmsg">
+                    <strong>{gt text="Please ensure the database is in UTF8 format."}</strong>
+                </p>
             </div>
             <div class="z-formrow">
                 <label for="dbusername">{gt text="User name"}</label>
@@ -41,13 +48,12 @@
                 <input type="password" name="dbpassword" id="dbpassword" maxlength="80" value="{$dbpassword}" />
             </div>
             <div class="z-formrow">
-                <label for="dbname">{gt text="Database name"}</label>
-                <input type="text" name="dbname" id="dbname" maxlength="80" value="{$dbname}" />
-                <p class="z-formnote z-informationmsg">
-                    <strong>{gt text="Please ensure the database is in UTF8 format."}</strong>
-                </p>
+                <label for="dbtabletype">{gt text="Database table type (MySQL only)"}</label>
+                <select name="dbtabletype" id="dbtabletype">
+                    <option value="innodb"{if $dbtabletype eq innodb} selected="selected"{/if}>InnoDB</option>
+                    <option value="myisam"{if $dbtabletype eq myisam} selected="selected"{/if}>MyISAM</option>
+                </select>
             </div>
-
         </fieldset>
         <div class="z-buttons z-center">
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />

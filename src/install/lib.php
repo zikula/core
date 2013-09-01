@@ -52,12 +52,13 @@ function install(Zikula_Core $core)
     file_put_contents("$tempDir/view_compiled/index.html", '');
 
     $lang = FormUtil::getPassedValue('lang', '', 'GETPOST');
+    $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
     $dbhost = FormUtil::getPassedValue('dbhost', '', 'GETPOST');
+    $dbport = FormUtil::getPassedValue('dbport', '', 'GETPOST');
+    $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
     $dbusername = FormUtil::getPassedValue('dbusername', '', 'GETPOST');
     $dbpassword = FormUtil::getPassedValue('dbpassword', '', 'GETPOST');
-    $dbname = FormUtil::getPassedValue('dbname', '', 'GETPOST');
     $dbprefix = '';
-    $dbdriver = FormUtil::getPassedValue('dbdriver', '', 'GETPOST');
     $dbtabletype = FormUtil::getPassedValue('dbtabletype', '', 'GETPOST');
     $username = FormUtil::getPassedValue('username', '', 'POST');
     $password = FormUtil::getPassedValue('password', '', 'POST');
@@ -151,10 +152,10 @@ function install(Zikula_Core $core)
                 $action = 'dbinformation';
                 $smarty->assign('dbinvalidname', true);
             } else {
-                update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype);
+                update_config_php($dbdriver, $dbhost, $dbport, $dbname, $dbusername, $dbpassword, $dbtabletype);
                 update_installed_status(0);
                 try {
-                    $dbh = new PDO("$dbdriver:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
+                    $dbh = new PDO("$dbdriver:host=$dbhost;port=$dbport;dbname=$dbname", $dbusername, $dbpassword);
                 } catch (PDOException $e) {
                     $action = 'dbinformation';
                     $smarty->assign('reason', $e->getMessage());
@@ -528,16 +529,16 @@ function _installer_replace_keys($searchKey, $replaceWith, $string)
     return preg_replace($search, $replace, $string);
 }
 
-function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype)
+function update_config_php($dbdriver, $dbhost, $dbport, $dbname, $dbusername, $dbpassword, $dbtabletype)
 {
     $file = file_get_contents('config/config.php');
-    $file = _installer_replace_keys('dbname', $dbname, $file);
     $file = _installer_replace_keys('dbdriver', $dbdriver, $file);
-    $file = _installer_replace_keys('dbtabletype', $dbtabletype, $file);
-    $file = _installer_replace_keys('user', $dbusername, $file);
-    $file = _installer_replace_keys('password', $dbpassword, $file);
     $file = _installer_replace_keys('host', $dbhost, $file);
+    $file = _installer_replace_keys('port', $dbport, $file);       
     $file = _installer_replace_keys('dbname', $dbname, $file);
+    $file = _installer_replace_keys('user', $dbusername, $file);
+    $file = _installer_replace_keys('password', $dbpassword, $file);        
+    $file = _installer_replace_keys('dbtabletype', $dbtabletype, $file);
     file_put_contents('config/config.php', $file);
 
     $array = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
