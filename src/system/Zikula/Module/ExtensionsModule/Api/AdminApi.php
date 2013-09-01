@@ -435,7 +435,7 @@ class AdminApi extends \Zikula_AbstractApi
         $filemodules = array();
 
         $scanner = new Scanner();
-        $scanner->scan(array('system', 'modules'), 4);
+        $scanner->scan(array('system', 'modules'), 5);
         $newModules = $scanner->getModulesMetaData();
 
         foreach ($newModules as $name => $module) {
