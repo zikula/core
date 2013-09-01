@@ -15,13 +15,46 @@
 
 namespace Zikula\Core\Hook;
 
+use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Core\Hook\ValidationProviders;
+use Zikula\Core\Hook\ValidationResponse;
+
 /**
  * Content validation hook.
  */
-class ValidationHook extends \Zikula_ValidationHook
+class ValidationHook extends Hook
 {
+    /**
+     * @var ValidationProviders
+     */
+    private $validators;
+
     public function __construct(ValidationProviders $validators)
     {
-        parent::__construct(null, $validators);
+        if (isset($validators)) {
+            $this->validators = $validators;
+        } else {
+            $this->validators = new ValidationProviders();
+        }
+    }
+    /**
+     * Sets the validation response.
+     *
+     * @param $name
+     * @param ValidationResponse $response
+     */
+    public function setValidator($name, ValidationResponse $response)
+    {
+        $this->validators->set($name, $response);
+    }
+
+    /**
+     * Gets validation providers
+     *
+     * @return ValidationProviders
+     */
+    public function getValidators()
+    {
+        return $this->validators;
     }
 }

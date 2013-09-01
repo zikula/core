@@ -13,38 +13,20 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\HookDispatcher\Hook;
 use Zikula\Core\ModUrl;
 
 /**
- * Zikula_Event encapsulation class.
+ * Process Hook.
  *
- * Encapsulates events thus decoupling the observer from the subject they encapsulate.
- *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\DisplayHook
  */
-class Zikula_ProcessHook extends Hook
+class Zikula_ProcessHook extends Zikula\Core\Hook\ProcessHook
 {
-    /**
-     * Url container.
-     *
-     * @var ModUrl
-     */
-    protected $url;
-
-    public function __construct($name, $id, Zikula_ModUrl $url=null)
+    function __construct($name, $id, ModUrl $url=null)
     {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);
-        $this->id = $id;
-        $this->url = $url;
-    }
-
-    /**
-     * Gets the ModUrl
-     *
-     * @return ModUrl
-     */
-    public function getUrl()
-    {
-        return $this->url;
+        parent::__construct($id, $url);
     }
 }

@@ -13,28 +13,18 @@
  * information regarding copyright and licensing.
  */
 
-use Zikula\Component\HookDispatcher\Hook;
-
 /**
  * Content filter hook.
+ *
+ * @deprecated since Core 1.3.6
+ * @see Zikula\Core\Hook\DisplayHook
  */
-class Zikula_FilterHook extends Hook
+class Zikula_FilterHook extends Zikula\Core\Hook\FilterHook
 {
-    private $data;
-
     public function __construct($name, $data=null)
     {
+        LogUtil::log(__f('Warning! Class %s is deprecated.', array(__CLASS__), E_USER_DEPRECATED));
         $this->setName($name);
-        $this->data = $data;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    public function setData($data)
-    {
-        $this->data = $data;
+        parent::__construct($data);
     }
 }
