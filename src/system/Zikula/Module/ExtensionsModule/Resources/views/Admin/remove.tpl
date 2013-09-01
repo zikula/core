@@ -4,9 +4,9 @@
     <h3>{gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}</h3>
 </div>
 
-<p class="z-warningmsg">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
+<p class="alert alert-warning">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
@@ -17,14 +17,14 @@
         <fieldset>
             <legend>{gt text="Do you really want to uninstall this module?"}</legend>
             {if $hasBlocks gt 0}
-            <div class="z-formrow">
-                <p class="z-warningmsg">{gt text="Warning! This module still has %s active block. Removing this module will also permanently remove this block." plural="Warning! This module still has %s active blocks. Removing this module will also permanently remove these blocks." count=$hasBlocks tag1=$hasBlocks}</p>
+            <div class="form-group">
+                <p class="alert alert-warning">{gt text="Warning! This module still has %s active block. Removing this module will also permanently remove this block." plural="Warning! This module still has %s active blocks. Removing this module will also permanently remove these blocks." count=$hasBlocks tag1=$hasBlocks}</p>
             </div>
             {/if}
             {if $dependents}
-            <div class="z-formrow">
-                <p class="z-informationmsg">{gt text="Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled."}</p>
-                <table class="z-datatable">
+            <div class="form-group">
+                <p class="alert alert-info">{gt text="Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled."}</p>
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>{gt text="Module name"}</th>
@@ -58,10 +58,13 @@
             </div>
             {/if}
 
-            <div class="z-buttons z-formbuttons">
-                {button src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Uninstall' __title='Uninstall' __text='Uninstall'}
-                <a class="z-btred" href="{modurl modname='ZikulaExtensionsModule' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-            </div>
+            <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                    {button src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Uninstall' __title='Uninstall' __text='Uninstall'}
+                    <a class="btn btn-default" class="z-btred" href="{modurl modname='ZikulaExtensionsModule' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                </div>
+        </div>
+        </div>
         </fieldset>
     </div>
 </form>

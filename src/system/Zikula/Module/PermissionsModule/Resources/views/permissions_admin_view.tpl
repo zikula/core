@@ -30,7 +30,7 @@
     <h3>{gt text="Permission rules list"}</h3>
 </div>
 
-<p class="z-informationmsg z-hide" id="permissiondraganddrophint">
+<p class="alert alert-info hide" id="permissiondraganddrophint">
     {gt text="Notice: Arrange your permission rules in the desired order of evaluation, using drag and drop. The sort order will be saved immediately and automatically."}
     {if $lockadmin == 1}
     {gt text="The permission rule you have defined as your main administration permission rule (highlighted in the list below) has been <strong>locked</strong>, which means you cannot edit it, move it or delete it. If this permission rule is not at the top of the list, other permission rules can be moved around it. If you need to perform an operation on the main administration permission rule then you must go to the Permission rules manager Settings page to unlock it beforehand. Otherwise, it is safer to keep it locked."}
@@ -40,38 +40,36 @@
 </p>
 
 {if $enablefilter eq true}
-<form class="z-form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
-    <div>
-        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <fieldset>
-            <legend>{gt text="Filter permission rules list"}</legend>
-            <span class="z-nowrap">
-                <label for="permgrp">{gt text="Choose filter"}</label>
-                <select id="permgrp" name="permgrp">
-                    <optgroup label="{gt text="Group"}">
-                        {foreach item=groupname from=$permgrps key=groupid}
-                        <option value="g+{$groupid}">{$groupname}</option>
-                        {/foreach}
-                    </optgroup>
-                    <optgroup label="{gt text="Component"}">
-                        {foreach item=component from=$components key=compkey}
-                        <option value="c+{$compkey}">{$component}</option>
-                        {/foreach}
-                    </optgroup>
-                </select>
-            </span>
-            <span class="z-nowrap z-buttons">
-                <button id="permgroupfiltersubmit" class="z-button z-bt-small" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
-                <button id="permgroupfiltersubmitajax" class="z-button z-bt-small z-hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
-            </span>
-        </fieldset>
-    </div>
+<form class="form-inline" role="form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+    <fieldset>
+        <legend>{gt text="Filter permission rules list"}</legend>
+        <span class="z-nowrap">
+            <label for="permgrp">{gt text="Choose filter"}</label>
+            <select id="permgrp" name="permgrp">
+                <optgroup label="{gt text="Group"}">
+                    {foreach item=groupname from=$permgrps key=groupid}
+                    <option value="g+{$groupid}">{$groupname}</option>
+                    {/foreach}
+                </optgroup>
+                <optgroup label="{gt text="Component"}">
+                    {foreach item=component from=$components key=compkey}
+                    <option value="c+{$compkey}">{$component}</option>
+                    {/foreach}
+                </optgroup>
+            </select>
+        </span>
+        <span class="z-nowrap z-buttons">
+            <button id="permgroupfiltersubmit" class="z-button z-bt-small" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+            <button id="permgroupfiltersubmitajax" class="z-button z-bt-small hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
+        </span>
+    </fieldset>
 </form>
 {/if}
 
 {checkpermissionblock component='ZikulaPermissionsModule::' instance='::' level=ACCESS_ADMIN}
 <div id="permissions-header" class="z-clearfix">
-    <a id="appendajax" onclick="javascript:permappend();" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
+    <a id="appendajax" onclick="javascript:permappend();" class="z-floatleft z-icon-es-new hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
     <strong id="filterwarning" class="z-floatright z-icon-es-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
 </div>
 {/checkpermissionblock}
@@ -108,26 +106,26 @@
                 <span id="permgroup_{$permission.permid}" class="z-itemcell z-w15">
                     {$permission.group|safetext}
                 </span>
-                <span id="editpermgroup_{$permission.permid}" class="z-itemcell z-w15 z-hide">
+                <span id="editpermgroup_{$permission.permid}" class="z-itemcell z-w15 hide">
                     <select name="group_{$permission.permid}" id="group_{$permission.permid}">
                         {html_options options=$groups}
                     </select>
                 </span>
 
                 <span id="permcomp_{$permission.permid}" class="z-itemcell z-w25">{$permission.component|safetext}</span>
-                <span id="editpermcomp_{$permission.permid}" class="z-itemcell z-w25 z-hide">
+                <span id="editpermcomp_{$permission.permid}" class="z-itemcell z-w25 hide">
                     <textarea id="component_{$permission.permid}" name="component_{$permission.permid}" rows="2" cols="20">{$permission.component|safetext}</textarea>
                 </span>
 
                 <span id="perminst_{$permission.permid}" class="z-itemcell z-w25">{$permission.instance|safetext}</span>
-                <span id="editperminst_{$permission.permid}" class="z-itemcell z-w25 z-hide">
+                <span id="editperminst_{$permission.permid}" class="z-itemcell z-w25 hide">
                     <textarea id="instance_{$permission.permid}" name="instance_{$permission.permid}" rows="2" cols="20">{$permission.instance|safetext}</textarea>
                 </span>
 
                 <span id="permlevel_{$permission.permid}" class="z-itemcell z-w20">
                     {$permission.accesslevel|safetext}
                 </span>
-                <span id="editpermlevel_{$permission.permid}" class="z-itemcell z-w20 z-hide">
+                <span id="editpermlevel_{$permission.permid}" class="z-itemcell z-w20 hide">
                     <select name="level_{$permission.permid}" id="level_{$permission.permid}">
                         {html_options options=$permissionlevels}
                     </select>
@@ -136,19 +134,19 @@
                     <a id="insert_{$permission.permid}"     href="{$permission.inserturl|safetext}" title="{gt text="Insert permission rule before"}">{img src=insert_table_row.png modname=core set=icons/extrasmall __title="Insert permission rule before" __alt="Insert permission rule before"}</a>
                     <a id="modify_{$permission.permid}"     href="{$permission.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</a>
                     <a id="delete_{$permission.permid}"     href="{$permission.deleteurl|safetext}" title="{gt text="Delete"}">{img src=delete_table_row.png modname=core set=icons/extrasmall __title="Delete" __alt="Delete"}</a>
-                    <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$permission.permid}"   title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
-                    <button class="z-imagebutton z-hide tooltips" id="testpermajax_{$permission.permid}" title="{gt text="User permission check"}">{img src=testbed_protocol.png modname=core set=icons/extrasmall __title="Check a users permission" __alt="Check a users permission"}</button>
+                    <button class="z-imagebutton hide tooltips" id="modifyajax_{$permission.permid}"   title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                    <button class="z-imagebutton hide tooltips" id="testpermajax_{$permission.permid}" title="{gt text="User permission check"}">{img src=testbed_protocol.png modname=core set=icons/extrasmall __title="Check a users permission" __alt="Check a users permission"}</button>
                 </span>
-                <span id="editpermaction_{$permission.permid}" class="z-itemcell z-w07 z-hide">
+                <span id="editpermaction_{$permission.permid}" class="z-itemcell z-w07 hide">
                     <button class="z-imagebutton tooltips" id="permeditsave_{$permission.permid}"   title="{gt text="Save"}">{img src=button_ok.png modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
                     <button class="z-imagebutton tooltips" id="permeditdelete_{$permission.permid}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                     <button class="z-imagebutton tooltips" id="permeditcancel_{$permission.permid}" title="{gt text="Cancel"}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                 </span>
             </div>
-            <div id="permissioninfo_{$permission.permid}" class="z-hide z-permissioninfo">&nbsp;</div>
+            <div id="permissioninfo_{$permission.permid}" class="hide z-permissioninfo">&nbsp;</div>
         </li>
         {foreachelse}
-        <li id="permission_1" class="z-hide z-clearfix">
+        <li id="permission_1" class="hide z-clearfix">
             <div id="permissioncontent_1" class="permissioncontent">
                 <input type="hidden" id="groupid_1" value="" class="permgroup" />
                 <input type="hidden" id="levelid_1" value="" class="permlevel" />
@@ -157,27 +155,27 @@
                 <span id="permdrag_1" class="z-itemcell z-w05">
                     &nbsp;
                 </span>
-                <span id="permgroup_1" class="z-itemcell z-w15 z-hide">{$permission.group|safetext}</span>
+                <span id="permgroup_1" class="z-itemcell z-w15 hide">{$permission.group|safetext}</span>
                 <span id="editpermgroup_1" class="z-itemcell z-w15">
                     <select name="group_1" id="group_1">
                         {html_options options=$groups}
                     </select>
                 </span>
-                <span id="permcomp_1" class="z-itemcell z-w25 z-hide">{$permission.component|safetext}</span>
+                <span id="permcomp_1" class="z-itemcell z-w25 hide">{$permission.component|safetext}</span>
                 <span id="editpermcomp_1" class="z-itemcell z-w25">
                     <textarea id="component_1" name="component_1"></textarea>
                 </span>
-                <span id="perminst_1" class="z-itemcell z-w25 z-hide">{$permission.instance|safetext}</span>
+                <span id="perminst_1" class="z-itemcell z-w25 hide">{$permission.instance|safetext}</span>
                 <span id="editperminst_1" class="z-itemcell z-w25">
                     <textarea id="instance_1" name="instance_1"></textarea>
                 </span>
-                <span id="permlevel_1" class="z-itemcell z-w20 z-hide">{$permission.accesslevel|safetext}</span>
+                <span id="permlevel_1" class="z-itemcell z-w20 hide">{$permission.accesslevel|safetext}</span>
                 <span id="editpermlevel_1" class="z-itemcell z-w20">
                     <select name="level_1" id="level_1">
                         {html_options options=$permissionlevels}
                     </select>
                 </span>
-                <span id="permaction_1" class="z-itemcell z-w07 z-hide">
+                <span id="permaction_1" class="z-itemcell z-w07 hide">
                     <button class="z-imagebutton tooltips" id="modifyajax_1"   title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                     <button class="z-imagebutton tooltips" id="testpermajax_1" title="{gt text="User permission check"}">{img src=testbed_protocol.png modname=core set=icons/extrasmall __title="Check a users permission" __alt="Check a users permission"}</button>
                 </span>
@@ -187,7 +185,7 @@
                     <button class="z-imagebutton tooltips" id="permeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                 </span>
             </div>
-            <div id="permissioninfo_1" class="z-hide z-permissioninfo">
+            <div id="permissioninfo_1" class="hide z-permissioninfo">
                 &nbsp;
             </div>
         </li>
@@ -195,29 +193,37 @@
     </ol>
 </div>
 
-<form id="testpermform" class="z-form" action="{modurl modname=permissions type=admin func=view}" method="post">
+<form id="testpermform" class="form-horizontal" role="form" action="{modurl modname=permissions type=admin func=view}" method="post">
     <fieldset>
         <legend>{gt text="User permission check"}</legend>
-        <div class="z-formrow">
-            <label for="test_user">{gt text="User name"}</label>
-            <input type="text" size="40" maxlength="50" name="test_user" id="test_user" value="{$testuser|safetext}" />
+        <div class="form-group">
+            <label class="col-lg-3 control-label" for="test_user">{gt text="User name"}</label>
+            <div class="col-lg-9">
+                <input class="form-control" type="text" size="40" maxlength="50" name="test_user" id="test_user" value="{$testuser|safetext}" />
+            </div>
         </div>
-        <div class="z-formrow">
-            <label for="test_component">{gt text="Component to check"}</label>
-            <input type="text" size="40" maxlength="50" name="test_component" id="test_component" value="{$testcomponent|safetext}" />
+        <div class="form-group">
+            <label class="col-lg-3 control-label" for="test_component">{gt text="Component to check"}</label>
+            <div class="col-lg-9">
+                <input class="form-control" type="text" size="40" maxlength="50" name="test_component" id="test_component" value="{$testcomponent|safetext}" />
+            </div>
         </div>
-        <div class="z-formrow">
-            <label for="test_instance">{gt text="Instance to check"}</label>
-            <input type="text" size="40" maxlength="50" name="test_instance" id="test_instance" value="{$testinstance|safetext}" />
+        <div class="form-group">
+            <label class="col-lg-3 control-label" for="test_instance">{gt text="Instance to check"}</label>
+            <div class="col-lg-9">
+                <input class="form-control" type="text" size="40" maxlength="50" name="test_instance" id="test_instance" value="{$testinstance|safetext}" />
+            </div>
         </div>
-        <div class="z-formrow">
-            <label for="test_level">{gt text="Permission level"}</label>
-            <select name="test_level" id="test_level">
-                {html_options options=$permissionlevels selected=$testlevel}
-            </select>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" for="test_level">{gt text="Permission level"}</label>
+            <div class="col-lg-9">
+                <select name="test_level" id="test_level" class="form-control" >
+                    {html_options options=$permissionlevels selected=$testlevel}
+                </select>
+            </div>
         </div>
-        <div class="z-formrow">
-            <div class="z-formnote" id="permissiontestinfo">
+        <div class="form-group">
+            <div class="help-block" id="permissiontestinfo">
                 {if $testresult <> ''}
                 {gt text="Permission check result:"} {$testresult}
                 {else}
@@ -225,10 +231,12 @@
                 {/if}
             </div>
         </div>
-        <div class="z-buttons z-formbuttons">
-            <button id="testpermsubmit" type="submit" title="{gt text="Check permission"}">{img modname=core src=button_ok.png set=icons/extrasmall  __alt="Check permission" __title="Check permission"} {gt text="Check permission"}</button>
-            <button class="z-hide" id="testpermsubmitajax" onclick="javascript:performpermissiontest(); return false;" title="{gt text="Check permission"}">{img modname=core src=button_ok.png set=icons/extrasmall  __alt="Check permission" __title="Check permission"} {gt text="Check permission"}</button>
-            <button id="testpermreset" type="reset" title="{gt text="Reset"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Reset" __title="Reset"} {gt text="Reset"}</button>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                <button id="testpermsubmit" class="btn btn-default" type="submit" title="{gt text="Check permission"}">{img modname=core src=button_ok.png set=icons/extrasmall  __alt="Check permission" __title="Check permission"} {gt text="Check permission"}</button>
+                <button class="btn btn-default hide" id="testpermsubmitajax" onclick="javascript:performpermissiontest(); return false;" title="{gt text="Check permission"}">{img modname=core src=button_ok.png set=icons/extrasmall  __alt="Check permission" __title="Check permission"} {gt text="Check permission"}</button>
+                <button class="btn btn-default" id="testpermreset" type="reset" title="{gt text="Reset"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Reset" __title="Reset"} {gt text="Reset"}</button>
+            </div>
         </div>
     </fieldset>
 </form>

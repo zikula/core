@@ -72,7 +72,7 @@ a.z-logo {
     font-weight: bold;
     text-align:center;
 }
-.z-statusmsg {
+.alert alert-success {
     color: red;
     font-style: italic;
 }

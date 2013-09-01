@@ -2,7 +2,7 @@
 <div class="z-admin-content-pagetitle">
     <h3>{$title|safetext}</h3>
 </div>
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Variable"}</th>

@@ -25,10 +25,10 @@ jQuery(document).ready(function() {
     jQuery('.z-bt-delete').attr('data-icon','delete');
     jQuery('.z-bt-filter').attr('data-icon','filter');
      
-    jQuery('.z-menulinks').attr('data-role','controlgroup');
-    jQuery('.z-menulinks').attr('data-type','horizontal');
+    jQuery('.navbar navbar-default').attr('data-role','controlgroup');
+    jQuery('.navbar navbar-default').attr('data-type','horizontal');
 
-    jQuery('.z-menulinks').each(
+    jQuery('.navbar navbar-default').each(
             function() {
                 jQuery(this).children().each(
                     function() {

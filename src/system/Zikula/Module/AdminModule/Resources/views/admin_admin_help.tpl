@@ -14,72 +14,134 @@
     <h3>{gt text="Help"}</h3>
 </div>
 
-<div id="adminhelp">
-    <h4 id="view" class="z-acc-header">{gt text="Module categories list"}</h4>
-    <div class="z-acc-content">
-        <p>{gt text="Displays the list view of module categories included within the category tab menu. In the 'Actions' column on the right, you can choose to edit or delete a module category"}</p>
-        <ul>
-            <li>
-                <a id="modify"></a>
-                <strong>{gt text="Edit"}</strong>: {gt text="Lets you edit the name and description of an existing module category."}
-            </li>
-            <li>
-                <a id="delete"></a>
-                <strong>{gt text="Delete"}</strong>: {gt text="Lets you delete a module category from the tab menu. You will be prompted for confirmation before the category is deleted."}
-            </li>
-        </ul>
-    </div>
 
-    <h4 id="new" class="z-acc-header">{gt text="Create new module category"}</h4>
-    <div class="z-acc-content">
-        <p>{gt text="Lets you add a new category to the module categories tab list. You can edit the following:"}</p>
-        <ul>
-            <li>
-                <strong>{gt text="Name"}</strong>: {gt text="Enter the name to be displayed within the categories tab menu."}
-            </li>
-            <li>
-                <strong>{gt text="Description"}</strong>: {gt text="Enter an informative description to be displayed after the category name, when this category is displayed in the Administration panel."}
-            </li>
-        </ul>
-    </div>
 
-    <h4 id="modifyconfig" class="z-acc-header">{gt text="Settings"}</h4>
-    <div class="z-acc-content">
-        <p>{gt text="The 'Settings' page contains three sections: 'General settings', 'Display settings' and 'Modules categorisation'. Each is covered below."}</p>
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#view">
+                    {gt text="Module categories list"}
+                </a>
+            </h4>
+        </div>
+        <div id="view" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <p>{gt text="Displays the list view of module categories included within the category tab menu. In the 'Actions' column on the right, you can choose to edit or delete a module category"}</p>
+                <ul>
+                    <li>
+                        <a id="modify"></a>
+                        <strong>{gt text="Edit"}</strong>: {gt text="Lets you edit the name and description of an existing module category."}
+                    </li>
+                    <li>
+                        <a id="delete"></a>
+                        <strong>{gt text="Delete"}</strong>: {gt text="Lets you delete a module category from the tab menu. You will be prompted for confirmation before the category is deleted."}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <h4 id="generalsettings" class="z-acc-header">{gt text="General settings"}</h4>
-    <div class="z-acc-content">
-        <p>{gt text="There is currently only one option in the General settings section."}</p>
-        <ul>
-            <li><strong>{gt text="Ignore check for installer"}</strong>:
-            {gt text="This option enables you to disable the Security analyser's check to see if the Installer is present in your site's root directory. Preferably, you should leave the check enabled, as a security breach could easily occur if you omit to remove the Installer's components after completing installation."}</li>
-        </ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#new">
+                    {gt text="Create new module category"}
+                </a>
+            </h4>
+        </div>
+        <div id="new" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{gt text="Lets you add a new category to the module categories tab list. You can edit the following:"}</p>
+                <ul>
+                    <li>
+                        <strong>{gt text="Name"}</strong>: {gt text="Enter the name to be displayed within the categories tab menu."}
+                    </li>
+                    <li>
+                        <strong>{gt text="Description"}</strong>: {gt text="Enter an informative description to be displayed after the category name, when this category is displayed in the Administration panel."}
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-    <h4 id="displaysettings" class="z-acc-header">{gt text="Display settings"}</h4>
-    <div class="z-acc-content">
-        <p>{gt text="There are six display settings."}</p>
-        <ul>
-            <li><strong>{gt text="Display icons"}:</strong> {gt text="When checked, this option causes graphic icons to be displayed for each module in the Administration panel."}</li>
-            <li><strong>{gt text="Modules per page"}:</strong> {gt text="Enter a whole number for the number of modules to be displayed on each page of the Administration panel."}</li>
-            <li><strong>{gt text="Modules per row"}:</strong> {gt text="Enter a whole number for the number of modules to be displayed on each line of the Administration panel."}</li>
-            <li><strong>{gt text="Theme to use"}:</strong> {gt text="Open the dropdown list and choose the theme to be applied to the Administration panel."}</li>
-            <li><strong>{gt text="Style sheet to use"}:</strong> {gt text="Open the dropdown list and choose the style sheet to be used to render the Administration panel."}</li>
-            <li><strong>{gt text="Category initially selected"}:</strong> {gt text="Open the dropdown list and choose the modules category to be shown when the Administration panel first displays."}</li>
-        </ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#modifyconfig">
+                    {gt text="Settings"}
+                </a>
+            </h4>
+        </div>
+        <div id="modifyconfig" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{gt text="The 'Settings' page contains three sections: 'General settings', 'Display settings' and 'Modules categorisation'. Each is covered below."}</p>
+            </div>
+        </div>
     </div>
-
-    <h4 id="categoryconfiguration" class="z-acc-header">{gt text="Modules categorisation"}</h4>
-    <div class="z-acc-content">
-        <p>{gt text="In the Modules categorisation section, you can choose two things:"}</p>
-        <ul>
-            <li><strong>{gt text="Default category for newly-added modules"}:</strong> {gt text="Open the dropdown list and choose the module category in which to put all newly-installed and activated modules."}</li>
-            <li><strong>{gt text="Modules categorisation"}:</strong> {gt text="You will see listed all the modules currently installed and activated. Open the dropdown list beside each module and choose the module category in which that module should be placed."}</li>
-        </ul>
+ 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#generalsettings">
+                    {gt text="General settings"}
+                </a>
+            </h4>
+        </div>
+        <div id="generalsettings" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{gt text="There is currently only one option in the General settings section."}</p>
+                <ul>
+                    <li><strong>{gt text="Ignore check for installer"}</strong>:
+                    {gt text="This option enables you to disable the Security analyser's check to see if the Installer is present in your site's root directory. Preferably, you should leave the check enabled, as a security breach could easily occur if you omit to remove the Installer's components after completing installation."}</li>
+                </ul>
+            </div>
+        </div>
+    </div>          
+                
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#displaysettings">
+                    {gt text="Display settings"}
+                </a>
+            </h4>
+        </div>
+        <div id="displaysettings" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{gt text="There are six display settings."}</p>
+                <ul>
+                    <li><strong>{gt text="Display icons"}:</strong> {gt text="When checked, this option causes graphic icons to be displayed for each module in the Administration panel."}</li>
+                    <li><strong>{gt text="Modules per page"}:</strong> {gt text="Enter a whole number for the number of modules to be displayed on each page of the Administration panel."}</li>
+                    <li><strong>{gt text="Modules per row"}:</strong> {gt text="Enter a whole number for the number of modules to be displayed on each line of the Administration panel."}</li>
+                    <li><strong>{gt text="Theme to use"}:</strong> {gt text="Open the dropdown list and choose the theme to be applied to the Administration panel."}</li>
+                    <li><strong>{gt text="Style sheet to use"}:</strong> {gt text="Open the dropdown list and choose the style sheet to be used to render the Administration panel."}</li>
+                    <li><strong>{gt text="Category initially selected"}:</strong> {gt text="Open the dropdown list and choose the modules category to be shown when the Administration panel first displays."}</li>
+                </ul>
+            </div>
+        </div>
     </div>
+                
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#categoryconfiguration">
+                    {gt text="Modules categorisation"}
+                </a>
+            </h4>
+        </div>
+        <div id="categoryconfiguration" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{gt text="In the Modules categorisation section, you can choose two things:"}</p>
+                <ul>
+                    <li><strong>{gt text="Default category for newly-added modules"}:</strong> {gt text="Open the dropdown list and choose the module category in which to put all newly-installed and activated modules."}</li>
+                    <li><strong>{gt text="Modules categorisation"}:</strong> {gt text="You will see listed all the modules currently installed and activated. Open the dropdown list beside each module and choose the module category in which that module should be placed."}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+ 
 </div>
 <br />
+
 
 <fieldset>
     <legend>{gt text="Messages you might see"}</legend>

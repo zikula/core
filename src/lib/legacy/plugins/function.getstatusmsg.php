@@ -64,7 +64,7 @@ function smarty_function_getstatusmsg($params, Zikula_View $view)
     // show a status or an error
     $session = $view->getContainer()->get('session');
     $msgStatus = $session->getMessages(Zikula_Session::MESSAGE_STATUS);
-    $msgtype   = ($class ? $class : 'z-statusmsg');
+    $msgtype   = ($class ? $class : 'alert alert-success');
     $session->clearMessages(Zikula_Session::MESSAGE_STATUS);
     $msgError = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
     $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
@@ -72,7 +72,7 @@ function smarty_function_getstatusmsg($params, Zikula_View $view)
     // Error message overrides status message
     if (!empty($msgError)) {
         $msgStatus = $msgError;
-        $msgtype   = ($class ? $class : 'z-errormsg');
+        $msgtype   = ($class ? $class : 'alert alert-danger');
     }
 
     if ($assign) {

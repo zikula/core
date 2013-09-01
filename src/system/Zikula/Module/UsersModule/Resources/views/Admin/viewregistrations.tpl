@@ -15,7 +15,7 @@
 </div>
 
 {if count($reglist) > 0}
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="User name"}</th>
@@ -135,7 +135,7 @@
 {if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar}{/if}
 
 <p class="z-sub z-center z-bold">{gt text='Legend'}</p>
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th colspan="2" class="z-sub z-center">{gt text='Approval'}</th>
@@ -152,7 +152,7 @@
         </tr>
     </tbody>
 </table>
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th colspan="2" class="z-sub z-center">{gt text='Verification'}</th>
@@ -178,6 +178,6 @@
     </tbody>
 </table>
 {else}
-<p class="z-informationmsg">{gt text='There are no pending registration applications to review.'}</p>
+<p class="alert alert-info">{gt text='There are no pending registration applications to review.'}</p>
 {/if}
 {adminfooter}

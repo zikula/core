@@ -8,7 +8,7 @@
 
 {include file="User/menu.tpl"}
 
-<form class="z-form" action="{modurl modname="Groups" type="user" func="userupdate" action=$action}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Groups" type="user" func="userupdate" action=$action}" method="post" enctype="application/x-www-form-urlencoded">
     
     <div>
         <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
@@ -19,24 +19,30 @@
         
         <fieldset>
             <legend>{$templatetitle}</legend>
-            <div class="z-formrow">
-                <label>{gt text="Group name"}</label>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">{gt text="Group name"}</label>
+                <div class="col-lg-9">
                 <span>{$gname}</span>
             </div>
-            <div class="z-formrow">
-                <label>{gt text="Description"}</label>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">{gt text="Description"}</label>
+                <div class="col-lg-9">
                 <span>{if $description}{$description}{else}<em>{gt text="Not available"}</em>{/if}</span>
             </div>
             {if $action eq "subscribe" && $gtype eq 2}
-            <div class="z-formrow">
-                <label for="groups_applytext">{gt text="Comment to attach to your application"}</label>
-                <textarea id="groups_applytext" name="applytext" cols="50" rows="8"></textarea>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="groups_applytext">{gt text="Comment to attach to your application"}</label>
+                <div class="col-lg-9">
+                <textarea class="form-control" id="groups_applytext" name="applytext" cols="50" rows="8"></textarea>
             </div>
             {/if}
         </fieldset>
-        <div class="z-buttons z-formbuttons">
-            {button src=button_ok.png set=icons/extrasmall value="Apply" __alt="Apply" __title="Apply" __text="Apply"}
-            <a href="{modurl modname='ZikulaGroupsModule' type='user' func='view'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button src=button_ok.png set=icons/extrasmall value="Apply" __alt="Apply" __title="Apply" __text="Apply"}
+                <a class="btn btn-default" href="{modurl modname='ZikulaGroupsModule' type='user' func='view'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            </div>
         </div>
     </div>
 </form>

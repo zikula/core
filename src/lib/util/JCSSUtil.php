@@ -124,15 +124,22 @@ class JCSSUtil
         } else {
             $initStyle = array('style/core.css');
         }
-        
+
         // Add generic stylesheet as the first stylesheet.
         $event = new \Zikula\Core\Event\GenericEvent('stylesheet', array(), $initStyle);
         $coreStyle = EventUtil::getManager()->dispatch('pageutil.addvar_filter', $event)->getData();
-        if (is_array($stylesheets)) {
-            array_unshift($stylesheets, $coreStyle[0]);
-        } else {
-            $stylesheets = array($coreStyle[0]);
+        if (!is_array($stylesheets)) {
+            $stylesheets = array();
         }
+        // Add bootstrap stylesheet
+        array_unshift($stylesheets, 'web/bootstrap/css/bootstrap.min.css', 'style/bootstrap-zikula-theme.css'); 
+        // Add legacy stylesheet
+        if (System::isLegacyMode()) {
+           array_unshift($stylesheets, 'style/legacy.css');
+        }
+        // Add core stylesheet
+        array_unshift($stylesheets, $coreStyle[0]);
+        
         $stylesheets = array_unique(array_values($stylesheets));
 
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
@@ -153,6 +160,8 @@ class JCSSUtil
      */
     public static function prepareJavascripts($javascripts)
     {
+        array_unshift($javascripts, 'jquery', 'web/bootstrap/js/bootstrap.min.js');
+        
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
@@ -365,6 +374,7 @@ class JCSSUtil
                 'zikula.ui' => array(
                         'path' => 'javascript/helpers/Zikula.UI.js',
                         'require' => array('prototype', 'livepipe', 'zikula'),
+                        'styles' => array('javascript/helpers/Zikula.UI.css'),
                         'gettext' => true
                 ),
                 'zikula.imageviewer' => array(

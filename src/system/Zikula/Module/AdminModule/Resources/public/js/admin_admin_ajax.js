@@ -28,7 +28,7 @@ Zikula.AdminPanel.setupNotices = function() {
     }
     Zikula.AdminPanel.noticesPanels = new Zikula.UI.Panels('admin-systemnotices', options);
     if (ul_first[0]) {
-        ul_first[0].removeClassName('z-hide');
+        ul_first[0].removeClassName('hide');
     }
 };
 
@@ -254,7 +254,7 @@ Object.extend(Zikula.AdminPanel.Tab, /** @lends Zikula.AdminPanel.Tab */{
     },
     setupForm: function() {
         this.addTabLink = $('addcatlink');
-        this.addTabForm = $('ajaxNewCatHidden').removeClassName('z-hide').hide();
+        this.addTabForm = $('ajaxNewCatHidden').removeClassName('hide').hide();
         this.addTabLink.observe('click', this.addTabShowForm.bindAsEventListener(this));
         this.addTabForm.down('form').observe('submit', this.addTabSave.bindAsEventListener(this));
         this.addTabForm.down('a.cancel').observe('click', this.addTabHideForm.bindAsEventListener(this));

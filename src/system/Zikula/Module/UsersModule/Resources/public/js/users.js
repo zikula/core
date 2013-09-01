@@ -2,16 +2,16 @@
 function showdynamicsmenu()
 {
     var menuLinks = $('profileadminlinks');
-    if (menuLinks.hasClassName('z-hide')) {
-        menuLinks.removeClassName('z-hide');
+    if (menuLinks.hasClassName('hide')) {
+        menuLinks.removeClassName('hide');
     } else {
-        menuLinks.addClassName('z-hide');
+        menuLinks.addClassName('hide');
     }
 }
 
 function liveusersearch()
 {
-    $('liveusersearch').removeClassName('z-hide');
+    $('liveusersearch').removeClassName('hide');
     $('modifyuser').observe('click', function() { 
         window.location.href = Zikula.Config.entrypoint + "?module=users&type=admin&func=modify&uname=" + $F('username');
     });

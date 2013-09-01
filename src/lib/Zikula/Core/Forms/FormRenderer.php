@@ -101,7 +101,7 @@ class FormRenderer
             $this->collectErrors($form, $errors);
 
             if ($errors) {
-                $html .= '<div class="z-form-validationSummary z-errormsg"><ul>';
+                $html .= '<div class="z-form-validationSummary alert alert-danger"><ul>';
 
                 foreach ($errors as $child) {
                     foreach ($child->get('errors') as $error) {

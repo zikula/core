@@ -17,7 +17,7 @@ class FieldErrors implements RendererInterface
     }
     
     protected function getDivClassName() {
-        return 'z-formnote';
+        return 'help-block';
     }
 
     public function render(FormView $form, $variables, FormRenderer $renderer)
@@ -25,7 +25,7 @@ class FieldErrors implements RendererInterface
         $html = '';
         
         if ($variables['errors'] && !$this->getRoot($form)->get('omit_errors', false)) {
-            $html .= '<div class="' . $this->getDivClassName() . ' z-errormsg"><ul>';
+            $html .= '<div class="' . $this->getDivClassName() . ' alert alert-danger"><ul>';
             
             foreach ($variables['errors'] as $error) {
                 $html .= '<li>' . $error->getMessageTemplate() . '</li>'; //TODO: $error->getMessageParameters()

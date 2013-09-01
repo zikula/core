@@ -13,7 +13,7 @@
     <h3>{gt text="Module categories list"}</h3>
 </div>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -38,7 +38,7 @@
             </td>
         </tr>
         {sectionelse}
-        <tr class="z-datatableempty"><td colspan="2">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="2">{gt text="No items found."}</td></tr>
         {/section}
     </tbody>
 </table>

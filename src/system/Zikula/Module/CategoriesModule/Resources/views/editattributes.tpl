@@ -1,4 +1,4 @@
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>

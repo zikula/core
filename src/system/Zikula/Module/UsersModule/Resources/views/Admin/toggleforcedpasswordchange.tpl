@@ -12,12 +12,12 @@
 </div>
 
 {if $user_must_change_password}
-<p class="z-warningmsg">{gt text='Do you want to cancel the forced password change for %1$s?' tag1=$user_obj.uname|safetext}</p>
+<p class="alert alert-warning">{gt text='Do you want to cancel the forced password change for %1$s?' tag1=$user_obj.uname|safetext}</p>
 {else}
-<p class="z-warningmsg">{gt text='Do you want to force a password change during the next login attempt for %1$s?' tag1=$user_obj.uname|safetext}</p>
+<p class="alert alert-warning">{gt text='Do you want to force a password change during the next login attempt for %1$s?' tag1=$user_obj.uname|safetext}</p>
 {/if}
 
-<form class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange'}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="userid" value="{$user_obj.uid|safetext}" />
@@ -32,6 +32,7 @@
                 {/if}
                 <a class="z-btred" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='No'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='No'}</a>
             </div>
+        </div>
         </fieldset>
     </div>
 </form>

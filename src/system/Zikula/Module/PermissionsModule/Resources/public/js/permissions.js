@@ -39,14 +39,14 @@ function permissioninit()
                 $('permission_' + thispermid).addClassName('normalpermission');
                 $('permission_' + thispermid).addClassName('z-itemsort');
                 $('permdrag_' + thispermid).update('(' + thispermid + ')');
-                $('modifyajax_' + thispermid).removeClassName('z-hide');
+                $('modifyajax_' + thispermid).removeClassName('hide');
                 $('modifyajax_' + thispermid).observe('click', function() { permmodifyinit(thispermid); });
             }
             // both admin and not adminpermissions
-            $('insert_' + thispermid).addClassName('z-hide');
-            $('modify_' + thispermid).addClassName('z-hide');
-            $('delete_' + thispermid).addClassName('z-hide');
-            $('testpermajax_' + thispermid).removeClassName('z-hide');
+            $('insert_' + thispermid).addClassName('hide');
+            $('modify_' + thispermid).addClassName('hide');
+            $('delete_' + thispermid).addClassName('hide');
+            $('testpermajax_' + thispermid).removeClassName('hide');
 
             $('testpermajax_' + thispermid).observe('click', function() { permtestinit(thispermid); });
         } );
@@ -70,17 +70,17 @@ function permissioninit()
         }
     });
 
-    $('appendajax').removeClassName('z-hide');
+    $('appendajax').removeClassName('hide');
     if ($('permgroupfilterform')) {
         $('permgroupfilterform').action = 'javascript:void(0);';
-        $('permgroupfiltersubmit').remove('z-hide');
-        $('permgroupfiltersubmitajax').removeClassName('z-hide');
+        $('permgroupfiltersubmit').remove('hide');
+        $('permgroupfiltersubmitajax').removeClassName('hide');
     }
     $('testpermsubmit').remove();
-    $('testpermsubmitajax').removeClassName('z-hide');
+    $('testpermsubmitajax').removeClassName('hide');
     $('testpermform').action = 'javascript:void(0);';
 
-    $('permissiondraganddrophint').removeClassName('z-hide');
+    $('permissiondraganddrophint').removeClassName('hide');
 
     Sortable.create('permissionlist',
                     {
@@ -155,7 +155,7 @@ function permappend_response(req)
     Zikula.setselectoption('level_' + data.pid, data.level);
 
     // hide cancel icon for new permissions
-    $('permeditcancel_' + data.pid).addClassName('z-hide');
+    $('permeditcancel_' + data.pid).addClassName('hide');
     // update delete icon to show cancel icon
     $('permeditdelete_' + data.pid).update(canceliconhtml);
 
@@ -186,14 +186,14 @@ function permappend_response(req)
     $('permission_' + data.pid).addClassName('z-itemsort');
 
     // remove class to make edit button visible
-    $('modifyajax_' + data.pid).removeClassName('z-hide');
+    $('modifyajax_' + data.pid).removeClassName('hide');
     $('modifyajax_' + data.pid).observe('click', function() { permmodifyinit(data.pid); });
 
     // turn on edit mode
     enableeditfields(data.pid);
 
     // we are ready now, make it visible
-    $('permission_' + data.pid).removeClassName('z-hide');
+    $('permission_' + data.pid).removeClassName('hide');
     new Effect.Highlight('permission_' + data.pid, { startcolor: '#ffff99', endcolor: '#ffffff' });
 
     // update the sortable
@@ -348,7 +348,7 @@ function permmodify_response(req)
     $('permlevel_' + data.pid).update(data.levelname);
 
     // show trascan icon for new permissions if necessary
-    $('permeditcancel_' + data.pid).removeClassName('z-hide');
+    $('permeditcancel_' + data.pid).removeClassName('hide');
     // update delete icon to show trashcan icon
     $('permeditdelete_' + data.pid).update(deleteiconhtml);
 
@@ -411,16 +411,16 @@ function permdelete_response(req)
  */
 function enableeditfields(permid)
 {
-    $('permgroup_' + permid).addClassName('z-hide');
-    $('permcomp_' + permid).addClassName('z-hide');
-    $('perminst_' + permid).addClassName('z-hide');
-    $('permlevel_' + permid).addClassName('z-hide');
-    $('permaction_' + permid).addClassName('z-hide');
-    $('editpermgroup_' + permid).removeClassName('z-hide');
-    $('editpermcomp_' + permid).removeClassName('z-hide');
-    $('editperminst_' + permid).removeClassName('z-hide');
-    $('editpermlevel_' + permid).removeClassName('z-hide');
-    $('editpermaction_' + permid).removeClassName('z-hide');
+    $('permgroup_' + permid).addClassName('hide');
+    $('permcomp_' + permid).addClassName('hide');
+    $('perminst_' + permid).addClassName('hide');
+    $('permlevel_' + permid).addClassName('hide');
+    $('permaction_' + permid).addClassName('hide');
+    $('editpermgroup_' + permid).removeClassName('hide');
+    $('editpermcomp_' + permid).removeClassName('hide');
+    $('editperminst_' + permid).removeClassName('hide');
+    $('editpermlevel_' + permid).removeClassName('hide');
+    $('editpermaction_' + permid).removeClassName('hide');
 }
 
 /**
@@ -431,16 +431,16 @@ function enableeditfields(permid)
  */
 function disableeditfields(permid)
 {
-    $('editpermgroup_' + permid).addClassName('z-hide');
-    $('editpermcomp_' + permid).addClassName('z-hide');
-    $('editperminst_' + permid).addClassName('z-hide');
-    $('editpermlevel_' + permid).addClassName('z-hide');
-    $('editpermaction_' + permid).addClassName('z-hide');
-    $('permgroup_' + permid).removeClassName('z-hide');
-    $('permcomp_' + permid).removeClassName('z-hide');
-    $('perminst_' + permid).removeClassName('z-hide');
-    $('permlevel_' + permid).removeClassName('z-hide');
-    $('permaction_' + permid).removeClassName('z-hide');
+    $('editpermgroup_' + permid).addClassName('hide');
+    $('editpermcomp_' + permid).addClassName('hide');
+    $('editperminst_' + permid).addClassName('hide');
+    $('editpermlevel_' + permid).addClassName('hide');
+    $('editpermaction_' + permid).addClassName('hide');
+    $('permgroup_' + permid).removeClassName('hide');
+    $('permcomp_' + permid).removeClassName('hide');
+    $('perminst_' + permid).removeClassName('hide');
+    $('permlevel_' + permid).removeClassName('hide');
+    $('permaction_' + permid).removeClassName('hide');
 }
 
 /**
@@ -482,22 +482,22 @@ function showinfo(permid, infotext)
     if (permid) {
         var perminfo = $('permissioninfo_' + permid);
         var perm = $('permissioncontent_' + permid);
-        if (!perminfo.hasClassName('z-hide')) {
+        if (!perminfo.hasClassName('hide')) {
             perminfo.update('&nbsp;');
-            perminfo.addClassName('z-hide');
-            perm.removeClassName('z-hide');
+            perminfo.addClassName('hide');
+            perm.removeClassName('hide');
         } else {
             perminfo.update(infotext);
-            perm.addClassName('z-hide');
-            perminfo.removeClassName('z-hide');
+            perm.addClassName('hide');
+            perminfo.removeClassName('hide');
         }
     } else {
         $A(document.getElementsByClassName('permissioninfo')).each(function(perminfo) {
             $(perminfo).update('&nbsp;');
-            $(perminfo).addClassName('z-hide');
+            $(perminfo).addClassName('hide');
         });
         $A(document.getElementsByClassName('permissioncontent')).each(function(permcontent) {
-            $(permcontent).removeClassName('z-hide');
+            $(permcontent).removeClassName('hide');
         });
     }
 }

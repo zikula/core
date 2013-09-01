@@ -10,9 +10,9 @@
 {include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
 <div>
-    <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Choose how you would like to log in by clicking on one of the following..."}</h5>
-    <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="z-hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
-    <h5 id="users_login_h5" class="z-hide"></h5>
+    <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="hide"{/if}>{gt text="Choose how you would like to log in by clicking on one of the following..."}</h5>
+    <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
+    <h5 id="users_login_h5" class="hide"></h5>
     <div class="authentication_select_method_bigbutton">
     {modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode assign='form_action'}
     {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
@@ -29,7 +29,7 @@
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='loginscreen' authentication_method=$selected_authentication_method assign='login_form_fields'}
 {/if}
-<form id="users_login_login_form" class="z-form z-gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} z-hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
+<form id="users_login_login_form" class="form-horizontal{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />
@@ -44,11 +44,11 @@
                 {$login_form_fields}
             </div>
             {if ($modvars.ZConfig.seclevel|lower != 'high')}
-            <div class="z-formrow">
-                <span class="z-formlist">
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-9">
                     <input id="users_login_rememberme" type="checkbox" name="rememberme" value="1" />
                     <label for="users_login_rememberme">{gt text="Keep me logged in on this computer"}</label>
-                </span>
+                </div>
             </div>
             {/if}
         </fieldset>
@@ -74,14 +74,14 @@
         </div>
     </div>
 </form>
-<div id="users_login_waiting" class="z-form z-clearer z-gap z-hide">
+<div id="users_login_waiting" class="z-form z-clearer z-gap hide">
     <fieldset>
         <p class="z-center z-gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
     </fieldset>
 </div>
-<div id="users_login_no_loginformfields" class="z-clearer z-gap{if (isset($login_form_fields) && !empty($login_form_fields)) || !isset($selected_authentication_method) || empty($selected_authentication_method)} z-hide{/if}">
+<div id="users_login_no_loginformfields" class="z-clearer z-gap{if (isset($login_form_fields) && !empty($login_form_fields)) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}">
     <h5>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:''}{/if}</h5>
-    <p class="z-errormsg">
+    <p class="alert alert-danger">
         {gt text='The log-in option you chose is not available at the moment.'}
         {if count($authentication_method_display_order) > 1}
         {gt text='Please choose another or contact the site administrator for assistance.'}

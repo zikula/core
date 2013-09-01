@@ -1,20 +1,22 @@
 {gt text='Language switcher' assign='templatetitle'}
 {include file='User/menu.tpl'}
 
-<form id="changelang" class="z-form" action="{modurl modname='ZikulaUsersModule' type='user' func='index'}" method="post">
+<form id="changelang" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='index'}" method="post">
     <fieldset>
         <legend>{gt text="Change language"}</legend>
-        <div class="z-formrow">
-            <label for="user_changelang">{gt text="New language"}</label>
-            <select id="user_changelang" name="setsessionlanguage">
-                {foreach key='code' item='language' from=$languages}
-                {if $code eq $usrlang}
-                <option value="{$code}" selected="selected">{$language|safetext}</option>
-                {else}
-                <option value="{$code}">{$language|safetext}</option>
-                {/if}
-                {/foreach}
-            </select>
+        <div class="form-group">
+            <label class="col-lg-3 control-label" for="user_changelang">{gt text="New language"}</label>
+            <div class="col-lg-9">
+                <select id="user_changelang" name="setsessionlanguage" class="form-control">
+                    {foreach key='code' item='language' from=$languages}
+                    {if $code eq $usrlang}
+                    <option value="{$code}" selected="selected">{$language|safetext}</option>
+                    {else}
+                    <option value="{$code}">{$language|safetext}</option>
+                    {/if}
+                    {/foreach}
+                </select>
+            </div>
         </div>
     </fieldset>
     <div class="z-formbuttons z-buttons">

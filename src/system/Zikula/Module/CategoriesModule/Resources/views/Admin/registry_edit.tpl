@@ -16,10 +16,10 @@
 {gt text="Choose category" assign=chooseCategory}
 {gt text="Choose module" assign=chooseModule}
 {gt text="Choose entity" assign=chooseEntity}
-<form class="z-form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <table class="z-datatable">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>{gt text="Module"}</th>
@@ -36,7 +36,7 @@
                     <input id="category_registry_id" name="category_registry[id]" value="{$obj.id}" type="hidden" />
                     <td>{selector_module name="category_registry[modname]" selectedValue=$obj.modname defaultValue="" defaultText="$chooseModule" submit="1"}</td>
                     <td>{if $obj.modname}{selector_module_tables modname=$obj.modname name="category_registry[entityname]" selectedValue=$obj.entityname defaultValue="" defaultText=$chooseEntity}{else}----------{/if}</td>
-                    <td><input id="category_registry_property" name="category_registry[property]" value="{$obj.property}" type="text" size="20" maxlength="32" /></td>
+                    <td><input id="category_registry_property" name="category_registry[property]" value="{$obj.property}" type="text" class="form-control" size="20" maxlength="32" /></td>
                     <td>{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=$obj.category_id editLink=0}</td>
                     <td>&nbsp;</td>
                     {else}
@@ -57,7 +57,7 @@
                 <tr class="{cycle values=z-odd,z-even}" valign="middle">
                     <td><span class="z-form-mandatory-flag">*</span>{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newobj.modname submit="1"}</td>
                     <td>{if $newobj.modname}<span class="z-form-mandatory-flag">*</span>{selector_module_tables modname=$newobj.modname name="category_registry[entityname]" displayField="name" selectedValue=$newobj.entityname defaultValue="" defaultText=$chooseEntity}{else}----------{/if}</td>
-                    <td><span class="z-form-mandatory-flag">*</span><input id="category_registry_property" name="category_registry[property]" value="{$newobj.property|default:'Main'}" type="text" size="20" maxlength="32" /></td>
+                    <td><span class="z-form-mandatory-flag">*</span><input id="category_registry_property" name="category_registry[property]" value="{$newobj.property|default:'Main'}" type="text" class="form-control" size="20" maxlength="32" /></td>
                     <td><span class="z-form-mandatory-flag">*</span>{selector_category category=$root_id name="category_registry[category_id]" includeLeaf=0 selectedValue=newobj.category_id defaultValue=0 defaultText=$chooseCategory editLink=0}</td>
                     <td>&nbsp;</td>
                 </tr>
@@ -65,9 +65,11 @@
 
             </tbody>
         </table>
-        <div class="z-buttons z-formbuttons">
-            {button id="category_submit" name="category_submit" value="1" src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname="ZikulaCategoriesModule" type="admin" func="editregistry"}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button id="category_submit" name="category_submit" value="1" src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <a class="btn btn-default" href="{modurl modname="ZikulaCategoriesModule" type="admin" func="editregistry"}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            </div>
         </div>
     </div>
 </form>

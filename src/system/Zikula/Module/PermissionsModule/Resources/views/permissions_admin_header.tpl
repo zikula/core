@@ -2,7 +2,7 @@
 {pageaddvarblock}
 <script type="text/javascript">
     document.observe("dom:loaded", function() {
-        Element.addClassName('permissions_new', 'z-hide');
+        Element.addClassName('permissions_new', 'hide');
 
         $$('.showinstanceinformation').each(function(element) {
             new Zikula.UI.Window(element,{width: 600, iframe: true, resizable: true});
