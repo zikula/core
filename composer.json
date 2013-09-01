@@ -52,7 +52,8 @@
         "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master",
         "zikula/jquery-bundle": "dev-master",
-        "zikula/jquery-ui-bundle": "dev-master"
+        "zikula/jquery-ui-bundle": "dev-master",
+        "zikula/bootstrap-bundle": "dev-master"
     },
     "config": {
         "vendor-dir": "src/vendor",
