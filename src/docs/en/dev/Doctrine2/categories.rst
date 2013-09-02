@@ -192,7 +192,7 @@ In your Handler's initialize method::
 In your edit template::
 
     {foreach from=$registries item="registryCid" key="registryId"}
-        <div class="z-formrow">
+        <div class="form-group">
             {formlabel for="category_`$registryId`" __text="Category"}
             {formcategoryselector id="category_`$registryId`" category=$registryCid 
                                   dataField="categories" group="user" registryId=$registryId doctrine2=true}

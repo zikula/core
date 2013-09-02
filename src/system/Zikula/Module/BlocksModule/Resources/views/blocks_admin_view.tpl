@@ -19,16 +19,16 @@
     <h3>{gt text="Blocks list"}</h3>
 </div>
 
-<p class="z-informationmsg">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
+<p class="alert alert-info">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
 
-<form class="z-form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
     {gt text="All" assign="lblAll"}
     {gt text="Filter" assign="lblFilter"}
     <fieldset>
         <legend>{$lblFilter}</legend>
         <span class="z-nowrap">
             <label for="filter_blockposition_id">{gt text="Block Position"}</label>
-            <select id="filter_blockposition_id" name="filter[blockposition_id]">
+            <select class="form-control" id="filter_blockposition_id" name="filter[blockposition_id]">
                 <option value="0">{$lblAll}</option>
                 {foreach from=$positions item='position'}
                     <option value="{$position.pid}" {if $filter.blockposition_id eq $position.pid}selected="selected"{/if}>{$position.name|safetext}</option>
@@ -45,7 +45,7 @@
         </span>
         <span class="z-nowrap">
             <label for="filter_status">{gt text="Active Status"}</label>
-            <select id="filter_status" name="filter[active_status]">
+            <select class="form-control" id="filter_status" name="filter[active_status]">
                 <option value="0" {if (isset($filter.active_status) && $filter.active_status == 0)}selected="selected"{/if}>{gt text="All"}</option>
                 <option value="1" {if (isset($filter.active_status) && $filter.active_status == 1)}selected="selected"{/if}>{gt text="Active"}</option>
                 <option value="2" {if (isset($filter.active_status) && $filter.active_status == 2)}selected="selected"{/if}>{gt text="Inactive"}</option>
@@ -58,7 +58,7 @@
     </fieldset>
 </form>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>
@@ -126,15 +126,15 @@
             </td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="9">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="9">{gt text="No items found."}</td></tr>
         {/foreach}
     </tbody>
 </table>
 
 <h3 id="blockpositions">{gt text="Block positions list"}</h3>
 
-<p class="z-informationmsg">{gt text="This is the list of block positions currently existing for your site's pages. You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position, or to reorder the blocks within a block position, click on the 'Edit' icon beside that particular position. To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display."}</p>
-<table class="z-datatable">
+<p class="alert alert-info">{gt text="This is the list of block positions currently existing for your site's pages. You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position, or to reorder the blocks within a block position, click on the 'Edit' icon beside that particular position. To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display."}</p>
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -163,7 +163,7 @@
             </td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="4">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="4">{gt text="No items found."}</td></tr>
         {/foreach}
     </tbody>
 </table>

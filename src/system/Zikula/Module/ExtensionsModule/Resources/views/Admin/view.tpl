@@ -16,11 +16,11 @@
     <h3>{gt text="Modules list"}</h3>
 </div>
 
-<p class="z-informationmsg">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
+<p class="alert alert-info">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 
 <div style="padding:0 0 1em;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>
@@ -79,13 +79,13 @@
                 {assign var="options" value=$modules[modules].options}
                 {strip}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|safetext}">{img modname=core src=$options[options].image set=icons/extrasmall title=$options[options].title alt=$options[options].title class='tooltips'}</a>&nbsp;
+                <a href="{$options[options].url|safetext}" class="glyphicon glyphicon-{$options[options].image} tooltips" style="color:black" title="{$options[options].title}"></a>&nbsp;
                 {/section}
                 {/strip}
             </td>
         </tr>
         {sectionelse}
-        <tr class="z-datatableempty"><td colspan="7">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="7">{gt text="No items found."}</td></tr>
         {/section}
     </tbody>
 </table>

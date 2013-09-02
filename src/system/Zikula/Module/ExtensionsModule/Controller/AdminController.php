@@ -288,7 +288,7 @@ class AdminController extends \Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'folder_red.png',
+                                        'image' => 'star-empty',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
 
@@ -317,7 +317,7 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'folder_green.png',
+                                    'image' => 'star',
                                     'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
                                     'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'remove', array(
@@ -325,7 +325,7 @@ class AdminController extends \Zikula_AbstractController
                                     'startnum' => $startnum,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => '14_layer_deletelayer.png',
+                                    'image' => 'trash',
                                     'title' => $this->__f('Uninstall \'%s\' module', $mod['name']));
                             break;
 
@@ -336,7 +336,7 @@ class AdminController extends \Zikula_AbstractController
                                     'startnum' => $startnum,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => '14_layer_deletelayer.png',
+                                    'image' => 'trash',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_UPGRADED:
@@ -347,7 +347,7 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'folder_favorites.png',
+                                    'image' => 'refresh',
                                     'title' => $this->__f('Upgrade \'%s\'', $mod['name']));
                             break;
 
@@ -374,7 +374,7 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => '14_layer_deletelayer.png',
+                                    'image' => 'trash',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
 
@@ -388,7 +388,7 @@ class AdminController extends \Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'folder_new.png',
+                                        'image' => 'plus-sign',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
 //                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
@@ -398,7 +398,7 @@ class AdminController extends \Zikula_AbstractController
 //                                            'authid' => $authid,
 //                                            'letter' => $letter,
 //                                            'state' => $state)),
-//                                            'image' => '14_layer_deletelayer.png',
+//                                            'image' => 'trash',
 //                                            'title' => $this->__('Remove module'));
 //                                }
                             } else {
@@ -408,7 +408,7 @@ class AdminController extends \Zikula_AbstractController
                                         'startnum' => $startnum,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'documentinfo.png',
+                                        'image' => 'info-sign',
                                         'title' => $this->__f('Incompatible version: \'%s\'', $mod['name']));
                             }
                             break;
@@ -419,7 +419,7 @@ class AdminController extends \Zikula_AbstractController
                         $actions[] = array(
                                 'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'modify', array(
                                 'id' => $mod['id'])),
-                                'image' => 'xedit.png',
+                                'image' => 'wrench',
                                 'title' => $this->__f('Edit \'%s\'', $mod['name']));
                     }
                 }
@@ -453,14 +453,14 @@ class AdminController extends \Zikula_AbstractController
 
                     case ModUtil::STATE_NOTALLOWED:
                         $status = $this->__('Not allowed');
-                        $statusimage = 'folder_red.png';
+                        $statusimage = 'star-empty';
                         break;
 
                     case ModUtil::STATE_UNINITIALISED:
                     default:
                         if ($mod['state'] > 10) {
                             $status = $this->__('Incompatible');
-                            $statusimage = 'folder_red.png';
+                            $statusimage = 'star-empty';
                         } else {
                             $status = $this->__('Not installed');
                             $statusimage = 'redled.png';
@@ -1188,7 +1188,7 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'folder_new.png',
+                                       'image' => 'plus-sign',
                                        'title' => $this->__('Install'));
                     break;
                 case PluginUtil::ENABLED:
@@ -1217,7 +1217,7 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'folder_red.png',
+                                       'image' => 'star',
                                        'title' => $this->__('Deactivate'));
 
                         $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'removePlugin',
@@ -1228,7 +1228,7 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => '14_layer_deletelayer.png',
+                                       'image' => 'trash',
                                        'title' => $this->__('Remove plugin'));
                     }
                     break;
@@ -1244,7 +1244,7 @@ class AdminController extends \Zikula_AbstractController
                                                           'systemplugins' => $systemplugins,
                                                           'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => 'folder_green.png',
+                                       'image' => 'star',
                                        'title' => $this->__('Activate'));
 
                     $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'removePlugin',
@@ -1255,7 +1255,7 @@ class AdminController extends \Zikula_AbstractController
                                                            'systemplugins' => $systemplugins,
                                                            'csrftoken' => $csrfToken)
                                                 ),
-                                       'image' => '14_layer_deletelayer.png',
+                                       'image' => 'trash',
                                        'title' => $this->__('Remove plugin'));
 
                     break;
@@ -1288,7 +1288,7 @@ class AdminController extends \Zikula_AbstractController
                                                        'systemplugins' => $systemplugins,
                                                        'csrftoken' => $csrfToken)
                                             ),
-                                       'image' => '14_layer_deletelayer.png',
+                                       'image' => 'trash',
                                        'title' => $this->__('Remove plugin'));
             }
 

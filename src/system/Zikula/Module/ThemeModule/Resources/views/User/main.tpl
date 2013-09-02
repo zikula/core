@@ -3,7 +3,7 @@
 {pagesetvar name=title value=$title}
 <h2>{$title}</h2>
 {insert name="getstatusmsg"}
-<p class="z-informationmsg">
+<p class="alert alert-info">
     {gt text="Themes enable you to change the visual presentation of the site when you are logged-in."} {gt text="The current theme is '%s'." tag1=$currenttheme.displayname}
     {if $currenttheme.name neq $defaulttheme.name}
     {modurl modname='ZikulaThemeModule' type='user' func='resettodefault' assign='resetdefaulturl'}

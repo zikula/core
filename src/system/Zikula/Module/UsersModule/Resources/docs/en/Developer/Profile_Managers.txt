@@ -17,7 +17,7 @@
       Ideally it must check that it's not the current module to avoid direct access.
 
     * form.display:
-      A function that outputs the dynamic data to fill a z-datatable with the passed data.
+      A function that outputs the dynamic data to fill a table table-bordered with the passed data.
       Ideally it must check that it's not the current module to avoid direct access.
 
     * userapi.checkrequired:

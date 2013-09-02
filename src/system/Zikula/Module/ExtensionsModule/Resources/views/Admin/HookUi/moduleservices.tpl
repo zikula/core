@@ -4,7 +4,7 @@
     <h3>{gt text='Module Services'}</h3>
 </div>
 
-<p class="z-informationmsg">{gt text='Module Services are functions provided by the core or other modules for this module.'}</p>
+<p class="alert alert-info">{gt text='Module Services are functions provided by the core or other modules for this module.'}</p>
 
 {if count($sublinks) > 0}
 <ul style='list-style: none'>

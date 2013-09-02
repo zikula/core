@@ -11,9 +11,9 @@
         }
 
         function CheckPageLink(linkid) {
-            PagerChangeClass('showlink' + linkid + 'one', 'z-hide', 'z-show');
-            PagerChangeClass('showlink' + linkid + 'two', 'z-hide', 'z-show');
-            PagerChangeClass('showpages' + linkid, 'z-hide', 'z-show');
+            PagerChangeClass('showlink' + linkid + 'one', 'hide', 'show');
+            PagerChangeClass('showlink' + linkid + 'two', 'hide', 'show');
+            PagerChangeClass('showpages' + linkid, 'hide', 'show');
         }
     </script>
 {/pageaddvarblock}
@@ -44,9 +44,9 @@
             {if $currentPage.isVisible eq 0 && $hiddenPageBoxOpened eq 0}
                 <a href="javascript:void(0);" onclick="javascript:CheckPageLink('{$currentPage.pagenr}')" onkeypress="javascript:CheckPageLink('{$currentPage.pagenr}')">
                     <span id="showlink{$currentPage.pagenr}one">... +</span>
-                    <span id="showlink{$currentPage.pagenr}two" class="z-hide">... -</span>
+                    <span id="showlink{$currentPage.pagenr}two" class="hide">... -</span>
                 </a>
-                <span id="showpages{$currentPage.pagenr}" class="z-hide">
+                <span id="showpages{$currentPage.pagenr}" class="hide">
                 {assign var="hiddenPageBoxOpened" value="1"}
                 {assign var="hiddenPageBoxClosed" value="0"}
             {/if}

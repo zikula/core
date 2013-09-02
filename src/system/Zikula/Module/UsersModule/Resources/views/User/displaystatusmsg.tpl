@@ -1,7 +1,7 @@
 {insert name='getstatusmsg'}
 
 {if isset($regErrors) && count($regErrors) > 0}
-<div class="z-errormsg">
+<div class="alert alert-danger">
 {foreach from=$regErrors item="regError"}
     <p>{$regError}</p>
 {/foreach}

@@ -123,12 +123,12 @@ Zikula.Users.Admin.Config = {
         var regAnswerMandatory = $(Zikula.Users.Admin.Config.registrationAntispamAnswerMandatoryId);
 
         if ($F(Zikula.Users.Admin.Config.registrationAntispamQuestionId).blank()) {
-            if (!regAnswerMandatory.hasClassName('z-hide')) {
-                regAnswerMandatory.addClassName('z-hide');
+            if (!regAnswerMandatory.hasClassName('hide')) {
+                regAnswerMandatory.addClassName('hide');
             }
         } else {
-            if (regAnswerMandatory.hasClassName('z-hide')) {
-                regAnswerMandatory.removeClassName('z-hide');
+            if (regAnswerMandatory.hasClassName('hide')) {
+                regAnswerMandatory.removeClassName('hide');
             }
         }
     },

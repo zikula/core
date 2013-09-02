@@ -16,13 +16,13 @@
     <h3>{gt text="View IDS Log"}</h3>
 </div>
 
-<ul class="z-menulinks">
+<ul class="navbar navbar-default">
     <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>
     <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
 </ul>
 
 {gt text="All" assign=lblAll}
-<form id="securitycenter_logfilter" class="z-form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
+<form id="securitycenter_logfilter" class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Filter"}</legend>
         <label>{gt text="User Name"}</label>
@@ -49,7 +49,7 @@
     <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
 </div>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
@@ -88,7 +88,7 @@
             <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>
         {/foreach}
     </tbody>
 </table>

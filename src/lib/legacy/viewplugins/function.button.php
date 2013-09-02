@@ -103,11 +103,11 @@ function smarty_function_button($params, Zikula_View $view)
     } else {
         $id = '';
     }
+    $class = ' class="btn btn-default';
     if (isset($params['class'])) {
-        $class = ' class="'.DataUtil::formatForDisplay($params['class']).'"';
-    } else {
-        $class = '';
+        $class .= ' '.DataUtil::formatForDisplay($params['class']);
     }
+    $class .= '"';
     if (isset($params['text'])) {
         $text = ' ' . DataUtil::formatForDisplay($params['text']);
     } else {

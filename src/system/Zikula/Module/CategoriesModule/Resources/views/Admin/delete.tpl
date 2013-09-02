@@ -4,19 +4,19 @@
     <h3>{gt text="Delete category"}</h3>
 </div>
 
-<p class="z-warningmsg">
+<p class="alert alert-warning">
     {gt text="Do you really want to delete this category?"}<br />
     {gt text="Category"}: <strong>{$category.name}</strong>
 </p>
 
-<form class="z-form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="cid" value="{$category.id}" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
             <legend>{gt text="Confirmation prompt"}</legend>
             {if $numSubcats > 0}
-            <p class="z-informationmsg">
+            <p class="alert alert-info">
                 {gt text="It contains %s direct sub-categories." tag1=$numSubcats}
                 {gt text="Please also choose what to do with this category's sub-categories:"}
             </p>
@@ -34,10 +34,13 @@
             {else}
             <input type="hidden" name="subcat_action" id="subcat_action" value="delete" />
             {/if}
-            <div class="z-buttons z-formbuttons">
-                {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                <a class="z-btred" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-            </div>
+            <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                    {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
+                    <a class="btn btn-default" class="z-btred" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                </div>
+        </div>
+        </div>
         </fieldset>
     </div>
 </form>

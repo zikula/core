@@ -201,7 +201,7 @@ Zikula.Users.PassMeter = Class.create({
         }
     },
     prepareVisualisation: function() {
-        this.passindicatorContainer = new Element('div',{'class':'z-formnote passindicator'}).hide();
+        this.passindicatorContainer = new Element('div',{'class':'help-block passindicator'}).hide();
         this.passindicatorBarContainer = new Element('div',{'class':'passindicatorbarcontainer'}).setStyle({width:'200px'});
         this.passindicatorBar = new Element('div',{'class':'passindicatorbar'}).setStyle({
                 backgroundColor: this.options.colors[0],

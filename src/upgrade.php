@@ -158,7 +158,7 @@ function _upg_selectlanguage()
     if (!$GLOBALS['ZConfig']['System']['installed']) {
         $validupgrade = false;
         echo '<h2>'.__('FATAL ERROR!')."</h2>\n";
-        echo '<p class="z-errormsg">'.__("Zikula does not appear to be installed.")."</p>\n";
+        echo '<p class="alert alert-danger">'.__("Zikula does not appear to be installed.")."</p>\n";
     }
 
     if (!$validupgrade) {
@@ -167,11 +167,11 @@ function _upg_selectlanguage()
     }
 
     $curlang = ZLanguage::getLanguageCode();
-    echo '<form class="z-form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">'."\n";
+    echo '<form class="form-horizontal" role="form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">'."\n";
     echo '<fieldset><legend>'.__('Please select your language').'</legend>'."\n";
     echo '<input type="hidden" name="action" value="upgradeinit" />'."\n";
-    echo '<div class="z-formrow"><label for="lang">'.__('Choose a language').'</label>'."\n";
-    echo '<select id="lang" name="lang">'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="lang">'.__('Choose a language').'</label><div class="col-lg-9">'."\n";
+    echo '<select class="form-control" id="lang" name="lang">'."\n";
     $langs = ZLanguage::getInstalledLanguageNames();
     foreach ($langs as $lang => $name) {
         $selected = ($lang == $curlang ? ' selected="selected"' : '');
@@ -212,13 +212,13 @@ function _upg_login($showheader = true)
     $lang = ZLanguage::getLanguageCode();
     if ($showheader == true) {
         _upg_header();
-        echo '<p class="z-errormsg">'.__('Failed to login to your site').'</p>'."\n";
+        echo '<p class="alert alert-danger">'.__('Failed to login to your site').'</p>'."\n";
     }
     echo '<p>'.__('For the next upgrade steps you need to be logged in. Please provide your admin account credentials').'</p>'."\n";
-    echo '<form class="z-form" action="upgrade.php?lang='.$lang.'" method="post" enctype="application/x-www-form-urlencoded">'."\n";
+    echo '<form class="form-horizontal" role="form" action="upgrade.php?lang='.$lang.'" method="post" enctype="application/x-www-form-urlencoded">'."\n";
     echo '<fieldset><legend>'.__('Log-in').'</legend>'."\n";
-    echo '<div class="z-formrow"><label for="username">'.__('User name').'</label><input id="username" type="text" name="username" size="60" maxlength="25" /></div>'."\n";
-    echo '<div class="z-formrow"><label for="password">'.__('Password').'</label><input id="password" type="password" name="password" size="25" maxlength="40" /></div>'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="username">'.__('User name').'</label><div class="col-lg-9"><input id="username" type="text" class="form-control" name="username" size="60" maxlength="25" /></div>'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="password">'.__('Password').'</label><div class="col-lg-9"><input id="password" type="text" class="form-control" name="password" size="25" maxlength="40" /></div>'."\n";
     echo '<input type="hidden" name="action" value="sanitycheck" />'."\n";
 
     if ($lang != null) {
@@ -276,7 +276,7 @@ function _upg_upgrademodules($username, $password)
     // Relogin the admin user to give a proper admin link
     SessionUtil::requireSession();
 
-    echo '<p class="z-statusmsg">'.__('Finished upgrade')." - \n";
+    echo '<p class="alert alert-success">'.__('Finished upgrade')." - \n";
 
     $authenticationInfo = array(
         'login_id' => $username,
@@ -346,21 +346,21 @@ function _upg_sanity_check($username, $password)
         // Already installed the correct version
         $validupgrade = false;
         echo '<h2>'.__('Already up to date')."</h2>\n";
-        echo '<p class="z-errormsg">'.__f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore.", _ZINSTALLEDVERSION)."</p>\n";
+        echo '<p class="alert alert-danger">'.__f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore.", _ZINSTALLEDVERSION)."</p>\n";
     } elseif (version_compare(_ZINSTALLEDVERSION, _Z_MINUPGVER, '<')) {
         // Not on version _Z_MINUPGVER yet
         $validupgrade = false;
         echo '<h2>'.__('Possible incompatible version found.')."</h2>\n";
-        echo '<p class="z-warningmsg">'.__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
+        echo '<p class="alert alert-warning">'.__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
     } elseif (version_compare(PHP_VERSION, '5.3.0', '>=')) {
         if (ini_get('date.timezone') == '') {
-            echo '<p class="z-errormsg"><strong>'.__('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.')."</strong></p>\n";
+            echo '<p class="alert alert-danger"><strong>'.__('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.')."</strong></p>\n";
             _upg_continue('sanitycheck', __('Check again'), $username, $password);
             $validupgrade = false;
         }
     } elseif (version_compare(Zikula_Core::VERSION_NUM, '1.3.6', '>=') && (is_dir('plugins/Doctrine') || is_dir('plugins/DoctrineExtensions'))) {
         echo '<h2>'.__('Legacy plugins found.')."</h2>\n";
-        echo '<p class="z-warningmsg">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
+        echo '<p class="alert alert-warning">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
         $validupgrade = false;
     }
 
@@ -370,7 +370,7 @@ function _upg_sanity_check($username, $password)
             // PCRE Unicode property support is not enabled.
             $validupgrade = false;
             echo '<h2>'.__('PCRE Unicode Property Support Needed.')."</h2>\n";
-            echo '<p class="z-errormsg">'.__('The PCRE (Perl Compatible Regular Expression) library being used with your PHP installation does not support Unicode properties. This is required to handle multi-byte character sets in regular expressions. The PCRE library used must be compiled with the \'--enable-unicode-properties\' option.')."</p>\n";
+            echo '<p class="alert alert-danger">'.__('The PCRE (Perl Compatible Regular Expression) library being used with your PHP installation does not support Unicode properties. This is required to handle multi-byte character sets in regular expressions. The PCRE library used must be compiled with the \'--enable-unicode-properties\' option.')."</p>\n";
         }
     }
 

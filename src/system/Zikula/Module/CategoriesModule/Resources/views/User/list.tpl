@@ -1,6 +1,6 @@
 {assign var="dr" value=`$rootCat.id`}
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th style="text-align:left">{gt text="Internal ID"}</th>

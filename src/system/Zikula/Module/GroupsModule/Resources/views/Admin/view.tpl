@@ -11,10 +11,10 @@
         Zikula.UI.Tooltips($$('.tooltips'));
 
         {{foreach item='group' from=$groups}}
-        //$('insert_{{$group.gid}}').addClassName('z-hide');
-        $('modify_{{$group.gid}}').addClassName('z-hide');
-        $('delete_{{$group.gid}}').addClassName('z-hide');
-        $('modifyajax_{{$group.gid}}').removeClassName('z-hide');
+        //$('insert_{{$group.gid}}').addClassName('hide');
+        $('modify_{{$group.gid}}').addClassName('hide');
+        $('delete_{{$group.gid}}').addClassName('hide');
+        $('modifyajax_{{$group.gid}}').removeClassName('hide');
         $('modifyajax_{{$group.gid}}').observe('click', function() {
             groupmodifyinit({{$group.gid}});
         });
@@ -32,7 +32,7 @@
 </div>
 
 {checkpermissionblock component='ZikulaGroupsModule::' instance='::' level=ACCESS_ADD}
-<a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new z-hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
+<a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
 {/checkpermissionblock}
 
 <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
@@ -67,7 +67,7 @@
                     {/if}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupname_{$group.gid}" class="z-itemcell z-w15 z-hide">
+                <span id="editgroupname_{$group.gid}" class="z-itemcell z-w15 hide">
                     <input type="text" id="name_{$group.gid}" name="name_{$group.gid}" value="{$group.name|safetext}" size="15" />
                 </span>
                 {* *}
@@ -75,7 +75,7 @@
                     {gt text="$group.gtypelbl|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupgtype_{$group.gid}" class="z-itemcell z-w10 z-hide">
+                <span id="editgroupgtype_{$group.gid}" class="z-itemcell z-w10 hide">
                     <select id="gtype_{$group.gid}" name="gtype_{$group.gid}">
                         {html_options options=$grouptypes selected=$group.gtype}
                     </select>
@@ -85,7 +85,7 @@
                     {$group.description|safehtml}&nbsp;
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupdescription_{$group.gid}" class="z-itemcell z-w30 z-hide">
+                <span id="editgroupdescription_{$group.gid}" class="z-itemcell z-w30 hide">
                     <textarea id="description_{$group.gid}" rows="2" cols="20" name="description_{$group.gid}">{$group.description|safehtml}</textarea>
                 </span>
                 {* *}
@@ -93,7 +93,7 @@
                     {gt text="$group.statelbl|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupstate_{$group.gid}" class="z-itemcell z-w10 z-hide">
+                <span id="editgroupstate_{$group.gid}" class="z-itemcell z-w10 hide">
                     <select id="state_{$group.gid}" name="state_{$group.gid}">
                         {html_options options=$states selected=$group.state}
                     </select>
@@ -106,7 +106,7 @@
                     {$group.nbumax|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 z-hide z-center">
+                <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 hide z-center">
                     <input type="text" id="nbumax_{$group.gid}" size="5" name="nbumax_{$group.gid}" value="{$group.nbumax|safetext}" />
                 </span>
                 {* *}
@@ -118,23 +118,23 @@
                 {gt text='Delete: %s' tag1=$group.name assign=strDeleteGroup}
                 {gt text='Cancel: %s' tag1=$group.name assign=strCancelGroup}
                 <span id="groupaction_{$group.gid}" class="z-itemcell z-w10">
-                    <button class="z-imagebutton z-hide tooltips" id="modifyajax_{$group.gid}" title="{$strEditGroup}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
+                    <button class="z-imagebutton hide tooltips" id="modifyajax_{$group.gid}" title="{$strEditGroup}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                     <a id="modify_{$group.gid}" href="{$group.editurl|safetext}" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall title=$strEditGroup alt="Edit" class='tooltips'}</a>
                     <a id="delete_{$group.gid}" href="{$group.deleteurl|safetext}" title="{gt text="Delete"}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall title=$strDeleteGroup __alt="Delete" class='tooltips'}</a>
                     <a id="members_{$group.gid}" href="{$group.membersurl|safetext}" title="{gt text="Group membership"}">{img src=group.png modname=core set=icons/extrasmall title=$strMembershipGroup __alt="Group membership" class='tooltips'}</a>
                 </span>
-                <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 z-hide">
+                <span id="editgroupaction_{$group.gid}" class="z-itemcell z-w10 hide">
                     <button class="z-imagebutton tooltips" id="groupeditsave_{$group.gid}" title="{$strSaveGroup}">{img src=button_ok.png modname=core set=icons/extrasmall __alt="Save" __title="Save"}</button>
                     <button class="z-imagebutton tooltips" id="groupeditdelete_{$group.gid}" title="{$strDeleteGroup}">{img src=14_layer_deletelayer.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete"}</button>
                     <button class="z-imagebutton tooltips" id="groupeditcancel_{$group.gid}" title="{$strCancelGroup}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                 </span>
             </div>
-            <div id="groupinfo_{$group.gid}" class="z-hide z-groupinfo">
+            <div id="groupinfo_{$group.gid}" class="hide z-groupinfo">
                 &nbsp;
             </div>
         </li>
         {foreachelse}
-        <li id="group_1" class="z-hide z-clearfix">
+        <li id="group_1" class="hide z-clearfix">
             <div id="groupcontent_1" class="groupcontent">
                 <input type="hidden" id="gtypeid_1" value="" />
                 <input type="hidden" id="stateid_1" value="" />
@@ -143,7 +143,7 @@
                 <span id="groupgid_1" class="z-itemcell z-w05">
                     {$group.gid|safetext}
                 </span>
-                <span id="groupname_1" class="z-itemcell z-w15 z-hide">
+                <span id="groupname_1" class="z-itemcell z-w15 hide">
                     {$group.name|safetext}
                 </span>
                 {* Hidden until called *}
@@ -151,7 +151,7 @@
                     <input type="text" id="name_1" name="name_1" value="" size="15" />&nbsp;
                 </span>
                 {* *}
-                <span id="groupgtype_1" class="z-itemcell z-w10 z-hide">
+                <span id="groupgtype_1" class="z-itemcell z-w10 hide">
                     {gt text="$group.gtypelbl|safetext}
                 </span>
                 {* Hidden until called *}
@@ -161,7 +161,7 @@
                     </select>
                 </span>
                 {* *}
-                <span id="groupdescription_1" class="z-itemcell z-w30 z-hide">
+                <span id="groupdescription_1" class="z-itemcell z-w30 hide">
                     {$group.description}&nbsp;
                 </span>
                 {* Hidden until called *}
@@ -169,7 +169,7 @@
                     <textarea id="description_1" rows="2" cols="20" name="description_1">{$group.description|safetext}</textarea>&nbsp;
                 </span>
                 {* *}
-                <span id="groupstate_1" class="z-itemcell z-w10 z-hide">
+                <span id="groupstate_1" class="z-itemcell z-w10 hide">
                     {gt text="$group.statelbl|safetext}
                 </span>
                 {* Hidden until called *}
@@ -179,11 +179,11 @@
                     </select>
                 </span>
                 {* *}
-                <span id="groupnbuser_1" class="z-itemcell z-w10 z-hide z-center">
+                <span id="groupnbuser_1" class="z-itemcell z-w10 hide z-center">
                     {*$group.nbuser|safetext*}&nbsp;
                 </span>
                 {* *}
-                <span id="groupnbumax_1" class="z-itemcell z-w10 z-hide z-center">
+                <span id="groupnbumax_1" class="z-itemcell z-w10 hide z-center">
                     {$group.nbumax|safetext}
                 </span>
                 {* Hidden until called *}
@@ -191,7 +191,7 @@
                     <input type="text" id="nbumax_1" size="5" name="nbumax_1" value="{$group.nbumax|safetext}" />
                 </span>
                 {* *}
-                <span id="groupaction_1" class="z-itemcell z-w12 z-hide">
+                <span id="groupaction_1" class="z-itemcell z-w12 hide">
                     <button class="z-imagebutton" id="modifyajax_1" title="{gt text="Edit"}">{img src=xedit.png modname=core set=icons/extrasmall __title="Edit" __alt="Edit"}</button>
                 </span>
                 <span id="editgroupaction_1" class="z-itemcell z-w12">
@@ -200,7 +200,7 @@
                     <button class="z-imagebutton" id="groupeditcancel_1" title="{gt text="Cancel"}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Cancel" __title="Cancel"}</button>
                 </span>
             </div>
-            <div id="groupinfo_1" class="z-hide z-groupinfo">&nbsp;</div>
+            <div id="groupinfo_1" class="hide z-groupinfo">&nbsp;</div>
         </li>
         {/foreach}
     </ol>
@@ -210,7 +210,7 @@
 
 {if $useritems}
 <h3>{gt text="Pending applications"}</h3>
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="User ID"}</th>
@@ -233,7 +233,7 @@
             </td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="5">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="5">{gt text="No items found."}</td></tr>
         {/foreach}
     </tbody>
 </table>

@@ -18,7 +18,7 @@ class FieldRow implements RendererInterface
     
     public function render(FormView $form, $variables, FormRenderer $renderer)
     {
-        return '<div class="z-formrow">'
+        return '<div class="form-group">'
               . $renderer->renderLabel(array('form' => $form, 
                                              'label' => isset($variables['label'])? $variables['label'] : null))
               . $renderer->renderWidget(array('form' => $form))

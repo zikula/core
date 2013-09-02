@@ -5,25 +5,31 @@
     <h3>{gt text="Settings"}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         {insert name='csrftoken' assign='csrftoken'}
         <input type="hidden" name="csrftoken" value="{$csrftoken}" />
         <fieldset>
             <legend>{gt text="General settings"}</legend>
-            <div class="z-formrow">
-                <label for="modules_itemsperpage">{gt text="Items per page"}</label>
-                <input id="modules_itemsperpage" type="text" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="modules_itemsperpage">{gt text="Items per page"}</label>
+                <div class="col-lg-9">
+                <input id="modules_itemsperpage" type="text" class="form-control" name="itemsperpage" size="3" value="{$itemsperpage|safetext}" />
             </div>
-            <div class="z-formrow">
-                <label>{gt text="Module defaults"}</label>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">{gt text="Module defaults"}</label>
+                <div class="col-lg-9">
                 <span><a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="view" defaults=true csrftoken=$csrftoken}">{gt text="Hard module regenerate to reset displayname, url and description to defaults"}</a></span>
             </div>
+        </div>
         </fieldset>
 
-        <div class="z-buttons z-formbuttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <a class="btn btn-default" href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            </div>
         </div>
     </div>
 </form>

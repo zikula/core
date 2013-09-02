@@ -19,7 +19,7 @@ Zikula.Users.NewUser = {
         
         var submitElement = $(Zikula.Users.NewUser.fieldId.submit)
         submitElement.disabled = true;
-        submitElement.addClassName('z-hide');
+        submitElement.addClassName('hide');
         
         var formfields = Form.getElements(Zikula.Users.NewUser.formId);
         for (var i = 0, len = formfields.length; i < len; i++) {
@@ -40,7 +40,7 @@ Zikula.Users.NewUser = {
         });
 
         var checkUserElement = $(Zikula.Users.NewUser.fieldId.checkUser);
-        checkUserElement.removeClassName('z-hide');
+        checkUserElement.removeClassName('hide');
         checkUserElement.observe('click', Zikula.Users.NewUser.callGetRegistrationErrors);
     },
 
@@ -54,18 +54,18 @@ Zikula.Users.NewUser = {
         var checkMessageElement = $(Zikula.Users.NewUser.fieldId.checkMessage);
         var validMessageElement = $(Zikula.Users.NewUser.fieldId.validMessage);
         
-        if (checkMessageElement.hasClassName('z-hide')) {
-            checkMessageElement.removeClassName('z-hide');
+        if (checkMessageElement.hasClassName('hide')) {
+            checkMessageElement.removeClassName('hide');
         }
-        if (!validMessageElement.hasClassName('z-hide')) {
-            validMessageElement.addClassName('z-hide');
+        if (!validMessageElement.hasClassName('hide')) {
+            validMessageElement.addClassName('hide');
         }
-        if (!submitElement.hasClassName('z-hide')) {
-            submitElement.addClassName('z-hide');
+        if (!submitElement.hasClassName('hide')) {
+            submitElement.addClassName('hide');
         }
         submitElement.disabled = true;
-        if (checkUserElement.hasClassName('z-hide')) {
-            checkUserElement.removeClassName('z-hide');
+        if (checkUserElement.hasClassName('hide')) {
+            checkUserElement.removeClassName('hide');
         }
         checkUserElement.disabled = false;
     },
@@ -78,30 +78,30 @@ Zikula.Users.NewUser = {
         var checkMessageElement = $(Zikula.Users.NewUser.fieldId.checkMessage);
         var validMessageElement = $(Zikula.Users.NewUser.fieldId.validMessage);
         
-        if (indicatorElement.hasClassName('z-hide')) {
-            indicatorElement.removeClassName('z-hide');
+        if (indicatorElement.hasClassName('hide')) {
+            indicatorElement.removeClassName('hide');
         }
         
-        if (checkMessageElement.hasClassName('z-hide')) {
-            checkMessageElement.removeClassName('z-hide');
+        if (checkMessageElement.hasClassName('hide')) {
+            checkMessageElement.removeClassName('hide');
         }
         
         if (!checkMessageElement.hasClassName('z-invisible')) {
             checkMessageElement.addClassName('z-invisible');
         }
         
-        if (!validMessageElement.hasClassName('z-hide')) {
-            validMessageElement.addClassName('z-hide');
+        if (!validMessageElement.hasClassName('hide')) {
+            validMessageElement.addClassName('hide');
         }
         
-        if (!submitElement.hasClassName('z-hide')) {
-            submitElement.addClassName('z-hide');
+        if (!submitElement.hasClassName('hide')) {
+            submitElement.addClassName('hide');
         }
         
         submitElement.disabled = true;
         
-        if (!checkUserElement.hasClassName('z-hide')) {
-            checkUserElement.addClassName('z-hide');
+        if (!checkUserElement.hasClassName('hide')) {
+            checkUserElement.addClassName('hide');
         }
         
         checkUserElement.disabled = true;
@@ -115,44 +115,44 @@ Zikula.Users.NewUser = {
         var checkMessageElement = $(Zikula.Users.NewUser.fieldId.checkMessage);
         var validMessageElement = $(Zikula.Users.NewUser.fieldId.validMessage);
         
-        if (!indicatorElement.hasClassName('z-hide')) {
-            indicatorElement.addClassName('z-hide');
+        if (!indicatorElement.hasClassName('hide')) {
+            indicatorElement.addClassName('hide');
         }
         
         if (hasError) {
             if (checkMessageElement.hasClassName('z-invisible')) {
                 checkMessageElement.removeClassName('z-invisible');
             }
-            if (checkMessageElement.hasClassName('z-hide')) {
-                checkMessageElement.removeClassName('z-hide');
+            if (checkMessageElement.hasClassName('hide')) {
+                checkMessageElement.removeClassName('hide');
             }
-            if (!validMessageElement.hasClassName('z-hide')) {
-                validMessageElement.addClassName('z-hide');
+            if (!validMessageElement.hasClassName('hide')) {
+                validMessageElement.addClassName('hide');
             }
-            if (!submitElement.hasClassName('z-hide')) {
-                submitElement.addClassName('z-hide');
+            if (!submitElement.hasClassName('hide')) {
+                submitElement.addClassName('hide');
             }
             submitElement.disabled = true;
-            if (checkUserElement.hasClassName('z-hide')) {
-                checkUserElement.removeClassName('z-hide');
+            if (checkUserElement.hasClassName('hide')) {
+                checkUserElement.removeClassName('hide');
             }
             checkUserElement.disabled = false;
         } else {
             if (checkMessageElement.hasClassName('z-invisible')) {
                 checkMessageElement.removeClassName('z-invisible');
             }
-            if (!checkMessageElement.hasClassName('z-hide')) {
-                checkMessageElement.addClassName('z-hide');
+            if (!checkMessageElement.hasClassName('hide')) {
+                checkMessageElement.addClassName('hide');
             }
-            if (validMessageElement.hasClassName('z-hide')) {
-                validMessageElement.removeClassName('z-hide');
+            if (validMessageElement.hasClassName('hide')) {
+                validMessageElement.removeClassName('hide');
             }
-            if (submitElement.hasClassName('z-hide')) {
-                submitElement.removeClassName('z-hide');
+            if (submitElement.hasClassName('hide')) {
+                submitElement.removeClassName('hide');
             }
             submitElement.disabled = false;
-            if (!checkUserElement.hasClassName('z-hide')) {
-                checkUserElement.addClassName('z-hide');
+            if (!checkUserElement.hasClassName('hide')) {
+                checkUserElement.addClassName('hide');
             }
             checkUserElement.disabled = true;
         }
@@ -203,9 +203,9 @@ Zikula.Users.NewUser = {
             return;
         }
         
-        $$('div#z-maincontent>div.z-errormsg').each(function(item) {
-            if (!item.hasClassName('z-hide')) {
-                item.addClassName('z-hide')
+        $$('div#z-maincontent>div.alert alert-danger').each(function(item) {
+            if (!item.hasClassName('hide')) {
+                item.addClassName('hide')
             }
         });
         
@@ -213,10 +213,10 @@ Zikula.Users.NewUser = {
             element.removeClassName('z-form-error');
         });
         
-        $$('#' + Zikula.Users.NewUser.formId + ' .z-errormsg').each(function(element, index){
+        $$('#' + Zikula.Users.NewUser.formId + ' .alert alert-danger').each(function(element, index){
             element.update();
-            if (!element.hasClassName('z-hide')) {
-                element.addClassName('z-hide');
+            if (!element.hasClassName('hide')) {
+                element.addClassName('hide');
             }
         });
         
@@ -232,7 +232,7 @@ Zikula.Users.NewUser = {
                 errorMessagesDiv.insert(item);
             });
             
-            errorMessagesDiv.removeClassName('z-hide');
+            errorMessagesDiv.removeClassName('hide');
         }
 
         if (data.errorFieldsCount > 0) {
@@ -245,7 +245,7 @@ Zikula.Users.NewUser = {
 
                 element = $(Zikula.Users.NewUser.formId + '_' + pair.key + '_error');
                 element.update(pair.value);
-                element.removeClassName('z-hide');
+                element.removeClassName('hide');
             });
         }
         

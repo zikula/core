@@ -1,16 +1,18 @@
 {* $Id$ *}
 <h4>{gt text="CSS styling"}</h4>
-<div class="z-formrow">
-    <label for="blocks_menu_stylesheet">{gt text="Style sheet" domain='zikula'}</label>
+<div class="form-group">
+    <label class="col-lg-3 control-label" for="blocks_menu_stylesheet">{gt text="Style sheet" domain='zikula'}</label>
+    <div class="col-lg-9">
     <input id="blocks_menu_stylesheet" type="text" name="stylesheet" size="20" value="{$stylesheet|safetext}" />
 </div>
 <h4>{gt text="Visibility within block"}</h4>
-<div class="z-formrow">
-    <label for="blocks_menu_modules">{gt text="Modules manager" domain='zikula'}</label>
+<div class="form-group">
+    <label class="col-lg-3 control-label" for="blocks_menu_modules">{gt text="Modules manager" domain='zikula'}</label>
+    <div class="col-lg-9">
     <input id="blocks_menu_modules" type="checkbox" value="1" name="displaymodules"{if $displaymodules} checked="checked"{/if} />
 </div>
 <h3>{gt text="Content"}</h3>
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Title" domain='zikula'}</th>

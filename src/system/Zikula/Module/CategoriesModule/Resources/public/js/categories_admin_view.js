@@ -97,7 +97,7 @@ Zikula.Categories.DeleteMenuAction = function(node){
         var info = Zikula.__f('It contains %s direct sub-categories.', subCats)
             + ' '
             + Zikula.__("Please also choose what to do with this category's sub-categories.");
-        msg.insert(new Element('p',{'class':'z-informationmsg'}).update(info));
+        msg.insert(new Element('p',{'class':'alert alert-info'}).update(info));
         buttons = [
             {name: 'Delete', value: 'Delete', label: Zikula.__('Delete all sub-categories'), 'class': 'z-btgreen'},
             {name: 'Delete', value: 'DeleteAndMoveSubs', label: Zikula.__('Move all sub-categories'), 'class': 'z-btgreen', close: false},

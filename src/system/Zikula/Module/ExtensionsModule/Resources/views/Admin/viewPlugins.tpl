@@ -17,7 +17,7 @@
     {/if}
 </div>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             {if !$systemplugins}
@@ -96,7 +96,7 @@
             </td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="7">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="7">{gt text="No items found."}</td></tr>
         {/foreach}
     </tbody>
 </table>

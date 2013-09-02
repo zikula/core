@@ -40,4 +40,4 @@
 </div>
 
 
-<div class="z-hide" id="admintabs-none"></div>
+<div class="hide" id="admintabs-none"></div>

@@ -4,17 +4,17 @@
     <h3>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="confirmation" value="1" />
         <input type="hidden" name="id" value="{$id|safetext}" />
-        <div class="z-formrow">
-            <p class="z-informationmsg">{gt text="Notice! This module either requires or recommends additional modules be installed. The report below details these requirements and/or recommendations."}</p>
+        <div class="form-group">
+            <p class="alert alert-info">{gt text="Notice! This module either requires or recommends additional modules be installed. The report below details these requirements and/or recommendations."}</p>
         </div>
         {if $dependencies}
-        <div class="z-formrow">
-            <table class="z-datatable">
+        <div class="form-group">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>{gt text="Module name"}</th>
@@ -52,16 +52,18 @@
         </div>
         {/if}
         {if !$fataldependency}
-        <p class="z-informationmsg">{gt text="Do you really want to install this module?"}</p>
+        <p class="alert alert-info">{gt text="Do you really want to install this module?"}</p>
         {else}
-        <p class="z-errormsg">{gt text="Error! Required dependencies are not present. To install this module, please upload the dependencies."}</p>
+        <p class="alert alert-danger">{gt text="Error! Required dependencies are not present. To install this module, please upload the dependencies."}</p>
         {/if}
 
-        <div class="z-buttons z-formbuttons">
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
             {if !$fataldependency}
-            {button src=button_ok.png set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
+                {button src=button_ok.png set=icons/extrasmall __alt="Accept" __title="Accept" __text="Accept"}
             {/if}
-            <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="btn btn-default" href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            </div>
         </div>
     </div>
 </form>

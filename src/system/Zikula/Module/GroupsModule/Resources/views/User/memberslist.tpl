@@ -1,7 +1,7 @@
 {gt text="Memberships" assign=templatetitle}
 {include file="User/menu.tpl"}
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -56,7 +56,7 @@
         
 <br />
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="User name"}</th>
@@ -70,7 +70,7 @@
             <td>{img modname='core' set='icons/extrasmall' src=$members[members].isonline alt=$members[members].isonlinelbl}</td>
         </tr>
         {sectionelse}
-        <tr class="z-datatableempty">
+        <tr class="table table-borderedempty">
             <td colspan="2">{gt text="No group members found."}</td>
         </tr>
         {/section}

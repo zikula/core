@@ -16,11 +16,11 @@
     <h3>{gt text="Themes list"}</h3>
 </div>
 
-<p class="z-informationmsg">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
+<p class="alert alert-info">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
 <div id="themes-alphafilter" style="padding:0 0 1em;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -81,7 +81,7 @@
             </td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="3">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="3">{gt text="No items found."}</td></tr>
         {/foreach}
     </tbody>
 </table>

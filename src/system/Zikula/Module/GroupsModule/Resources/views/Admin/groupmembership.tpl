@@ -7,7 +7,7 @@
     <h3>{gt text="Group membership"} ({$group.name|safetext})</h3>
 </div>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="User ID"}</th>
@@ -32,7 +32,7 @@
             </td>
         </tr>
         {sectionelse}
-        <tr class="z-datatableempty"><td colspan="4">{gt text="No items found."}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="4">{gt text="No items found."}</td></tr>
         {/section}
     </tbody>
 </table>
@@ -45,22 +45,26 @@
 </div>
 <br />
 
-<p class="z-informationmsg">{gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}</p>
+<p class="alert alert-info">{gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}</p>
 
-<form class="z-form" action="{modurl modname="Groups" type="admin" func="adduser"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="adduser"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <input type="hidden" name="gid" value="{$group.gid|safetext}" />
         <fieldset>
-            <div class="z-formrow">
-                <label for="groups_uid">{gt text="Users to add"}</label>
-                <select id="groups_uid" name="uid[]" multiple="multiple" size="10">
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="groups_uid">{gt text="Users to add"}</label>
+                <div class="col-lg-9">
+                <select class="form-control" id="groups_uid" name="uid[]" multiple="multiple" size="10">
                     {html_options options=$uids}
                 </select>
             </div>
+        </div>
         </fieldset>
-        <div class="z-buttons z-formbuttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Add" __title="Add" __text="Add"}
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button src=button_ok.png set=icons/extrasmall __alt="Add" __title="Add" __text="Add"}
+            </div>
         </div>
     </div>
 </form>

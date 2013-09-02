@@ -17,7 +17,7 @@
  * Zikula_View function to display menulinks in an unordered list
  *
  * Example
- * {modulelinks data=$links id='listid' class='z-menulinks' itemclass='z-ml-item' first='z-ml-first' last='z-ml-last'}
+ * {modulelinks data=$links id='listid' class='navbar navbar-default' itemclass='z-ml-item' first='z-ml-first' last='z-ml-last'}
  *
  * Available parameters:
  *  links     Array with menulinks (text, url, title, id, class, disabled) (optional)
@@ -40,7 +40,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
-    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'z-menulinks';
+    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar navbar-default';
     $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
     $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
