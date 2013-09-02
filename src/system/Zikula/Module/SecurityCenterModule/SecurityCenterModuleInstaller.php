@@ -63,7 +63,7 @@ class SecurityCenterModuleInstaller extends \Zikula_AbstractInstaller
         System::setVar('sessionregeneratefreq', 10);
         System::setVar('sessionipcheck', 0);
         System::setVar('sessionname', '_zsid');
-        System::setVar('sessioncsrftokenonetime', 0);  // 1 means use same token for entire session
+        System::setVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
 
         System::setVar('filtergetvars', 1);
         System::setVar('filterpostvars', 1);
