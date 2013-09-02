@@ -46,9 +46,9 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="alt_theme_domain">{gt text="Domain for alternative site view"}</label>
                 <div class="col-lg-9">
-                    <input id="alt_theme_domain" type="text" class="form-control" name="alt_theme_domain" value="{$alt_theme_domain|safetext}" size="50" />
+                    <input id="alt_theme_domain" type="text" class="form-control" name="alt_theme_domain" value="{$alt_theme_domain|default:''|safetext}" size="50" />
                 </div>
-        </div>
+            </div>
         </fieldset>
         <fieldset>
             <legend>{gt text="Mobile theme"}</legend>
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="mobile_theme_domain">{gt text="Mobile theme domain"}</label>
                 <div class="col-lg-9">
-                    <input id="mobile_theme_domain" type="text" class="form-control" name="mobile_theme_domain" value="{$mobile_theme_domain|safetext}" size="50" />
+                    <input id="mobile_theme_domain" type="text" class="form-control" name="mobile_theme_domain" value="{$mobile_theme_domain|default:''|safetext}" size="50" />
                     <em class="z-sub help-block">{gt text='This forces the mobile theme if your server is visited via the specified url, e.g. m.example.com'}</em>
                 </div>
             </div>
