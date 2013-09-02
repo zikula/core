@@ -2,7 +2,7 @@
 {include file='User/menu.tpl'}
 
 <h3>{$templatetitle}</h3>
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Search keywords" domain='zikula'}</th>
@@ -18,7 +18,7 @@
             <td>{$recentsearch.date->getTimestamp()|date_format}</td>
         </tr>
         {foreachelse}
-        <tr class="z-datatableempty"><td colspan="3">{gt text="No items found." domain='zikula'}</td></tr>
+        <tr class="table table-borderedempty"><td colspan="3">{gt text="No items found." domain='zikula'}</td></tr>
         {/foreach}
     </tbody>
 </table>

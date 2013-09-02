@@ -26,7 +26,7 @@
             {/if}
 
             {if $currentPage.isVisible eq 0 && $hiddenPageBoxOpened eq 0}
-                 ... <span class="z-hide">
+                 ... <span class="hide">
                 {assign var="hiddenPageBoxOpened" value="1"}
                 {assign var="hiddenPageBoxClosed" value="0"}
             {/if}

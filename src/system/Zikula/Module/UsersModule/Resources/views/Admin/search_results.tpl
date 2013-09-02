@@ -25,10 +25,10 @@
     <h3>{gt text="Search results"}</h3>
 </div>
 
-<form id="users_searchresults" class="z-form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
+<form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <table class="z-datatable">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     {if $deleteUsers}

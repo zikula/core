@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1 class="z-center" style="font-size: 1em; margin: 0 0 0.7em;">{gt text="Permission rule information"}</h1>
-    <table class="z-datatable">
+    <table class="table table-bordered">
         <thead>
         <tr>
             <th>{gt text="Registered component"}</th>

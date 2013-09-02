@@ -4,14 +4,16 @@
     <head>
         <title>Zikula UI Demos</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="../../../themes/Andreas08/style/style.css" type="text/css" />
-        <link rel="stylesheet" href="../../../themes/Andreas08/style/fluid960gs/reset.css" type="text/css" />
-        <link rel="stylesheet" href="../../../themes/Andreas08/style/fluid960gs/grid.css" type="text/css" />
-        <link rel="stylesheet" href="../../../themes/Andreas08/style/style.css" type="text/css" />
+        <link rel="stylesheet" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/css/style.css" type="text/css" />
+        <link rel="stylesheet" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/css/fluid960gs/reset.css" type="text/css" />
+        <link rel="stylesheet" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/css/fluid960gs/grid.css" type="text/css" />
+        <link rel="stylesheet" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/css/style.css" type="text/css" />
         <link rel="stylesheet" href="../../../style/core.css" type="text/css" />
+        <link rel="stylesheet" href="../../../style/legacy.css" type="text/css" />
+        <link rel="stylesheet" href="../../../javascript/helpers/Zikula.UI.css" type="text/css" />
         <link rel="stylesheet" href="../../../javascript/helpers/ImageViewer/ImageViewer.css" type="text/css" />
-        <!--[if IE 6]><link rel="stylesheet" type="text/css" href="../../../themes/Andreas08/style/fluid960gs/ie6.css" media="screen" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" type="text/css" href="../../../themes/Andreas08/style/fluid960gs/ie.css" media="screen" /><![endif]-->
+        <!--[if IE 6]><link rel="stylesheet" type="text/css" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/css/fluid960gs/ie6.css" media="screen" /><![endif]-->
+        <!--[if IE 7]><link rel="stylesheet" type="text/css" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/css/fluid960gs/ie.css" media="screen" /><![endif]-->
         <!--[if IE]><link rel="stylesheet" type="text/css" href="../../../style/core_iehacks.css" media="print,projection,screen" /><![endif]-->
         <script type="text/javascript">
             /* <![CDATA[ */
@@ -263,7 +265,7 @@
                     <legend>Ajax window</legend>
                     <p>Default window, content loaded using Ajax call (from href='external.html'), additionaly window is resizable</p>
                     <div class="code">
-                        <p><a id="defwindowajax" href="../../CHANGELOG" title="Default window title">Open window</a></p>
+                        <p><a id="defwindowajax" href="../../CHANGELOG.md" title="Default window title">Open window</a></p>
                         <script type="text/javascript">
                             var defwindowajax = new Zikula.UI.Window($('defwindowajax'),{resizable: true});
                         </script>
@@ -676,11 +678,11 @@
                         <legend>Example</legend>
                         <p>Custom implementation for image zooming. It was designed as Lightbox replacement and it works quite the same. It's also backward compatible with Lightbox. While initialization Zikula.ImageViewerUtil collects all links to images with "rel" attribute containing "imageviewer" or "lightbox" value. It also works for image galleries - "imageviewer[galleryname]" or  "imageviewer[lightbox]".</p>
                         <div id="previewimages" class="z-center">
-                            <a rel="imageviewer[gallery]" title="Preview Andreas08" href="../../../themes/Andreas08/images/preview_large.png">
-                                <img title="Theme preview" alt="Andreas08" src="../../../themes/Andreas08/images/preview_medium.png">
+                            <a rel="imageviewer[gallery]" title="Preview Andreas08" href="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/images/preview_large.png">
+                                <img title="Theme preview" alt="Andreas08" src="../../../themes/Zikula/Theme/Andreas08Theme/Resources/public/images/preview_medium.png">
                             </a>
-                            <a rel="imageviewer[gallery]" title="Preview SeaBreeze" href="../../../themes/SeaBreeze/images/preview_large.png">
-                                <img title="Theme preview" alt="SeaBreeze" src="../../../themes/SeaBreeze/images/preview_medium.png">
+                            <a rel="imageviewer[gallery]" title="Preview SeaBreeze" href="../../../themes/Zikula/Theme/SeaBreezeTheme/Resources/public/images/preview_large.png">
+                                <img title="Theme preview" alt="SeaBreeze" src="../../../themes/Zikula/Theme/SeaBreezeTheme/Resources/public/images/preview_medium.png">
                             </a>
                         </div>
                     </fieldset>

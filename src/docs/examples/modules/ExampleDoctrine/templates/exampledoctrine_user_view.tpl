@@ -4,7 +4,7 @@
 
 <a href="{modurl modname="ExampleDoctrine" type="user" func="edit"}">{gt text='New user'}</a>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <td>{gt text='Username'}</td>

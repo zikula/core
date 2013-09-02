@@ -1,9 +1,9 @@
 {if $nogroups}
-<div class="z-warningmsg">{gt text="There are currently no groups that can be joined."}</div>
+<div class="alert alert-warning">{gt text="There are currently no groups that can be joined."}</div>
 {else}
 {gt text="Groups manager" assign=templatetitle}
 {include file="User/menu.tpl"}
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th> {gt text="Name"} </th>

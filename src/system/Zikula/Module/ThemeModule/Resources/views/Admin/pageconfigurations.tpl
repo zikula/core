@@ -2,7 +2,7 @@
 {include file="Admin/modifymenu.tpl"}
 <h4>{gt text="Page configuration assignments"}</h4>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -28,7 +28,7 @@
 
 <h4>{gt text="Page configurations in use"}</h4>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>{gt text="Configuration file"}</th>
@@ -50,18 +50,19 @@
     </tbody>
 </table>
 
-<p class="z-informationmsg">{gt text="Notice: Any configuration files that Zikula cannot find must be created in 'themes/%s/templates/config'." tag1=$themename|safetext}</p>
+<p class="alert alert-info">{gt text="Notice: Any configuration files that Zikula cannot find must be created in 'themes/%s/templates/config'." tag1=$themename|safetext}</p>
 
 <h4>{gt text="Create new page configuration assignment"}</h4>
 
-<form class="z-form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="updatepageconfigurationassignment"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
         <fieldset>
-            <div class="z-formrow">
-                <label for="theme_pagemodule">{gt text="Module"}</label>
-                <select id="theme_pagemodule" name="pagemodule">
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="theme_pagemodule">{gt text="Module"}</label>
+                <div class="col-lg-9">
+                <select class="form-control" id="theme_pagemodule" name="pagemodule">
                     <option value="">&nbsp;</option>
                     {foreach from=$pagetypes key='pagevalue' item='pagetext'}
                     <option value="{$pagevalue}">{$pagetext}</option>
@@ -69,34 +70,47 @@
                     {html_options options=$modules}
                 </select>
             </div>
-            <div class="z-formrow">
-                <label for="theme_pagetype">{gt text="Function type"}</label>
-                <input id="theme_pagetype" type="text" name="pagetype" size="30" />
             </div>
-            <div class="z-formrow">
-                <label for="theme_pagefunc">{gt text="Function name"}</label>
-                <input id="theme_pagefunc" type="text" name="pagefunc" size="30" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="theme_pagetype">{gt text="Function type"}</label>
+                <div class="col-lg-9">
+                <input id="theme_pagetype" type="text" class="form-control" name="pagetype" size="30" />
             </div>
-            <div class="z-formrow">
-                <label for="theme_pagecustomargs">{gt text="Function arguments"}</label>
-                <input id="theme_pagecustomargs" type="text" name="pagecustomargs" size="30" />
-                <em class="z-formnote z-sub">{gt text="Notice: This is a list of arguments found in the page URL, separated by '/'."}</em>
             </div>
-            <div class="z-formrow">
-                <label for="theme_filename">{gt text="Configuration file"}</label>
-                <select id="theme_filename" name="filename">
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="theme_pagefunc">{gt text="Function name"}</label>
+                <div class="col-lg-9">
+                <input id="theme_pagefunc" type="text" class="form-control" name="pagefunc" size="30" />
+            </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="theme_pagecustomargs">{gt text="Function arguments"}</label>
+                <div class="col-lg-9">
+                <input id="theme_pagecustomargs" type="text" class="form-control" name="pagecustomargs" size="30" />
+                <em class="help-block z-sub">{gt text="Notice: This is a list of arguments found in the page URL, separated by '/'."}</em>
+            </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="theme_filename">{gt text="Configuration file"}</label>
+                <div class="col-lg-9">
+                <select class="form-control" id="theme_filename" name="filename">
                     {html_options values=$existingconfigs output=$existingconfigs}
                 </select>
             </div>
-            <div class="z-formrow">
-                <label for="theme_important">{gt text="Important"}</label>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="theme_important">{gt text="Important"}</label>
+                <div class="col-lg-9">
                 <input id="theme_important" type="checkbox" name="pageimportant" value="1" />
-                <em class="z-formnote z-sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
+                <em class="help-block z-sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
             </div>
-            <div class="z-buttons z-formbuttons">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-            </div>
+            <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                    <a class="btn btn-default" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                </div>
+        </div>
+        </div>
         </fieldset>
     </div>
 </form>

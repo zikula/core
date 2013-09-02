@@ -17,7 +17,7 @@
     <h3>{gt text="Users list"}</h3>
 </div>
 
-<div id="liveusersearch" class="z-hide z-form">
+<div id="liveusersearch" class="hide z-form">
     <fieldset>
         <label for="username">{gt text="Search"}:</label>&nbsp;<input size="25" maxlength="25" type="text" id="username" value="" />
         <a id="modifyuser" href="javascript:void(0);" style="vertical-align:middle;">{img modname=core set=icons/extrasmall src="xedit.png" __title="Edit" __alt="Edit" class='tooltips'}</a>
@@ -31,7 +31,7 @@
     <strong>[{pagerabc posvar="letter" forwardvars="sortby"}]</strong>
 </p>
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>

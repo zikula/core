@@ -10,36 +10,46 @@
     <h3>{$templatetitle}</h3>
 </div>
 
-<form id="users_search" class="z-form" method="post" action="{modurl modname='ZikulaUsersModule' type='admin' func=$callbackFunc|default:'search'}">
+<form id="users_search" class="form-horizontal" role="form" method="post" action="{modurl modname='ZikulaUsersModule' type='admin' func=$callbackFunc|default:'search'}">
     <div>
         <input id="users_search_csrftoken" name="csrftoken" type="hidden" value="{insert name='csrftoken'}" />
         <input id="users_search_formid" name="formid" type="hidden" value="users_search" />
         <fieldset>
             <legend>{gt text="Find users"}</legend>
-            <div class="z-formrow">
-                <label for="users_uname">{gt text="User name"}</label>
-                <input id="users_uname" type="text" name="uname" size="40" maxlength="40" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_uname">{gt text="User name"}</label>
+                <div class="col-lg-9">
+                    <input id="users_uname" class="form-control" type="text" name="uname" size="40" maxlength="40" />
+                </div>
             </div>
-            <div class="z-formrow">
-                <label for="users_email">{gt text="E-mail address"}</label>
-                <input id="users_email" type="text" name="email" size="40" maxlength="255" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_email">{gt text="E-mail address"}</label>
+                <div class="col-lg-9">
+                    <input id="users_email" class="form-control" type="text" name="email" size="40" maxlength="255" />
+                </div>
             </div>
-            <div class="z-formrow">
-                <label for="users_ugroup">{gt text="Group membership"}</label>
-                <select id="users_ugroup" name="ugroup">
-                    <option value="0" selected="selected">{gt text="Any group"}</option>
-                    {section name=group loop=$groups}
-                    <option value="{$groups[group].gid}">{$groups[group].name}</option>
-                    {/section}
-                </select>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_ugroup">{gt text="Group membership"}</label>
+                <div class="col-lg-9">
+                    <select id="users_ugroup" class="form-control" name="ugroup">
+                        <option value="0" selected="selected">{gt text="Any group"}</option>
+                        {section name=group loop=$groups}
+                        <option value="{$groups[group].gid}">{$groups[group].name}</option>
+                        {/section}
+                    </select>
+                </div>
             </div>
-            <div class="z-formrow">
-                <label for="users_regdateafter">{gt text="Registration date after (yyyy-mm-dd)"}</label>
-                <input id="users_regdateafter" type="text" name="regdateafter" size="40" maxlength="10" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_regdateafter">{gt text="Registration date after (yyyy-mm-dd)"}</label>
+                <div class="col-lg-9">
+                    <input id="users_regdateafter" class="form-control" type="text" name="regdateafter" size="40" maxlength="10" />
+                </div>
             </div>
-            <div class="z-formrow">
-                <label for="users_regdatebefore">{gt text="Registration date before (yyyy-mm-dd)"}</label>
-                <input id="users_regdatebefore" type="text" name="regdatebefore" size="40" maxlength="10" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_regdatebefore">{gt text="Registration date before (yyyy-mm-dd)"}</label>
+                <div class="col-lg-9">
+                    <input id="users_regdatebefore" class="form-control" type="text" name="regdatebefore" size="40" maxlength="10" />
+                </div>
             </div>
         </fieldset>
 

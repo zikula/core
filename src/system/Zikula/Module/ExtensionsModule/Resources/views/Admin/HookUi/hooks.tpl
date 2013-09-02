@@ -101,7 +101,7 @@
                                 {/foreach}
                             {/if}
 
-                            <li id="sarea_empty_{$sarea_md5}" class="z-clearfix sarea_empty {if isset($areasSorting.$category.$sarea)}z-hide{/if}">
+                            <li id="sarea_empty_{$sarea_md5}" class="z-clearfix sarea_empty {if isset($areasSorting.$category.$sarea)}hide{/if}">
                                 <span class="z-itemcell">{gt text="There aren't any areas attached here.<br />Drag an area from the right and drop it here to attach it."}</span>
                             </li>
                         </ol>
@@ -110,7 +110,7 @@
                 {/foreach}
             </fieldset>
             {foreachelse}
-                <p class="z-warningmsg">{gt text='There are no subscribers available for %s.' tag1=$currentmodule}</p>
+                <p class="alert alert-warning">{gt text='There are no subscribers available for %s.' tag1=$currentmodule}</p>
             {/foreach}
         </fieldset>
     </div>
@@ -139,7 +139,7 @@
                                         {assign var="available_area_identifier" value="`$parea_md5`-sarea_identifier"}
 
                                         <li id="availablearea_{$available_area_identifier}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
-                                            <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink z-hide" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" onmouseover="this.up().up().addClassName('attachedarea_detach')" onmouseout="this.up().up().removeClassName('attachedarea_detach')" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
+                                            <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink hide" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" onmouseover="this.up().up().addClassName('attachedarea_detach')" onmouseout="this.up().up().removeClassName('attachedarea_detach')" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
                                             <input type="hidden" id="availablearea_{$available_area_identifier}_a" value="{$parea}" />
                                             <input type="hidden" id="availablearea_{$available_area_identifier}_c" value="{$hookprovider.areasToCategories.$parea}" />
                                             <input type="hidden" id="availablearea_{$available_area_identifier}_i" value="{$parea_md5}" />
@@ -153,7 +153,7 @@
                     </div>
                 {/if}
             {foreachelse}
-                <p class="z-warningmsg">{gt text='There are no providers available for %s.' tag1=$currentmodule}</p>
+                <p class="alert alert-warning">{gt text='There are no providers available for %s.' tag1=$currentmodule}</p>
             {/foreach}
         </fieldset>
     </div>
@@ -162,7 +162,7 @@
 
 
 {if $isProvider and !empty($providerAreas) and $total_available_subscriber_areas gt 0}
-<div id="hooks_provider" class="z-form">
+<div id="hooks_provider" class="form-horizontal" role="form">
 
     <fieldset>
         <legend>{gt text="Connect %s to other modules" tag1=$currentmodule|safetext}</legend>
@@ -181,12 +181,13 @@
                     {/foreach}
                     </ol>
                 </div>
+            </div>
             </fieldset>
         </div>
 
-        <div class="z-informationmsg">{gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule|safetext}</div>
+        <div class="alert alert-info">{gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule|safetext}</div>
 
-        <table class="z-datatable" id="subscriberslist">
+        <table class="table table-bordered" id="subscriberslist">
             <thead>
                 <tr>
                     <th class="z-w05">{gt text='ID'}</th>
@@ -261,7 +262,7 @@
 {/if}
 
 {if $total_available_subscriber_areas == 0 && !$isSubscriber}
-    <p class="z-warningmsg">{gt text='There are no subscribers available for %s.' tag1=$currentmodule}</p>
+    <p class="alert alert-warning">{gt text='There are no subscribers available for %s.' tag1=$currentmodule}</p>
 {/if}
 
 {adminfooter}

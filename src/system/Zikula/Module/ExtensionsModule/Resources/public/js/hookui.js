@@ -104,7 +104,7 @@ function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
    
     newitem.innerHTML = newitem.innerHTML.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
     newitem.innerHTML = newitem.innerHTML.replace(new RegExp('sarea_identifier', 'g'), sarea_id);
-    newitem.innerHTML = newitem.innerHTML.replace(' z-hide', '');
+    newitem.innerHTML = newitem.innerHTML.replace(' hide', '');
     newitem.innerHTML = newitem.innerHTML.replace('##id', sarea_id);
     newitem.innerHTML = newitem.innerHTML.replace('##name', sarea_name);
 
@@ -118,8 +118,8 @@ function appendProviderAreaToSubscriberArea(sarea_id, sarea_name, parea_id)
     newitem.style.left = 0;
     
     // hide empty_area if is visible
-    if (!empty_area.hasClassName('z-hide')) {
-        empty_area.addClassName('z-hide');
+    if (!empty_area.hasClassName('hide')) {
+        empty_area.addClassName('hide');
     }
     
     // append dragged item to our list
@@ -155,7 +155,7 @@ function removeProviderAreaFromSubscriberArea(sarea_id, parea_id)
     
     // if there no more areas attached, show empty_area
     if (total_areas_attached == 0) {
-        $('sarea_empty_' + sarea_id).removeClassName('z-hide');
+        $('sarea_empty_' + sarea_id).removeClassName('hide');
     }
 
     // recolor

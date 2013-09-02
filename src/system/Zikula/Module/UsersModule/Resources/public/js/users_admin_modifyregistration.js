@@ -11,7 +11,7 @@ Zikula.Users.AdminModifyRegistration = {
     init: function()
     {
         $('submitchanges').disabled = true;
-        $('submitchanges').addClassName('z-hide');
+        $('submitchanges').addClassName('hide');
 
         var formfields = Form.getElements("users_modifyregistration");
         for (var i = 0, len = formfields.length; i < len; i++) {
@@ -25,7 +25,7 @@ Zikula.Users.AdminModifyRegistration = {
         $('users_reginfo_uname').observe('keyup', function(){$('users_reginfo_uname').value = $('users_reginfo_uname').value.toLocaleLowerCase();});
         $('users_reginfo_email').observe('keyup', function(){$('users_reginfo_email').value = $('users_reginfo_email').value.toLocaleLowerCase();});
 
-        $('checkuserajax').removeClassName('z-hide');
+        $('checkuserajax').removeClassName('hide');
         $('checkuserajax').observe('click', Zikula.Users.AdminModifyRegistration.callGetRegistrationErrors);
     },
 
@@ -35,9 +35,9 @@ Zikula.Users.AdminModifyRegistration = {
     lastCheckExpired: function()
     {
         if (!$('submitchanges').disabled) {
-            $('users_checkmessage').removeClassName('z-hide');
-            $('users_validmessage').addClassName('z-hide');
-            $('submitchanges').addClassName('z-hide');
+            $('users_checkmessage').removeClassName('hide');
+            $('users_validmessage').addClassName('hide');
+            $('submitchanges').addClassName('hide');
             $('submitchanges').disabled = true;
         }
     },
@@ -108,20 +108,20 @@ Zikula.Users.AdminModifyRegistration = {
         }
         if (errorMessages.length > 0) {
             submitButton.disabled = true;
-            submitButton.addClassName('z-hide');
+            submitButton.addClassName('hide');
             for (i = 0, len = errorMessages.length; i < len; i++) {
                 errorMessagesList.insert('<li>'+errorMessages[i]+'</li>');
             }
-            errorMessagesDiv.removeClassName('z-hide');
+            errorMessagesDiv.removeClassName('hide');
             location.hash = 'users_formtop';
         } else {
             submitButton.disabled = false;
-            submitButton.removeClassName('z-hide');
-            if (!errorMessagesDiv.hasClassName('z-hide')) {
-                errorMessagesDiv.addClassName('z-hide');
+            submitButton.removeClassName('hide');
+            if (!errorMessagesDiv.hasClassName('hide')) {
+                errorMessagesDiv.addClassName('hide');
             }
-            $('users_checkmessage').addClassName('z-hide');
-            $('users_validmessage').removeClassName('z-hide');
+            $('users_checkmessage').addClassName('hide');
+            $('users_validmessage').removeClassName('hide');
         }
     }
 }

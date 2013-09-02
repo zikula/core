@@ -6,7 +6,7 @@
 
 {include file='Admin/includeregistration.tpl'}
 
-<form id="users_verifyregistration" class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='verifyRegistration'}" method="post">
+<form id="users_verifyregistration" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='verifyRegistration'}" method="post">
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uid" name="uid" value="{$reginfo.uid}" />

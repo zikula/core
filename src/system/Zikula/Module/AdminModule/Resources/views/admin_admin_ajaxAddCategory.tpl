@@ -1,4 +1,4 @@
-<div id="ajaxNewCatHidden" class="z-hide">
+<div id="ajaxNewCatHidden" class="hide">
     <form id="ajaxNewCatForm" class="z-clearfix" action="#">
         <div>
             <input type="text" class="ajaxNewCat" name="name" id="ajaxNewCat" />&nbsp;

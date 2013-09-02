@@ -1,31 +1,28 @@
 {ajaxheader modname='ZikulaAdminModule' filename='admin_admin_ajax.js' ui=true}
 
-<div class="z-admin-breadcrumbs">
-    <span class="z-sub">{gt text='You are in:'}</span>
-    <span class="z-breadcrumb"><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
+<ol class="breadcrumb">
+    <span>{gt text='You are in:'}</span>
+    <li><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></li>
 
-    <span class="z-sub">&raquo;</span>
     {if $func neq 'adminpanel'}
-        <span class="z-breadcrumb"><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></span>
+        <li><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></li>
     {else}
-        <span class="z-breadcrumb">{$menuoptions.$currentcat.title|safetext}</span>
+        <li>{$menuoptions.$currentcat.title|safetext}</li>
     {/if}
 
     {if $func neq 'adminpanel'}
-        <span class="z-sub">&raquo;</span>
         {foreach from=$menuoptions.$currentcat.items item='moditem'}
             {if $toplevelmodule eq $moditem.modname}
-                <span class="z-breadcrumb"><a href="{modurl modname=$toplevelmodule type='admin' func='index'}" class="z-admin-pagemodule">{$moditem.menutext|safetext}</a></span>
+                <li><a href="{modurl modname=$toplevelmodule type='admin' func='index'}">{$moditem.menutext|safetext}</a></li>
                 {break}
             {/if}
         {/foreach}
 
         {if $func neq 'index'}
-            <span class="z-sub">&raquo;</span>
-            <span class="z-breadcrumb z-admin-pagefunc">{$func|safetext}</span>
+            <li class="active z-admin-pagefunc">{$func|safetext}</li>
         {/if}
     {/if}
-</div>
+</ol>
 
 <div id="admin-systemnotices">
 {include file='admin_admin_securityanalyzer.tpl'}
@@ -52,4 +49,4 @@
     {helplink}
 </div>
 
-<div class="z-hide" id="admintabs-none"></div>
+<div class="hide" id="admintabs-none"></div>

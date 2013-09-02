@@ -14,8 +14,8 @@ Zikula.Users.Admin.NewUser = {
         
         $(Zikula.Users.Admin.NewUser.fieldId.setPassYes).observe('click', Zikula.Users.Admin.NewUser.setpass_onClick);
         $(Zikula.Users.Admin.NewUser.fieldId.setPassNo).observe('click', Zikula.Users.Admin.NewUser.setpass_onClick);
-        $(Zikula.Users.Admin.NewUser.fieldId.setPassWrap).removeClassName('z-hide');
-        $(Zikula.Users.Admin.NewUser.fieldId.passwordNotSetWrap).removeClassName('z-hide');
+        $(Zikula.Users.Admin.NewUser.fieldId.setPassWrap).removeClassName('hide');
+        $(Zikula.Users.Admin.NewUser.fieldId.passwordNotSetWrap).removeClassName('hide');
         Zikula.Users.Admin.NewUser.setpass_onClick();
     },
 

@@ -5,30 +5,34 @@
 </div>
 
 {if $importResults neq ''}
-<div class="z-errormsg">
+<div class="alert alert-danger">
     {$importResults}
 </div>
 {/if}
 
-<form class="z-form" action="{modurl modname='ZikulaUsersModule' type='admin' func='import'}" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='import'}" method="post" enctype="multipart/form-data">
     <div>
         <input type="hidden" name="confirmed" value="1" />
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <fieldset>
             <legend>{gt text="Select the CSV file"}</legend>
-            <div class="z-formrow">
-                <label for="users_import">{gt text="CSV file (Max. %s)" tag1=$post_max_size}</label>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_import">{gt text="CSV file (Max. %s)" tag1=$post_max_size}</label>
+                <div class="col-lg-9">
                 <input id="users_import" type="file" name="importFile" size="30" />
-                <em class="z-formnote z-sub">{gt text='The file must be utf8 encoded.'}</em>
+                <em class="help-block z-sub">{gt text='The file must be utf8 encoded.'}</em>
             </div>
-            <div class="z-formrow">
-                <label for="users_import_delimiter">{gt text="CSV delimiter"}</label>
-                <select id="users_import_delimiter" name="delimiter">
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="users_import_delimiter">{gt text="CSV delimiter"}</label>
+                <div class="col-lg-9">
+                <select class="form-control" id="users_import_delimiter" name="delimiter">
                     <option value="1">Comma (,)</option>
                     <option value="2">Semicolon (;)</option>
                     <option value="3">Colon (:)</option>
                 </select>
             </div>
+        </div>
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Import' __title='Import' __text='Import'}
@@ -37,7 +41,7 @@
     </div>
 </form>
 
-<div class="z-informationmsg">
+<div class="alert alert-info">
     <h4>{gt text="About the CSV file"}</h4>
     <dl>
         <dt>{gt text="The first row of the CSV file must contain the field names. It must be like this:"}</dt>

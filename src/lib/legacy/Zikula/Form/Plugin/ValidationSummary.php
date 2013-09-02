@@ -23,7 +23,7 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
      *
      * @var string
      */
-    public $cssClass = 'z-form-validationSummary z-errormsg';
+    public $cssClass = 'z-form-validationSummary alert alert-danger';
 
     /**
      * Get filename of this file.

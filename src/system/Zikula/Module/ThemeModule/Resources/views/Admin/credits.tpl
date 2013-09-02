@@ -8,7 +8,7 @@
 <div style="text-align:center;">{previewimage size='large' name=$themeinfo.name id=theme_credits_preview}</div>
 {/if}
 
-<table class="z-datatable">
+<table class="table table-bordered">
     <tbody>
         {foreach from=$themeinfo item=field key=key}
         {if $field neq ''}

@@ -4,19 +4,19 @@
     <h3>{gt text="Delete module category"}</h3>
 </div>
 
-<p class="z-warningmsg">{gt text="Do you really want to delete module category '%s'?" tag1=$category.name|safetext}</p>
-<form class="z-form" action="{modurl modname="ZikulaAdminModule" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
-    <div>
-        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <input type="hidden" name="confirmation" value="1" />
-        <input type="hidden" name="cid" value="{$category.cid|safetext}" />
-        <fieldset>
-            <legend>{gt text="Confirmation prompt"}</legend>
-            <div class="z-buttons z-formbuttons">
+<p class="alert alert-warning">{gt text="Do you really want to delete module category '%s'?" tag1=$category.name|safetext}</p>
+<form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+    <input type="hidden" name="confirmation" value="1" />
+    <input type="hidden" name="cid" value="{$category.cid|safetext}" />
+    <fieldset>
+        <legend>{gt text="Confirmation prompt"}</legend>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
                 {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                <a class="z-btred" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <a class="btn btn-default" class="z-btred" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
             </div>
-        </fieldset>
-    </div>
+        </div>
+    </fieldset>
 </form>
 {adminfooter}

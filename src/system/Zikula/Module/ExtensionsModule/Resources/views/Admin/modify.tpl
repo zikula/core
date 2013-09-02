@@ -4,33 +4,43 @@
     <h3>{gt text="Edit module"} - {modgetinfo modid=$id info=displayname}</h3>
 </div>
 
-<form class="z-form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="id" value="{$id|safetext}" />
         <fieldset>
             <legend>{gt text="Module"}</legend>
-            <div class="z-formrow">
-                <label for="modules_newdisplayname">{gt text="Module display name"}</label>
-                <input id="modules_newdisplayname" name="newdisplayname" type="text" size="30" maxlength="64" value="{$displayname|safetext}" />
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="modules_newdisplayname">{gt text="Module display name"}</label>
+                <div class="col-lg-9">
+                <input id="modules_newdisplayname" name="newdisplayname" type="text" class="form-control" size="30" maxlength="64" value="{$displayname|safetext}" />
             </div>
-            <div class="z-formrow">
-                <label for="modules_newurl">{gt text="Module URL"}</label>
-                <input id="modules_newurl" name="newurl" type="text" size="30" maxlength="64" value="{$url|safetext}" />
             </div>
-            <div class="z-formrow">
-                <label for="modules_newdescription">{gt text="Description"}</label>
-                <textarea id="modules_newdescription" name="newdescription" cols="50" rows="10">{$description|safetext}</textarea>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="modules_newurl">{gt text="Module URL"}</label>
+                <div class="col-lg-9">
+                <input id="modules_newurl" name="newurl" type="text" class="form-control" size="30" maxlength="64" value="{$url|safetext}" />
             </div>
-            <div class="z-formrow">
-                <label>{gt text="Defaults"}</label>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="modules_newdescription">{gt text="Description"}</label>
+                <div class="col-lg-9">
+                <textarea class="form-control" id="modules_newdescription" name="newdescription" cols="50" rows="10">{$description|safetext}</textarea>
+            </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">{gt text="Defaults"}</label>
+                <div class="col-lg-9">
                 <span><a id="restore_defaults" href="{modurl modname="Extensions" type="admin" func="modify" id=$id restore=true}">{gt text="Restore now"}</a> ({gt text="This may break your existing indexed URLs"})</span>
+                </div>
             </div>
         </fieldset>
 
-        <div class="z-buttons z-formbuttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <a class="btn btn-default" href="{modurl modname=Extensions type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            </div>
         </div>
     </div>
 </form>

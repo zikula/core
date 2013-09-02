@@ -19,7 +19,7 @@ function groupinit(defgroupid, frstgroup, admingroupid)
     canceliconhtml = $('groupeditcancel_'+firstgroup).innerHTML;
 
     appending = false;
-    $('appendajax').removeClassName('z-hide');
+    $('appendajax').removeClassName('hide');
 
     // set observers on all existing groups images
     $$('button.z-imagebutton').each(
@@ -106,7 +106,7 @@ function groupappend_response(req)
     Zikula.setselectoption('gtype_' + data.gid, data.gtypelbl);
 
     // hide cancel icon for new groups
-    // $('groupeditcancel_' + json.gid).addClassName('z-hide');
+    // $('groupeditcancel_' + json.gid).addClassName('hide');
     // update delete icon to show cancel icon
     // $('groupeditdelete_' + json.gid).update(canceliconhtml);
 
@@ -127,14 +127,14 @@ function groupappend_response(req)
     $('groupeditcancel_' + data.gid).observe('click', function() { groupmodifycancel(data.gid); });
 
     // remove class to make edit button visible
-    $('modifyajax_' + data.gid).removeClassName('z-hide');
+    $('modifyajax_' + data.gid).removeClassName('hide');
     $('modifyajax_' + data.gid).observe('click', function() { groupmodifyinit(data.gid); });
 
     // turn on edit mode
     enableeditfields(data.gid);
 
     // we are ready now, make it visible
-    $('group_' + data.gid).removeClassName('z-hide');
+    $('group_' + data.gid).removeClassName('hide');
     new Effect.Highlight('group_' + data.gid, { startcolor: '#ffff99', endcolor: '#ffffff' });
 
     // set flag: we are adding a new group
@@ -154,9 +154,9 @@ function groupmodifyinit(groupid)
         Zikula.setselectoption('state_' + groupid, $F('state_' + groupid));
 
         if ((groupid == defaultgroup) || (groupid == admingroup)) {
-            $('groupeditdelete_' + groupid).addClassName('z-hide');
+            $('groupeditdelete_' + groupid).addClassName('hide');
         } else {
-            $('groupeditdelete_' + groupid).removeClassName('z-hide');
+            $('groupeditdelete_' + groupid).removeClassName('hide');
         }
         enableeditfields(groupid);
     }
@@ -170,18 +170,18 @@ function groupmodifyinit(groupid)
  */
 function enableeditfields(groupid)
 {
-    $('groupname_'               + groupid).addClassName('z-hide');
-    $('groupgtype_'              + groupid).addClassName('z-hide');
-    $('groupdescription_'        + groupid).addClassName('z-hide');
-    $('groupstate_'              + groupid).addClassName('z-hide');
-    $('groupnbumax_'             + groupid).addClassName('z-hide');
-    $('groupaction_'             + groupid).addClassName('z-hide');
-    $('editgroupname_'        + groupid).removeClassName('z-hide');
-    $('editgroupgtype_'       + groupid).removeClassName('z-hide');
-    $('editgroupdescription_' + groupid).removeClassName('z-hide');
-    $('editgroupstate_'       + groupid).removeClassName('z-hide');
-    $('editgroupnbumax_'      + groupid).removeClassName('z-hide');
-    $('editgroupaction_'      + groupid).removeClassName('z-hide');
+    $('groupname_'               + groupid).addClassName('hide');
+    $('groupgtype_'              + groupid).addClassName('hide');
+    $('groupdescription_'        + groupid).addClassName('hide');
+    $('groupstate_'              + groupid).addClassName('hide');
+    $('groupnbumax_'             + groupid).addClassName('hide');
+    $('groupaction_'             + groupid).addClassName('hide');
+    $('editgroupname_'        + groupid).removeClassName('hide');
+    $('editgroupgtype_'       + groupid).removeClassName('hide');
+    $('editgroupdescription_' + groupid).removeClassName('hide');
+    $('editgroupstate_'       + groupid).removeClassName('hide');
+    $('editgroupnbumax_'      + groupid).removeClassName('hide');
+    $('editgroupaction_'      + groupid).removeClassName('hide');
 }
 
 /**
@@ -192,18 +192,18 @@ function enableeditfields(groupid)
  */
 function disableeditfields(groupid)
 {
-    $('editgroupname_'        + groupid).addClassName('z-hide');
-    $('editgroupgtype_'       + groupid).addClassName('z-hide');
-    $('editgroupdescription_' + groupid).addClassName('z-hide');
-    $('editgroupstate_'       + groupid).addClassName('z-hide');
-    $('editgroupnbumax_'      + groupid).addClassName('z-hide');
-    $('editgroupaction_'      + groupid).addClassName('z-hide');
-    $('groupname_'         + groupid).removeClassName('z-hide');
-    $('groupgtype_'        + groupid).removeClassName('z-hide');
-    $('groupdescription_'  + groupid).removeClassName('z-hide');
-    $('groupstate_'        + groupid).removeClassName('z-hide');
-    $('groupnbumax_'       + groupid).removeClassName('z-hide');
-    $('groupaction_'       + groupid).removeClassName('z-hide');
+    $('editgroupname_'        + groupid).addClassName('hide');
+    $('editgroupgtype_'       + groupid).addClassName('hide');
+    $('editgroupdescription_' + groupid).addClassName('hide');
+    $('editgroupstate_'       + groupid).addClassName('hide');
+    $('editgroupnbumax_'      + groupid).addClassName('hide');
+    $('editgroupaction_'      + groupid).addClassName('hide');
+    $('groupname_'         + groupid).removeClassName('hide');
+    $('groupgtype_'        + groupid).removeClassName('hide');
+    $('groupdescription_'  + groupid).removeClassName('hide');
+    $('groupstate_'        + groupid).removeClassName('hide');
+    $('groupnbumax_'       + groupid).removeClassName('hide');
+    $('groupaction_'       + groupid).removeClassName('hide');
 }
 
 /**
@@ -298,8 +298,8 @@ function groupmodify_response(req)
     // check for groups internal error
     if (data.error == 1) {
         showinfo();
-        $('groupinfo_' + data.gid).addClassName('z-hide');
-        $('groupcontent_' + data.gid).removeClassName('z-hide');
+        $('groupinfo_' + data.gid).addClassName('hide');
+        $('groupcontent_' + data.gid).removeClassName('hide');
 
         /*
         // add events
@@ -330,7 +330,7 @@ function groupmodify_response(req)
     adding = adding.without(data.gid);
 
     // show trascan icon for new permissions if necessary
-    $('groupeditcancel_' + data.gid).removeClassName('z-hide');
+    $('groupeditcancel_' + data.gid).removeClassName('hide');
     // update delete icon to show trashcan icon
     $('groupeditdelete_' + data.gid).update(deleteiconhtml);
 
@@ -416,22 +416,22 @@ function showinfo(groupid, infotext)
     if (groupid) {
         var groupinfo = $('groupinfo_' + groupid);
         var group = $('groupcontent_' + groupid);
-        if (!groupinfo.hasClassName('z-hide')) {
+        if (!groupinfo.hasClassName('hide')) {
             groupinfo.update('&nbsp;');
-            groupinfo.addClassName('z-hide');
-            group.removeClassName('z-hide');
+            groupinfo.addClassName('hide');
+            group.removeClassName('hide');
         } else {
             groupinfo.update(infotext);
-            group.addClassName('z-hide');
-            groupinfo.removeClassName('z-hide');
+            group.addClassName('hide');
+            groupinfo.removeClassName('hide');
         }
     } else {
         $A(document.getElementsByClassName('z-groupinfo')).each(function(groupinfo) {
             $(groupinfo).update('&nbsp;');
-            $(groupinfo).addClassName('z-hide');
+            $(groupinfo).addClassName('hide');
         });
         $A(document.getElementsByClassName('groupcontent')).each(function(groupcontent) {
-            $(groupcontent).removeClassName('z-hide');
+            $(groupcontent).removeClassName('hide');
         });
     }
 }

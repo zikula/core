@@ -7,7 +7,7 @@
 document.observe('dom:loaded', function() 
     {
         // show link to extended hook settings 
-        $('extendedhookslinks').removeClassName('z-hide');
-        $('extendedhookslinks').addClassName('z-show');
+        $('extendedhookslinks').removeClassName('hide');
+        $('extendedhookslinks').addClassName('show');
     }
 ); 
