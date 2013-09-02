@@ -145,9 +145,8 @@ class AdminApi extends \Zikula_AbstractApi
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
-            $field = System::isDevelopmentMode() ? 'e.name' : 'e.displayname';
-            $clause1 = $qb->expr()->like($field, $qb->expr()->literal($args['letter'] . '%'));
-            $clause2 = $qb->expr()->like($field, $qb->expr()->literal(strtolower($args['letter']) . '%'));
+            $clause1 = $qb->expr()->like('e.name', $qb->expr()->literal($args['letter'] . '%'));
+            $clause2 = $qb->expr()->like('e.name', $qb->expr()->literal(strtolower($args['letter']) . '%'));
             $qb->andWhere($clause1 . ' OR ' . $clause2);
         }
 

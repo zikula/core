@@ -23,11 +23,9 @@
 <table class="z-datatable">
     <thead>
         <tr>
-            {if $isDevelopmentMode}
             <th>
                 {sortlink __linktext='Internal name' sort='name' currentsort=$sort sortdir=$sortdir modname='ZikulaExtensionsModule' type='admin' func='view'}
             </th>
-            {/if}
             <th>
                 {sortlink __linktext='Display name' sort='displayname' currentsort=$sort sortdir=$sortdir modname='ZikulaExtensionsModule' type='admin' func='view'}
             </th>
@@ -60,16 +58,14 @@
     <tbody>
         {section name=modules loop=$modules}
         <tr class="{cycle values="z-odd,z-even"}">
-            {if $isDevelopmentMode}
-            <td>{$modules[modules].modinfo.name|safetext}</td>
-            {/if}
-            <td class="z-nowrap">
+            <td>
                 {if isset($modules[modules].modinfo.capabilities.admin) and $modules[modules].modinfo.state eq 3}
-                <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin func=index}">{$modules[modules].modinfo.displayname|safetext}</a>
+                <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin func=index}">{$modules[modules].modinfo.name|safetext}</a>
                 {else}
-                {$modules[modules].modinfo.displayname|safetext|default:"&nbsp;"}
+                {$modules[modules].modinfo.name|safetext}
                 {/if}
             </td>
+            <td>{$modules[modules].modinfo.displayname|safetext|default:"&nbsp;"}</td>
             <td>{$modules[modules].modinfo.url|safetext}</td>
             <td>{$modules[modules].modinfo.description|safetext|default:"&nbsp;"}</td>
             <td>{$modules[modules].modinfo.version|safetext}</td>
