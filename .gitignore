@@ -12,6 +12,10 @@
 !/src/modules/acme-example
 /src/themes/*
 !/src/themes/Zikula
+/src/app/Resources/locale/*
+!/src/app/Resources/locale/en
+!/src/app/Resources/locale/zikula.pot
+!/src/app/Resources/locale/zikula_js.pot
 /src/plugins/
 /src/userdata/
 /src/vendor/
