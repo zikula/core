@@ -4,14 +4,14 @@
     $(function() { 
         if ($('#alt_theme_name').val() == "") {
             // Not set
-            $('#alt_theme_domain').parent().hide();
+            $('#alt_theme_domain').parent().parent().hide();
         }
 
         $("#alt_theme_name").click(function() {
             if ($('#alt_theme_name').val() == "") {
-                $('#alt_theme_domain').parent().fadeOut();
+                $('#alt_theme_domain').parent().parent().fadeOut();
             } else {
-                $('#alt_theme_domain').parent().fadeIn();
+                $('#alt_theme_domain').parent().parent().fadeIn();
             }
         });
     });
