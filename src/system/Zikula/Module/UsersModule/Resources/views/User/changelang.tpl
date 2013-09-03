@@ -1,3 +1,4 @@
+{if $modvars.ZConfig.shorturls.multilingual}
 {gt text='Language switcher' assign='templatetitle'}
 {include file='User/menu.tpl'}
 
@@ -19,8 +20,13 @@
             </div>
         </div>
     </fieldset>
-    <div class="z-formbuttons z-buttons">
-        {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-        <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+            <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        </div>
     </div>
 </form>
+{else}
+<div class="alert alert-danger">{gt text="Multi-lingual features are deactivated."}</div>
+{/if}
