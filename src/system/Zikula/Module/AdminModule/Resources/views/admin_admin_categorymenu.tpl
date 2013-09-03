@@ -40,8 +40,8 @@
             <span class="z-admindrop">&nbsp;</span>
         </li>
         {/foreach}
-        <li id="addcat">
-            <a id="addcatlink" href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
+        <li id="addcat"> 
+            <a id="addcatlink" class="glyphicon glyphicon-plus" href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
             {include file='admin_admin_ajaxAddCategory.tpl'}
         </li>
     </ul>
