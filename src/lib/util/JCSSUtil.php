@@ -160,6 +160,7 @@ class JCSSUtil
      */
     public static function prepareJavascripts($javascripts)
     {
+        array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js');
         array_unshift($javascripts, 'jquery', 'web/bootstrap/js/bootstrap.min.js');
         
         // first resolve any dependencies

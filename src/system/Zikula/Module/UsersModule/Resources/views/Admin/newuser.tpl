@@ -1,7 +1,6 @@
 {strip}
     {gt text='Create new user' assign='templatetitle'}
     {ajaxheader modname=$modinfo.name filename='Zikula.Users.NewUser.js' noscriptaculous=true effects=true}
-    {ajaxheader modname=$modinfo.name filename='Zikula.Users.Admin.NewUser.js' noscriptaculous=true effects=true}
     {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
         {* TODO - Using ajaxheader here causes an error when the PassMeter is initialized. *}
         {pageaddvar name='javascript' value='prototype'}
@@ -31,20 +30,6 @@
 
                     userName:       '{{$formData->getFieldId('uname')}}',
                     email:          '{{$formData->getFieldId('email')}}',
-                };
-            }
-
-            Zikula.Users.Admin.NewUser.setup = function() {
-                Zikula.Users.Admin.NewUser.fieldId = {
-                    passwordIsSetWrap:  '{{$formData->getFormId()}}_password_is_set_wrap',
-                    passwordNotSetWrap: '{{$formData->getFormId()}}_password_not_set_wrap',
-
-                    setPass:            '{{$formData->getFieldId('setpass')}}',
-                    setPassYes:         '{{$formData->getFieldId('setpass')}}_yes',
-                    setPassNo:          '{{$formData->getFieldId('setpass')}}_no',
-                    setPassWrap:        '{{$formData->getFieldId('setpass')}}_wrap',
-                    passWrap:           '{{$formData->getFieldId('pass')}}_wrap',
-                    email:              '{{$formData->getFieldId('email')}}',
                 };
             }
         </script>
@@ -126,64 +111,63 @@
                     <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0"{if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                    <div data-switch="setpass" data-switch-value="0">
+                        {if $modvars.ZikulaUsersModule.reg_verifyemail == 'Zikula\Module\UsersModule\Constant::VERIFY_NO'|const}
+                        <p class="help-block alert alert-warning">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
+                        {else}
+                        <p class="help-block alert alert-info">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
+                        {/if}
+                    </div>
                 </div>
             </div>
-            {assign var='fieldName' value='pass'}
-            <div id="{$formData->getFieldId($fieldName)}_wrap" class="form-group">
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
-                <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
-                    <em class="z-sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
-                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+            
+            <div data-switch="setpass" data-switch-value="1">
+                {assign var='fieldName' value='pass'}
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                    <div class="col-lg-9">
+                        <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
+                        <em class="z-sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
+                        <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                        <div id="{$formData->getFormId()}_passmeter"></div>
+                    </div>
+                    
                 </div>
-                <div id="{$formData->getFormId()}_passmeter"></div>
-            </div>
-            <div class="form-group">
-                {assign var='fieldName' value='passagain'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat password for verification'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
-                {assign var='fieldName' value='passagain'}
-                <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
-                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <div class="form-group">
+                    {assign var='fieldName' value='passagain'}
+                    <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat password for verification'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                    {assign var='fieldName' value='passagain'}
+                    <div class="col-lg-9">
+                        <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
+                        <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                    </div>
                 </div>
-            </div>
-            {assign var='fieldName' value='sendpass'}
-            <div id="{$formData->getFieldId($fieldName)}_container" class="form-group">
-                <label class="col-lg-3 control-label">{gt text="Send password via e-mail?"}</label>
-                <div id="{$formData->getFieldId($fieldName)}" class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $formData->getFieldData($fieldName)} checked="checked"{/if} />
-                    <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
-                    <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
-                    <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
-                    <p class="help-block alert alert-warning">{gt text="Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication."}</p>
-                    <p class="help-block alert alert-info">{gt text="Even if you choose to not send the user's password via e-mail, other e-mail messages may be sent to the user as part of the registration process."}</p>
-                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                {assign var='fieldName' value='sendpass'}
+                <div id="{$formData->getFieldId($fieldName)}_container" class="form-group">
+                    <label class="col-lg-3 control-label">{gt text="Send password via e-mail?"}</label>
+                    <div id="{$formData->getFieldId($fieldName)}" class="col-lg-9">
+                        <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $formData->getFieldData($fieldName)} checked="checked"{/if} />
+                        <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
+                        <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
+                        <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
+                        <p class="help-block alert alert-warning">{gt text="Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication."}</p>
+                        <p class="help-block alert alert-info">{gt text="Even if you choose to not send the user's password via e-mail, other e-mail messages may be sent to the user as part of the registration process."}</p>
+                        <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                    </div>
                 </div>
-            </div>
-            <div id="{$formData->getFormId()}_password_not_set_wrap" class="hide">
-                
-
-                {if $modvars.ZikulaUsersModule.reg_verifyemail == 'Zikula\Module\UsersModule\Constant::VERIFY_NO'|const}
-                <p class="help-block alert alert-warning">{gt text="The user's e-mail address will be verified, even though e-mail address verification is turned off in 'Settings'. This is necessary because the user will create a password during the verification process."}</p>
-                {else}
-                <p class="help-block alert alert-info">{gt text="The user's e-mail address will be verified. The user will create a password at that time."}</p>
-                {/if}
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text="Send welcome message to user?"}</label>
                 <div class="col-lg-9">
-                <div class="z-formlist">
                     <input id="usernotification_yes" type="radio" name="usernotification" value="1" />
                     <label for="usernotification_yes">{gt text="Yes"}</label>
                     <input id="usernotification_no" type="radio" name="usernotification" value="0" checked="checked" />
                     <label for="usernotification_no">{gt text="No"}</label>
                 </div>
             </div>
-            </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text="Send info message to adminstrators?"}</label>
                 <div class="col-lg-9">
-                <div class="z-formlist">
                     <input id="adminnotification_yes" type="radio" name="adminnotification" value="1" />
                     <label for="adminnotification_yes">{gt text="Yes"}</label>
                     <input id="adminnotification_no" type="radio" name="adminnotification" value="0" checked="checked" />
@@ -192,17 +176,16 @@
             </div>
             <div id="{$formData->getFormId()}_password_is_set_wrap" class="form-group">
                 {assign var='fieldName' value='usermustverify'}
-                <label>{gt text="Verify user's e-mail address?"}</label>
-                <div class="z-formlist">
+                <label class="col-lg-3 control-label">{gt text="Verify user's e-mail address?"}</label>
+                <div class="col-lg-9">
                     <input id="{$formData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1"{if $formData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes (recommended)"}</label>
                     <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0"{if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
+                    <em class="z-sub help-block">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</em>
                 </div>
-                <em class="z-sub help-block">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
-        </div>
         </fieldset>
 
         {notifyevent eventname='module.users.ui.form_edit.new_user' eventsubject=null id=null assign="eventData"}
