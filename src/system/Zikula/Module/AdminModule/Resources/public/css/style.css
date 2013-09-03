@@ -499,12 +499,12 @@ ul#admintabs li#addcat > a:hover {
 }
 
 ul#admintabs li#addcat #addcatlink {
-    background: url("../../../../../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% transparent;
-    width: 20px;
+    width: 28px;
+	height:27px;
+	padding-left:8px;
 }
 
 ul#admintabs li#addcat a#addcatlink:hover {
-    background: url("../../../../../../../images/icons/extrasmall/edit_add.png") no-repeat scroll 50% 50% #FFF !important;
     -webkit-border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     border-radius: 5px 5px 0 0;
