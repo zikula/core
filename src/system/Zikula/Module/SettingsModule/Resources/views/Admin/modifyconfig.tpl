@@ -1,4 +1,3 @@
-{ajaxheader modname=ZikulaSettingsModule filename=settings_admin_modifyconfig.js noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}
@@ -47,7 +46,7 @@
                 </div>
             </div>
                 <div id="settings_siteoff_container">
-                <div class="form-group">
+                <div class="form-group" data-switch="settings[siteoff]" data-switch-value="1">
                     <label class="col-lg-3 control-label" for="settings_siteoffreason">{gt text="Reason for disabling site"}</label>
                     <div class="col-lg-9">
                         <textarea class="form-control" id="settings_siteoffreason" name="settings[siteoffreason]" cols="50" rows="5">{$modvars.ZConfig.siteoffreason|safetext}</textarea>
@@ -186,16 +185,14 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="settings_shorturls">{gt text="Enable directory-based short URLs"}</label>
                 <div class="col-lg-9">
-                    <div id="settings_shorturls">
-                        <input id="settings_shorturls_yes" type="radio" name="settings[shorturls]" value="1" {if $modvars.ZConfig.shorturls eq 1}checked="checked"{/if} />
-                        <label for="settings_shorturls_yes">{gt text="Yes"}</label>
-                        <input id="settings_shorturls_no" type="radio" name="settings[shorturls]" value="0" {if $modvars.ZConfig.shorturls eq 0}checked="checked"{/if} />
-                        <label for="settings_shorturls_no">{gt text="No"}</label>
-                    </div>
+                    <input id="settings_shorturls_yes" type="radio" name="settings[shorturls]" value="1" {if $modvars.ZConfig.shorturls eq 1}checked="checked"{/if} />
+                    <label for="settings_shorturls_yes">{gt text="Yes"}</label>
+                    <input id="settings_shorturls_no" type="radio" name="settings[shorturls]" value="0" {if $modvars.ZConfig.shorturls eq 0}checked="checked"{/if} />
+                    <label for="settings_shorturls_no">{gt text="No"}</label>
                 </div>
             </div>
-            <div id="settings_shorturls_container">
-                <div id="settings_shorturlsstripentrypoint_container" class="form-group">
+            <div data-switch="settings[shorturls]" data-switch-value="1">
+                <div class="form-group">
                     <label class="col-lg-3 control-label" for="settings_shorturlsstripentrypoint">{gt text="Strip entry point from directory-based URLs"}</label>
                     <div id="settings_shorturlsstripentrypoint" class="col-lg-9">
                         <input id="shorturlsstripentrypoint1" type="radio" name="settings[shorturlsstripentrypoint]" value="1" {if $modvars.ZConfig.shorturlsstripentrypoint eq 1}checked="checked"{/if} />

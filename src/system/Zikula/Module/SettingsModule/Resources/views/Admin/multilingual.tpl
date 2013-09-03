@@ -1,4 +1,3 @@
-{ajaxheader modname=ZikulaSettingsModule filename=settings_admin_multilingual.js noscriptaculous=true effects=true}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="locale" size="small"}
@@ -45,13 +44,11 @@
                         <input id="language_detect0" type="radio" name="mlsettings_language_detect" value="0"{if $modvars.ZConfig.language_detect eq 0} checked="checked"{/if} />
                         <label for="language_detect0">{gt text="No"}</label>
                     </span>
-                    <div id="mlsettings_language_detect_warning">
-                        <p class="alert alert-info help-block">
-                            {gt text="If this is set to 'Yes', Zikula try to serve the language requested by the each user's browser (if that language available and allowed by the multi-lingual settings). If users sets their personal language preference, then this setting will be overriden by their personal preference."}<br />
-                        </p>
-                    </div>
                 </div>
             </div>
+            <p class="alert alert-info help-block" data-switch="mlsettings_language_detect" data-switch-value="1">
+                     {gt text="If this is set to 'Yes', Zikula try to serve the language requested by the each user's browser (if that language available and allowed by the multi-lingual settings). If users sets their personal language preference, then this setting will be overriden by their personal preference."}
+            </p>
         </fieldset>
         <fieldset>
             <legend>{gt text="Server"}</legend>
@@ -72,7 +69,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">{gt text="Server time zone"}</label>
                 <div class="col-lg-9">
-                    <span>{$timezone_server_abbr}</span>
+                    <div class="form-control-static">{$timezone_server_abbr}</div>
                     <input type="hidden" name="mlsettings_timezone_server" value="{$timezone_server|default:0}" />
                 </div>
             </div>

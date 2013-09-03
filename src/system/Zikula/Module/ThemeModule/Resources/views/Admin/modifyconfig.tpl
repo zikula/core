@@ -125,7 +125,7 @@
                     <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
                 </div>
             </div>
-                <div id="theme_caching">
+            <div data-switch="enablecache" data-switch-value="1">
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="cache_lifetime">{gt text="Length of time to keep cached theme pages"}</label>
                     <div class="col-lg-9">
@@ -176,7 +176,7 @@
                     <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
                 </div>
             </div>
-            <div id="render_lifetime_container">
+            <div data-switch="render_cache" data-switch-value="1">
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="render_lifetime">{gt text="Length of time to keep cached render pages"}</label>
                     <div class="col-lg-9">
@@ -199,7 +199,7 @@
                     <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
                 </div>
             </div>
-            <div id="theme_cssjscombine">
+            <div data-switch="cssjscombine" data-switch-value="1">
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="cssjscompress">{gt text="Use GZ compression"}</label>
                     <div class="col-lg-9">
@@ -210,7 +210,7 @@
                     <label class="col-lg-3 control-label" for="cssjsminify">{gt text="Minify CSS"}</label>
                     <div class="col-lg-9">
                         <input id="cssjsminify" name="cssjsminify" type="checkbox" value="1" {if $cssjsminify eq 1}checked="checked"{ /if } />
-                        <div id="theme_cssjsminify">
+                        <div data-switch="cssjsminify" data-switch-value="1">
                             <p class="alert alert-warning help-block">{gt text="The 'Minify CSS' option may require more PHP memory. If errors occur, you should increase the 'memory_limit' setting in your PHP installation's 'php.ini' configuration file. Alternatively, you should add the following entry to the '.htaccess' file in your site's web root (without the quotation marks): 'php_value memory_limit 64M'. 64M is just a suggested value. You should experiment to find the lowest value that resolves the problem."}</p>
                         </div>
                     </div>
