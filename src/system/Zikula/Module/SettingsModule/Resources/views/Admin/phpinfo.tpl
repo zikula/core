@@ -1,5 +1,4 @@
-{pageaddvar name='javascript' value='jquery'}
-{ajaxheader modname='ZikulaSettingsModule' filename='ZikulaSettingsModule.Admin.Phpinfo.js' noscriptaculous=true effects=false}
+{ajaxheader modname='ZikulaSettingsModule' filename='ZikulaSettingsModule.Admin.Phpinfo.js' noscriptaculous=false effects=false}
 
 {adminheader}
 <div class="z-admin-content-pagetitle">
