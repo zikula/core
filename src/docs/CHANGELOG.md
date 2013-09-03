@@ -16,6 +16,7 @@ Fixes:
 - Fix admin-tab problem with content module, #940.
 - Fixed Extensions module pager, #961.
 - Pass-meter was hidden, because no height was set, #997.
+- Do not show multi-lingual user settings if multi-lingual is disabled, #1050.
 
 Features:
 - Show an error message if version number of a module is incorrect.
