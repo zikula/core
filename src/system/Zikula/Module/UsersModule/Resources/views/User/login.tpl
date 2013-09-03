@@ -24,8 +24,8 @@
     {/foreach}
     </div>
 </div>
+<div class="clearfix" style="margin-bottom:20px"></div>
 {/if}
-
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='loginscreen' authentication_method=$selected_authentication_method assign='login_form_fields'}
 {/if}
