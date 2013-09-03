@@ -491,3 +491,13 @@ body {
     font: 76% Verdana, Tahoma, Arial, sans-serif;
     line-height: 1.4em;
 }
+
+/* Glyphicon Color Swatches */
+
+.glyphicon-green{
+	color: #61B329;
+}
+
+.glyphicon-red{
+	color: #C30;
+}
