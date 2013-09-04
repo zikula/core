@@ -55,14 +55,14 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="mlsettings_language_i18n">{gt text="Default language to use for this site"}</label>
                 <div class="col-lg-9">
-                    {html_select_locales id=mlsettings_language_i18n name=mlsettings_language_i18n selected=$modvars.ZConfig.language_i18n installed=1 all=false}
+                    {html_select_locales id=mlsettings_language_i18n name=mlsettings_language_i18n selected=$modvars.ZConfig.language_i18n installed=1 all=false class="form-control"}
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="mlsettings_timezone_offset">{gt text="Time zone for anonymous guests"}</label>
                 <div class="col-lg-9">
                     <select class="form-control" id="mlsettings_timezone_offset" size="1" name="mlsettings_timezone_offset">
-                        {timezoneselect selected=$modvars.ZConfig.timezone_offset}
+                        {timezoneselect selected=$modvars.ZConfig.timezone_offset class="form-control"}
                     </select>
                 </div>
             </div>

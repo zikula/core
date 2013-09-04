@@ -24,21 +24,24 @@
 <div class="form-group">
     <label class="col-lg-3 control-label" for="blocks_menu_template">{gt text="Template for this block"}</label>
     <div class="col-lg-9">
-    <input id="blocks_menu_template" type="text" name="template" size="30" maxlength="60" value="{$template|safetext}" />
+        <input id="blocks_menu_template" class="form-control" type="text" name="template" size="30" maxlength="60" value="{$template|safetext}" />
+    </div>
 </div>
 
 <h4>{gt text="CSS styling" domain='zikula'}</h4>
 <div class="form-group">
     <label class="col-lg-3 control-label" for="blocks_menu_stylesheet">{gt text="Style sheet" domain='zikula'}</label>
     <div class="col-lg-9">
-    <input id="blocks_menu_stylesheet" type="text" name="stylesheet" size="20" value="{$stylesheet|safetext}" />
+        <input id="blocks_menu_stylesheet" class="form-control" type="text" name="stylesheet" size="20" value="{$stylesheet|safetext}" />
+    </div>
 </div>
 
 <h4>{gt text="Visibility within block"}</h4>
 <div class="form-group">
     <label class="col-lg-3 control-label" for="blocks_menu_modules">{gt text="Display links to installed modules"}</label>
     <div class="col-lg-9">
-    <input id="blocks_menu_modules" type="checkbox" value="1" name="displaymodules"{if $displaymodules} checked="checked"{/if} />
+        <input id="blocks_menu_modules" type="checkbox" value="1" name="displaymodules"{if $displaymodules} checked="checked"{/if} />
+    </div>
 </div>
 
 <h4>{gt text="Block titles"}</h4>
@@ -48,7 +51,8 @@
 <div class="form-group">
     <label class="col-lg-3 control-label" for="blocktitle_{$lang}">{$lang}:</label>
     <div class="col-lg-9">
-    <input type="text" id="blocktitle_{$lang}" name="blocktitles[{$lang}]" size="30" maxlength="60" value="{$blocktitle}" />
+        <input class="form-control" type="text" id="blocktitle_{$lang}" name="blocktitles[{$lang}]" size="30" maxlength="60" value="{$blocktitle}" />
+    </div>
 </div>
 {/foreach}
 
@@ -80,16 +84,16 @@
                 {$thislanguage}
             </span>
             <span class="z-itemcell z-w20">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_image" name="links[{$thislanguage}][{$itemid}][image]" size="25" maxlength="255" value="{$item.image|safetext}" />
+                <input class="form-control" type="text" id="links_{$thislanguage}_{$itemid}_image" name="links[{$thislanguage}][{$itemid}][image]" size="25" maxlength="255" value="{$item.image|safetext}" />
             </span>
             <span class="z-itemcell z-w22">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_name"  name="links[{$thislanguage}][{$itemid}][name]" size="25" maxlength="255" value="{$item.name|safetext}" />
+                <input class="form-control" type="text" id="links_{$thislanguage}_{$itemid}_name"  name="links[{$thislanguage}][{$itemid}][name]" size="25" maxlength="255" value="{$item.name|safetext}" />
             </span>
             <span class="z-itemcell z-w22">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_url"   name="links[{$thislanguage}][{$itemid}][url]" size="25" maxlength="255" value="{$item.url|safetext}" />
+                <input class="form-control" type="text" id="links_{$thislanguage}_{$itemid}_url"   name="links[{$thislanguage}][{$itemid}][url]" size="25" maxlength="255" value="{$item.url|safetext}" />
             </span>
             <span class="z-itemcell z-w15">
-                <input type="text" id="links_{$thislanguage}_{$itemid}_title" name="links[{$thislanguage}][{$itemid}][title]" size="25" maxlength="255" value="{$item.title|safetext}" />
+                <input class="form-control" type="text" id="links_{$thislanguage}_{$itemid}_title" name="links[{$thislanguage}][{$itemid}][title]" size="25" maxlength="255" value="{$item.title|safetext}" />
             </span>
             <span class="z-itemcell z-w10">
                 <input type="checkbox" id="links_{$thislanguage}_{$itemid}_active" name="links[{$thislanguage}][{$itemid}][active]" {if isset($item.active) && $item.active}checked="checked"{/if} value="1" />
@@ -121,16 +125,16 @@
                 {$thislanguage}
             </span>
             <span class="z-itemcell z-w20">
-                <input type="text" class="listinput" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
-                <input type="text" class="listinput" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
-                <input type="text" class="listinput" id="links_{$thislanguage}_X_url"   name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_url"   name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w15">
-                <input type="text" class="listinput" id="links_{$thislanguage}_X_title" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_title" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w10">
                 <input class="listinput" type="checkbox" id="links_{$thislanguage}_X_active" name="dummy[]" checked="checked" value="1" />
