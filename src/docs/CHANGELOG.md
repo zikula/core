@@ -69,6 +69,8 @@ Features:
 - Added "hybrid" login option. The user can either provide his email address or user name and will be logged in.
 - Added system information page using `phpinfo()` to the settings module.
 - Params delivery from zikula html_select_* to smarty_function_html_options, #1031.
+- Added a third level of warning messages: LogUtil::registerWarning(). These override status messages and are
+  overridden by error messages.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
