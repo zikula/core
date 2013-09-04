@@ -28,6 +28,13 @@ class Zikula_Session extends Session
     const MESSAGE_STATUS = 'status';
 
     /**
+     * The message type for warning messages, to use with, for example, {@link hasMessages()}.
+     *
+     * @var string
+     */
+    const MESSAGE_WARNING = 'warning';
+
+    /**
      * The message type for error messages, to use with, for example, {@link hasMessages()}.
      *
      * @var string
