@@ -42,25 +42,26 @@ function smarty_function_html_select_locales($params, Zikula_View $view)
 
     require_once $view->_get_plugin_filepath('function','html_options');
 
-    $values = $output = array();
+    $params['values'] = $params['output'] = array();
     if (isset($params['all']) && $params['all']) {
-        $values[] = '';
-        $output[]= DataUtil::formatForDisplay(__('All'));
+        $params['values'][] = '';
+        $params['output'][]= DataUtil::formatForDisplay(__('All'));
+        unset($params['all']);
     }
 
     $installed = ZLanguage::getInstalledLanguageNames();
-    $output = array_merge($output, DataUtil::formatForDisplay(array_values($installed)));
-    $values = array_merge($values, DataUtil::formatForDisplay(array_keys($installed)));
+    $params['output'] = array_merge($params['output'], DataUtil::formatForDisplay(array_values($installed)));
+    $params['values'] = array_merge($params['values'], DataUtil::formatForDisplay(array_keys($installed)));
+    unset($params['installed']);
 
-    $html_result = smarty_function_html_options(array('output'       => $output,
-                                                      'values'       => $values,
-                                                      'selected'     => isset($params['selected']) ? $params['selected'] : null,
-                                                      'id'           => isset($params['id']) ? $params['id'] : null,
-                                                      'name'         => $params['name']),
-                                                $view);
+    
+    $assign = isset($params['assign']) ? $params['assign'] : null;
+    unset($params['assign']);
 
-    if (isset($params['assign']) && !empty($params['assign'])) {
-        $view->assign($params['assign'], $html_result);
+    $html_result = smarty_function_html_options($params, $view);
+
+    if (!empty($assign)) {
+        $view->assign($assign, $html_result);
     } else {
         return $html_result;
     }

@@ -39,22 +39,23 @@ function smarty_function_html_select_modulestylesheets($params, Zikula_View $vie
 
     if (isset($params['exclude'])) {
         $exclude = explode(',', trim($params['exclude']));
+        unset($params['exclude']);
     } else {
         $exclude = array();
     }
 
-    $modstyleslist = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
+    $params['values'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'getmodstyles', array('modname' => $params['modname'], 'exclude' => $exclude));
+    unset($params['modname']);
+    $params['output'] = $params['values'];
 
+    $assign = isset($params['assign']) ? $params['assign'] : null;
+    unset($params['assign']);
+    
     require_once $view->_get_plugin_filepath('function','html_options');
-    $output = smarty_function_html_options(array('values'  => $modstyleslist,
-                                                 'output'  => $modstyleslist,
-                                                 'selected' => isset($params['selected']) ? $params['selected'] : null,
-                                                 'name'     => isset($params['name'])     ? $params['name']     : null,
-                                                 'id'       => isset($params['id'])       ? $params['id']       : null),
-                                                 $view);
+    $output = smarty_function_html_options($params, $view);
 
-    if (isset($params['assign'])) {
-        $view->assign($params['assign'], $output);
+    if (!empty($assign)) {
+        $view->assign($assign, $output);
     } else {
         return $output;
     }

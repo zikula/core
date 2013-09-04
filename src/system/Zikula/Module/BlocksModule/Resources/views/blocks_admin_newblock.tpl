@@ -33,7 +33,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="blocks_language">{gt text="Language"} </label>
                 <div class="col-lg-9">
-                {html_select_locales id=blocks_language name="block[language]" installed=true all=true selected=$block.language|default:''}
+                {html_select_locales id=blocks_language class="form-control" name="block[language]" installed=true all=true selected=$block.language|default:''}
             </div>
         </div>
         </fieldset>
