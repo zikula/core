@@ -38,7 +38,7 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
             $this->domain = ZLanguage::getModuleDomain($this->name);
             $this->baseDir = $bundle->getPath();
             $versionClass =  $bundle->getVersionClass();
-            $this->version = new $versionClass;
+            $this->version = new $versionClass($bundle);
         } else {
             $className = $this->getReflection()->getName();
             $separator = (false === strpos($className, '_')) ? '\\' : '_';
