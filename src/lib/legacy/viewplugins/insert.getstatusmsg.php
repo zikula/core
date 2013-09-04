@@ -56,9 +56,14 @@ function smarty_insert_getstatusmsg($params, $view)
     $session = $view->getContainer()->get('session');
     $msgStatus = $session->getFlashBag()->get(Zikula_Session::MESSAGE_STATUS);
     $msgtype   = ($class ? $class : 'alert alert-success');
+    $msgWarning = $session->getFlashBag()->get(Zikula_Session::MESSAGE_WARNING);
     $msgError = $session->getFlashBag()->get(Zikula_Session::MESSAGE_ERROR);
 
-    // Error message overrides status message
+    if (!empty($msgWarning)) {
+        $msgStatus = $msgWarning;
+        $msgtype = ($class ? $class : 'alert alert-warning');
+    }
+    // Error message overrides status and warning message
     if (!empty($msgError)) {
         $msgStatus = $msgError;
         $msgtype   = ($class ? $class : 'alert alert-danger');

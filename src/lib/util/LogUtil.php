@@ -67,6 +67,53 @@ class LogUtil
     }
 
     /**
+     * Returns an array of warning messages.
+     *
+     * @param boolean $delete   Whether to delete warning messages (optional) (default=true).
+     * @param boolean $override Whether to override warning messages with error messages (optional) (default=true).
+     * @param boolean $reverse  Whether to reverse order of messages (optional) (default=true).
+     *
+     * @return array of messages.
+     */
+    public static function getWarningMessages($delete = true, $override = true, $reverse = true)
+    {
+        $session = ServiceUtil::getManager()->get('session');
+        $warns = $session->getMessages(Zikula_Session::MESSAGE_WARNING);
+        $errs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
+
+        if (!empty($errs) && $override) {
+            $warns = $errs;
+        }
+
+        if ($delete) {
+            $session->clearMessages(Zikula_Session::MESSAGE_WARNING);
+            SessionUtil::delVar('_ZWarningMsgType');
+        }
+
+        if ($reverse) {
+            $warns = array_reverse($warns, true);
+        }
+
+        return $warns;
+    }
+
+    /**
+     * Returns a string of the available warning messages, separated by the given delimeter.
+     *
+     * @param string  $delimiter The string to use as the delimeter between the array of messages.
+     * @param boolean $delete    True to delete.
+     * @param boolean $override  Whether to override warning messages with error messages.
+     *
+     * @return string the generated error message.
+     */
+    public static function getWarningMessagesText($delimiter = '<br />', $delete = true, $override = true)
+    {
+        $msgs = self::getWarningMessages($delete, $override);
+
+        return implode($delimiter, $msgs);
+    }
+
+    /**
      * Get an array of error messages.
      *
      * @param boolean $delete  True to delete error messages (optional)(default=true).
@@ -129,7 +176,7 @@ class LogUtil
     }
 
     /**
-     * Set an error message text.
+     * Set an status message text.
      *
      * @param string $message String the error message.
      * @param string $url     The url to redirect to (optional) (default=null).
@@ -141,6 +188,28 @@ class LogUtil
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addStatusPopup($message);
+
+        // check if we want to redirect
+        if ($url) {
+            return System::redirect($url);
+        }
+
+        return true;
+    }
+
+    /**
+     * Set a warning message text.
+     *
+     * @param string $message String the warning message.
+     * @param string $url     The url to redirect to (optional) (default=null).
+     *
+     * @return true, or redirect if url.
+     */
+    public static function registerWarning($message, $url = null)
+    {
+        $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
+
+        self::addWarningPopup($message);
 
         // check if we want to redirect
         if ($url) {
@@ -163,6 +232,21 @@ class LogUtil
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
         self::_addPopup($message, Zikula_AbstractErrorHandler::INFO);
+    }
+
+    /**
+     * Add a popup warning message.
+     *
+     * @param string $message The warning message.
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if the type provided to the internal function _addPopup is invalid.
+     */
+    public static function addWarningPopup($message)
+    {
+        $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
+        self::_addPopup($message, Zikula_AbstractErrorHandler::WARN);
     }
 
     /**
@@ -197,6 +281,8 @@ class LogUtil
 
         if ($type === Zikula_AbstractErrorHandler::INFO) {
             $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
+        } elseif ($type === Zikula_AbstractErrorHandler::WARN) {
+            $session->addMessage(Zikula_Session::MESSAGE_WARNING, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
             $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
         } else {
@@ -277,7 +363,7 @@ class LogUtil
 
         // since we're registering an error, it makes sense to return false here.
         // This allows the calling code to just return the result of LogUtil::registerError
-        // if it wishes to return 'false' (which is what ususally happens).
+        // if it wishes to return 'false' (which is what usually happens).
         return false;
     }
 
