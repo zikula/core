@@ -29,9 +29,11 @@ function smarty_function_timezoneselect($params, Zikula_View $view)
     require_once $view->_get_plugin_filepath('function', 'html_options');
 
     $timezones = DateUtil::getTimezones();
+    $params['options'] = $timezones;
     if (!isset($params['selected']) || empty($params['selected']) || !isset($timezones[$params['selected']])) {
         $params['selected'] = System::getVar('timezone_offset');
     }
+    $params['print_result'] = false;
 
-    return smarty_function_html_options(array('options' => $timezones, 'selected' => $params['selected'], 'print_result' => false), $view);
+    return smarty_function_html_options($params, $view);
 }
