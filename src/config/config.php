@@ -19,7 +19,7 @@ $ZConfig['System']['datadir'] = 'userdata';     // location of site data files
 $ZConfig['System']['prefix'] = '';         // database prefix (deprecated).
 $ZConfig['System']['development'] = 0;      // development mode 1/0 for on or off.  Disable in production mode.
 $ZConfig['System']['legacy_prefilters'] = true; // enable legacy template prefilters for old style smarty delimiters (<!--[...]-->).
-$ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers for Zikula Core 1.2.x API.
+$ZConfig['System']['compat_layer'] = true;  // enable loading of compat layers for Zikula Core.
 $ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new directories created by Zikula.
 
 // ----------------------------------------------------------------------
