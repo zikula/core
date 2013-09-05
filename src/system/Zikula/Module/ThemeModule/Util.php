@@ -62,7 +62,10 @@ class Util
             $array = $version->toArray();
             unset($array['id']);
 
-            $array['directory'] = str_replace('\\', '/', $bundle->getNamespace());
+            $directory = explode('/', $bundle->getRelativePath());
+            array_shift($directory);
+            $array['directory'] = implode('/', $directory);
+
             $array['type'] = 3;
             $array['state'] = 1;
             $array['contact'] = 3;
