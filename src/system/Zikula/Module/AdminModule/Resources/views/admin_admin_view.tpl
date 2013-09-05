@@ -30,10 +30,10 @@
             <td><a href="{modurl modname=ZikulaAdminModule type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
             <td>
                 {if $access_edit}
-                <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit' class='tooltips'}</a>
+                <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}"><span title="{gt text="Edit"}" alt="{gt text="Edit"}" class="tooltips glyphicon glyphicon16 glyphicon-wrench glyphicon-black"></span></a>
                 {/if}
                 {if $access_delete}
-                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' __title='Delete' __alt='Delete' class='tooltips'}</a>
+                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}"><span title="{gt text="Delete"}" alt="{gt text="Delete"}" class="tooltips glyphicon glyphicon16 glyphicon-trash glyphicon-red" style="margin-left:8px;"></span></a>
                 {/if}
             </td>
         </tr>

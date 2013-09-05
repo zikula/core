@@ -24,10 +24,10 @@
         </fieldset>
 
         <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
-                <a class="btn btn-default" class="z-btblue" href="{modurl modname=ZikulaAdminModule type=admin func=help fragment=new}" title="{gt text="Help"}">{img modname=core src=agt_support.png set=icons/extrasmall __alt="Help" __title="Help"} {gt text="Help"}</a>
+			<div class="col-lg-offset-3 col-lg-9">
+                <button class="btn btn-default" type="submit" name="submit" title="{gt text="Save"}"><span title="{gt text="Save"}" alt="{gt text="Save"}" class="glyphicon glyphicon16 glyphicon-ok glyphicon-green"></span> Save</button>
+                <a class="btn btn-default" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}"><span title="{gt text="Cancel"}" alt="{gt text="Cancel"}" class="glyphicon glyphicon16 glyphicon-remove glyphicon-red"></span> {gt text="Cancel"}</a>
+                <a class="btn btn-default" class="z-btblue" href="{modurl modname=ZikulaAdminModule type=admin func=help fragment=new}" title="{gt text="Help"}"><span title="{gt text="Help"}" alt="{gt text="Help"}" class="glyphicon glyphicon16 glyphicon-question-sign glyphicon-bluelight"></span> {gt text="Help"}</a>
             </div>
         </div>
     </div>
