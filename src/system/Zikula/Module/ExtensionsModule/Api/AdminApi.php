@@ -467,8 +467,6 @@ class AdminApi extends \Zikula_AbstractApi
                 $array['capabilities'] = $caps;
             }
 
-            $array['directory'] = str_replace('\\', '/', $bundle->getNamespace());
-
             $array['capabilities'] = serialize($array['capabilities']);
             $array['securityschema'] = serialize($array['securityschema']);
             $array['dependencies'] = serialize($array['dependencies']);
@@ -581,22 +579,22 @@ class AdminApi extends \Zikula_AbstractApi
                     } else {
                         $moddependencies = serialize(array());
                     }
-                    //if (!isset($args['name'])) {
-                        $filemodules[$name] = array(
-                                'directory'       => $dir,
-                                'name'            => $name,
-                                'type'            => $moduletype,
-                                'displayname'     => $displayname,
-                                'url'             => $url,
-                                'oldnames'        => $oldnames,
-                                'version'         => $version,
-                                'capabilities'    => $capabilities,
-                                'description'     => $description,
-                                'securityschema'  => $securityschema,
-                                'dependencies'    => $moddependencies,
-                                'core_min'        => $core_min,
-                                'core_max'        => $core_max,
-                        );
+
+                    $filemodules[$name] = array(
+                        'directory'       => $dir,
+                        'name'            => $name,
+                        'type'            => $moduletype,
+                        'displayname'     => $displayname,
+                        'url'             => $url,
+                        'oldnames'        => $oldnames,
+                        'version'         => $version,
+                        'capabilities'    => $capabilities,
+                        'description'     => $description,
+                        'securityschema'  => $securityschema,
+                        'dependencies'    => $moddependencies,
+                        'core_min'        => $core_min,
+                        'core_max'        => $core_max,
+                    );
 
                     // important: unset modversion and modtype, otherwise the
                     // following modules will have some values not defined in

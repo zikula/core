@@ -194,7 +194,13 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
         if (null !== $bundle) {
             $this->name = $bundle->getName();
             $this->baseDir = $bundle->getPath();
-            $this->directory = $bundle->getNamespace();
+
+            // this is a work around for how the core constructs relative paths in some places
+            // using the module path stored in the db. This is the old way since bundles provide
+            // the information anyhow now.
+            $this->directory = explode('/', $bundle->getRelativePath().$bundle->getNamespace());
+            array_shift($this->directory);
+            $this->directory = implode('/', $this->directory);
         } else {
             $this->reflection = new ReflectionObject($this);
             $separator = (false === strpos(get_class($this), '_')) ? '\\' : '_';
