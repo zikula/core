@@ -288,7 +288,8 @@ class AdminController extends \Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'star-empty',
+                                        'image' => 'minus-sign',
+                                        'color' => '#c00',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
 
@@ -296,7 +297,8 @@ class AdminController extends \Zikula_AbstractController
                                 $actions[] = array(
                                         'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'legacyhooks', array(
                                         'id' => $mod['id'])),
-                                        'image' => 'attach.png',
+                                        'image' => 'paperclip',
+                                        'color' => 'black',
                                         'title' => $this->__f('Legacy hook settings for \'%s\'', $mod['name']));
                             }
 
@@ -304,7 +306,8 @@ class AdminController extends \Zikula_AbstractController
                                 $actions[] = array(
                                         'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array(
                                         'bymodule' => $mod['name'])),
-                                        'image' => 'blockdevice.png',
+                                        'image' => 'paperclip',
+                                        'color' => 'black',
                                         'title' => $this->__f('Plugins for \'%s\'', $mod['name']));
                             }
                             break;
@@ -317,7 +320,8 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'star',
+                                    'image' => 'plus',
+                                    'color' => '#0c0',
                                     'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
                                     'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'remove', array(
@@ -326,6 +330,7 @@ class AdminController extends \Zikula_AbstractController
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'trash',
+                                    'color' => '#c00',
                                     'title' => $this->__f('Uninstall \'%s\' module', $mod['name']));
                             break;
 
@@ -337,6 +342,7 @@ class AdminController extends \Zikula_AbstractController
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'trash',
+                                    'color' => '#c00',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
                         case ModUtil::STATE_UPGRADED:
@@ -348,6 +354,7 @@ class AdminController extends \Zikula_AbstractController
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'refresh',
+                                    'color' => '#00c',
                                     'title' => $this->__f('Upgrade \'%s\'', $mod['name']));
                             break;
 
@@ -375,6 +382,7 @@ class AdminController extends \Zikula_AbstractController
                                     'letter' => $letter,
                                     'state' => $state)),
                                     'image' => 'trash',
+                                    'color' => '#c00',
                                     'title' => $this->__f('Remove \'%s\' module', $mod['name']));
                             break;
 
@@ -389,6 +397,7 @@ class AdminController extends \Zikula_AbstractController
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'plus-sign',
+                                        'color' => '#0c0',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
 //                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
 //                                    $actions[] = array(
@@ -409,6 +418,7 @@ class AdminController extends \Zikula_AbstractController
                                         'letter' => $letter,
                                         'state' => $state)),
                                         'image' => 'info-sign',
+                                        'color' => 'black',
                                         'title' => $this->__f('Incompatible version: \'%s\'', $mod['name']));
                             }
                             break;
@@ -420,6 +430,7 @@ class AdminController extends \Zikula_AbstractController
                                 'url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'modify', array(
                                 'id' => $mod['id'])),
                                 'image' => 'wrench',
+                                'color' => 'black',
                                 'title' => $this->__f('Edit \'%s\'', $mod['name']));
                     }
                 }
