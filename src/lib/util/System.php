@@ -13,8 +13,6 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * System class.
@@ -163,12 +161,11 @@ class System
      *
      * @param mixed  $var  The variable to validate.
      * @param string $type The type of the validation to perform (email, url etc.).
-     *
-     * @deprecated since 1.3.6
+     * @param mixed  $args Optional array with validation-specific settings (deprecated).
      *
      * @return boolean True if the validation was successful, false otherwise.
      */
-    public static function varValidate($var, $type)
+    public static function varValidate($var, $type, $args = 0)
     {
         if (!isset($var) || !isset($type)) {
             return false;
@@ -210,12 +207,37 @@ class System
             return false;
         }
 
-        if ($type == 'email' && !filter_var($var, FILTER_VALIDATE_EMAIL)) {
-            return false;
+        if ($type == 'email' || $type == 'url') {
+            // CSRF protection for email and url
+            $var = str_replace(array(
+                            '\r',
+                            '\n',
+                            '%0d',
+                            '%0a'), '', $var);
+
+            if (self::getVar('idnnames')) {
+                // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
+                require_once 'lib/vendor/idn/idna_convert.class.php';
+                $IDN = new idna_convert();
+                $var = $IDN->encode(DataUtil::convertToUTF8($var));
+            }
+            // all characters must be 7 bit ascii
+            $length = strlen($var);
+            $idx = 0;
+            while ($length--) {
+                $c = $var[$idx++];
+                if (ord($c) > 127) {
+                    return false;
+                }
+            }
         }
 
-        if ($type == 'url' && !filter_var($var, FILTER_VALIDATE_URL)) {
-            return false;
+        if ($type == 'url') {
+            // check for url
+            $url_array = @parse_url($var);
+            if (!empty($url_array) && empty($url_array['scheme'])) {
+                return false;
+            }
         }
 
         if ($type == 'uname') {
@@ -661,32 +683,6 @@ class System
             return;
         }
 
-        // Try to match a route first.
-        /** @var \Symfony\Cmf\Component\Routing\ChainRouter $router */
-        $router = ServiceUtil::get('router');
-        try {
-            $parameters = $router->matchRequest($request);
-
-            if (!isset($parameters['_module']) || !isset($parameters['_type']) || !isset($parameters['_func'])) {
-                // This might be the web profiler or another native bundle.
-            } else {
-                $request->attributes->set('_module', strtolower($parameters['_module']));
-                $request->attributes->set('_type', strtolower($parameters['_type']));
-                $request->attributes->set('_func', strtolower($parameters['_func']));
-                $request->query->set('module', strtolower($parameters['_module']));
-                $request->query->set('type', strtolower($parameters['_type']));
-                $request->query->set('func', strtolower($parameters['_func']));
-                $request->overrideGlobals();
-
-                return;
-            }
-
-        } catch (ResourceNotFoundException $e) {
-            // This is an old style url.
-        } catch (RouteNotFoundException $e) {
-            // This is an old style url.
-        }
-
         // get our base parameters to work out if we need to decode the url
         $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
         $func = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
@@ -881,6 +877,7 @@ class System
         //foreach ($_POST as $key => $value) {
         //    $request->attributes->set($key, $value);
         //}
+        $request->attributes->set('_controller', "$module:$type:$func");
         $request->attributes->set('_module', strtolower($module)); // legacy - this is how they are received originally
         $request->attributes->set('_type', strtolower($type)); // legacy - this is how they are received originally
         $request->attributes->set('_func', strtolower($func)); // legacy - this is how they are received originally
@@ -999,23 +996,45 @@ class System
     }
 
     /**
-     * Legacy mode enabled check for target versions
-     *
-     * @param string|boolean $targetVersion Returns true if target version is less than
-     *                                      or equal to the compay_layer version string
+     * Legacy mode enabled check.
      *
      * @return boolean
      */
-    public static function isLegacyMode($targetVersion = null)
+    public static function isLegacyMode()
     {
-        $minVersion = ServiceUtil::getManager()->getParameter('compat_layer');
-
-        if (!is_bool($minVersion)) {
-            return version_compare($minVersion, $targetVersion, '<=');
+        if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
+            return false;
         }
 
-        // boolean so just return that
-        return $minVersion;
+        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+    }
+
+    /**
+     * Legacy mode enabled check.
+     *
+     * @return boolean
+     */
+    public static function hasLegacyCSS()
+    {
+        if (!isset($GLOBALS['ZConfig']['System']['legacy_css'])) {
+            return false;
+        }
+
+        return (bool)$GLOBALS['ZConfig']['System']['legacy_css'];
+    }
+
+    /**
+     * Legacy prefilters check.
+     *
+     * @return boolean
+     */
+    public static function hasLegacyTemplates()
+    {
+        if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
+            return false;
+        }
+
+        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
     }
 
     /**
@@ -1025,8 +1044,11 @@ class System
      */
     public static function isDevelopmentMode()
     {
-        $s = ServiceUtil::getManager();
-        return $s->getParameter('kernel.environment') !== 'dev' ? false : true;
+        if (!isset($GLOBALS['ZConfig']['System']['development'])) {
+            return false;
+        }
+
+        return (bool)$GLOBALS['ZConfig']['System']['development'];
     }
 
     /**

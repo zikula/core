@@ -125,18 +125,14 @@ class JCSSUtil
         if (!is_array($stylesheets)) {
             $stylesheets = array();
         }
+        // Add bootstrap stylesheet
+        array_unshift($stylesheets, 'web/bootstrap/css/bootstrap.min.css', 'style/bootstrap-zikula-theme.css');
         // Add legacy stylesheet
-        if (System::isLegacyMode('1.3.7')) {
+        if (System::hasLegacyCSS()) {
             array_unshift($stylesheets, 'style/legacy.css');
         }
         // Add core stylesheet
         array_unshift($stylesheets, $coreStyle[0]);
-        // Add bootstrap stylesheet
-        $overrideBootstrapPath = ThemeUtil::getVar('bootstrapPath', ''); // allows for theme override of bootstrap css path
-        $bootstrapPath = !empty($overrideBootstrapPath) ? $overrideBootstrapPath : ServiceUtil::getManager()->getParameter('zikula.stylesheet.bootstrap.min.path');
-        array_unshift($stylesheets, $bootstrapPath);
-        // Add font-awesome
-        array_unshift($stylesheets, ServiceUtil::getManager()->getParameter('zikula.stylesheet.fontawesome.min.path'));
         $stylesheets = array_unique(array_values($stylesheets));
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('header', $iehack);
@@ -157,7 +153,7 @@ class JCSSUtil
     public static function prepareJavascripts($javascripts)
     {
         array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js');
-        array_unshift($javascripts, 'jquery', ServiceUtil::getManager()->getParameter('zikula.javascript.bootstrap.min.path'));
+        array_unshift($javascripts, 'jquery', 'web/bootstrap/js/bootstrap.min.js');
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
         // set proper file paths for aliased scripts
