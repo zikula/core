@@ -28,12 +28,12 @@
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_DELETE" assign="access_delete"}
         <tr class="{cycle values="z-odd,z-even"}">
             <td><a href="{modurl modname=ZikulaAdminModule type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
-            <td>
+            <td class="actions">
                 {if $access_edit}
-                <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='xedit.png' __title='Edit' __alt='Edit' class='tooltips'}</a>
+                    <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips glyphicon glyphicon-wrench"></a>
                 {/if}
                 {if $access_delete}
-                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' __title='Delete' __alt='Delete' class='tooltips'}</a>
+                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" alt="{gt text="Delete"}" class="tooltips glyphicon glyphicon-trash"></a>
                 {/if}
             </td>
         </tr>
