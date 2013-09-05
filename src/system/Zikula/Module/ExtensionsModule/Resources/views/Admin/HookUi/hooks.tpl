@@ -21,7 +21,7 @@
         initAreasDraggables();
         initAreasDroppables();
 
-        provider_panel = new Zikula.UI.Panels('hooks_provider_areas', {
+        new Zikula.UI.Panels('hooks_provider_areas', {
             active: [0],
             effectDuration: 0.5
         });
@@ -44,9 +44,6 @@
                 headerClassName: 'subscriberarea-header'
             });
         }
-		// Expand all hook panels
-		subscriber_panel.expandAll();
-		provider_panel.expandAll();
     });
 </script>
 {/pageaddvarblock}
