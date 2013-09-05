@@ -1010,6 +1010,20 @@ class System
     }
 
     /**
+     * Legacy mode enabled check.
+     *
+     * @return boolean
+     */
+    public static function hasLegacyCSS()
+    {
+        if (!isset($GLOBALS['ZConfig']['System']['legacy_css'])) {
+            return false;
+        }
+
+        return (bool)$GLOBALS['ZConfig']['System']['legacy_css'];
+    }
+
+    /**
      * Legacy prefilters check.
      *
      * @return boolean
