@@ -15,18 +15,18 @@
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="hide"{/if}>{gt text="Log in below, or change how you would like to log in."}</h5>
     {modurl modname='ZikulaUsersModule' type='user' func='register' assign='form_action'}
     <div>
-        <div class="z-w40 z-floatright">
+        <div class="z-w40 floatright">
             {gt text='If you prefer, you can create an account and password for use only with this site by clicking below...'}
         </div>
         <div class="z-w60">
             {gt text='Click on one of the following to log into this site using that service...'}
         </div>
     </div>
-    <div class="z-clearer z-gap">
-        <div class="authentication_select_method_bigbutton z-w40 z-middle z-floatright">
+    <div class="z-clearer gap">
+        <div class="authentication_select_method_bigbutton z-w40 middle floatright">
             {authentication_method_selector form_type='registration' form_action=$form_action authentication_method=$users_authentication_method selected_authentication_method=$selected_authentication_method}
         </div>
-        <div class="authentication_select_method_bigbutton z-w60 z-middle">
+        <div class="authentication_select_method_bigbutton z-w60 middle">
         {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
             {if $smarty.foreach.authentication_method_display_order.iteration == 7}
                 </div>
@@ -41,7 +41,7 @@
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='registration' authentication_method=$selected_authentication_method assign='login_form_fields'}
 {/if}
-<form id="users_login_login_form" class="z-form z-gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{modurl modname="Users" type="user" func="register"}" method="post">
+<form id="users_login_login_form" class="z-form gap z-clearer{if !isset($login_form_fields) || empty($login_form_fields) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}" action="{modurl modname="Users" type="user" func="register"}" method="post">
     <div>
         <input id="users_login_selected_authentication_module" type="hidden" name="authentication_method[modname]" value="{$selected_authentication_method.modname|default:''}" />
         <input id="users_login_selected_authentication_method" type="hidden" name="authentication_method[method]" value="{$selected_authentication_method.method|default:''}" />
@@ -61,12 +61,12 @@
         </div>
     </div>
 </form>
-<div id="users_login_waiting" class="z-form z-clearer z-gap hide">
+<div id="users_login_waiting" class="z-form z-clearer gap hide">
     <fieldset>
-        <p class="z-center z-gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
+        <p class="center gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
     </fieldset>
 </div>
-<div id="users_login_no_loginformfields" class="z-clearer z-gap{if (isset($login_form_fields) && !empty($login_form_fields)) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}">
+<div id="users_login_no_loginformfields" class="z-clearer gap{if (isset($login_form_fields) && !empty($login_form_fields)) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}">
     <h5>{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:''}{/if}</h5>
     <p class="alert alert-danger">
         {gt text='The registration option you chose is not available at the moment.'}

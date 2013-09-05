@@ -42,7 +42,7 @@
             <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="Extensions" type="admin" func="viewPlugins" sort="name" state=$state bymodule=$module systemplugins=$systemplugins}">{gt text="Plugin display name"}</a></th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
-            <th class="z-nowrap">
+            <th class="nowrap">
                 <form action="{modurl modname="Extensions" type="admin" func="viewPlugins"}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <input type="hidden" name="sort" value="{$sort|safetext}" />
@@ -60,7 +60,7 @@
                     </div>
                 </form>
             </th>
-            <th class="z-right">{gt text="Actions"}</th>
+            <th class="right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -81,13 +81,13 @@
             <td>{$plugin.instance->getMetaDisplayName()|safetext}</td>
             <td>{$plugin.instance->getMetaDescription()|safetext}</td>
             <td>{$plugin.version|safetext}</td>
-            <td class="z-nowrap">
+            <td class="nowrap">
                 {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|safetext}
                 {if isset($plugin.newversion)}
                 <br />({$plugin.newversion|safetext})
                 {/if}
             </td>
-            <td class="z-right z-nowrap">
+            <td class="right nowrap">
                 {strip}
                 {foreach from=$plugin.actions item="action"}
                 <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title class='tooltips'}</a>&nbsp;

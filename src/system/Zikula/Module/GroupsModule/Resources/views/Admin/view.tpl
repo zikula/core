@@ -32,25 +32,25 @@
 </div>
 
 {checkpermissionblock component='ZikulaGroupsModule::' instance='::' level=ACCESS_ADD}
-<a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="z-floatleft z-icon-es-new hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
+<a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="floatleft smallicon smallicon-new hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
 {/checkpermissionblock}
 
 <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
 
 <div class="groupbox z-clearer">
     <ol id="grouplist" class="z-itemlist">
-        <li class="z-itemheader z-clearfix">
+        <li class="z-itemheader clearfix">
             <span class="z-itemcell z-w05">{gt text="Internal ID"}</span>
             <span class="z-itemcell z-w15">{gt text="Name"}</span>
             <span class="z-itemcell z-w10">{gt text="Type"}</span>
             <span class="z-itemcell z-w30">{gt text="Description"}</span>
             <span class="z-itemcell z-w10">{gt text="State"}</span>
-            <span class="z-itemcell z-w10 z-center">{gt text="Members"}</span>
-            <span class="z-itemcell z-w10 z-center">{gt text="Maximum membership"}</span>
+            <span class="z-itemcell z-w10 center">{gt text="Members"}</span>
+            <span class="z-itemcell z-w10 center">{gt text="Maximum membership"}</span>
             <span class="z-itemcell z-w10">{gt text="Actions"}</span>
         </li>
         {foreach item='group' from=$groups}
-        <li id="group_{$group.gid}" class="{cycle values='z-odd,z-even'} z-clearfix">
+        <li id="group_{$group.gid}" class="{cycle values='z-odd,z-even'} clearfix">
             <div id="groupcontent_{$group.gid}">
                 <input type="hidden" id="gtypeid_{$group.gid}" value="{$group.gtype}" />
                 <input type="hidden" id="stateid_{$group.gid}" value="{$group.state}" />
@@ -99,14 +99,14 @@
                     </select>
                 </span>
                 {* *}
-                <span id="groupnbuser_{$group.gid}" class="z-itemcell z-w10 z-center">
+                <span id="groupnbuser_{$group.gid}" class="z-itemcell z-w10 center">
                     {$group.nbuser|safetext}
                 </span>
-                <span id="groupnbumax_{$group.gid}" class="z-itemcell z-w10 z-center">
+                <span id="groupnbumax_{$group.gid}" class="z-itemcell z-w10 center">
                     {$group.nbumax|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 hide z-center">
+                <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 hide center">
                     <input type="text" id="nbumax_{$group.gid}" size="5" name="nbumax_{$group.gid}" value="{$group.nbumax|safetext}" />
                 </span>
                 {* *}
@@ -134,7 +134,7 @@
             </div>
         </li>
         {foreachelse}
-        <li id="group_1" class="hide z-clearfix">
+        <li id="group_1" class="hide clearfix">
             <div id="groupcontent_1" class="groupcontent">
                 <input type="hidden" id="gtypeid_1" value="" />
                 <input type="hidden" id="stateid_1" value="" />
@@ -179,15 +179,15 @@
                     </select>
                 </span>
                 {* *}
-                <span id="groupnbuser_1" class="z-itemcell z-w10 hide z-center">
+                <span id="groupnbuser_1" class="z-itemcell z-w10 hide center">
                     {*$group.nbuser|safetext*}&nbsp;
                 </span>
                 {* *}
-                <span id="groupnbumax_1" class="z-itemcell z-w10 hide z-center">
+                <span id="groupnbumax_1" class="z-itemcell z-w10 hide center">
                     {$group.nbumax|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupnbumax_1" class="z-itemcell z-w10 z-center">
+                <span id="editgroupnbumax_1" class="z-itemcell z-w10 center">
                     <input type="text" id="nbumax_1" size="5" name="nbumax_1" value="{$group.nbumax|safetext}" />
                 </span>
                 {* *}
@@ -205,8 +205,8 @@
         {/foreach}
     </ol>
 </div>
-<div class="z-italic">* {gt text="Default user group. Cannot be deleted."}</div>
-<div class="z-italic">** {gt text="Primary administrators group. Cannot be deleted."}</div>
+<div class="italic">* {gt text="Default user group. Cannot be deleted."}</div>
+<div class="italic">** {gt text="Primary administrators group. Cannot be deleted."}</div>
 
 {if $useritems}
 <h3>{gt text="Pending applications"}</h3>

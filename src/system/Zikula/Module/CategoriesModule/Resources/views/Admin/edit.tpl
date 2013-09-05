@@ -129,17 +129,29 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
         {if ($mode == "edit")}
-            {button class="z-btgreen" src=button_ok.png set=icons/extrasmall name="category_submit" value="update"  __alt="Save" __title="Save" __text="Save"}
-            {button class="z-btblue" src=editcopy.png set=icons/extrasmall name="category_copy" value="copy" __alt="Copy" __title="Copy" __text="Copy"}
-            {button class="z-btblue" src=editcut.png set=icons/extrasmall name="category_move" value="move" __alt="Move" __title="Move" __text="Move"}
-            {button class="z-btred" src=14_layer_deletelayer.png set=icons/extrasmall name="category_delete" value="delete" __alt="Delete" __title="Delete" __text="Delete"}
+            <button class="btn btn-success" name="category_submit" value="update" title="{gt text="Save"}">
+                {gt text="Save"}
+            </button>
+            <button class="btn btn-default" name="category_copy" value="copy" title="{gt text="Copy"}">
+                {gt text="Copy"}
+            </button>
+            <button class="btn btn-default" name="category_move" value="move" title="Move">
+                {gt text="Move"}
+            </button>
+            <button class="btn btn-default" name="category_delete" value="delete" title="Delete">
+                {gt text="Delete"}
+            </button>
         {if (!$category.is_leaf && $haveSubcategories && $haveLeafSubcategories)}
-            {button src=xedit.png set=icons/extrasmall name="category_user_edit" value="edit" __alt="Edit" __title="Edit" __text="Edit"}
+            <button class="btn btn-default" name="category_user_edit" value="edit" title="{gt text="Edit"}">
+                {gt text="Edit"}
+            </button>
         {/if}
-            <a class="btn btn-default" class="z-btred" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         {else}
-            {button class="z-btgreen" src=button_ok.png set=icons/extrasmall name="category_submit" value="add" __alt="Save" __title="Save" __text="Save"}
-            <a class="btn btn-default" class="z-btred" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <button class="btn btn-success" name="category_submit" value="add" title="{gt text="Save"}">
+                {gt text="Save"}
+            </button>
+            <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         {/if}
         </div>
     </div>

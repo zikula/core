@@ -10,7 +10,7 @@
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" name="themename" value="{$themename|safetext}" />
         <input type="hidden" name="filename" value="{$filename|safetext}" />
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>{gt text="Name"}</th>
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 {foreach from=$variables.variables key=name item=value}
-                <tr class="{cycle values=z-odd,z-even}">
+                <tr>
                     <td>
                         {if isset($variables.$name.editable)}
                         <input type="text" class="form-control" name="variablesnames[{$name|safetext}]" value="{$name|safetext}" />
@@ -37,7 +37,7 @@
                         <input type="radio" name="variablesvalues[{$name|safetext}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
                         <input type="radio" name="variablesvalues[{$name|safetext}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
                         {elseif $variables.$name.type eq 'select'}
-                        {html_options name=variablesvalues[$name] values=$variables.$name.values output=$variables.$name.output selected=$value}
+                        {html_options class="form-control" name=variablesvalues[$name] values=$variables.$name.values output=$variables.$name.output selected=$value}
                         {else}
                         <input type="text" class="form-control" name="variablesvalues[{$name|safetext}]" value="{$value|safetext}" />
                         {/if}
@@ -59,20 +59,20 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="theme_newvariablename">{gt text="Name"}</label>
                 <div class="col-lg-9">
-                <input id="theme_newvariablename" type="text" class="form-control" name="newvariablename" size="30" />
-            </div>
+                    <input id="theme_newvariablename" type="text" class="form-control" name="newvariablename" size="30" />
+                </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="theme_newvariablevalue">{gt text="Value"}</label>
                 <div class="col-lg-9">
-                <input id="theme_newvariablevalue" type="text" class="form-control" name="newvariablevalue" size="30" />
+                    <input id="theme_newvariablevalue" type="text" class="form-control" name="newvariablevalue" size="30" />
+                </div>
             </div>
-        </div>
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/small __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

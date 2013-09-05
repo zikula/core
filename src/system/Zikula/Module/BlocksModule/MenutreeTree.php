@@ -194,7 +194,7 @@ class MenutreeTree extends \Zikula_Tree
         }
         $links = $indent.implode("\n{$indent}", $links);
 
-        $itemid  = $indent.'<span class="z-sub">'.$translated['id'].'.</span>';
+        $itemid  = $indent.'<span class="sub">'.$translated['id'].'.</span>';
 
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
         $liClass = array();

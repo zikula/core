@@ -4,7 +4,7 @@
     <body class="threecols">
         {include file="includes/userheader.tpl"}
         <div id="pagewidth">
-            <div id="wrapper" class="z-clearfix">
+            <div id="wrapper" class="clearfix">
                 <div id="leftcol">
                     <div id="sidebar">
                         {blockposition name=left}

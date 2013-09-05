@@ -13,7 +13,7 @@
             {assign var='show_login_form' value=true}
         {/if}
     {/if}
-    {/strip}<div id="users_loginblock_waiting" class="z-center hide">
+    {/strip}<div id="users_loginblock_waiting" class="center hide">
         {img modname='core' set='ajax' src='indicator_circle.gif'}
     </div>
     <form id="users_loginblock_login_form" class="form-horizontal{if !$show_login_form} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
@@ -46,7 +46,7 @@
         {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
 
         {/if}
-        <div class="z-buttons z-right">
+        <div class="z-buttons right">
             <input class="z-bt-ok z-bt-small" id="users_loginblock_submit" name="users_loginblock_submit" type="submit" value="{gt text="Log in"}" />
         </div>
     </form>

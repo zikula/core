@@ -93,7 +93,7 @@
             <label class="col-lg-3 control-label" for="menutree_editlinks">{gt text="Show editing links"}</label>
             <div class="col-lg-9">
             <input id="menutree_editlinks" type="checkbox" name="menutree[editlinks]" {if $menutree_editlinks}checked="checked"{/if}/>
-            <em class="z-sub">{gt text='Display the links: "Add current URL" and "Edit this block".'}</em>
+            <em class="sub">{gt text='Display the links: "Add current URL" and "Edit this block".'}</em>
         </div>
     </div>
     </fieldset>
@@ -107,7 +107,7 @@
             <div class="col-lg-9">
             <span>
                 <input id="menutree_stripbaseurl" type="checkbox" name="menutree[stripbaseurl]" {if $menutree_stripbaseurl}checked="checked"{/if}/>
-                <em class="z-sub">{gt text="Base URL which will be removed: %s." tag1=$baseurl}</em>
+                <em class="sub">{gt text="Base URL which will be removed: %s." tag1=$baseurl}</em>
             </span>
             {if $modvars.ZConfig.shorturls}
             <p class="help-block alert alert-warning">
@@ -121,7 +121,7 @@
             <div class="col-lg-9">
             <span>
                 <input id="menutree_maxdepth" type="text" name="menutree[maxdepth]" value="{$menutree_maxdepth|safehtml}" size="2" maxlength="2" />
-                <em class="z-sub">{gt text="Zero means no limit."}</em>
+                <em class="sub">{gt text="Zero means no limit."}</em>
             </span>
         </div>
         </div>
@@ -135,14 +135,14 @@
             <legend>{gt text="Class list for links"}</legend>
             <p>{gt text='The title of the class will be visible to the user, the name of the class will be used as an "class" attribute value.'}</p>
             <ul id="menutree_linkclasses_list" class="z-itemlist">
-                <li class="z-clearfix z-itemheader">
+                <li class="clearfix z-itemheader">
                     <span class="z-itemcell z-w30">{gt text="Class name"}</span>
                     <span class="z-itemcell z-w30">{gt text="Class title"}</span>
                 </li>
                 {gt text="Delete" assign="alt"}
                 {assign var='classescount' value=$menutree_linkclasses|@count}
                 {foreach from=$menutree_linkclasses key=id item=class}
-                <li id="class_{$id}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                <li id="class_{$id}" class="{cycle values='z-odd,z-even'} clearfix">
                     <span class="z-itemcell z-w30">
                         <input type="text" name="menutree[linkclasses][{$id}][name]" value="{$class.name|safehtml}" size="40" maxlength="255" />
                     </span>
@@ -154,7 +154,7 @@
                     </span>
                 </li>
                 {/foreach}
-                <li id="class_{$classescount}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                <li id="class_{$classescount}" class="{cycle values='z-odd,z-even'} clearfix">
                     <span class="z-itemcell z-w30">
                         <input type="text" name="menutree[linkclasses][{$classescount}][name]" size="40" maxlength="255" />
                     </span>
@@ -303,7 +303,7 @@
                     <div class="col-lg-9">
                     <input type="text" name="link_href" id="link_href" />
                     {if $multilingual}
-                    <div class="z-sub help-block">
+                    <div class="sub help-block">
                         <input type="checkbox" class="checkbox" name="global_link_href" id="global_link_href" />
                         <label for="global_link_href">{gt text="Use one for all languages"}</label>
                     </div>
@@ -324,7 +324,7 @@
                     <input type="text" name="link_className" id="link_className" />
                     {/if}
                     {if $multilingual}
-                    <div class="z-sub help-block">
+                    <div class="sub help-block">
                         <input type="checkbox" class="checkbox" name="global_link_className" id="global_link_className" />
                         <label for="global_link_className">{gt text="Use one for all languages"}</label>
                     </div>

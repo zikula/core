@@ -12,9 +12,9 @@
 
 <ul class="navbar navbar-default">
     {if ($referer)}
-    <li><a class="z-icon-es-view" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="smallicon smallicon-view" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
-    <li><a class="z-icon-es-regenerate" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
+    <li><a class="smallicon smallicon-regenerate" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>
 
 {insert name="getstatusmsg"}
@@ -125,10 +125,10 @@
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
             {if ($category)}
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname=ZikulaCategoriesModule type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=user func=edit dr=$rootCat.id}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             {else}
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
             {/if}
             </div>
         </div>

@@ -1,8 +1,8 @@
-<div id="topline" class="z-clearfix">
-    <div class="z-floatleft">{userwelcome|ucwords}</div>
-    <div class="z-floatright">{blockposition name=search}</div>
+<div id="topline" class="clearfix">
+    <div class="floatleft">{userwelcome|ucwords}</div>
+    <div class="floatright">{blockposition name=search}</div>
 </div>
-<div id="header" class="z-clearfix">
+<div id="header" class="clearfix">
     <h1><a href="{homepage}" title="{$modvars.ZConfig.slogan}">{$modvars.ZConfig.sitename}</a></h1>
     {blockposition name='topnav' assign='topnavblock'}
     {if empty($topnavblock)}

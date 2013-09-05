@@ -85,14 +85,16 @@
                         <input id="idnnamesno" type="radio" name="idnnames" value="0" {if $modvars.ZConfig.idnnames != 1}checked="checked" {/if}/>
                         <label for="idnnamesno">{gt text="No"}</label>
                     </div>
-                    <div class="help-block z-sub z-italic">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</div>
+                    <div class="help-block sub italic">{gt text="Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs."}</div>
                 </div>
             </div>
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src="button_ok.png" set="icons/extrasmall" __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname="ZikulaSettingsModule" type="admin" func="main"}" title="{gt text="Cancel"}">{img modname="core" src="button_cancel.png" set="icons/extrasmall" __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">
+                    {gt text="Save"}
+                </button>
+                <a class="btn btn-danger" href="{modurl modname="ZikulaSettingsModule" type="admin" func="main"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

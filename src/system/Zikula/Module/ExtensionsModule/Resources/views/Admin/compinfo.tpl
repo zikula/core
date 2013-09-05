@@ -11,7 +11,7 @@
 {/if}
 <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-        <a class="btn btn-default" href="{modurl modname=Extensions type=admin func=view startnum=$startnum letter=$letter state=$state}">{img modname=core src=button_ok.png set=icons/small  __alt="Ok" __title="Ok"} {gt text="Ok"}</a>
+        <a class="btn btn-danger" href="{modurl modname=Extensions type=admin func=view startnum=$startnum letter=$letter state=$state}">{img modname=core src=button_ok.png set=icons/small  __alt="Ok" __title="Ok"} {gt text="Ok"}</a>
     </div>
         </div>
 {adminfooter}

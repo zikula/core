@@ -818,7 +818,7 @@ new parameters 'imgset' and 'imgsrc'. imgset is default to 'icons/extrasmall'.
 Examples:
 {linkbutton commandName='edit' __text='Edit' imgsrc='edit.gif'}
 or through the core CSS:
-{linkbutton commandName='edit' __text='Edit' class='z-icon-es-edit'}
+{linkbutton commandName='edit' __text='Edit' class='smallicon smallicon-edit'}
 {button commandName='cancel' __text='Cancel' class='z-bt-cancel'}
 
 API COMPLIANCE

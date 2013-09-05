@@ -50,7 +50,7 @@
             {if $action == "deny"}
             <button type="submit">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Deny" __title="Deny"} {gt text="Deny"}</button>
             {else}
-            <button type="submit">{img modname=core src=button_ok.png set=icons/extrasmall __alt="Accept" __title="Accept"} {gt text="Accept"}</button>
+            <button type="submit">{img modname=core class="btn btn-success" __alt="Accept" __title="Accept"} {gt text="Accept"}</button>
             {/if}
             </div>
         </div>

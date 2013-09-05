@@ -26,7 +26,7 @@
                     <th>{gt text="Entity"}</th>
                     <th>{gt text="Property name"}</th>
                     <th>{gt text="Category"}</th>
-                    <th class="z-right">{gt text="Actions"}</th>
+                    <th class="right">{gt text="Actions"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +45,7 @@
                     <td>{$obj.entityname}</td>
                     <td>{$obj.property}</td>
                     <td>{category_path id=$obj.category_id html=true}</td>
-                    <td class="z-right">
+                    <td class="right">
                         <a href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry' id=$obj.id}">{img modname=core set=icons/extrasmall src="xedit.png" __title="Edit" __alt="Edit" class="tooltips"}</a>
                         <a href="{modurl modname='ZikulaCategoriesModule' type='admin' func='deleteregistry' id=$obj.id}">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.png" __title="Delete" __alt="Delete" class="tooltips"}</a>
                     </td>
@@ -67,8 +67,8 @@
         </table>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button id="category_submit" name="category_submit" value="1" src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname="ZikulaCategoriesModule" type="admin" func="editregistry"}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                {button id="category_submit" name="category_submit" value="1" class="btn btn-success" __alt="Save" __title="Save" __text="Save"}
+                <a class="btn btn-danger" href="{modurl modname="ZikulaCategoriesModule" type="admin" func="editregistry"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

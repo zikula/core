@@ -611,7 +611,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $event->data[] = array(
                 'url' => ModUtil::url($event['modname'], 'admin', 'hooks'),
                 'text' => __('Hooks'),
-                'class' => 'z-icon-es-hook'
+                'class' => 'smallicon smallicon-hook'
         );
     }
 
@@ -641,7 +641,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $event->data[] = array(
                     'url' => ModUtil::url($event['modname'], 'admin', 'moduleservices'),
                     'text' => __('Services'),
-                    'class' => 'z-icon-es-gears',
+                    'class' => 'smallicon smallicon-gears',
                     'links' => $sublinks);
         }
     }

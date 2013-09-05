@@ -65,7 +65,7 @@
                 {assign var='fieldName' value='uname'}
                 <div class="col-lg-9">
                     <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
-                    <em class="help-block z-sub">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
+                    <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                     <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
                     <div class="col-lg-9">
                         <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
-                        <em class="z-sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
+                        <em class="sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
                         <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                         <div id="{$formData->getFormId()}_passmeter"></div>
                     </div>
@@ -182,7 +182,7 @@
                     <label for="{$formData->getFieldId($fieldName)}_yes">{gt text="Yes (recommended)"}</label>
                     <input id="{$formData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0"{if !$formData->getFieldData($fieldName)} checked="checked"{/if} />
                     <label for="{$formData->getFieldId($fieldName)}_no">{gt text="No"}</label>
-                    <em class="z-sub help-block">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</em>
+                    <em class="sub help-block">{gt text="Notice: This overrides the 'Verify e-mail address during registration' setting in 'Settings'."}</em>
                 </div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -197,13 +197,15 @@
 
         <fieldset>
             <legend>{gt text="Check your entries and submit your registration"}</legend>
-            <p id="{$formData->getFormId()}_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
-            <p id="{$formData->getFormId()}_validmessage" class="hide z-sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-            <div class="z-formbuttons z-buttons">
-                {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide z-center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
-                {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
-                {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit new user' to continue."}</p>
+            <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-9">
+                    {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
+                    {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit new user' __title='Submit new user' __text='Submit new user'}
+                    {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
+                    <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}">{gt text='Cancel'}</a>
+                </div>
             </div>
         </div>
         </fieldset>

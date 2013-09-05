@@ -41,8 +41,8 @@ h2 a {
     font-size: 14px;
     font-weight: bold;
 }
-a.z-sub,
-a.z-sub {
+a.sub,
+a.sub {
     font-size: 12px;
 }
 a.z-logo {
@@ -101,7 +101,7 @@ ul {
 /**************** please include this in all ***************/
 /******************** css based themes! ********************/
 
-.z-clearfix:after {
+.clearfix:after {
     content: ".";
     display: block;
     height: 0;
@@ -109,11 +109,11 @@ ul {
     visibility: hidden;
 }
 
-.z-clearfix {display: inline-table;}
+.clearfix {display: inline-table;}
 
 /* Hides from IE-mac \*/
-* html .z-clearfix {height: 1%;}
-.z-clearfix {display: block;}
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
 /* End hide from IE-mac */
 
 /* Overflow-Method to clear float environments */

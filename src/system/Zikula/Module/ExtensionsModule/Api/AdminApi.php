@@ -1215,7 +1215,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'),
                              'text' => $this->__('Modules list'),
-                             'class' => 'z-icon-es-view',
+                             'class' => 'smallicon smallicon-view',
                              'links' => array(
                                              array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'),
                                                    'text' => $this->__('All')),
@@ -1235,7 +1235,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'),
                              'text' => $this->__('Plugins list'),
-                             'class' => 'z-icon-es-gears',
+                             'class' => 'smallicon smallicon-gears',
                              'links' => array(
                                              array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'),
                                                    'text' => $this->__('All')),
@@ -1249,7 +1249,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true)),
                              'text' => $this->__('System Plugins'),
-                             'class' => 'z-icon-es-gears',
+                             'class' => 'smallicon smallicon-gears',
                              'links' => array(
                                              array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins', array('systemplugins' => true)),
                                                    'text' => $this->__('All')),
@@ -1263,17 +1263,17 @@ class AdminApi extends \Zikula_AbstractApi
 
             $legacyHooks = DBUtil::selectObjectArray('hooks');
             if (System::isLegacyMode() && $legacyHooks) {
-                $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'z-icon-es-hook');
+                $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'legacyhooks', array('id' => 0)), 'text' => $this->__('Legacy hooks'), 'class' => 'smallicon smallicon-hook');
             }
 
-            $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'smallicon smallicon-config');
             //$filemodules = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'getfilemodules');
             //ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $filemodules));
 
             // get a list of modules needing upgrading
             $newmods = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'listmodules', array('state' => ModUtil::STATE_UPGRADED));
             if ($newmods) {
-                $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'class' => 'z-icon-es-config');
+                $links[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'upgradeall'), 'text' => $this->__('Upgrade All'), 'class' => 'smallicon smallicon-config');
             }
         }
 

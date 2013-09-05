@@ -7,16 +7,18 @@
 </div>
 
 <p class="alert alert-info">{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
-<form class="form-inline" role="form" action="{modurl modname="SecurityCenter" type="admin" func="updateallowedhtml"}" method="post" enctype="application/x-www-form-urlencoded">
+<form class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="updateallowedhtml"}" method="post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
     <fieldset>
         <legend>{gt text="HTML entities"}</legend>
         <div class="form-group" id="securitycenter_htmlentities">
-            <label for="securitycenter_htmlentities">{gt text="Translate embedded HTML entities into real characters"}</label>
-            <input id="securitycenter_htmlentities_yes" type="radio" name="xhtmlentities" value="1"{if $htmlentities eq 1} checked="checked"{/if} />
-            <label for="securitycenter_htmlentities_yes">{gt text="Yes"}</label>
-            <input id="securitycenter_htmlentities_n0" type="radio" name="xhtmlentities" value="0"{if $htmlentities ne 1} checked="checked"{/if} />
-            <label for="securitycenter_htmlentities_n0">{gt text="No"}</label>
+            <div class="col-lg-12">
+                <label for="securitycenter_htmlentities">{gt text="Translate embedded HTML entities into real characters"}</label>
+                <input id="securitycenter_htmlentities_yes" type="radio" name="xhtmlentities" value="1"{if $htmlentities eq 1} checked="checked"{/if} />
+                <label for="securitycenter_htmlentities_yes">{gt text="Yes"}</label>
+                <input id="securitycenter_htmlentities_n0" type="radio" name="xhtmlentities" value="0"{if $htmlentities ne 1} checked="checked"{/if} />
+                <label for="securitycenter_htmlentities_n0">{gt text="No"}</label>
+            </div>
         </div>
     </fieldset>
     <fieldset>
@@ -58,10 +60,12 @@
         </table>
     </fieldset>
     <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a class="btn btn-default" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+        <div class="col-lg-offset-3 col-lg-9">
+            <button class="btn btn-success" title="{gt text="Save"}">
+                {gt text="Save"}
+            </button>
+            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}" class="btn btn-danger">{gt text="Cancel"}</a>
         </div>
-        </div>
+    </div>
 </form>
 {adminfooter}

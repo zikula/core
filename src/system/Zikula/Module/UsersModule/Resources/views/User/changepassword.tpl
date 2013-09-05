@@ -96,17 +96,19 @@
                     {/foreach}
                 </div>
                 {/if}
-                <div class="z-sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
+                <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-warning">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
             </div>
         </div>
     </fieldset>
-    <div class="z-formbuttons z-buttons">
-        {if $login}
-        {button class='z-bt-ok' __alt='Save and continue logging in' __title='Save and continue logging in' __text='Save and continue logging in'}
-        {else}
-        {button class='z-bt-ok' __alt='Save' __title='Save' __text='Save'}
-        {/if}
-        <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}" class='z-bt-cancel'>{gt text='Cancel'}</a>
+    <div class="form-group">
+        <div class="col-lg-offset-3 col-lg-9">
+            {if $login}
+            {button class='btn btn-success' __alt='Save and continue logging in' __title='Save and continue logging in' __text='Save and continue logging in'}
+            {else}
+            {button class='btn btn-success' __alt='Save' __title='Save' __text='Save'}
+            {/if}
+            <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}" class="btn btn-danger">{gt text='Cancel'}</a>
+        </div>
     </div>
 </form>

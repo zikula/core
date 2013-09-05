@@ -457,13 +457,13 @@ class UserApi extends \Zikula_AbstractApi
         $search_modules = ModUtil::apiFunc('ZikulaSearchModule', 'user', 'getallplugins');
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'admin', 'index'), 'text' => $this->__('Backend'), 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'admin', 'index'), 'text' => $this->__('Backend'), 'class' => 'smallicon smallicon-config');
         }
 
         if (SecurityUtil::checkPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'z-icon-es-search');
+            $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'index', array()), 'text' => $this->__('New search'), 'class' => 'smallicon smallicon-search');
             if ((count($search_modules) > 0) && UserUtil::isLoggedIn()) {
-                $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'z-icon-es-view');
+                $links[] = array('url' => ModUtil::url('ZikulaSearchModule', 'user', 'recent', array()), 'text' => $this->__('Recent searches list'), 'class' => 'smallicon smallicon-view');
             }
         }
 

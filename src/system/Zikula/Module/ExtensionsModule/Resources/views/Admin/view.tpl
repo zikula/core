@@ -32,7 +32,7 @@
             <th>{gt text="Module URL"}</th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Version"}</th>
-            <th class="z-nowrap">
+            <th class="nowrap">
                 <form action="{modurl modname="Extensions" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
                     <div>
                         <label for="modules_state">{gt text="State"}</label><br />
@@ -52,7 +52,7 @@
                     </div>
                 </form>
             </th>
-            <th class="z-right">{gt text="Actions"}</th>
+            <th class="right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -69,17 +69,19 @@
             <td>{$modules[modules].modinfo.url|safetext}</td>
             <td>{$modules[modules].modinfo.description|safetext|default:"&nbsp;"}</td>
             <td>{$modules[modules].modinfo.version|safetext}</td>
-            <td class="z-nowrap">
-                {img src=$modules[modules].statusimage modname=core set=icons/extrasmall alt=$modules[modules].status title=$modules[modules].status}&nbsp;{$modules[modules].status|safetext}
+            <td class="nowrap">                
+                <span class="label label-{$modules[modules].statusclass|safetext}">
+                    {$modules[modules].status|safetext}
+                </span>
                 {if isset($modules[modules].modinfo.newversion)}
                 <br />({$modules[modules].modinfo.newversion|safetext})
                 {/if}
             </td>
-            <td class="z-right z-nowrap">
+            <td class="actions">
                 {assign var="options" value=$modules[modules].options}
                 {strip}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|safetext}" class="glyphicon glyphicon-{$options[options].image} tooltips" style="color:black" title="{$options[options].title}"></a>&nbsp;
+                <a href="{$options[options].url|safetext}" class="glyphicon glyphicon-{$options[options].image} tooltips" title="{$options[options].title}"></a>&nbsp;
                 {/section}
                 {/strip}
             </td>

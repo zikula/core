@@ -52,6 +52,32 @@ class Bootstrapify
                 $content = str_replace('z-datatable', 'table table-bordered', $content);
                 $content = str_replace('z-hide', 'hide', $content);
                 $content = str_replace('z-show', 'show', $content);
+                $content = str_replace('src=button_ok.png set=icons/extrasmall', 'class="btn btn-success"', $content);
+                
+                $replace = array(
+                    'invisible',
+                    'visible',
+                    'top',
+                    'middle',
+                    'bottom',
+                    'center',
+                    'left',
+                    'right',
+                    'nowrap',
+                    'italic',
+                    'bold',
+                    'underline',
+                    'line-through',
+                    'normal',
+                    'floatleft',
+                    'floatright',
+                    'gap'
+                );
+                foreach ($replace as  $value) {
+                    $content = str_replace('z-'.$value, $value, $content);
+                }
+
+                 
 
                 // form
                 /* This code is not very sensitive

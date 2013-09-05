@@ -61,7 +61,7 @@
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                     {button src='14_layer_deletelayer.png' set='icons/extrasmall' __alt='Uninstall' __title='Uninstall' __text='Uninstall'}
-                    <a class="btn btn-default" class="z-btred" href="{modurl modname='ZikulaExtensionsModule' type='admin' func='view'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    <a class="btn btn-danger" class="z-btred" href="{modurl modname='ZikulaExtensionsModule' type='admin' func='view'}" class="btn btn-danger">{gt text="Cancel"}</a>
                 </div>
         </div>
         </div>

@@ -13,7 +13,7 @@
 <div style="text-align:center; margin:1em 0;"><img src="{$currentthemepic}" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" /></div>
 
 <h3>{gt text="Themes list"}</h3>
-<div id="themes_list" class="z-clearfix">
+<div id="themes_list" class="clearfix">
     {foreach from=$themes item=theme}
     <dl class="theme_item">
         <dt><strong>{$theme.displayname}</strong></dt>
@@ -30,8 +30,8 @@
         {else}
         {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
         {/if}
-        <dd><a class="z-icon-es-preview" href="{$themeurl|safetext}">{gt text="Preview theme"}</a></dd>
-        <dd><a class="z-icon-es-ok" href="?newtheme={$theme.name}">{gt text="Use theme"}</a></dd>
+        <dd><a class="smallicon smallicon-preview" href="{$themeurl|safetext}">{gt text="Preview theme"}</a></dd>
+        <dd><a class="smallicon smallicon-ok" href="?newtheme={$theme.name}">{gt text="Use theme"}</a></dd>
     </dl>
     {/foreach}
 </div>

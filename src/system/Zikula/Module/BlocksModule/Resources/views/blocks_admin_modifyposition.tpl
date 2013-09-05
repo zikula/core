@@ -19,7 +19,7 @@
             <label class="col-lg-3 control-label" for="blocks_positionname">{gt text="Name"}</label>
             <div class="col-lg-9">
                 <input type="text" id="blocks_positionname" class="form-control" name="position[name]" value="{$name|safetext}" size="50" maxlength="255" />
-                <em class="z-sub help-block">{gt text="Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_)."}</em>
+                <em class="sub help-block">{gt text="Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_)."}</em>
             </div>
         </div>
         <div class="form-group">
@@ -28,8 +28,8 @@
                 <textarea name="position[description]" id="blocks_positiondescription" class="form-control" rows="5" cols="30">{$description|safehtml}</textarea>
             </div>
         <div class="z-formbuttons z-buttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+            <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+            <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
     </fieldset>
@@ -39,7 +39,7 @@
 
     <h4>{gt text="Blocks assigned to this position"}</h4>
     <ol id="assignedblocklist" class="z-itemlist">
-        <li id="assignedblocklistheader" class="z-itemheader z-itemsortheader z-clearfix">
+        <li id="assignedblocklistheader" class="z-itemheader z-itemsortheader clearfix">
             <span class="z-itemcell z-w10">{gt text="Block ID"}</span>
             <span class="z-itemcell z-w30">{gt text="Title, Description"}</span>
             <span class="z-itemcell z-w15">{gt text="Module"}</span>
@@ -48,7 +48,7 @@
             <span class="z-itemcell z-w15">{gt text="State"}</span>
         </li>
         {foreach item=block from=$assignedblocks}
-        <li id="block_{$block.bid}" class="{cycle name=assignedblocklist values="z-odd,z-even"} z-sortable z-clearfix">
+        <li id="block_{$block.bid}" class="{cycle name=assignedblocklist values="z-odd,z-even"} z-sortable clearfix">
             <span class="z-itemcell z-w10">{$block.bid|safetext}</span>
             <span id="blockdrag_{$block.bid}" class="z-itemcell z-w30">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</span>
             <span class="z-itemcell z-w15">{$block.modname|safetext}</span>
@@ -72,7 +72,7 @@
 
     <h4>{gt text="Blocks not assigned to this position"}</h4>
     <ol id="unassignedblocklist" class="z-itemlist">
-        <li id="unassignedblocklistheader" class="z-itemheader z-itemsortheader z-clearfix">
+        <li id="unassignedblocklistheader" class="z-itemheader z-itemsortheader clearfix">
             <span class="z-itemcell z-w10">{gt text="Block ID"}</span>
             <span class="z-itemcell z-w30">{gt text="Title, Description"}</span>
             <span class="z-itemcell z-w15">{gt text="Module"}</span>
@@ -81,7 +81,7 @@
             <span class="z-itemcell z-w15">{gt text="State"}</span>
         </li>
         {foreach item=block from=$unassignedblocks}
-        <li id="block_{$block.bid}" class="{cycle name=unassignedblocklist values="z-odd,z-even"} z-sortable z-clearfix">
+        <li id="block_{$block.bid}" class="{cycle name=unassignedblocklist values="z-odd,z-even"} z-sortable clearfix">
             <span class="z-itemcell z-w10">{$block.bid|safetext}</span>
             <span id="blockdrag_{$block.bid}" class="z-itemcell z-w30">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</span>
             <span class="z-itemcell z-w15">{$block.modname|safetext}</span>

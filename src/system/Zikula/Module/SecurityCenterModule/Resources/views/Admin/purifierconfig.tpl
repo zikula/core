@@ -29,7 +29,9 @@
 
         {if $directive.allowNull}
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="purifierConfig_div_{$directive.key}">{$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a></label>
+            <label class="col-lg-3 control-label" for="purifierConfig_div_{$directive.key}">
+                {$directiveName|safetext} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{$directive.key|urlencode}">(?)</a>
+            </label>
             <div class="col-lg-9">
                 <div id="purifierConfig_div_{$directive.key}">
                     <input id="purifierConfig_Null_{$directive.key}" name="purifierConfig[Null_{$directive.key}]" type="checkbox" value="1"{if is_null($directive.value)} checked="checked"{/if} onclick="{if ($directive.type != $purifierTypes.bool)}toggleWriteability('{$idVal}', checked);{else}toggleWriteability('{$idVal}_Yes', checked); toggleWriteability('{$idVal}_No', checked);{/if}" />
@@ -59,9 +61,9 @@
                 <textarea id="{$idVal}" class="form-control" name="{$nameVal}" cols="50" rows="8"{$disabledVal}>{$directive.value|safetext}</textarea>
 
                 {if (($directive.type == $purifierTypes.list) || ($directive.type == $purifierTypes.lookup))}
-                <em class="help-block z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                <em class="help-block sub">{gt text='(Place each value on a separate line.)'}</em>
                 {elseif ($directive.type == $purifierTypes.hash)}
-                <em class="help-block z-sub">{gt text='(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)'}</em>
+                <em class="help-block sub">{gt text='(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)'}</em>
                 {/if}
             </div>
             {elseif (($directive.type == $purifierTypes.string) || ($directive.type == $purifierTypes.istring) || ($directive.type == $purifierTypes.int) || ($directive.type == $purifierTypes.float))}
@@ -77,7 +79,7 @@
             </div>
             {else}
             <div class="col-lg-9">
-                <em class="help-block z-sub">{gt text='(Modification not supported.)'} {gt text='Value:'} {$directive.value|serialize|safetext}</em>
+                <em class="help-block sub">{gt text='(Modification not supported.)'} {gt text='Value:'} {$directive.value|serialize|safetext}</em>
             </div>
             {/if}
         {/if}
@@ -88,9 +90,11 @@
 
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
-            {button src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-            <a class="btn btn-default" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func="main"}" title="{gt text="Cancel"}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text="Cancel"}</a>
-            <a class="btn btn-default" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{img modname='core' src='reload.png' set='icons/extrasmall' __alt='Reset to Default Values' __title='Reset to Default Values'} {gt text="Reset to Default Values"}</a>
+            <button class="btn btn-success" title="{gt text='Save'}">
+                {gt text='Save'}
+            </button>
+            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func="main"}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='purifierconfig' reset='default'}" title="{gt text="Reset to Default Values"}">{gt text="Reset to Default Values"}</a>
         </div>
     </div>
 </form>

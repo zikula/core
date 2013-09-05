@@ -93,7 +93,7 @@
               {/foreach}
             </ul>
         </fieldset>
-        <div class="z-buttons z-center">
+        <div class="z-buttons center">
             {if $checkfailed neq true}
             <input type="hidden" name="action" value="dbinformation" />
             <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />

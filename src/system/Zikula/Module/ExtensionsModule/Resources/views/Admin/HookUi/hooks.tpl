@@ -62,9 +62,9 @@
 {/if}
 
 {if $isSubscriber}
-<div id="hooks_subscriber" class="z-form z-clearfix">
+<div id="hooks_subscriber" class="z-form clearfix">
 
-    <div id="hooks_subscriber_areas" class="z-floatleft z-w49">
+    <div id="hooks_subscriber_areas" class="floatleft z-w49">
         <fieldset>
             <legend>{gt text='Attached areas'}</legend>
 
@@ -81,16 +81,16 @@
                         <input type="hidden" id="sarea_{$sarea_md5}_c" value="{$subscriberAreasToCategories.$sarea}" />
                         <input type="hidden" id="sarea_{$sarea_md5}_i" value="{$sarea_md5}" />
 
-                        <h4>{$subscriberAreasToTitles.$sarea}<span class="z-sub">({$sarea})</span></h4>
+                        <h4>{$subscriberAreasToTitles.$sarea}<span class="sub">({$sarea})</span></h4>
                         <ol id="sarea_{$sarea_md5}_list" class="z-itemlist">
                             {if isset($areasSorting.$category.$sarea)}
                                 {foreach from=$areasSorting.$category.$sarea item='parea'}
                                     {assign var='parea_md5' value=$parea|md5}
                                     {assign var='attached_area_identifier' value="`$parea_md5`-`$sarea_md5`"}
 
-                                    <li id="attachedarea_{$attached_area_identifier}" class="z-clearfix z-sortable {cycle name="attachedareaslist_`$sarea`" values='z-even,z-odd'}">
+                                    <li id="attachedarea_{$attached_area_identifier}" class="clearfix z-sortable {cycle name="attachedareaslist_`$sarea`" values='z-even,z-odd'}">
                                         <span>
-                                            {$areasSortingTitles.$parea} <span class="z-sub">({$parea})</span>
+                                            {$areasSortingTitles.$parea} <span class="sub">({$parea})</span>
                                             <a class="detachlink" title="{gt text='Detach'} {$areasSortingTitles.$parea}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{$sarea_md5}', '{$sarea}', '{$parea_md5}', '{$parea}');" onmouseover="this.up().up().addClassName('attachedarea_detach')" onmouseout="this.up().up().removeClassName('attachedarea_detach')">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a>
                                         </span>
                                         <input type="hidden" id="attachedarea_{$attached_area_identifier}_a" value="{$parea}" />
@@ -101,7 +101,7 @@
                                 {/foreach}
                             {/if}
 
-                            <li id="sarea_empty_{$sarea_md5}" class="z-clearfix sarea_empty {if isset($areasSorting.$category.$sarea)}hide{/if}">
+                            <li id="sarea_empty_{$sarea_md5}" class="clearfix sarea_empty {if isset($areasSorting.$category.$sarea)}hide{/if}">
                                 <span class="z-itemcell">{gt text="There aren't any areas attached here.<br />Drag an area from the right and drop it here to attach it."}</span>
                             </li>
                         </ol>
@@ -115,7 +115,7 @@
         </fieldset>
     </div>
 
-    <div id="hooks_provider_areas" class="z-floatright z-w49">
+    <div id="hooks_provider_areas" class="floatright z-w49">
         <fieldset>
             <legend>{gt text='Available areas'}</legend>
 
@@ -138,8 +138,8 @@
                                         {assign var="parea_md5" value=$parea|md5}
                                         {assign var="available_area_identifier" value="`$parea_md5`-sarea_identifier"}
 
-                                        <li id="availablearea_{$available_area_identifier}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable z-clearfix">
-                                            <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="z-sub">({$parea})</span> <a class="detachlink hide" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" onmouseover="this.up().up().addClassName('attachedarea_detach')" onmouseout="this.up().up().removeClassName('attachedarea_detach')" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
+                                        <li id="availablearea_{$available_area_identifier}" class="{cycle name="availableareaslist_`$draglist_identifier`" values='z-even,z-odd'} z-draggable clearfix">
+                                            <span class="z-itemcell">{$hookprovider.areasToTitles.$parea} <span class="sub">({$parea})</span> <a class="detachlink hide" href="javascript:" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{$parea_md5}', '{$parea}');" onmouseover="this.up().up().addClassName('attachedarea_detach')" onmouseout="this.up().up().removeClassName('attachedarea_detach')" title="{gt text='Detach'} {$hookprovider.areasToTitles.$parea}">{img modname='core' set='icons/extrasmall' src='button_cancel.png' width='10' height='10' __alt='detach'}</a></span>
                                             <input type="hidden" id="availablearea_{$available_area_identifier}_a" value="{$parea}" />
                                             <input type="hidden" id="availablearea_{$available_area_identifier}_c" value="{$hookprovider.areasToCategories.$parea}" />
                                             <input type="hidden" id="availablearea_{$available_area_identifier}_i" value="{$parea_md5}" />
@@ -177,7 +177,7 @@
                 <div>
                     <ol>
                     {foreach from=$providerAreas item='providerarea' name="loop"}
-                        <li><strong>{$providerAreasToTitles.$providerarea}</strong> <span class="z-sub">({$providerarea})</span></li>
+                        <li><strong>{$providerAreasToTitles.$providerarea}</strong> <span class="sub">({$providerarea})</span></li>
                     {/foreach}
                     </ol>
                 </div>
@@ -219,7 +219,7 @@
                     {/foreach}
 
                     {if $total_bindings eq 0}
-                    {if $connection_exists eq false}<span class="z-sub">{gt text="%1$s module can't connect to %2$s module. No connections are supported" tag1=$currentmodule tag2=$subscriber.name|safetext}</span>{/if}
+                    {if $connection_exists eq false}<span class="sub">{gt text="%1$s module can't connect to %2$s module. No connections are supported" tag1=$currentmodule tag2=$subscriber.name|safetext}</span>{/if}
                     {continue}
                     {/if}
 
@@ -228,23 +228,23 @@
                     <div style="height:5px; margin-top: 5px; border-top:1px dotted #dedede;"></div>
                     {/if}
 
-                    <div class="z-clearfix">
-                        <div class="z-floatleft z-w45">
-                            {$subscriber.areasToTitles.$sarea} <span class="z-sub">({$sarea})</span>
+                    <div class="clearfix">
+                        <div class="floatleft z-w45">
+                            {$subscriber.areasToTitles.$sarea} <span class="sub">({$sarea})</span>
                         </div>
 
-                        <div class="z-floatleft z-w10 z-center">
+                        <div class="floatleft z-w10 center">
                             {img src="attach.png" modname="core" set="icons/extrasmall"}
                         </div>
 
-                        <div class="z-floatleft z-w45">
+                        <div class="floatleft z-w45">
                             {foreach from=$providerAreas item='parea'}
                             {assign var="parea_md5" value=$parea|md5}
 
                             {callfunc x_class='HookUtil' x_method='isAllowedBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='allow_binding'}
                             {if !$allow_binding}{continue}{/if}
                             {callfunc x_class='HookUtil' x_method='getBindingBetweenAreas' sarea=$sarea parea=$parea x_assign='binding'}
-                            <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" onclick="subscriberAreaToggle('{$sarea}', '{$parea}', true);" {if $binding}checked="checked"{/if} /> {$providerAreasToTitles.$parea} <span class="z-sub">({$parea})</span><br />
+                            <input type="checkbox" id="chk_{$sarea_md5}_{$parea_md5}" name="chk[{$sarea_md5}][{$parea_md5}]" onclick="subscriberAreaToggle('{$sarea}', '{$parea}', true);" {if $binding}checked="checked"{/if} /> {$providerAreasToTitles.$parea} <span class="sub">({$parea})</span><br />
                             {/foreach}
                         </div>
                     </div>

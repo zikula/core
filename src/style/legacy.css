@@ -4,6 +4,23 @@
 
 .z-hide { display: none !important; }
 .z-show { display: inherit !important; }
+.z-invisible { visibility: hidden !important; }
+.z-visible { visibility: inherit !important; }
+.z-top { vertical-align: top !important; }
+.z-middle { vertical-align: middle !important; }
+.z-bottom { vertical-align: bottom !important; }
+.z-center { text-align: center !important; }
+.z-left { text-align: left !important; }
+.z-right { text-align: right !important; }
+.z-nowrap { white-space: nowrap !important; }
+.z-italic { font-style: italic !important; }
+.z-bold { font-weight: bold !important; }
+.z-underline { text-decoration: underline !important; }
+.z-line-through { text-decoration: line-through !important; }
+.z-normal { font-weight: normal !important; font-style: normal !important; }
+.z-floatleft { float: left; }
+.z-floatright { float: right; }
+.z-gap { margin: 1em 0 !important; padding: 1em 0 !important; }
 
 /******************************************************************************
 * Styles for the old module menus based on the SPAN tag
@@ -143,18 +160,6 @@
     padding: 0 !important;
 }
 
-/******************************************************************************
-* Classes to define two colors for alternating rows in views
-******************************************************************************/
-
-.z-even {
-    background-color: #fff;
-    color: #222;
-}
-.z-odd {
-    background-color: #f3f3f3;
-    color: #222;
-}
 
 
 /******************************************************************************
@@ -1039,4 +1044,373 @@ button.z-imagebutton, /* Buttons in inline 'ajax' forms */
 
 .z-buttons input[type=image] {
     float: left;
+}
+
+
+
+
+
+
+
+/******************************************************************************
+* IMG Float styles, e.g. for the positioning of images in articles
+******************************************************************************/
+
+img.z-floatleft {
+    display: inline;
+    float: left;
+    margin-bottom: 0.15em;
+    margin-right: 1em;
+}
+
+img.z-floatright {
+    display: inline;
+    float: right;
+    margin-bottom: 0.15em;
+    margin-left: 1em;
+}
+
+/******************************************************************************
+* Zikula general clearfix solution
+* http://perishablepress.com/press/2009/12/06/new-clearfix-hack/
+******************************************************************************/
+
+.z-clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/******************************************************************************
+* Overflow-Method to clear float environments, Generic clearer
+******************************************************************************/
+
+.z-floatbox { overflow: hidden; }
+.z-clearer { clear: both; }
+
+/******************************************************************************
+* Miscellaneous, Generic secondary text
+******************************************************************************/
+
+.z-sub {
+    color: #777;
+    font-size: 0.9em;
+}
+
+.z-pointer {
+    cursor: pointer !important;
+}
+
+.z-calendarimg { background-color: transparent; }
+.z-calendarimg:hover,
+.z-calendarimg.hover {
+    background-color: blue;
+}
+
+.z-menutexttitle {
+    word-wrap: break-word;
+    margin-left: 63px;
+    margin-right: 5px;
+}
+
+
+
+/******************************************************************************
+* Widths styles
+******************************************************************************/
+
+.z-w90 { width: 90%; }
+.z-w85 { width: 85%; }
+.z-w80 { width: 80%; }
+.z-w75 { width: 75%; }
+.z-w70 { width: 70%; }
+.z-w66 { width: 66%; }
+.z-w60 { width: 60%; }
+.z-w50 { width: 50%; }
+.z-w49 { width: 49%; }
+.z-w45 { width: 45%; }
+.z-w40 { width: 40%; }
+.z-w35 { width: 35%; }
+.z-w33 { width: 33%; }
+.z-w30 { width: 30%; }
+.z-w25 { width: 25%; }
+.z-w22 { width: 22%; }
+.z-w20 { width: 20%; }
+.z-w15 { width: 15%; }
+.z-w10 { width: 10%; }
+.z-w08 { width: 8%; }
+.z-w07 { width: 7%; }
+.z-w06 { width: 6%; }
+.z-w05 { width: 5%; }
+.z-w04 { width: 4%; }
+.z-w02 { width: 2%; }
+
+
+/******************************************************************************
+* Order styles
+******************************************************************************/
+
+.z-order-asc {
+    background: url("../images/global/arrow_up_grey.png") transparent 100% 50% no-repeat;
+    padding-right: 12px;
+}
+.z-order-asc:hover,
+.z-order-asc.hover {
+    background: url("../images/global/arrow_up_black.png") transparent 100% 50% no-repeat;
+}
+.z-order-desc {
+    background: url("../images/global/arrow_down_grey.png") transparent 100% 50% no-repeat;
+    padding-right: 12px;
+}
+.z-order-desc:hover,
+.z-order-desc.hover {
+    background: url("../images/global/arrow_down_black.png") transparent 100% 50% no-repeat;
+}
+.z-order-unsorted {
+    padding-right: 12px;
+}
+
+/******************************************************************************
+* Toggle styles
+******************************************************************************/
+
+.z-toggle {
+    display: block;
+    background-image: url("../images/global/toggle-bl.png");
+    background-repeat: no-repeat;
+    background-position: 0px;
+    border: 0pt none;
+    margin: 0pt;
+    padding: 0pt;
+    width: 27px;
+    height: 25px;
+}
+.z-toggle-open,
+.z-toggle-open:link,
+.z-toggle-open:visited {
+    background-position: 0pt -16px;
+    height: 25px;
+    width: 27px;
+}
+.z-toggle-link,
+.z-toggle-link:link,
+.z-toggle-link:visited {
+    background-image: url("../images/global/toggle-bl.png");
+    background-repeat: no-repeat;
+    background-position: right 2px;
+    padding-right: 20px;
+    border: 0pt none;
+}
+.z-toggle-link-open,
+.z-toggle-link-open:link,
+.z-toggle-link-open:visited {
+    background-position: right -15px;
+}
+
+/******************************************************************************
+* Styles for pager plugins
+* TODO: Do we still need this? (herr.vorragend)
+******************************************************************************/
+
+.z-pager {
+    color: #999;
+    line-height: 2.2em;
+    padding: 0 4px 5px;
+    text-align: center;
+}
+/* style for the selected item of the pager abc plugin */
+.z-pager a.z-pagerselected {
+    font-weight: bold;
+    text-decoration: underline;
+}
+/* style for the selected item of the pager plugin */
+.z-pager span.z-pagerselected {
+    font-weight: bold;
+}
+
+
+
+
+/******************************************************************************
+* Drop-Down
+******************************************************************************/
+
+.z-drop {
+    background: url("../images/global/arrow_down_grey.png") no-repeat scroll 100% 50% transparent;
+    cursor: pointer;
+    padding-left: 8px;
+    position: relative;
+}
+
+.z-drop:hover,
+.z-drop.hover {
+    background: url("../images/global/arrow_down_black.png") no-repeat scroll 100% 50% transparent;
+}
+
+/******************************************************************************
+* Icon styles (es=extrasmall) - Equivalent with /images/icons/config.php
+******************************************************************************/
+
+
+.z-icon-es-add {
+    background: url("../images/icons/extrasmall/edit_add.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-back {
+    background: url("../images/icons/extrasmall/agt_back.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-cancel {
+    background: url("../images/icons/extrasmall/button_cancel.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-config {
+    background: url("../images/icons/extrasmall/configure.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-copy {
+    background: url("../images/icons/extrasmall/editcopy.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-cubes {
+    background: url("../images/icons/extrasmall/kcmdf.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-cut {
+    background: url("../images/icons/extrasmall/editcut.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-delete {
+    background: url("../images/icons/extrasmall/14_layer_deletelayer.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-display {
+    background: url("../images/icons/extrasmall/kview.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-edit {
+    background: url("../images/icons/extrasmall/xedit.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-error {
+    background: url("../images/icons/extrasmall/error.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-export {
+    background: url("../images/icons/extrasmall/fileexport.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-gears {
+    background: url("../images/icons/extrasmall/run.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-filter {
+    background: url("../images/icons/extrasmall/filter.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-group {
+    background: url("../images/icons/extrasmall/group.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-help {
+    background: url("../images/icons/extrasmall/help.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-home {
+    background: url("../images/icons/extrasmall/folder_home.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-hook {
+    background: url("../images/icons/extrasmall/attach.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-import {
+    background: url("../images/icons/extrasmall/fileimport.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-info {
+    background: url("../images/icons/extrasmall/documentinfo.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-locale {
+    background: url("../images/icons/extrasmall/locale.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-locked {
+    background: url("../images/icons/extrasmall/encrypted.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-log {
+    background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-mail {
+    background: url("../images/icons/extrasmall/mail_generic.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-new {
+    background: url("../images/icons/extrasmall/filenew.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-ok {
+    background: url("../images/icons/extrasmall/button_ok.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-options {
+    background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-preview {
+    background: url("../images/icons/extrasmall/demo.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-print {
+    background: url("../images/icons/extrasmall/printer.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-profile {
+    background: url("../images/icons/extrasmall/personal.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-regenerate {
+    background: url("../images/icons/extrasmall/agt_update-product.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-remove {
+    background: url("../images/icons/extrasmall/edit_remove.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-save {
+    background: url("../images/icons/extrasmall/filesave.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-saveas {
+    background: url("../images/icons/extrasmall/filesaveas.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-search {
+    background: url("../images/icons/extrasmall/search.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-url {
+    background: url("../images/icons/extrasmall/web.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-user {
+    background: url("../images/icons/extrasmall/user.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-view {
+    background: url("../images/icons/extrasmall/windowlist.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-warning {
+    background: url("../images/icons/extrasmall/bell.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
+}
+.z-icon-es-rss {
+    background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
+    padding: 2px 0 2px 20px;
 }

@@ -487,19 +487,19 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'view', array()), 'text' => $this->__('Permission rules list'), 'id' => 'permissions_view', 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'view', array()), 'text' => $this->__('Permission rules list'), 'id' => 'permissions_view', 'class' => 'smallicon smallicon-view');
         }
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'listedit', array('action' => 'add')), 'text' => $this->__('Create new permission rule'), 'id' => 'permissions_new', 'class' => 'smallicon smallicon-new');
         }
 
         if (SecurityUtil::checkPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'permissions_modifyconfig', 'class' => 'smallicon smallicon-config');
         }
 
         if (ModUtil::getName() == 'ZikulaPermissionsModule') {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'class' => 'z-icon-es-info showinstanceinformation');
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'class' => 'smallicon smallicon-info showinstanceinformation');
         }
 
         return $links;

@@ -86,8 +86,8 @@ Zikula.Users.NewUser = {
             checkMessageElement.removeClassName('hide');
         }
         
-        if (!checkMessageElement.hasClassName('z-invisible')) {
-            checkMessageElement.addClassName('z-invisible');
+        if (!checkMessageElement.hasClassName('invisible')) {
+            checkMessageElement.addClassName('invisible');
         }
         
         if (!validMessageElement.hasClassName('hide')) {
@@ -120,8 +120,8 @@ Zikula.Users.NewUser = {
         }
         
         if (hasError) {
-            if (checkMessageElement.hasClassName('z-invisible')) {
-                checkMessageElement.removeClassName('z-invisible');
+            if (checkMessageElement.hasClassName('invisible')) {
+                checkMessageElement.removeClassName('invisible');
             }
             if (checkMessageElement.hasClassName('hide')) {
                 checkMessageElement.removeClassName('hide');
@@ -138,8 +138,8 @@ Zikula.Users.NewUser = {
             }
             checkUserElement.disabled = false;
         } else {
-            if (checkMessageElement.hasClassName('z-invisible')) {
-                checkMessageElement.removeClassName('z-invisible');
+            if (checkMessageElement.hasClassName('invisible')) {
+                checkMessageElement.removeClassName('invisible');
             }
             if (!checkMessageElement.hasClassName('hide')) {
                 checkMessageElement.addClassName('hide');

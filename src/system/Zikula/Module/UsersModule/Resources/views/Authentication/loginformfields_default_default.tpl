@@ -50,7 +50,7 @@
     <label class="col-lg-3 control-label" for="users_login_pass">{if isset($change_password) && $change_password}{gt text='Current password'}{else}{gt text='Password'}{/if}</label>
     <div class="col-lg-9">
         <input id="users_login_pass" class="form-control" type="password" name="authentication_info[pass]" maxlength="25" onkeypress="capLock(event)" />
-        <em class="help-block z-sub" id="capsLok" style="visibility:hidden">{gt text='Caps Lock is on!'}</em>
+        <em class="help-block sub" id="capsLok" style="visibility:hidden">{gt text='Caps Lock is on!'}</em>
     </div>
 </div>
 
@@ -77,7 +77,7 @@
     <label class="col-lg-3 control-label" for="users_login_pass_reminder">{gt text="New password reminder"}</label>
     <div class="col-lg-9">
         <input type="text" class="form-control" id="users_login_pass_reminder" name="authentication_info[pass_reminder]" value="" size="25" maxlength="128" />
-        <div class="z-sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
+        <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
         <div class="help-block alert alert-warning">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
     </div>
 </div>

@@ -1,8 +1,8 @@
 <div class="z-admin-breadcrumbs">
-    <span class="z-sub">{gt text='You are in:'}</span>
+    <span class="sub">{gt text='You are in:'}</span>
     <span class="z-breadcrumb"><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></span>
 
-    <span class="z-sub">&raquo;</span>
+    <span class="sub">&raquo;</span>
     {if $func neq 'adminpanel'}
         <span class="z-breadcrumb"><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></span>
     {else}
@@ -10,7 +10,7 @@
     {/if}
 
     {if $func neq 'adminpanel'}
-        <span class="z-sub">&raquo;</span>
+        <span class="sub">&raquo;</span>
         {foreach from=$menuoptions.$currentcat.items item='moditem'}
             {if $toplevelmodule eq $moditem.modname}
                 <span class="z-breadcrumb"><a href="{modurl modname=$toplevelmodule type='admin' func='main'}" class="z-admin-pagemodule">{$moditem.menutext|safetext}</a></span>
@@ -19,7 +19,7 @@
         {/foreach}
 
         {if $func neq 'main'}
-            <span class="z-sub">&raquo;</span>
+            <span class="sub">&raquo;</span>
             <span class="z-breadcrumb z-admin-pagefunc">{$func|safetext}</span>
         {/if}
     {/if}

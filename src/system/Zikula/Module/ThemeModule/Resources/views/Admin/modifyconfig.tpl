@@ -31,7 +31,7 @@
                         <option value="">{gt text="Use site's theme"}</option>
                         {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const filter='ThemeUtil::FILTER_ADMIN'|const selected=$admintheme}
                     </select>
-                    <em class="z-sub help-block">{gt text='This theme will be used in the admin interface of Zikula. This setting does not override the mobile theme setting in admin area.'}</em>
+                    <em class="sub help-block">{gt text='This theme will be used in the admin interface of Zikula. This setting does not override the mobile theme setting in admin area.'}</em>
                 </div>
             </div>
             <div class="form-group">
@@ -65,7 +65,7 @@
                 <label class="col-lg-3 control-label" for="mobile_theme_domain">{gt text="Mobile theme domain"}</label>
                 <div class="col-lg-9">
                     <input id="mobile_theme_domain" type="text" class="form-control" name="mobile_theme_domain" value="{$mobile_theme_domain|default:''|safetext}" size="50" />
-                    <em class="z-sub help-block">{gt text='This forces the mobile theme if your server is visited via the specified url, e.g. m.example.com'}</em>
+                    <em class="sub help-block">{gt text='This forces the mobile theme if your server is visited via the specified url, e.g. m.example.com'}</em>
                 </div>
             </div>
             <div class="form-group">
@@ -77,7 +77,7 @@
                         <option value="2"{if $enable_mobile_theme == 2} selected="selected"{/if}>{gt text="Enabled: force for smartphones only"}</option>
                         <option value="3"{if $enable_mobile_theme == 3} selected="selected"{/if}>{gt text="Enabled: force for tablets only"}</option>
                     </select>
-                    <em class="z-sub help-block">{gt text='Here you can decide if you want to automatically enable the mobile theme for mobile devices.'}</em>
+                    <em class="sub help-block">{gt text='Here you can decide if you want to automatically enable the mobile theme for mobile devices.'}</em>
                 </div>
             </div>
         </fieldset>
@@ -254,8 +254,8 @@
 
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>
