@@ -440,31 +440,37 @@ class AdminController extends \Zikula_AbstractController
                     case ModUtil::STATE_INACTIVE:
                         $status = $this->__('Inactive');
                         $statusimage = 'yellowled.png';
+                        $statusclass = "warning";
                         break;
 
                     case ModUtil::STATE_ACTIVE:
                         $status = $this->__('Active');
                         $statusimage = 'greenled.png';
+                         $statusclass = "success";
                         break;
 
                     case ModUtil::STATE_MISSING:
                         $status = $this->__('Files missing');
                         $statusimage = 'redled.png';
+                        $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_UPGRADED:
                         $status = $this->__('New version');
                         $statusimage = 'redled.png';
+                        $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_INVALID:
                         $status = $this->__('Invalid structure');
                         $statusimage = 'redled.png';
+                        $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_NOTALLOWED:
                         $status = $this->__('Not allowed');
                         $statusimage = 'star-empty';
+                        $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_UNINITIALISED:
@@ -472,9 +478,11 @@ class AdminController extends \Zikula_AbstractController
                         if ($mod['state'] > 10) {
                             $status = $this->__('Incompatible');
                             $statusimage = 'star-empty';
+                            $statusclass = "default";
                         } else {
                             $status = $this->__('Not installed');
                             $statusimage = 'redled.png';
+                            $statusclass = "danger";
                         }
                         break;
                 }
@@ -488,6 +496,7 @@ class AdminController extends \Zikula_AbstractController
                         'modinfo' => $mod,
                         'status' => $status,
                         'statusimage' => $statusimage,
+                        'statusclass' => $statusclass,
                         'options' => $actions);
             }
         }

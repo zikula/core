@@ -5,8 +5,8 @@
 </div>
 
 <ul class="navbar navbar-default">
-    <li><span class="z-icon-es-export">{gt text="Export IDS Log"}</span></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
+    <li><span class="smallicon smallicon-export">{gt text="Export IDS Log"}</span></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="smallicon smallicon-delete">{gt text="Purge IDS Log"}</a></li>
 </ul>
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='exportidslog'}" method="post" enctype="multipart/form-data">
@@ -40,7 +40,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
-            <a href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='viewidslog'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

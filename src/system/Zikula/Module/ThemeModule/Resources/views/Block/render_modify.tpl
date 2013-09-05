@@ -21,5 +21,5 @@
     <label class="col-lg-3 control-label" for="rparameters">{gt text="Parameters" domain='zikula'}</label>
     <div class="col-lg-9">
     <input id="rtemplate" value="{$parameters|default:''|safetext}" maxlength="300" size="40" name="rparameters" type="text" />
-    <span class='help-block z-sub'>{gt text="Format: parameter1=value1;parameter2=value2..." domain='zikula'}</span>
+    <span class='help-block sub'>{gt text="Format: parameter1=value1;parameter2=value2..." domain='zikula'}</span>
 </div>

@@ -28,7 +28,7 @@
         <div class="z-formbuttons z-buttons">
             {gt text='Delete user account' plural='Delete user accounts' count=$users|@count assign='buttonText'}
             {button class="z-btgreen" src='button_ok.png' set='icons/extrasmall' alt=$buttonText title=$buttonText text=$buttonText}
-            <a class="z-btred" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a class="z-btred" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

@@ -63,9 +63,13 @@
         {$eventDisplay}
         {/foreach}
 
-        <div class="z-formbuttons z-buttons">
-            {button src='button_ok.png' set='icons/extrasmall' __alt='Search' __title='Search' __text='Search'}
-            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                <button class="btn btn-success" title="{gt text="Search"}">
+                    {gt text='Search'}
+                </button>
+                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            </div>
         </div>
     </div>
 </form>

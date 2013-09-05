@@ -64,7 +64,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ANONYMOUS_DISPLAY_NAME'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="20" maxlength="20" />
-                    <em class="help-block z-sub">{gt text="Anonymous users are visitors to your site who have not logged in."}</em>
+                    <em class="help-block sub">{gt text="Anonymous users are visitors to your site who have not logged in."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -74,7 +74,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_ITEMS_PER_PAGE'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" class="form-control" name="{$fieldName}" size="3" value="{$configData->getFieldData($fieldName)|safetext}" />
-                    <em class="help-block z-sub">{gt text="When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time."}</em>
+                    <em class="help-block sub">{gt text="When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -202,7 +202,7 @@
                         <input id="{$configData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_no">{gt text="No"}</label>
                     </div>
-                    <em class="help-block z-sub">{gt text="If set to yes, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration."}</em>
+                    <em class="help-block sub">{gt text="If set to yes, then e-mail addresses entered for new registrations and for e-mail address change requests cannot already be in use by another user account or registration."}</em>
                     <div class="help-block alert alert-warning">{gt text="Notice: If this option was set to 'no' at some point, then user accounts or registrations with duplicate e-mail addresses might exist in the system. Setting this option to 'yes' will not affect those accounts or registrations."}</div>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
@@ -213,7 +213,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_MINIMUM_LENGTH'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="2" maxlength="2" />
-                    <em class="help-block z-sub">{gt text="This affects both passwords created during registration, as well as passwords modified by users or administrators."} {gt text="Enter an integer greater than zero."}</em>
+                    <em class="help-block sub">{gt text="This affects both passwords created during registration, as well as passwords modified by users or administrators."} {gt text="Enter an integer greater than zero."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -226,7 +226,7 @@
                         <option value="sha1" {if $configData->getFieldData($fieldName) == 'sha1'} selected="selected"{/if}>SHA1</option>
                         <option value="sha256" {if $configData->getFieldData($fieldName) == 'sha256'} selected="selected"{/if}>SHA256</option>
                     </select>
-                    <em class="help-block z-sub">{gt text="The default hashing method is 'SHA256'."}</em>
+                    <em class="help-block sub">{gt text="The default hashing method is 'SHA256'."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -253,7 +253,7 @@
                         <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
                         <span class="input-group-addon">{gt text="days"}</span>
                     </div>
-                    <em class="z-sub help-block">{gt text="Enter the number of days a user's request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration."}</em>
+                    <em class="sub help-block">{gt text="Enter the number of days a user's request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration."}</em>
                     <div class="alert alert-warning help-block">{gt text="Changing this setting will affect all requests to change e-mail addresses currently pending verification."}</div>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
@@ -267,7 +267,7 @@
                         <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />
                         <span class="input-group-addon">{gt text="days"}</span>
                     </div>
-                    <em class="z-sub help-block">{gt text="This setting only affects users who have not established security question responses. Enter the number of days a user's request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration."}</em>
+                    <em class="sub help-block">{gt text="This setting only affects users who have not established security question responses. Enter the number of days a user's request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration."}</em>
                     <div class="alert alert-warning help-block">{gt text="Changing this setting will affect all password change requests currently pending verification."}</div>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
@@ -304,7 +304,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}" type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
-                    <em class="help-block z-sub">{gt text="A notification is sent to this e-mail address for each registration. Leave blank for no notifications."}</em>
+                    <em class="help-block sub">{gt text="A notification is sent to this e-mail address for each registration. Leave blank for no notifications."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -359,12 +359,12 @@
                         <input id="{$configData->getFieldId($fieldName)}_yes" type="radio" name="{$fieldName}" value="1" {if $configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Newly registered users are logged in automatically."}</label>
                     </div>
-                    <em class="z-sub help-block">{gt text="Newly registered users are logged in automatically only if there is no approval, verification, or other requirement that must be met to complete the registration process."}</em>
+                    <em class="sub help-block">{gt text="Newly registered users are logged in automatically only if there is no approval, verification, or other requirement that must be met to complete the registration process."}</em>
                     <div class="z-formlist">
                         <input id="{$configData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$configData->getFieldData($fieldName)} checked="checked"{/if} />
                         <label for="{$configData->getFieldId($fieldName)}_no">{gt text="Newly registered users are not logged in automatically."}</label>
                     </div>
-                    <em class="z-sub help-block">{gt text="Newly registered users are redirected to the log-in screen, if appropriate. If there are other registration requirements to be met, then they are shown this information instead."}</em>
+                    <em class="sub help-block">{gt text="Newly registered users are redirected to the log-in screen, if appropriate. If there are other registration requirements to be met, then they are shown this information instead."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -396,7 +396,7 @@
                         <input id="{$configData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|default:0}" maxlength="3" />      
                         <span class="input-group-addon">{gt text="days"}</span>
                     </div>
-                    <em class="z-sub help-block">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</em>
+                    <em class="sub help-block">{gt text="Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion)."}</em>
                     <div class="alert alert-info help-block">{gt text="If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval."}</div>
                     <div class="alert alert-warning help-block">{gt text="Changing this setting will affect all registrations currently pending e-mail address verification."}</div>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
@@ -409,7 +409,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ANTISPAM_QUESTION'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}" class="form-control" tpye="text" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="50" maxlength="255" />
-                    <em class="help-block z-sub">{gt text="You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
+                    <em class="help-block sub">{gt text="You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -419,7 +419,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ANTISPAM_ANSWER'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safehtml}" size="50" maxlength="255" />
-                    <em class="help-block z-sub">{gt text="Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided."}</em>
+                    <em class="help-block sub">{gt text="Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided."}</em>
                     {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
                 </div>
             </div>
@@ -429,7 +429,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ILLEGAL_UNAMES'|const}
                 <div class="col-lg-9">
                     <input id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} type="text" class="form-control" name="{$fieldName}" value="{$configData->getFieldData($fieldName)|safetext}" size="50" maxlength="255" />
-                    <em class="help-block z-sub">
+                    <em class="help-block sub">
                         {gt text="Separate each user name with a comma."}<br />
                         {gt text="Each user name on this list is not allowed to be chosen by someone registering for a new account."}
                     </em>
@@ -442,7 +442,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ILLEGAL_AGENTS'|const}
                 <div class="col-lg-9">
                     <textarea class="form-control" id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} name="{$fieldName}" cols="45" rows="2">{$configData->getFieldData($fieldName)|safehtml}</textarea>
-                    <em class="help-block z-sub">
+                    <em class="help-block sub">
                         {gt text="Separate each user agent string with a comma."}<br />
                         {gt text="Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process."}
                     </em>
@@ -455,7 +455,7 @@
                 {assign var='fieldName' value='Zikula\Module\UsersModule\Constant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS'|const}
                 <div class="col-lg-9">
                     <textarea class="form-control" id="{$configData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="z-form-error"{/if} name="{$fieldName}" cols="45" rows="2">{$configData->getFieldData($fieldName)|safehtml}</textarea>
-                    <em class="help-block z-sub">
+                    <em class="help-block sub">
                         {gt text="Separate each domain with a comma."}<br />
                         {gt text="Each item on this list is an e-mail address domain (the part after the '@'). E-mail addresses on new registrations or on an existing user's change of e-mail address requests are not allowed to have any domain on this list."}
                     </em>
@@ -476,7 +476,7 @@
                     <label for="{$configData->getFieldId($fieldName)}_yes">{gt text="Yes"}</label>
                     <input id="{$configData->getFieldId($fieldName)}_no" type="radio" name="{$fieldName}" value="0" {if !$configData->getFieldData($fieldName)}checked="checked" {/if}/>
                     <label for="{$configData->getFieldId($fieldName)}_no">{gt text="No"}</label>
-                    <em class="z-sub">{gt text="Notice: Uses meta refresh."}</em>
+                    <em class="sub">{gt text="Notice: Uses meta refresh."}</em>
                 </div>
                 {if isset($errorFields.$fieldName)}<p class="help-block alert alert-danger">{$errorFields.$fieldName}</p>{/if}
             </div>
@@ -531,10 +531,13 @@
         </div>
         </fieldset>
 
-        <div class="z-formbuttons z-buttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-            {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
-            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                <button class="btn btn-success" title="{gt text="Save"}">
+                    {gt text="Save"}
+                </button>
+                {helplink filename='Help/Admin/config.txt' popup=1 __title='Help' icon_type='help' icon_size='extrasmall' __icon_alt='Help' __icon_title='Help'}
+                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

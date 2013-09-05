@@ -44,7 +44,7 @@
     <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
     <fieldset>
         <legend>{gt text="Filter permission rules list"}</legend>
-        <span class="z-nowrap">
+        <span class="nowrap">
             <label for="permgrp">{gt text="Choose filter"}</label>
             <select id="permgrp" name="permgrp">
                 <optgroup label="{gt text="Group"}">
@@ -59,7 +59,7 @@
                 </optgroup>
             </select>
         </span>
-        <span class="z-nowrap z-buttons">
+        <span class="nowrap z-buttons">
             <button id="permgroupfiltersubmit" class="z-button z-bt-small" name="permgroupfiltersubmit" type="submit">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
             <button id="permgroupfiltersubmitajax" class="z-button z-bt-small hide" onclick="javascript:permgroupfilter();">{img modname=core src=filter.png set=icons/extrasmall  __alt="Filter" __title="Filter"} {gt text="Filter"}</button>
         </span>
@@ -68,16 +68,16 @@
 {/if}
 
 {checkpermissionblock component='ZikulaPermissionsModule::' instance='::' level=ACCESS_ADMIN}
-<div id="permissions-header" class="z-clearfix">
-    <a id="appendajax" onclick="javascript:permappend();" class="z-floatleft z-icon-es-new hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
-    <strong id="filterwarning" class="z-floatright z-icon-es-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
+<div id="permissions-header" class="clearfix">
+    <a id="appendajax" onclick="javascript:permappend();" class="floatleft smallicon smallicon-new hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
+    <strong id="filterwarning" class="floatright smallicon smallicon-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
 </div>
 {/checkpermissionblock}
 
 <div class="permbox">
 
     <ol id="permissionlist" class="z-itemlist">
-        <li class="z-itemheader z-itemsortheader z-clearfix">
+        <li class="z-itemheader z-itemsortheader clearfix">
             <span class="z-itemcell z-w05">&nbsp;</span>
             <span class="z-itemcell z-w15">{gt text="Group"}<em id="filterwarninggroup" style="{if $filtertype neq 'group'}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em></span>
             <span class="z-itemcell z-w25">{gt text="Component"}<em id="filterwarningcomponent" style="{if $filtertype neq 'component'}display: none;{/if} color: red; vertical-align: top;"> (filtered)</em></span>
@@ -86,7 +86,7 @@
             <span class="z-itemcell z-w07">{gt text="Actions"}</span>
         </li>
         {foreach item=permission from=$permissions}
-        <li id="permission_{$permission.permid}" class="{cycle values="z-odd,z-even"} z-sortable z-clearfix">
+        <li id="permission_{$permission.permid}" class="{cycle values="z-odd,z-even"} z-sortable clearfix">
             <div id="permissioncontent_{$permission.permid}" class="permissioncontent">
                 <input type="hidden" id="groupid_{$permission.permid}" value="{$permission.groupid}" class="permgroup" />
                 <input type="hidden" id="comp_{$permission.permid}" value="{$permission.component|safetext}" class="permgroup" />
@@ -146,7 +146,7 @@
             <div id="permissioninfo_{$permission.permid}" class="hide z-permissioninfo">&nbsp;</div>
         </li>
         {foreachelse}
-        <li id="permission_1" class="hide z-clearfix">
+        <li id="permission_1" class="hide clearfix">
             <div id="permissioncontent_1" class="permissioncontent">
                 <input type="hidden" id="groupid_1" value="" class="permgroup" />
                 <input type="hidden" id="levelid_1" value="" class="permlevel" />
@@ -233,9 +233,15 @@
         </div>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                <button id="testpermsubmit" class="btn btn-default" type="submit" title="{gt text="Check permission"}">{img modname=core src=button_ok.png set=icons/extrasmall  __alt="Check permission" __title="Check permission"} {gt text="Check permission"}</button>
-                <button class="btn btn-default hide" id="testpermsubmitajax" onclick="javascript:performpermissiontest(); return false;" title="{gt text="Check permission"}">{img modname=core src=button_ok.png set=icons/extrasmall  __alt="Check permission" __title="Check permission"} {gt text="Check permission"}</button>
-                <button class="btn btn-default" id="testpermreset" type="reset" title="{gt text="Reset"}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Reset" __title="Reset"} {gt text="Reset"}</button>
+                <button id="testpermsubmit" class="btn btn-default" type="submit" title="{gt text="Check permission"}">
+                    {gt text="Check permission"}
+                </button>
+                <button class="btn btn-default hide" id="testpermsubmitajax" onclick="javascript:performpermissiontest(); return false;" title="{gt text="Check permission"}">
+                    {gt text="Check permission"}
+                </button>
+                <button class="btn btn-danger" id="testpermreset" type="reset" title="{gt text="Reset"}">
+                    {gt text="Reset"}
+                </button>
             </div>
         </div>
     </fieldset>

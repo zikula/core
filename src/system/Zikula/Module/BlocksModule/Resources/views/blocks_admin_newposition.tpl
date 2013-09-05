@@ -15,7 +15,7 @@
                 <label class="col-lg-3 control-label" for="blocks_positionname">{gt text="Name"}</label>
                 <div class="col-lg-9">
                 <input type="text" class="form-control" id="blocks_positionname" name="position[name]" value="{$name|safetext}" size="50" maxlength="255" />
-                <em class="help-block z-sub">{gt text="Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_)."}</em>
+                <em class="help-block sub">{gt text="Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_)."}</em>
             </div>
             </div>
             <div class="form-group">
@@ -27,8 +27,8 @@
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                <a class="btn btn-danger" href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

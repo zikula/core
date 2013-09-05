@@ -42,7 +42,7 @@
                 <label class="col-lg-3 control-label" for="theme_pagecustomargs">{gt text="Function arguments"}</label>
                 <div class="col-lg-9">
                 <input id="theme_pagecustomargs" type="text" class="form-control" name="pagecustomargs" size="30" value="{$pagecustomargs|safetext}" />
-                <em class="help-block z-sub">{gt text="Notice: This is a list of arguments found in the page URL, separated by '/'."}</em>
+                <em class="help-block sub">{gt text="Notice: This is a list of arguments found in the page URL, separated by '/'."}</em>
             </div>
             </div>
             <div class="form-group">
@@ -57,12 +57,12 @@
                 <label class="col-lg-3 control-label" for="theme_important">{gt text="Important"}</label>
                 <div class="col-lg-9">
                 <input id="theme_important" type="checkbox" name="pageimportant" value="1"{if $pageimportant|default:0} checked="checked"{/if} />
-                <em class="help-block z-sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
+                <em class="help-block sub">{gt text="Any match with this assignment will be consider over the following others."}</em>
             </div>
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                    {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                    <a class="btn btn-default" href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                    <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=pageconfigurations themename=$themename}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
         </div>
         </div>

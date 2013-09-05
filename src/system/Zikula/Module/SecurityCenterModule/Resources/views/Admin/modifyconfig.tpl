@@ -334,21 +334,21 @@
                     <label class="col-lg-3 control-label" for="securitycenter_idshtmlfields">{gt text="Define which fields contain HTML and need preparation"}</label>
                     <div class="col-lg-9">
                     <textarea class="form-control" id="securitycenter_idshtmlfields" name="idshtmlfields" cols="50" rows="8">{$idshtmlfields|safetext}</textarea>
-                    <em class="help-block z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                    <em class="help-block sub">{gt text='(Place each value on a separate line.)'}</em>
                 </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="securitycenter_idsjsonfields">{gt text="Define which fields contain JSON data and should be treated as such"}</label>
                     <div class="col-lg-9">
                     <textarea class="form-control" id="securitycenter_idsjsonfields" name="idsjsonfields" cols="50" rows="8">{$idsjsonfields|safetext}</textarea>
-                    <em class="help-block z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                    <em class="help-block sub">{gt text='(Place each value on a separate line.)'}</em>
                 </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="securitycenter_idsexceptions">{gt text="Define which fields should not be monitored"}</label>
                     <div class="col-lg-9">
                     <textarea class="form-control" id="securitycenter_idsexceptions" name="idsexceptions" cols="50" rows="8">{$idsexceptions|safetext}</textarea>
-                    <em class="help-block z-sub">{gt text='(Place each value on a separate line.)'}</em>
+                    <em class="help-block sub">{gt text='(Place each value on a separate line.)'}</em>
                 </div>
             </div>
         </div>
@@ -368,8 +368,10 @@
 
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">
+                    {gt text="Save"}
+                </button>
+                <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

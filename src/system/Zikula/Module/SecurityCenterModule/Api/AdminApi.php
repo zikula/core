@@ -177,11 +177,11 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
-            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'allowedhtml'), 'text' => $this->__('Allowed HTML settings'), 'class' => 'z-icon-es-options');
+            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'smallicon smallicon-config');
+            $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'allowedhtml'), 'text' => $this->__('Allowed HTML settings'), 'class' => 'smallicon smallicon-options');
             $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'viewidslog'),
                              'text' => $this->__('View IDS Log'),
-                             'class' => 'z-icon-es-log',
+                             'class' => 'smallicon smallicon-log',
                              'links' => array(
                                              array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'viewidslog'),
                                                    'text' => $this->__('View IDS Log')),
@@ -193,7 +193,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             $outputfilter = System::getVar('outputfilter');
             if ($outputfilter == 1) {
-                $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'purifierconfig'), 'text' => $this->__('HTMLPurifier settings'), 'class' => 'z-icon-es-options');
+                $links[] = array('url' => ModUtil::url('ZikulaSecurityCenterModule', 'admin', 'purifierconfig'), 'text' => $this->__('HTMLPurifier settings'), 'class' => 'smallicon smallicon-options');
             }
         }
 

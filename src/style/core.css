@@ -1,524 +1,150 @@
-/******************************************************************************
-* Generic styles
-******************************************************************************/
-
-.z-invisible { visibility: hidden !important; }
-.z-visible { visibility: inherit !important; }
-.z-top { vertical-align: top !important; }
-.z-middle { vertical-align: middle !important; }
-.z-bottom { vertical-align: bottom !important; }
-.z-center { text-align: center !important; }
-.z-left { text-align: left !important; }
-.z-right { text-align: right !important; }
-.z-nowrap { white-space: nowrap !important; }
-.z-italic { font-style: italic !important; }
-.z-bold { font-weight: bold !important; }
-.z-underline { text-decoration: underline !important; }
-.z-line-through { text-decoration: line-through !important; }
-.z-normal { font-weight: normal !important; font-style: normal !important; }
-.z-floatleft { float: left; }
-.z-floatright { float: right; }
-.z-gap { margin: 1em 0 !important; padding: 1em 0 !important; }
-
-/******************************************************************************
-* IMG Float styles, e.g. for the positioning of images in articles
-******************************************************************************/
-
-img.z-floatleft {
-    display: inline;
-    float: left;
-    margin-bottom: 0.15em;
-    margin-right: 1em;
-}
-
-img.z-floatright {
-    display: inline;
-    float: right;
-    margin-bottom: 0.15em;
-    margin-left: 1em;
-}
-
-/******************************************************************************
-* Zikula general clearfix solution
-* http://perishablepress.com/press/2009/12/06/new-clearfix-hack/
-******************************************************************************/
-
-.z-clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-/******************************************************************************
-* Overflow-Method to clear float environments, Generic clearer
-******************************************************************************/
-
-.z-floatbox { overflow: hidden; }
-.z-clearer { clear: both; }
-
-/******************************************************************************
-* Miscellaneous, Generic secondary text
-******************************************************************************/
-
-.z-sub {
-    color: #777;
-    font-size: 0.9em;
-}
-
-.z-pointer {
-    cursor: pointer !important;
-}
-
-.z-calendarimg { background-color: transparent; }
-.z-calendarimg:hover,
-.z-calendarimg.hover {
-    background-color: blue;
-}
-
-.z-menutexttitle {
-    word-wrap: break-word;
-    margin-left: 63px;
-    margin-right: 5px;
-}
-
-/******************************************************************************
-* Class to show a sortable li or div. Has to be set in the js code to avoid
-* wrong css in non javascript environments
-******************************************************************************/
-
-.z-sortable { /* cursor: move; */ }
-
-/******************************************************************************
-* Itemlist styles
-******************************************************************************/
-
-.z-itemlist {
-    border: 1px solid #ccc;
-    padding: 0 !important;
-    margin: 1em 0  !important;
-    list-style: none !important;
-}
-.z-itemlist ul,
-.z-itemlist ol {
-    list-style: none !important;
-}
-.z-itemlist li {
-    font-size: 1em;
-    border: 1px dotted #999999;
-    line-height: 2em;
-    margin: 0.5em !important;
-    padding: 0.2em !important;
-}
-.z-itemlist li.z-itemheader {
-    font-size: 0.9em;
-    background: #CFCFCF;
-    border: 1px solid #999999;
-    font-weight: bold;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-.z-itemlist li.z-itemsort {
-    background-image:url("../images/icons/extrasmall/move.png");
-    background-position:5px 50%;
-    background-repeat:no-repeat;
-    padding-left: 30px !important;
-    cursor: move;
-}
-.z-itemlist li.z-itemsortheader {
-    padding-left: 30px !important;
-}
-.z-itemlist li.z-itemdragleft {
-    background-image:url("../images/icons/extrasmall/move_left.png");
-    background-position:5px 50%;
-    background-repeat:no-repeat;
-    padding-left: 30px !important;
-    cursor: move;
-}
-.z-itemlist li.z-itemdragright {
-    background-image:url("../images/icons/extrasmall/move_right.png");
-    background-position:99% 50%;
-    background-repeat:no-repeat;
-    padding-left: 5px !important;
-    padding-right: 30px !important;
-    cursor: move;
-}
-.z-itemlist li:hover,
-.z-itemlist li.hover {
-    background-color: #CFCFCF;
-}
-.z-itemlist li input,
-.z-itemlist li textarea,
-.z-itemlist li select {
-    max-width:90%;
-}
-.z-itemlist li  * {
-    margin: 0 !important;
-    vertical-align: middle;
-}
-.z-itemlist .z-itemcell {
-    float: left;
-    margin: 0;
-    text-align: left;
-    overflow: hidden;
-}
-
-/******************************************************************************
-* Widths styles
-******************************************************************************/
-
-.z-w90 { width: 90%; }
-.z-w85 { width: 85%; }
-.z-w80 { width: 80%; }
-.z-w75 { width: 75%; }
-.z-w70 { width: 70%; }
-.z-w66 { width: 66%; }
-.z-w60 { width: 60%; }
-.z-w50 { width: 50%; }
-.z-w49 { width: 49%; }
-.z-w45 { width: 45%; }
-.z-w40 { width: 40%; }
-.z-w35 { width: 35%; }
-.z-w33 { width: 33%; }
-.z-w30 { width: 30%; }
-.z-w25 { width: 25%; }
-.z-w22 { width: 22%; }
-.z-w20 { width: 20%; }
-.z-w15 { width: 15%; }
-.z-w10 { width: 10%; }
-.z-w08 { width: 8%; }
-.z-w07 { width: 7%; }
-.z-w06 { width: 6%; }
-.z-w05 { width: 5%; }
-.z-w04 { width: 4%; }
-.z-w02 { width: 2%; }
+.invisible { visibility: hidden !important; }
+.visible { visibility: inherit !important; }
+.top { vertical-align: top !important; }
+.middle { vertical-align: middle !important; }
+.bottom { vertical-align: bottom !important; }
+.center { text-align: center !important; }
+.left { text-align: left !important; }
+.right { text-align: right !important; }
+.nowrap { white-space: nowrap !important; }
+.italic { font-style: italic !important; }
+.bold { font-weight: bold !important; }
+.underline { text-decoration: underline !important; }
+.line-through { text-decoration: line-through !important; }
+.normal { font-weight: normal !important; font-style: normal !important; }
+.floatleft { float: left; }
+.floatright { float: right; }
+.gap { margin: 1em 0 !important; padding: 1em 0 !important; }
+.sub { color: #777; font-size: 0.9em;}
+.pointer { cursor: pointer !important;}
 
 /******************************************************************************
 * Icon styles (es=extrasmall) - Equivalent with /images/icons/config.php
 ******************************************************************************/
 
-.z-icon-es-add {
+.smallicon {
+    padding: 2px 0 2px 20px;
+}
+
+.smallicon-add {
     background: url("../images/icons/extrasmall/edit_add.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-back {
+.smallicon-back {
     background: url("../images/icons/extrasmall/agt_back.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-cancel {
+.smallicon-cancel {
     background: url("../images/icons/extrasmall/button_cancel.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-config {
+.smallicon-config {
     background: url("../images/icons/extrasmall/configure.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-copy {
+.smallicon-copy {
     background: url("../images/icons/extrasmall/editcopy.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-cubes {
+.smallicon-cubes {
     background: url("../images/icons/extrasmall/kcmdf.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-cut {
+.smallicon-cut {
     background: url("../images/icons/extrasmall/editcut.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-delete {
+.smallicon-delete {
     background: url("../images/icons/extrasmall/14_layer_deletelayer.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
+    
 }
-.z-icon-es-display {
+.smallicon-display {
     background: url("../images/icons/extrasmall/kview.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-edit {
+.smallicon-edit {
     background: url("../images/icons/extrasmall/xedit.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-error {
+.smallicon-error {
     background: url("../images/icons/extrasmall/error.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-export {
+.smallicon-export {
     background: url("../images/icons/extrasmall/fileexport.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-gears {
+.smallicon-gears {
     background: url("../images/icons/extrasmall/run.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-filter {
+.smallicon-filter {
     background: url("../images/icons/extrasmall/filter.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-group {
+.smallicon-group {
     background: url("../images/icons/extrasmall/group.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-help {
+.smallicon-help {
     background: url("../images/icons/extrasmall/help.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-home {
+.smallicon-home {
     background: url("../images/icons/extrasmall/folder_home.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-hook {
+.smallicon-hook {
     background: url("../images/icons/extrasmall/attach.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-import {
+.smallicon-import {
     background: url("../images/icons/extrasmall/fileimport.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-info {
+.smallicon-info {
     background: url("../images/icons/extrasmall/documentinfo.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-locale {
+.smallicon-locale {
     background: url("../images/icons/extrasmall/locale.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-locked {
+.smallicon-locked {
     background: url("../images/icons/extrasmall/encrypted.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-log {
+.smallicon-log {
     background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-mail {
+.smallicon-mail {
     background: url("../images/icons/extrasmall/mail_generic.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-new {
+.smallicon-new {
     background: url("../images/icons/extrasmall/filenew.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-ok {
+.smallicon-ok {
     background: url("../images/icons/extrasmall/button_ok.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-options {
+.smallicon-options {
     background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-preview {
+.smallicon-preview {
     background: url("../images/icons/extrasmall/demo.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-print {
+.smallicon-print {
     background: url("../images/icons/extrasmall/printer.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-profile {
+.smallicon-profile {
     background: url("../images/icons/extrasmall/personal.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-regenerate {
+.smallicon-regenerate {
     background: url("../images/icons/extrasmall/agt_update-product.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-remove {
+.smallicon-remove {
     background: url("../images/icons/extrasmall/edit_remove.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
+    
 }
-.z-icon-es-save {
+.smallicon-save {
     background: url("../images/icons/extrasmall/filesave.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-saveas {
+.smallicon-saveas {
     background: url("../images/icons/extrasmall/filesaveas.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-search {
+.smallicon-search {
     background: url("../images/icons/extrasmall/search.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-url {
+.smallicon-url {
     background: url("../images/icons/extrasmall/web.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-user {
-    background: url("../images/icons/extrasmall/user.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
+.smallicon-user {
+    background: url("../images/icons/extrasmall/user.png") no-repeat scroll 0 50% transparent;  
 }
-.z-icon-es-view {
+.smallicon-view {
     background: url("../images/icons/extrasmall/windowlist.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-warning {
+.smallicon-warning {
     background: url("../images/icons/extrasmall/bell.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
 }
-.z-icon-es-rss {
+.smallicon-rss {
     background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
-    padding: 2px 0 2px 20px;
-}
-
-
-
-
-/******************************************************************************
-* Order styles
-******************************************************************************/
-
-.z-order-asc {
-    background: url("../images/global/arrow_up_grey.png") transparent 100% 50% no-repeat;
-    padding-right: 12px;
-}
-.z-order-asc:hover,
-.z-order-asc.hover {
-    background: url("../images/global/arrow_up_black.png") transparent 100% 50% no-repeat;
-}
-.z-order-desc {
-    background: url("../images/global/arrow_down_grey.png") transparent 100% 50% no-repeat;
-    padding-right: 12px;
-}
-.z-order-desc:hover,
-.z-order-desc.hover {
-    background: url("../images/global/arrow_down_black.png") transparent 100% 50% no-repeat;
-}
-.z-order-unsorted {
-    padding-right: 12px;
-}
-
-/******************************************************************************
-* Toggle styles
-******************************************************************************/
-
-.z-toggle {
-    display: block;
-    background-image: url("../images/global/toggle-bl.png");
-    background-repeat: no-repeat;
-    background-position: 0px;
-    border: 0pt none;
-    margin: 0pt;
-    padding: 0pt;
-    width: 27px;
-    height: 25px;
-}
-.z-toggle-open,
-.z-toggle-open:link,
-.z-toggle-open:visited {
-    background-position: 0pt -16px;
-    height: 25px;
-    width: 27px;
-}
-.z-toggle-link,
-.z-toggle-link:link,
-.z-toggle-link:visited {
-    background-image: url("../images/global/toggle-bl.png");
-    background-repeat: no-repeat;
-    background-position: right 2px;
-    padding-right: 20px;
-    border: 0pt none;
-}
-.z-toggle-link-open,
-.z-toggle-link-open:link,
-.z-toggle-link-open:visited {
-    background-position: right -15px;
-}
-
-/******************************************************************************
-* Styles for pager plugins
-* TODO: Do we still need this? (herr.vorragend)
-******************************************************************************/
-
-.z-pager {
-    color: #999;
-    line-height: 2.2em;
-    padding: 0 4px 5px;
-    text-align: center;
-}
-/* style for the selected item of the pager abc plugin */
-.z-pager a.z-pagerselected {
-    font-weight: bold;
-    text-decoration: underline;
-}
-/* style for the selected item of the pager plugin */
-.z-pager span.z-pagerselected {
-    font-weight: bold;
-}
-
-/******************************************************************************
-* Drop-Down
-******************************************************************************/
-
-.z-drop {
-    background: url("../images/global/arrow_down_grey.png") no-repeat scroll 100% 50% transparent;
-    cursor: pointer;
-    padding-left: 8px;
-    position: relative;
-}
-
-.z-drop:hover,
-.z-drop.hover {
-    background: url("../images/global/arrow_down_black.png") no-repeat scroll 100% 50% transparent;
-}
-
-/******************************************************************************
-* Livepipe Control.ContextMenu
-******************************************************************************/
-
-#control_contextmenu {
-    background: #ddd; /*non-CSS3 browsers*/
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /*IE*/
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /*webkit*/
-    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /*gecko*/
-    background: linear-gradient(top,  #fff,  #cfcfcf); /*CSS3*/
-    border: solid 1px #b4b4b4;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
-    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
-    min-width: 100px;
-}
-
-#control_contextmenu ul {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: pointer;
-}
-
-#control_contextmenu ul li {
-    list-style: none !important;
-    font-size: 0.9em;
-    text-align: left;
-    padding: 0.3em 0.4em !important;
-    margin: 0 !important;
-    cursor: pointer;
-    text-decoration: none;
-    color: #333;
-    font-weight: normal;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-#control_contextmenu ul li.selected,
-#control_contextmenu ul li:hover,
-#control_contextmenu ul li.hover {
-    background-color:#3875D7;
-    color:#FFFFFF;
-    cursor:pointer;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-}
-
-#control_contextmenu ul li.selected:hover,
-#control_contextmenu ul li.selected.hover {
-    color: #333;
-    background-color: #f3f3f3;
-    cursor: pointer;
-}
-
-#control_contextmenu ul li.disabled,
-#control_contextmenu ul li:hover.disabled,
-#control_contextmenu ul li.hover.disabled {
-    background-color: #eee;
-    color: #999;
-    cursor: pointer;
 }

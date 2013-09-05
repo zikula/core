@@ -7,12 +7,12 @@
     <div class="z-fieldset">
         <div class="form-group">
             <p class="z-label">{gt text='User name'}</p>
-            <div class="z-text z-bold">{$uname}</div>
+            <div class="z-text bold">{$uname}</div>
         </div>
         </div>
         <div class="form-group">
             <p class="z-label">{gt text='Password reminder'}</p>
-            <div class="z-text z-bold">{$passreminder}</div>
+            <div class="z-text bold">{$passreminder}</div>
         </div>
         <div class="z-formbuttons z-buttons">
             <p>{gt text="I remember my password now."}</p>
@@ -44,12 +44,12 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="users_newpass">{gt text='Password'}</label>
             <p class="z-label">{gt text='User name'}</p>
-            <div class="z-text z-bold">{$uname}</div>
+            <div class="z-text bold">{$uname}</div>
         </div>
         </div>
         <div class="form-group">
             <p class="z-label">{gt text='Password reminder'}</p>
-            <div class="z-text z-bold">{$passreminder}</div>
+            <div class="z-text bold">{$passreminder}</div>
         </div>
         <div class="z-formbuttons z-buttons">
             <p>{gt text="I remember my password now."}</p>
@@ -93,7 +93,7 @@
                 <label class="col-lg-3 control-label" for="users_newpassreminder">{gt text='Password reminder'}</label>
                 <div class="col-lg-9">
                 <input id="users_newpassreminder" type="text" class="form-control" name="newpassreminder" size="25" maxlength="128" value="{$newpassreminder}" />
-                <div class="z-sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
+                <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
             </div>
             <div class="z-formbuttons z-buttons">

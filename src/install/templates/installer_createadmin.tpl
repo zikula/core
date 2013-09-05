@@ -45,7 +45,7 @@
             </div>
         </div>
         </fieldset>
-        <div class="z-buttons z-center">
+        <div class="z-buttons center">
             <input type="submit" value="{gt text="Proceed with Installation"}" class="z-bt-ok" />
         </div>
     </div>

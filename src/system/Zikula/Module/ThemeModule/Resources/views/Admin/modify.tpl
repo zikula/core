@@ -20,7 +20,7 @@
                 <div class="col-lg-9">
                 <div>
                     <input id="theme_usertheme" type="checkbox" name="themeinfo[user]" value="1"{if $themeinfo.user} checked="checked"{/if} />
-                    <span class="z-sub help-block">{gt text="Notice: This category is for 'browser-oriented' themes that can be selected by users for their sessions on the site."}</span>
+                    <span class="sub help-block">{gt text="Notice: This category is for 'browser-oriented' themes that can be selected by users for their sessions on the site."}</span>
                 </div>
             </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="col-lg-9">
                 <div>
                     <input id="theme_systemtheme" type="checkbox" name="themeinfo[system]" value="1"{if $themeinfo.system} checked="checked"{/if} />
-                    <span class="z-sub help-block">{gt text="Notice: This category is for themes used to deliver back-end services (such as RSS feeds, etc.)."}</span>
+                    <span class="sub help-block">{gt text="Notice: This category is for themes used to deliver back-end services (such as RSS feeds, etc.)."}</span>
                 </div>
             </div>
             </div>
@@ -38,15 +38,15 @@
                 <div class="col-lg-9">
                 <div>
                     <input id="theme_admintheme" type="checkbox" name="themeinfo[admin]" value="1"{if $themeinfo.admin} checked="checked"{/if} />
-                    <span class="z-sub help-block">{gt text="Notice: This category is for themes used to display the site admin panel."}</span>
+                    <span class="sub help-block">{gt text="Notice: This category is for themes used to display the site admin panel."}</span>
                 </div>
             </div>
         </div>
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                <a class="btn btn-danger" href="{modurl modname=Theme type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

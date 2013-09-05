@@ -19,9 +19,9 @@
         {/foreach}
         </ul>
     {else}
-        <p class="z-bold z-center">{gt text="There are currently no modules in this category."}</p>
+        <p class="bold center">{gt text="There are currently no modules in this category."}</p>
     {/if}
 </div>
 
-<div class="z-admin-coreversion z-right">Zikula {$coredata.version_num}</div>
+<div class="z-admin-coreversion right">Zikula {$coredata.version_num}</div>
 

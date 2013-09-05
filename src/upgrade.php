@@ -178,7 +178,7 @@ function _upg_selectlanguage()
         echo '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
     }
     echo '</select></div></fieldset>'."\n";
-    echo '<div class="z-buttons z-center"><input type="submit" value="'.__('Submit').'" /></div>'."\n";
+    echo '<div class="z-buttons center"><input type="submit" value="'.__('Submit').'" /></div>'."\n";
     echo '</form>'."\n";
     _upg_footer();
 }
@@ -225,7 +225,7 @@ function _upg_login($showheader = true)
         echo '<input type="hidden" name="lang" value="'.htmlspecialchars($lang).'" />'."\n";
     }
     echo '</fieldset>'."\n";
-    echo '<div class="z-buttons z-center"><input name="submit" type="submit" value="'.__('Submit').'" /></div>'."\n";
+    echo '<div class="z-buttons center"><input name="submit" type="submit" value="'.__('Submit').'" /></div>'."\n";
     echo '</form>'."\n";
     if ($showheader == true) {
         _upg_footer();
@@ -321,7 +321,7 @@ function _upg_continue($action, $text, $username, $password)
         echo '<input type="hidden" name="password" value="'.DataUtil::formatForDisplay($password).'" />'."\n";
     }
     echo '<input type="hidden" name="action" value="'.htmlspecialchars($action).'" />'."\n";
-    echo '<div class="z-buttons z-center"><input type="submit" name="submit" value="'.htmlspecialchars($text).'" /></div>'."\n";
+    echo '<div class="z-buttons center"><input type="submit" name="submit" value="'.htmlspecialchars($text).'" /></div>'."\n";
     echo '</fieldset></div>'."\n";
     echo '</form>'."\n";
 

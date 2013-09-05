@@ -32,7 +32,7 @@
         </div>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Search now" __title="Search now" __text="Search now"}
+                {button class="btn btn-success" __alt="Search now" __title="Search now" __text="Search now"}
             </div>
         </div>
     </fieldset>

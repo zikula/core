@@ -52,10 +52,10 @@
 
                 <div id="block_placement_advanced" style="display:none;">
                     <p class="alert alert-info">{gt text="To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. "}</p>
-                    <p><a id="appendfilter" class="z-icon-es-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
+                    <p><a id="appendfilter" class="smallicon smallicon-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
                     <div>
                         <ol id="placementfilterslist" class="z-itemlist">
-                            <li class="z-itemheader z-clearfix">
+                            <li class="z-itemheader clearfix">
                                 <span class="z-itemcell z-w25">{gt text="Module"}</span>
                                 <span class="z-itemcell z-w15">{gt text="Function type"}</span>
                                 <span class="z-itemcell z-w25">{gt text="Function name"}</span>
@@ -65,7 +65,7 @@
 
                             {foreach from=$filter item='placementfilter' name='loop_filters'}
                             {assign var='loop_index' value=$smarty.foreach.loop_filters.iteration-1}
-                            <li id="li_placementfilterslist_{$loop_index}" class="{cycle values='z-odd,z-even'} z-clearfix">
+                            <li id="li_placementfilterslist_{$loop_index}" class="{cycle values='z-odd,z-even'} clearfix">
                                 <span class="z-itemcell z-w25">
                                     <select id="filters_{$loop_index}_module" class="form-control" name="filters[{$loop_index}][module]">
                                         {foreach from=$mods key='name' item='displayname' name='modlist'}
@@ -89,7 +89,7 @@
                     </div>
 
                     <ul style="display:none;">
-                        <li id="placementfilterslist_emptyitem" class="z-clearfix">
+                        <li id="placementfilterslist_emptyitem" class="clearfix">
                             <span class="z-itemcell z-w25">
                                 <select class="listinput" class="form-control" id="filters_X_module" name="filtersdummy[]">
                                     {foreach from=$mods key='name' item='displayname' name='modlist'}
@@ -181,8 +181,8 @@
 
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text="Save"}
-                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+                <a class="btn btn-danger" href="{$cancelurl|safetext}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </div>

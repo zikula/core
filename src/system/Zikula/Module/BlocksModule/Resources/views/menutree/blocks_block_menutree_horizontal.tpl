@@ -1,5 +1,5 @@
 <div class="menutree_horizontal_container">
-    {menutree data=$menutree_content id='menu'|cat:$blockinfo.bid class='menutree_horizontal z-clearfix' ext=true}
+    {menutree data=$menutree_content id='menu'|cat:$blockinfo.bid class='menutree_horizontal clearfix' ext=true}
     {if $menutree_editlinks}
     <ul class="menutree_horizontal_controls">
         <li><a href="{modurl modname=Blocks type=admin func=modify bid=$blockinfo.bid addurl=1}#menutree_tabs" title="{gt text='Add the current URL as new link in this block'}">{icon type="add" size="extrasmall" __alt='Add the current URL as new link in this block' __title='Add the current URL as new link in this block'}</a></li>

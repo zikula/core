@@ -4,7 +4,7 @@
     <body class="onecol">
         {include file="includes/adminheader.tpl"}
         <div id="pagewidth">
-            <div id="wrapper" class="z-clearfix">
+            <div id="wrapper" class="clearfix">
                 <div id="maincol">
                     {$maincontent}
                 </div>

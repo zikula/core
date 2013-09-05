@@ -360,14 +360,14 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'z-icon-es-view');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'class' => 'smallicon smallicon-view');
         }
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'z-icon-es-new');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'class' => 'smallicon smallicon-new');
         }
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'z-icon-es-help');
-            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'z-icon-es-config');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'help'), 'text' => $this->__('Help'), 'class' => 'smallicon smallicon-help');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'class' => 'smallicon smallicon-config');
         }
 
         return $links;

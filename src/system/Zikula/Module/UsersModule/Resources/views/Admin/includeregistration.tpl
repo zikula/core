@@ -65,13 +65,13 @@
         <div class="form-group">
             <label class="col-lg-3 control-label">{gt text='E-mail verification:'}</label>
             <div class="col-lg-9">
-            <span>{if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}{if !isset($reginfo.verificationsent) || empty($reginfo.verificationsent)}{img modname='core' set='icons/extrasmall' src='mail_delete.png' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'} {gt text='Verification e-mail message not yet sent to the user'}{else}{img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'} {gt text='Not yet verified'}{/if}{else}{img modname='core' set='icons/extrasmall' src='greenled.png' __title='Verified' __alt='Verified'} {gt text='Verification complete'} <span class="z-sub">{gt text='(or verification was not required when the registration was completed)'}</span>{/if}</span>
+            <span>{if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}{if !isset($reginfo.verificationsent) || empty($reginfo.verificationsent)}{img modname='core' set='icons/extrasmall' src='mail_delete.png' __title='E-mail verification not sent; awating approval' __alt='E-mail verification not sent; awating approval'} {gt text='Verification e-mail message not yet sent to the user'}{else}{img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending verification of e-mail address' __alt='Pending verification of e-mail address'} {gt text='Not yet verified'}{/if}{else}{img modname='core' set='icons/extrasmall' src='greenled.png' __title='Verified' __alt='Verified'} {gt text='Verification complete'} <span class="sub">{gt text='(or verification was not required when the registration was completed)'}</span>{/if}</span>
         </div>
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label">{gt text='Administrator approval:'}</label>
             <div class="col-lg-9">
-            <span>{if !isset($reginfo.isapproved) || empty($reginfo.isapproved) || !$reginfo.isapproved}{img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending approval' __alt='Pending approval'} {gt text='Not yet approved'}{else}{img modname='core' set='icons/extrasmall' src='greenled.png' __title='Approved' __alt='Approved'} {gt text='Approved'} <span class="z-sub">{gt text='(or approval was not required when the registration was completed)'}</span>{/if}</span>
+            <span>{if !isset($reginfo.isapproved) || empty($reginfo.isapproved) || !$reginfo.isapproved}{img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending approval' __alt='Pending approval'} {gt text='Not yet approved'}{else}{img modname='core' set='icons/extrasmall' src='greenled.png' __title='Approved' __alt='Approved'} {gt text='Approved'} <span class="sub">{gt text='(or approval was not required when the registration was completed)'}</span>{/if}</span>
         </div>
     </div>
     </fieldset>

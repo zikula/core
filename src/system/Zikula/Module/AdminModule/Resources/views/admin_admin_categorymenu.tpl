@@ -33,7 +33,7 @@
 {insert name="getstatusmsg"}
 <input type="hidden" name="admintabs-menuoptions" id="admintabs-menuoptions" value="{$menuoptions|@json_encode|escape}" />
 <div class="admintabs-container" id="admintabs-container">
-    <ul id="admintabs" class="z-clearfix">
+    <ul id="admintabs" class="clearfix">
         {foreach from=$menuoptions name='menuoption' item='menuoption'}
         <li id="admintab_{$menuoption.cid}" class="admintab {if $currentcat eq $menuoption.cid} active{/if}" style="z-index:0;">
             <a href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>

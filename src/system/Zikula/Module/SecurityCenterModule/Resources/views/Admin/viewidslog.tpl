@@ -17,8 +17,8 @@
 </div>
 
 <ul class="navbar navbar-default">
-    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="z-icon-es-delete">{gt text="Purge IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="smallicon smallicon-export">{gt text="Export IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="smallicon smallicon-delete">{gt text="Purge IDS Log"}</a></li>
 </ul>
 
 {gt text="All" assign=lblAll}
@@ -61,7 +61,7 @@
             <th><a class="{if $sort eq 'impact'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="impact"}">{gt text="Impact"}</a></th>
             <th>{gt text="PHPIDS filters used"}</th>
             <th><a class="{if empty($sort) || $sort eq 'date DESC'}z-order-desc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="date+DESC"}">{gt text="Date"}</a></th>
-            <th class="z-right">{gt text="Actions"}</th>
+            <th class="right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -85,7 +85,7 @@
                 {/foreach}
             </td>
             <td>{$event.date|safetext}</td>
-            <td class="z-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
+            <td class="right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
         </tr>
         {foreachelse}
         <tr class="table table-borderedempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>

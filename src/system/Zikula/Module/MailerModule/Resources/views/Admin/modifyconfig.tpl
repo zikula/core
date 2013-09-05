@@ -21,14 +21,14 @@
                 {formlabel cssClass="col-lg-3 control-label" for='charset' __text='Character set' mandatorysym=true}
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='charset' size=10 maxLength=20 mandatory=true}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1=$defaultcharset}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1=$defaultcharset}</p>
                 </div>
             </div>
             <div class="form-group">
                 {formlabel cssClass="col-lg-3 control-label" for='encoding' __text="Encoding" mandatorysym=true}
                 <div class="col-lg-9">
                     {formdropdownlist cssClass="form-control" id='encoding' mandatory=true}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1='8bit'}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1='8bit'}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -41,7 +41,7 @@
                 {formlabel cssClass="col-lg-3 control-label" for='wordwrap' __text='Word wrap' mandatorysym=true}
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='wordwrap' size=3 maxLength=3 mandatory=true}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1='50'}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1='50'}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -58,7 +58,7 @@
                 {formlabel cssClass="col-lg-3 control-label" for='sendmailpath' __text="Path to 'Sendmail'"}
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='sendmailpath' size=50 maxLength=255}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1='/usr/sbin/sendmail'}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1='/usr/sbin/sendmail'}</p>
                 </div>
             </div>
         </fieldset>
@@ -69,14 +69,14 @@
                 {formlabel cssClass="col-lg-3 control-label" for='smtpserver' __text='SMTP server'}
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='smtpserver' size=30 maxLength=255}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1='localhost'}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1='localhost'}</p>
                 </div>
             </div>
             <div class="form-group">
                 {formlabel cssClass="col-lg-3 control-label" for='smtpport' __text='SMTP port'}
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='smtpport' size=5 maxLength=5}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1='25'}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1='25'}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -89,7 +89,7 @@
                 {formlabel cssClass="col-lg-3 control-label" for='smtptimeout' __text='SMTP time-out'}
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='smtptimeout' size=5 maxLength=5}
-                    <p class="help-block z-sub">{gt text="Default: '%s'" tag1='10 seconds'}</p>
+                    <p class="help-block sub">{gt text="Default: '%s'" tag1='10 seconds'}</p>
                 </div>
             </div>
             <div class="form-group">

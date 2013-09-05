@@ -21,7 +21,7 @@
                     $lang = $this->_tpl_vars['lang'];
                     $this->assign('doclink', "docs/$lang/INSTALL");
                     {/php}
-                    <ol class="breadcrumb z-clearfix">
+                    <ol class="breadcrumb clearfix">
                         <li{if $action eq lang} class="menu_selected"{/if}>
                             <span class="{if $step > 0}icon-ok{else}icon-nok{/if}"><a href="install.php?lang=">{gt text="Select language"}</a></span>
                         </li>

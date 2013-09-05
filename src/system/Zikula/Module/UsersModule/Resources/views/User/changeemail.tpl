@@ -25,9 +25,11 @@
             </div>
         </div>
         </fieldset>
-        <div class="z-formbuttons z-buttons">
-            {button src=button_ok.png set=icons/extrasmall __alt="Save" __title="Save" __text='Save'}
-            <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}">{img modname=core src=button_cancel.png set=icons/extrasmall  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+        <div class="form-group">
+             <div class="col-lg-offset-3 col-lg-9">
+                {button class="btn btn-success" __alt="Save" __title="Save" __text='Save'}
+                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            </div>
         </div>
     </div>
 </form>

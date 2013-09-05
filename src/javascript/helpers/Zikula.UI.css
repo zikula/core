@@ -413,3 +413,164 @@
 .z-panels .z-panel-indicator.z-panel-active:hover {
     background: url("../../images/global/arrow_down_grey.png") no-repeat scroll 6px 50%;
 }
+
+
+/******************************************************************************
+* Class to show a sortable li or div. Has to be set in the js code to avoid
+* wrong css in non javascript environments
+******************************************************************************/
+
+.z-sortable { /* cursor: move; */ }
+
+/******************************************************************************
+* Itemlist styles
+******************************************************************************/
+
+.z-itemlist {
+    border: 1px solid #ccc;
+    padding: 0 !important;
+    margin: 1em 0  !important;
+    list-style: none !important;
+}
+.z-itemlist ul,
+.z-itemlist ol {
+    list-style: none !important;
+}
+.z-itemlist li {
+    font-size: 1em;
+    border: 1px dotted #999999;
+    line-height: 2em;
+    margin: 0.5em !important;
+    padding: 0.2em !important;
+}
+.z-itemlist li.z-itemheader {
+    font-size: 0.9em;
+    background: #CFCFCF;
+    border: 1px solid #999999;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.z-itemlist li.z-itemsort {
+    background-image:url("../images/icons/extrasmall/move.png");
+    background-position:5px 50%;
+    background-repeat:no-repeat;
+    padding-left: 30px !important;
+    cursor: move;
+}
+.z-itemlist li.z-itemsortheader {
+    padding-left: 30px !important;
+}
+.z-itemlist li.z-itemdragleft {
+    background-image:url("../images/icons/extrasmall/move_left.png");
+    background-position:5px 50%;
+    background-repeat:no-repeat;
+    padding-left: 30px !important;
+    cursor: move;
+}
+.z-itemlist li.z-itemdragright {
+    background-image:url("../images/icons/extrasmall/move_right.png");
+    background-position:99% 50%;
+    background-repeat:no-repeat;
+    padding-left: 5px !important;
+    padding-right: 30px !important;
+    cursor: move;
+}
+.z-itemlist li:hover,
+.z-itemlist li.hover {
+    background-color: #CFCFCF;
+}
+.z-itemlist li input,
+.z-itemlist li textarea,
+.z-itemlist li select {
+    max-width:90%;
+}
+.z-itemlist li  * {
+    margin: 0 !important;
+    vertical-align: middle;
+}
+.z-itemlist .z-itemcell {
+    float: left;
+    margin: 0;
+    text-align: left;
+    overflow: hidden;
+}
+
+/******************************************************************************
+* Classes to define two colors for alternating rows in views
+******************************************************************************/
+
+.z-even {
+    background-color: #fff;
+    color: #222;
+}
+.z-odd {
+    background-color: #f3f3f3;
+    color: #222;
+}
+
+
+
+
+/******************************************************************************
+* Livepipe Control.ContextMenu
+******************************************************************************/
+
+#control_contextmenu {
+    background: #ddd; /*non-CSS3 browsers*/
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#cfcfcf'); /*IE*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#cfcfcf)); /*webkit*/
+    background: -moz-linear-gradient(top,  #fff,  #cfcfcf); /*gecko*/
+    background: linear-gradient(top,  #fff,  #cfcfcf); /*CSS3*/
+    border: solid 1px #b4b4b4;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    min-width: 100px;
+}
+
+#control_contextmenu ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
+}
+
+#control_contextmenu ul li {
+    list-style: none !important;
+    font-size: 0.9em;
+    text-align: left;
+    padding: 0.3em 0.4em !important;
+    margin: 0 !important;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-weight: normal;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+#control_contextmenu ul li.selected,
+#control_contextmenu ul li:hover,
+#control_contextmenu ul li.hover {
+    background-color:#3875D7;
+    color:#FFFFFF;
+    cursor:pointer;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+
+#control_contextmenu ul li.selected:hover,
+#control_contextmenu ul li.selected.hover {
+    color: #333;
+    background-color: #f3f3f3;
+    cursor: pointer;
+}
+
+#control_contextmenu ul li.disabled,
+#control_contextmenu ul li:hover.disabled,
+#control_contextmenu ul li.hover.disabled {
+    background-color: #eee;
+    color: #999;
+    cursor: pointer;
+}

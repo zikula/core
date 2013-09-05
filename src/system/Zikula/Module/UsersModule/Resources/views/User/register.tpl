@@ -80,10 +80,10 @@
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
-                <em class="help-block z-sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
+                <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods and/or dashes.'}</em>
 
                 {if ($authentication_method.modname != 'ZikulaUsersModule') || (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
-                <em class="help-block z-sub">{gt text='Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.'}</em>
+                <em class="help-block sub">{gt text='Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -100,7 +100,7 @@
             {assign var='fieldName' value='pass'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" />
-                <em class="help-block z-sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
+                <em class="help-block sub">{gt text="The minimum length for user passwords is %s characters." tag1=$modvars.ZikulaUsersModule.minpass}</em>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 <div id="{$formData->getFormId()}_passmeter"></div>
             </div>
@@ -121,7 +121,7 @@
             {assign var='fieldName' value='passreminder'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" />
-                <div class="z-sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
+                <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -144,7 +144,7 @@
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
 
                 {if (($authentication_method.modname == 'ZikulaUsersModule') && ($modvars.ZikulaUsersModule.loginviaoption == 'Zikula\Module\UsersModule\Constant::LOGIN_METHOD_EMAIL'|const))}
-                <em class="help-block z-sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
+                <em class="help-block sub">{gt text='You will use your e-mail address to identify yourself when you log in.'}</em>
                 {/if}
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
@@ -183,7 +183,7 @@
         {if is_array($hooks) && count($hooks)}
             {foreach key='providerArea' item='hook' from=$hooks}
                 {$hook}
-                <div class="z-clearfix"></div>
+                <div class="clearfix"></div>
             {/foreach}
         {/if}
     </fieldset>
@@ -197,7 +197,7 @@
             {assign var='fieldName' value='antispamanswer'}
             <div class="col-lg-9">
             <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="has-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
-            <em class="help-block z-sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
+            <em class="help-block sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
             <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
         </div>
     </div>
@@ -206,9 +206,9 @@
 
     <fieldset>
         <legend>{gt text="Check your entries and submit your registration"}</legend>
-        <p id="{$formData->getFormId()}_checkmessage" class="z-sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</p>
+        <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</p>
         <p id="{$formData->getFormId()}_validmessage" class="hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-        <div class="z-center z-buttons">
+        <div class="center z-buttons">
             {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide' modname=core set='ajax' src='indicator_circle.gif' alt=''}
             {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit registration' __title='Submit registration' __text='Submit registration'}
             {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='help.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}

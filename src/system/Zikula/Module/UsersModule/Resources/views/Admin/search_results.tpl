@@ -39,7 +39,7 @@
                     <th>{gt text="Internal name"}</th>
                     {/if}
                     <th>{gt text="E-mail address"}</th>
-                    <th class="z-right">{gt text="Actions"}</th>
+                    <th class="right">{gt text="Actions"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,7 +57,7 @@
                         {$items[item].email}
                         {/if}
                     </td>
-                    <td class="z-right">
+                    <td class="right">
                         {if $actions[item].modifyUrl}<a href="{$actions[item].modifyUrl|safehtml}">{img modname=core set=icons/extrasmall src=xedit.png __alt="Edit" __title="Edit" class="tooltips"}</a>{/if}
                         {if $actions[item].deleteUrl}<a href="{$actions[item].deleteUrl|safehtml}">{img modname=core set=icons/extrasmall src=14_layer_deletelayer.png __alt="Delete" __title="Delete" class="tooltips"}</a>{/if}
                     </td>

@@ -20,7 +20,7 @@
                 <label class="col-lg-3 control-label" for="users_import">{gt text="CSV file (Max. %s)" tag1=$post_max_size}</label>
                 <div class="col-lg-9">
                 <input id="users_import" type="file" name="importFile" size="30" />
-                <em class="help-block z-sub">{gt text='The file must be utf8 encoded.'}</em>
+                <em class="help-block sub">{gt text='The file must be utf8 encoded.'}</em>
             </div>
             </div>
             <div class="form-group">
@@ -36,7 +36,7 @@
         </fieldset>
         <div class="z-formbuttons z-buttons">
             {button src='button_ok.png' set='icons/extrasmall' __alt='Import' __title='Import' __text='Import'}
-            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
         </div>
     </div>
 </form>

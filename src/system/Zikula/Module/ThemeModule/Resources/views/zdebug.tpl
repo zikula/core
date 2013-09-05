@@ -73,7 +73,7 @@
                     {$_debug_tpls[templates].filename|safehtml}
                 </span>
                 {if isset($_debug_tpls[templates].exec_time)}
-                    <span class="z-sub">({$_debug_tpls[templates].exec_time|string_format:"%.5f"}){if %templates.index% eq 0} (total){/if}</span>
+                    <span class="sub">({$_debug_tpls[templates].exec_time|string_format:"%.5f"}){if %templates.index% eq 0} (total){/if}</span>
                 {/if}
             </tt>
         </li>

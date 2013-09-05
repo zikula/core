@@ -60,14 +60,14 @@
 <h4 id="editmenu">{gt text="Content" domain='zikula'}</h4>
 <p class="alert alert-info">{gt text="In the table below, drag and drop the menu items into your desired order. It is also possible to create nesting menu entries if you move an entry onto an existing row. The item order and the contents of each menu item are saved when you click the 'Save' button. The number in the right-hand column is the ID of the menu item. Use this ID number if you want to use permission rules to restrict access to the menu item." domain='zikula'}</p>
 <p class="alert alert-info">{gt text="You can use bracket URLs in the form: &#123;modname&#125;, &#123;modname:type:func&#125; or &#123;modname:type:func:param1=value1&amp;param2=value2&#125;.  You may also specify the homepage as &#123;homepage&#125;." domain='zikula'}</p>
-<p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="z-icon-es-new" href="#">{gt text="Create new menu item" domain='zikula'}</a></p>
+<p style="margin:2em 0; padding:0;"><a id="appendmenuitem" class="smallicon smallicon-new" href="#">{gt text="Create new menu item" domain='zikula'}</a></p>
 
 {* return to this block after saving *}
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 <input type="hidden" id="linksorder" name="linksorder" value="" />
 {menu from=$links item='menuitem' key='itemid' name='extmenu' id='menuitemlist' class='z-itemlist' tag='ol' multilang=true}
     {if $extmenu.first}
-    <li class="z-clearfix z-itemheader">
+    <li class="clearfix z-itemheader">
         <span class="z-itemcell z-w05"><strong>&nbsp;</strong></span>
         <span class="z-itemcell z-w20"><strong>{gt text="Image" domain='zikula'}</strong></span>
         <span class="z-itemcell z-w22"><strong>{gt text="Name" domain='zikula'}</strong></span>
@@ -77,9 +77,9 @@
     </li>
     {/if}
     {if $extmenu.total > 0}
-    <li id="li_menuitemlist_{$itemid}" class="{cycle values='z-odd,z-even'} z-sortable z-clearfix">
+    <li id="li_menuitemlist_{$itemid}" class="{cycle values='z-odd,z-even'} z-sortable clearfix">
         {foreach key='thislanguage' item='item' from=$menuitem}
-        <div class="z-clearfix">
+        <div class="clearfix">
             <span class="z-itemcell z-w05">
                 {$thislanguage}
             </span>
@@ -118,9 +118,9 @@
 {/menu}
 
 <ul style="display:none">
-    <li id="menuitemlist_emptyitem" class="z-sortable z-clearfix" style="padding-left: 30px !important;">
+    <li id="menuitemlist_emptyitem" class="z-sortable clearfix" style="padding-left: 30px !important;">
         {foreach item='thislanguage' from=$languages}
-        <div class="z-clearfix">
+        <div class="clearfix">
             <span class="z-itemcell z-w05">
                 {$thislanguage}
             </span>

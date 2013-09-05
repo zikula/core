@@ -30,7 +30,7 @@
                 {else}
                 {button class="z-btgreen" src='button_ok.png' set='icons/extrasmall' __alt='Yes, force the change of password' __title='Yes, force the change of password' __text='Yes, force the change of password'}
                 {/if}
-                <a class="z-btred" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='No'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall' __alt='Cancel' __title='Cancel'} {gt text='No'}</a>
+                <a class="z-btred" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='No'}">{gt text='No'}</a>
             </div>
         </div>
         </fieldset>

@@ -10,7 +10,7 @@
             {foreach from=$adminlinks name=adminlink item=adminlink}
             {math equation="$moduleid+1" assign="moduleid"}
 
-            {if $smarty.foreach.adminlink.first}<div class="z-adminiconrow z-clearfix" id="modules">{/if}
+            {if $smarty.foreach.adminlink.first}<div class="z-adminiconrow clearfix" id="modules">{/if}
                 <div id="module_{$adminlink.id}" class="z-adminiconcontainer draggable" style="width:{math equation='100/x' x=$modvars.ZikulaAdminModule.modulesperrow format='%.0f'}%;z-index:{math equation="2200-$moduleid"};">
                     {if $modvars.ZikulaAdminModule.admingraphic eq 1}
                     <a class="z-adminicon z-adminfloat" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
@@ -40,8 +40,8 @@
         </div>
 
     {else}
-    <p class="z-bold z-center">{gt text="There are currently no modules in this category."}</p>
+    <p class="bold center">{gt text="There are currently no modules in this category."}</p>
     {/if}
 </div>
 
-<div class="z-admin-coreversion z-right">Zikula {$coredata.version_num}</div>
+<div class="z-admin-coreversion right">Zikula {$coredata.version_num}</div>

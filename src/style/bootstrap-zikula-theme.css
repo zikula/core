@@ -495,9 +495,23 @@ body {
 /* Glyphicon Color Swatches */
 
 .glyphicon-green{
-	color: #61B329;
+    color: #61B329;
 }
 
 .glyphicon-red{
-	color: #C30;
+    color: #C30;
+}
+
+
+td.actions {
+    text-align: right !important;
+    white-space: nowrap !important;
+}
+
+td.actions .glyphicon-trash {
+    color: #C30;
+}
+
+td.actions .glyphicon-ok {
+    color: #61B329;
 }

@@ -100,7 +100,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
             $active = '';
             if (!empty($menuitem['url']) && System::getBaseUrl().$menuitem['url'] === System::getCurrentUrl()) {
-                $active = ' z-bold';
+                $active = ' bold';
             }
             $attr .= !empty($menuitem['class']) ? ' class="z-iconlink '.$menuitem['class'].$active.'"' : '';
 

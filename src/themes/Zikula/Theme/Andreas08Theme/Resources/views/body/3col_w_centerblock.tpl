@@ -1,4 +1,4 @@
-<div id="theme_content" class="z-clearfix">
+<div id="theme_content" class="clearfix">
     <div id="theme_leftcol" class="grid_3">
         {blockposition name=left}
     </div>

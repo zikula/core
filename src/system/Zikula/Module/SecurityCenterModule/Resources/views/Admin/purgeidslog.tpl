@@ -6,8 +6,8 @@
 </div>
 
 <ul class="navbar navbar-default">
-    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="z-icon-es-export">{gt text="Export IDS Log"}</a></li>
-    <li><span class="z-icon-es-delete">{gt text="Purge IDS Log"}</span></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="smallicon smallicon-export">{gt text="Export IDS Log"}</a></li>
+    <li><span class="smallicon smallicon-delete">{gt text="Purge IDS Log"}</span></li>
 </ul>
 
 <p class="alert alert-warning">{gt text="Do you really want to delete the entire IDS log?"}</p>
@@ -20,8 +20,8 @@
             <legend>{gt text="Confirmation prompt"}</legend>
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                    {button class="z-btgreen" src=button_ok.png set=icons/extrasmall __alt="Delete" __title="Delete" __text="Delete"}
-                    <a class="btn btn-default" class="z-btred" href="{modurl modname=SecurityCenter type=admin func=viewidslog}" title="{gt text="Cancel"}">{img modname=core src=button_cancel.png set=icons/extrasmall __alt="Cancel" __title="Cancel"} {gt text="Cancel"}</a>
+                    {button class="z-btgreen" class="btn btn-success" __alt="Delete" __title="Delete" __text="Delete"}
+                    <a class="btn btn-danger" class="z-btred" href="{modurl modname=SecurityCenter type=admin func=viewidslog}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
         </div>
         </div>
