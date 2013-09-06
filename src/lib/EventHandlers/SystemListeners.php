@@ -41,7 +41,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.init', 'setupRequest');
         $this->addHandlerDefinition('core.preinit', 'request');
         $this->addHandlerDefinition('core.postinit', 'systemHooks');
-        $this->addHandlerDefinition('core.init', 'setupDebugToolbar');
         $this->addHandlerDefinition('log.sql', 'logSqlQueries');
         $this->addHandlerDefinition('core.init', 'setupAutoloaderForGeneratedCategoryModels');
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
@@ -429,92 +428,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
 
         if ($this->serviceManager['log.sql.to_file']) {
             $this->serviceManager->get('zend.logger.file')->debug($message);
-        }
-    }
-
-    /**
-     * Debug toolbar startup.
-     *
-     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG in development mode.
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function setupDebugToolbar(Zikula_Event $event)
-    {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG && System::isDevelopmentMode() && $event->getSubject()->getContainer()->getParameter('log.to_debug_toolbar')) {
-            // autoloaders don't work inside error handlers!
-            include_once 'lib/legacy/Zikula/DebugToolbar/Panel/Log.php';
-
-            // create definitions
-            $toolbar = new Definition('Zikula_DebugToolbar',  array(new Reference('event_dispatcher')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.version')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.config')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.memory')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.rendertime')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.sql')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.view')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.exec')));
-            $toolbar->addMethodCall('addPanel', array(new Reference('debug.toolbar.panel.logs')));
-
-            $versionPanel = new Definition('Zikula_DebugToolbar_Panel_Version');
-            $configPanel = new Definition('Zikula_DebugToolbar_Panel_Config');
-            $momoryPanel = new Definition('Zikula_DebugToolbar_Panel_Memory');
-            $rendertimePanel = new Definition('Zikula_DebugToolbar_Panel_RenderTime');
-            $sqlPanel = new Definition('Zikula_DebugToolbar_Panel_SQL');
-            $viewPanel = new Definition('Zikula_DebugToolbar_Panel_View');
-            $execPanel = new Definition('Zikula_DebugToolbar_Panel_Exec');
-            $logsPanel = new Definition('Zikula_DebugToolbar_Panel_Log');
-
-            // save start time (required by rendertime panel)
-            $this->serviceManager->setParameter('debug.toolbar.panel.rendertime.start', microtime(true));
-
-            // register services
-            $this->serviceManager->setDefinition('debug.toolbar.panel.version', $versionPanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.config', $configPanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.memory', $momoryPanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.rendertime', $rendertimePanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.sql', $sqlPanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.view', $viewPanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.exec', $execPanel);
-            $this->serviceManager->setDefinition('debug.toolbar.panel.logs', $logsPanel);
-            $this->serviceManager->setDefinition('debug.toolbar', $toolbar);
-
-            // setup rendering event listeners
-            $this->eventManager->addListener('theme.prefetch', array($this, 'debugToolbarRendering'));
-            $this->eventManager->addListener('theme.postfetch', array($this, 'debugToolbarRendering'));
-
-            // setup event listeners
-            $this->eventManager->addListenerService('view.init', array('debug.toolbar.panel.view', 'initRenderer'));
-            $this->eventManager->addListenerService('module_dispatch.preexecute', array('debug.toolbar.panel.exec', 'modexecPre'), -20);
-            $this->eventManager->addListenerService('module_dispatch.postexecute', array('debug.toolbar.panel.exec', 'modexecPost'), -20);
-            $this->eventManager->addListenerService('module_dispatch.execute_not_found', array('debug.toolbar.panel.logs', 'logExecNotFound'), -20);
-            $this->eventManager->addListenerService('log', array('debug.toolbar.panel.logs', 'log'));
-            $this->eventManager->addListenerService('log.sql', array('debug.toolbar.panel.sql', 'logSql'));
-            $this->eventManager->addListenerService('controller.method_not_found', array('debug.toolbar.panel.logs', 'logModControllerNotFound'), -20);
-            $this->eventManager->addListenerService('controller_api.method_not_found', array('debug.toolbar.panel.logs', 'logModControllerAPINotFound'),- 20);
-        }
-    }
-
-    /**
-     * Debug toolbar rendering (listener for 'theme.prefetch' and 'theme.postfetch' events).
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function debugToolbarRendering(Zikula_Event $event)
-    {
-        if (!$event->getSubject() instanceof Zikula_ErrorHandler_Ajax) {
-            if ($event->getName() == 'theme.prefetch') {
-                // force object construction (debug toolbar constructor registers javascript and css files via PageUtil)
-                $this->serviceManager->get('debug.toolbar');
-            } else {
-                $toolbar = $this->serviceManager->get('debug.toolbar');
-                $html = $toolbar->getContent() . "\n</body>";
-                $event->setData(str_replace('</body>', $html, $event->getData()));
-            }
         }
     }
 
