@@ -33,8 +33,12 @@
                 </div>
             </div>
         </fieldset>
-        <div class="z-formbuttons z-buttons">
-            {button src='button_ok.png' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
+        <div class="form-group">
+             <div class="col-lg-offset-3 col-lg-9">
+                <button class="btn btn-success" title="{gt text='Submit'}">
+                    {gt text='Submit'}
+                </button>
+            </div>
         </div>
     </div>
 </form>

@@ -22,7 +22,9 @@
     </fieldset>
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
-            <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
+            <button class="btn btn-success" title="{gt text="Save"}">
+                {gt text="Save"}
+            </button>
             <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
