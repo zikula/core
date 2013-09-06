@@ -12,6 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 /**
  * Doctrine class.
  */
@@ -26,7 +27,22 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula\Component\HookDispat
     {
         $areaId = $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
 
-        // Now we have an areaId we can register a subscriber
+        // Now we have an areaId we can register a subscriber, but first test if the subscriber is already registered.
+        $existingSubscriber = $this->getSubscriberByEventName($eventName);
+        if (!empty($existingSubscriber)) {
+            if (System::isDevelopmentMode()) {
+                LogUtil::registerWarning(__f('The hook subscriber "%1$s" could not be registered for "%2$s" because it is registered already.', array($eventName, $owner)));
+            } else {
+                $warns = LogUtil::getWarningMessages(false);
+                $msg = __f('Hook subscribers could not be registered for "%1$s" because they are registered already.', array($owner));
+                if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
+                    LogUtil::registerWarning($msg);
+                }
+            }
+            
+            return;
+        }
+
         $subscriber = new Zikula_Doctrine_Model_HookSubscriber();
         $subscriber->merge(array(
                 'owner' => $owner,
@@ -80,6 +96,21 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula\Component\HookDispat
     {
         $pareaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
 
+        $existingProvider = $this->getProviderByAreaAndType($pareaId, $hookType);
+        if (!empty($existingProvider)) {
+            if (System::isDevelopmentMode()) {
+                LogUtil::registerWarning(__f('The hook provider for area "%1$s" of type "%2$s" could not be registered for "%3$s" because it already exists.', array($pareaId, $hookType, $owner)));
+            } else {
+                $warns = LogUtil::getWarningMessages(false);
+                $msg = __f('Hook providers could not be registered for "%1$s" because they already exist.', array($owner));
+                if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
+                    LogUtil::registerWarning($msg);
+                }
+            }
+
+            return;
+        }
+
         $provider = new Zikula_Doctrine_Model_HookProvider();
         $provider->merge(array(
                 'owner' => $owner,
@@ -92,6 +123,15 @@ class Zikula_HookManager_Storage_Doctrine implements Zikula\Component\HookDispat
                 'serviceid' => $serviceId,
         ));
         $provider->save();
+    }
+
+    public function getProviderByAreaAndType($areaId, $type)
+    {
+        return Doctrine_Query::create()->select()
+            ->where('pareaid = ?', $areaId)
+            ->andWhere('hooktype = ?', $type)
+            ->from('Zikula_Doctrine_Model_HookProvider')
+            ->fetchArray();
     }
 
     public function unregisterProviderByArea($areaName)
