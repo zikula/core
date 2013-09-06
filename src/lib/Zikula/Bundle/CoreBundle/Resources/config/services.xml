@@ -8,4 +8,9 @@
         <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
     </parameters>
 
+    <services>
+        <service id="data_collector.zikula_version" class="Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector" public="false">
+            <tag name="data_collector" template="CoreBundle:Collector:ZikulaVersion.html.twig" id="zikula_version" priority="300" />
+        </service>
+    </services>
 </container>
