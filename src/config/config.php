@@ -75,11 +75,6 @@ $ZConfig['Log']['log.show_php_errorhandler'] = 0;   // Allow PHP error handlers 
 $ZConfig['Log']['log.display_template'] = 0;        // Overrides PHP's output handler if activated by log.show_php_error_handler and gains full control of output.
                                                     // This setting is generally NOT desirable when developing/debugging.
 
-$ZConfig['Log']['log.to_debug_toolbar'] = 0;        // 1 to show the debug toolbar (reqires development 1), 0 to disable
-$ZConfig['Log']['log.to_debug_toolbar_output'] = 0; // Debug toolbar output type: 0 - normal toolbar, 1 - json output, 2 - both
-$ZConfig['Log']['log.to_debug_toolbar_seckey'] = ''; // Security key for debug toolbar output of json type
-                                                     // If defined - it's required that http request contains custom header
-                                                     // "HTTP_X_ZIKULA_DEBUGTOOLBAR" equal to this key, otherwise no data is returned.
 $ZConfig['Log']['log.sql.to_display'] = 0;          // Display sql queries.
 $ZConfig['Log']['log.sql.to_file'] = 0;             // Log sql queries to file.
 
