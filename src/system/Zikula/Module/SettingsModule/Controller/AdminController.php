@@ -14,6 +14,9 @@
 
 namespace Zikula\Module\SettingsModule\Controller;
 
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\RequestContext;
+use Zikula\Core\Response\PlainResponse;
 use Zikula_View;
 use ModUtil;
 use LogUtil;
@@ -261,5 +264,34 @@ class AdminController extends \Zikula_AbstractController
         $this->view->assign('phpinfo', $phpinfo);
 
         return $this->response($this->view->fetch('Admin/phpinfo.tpl'));
+    }
+
+    /**
+     * @todo Remove this hacky code in 1.4.0.
+     * @return PlainResponse
+     */
+    public function debugToolbar()
+    {
+        if (!System::isDevelopmentMode() || !SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
+            return $this->throwForbidden();
+        }
+
+        $this->getContainer()->enterScope('request');
+        $this->getContainer()->set('request', $this->request, 'request');
+
+        $context = new RequestContext($_SERVER['REQUEST_URI']);
+
+        $routes = $this->getContainer()->get('router')->getRouteCollection();
+        $generator = new UrlGenerator($routes, $context);
+
+        $controller = new \Symfony\Bundle\WebProfilerBundle\Controller\ProfilerController(
+            $generator,
+            $this->getContainer()->get('profiler'),
+            $this->getContainer()->get('twig'),
+            $this->getContainer()->getParameter('data_collector.templates'),
+            'bottom'
+        );
+
+        return new PlainResponse($controller->toolbarAction($this->request, $this->request->query->get('token'))->getContent());
     }
 }

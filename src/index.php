@@ -11,6 +11,11 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +29,22 @@ include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
 $core->init();
+
+/**
+ * Use the router for urls starting with '_profile'.
+ * @todo Remove in 1.4.0.
+ */
+if (substr($request->getRequestUri(), 0, strlen('/_profiler')) == '/_profiler' && System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
+    $matcher = new UrlMatcher($kernel->getContainer()->get('router')->getRouteCollection(), new RequestContext());
+    $attributes = $matcher->match($request->getPathInfo());
+    $request->attributes->add($attributes);
+    $resolver = new ControllerResolver();
+    $response = $kernel->handle($request);
+    $response->send();
+    $kernel->terminate($request, $response);
+    $kernel->shutdown();
+    exit;
+}
 
 //$response = $kernel->handle($request);
 
@@ -155,6 +176,9 @@ switch (true) {
 if (false === $response instanceof PlainResponse) {
     Zikula_View_Theme::getInstance()->themefooter($response);
 }
+
+
+$core->getDispatcher()->dispatch('kernel.response', new \Symfony\Component\HttpKernel\Event\FilterResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $response));
 
 $response->send();
 System::shutdown();
