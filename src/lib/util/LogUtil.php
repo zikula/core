@@ -29,8 +29,8 @@ class LogUtil
     public static function getStatusMessages($delete = true, $override = true, $reverse = true)
     {
         $session = ServiceUtil::getManager()->get('session');
-        $msgs = $session->getMessages(Zikula_Session::MESSAGE_STATUS);
-        $errs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
+        $msgs = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_STATUS);
+        $errs = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_ERROR);
 
         if (!empty($errs) && $override) {
             $msgs = $errs;
@@ -78,8 +78,8 @@ class LogUtil
     public static function getWarningMessages($delete = true, $override = true, $reverse = true)
     {
         $session = ServiceUtil::getManager()->get('session');
-        $warns = $session->getMessages(Zikula_Session::MESSAGE_WARNING);
-        $errs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
+        $warns = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_WARNING);
+        $errs =  $session->getFlashBag()->peek(Zikula_Session::MESSAGE_ERROR);
 
         if (!empty($errs) && $override) {
             $warns = $errs;
@@ -124,7 +124,7 @@ class LogUtil
     public static function getErrorMessages($delete = true, $reverse = true)
     {
         $session = ServiceUtil::getManager()->get('session');
-        $msgs = $session->getMessages(Zikula_Session::MESSAGE_ERROR);
+        $msgs = $session->getFlashBag()->peek(Zikula_Session::MESSAGE_ERROR);
 
         if ($delete) {
             $session->clearMessages(Zikula_Session::MESSAGE_ERROR);
