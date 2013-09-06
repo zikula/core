@@ -150,7 +150,7 @@ class Zikula_Session extends Session
      */
     public function getMessages($type, $default = array())
     {
-        return $this->getFlashBag()->get($type, $default);
+        return $this->getFlashBag()->peek($type, $default);
     }
 
     /**
