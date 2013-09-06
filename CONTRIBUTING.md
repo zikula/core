@@ -14,6 +14,7 @@ Pull requests should use the following desription template:
 | Deprecations? | [yes|no]
 | Tests pass?   | [yes|no]
 | Fixed tickets | [comma separated list of tickets fixed by the PR]
+| Refs tickets  | [comma separated list of tickets fixed by the PR]
 | License       | MIT
 | Doc PR        | [The reference to the documentation PR if any]
 ```
@@ -28,7 +29,8 @@ For example:
 | BC breaks?    | no
 | Deprecations? | no
 | Tests pass?   | yes
-| Fixed tickets | #12, #43
+| Fixed tickets | #121, #437
+| Refs tickets  | #999
 | License       | MIT
 | Doc PR        | zikula/zikula-docs#123
 ```
