@@ -71,6 +71,8 @@ Features:
 - Params delivery from zikula html_select_* to smarty_function_html_options, #1031.
 - Added a third level of warning messages: LogUtil::registerWarning(). These override status messages and are
   overridden by error messages.
+- Do not register hooks twice, #484.
+- Do not register eventhandlers twice, #727.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
