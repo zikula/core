@@ -177,7 +177,7 @@ class ModUtil
      *
      * @param string  $modname The name of the module or pseudo-module (e.g., 'Users', 'ZConfig', '/EventHandlers').
      * @param string  $name    The name of the variable.
-     * @param boolean $default The value to return if the requested modvar is not set.
+     * @param mixed   $default The value to return if the requested modvar is not set.
      *
      * @return string|array If the name parameter is included then method returns
      *          string - module variable value
