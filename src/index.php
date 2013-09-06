@@ -132,8 +132,23 @@ switch (true) {
     case ($response->getStatusCode() == 500):
 
     default:
-        LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), 500, null);
-        $response = ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e : null));
+        if (!System::isDevelopmentMode() || !isset($e)) {
+            LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), 500, null);
+            $response = ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e : null));
+        } else {
+            // @todo Remove this hacky code in 1.4.0.
+            $core->getContainer()->enterScope('request');
+            $core->getContainer()->set('request', $request, 'request');
+
+            PageUtil::addVar('stylesheet', 'web/bundles/framework/css/exception.css');
+            PageUtil::addVar('stylesheet', 'web/bundles/framework/css/structure.css');
+            PageUtil::addVar('stylesheet', 'web/bundles/framework/css/body.css');
+
+            $exceptionController = new \Symfony\Bundle\TwigBundle\Controller\ExceptionController($core->getContainer()->get('twig'), true);
+            $flattenException = \Symfony\Component\HttpKernel\Exception\FlattenException::create($e);
+            $response = $exceptionController->showAction($request, $flattenException, $core->getContainer()->get('logger'));
+            $response->setStatusCode(500);
+        }
         break;
 }
 
