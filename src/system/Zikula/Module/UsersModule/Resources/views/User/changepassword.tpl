@@ -67,10 +67,10 @@
                     {/foreach}
                 </div>
                 {/if}
+                {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
+                <div id="users_user_changepassword_passmeter"></div>
+                {/if}
             </div>
-            {if $modvars.ZikulaUsersModule.use_password_strength_meter == 1}
-            <div id="users_user_changepassword_passmeter"></div>
-            {/if}
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label" for="newpasswordconfirm">{gt text="New password (repeat for verification)"}</label>
@@ -104,9 +104,13 @@
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
             {if $login}
-            {button class='btn btn-success' __alt='Save and continue logging in' __title='Save and continue logging in' __text='Save and continue logging in'}
+            <button class='btn btn-success' title="{gt text='Save and continue logging in'}">
+                {gt text='Save and continue logging in'}
+            </button>
             {else}
-            {button class='btn btn-success' __alt='Save' __title='Save' __text='Save'}
+            <button class='btn btn-success' title="{gt text='Save'}">
+                {gt text='Save'}
+            </button>
             {/if}
             <a href="{modurl modname='ZikulaUsersModule' type='user' func='index'}" title="{gt text='Cancel'}" class="btn btn-danger">{gt text='Cancel'}</a>
         </div>
