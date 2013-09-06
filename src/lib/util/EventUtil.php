@@ -149,6 +149,8 @@ class EventUtil
      * @throws InvalidArgumentException If the callable given is not callable.
      *
      * @return void
+     *
+     * @note If the exact same handler is already registered, this function does nothing.
      */
     public static function registerPersistentModuleHandler($moduleName, $eventName, $callable, $weight=10)
     {
@@ -165,7 +167,25 @@ class EventUtil
         }
 
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $handlers[] = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
+        $newHandler = array('eventname' => $eventName, 'callable' => $callable, 'weight' => $weight);
+        foreach($handlers as $handler) {
+            if ($handler == $newHandler) {
+                // The exact same handler exists already. Do nothing but display a warning.
+                if (System::isDevelopmentMode()) {
+                    LogUtil::registerWarning(__f('The eventhandler "%1$s" for "%2$s" could not be registered because it is registered already.', array($eventName, $moduleName)));
+                } else {
+                    $warns = LogUtil::getWarningMessages(false);
+                    $msg = __f('The eventhandlers for "%1$s" could not be registered because they are registered already.', array($moduleName));
+                    if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
+                        LogUtil::registerWarning($msg);
+                    }
+                }
+
+                return;
+            }
+        }
+
+        $handlers[] = $newHandler;
         ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
     }
 
@@ -203,6 +223,8 @@ class EventUtil
      * @throws InvalidArgumentException If class is not available or not a subclass of Zikula_AbstractEventHandler.
      *
      * @return void
+     *
+     * @note If the exact same handler is already registered, this function does nothing.
      */
     public static function registerPersistentEventHandlerClass($moduleName, $className)
     {
@@ -216,7 +238,25 @@ class EventUtil
         }
 
         $handlers = ModUtil::getVar(self::HANDLERS, $moduleName, array());
-        $handlers[] = array('classname' => $className);
+        $newHandler = array('classname' => $className);
+        foreach($handlers as $handler) {
+            if ($handler == $newHandler) {
+                // The exact same handler exists already. Do nothing but display a warning.
+                if (System::isDevelopmentMode()) {
+                    LogUtil::registerWarning(__f('The eventhandler class "%1$s" for "%2$s" could not be registered because it is registered already.', array($className, $moduleName)));
+                } else {
+                    $warns = LogUtil::getWarningMessages(false);
+                    $msg = __f('The eventhandlers for "%1$s" could not be registered because they are registered already.', array($moduleName));
+                    if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
+                        LogUtil::registerWarning($msg);
+                    }
+                }
+
+                return;
+            }
+        }
+
+        $handlers[] = $newHandler;
         ModUtil::setVar(self::HANDLERS, $moduleName, $handlers);
     }
 

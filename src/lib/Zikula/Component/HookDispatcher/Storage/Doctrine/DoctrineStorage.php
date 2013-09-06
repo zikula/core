@@ -17,7 +17,10 @@ namespace Zikula\Component\HookDispatcher\Storage\Doctrine;
 
 use Zikula\Component\HookDispatcher\StorageInterface;
 use Zikula\Component\HookDispatcher\Exception\InvalidArgumentException;
-use\Doctrine\ORM\EntityManager;
+use \Doctrine\ORM\EntityManager;
+use System;
+use LogUtil;
+use DataUtil;
 
 /**
  * Doctrine class.
@@ -44,7 +47,22 @@ class DoctrineStorage implements StorageInterface
     {
         $areaId = $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
 
-        // Now we have an areaId we can register a subscriber
+        // Now we have an areaId we can register a subscriber, but first test if the subscriber is already registered.
+        $existingSubscriber = $this->getSubscriberByEventName($eventName);
+        if (!empty($existingSubscriber)) {
+            if (System::isDevelopmentMode()) {
+                LogUtil::registerWarning(__f('The hook subscriber "%1$s" could not be registered for "%2$s" because it is registered already.', array($eventName, $owner)));
+            } else {
+                $warns = LogUtil::getWarningMessages(false);
+                $msg = __f('Hook subscribers could not be registered for "%1$s" because they are registered already.', array($owner));
+                if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
+                    LogUtil::registerWarning($msg);
+                }
+            }
+
+            return;
+        }
+
         $subscriber = new Entity\HookSubscriberEntity();
         $subscriber->setOwner($owner);
         $subscriber->setCategory($category);
@@ -101,6 +119,21 @@ class DoctrineStorage implements StorageInterface
     {
         $pareaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
 
+        $existingProvider = $this->getProviderByAreaAndType($pareaId, $hookType);
+        if (!empty($existingProvider)) {
+            if (System::isDevelopmentMode()) {
+                LogUtil::registerWarning(__f('The hook provider for area "%1$s" of type "%2$s" could not be registered for "%3$s" because it already exists.', array($pareaId, $hookType, $owner)));
+            } else {
+                $warns = LogUtil::getWarningMessages(false);
+                $msg = __f('Hook providers could not be registered for "%1$s" because they already exist.', array($owner));
+                if (!in_array(DataUtil::formatForDisplayHTML($msg), $warns)) {
+                    LogUtil::registerWarning($msg);
+                }
+            }
+
+            return;
+        }
+
         $provider = new Entity\HookProviderEntity();
         $provider->setOwner($owner);
         $provider->setSubowner($subOwner);
@@ -112,6 +145,18 @@ class DoctrineStorage implements StorageInterface
         $provider->setServiceid($serviceId);
         $this->em->persist($provider);
         $this->em->flush();
+    }
+
+    public function getProviderByAreaAndType($areaId, $type)
+    {
+        return $this->em->createQueryBuilder()->select('t')
+            ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
+            ->where('t.pareaid = ?1')
+            ->andWhere('t.hooktype = ?2')
+            ->getQuery()
+            ->setParameter(1, $areaId)
+            ->setParameter(2, $type)
+            ->getArrayResult();
     }
 
     public function unregisterProviderByArea($areaName)
