@@ -3,7 +3,7 @@
     <div>
         <input id="block_search_q" type="search" name="q" size="20" maxlength="255" results="10" autosave="Search" class="theme_search_input" onfocus="if(this.value=='{$searchtxt}')this.value=''" value="{$searchtxt|safetext}" />
         {if $vars.displaySearchBtn eq 1}
-        <input class="z-button z-bt-small theme_search_button" type="submit" value="{gt text="Go" domain='zikula'}" />
+        <input class="theme_search_button" type="submit" value="{gt text="Go" domain='zikula'}" />
         {/if}
         <div style="display: none;">
             {foreach from=$plugin_options key='plugin' item='plugin_option'}
