@@ -198,8 +198,12 @@ dd {
 }
 
 .z-blockposition-search #theme_search .theme_search_button {
-    margin: 0 2px !important;
+    margin: 0 !important;
     padding: 1px 4px !important;
+    background-color: #578BB8;
+    border-width: 0px;
+    border-left: 1px solid #fff;
+    height: 26px;
 }
 
 /**************** Content styles ****************/
@@ -376,4 +380,8 @@ ul.menutree ul {
 ul.menutree ul li a {
     background: #FAFAFA;
     padding-left: 20px;
+}
+
+#block_search_q {
+    height: 26px;
 }
