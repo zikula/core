@@ -178,7 +178,9 @@ if (false === $response instanceof PlainResponse) {
 }
 
 
-$core->getDispatcher()->dispatch('kernel.response', new \Symfony\Component\HttpKernel\Event\FilterResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $response));
+if (System::isDevelopmentMode()) {
+    $core->getDispatcher()->dispatch('kernel.response', new \Symfony\Component\HttpKernel\Event\FilterResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $response));
+}
 
 $response->send();
 System::shutdown();
