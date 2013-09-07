@@ -301,10 +301,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // register prefilters
         $this->register_prefilter('z_prefilter_add_literal');
 
-        if ($GLOBALS['ZConfig']['System']['legacy_prefilters']) {
-            $this->register_prefilter('z_prefilter_legacy');
-        }
-
         $this->register_prefilter('z_prefilter_gettext_params');
         //$this->register_prefilter('z_prefilter_notifyfilters');
 
@@ -2997,9 +2993,6 @@ function z_prefilter_add_literal_callback($matches)
     $script = $matches[3];
     $tagClose = $matches[4];
 
-    if (System::hasLegacyTemplates()) {
-        $script = str_replace('<!--[', '{{', str_replace(']-->', '}}', $script));
-    }
     $script = str_replace('{{', '{/literal}{', str_replace('}}', '}{literal}', $script));
 
     return $tagOpen . '{literal}' . $script . '{/literal}' . $tagClose;
@@ -3037,50 +3030,3 @@ function z_prefilter_gettext_params($tpl_source, $view)
 {
     return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.+?))__([a-zA-Z0-9][a-zA-Z_0-9]*=([\'"])(?:\\\\?+.)*?\3)#', '$1$2|gt:\$zikula_view', $tpl_source);
 }
-
-/**
- * Prefilter for legacy tag delemitters.
- *
- * @param string      $source The template's source prior to prefiltering.
- * @param Zikula_View $view   A reference to the Zikula_View object.
- *
- * @return string The prefiltered template contents.
- */
-function z_prefilter_legacy($source, $view)
-{
-    // rewrite the old delimiters to new.
-    $source = str_replace('<!--[', '{', str_replace(']-->', '}', $source));
-
-    // handle old plugin names and return.
-    return preg_replace_callback('#\{(.*?)\}#', create_function('$m', 'return z_prefilter_legacy_callback($m);'), $source);
-}
-
-/**
- * Callback function for self::z_prefilter_legacy().
- *
- * @param string $m Tag token.
- *
- * @return string
- */
-function z_prefilter_legacy_callback($m)
-{
-    $m[1] = str_replace('|pndate_format', '|dateformat', $m[1]);
-    $m[1] = str_replace('pndebug', 'zdebug', $m[1]);
-    $m[1] = preg_replace('#^(\s*)(/{0,1})pn([a-zA-Z0-9_]+)(\s*|$)#', '$1$2$3$4', $m[1]);
-    $m[1] = preg_replace('#\|pn#', '|', $m[1]);
-
-    return "{{$m[1]}}";
-}
-
-///**
-// * Prefilter for hookable filters.
-// *
-// * @param string      $tpl_source The template's source prior to prefiltering.
-// * @param Zikula_View $view       A reference to the Zikula_View object.
-// *
-// * @return string The prefiltered template contents.
-// */
-//function z_prefilter_notifyfilters($tpl_source, $view)
-//{
-//    return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.*?))(\|notifyfilters(?:([\'"])(?:\\\\?+.)*?\3|[^\s|}])*)#', '$1$2:\$zikula_view', $tpl_source);
-//}

@@ -1020,20 +1020,6 @@ class System
     }
 
     /**
-     * Legacy prefilters check.
-     *
-     * @return boolean
-     */
-    public static function hasLegacyTemplates()
-    {
-        if (!isset($GLOBALS['ZConfig']['System']['legacy_prefilters'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['legacy_prefilters'];
-    }
-
-    /**
      * Development mode enabled check.
      *
      * @return boolean
