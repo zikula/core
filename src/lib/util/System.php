@@ -996,17 +996,27 @@ class System
     }
 
     /**
-     * Legacy mode enabled check.
+     * Legacy mode enabled check for target versions
+     *
+     * @param string|boolean $targetVersion Returns true if target version is less than
+     *                                      or equal to the compay_layer version string
      *
      * @return boolean
      */
-    public static function isLegacyMode()
+    public static function isLegacyMode($targetVersion = null)
     {
-        if (!isset($GLOBALS['ZConfig']['System']['compat_layer'])) {
+        if (!isset($GLOBALS['ZConfig']['System']['compat_layer']) ||
+            !$GLOBALS['ZConfig']['System']['compat_layer']) {
             return false;
         }
 
-        return (bool)$GLOBALS['ZConfig']['System']['compat_layer'];
+        $minVersion = $GLOBALS['ZConfig']['System']['compat_layer'];
+
+        if (!is_bool($minVersion)) {
+            return version_compare($minVersion, $targetVersion, '<=');
+        }
+
+        return true;
     }
 
     /**
