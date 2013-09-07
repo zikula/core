@@ -34,7 +34,7 @@ $core->init();
  * Use the router for urls starting with '_profile'.
  * @todo Remove in 1.4.0.
  */
-if (substr($request->getRequestUri(), 0, strlen('/_profiler')) == '/_profiler' && System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
+if (strpos($request->getRequestUri(), '/_profiler') !== false && System::isDevelopmentMode()) {
     $matcher = new UrlMatcher($kernel->getContainer()->get('router')->getRouteCollection(), new RequestContext());
     $attributes = $matcher->match($request->getPathInfo());
     $request->attributes->add($attributes);
