@@ -272,7 +272,7 @@ class AdminController extends \Zikula_AbstractController
      */
     public function debugToolbar()
     {
-        if (!System::isDevelopmentMode() || !SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
+        if (!System::isDevelopmentMode()) {
             return $this->throwForbidden();
         }
 
