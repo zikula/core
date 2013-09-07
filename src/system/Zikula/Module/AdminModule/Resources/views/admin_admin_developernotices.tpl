@@ -1,7 +1,7 @@
 {checkpermissionblock component='ZikulaAdminModule::' instance='::' level=ACCESS_ADMIN}
 {modurl modname=Theme type=admin func=modifyconfig assign=themeurl}
 {if $notices.developer.devmode}
-<div id="z-developernotices">
+<div id="z-developernotices" class="alert alert-info">
     <strong>{gt text="Developer notices (development mode on)" domain="zikula"}</strong>
     <ul class="hide">
         {if isset($notices.developer.render)}

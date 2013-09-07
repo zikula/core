@@ -190,21 +190,6 @@
 #z-maincontent div#z-securityanalyzer,
 #z-maincontent div#z-updatechecker,
 #z-maincontent div#z-adminwarning,
-#z-maincontent div#z-developernotices {
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    text-align: left;
-    padding: 0 20px 0 0;
-    margin: 1em auto;
-    min-height: 1em;
-    width: 75%;
-    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    color: #444;
-}
 
 /* styling for security checks */
 #z-maincontent div#z-securityanalyzer {
