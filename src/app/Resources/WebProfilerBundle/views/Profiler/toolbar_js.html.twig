@@ -11,7 +11,7 @@
         {% endif %}
         Sfjs.load(
             'sfwdt{{ token }}',
-            'index.php?module=ZikulaSettingsModule&type=admin&func=debugToolbar&token={{ token }}',
+            '{{ app.request.getBasePath }}/index.php?module=ZikulaSettingsModule&type=admin&func=debugToolbar&token={{ token }}',
             /*'{{ path("_wdt", { "token": token }) }}',*/
             function(xhr, el) {
                 el.style.display = -1 !== xhr.responseText.indexOf('sf-toolbarreset') ? 'block' : 'none';
@@ -28,6 +28,15 @@
                     document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'block';
                     document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'block';
                     document.getElementById('sfMiniToolbar-{{ token }}').style.display = 'none';
+                }
+                
+                var links = document.getElementById('sfwdt{{ token }}').getElementsByTagName('a');
+                for (var i = 0; i < links.length; i++) {
+                    element = links[i];
+                    if (element.href.indexOf('_profiler') != -1) {
+                        var newLink = element.href.substr(0, element.href.indexOf('_profiler') - 1) + '{{ app.request.getBasePath }}' + element.href.substr(element.href.indexOf('_profiler') - 1);
+                        element.href = newLink;
+                    }
                 }
             },
             function(xhr) {
