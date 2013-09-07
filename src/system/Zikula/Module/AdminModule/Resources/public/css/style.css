@@ -187,19 +187,6 @@
     margin-top: -1.15em;
 }
 
-#z-maincontent div#z-securityanalyzer,
-#z-maincontent div#z-updatechecker,
-#z-maincontent div#z-adminwarning,
-
-/* styling for security checks */
-#z-maincontent div#z-securityanalyzer {
-    background: url("../../../../../../../images/icons/extrasmall/bell.png") #FFF6BF 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../../../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #FEFEF3, #FFF6BF) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../../../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#FEFEF3), to(#FFF6BF)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../../../../../images/icons/extrasmall/bell.png") 99% 0.35em no-repeat, linear-gradient(#FEFEF3, #FFF6BF); /*CSS3*/
-    border: 2px solid #ffd324;
-}
-
 /* styling for status update checker */
 #z-maincontent div#z-updatechecker {
     background: url("../../../../../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.35em no-repeat; /*non-CSS3 browsers*/
@@ -216,15 +203,6 @@
     background: url("../../../../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../../../../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
-}
-
-/* styling for developer notices */
-#z-maincontent div#z-developernotices {
-    background: url("../../../../../../../images/icons/extrasmall/run.png") #C5E8F1 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../../../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #EAF5FA, #C5E8F1) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../../../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#EAF5FA), to(#C5E8F1)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../../../../../images/icons/extrasmall/run.png") 99% 0.35em no-repeat, linear-gradient(#EAF5FA, #C5E8F1); /*CSS3*/
-    border: 2px solid #95C9EF;
 }
 
 div#z-developernotices strong,
