@@ -128,7 +128,7 @@ class JCSSUtil
         // Add bootstrap stylesheet
         array_unshift($stylesheets, 'web/bootstrap/css/bootstrap.min.css', 'style/bootstrap-zikula-theme.css');
         // Add legacy stylesheet
-        if (System::isLegacyMode()) {
+        if (System::isLegacyMode('1.3.6')) {
             array_unshift($stylesheets, 'style/legacy.css');
         }
         // Add core stylesheet
