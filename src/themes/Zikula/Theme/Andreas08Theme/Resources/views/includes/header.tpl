@@ -6,6 +6,7 @@
         <meta name="description" content="{$metatags.description}" />
         <meta name="keywords" content="{$metatags.keywords}" />
         <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        {pageaddvar name="stylesheet" value="web/bootstrap/css/bootstrap-theme.min.css"}
         {pageaddvar name="stylesheet" value="$stylepath/fluid960gs/reset.css"}
         {pageaddvar name="stylesheet" value="$stylepath/fluid960gs/$layout.css"}
         {pageaddvar name="stylesheet" value="$stylepath/style.css"}

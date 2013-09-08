@@ -125,14 +125,14 @@ class JCSSUtil
         if (!is_array($stylesheets)) {
             $stylesheets = array();
         }
-        // Add bootstrap stylesheet
-        array_unshift($stylesheets, 'web/bootstrap/css/bootstrap.min.css', 'style/bootstrap-zikula-theme.css');
         // Add legacy stylesheet
         if (System::isLegacyMode('1.3.6')) {
             array_unshift($stylesheets, 'style/legacy.css');
         }
         // Add core stylesheet
         array_unshift($stylesheets, $coreStyle[0]);
+        // Add bootstrap stylesheet
+        array_unshift($stylesheets, 'web/bootstrap/css/bootstrap.min.css');
         $stylesheets = array_unique(array_values($stylesheets));
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('header', $iehack);
