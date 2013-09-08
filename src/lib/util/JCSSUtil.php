@@ -133,6 +133,8 @@ class JCSSUtil
         array_unshift($stylesheets, $coreStyle[0]);
         // Add bootstrap stylesheet
         array_unshift($stylesheets, 'web/bootstrap/css/bootstrap.min.css');
+        // Add font-awesome
+        array_unshift($stylesheets, 'web/font-awesome/css/font-awesome.min.css');
         $stylesheets = array_unique(array_values($stylesheets));
         $iehack = '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->';
         PageUtil::addVar('header', $iehack);
