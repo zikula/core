@@ -55,8 +55,12 @@ class Bootstrap
 
             if (class_exists($class)) {
                 $bundle = new $class;
-                $bundle->setState($state);
-                $bundles[] = $bundle;
+                try {
+                    $bundle->setState($state);
+                    $bundles[] = $bundle;
+                } catch (\InvalidArgumentException $e) {
+                    // continue
+                }
             } else {
                 throw new \RuntimeException(sprintf('Looks like the bundle %s files are missing', $name));
             }
