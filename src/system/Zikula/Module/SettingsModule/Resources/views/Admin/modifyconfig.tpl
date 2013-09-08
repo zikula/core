@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_siteoff">{gt text="Disable site"}</label>
+                <label class="col-lg-3 control-label">{gt text="Disable site"}</label>
                 <div class="col-lg-9">
                     <div id="settings_siteoff">
                         <input id="settings_siteoff_yes" type="radio" name="settings[siteoff]" value="1" {if $modvars.ZConfig.siteoff eq 1}checked="checked"{/if} />
@@ -122,7 +122,7 @@
         <fieldset>
             <legend>{gt text="General settings"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_usecompression">{gt text="Activate compression"}</label>
+                <label class="col-lg-3 control-label">{gt text="Activate compression"}</label>
                 <div class="col-lg-9">
                     <div id="settings_usecompression">
                         <input id="UseCompression1" type="radio" name="settings[UseCompression]" value="1" {if $modvars.ZConfig.UseCompression eq 1}checked="checked"{/if} />
@@ -167,7 +167,7 @@
                 <div class="col-lg-9">
                     <input id="settings_permasearch" class="form-control" type="text" name="settings[permasearch]" value="{$modvars.ZConfig.permasearch}" size="60" /><br />
                     <label for="settings_permasearch_default">{gt text="Default"}</label>
-                    <input id="settings_permasearch_default" type="text" class="form-control" readonly="readonly" class="z-form-readonly" value="{gt text="À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü"}" />
+                    <input id="settings_permasearch_default" type="text" class="form-control z-form-readonly" readonly="readonly" value="{gt text="À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü"}" />
                 </div>
             </div>
             <div class="form-group">
@@ -175,7 +175,7 @@
                 <div class="col-lg-9">
                     <input id="settings_permareplace" class="form-control" type="text" name="settings[permareplace]" value="{$modvars.ZConfig.permareplace}" size="60" /><br />
                     <label for="settings_permareplace_default">{gt text="Default"}</label>
-                    <input id="settings_permareplace_default" type="text" class="form-control" readonly="readonly" class="z-form-readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue"}" />
+                    <input id="settings_permareplace_default" type="text" class="form-control z-form-readonly" readonly="readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue"}" />
                 </div>
             </div>
         </fieldset>
@@ -183,7 +183,7 @@
             <legend>{gt text="Short URL settings"}</legend>
             <input type="hidden" id="settings_shorturlstype_directory" name="settings[shorturlstype]" value="0" />
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="settings_shorturls">{gt text="Enable directory-based short URLs"}</label>
+                <label class="col-lg-3 control-label">{gt text="Enable directory-based short URLs"}</label>
                 <div class="col-lg-9">
                     <input id="settings_shorturls_yes" type="radio" name="settings[shorturls]" value="1" {if $modvars.ZConfig.shorturls eq 1}checked="checked"{/if} />
                     <label for="settings_shorturls_yes">{gt text="Yes"}</label>
@@ -193,7 +193,7 @@
             </div>
             <div data-switch="settings[shorturls]" data-switch-value="1">
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="settings_shorturlsstripentrypoint">{gt text="Strip entry point from directory-based URLs"}</label>
+                    <label class="col-lg-3 control-label">{gt text="Strip entry point from directory-based URLs"}</label>
                     <div id="settings_shorturlsstripentrypoint" class="col-lg-9">
                         <input id="shorturlsstripentrypoint1" type="radio" name="settings[shorturlsstripentrypoint]" value="1" {if $modvars.ZConfig.shorturlsstripentrypoint eq 1}checked="checked"{/if} />
                         <label for="shorturlsstripentrypoint1">{gt text="Yes (recommended)"}</label>
@@ -208,7 +208,7 @@
                     </div>
                 </div>
                 <div id="settings_shorturls_defaultmodule_container" class="form-group">
-                    <label class="col-lg-3 control-label"for="settings_shorturls_defaultmodule">{gt text="Do not display module name in short URLs for"}</label>
+                    <label class="col-lg-3 control-label" for="settings_shorturls_defaultmodule">{gt text="Do not display module name in short URLs for"}</label>
                     <div class="col-lg-9">
                         <select class="form-control" id="settings_shorturls_defaultmodule" name="settings[shorturlsdefaultmodule]">
                             <option value="">{gt text="(disabled)"}</option>
@@ -221,7 +221,7 @@
 
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                <button class="btn btn-success" alt="{gt text="Save"}" title="Save">
+                <button class="btn btn-success" title="{gt text='Save'}">
                     {gt text="Save"}
                 </button>
                 <a class="btn btn-danger" href="{modurl modname=ZikulaSettingsModule type=admin func=index}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>

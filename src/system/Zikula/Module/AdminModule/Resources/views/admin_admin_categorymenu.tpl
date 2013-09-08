@@ -1,8 +1,7 @@
 {ajaxheader modname='ZikulaAdminModule' filename='admin_admin_ajax.js' ui=true}
 
 <ol class="breadcrumb">
-    <span>{gt text='You are in:'}</span>
-    <li><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></li>
+    <li>{gt text='You are in:'} <a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></li>
 
     {if $func neq 'adminpanel'}
         <li><a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel' acid=$currentcat}">{$menuoptions.$currentcat.title|safetext}</a></li>
