@@ -39,7 +39,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label" for="oldpassword">{gt text="Current password"}</label>
             <div class="col-lg-9">
-                <input type="password" id="oldpassword" name="oldpassword" class="form-control"{if isset($password_errors.oldpass) && !empty($password_errors.oldpass)} z-form-error{/if}" value="" />
+                <input type="password" id="oldpassword" name="oldpassword" class="form-control{if isset($password_errors.oldpass) && !empty($password_errors.oldpass)} z-form-error{/if}" value="" />
                 {if isset($password_errors.oldpass) && !empty($password_errors.oldpass)}
                 <div class="help-block alert alert-danger">
                     {foreach from=$password_errors.oldpass item='message' name='messages'}

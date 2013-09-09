@@ -13,7 +13,7 @@
         <legend>{gt text="HTML entities"}</legend>
         <div class="form-group" id="securitycenter_htmlentities">
             <div class="col-lg-12">
-                <label for="securitycenter_htmlentities">{gt text="Translate embedded HTML entities into real characters"}</label>
+                <label>{gt text="Translate embedded HTML entities into real characters"}</label>
                 <input id="securitycenter_htmlentities_yes" type="radio" name="xhtmlentities" value="1"{if $htmlentities eq 1} checked="checked"{/if} />
                 <label for="securitycenter_htmlentities_yes">{gt text="Yes"}</label>
                 <input id="securitycenter_htmlentities_n0" type="radio" name="xhtmlentities" value="0"{if $htmlentities ne 1} checked="checked"{/if} />
@@ -64,7 +64,7 @@
             <button class="btn btn-success" title="{gt text="Save"}">
                 {gt text="Save"}
             </button>
-            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}" class="btn btn-danger">{gt text="Cancel"}</a>
+            <a class="btn btn-danger" href="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='index'}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
     </div>
 </form>

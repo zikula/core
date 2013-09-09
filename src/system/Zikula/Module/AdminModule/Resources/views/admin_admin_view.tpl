@@ -33,7 +33,7 @@
                     <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips glyphicon glyphicon-wrench"></a>
                 {/if}
                 {if $access_delete}
-                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" alt="{gt text="Delete"}" class="tooltips glyphicon glyphicon-trash"></a>
+                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips glyphicon glyphicon-trash"></a>
                 {/if}
             </td>
         </tr>

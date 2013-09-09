@@ -68,16 +68,16 @@
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
                 {if $theme.displayname neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.displayname}"><span class="glyphicon glyphicon-ok" alt="{gt text="Set as default"}" title={$strSetDefaultTheme} class="tooltips"></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.displayname}"><span class="glyphicon glyphicon-ok tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
-                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="glyphicon glyphicon-eye-open" alt="{gt text="Preview"}" title={$strPreviewTheme} class="tooltips"></a>
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="modify" themename=$theme.displayname}"><span class="glyphicon glyphicon-pencil" alt="{gt text="Edit"}" title={$strEditTheme} class="tooltips"></a>
+                <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="glyphicon glyphicon-eye-open tooltips" title="{$strPreviewTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="modify" themename=$theme.displayname}"><span class="glyphicon glyphicon-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="glyphicon glyphicon-trash" alt="{gt text="Delete"}" title={$strDeleteTheme} class="tooltips"></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="glyphicon glyphicon-trash tooltips" title="{$strDeleteTheme}"></span></a>
                 {/if}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="glyphicon glyphicon-info-sign" alt="{gt text="Credits"}" title={$strCreditsTheme} class="tooltips"></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="glyphicon glyphicon-info-sign tooltips" title="{$strCreditsTheme}"></span></a>
             </td>
         </tr>
         {foreachelse}
