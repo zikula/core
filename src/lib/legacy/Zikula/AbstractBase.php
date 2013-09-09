@@ -785,8 +785,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
             return;
         }
 
-        // Should we expire the session also? drak.
-        throw new Zikula_Exception_Forbidden(__('Security token validation failed'));
+        throw new Zikula_Exception_Forbidden(__f('Oops, something went wrong: security token validation failed. You might want to go to the <a href="%s">startpage</a>.', $this->request->getBaseUrl()));
     }
 
     /**
