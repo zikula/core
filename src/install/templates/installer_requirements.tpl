@@ -96,11 +96,11 @@
         <div class="form-group"id="test">
             {if $checkfailed neq true}
             <input type="hidden" name="action" value="dbinformation" />
-            <input type="submit" value="{gt text="Next"}" class="btn btn-default btn-success" />
+            <button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-success"><span class="icon icon-double-angle-right"></span> {gt text="Check again"}</button>                        
             {else}
             <br />
             <input type="hidden" name="action" value="requirements" />
-            <button type="submit" id="submit"  onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-danger">{gt text="Check again"}</button>
+            <button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-danger"><span class="icon icon-repeat"></span> {gt text="Check again"}</button>
             {/if}
         </div>
     </div>
