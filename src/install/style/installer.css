@@ -88,7 +88,7 @@ img {
 .bs {
     background: none repeat scroll 0 0 #0092D0;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     overflow: hidden;
     padding: 0;
@@ -294,6 +294,14 @@ fieldset{
 }
 
 .icon-remove {
+    color:red;
+}
+
+.icon-circle{
+    color: #61B329;
+}
+
+.red{
     color:red;
 }
 
