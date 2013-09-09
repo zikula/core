@@ -720,7 +720,21 @@ class DBUtil
                 // generate the actual insert values
                 if (!$skip) {
                     $cArray[] = $columnList[$key];
-                    $vArray[] = self::_formatForStore($object[$key]);
+                    $value    = is_bool($object[$key]) ? (int)$object[$key] : $object[$key];
+                    if (($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
+                        (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
+                        $chunks = str_split ($object[$key], 32000);
+                        $str    = '';
+                        foreach ($chunks as $chunk) {
+                            if ($str) {
+                                $str .= ' || ';
+                            }
+                            $str = "CAST (" . self::_formatForStore($chunk) . " AS CLOB)";
+                        }
+                        $vArray[] = self::_formatForStore($str);
+                    } else {
+                        $vArray[] =  self::_typesafeQuotedValue ($table, $key, $object[$key]);
+                    }
                 }
             } else {
                 if ($key == $idfield) {
@@ -749,9 +763,17 @@ class DBUtil
 
         self::flushCache($table);
 
-        if ((!$preserve || !isset($object[$idfield])) && isset($columnList[$idfield])) {
-            $obj_id = self::getInsertID($table, $idfield);
-            $object[$idfield] = $obj_id;
+        if (!isset($object[$idfield]) || !$object[$idfield] || (!$preserve || !isset($object[$idfield])) && isset($columnList[$idfield])) {
+            if (isset($columnDefList[$idfield])) {
+                $columnDefinition = $columnDefList[$idfield];
+                $columnDefFields  = explode(' ', $columnDefinition);
+                $colType          = substr($columnDefinition, 0, 1);
+                $colAuto          = $columnDefFields[1];
+                if ($colType == 'I' && $colAuto == 'AUTO') {
+                    $obj_id = self::getInsertID($table, $idfield);
+                    $object[$idfield] = $obj_id;
+                }
+            }
         }
 
         if ($cArray && $vArray) {
@@ -827,7 +849,21 @@ class DBUtil
 
                     // generate the actual update values
                     if (!$skip) {
-                        $tArray[] = "$val=" . (isset($object[$key]) ? self::_formatForStore($object[$key]) : 'NULL');
+                        if (isset($object[$key]) &&
+                            ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
+                            (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
+                            $chunks = str_split ($object[$key], 32000);
+                            $str    = '';
+                            foreach ($chunks as $chunk) {
+                                if ($str) {
+                                    $str .= ' || ';
+                                }
+                                $str .= "CAST (" . self::_formatForStore($chunk) . " AS CLOB)";
+                            }
+                            $tArray[] = "$val=$str";
+                        } else {
+                            $tArray[] = "$val=" . (isset($object[$key]) ? self::_typesafeQuotedValue ($table, $key, $object[$key]) : 'NULL');
+                        }
                     }
                 }
             }
@@ -1948,11 +1984,11 @@ class DBUtil
      * @param string  $where          The where clause (optional) (default='').
      * @param string  $categoryFilter The category list to use for filtering.
      * @param boolean $returnArray    Whether or not to return an array (optional) (default=false).
-     * @param boolean $usesJoin       Whether a join is used (if yes, then a prefix is prepended to the column name) (optional) (default=false).
+     * @param boolean $useJoins       Whether a join is used (if yes, then a prefix is prepended to the column name) (optional) (default=false).
      *
      * @return mixed The resulting string or array.
      */
-    public static function generateCategoryFilterWhere($table, $where, $categoryFilter, $returnArray = false, $usesJoin = false)
+    public static function generateCategoryFilterWhere($table, $where, $categoryFilter, $returnArray = false, $useJoins = false)
     {
         $tables = self::getTables();
         $idlist = self::_generateCategoryFilter($table, $categoryFilter);
@@ -1962,7 +1998,7 @@ class DBUtil
             $idcol = $cols[$idcol];
 
             $and = ($where ? ' AND ' : '');
-            $tblName = ($usesJoin ? 'tbl.' : '') . $idcol;
+            $tblName = ($useJoins ? 'tbl.' : '') . $idcol;
             $where .= "$and $tblName IN ($idlist)";
         }
 
@@ -2223,10 +2259,11 @@ class DBUtil
      * @param string $column         The column to place in the sum phrase.
      * @param string $where          The where clause (optional) (default='').
      * @param string $categoryFilter The category list to use for filtering (optional) (default=null).
+     * @param string $subquery       The subquery to the apply to the operatioin (optional) default=null).
      *
      * @return integer The resulting column sum.
      */
-    public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null)
+    public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null, $subquery = null)
     {
         $tables = self::getTables();
         $tableName = $tables[$table];
@@ -2236,7 +2273,11 @@ class DBUtil
         $where = self::generateCategoryFilterWhere($table, $where, $categoryFilter);
         $where = self::_checkWhereClause($where);
 
-        $sql = "SELECT SUM($fieldName) FROM $tableName $where";
+        if ($subquery) {
+            $sql = "SELECT SUM($fieldName) FROM $subquery";
+        } else {
+            $sql = "SELECT SUM($fieldName) FROM $tableName AS tbl $where";
+        }
 
         $res = self::executeSQL($sql);
         if ($res === false) {
@@ -2247,6 +2288,8 @@ class DBUtil
         if ($data = $res->fetchColumn(0)) {
             $sum = $data;
         }
+
+        self::setCache($table, $key, $sum);
 
         return $sum;
     }
@@ -2259,6 +2302,7 @@ class DBUtil
      * @param string  $column         The column to place in the count phrase (optional) (default='*').
      * @param boolean $distinct       Whether or not to count distinct entries (optional) (default='false').
      * @param string  $categoryFilter The category list to use for filtering (optional) (default=null).
+     * @param string  $subquery       The subquery to the apply to the operatioin (optional) default=null).
      *
      * @return integer The resulting object count.
      */
@@ -2285,15 +2329,22 @@ class DBUtil
             return $res;
         }
 
-        $res = $res->fetchAll(Doctrine_Core::FETCH_COLUMN);
+        $res = $res->fetchAll(Doctrine_Core::FETCH_COLUMN); // RNG: Should this really be fetchAll() ??
 
         if ($res) {
             if (isset($res[0])) {
-                $count = $res[0];
+                $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+                if ($dbDriverName == 'jdbcbridge') {
+                    $count = $res[0][0];
+                } else {
+                    $count = $res[0];
+                }
             } else {
                 $count = $res["COUNT($dst $col)"];
             }
         }
+
+        self::setCache($table, $key, $count);
 
         return $count;
     }
@@ -2518,27 +2569,32 @@ class DBUtil
 
         self::_setFetchedObjectCount(0);
 
-        $tables = self::getTables();
-        $tableName = $tables[$table];
-        $columns = $tables["{$table}_column"];
+        $tables       = self::getTables();
+        $tableName    = $tables[$table];
+        $columns      = $tables["{$table}_column"];
+        $useJoins     = (count($joinInfo) > 0) ? true : false;
+        $disableJoins = System::getVar('disableJoinss');
 
-        $sqlStart = "SELECT " . ($distinct ? 'DISTINCT ' : '') . self::_getAllColumnsQualified($table, 'tbl', $columnArray);
-        $sqlFrom = "FROM $tableName AS tbl ";
+        $sqlStart  = "SELECT " . ($distinct ? 'DISTINCT ' : '') . self::_getAllColumnsQualified($table, 'tbl', $columnArray);
+        $sqlFrom   = "FROM $tableName AS tbl ";
 
-        $sqlJoinArray = self::_processJoinArray($table, $joinInfo, $columnArray);
-        $sqlJoin = $sqlJoinArray[0];
-        $sqlJoinFieldList = $sqlJoinArray[1];
+        if ($useJoins && !$disableJoins) {
+            $sqlJoinArray     = self::_processJoinArray($table, $joinInfo, $columnArray);
+            $sqlJoin          = $sqlJoinArray[0];
+            $sqlJoinFieldList = $sqlJoinArray[1];
+        }
         $ca = null; //$sqlJoinArray[2]; -- edited by Drak, this causes errors if set.
 
-        $usesJoin = (count($joinInfo) > 0) ? true : false;
-
-        $where = self::generateCategoryFilterWhere($table, $where, $categoryFilter, false, $usesJoin);
-
-        $where = self::_checkWhereClause($where);
+        $where   = self::generateCategoryFilterWhere($table, $where, $categoryFilter, false, $useJoins);
+        $where   = self::_checkWhereClause($where);
         $orderby = self::_checkOrderByClause($orderby, $table);
-
         $objects = array();
-        $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $orderby";
+
+        if ($useJoins && !$disableJoins) {
+            $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $orderby";
+        } else {
+           $sql = "$sqlStart $sqlFrom $where $orderby";
+        }
 
         do {
             $fetchedObjectCount = self::_getFetchedObjectCount();
@@ -2564,6 +2620,72 @@ class DBUtil
         $idFieldName = isset($tables["{$table}_primary_key_column"]) ? $tables["{$table}_primary_key_column"] : 'id';
 
         $objects = self::_selectPostProcess($objects, $table, $idFieldName);
+
+        if ($objects && $useJoins && $disableJoins) {
+            foreach ($joinInfo as $ji) {
+                if (isset($ji['join_where']) && $ji['join_where']) {
+                    continue;
+                }
+
+                $joinTable = $ji['join_table'];
+                $tab       = $tables[$joinTable];
+                $cols      = $tables["{$joinTable}_column"];
+                $colDefs   = $tables["{$joinTable}_column_def"];
+
+                $ids     = array();
+                $idField = $ji['compare_field_table'];
+                foreach ($objects as $object) {
+                    $id = isset($object[$idField]) ? $object[$idField] : null;
+                    if ($id) {
+                        $ids[$id] = $id;
+                    }
+                }
+
+                $joinFields       = $ji['join_field'];
+                $objectFields     = $ji['object_field_name'];
+                $joinTableIdField = $ji['compare_field_join'];
+
+                if (!is_array($joinFields)) {
+                    $joinFields = array($joinFields);
+                }
+                if (!is_array($objectFields)) {
+                    $objectFields = array($objectFields);
+                }
+
+                $fieldType  = $colDefs[$joinTableIdField];
+                $fieldTypes = explode (' ', $fieldType);
+                $fieldType  = $fieldTypes[0];
+
+                static $numericFields = null;
+                if (!$numericFields) {
+                    $numericFields = array ('I', 'I1', 'I2', 'I4', 'I8', 'F', 'N', 'L');
+                }
+
+                if (!in_array ($fieldType, $numericFields)) {
+                    foreach ($ids as $k=>$v) {
+                        $ids[$k] = "'$v'";
+                    }
+                }
+
+                $idList = implode (',', $ids);
+                $where  = "$cols[$joinTableIdField] IN ($idList)";
+                $joinObjects = $ids ? self::selectObjectArray ($joinTable, $where, '', -1, -1, $joinTableIdField) : array();
+
+                foreach ($objects as $k=>$object) {
+                    foreach ($joinFields as $kk=>$joinField) {
+                        if (isset($object[$idField])) {
+                            $objectIdValue    = $object[$idField];
+                            $joinFieldName    = $joinFields[$kk];
+                            $objectFieldName  = $objectFields[$kk];
+                            if (isset($joinObjects[$objectIdValue])) {
+                                $objectFieldValue = $joinObjects[$objectIdValue][$joinFieldName];
+                                $objects[$k][$objectFieldName] = $objectFieldValue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         self::setCache($table, $key, $objects);
 
