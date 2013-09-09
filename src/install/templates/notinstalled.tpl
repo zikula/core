@@ -1,12 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="{$lang}" xml:lang="{$lang}">
+<!DOCTYPE html>
+<html lang="{$lang}" xml:lang="{$lang}">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Zikula Installer">
+        <meta name="author" content="Zikula Development Team">
         <title>{gt text="Zikula is not installed!"}</title>
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />		
         <link rel="stylesheet" href="install/style/systemdialogs.css" type="text/css" />
     </head>
     <body>
-        <div id="container">
+        <div class="container">
             <div id="cell">
                 <div id="content">
                     <h1>{gt text="Zikula Application Framework"}</h1>

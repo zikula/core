@@ -11,7 +11,7 @@
     {/if}
 </div>
 {/if}
-<form id="dbinformation_form" class="form-horizontal" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form id="form_dbinformation" class="form-horizontal" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="action" value="processBDInfo" />
         <input type="hidden" name="locale" value="{$locale}" />
@@ -60,8 +60,14 @@
             </div>
 
         </fieldset>
-        <div class="z-buttons center">
-            <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
+        <div class="btn-group"> 
+            <button type="submit" id="submit" class="btn btn-default btn-primary">{gt text="Next"}</button>
         </div>
     </div>
 </form>
+<br />
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">
+    <span class="sr-only">80% {gt text="Complete"}</span>
+    </div>
+</div>

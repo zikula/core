@@ -14,7 +14,7 @@
     {/if}
 </div>
 {/if}
-<form id="createadmin_form" class="form-horizontal" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form id="form_createadmin" class="form-horizontal" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="action" value="finish" />
         <input type="hidden" name="locale" value="{$locale}" />
@@ -45,8 +45,14 @@
             </div>
         </div>
         </fieldset>
-        <div class="z-buttons center">
-            <input type="submit" value="{gt text="Proceed with Installation"}" class="z-bt-ok" />
+        <div class="btn-group"> 
+            <button type="submit" id="submit" class="btn btn-default btn-info">{gt text="Proceed with Installation"}</button>
         </div>
     </div>
 </form>
+<br />
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;">
+    <span class="sr-only">95% {gt text="Complete"}</span>
+    </div>
+</div>

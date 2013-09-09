@@ -6,7 +6,7 @@
 {if !$mbstring}
 <div class="alert alert-danger">FATAL ERROR: mbstring is not installed in PHP.  Zikula will not install without this extension.</div>
 {else}
-<form id="lang_form" class="z-form gap" action="install.php?lang={$lang}" method="get">
+<form class="form-horizontal" role="form" id="form_lang" class="z-form gap" action="install.php?lang={$lang}" method="get">
     <div>
         <input type="hidden" name="action" value="requirements" />
         {if not $installbySQL}
@@ -20,9 +20,16 @@
         </div>
         </fieldset>
         {/if}
-        <div class="z-buttons center">
-            <input type="submit" value="{gt text="Next"}" class="z-bt-ok" />
+        <br />
+        <div class="btn-group">            
+            <button type="submit" id="submit" class="btn btn-default btn-primary">{gt text="Next"}</button>
         </div>
     </div>
 </form>
 {/if}
+<br />
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
+    <span class="sr-only">20% {gt text="Complete"}</span>
+    </div>
+</div>
