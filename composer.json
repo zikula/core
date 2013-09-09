@@ -1,5 +1,5 @@
 {
-    "name": "zikula/core1",
+    "name": "zikula/core",
     "homepage": "http://zikula.org/",
     "license": "LGPL-3.0+",
     "description": "Zikula Application Framework",
@@ -33,29 +33,42 @@
     "require": {
         "php": ">=5.3.3",
         "beberlei/DoctrineExtensions": "dev-master",
-        "elao/web-profiler-extra-bundle" : "dev-master",
-        "doctrine/doctrine-bundle": "1.2.*",
+        "doctrine/doctrine-bundle": "~1.2",
         "doctrine/orm": ">=2.2.3,<2.5-dev",
         "drak/doctrine1": "dev-master",
         "drak/smarty": "dev-master",
-        "phpids/phpids": "dev-master",
+        "elao/web-profiler-extra-bundle" : "dev-master",
         "gedmo/doctrine-extensions": "2.3.*",
         "imagine/Imagine": "dev-master",
         "michelf/php-markdown": "1.3.*@dev",
         "mobiledetect/mobiledetectlib": "~2",
-        "sensio/distribution-bundle": "2.2.*",
-        "sensio/framework-extra-bundle": "2.2.*",
+        "phpids/phpids": "dev-master",
+        "sensio/distribution-bundle": "~2.3",
+        "sensio/framework-extra-bundle": "~2.3",
         "stof/doctrine-extensions-bundle": "1.1.*",
-        "symfony/swiftmailer-bundle": "2.2.*",
-        "symfony/symfony": "2.3.*",
-        "symfony/assetic-bundle": "2.1.*",
-        "symfony/monolog-bundle": "~2.2",
+        "symfony/symfony": "2.4.*",
+        "symfony/assetic-bundle": "~2.3",
+        "symfony/swiftmailer-bundle": "~2.3",
+        "symfony/monolog-bundle": "~2.4",
+        "twig/extensions": "~1.0",
         "zikula/generator-bundle": "dev-master",
         "zikula/filesystem": "dev-master",
         "zikula/jquery-bundle": "dev-master",
         "zikula/jquery-ui-bundle": "dev-master",
         "zikula/bootstrap-bundle": "dev-master",
         "zikula/fontawesome-bundle": "dev-master"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+        ],
+        "post-update-cmd": [
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets"
+        ]
     },
     "config": {
         "vendor-dir": "src/vendor",
