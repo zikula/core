@@ -81,7 +81,7 @@
                 {assign var="options" value=$modules[modules].options}
                 {strip}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|safetext}" class="glyphicon glyphicon-{$options[options].image} tooltips" style="color:{$options[options].color}" title="{$options[options].title}"></a>&nbsp;
+                <a href="{$options[options].url|safetext}" class="icon icon-{$options[options].image} tooltips" style="color:{$options[options].color}" title="{$options[options].title}"></a>&nbsp;
                 {/section}
                 {/strip}
             </td>
