@@ -23,25 +23,25 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="username">{gt text="User name"}</label>
                 <div class="col-lg-9">
-                <input type="text" name="username" id="username" maxlength="80" value="{$username|default:'admin'}"{if $uservalidatefailed} class="validationfailed"{/if} />
+                <input type="text" name="username" id="username" class="form-control" maxlength="80" value="{$username|default:'admin'}"{if $uservalidatefailed} class="validationfailed"{/if} />
             </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="password">{gt text="Password"}</label>
                 <div class="col-lg-9">
-                <input type="password" name="password" id="password" maxlength="80" value="{$password}"{if $passwordcomparefailed} class="validationfailed"{/if} />
+                <input type="password" name="password" id="password" class="form-control" maxlength="80" value="{$password}"{if $passwordcomparefailed} class="validationfailed"{/if} />
             </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="repeatpassword">{gt text="Password (repetition for verification)"}</label>
                 <div class="col-lg-9">
-                <input type="password" name="repeatpassword" id="repeatpassword" maxlength="80" value="{$repeatpassword}"{if $passwordcomparefailed} class="validationfailed"{/if} />
+                <input type="password" name="repeatpassword" id="repeatpassword" class="form-control" maxlength="80" value="{$repeatpassword}"{if $passwordcomparefailed} class="validationfailed"{/if} />
             </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="email">{gt text="E-mail address"}</label>
                 <div class="col-lg-9">
-                <input type="text" name="email" id="email" maxlength="80" value="{$email}"{if $emailvalidatefailed} class="validationfailed"{/if} />
+                <input type="text" name="email" id="email" class="form-control" maxlength="80" value="{$email}"{if $emailvalidatefailed} class="validationfailed"{/if} />
             </div>
         </div>
         </fieldset>

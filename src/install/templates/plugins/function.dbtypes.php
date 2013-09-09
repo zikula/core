@@ -45,7 +45,7 @@ function smarty_function_dbtypes($params, &$smarty)
     $id = DataUtil::formatForDisplay($params['id']);
     $sv   = isset($params['selectedValue']) ? $params['selectedValue'] : 'mysql';
 
-    $dbtypesdropdown = "<select name=\"$name\" id=\"$id\" onchange=\"dbtype_onchange()\">\n";
+    $dbtypesdropdown = "<select name=\"$name\" id=\"$id\" class=\"form-control\" onchange=\"dbtype_onchange()\">\n";
     if (function_exists('mysql_connect')) {
         $sel = $sv=='mysql' ? 'selected="selected"' : '';
         $dbtypesdropdown .= "<option value=\"mysql\" $sel>" . __('MySQL') . "</option>\n";

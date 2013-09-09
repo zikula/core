@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="lang">{gt text="Choose a language"}</label>
                 <div class="col-lg-9">
-                {html_select_locales name=lang all=false installed=true selected=$lang id=lang}
+                {html_select_locales name=lang all=false installed=true selected=$lang id=lang class=form-control}
             </div>
         </div>
         </fieldset>
