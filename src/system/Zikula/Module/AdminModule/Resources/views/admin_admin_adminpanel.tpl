@@ -18,7 +18,7 @@
                     </a>
                     {/if}
                     <div class="z-adminlinkheader">
-                         <span title="Drag and drop into a new module category" id="dragicon{$adminlink.id}" class=" z-dragicon tooltips glyphicon glyphicon24 glyphicon-move"></span> 
+                         <span title="Drag and drop into a new module category" id="dragicon{$adminlink.id}" class="z-dragicon tooltips icon icon-move"></span> 
                         <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
 
                         {assign var="modlinks" value=false}
