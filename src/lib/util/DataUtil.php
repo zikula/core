@@ -339,7 +339,7 @@ class DataUtil
             }
         } else {
             $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-            if ($dbDriverName == 'mssql' || $dbDriverName == 'oracle') {
+            if ($dbDriverName == 'mssql' || $dbDriverName == 'oracle' || $dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') {
                 $var = str_replace("'", "''", $var);
             } else {
                 $var = addslashes($var);

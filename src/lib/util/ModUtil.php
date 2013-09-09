@@ -687,12 +687,26 @@ class ModUtil
                 $data = call_user_func($tablefuncOld);
             }
 
+            $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
+
             // Generate _column automatically from _column_def if it is not present.
             foreach ($data as $key => $value) {
                 $table_col = substr($key, 0, -4);
                 if (substr($key, -11) == "_column_def" && !isset($data[$table_col])) {
                     foreach ($value as $fieldname => $def) {
                         $data[$table_col][$fieldname] = $fieldname;
+                    }
+                }
+
+                if ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') {
+                    if (substr($key, -7) == "_column") {
+                        if (is_array($value) && $value) {
+                            foreach ($value as $alias => $fieldname) {
+                                if ($alias != 'user') {
+                                    $data[$key][$alias] = strtoupper($fieldname);
+                                }
+                            }
+                        }
                     }
                 }
             }
