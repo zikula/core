@@ -13,6 +13,7 @@ class ZikulaVersionDataCollector extends DataCollector
             'version' => \Zikula_Core::VERSION_NUM,
             'ghZikulaCoreUrl' => 'https://www.github.com/zikula/core',
             'ghZikulaDocsUrl' => 'https://www.github.com/zikula/zikula-docs',
+            'ghZikulaBootstrapDocsUrl' => 'http://zikula.github.io/bootstrap-docs',
         );
     }
 
@@ -29,6 +30,11 @@ class ZikulaVersionDataCollector extends DataCollector
     public function getGhZikulaDocsUrl()
     {
         return $this->data['ghZikulaDocsUrl'];
+    }
+
+    public function getGhZikulaBootstrapDocsUrl()
+    {
+        return $this->data['ghZikulaBootstrapDocsUrl'];
     }
 
     public function getName()

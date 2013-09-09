@@ -16,6 +16,9 @@
     <div class="sf-toolbar-info-piece">
         <a href="{{ collector.ghZikulaDocsUrl }}">GitHub Documentation Repository</a>
     </div>
+    <div class="sf-toolbar-info-piece">
+        <a href="{{ collector.ghZikulaBootstrapDocsUrl }}">Styling Documentation</a>
+    </div>
     {% endset %}
     {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
 {% endblock %}
@@ -32,5 +35,5 @@
 
 {% block panel %}
     <h2>Zikula Core {{ collector.version }}</h2>
-    <p>@todo Add some usefull information here.</p>
+    <p>@todo Add some useful information here.</p>
 {% endblock %}
