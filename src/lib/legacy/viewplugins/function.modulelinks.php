@@ -40,7 +40,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
-    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar navbar-default';
+    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar navbar-default navbar-modulelinks';
     $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
     $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
@@ -72,7 +72,6 @@ function smarty_function_modulelinks($params, Zikula_View $view)
         }
     }
 
-
     $html = '';
 
     if (!empty($menuLinks)) {
@@ -93,21 +92,150 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             $class = trim(implode(' ', $class));
             $i++;
 
-            $html .= '<li';
-            $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
-            $html .= !empty($class) ? ' class="'.$class.'"' : '';
-            $html .= '>';
-            $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
+            if (System::isLegacyMode() && !empty($class)) {
+                if ($menuitem['class'] == 'z-icon-es-add') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'plus';
+                } elseif ($menuitem['class'] == 'z-icon-es-back') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'arrow-left';
+                } elseif ($menuitem['class'] == 'z-icon-es-cancel') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'remove';
+                } elseif ($menuitem['class'] == 'z-icon-es-config') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'wrench';
+                } elseif ($menuitem['class'] == 'z-icon-es-copy') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'copy';
+                } elseif ($menuitem['class'] == 'z-icon-es-cubes') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'th';
+                } elseif ($menuitem['class'] == 'z-icon-es-cut') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'cut';
+                } elseif ($menuitem['class'] == 'z-icon-es-delete') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'trash';
+                } elseif ($menuitem['class'] == 'z-icon-es-display') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'eye-on';
+                } elseif ($menuitem['class'] == 'z-icon-es-edit') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'edit';
+                } elseif ($menuitem['class'] == 'z-icon-es-error') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'warning-sign';
+                } elseif ($menuitem['class'] == 'z-icon-es-export') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'upload-alt';
+                } elseif ($menuitem['class'] == 'z-icon-es-gears') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'gears';
+                } elseif ($menuitem['class'] == 'z-icon-es-filter') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'filter';
+                } elseif ($menuitem['class'] == 'z-icon-es-group') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'group';
+                } elseif ($menuitem['class'] == 'z-icon-es-help') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'info';
+                } elseif ($menuitem['class'] == 'z-icon-es-home') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'home';
+                } elseif ($menuitem['class'] == 'z-icon-es-hook') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'paper-clip';
+                } elseif ($menuitem['class'] == 'z-icon-es-import') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'download-alt';
+                } elseif ($menuitem['class'] == 'z-icon-es-info') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'info';
+                } elseif ($menuitem['class'] == 'z-icon-es-locale') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'globe';
+                } elseif ($menuitem['class'] == 'z-icon-es-locked') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'lock';
+                } elseif ($menuitem['class'] == 'z-icon-es-log') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'archive';
+                } elseif ($menuitem['class'] == 'z-icon-es-mail') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'icon-inbox';
+                } elseif ($menuitem['class'] == 'z-icon-es-new') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'file-alt';
+                } elseif ($menuitem['class'] == 'z-icon-es-ok') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'ok';
+                } elseif ($menuitem['class'] == 'z-icon-es-options') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'th-list';
+                } elseif ($menuitem['class'] == 'z-icon-es-preview') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'cog';
+                } elseif ($menuitem['class'] == 'z-icon-es-print') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'print';
+                } elseif ($menuitem['class'] == 'z-icon-es-profile') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'user';
+                } elseif ($menuitem['class'] == 'z-icon-es-regenerate') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'refresh';
+                } elseif ($menuitem['class'] == 'z-icon-es-remove') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'remove';
+                } elseif ($menuitem['class'] == 'z-icon-es-save') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'save';
+                } elseif ($menuitem['class'] == 'z-icon-es-saveas') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'save';
+                } elseif ($menuitem['class'] == 'z-icon-es-search') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'search';
+                } elseif ($menuitem['class'] == 'z-icon-es-url') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'globe';
+                } elseif ($menuitem['class'] == 'z-icon-es-user') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'user';
+                } elseif ($menuitem['class'] == 'z-icon-es-view') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'eye-open';
+                } elseif ($menuitem['class'] == 'z-icon-es-warning') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'warning-sign';
+                } elseif ($menuitem['class'] == 'z-icon-es-rss') {
+                    $menuitem['class'] = null;
+                    $menuitem['icon'] = 'rss-sign';
+                }
+            }
+            
             $active = '';
             if (!empty($menuitem['url']) && System::getBaseUrl().$menuitem['url'] === System::getCurrentUrl()) {
-                $active = ' bold';
+                $active = 'active ';
             }
-            $attr .= !empty($menuitem['class']) ? ' class="z-iconlink '.$menuitem['class'].$active.'"' : '';
+            $html .= '<li';
+            $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
+            $html .= ' class="'.$active;
+            $html .= !empty($class) ? $class : '';
+            $html .= '">';
+            $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
+            $attr .= !empty($menuitem['class']) ? ' class="'.$menuitem['class'].'"' : '';
 
             if (isset($menuitem['disabled']) && $menuitem['disabled'] == true) {
                 $html .= '<a '.$attr.'>'.$menuitem['text'].'</a>';
             } elseif (!empty($menuitem['url'])) {
-                $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$menuitem['text'].'</a>';
+                $icon = ''; 
+                if (!empty($menuitem['icon'])) {
+                    $icon = '<span class="icon icon-'.$menuitem['icon'].'"></span> ';
+                }
+                $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$icon.$menuitem['text'].'</a>';
             } else {
                 $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
             }

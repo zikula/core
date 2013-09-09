@@ -23,149 +23,28 @@
 .pointer { cursor: pointer !important;}
 
 /******************************************************************************
-* Icon styles (es=extrasmall) - Equivalent with /images/icons/config.php
+* Module linke navbar
 ******************************************************************************/
 
-.smallicon {
-    padding: 2px 0 2px 20px;
-}
-
-.smallicon-add {
-    background: url("../images/icons/extrasmall/edit_add.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-back {
-    background: url("../images/icons/extrasmall/agt_back.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-cancel {
-    background: url("../images/icons/extrasmall/button_cancel.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-config {
-    background: url("../images/icons/extrasmall/configure.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-copy {
-    background: url("../images/icons/extrasmall/editcopy.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-cubes {
-    background: url("../images/icons/extrasmall/kcmdf.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-cut {
-    background: url("../images/icons/extrasmall/editcut.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-delete {
-    background: url("../images/icons/extrasmall/14_layer_deletelayer.png") no-repeat scroll 0 50% transparent;
-    
-}
-.smallicon-display {
-    background: url("../images/icons/extrasmall/kview.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-edit {
-    background: url("../images/icons/extrasmall/xedit.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-error {
-    background: url("../images/icons/extrasmall/error.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-export {
-    background: url("../images/icons/extrasmall/fileexport.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-gears {
-    background: url("../images/icons/extrasmall/run.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-filter {
-    background: url("../images/icons/extrasmall/filter.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-group {
-    background: url("../images/icons/extrasmall/group.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-help {
-    background: url("../images/icons/extrasmall/help.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-home {
-    background: url("../images/icons/extrasmall/folder_home.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-hook {
-    background: url("../images/icons/extrasmall/attach.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-import {
-    background: url("../images/icons/extrasmall/fileimport.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-info {
-    background: url("../images/icons/extrasmall/documentinfo.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-locale {
-    background: url("../images/icons/extrasmall/locale.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-locked {
-    background: url("../images/icons/extrasmall/encrypted.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-log {
-    background: url("../images/icons/extrasmall/lists.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-mail {
-    background: url("../images/icons/extrasmall/mail_generic.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-new {
-    background: url("../images/icons/extrasmall/filenew.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-ok {
-    background: url("../images/icons/extrasmall/button_ok.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-options {
-    background: url("../images/icons/extrasmall/servicemanager.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-preview {
-    background: url("../images/icons/extrasmall/demo.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-print {
-    background: url("../images/icons/extrasmall/printer.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-profile {
-    background: url("../images/icons/extrasmall/personal.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-regenerate {
-    background: url("../images/icons/extrasmall/agt_update-product.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-remove {
-    background: url("../images/icons/extrasmall/edit_remove.png") no-repeat scroll 0 50% transparent;
-    
-}
-.smallicon-save {
-    background: url("../images/icons/extrasmall/filesave.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-saveas {
-    background: url("../images/icons/extrasmall/filesaveas.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-search {
-    background: url("../images/icons/extrasmall/search.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-url {
-    background: url("../images/icons/extrasmall/web.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-user {
-    background: url("../images/icons/extrasmall/user.png") no-repeat scroll 0 50% transparent;  
-}
-.smallicon-view {
-    background: url("../images/icons/extrasmall/windowlist.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-warning {
-    background: url("../images/icons/extrasmall/bell.png") no-repeat scroll 0 50% transparent;
-}
-.smallicon-rss {
-    background: url("../images/feeds/feed-icon-16x16.png") no-repeat scroll 0 50% transparent;
-}
-
-
-ul.navbar li {
+ul.navbar-modulelinks li {
     background: none;
     border-right:1px solid #aaa;
     display:inline;
-    line-height: 22px;
     padding:0 10px;
     margin:0;
 }
 
-.navbar {
+ul.navbar-modulelinks {
     min-height: inherit;
 }
+
+ul.navbar li.active a {
+    font-weight: bold;
+}
+
+/******************************************************************************
+* Form
+******************************************************************************/
 
 .form-horizontal fieldset,
 .form-inline fieldset {
@@ -280,11 +159,11 @@ td.actions .icon-ok {
 * Icon colors
 ******************************************************************************/
 
-.glyphicon-green{
+.icon-green{
     color: #61B329;
 }
 
-.glyphicon-red{
+.icon-red{
     color: #C30;
 }
 
@@ -299,4 +178,9 @@ td.actions .icon-ok {
 
 .icon-black{
     color: #000;
+}
+
+
+.z-admin-content-pagetitle .icon:after {
+    content: "\00a0";
 }
