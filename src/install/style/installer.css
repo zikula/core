@@ -226,6 +226,9 @@ ul.systemrequirements li.warning {
     padding: 0;
     margin: 0;
     border: 0;
+    filter:alpha(opacity=60);
+    -moz-opacity: 0.60;
+    opacity: 0.60;
 }
 
 button{
