@@ -116,12 +116,12 @@
                 {/if}
             </td>
             <td class="actions">
-                <a class="glyphicon glyphicon-eye-open tooltips" href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}" title={$lbl_preview_block alt=$lbl_preview_block}></a>
+                <a class="glyphicon glyphicon-eye-open tooltips" href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
                 {if $access_edit}
-                <a class="glyphicon glyphicon-pencil tooltips" href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}" title={$lbl_edit_block}></a>
+                <a class="glyphicon glyphicon-pencil tooltips" href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="glyphicon glyphicon-trash tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title={$lbl_delete_block}></a>
+                <a class="glyphicon glyphicon-trash tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
                 {/if}
             </td>
         </tr>
@@ -155,7 +155,7 @@
             <td><pre style="margin:0;padding:0;">&#123;blockposition name='{$position.name|safehtml}'&#125;</pre></td>
             <td class="actions">
                 {if $access_edit}
-                <a class="glyphicon glyphicon-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title={$lbl_edit_blockposition}></a>
+                <a class="glyphicon glyphicon-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>
                 {/if}
                 {if $access_delete}
                 <a class="glyphicon glyphicon-trash tooltips" href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>

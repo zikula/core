@@ -35,7 +35,7 @@
         <fieldset>
             <legend>{gt text="Automatic update settings"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_updatecheck">{gt text="Check for updates"}</label>
+                <label class="col-lg-3 control-label">{gt text="Check for updates"}</label>
                 <div class="col-lg-9">
                     <div id="securitycenter_updatecheck">
                         <input id="securitycenter_updatecheck_yes" type="radio" name="updatecheck" value="1"{if $modvars.ZConfig.updatecheck eq 1} checked="checked"{/if} />
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_sessionauthkeyua">{gt text="Bind authkey to user agent ('UserAgent')"}</label>
+                <label class="col-lg-3 control-label">{gt text="Bind authkey to user agent ('UserAgent')"}</label>
                 <div class="col-lg-9">
                     <div id="securitycenter_sessionauthkeyua">
                         <input id="sessionauthkeyua1" type="radio" name="sessionauthkeyua" value="1"{if $modvars.ZConfig.sessionauthkeyua eq 1} checked="checked"{/if} />
@@ -86,7 +86,7 @@
         <fieldset>
             <legend>{gt text="Cookies settings"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_signcookies">{gt text="Sign cookies"}</label>
+                <label class="col-lg-3 control-label">{gt text="Sign cookies"}</label>
                 <div class="col-lg-9">
                     <div id="securitycenter_signcookies">
                         <input id="securitycenter_signcookies_yes" type="radio" name="signcookies" value="1"{if $modvars.ZConfig.signcookies eq 1} checked="checked"{/if} />
@@ -138,7 +138,7 @@
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_sessionstoretofile">{gt text="Store sessions"}</label>
+                <label class="col-lg-3 control-label">{gt text="Store sessions"}</label>
                 <div class="col-lg-9">
                     <div id="securitycenter_sessionstoretofile">
                         <input id="securitycenter_sessionstoretofile_file" type="radio" name="sessionstoretofile" value="1"{if $modvars.ZConfig.sessionstoretofile eq 1} checked="checked"{/if} />
@@ -168,7 +168,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_sessioncsrftokenonetime">{gt text="CSRF Token"}</label>
+                <label class="col-lg-3 control-label">{gt text="CSRF Token"}</label>
                 <div class="col-lg-9">
                     <div id="securitycenter_sessioncsrftokenonetime">
                         <input id="securitycenter_sessioncsrftokenonetime_persession" type="radio" name="sessioncsrftokenonetime" value="1"{if $modvars.ZConfig.sessioncsrftokenonetime eq 1} checked="checked"{/if} />
@@ -181,7 +181,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_anonymoussessions">{gt text="Use sessions for anonymous guests"}</label>
+                <label class="col-lg-3 control-label">{gt text="Use sessions for anonymous guests"}</label>
                 <div class="col-lg-9">
                 <div id="securitycenter_anonymoussessions">
                     <input id="anonymoussessions1" type="radio" name="anonymoussessions" value="1"{if $modvars.ZConfig.anonymoussessions eq 1} checked="checked"{/if} />
@@ -192,7 +192,7 @@
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_sessionrandregenerate">{gt text="Periodically regenerate session ID"}</label>
+                <label class="col-lg-3 control-label">{gt text="Periodically regenerate session ID"}</label>
                 <div class="col-lg-9">
                 <div id="securitycenter_sessionrandregenerate">
                     <input id="sessionrandregenerate1" type="radio" name="sessionrandregenerate" value="1"{if $modvars.ZConfig.sessionrandregenerate eq 1} checked="checked"{/if} />
@@ -203,7 +203,7 @@
             </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_sessionregenerate">{gt text="Regenerate session ID during log-in and log-out"}</label>
+                <label class="col-lg-3 control-label">{gt text="Regenerate session ID during log-in and log-out"}</label>
                 <div class="col-lg-9">
                 <div id="securitycenter_sessionregenerate">
                     <input id="sessionregenerate1" type="radio" name="sessionregenerate" value="1"{if $modvars.ZConfig.sessionregenerate eq 1} checked="checked"{/if} />
@@ -223,7 +223,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_sessionipcheck">{gt text="IP checks on session (may cause problems for AOL users)"}</label>
+                <label class="col-lg-3 control-label">{gt text="IP checks on session (may cause problems for AOL users)"}</label>
                 <div class="col-lg-9">
                 <div id="securitycenter_sessionipcheck">
                     <input id="sessionipcheck1" type="radio" name="sessionipcheck" value="1"{if $modvars.ZConfig.sessionipcheck eq 1} checked="checked"{/if} />
@@ -244,7 +244,7 @@
         <fieldset id="securitycenter_ids">
             <legend>{gt text="Intrusion Detection System"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="securitycenter_useids">{gt text="Use PHPIDS"}</label>
+                <label class="col-lg-3 control-label">{gt text="Use PHPIDS"}</label>
                 <div class="col-lg-9">
                     <div id="securitycenter_useids">
                         <input id="useidsyes" type="radio" name="useids" value="1"{if $modvars.ZConfig.useids eq 1} checked="checked"{/if} />
@@ -261,7 +261,7 @@
                     {gt text="Read more about this system on the <a href=\"http://phpids.org\" title=\"PHPIDS homepage\">PHPIDS homepage</a>."}
                 </p>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="securitycenter_idssoftblock">{gt text="Block action"}</label>
+                    <label class="col-lg-3 control-label">{gt text="Block action"}</label>
                     <div class="col-lg-9" id="securitycenter_idssoftblock">
                         <input id="idssoftblockyes" type="radio" name="idssoftblock" value="1"{if $modvars.ZConfig.idssoftblock eq 1} checked="checked"{/if} />
                         <label for="idssoftblockyes">{gt text="Warn only"}</label>
@@ -270,7 +270,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="securitycenter_idsmail">{gt text="Send email on block action"}</label>
+                    <label class="col-lg-3 control-label">{gt text="Send email on block action"}</label>
                     <div class="col-lg-9">
                         <div id="securitycenter_idsmail">
                             <input id="idsmailyes" type="radio" name="idsmail" value="1"{if $modvars.ZConfig.idsmail eq 1} checked="checked"{/if} />
