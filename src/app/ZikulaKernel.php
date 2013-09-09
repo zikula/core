@@ -28,8 +28,9 @@ class ZikulaKernel extends Kernel
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle();
             $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
+            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+            $bundles[] = new Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle();
         }
 
         return $bundles;
