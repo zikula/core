@@ -1,11 +1,11 @@
-<div class="text-center" />
+<div class="text-center">
     <ul class="pagination">
         {if $pagerPluginArray.currentPage > 1}
         <li><a href="{$pagerPluginArray.firstUrl}" title="{gt text="First page"}">&laquo;</a></li>
         <li><a href="{$pagerPluginArray.prevUrl}" title="{gt text="Previous page"}">&lsaquo;</a></li>
         {else}
-        <li class="disabled"><span title="{gt text="First page"}">&laquo;</li>
-        <li class="disabled"><span title="{gt text="Previous page"}">&lsaquo;</li>
+        <li class="disabled"><span title="{gt text="First page"}">&laquo;</span></li>
+        <li class="disabled"><span title="{gt text="Previous page"}">&lsaquo;</span></li>
         {/if}
 
         {foreach name="pages" item="currentPage" key="currentItem" from=$pagerPluginArray.pages}

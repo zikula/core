@@ -45,9 +45,9 @@ function smarty_function_html_select_locales($params, Zikula_View $view)
     $params['values'] = $params['output'] = array();
     if (isset($params['all']) && $params['all']) {
         $params['values'][] = '';
-        $params['output'][]= DataUtil::formatForDisplay(__('All'));
-        unset($params['all']);
+        $params['output'][]= DataUtil::formatForDisplay(__('All')); 
     }
+    unset($params['all']);
 
     $installed = ZLanguage::getInstalledLanguageNames();
     $params['output'] = array_merge($params['output'], DataUtil::formatForDisplay(array_values($installed)));

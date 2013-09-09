@@ -11,7 +11,7 @@
         <fieldset>
             <legend>{gt text="Language system"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="mlsettings_multilingual">{gt text="Activate multi-lingual features"}</label>
+                <label class="col-lg-3 control-label">{gt text="Activate multi-lingual features"}</label>
                 <div class="col-lg-9">
                     <span id="mlsettings_multilingual">
                         <input id="multilingual1" type="radio" name="mlsettings_multilingual" value="1"{if $modvars.ZConfig.multilingual eq 1} checked="checked"{/if} />
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="mlsettings_languageurl">{gt text="Add language to URL"}</label>
+                <label class="col-lg-3 control-label">{gt text="Add language to URL"}</label>
                 <div class="col-lg-9">
                     <span id="mlsettings_languageurl">
                         <input id="languageurl0" type="radio" name="mlsettings_languageurl" value="1"{if $modvars.ZConfig.languageurl eq 1} checked="checked"{/if} />
@@ -36,9 +36,9 @@
         <fieldset>
             <legend>{gt text="Browser"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="mlsettings_language_detect">{gt text="Automatically detect language from browser settings"}</label>
+                <label class="col-lg-3 control-label">{gt text="Automatically detect language from browser settings"}</label>
                 <div class="col-lg-9">
-                    <span id="mlsettings_language_detect">
+                    <span>
                         <input id="language_detect1" type="radio" name="mlsettings_language_detect" value="1"{if $modvars.ZConfig.language_detect eq 1} checked="checked"{/if} />
                         <label for="language_detect1">{gt text="Yes"}</label>
                         <input id="language_detect0" type="radio" name="mlsettings_language_detect" value="0"{if $modvars.ZConfig.language_detect eq 0} checked="checked"{/if} />

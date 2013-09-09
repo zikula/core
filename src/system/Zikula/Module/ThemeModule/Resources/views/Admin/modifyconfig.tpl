@@ -97,21 +97,23 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="render_compile_dir">{gt text="Compiled render templates directory"}</label>
+                <label class="col-lg-3 control-label">{gt text="Compiled render templates directory"}</label>
                 <div class="col-lg-9">
-                    <span id="render_compile_dir"><em>{render->compile_dir}</em></span>
+                    <div class="form-control-static">
+                        <em>{render->compile_dir}</em>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="render_compile_check">{gt text="Check for updated version of render templates"}</label>
                 <div class="col-lg-9">
-                    <input id="render_compile_check" type="checkbox" name="render_compile_check" value="1"{if $render_compile_check}checked="checked"{/if} />
+                    <input id="render_compile_check" type="checkbox" name="render_compile_check" value="1"{if $render_compile_check} checked="checked"{/if} />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="render_force_compile">{gt text="Force re-compilation of render templates"}</label>
                 <div class="col-lg-9">
-                    <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile}checked="checked"{/if} />
+                    <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile} checked="checked"{/if} />
                     <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
                 </div>
             </div>
@@ -149,7 +151,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="theme_nocache">{gt text="Modules to exclude from theme caching"}</label>
+                    <label class="col-lg-3 control-label">{gt text="Modules to exclude from theme caching"}</label>
                     <div class="col-lg-9">
                         <div id="theme_nocache">
                             {foreach from=$mods key=modname item=moddisplayname}
@@ -164,9 +166,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="render_cache_dir">{gt text="Cached templates directory"}</label>
+                <label class="col-lg-3 control-label">{gt text="Cached templates directory"}</label>
                 <div class="col-lg-9">
-                    <span id="render_cache_dir"><em>{render->cache_dir}</em></span>
+                    <div class="form-control-static">
+                        <em>{render->cache_dir}</em>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
