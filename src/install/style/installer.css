@@ -172,11 +172,11 @@ img {
     text-align: center;
 }
 
-.icon-ok {
+.icon-ok-ok {
     background: url("../images/ok.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 18px;
 }
-.icon-nok {
+.icon-nok-nok {
     background: url("../images/nok.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 18px;
 }
@@ -289,10 +289,10 @@ fieldset{
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-.glyphicon-green{
-	color: #61B329;
+.icon-ok {
+    color: #61B329;
 }
 
-.glyphicon-red{
-	color: #C30;
+.icon-remove {
+    color:red;
 }

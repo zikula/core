@@ -9,9 +9,11 @@
         <meta http-equiv="X-UA-Compatible" content="chrome=1" />        
         <title>{gt text="Zikula installer script"}</title>
         <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />	
+        <link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />	
         <link rel="stylesheet" href="install/style/installer.css" type="text/css" />
         <link rel="stylesheet" href="style/core.css" type="text/css" />
         {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" />{/browserhack}
+        {browserhack condition="if IE 7"}<link rel="stylesheet" type="text/css" href="web/font-awesome/css/font-awesome-ie7.min.css" media="print,projection,screen" />{/browserhack}
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="install/javascript/install.js"></script>
     </head>
@@ -27,16 +29,16 @@
                     {/php}
                     <ol class="bs clearfix">
                         <li{if $action eq lang} class="menu_selected"{/if}>
-                            <span class="{if $step > 0}icon-ok{else}icon-nok{/if}"><a href="install.php?lang=">{gt text="Select language"}</a></span>
+                            <span class="{if $step > 0}icon-ok-ok{else}icon-nok-nok{/if}"><a href="install.php?lang=">{gt text="Select language"}</a></span>
                         </li>
                         <li{if $action eq requirements} class="menu_selected"{/if}>
-                            <span class="{if $step > 1}icon-ok{else}icon-nok{/if}">{gt text="Check requirements"}</span>
+                            <span class="{if $step > 1}icon-ok-ok{else}icon-nok-nok{/if}">{gt text="Check requirements"}</span>
                         </li>
                         <li{if $action eq dbinformation} class="menu_selected"{/if}>
-                            <span class="{if $step > 2}icon-ok{else}icon-nok{/if}">{gt text="Database information"}</span>
+                            <span class="{if $step > 2}icon-ok-ok{else}icon-nok-nok{/if}">{gt text="Database information"}</span>
                         </li>
                         <li class="last {if $action eq createadmin}menu_selected{/if}">
-                            <span class="{if $step > 3}icon-ok{else}icon-nok{/if}">{gt text="Create administrator's account"}</span>
+                            <span class="{if $step > 3}icon-ok-ok{else}icon-nok-nok{/if}">{gt text="Create administrator's account"}</span>
                         </li>
                     </ol>
                     <p class="installguide"><em>{gt text="Please refer to the <a style=\"color: red\" href=\"%1\$s\" onclick=\"window.open('%2\$s');return false;\">Installation guide</a> during the process." html=1 tag1=$doclink tag2=$doclink}</em></p>
