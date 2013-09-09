@@ -33,6 +33,7 @@
     "require": {
         "php": ">=5.3.3",
         "beberlei/DoctrineExtensions": "dev-master",
+        "elao/web-profiler-extra-bundle" : "dev-master",
         "doctrine/doctrine-bundle": "1.2.*",
         "doctrine/orm": ">=2.2.3,<2.5-dev",
         "drak/doctrine1": "dev-master",
