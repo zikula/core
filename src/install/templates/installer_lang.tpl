@@ -6,7 +6,7 @@
 {if !$mbstring}
 <div class="alert alert-danger">FATAL ERROR: mbstring is not installed in PHP.  Zikula will not install without this extension.</div>
 {else}
-<form class="form-horizontal" role="form" id="form_lang" class="z-form gap" action="install.php?lang={$lang}" method="get">
+<form class="form-horizontal z-gap" role="form" id="form_lang" action="install.php?lang={$lang}" method="get">
     <div>
         <input type="hidden" name="action" value="requirements" />
         {if not $installbySQL}

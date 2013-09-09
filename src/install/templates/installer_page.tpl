@@ -10,6 +10,7 @@
         <title>{gt text="Zikula installer script"}</title>
         <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />	
         <link rel="stylesheet" href="install/style/installer.css" type="text/css" />
+        <link rel="stylesheet" href="style/core.css" type="text/css" />
         {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" />{/browserhack}
         <script type="text/javascript" src="web/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="install/javascript/install.js"></script>

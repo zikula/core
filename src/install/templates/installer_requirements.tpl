@@ -1,6 +1,6 @@
 {assign var="step" value=1}
 <h2>{gt text="Check system requirements"}</h2>
-<form class="form-horizontal" id="form_require" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form class="form-horizontal z-gap" id="form_require" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="locale" value="{$locale}" />
         <fieldset>
