@@ -73,7 +73,7 @@ Features:
   overridden by error messages.
 - Do not register hooks twice, #484.
 - Do not register eventhandlers twice, #727.
-- Added a reason field to module dependendies.
+- Added a `reason` key to module dependendies array in module version file.
 
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
