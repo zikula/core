@@ -14,7 +14,6 @@
 
 namespace Zikula\Module\SearchModule;
 
-use DBUtil;
 use EventUtil;
 use DoctrineHelper;
 
