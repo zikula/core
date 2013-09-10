@@ -25,20 +25,20 @@
                     <h2>{gt text="Installer script"}</h2>
                     {php}
                     $lang = $this->_tpl_vars['lang'];
-                    $this->assign('doclink', "docs/$lang/INSTALL");
+                    $this->assign('doclink', "docs/$lang/INSTALL.md");
                     {/php}
-                    <ol class="bs clearfix">
-                        <li{if $action eq lang} class="menu_selected"{/if}>
-                            <span class="{if $step > 0}icon-circle{else}icon-circle red{/if}"><a href="install.php?lang="> {gt text="Select language"}</a></span>
+                    <ol class="wizard">
+                        <li{if $action eq lang} class="active"{/if}>
+                            <a href="install.php?lang=">{gt text="Select language"}</a>
                         </li>
-                        <li{if $action eq requirements} class="menu_selected"{/if}>
-                            <span class="{if $step > 1}icon-circle{else}icon-circle red{/if}"> {gt text="Check requirements"}</span>
+                        <li{if $action eq requirements} class="active"{/if}>
+                            {gt text="Check requirements"}
                         </li>
-                        <li{if $action eq dbinformation} class="menu_selected"{/if}>
-                            <span class="{if $step > 2}icon-circle{else}icon-circle red{/if}"> {gt text="Database information"}</span>
+                        <li{if $action eq dbinformation} class="active"{/if}>
+                            {gt text="Database information"}
                         </li>
-                        <li class="last {if $action eq createadmin}menu_selected{/if}">
-                            <span class="{if $step > 3}icon-circle{else}icon-circle red{/if}"> {gt text="Create administrator's account"}</span>
+                        <li{if $action eq createadmin} class="active"{/if}>
+                            {gt text="Create administrator's account"}
                         </li>
                     </ol>
                     <p class="installguide"><em>{gt text="Please refer to the <a style=\"color: red\" href=\"%1\$s\" onclick=\"window.open('%2\$s');return false;\">Installation guide</a> during the process." html=1 tag1=$doclink tag2=$doclink}</em></p>
@@ -65,6 +65,6 @@
                 </ul>
             </div>
         </div>
-        <div id="ZikulaOverlay" style="display:none;"></div>
+        <div id="ZikulaOverlay" class="hide"></div>
     </body>
 </html>

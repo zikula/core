@@ -6,8 +6,9 @@
         <meta name="description" content="Zikula Installer">
         <meta name="author" content="Zikula Development Team">
         <title>{gt text="Zikula is not installed!"}</title>
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />
         <link rel="stylesheet" href="install/style/systemdialogs.css" type="text/css" />
-        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />		        
+        		        
     </head>
     <body>
         <div class="container">
@@ -19,8 +20,8 @@
                         {gt text='You are seeing this message because Zikula is not yet installed.  You can install Zikula by clicking on the install button, but before doing so please read the <a href="docs/en/INSTALL.md">installation instructions</a>. Further information can be found in the <a href="http://community.zikula.org/Wiki-UserDocs.htm">online documentation</a>.'}
                     </p>
                     <p>
-                        <a href="install.php?lang={$lang}" class="button-install">
-                            <strong>{gt text="Install Zikula!"}</strong>
+                        <a href="install.php?lang={$lang}" class="btn btn-install">
+                            <strong>{gt text="Install Zikula!"}</strong><br />
                             {gt text="Zikula is free software released under the GPL license!"}
                         </a>
                     </p>

@@ -69,8 +69,7 @@ h2 {
     text-align: center;
     color: #444;
 }
-.button-install {
-    display: inline-block;
+.btn-install {
     padding: 15px 20px;
     color: #bed7e1;
     font-size: 12px;
@@ -90,8 +89,8 @@ h2 {
     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
-a.button-install:hover,
-a.button-install:active {
+a.btn-install:hover,
+a.btn-install:active {
     text-decoration: none;
     background: #3764DF;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#8FBAFF', endColorstr='#3764DF');
@@ -99,8 +98,9 @@ a.button-install:active {
     background: -moz-linear-gradient(-90deg, #8FBAFF, #3764DF);
     background: linear-gradient(-90deg, #8FBAFF, #3764DF);
 }
-.button-install strong {
+.btn-install strong {
     display: block;
     color: #fff;
     font-size: 18px;
+    margin-bottom: -15px;
 }
