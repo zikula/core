@@ -49,10 +49,10 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaThemeModule', 'admin', 'view'), 'text' => __('Themes list'), 'class' => 'smallicon smallicon-view');
+            $links[] = array('url' => ModUtil::url('ZikulaThemeModule', 'admin', 'view'), 'text' => __('Themes list'), 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'class' => 'smallicon smallicon-config');
+            $links[] = array('url' => ModUtil::url('ZikulaThemeModule', 'admin', 'modifyconfig'), 'text' => __('Settings'), 'icon' => 'wrench');
         }
 
         return $links;

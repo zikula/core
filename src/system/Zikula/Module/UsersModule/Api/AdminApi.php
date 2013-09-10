@@ -371,12 +371,12 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'class' => 'smallicon smallicon-view');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'view'), 'text' => $this->__('Users list'), 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
             $pending = ModUtil::apiFunc($this->name, 'registration', 'countAll');
             if ($pending) {
-                $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'class' => 'user-icon-adduser');
+                $links[] = array('url' => ModUtil::url($this->name, 'admin', 'viewRegistrations'), 'text' => $this->__('Pending registrations') . ' ('.DataUtil::formatForDisplay($pending).')', 'icon' => 'plus');
             }
         }
 
@@ -395,16 +395,16 @@ class AdminApi extends \Zikula_AbstractApi
             if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
                  $submenulinks[] = array('url' => ModUtil::url($this->name, 'admin', 'exporter'), 'text' => $this->__('Export users'));
             }
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'class' => 'smallicon smallicon-new', 'links' => $submenulinks);
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'newUser'), 'text' => $this->__('Create new user'), 'icon' => 'plus', 'links' => $submenulinks);
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'class' => 'smallicon smallicon-search');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'search'), 'text' => $this->__('Find users'), 'icon' => 'search');
         }
         if (SecurityUtil::checkPermission('ZikulaUsersModule::MailUsers', '::', ACCESS_MODERATE)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'class' => 'smallicon smallicon-mail');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'mailUsers'), 'text' => $this->__('E-mail users'), 'icon' => 'envelope');
         }
         if (SecurityUtil::checkPermission("{$this->name}::", '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'), 'text' => $this->__('Settings'), 'class' => 'smallicon smallicon-config');
+            $links[] = array('url' => ModUtil::url($this->name, 'admin', 'config'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
         }
 
         return $links;

@@ -460,13 +460,13 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'class' => 'smallicon smallicon-view');
+            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'class' => 'smallicon smallicon-new');
+            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'class' => 'smallicon smallicon-config');
+            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'icon' => 'wrench');
         }
 
         return $links;
