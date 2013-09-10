@@ -157,7 +157,6 @@
                 <label class="col-lg-3 control-label">{if $usersAuth}{gt text="Change the user's password?"}{else}{gt text="Create a password for the user?"}{/if}</label>
                 <p class="help-block alert alert-info">{gt text='This user does not currently log in with a web site account password. To enable the user to do so&mdash;in addition to any other log-in method used, create a password for the account here.'}</p>
             </div>
-            {/if}
             {assign var='fieldName' value='setpass'}
             <div id="{$formData->getFieldId($fieldName)}_wrap" class="form-group">
                 <div class="col-lg-9">
