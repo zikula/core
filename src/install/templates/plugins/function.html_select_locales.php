@@ -55,6 +55,7 @@ function smarty_function_html_select_locales($params, Smarty $view)
                                                       'values'       => $values,
                                                       'selected'     => isset($params['selected']) ? $params['selected'] : null,
                                                       'id'           => isset($params['id']) ? $params['id'] : null,
+                                                      'class'        => isset($params['class']) ? $params['class'] : null,
                                                       'name'         => $params['name']),
                                                 $view);
 

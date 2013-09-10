@@ -14,7 +14,7 @@
     {/if}
 </div>
 {/if}
-<form id="createadmin_form" class="form-horizontal" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form id="form_createadmin" class="form-horizontal z-gap" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="action" value="finish" />
         <input type="hidden" name="locale" value="{$locale}" />
@@ -23,30 +23,36 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="username">{gt text="User name"}</label>
                 <div class="col-lg-9">
-                <input type="text" name="username" id="username" maxlength="80" value="{$username|default:'admin'}"{if $uservalidatefailed} class="validationfailed"{/if} />
+                <input type="text" name="username" id="username" class="form-control" maxlength="80" value="{$username|default:'admin'}"{if $uservalidatefailed} class="validationfailed"{/if} />
             </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="password">{gt text="Password"}</label>
                 <div class="col-lg-9">
-                <input type="password" name="password" id="password" maxlength="80" value="{$password}"{if $passwordcomparefailed} class="validationfailed"{/if} />
+                <input type="password" name="password" id="password" class="form-control" maxlength="80" value="{$password}"{if $passwordcomparefailed} class="validationfailed"{/if} />
             </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="repeatpassword">{gt text="Password (repetition for verification)"}</label>
                 <div class="col-lg-9">
-                <input type="password" name="repeatpassword" id="repeatpassword" maxlength="80" value="{$repeatpassword}"{if $passwordcomparefailed} class="validationfailed"{/if} />
+                <input type="password" name="repeatpassword" id="repeatpassword" class="form-control" maxlength="80" value="{$repeatpassword}"{if $passwordcomparefailed} class="validationfailed"{/if} />
             </div>
             </div>
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="email">{gt text="E-mail address"}</label>
                 <div class="col-lg-9">
-                <input type="text" name="email" id="email" maxlength="80" value="{$email}"{if $emailvalidatefailed} class="validationfailed"{/if} />
+                <input type="text" name="email" id="email" class="form-control" maxlength="80" value="{$email}"{if $emailvalidatefailed} class="validationfailed"{/if} />
             </div>
         </div>
         </fieldset>
-        <div class="z-buttons center">
-            <input type="submit" value="{gt text="Proceed with Installation"}" class="z-bt-ok" />
+        <div class="btn-group"> 
+            <button type="submit" id="submit" class="btn btn-default btn-info"><span class="icon icon-double-angle-right"></span> {gt text="Proceed with Installation"}</button>
         </div>
     </div>
 </form>
+<br />
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;">
+    <span class="sr-only">95% {gt text="Complete"}</span>
+    </div>
+</div>
