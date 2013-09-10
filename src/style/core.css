@@ -36,6 +36,8 @@ ul.navbar-modulelinks li {
 
 ul.navbar-modulelinks {
     min-height: inherit;
+    padding: 3px;
+    margin-left: 0;
 }
 
 ul.navbar li.active a {
