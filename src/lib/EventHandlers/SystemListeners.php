@@ -524,7 +524,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $event->data[] = array(
                 'url' => ModUtil::url($event['modname'], 'admin', 'hooks'),
                 'text' => __('Hooks'),
-                'class' => 'smallicon smallicon-hook'
+                'icon' => 'paper-clip'
         );
     }
 
