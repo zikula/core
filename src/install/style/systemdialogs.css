@@ -38,6 +38,9 @@ h2 {
     text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
     text-transform: uppercase;
 }
+.container{
+    padding-top:40px;
+}
 #container {
     display: table;
     height: 100%;
