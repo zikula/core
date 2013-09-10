@@ -18,7 +18,7 @@
 
 <p class="alert alert-info">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 
-<div style="padding:0 0 1em;"><strong>[{pagerabc posvar="letter" forwardvars="module,type,func"}]</strong></div>
+{pagerabc posvar="letter" forwardvars="module,type,func"}
 
 <table class="table table-bordered">
     <thead>

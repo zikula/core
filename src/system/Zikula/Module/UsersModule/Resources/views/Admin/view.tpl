@@ -28,7 +28,7 @@
 </div>
 
 <p id="users-alphafilter">
-    <strong>[{pagerabc posvar="letter" forwardvars="sortby"}]</strong>
+    {pagerabc posvar="letter" forwardvars="sortby"}
 </p>
 
 <table class="table table-bordered">
