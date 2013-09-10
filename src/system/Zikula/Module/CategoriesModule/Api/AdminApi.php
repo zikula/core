@@ -32,15 +32,15 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_READ)) {
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'view'), 'text' => $this->__('Categories list'), 'class' => 'smallicon smallicon-view');
+            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'view'), 'text' => $this->__('Categories list'), 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'newcat'), 'text' => $this->__('Create new category'), 'class' => 'smallicon smallicon-new');
+            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'newcat'), 'text' => $this->__('Create new category'), 'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'editregistry'), 'text' => $this->__('Category registry'), 'class' => 'smallicon smallicon-cubes');
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'config'), 'text' => $this->__('Rebuild paths'), 'class' => 'smallicon smallicon-regenerate');
-            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'preferences'), 'text' => $this->__('Settings'), 'class' => 'smallicon smallicon-config');
+            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'editregistry'), 'text' => $this->__('Category registry'), 'icon' => 'archive');
+            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'config'), 'text' => $this->__('Rebuild paths'), 'icon' => 'refresh');
+            $links[] = array('url' => ModUtil::url('ZikulaCategoriesModule', 'admin', 'preferences'), 'text' => $this->__('Settings'), 'icon' => 'wrench');
         }
 
         return $links;
