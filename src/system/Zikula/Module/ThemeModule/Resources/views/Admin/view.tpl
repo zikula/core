@@ -18,7 +18,7 @@
 
 <p class="alert alert-info">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
-<div id="themes-alphafilter" style="padding:0 0 1em;"><strong>[{pagerabc posvar="startlet" forwardvars=''}]</strong></div>
+{pagerabc posvar="startlet" forwardvars=''}
 
 <table class="table table-bordered table-striped">
     <thead>

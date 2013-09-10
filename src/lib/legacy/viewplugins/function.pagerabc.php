@@ -44,7 +44,6 @@
  *  class          Class for the pager
  *  class_num      Class for the pager links (<a> tags)
  *  class_numon    Class for the active page
- *  separator      String to put between the letters, eg "|" makes | A | B | C | D |
  *  printempty     Print empty sel ('-')
  *  lang           Language
  *  names          String or array of names to select from (array or csv)
@@ -76,17 +75,16 @@ function smarty_function_pagerabc($params, Zikula_View $view)
 
     // set a default class
     if (!isset($params['class'])) {
-        $params['class'] = 'z-pager';
+        $params['class'] = 'pagination pagination-sm';
     }
 
     if (!isset($params['class_num'])) {
-        $params['class_num'] = 'z-pagerabclink';
+        $params['class_num'] = '';
     }
 
     if (!isset($params['class_numon'])) {
-        $params['class_numon'] = 'z-pagerselected';
+        $params['class_numon'] = ' ';
     }
-
 
     $pager = array();
 
@@ -190,7 +188,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
     unset($pager['args'][$pager['posvar']]);
 
     // begin to fill the output
-    $output = '<span class="'.$params['class'].'">'."\n";
+    $output = '<ul class="'.$params['class'].'">'."\n";
 
     $style = '';
     if ($params['printempty']) {
@@ -199,14 +197,16 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         }
         $vars[$pager['posvar']] = '';
         $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
-        $output .= '<a '.$tmp.' href="'.$urltemp.'"> -'."\n</a>".$params['separator'];
+        $output .= '<a '.$tmp.' href="'.$urltemp.'"> -'."\n</a>";
     }
-
+    
     $style = '';
     foreach (array_keys($pager['names']) as $i) {
+        $active = '';
         if (!empty($params['class_numon'])) {
             if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i]) {
                 $style = ' class="'.$params['class_numon'].'"';
+                $active = 'class="active"';
             } elseif (!empty($params['class_num'])) {
                 $style = ' class="'.$params['class_num'].'"';
             } else {
@@ -215,12 +215,9 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         }
         $pager['args'][$pager['posvar']] = $pager['values'][$i];
         $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
-        if ($i > 0) {
-            $output .= $params['separator'];
-        }
-        $output .= '<a'.$style.' href="'.$urltemp.'">'.$pager['names'][$i]."</a>\n";
+        $output .= '<li '.$active.'><a '.$style.' href="'.$urltemp.'">'.$pager['names'][$i]."</a></li>\n";
     }
-    $output .= "</span>\n";
+    $output .= "</ul>\n";
 
     return $output;
 }
