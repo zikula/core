@@ -25,7 +25,7 @@
                     <h2>{gt text="Installer script"}</h2>
                     {php}
                     $lang = $this->_tpl_vars['lang'];
-                    $this->assign('doclink', "docs/$lang/INSTALL");
+                    $this->assign('doclink', "docs/$lang/INSTALL.md");
                     {/php}
                     <ol class="wizard">
                         <li{if $action eq lang} class="active"{/if}>
