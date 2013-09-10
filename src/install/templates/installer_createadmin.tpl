@@ -14,7 +14,7 @@
     {/if}
 </div>
 {/if}
-<form id="form_createadmin" class="form-horizontal z-gap" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
+<form id="form_createadmin" class="form-horizontal gap" role="form" action="install.php{if not $installbySQL}?lang={$lang}{/if}" method="post">
     <div>
         <input type="hidden" name="action" value="finish" />
         <input type="hidden" name="locale" value="{$locale}" />
@@ -50,9 +50,3 @@
         </div>
     </div>
 </form>
-<br />
-<div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;">
-    <span class="sr-only">95% {gt text="Complete"}</span>
-    </div>
-</div>
