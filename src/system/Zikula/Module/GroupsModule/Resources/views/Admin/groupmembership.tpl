@@ -41,7 +41,7 @@
 {if $uids}
 <h3>{gt text="Add users to group"}</h3>
 <div class="group-membership-alphanav">
-    [{pagerabc posvar="letter" separator="&nbsp;|&nbsp;" names="*;A;B;C;D;E;F;G;H;I;J;K;L;M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;?" forwardvars="module,type,func,gid"}&nbsp;]
+    {pagerabc posvar="letter" separator="&nbsp;|&nbsp;" names="*;A;B;C;D;E;F;G;H;I;J;K;L;M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;?" forwardvars="module,type,func,gid"}
 </div>
 <br />
 

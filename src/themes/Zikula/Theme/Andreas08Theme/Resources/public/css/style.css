@@ -74,6 +74,10 @@ li {
     margin: 0 0 0.5em 1.5em;
 }
 
+.pagination li {
+    margin: 0px;
+}
+
 dl {
     margin: 1em 0 1em 0.5em;
 }
