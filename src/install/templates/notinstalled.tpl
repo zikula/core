@@ -6,8 +6,8 @@
         <meta name="description" content="Zikula Installer">
         <meta name="author" content="Zikula Development Team">
         <title>{gt text="Zikula is not installed!"}</title>
-        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />		
         <link rel="stylesheet" href="install/style/systemdialogs.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />		        
     </head>
     <body>
         <div class="container">
