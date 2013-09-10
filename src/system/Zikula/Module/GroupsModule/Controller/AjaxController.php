@@ -19,7 +19,6 @@ use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use SecurityUtil;
 use ModUtil;
 use LogUtil;
-use DBUtil;
 use Zikula_Exception_Fatal;
 
 /**

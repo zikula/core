@@ -14,7 +14,6 @@
 
 namespace Zikula\Module\SecurityCenterModule;
 
-use DBUtil;
 use System;
 use Zikula_Core;
 use CacheUtil;

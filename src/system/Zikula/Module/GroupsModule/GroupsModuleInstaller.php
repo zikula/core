@@ -15,7 +15,6 @@
 namespace Zikula\Module\GroupsModule;
 
 use DoctrineHelper;
-use DBUtil;
 
 class GroupsModuleInstaller extends \Zikula_AbstractInstaller
 {

@@ -15,7 +15,6 @@
 namespace Zikula\Module\AdminModule;
 
 use DoctrineHelper;
-use DBUtil;
 use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
 
 class AdminModuleInstaller extends \Zikula_AbstractInstaller

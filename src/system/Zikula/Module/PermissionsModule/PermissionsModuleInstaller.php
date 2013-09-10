@@ -14,7 +14,6 @@
 
 namespace Zikula\Module\PermissionsModule;
 
-use DBUtil;
 use Zikula\Module\PermissionsModule\Entity\PermissionEntity;
 
 class PermissionsModuleInstaller extends \Zikula_AbstractInstaller
