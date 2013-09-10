@@ -15,7 +15,6 @@
 namespace Zikula\Module\BlocksModule;
 
 use DoctrineHelper;
-use DBUtil;
 use ModUtil;
 use ZLanguage;
 use Doctrine;
