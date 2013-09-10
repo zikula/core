@@ -16,6 +16,7 @@
                 <tr>
                     <th>{gt text="Module name"}</th>
                     <th>{gt text="Level"}</th>
+                    <th>{gt text="Reason"}</th>
                     <th>{gt text="Install"}</th>
                 </tr>
             </thead>
@@ -32,6 +33,7 @@
                         {gt text="Recommended"}
                         {/if}
                     </td>
+                    <td>{$dependency.reason}</td>
                     <td>
                         {if $dependency.insystem neq true and ($dependency.status eq 1 or $dependency.status eq 2)}
                         {gt text="Not present"}.
