@@ -6,7 +6,7 @@
 
 {include file='Admin/includeregistration.tpl'}
 
-<div class="z-buttons center" style="margin:0 0 1em; padding:1em 0;">
+<div class="z-buttons text-center" style="margin:0 0 1em; padding:1em 0;">
     {strip}
     {assign var="regactions" value=$actions.list[$reginfo.uid]}
     {gt assign='titleIfSent' text='Resend verification code'}

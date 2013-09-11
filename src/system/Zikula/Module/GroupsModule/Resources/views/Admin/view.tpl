@@ -32,7 +32,7 @@
 </div>
 
 {checkpermissionblock component='ZikulaGroupsModule::' instance='::' level=ACCESS_ADD}
-<a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="floatleft smallicon smallicon-new hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
+<a id="appendajax" onclick="groupappend();" style="margin-bottom: 1em;" class="pull-left smallicon smallicon-new hide" title="{gt text="Create new group"}" href="javascript:void(0);">{gt text="Create new group"}</a>
 {/checkpermissionblock}
 
 <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
@@ -45,8 +45,8 @@
             <span class="z-itemcell z-w10">{gt text="Type"}</span>
             <span class="z-itemcell z-w30">{gt text="Description"}</span>
             <span class="z-itemcell z-w10">{gt text="State"}</span>
-            <span class="z-itemcell z-w10 center">{gt text="Members"}</span>
-            <span class="z-itemcell z-w10 center">{gt text="Maximum membership"}</span>
+            <span class="z-itemcell z-w10 text-center">{gt text="Members"}</span>
+            <span class="z-itemcell z-w10 text-center">{gt text="Maximum membership"}</span>
             <span class="z-itemcell z-w10">{gt text="Actions"}</span>
         </li>
         {foreach item='group' from=$groups}
@@ -99,14 +99,14 @@
                     </select>
                 </span>
                 {* *}
-                <span id="groupnbuser_{$group.gid}" class="z-itemcell z-w10 center">
+                <span id="groupnbuser_{$group.gid}" class="z-itemcell z-w10 text-center">
                     {$group.nbuser|safetext}
                 </span>
-                <span id="groupnbumax_{$group.gid}" class="z-itemcell z-w10 center">
+                <span id="groupnbumax_{$group.gid}" class="z-itemcell z-w10 text-center">
                     {$group.nbumax|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 hide center">
+                <span id="editgroupnbumax_{$group.gid}" class="z-itemcell z-w10 hide text-center">
                     <input type="text" id="nbumax_{$group.gid}" size="5" name="nbumax_{$group.gid}" value="{$group.nbumax|safetext}" />
                 </span>
                 {* *}
@@ -179,15 +179,15 @@
                     </select>
                 </span>
                 {* *}
-                <span id="groupnbuser_1" class="z-itemcell z-w10 hide center">
+                <span id="groupnbuser_1" class="z-itemcell z-w10 hide text-center">
                     {*$group.nbuser|safetext*}&nbsp;
                 </span>
                 {* *}
-                <span id="groupnbumax_1" class="z-itemcell z-w10 hide center">
+                <span id="groupnbumax_1" class="z-itemcell z-w10 hide text-center">
                     {$group.nbumax|safetext}
                 </span>
                 {* Hidden until called *}
-                <span id="editgroupnbumax_1" class="z-itemcell z-w10 center">
+                <span id="editgroupnbumax_1" class="z-itemcell z-w10 text-center">
                     <input type="text" id="nbumax_1" size="5" name="nbumax_1" value="{$group.nbumax|safetext}" />
                 </span>
                 {* *}

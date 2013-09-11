@@ -15,7 +15,7 @@
     <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="hide"{/if}>{gt text="Log in below, or change how you would like to log in."}</h5>
     {modurl modname='ZikulaUsersModule' type='user' func='register' assign='form_action'}
     <div>
-        <div class="z-w40 floatright">
+        <div class="z-w40 pull-right">
             {gt text='If you prefer, you can create an account and password for use only with this site by clicking below...'}
         </div>
         <div class="z-w60">
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="z-clearer gap">
-        <div class="authentication_select_method_bigbutton z-w40 middle floatright">
+        <div class="authentication_select_method_bigbutton z-w40 middle pull-right">
             {authentication_method_selector form_type='registration' form_action=$form_action authentication_method=$users_authentication_method selected_authentication_method=$selected_authentication_method}
         </div>
         <div class="authentication_select_method_bigbutton z-w60 middle">
@@ -63,7 +63,7 @@
 </form>
 <div id="users_login_waiting" class="z-form z-clearer gap hide">
     <fieldset>
-        <p class="center gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
+        <p class="text-center gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
     </fieldset>
 </div>
 <div id="users_login_no_loginformfields" class="z-clearer gap{if (isset($login_form_fields) && !empty($login_form_fields)) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}">

@@ -49,7 +49,7 @@
             {if $canSeeGroups}
             <th>{gt text="User's groups"}</th>
             {/if}
-            <th class="center">
+            <th class="text-center">
                 {sortlink __linktext='Status' sort='activated' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
             </th>
             <th colspan="{$available_options|@array_sum}">
@@ -93,7 +93,7 @@
                 {gt text="Send user name to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='lostUsername' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src='lostusername.png' title=$title alt=$title class='tooltips'}</a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='lostusername.png' class="invisible"}
+                {img modname='core' set='icons/extrasmall' src='lostusername.png' class=" hidden "}
                 {/if}
             </td>
             {/if}
@@ -103,7 +103,7 @@
                 {gt text="Send password recovery code to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='lostPassword' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}">{img modname='core' set='icons/extrasmall' src='lostpassword.png' title=$title alt=$usersitems[usersitems].options.lostPassword.title class='tooltips'}</a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='lostpassword.png' class="invisible"}
+                {img modname='core' set='icons/extrasmall' src='lostpassword.png' class=" hidden "}
                 {/if}
             </td>
             {/if}
@@ -120,7 +120,7 @@
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src=$image title=$title alt=$title class='tooltips'}</a>
                 {else}
                 {assign var='image' value='password_expire.png'}
-                {img modname='core' set='icons/extrasmall' src=$image class="invisible"}
+                {img modname='core' set='icons/extrasmall' src=$image class=" hidden "}
                 {/if}
             </td>
             {/if}
@@ -130,7 +130,7 @@
                 {gt text="Edit '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='modify' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src='xedit.png' title=$title alt=$title class='tooltips'}</a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='xedit.png' class="invisible"}
+                {img modname='core' set='icons/extrasmall' src='xedit.png' class=" hidden "}
                 {/if}
             </td>
             {/if}
@@ -140,7 +140,7 @@
                 {gt text="Delete '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' title=$title alt=$title class='tooltips'}</a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' title=$usersitems[usersitems].options.deleteUsers.title alt=$usersitems[usersitems].options.deleteUsers.title class="invisible"}
+                {img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' title=$usersitems[usersitems].options.deleteUsers.title alt=$usersitems[usersitems].options.deleteUsers.title class=" hidden "}
                 {/if}
             </td>
             {/if}
