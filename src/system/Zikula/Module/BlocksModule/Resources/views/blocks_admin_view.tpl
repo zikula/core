@@ -83,7 +83,7 @@
             <th>
                 {sortlink __linktext='State' sort='active' currentsort=$sort sortdir=$sortdir modname='ZikulaBlocksModule' type='admin' func='view' filter=$filter}
             </th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -140,7 +140,7 @@
             <th>{gt text="Name"}</th>
             <th>{gt text="Description"}</th>
             <th>{gt text="Theme tag"}</th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>

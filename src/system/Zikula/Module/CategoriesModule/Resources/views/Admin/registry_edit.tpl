@@ -26,7 +26,7 @@
                     <th>{gt text="Entity"}</th>
                     <th>{gt text="Property name"}</th>
                     <th>{gt text="Category"}</th>
-                    <th class="right">{gt text="Actions"}</th>
+                    <th class="text-right">{gt text="Actions"}</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +45,7 @@
                     <td>{$obj.entityname}</td>
                     <td>{$obj.property}</td>
                     <td>{category_path id=$obj.category_id html=true}</td>
-                    <td class="right">
+                    <td class="text-right">
                         <a href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry' id=$obj.id}">{img modname=core set=icons/extrasmall src="xedit.png" __title="Edit" __alt="Edit" class="tooltips"}</a>
                         <a href="{modurl modname='ZikulaCategoriesModule' type='admin' func='deleteregistry' id=$obj.id}">{img modname=core set=icons/extrasmall src="14_layer_deletelayer.png" __title="Delete" __alt="Delete" class="tooltips"}</a>
                     </td>

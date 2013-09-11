@@ -105,7 +105,7 @@
                             {html_options options=$permissionlevels}
                         </select>
                     </td>
-                    <td class="z-buttons right">
+                    <td class="z-buttons text-right">
                         {button class="btn btn-success" alt=$submit title=$submit text=$submit constants=false}
                     </td>
                 </tr>

@@ -55,7 +55,7 @@
         
        {* {blockposition name=topnav assign=topnavblock}
     {if empty($topnavblock)}
-    <ul class="floatleft">
+    <ul class="pull-left">
         <li></li>
         <li></li>
         <li></li>

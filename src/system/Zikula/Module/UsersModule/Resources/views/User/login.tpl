@@ -69,14 +69,16 @@
             {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
         {/if}
 
-        <div class="z-formbuttons z-buttons">
-            {button src='button_ok.png' set='icons/extrasmall' __alt='Log in' __title='Log in' __text='Log in'}
+        <div>
+            <button class="btn btn-default" title="{gt text='Log in'}">
+                {gt text='Log in'}
+            </button>
         </div>
     </div>
 </form>
 <div id="users_login_waiting" class="z-form z-clearer gap hide">
     <fieldset>
-        <p class="center gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
+        <p class="text-center gap">{img modname='core' set='ajax' src='large_fine_white.gif'}</p>
     </fieldset>
 </div>
 <div id="users_login_no_loginformfields" class="z-clearer gap{if (isset($login_form_fields) && !empty($login_form_fields)) || !isset($selected_authentication_method) || empty($selected_authentication_method)} hide{/if}">
