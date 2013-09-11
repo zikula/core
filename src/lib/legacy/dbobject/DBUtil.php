@@ -768,7 +768,7 @@ class DBUtil
                 $columnDefinition = $columnDefList[$idfield];
                 $columnDefFields  = explode(' ', $columnDefinition);
                 $colType          = substr($columnDefinition, 0, 1);
-                $colAuto          = $columnDefFields[1];
+                $colAuto          = array_pop($columnDefFields);
                 if ($colType == 'I' && $colAuto == 'AUTO') {
                     $obj_id = self::getInsertID($table, $idfield);
                     $object[$idfield] = $obj_id;
