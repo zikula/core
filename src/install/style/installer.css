@@ -35,9 +35,8 @@ body {
     border: 1px solid #42403E\9; /* IE6/7/8 */
 }
 
-
 a {
-    color: #2147B3;
+    color: #0092D0;
     border: none;
 }
 
@@ -83,48 +82,6 @@ img {
 
 #header p {
     margin: 1em 0;
-}
-
-.bs {
-    background: none repeat scroll 0 0 #0092D0;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: bold;
-    overflow: hidden;
-    padding: 0;
-    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
-    -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
-    white-space: nowrap;
-}
-
-.bs li {
-    background-image: url("../images/breadcrumb.png");
-    background-position: right center;
-    background-repeat: no-repeat;
-    display: inline;
-    line-height: 24px;
-    list-style-type: none;
-    padding: 5px 12px 5px 7px;
-}
-
-.bs li.last {
-	background-image: none;
-}
-
-.bs a {
-    color: #FFFFFF;
-}
-
-.bs a:hover {
-    text-decoration:underline;
-}
-
-.bs li.menu_selected a,
-.bs li.menu_selected span {
-    font-weight:bold;
-    color:#F59A00;
 }
 
 #footer {
@@ -257,43 +214,78 @@ fieldset{
     font-size:1.6em;
 }
 
-.bs{
-    border-radius:0px;
+.wizard {
+    margin-left: -50px;
 }
 
-.bs li{
-    font-weight:normal;
+.wizard a {
+    color: black;    
 }
 
-.form-horizontal fieldset,
-.form-inline fieldset {
-    border: 1px #ddd solid;
-    margin: 0 0 1em 0;
-    padding: 0.5em 1em;
-    color: #333;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background: #fafafa; /*non-CSS3 browsers*/
-    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
-    background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko*/
-    background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
+.wizard li:first-child {
+    -moz-border-radius: 4px 0 0 4px;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
 }
 
-.form-horizontal legend {
-    font-size: 1.25em;
-    font-weight: normal;
-    color: #000;
-    background: transparent;
+.wizard .active {
+    background: #0092D0;
+    color: white;
+    font-weight: bold;
+}
+
+.wizard .active > a {
+    color: white;
+}
+
+.wizard li {
+    display: inline-block;
+    position: relative;
+    margin-right: 5px;
+    line-height: 18px;
+    list-style: none;
+    padding: 12px 17px 10px 30px;
+    background: #efefef;
+    zoom: 1;
+}
+
+.wizard li:first-child:before {
     border: 0;
-    text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.wizard li:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 0;
+    width: 0;
+    border-bottom: 20px inset transparent;
+    border-left: 20px solid #FAFAFA;
+    border-top: 20px inset transparent;
+    content: "";
+}
+
+.wizard .active:after {
+    border-left-color: #0092D0;
+}
+.wizard li:after {
+    position: absolute;
+    right: -20px;
+    top: 0;
+    height: 0;
+    width: 0;
+    border-bottom: 20px inset transparent;
+    border-left: 20px solid #efefef;
+    border-top: 20px inset transparent;
+    content: "";
+    z-index: 2;
 }
 
 .icon-ok {
     color: #61B329;
 }
 
-.icon-remove {
+.icon-remove, .red {
     color:red;
 }
 
@@ -301,10 +293,60 @@ fieldset{
     color: #61B329;
 }
 
-.red{
-    color:red;
+@-webkit-keyframes shake {
+	0%, 100% {-webkit-transform: translateX(0);}
+	10%, 30%, 50%, 70%, 90% {-webkit-transform: translateX(-10px);}
+	20%, 40%, 60%, 80% {-webkit-transform: translateX(10px);}
 }
 
-.form-control{
-    width:180px;
+@-moz-keyframes shake {
+	0%, 100% {-moz-transform: translateX(0);}
+	10%, 30%, 50%, 70%, 90% {-moz-transform: translateX(-10px);}
+	20%, 40%, 60%, 80% {-moz-transform: translateX(10px);}
+}
+
+@-ms-keyframes shake {
+	0%, 100% {-ms-transform: translateX(0);}
+	10%, 30%, 50%, 70%, 90% {-ms-transform: translateX(-10px);}
+	20%, 40%, 60%, 80% {-ms-transform: translateX(10px);}
+}
+
+@-o-keyframes shake {
+	0%, 100% {-o-transform: translateX(0);}
+	10%, 30%, 50%, 70%, 90% {-o-transform: translateX(-10px);}
+	20%, 40%, 60%, 80% {-o-transform: translateX(10px);}
+}
+
+@keyframes shake {
+	0%, 100% {transform: translateX(0);}
+	10%, 30%, 50%, 70%, 90% {transform: translateX(-10px);}
+	20%, 40%, 60%, 80% {transform: translateX(10px);}
+}
+
+.shake {
+	-webkit-animation-name: shake;
+	-moz-animation-name: shake;
+	-ms-animation-name: shake;
+	-o-animation-name: shake;
+	animation-name: shake;
+}
+
+.animate{
+	-webkit-animation-duration: 1s;
+    -webkit-animation-delay: 1s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: shake;
+    -webkit-animation-iteration-count: 1;
+    
+    animation-name: shake;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+
+    -o-animation-name: shake;
+    -o-animation-duration: 1s;
+    -o-animation-iteration-count: 1;
+
+    -moz-animation-name: shake;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: 1;
 }
