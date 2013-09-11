@@ -7,17 +7,12 @@
 .top { vertical-align: top !important; }
 .middle { vertical-align: middle !important; }
 .bottom { vertical-align: bottom !important; }
-.center { text-align: center !important; }
-.left { text-align: left !important; }
-.right { text-align: right !important; }
 .nowrap { white-space: nowrap !important; }
 .italic { font-style: italic !important; }
 .bold { font-weight: bold !important; }
 .underline { text-decoration: underline !important; }
 .line-through { text-decoration: line-through !important; }
 .normal { font-weight: normal !important; font-style: normal !important; }
-.floatleft { float: left; }
-.floatright { float: right; }
 .gap { margin: 1em 0 !important; padding: 1em 0 !important; }
 .sub { color: #777; font-size: 0.9em;}
 .pointer { cursor: pointer !important;}

@@ -1,6 +1,6 @@
 <div id="topline" class="clearfix">
-    <div class="floatleft">{userwelcome|ucwords}</div>
-    <div class="floatright">{blockposition name=search}</div>
+    <div class="pull-left">{userwelcome|ucwords}</div>
+    <div class="pull-right">{blockposition name=search}</div>
 </div>
 <div id="header" class="clearfix">
     <h1><a href="{homepage}" title="{$modvars.ZConfig.slogan}">{$modvars.ZConfig.sitename}</a></h1>

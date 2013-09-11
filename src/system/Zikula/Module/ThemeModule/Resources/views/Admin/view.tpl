@@ -25,7 +25,7 @@
         <tr>
             <th>{gt text="Name"}</th>
             <th>{gt text="Description"}</th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -50,7 +50,7 @@
                     {if !$theme.structure}</strike>{/if}
                 </a>
                 {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips z-form-mandatory-flag">*</span>{/if}
-                <div id="title_{$theme.name}" class="theme_preview center" style="display: none;">
+                <div id="title_{$theme.name}" class="theme_preview text-center" style="display: none;">
                     <h4>{$theme.displayname}</h4>
                     {if $themeinfo.system neq 1}
                     <p>{previewimage name=$theme.name}</p>

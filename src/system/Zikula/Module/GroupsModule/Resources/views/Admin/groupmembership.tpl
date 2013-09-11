@@ -13,7 +13,7 @@
             <th>{gt text="User ID"}</th>
             <th>{gt text="User name"}</th>
             <th>{gt text="Email"}</th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
             <td>{$groupmembers[groupmembers].uid|safetext}</td>
             <td>{$groupmembers[groupmembers].uname|safetext} {if $groupmembers[groupmembers].name neq ''}({$groupmembers[groupmembers].name|safetext}){/if}</td>
             <td>{$groupmembers[groupmembers].email|safetext}</td>
-            <td class="right">
+            <td class="text-right">
                 {assign var="options" value=$groupmembers[groupmembers].options}
                 {section name=options loop=$options}
                 {if !empty($options[options])}

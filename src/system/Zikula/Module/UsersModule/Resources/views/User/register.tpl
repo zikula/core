@@ -208,7 +208,7 @@
         <legend>{gt text="Check your entries and submit your registration"}</legend>
         <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Submit registration' to continue."}</p>
         <p id="{$formData->getFormId()}_validmessage" class="hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
-        <div class="center z-buttons">
+        <div class="text-center z-buttons">
             {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide' modname=core set='ajax' src='indicator_circle.gif' alt=''}
             {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit registration' __title='Submit registration' __text='Submit registration'}
             {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='help.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}

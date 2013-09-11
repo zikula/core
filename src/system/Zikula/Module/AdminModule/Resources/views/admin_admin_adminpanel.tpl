@@ -18,13 +18,13 @@
                     </a>
                     {/if}
                     <div class="z-adminlinkheader">
-                         <span title="Drag and drop into a new module category" id="dragicon{$adminlink.id}" class="z-dragicon tooltips icon icon-move"></span> 
+                        <span title="Drag and drop into a new module category" id="dragicon{$adminlink.id}" class="z-dragicon tooltips icon icon-move"></span> 
                         <a class="z-adminmodtitle" title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
 
                         {assign var="modlinks" value=false}
                         {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
                         {if $modlinks}
-                        <span class="z-pointericon module-context" title="Functions">&nbsp;</span>
+                        <span class="module-context icon icon-caret-down" title="Functions"></span>
                         {/if}
                         <input type="hidden" name="modlinks-{$adminlink.id}" class="modlinks" id="modlinks-{$adminlink.id}" value="{$modlinks|@json_encode|escape}" />
 
@@ -40,8 +40,8 @@
         </div>
 
     {else}
-    <p class="bold center">{gt text="There are currently no modules in this category."}</p>
+    <p class="bold text-center">{gt text="There are currently no modules in this category."}</p>
     {/if}
 </div>
 
-<div class="z-admin-coreversion right">Zikula {$coredata.version_num}</div>
+<div class="z-admin-coreversion text-right">Zikula {$coredata.version_num}</div>

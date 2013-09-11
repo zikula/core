@@ -64,7 +64,7 @@
 {if $isSubscriber}
 <div id="hooks_subscriber" class="z-form clearfix">
 
-    <div id="hooks_subscriber_areas" class="floatleft z-w49">
+    <div id="hooks_subscriber_areas" class="pull-left z-w49">
         <fieldset>
             <legend>{gt text='Attached areas'}</legend>
 
@@ -115,7 +115,7 @@
         </fieldset>
     </div>
 
-    <div id="hooks_provider_areas" class="floatright z-w49">
+    <div id="hooks_provider_areas" class="pull-right z-w49">
         <fieldset>
             <legend>{gt text='Available areas'}</legend>
 
@@ -229,15 +229,15 @@
                     {/if}
 
                     <div class="clearfix">
-                        <div class="floatleft z-w45">
+                        <div class="pull-left z-w45">
                             {$subscriber.areasToTitles.$sarea} <span class="sub">({$sarea})</span>
                         </div>
 
-                        <div class="floatleft z-w10 center">
+                        <div class="pull-left z-w10 text-center">
                             {img src="attach.png" modname="core" set="icons/extrasmall"}
                         </div>
 
-                        <div class="floatleft z-w45">
+                        <div class="pull-left z-w45">
                             {foreach from=$providerAreas item='parea'}
                             {assign var="parea_md5" value=$parea|md5}
 

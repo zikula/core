@@ -22,9 +22,9 @@
             <th>{gt text="Internal ID"}</th>
             <th>{gt text="Registration date"}</th>
             <th>{gt text="E-mail address"}</th>
-            <th class="center">{gt text="Approved?"}</th>
-            <th class="center">{gt text="Verified?"}</th>
-            <th class="center" colspan="{$actions.count}">{gt text="Actions"}</th>
+            <th class="text-center">{gt text="Approved?"}</th>
+            <th class="text-center">{gt text="Verified?"}</th>
+            <th class="text-center" colspan="{$actions.count}">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -35,14 +35,14 @@
             <td>{$reginfo.uid|safetext}</td>
             <td>{$reginfo.user_regdate|safetext}</td>
             <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
-            <td class="center">
+            <td class="text-center">
                 {if $reginfo.isapproved}
                 {img modname='core' set='icons/extrasmall' src='greenled.png' __title='Approved' __alt='Approved' class='tooltips'}
                 {else}
                 {img modname='core' set='icons/extrasmall' src='redled.png' __title='Pending approval' __alt='Pending approval' class='tooltips'}
                 {/if}
             </td>
-            <td class="center">
+            <td class="text-center">
                 {if $reginfo.isverified}
                 {img modname='core' set='icons/extrasmall' src='greenled.png' __title='Verified' __alt='Verified' class='tooltips'}
                 {elseif !$reginfo.verificationsent}
@@ -134,11 +134,11 @@
 
 {if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar}{/if}
 
-<p class="sub center bold">{gt text='Legend'}</p>
+<p class="sub text-center bold">{gt text='Legend'}</p>
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th colspan="2" class="sub center">{gt text='Approval'}</th>
+            <th colspan="2" class="sub text-center">{gt text='Approval'}</th>
         </tr>
     </thead>
     <tbody>
@@ -155,7 +155,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th colspan="2" class="sub center">{gt text='Verification'}</th>
+            <th colspan="2" class="sub text-center">{gt text='Verification'}</th>
         </tr>
     </thead>
     <tbody>

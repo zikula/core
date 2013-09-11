@@ -161,8 +161,8 @@
     cursor: move;
 }
 
-.z-pointericon {
-    background: url("../../../../../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
+.module-context {
+    color: #808080;
     border: 1px solid transparent;
     cursor: pointer;
     height: 1em;
@@ -171,8 +171,8 @@
     width: 1em;
 }
 
-.z-pointericon:hover {
-    background: url("../../../../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
+.module-context:hover {
+    color: black;
     border: 1px solid #999;
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);

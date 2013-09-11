@@ -52,7 +52,7 @@
                     </div>
                 </form>
             </th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>

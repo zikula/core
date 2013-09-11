@@ -8,7 +8,7 @@
             <th>{gt text="Name"}</th>
             <th>{gt text="Configuration file"}</th>
             <th>{gt text="Important"}</th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -17,7 +17,7 @@
             <td>{$name|safetext}</td>
             <td>{$filesection.file|safetext}</td>
             <td>{$filesection.important|default:0|yesno}</td>
-            <td class="right">
+            <td class="text-right">
                 <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
                 <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
             </td>
@@ -33,7 +33,7 @@
         <tr>
             <th>{gt text="Configuration file"}</th>
             <th>{gt text="Configuration file found"}</th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -41,7 +41,7 @@
         <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
             <td>{$filename|safetext}</td>
             <td>{$fileexists|yesno}</td>
-            <td class="right">
+            <td class="text-right">
                 <a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
                 <a href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}">{img modname=core src=configure.png set=icons/extrasmall __alt="Variables" __title="Variables"}</a>
             </td>

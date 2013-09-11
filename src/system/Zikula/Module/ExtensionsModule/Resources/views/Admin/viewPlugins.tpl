@@ -60,7 +60,7 @@
                     </div>
                 </form>
             </th>
-            <th class="right">{gt text="Actions"}</th>
+            <th class="text-right">{gt text="Actions"}</th>
         </tr>
     </thead>
     <tbody>
@@ -87,7 +87,7 @@
                 <br />({$plugin.newversion|safetext})
                 {/if}
             </td>
-            <td class="right nowrap">
+            <td class="text-right nowrap">
                 {strip}
                 {foreach from=$plugin.actions item="action"}
                 <a href="{$action.url|safetext}">{img modname=core src=$action.image set=icons/extrasmall title=$action.title alt=$action.title class='tooltips'}</a>&nbsp;

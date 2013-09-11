@@ -743,12 +743,12 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'login'),
                 'text'  => $this->__('Log in'),
-                'class' => 'smallicon smallicon-user',
+                'icon' => 'signin',
             );
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'lostPwdUname'),
                 'text'  => $this->__('Recover account information or password'),
-                'class' => 'user-icon-password',
+                'icon' => 'key',
             );
         }
 
@@ -756,7 +756,7 @@ class UserApi extends \Zikula_AbstractApi
             $links[] = array(
                 'url'   => ModUtil::url($this->name, 'user', 'register'),
                 'text'  => $this->__('New account'),
-                'class' => 'user-icon-adduser',
+                'icon' => 'plus',
             );
         }
 
