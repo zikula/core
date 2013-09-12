@@ -151,6 +151,11 @@ td.actions .icon-ok {
     color: #61B329;
 }
 
+td.actions .icon {
+    font-size: 1.4em;
+    padding-left: 4px;
+}
+
 
 /******************************************************************************
 * Icon colors
