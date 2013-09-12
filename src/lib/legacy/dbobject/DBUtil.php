@@ -2265,6 +2265,12 @@ class DBUtil
      */
     public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null, $subquery = null)
     {
+        $key = $column . $where. serialize($categoryFilter) . $subquery;
+        $sum = self::getCache($table, $key);
+        if ($sum !== false) {
+            return $sum;
+        }
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -2308,6 +2314,12 @@ class DBUtil
      */
     public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null, $subquery = null)
     {
+        $key = $column . $where. (int)$distinct . serialize($categoryFilter) . $subquery;
+        $sum = self::getCache($table, $key);
+        if ($sum !== false) {
+            return $sum;
+        }
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
