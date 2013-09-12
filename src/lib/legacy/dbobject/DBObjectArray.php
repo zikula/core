@@ -309,13 +309,20 @@ class DBObjectArray
      *
      * @return array The object's data set count.
      */
-    public function getCount($where = '', $doJoin = false)
+    public function getCount($where = '', $doJoin = null)
     {
+        if ($doJoin === null) {
+            $doJoin = (bool)($this->_objJoin);
+        } else {
+            $doJoin = (bool)$doJoin;
+        }
+
         if ($this->_objJoin && $doJoin) {
             $this->_objData = DBUtil::selectExpandedObjectCount($this->_objType, $this->_objJoin, $where, false, $this->_objCategoryFilter);
         } else {
             $this->_objData = DBUtil::selectObjectCount($this->_objType, $where, '1', false, $this->_objCategoryFilter);
         }
+
         return $this->_objData;
     }
 
