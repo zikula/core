@@ -471,13 +471,13 @@ class Zikula_Core
                 ModUtil::registerAutoloaders();
             }
 
-            $coreInitEvent->setArg('stage', self::STAGE_TABLES);
+            $coreInitEvent->setArgument('stage', self::STAGE_TABLES);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         if ($stage & self::STAGE_SESSIONS) {
             SessionUtil::requireSession();
-            $coreInitEvent->setArg('stage', self::STAGE_SESSIONS);
+            $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
@@ -489,13 +489,13 @@ class Zikula_Core
 
         if ($stage & self::STAGE_DECODEURLS) {
             System::queryStringDecode($request);
-            $coreInitEvent->setArg('stage', self::STAGE_DECODEURLS);
+            $coreInitEvent->setArgument('stage', self::STAGE_DECODEURLS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
         if ($stage & self::STAGE_LANGS) {
             $lang->setup($request);
-            $coreInitEvent->setArg('stage', self::STAGE_LANGS);
+            $coreInitEvent->setArgument('stage', self::STAGE_LANGS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
         // end block
