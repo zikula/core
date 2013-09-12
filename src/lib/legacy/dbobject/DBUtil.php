@@ -286,6 +286,18 @@ class DBUtil
             }
 
             if ($result) {
+                // catch manual SQL which requires cache flushes
+                $tab = null;
+                $sql = strtolower(trim(preg_replace( "/\s+/", " ", $sql)));
+                if (strpos ($sql, 'update') === 0) {
+                    list(, $tab, ) = explode(' ', $sql);
+                }
+                if (strpos ($sql, 'delete') === 0) {
+                    list(, , $tab, ) = explode(' ', $sql);
+                }
+                if ($tab && strpos($tab, 'session_info') === false) {
+                    self::flushCache($tab);
+                }
                 if (System::isLegacyMode()) {
                     return new Zikula_Adapter_AdodbStatement($result);
                 } else {
