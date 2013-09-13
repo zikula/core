@@ -104,27 +104,25 @@ function _upg_header()
 {
     $lang = ZLanguage::getLanguageCode();
     $charset = ZLanguage::getEncoding();
-    echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">'."\n";
-    echo '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="'.$lang.'">'."\n";
+    echo '<!DOCTYPE html>'."\n";
+    echo '<html lang="'.$lang.'" xml:lang="'.$lang.'">'."\n";
     echo '<head>'."\n";
     echo '<meta http-equiv="Content-Type" content="text/html; charset='.$charset.'" />'."\n";
     echo '<title>'.__('Zikula Upgrade script')."</title>\n";
     echo '<link rel="stylesheet" href="install/style/installer.css" type="text/css" />'."\n";
+    echo '<link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />'."\n";    
     echo '<link rel="stylesheet" href="style/core.css" type="text/css" />'."\n";
+    echo '<link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />'."\n";
     echo '<!--[if IE]><link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" /><![endif]-->'."\n";
-    echo '<script src="javascript/ajax/proto_scriptaculous.combined.min.js" type="text/javascript"></script>'."\n";
+    echo '<script type="text/javascript" src="web/jquery/jquery.min.js"></script>'."\n";
     echo '<script src="install/javascript/install.js" type="text/javascript"></script>'."\n";
     echo '</head>'."\n";
     echo '<body>'."\n";
-    echo '<div id="container"><div id="content">'."\n";
+    echo '<div class="container"><div id="content">'."\n";
     echo '<div id="header">'."\n";
     echo '<h1>'.__('Zikula Application Framework').'</h1>'."\n";
     echo '<h2>'.__('Upgrade script').'</h2></div>'."\n";
-    echo '<div id="maincontent">';
-    if (UserUtil::isLoggedIn()) {
-        echo '<h3>'.__f('Zikula Upgrade script (for Zikula version %s and up)', array(_Z_MINUPGVER)).'</h3>'."\n";
-        echo '<p>'.__f('This script will upgrade any Zikula v%1$s+ installation. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER))."</p>\n";
-    }
+    echo '<div id="maincontent">';    
 }
 
 /**
@@ -138,7 +136,8 @@ function _upg_footer()
     $lang = ZLanguage::getLanguageCode();
     echo '</div></div>'."\n";
     echo '<div id="footer">'."\n";
-    echo '<p id="notice">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang).'</p>';
+    echo '<br />'."\n";
+    echo '<div class="alert alert-info text-center">'.__f('For more information about the upgrade process, please read the <a href="docs/%1$s/UPGRADING.md">upgrade documentation</a>, visit our <a href="http://community.zikula.org/Wiki.htm">wiki</a> or the <a href="http://community.zikula.org/module-Forum.htm">support forum</a>.', $lang).'</div>';
     echo '</div>'."\n";
     echo '</div></body>'."\n";
     echo '</html>';
@@ -157,8 +156,8 @@ function _upg_selectlanguage()
     $validupgrade = true;
     if (!$GLOBALS['ZConfig']['System']['installed']) {
         $validupgrade = false;
-        echo '<h2>'.__('FATAL ERROR!')."</h2>\n";
-        echo '<p class="alert alert-danger">'.__("Zikula does not appear to be installed.")."</p>\n";
+        echo '<h1 class="text-center">'.__('FATAL ERROR!')."</h1>\n";
+        echo '<div class="animate shake"><p class="alert alert-danger text-center">'.__("Zikula does not appear to be installed.")."</p></div>\n";
     }
 
     if (!$validupgrade) {
@@ -167,6 +166,8 @@ function _upg_selectlanguage()
     }
 
     $curlang = ZLanguage::getLanguageCode();
+    echo '<p class="alert alert-info text-center">'.__f('This script will upgrade any Zikula v%1$s+ installation. Upgrades from less than Zikula v%1$s are not supported by this script.', array(_Z_MINUPGVER))."</p>\n";
+    echo '<br />'."\n";        
     echo '<form class="form-horizontal" role="form" action="upgrade.php" method="get" enctype="application/x-www-form-urlencoded">'."\n";
     echo '<fieldset><legend>'.__('Please select your language').'</legend>'."\n";
     echo '<input type="hidden" name="action" value="upgradeinit" />'."\n";
@@ -178,7 +179,8 @@ function _upg_selectlanguage()
         echo '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
     }
     echo '</select></div></fieldset>'."\n";
-    echo '<div class="z-buttons center"><input type="submit" value="'.__('Submit').'" /></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-default btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
+    
     echo '</form>'."\n";
     _upg_footer();
 }
@@ -212,21 +214,24 @@ function _upg_login($showheader = true)
     $lang = ZLanguage::getLanguageCode();
     if ($showheader == true) {
         _upg_header();
-        echo '<p class="alert alert-danger">'.__('Failed to login to your site').'</p>'."\n";
+        echo '<div class="animate shake"><p class="alert alert-danger text-center">'.__('Failed to login to your site').'</p></div>'."\n";
     }
-    echo '<p>'.__('For the next upgrade steps you need to be logged in. Please provide your admin account credentials').'</p>'."\n";
+    echo '<div>'."\n";
+    echo '<p class="alert alert-success text-center">'.__('For the next upgrade steps you need to be logged in. Please provide your admin account credentials:').'</p>'."\n";
     echo '<form class="form-horizontal" role="form" action="upgrade.php?lang='.$lang.'" method="post" enctype="application/x-www-form-urlencoded">'."\n";
     echo '<fieldset><legend>'.__('Log-in').'</legend>'."\n";
-    echo '<div class="form-group"><label class="col-lg-3 control-label" for="username">'.__('User name').'</label><div class="col-lg-9"><input id="username" type="text" class="form-control" name="username" size="60" maxlength="25" /></div>'."\n";
-    echo '<div class="form-group"><label class="col-lg-3 control-label" for="password">'.__('Password').'</label><div class="col-lg-9"><input id="password" type="text" class="form-control" name="password" size="25" maxlength="40" /></div>'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="username">'.__('User name:').'</label><div class="col-lg-9"><input type="text" name="username" id="username" class="form-control" maxlength="80" value=""/></div>'."\n";
+    echo '<br /><br />'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="password">'.__('Password:').'</label><div class="col-lg-9"><input type="password" name="password" id="password" class="form-control" maxlength="80" value=""/></div>'."\n";
     echo '<input type="hidden" name="action" value="sanitycheck" />'."\n";
 
     if ($lang != null) {
         echo '<input type="hidden" name="lang" value="'.htmlspecialchars($lang).'" />'."\n";
     }
     echo '</fieldset>'."\n";
-    echo '<div class="z-buttons center"><input name="submit" type="submit" value="'.__('Submit').'" /></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-default btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
     echo '</form>'."\n";
+    echo '</div>'."\n";
     if ($showheader == true) {
         _upg_footer();
     }
@@ -248,7 +253,7 @@ function _upg_upgrademodules($username, $password)
     // force load the modules admin API
     ModUtil::loadApi('ZikulaExtensionsModule', 'admin', true);
 
-    echo '<h2>'.__('Starting upgrade').'</h2>'."\n";
+    echo '<h2>'.__('Upgrade Results:').'</h2>'."\n";
     echo '<ul id="upgradelist" class="check">'."\n";
 
     $results = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
@@ -263,7 +268,9 @@ function _upg_upgrademodules($username, $password)
     }
     echo '</ul>'."\n";
     if (!$results) {
-        echo '<ul class="check"><li class="passed">'.__('No modules required upgrading').'</li></ul>';
+        echo '<br />'."\n";
+        echo '<ul class="check"><li class="passed"><strong>'.__('No modules required upgrading').'</strong></li></ul>';
+        echo '<br />'."\n";
     }
 
     // regenerate the themes list
@@ -276,7 +283,7 @@ function _upg_upgrademodules($username, $password)
     // Relogin the admin user to give a proper admin link
     SessionUtil::requireSession();
 
-    echo '<p class="alert alert-success">'.__('Finished upgrade')." - \n";
+    echo '<p class="alert alert-success text-center">'.__('Finished upgrade')." - \n";
 
     $authenticationInfo = array(
         'login_id' => $username,
@@ -314,14 +321,17 @@ function _upg_upgrademodules($username, $password)
 function _upg_continue($action, $text, $username, $password)
 {
     $lang = ZLanguage::getLanguageCode();
-    echo '<form class="z-form z-linear" method="post" action="upgrade.php?lang='.$lang."\">\n";
-    echo '<div><fieldset><legend>'.DataUtil::formatForDisplay($text).'</legend>'."\n";
+    echo '<form class="form-horizontal" method="post" action="upgrade.php?lang='.$lang."\">\n";
+    echo '<div><fieldset><legend>'.__('Upgrade').'</legend>'."\n";
     if ($username != null && $password != null) {
         echo '<input type="hidden" name="username" value="'.DataUtil::formatForDisplay($username).'" />'."\n";
         echo '<input type="hidden" name="password" value="'.DataUtil::formatForDisplay($password).'" />'."\n";
     }
+    echo ''.__('Please click once and wait:').''."\n";
+    echo '<br />'."\n";
+    echo '<br />'."\n";
     echo '<input type="hidden" name="action" value="'.htmlspecialchars($action).'" />'."\n";
-    echo '<div class="z-buttons center"><input type="submit" name="submit" value="'.htmlspecialchars($text).'" /></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" value="'.htmlspecialchars($text).'" class="btn btn-default btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Proceed to Upgrade').'</button></div>'."\n";
     echo '</fieldset></div>'."\n";
     echo '</form>'."\n";
 
@@ -345,22 +355,22 @@ function _upg_sanity_check($username, $password)
     if (version_compare(_ZINSTALLEDVERSION, _ZINSTALLVER, '=')) {
         // Already installed the correct version
         $validupgrade = false;
-        echo '<h2>'.__('Already up to date')."</h2>\n";
-        echo '<p class="alert alert-danger">'.__f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore.", _ZINSTALLEDVERSION)."</p>\n";
+        echo '<div class="alert alert-success text-center"><h1 class="text-center">'.__('Already up to date')."</h1></div>\n";
+        echo '<div class="animate shake"><p class="alert alert-danger text-center">'.__f("It seems that you have already installed version %s. Please remove this upgrade script, you do not need it anymore.", _ZINSTALLEDVERSION)."</p></div>\n";
     } elseif (version_compare(_ZINSTALLEDVERSION, _Z_MINUPGVER, '<')) {
         // Not on version _Z_MINUPGVER yet
         $validupgrade = false;
         echo '<h2>'.__('Possible incompatible version found.')."</h2>\n";
-        echo '<p class="alert alert-warning">'.__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
+        echo '<p class="alert alert-warning text-center">'.__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
     } elseif (version_compare(PHP_VERSION, '5.3.0', '>=')) {
         if (ini_get('date.timezone') == '') {
-            echo '<p class="alert alert-danger"><strong>'.__('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.')."</strong></p>\n";
+            echo '<div class="animate shake"><p class="alert alert-danger text-center"><strong>'.__('date.timezone is currently not set. Since PHP 5.3.0, it needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.')."</strong></p></div>\n";
             _upg_continue('sanitycheck', __('Check again'), $username, $password);
             $validupgrade = false;
         }
     } elseif (version_compare(Zikula_Core::VERSION_NUM, '1.3.6', '>=') && (is_dir('plugins/Doctrine') || is_dir('plugins/DoctrineExtensions'))) {
         echo '<h2>'.__('Legacy plugins found.')."</h2>\n";
-        echo '<p class="alert alert-warning">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
+        echo '<p class="alert alert-warning text-center">'.__f('Please delete the folders <strong>plugins/Doctrine</strong> and <strong>plugins/DoctrineExtensions</strong> as they have been deprecated', array(_ZINSTALLEDVERSION, _Z_MINUPGVER))."</p>\n";
         $validupgrade = false;
     }
 
@@ -370,7 +380,7 @@ function _upg_sanity_check($username, $password)
             // PCRE Unicode property support is not enabled.
             $validupgrade = false;
             echo '<h2>'.__('PCRE Unicode Property Support Needed.')."</h2>\n";
-            echo '<p class="alert alert-danger">'.__('The PCRE (Perl Compatible Regular Expression) library being used with your PHP installation does not support Unicode properties. This is required to handle multi-byte character sets in regular expressions. The PCRE library used must be compiled with the \'--enable-unicode-properties\' option.')."</p>\n";
+            echo '<div class="animate shake"><p class="alert alert-danger text-center">'.__('The PCRE (Perl Compatible Regular Expression) library being used with your PHP installation does not support Unicode properties. This is required to handle multi-byte character sets in regular expressions. The PCRE library used must be compiled with the \'--enable-unicode-properties\' option.')."</p></div>\n";
         }
     }
 
@@ -378,7 +388,12 @@ function _upg_sanity_check($username, $password)
         _upg_footer();
         System::shutdown();
     }
-
+    if (UserUtil::isLoggedIn()) {
+        echo '<div class="text-center">'."\n";
+        echo '<h3>'.__f('Zikula Upgrade script (for Zikula version %s and up)', array(_Z_MINUPGVER)).'</h3>'."\n";
+        echo '</div>'."\n";
+        echo '<br />'."\n";
+    }
     _upg_continue('upgrademodules', __('Proceed to upgrade (click once and wait)'), $username, $password);
     _upg_footer();
 }
