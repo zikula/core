@@ -451,7 +451,7 @@
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 .z-itemlist li.z-itemsort {
-    background-image:url("../images/icons/extrasmall/move.png");
+    background-image:url("../../images/icons/extrasmall/move.png");
     background-position:5px 50%;
     background-repeat:no-repeat;
     padding-left: 30px !important;
@@ -461,14 +461,14 @@
     padding-left: 30px !important;
 }
 .z-itemlist li.z-itemdragleft {
-    background-image:url("../images/icons/extrasmall/move_left.png");
+    background-image:url("../../images/icons/extrasmall/move_left.png");
     background-position:5px 50%;
     background-repeat:no-repeat;
     padding-left: 30px !important;
     cursor: move;
 }
 .z-itemlist li.z-itemdragright {
-    background-image:url("../images/icons/extrasmall/move_right.png");
+    background-image:url("../../images/icons/extrasmall/move_right.png");
     background-position:99% 50%;
     background-repeat:no-repeat;
     padding-left: 5px !important;
