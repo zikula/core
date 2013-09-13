@@ -2,6 +2,7 @@
 
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
+use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
@@ -184,7 +185,11 @@ abstract class ZikulaKernel extends Kernel
     {
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
-            $this->autoloader = $loaders[0][0];
+            if ($loaders[0][0] instanceof DebugClassLoader) {
+                $this->autoloader = $loaders[0][0]->getClassLoader();
+            } else {
+                $this->autoloader = $loaders[0][0];
+            }
         }
 
         return $this->autoloader;
