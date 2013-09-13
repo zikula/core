@@ -420,6 +420,17 @@ Version.php
 
 Modules should have `core_min = 1.3.6`.
 
+You now can add a reason for each dependency. Add a `reason` key to any dependency array you want. Example:
+
+    $meta['dependencies'] = array(
+            array('modname'    => 'Scribite',
+                  'minversion' => '5.0.0',
+                  'maxversion' => '',
+                  'status'     => ModUtil::DEPENDENCY_RECOMMENDED,
+                  'reason'     => 'Scribite adds a html editor.'),
+    );
+
+*Note: This only works for modules using the new >= 1.3.6 structure. Modules with the < 1.3.6 structure are ignoring this setting.*
 
 Theme Standard
 --------------
