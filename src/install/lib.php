@@ -354,9 +354,7 @@ function createuser($username, $password, $email)
     $password = UserUtil::getHashedPassword($password);
 
     // prepare the data
-    $username = mb_strtolower(DataUtil::formatForStore($username));
-    $password = DataUtil::formatForStore($password);
-    $email = mb_strtolower(DataUtil::formatForStore($email));
+    $username = mb_strtolower($username);
 
     $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
     $nowUTCStr = $nowUTC->format(Users_Constant::DATETIME_FORMAT);
