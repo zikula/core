@@ -32,16 +32,12 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', -10);
         $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
-        $this->addHandlerDefinition('setup.errorreporting', 'defaultErrorReporting');
-        $this->addHandlerDefinition('core.init', 'setupLoggers');
-        $this->addHandlerDefinition('log', 'errorLog');
         $this->addHandlerDefinition('core.init', 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
         $this->addHandlerDefinition('core.init', 'setupRequest');
         $this->addHandlerDefinition('core.preinit', 'request');
         $this->addHandlerDefinition('core.postinit', 'systemHooks');
-        $this->addHandlerDefinition('log.sql', 'logSqlQueries');
         $this->addHandlerDefinition('core.init', 'setupAutoloaderForGeneratedCategoryModels');
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
@@ -269,165 +265,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
                 PluginUtil::loadPlugins(realpath(realpath('.').'/plugins'), "SystemPlugin");
                 EventUtil::loadPersistentEvents();
             }
-        }
-    }
-
-    /**
-     * Setup default error reporting.
-     *
-     * Implements 'setup.errorreporting' event.
-     *
-     * @param Zikula_Event $event The event.
-     *
-     * @return void
-     */
-    public function defaultErrorReporting(Zikula_Event $event)
-    {
-        if (!$this->serviceManager['log.enabled']) {
-            return;
-        }
-
-        if ($this->serviceManager->has('system.errorreporting')) {
-            return;
-        }
-
-        $class = 'Zikula_ErrorHandler_Standard';
-        if ($event['stage'] & Zikula_Core::STAGE_AJAX) {
-            $class = 'Zikula_ErrorHandler_Ajax';
-        }
-
-        $errorHandler = new $class($this->serviceManager);
-        $this->serviceManager->set('system.errorreporting', $errorHandler);
-        set_error_handler(array($errorHandler, 'handler'));
-        $event->stopPropagation();
-    }
-
-    /**
-     * Establish the necessary instances for logging.
-     *
-     * Implements 'core.init' event when Zikula_Core::STAGE_CONFIG.
-     *
-     * @param Zikula_Event $event The event to log.
-     *
-     * @return void
-     */
-    public function setupLoggers(Zikula_Event $event)
-    {
-        if (!($event['stage'] & Zikula_Core::STAGE_CONFIG)) {
-            return;
-        }
-
-        if (!$this->serviceManager['log.enabled']) {
-            return;
-        }
-
-        if ($this->serviceManager['log.to_display'] || $this->serviceManager['log.sql.to_display']) {
-            $this->serviceManager->set('zend.logger.display', $displayLogger = new Monolog\Logger('logger'));
-            // load writer first because of hard requires in the Zend_Log_Writer_Stream
-            $handler = new Monolog\Handler\StreamHandler('php://output');
-            $formatter = new Monolog\Formatter\LineFormatter();
-            $handler->setFormatter($formatter);
-            $displayLogger->pushHandler($handler);
-        }
-
-        if ($this->serviceManager['log.to_file'] || $this->serviceManager['log.sql.to_file']) {
-            $this->serviceManager->set('zend.logger.file', $fileLogger = new Monolog\Logger('logger.file'));
-            $filename = LogUtil::getLogFileName();
-            // load writer first because of hard requires in the Zend_Log_Writer_Stream
-            $handler = new Monolog\Handler\StreamHandler($filename);
-            $formatter = new Monolog\Formatter\LineFormatter();
-            $handler->setFormatter($formatter);
-            $fileLogger->pushHandler($handler);
-        }
-    }
-
-    /**
-     * Log an error.
-     *
-     * Implements 'log' event.
-     *
-     * @param Zikula_Event $event The log event to log.
-     *
-     * @throws Zikula_Exception_Fatal Thrown if the handler for the event is an instance of Zikula_ErrorHandler_Ajax.
-     *
-     * @return void
-     */
-    public function errorLog(Zikula_Event $event)
-    {
-        // Check for error supression.  if error @ supression was used.
-        // $errno wil still contain the real error that triggered the handler - drak
-        if (error_reporting() == 0) {
-            return;
-        }
-
-        $handler = $event->getSubject();
-
-        // array('trace' => $trace, 'type' => $type, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)
-        $message = $event['errstr'];
-        if (is_string($event['errstr'])) {
-            if ($event['errline'] == 0) {
-                $message = __f('PHP issued an error at line 0, so reporting entire trace to be more helpful: %1$s: %2$s', array(Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr']));
-                $fullTrace = $event['trace'];
-                array_shift($fullTrace); // shift is performed on copy so as not to disturn the event args
-                foreach ($fullTrace as $trace) {
-                    $file = isset($trace['file']) ? $trace['file'] : null;
-                    $line = isset($trace['line']) ? $trace['line'] : null;
-
-                    if ($file && $line) {
-                        $message .= ' ' . __f('traced in %1$s line %2$s', array($file, $line)) . "#\n";
-                    }
-                }
-            } else {
-                $message = __f('%1$s: %2$s in %3$s line %4$s', array(Zikula_AbstractErrorHandler::translateErrorCode($event['errno']), $event['errstr'], $event['errfile'], $event['errline']));
-            }
-        }
-
-        $type = Zikula_AbstractErrorHandler::$configConversion[abs($handler->getType())];
-        if ($this->serviceManager['log.to_display'] && !$handler instanceof Zikula_ErrorHandler_Ajax) {
-            if (abs($handler->getType()) <= $this->serviceManager['log.display_level']) {
-                $this->serviceManager->get('zend.logger.display')->log(abs($event['type']), $message);
-            }
-        }
-
-        if ($this->serviceManager['log.to_file']) {
-            if ($type <= $this->serviceManager['log.file_level']) {
-                $this->serviceManager->get('zend.logger.file')->log(abs($event['type']), $message);
-            }
-        }
-
-        if ($handler instanceof Zikula_ErrorHandler_Ajax) {
-            if ($type <= $this->serviceManager['log.display_ajax_level']) {
-                // autoloaders don't work inside error handlers!
-                include_once 'lib/legacy/Zikula/Exception.php';
-                include_once 'lib/legacy/Zikula/Exception/Fatal.php';
-                throw new Zikula_Exception_Fatal($message);
-            }
-        }
-    }
-
-    /**
-     * Listener for 'log.sql' events.
-     *
-     * This listener logs the queries via Zend_Log to file / console.
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function logSqlQueries(Zikula_Event $event)
-    {
-        if (!$this->serviceManager['log.enabled']) {
-            return;
-        }
-
-        $message = __f('SQL Query: %s took %s sec', array($event['query'], $event['time']));
-
-        if ($this->serviceManager['log.sql.to_display']) {
-            $this->serviceManager->get('zend.logger.display')->debug($message);
-        }
-
-        if ($this->serviceManager['log.sql.to_file']) {
-            $this->serviceManager->get('zend.logger.file')->debug($message);
         }
     }
 
