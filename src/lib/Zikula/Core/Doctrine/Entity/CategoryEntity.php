@@ -17,9 +17,9 @@ namespace Zikula\Core\Doctrine\Entity;
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Zikula\Core\Doctrine\StandardFields;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zikula\Core\Doctrine\StandardFields\Mapping\Annotation as ZK;
+use Zikula\Core\Doctrine\StandardFields\StandardFields;
 /**
  * Category entity.
  *
@@ -147,6 +147,13 @@ class CategoryEntity extends EntityAccess implements StandardFields
     private $lu_date;
 
     /**
+     * maintain BC (same as status)
+     * @ORM\Column(type="string", length=1)
+     * @var string
+     */
+    private $obj_status = 'A';
+
+    /**
      * constructor
      */
     public function __construct()
@@ -163,6 +170,7 @@ class CategoryEntity extends EntityAccess implements StandardFields
         $this->path = '';
         $this->ipath = '';
         $this->status = 'A';
+        $this->obj_status = 'A';
 
         $this->attributes = new ArrayCollection();
     }
