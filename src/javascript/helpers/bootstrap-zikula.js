@@ -58,8 +58,9 @@
     $(document).ready(function() {
         
         
-        jQuery('input:radio').data('state', 'hh');
-
+        // remove class hide because bootstrap is using important, that is not
+        // working with jQuery.show();
+        $('.hide').hide().removeClass('hide');
         
         /**
         * Input switch container. 

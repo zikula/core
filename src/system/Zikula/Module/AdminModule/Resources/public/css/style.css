@@ -1,26 +1,4 @@
 /******************************************************************************
-* Admin breadcrumbs
-******************************************************************************/
-
-#z-maincontent .z-admin-breadcrumbs {
-    color: #777;
-    font-size: 0.95em;
-    margin-bottom: 1em;
-}
-
-#z-maincontent .z-admin-breadcrumbs a {
-    color: #555;
-}
-
-#z-maincontent .z-admin-breadcrumbs .sub {
-    color: #999;
-}
-
-#z-maincontent .z-admin-breadcrumbs .z-breadcrumb {
-    padding: 0 0.2em;
-}
-
-/******************************************************************************
 * Admin area (introduced in Core 1.3)
 * This single container replaces the old 'z-adminbox' and 'z-admincontainer'
 ******************************************************************************/
@@ -111,75 +89,6 @@
 }
 
 /******************************************************************************
-* Styling for module icon list in the admin panel
-******************************************************************************/
-
-#z-adminiconlist {
-    margin: 5px;
-}
-
-#z-adminiconlist .z-adminfloat {
-    float: left;
-}
-
-#z-adminiconlist .z-adminiconcontainer {
-    float: left;
-    padding: 0.75em 0;
-}
-
-#z-adminiconlist .z-adminmodtitle {
-    font-weight: bold;
-    overflow: hidden;
-}
-
-#z-adminiconlist .z-adminiconrow .z-adminiconcontainer .z-adminicon {
-    /* only for admin_admin_adminpanel_inc1.tpl */
-    margin-right: 5px;
-}
-
-#z-adminiconlist .z-adminiconcontainer .z-adminicon img {
-    background: inherit;
-    border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
-    border-style: solid;
-    border-width: 1px;
-    padding: 4px;
-}
-
-#z-adminiconlist .z-adminiconcontainer .z-adminicon img:hover {
-    border: 1px solid #aaa;
-}
-
-#z-adminiconlist .z-adminlinkheader {
-    white-space: nowrap;
-}
-
-#z-adminiconlist .z-adminlinkheader img {
-    vertical-align: middle;
-}
-
-#z-adminiconlist .z-dragicon {
-    cursor: move;
-}
-
-.module-context {
-    color: #808080;
-    border: 1px solid transparent;
-    cursor: pointer;
-    height: 1em;
-    margin-left: 0;
-    padding: 0 5px;
-    width: 1em;
-}
-
-.module-context:hover {
-    color: black;
-    border: 1px solid #999;
-    -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-/******************************************************************************
 * Styling for status security analyzer, update checker and more
 ******************************************************************************/
 
@@ -205,17 +114,8 @@
     border: 2px solid #990000;
 }
 
-div#z-developernotices strong,
-div#z-securityanalyzer strong,
-div#z-updatechecker strong {
-    display: block;
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: 0;
-    padding: 0.25em;
-}
-
 div#z-developernotices strong:hover,
+div#z-developernotices span:hover,
 div#z-securityanalyzer strong:hover,
 div#z-updatechecker strong:hover {
     text-decoration: underline;
@@ -291,6 +191,7 @@ div.z-admincategorydescription {
     color: #999;
     font-size: 0.9em;
     margin: 0 0 1.25em;
+    text-align: right;
 }
 
 /******************************************************************************
@@ -404,174 +305,76 @@ div.z-admincontainer {
 }
 
 /******************************************************************************
-* Admin tabs
+* Admin tab
 ******************************************************************************/
 
-ul#admintabs {
-    background: url("../images/tab_bottom.gif") repeat-x scroll center bottom transparent;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
-    list-style: none outside none !important;
-}
-
-ul#admintabs li {
-    background: none repeat scroll 0 0 #F3F3F3 !important;
-    border: 1px solid #CCCCCC;
-    float: left;
-    margin: 0 5px 0 0;
-    padding: 0;
-    z-index: 1000;
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
-}
-
-ul#admintabs li > a {
-    border-right: 1px solid transparent;
-    color: #666666;
-    float: left;
-    font-weight: bold;
-    padding: 5px;
-    position: relative;
-    text-decoration: none !important;
-}
-
-ul#admintabs li > a:hover {
-    background: #FFFFFF !important;
-    border-right: 1px solid #ccc;
-    color: #000;
-    text-decoration: none !important;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-    border-radius: 5px 0 0 0;
-}
-
-ul#admintabs li.active {
-    background: none repeat scroll 0 0 #fff !important;
-    border-bottom: 1px solid #fff;
-    z-index: 2000;
-}
-
-ul#admintabs li.active a:hover {
-    border-right: 1px solid transparent;
-}
-
-ul#admintabs li#addcat > a:hover {
-    border-right: 1px solid transparent;
-}
-
-ul#admintabs li#addcat #addcatlink {
-    width: 28px;
-	height:27px;
-	padding-left:8px;
-}
-
-ul#admintabs li#addcat a#addcatlink:hover {
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
-}
-
-ul#admintabs li > .z-admindrop {
-    background: url("../../../../../../../images/global/arrow_down_grey.png") no-repeat scroll 50% 50% transparent;
-    border-left: 1px solid transparent;
-    cursor: pointer;
-    float: left;
-    padding: 5px 4px;
-    position: relative;
-    width: 7px;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-}
-
-ul#admintabs li > .z-admindrop:hover {
-    background: url("../../../../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% #FFFFFF;
-    border-left: 1px solid #CCCCCC;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-    border-radius: 0 5px 0 0;
-}
-
-ul#admintabs li.active > .z-admindrop:hover {
-    background: url("../../../../../../../images/global/arrow_down_black.png") no-repeat scroll 50% 50% transparent;
-    border-left: 1px solid transparent;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-    border-radius: 0 5px 0 0;
-}
-
-ul#admintabs li a.ajaxhover {
-    background: #FFFFB2 !important;
-    border-right: 1px solid #ccc;
-    color: #000;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-    border-radius: 5px 0 0 0;
-}
-
-ul#admintabs #ajaxNewCatForm {
-    background-color: #FFFFB2;
-    display: block;
-    float: left;
-    font-weight: bold;
-    padding: 5px;
-    position: relative;
-    text-decoration: none;
-    z-index: 1000;
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
-}
-
-ul#admintabs #ajaxNewCatForm input.ajaxNewCat {
-    background-color: #fff;
-    border: none;
-    color: #333;
-    float: left;
-    font-weight: bold;
-    margin: 0;
-    max-width: 8em;
-    padding: 0;
-}
-
-ul#admintabs #ajaxNewCatForm a.ajaxCatImage {
-    background-color: transparent;
-    border: medium none;
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-}
-
-ul#admintabs #ajaxNewCatForm a.ajaxCatImage img {
-    background-color: transparent;
-    border: medium none;
-    margin-left: 3px;
-    padding: 0;
-    text-decoration: none;
-}
-
-form.inplaceeditor-form {
-    background-color: #FFFFB2;
-    border-right: 1px solid #ccc;
-    color: #666666;
-    display: block;
-    float: left;
-    margin-right: 0.5em;
+.nav-tabs-admin > li > a {
     padding: 5px 10px;
-    text-decoration: none;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-    border-radius: 5px 0 0 0;
+    color: black;
 }
 
-form.inplaceeditor-form input[type="text"] {
+.nav-tabs-admin > li {
+    margin: 0 2px -1px 0;
+}
+
+.nav-tabs-admin > .active {
     font-weight: bold;
-    background-color: #FFF;
-    border: none;
-    color: #333;
-    margin: 0 !important;
-    padding: 0 !important;
-    max-width: 8em;
-    outline: medium none;
+}
+
+
+.nav-tabs-admin .popover {
+    width:300px;
+}
+
+
+.admintab-dropover {
+    background-color: orange!important
+}
+
+
+/******************************************************************************
+* Module list
+******************************************************************************/
+
+#modulelist {
+  padding-left: 0;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  list-style: none;
+  overflow: hidden;
+}
+
+#modulelist > li {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  margin: 0 -1px 10px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+#modulelist img {
+    float: left;
+    background: inherit;
+    border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
+    border-style: solid;
+    border-width: 1px;
+    padding: 4px;
+}
+
+#modulelist div {
+    margin-left: 65px;
+    text-align: left;
+}
+
+@media (min-width: 550px) {
+  #modulelist > li {
+    width: 50%;
+  }
+}
+
+@media (min-width: 950px) {
+  #modulelist > li {
+    width: 33%;
+  }
 }
