@@ -2,10 +2,10 @@
 
 namespace Zikula\Core\Doctrine\StandardFields;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata,
-    Doctrine\Common\Persistence\Proxy,
-    Doctrine\Common\Persistence\Event\LifecycleEventArgs,
-    Gedmo\Mapping\MappedEventSubscriber;
+use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Gedmo\Mapping\MappedEventSubscriber;
+use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 
 /**
  * The StandardFields listener handles the update of
@@ -34,7 +34,7 @@ class StandardFieldsListener extends MappedEventSubscriber
      *
      * @return void
      */
-    public function loadClassMetadata(LifecycleEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
         $ea = $this->getEventAdapter($eventArgs);
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
