@@ -314,6 +314,10 @@ class DataUtil
      *
      * @param string $var The variable to format.
      *
+     * @deprecated since 1.3.6
+     *
+     * This API is insanely unsafe. Always prepare and bind variables in SQL statements.
+     *
      * @return The formatted variable.
      */
     public static function formatForStore($var)
