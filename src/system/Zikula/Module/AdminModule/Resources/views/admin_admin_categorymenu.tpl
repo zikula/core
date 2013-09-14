@@ -1,4 +1,6 @@
-{ajaxheader modname='ZikulaAdminModule' filename='admin_admin_ajax.js' ui=true}
+{pageaddvar name='javascript' value='system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_admintab.js'}
+{pageaddvar name='javascript' value='jquery-ui'}
+
 
 <ol class="breadcrumb">
     <li>{gt text='You are in:'} <a href="{modurl modname='ZikulaAdminModule' type='admin' func='adminpanel'}">{gt text='Administration'}</a></li>
@@ -30,22 +32,53 @@
 </div>
 
 {insert name="getstatusmsg"}
-<input type="hidden" name="admintabs-menuoptions" id="admintabs-menuoptions" value="{$menuoptions|@json_encode|escape}" />
+
 <div class="admintabs-container" id="admintabs-container">
-    <ul id="admintabs" class="clearfix">
+
+    <ul id="admintab" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {foreach from=$menuoptions name='menuoption' item='menuoption'}
-        <li id="admintab_{$menuoption.cid}" class="admintab {if $currentcat eq $menuoption.cid} active{/if}" style="z-index:0;">
-            <a href="{$menuoption.url|safetext}" title="{$menuoption.description|safetext}">{$menuoption.title|safetext}</a>
-            <span class="z-admindrop">&nbsp;</span>
+        <li class="dropdown droppable{if $currentcat eq $menuoption.cid} active{/if}" data-catid="{$menuoption.cid}">
+            <a class="dropdown-toggle" href="{$menuoption.url|safetext}">{$menuoption.title|safetext}
+            {if count($menuoption.items) > 0}
+                <span class="caret"></span>
+            {/if}
+            </a>
+            {if count($menuoption.items) > 0}
+                <ul class="dropdown-menu">
+                {foreach from=$menuoption.items item="item"}
+                    {assign var="modname" value=$item.modname}
+                    <li>
+                        <a href="{$item.menutexturl}"><img src="{$item.icon}" width=15 heigh=15 style="margin-right:6px">{$item.menutext}</a>
+                    </li>
+                {/foreach}
+                </ul>
+            {/if}
         </li>
         {/foreach}
-        <li id="addcat"> 
-            <a id="addcatlink" class="icon icon-plus" href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}">&nbsp;</a>
-            {include file='admin_admin_ajaxAddCategory.tpl'}
+        <li>
+            <a id="admintab-addcat-link" href="{modurl modname=ZikulaAdminModule type=admin func=new}" title="{gt text='New module category'}" {*class="tooltips"*} data-placement="top"><span class="icon icon-plus"></span></a>
+            <div id="admintab-addcat-popover" class="hide">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="name" id="admintab-addcat-name" />
+                    <span id="admintab-addcat-cancel" class="input-group-addon icon icon-remove icon-red pointer"></span>
+                    <span id="admintab-addcat-save" class="input-group-addon icon icon-ok icon-green pointer"></span>
+                </div>
+            </div>
+
         </li>
     </ul>
+</div>    
 
-    {helplink}
-</div>
+    {*helplink*}
 
 <div class="hide" id="admintabs-none"></div>
+
+<script>
+    
+jQuery('ul.nav-mouseover li.dropdown').hover(function() {
+    jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn();
+}, function() {
+    jQuery(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
+});
+    
+</script>

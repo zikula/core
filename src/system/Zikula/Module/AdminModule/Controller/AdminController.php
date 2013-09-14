@@ -516,7 +516,8 @@ class AdminController extends \Zikula_AbstractController
                         'menutexttitle' => $menutexttitle,
                         'modname' => $adminmodule['name'],
                         'order' => $order,
-                        'id' => $adminmodule['id']
+                        'id' => $adminmodule['id'],
+                        'icon' =>  ModUtil::getModuleImagePath($adminmodule['name'])
                 );
             }
         }
