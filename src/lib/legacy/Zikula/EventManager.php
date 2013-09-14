@@ -94,7 +94,9 @@ class Zikula_EventManager extends EventDispatcher
      */
     public function dispatch($name, Event $event = null)
     {
-        return parent::dispatch($name, $event);
+        $dispatcher = func_num_args() === 3 ? func_get_arg(2) : null;
+
+        return parent::dispatch($name, $event, $dispatcher);
     }
 
     /**
