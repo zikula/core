@@ -35,8 +35,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.init', 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
-        $this->addHandlerDefinition('core.init', 'setupRequest');
-        $this->addHandlerDefinition('core.preinit', 'request');
         $this->addHandlerDefinition('core.postinit', 'systemHooks');
         $this->addHandlerDefinition('core.init', 'setupAutoloaderForGeneratedCategoryModels');
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
@@ -90,43 +88,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
             header('HTTP/1.1 503 Service Unavailable');
             require_once System::getSystemErrorTemplate('siteoff.tpl');
             System::shutdown();
-        }
-    }
-
-    /**
-     * Listen for the 'core.preinit' event.
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function request(Zikula_Event $event)
-    {
-        return;
-        $requestDef = new Definition('Zikula_Request_Http');
-        $requestDef->addMethod('setSession', array(new Reference('session')));
-        $this->serviceManager->setDefinition('request', $requestDef);
-    }
-
-    /**
-     * Listen for the 'core.init' event & STAGE_DECODEURLS.
-     *
-     * This is basically a hack until the routing framework takes over (drak).
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function setupRequest(Zikula_Event $event)
-    {
-        if ($event['stage'] & Zikula_Core::STAGE_DECODEURLS) {
-            $request = $this->serviceManager->get('request');
-            // temporary workaround: reinitialize request information after having decoded short urls
-
-            $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            $controller = FormUtil::getPassedValue('type', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            $action = FormUtil::getPassedValue('func', null, 'GETPOST', FILTER_SANITIZE_STRING);
-            //$request->addRequest($module, $controller, $action);
         }
     }
 
