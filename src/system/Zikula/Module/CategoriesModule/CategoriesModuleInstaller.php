@@ -88,12 +88,14 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
                 } catch (\Exception $e) {
                 }
                 try {
-                DoctrineUtil::createColumn('categories_registry', 'entityname', array('type' => 'string', 'length' => 60), false);
+                    DoctrineUtil::createColumn('categories_registry', 'entityname', array('type' => 'string', 'length' => 60), false);
                 } catch (\Exception $e) {
                 }
 
                 $this->migrateAttributesFromObjectData();
             case '1.2.3':
+                DoctrineHelper::updateSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\CategoryEntity'));
+            case '1.2.4': // temp
                 // future
         }
 

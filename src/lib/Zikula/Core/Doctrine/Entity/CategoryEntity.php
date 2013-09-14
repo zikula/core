@@ -17,7 +17,9 @@ namespace Zikula\Core\Doctrine\Entity;
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Zikula\Core\Doctrine\StandardFields;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Zikula\Core\Doctrine\StandardFields\Mapping\Annotation as ZK;
 /**
  * Category entity.
  *
@@ -28,7 +30,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *                                                @ORM\Index(name="idx_categories_status",columns={"status"}),
  *                                                @ORM\Index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
-class CategoryEntity extends EntityAccess
+class CategoryEntity extends EntityAccess implements StandardFields
 {
     /**
      * @ORM\Id
@@ -120,6 +122,29 @@ class CategoryEntity extends EntityAccess
      */
     private $attributes;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="create")
+     */
+    private $cr_uid;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @ZK\StandardFields(type="userid", on="update")
+     */
+    private $lu_uid;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $cr_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $lu_date;
 
     /**
      * constructor
