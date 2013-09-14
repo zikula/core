@@ -30,7 +30,7 @@ class StandardFieldsListener extends MappedEventSubscriber
     /**
      * Maps additional metadata for the Entity
      *
-     * @param LifecycleEventArgs $eventArgs
+     * @param LoadClassMetadataEventArgs $eventArgs
      *
      * @return void
      */
