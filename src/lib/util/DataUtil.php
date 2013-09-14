@@ -277,21 +277,6 @@ class DataUtil
             if (!empty($allowedtags)) {
                 $var = preg_replace($allowedtags, "\022\\1\024", $var);
             }
-            // Encode email addresses
-            // This search and replace finds the text 'x@y' and replaces
-            // it with HTML entities, this provides protection against
-            // email harvesters
-            //
-            // Note that the use of \024 and \022 are needed to ensure that
-            // this does not break HTML tags that might be around either
-            // the username or the domain name
-            $var = preg_replace_callback(
-                '/([^\024])@([^\022])/s',
-                function($m) {
-                    return "&#".sprintf("%03d", ord($m[1])).";&#064;&#" .sprintf("%03d", ord($m[2])) . ";";
-                }, 
-                $var
-             );
             // Fix html entities
             $var = htmlspecialchars($var);
             // Fix the HTML that we want
@@ -328,6 +313,10 @@ class DataUtil
      * Format a variable for DB-storage. This method is recursive array safe.
      *
      * @param string $var The variable to format.
+     *
+     * @deprecated since 1.3.6
+     *
+     * This API is insanely unsafe. Always prepare and bind variables in SQL statements.
      *
      * @return The formatted variable.
      */
@@ -472,33 +461,6 @@ class DataUtil
         }
         if ($strIsUpper) {
             $var = mb_strtoupper($var);
-        }
-
-        return $var;
-    }
-
-    /**
-     * Censor variable contents. This method is recursive array safe.
-     *
-     * @param string $var The variable to censor.
-     *
-     * @return string The censored variable.
-     */
-    public static function censor($var)
-    {
-        static $doCensor;
-        if (!isset($doCensor)) {
-            $doCensor = ModUtil::available('MultiHook');
-        }
-        if (!$doCensor) {
-            return $var;
-        }
-        if (is_array($var)) {
-            foreach ($var as $k => $v) {
-                $var[$k] = self::censor($v);
-            }
-        } else {
-            $var = ModUtil::apiFunc('MultiHook', 'user', 'censor', array('word' => $var)); // preg_replace($search, $replace, $var);
         }
 
         return $var;
