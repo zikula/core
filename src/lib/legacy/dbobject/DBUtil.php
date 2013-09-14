@@ -721,6 +721,7 @@ class DBUtil
                 $skip = false;
                 $save = false;
                 $columnDefinition = $columnDefList[$key];
+                $columnDefFields  = explode(' ', $columnDefinition);
                 $colType = substr($columnDefinition, 0, 1);
                 // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
                 if ($colType == 'F' || $colType == 'N') {
@@ -851,6 +852,7 @@ class DBUtil
                 if ($force || array_key_exists($key, $object)) {
                     $skip = false;
                     $columnDefinition = $columnDefList[$key];
+                    $columnDefFields  = explode(' ', $columnDefinition);
                     $colType = substr($columnDefinition, 0, 1);
                     // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
                     if ($colType == 'F' || $colType == 'N') {
@@ -861,6 +863,7 @@ class DBUtil
 
                     // generate the actual update values
                     if (!$skip) {
+                        $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
                         if (isset($object[$key]) &&
                             ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
                             (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
