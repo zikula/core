@@ -21,6 +21,6 @@ class PathPackage extends BasePathPackage
      */
     public function __construct(Request $request, $version = null, $format = null)
     {
-        parent::__construct($request->getBasePath() . 'web/', $version, $format);
+        parent::__construct($request->getBasePath() . '/web/', $version, $format);
     }
 }
