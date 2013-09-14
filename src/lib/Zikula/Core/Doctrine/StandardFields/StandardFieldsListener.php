@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\Proxy;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Gedmo\Mapping\MappedEventSubscriber;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 
 /**
  * The StandardFields listener handles the update of
@@ -44,11 +45,12 @@ class StandardFieldsListener extends MappedEventSubscriber
      * Looks for Timestampable objects being updated
      * to update modification date
      *
-     * @param LifecycleEventArgs $args
+     * @param OnFlushEventArgs $args
      *
+     * @throws \Gedmo\Exception\UnexpectedValueException
      * @return void
      */
-    public function onFlush(LifecycleEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args)
     {
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();
