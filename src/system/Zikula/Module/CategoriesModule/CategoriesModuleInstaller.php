@@ -94,8 +94,6 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
 
                 $this->migrateAttributesFromObjectData();
             case '1.2.3':
-                DoctrineHelper::updateSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\CategoryEntity'));
-            case '1.2.4': // temp
                 // future
         }
 
