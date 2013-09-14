@@ -120,8 +120,8 @@ class Zikula_Session_LegacyHandler implements \SessionHandlerInterface
         $inactive = ($now - (int) (System::getVar('secinactivemins') * 60));
         $daysold = ($now - (int) (System::getVar('secmeddays') * 86400));
 
-        $inactive = DataUtil::formatForStore(date('Y-m-d H:i:s', $inactive));
-        $daysold = DataUtil::formatForStore(date('Y-m-d H:i:s', $daysold));
+        $inactive = date('Y-m-d H:i:s', $inactive);
+        $daysold = date('Y-m-d H:i:s', $daysold);
 
         switch (System::getVar('seclevel')) {
             case 'Low':
