@@ -11,11 +11,17 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
+use Zikula\Core\Response\Ajax\FatalResponse;
+use Zikula\Core\Response\Ajax\ForbiddenResponse;
+use Zikula\Core\Response\Ajax\NotFoundResponse;
+use Zikula\Core\Response\Ajax\UnavailableResponse;
 use Zikula_Request_Http as Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +29,7 @@ use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 include 'lib/bootstrap.php';
 
@@ -165,8 +172,8 @@ switch (true) {
             PageUtil::addVar('stylesheet', 'web/bundles/framework/css/structure.css');
             PageUtil::addVar('stylesheet', 'web/bundles/framework/css/body.css');
 
-            $exceptionController = new \Symfony\Bundle\TwigBundle\Controller\ExceptionController($core->getContainer()->get('twig'), true);
-            $flattenException = \Symfony\Component\HttpKernel\Exception\FlattenException::create($e);
+            $exceptionController = new ExceptionController($core->getContainer()->get('twig'), true);
+            $flattenException = FlattenException::create($e);
             $response = $exceptionController->showAction($request, $flattenException, $core->getContainer()->get('logger'));
             $response->setStatusCode(500);
         }
@@ -177,9 +184,8 @@ if (false === $response instanceof PlainResponse) {
     Zikula_View_Theme::getInstance()->themefooter($response);
 }
 
-
 if (System::isDevelopmentMode()) {
-    $core->getDispatcher()->dispatch('kernel.response', new \Symfony\Component\HttpKernel\Event\FilterResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $response));
+    $core->getDispatcher()->dispatch('kernel.response', new FilterResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $response));
 }
 
 $response->send();
@@ -200,15 +206,15 @@ function __frontcontroller_ajax(Request $request)
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
             UserUtil::logout();
         }
-        $response = new \Zikula\Core\Response\Ajax\UnavailableResponse(__('The site is currently off-line.'));
+        $response = new UnavailableResponse(__('The site is currently off-line.'));
     } else if (empty($func)) {
-        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Missing parameter '%s'", 'func'));
+        $response = new NotFoundResponse(__f("Missing parameter '%s'", 'func'));
     } else if ($modinfo == false) {
-        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
+        $response = new NotFoundResponse(__f("Error! The '%s' module is unknown.", DataUtil::formatForDisplay($module)));
     } else if (!ModUtil::available($modinfo['name'])) {
-        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
+        $response = new NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
     } else if (!ModUtil::load($modinfo['name'], $type)) {
-        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
+        $response = new NotFoundResponse(__f("Error! The '%s' module is not available.", DataUtil::formatForDisplay($module)));
     }
 
     // Dispatch controller.
@@ -220,11 +226,11 @@ function __frontcontroller_ajax(Request $request)
             }
         }
     } catch (Zikula_Exception_NotFound $e) {
-        $response = new \Zikula\Core\Response\Ajax\NotFoundResponse($e->getMessage());
+        $response = new NotFoundResponse($e->getMessage());
     } catch (Zikula_Exception_Forbidden $e) {
-        $response = new \Zikula\Core\Response\Ajax\ForbiddenResponse($e->getMessage());
+        $response = new ForbiddenResponse($e->getMessage());
     } catch (\Exception $e) {
-        $response = new \Zikula\Core\Response\Ajax\FatalResponse($e->getMessage());
+        $response = new FatalResponse($e->getMessage());
     }
 
     // Process final response.
