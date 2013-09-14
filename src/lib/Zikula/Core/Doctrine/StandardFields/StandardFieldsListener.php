@@ -4,7 +4,7 @@ namespace Zikula\Core\Doctrine\StandardFields;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata,
     Doctrine\Common\Persistence\Proxy,
-    Doctrine\Common\EventArgs,
+    Doctrine\Common\Persistence\Event\LifecycleEventArgs,
     Gedmo\Mapping\MappedEventSubscriber;
 
 /**
@@ -28,13 +28,13 @@ class StandardFieldsListener extends MappedEventSubscriber
     }
 
     /**
-     * Mapps additional metadata for the Entity
+     * Maps additional metadata for the Entity
      *
-     * @param EventArgs $eventArgs
+     * @param LifecycleEventArgs $eventArgs
      *
      * @return void
      */
-    public function loadClassMetadata(EventArgs $eventArgs)
+    public function loadClassMetadata(LifecycleEventArgs $eventArgs)
     {
         $ea = $this->getEventAdapter($eventArgs);
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
@@ -44,11 +44,11 @@ class StandardFieldsListener extends MappedEventSubscriber
      * Looks for Timestampable objects being updated
      * to update modification date
      *
-     * @param EventArgs $args
+     * @param LifecycleEventArgs $args
      *
      * @return void
      */
-    public function onFlush(EventArgs $args)
+    public function onFlush(LifecycleEventArgs $args)
     {
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();
@@ -118,11 +118,11 @@ class StandardFieldsListener extends MappedEventSubscriber
      * Checks for persisted Timestampable objects
      * to update creation and modification dates
      *
-     * @param EventArgs $args
+     * @param LifecycleEventArgs $args
      *
      * @return void
      */
-    public function prePersist(EventArgs $args)
+    public function prePersist(LifecycleEventArgs $args)
     {
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();
