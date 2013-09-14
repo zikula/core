@@ -4,20 +4,25 @@
     <div class="z-admincategorydescription">{$category.description|safetext}</div>
 
         {if !empty($adminlinks)}
-        <ul id="modulelist">
+        <ul id="modulelist">            
             {foreach from=$adminlinks name=adminlink item=adminlink}
-
             <li data-modid="{$adminlink.id}" class="draggable">
                 {* module icon *}
                 {if $modvars.ZikulaAdminModule.admingraphic eq 1}
-                <a title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
-                    <img src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
-                </a>
+                <div class="modulelist-icon">
+                    <a title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">
+                        <img class="modulelist-sort" src="{$adminlink.adminicon}" title="{$adminlink.menutext|safetext}" alt="{$adminlink.menutext|safetext}" />
+                        
+                    </a>
+                    
+                </div>
                 {/if}
                 
-                <div>
+                <span title="{gt text="Sort module"}" class="tooltips icon icon-move" style="margin: 42px 0 0 -15px; float: left"></span> 
+                
+                <div class="modulelist-text">
                     {* movable icon *}
-                    <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move modulelist-drag"></span> 
+                    <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move modulelist-drag admintab-action"></span> 
                     
                     {* module title *}
                     <a title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
@@ -37,7 +42,7 @@
                     {/if}
                     {* module description *}
                     <p>
-                        <span title="{gt text="Sort module"}" class="tooltips icon icon-move modulelist-sort"></span> 
+                        
                         {$adminlink.menutexttitle|safetext}
                     </p>
                     

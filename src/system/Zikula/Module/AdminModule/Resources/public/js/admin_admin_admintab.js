@@ -163,7 +163,7 @@ $('.droppable').droppable({
 $('#modulelist').sortable({
     cursor: 'move',
     containment: 'parent',
-    handle: 'span.modulelist-sort',
+    handle: '.modulelist-sort',
     update: function(event, ui) {
         var modules = new Array();
         $('#modulelist li').each( function() {
@@ -216,4 +216,69 @@ $(document).on('click', '#z-developernotices strong', function(e) {
 });
 
 
+
+/*******************************************************************************
+ * Admintab - click dropdown hack
+*******************************************************************************/
+
+$('#admintab .icon-caret-down').click(
+    function(e) {
+        e.preventDefault();
+        var li =  $(this).parent().parent()
+        var dropdown = li.find('.dropdown-menu');
+        dropdown.stop(true, true).delay(200).fadeIn();
+        li.bind("mouseleave", function() {
+            dropdown.stop(true, true).delay(200).fadeOut();
+        });
+    }
+);
+
+/*******************************************************************************
+ * Admintab - Lock/Unlick
+*******************************************************************************/
+
+var edit = $('.admintab-action, #admintab .divider, admintab-emptycat')
+edit.hide();
+$('#admintab-edit a').click(
+    function(e) {
+        e.preventDefault();
+        edit.toggle();
+        $(this).find('span').toggleClass('icon-unlock').toggleClass('icon-lock');
+    }
+);
+
+/*******************************************************************************
+ * Admintab - Make category default action
+*******************************************************************************/
+
+$('.admintab-action-makedefault').click(
+    function(e) {
+        e.preventDefault();
+        var catid = $(this).parent().parent().data('catid');
+        console.log(catid);
+        $.ajax({
+            url: 'index.php?module=adminpanel&type=ajax&func=defaultCategory',
+            data: {cid: catid},
+            error: function (response) {
+                alert($.parseJSON(response.responseText).core.statusmsg);
+            }
+        });
+    }
+);
+
+
+
 });})(jQuery);
+
+
+
+
+
+
+
+/*$('ul.nav-mouseover li.dropdown').hover(function() {
+    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn();
+}, function() {
+    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
+});*/
+    

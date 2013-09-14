@@ -331,6 +331,15 @@ div.z-admincontainer {
     background-color: orange!important
 }
 
+li.admintab-add {
+    float: right;
+}
+
+#admintab-edit {
+    float: right;
+    margin-right: -2px;
+}
+
 
 /******************************************************************************
 * Module list
@@ -353,8 +362,11 @@ div.z-admincontainer {
   line-height: 1.4;
 }
 
-#modulelist img {
+#modulelist div.modulelist-icon {
     float: left;
+}
+
+#modulelist img {
     background: inherit;
     border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
     border-style: solid;
@@ -362,8 +374,8 @@ div.z-admincontainer {
     padding: 4px;
 }
 
-#modulelist div {
-    margin-left: 65px;
+#modulelist div.modulelist-text {
+    margin-left: 70px;
     text-align: left;
 }
 
