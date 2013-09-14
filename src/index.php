@@ -29,7 +29,7 @@ use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\HttpKernel\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpKernel\Exception\FlattenException;
 
 include 'lib/bootstrap.php';
 
