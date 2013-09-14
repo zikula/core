@@ -77,11 +77,6 @@ abstract class ZikulaKernel extends Kernel
 
         // relocate ztemp to cache dir (nasty BC, sorry)
         $GLOBALS['ZConfig']['System']['temp'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['System']['temp'];
-        $GLOBALS['ZConfig']['Log']['log_dir'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['Log']['log_dir'];
-        $GLOBALS['ZConfig']['Log']['log_file'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['Log']['log_file'];
-        foreach ($GLOBALS['ZConfig']['Log']['log_level_files'] as $key => $path) {
-            $GLOBALS['ZConfig']['Log']['log_level_files'][$key] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['Log']['log_level_files'][$key];
-        }
     }
 
     public function boot()
