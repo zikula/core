@@ -101,6 +101,12 @@ doctrine:
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
 
+services:
+    standardfields.listener:
+        class: Zikula\Core\Doctrine\StandardFields\StandardFieldsListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
 stof_doctrine_extensions:
     default_locale: en_US
     orm:
