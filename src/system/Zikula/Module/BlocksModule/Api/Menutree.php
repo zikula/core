@@ -576,9 +576,6 @@ class MenutreeApi extends \Zikula_AbstractApi
             }
             $catParentNode = !$extrainfo['flat'] ? $links['cat'][$lang]['id'] : $item['parent'];
 
-            Loader::loadClass('CategoryRegistryUtil');
-            Loader::loadClass('CategoryUtil');
-
             $catregistry  = CategoryRegistryUtil::getRegisteredModuleCategories ('News', 'stories');
             if (!empty($catregistry)) {
                 $multicategory = count($catregistry) > 1;

@@ -675,8 +675,15 @@ class ModUtil
 
         $files[] = "$modpath/$directory/tables.php";
         $files[] = "$modpath/$directory/pntables.php";
+        $found = false;
+        foreach ($files as $file) {
+            if ($found = is_readable($file)) {
+                include_once $file;
+                break;
+            }
+        }
 
-        if (Loader::loadOneFile($files)) {
+        if ($found) {
             // If not gets here, the module has no tables to load
             $tablefunc = $modname . '_tables';
             $tablefuncOld = $modname . '_pntables';
