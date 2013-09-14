@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-use Monolog\Logger;
+use Monolog\Logger as Log;
 
 /**
  * LogUtil.
