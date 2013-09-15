@@ -35,7 +35,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.init', 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
-        $this->addHandlerDefinition('core.postinit', 'systemHooks');
         $this->addHandlerDefinition('core.init', 'setupAutoloaderForGeneratedCategoryModels');
         $this->addHandlerDefinition('installer.module.uninstalled', 'deleteGeneratedCategoryModelsOnModuleRemove');
         $this->addHandlerDefinition('pageutil.addvar_filter', 'coreStylesheetOverride');
@@ -183,30 +182,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
     {
         $this->eventManager->dispatch('doctrine.init_connection', new \Zikula\Core\Event\GenericEvent(null, $event->getArgs()));
         $this->eventManager->dispatch('doctrine.boot', new \Zikula\Core\Event\GenericEvent());
-    }
-
-    /**
-     * Call system hooks.
-     *
-     * Implements 'core.postinit' event.
-     *
-     * This is just here for legacy systeminit hooks.
-     *
-     * @param Zikula_Event $event The event handler.
-     *
-     * @return void
-     */
-    public function systemHooks(Zikula_Event $event)
-    {
-        if (!System::isInstalling() && System::isLegacyMode()) {
-            // call system init hooks
-            $systeminithooks = FormUtil::getPassedValue('systeminithooks', 'yes', 'GETPOST');
-            if (SecurityUtil::checkPermission('::', '::', ACCESS_ADMIN) && (isset($systeminithooks) && $systeminithooks == 'no')) {
-                // omit system hooks if requested by an administrator
-            } else {
-                ModUtil::callHooks('zikula', 'systeminit', 0, array('module' => 'zikula'));
-            }
-        }
     }
 
     /**
