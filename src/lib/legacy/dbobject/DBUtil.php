@@ -338,7 +338,7 @@ class DBUtil
 
         static $numericFields = null;
         if (!$numericFields) {
-            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'N'=>'N');
+            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'L'=>'L', 'N'=>'N');
         }
 
         if (isset($numericFields[$fieldType])) {
@@ -2447,13 +2447,13 @@ class DBUtil
         $fieldName = $tableCols['id'];
         $where     = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
         $sql       = 'SELECT ' . implode(',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
-        $res       = DBUtil::executeSQL ($sql, 0, 1);
+        $res       = self::executeSQL ($sql, 0, 1);
 
         if ($res === false) {
             return $res;
         }
 
-        $res = DBUtil::marshallObjects ($res, $columns);
+        $res = self::marshallObjects ($res, $columns);
 
         return $res[0];
     }
