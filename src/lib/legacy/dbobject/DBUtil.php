@@ -338,7 +338,7 @@ class DBUtil
 
         static $numericFields = null;
         if (!$numericFields) {
-            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'N'=>'N');
+            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'L'=>'L', 'N'=>'N');
         }
 
         if (isset($numericFields[$fieldType])) {
