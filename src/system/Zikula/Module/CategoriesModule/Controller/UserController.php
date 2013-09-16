@@ -199,7 +199,7 @@ class UserController extends \Zikula_AbstractController
 
             $cat = array(
                 'id' => '',
-                'parent' => $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\CategoryEntity', $userRootCat['id']),
+                'parent' => $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $userRootCat['id']),
                 'name' => $userCatName,
                 'display_name' => unserialize($installer->makeDisplayName($userCatName)),
                 'display_desc' => unserialize($installer->makeDisplayDesc()),
@@ -207,7 +207,7 @@ class UserController extends \Zikula_AbstractController
                 'status' => 'A'
             );
 
-            $obj = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
+            $obj = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
             $obj->merge($cat);
             $this->entityManager->persist($obj);
             $this->entityManager->flush();
@@ -224,7 +224,7 @@ class UserController extends \Zikula_AbstractController
                 $userdefaultcatname = $this->getVar('userdefaultcatname', $this->__('Default'));
                 $cat = array(
                     'id' => '',
-                    'parent' => $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\CategoryEntity', $dr),
+                    'parent' => $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $dr),
                     'is_leaf' => 1,
                     'name' => $userdefaultcatname,
                     'sort_value' => 0,
@@ -234,7 +234,7 @@ class UserController extends \Zikula_AbstractController
                     'status' => 'A'
                 );
 
-                $obj2 = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
+                $obj2 = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
                 $obj2->merge($cat);
                 $this->entityManager->persist($obj2);
                 $this->entityManager->flush();

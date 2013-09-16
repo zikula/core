@@ -102,7 +102,7 @@ class UserformController extends \Zikula_AbstractController
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // get existing category
-        $category = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntity', $data['id']);
+        $category = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $data['id']);
 
         if (!$category) {
             $msg = $this->__f('Error! Cannot retrieve category with ID %s.', $data['id']);
@@ -175,14 +175,14 @@ class UserformController extends \Zikula_AbstractController
 
         $ak = array_keys($cats1);
         foreach ($ak as $k) {
-            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntity', $cats1[$k]['id']);
+            $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cats1[$k]['id']);
             $obj['sort_value'] = $cats2[$k]['sort_value'];
             $sort_values[] = array('id' => $obj['id'], 'sort_value' => $obj['sort_value']);
         }
 
         $this->entityManager->flush();
 
-        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntity', $cid);
+        $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cid);
 
         for ($i=0 ; $i < count($sort_values) ; $i++) {
             if ($sort_values[$i]['id'] == $cid) {
@@ -245,7 +245,7 @@ class UserformController extends \Zikula_AbstractController
         $data['sort_value'] = 0;
 
         // save category
-        $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
+        $category = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
         $category->merge($data);
         $this->entityManager->persist($category);
         $this->entityManager->flush();
@@ -287,7 +287,7 @@ class UserformController extends \Zikula_AbstractController
 
         $ak = array_keys($cats1);
         foreach ($ak as $k) {
-            $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryEntity', $cats1[$k]['id']);
+            $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $cats1[$k]['id']);
             $obj['sort_value'] = $cats2[$k]['sort_value'];
         }
 

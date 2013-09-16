@@ -14,7 +14,7 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Zikula\Core\Doctrine\Entity\CategoryEntity;
+use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Category doctrine2 entity.

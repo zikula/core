@@ -20,7 +20,7 @@ use DoctrineUtil;
 use DoctrineHelper;
 use DataUtil;
 use ZLanguage;
-use Zikula\Core\Doctrine\Entity\CategoryEntity;
+use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
 class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
 {
@@ -31,9 +31,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     {
         // create tables
         $classes = array(
-            'Zikula\Core\Doctrine\Entity\CategoryEntity',
-            'Zikula\Core\Doctrine\Entity\CategoryAttributeEntity',
-            'Zikula\Core\Doctrine\Entity\CategoryRegistryEntity'
+            'Zikula\Module\CategoriesModule\Entity\CategoryEntity',
+            'Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity',
+            'Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity'
         );
 
         try {
@@ -84,7 +84,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             case '1.2.1':
             case '1.2.2':
                 try {
-                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\Core\Doctrine\Entity\CategoryAttributeEntity'));
+                    DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity'));
                 } catch (\Exception $e) {
                 }
                 try {
@@ -671,7 +671,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             if ($obj['parent_id'] == 0) {
                 $obj['parent'] = null;
             } else {
-                $obj['parent'] = $this->entityManager->getReference('Zikula\Core\Doctrine\Entity\CategoryEntity', $obj['parent_id']);
+                $obj['parent'] = $this->entityManager->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $obj['parent_id']);
             }
             unset($obj['parent_id']);
 
@@ -716,7 +716,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             if (!isset($data['__ATTRIBUTES__'])) {
                 continue;
             }
-            $category = $em->getRepository('Zikula\Core\Doctrine\Entity\CategoryEntity')->findOneBy(array('id' => $data['id']));
+            $category = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryEntity')->findOneBy(array('id' => $data['id']));
             foreach ($data['__ATTRIBUTES__'] as $name => $value) {
                 $category->setAttribute($name ,$value);
             }

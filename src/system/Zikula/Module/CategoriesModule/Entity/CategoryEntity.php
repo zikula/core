@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Zikula\Module\CategoriesModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,14 +40,14 @@ class CategoryEntity extends EntityAccess
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var CategoryEntity
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
      * @var CategoryEntity
      */
     private $children;
@@ -113,7 +113,7 @@ class CategoryEntity extends EntityAccess
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttributeEntity",
+     * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
      *                mappedBy="category",
      *                cascade={"all"},
      *                orphanRemoval=true,
