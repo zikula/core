@@ -18,8 +18,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Zikula\Core\Doctrine\StandardFields\Mapping\Annotation as ZK;
-use Zikula\Core\Doctrine\StandardFields\StandardFields;
+
 /**
  * Category entity.
  *
@@ -30,7 +29,7 @@ use Zikula\Core\Doctrine\StandardFields\StandardFields;
  *                                                @ORM\Index(name="idx_categories_status",columns={"status"}),
  *                                                @ORM\Index(name="idx_categories_ipath_status",columns={"ipath","status"})})
  */
-class CategoryEntity extends EntityAccess implements StandardFields
+class CategoryEntity extends EntityAccess
 {
     /**
      * @ORM\Id
@@ -123,14 +122,16 @@ class CategoryEntity extends EntityAccess implements StandardFields
     private $attributes;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="create")
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
     private $cr_uid;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ZK\StandardFields(type="userid", on="update")
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
     private $lu_uid;
 
@@ -303,6 +304,86 @@ class CategoryEntity extends EntityAccess implements StandardFields
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @param mixed $cr_date
+     */
+    public function setCr_date($cr_date)
+    {
+        $this->cr_date = $cr_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCr_date()
+    {
+        return $this->cr_date;
+    }
+
+    /**
+     * @param mixed $cr_uid
+     */
+    public function setCr_uid($cr_uid)
+    {
+        $this->cr_uid = $cr_uid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCr_uid()
+    {
+        return $this->cr_uid;
+    }
+
+    /**
+     * @param mixed $lu_date
+     */
+    public function setLu_date($lu_date)
+    {
+        $this->lu_date = $lu_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLu_date()
+    {
+        return $this->lu_date;
+    }
+
+    /**
+     * @param mixed $lu_uid
+     */
+    public function setLu_uid($lu_uid)
+    {
+        $this->lu_uid = $lu_uid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLu_uid()
+    {
+        return $this->lu_uid;
+    }
+
+    /**
+     * @param string $obj_status
+     */
+    public function setObj_status($obj_status)
+    {
+        $this->obj_status = $obj_status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObj_status()
+    {
+        return $this->obj_status;
     }
 
     /**
