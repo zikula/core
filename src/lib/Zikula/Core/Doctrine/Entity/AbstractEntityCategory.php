@@ -16,6 +16,7 @@ namespace Zikula\Core\Doctrine\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Base class of many-to-many association between any entity and Category.
