@@ -37,80 +37,80 @@ class CategoryEntity extends EntityAccess
      * @ORM\Column(type="integer")
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var CategoryEntity
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
      * @var CategoryEntity
      */
-    private $children;
+    protected $children;
 
     /**
      * @ORM\Column(type="boolean", name="is_locked")
      * @var boolean
      */
-    private $is_locked;
+    protected $is_locked;
 
     /**
      * @ORM\Column(type="boolean", name="is_leaf")
      * @var boolean
      */
-    private $is_leaf;
+    protected $is_leaf;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private $value;
+    protected $value;
 
     /**
      * @ORM\Column(type="integer", name="sort_value")
      * @var integer
      */
-    private $sort_value;
+    protected $sort_value;
 
     /**
      * @ORM\Column(type="array", name="display_name")
      * @var array
      */
-    private $display_name;
+    protected $display_name;
 
     /**
      * @ORM\Column(type="array", name="display_desc")
      * @var array
      */
-    private $display_desc;
+    protected $display_desc;
 
     /**
      * @ORM\Column(type="text")
      * @var string
      */
-    private $path;
+    protected $path;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private $ipath;
+    protected $ipath;
 
     /**
      * @ORM\Column(type="string", length=1)
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
@@ -119,40 +119,40 @@ class CategoryEntity extends EntityAccess
      *                orphanRemoval=true,
      *                indexBy="name")
      */
-    private $attributes;
+    protected $attributes;
 
     /**
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
-    private $cr_uid;
+    protected $cr_uid;
 
     /**
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
-    private $lu_uid;
+    protected $lu_uid;
 
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    private $cr_date;
+    protected $cr_date;
 
     /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
-    private $lu_date;
+    protected $lu_date;
 
     /**
      * maintain BC (same as status)
      * @ORM\Column(type="string", length=1)
      * @var string
      */
-    private $obj_status = 'A';
+    protected $obj_status = 'A';
 
     /**
      * constructor
