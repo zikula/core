@@ -269,7 +269,7 @@ class CategoryRegistryUtil
         $fArr = array();
 
         foreach ($rCategories as $rCategory) {
-            $fArr[$rCategory['property']] = $rCategory['id'];
+            $fArr[$rCategory['property']] = $rCategory['category_id'];
         }
 
         return $fArr;
