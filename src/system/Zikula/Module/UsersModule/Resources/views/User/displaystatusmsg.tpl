@@ -8,6 +8,6 @@
 </div>
 {/if}
 
-<p style="text-align: center;">
+<p class="text-center">
     <a href="{$baseurl}">{gt text="Go back to the homepage"}</a>
 </p>

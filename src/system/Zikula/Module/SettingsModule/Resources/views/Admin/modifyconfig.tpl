@@ -153,7 +153,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="settings_ajaxtimeout">{gt text="Time-out for Ajax connections"}</label>
                 <div class="col-lg-9">
-                    <input class="z-form-int form-control" id="settings_ajaxtimeout" name="settings[ajaxtimeout]" value="{$modvars.ZConfig.ajaxtimeout}" />
+                    <input class="form-control" id="settings_ajaxtimeout" name="settings[ajaxtimeout]" value="{$modvars.ZConfig.ajaxtimeout}" />
                     <em>{gt text="(in milliseconds, default 5000 = 5 seconds)"}</em>
                     <p class="help-block alert alert-info">{gt text="Notice: Increase this value if mobile appliances experience problems with using the site."}</p>
                 </div>
