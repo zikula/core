@@ -1,4 +1,5 @@
 {adminheader}
+{ajaxheader}
 {include file="Admin/modifymenu.tpl"}
 
 <h4>{gt text="Colour palettes"}</h4>
