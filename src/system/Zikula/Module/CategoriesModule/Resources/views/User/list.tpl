@@ -1,6 +1,6 @@
 {assign var="dr" value=`$rootCat.id`}
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th style="text-align:left">{gt text="Internal ID"}</th>
@@ -23,7 +23,7 @@
     {counter print=false assign="cnt"}
     {array_field assign='displayname' array=$cat.display_name field=$userlanguage}
     <tbody>
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td style="text-align:left">{$cat.id|safetext}</td>
             <td style="text-align:left">{$displayname|default:$cat.name}</td>
             <td style="text-align:left">{$cat.value|safetext}</td>

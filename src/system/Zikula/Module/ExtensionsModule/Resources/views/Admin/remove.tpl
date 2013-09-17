@@ -23,7 +23,7 @@
         {if $dependents}
         <div class="form-group">
             <p class="alert alert-info">{gt text="Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled."}</p>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>{gt text="Module name"}</th>
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                     {foreach from=$dependents item=dependent}
-                    <tr class="{cycle values="z-odd,z-even"}">
+                    <tr>
                         <td>{$dependent.displayname}</td>
                         <td>
                             {if $dependent.status eq 1}

@@ -28,7 +28,7 @@
 <form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     {if $deleteUsers}

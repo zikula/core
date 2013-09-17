@@ -17,7 +17,7 @@
     {/if}
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             {if !$systemplugins}
@@ -65,7 +65,7 @@
     </thead>
     <tbody>
         {foreach from=$plugins item="plugin"}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             {if !$systemplugins}
             <td>{$plugin.instance->getModuleName()|safetext}</td>
             {/if}
@@ -96,7 +96,7 @@
             </td>
         </tr>
         {foreachelse}
-        <tr class="table table-borderedempty"><td colspan="7">{gt text="No items found."}</td></tr>
+        <tr><td colspan="7">{gt text="No items found."}</td></tr>
         {/foreach}
     </tbody>
 </table>

@@ -52,7 +52,6 @@
       </div>
     </div>
         
-        
        {* {blockposition name=topnav assign=topnavblock}
     {if empty($topnavblock)}
     <ul class="pull-left">

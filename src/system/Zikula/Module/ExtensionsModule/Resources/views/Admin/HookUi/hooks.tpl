@@ -187,7 +187,7 @@
 
         <div class="alert alert-info">{gt text="To connect %s to one of the modules from the list below, click on the checkbox(es) next to the corresponding area." tag1=$currentmodule|safetext}</div>
 
-        <table class="table table-bordered" id="subscriberslist">
+        <table class="table table-bordered table-striped" id="subscriberslist">
             <thead>
                 <tr>
                     <th class="z-w05">{gt text='ID'}</th>
@@ -199,7 +199,7 @@
             {foreach from=$hooksubscribers item='subscriber'}
             {if empty($subscriber.areas)}{continue}{/if}
 
-            <tr class="{cycle values="z-odd,z-even"}">
+            <tr>
                 <td>{$subscriber.id}</td>
                 <td>{$subscriber.displayname|safetext|default:$subscriber.name}</td>
                 <td>

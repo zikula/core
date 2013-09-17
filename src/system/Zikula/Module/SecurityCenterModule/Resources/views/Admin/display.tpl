@@ -2,7 +2,7 @@
 <div class="z-admin-content-pagetitle">
     <h3>{$title|safetext}</h3>
 </div>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Variable"}</th>
@@ -11,7 +11,7 @@
     </thead>
     <tbody>
         {section name=arrayvariables loop=$arrayvariables}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td>{$arrayvariables[arrayvariables].key|safetext}</td>
             <td>{$arrayvariables[arrayvariables].value|safetext}</td>
         </tr>
