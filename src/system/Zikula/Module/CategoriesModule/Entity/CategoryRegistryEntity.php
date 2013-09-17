@@ -143,7 +143,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @param mixed $cr_date
      */
-    public function setCrDate($cr_date)
+    public function setCr_date($cr_date)
     {
         $this->cr_date = $cr_date;
     }
@@ -151,7 +151,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @return mixed
      */
-    public function getCrDate()
+    public function getCr_date()
     {
         return $this->cr_date;
     }
@@ -159,7 +159,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @param mixed $cr_uid
      */
-    public function setCrUid($cr_uid)
+    public function setCr_uid($cr_uid)
     {
         $this->cr_uid = $cr_uid;
     }
@@ -167,7 +167,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @return mixed
      */
-    public function getCrUid()
+    public function getCr_uid()
     {
         return $this->cr_uid;
     }
@@ -175,7 +175,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @param mixed $lu_date
      */
-    public function setLuDate($lu_date)
+    public function setLu_date($lu_date)
     {
         $this->lu_date = $lu_date;
     }
@@ -183,7 +183,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @return mixed
      */
-    public function getLuDate()
+    public function getLu_date()
     {
         return $this->lu_date;
     }
@@ -191,7 +191,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @param mixed $lu_uid
      */
-    public function setLuUid($lu_uid)
+    public function setLu_uid($lu_uid)
     {
         $this->lu_uid = $lu_uid;
     }
@@ -199,7 +199,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @return mixed
      */
-    public function getLuUid()
+    public function getLu_uid()
     {
         return $this->lu_uid;
     }
@@ -207,7 +207,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @param string $obj_status
      */
-    public function setObjStatus($obj_status)
+    public function setObj_status($obj_status)
     {
         $this->obj_status = $obj_status;
     }
@@ -215,7 +215,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * @return string
      */
-    public function getObjStatus()
+    public function getObj_status()
     {
         return $this->obj_status;
     }
