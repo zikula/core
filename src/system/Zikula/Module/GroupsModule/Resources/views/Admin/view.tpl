@@ -210,7 +210,7 @@
 
 {if $useritems}
 <h3>{gt text="Pending applications"}</h3>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="User ID"}</th>

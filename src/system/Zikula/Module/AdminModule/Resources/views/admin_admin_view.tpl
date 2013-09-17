@@ -13,7 +13,7 @@
     <h3>{gt text="Module categories list"}</h3>
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -26,7 +26,7 @@
         {assign var='category_name' value=$categories[category].name|safetext}
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_EDIT" assign="access_edit"}
         {checkpermission component="`$module`::" instance="`$category_name`:`$category_id`" level="ACCESS_DELETE" assign="access_delete"}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td><a href="{modurl modname=ZikulaAdminModule type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
             <td class="actions">
                 {if $access_edit}

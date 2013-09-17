@@ -10,31 +10,33 @@
     {gt text='Your chosen theme is not the current site default. You can <a href="%1$s">reset</a> your chosen theme to site default of <a href="?theme=%2$s">%3$s</a>.' tag1=$resetdefaulturl|safetext tag2=$defaulttheme.name|safetext tag3=$defaulttheme.displayname|safetext}
     {/if}
 </p>
-<div style="text-align:center; margin:1em 0;"><img src="{$currentthemepic}" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" /></div>
+<div class="text-center">
+    <img class="img-thumbnail themes-list" src="{$currentthemepic}" alt="{$currenttheme.displayname}" title="{$currenttheme.description|default:$currenttheme.displayname}" />
+</div>
 
 <h3>{gt text="Themes list"}</h3>
-<div id="themes_list" class="clearfix">
-    {foreach from=$themes item=theme}
-    <dl class="theme_item">
-        <dt><strong>{$theme.displayname}</strong></dt>
-        <dt>
-            <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="lightbox[themes]" >
-                <img src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
-            </a>
-        </dt>
-        {homepage assign='homepageurl'}
-        {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
-        {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
-        {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
-        {assign var='themeurl' value="`$homepageurl``$theme.name`"}
-        {else}
-        {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
-        {/if}
-        <dd><a class="smallicon smallicon-preview" href="{$themeurl|safetext}">{gt text="Preview theme"}</a></dd>
-        <dd><a class="smallicon smallicon-ok" href="?newtheme={$theme.name}">{gt text="Use theme"}</a></dd>
-    </dl>
-    {/foreach}
-</div>
+
+
+{foreach from=$themes item=theme}
+<dl class="img-thumbnail themes-list">
+    <dt><strong>{$theme.displayname}</strong></dt>
+    <dt>
+        <a href="{$theme.largeImage}" title="{$theme.description|default:$theme.displayname}" rel="lightbox[themes]" >
+            <img  src="{$theme.previewImage}" alt="{$theme.displayname}" title="{$theme.description|default:$theme.displayname}" />
+        </a>
+    </dt>
+    {homepage assign='homepageurl'}
+    {if $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint neq 1}
+    {assign var='themeurl' value="`$homepageurl`/`$theme.name`"}
+    {elseif $modvars.ZConfig.shorturls eq 1 && $modvars.ZConfig.shorturlsstripentrypoint eq 1}
+    {assign var='themeurl' value="`$homepageurl``$theme.name`"}
+    {else}
+    {assign var='themeurl' value="`$homepageurl`?theme=`$theme.name`"}
+    {/if}
+    <dd><a href="{$themeurl|safetext}"><span class="icon icon-eye-open"></span> {gt text="Preview theme"}</a></dd>
+    <dd><a href="?newtheme={$theme.name}"><span class="icon icon-ok"></span>{gt text="Use theme"}</a></dd>
+</dl>
+{/foreach}
 
 <br />{pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 

@@ -27,11 +27,15 @@
             <div class="col-lg-9">
                 <textarea name="position[description]" id="blocks_positiondescription" class="form-control" rows="5" cols="30">{$description|safehtml}</textarea>
             </div>
-        <div class="z-formbuttons z-buttons">
-            <button class="btn btn-success" title="{gt text="Save"}">{gt text="Save"}</button>
-            <a href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
         </div>
-    </div>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                <button class="btn btn-success" title="{gt text="Save"}">
+                    {gt text="Save"}
+                </button>
+                <a class="btn btn-danger" href="{modurl modname=Blocks type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+            </div>
+        </div>
     </fieldset>
 
     <h3>{gt text="Block assignments"}</h3>

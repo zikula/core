@@ -49,7 +49,7 @@
     <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th><a class="{if $sort eq 'name'}z-order-asc{else}z-order-unsorted{/if}" href="{modurl modname="SecurityCenter" type="admin" func="viewidslog" sort="name"}">{gt text="Name"}</a></th>
@@ -66,7 +66,7 @@
     </thead>
     <tbody>
         {foreach from=$objectArray item=event}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td>{$event.name|safetext}</td>
             <td>{$event.tag|safetext}</td>
             <td>{$event.value|htmlentities}</td>

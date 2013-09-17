@@ -28,7 +28,7 @@
         <div>
             <fieldset>
                 <legend>{gt text='Select recipients'}</legend>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>&nbsp;</th>

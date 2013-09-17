@@ -14,7 +14,7 @@
     </div>
 </div>
 <h3>{gt text="Content"}</h3>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Title" domain='zikula'}</th>
@@ -26,7 +26,7 @@
     </thead>
     <tbody>
         {foreach name=menuitems from=$menuitems item=menuitem}
-        <tr class="{cycle values=z-odd,z-even}">
+        <tr>
             <td valign="top"><input class="form-control" type="text" name="linkname[{$smarty.foreach.menuitems.iteration}]" size="30" maxlength="255" value="{$menuitem.1|safetext}" /></td>
             <td valign="top"><input class="form-control" type="text" name="linkurl[{$smarty.foreach.menuitems.iteration}]" size="30" maxlength="255" value="{$menuitem.0|safetext}" /></td>
             <td valign="top"><input class="form-control" type="text" name="linkdesc[{$smarty.foreach.menuitems.iteration}]" size="30" maxlength="255" value="{$menuitem.2|safetext}" /></td>
@@ -34,7 +34,7 @@
             <td valign="top"><input type="checkbox" name="linkinsert[{$smarty.foreach.menuitems.iteration}]" value="1" /></td>
         </tr>
         {/foreach}
-        <tr class="{cycle values=z-odd,z-even}">
+        <tr>
             <td><input class="form-control" type="text" name="new_linkname" size="30" maxlength="255" /></td>
             <td><input class="form-control" type="text" name="new_linkurl" size="30" maxlength="255" /></td>
             <td><input class="form-control" type="text" name="new_linkdesc" size="30" maxlength="255" /></td>

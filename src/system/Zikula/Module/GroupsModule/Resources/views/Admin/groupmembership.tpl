@@ -7,7 +7,7 @@
     <h3>{gt text="Group membership"} ({$group.name|safetext})</h3>
 </div>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="User ID"}</th>
@@ -18,7 +18,7 @@
     </thead>
     <tbody>
         {section name=groupmembers loop=$groupmembers}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td>{$groupmembers[groupmembers].uid|safetext}</td>
             <td>{$groupmembers[groupmembers].uname|safetext} {if $groupmembers[groupmembers].name neq ''}({$groupmembers[groupmembers].name|safetext}){/if}</td>
             <td>{$groupmembers[groupmembers].email|safetext}</td>

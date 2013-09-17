@@ -15,7 +15,7 @@
 </head>
 <body>
     <h1 class="text-center" style="font-size: 1em; margin: 0 0 0.7em;">{gt text="Permission rule information"}</h1>
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <thead>
         <tr>
             <th>{gt text="Registered component"}</th>
@@ -24,7 +24,7 @@
         </thead>
         <tbody>
         {foreach from=$schemas key=component item=instance name=schemas}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td>{$component|safetext}</td>
             <td>{$instance|safetext}</td>
         </tr>

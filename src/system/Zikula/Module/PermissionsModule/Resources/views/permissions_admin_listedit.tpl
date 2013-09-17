@@ -20,7 +20,7 @@
         <input type="hidden" name="insseq" value="{$insseq|safetext}" />
         <input type="hidden" name="realm" value="0" />
         {/if}
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>{gt text="Sequence"}</th>
@@ -33,7 +33,7 @@
             </thead>
             <tbody>
                 {section name=permissions loop=$permissions}
-                <tr class="{cycle values="z-odd,z-even"}">
+                <tr>
                     {if ($insseq eq $permissions[permissions].sequence) and ($action eq "insert")}
                     <td>&nbsp;</td>
                     <td>
@@ -52,7 +52,7 @@
                         <input name="submit" type="submit" value="{$submit}" />
                     </td>
                 </tr>
-                <tr class="{cycle values="z-odd,z-even"}">
+                <tr>
                     <td>{$permissions[permissions].sequence|safetext}</td>
                     <td>{$permissions[permissions].group|safetext}</td>
                     <td>{$permissions[permissions].component|safetext}</td>
@@ -91,7 +91,7 @@
                 </tr>
                 {/section}
                 {if $action eq "add"}
-                <tr class="{cycle values="z-odd,z-even"}" style="vertical-align:top;">
+                <tr style="vertical-align:top;">
                     <td>&nbsp;</td>
                     <td>
                         <select class="form-control" name="id">

@@ -72,8 +72,8 @@
 
     <div class="form-group">
         <div class="col-lg-offset-3 col-lg-9">
-            {formbutton class='z-bt-ok' commandName='save' __text='Test settings now'}
-            {formbutton class='z-bt-cancel' commandName='cancel' __text='Cancel'}
+            {formbutton class='btn btn-success' commandName='save' __text='Test settings now'}
+            {formbutton class='btn btn-danger' commandName='cancel' __text='Cancel'}
         </div>
     </div>
 {/form}

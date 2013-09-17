@@ -5,14 +5,16 @@
 </div>
 
 {if $themeinfo.system neq 1}
-<div style="text-align:center;">{previewimage size='large' name=$themeinfo.name id=theme_credits_preview}</div>
+<div class="text-center">
+    {previewimage size='large' name=$themeinfo.name id=theme_credits_preview}
+</div>
 {/if}
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <tbody>
         {foreach from=$themeinfo item=field key=key}
         {if $field neq ''}
-        <tr class="{cycle values=z-odd,z-even}">
+        <tr>
             {if $key eq 'id'}<th>{gt text="Internal ID"}</th><td>{$field|safetext}</td>{/if}
             {if $key eq 'name'}<th>{gt text="Name"}</th><td>{$field|safetext}</td>{/if}
             {if $key eq 'type'}<th>{gt text="Type"}</th><td>{$field|themetype}</td>{/if}

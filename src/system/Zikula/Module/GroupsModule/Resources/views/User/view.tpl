@@ -3,7 +3,7 @@
 {else}
 {gt text="Groups manager" assign=templatetitle}
 {include file="User/menu.tpl"}
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th> {gt text="Name"} </th>
@@ -20,7 +20,7 @@
     {if $items}
     <tbody>
         {foreach item=item from=$items}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             {$item}
         </tr>
         {/foreach}
