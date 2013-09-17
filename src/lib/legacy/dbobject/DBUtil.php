@@ -286,6 +286,18 @@ class DBUtil
             }
 
             if ($result) {
+                // catch manual SQL which requires cache flushes
+                $tab = null;
+                $sql = strtolower(trim(preg_replace( "/\s+/", " ", $sql)));
+                if (strpos ($sql, 'update') === 0) {
+                    list(, $tab, ) = explode(' ', $sql);
+                }
+                if (strpos ($sql, 'delete') === 0) {
+                    list(, , $tab, ) = explode(' ', $sql);
+                }
+                if ($tab && strpos($tab, 'session_info') === false) {
+                    self::flushCache($tab);
+                }
                 if (System::isLegacyMode()) {
                     return new Zikula_Adapter_AdodbStatement($result);
                 } else {
@@ -326,7 +338,7 @@ class DBUtil
 
         static $numericFields = null;
         if (!$numericFields) {
-            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'N'=>'N');
+            $numericFields = array ('I'=>'I', 'I1'=>'I1', 'I2'=>'I2', 'I4'=>'I4', 'I8'=>'I8', 'F'=>'F', 'L'=>'L', 'N'=>'N');
         }
 
         if (isset($numericFields[$fieldType])) {
@@ -709,6 +721,7 @@ class DBUtil
                 $skip = false;
                 $save = false;
                 $columnDefinition = $columnDefList[$key];
+                $columnDefFields  = explode(' ', $columnDefinition);
                 $colType = substr($columnDefinition, 0, 1);
                 // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
                 if ($colType == 'F' || $colType == 'N') {
@@ -839,6 +852,7 @@ class DBUtil
                 if ($force || array_key_exists($key, $object)) {
                     $skip = false;
                     $columnDefinition = $columnDefList[$key];
+                    $columnDefFields  = explode(' ', $columnDefinition);
                     $colType = substr($columnDefinition, 0, 1);
                     // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
                     if ($colType == 'F' || $colType == 'N') {
@@ -849,6 +863,7 @@ class DBUtil
 
                     // generate the actual update values
                     if (!$skip) {
+                        $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
                         if (isset($object[$key]) &&
                             ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
                             (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
@@ -2265,6 +2280,12 @@ class DBUtil
      */
     public static function selectObjectSum($table, $column, $where = '', $categoryFilter = null, $subquery = null)
     {
+        $key = $column . $where. serialize($categoryFilter) . $subquery;
+        $sum = self::getCache($table, $key);
+        if ($sum !== false) {
+            return $sum;
+        }
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -2308,6 +2329,12 @@ class DBUtil
      */
     public static function selectObjectCount($table, $where = '', $column = '1', $distinct = false, $categoryFilter = null, $subquery = null)
     {
+        $key = $column . $where. (int)$distinct . serialize($categoryFilter) . $subquery;
+        $sum = self::getCache($table, $key);
+        if ($sum !== false) {
+            return $sum;
+        }
+
         $tables = self::getTables();
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
@@ -2420,13 +2447,13 @@ class DBUtil
         $fieldName = $tableCols['id'];
         $where     = $fieldName . " = " . self::_typesafeQuotedValue ($table, $field, $id);
         $sql       = 'SELECT ' . implode(',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
-        $res       = DBUtil::executeSQL ($sql, 0, 1);
+        $res       = self::executeSQL ($sql, 0, 1);
 
         if ($res === false) {
             return $res;
         }
 
-        $res = DBUtil::marshallObjects ($res, $columns);
+        $res = self::marshallObjects ($res, $columns);
 
         return $res[0];
     }

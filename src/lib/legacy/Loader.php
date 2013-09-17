@@ -15,6 +15,7 @@
 /**
  * Loader class
  *
+ * @deprecated since 1.3.6
  */
 class Loader
 {

@@ -68,7 +68,10 @@ class EntityAccess implements \ArrayAccess
             'reflection',
             '_entityPersister',
             '_identifier',
-            '__isInitialized__'
+            '__isInitialized__',
+            '__initializer__',
+            '__cloner__',
+            'lazyPropertiesDefaults'
         );
 
         while($r !== false) {

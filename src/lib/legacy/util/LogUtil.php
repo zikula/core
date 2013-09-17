@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Monolog\Logger as Log;
+
 /**
  * LogUtil.
  */
@@ -231,7 +233,7 @@ class LogUtil
     public static function addStatusPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, Zikula_AbstractErrorHandler::INFO);
+        self::_addPopup($message, Log::INFO);
     }
 
     /**
@@ -246,7 +248,7 @@ class LogUtil
     public static function addWarningPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, Zikula_AbstractErrorHandler::WARN);
+        self::_addPopup($message, Log::WARN);
     }
 
     /**
@@ -410,61 +412,26 @@ class LogUtil
     }
 
     /**
-     * Log the given messge under the given level
+     * Log the given message under the given level
      *
      * @param string $msg   The message to log.
      * @param string $level The log to log this message under(optional)(default='DEFAULT').
      *
      * @return void
      */
-    public static function log($msg, $level = Zikula_AbstractErrorHandler::DEBUG)
+    public static function log($msg, $level = Log::DEBUG)
     {
         if (System::isInstalling()) {
             return;
         }
 
         $serviceManager = ServiceUtil::getManager();
-        if (!$serviceManager->has('system.errorreporting')) {
+        if (!$serviceManager->has('logger')) {
             return;
         }
 
-        $errorReporting = $serviceManager->get('system.errorreporting');
-        $errorReporting->handler($level, $msg);
-    }
-
-    /**
-     * Generate the filename of todays log file.
-     *
-     * @param integer $level Log level.
-     *
-     * @return the generated filename.
-     */
-    public static function getLogFileName($level = null)
-    {
-        global $ZConfig;
-        $logfileSpec = $ZConfig['Log']['log_file'];
-        $dateFormat = $ZConfig['Log']['log_file_date_format'];
-
-        if ($level && isset($ZConfig['Log']['log_level_files'][$level]) && $ZConfig['Log']['log_level_files'][$level]) {
-            $logfileSpec = $ZConfig['Log']['log_level_files'][$level];
-        }
-
-        if (strpos($logfileSpec, "%s") !== false) {
-            if ($ZConfig['Log']['log_file_uid']) {
-                $perc = strpos($logfileSpec, '%s');
-                $start = substr($logfileSpec, 0, $perc + 2);
-                $end = substr($logfileSpec, $perc + 2);
-                $uid = SessionUtil::getVar('uid', 0);
-
-                $logfileSpec = $start . '-%d' . $end;
-                $logfile = sprintf($logfileSpec, date($dateFormat), $uid);
-            } else {
-                $logfile = sprintf($logfileSpec, date($dateFormat));
-            }
-        } else {
-            $logfile = $logfileSpec;
-        }
-
-        return $logfile;
+        /** @var Log $logger */
+        $logger = $serviceManager->get('logger');
+        $logger->log($level, $msg);
     }
 }

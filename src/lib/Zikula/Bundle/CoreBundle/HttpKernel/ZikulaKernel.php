@@ -2,6 +2,7 @@
 
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
+use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\Bridge\DependencyInjection\PhpDumper;
@@ -76,11 +77,6 @@ abstract class ZikulaKernel extends Kernel
 
         // relocate ztemp to cache dir (nasty BC, sorry)
         $GLOBALS['ZConfig']['System']['temp'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['System']['temp'];
-        $GLOBALS['ZConfig']['Log']['log_dir'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['Log']['log_dir'];
-        $GLOBALS['ZConfig']['Log']['log_file'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['Log']['log_file'];
-        foreach ($GLOBALS['ZConfig']['Log']['log_level_files'] as $key => $path) {
-            $GLOBALS['ZConfig']['Log']['log_level_files'][$key] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['Log']['log_level_files'][$key];
-        }
     }
 
     public function boot()
@@ -184,7 +180,11 @@ abstract class ZikulaKernel extends Kernel
     {
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
-            $this->autoloader = $loaders[0][0];
+            if ($loaders[0][0] instanceof DebugClassLoader) {
+                $this->autoloader = $loaders[0][0]->getClassLoader();
+            } else {
+                $this->autoloader = $loaders[0][0];
+            }
         }
 
         return $this->autoloader;

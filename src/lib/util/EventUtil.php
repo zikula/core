@@ -95,7 +95,7 @@ class EventUtil
      */
     public static function attach($name, $handler)
     {
-        self::getManager()->attach($name, $handler);
+        self::getManager()->addListener($name, $handler);
     }
 
     /**
@@ -108,7 +108,7 @@ class EventUtil
      */
     public static function detach($name, $handler)
     {
-        self::getManager()->detach($name, $handler);
+        self::getManager()->removeListener($name, $handler);
     }
 
     /**

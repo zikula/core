@@ -44,11 +44,6 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
             //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
 
-        // hooks - todo remove in 1.4
-        if (!DBUtil::createTable('hooks')) {
-            return false;
-        }
-
         try {
             \DoctrineHelper::createSchema($this->entityManager, $tables);
         } catch (\Exception $e) {

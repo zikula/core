@@ -163,7 +163,7 @@ abstract class Zikula_AbstractEventHandler
     public function attach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->attach($callable['name'], array($this, $callable['method']), $callable['weight']);
+            $this->eventManager->addListener($callable['name'], array($this, $callable['method']), 0-(int)$callable['weight']);
         }
     }
 
@@ -175,7 +175,7 @@ abstract class Zikula_AbstractEventHandler
     public function detach()
     {
         foreach ($this->eventNames as $callable) {
-            $this->eventManager->detach($callable['name'], array($this, $callable['method']));
+            $this->eventManager->removeListener($callable['name'], array($this, $callable['method']));
         }
     }
 

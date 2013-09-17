@@ -206,7 +206,12 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
             $dest[] = "$modpath/$directory/filter/$file";
         }
         $dest[] = "config/filter/$file";
-        Loader::loadOneFile($dest);
+        foreach ($dest as $file) {
+            if (is_readable($file)) {
+                include_once $file;
+                break;
+            }
+        }
 
         $config = array();
         $this->addCommon($config);

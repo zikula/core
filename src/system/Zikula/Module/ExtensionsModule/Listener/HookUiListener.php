@@ -206,8 +206,7 @@ class HookUiListener
                 }
 
                 // create an instance of the provider's version
-                $hookproviderVersion = $hookproviders[$i]['name'].'_Version';
-                $hookproviderVersionObj = new $hookproviderVersion;
+                $hookproviderVersionObj = Util::getVersionMeta($hookproviders[$i]['name']);
 
                 // get the areas of the provider
                 $hookproviderAreas = HookUtil::getProviderAreasByOwner($hookproviders[$i]['name']);
