@@ -29,6 +29,10 @@ ul.navbar-modulelinks li {
     margin:0;
 }
 
+ul.navbar-modulelinks li:last-child {
+    border-right-style: none;
+}
+
 ul.navbar-modulelinks {
     min-height: inherit;
     padding: 3px;
@@ -143,6 +147,12 @@ td.actions {
     white-space: nowrap !important;
 }
 
+td.actions .icon {
+    font-size: 1.3em;
+    padding-left: 4px;
+    color: #555
+}
+
 td.actions .icon-trash {
     color: #C30;
 }
@@ -151,11 +161,9 @@ td.actions .icon-ok {
     color: #61B329;
 }
 
-td.actions .icon {
-    font-size: 1.4em;
-    padding-left: 4px;
+td.actions a:hover {
+    text-decoration: none;    
 }
-
 
 /******************************************************************************
 * Icon colors
