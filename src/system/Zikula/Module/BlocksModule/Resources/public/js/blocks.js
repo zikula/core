@@ -1,72 +1,73 @@
-// Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
+// Copyright Zikula Foundation 2013 - license GNU/LGPLv3 (or at your option, any later version).
 
-/**
- * Inits block sorting
- *
- *@params none;
- *@return none;
- */
-function blocksmodifyinit()
-{
-    Sortable.create("assignedblocklist",
-                    {
-                      dropOnEmpty: true,
-                      only: 'z-sortable',
-                      containment:["assignedblocklist","unassignedblocklist"],
-                      onUpdate: blockorderchanged
-                    });
+( function($) {$(document).ready(function() {
 
-    Sortable.create("unassignedblocklist",
-                    {
-                      dropOnEmpty: true,
-                      only: 'z-sortable',
-                      containment:["assignedblocklist","unassignedblocklist"]
-                    });
 
-    initactivationbuttons();
-    $A(document.getElementsByClassName('z-sortable')).each(
-        function(node) 
-        {
-            var thisblockid = node.id.split('_')[1];
-            Element.addClassName('block_' + thisblockid, 'z-itemsort')
+/*******************************************************************************
+ * Toggle block
+*******************************************************************************/
+
+$('.label').click( function(e) {
+    e.preventDefault();
+    var a = $(this)
+    $.ajax({
+        url: 'index.php?module=Blocks&type=ajax&func=toggleblock',
+        data: {
+            bid: a.data('bid')
+        },
+        success: function(response) {
+            // toggle label
+            a.parent().find('a').toggleClass('hide');
+
         }
-    )
-}
+    });
+});
 
-/**
- * Stores the new sort order. This function gets called automatically
- * from the Sortable when a 'drop' action has been detected
- *
- *@params none;
- *@return none;
- */
-function blockorderchanged()
-{
-    var pars = "position=" + $F('position')
-               + "&" + Sortable.serialize('assignedblocklist', { 'name': 'blockorder' });
 
-    new Zikula.Ajax.Request(
-        "index.php?module=Blocks&type=ajax&func=changeblockorder",
-        {
-            parameters: pars,
-            onComplete: blockorderchanged_response
-        });
-}
-
-/**
- * Ajax response function for updating new sort order: cleanup
- *
- *@params none;
- *@return none;
- */
-function blockorderchanged_response(req)
-{
-    if (!req.isSuccess()) {
-        Zikula.showajaxerror(req.getMessage());
-        return;
-    }
-
-    Zikula.recolor('assignedblocklist', 'assignedblocklistheader');
-    Zikula.recolor('unassignedblocklist', 'unassignedblocklistheader');
+/*******************************************************************************
+ * Sort blocks in a block position
+*******************************************************************************/
     
-}
+// Return a helper with preserved width of cells
+var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+        $(this).width($(this).width());
+    });
+    return ui;
+};
+
+$("#assignedblocklist tbody").sortable({
+    connectWith: "#unassignedblocklist tbody",
+    helper: fixHelper,
+    update: function(event, ui) {
+        var blockorder = new Array();
+        $('#assignedblocklist > tbody > tr').each( function() {
+            var bid = $(this).data('bid');
+            console.log(bid);
+            if (bid !== undefined) {
+                blockorder.push(bid);
+            }
+        });
+        console.log(blockorder);
+        $.ajax({
+            url: 'index.php?module=Blocks&type=ajax&func=changeblockorder',
+            data: {
+                position: $('#position').val(),
+                blockorder: blockorder
+
+            },
+            success: function(response) {
+                console.log('jo')
+            }
+        });
+    },
+}).disableSelection();
+
+$("#unassignedblocklist tbody").sortable({
+    connectWith: "#assignedblocklist tbody",
+    helper: fixHelper
+}).disableSelection();
+
+
+
+});})(jQuery);

@@ -1,9 +1,5 @@
-{ajaxheader modname=Blocks filename=blocks.js}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", blocksmodifyinit);
-</script>
-{/pageaddvarblock}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js'}
+{pageaddvar name='javascript' value='jquery-ui'}
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="edit" size="small"}
@@ -42,68 +38,68 @@
     <p class="alert alert-info">{gt text="Notice: Use drag and drop to arrange the blocks in this position into your desired order. The new block order will be saved automatically."}</p>
 
     <h4>{gt text="Blocks assigned to this position"}</h4>
-    <ol id="assignedblocklist" class="z-itemlist">
-        <li id="assignedblocklistheader" class="z-itemheader z-itemsortheader clearfix">
-            <span class="z-itemcell z-w10">{gt text="Block ID"}</span>
-            <span class="z-itemcell z-w30">{gt text="Title, Description"}</span>
-            <span class="z-itemcell z-w15">{gt text="Module"}</span>
-            <span class="z-itemcell z-w15">{gt text="Name"}</span>
-            <span class="z-itemcell z-w15">{gt text="Language"}</span>
-            <span class="z-itemcell z-w15">{gt text="State"}</span>
-        </li>
-        {foreach item=block from=$assignedblocks}
-        <li id="block_{$block.bid}" class="{cycle name=assignedblocklist values="z-odd,z-even"} z-sortable clearfix">
-            <span class="z-itemcell z-w10">{$block.bid|safetext}</span>
-            <span id="blockdrag_{$block.bid}" class="z-itemcell z-w30">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</span>
-            <span class="z-itemcell z-w15">{$block.modname|safetext}</span>
-            <span class="z-itemcell z-w15">{$block.bkey|safetext}</span>
-            <span class="z-itemcell z-w15">{$block.language|safetext|default:"&nbsp;"}</span>
-            <span class="z-itemcell z-w15">
-                {if $block.active}
-                <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
-                <noscript><div>{img src=greenled.png modname=core set=icons/extrasmall __alt="Active"}</div></noscript>
-                &nbsp;{gt text="Active"}
-
-                {else}
-                <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to activate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" style="display: none;" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" id="inactive_`$block.bid`"}</a>
-                <noscript><div>{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive"}</div></noscript>
-                &nbsp;{gt text="Inactive"}
-                {/if}
-            </span>
-        </li>
-        {/foreach}
-    </ol>
+    <table id="assignedblocklist" class="table table-bordered table-striped">
+        <thead pid="">
+            <tr id="assignedblocklistheader">
+                <th width="20px"></th>
+                <th>{gt text="Block ID"}</th>
+                <th>{gt text="Title, Description"}</th>
+                <th>{gt text="Module"}</span>
+                <th>{gt text="Name"}</th>
+                <th>{gt text="Language"}</th>
+                <th>{gt text="State"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach item=block from=$assignedblocks}
+            <tr data-bid="{$block.bid}">
+                <td><span class="icon icon-move"></span></td>
+                <td>{$block.bid|safetext}</td>
+                <td id="blockdrag_{$block.bid}">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</td>
+                <td>{$block.modname|safetext}</td>
+                <td>{$block.bkey|safetext}</td>
+                <td>{$block.language|safetext|default:"&nbsp;"}</td>
+                <td>
+                    <a class="label label-success tooltips{if !$block.active} hide{/if}" href="#" title="{gt text="Click to deactivate this block"}" data-bid="{$block.bid}">{gt text="Active"}</a>
+                    <a class="label label-danger tooltips{if $block.active} hide{/if}" href="#" title="{gt text="Click to deactivate this block"}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
 
     <h4>{gt text="Blocks not assigned to this position"}</h4>
-    <ol id="unassignedblocklist" class="z-itemlist">
-        <li id="unassignedblocklistheader" class="z-itemheader z-itemsortheader clearfix">
-            <span class="z-itemcell z-w10">{gt text="Block ID"}</span>
-            <span class="z-itemcell z-w30">{gt text="Title, Description"}</span>
-            <span class="z-itemcell z-w15">{gt text="Module"}</span>
-            <span class="z-itemcell z-w15">{gt text="Name"}</span>
-            <span class="z-itemcell z-w15">{gt text="Language"}</span>
-            <span class="z-itemcell z-w15">{gt text="State"}</span>
-        </li>
-        {foreach item=block from=$unassignedblocks}
-        <li id="block_{$block.bid}" class="{cycle name=unassignedblocklist values="z-odd,z-even"} z-sortable clearfix">
-            <span class="z-itemcell z-w10">{$block.bid|safetext}</span>
-            <span id="blockdrag_{$block.bid}" class="z-itemcell z-w30">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</span>
-            <span class="z-itemcell z-w15">{$block.modname|safetext}</span>
-            <span class="z-itemcell z-w15">{$block.bkey|safetext}</span>
-            <span class="z-itemcell z-w15">{$block.language|safetext|default:"&nbsp;"}</span>
-            <span class="z-itemcell z-w15">
-                {if $block.active}
-                <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to deactivate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" style="display: none;" id="inactive_`$block.bid`"}</a>
-                <noscript><div>{img src=greenled.png modname=core set=icons/extrasmall __alt="Active"}</div></noscript>
-                &nbsp;{gt text="Active"}
-                {else}
-                <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})" title="{gt text="Click to activate this block"}">{img src=greenled.png modname=core set=icons/extrasmall __alt="Active" style="display: none;" id="active_`$block.bid`"}{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive" id="inactive_`$block.bid`"}</a>
-                <noscript><div>{img src=redled.png modname=core set=icons/extrasmall __alt="Inactive"}</div></noscript>
-                &nbsp;{gt text="Inactive"}
-                {/if}
-            </span>
-        </li>
-        {/foreach}
-    </ol>
+    <table id="unassignedblocklist" class="table table-bordered table-striped">
+        <thead>
+            <tr id="unassignedblocklistheader">
+                <th width="20px"></th>
+                <th>{gt text="Block ID"}</th>
+                <th>{gt text="Title, Description"}</th>
+                <th>{gt text="Module"}</th>
+                <th>{gt text="Name"}</th>
+                <th>{gt text="Language"}</th>
+                <th>{gt text="State"}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach item=block from=$unassignedblocks}
+            <tr data-bid="{$block.bid}">
+                <td><span class="icon icon-move"></span></td>
+                <td>{$block.bid|safetext}</td>
+                <td id="blockdrag_{$block.bid}">
+                    {$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}
+                </td>
+                <td>{$block.modname|safetext}</td>
+                <td>{$block.bkey|safetext}</td>
+                <td>{$block.language|safetext|default:"&nbsp;"}</td>
+                <td>
+                    <a class="label label-success tooltips{if !$block.active} hide{/if}" href="#" title="{gt text="Click to deactivate this block"}" data-bid="{$block.bid}">{gt text="Active"}</a>
+                    <a class="label label-danger tooltips{if $block.active} hide{/if}" href="#" title="{gt text="Click to deactivate this block"}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    
 </form>
 {adminfooter}

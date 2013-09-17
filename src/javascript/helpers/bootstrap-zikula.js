@@ -60,7 +60,7 @@
         
         // remove class hide because bootstrap is using important, that is not
         // working with jQuery.show();
-        $('.hide').hide().removeClass('hide');
+        // $('.hide').hide().removeClass('hide');
         
         /**
         * Input switch container. 
