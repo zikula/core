@@ -20,7 +20,7 @@
 
 {pagerabc posvar="letter" forwardvars="module,type,func"}
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>
@@ -57,7 +57,7 @@
     </thead>
     <tbody>
         {section name=modules loop=$modules}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td>
                 {if isset($modules[modules].modinfo.capabilities.admin) and $modules[modules].modinfo.state eq 3}
                 <a title="{gt text="Go to the module's administration panel"}" href="{modurl modname=$modules[modules].modinfo.url type=admin func=index}">{$modules[modules].modinfo.name|safetext}</a>
@@ -87,7 +87,7 @@
             </td>
         </tr>
         {sectionelse}
-        <tr class="table table-borderedempty"><td colspan="7">{gt text="No items found."}</td></tr>
+        <tr><td colspan="7">{gt text="No items found."}</td></tr>
         {/section}
     </tbody>
 </table>

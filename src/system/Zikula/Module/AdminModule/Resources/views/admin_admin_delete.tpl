@@ -13,8 +13,10 @@
         <legend>{gt text="Confirmation prompt"}</legend>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button class="z-btgreen" class="btn btn-success" __alt="Delete" __title="Delete" __text="Delete"}
-                <a class="btn btn-danger" class="z-btred" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <button class="btn btn-success" title="{gt text='Delete'}">
+                    {gt text='Delete'}
+                </button>
+                <a class="btn btn-danger" href="{modurl modname=ZikulaAdminModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
             </div>
         </div>
     </fieldset>

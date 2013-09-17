@@ -19,7 +19,7 @@
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="editregistry"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
         <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>{gt text="Module"}</th>
@@ -31,7 +31,7 @@
             </thead>
             <tbody>
                 {foreach item=obj from=$objectArray}
-                <tr class="{cycle values=z-odd,z-even}">
+                <tr>
                     {if ($obj.id == $id)}
                     <input id="category_registry_id" name="category_registry[id]" value="{$obj.id}" type="hidden" />
                     <td>{selector_module name="category_registry[modname]" selectedValue=$obj.modname defaultValue="" defaultText="$chooseModule" submit="1"}</td>
@@ -54,7 +54,7 @@
                 {/foreach}
 
                 {if ($id neq 0)}
-                <tr class="{cycle values=z-odd,z-even}" valign="middle">
+                <tr valign="middle">
                     <td><span class="z-form-mandatory-flag">*</span>{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newobj.modname submit="1"}</td>
                     <td>{if $newobj.modname}<span class="z-form-mandatory-flag">*</span>{selector_module_tables modname=$newobj.modname name="category_registry[entityname]" displayField="name" selectedValue=$newobj.entityname defaultValue="" defaultText=$chooseEntity}{else}----------{/if}</td>
                     <td><span class="z-form-mandatory-flag">*</span><input id="category_registry_property" name="category_registry[property]" value="{$newobj.property|default:'Main'}" type="text" class="form-control" size="20" maxlength="32" /></td>

@@ -11,7 +11,7 @@
         <input type="hidden" name="id" value="{$id|safetext}" />
         <p class="alert alert-info">{gt text="Notice! This module either requires or recommends additional modules be installed. The report below details these requirements and/or recommendations."}</p>
         {if $dependencies}
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>{gt text="Module name"}</th>
@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 {foreach from=$dependencies item=dependency}
-                <tr class="{cycle values="z-odd,z-even"}">
+                <tr>
                     <td>{$dependency.modname}</td>
                     <td>
                         {if $dependency.insystem neq true and $dependency.status eq 1}

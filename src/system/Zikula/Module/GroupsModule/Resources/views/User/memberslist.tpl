@@ -1,7 +1,7 @@
 {gt text="Memberships" assign=templatetitle}
 {include file="User/menu.tpl"}
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -56,7 +56,7 @@
         
 <br />
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="User name"}</th>

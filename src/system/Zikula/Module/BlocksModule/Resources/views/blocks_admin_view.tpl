@@ -1,14 +1,5 @@
-{ajaxheader modname=Blocks filename=blocks.js ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    var msgBlockStatusActive = '{{gt text="Active"}}';
-    var msgBlockStatusInactive = '{{gt text="Inactive"}}';
-    document.observe("dom:loaded", function() {
-        initactivationbuttons();
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/admin_admin_view.js'}
+
 {gt text="Click to activate this block" assign=activate}
 {gt text="Click to deactivate this block" assign=deactivate}
 
@@ -19,7 +10,9 @@
     <h3>{gt text="Blocks list"}</h3>
 </div>
 
-<p class="alert alert-info">{gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}</p>
+<p class="alert alert-info">
+    {gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}
+</p>
 
 <form class="form-inline" role="form" action="{modurl modname="Blocks" type="admin" func="view"}" method="post" enctype="application/x-www-form-urlencoded">
     {gt text="All" assign="lblAll"}
@@ -105,15 +98,8 @@
             <td>{$block.positions|safetext}</td>
             <td>{$block.language|safetext}</td>
             <td>
-                {if $block.active}
-                <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="active_`$block.bid`"}{img src="redled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$activate alt=$activate style="display: none;" id="inactive_`$block.bid`"}</a>
-                <noscript><div><a href="{modurl modname=$module type='admin' func='deactivate' bid=$block.bid|safetext csrftoken=$csrftoken}">{img src='folder_green.png' modname='core' set='icons/extrasmall' title=$lbl_deactivate_block alt=$lbl_deactivate_block}</a></div></noscript>
-                &nbsp;<span id="activity_{$block.bid}">{gt text="Active"}</span>
-                {else}
-                <a class="activationbutton" href="javascript:void(0);" onclick="toggleblock({$block.bid})">{img src="greenled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate style="display: none;" id="active_`$block.bid`"}{img src="redled.png" modname="core" set="icons/extrasmall" class="tooltips" title=$deactivate alt=$deactivate id="inactive_`$block.bid`"}</a>
-                <noscript><div><a href="{modurl modname=$module type='admin' func='activate' bid=$block.bid|safetext csrftoken=$csrftoken}">{img src='folder_grey.png' modname='core' set='icons/extrasmall' title=$lbl_activate_block alt=$lbl_activate_block}</a></div></noscript>
-                &nbsp;<span id="activity_{$block.bid}">{gt text="Inactive"}</span>
-                {/if}
+                <a class="label label-success tooltips{if !$block.active} hide{/if}" href="{modurl modname=$module type='admin' func='deactivate' bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_deactivate_block}" data-bid="{$block.bid}">{gt text="Active"}</a>
+                <a class="label label-danger tooltips{if $block.active} hide{/if}" href="{modurl modname=$module type='admin' func='activate' bid=$block.bid|safetext csrftoken=$csrftoken}" title="{$lbl_activate_block}" data-bid="{$block.bid}">{gt text="Inactive"}</a>
             </td>
             <td class="actions">
                 <a class="icon icon-eye-open tooltips" href="{modurl modname=$module type='user' func='display' bid=$block.bid|safetext showinactive=true}" title="{$lbl_preview_block}"></a>
@@ -152,7 +138,7 @@
         <tr>
             <td>{$position.name|safehtml}</td>
             <td>{$position.description|truncate:25|safehtml}</td>
-            <td><pre style="margin:0;padding:0;">&#123;blockposition name='{$position.name|safehtml}'&#125;</pre></td>
+            <td><code>&#123;blockposition name='{$position.name|safehtml}'&#125;</code></td>
             <td class="actions">
                 {if $access_edit}
                 <a class="icon icon-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>

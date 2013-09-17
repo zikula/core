@@ -27,7 +27,7 @@
             <p>{gt text="Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them."}</p>
             {if $htmlpurifier}<p>{gt text='Warning! Using the <a href="%s">HTML Purifier output filter</a> will override settings for some HTML tags (such as &lt;object&gt; and &lt;embed&gt;).' tag1=$configurl|safetext}</p>{/if}
         </div>
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>{gt text="Tag"}</th>
@@ -48,7 +48,7 @@
             </thead>
             <tbody>
                 {foreach from=$htmltags key=htmltag item=usagetag}
-                <tr class="{cycle values=z-odd,z-even}">
+                <tr>
                     <td>&lt;{$htmltag|safetext}&gt;</td>
                     <td><input class="notallowed_radio" type="radio" value="0" name="htmlallow{$htmltag|safetext}tag" {if (isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 0) or !isset($currenthtmltags.$htmltag)} checked="checked"{/if} /></td>
                     <td><input class="allowed_radio" type="radio" value="1" name="htmlallow{$htmltag|safetext}tag" {if isset($currenthtmltags.$htmltag) and $currenthtmltags.$htmltag eq 1} checked="checked"{/if} /></td>

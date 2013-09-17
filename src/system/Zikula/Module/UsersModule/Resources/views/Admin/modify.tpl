@@ -207,7 +207,7 @@
         </fieldset>
         <fieldset>
             <legend>{gt text='Group membership'}</legend>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>{gt text='Group'}</th>

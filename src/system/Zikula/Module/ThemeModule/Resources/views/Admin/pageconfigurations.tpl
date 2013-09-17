@@ -2,7 +2,7 @@
 {include file="Admin/modifymenu.tpl"}
 <h4>{gt text="Page configuration assignments"}</h4>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Name"}</th>
@@ -28,7 +28,7 @@
 
 <h4>{gt text="Page configurations in use"}</h4>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Configuration file"}</th>

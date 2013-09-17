@@ -15,7 +15,7 @@
 </div>
 
 {if count($reglist) > 0}
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="User name"}</th>
@@ -135,7 +135,7 @@
 {if !empty($pager)}{pager rowcount=$pager.rowcount limit=$pager.limit posvar=$pager.posvar}{/if}
 
 <p class="sub text-center bold">{gt text='Legend'}</p>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th colspan="2" class="sub text-center">{gt text='Approval'}</th>
@@ -152,7 +152,7 @@
         </tr>
     </tbody>
 </table>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th colspan="2" class="sub text-center">{gt text='Verification'}</th>

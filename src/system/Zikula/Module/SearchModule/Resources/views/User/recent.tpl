@@ -2,7 +2,7 @@
 {include file='User/menu.tpl'}
 
 <h3>{$templatetitle}</h3>
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>{gt text="Search keywords" domain='zikula'}</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         {foreach from=$recentsearches item=recentsearch}
-        <tr class="{cycle values="z-odd,z-even"}">
+        <tr>
             <td><a href="{modurl modname='ZikulaSearchModule' type='user' func='search' q=$recentsearch.search|urlencode}">{$recentsearch.search|replace:' ':', '|safetext}</a></td>
             <td>{$recentsearch.count|safetext}</td>
             <td>{$recentsearch.date->getTimestamp()|date_format}</td>
