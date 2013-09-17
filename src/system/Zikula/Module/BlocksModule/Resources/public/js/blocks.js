@@ -43,21 +43,16 @@ $("#assignedblocklist tbody").sortable({
         var blockorder = new Array();
         $('#assignedblocklist > tbody > tr').each( function() {
             var bid = $(this).data('bid');
-            console.log(bid);
             if (bid !== undefined) {
                 blockorder.push(bid);
             }
         });
-        console.log(blockorder);
         $.ajax({
             url: 'index.php?module=Blocks&type=ajax&func=changeblockorder',
             data: {
                 position: $('#position').val(),
                 blockorder: blockorder
 
-            },
-            success: function(response) {
-                console.log('jo')
             }
         });
     },
