@@ -145,6 +145,7 @@ ul.navbar li.active a {
 td.actions {
     text-align: right !important;
     white-space: nowrap !important;
+    width: 1px;
 }
 
 td.actions .icon {
