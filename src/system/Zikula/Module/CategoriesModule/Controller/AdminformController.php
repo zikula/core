@@ -20,7 +20,7 @@ use ModUtil;
 use System;
 use FormUtil;
 use CategoryUtil;
-use Zikula\Module\CategoriesModuleGenericUtil;
+use Zikula\Module\CategoriesModule\GenericUtil;
 
 /**
  * Controller.
