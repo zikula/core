@@ -220,9 +220,8 @@ function _upg_login($showheader = true)
     echo '<p class="alert alert-success text-center">'.__('For the next upgrade steps you need to be logged in. Please provide your admin account credentials:').'</p>'."\n";
     echo '<form class="form-horizontal" role="form" action="upgrade.php?lang='.$lang.'" method="post" enctype="application/x-www-form-urlencoded">'."\n";
     echo '<fieldset><legend>'.__('Log-in').'</legend>'."\n";
-    echo '<div class="form-group"><label class="col-lg-3 control-label" for="username">'.__('User name:').'</label><div class="col-lg-9"><input type="text" name="username" id="username" class="form-control" maxlength="80" value=""/></div>'."\n";
-    echo '<br /><br />'."\n";
-    echo '<div class="form-group"><label class="col-lg-3 control-label" for="password">'.__('Password:').'</label><div class="col-lg-9"><input type="password" name="password" id="password" class="form-control" maxlength="80" value=""/></div>'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="username">'.__('User name:').'</label><div class="col-lg-9"><input type="text" name="username" id="username" class="form-control" maxlength="80" value=""/></div></div>'."\n";
+    echo '<div class="form-group"><label class="col-lg-3 control-label" for="password">'.__('Password:').'</label><div class="col-lg-9"><input type="password" name="password" id="password" class="form-control" maxlength="80" value=""/></div></div>'."\n";
     echo '<input type="hidden" name="action" value="sanitycheck" />'."\n";
 
     if ($lang != null) {
