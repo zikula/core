@@ -102,7 +102,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                 } elseif ($connectionInfo['dbdriver'] == 'jdbcbridge') {
                     $dbh = new Doctrine_Adapter_Jdbcbridge($connectionInfo, $connectionInfo['user'], $connectionInfo['password']);
                 } else {
-                    $dbh = new PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                    $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
                 }
                 $connection = Doctrine_Manager::connection($dbh, $name);
                 $connection->setOption('username', $connectionInfo['user']);
