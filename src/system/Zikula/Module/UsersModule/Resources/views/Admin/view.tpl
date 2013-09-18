@@ -52,14 +52,14 @@
             <th class="text-center">
                 {sortlink __linktext='Status' sort='activated' currentsort=$sort sortdir=$sortdir modname='ZikulaUsersModule' type='admin' func='view'}
             </th>
-            <th colspan="{$available_options|@array_sum}">
+            <th>
                 {gt text="Actions"}
             </th>
         </tr>
     </thead>
-    <tbody class="z-clearer">
+    <tbody>
         {section name="usersitems" loop=$usersitems}
-        <tr class="{cycle values='z-odd,z-even'}">
+        <tr>
             <td>{$usersitems[usersitems].uname|safehtml}</td>
             <td>{$usersitems[usersitems].uid|safehtml}</td>
             <td>{$usersitems[usersitems].user_regdate|safehtml}</td>
@@ -74,10 +74,10 @@
             <td class="users_activated">{strip}
                 {switch expr=$usersitems[usersitems].activated}
                 {case expr='Zikula\Module\UsersModule\Constant::ACTIVATED_ACTIVE'|const}
-                {img modname=core set=icons/extrasmall src='greenled.png' __title='Active' __alt='Active' class='tooltips'}
+                <span class="label label-success">{gt text='Active'}</span>
                 {/case}
                 {case expr='Zikula\Module\UsersModule\Constant::ACTIVATED_INACTIVE'|const}
-                {img modname=core set=icons/extrasmall src='yellowled.png' __title='Inactive' __alt='Inactive' class='tooltips'}
+                <span class="label label-danger">{gt text='Inactive'}</span>
                 {/case}
                 {case expr='Zikula\Module\UsersModule\Constant::ACTIVATED_PENDING_DELETE'|const}
                 {img modname=core set=icons/extrasmall src='14_layer_deletelayer.png' __title='Inactive, marked for deletion' __alt='Inactive, marked for deletion' class='tooltips'}
@@ -88,27 +88,23 @@
                 {/switch}
             {/strip}</td>
             {if $available_options.lostUsername}
-            <td class="users_action">
+            <td class="actions">
                 {if $usersitems[usersitems].options.lostUsername}
                 {gt text="Send user name to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a class="icon icon-user tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostUsername' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}"></a>
                 {else}
                 {img modname='core' set='icons/extrasmall' src='lostusername.png' class=" hidden "}
                 {/if}
-            </td>
             {/if}
             {if $available_options.lostPassword}
-            <td class="users_action">
                 {if $usersitems[usersitems].options.lostPassword}
                 {gt text="Send password recovery code to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a class="icon icon-key tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostPassword' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}" title="{$title}"></a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='lostpassword.png' class=" hidden "}
+                <span class="icon icon-fixed-width"></span>
                 {/if}
-            </td>
             {/if}
             {if $available_options.toggleForcedPasswordChange}
-            <td class="users_action">
                 {if $usersitems[usersitems].options.toggleForcedPasswordChange}
                 {if $usersitems[usersitems]._Users_mustChangePassword}
                 {gt text="Cancel required change of password for '%s'" tag1=$usersitems[usersitems].uname assign='title'}
@@ -119,28 +115,23 @@
                 {/if}
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src=$image title=$title alt=$title class='tooltips'}</a>
                 {else}
-                {assign var='image' value='password_expire.png'}
-                {img modname='core' set='icons/extrasmall' src=$image class=" hidden "}
+                <span class="icon icon-fixed-width"></span>
                 {/if}
-            </td>
             {/if}
             {if $available_options.modify}
-            <td class="users_action">
                 {if $usersitems[usersitems].options.modify}
                 {gt text="Edit '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                <a class="icon icon-edit tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='modify' userid=$usersitems[usersitems].uid}" title=$title></a>
+                <a class="icon icon-pencil tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='modify' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='xedit.png' class=" hidden "}
+                <span class="icon icon-fixed-width"></span>
                 {/if}
-            </td>
             {/if}
             {if $available_options.deleteUsers}
-            <td class="users_action">
                 {if $usersitems[usersitems].options.deleteUsers}
                 {gt text="Delete '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                <a class="icon icon-trash tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title=$title></a>
+                <a class="icon icon-trash icon-fixed-width tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
-                {img modname='core' set='icons/extrasmall' src='14_layer_deletelayer.png' title=$usersitems[usersitems].options.deleteUsers.title alt=$usersitems[usersitems].options.deleteUsers.title class=" hidden "}
+                <span class="icon icon-fixed-width"></span>
                 {/if}
             </td>
             {/if}

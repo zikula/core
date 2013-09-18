@@ -18,23 +18,26 @@
 {/if}
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange'}" method="post" enctype="application/x-www-form-urlencoded">
-    <div>
-        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-        <input type="hidden" name="userid" value="{$user_obj.uid|safetext}" />
-        <input type="hidden" name="user_must_change_password" value="{if $user_must_change_password}0{else}1{/if}" />
-        <fieldset>
-            <legend>{gt text='Confirmation prompt'}</legend>
-            <div class="z-formbuttons z-buttons">
+    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+    <input type="hidden" name="userid" value="{$user_obj.uid|safetext}" />
+    <input type="hidden" name="user_must_change_password" value="{if $user_must_change_password}0{else}1{/if}" />
+    <fieldset>
+        <legend>{gt text='Confirmation prompt'}</legend>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
                 {if $user_must_change_password}
-                {button class="z-btgreen" src='button_ok.png' set='icons/extrasmall' __alt='Yes, cancel the change of password' __title='Yes, cancel the change of password' __text='Yes, cancel the change of password'}
+                    <button class="btn btn-danger" title="{gt text='Yes, cancel the change of password'}">
+                        {gt text='Yes, cancel the change of password'}
+                    </button>
                 {else}
-                {button class="z-btgreen" src='button_ok.png' set='icons/extrasmall' __alt='Yes, force the change of password' __title='Yes, force the change of password' __text='Yes, force the change of password'}
+                    <button class="btn btn-danger" title={gt text='Yes, force the change of password'}>
+                        {gt text='Yes, force the change of password'}
+                    </button>
                 {/if}
-                <a class="z-btred" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='No'}">{gt text='No'}</a>
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='No'}">{gt text='No'}</a>
             </div>
         </div>
-        </fieldset>
-    </div>
+    </fieldset>
 </form>
 
 {adminfooter}
