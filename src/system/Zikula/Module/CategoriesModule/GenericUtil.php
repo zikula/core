@@ -49,7 +49,7 @@ class GenericUtil
         // on the same level
         $dql = "
         SELECT count(c.id)
-        FROM Zikula\\Core\\Doctrine\\Entity\\CategoryEntity c
+        FROM Zikula\\Module\\CategoriesModule\\Entity\\CategoryEntity c
         WHERE c.name = '" . $data['name'] . "'
           AND c.parent = " . $data['parent_id'];
 
