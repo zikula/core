@@ -95,7 +95,15 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                 $dsn = "$connectionInfo[dbdriver]://$connectionInfo[user]:$connectionInfo[password]@$connectionInfo[host]/$connectionInfo[dbname]";
                 $connection = Doctrine_Manager::connection($dsn, $name);
             } else {
-                $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                $dbh = null;
+                if ($connectionInfo['dbdriver'] == 'derby' || $connectionInfo['dbdriver'] == 'splice') {
+                    $class = 'Doctrine_Connection_' . ucwords($connectionInfo['dbdriver']) . '_Pdo';
+                    $dbh   = new $class ("odbc:$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                } elseif ($connectionInfo['dbdriver'] == 'jdbcbridge') {
+                    $dbh = new Doctrine_Adapter_Jdbcbridge($connectionInfo, $connectionInfo['user'], $connectionInfo['password']);
+                } else {
+                    $dbh = new PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
+                }
                 $connection = Doctrine_Manager::connection($dbh, $name);
                 $connection->setOption('username', $connectionInfo['user']);
                 $connection->setOption('password', $connectionInfo['password']);
