@@ -2,6 +2,7 @@
 
 namespace Zikula\Core\Forms;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Exception\FormException;
 use Symfony\Component\Form\Util\FormUtil;
@@ -15,9 +16,12 @@ class FormRenderer
 {
     protected $renderer;
     protected $varStack;
+    /**
+     * @var ContainerAwareEventDispatcher
+     */
     protected $dispatcher;
 
-    public function __construct(ContainerAwareEventDispatcher $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->varStack = array();
         $this->renderer = null;

@@ -12,6 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * AbstractHelper class.
@@ -95,7 +96,7 @@ abstract class Zikula_AbstractHelper implements Zikula_TranslatableInterface
         } elseif ($object instanceof Zikula_ServiceManager) {
             $this->serviceManager = $object;
             $this->eventManager = $object->get('event_dispatcher');
-        } elseif ($object instanceof Zikula_EventManager) {
+        } elseif ($object instanceof EventDispatcherInterface) {
             $this->eventManager = $object;
             $this->serviceManager = $object->getContainer();
         }
