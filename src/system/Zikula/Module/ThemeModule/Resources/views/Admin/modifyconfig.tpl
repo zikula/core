@@ -39,7 +39,7 @@
                 <div class="col-lg-9">
                     <select class="form-control" id="alt_theme_name" name="alt_theme_name">
                         <option value="">{gt text="Not set"}</option>
-                        {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$alt_theme_name}
+                        {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$alt_theme_name|default:''}
                     </select>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 <div class="col-lg-9">
                     <select class="form-control" id="mobile_theme_name" name="mobile_theme_name">
                         <option value="">{gt text="Use default mobile theme"}</option>
-                        {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$mobile_theme_name}
+                        {html_select_themes state='ThemeUtil::STATE_ACTIVE'|const selected=$mobile_theme_name|default:''}
                     </select>
                 </div>
             </div>

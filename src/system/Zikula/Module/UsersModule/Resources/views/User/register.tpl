@@ -74,8 +74,8 @@
 {capture name='uname'}
     <fieldset>
         <legend>{gt text="Choose a user name"}</legend>
-        {assign var='fieldName' value='uname'}
-        <div class="form-group {if isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
+            {assign var='fieldName' value='uname'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
@@ -94,7 +94,7 @@
     {if $authentication_method.modname == 'ZikulaUsersModule'}
     <fieldset>
         <legend>{gt text="Set a password"}</legend>
-        <div class="form-group {if isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='pass'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='pass'}
@@ -105,7 +105,7 @@
                 <div id="{$formData->getFormId()}_passmeter"></div>
             </div>
         </div>
-        <div class="form-group {if isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passagain'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='passagain'}
@@ -115,7 +115,7 @@
             </div>
         </div>
         {assign var='modvar_password_reminder_mandatory' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
-        <div class="form-group{if isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passreminder'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="z-form-mandatory-flag">*</span>{/if}</label>
             {assign var='fieldName' value='passreminder'}
@@ -136,7 +136,7 @@
 {capture name='email'}
     <fieldset>
         <legend>{gt text="Enter your e-mail address"}</legend>
-        <div class="form-group{if isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='email'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='email'}
@@ -149,7 +149,7 @@
                 <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
             </div>
         </div>
-        <div class="form-group{if isset($errorFields.$fieldName)} has-error{/if}">
+        <div class="form-group{if isset ($fieldName) &&  isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='emailagain'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='emailagain'}

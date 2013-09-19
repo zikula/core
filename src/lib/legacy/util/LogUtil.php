@@ -325,7 +325,7 @@ class LogUtil
                 $request = $serviceManager->get('request');
 
                 $loginArgs = array();
-                if ($request->isGet()) {
+                if ($request->isMethod('GET')) {
                     $loginArgs['returnpage'] = urlencode(System::getCurrentUri());
                 }
                 $url = ModUtil::url('ZikulaUsersModule', 'user', 'login', $loginArgs);
