@@ -74,8 +74,8 @@
 {capture name='uname'}
     <fieldset>
         <legend>{gt text="Choose a user name"}</legend>
+        {assign var='fieldName' value='uname'}
         <div class="form-group {if isset($errorFields.$fieldName)} has-error{/if}">
-            {assign var='fieldName' value='uname'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
@@ -196,11 +196,11 @@
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="z-form-mandatory-flag">*</span></label>
             {assign var='fieldName' value='antispamanswer'}
             <div class="col-lg-9">
-            <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="has-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
-            <em class="help-block sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
-            <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="has-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                <em class="help-block sub">{gt text="Asking this question helps us prevent automated scripts from accessing private areas of the site."}</em>
+                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+            </div>
         </div>
-    </div>
     </fieldset>
     {/if}
 
@@ -210,8 +210,11 @@
         <p id="{$formData->getFormId()}_validmessage" class="hide">{gt text="Your entries seem to be OK. Please click on 'Submit registration' when you are ready to continue."}</p>
         <div class="text-center z-buttons">
             {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide' modname=core set='ajax' src='indicator_circle.gif' alt=''}
-            {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Submit registration' __title='Submit registration' __text='Submit registration'}
-            {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='help.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
+            <button id="{$formData->getFormId()|cat:'_submitnewuser'}" type="submit" title="{gt text='Submit registration'}">
+                {gt text='Submit registration'}
+            <button id="{$formData->getFormId()|cat:'_checkuserajax'}" type="button" class="hide" title="{gt text='Check your entries'}">
+                {gt text='Check your entries'}
+            </button>
         </div>
     </fieldset>
 </form>
