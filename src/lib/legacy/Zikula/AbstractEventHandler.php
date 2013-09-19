@@ -12,6 +12,8 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+ 
+ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Custom Event Handler interface.
@@ -61,7 +63,7 @@ abstract class Zikula_AbstractEventHandler
      *
      * @param Zikula_EventManager $eventManager EventManager.
      */
-    public function __construct(Zikula_EventManager $eventManager)
+    public function __construct(EventDispatcherInterface $eventManager)
     {
         $this->eventManager = $eventManager;
         $this->serviceManager = $this->eventManager->getContainer();
