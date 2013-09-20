@@ -116,7 +116,6 @@ class AdminController extends \Zikula_AbstractController
                 if (SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_EDIT)) {
 
                     $editurl    = ModUtil::url('ZikulaGroupsModule', 'admin', 'modify', array('gid'     => $item['gid']));
-                    $deleteurl  = ModUtil::url('ZikulaGroupsModule', 'admin', 'view', array());
                     $membersurl = ModUtil::url('ZikulaGroupsModule', 'admin', 'groupmembership', array('gid'     => $item['gid']));
 
                     $options[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modify', array('gid'     => $item['gid'])),
@@ -125,7 +124,6 @@ class AdminController extends \Zikula_AbstractController
 
                     if ((SecurityUtil::checkPermission('ZikulaGroupsModule::', $item['gid'].'::', ACCESS_DELETE))
                             && ($item['gid'] != $defaultgroup) && ($item['gid'] != $primaryadmingroup)) {
-                        $deleteurl  = ModUtil::url('ZikulaGroupsModule', 'admin', 'delete', array('gid'     => $item['gid']));
                         $options[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'delete', array('gid'     => $item['gid'])),
                                 'title'   => $this->__('Delete'),
                                 'imgfile' => '14_layer_deletelayer.png');
@@ -152,7 +150,6 @@ class AdminController extends \Zikula_AbstractController
                         'uidmaster'   => $item['uidmaster'],
                         'options'     => $options,
                         'editurl'     => $editurl,
-                        'deleteurl'   => $deleteurl,
                         'membersurl'  => $membersurl);
                 }
             }

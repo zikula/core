@@ -1,6 +1,5 @@
 {* Do not allow editing of primaryadmingroup. For now it is read-only. *}
 {adminheader}
-{include file="Admin/header.tpl"}
 
 <div class="z-admin-content-pagetitle">
     {icon type="config" size="small"}

@@ -16,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr class="z-odd">
+        <tr>
             <td>{$group.name}</td>
             <td>{$group.description|safehtml}</td>
             <td>{$group.typelbl}</td>
@@ -65,7 +65,7 @@
     </thead>
     <tbody>
         {section name='members' loop=$members}
-        <tr class="{cycle values='z-odd,z-even'}">
+        <tr>
             <td>{$members[members].uname|profilelinkbyuname}</td>
             <td>{img modname='core' set='icons/extrasmall' src=$members[members].isonline alt=$members[members].isonlinelbl}</td>
         </tr>
