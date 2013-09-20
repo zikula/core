@@ -12,6 +12,8 @@
  * information regarding copyright and licensing.
  */
 
+use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
+
 /**
  * CategoryRegistryUtil
  */
@@ -137,7 +139,7 @@ class CategoryRegistryUtil
         if (isset($catreg['id'])) {
             $entity = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->find($catreg['id']);
         } else {
-            $entity = new \Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
+            $entity = new CategoryRegistryEntity();
         }
 
         $entity->merge($catreg);
@@ -166,7 +168,7 @@ class CategoryRegistryUtil
             if ($catreg['id']) {
                 $entity = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->find($catreg['id']);
             } else {
-                $entity = new \Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
+                $entity = new CategoryRegistryEntity();
             }
 
             $entity->merge($catreg);
@@ -204,7 +206,7 @@ class CategoryRegistryUtil
 
         $fArr = array();
 
-        /** @var $rCategory Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity */
+        /** @var $rCategory CategoryRegistryEntity */
         foreach ($rCategories as $rCategory) {
             $rCategory = $rCategory->toArray();
             $fArr[$rCategory[$arraykey]] = $rCategory['category_id'];

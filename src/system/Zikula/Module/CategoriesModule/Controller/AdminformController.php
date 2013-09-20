@@ -21,6 +21,7 @@ use System;
 use FormUtil;
 use CategoryUtil;
 use Zikula\Module\CategoriesModule\GenericUtil;
+use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Controller.
@@ -152,7 +153,7 @@ class AdminformController extends \Zikula_AbstractController
         $data['display_name'] = GenericUtil::processCategoryDisplayName($data['display_name'], $data['name']);
 
         // save category
-        $category = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
+        $category = new CategoryEntity();
         $category->merge($data);
         $this->entityManager->persist($category);
         $this->entityManager->flush();

@@ -22,6 +22,7 @@ use SecurityUtil;
 use CategoryUtil;
 use ZLanguage;
 use StringUtil;
+use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
 class AdminController extends \Zikula_AbstractController
 {
@@ -118,22 +119,22 @@ class AdminController extends \Zikula_AbstractController
             if (isset($_SESSION['newCategory']) && $_SESSION['newCategory']) {
                 $editCat = $_SESSION['newCategory'];
                 unset($_SESSION['newCategory']);
-                $category = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity; // need this for validation info
+                $category = new CategoryEntity(); // need this for validation info
             }
             // if we're back from validation get the posted data from session
             elseif (FormUtil::getValidationErrors()) {
                 $newCatActionData = \SessionUtil::getVar('newCatActionData');
                 \SessionUtil::delVar('newCatActionData');
-                $editCat = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
+                $editCat = new CategoryEntity();
                 $editCat = $editCat->toArray();
                 $editCat = array_merge($editCat, $newCatActionData);
                 unset($editCat['path']);
                 unset($editCat['ipath']);
-                $category = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity; // need this for validation info
+                $category = new CategoryEntity(); // need this for validation info
             }
             // someone just pressed 'new' -> populate defaults
             else {
-                $category = new \Zikula\Module\CategoriesModule\Entity\CategoryEntity;
+                $category = new CategoryEntity();
                 $editCat['sort_value'] = '0';
             }
         }
