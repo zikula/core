@@ -1,7 +1,5 @@
 {gt text="Membership application" assign=templatetitle}
 {adminheader}
-{include file="Admin/header.tpl"}
-
 <div class="z-admin-content-pagetitle">
     {icon type="new" size="small"}
     <h3>{$templatetitle}</h3>
