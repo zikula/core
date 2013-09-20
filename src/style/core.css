@@ -220,3 +220,14 @@ td.actions a:hover {
 .z-admin-content-pagetitle .icon:after {
     content: "\00a0";
 }
+
+
+:invalid {
+    background: #ffe1da;
+    border: 1px solid #f34f4f;
+}
+
+.required:after {
+    content: "\002A";
+    color: red;
+}

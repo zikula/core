@@ -99,7 +99,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get item
-        $item = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\Group', $args['gid']);
+        $item = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
 
         if (!$item) {
             return LogUtil::registerError($this->__('Sorry! No such item found.'));
@@ -461,9 +461,6 @@ class AdminApi extends \Zikula_AbstractApi
 
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_READ)) {
             $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'view'), 'text' => $this->__('Groups list'), 'id' => 'groups_view', 'icon' => 'list');
-        }
-        if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'newgroup'), 'text' => $this->__('Create new group'), 'id' => 'groups_new', 'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaGroupsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Settings'), 'id' => 'groups_modifyconfig', 'icon' => 'wrench');
