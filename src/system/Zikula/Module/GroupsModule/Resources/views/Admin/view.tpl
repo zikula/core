@@ -75,7 +75,7 @@
                 {if $group.gid neq $defaultgroup && $group.gid neq $primaryadmingroup}
                 <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='delete' gid=$group.gid}" class="icon icon-trash con-fixed-width tooltips" data-gid="{$group.gid}" title="{$strDeleteGroup}" data-confirm="{gt text="Do you really want to delete this group?"}"></a>
                 {else}
-                <span class="icon icon-fixed-width">
+                <span class="icon icon-fixed-width"></span>
                 {/if}
             </td>
         </tr>

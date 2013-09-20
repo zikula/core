@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" dir="{langdirection}">
+<html lang="{lang}" dir="{langdirection}">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
         <title>{pagegetvar name='title'}</title>
