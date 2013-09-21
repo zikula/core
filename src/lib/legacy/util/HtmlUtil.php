@@ -395,7 +395,11 @@ class HtmlUtil
     }
 
     /**
-     * Selector for a module's tables.
+     * Selector for a module's tables or entities.
+     *
+     * This method is Backward Compatible with all Core versions back to 1.2.x
+     * It scans for tables in `tables.php` as well as locating Doctrine 1 tables
+     * or Doctrine 2 entities in either the 1.3.0 type directories or 1.3.6++ type
      *
      * @param string  $modname       Module name.
      * @param string  $name          Select field name.
@@ -416,37 +420,115 @@ class HtmlUtil
             throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_ModuleTables')));
         }
 
+        // old style 'tables.php' modules (Core 1.2.x--)
+        $tables = ModUtil::dbInfoLoad($modname, '', true);
+        $data = array();
+        if (is_array($tables) && $tables) {
+            foreach ($tables as $k => $v) {
+                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
+                    $checkColumns = $k . '_column';
+                    if (!isset($tables[$checkColumns])) {
+                        continue;
+                    }
+                }
+                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
+                    if (strpos($k, 'z_') === 0) {
+                        $k = substr($k, 4);
+                    }
+
+                    if ($remove) {
+                        $k2 = str_replace($remove, '', $k);
+                    } else {
+                        $k2 = $k;
+                    }
+
+                    if ($nStripChars) {
+                        $k2 = ucfirst(substr($k2, $nStripChars));
+                    }
+
+                    // Use $k2 for display also (instead of showing the internal table name)
+                    $data[$k2] = $k2;
+                }
+            }
+        }
+        if (!empty($data)) {
+            return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
+        }
+
+
+        // Doctrine 1 models (Core 1.3.0 - 1.3.5)
+        DoctrineUtil::loadModels($modname);
+        $records = Doctrine::getLoadedModels();
+        $data = array();
+        foreach ($records as $recordClass) {
+            // remove records from other modules
+            if (substr($recordClass, 0, strlen($modname)) != $modname) {
+                continue;
+            }
+
+            // get table name of remove table prefix
+            $tableNameRaw = Doctrine::getTable($recordClass)->getTableName();
+            sscanf($tableNameRaw, Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
+
+            if ($remove) {
+                $tableName = str_replace($remove, '', $tableName);
+            }
+
+            if ($nStripChars) {
+                $tableName = ucfirst(substr($tableName, $nStripChars));
+            }
+
+            $data[$tableName] = $tableName;
+        }
+        if (!empty($data)) {
+            return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
+        }
+
+        // Doctrine 2 entities (Core 1.3.0++)
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
-        $entityDir = "$modpath/$osdir/Entity/";
+        $entityDirs = array(
+            "$modpath/$osdir/Entity/", // Core 1.3.6++
+            "$modpath/$osdir/lib/$osdir/Entity/", // Core 1.3.5--
+        );
 
         $entities = array();
-        if (file_exists($entityDir)) {
-            $files = scandir($entityDir);
-            foreach ($files as $file) {
-                if ($file != '.' && $file != '..' && substr($file, -4) === '.php') {
-                    $entities[] = $file;
+        foreach ($entityDirs as $entityDir) {
+            if (file_exists($entityDir)) {
+                $files = scandir($entityDir);
+                foreach ($files as $file) {
+                    if ($file != '.' && $file != '..' && substr($file, -4) === '.php') {
+                        $entities[] = $file;
+                    }
                 }
             }
         }
 
+        $module = ModUtil::getModule($modname);
         $data = array();
         foreach ($entities as $entity) {
-            $class = $modname . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4).'Entity';
+            $possibleClassNames = array(
+                $modname . '_Entity_' . substr($entity, 0, strlen($entity) - 4), // Core 1.3.5--
+            );
+            if ($module) {
+                $possibleClassNames[] = $module->getNamespace() . '\\Entity\\' . substr($entity, 0, strlen($entity) - 4); // Core 1.3.6++
+            }
 
-            if (class_exists($class)) {
-                $entityName = substr($entity, 0, strlen($entity) - 4);
+            foreach ($possibleClassNames as $class) {
+                if (class_exists($class)) {
+                    $entityName = substr($entity, 0, strlen($entity) - 4);
 
-                if ($remove) {
-                    $entityName = str_replace($remove, '', $entityName);
+                    if ($remove) {
+                        $entityName = str_replace($remove, '', $entityName);
+                    }
+
+                    if ($nStripChars) {
+                        $entityName = ucfirst(substr($entityName, $nStripChars));
+                    }
+
+                    $data[$entityName] = $entityName;
                 }
-
-                if ($nStripChars) {
-                    $entityName = ucfirst(substr($entityName, $nStripChars));
-                }
-
-                $data[$entityName] = $entityName;
             }
         }
 

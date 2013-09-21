@@ -14,7 +14,7 @@
             <thead>
                 <tr>
                     <th>{gt text="Module"}</th>
-                    <th>{gt text="Entity"}</th>
+                    <th>{gt text="Entity/Table"}</th>
                     <th>{gt text="Property name"}</th>
                     <th>{gt text="Category"}</th>
                     <th>{gt text="Actions"}</th>
