@@ -161,7 +161,7 @@ class ExtensionDependencyEntity extends EntityAccess
                 $dependencies = $meta['dependencies'];
                 foreach ($dependencies as $dependency) {
                     if ($dependency['modname'] == $this->modname) {
-                        $this->reason = $dependency['reason'];
+                        $this->reason = isset($dependency['reason']) ? $dependency['reason'] : '';
                         return $this->reason;
                     }
                 }
