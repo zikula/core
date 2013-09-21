@@ -53,7 +53,7 @@
                 </tr>
                 {/foreach}
 
-                {if ($id neq 0)}
+                {if ($id eq 0)}
                 <tr valign="middle">
                     <td><span class="z-form-mandatory-flag">*</span>{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newobj.modname submit="1"}</td>
                     <td>{if $newobj.modname}<span class="z-form-mandatory-flag">*</span>{selector_module_tables modname=$newobj.modname name="category_registry[entityname]" displayField="name" selectedValue=$newobj.entityname defaultValue="" defaultText=$chooseEntity}{else}----------{/if}</td>
