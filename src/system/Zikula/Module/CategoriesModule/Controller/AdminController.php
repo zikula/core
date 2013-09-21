@@ -23,6 +23,7 @@ use CategoryUtil;
 use ZLanguage;
 use StringUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
+use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 
 class AdminController extends \Zikula_AbstractController
 {
@@ -120,9 +121,8 @@ class AdminController extends \Zikula_AbstractController
                 $editCat = $_SESSION['newCategory'];
                 unset($_SESSION['newCategory']);
                 $category = new CategoryEntity(); // need this for validation info
-            }
-            // if we're back from validation get the posted data from session
-            elseif (FormUtil::getValidationErrors()) {
+            } elseif (FormUtil::getValidationErrors()) {
+                // if we're back from validation get the posted data from session
                 $newCatActionData = \SessionUtil::getVar('newCatActionData');
                 \SessionUtil::delVar('newCatActionData');
                 $editCat = new CategoryEntity();
@@ -131,9 +131,8 @@ class AdminController extends \Zikula_AbstractController
                 unset($editCat['path']);
                 unset($editCat['ipath']);
                 $category = new CategoryEntity(); // need this for validation info
-            }
-            // someone just pressed 'new' -> populate defaults
-            else {
+            } else {
+                // someone just pressed 'new' -> populate defaults
                 $category = new CategoryEntity();
                 $editCat['sort_value'] = '0';
             }
@@ -193,7 +192,7 @@ class AdminController extends \Zikula_AbstractController
         $root_id = $this->request->get('dr', 1);
         $id = $this->request->get('id', 0);
 
-        $obj = new \Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity();
+        $obj = new CategoryRegistryEntity();
 
         $category_registry = $this->request->query->get('category_registry', null);
         if ($category_registry) {
