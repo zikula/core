@@ -22,6 +22,7 @@ use FormUtil;
 use CategoryUtil;
 use Zikula\Module\CategoriesModule\GenericUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
+use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 
 /**
  * Controller.
@@ -342,13 +343,12 @@ class AdminformController extends \Zikula_AbstractController
             // update existing registry
             $obj = $this->entityManager->find('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity', $data['id']);
         } else {
-            // save the new registry
-            $obj = new \Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
+            // create new registry
+            $obj = new CategoryRegistryEntity();
         }
         $obj->merge($data);
         $this->entityManager->persist($obj);
         $this->entityManager->flush();
-
         LogUtil::registerStatus(__('Done! Saved the category registry entry.'));
 
         return $this->redirect(ModUtil::url('ZikulaCategoriesModule', 'admin', 'editregistry'));
