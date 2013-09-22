@@ -47,14 +47,14 @@
             </td>
             <td id="groupgtype_{$group.gid}" class="zikulagroupsmodule-edit ">
                 <span>
-                    {gt text="$group.gtypelbl|safetext}
+                    {gt text=$group.gtypelbl|safetext}
                 </span>
             </td>
             <td id="groupdescription_{$group.gid}">
                 {$group.description|safehtml}&nbsp;
             </td>
             <td id="groupstate_{$group.gid}">
-                {gt text="$group.statelbl|safetext}
+                {gt text=$group.statelbl|safetext}
             </td>
             <td id="groupnbuser_{$group.gid}" class="text-center">
                 {$group.nbuser|safetext}
