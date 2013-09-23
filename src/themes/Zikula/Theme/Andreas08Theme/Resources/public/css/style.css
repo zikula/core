@@ -70,6 +70,10 @@ ul {
     margin: 1em 0 1em 0.5em;
 }
 
+ul.nav {
+    margin:0;
+}
+
 li {
     margin: 0 0 0.5em 1.5em;
 }

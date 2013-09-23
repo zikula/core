@@ -67,6 +67,10 @@ ul {
     list-style: square;
 }
 
+ul.nav {
+    margin:0;
+}
+
 ol {
     margin: 14px 0 14px 7px;
     padding: 0;
