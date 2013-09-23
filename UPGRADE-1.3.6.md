@@ -263,6 +263,29 @@ The default action should be named `indexAction()` however please not that all r
 must be explicitly referenced so there is in fact no default route any more for a module.
 
 
+Controller Method Parameters
+----------------------------
+
+Arguments of controller methods now automatically receive the request.
+For example if ?name=Fred&age=21 then
+
+    public function fooAction($name, $age)
+    {
+        return new Response("Hello $name, you are $age");
+    }
+
+Argument order does not matter.
+
+You can also get the request object using this:
+
+    public function fooAction(Request $request)
+    {
+        $name = $request->query->get('name');
+
+        return new Response("Hello $name");
+    }
+
+
 Controller Response
 -------------------
 
