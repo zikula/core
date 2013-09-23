@@ -97,6 +97,16 @@
                 }
             });
         });
+
+        if ( typeof Prototype === "undefined" ) {
+            $('.tooltips').each(function() {
+                var placement = 'top';
+                if ($(this).hasClass('tooltips-bottom')) {
+                    placement = 'bottom';
+                }
+                $(this).tooltip({placement: placement, animation: false});
+            });
+        }
     });
 
 
