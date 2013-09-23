@@ -20,8 +20,7 @@
             "src/lib/legacy/util"
         ],
         "files": [
-            "src/lib/i18n/ZGettextFunctions.php",
-            "src/lib/legacy/Loader.php"
+            "src/lib/i18n/ZGettextFunctions.php"
         ]
     },
     "authors": [
