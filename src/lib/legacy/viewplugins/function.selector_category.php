@@ -52,6 +52,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
     $multipleSize     = isset($params['multipleSize'])     ? $params['multipleSize']     : 1;
     $sortField        = isset($params['sortField'])        ? $params['sortField']        : 'sort_value';
     $doReplaceRootCat = isset($params['doReplaceRootCat']) ? $params['doReplaceRootCat'] : null;
+    $cssClass         = isset($params['cssClass'])         ? $params['cssClass']         : '';
 
     // disable attribution if we don't need it
     $_dbTables = null;
@@ -90,7 +91,8 @@ function smarty_function_selector_category($params, Zikula_View $view)
     }
 
     $html = CategoryUtil::getSelector_Categories ($catCache[$cacheKey], $field, $selectedValue, $name, $defaultValue, $defaultText,
-                                                  $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute);
+                                                  $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass
+                                                  );
 
     if ($editLink && !empty($category) && SecurityUtil::checkPermission( 'ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
         $url = DataUtil::formatForDisplay(ModUtil::url ('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $category['id'])));

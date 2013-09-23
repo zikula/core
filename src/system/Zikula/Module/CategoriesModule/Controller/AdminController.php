@@ -150,7 +150,20 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        $selector = CategoryUtil::getSelector_Categories($allCats, 'id', (isset($editCat['parent_id']) ? $editCat['parent_id'] : 0), 'category[parent_id]', isset($defaultValue) ? $defaultValue : null, null, $reloadOnCatChange);
+        $selector = CategoryUtil::getSelector_Categories($allCats, 
+                                                         'id',
+                                                         (isset($editCat['parent_id']) ? $editCat['parent_id'] : 0),
+                                                         'category[parent_id]',
+                                                         isset($defaultValue) ? $defaultValue : null,
+                                                         null,
+                                                         0,
+                                                         null,
+                                                         $reloadOnCatChange,
+                                                         false,
+                                                         true,
+                                                         1,
+                                                         false,
+                                                         'form-control');
 
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 

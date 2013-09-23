@@ -1170,19 +1170,19 @@ class CategoryUtil
      * @param string       $field            The field value to return (optional) (default='id').
      * @param string|array $selectedValue    The selected category (optional) (default=0).
      * @param string       $name             The name of the selector field to generate (optional) (default='category[parent_id]').
-     * @param intiger      $defaultValue     The default value to present to the user (optional) (default=0).
+     * @param integer      $defaultValue     The default value to present to the user (optional) (default=0).
      * @param string       $defaultText      The default text to present to the user (optional) (default='').
-     * @param intiger      $allValue         The value to assign to the "all" option (optional) (default=0).
+     * @param integer      $allValue         The value to assign to the "all" option (optional) (default=0).
      * @param string       $allText          The text to assign to the "all" option (optional) (default='').
      * @param boolean      $submit           Whether or not to submit the form upon change (optional) (default=false).
      * @param boolean      $displayPath      If false, the path is simulated, if true, the full path is shown (optional) (default=false).
      * @param boolean      $doReplaceRootCat Whether or not to replace the root category with a localized string (optional) (default=true).
-     * @param intiger      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
+     * @param integer      $multipleSize     If > 1, a multiple selector box is built, otherwise a normal/single selector box is build (optional) (default=1).
      * @param boolean      $fieldIsAttribute True if the field is attribute (optional) (default=false).
      *
      * @return The HTML selector code for the given category hierarchy
      */
-    public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false)
+    public static function getSelector_Categories($cats, $field = 'id', $selectedValue = '0', $name = 'category[parent_id]', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $submit = false, $displayPath = false, $doReplaceRootCat = true, $multipleSize = 1, $fieldIsAttribute = false, $cssClass = '')
     {
         $line = '---------------------------------------------------------------------';
 
@@ -1198,9 +1198,10 @@ class CategoryUtil
         $multiple = $multipleSize > 1 ? ' multiple="multiple"' : '';
         $multipleSize = $multipleSize > 1 ? " size=\"$multipleSize\"" : '';
         $submit = $submit ? ' onchange="this.form.submit();"' : '';
+        $cssClass = $cssClass ? " class=\"$cssClass\"" : '';
         $lang = ZLanguage::getLanguageCode();
 
-        $html = "<select name=\"$name\" id=\"$id\"{$multipleSize}{$multiple}{$submit}>";
+        $html = "<select name=\"$name\" id=\"$id\"{$multipleSize}{$multiple}{$submit}{$cssClass}>";
 
         if (!empty($defaultText)) {
             $sel = (in_array((string)$defaultValue, $selectedValue) ? ' selected="selected"' : '');
