@@ -647,7 +647,7 @@ class DBUtil
      *
      * Special handling for integers and booleans (the last is required for MySQL 5 strict mode).
      *
-     * @param intiger|boolean $value The value to format.
+     * @param integer|boolean $value The value to format.
      *
      * @return string string ready to add to SQL statement.
      */
@@ -2962,7 +2962,7 @@ class DBUtil
      * @param boolean $exitOnError Exit on error.
      * @param boolean $verbose     Verbose mode.
      *
-     * @return intiger   The result ID.
+     * @return integer   The result ID.
      * @throws Exception IF table does not point to valid table definition, or field does not point to valif field def.
      */
     public static function getInsertID($table, $field = 'id', $exitOnError = true, $verbose = true)
