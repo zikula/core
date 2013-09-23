@@ -217,9 +217,7 @@ class System
 
             if (self::getVar('idnnames')) {
                 // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
-                require_once 'lib/vendor/idn/idna_convert.class.php';
-                $IDN = new idna_convert();
-                $var = $IDN->encode(DataUtil::convertToUTF8($var));
+                $var = idn_to_ascii(DataUtil::convertToUTF8($var));
             }
             // all characters must be 7 bit ascii
             $length = strlen($var);

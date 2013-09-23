@@ -21,7 +21,6 @@
         ],
         "files": [
             "src/lib/i18n/ZGettextFunctions.php",
-            "src/lib/vendor/idn/idna_convert.class.php",
             "src/lib/legacy/Loader.php"
         ]
     },
