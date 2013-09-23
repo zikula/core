@@ -223,9 +223,14 @@ $('#admintabs-locker a').click(
 $(document).on('click', '.admintabs-makedefault', function (e) {
     e.preventDefault();
     var catid = $(this).parent().parent().data('catid');
+    var e = $(this);
     $.ajax({
         url: 'index.php?module=adminpanel&type=ajax&func=defaultCategory',
         data: {cid: catid},
+        success: function() {
+            $('.admintabs-makedefault').removeClass('hide');
+            e.addClass('hide');  
+        },
         error: function (response) {
             alert($.parseJSON(response.responseText).core.statusmsg);
         }
