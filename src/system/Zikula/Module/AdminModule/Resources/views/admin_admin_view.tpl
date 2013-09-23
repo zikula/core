@@ -1,12 +1,3 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-
 {adminheader}
 <div class="z-admin-content-pagetitle">
     {icon type="view" size="small"}

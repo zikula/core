@@ -33,7 +33,7 @@
 }
 
 /******************************************************************************
-* Module- and pageheaders (icon+header)
+* Module- and pageheaders (iconheader)
 ******************************************************************************/
 
 #z-maincontent div.z-admin-content-modtitle {
@@ -92,7 +92,7 @@
 * Styling for status security analyzer, update checker and more
 ******************************************************************************/
 
-#z-maincontent #admin-systemnotices div+div {
+#z-maincontent #admin-systemnotices divdiv {
     margin-top: -1.15em;
 }
 
@@ -253,7 +253,7 @@ div.property_selector_noscript {
     padding-top: 12px;
 }
 
-#z-maincontent div.z-adminpageicon+h2 {
+#z-maincontent div.z-adminpageiconh2 {
     background: none;
     border-bottom: 1px solid #EEEEEE;
     color: #333333;
@@ -265,7 +265,7 @@ div.property_selector_noscript {
     text-align: left;
 }
 
-#z-maincontent div.z-admincontainer h2+* {
+#z-maincontent div.z-admincontainer h2* {
     clear: both;
 }
 
@@ -327,8 +327,25 @@ div.z-admincontainer {
 }
 
 
-.admintab-dropover {
+.admintabs-dropover {
     background-color: orange!important
+}
+
+.admintabs-lock {
+    display: none!important
+}
+
+li.admintabs-add {
+    float: right;
+}
+
+#admintabs-locker {
+    float: right;
+    margin-right: -2px;
+}
+
+#admintabs .dropdown-menu .icon {
+    padding:0 17px 0 3px
 }
 
 

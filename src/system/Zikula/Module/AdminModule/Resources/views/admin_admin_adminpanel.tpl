@@ -17,7 +17,7 @@
                 
                 <div>
                     {* movable icon *}
-                    <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move modulelist-drag"></span> 
+                    <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move admintabs-lock"></span> 
                     
                     {* module title *}
                     <a title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
@@ -37,7 +37,6 @@
                     {/if}
                     {* module description *}
                     <p>
-                        <span title="{gt text="Sort module"}" class="tooltips icon icon-move modulelist-sort"></span> 
                         {$adminlink.menutexttitle|safetext}
                     </p>
                     
