@@ -98,7 +98,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Current ID count - used to assign automatic ID's to all items.
      *
-     * @var intiger
+     * @var integer
      * @internal
      */
     public $idCount;
@@ -499,7 +499,7 @@ class Zikula_Form_View extends Zikula_View
     /**
      * Get Plugin by id.
      *
-     * @param intiger $id Plugin ID.
+     * @param integer $id Plugin ID.
      *
      * @return Zikula_Form_AbstractPlugin|null
      */
@@ -523,7 +523,7 @@ class Zikula_Form_View extends Zikula_View
      * Get Plugin By Id_rec.
      *
      * @param object  $plugin Plugin.
-     * @param intiger $id     Plugin ID.
+     * @param integer $id     Plugin ID.
      *
      * @return Zikula_Form_AbstractPlugin|null
      */

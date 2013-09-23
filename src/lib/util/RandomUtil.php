@@ -35,8 +35,8 @@ class RandomUtil
     /**
      * Return a random integer between $floor and $ceil (inclusive).
      *
-     * @param intiger $floor The lower bound.
-     * @param intiger $ceil  The upper bound.
+     * @param integer $floor The lower bound.
+     * @param integer $ceil  The upper bound.
      *
      * @return The resulting random integer
      */
@@ -54,7 +54,7 @@ class RandomUtil
      *
      * This function uses md5() to generate the string.
      *
-     * @param intiger $length The length of string to generate.
+     * @param integer $length The length of string to generate.
      *
      * @return The resulting random integer.
      */
@@ -72,8 +72,8 @@ class RandomUtil
     /**
      * Return a random string
      *
-     * @param intiger $minLen         The minimum string length.
-     * @param intiger $maxLen         The maximum string length.
+     * @param integer $minLen         The minimum string length.
+     * @param integer $maxLen         The maximum string length.
      * @param boolean $leadingCapital Whether or not the string should start with a capital letter (optional) (default=true).
      * @param boolean $useUpper       Whether or not to also use uppercase letters (optional) (default=true).
      * @param boolean $useLower       Whether or not to also use lowercase letters (optional) (default=true).
@@ -168,7 +168,7 @@ class RandomUtil
     /**
      * Return a random sentence of nWords based on the dictionary
      *
-     * @param intiger $nWords    The number of words to put in the sentence.
+     * @param integer $nWords    The number of words to put in the sentence.
      * @param array   $dictArray The array of dictionary words to use.
      *
      * @return The resulting random date string.
@@ -217,10 +217,10 @@ class RandomUtil
     /**
      * Return a nParas paragraphs of random text based on the dictionary.
      *
-     * @param intiger $nParas         The number of paragraphs to return to put in the sentence.
+     * @param integer $nParas         The number of paragraphs to return to put in the sentence.
      * @param string  $dict           The dictionary to use (a space separated list of words).
-     * @param intiger $irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated).
-     * @param intiger $irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated).
+     * @param integer $irndS          The number of sentences in a paragraph (optional) (default=0=randomlyGenerated).
+     * @param integer $irndW          The number of words in a sentence (optional) (default=0=randomlyGenerated).
      * @param boolean $startCustomary Whether or not to start with the customary phrase (optional) (default=false).
      *
      * @return The resulting random date string.
