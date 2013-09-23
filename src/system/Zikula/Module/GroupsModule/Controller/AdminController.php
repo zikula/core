@@ -226,7 +226,7 @@ class AdminController extends \Zikula_AbstractController
         $description = $this->request->request->get('description', isset($args['description']) ? $args['description'] : null);
 
         // The API function is called.
-        $check = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', array());
+        $check = ModUtil::apiFunc('ZikulaGroupsModule', 'admin', 'getgidbyname', array('name' => $name));
 
         if ($check != false) {
             // Group already exists
