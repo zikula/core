@@ -12,7 +12,7 @@
             <span class="icon icon-caret-down"></span>
             </a>
                 <ul class="dropdown-menu">
-                    <li class="admintabs-lock admintabs-makedefault">
+                    <li class="admintabs-lock admintabs-makedefault{if $currentcat eq $menuoption.cid} hide{/if}">
                         <a href="#"><span class="icon icon-asterisk icon-fixed-width" ></span> {gt text='Make default category'}</a>
                     </li>
                     <li class="admintabs-lock admintabs-edit" data-toggle="modal" data-target="#admintabs-rename-category-modal">
