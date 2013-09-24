@@ -17,9 +17,9 @@
             <td>{$name|safetext}</td>
             <td>{$filesection.file|safetext}</td>
             <td>{$filesection.important|default:0|yesno}</td>
-            <td class="text-right">
-                <a href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
-                <a href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}">{img modname=core src=14_layer_deletelayer.png set=icons/extrasmall __alt="Delete" __title="Delete"}</a>
+            <td class="actions">
+                <a class="icon icon-pencil" href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Edit'}"></a>
+                <a class="icon icon-trash" href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
             </td>
         </tr>
         {/foreach}
@@ -41,9 +41,9 @@
         <tr>
             <td>{$filename|safetext}</td>
             <td>{$fileexists|yesno}</td>
-            <td class="text-right">
-                <a href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}">{img modname=core src=xedit.png set=icons/extrasmall __alt="Edit" __title="Edit"}</a>
-                <a href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}">{img modname=core src=configure.png set=icons/extrasmall __alt="Variables" __title="Variables"}</a>
+            <td class="actions">
+                <a class="icon icon-pencil" href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}" title="{gt text='Edit'}"></a>
+                <a class="icon icon-trash" href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}" title="{gt text='Variables'}"></a>
             </td>
         </tr>
         {/foreach}
