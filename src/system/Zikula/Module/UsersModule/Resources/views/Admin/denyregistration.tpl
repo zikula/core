@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="remove" size="small"}
-    <h3>{gt text='Deny registration request of \'%1$s\'' tag1=$reginfo.uname}</h3>
-</div>
+    {gt text='Deny registration request of \'%1$s\'' tag1=$reginfo.uname}
+</h3>
 
 <p class="alert alert-warning">{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>
 
@@ -35,9 +35,11 @@
             </div>
         </div>
         </fieldset>
-        <div class="z-formbuttons z-buttons">
-            {button id='confirm' type='submit' src='delete_user.png' set='icons/extrasmall' __alt='Delete registration' __title='Delete registration' __text='Delete registration'}
-            <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button id='confirm' type='submit' src='delete_user.png' set='icons/extrasmall' __alt='Delete registration' __title='Delete registration' __text='Delete registration'}
+                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            </div>
         </div>
     </div>
 </form>

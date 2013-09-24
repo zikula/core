@@ -222,7 +222,7 @@ td.actions a:hover {
 }
 
 
-:invalid {
+input:invalid, select:invalid, textarea:invalid, .form-error {
     background: #ffe1da;
     border: 1px solid #f34f4f;
 }

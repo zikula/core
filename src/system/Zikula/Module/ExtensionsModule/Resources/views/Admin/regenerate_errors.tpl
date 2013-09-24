@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="error" size="small"}
-    <h3>{gt text="Error! Could not regenerate the modules list."}</h3>
-</div>
+    {gt text="Error! Could not regenerate the modules list."}
+</h3>
 
 <p class="alert alert-danger">{gt text="Error! The modules list could not be regenerated because there are one or more problems in the Zikula file system. You need to correct them before you can proceed. Please read this explanation:"}</p>
 {if $errors_modulenames}

@@ -1,9 +1,9 @@
 {ajaxheader modname='ZikulaMailerModule' filename='mailer_admin_modifyconfig.js' noscriptaculous=true effects=true}
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="config" size="small"}
-    <h3>{gt text="Settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {gt text="Settings"}
+</h3>
 
 {form cssClass='form-horizontal'}
     {formvalidationsummary}

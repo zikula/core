@@ -1,16 +1,18 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js'}
 {pageaddvar name='javascript' value='jquery-ui'}
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Edit block position"}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Edit block position"}
+</h3>
 
 <form id="blockpositionform" class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="updateposition"}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
     <fieldset>
         <legend>{gt text="Block position"}</legend>
+        
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" id="position" name="position[pid]" value="{$pid|safetext}" />
+        
         <div class="form-group">
             <label class="col-lg-3 control-label" for="blocks_positionname">{gt text="Name"}</label>
             <div class="col-lg-9">

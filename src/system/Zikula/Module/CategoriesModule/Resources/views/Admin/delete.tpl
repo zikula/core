@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text="Delete category"}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {gt text="Delete category"}
+</h3>
 
 <p class="alert alert-warning">
     {gt text="Do you really want to delete this category?"}<br />
@@ -35,12 +35,11 @@
             <input type="hidden" name="subcat_action" id="subcat_action" value="delete" />
             {/if}
             <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
-                    {button class="z-btgreen" class="btn btn-success" __alt="Delete" __title="Delete" __text="Delete"}
-                    <a class="btn btn-danger" class="z-btred" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
+                <div class="col-lg-offset-3 col-lg-9">
+                    {button class="btn btn-success" __alt="Delete" __title="Delete" __text="Delete"}
+                    <a class="btn btn-danger" href="{modurl modname=ZikulaCategoriesModule type=admin func=view}" title="{gt text="Cancel"}">{gt text="Cancel"}</a>
                 </div>
-        </div>
-        </div>
+            </div>
         </fieldset>
     </div>
 </form>

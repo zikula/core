@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {img modname="core" src="folder_new.png" set=icons/small __alt="Install"}
-    <h3>{gt text="Install"} - {modgetinfo modid=$id info=displayname}</h3>
-</div>
+    {gt text="Install"} - {modgetinfo modid=$id info=displayname}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="initialise"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

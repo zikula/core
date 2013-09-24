@@ -2,15 +2,15 @@
 {include file="permissions_admin_header.tpl"}
 
 {if $action eq "add"}
-<div class="z-admin-content-pagetitle">
-    {icon type="new" size="small"}
-    <h3>{$title|safetext}</h3>
-</div>
+<h3>
+    <span class="icon icon-plus"></span>
+    {$title|safetext}
+</h3>
 {else}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{$title|safetext}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {$title|safetext}
+</h3>
 {/if}
 
 {if $action eq "insert" or $action eq "modify" or $action eq "add"}

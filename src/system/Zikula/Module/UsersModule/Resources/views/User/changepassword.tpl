@@ -32,14 +32,14 @@
 </div>
 
 <form id="users_user_changepassword" class="form-horizontal" role="form" action="{modurl modname="Users" type="user" func="updatePassword"}" method="post">
-    <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" id="usernamehidden" name="usernamehidden" value="{if $login}{$user_obj.uname}{else}{user}{/if}" />
     <fieldset>
         <legend>{gt text="Change password"}</legend>
+        <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
+    <input type="hidden" id="usernamehidden" name="usernamehidden" value="{if $login}{$user_obj.uname}{else}{user}{/if}" />
         <div class="form-group">
             <label class="col-lg-3 control-label" for="oldpassword">{gt text="Current password"}</label>
             <div class="col-lg-9">
-                <input type="password" id="oldpassword" name="oldpassword" class="form-control{if isset($password_errors.oldpass) && !empty($password_errors.oldpass)} z-form-error{/if}" value="" />
+                <input type="password" id="oldpassword" name="oldpassword" class="form-control{if isset($password_errors.oldpass) && !empty($password_errors.oldpass)} form-error{/if}" value="" />
                 {if isset($password_errors.oldpass) && !empty($password_errors.oldpass)}
                 <div class="help-block alert alert-danger">
                     {foreach from=$password_errors.oldpass item='message' name='messages'}
@@ -52,7 +52,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label" for="newpassword">{gt text="New password"}</label>
             <div class="col-lg-9">
-                <input name="newpassword" id="newpassword" type="password" class="form-control{if isset($password_errors.reginfo_pass) && !empty($password_errors.reginfo_pass)} z-form-error{/if}" value="" />
+                <input name="newpassword" id="newpassword" type="password" class="form-control{if isset($password_errors.reginfo_pass) && !empty($password_errors.reginfo_pass)} form-error{/if}" value="" />
                 {if isset($password_errors.reginfo_pass) && !empty($password_errors.reginfo_pass)}
                 <div class="help-block alert alert-danger">
                     {foreach from=$password_errors.reginfo_pass item='message' name='messages'}
@@ -75,7 +75,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label" for="newpasswordconfirm">{gt text="New password (repeat for verification)"}</label>
             <div class="col-lg-9">
-                <input type="password" id="newpasswordconfirm" name="newpasswordconfirm" class="form-control {if isset($password_errors.passagain) && !empty($password_errors.passagain)} z-form-error{/if}" value="" />
+                <input type="password" id="newpasswordconfirm" name="newpasswordconfirm" class="form-control {if isset($password_errors.passagain) && !empty($password_errors.passagain)} form-error{/if}" value="" />
                 {if isset($password_errors.passagain) && !empty($password_errors.passagain)}
                 <div class="help-block alert alert-danger">
                     {foreach from=$password_errors.passagain item='message' name='messages'}
@@ -88,7 +88,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label" for="passreminder">{gt text="New password reminder"}</label>
             <div class="col-lg-9">
-                <input type="text" id="passreminder" name="passreminder" value="" class="form-control {if isset($password_errors.passreminder) && !empty($password_errors.passreminder)} z-form-error{/if}" size="25" maxlength="128" />
+                <input type="text" id="passreminder" name="passreminder" value="" class="form-control {if isset($password_errors.passreminder) && !empty($password_errors.passreminder)} form-error{/if}" size="25" maxlength="128" />
                 {if isset($password_errors.passreminder) && !empty($password_errors.passreminder)}
                 <div class="help-block alert alert-danger">
                     {foreach from=$password_errors.passreminder item='message' name='messages'}

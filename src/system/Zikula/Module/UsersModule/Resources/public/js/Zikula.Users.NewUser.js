@@ -210,7 +210,7 @@ Zikula.Users.NewUser = {
         });
         
         $(Zikula.Users.NewUser.formId).getElements().each(function(element, index){
-            element.removeClassName('z-form-error');
+            element.removeClassName('form-error');
         });
         
         $$('#' + Zikula.Users.NewUser.formId + ' .alert alert-danger').each(function(element, index){
@@ -240,7 +240,7 @@ Zikula.Users.NewUser = {
             errorFields.each(function(pair){
                 var element = $(Zikula.Users.NewUser.formId + '_' + pair.key);
                 if (element) {
-                    element.addClassName('z-form-error');
+                    element.addClassName('form-error');
                 }
 
                 element = $(Zikula.Users.NewUser.formId + '_' + pair.key + '_error');

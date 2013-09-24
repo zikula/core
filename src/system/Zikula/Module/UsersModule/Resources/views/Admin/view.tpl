@@ -12,10 +12,10 @@
 {/strip}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Users list"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Users list"}
+</h3>
 
 <div id="liveusersearch" class="hide z-form">
     <fieldset>

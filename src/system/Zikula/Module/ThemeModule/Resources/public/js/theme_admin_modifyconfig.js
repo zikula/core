@@ -1,13 +1,13 @@
 // Copyright Zikula Foundation 2009 - license GNU/LGPLv3 (or at your option, any later version).
 
-(function($) {
-    $(function() { 
+( function($) {
+    $(document).ready(function() {
         if ($('#alt_theme_name').val() == "") {
             // Not set
             $('#alt_theme_domain').parent().parent().hide();
         }
 
-        $("#alt_theme_name").click(function() {
+        $("#alt_theme_name").change(function() {
             if ($('#alt_theme_name').val() == "") {
                 $('#alt_theme_domain').parent().parent().fadeOut();
             } else {

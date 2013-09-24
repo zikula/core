@@ -13,7 +13,7 @@
     </thead>
     <tbody>
         {foreach from=$pageconfigurations item=filesection key=name}
-        <tr class="{cycle name=pageconfigurations values=z-odd,z-even}">
+        <tr>
             <td>{$name|safetext}</td>
             <td>{$filesection.file|safetext}</td>
             <td>{$filesection.important|default:0|yesno}</td>
@@ -38,7 +38,7 @@
     </thead>
     <tbody>
         {foreach from=$pageconfigs item='fileexists' key='filename'}
-        <tr class="{cycle name=pageconfigs values=z-odd,z-even}">
+        <tr>
             <td>{$filename|safetext}</td>
             <td>{$fileexists|yesno}</td>
             <td class="text-right">

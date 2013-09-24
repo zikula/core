@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="info" size="small"}
-    <h3>{gt text="Theme credits"}</h3>
-</div>
+<h3>
+    <span class="icon icon-info-sign"></span>
+    {gt text="Theme credits"}
+</h3>
 
 {if $themeinfo.system neq 1}
 <div class="text-center">

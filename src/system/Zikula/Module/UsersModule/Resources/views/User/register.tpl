@@ -66,17 +66,17 @@
 <p class="alert alert-warning">{gt text="The items that are marked with an asterisk ('*') are required entries."}</p>
 
 <form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='register'}" method="post">
-    <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+    <fieldset>
+        <legend>{gt text="Choose a user name"}</legend>
+        <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
     <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="new_registration" />
     <input id="{$formData->getFormId()}_registration_info" type="hidden" name="registration_info" value="1" />
     <input id="{$formData->getFormId()}_authentication_method" type="hidden" name="authentication_method_ser" value="{$authentication_method|@serialize|safetext}" />
     <input id="{$formData->getFormId()}_authentication_info" type="hidden" name="authentication_info_ser" value="{$authentication_info|@serialize|safetext}" />
 {capture name='uname'}
-    <fieldset>
-        <legend>{gt text="Choose a user name"}</legend>
         <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='uname'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="User name"}<span class="required"></span></label>
             {assign var='fieldName' value='uname'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
@@ -96,7 +96,7 @@
         <legend>{gt text="Set a password"}</legend>
         <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='pass'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password"}<span class="required"></span></label>
             {assign var='fieldName' value='pass'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" type="password" class="form-control" size="25" maxlength="60" />
@@ -107,7 +107,7 @@
         </div>
         <div class="form-group {if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passagain'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your Password for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='passagain'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="password" size="25" maxlength="60" />
@@ -117,7 +117,7 @@
         {assign var='modvar_password_reminder_mandatory' value='Zikula\Module\UsersModule\Constant::MODVAR_PASSWORD_REMINDER_MANDATORY'|const}
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='passreminder'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="z-form-mandatory-flag">*</span>{/if}</label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Password reminder"}{if $modvars.ZikulaUsersModule.$modvar_password_reminder_mandatory}<span class="required"></span>{/if}</label>
             {assign var='fieldName' value='passreminder'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="128" value="{$formData->getFieldData($fieldName)|safetext}" />
@@ -138,7 +138,7 @@
         <legend>{gt text="Enter your e-mail address"}</legend>
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='email'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="E-mail address"}<span class="required"></span></label>
             {assign var='fieldName' value='email'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
@@ -151,7 +151,7 @@
         </div>
         <div class="form-group{if isset ($fieldName) &&  isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='emailagain'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text="Repeat your E-mail address for verification"}<span class="required"></span></label>
             {assign var='fieldName' value='emailagain'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}" class="form-control" type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
@@ -193,7 +193,7 @@
         <legend>{gt text="Answer the security question"}</legend>
         <div class="form-group">
             {assign var='fieldName' value='antispamanswer'}
-            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{$modvars.ZikulaUsersModule.reg_question|safehtml}<span class="required"></span></label>
             {assign var='fieldName' value='antispamanswer'}
             <div class="col-lg-9">
                 <input id="{$formData->getFieldId($fieldName)}" name="{$fieldName}"{if isset($errorFields.$fieldName)} class="has-error"{/if} type="text" size="25" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />

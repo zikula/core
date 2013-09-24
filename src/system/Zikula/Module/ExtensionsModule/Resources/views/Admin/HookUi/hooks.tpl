@@ -49,10 +49,10 @@
 {/pageaddvarblock}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type='hook' size='small'}
-    <h3>{gt text='Hooks'}</h3>
-</div>
+    {gt text='Hooks'}
+</h3>
 
 {if $isSubscriber and $isProvider and !empty($providerAreas) and $total_available_subscriber_areas gt 0}
 <ul id="hooks_tabs" class="z-tabs">

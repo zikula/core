@@ -1,20 +1,11 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-
 {gt text="Extension database" assign=extdbtitle}
 {assign value="<strong><a href=\"https://github.com/zikula-modules\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Themes list"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Themes list"}
+</h3>
 
 <p class="alert alert-info">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
@@ -49,7 +40,7 @@
                     <span title="#title_{$theme.name}" class="tooltips marktooltip">{$theme.displayname|safetext}</span>
                     {if !$theme.structure}</strike>{/if}
                 </a>
-                {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips z-form-mandatory-flag">*</span>{/if}
+                {if $theme.displayname|strtolower eq $currenttheme|strtolower}<span title="{gt text="Default theme"}" class="tooltips required"></span>{/if}
                 <div id="title_{$theme.name}" class="theme_preview text-center" style="display: none;">
                     <h4>{$theme.displayname}</h4>
                     {if $themeinfo.system neq 1}
@@ -86,6 +77,6 @@
     </tbody>
 </table>
 
-<em><span class="z-form-mandatory-flag">*</span> = {gt text="Default theme"}</em>
+<em><span class="required"></span> = {gt text="Default theme"}</em>
 {pager rowcount=$pager.numitems limit=$pager.itemsperpage posvar='startnum'}
 {adminfooter}

@@ -17,25 +17,24 @@
                 
                 <div>
                     {* movable icon *}
-                    <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move admintabs-lock"></span> 
-                    
-                    {* module title *}
-                    <a title="{$adminlink.menutexttitle}" href="{$adminlink.menutexturl|safetext}">{$adminlink.menutext|safetext}</a>
+                    <div class="dropdown" style="text-align:left">
+                        <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move admintabs-lock"></span> 
 
-                    {assign var="modlinks" value=false}
-                    {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
-                    {if $modlinks}
-                    <span class="dropdown">
+                        {* module title *}
+                        <a title="{$adminlink.menutexttitle|safetext}" href="{$adminlink.menutexturl|safehtml}">{$adminlink.menutext|safetext}</a>
+
+                        {assign var="modlinks" value=false}
+                        {modapifunc modname=$adminlink.modname type="admin" func="getlinks" assign="modlinks"}
+                        {if $modlinks}
                         <a class="dropdown-toggle caret" data-toggle="dropdown" href="#" title="{gt text="Functions"}"></a>
                         <ul class="dropdown-menu" role="menu">
                         {foreach from=$modlinks item="item"}
-                            <li><a role="menuitem" href="{$item.url}">{$item.text}</a></li>
+                            <li><a role="menuitem" href="{$item.url|safehtml}">{$item.text}</a></li>
                         {/foreach}
                         </ul>
-                    </span>   
-                        
-                    {/if}
-                    {* module description *}
+                        {/if}
+                        {* module description *}
+                    </div>
                     <p>
                         {$adminlink.menutexttitle|safetext}
                     </p>

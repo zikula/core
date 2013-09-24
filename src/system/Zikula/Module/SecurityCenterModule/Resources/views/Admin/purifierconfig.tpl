@@ -2,10 +2,10 @@
 {pageaddvar name='javascript' value=$configFormJS.scriptfile}
 {adminheader}
 
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="options" size="small"}
-    <h3>{gt text='HTMLPurifier Settings'}</h3>
-</div>
+    {gt text='HTMLPurifier Settings'}
+</h3>
 
 <p class="alert alert-info">{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
 
@@ -16,7 +16,10 @@
 </div>
 
 <form class="form-horizontal" action="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+    <div>
+        <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+    </div>
+
     {foreach from=$purifierAllowed key='directiveNamespace' item='directives' name='directives'}
     <fieldset>
         {assign var='namespaceFrag' value=$directiveNamespace|urlencode}

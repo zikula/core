@@ -1,20 +1,11 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-
 {gt text="Extensions database" assign=extdbtitle}
 {assign value="<strong><a href=\"http://go.zikula.org/inappstore\">`$extdbtitle`</a></strong>" var=extdblink}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Modules list"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Modules list"}
+</h3>
 
 <p class="alert alert-info">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 

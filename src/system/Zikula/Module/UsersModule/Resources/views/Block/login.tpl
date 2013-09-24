@@ -17,14 +17,16 @@
         {img modname='core' set='ajax' src='indicator_circle.gif'}
     </div>
     <form id="users_loginblock_login_form" class="form-horizontal{if !$show_login_form} hide{/if}" action="{modurl modname="Users" type="user" func="login"}" method="post">
-        <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage}" />
-        <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-        <input id="users_login_event_type" type="hidden" name="event_type" value="login_block" />
-        <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:'false'}{/if}" />
-        <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|default:'false'}{/if}" />
-        {if ($modvars.ZConfig.seclevel|lower == 'high')}
-        <input id="users_loginblock_rememberme" type="hidden" name="rememberme" value="0" />
-        {/if}
+        <div>
+            <input type="hidden" id="users_loginblock_returnpage" name="returnpage" value="{$returnpage}" />
+            <input type="hidden" id="users_loginblock_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
+            <input id="users_login_event_type" type="hidden" name="event_type" value="login_block" />
+            <input type="hidden" id="users_loginblock_selected_authentication_module" name="authentication_method[modname]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.modname|default:'false'}{/if}" />
+            <input type="hidden" id="users_loginblock_selected_authentication_method" name="authentication_method[method]" value="{if isset($selected_authentication_method) && $selected_authentication_method}{$selected_authentication_method.method|default:'false'}{/if}" />
+            {if ($modvars.ZConfig.seclevel|lower == 'high')}
+            <input id="users_loginblock_rememberme" type="hidden" name="rememberme" value="0" />
+            {/if}
+        </div>
         <div id="users_loginblock_fields">
         {if !empty($login_form_fields)}
             {$login_form_fields}

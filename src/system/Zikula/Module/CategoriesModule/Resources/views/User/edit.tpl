@@ -12,9 +12,9 @@
 
 <ul class="navbar navbar-default">
     {if ($referer)}
-    <li><a class="smallicon smallicon-view" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="icon icon-eye-open" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
-    <li><a class="smallicon smallicon-regenerate" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
+    <li><a class="icon icon-refresh" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>
 
 {insert name="getstatusmsg"}
@@ -41,7 +41,7 @@
             <input type="hidden" name="category[ipath]"           value="{$category.ipath|safetext}" />
             {/if}
             <div class="form-group">
-                <label class="col-lg-3 control-label" for="category_name">{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
+                <label class="col-lg-3 control-label" for="category_name">{gt text="Name"}<span class="required"></span></label>
                 <div class="col-lg-9">
                 {array_field assign='catName' array='category' field='name'}
                 <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" class="form-control" size="32" maxlength="255" />
@@ -65,7 +65,7 @@
         <fieldset>
             <legend>{gt text="Localised output"}</legend>
             <div class="form-group">
-                <label class="col-lg-3 control-label">{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
+                <label class="col-lg-3 control-label">{gt text="Name"}<span class="required"></span></label>
                 <div class="col-lg-9">
                 {array_field assign='displayNames' array='category' field='display_name'}
                 {if ($displayNames || !$catID)}

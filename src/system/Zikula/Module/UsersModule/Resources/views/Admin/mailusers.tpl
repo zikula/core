@@ -16,10 +16,10 @@
 {/strip}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="mail" size="small"}
-    <h3>{gt text="E-mail Users"}</h3>
-</div>
+    {gt text="E-mail Users"}
+</h3>
 
 <form id="users_mailusers" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="mailUsers"}">
     <div>
@@ -41,7 +41,7 @@
                     </thead>
                     <tbody>
                         {section name=item loop=$items}
-                        <tr class="{cycle values='z-odd,z-even'}">
+                        <tr>
                             <td>{if ($items[item].uid != 1)}<input type="checkbox" name="userid[]" value="{$items[item].uid}" />{/if}</td>
                             <td>{$items[item].uname}</td>
                             {if $modvars.ZConfig.profilemodule}
@@ -112,10 +112,12 @@
 
             {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=null}
 
-            <div class="z-formbuttons z-buttons">
-                {button type='submit' src='mail_generic.png' set='icons/extrasmall' __alt="Send e-mail to selected recipients" __title="Send e-mail to selected recipients" __text="Send e-mail to selected recipients"}
-                <a href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-            </div>
+            <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                    {button type='submit' src='mail_generic.png' set='icons/extrasmall' __alt="Send e-mail to selected recipients" __title="Send e-mail to selected recipients" __text="Send e-mail to selected recipients"}
+                    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                </div>
+        </div>
         </div>
     </div>
 </form>
