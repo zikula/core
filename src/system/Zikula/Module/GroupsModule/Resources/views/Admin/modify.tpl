@@ -6,9 +6,10 @@
 </h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
-    <input type="hidden" name="gid" value="{$item.gid}" />
     <fieldset>
+        <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+        <input type="hidden" name="gid" value="{$item.gid}" />
+        
         <div class="form-group">
             <label class="col-lg-3 control-label" for="groups_name">{gt text="Name"}</label>
             <div class="col-lg-9">

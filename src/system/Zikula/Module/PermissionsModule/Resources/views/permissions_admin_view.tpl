@@ -41,8 +41,8 @@
 
 {if $enablefilter eq true}
 <form class="form-inline" role="form" id="permgroupfilterform" action="{modurl modname=Permissions type=admin func=view}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
     <fieldset>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
         <legend>{gt text="Filter permission rules list"}</legend>
         <span class="nowrap">
             <label for="permgrp">{gt text="Choose filter"}</label>

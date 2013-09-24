@@ -32,10 +32,10 @@
 </div>
 
 <form id="users_user_changepassword" class="form-horizontal" role="form" action="{modurl modname="Users" type="user" func="updatePassword"}" method="post">
-    <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" id="usernamehidden" name="usernamehidden" value="{if $login}{$user_obj.uname}{else}{user}{/if}" />
     <fieldset>
         <legend>{gt text="Change password"}</legend>
+        <input type="hidden" id="changepassword_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
+    <input type="hidden" id="usernamehidden" name="usernamehidden" value="{if $login}{$user_obj.uname}{else}{user}{/if}" />
         <div class="form-group">
             <label class="col-lg-3 control-label" for="oldpassword">{gt text="Current password"}</label>
             <div class="col-lg-9">

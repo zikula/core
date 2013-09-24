@@ -6,11 +6,10 @@
 
 <p class="alert alert-warning">{gt text="Do you really want to delete this theme?"}</p>
 <form class="form-horizontal" role="form" action="{modurl modname=Theme type=admin func=delete themename=$name|safetext}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" name="confirmation" value="1" />
-
     <fieldset>
         <legend>{gt text="Confirmation prompt"}</legend>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="confirmation" value="1" />
         <div class="form-group">
             <label class="col-lg-3 control-label" for="deletefiles">{gt text="Also delete theme files, if possible"}</label>
             <div class="col-lg-9">

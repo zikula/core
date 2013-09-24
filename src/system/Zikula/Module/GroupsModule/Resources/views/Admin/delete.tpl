@@ -9,10 +9,12 @@
 </p>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="delete" gid=$item.gid}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
-    <input type="hidden" name="confirmation" value="1" />
     <fieldset>
         <legend>{gt text="Confirmation prompt"}</legend>
+        
+        <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+        <input type="hidden" name="confirmation" value="1" />
+        
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 <button class="btn btn-success" title="{gt text='Delete'}">

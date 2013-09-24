@@ -5,8 +5,8 @@
 </h3>
 
 <form id="gg" class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
     <fieldset>
+        <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />
         <div class="form-group">
             <label class="col-lg-3 control-label required" for="group_name">{gt text="Name"}</label>
             <div class="col-lg-9">

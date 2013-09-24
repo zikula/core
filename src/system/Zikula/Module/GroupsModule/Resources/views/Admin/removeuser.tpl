@@ -9,10 +9,9 @@
 </p>
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaGroupsModule' type='admin' func='removeuser' gid=$gid|safetext uid=$uid|safetext}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" name="confirmation" value="1" />
-
     <fieldset>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="confirmation" value="1" />
         <legend>{gt text='Confirmation prompt'}</legend>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">

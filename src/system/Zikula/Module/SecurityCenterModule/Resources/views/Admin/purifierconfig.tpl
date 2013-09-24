@@ -16,7 +16,10 @@
 </div>
 
 <form class="form-horizontal" action="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='updatepurifierconfig'}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+    <div>
+        <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
+    </div>
+
     {foreach from=$purifierAllowed key='directiveNamespace' item='directives' name='directives'}
     <fieldset>
         {assign var='namespaceFrag' value=$directiveNamespace|urlencode}

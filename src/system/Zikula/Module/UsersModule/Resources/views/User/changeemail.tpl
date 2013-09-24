@@ -7,9 +7,9 @@
 </p>
 
 <form id="changeemail" class="form-horizontal" role="form" action="{modurl modname="Users" type="user" func="updateemail"}" method="post">
-    <input type="hidden" id="changeemailcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
     <fieldset>
         <legend>{gt text="Update e-mail address"}</legend>
+        <input type="hidden" id="changeemailcsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="form-group">
             <label class="col-lg-3 control-label" for="users_newemail">{gt text="New e-mail address"}</label>
             <div class="col-lg-9">

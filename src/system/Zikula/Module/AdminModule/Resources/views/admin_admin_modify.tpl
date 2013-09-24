@@ -5,10 +5,12 @@
 </h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" name="category[cid]" value="{$category.cid|safetext}" />
     <fieldset>
         <legend>{gt text="Module category"}</legend>
+
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="category[cid]" value="{$category.cid|safetext}" />
+        
         <div class="form-group">
             <label class="col-lg-3 control-label" for="admin_name">{gt text="Name"}</label>
             <div class="col-lg-9">

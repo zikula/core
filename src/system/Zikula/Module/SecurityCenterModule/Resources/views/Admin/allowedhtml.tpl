@@ -8,9 +8,9 @@
 
 <p class="alert alert-info">{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
 <form class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="updateallowedhtml"}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
     <fieldset>
         <legend>{gt text="HTML entities"}</legend>
+        <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />
         <div class="form-group" id="securitycenter_htmlentities">
             <div class="col-lg-12">
                 <label>{gt text="Translate embedded HTML entities into real characters"}</label>

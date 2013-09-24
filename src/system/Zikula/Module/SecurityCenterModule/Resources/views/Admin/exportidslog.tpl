@@ -14,8 +14,8 @@
 </ul>
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaSecurityCenterModule' type='admin' func='exportidslog'}" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="confirmed" value="1" />
     <fieldset>
+        <input type="hidden" name="confirmed" value="1" />
         <legend>{gt text="Export Options"}</legend>
         <div class="form-group">
             <label class="col-lg-3 control-label" for="securitycenter_export_titles">{gt text="Export Title Row"}</label>

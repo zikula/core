@@ -77,12 +77,12 @@
 <div class="alert alert-info">{gt text='You are editing your own record, therefore you are not permitted to change your membership in certain system groups, and you are not permitted to change your activated state. These fields are disabled below.'}</div>
 {/if}
 <form id="{$formData->getFormId()}" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='modify'}" method="post">
-    <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_user" />
-    {assign var='fieldName' value='uid'}
-    <input id="{$formData->getFieldId($fieldName)}" type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)|safetext}" />
     <fieldset>
         <legend>{gt text='Account information'}</legend>
+        <input id="{$formData->getFormId()}_csrftoken" type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input id="{$formData->getFormId()}_event_type" type="hidden" name="event_type" value="modify_user" />
+        {assign var='fieldName' value='uid'}
+        <input id="{$formData->getFieldId($fieldName)}" type="hidden" name="{$fieldName}" value="{$formData->getFieldData($fieldName)|safetext}" />
         <div class="form-group">
             {assign var='fieldName' value='uname'}
             <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
