@@ -192,12 +192,20 @@ function smarty_function_pagerabc($params, Zikula_View $view)
 
     $style = '';
     if ($params['printempty']) {
-        if (!empty($params['class_num'])) {
-            $style = 'class="'.$params['class_num'].'"';
+        $active = '';
+        if (!empty($params['class_numon'])) {
+            if (!isset($allVars[$pager['posvar']])) {
+                $style = ' class="'.$params['class_numon'].'"';
+                $active = 'class="active"';
+            } elseif (!empty($params['class_num'])) {
+                $style = ' class="'.$params['class_num'].'"';
+            } else {
+                $style = '';
+            }
         }
         $vars[$pager['posvar']] = '';
         $urltemp = DataUtil::formatForDisplay(ModUtil::url($pager['module'], $pager['type'], $pager['func'], $pager['args']));
-        $output .= '<a '.$tmp.' href="'.$urltemp.'"> -'."\n</a>";
+        $output .= '<li '.$active.'><a '.$style.' href="'.$urltemp.'"> -'."\n</a></li>";
     }
     
     $style = '';
