@@ -1,12 +1,3 @@
-
-#theme_modifymenu.minitabs {
-    padding-left: 10px !important;
-    width: auto !important;
-}
-#theme_modifymenu.minitabs+h4 {
-    margin-top: 0.7em;
-}
-
 .theme_preview {
     background-color: #FAFAFA; /*non-CSS3 browsers*/
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#f2f2f2'); /* for IE */
@@ -75,7 +66,7 @@ img.theme_colorpicker_image {
     margin-left: 5px;
 }
 
-.z-indented {
+.zikulathememodule-indented {
     margin-left: 2.5em;
 }
 
