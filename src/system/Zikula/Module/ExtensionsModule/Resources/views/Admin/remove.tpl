@@ -1,21 +1,23 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}
+</h3>
 
 <p class="alert alert-warning">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" name="confirmation" value="1" />
-    <input type="hidden" name="id" value="{$id|safetext}" />
-    <input type="hidden" name="startnum" value="{$startnum}" />
-    <input type="hidden" name="letter" value="{$letter}" />
-    <input type="hidden" name="state" value="{$state}" />
     <fieldset>
         <legend>{gt text="Do you really want to uninstall this module?"}</legend>
         {if $hasBlocks gt 0}
+            
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="confirmation" value="1" />
+        <input type="hidden" name="id" value="{$id|safetext}" />
+        <input type="hidden" name="startnum" value="{$startnum}" />
+        <input type="hidden" name="letter" value="{$letter}" />
+        <input type="hidden" name="state" value="{$state}" />
+            
         <div class="form-group">
             <p class="alert alert-warning">{gt text="Warning! This module still has %s active block. Removing this module will also permanently remove this block." plural="Warning! This module still has %s active blocks. Removing this module will also permanently remove these blocks." count=$hasBlocks tag1=$hasBlocks}</p>
         </div>

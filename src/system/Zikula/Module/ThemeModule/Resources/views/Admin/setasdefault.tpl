@@ -1,15 +1,17 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Theme confirmation prompt"}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Theme confirmation prompt"}
+</h3>
 
-<p class="alert alert-warning">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename|safetext}</p>
+<p class="alert alert-warning">
+    {gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename|safetext}
+</p>
 <form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="setasdefault" themename=$themename|safetext}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" name="confirmation" value="1" />
     <fieldset>
         <legend>{gt text="Confirmation prompt"}</legend>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="confirmation" value="1" />
         {if $theme_change}
         <div class="form-group">
             <label class="col-lg-3 control-label" for="themeswitcher_theme_change">

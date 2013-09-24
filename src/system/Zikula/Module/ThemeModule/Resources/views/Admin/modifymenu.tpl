@@ -1,7 +1,7 @@
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Edit theme"} {$themeinfo.displayname}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Edit theme"} {$themeinfo.displayname}
+</h3>
 {if $themeinfo.type eq 3}
 <ul class="nav nav-tabs nav-tabs-admin">
     <li {if $func eq 'modify'}class="active"{/if}>

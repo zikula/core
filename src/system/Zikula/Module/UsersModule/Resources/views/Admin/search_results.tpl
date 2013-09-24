@@ -20,10 +20,10 @@
 {/strip}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Search results"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Search results"}
+</h3>
 
 <form id="users_searchresults" class="form-horizontal" role="form" method="post" action="{modurl modname="Users" type="admin" func="deleteUsers"}">
     <div>
@@ -44,7 +44,7 @@
             </thead>
             <tbody>
                 {section name=item loop=$items}
-                <tr class="{cycle values='z-odd,z-even'}">
+                <tr>
                     {if $deleteUsers}
                     <td>{if ($items[item].uid != 1) && ($items[item].uid != 2)}<input type="checkbox" name="userid[]" value="{$items[item].uid}" />{/if}</td>
                     {/if}
@@ -72,11 +72,13 @@
         </p>
         {/if}
 
-        <div class="z-formbuttons z-buttons">
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
             {if $deleteUsers}
-            {button type='submit' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
+                {button type='submit' src='14_layer_deletelayer.png' set='icons/extrasmall' __alt="Delete selected users" __title="Delete selected users" __text="Delete selected users"}
             {/if}
-            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to User Administration" __title="Return to User Administration"} {gt text='Return to User Administration'}</a>
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Return to User Administration'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to User Administration" __title="Return to User Administration"} {gt text='Return to User Administration'}</a>
+            </div>
         </div>
     </div>
 </form>

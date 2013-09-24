@@ -1,10 +1,10 @@
 {ajaxheader filename='categories_admin_view.js' ui=true}
 {pageaddvar name='javascript' value='system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_edit.js'}
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type='view' size='small'}
-    <h3>{gt text='Categories list'}</h3>
-</div>
+    {gt text='Categories list'}
+</h3>
 
 <p class="alert alert-info">{gt text='You can arrange categories list using drag and drop - just grab page or folder icon and drag it to the new position. New order will be saved automatically.<br />Right click on selected category to open context menu.'}</p>
 

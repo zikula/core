@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="display" size="small"}
-    <h3>{gt text='Registration for \'%1$s\'' tag1=$reginfo.uname}</h3>
-</div>
+    {gt text='Registration for \'%1$s\'' tag1=$reginfo.uname}
+</h3>
 
 {include file='Admin/includeregistration.tpl'}
 

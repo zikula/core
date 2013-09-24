@@ -1,11 +1,10 @@
 {adminheader}
-{ajaxheader modname=Theme filename=theme_admin_modifyconfig.js noscriptaculous=true effects=true}
-{pageaddvar name='javascript' value='jquery'}
+{pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/theme_admin_modifyconfig.js'}
 
-<div class="z-admin-content-pagetitle">
-    {icon type="config" size="small"}
-    <h3>{gt text="Settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {gt text="Settings"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

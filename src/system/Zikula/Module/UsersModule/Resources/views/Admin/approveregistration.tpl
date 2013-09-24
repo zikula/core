@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="add" size="small"}
-    <h3>{gt text='Approve registration of \'%1$s\'' tag1=$reginfo.uname}</h3>
-</div>
+    {gt text='Approve registration of \'%1$s\'' tag1=$reginfo.uname}
+</h3>
 
 {if !$reginfo.isverified}
 {if $force}
@@ -21,7 +21,8 @@
         <input type="hidden" id="users_force" name="force" value="{$force}" />
         <input type="hidden" id="users_restoreview" name="restoreview" value="{$restoreview}" />
         <input type="hidden" id="users_confirmed" name="confirmed" value="true" />
-        <div class="z-formbuttons z-buttons">
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
             {strip}
             {if !$reginfo.isverified && $force}
             {gt text='Skip Verification' assign='actionTitle'}
@@ -29,8 +30,9 @@
             {gt text='Approve' assign='actionTitle'}
             {/if}
             {/strip}
-            {button id='confirm' type='submit' src='button_ok.png' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
-            <a href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+                {button id='confirm' type='submit' src='button_ok.png' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
+                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            </div>
         </div>
     </div>
 </form>

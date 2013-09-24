@@ -1,7 +1,7 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    <h3>{$title|safetext}</h3>
-</div>
+<h3>
+    {$title|safetext}
+</h3>
 <table class="table table-bordered table-striped">
     <thead>
         <tr>

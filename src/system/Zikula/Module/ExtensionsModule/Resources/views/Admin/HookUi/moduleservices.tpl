@@ -1,15 +1,15 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="hook" size="small"}
-    <h3>{gt text='Module Services'}</h3>
-</div>
+    {gt text='Module Services'}
+</h3>
 
 <p class="alert alert-info">{gt text='Module Services are functions provided by the core or other modules for this module.'}</p>
 
 {if count($sublinks) > 0}
 <ul style='list-style: none'>
     {foreach from=$sublinks item='sublink'}
-    <li><a href='{$sublink.url|safetext}' class='smallicon smallicon-gears'>{$sublink.text|safetext}</a></li>
+    <li><a href='{$sublink.url|safetext}' class='icon icon-cog'>{$sublink.text|safetext}</a></li>
     {/foreach}
 </ul>
 {else}

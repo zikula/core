@@ -1,16 +1,16 @@
 {ajaxheader modname='ZikulaCategoriesModule' filename='categories_admin_edit.js'}
 {adminheader}
 {if $mode == "edit"}
-    <div id="top" class="z-admin-content-pagetitle">
-        {icon type="edit" size="small"}
-        <h3>{gt text="Edit category"}</h3>
-    </div>
+    <h3>
+        <span class="icon icon-pencil"></span>
+        {gt text="Edit category"}
+    </h3>
     <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
 {else}
-    <div id="top" class="z-admin-content-pagetitle">
-        {icon type="new" size="small"}
-        <h3>{gt text="Create new category"}</h3>
-    </div>
+    <h3>
+        <span class="icon icon-plus"></span>
+        {gt text="Create new category"}
+    </h3>
     <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">
 {/if}
     <fieldset>
@@ -21,7 +21,7 @@
         {/if}
         <legend>{gt text="General settings"}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label" for="category_name">{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label" for="category_name">{gt text="Name"}<span class="required"></span></label>
             <div class="col-lg-9">
                 {array_field assign='catName' array='category' field='name'}
                 <input id="category_name" name="category[name]" value="{$catName|safetext}" type="text" class="form-control" size="32" maxlength="255" />
@@ -71,7 +71,7 @@
     <fieldset>
         <legend>{gt text="Localised output"}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{gt text="Name"}<span class="z-form-mandatory-flag">*</span></label>
+            <label class="col-lg-3 control-label">{gt text="Name"}<span class="required"></span></label>
             <div class="col-lg-9">
                 {array_field assign='displayNames' array='category' field='display_name'}
                 {foreach item=language from=$languages}

@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="export" size="small"}
-    <h3>{gt text='Export users'}</h3>
-</div>
+    {gt text='Export users'}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='exporter'}" method="post" enctype="multipart/form-data">
     <div>
@@ -62,9 +62,11 @@
                 </div>
             </div>
         </fieldset>
-        <div class="z-formbuttons z-buttons">
-            {button src='button_ok.png' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
-            <a href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+            </div>
         </div>
     </div>
 </form>

@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="config" size="small"}
-    <h3>{gt text="Main settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {gt text="Main settings"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaSettingsModule" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
@@ -167,7 +167,7 @@
                 <div class="col-lg-9">
                     <input id="settings_permasearch" class="form-control" type="text" name="settings[permasearch]" value="{$modvars.ZConfig.permasearch}" size="60" /><br />
                     <label for="settings_permasearch_default">{gt text="Default"}</label>
-                    <input id="settings_permasearch_default" type="text" class="form-control z-form-readonly" readonly="readonly" value="{gt text="À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü"}" />
+                    <input id="settings_permasearch_default" type="text" class="form-control" readonly="readonly" value="{gt text="À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü"}" />
                 </div>
             </div>
             <div class="form-group">
@@ -175,7 +175,7 @@
                 <div class="col-lg-9">
                     <input id="settings_permareplace" class="form-control" type="text" name="settings[permareplace]" value="{$modvars.ZConfig.permareplace}" size="60" /><br />
                     <label for="settings_permareplace_default">{gt text="Default"}</label>
-                    <input id="settings_permareplace_default" type="text" class="form-control z-form-readonly" readonly="readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue"}" />
+                    <input id="settings_permareplace_default" type="text" class="form-control" readonly="readonly" value="{gt text="A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue"}" />
                 </div>
             </div>
         </fieldset>

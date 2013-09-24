@@ -44,6 +44,9 @@ class Bootstrapify
                 $filename = realpath($name);
                 $content = file_get_contents($filename);
                 $original = $content;
+                
+                $content = preg_replace_callback("/<div class=\"z-admin-content-pagetitle\">(.*?)<\/div>/si", array($this, 'cb'), $content);
+                
                 $content = str_replace('z-informationmsg', 'alert alert-info', $content);
                 $content = str_replace('z-errormsg', 'alert alert-danger', $content);
                 $content = str_replace('z-statusmsg', 'alert alert-success', $content);
@@ -91,8 +94,9 @@ class Bootstrapify
                 $content = preg_replace_callback("/<div id=\"(([A-Za-z]|_)*?)\">\\n( *?)<div class=\"form-group\">/si", array($this, 'formCallback3'), $content);
                 $content = preg_replace_callback("/<\/div>\\n( *?)<div class=\"form-group\">/si", array($this, 'formCallback4'), $content);
                 $content = preg_replace_callback("/<form class=\"form(.*?)<\/form>/si", array($this, 'formCallback5'), $content);
-                */
-                $content = preg_replace_callback("/<div class=\"z-buttons z-formbuttons\">(.*?)<\/div>/si", array($this, 'formCallback6'), $content);
+                
+                $content = preg_replace_callback("/<div class=\"z-buttons z-formbuttons\">(.*?)<\/div>/si", array($this, 'formCallback6'), $content);*/
+                $content = preg_replace_callback("/<div class=\"z-formbuttons z-buttons\">(.*?)<\/div>/si", array($this, 'formCallback6'), $content);
 
                 if ($original !== $content) {
                     file_put_contents($filename, $content);
@@ -104,6 +108,15 @@ class Bootstrapify
     }
     
 
+    function cb($matches)
+    {
+        $content = $matches[1];
+        $content = str_replace('<h3>', '', $content);
+        $content = str_replace('</h3>', '', $content);
+        return '<h3>'.$content.'</h3>';
+
+    }
+    
     /**
      * Form replace callback function
      *

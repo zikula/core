@@ -5,8 +5,8 @@
 <p class="alert alert-info">{gt text="Please enter your e-mail address below and click the 'Submit' button. You will be sent an e-mail with your account information."}</p>
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='user' func='lostUname'}" method="post">
-    <input type="hidden" id="lostunamecsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
     <fieldset>
+        <input type="hidden" id="lostunamecsrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <div class="form-group">
             <label class="col-lg-3 control-label" for="users_email">{gt text='E-mail address'}</label>
             <div class="col-lg-9">

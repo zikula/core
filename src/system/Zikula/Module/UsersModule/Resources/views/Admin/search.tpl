@@ -5,10 +5,10 @@
 {/if}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {if ($callbackFunc == 'composeMail')}{icon type='mail' size='small'}{/if}{icon type='search' size='small'}
-    <h3>{$templatetitle}</h3>
-</div>
+    {$templatetitle}
+</h3>
 
 <form id="users_search" class="form-horizontal" role="form" method="post" action="{modurl modname='ZikulaUsersModule' type='admin' func=$callbackFunc|default:'search'}">
     <div>

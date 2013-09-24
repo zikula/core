@@ -2,10 +2,10 @@
 
 {adminheader}
 {include file="permissions_admin_header.tpl"}
-<div class="z-admin-content-pagetitle">
-    {icon type="config" size="small"}
-    <h3>{$templatetitle}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {$templatetitle}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Permissions" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

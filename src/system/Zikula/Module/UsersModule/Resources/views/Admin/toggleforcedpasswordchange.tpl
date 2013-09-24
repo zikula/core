@@ -6,10 +6,10 @@
 {gt text='Force a change of password for %1$s' tag1=$user_obj.uname|safetext assign='templatetitle'}
 {/if}
 
-<div class="z-admin-content-pagetitle">
+<h3>
     {img modname='core' set='icons/small' src='password_expire.png' alt=$templatetitle}
-    <h3>{$templatetitle}</h3>
-</div>
+    {$templatetitle}
+</h3>
 
 {if $user_must_change_password}
 <p class="alert alert-warning">{gt text='Do you want to cancel the forced password change for %1$s?' tag1=$user_obj.uname|safetext}</p>
@@ -18,11 +18,11 @@
 {/if}
 
 <form class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange'}" method="post" enctype="application/x-www-form-urlencoded">
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
-    <input type="hidden" name="userid" value="{$user_obj.uid|safetext}" />
-    <input type="hidden" name="user_must_change_password" value="{if $user_must_change_password}0{else}1{/if}" />
     <fieldset>
         <legend>{gt text='Confirmation prompt'}</legend>
+        <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+        <input type="hidden" name="userid" value="{$user_obj.uid|safetext}" />
+        <input type="hidden" name="user_must_change_password" value="{if $user_must_change_password}0{else}1{/if}" />
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                 {if $user_must_change_password}

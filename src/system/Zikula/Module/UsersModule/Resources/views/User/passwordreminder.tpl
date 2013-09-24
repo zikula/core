@@ -14,9 +14,11 @@
             <p class="z-label">{gt text='Password reminder'}</p>
             <div class="z-text bold">{$passreminder}</div>
         </div>
-        <div class="z-formbuttons z-buttons">
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
             <p>{gt text="I remember my password now."}</p>
-            <a href="{modurl modname='ZikulaUsersModule' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+            </div>
         </div>
     </div>
 </div>
@@ -51,9 +53,11 @@
             <p class="z-label">{gt text='Password reminder'}</p>
             <div class="z-text bold">{$passreminder}</div>
         </div>
-        <div class="z-formbuttons z-buttons">
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
             <p>{gt text="I remember my password now."}</p>
-            <a href="{modurl modname='ZikulaUsersModule' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='user' func='login'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='1rightarrow.png' __alt='Go to log-in screen' __title='Go to log-in screen'} {gt text="Go to log-in screen"}</a>
+            </div>
         </div>
     </div>
 </div>
@@ -96,10 +100,12 @@
                 <div class="sub help-block">{gt text="Enter a word or a phrase that will remind you of your password."}</div>
                 <div class="help-block alert alert-info">{gt text="Notice: Do not use a word or phrase that will allow others to guess your password! Do not include your password or any part of your password here!"}</div>
             </div>
-            <div class="z-formbuttons z-buttons">
-                {button src='button_ok.png' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
-                <a href="{homepage|safetext}" title="{gt text='Cancel'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='button_cancel.png' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
-            </div>
+            <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                    {button src='button_ok.png' set='icons/extrasmall' __alt='Submit' __title='Submit' __text='Submit'}
+                    <a class="btn btn-default" href="{homepage|safetext}" title="{gt text='Cancel'}">{img id='users_cancel' modname='core' set='icons/extrasmall' src='button_cancel.png' __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                </div>
+        </div>
         </div>
         </fieldset>
     </div>

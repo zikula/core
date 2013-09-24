@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="mail" size="small"}
-    <h3>{gt text="Test current settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-envelope"></span>
+    {gt text="Test current settings"}
+</h3>
 
 {form cssClass='form-horizontal'}
 {formvalidationsummary}
@@ -45,7 +45,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label">
                 {gt text="Message Type"}
-                <span class="z-form-mandatory-flag">*</span>
+                <span class="required"></span>
             </label>
             <div id="message_type" class="col-lg-9">
                 {formradiobutton id='mailer_text' dataField='msgtype' value='text' mandatory=true}

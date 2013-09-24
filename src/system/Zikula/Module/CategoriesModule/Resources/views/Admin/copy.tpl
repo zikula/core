@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="copy" size="small"}
-    <h3>{gt text="Copy category"}</h3>
-</div>
+    {gt text="Copy category"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="copy"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="locale" size="small"}
-    <h3>{gt text="Localisation settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-globe"></span>
+    {gt text="Localisation settings"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaSettingsModule" type="admin" func="updatemultilingual"}" method="post">
     <div>

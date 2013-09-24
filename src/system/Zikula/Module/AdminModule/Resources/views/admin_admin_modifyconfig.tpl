@@ -1,9 +1,8 @@
-{ajaxheader modname=ZikulaAdminModule filename=admin_admin_modifyconfig.js noscriptaculous=true effects=true}
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="config" size="small"}
-    <h3>{gt text="Settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {gt text="Settings"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
@@ -18,8 +17,8 @@
                     {else}
                     <input id="admin_ignoreinstallercheck" name="modvars[ignoreinstallercheck]" type="checkbox" value="1" />
                     {/if}
-                    <div id="admin_ignoreinstallercheck_warning">
-                        <div class="alert alert-warning">{gt text="Warning! Only enable the above option if this site is isolated from the Internet, otherwise security could be endangered if you omit to remove the Installer script from the site root and are not prompted to do so."}</div>
+                    <div class="alert alert-warning" data-switch="modvars[ignoreinstallercheck]" data-switch-value="1">
+                        {gt text="Warning! Only enable the above option if this site is isolated from the Internet, otherwise security could be endangered if you omit to remove the Installer script from the site root and are not prompted to do so."}
                     </div>
                 </div>
             </div>
