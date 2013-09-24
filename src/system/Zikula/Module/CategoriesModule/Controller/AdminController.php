@@ -22,8 +22,6 @@ use SecurityUtil;
 use CategoryUtil;
 use ZLanguage;
 use StringUtil;
-use Categories_DBObject_Category;
-use DBObject;
 
 class AdminController extends \Zikula_AbstractController
 {
@@ -105,9 +103,8 @@ class AdminController extends \Zikula_AbstractController
                 return LogUtil::registerError($this->__('Error! Cannot determine valid \'cid\' for edit mode in \'ZikulaCategoriesModule_admin_edit\'.'));
             }
 
-            $category = new Categories_DBObject_Category();
-            $editCat = $category->select($cid);
-            if ($editCat == false) {
+            $editCat = CategoryUtil::getCategoryByID($cid);
+            if (!$editCat) {
                 return LogUtil::registerError($this->__('Sorry! No such item found.'), 404);
             }
         } else {
@@ -121,16 +118,22 @@ class AdminController extends \Zikula_AbstractController
             if (isset($_SESSION['newCategory']) && $_SESSION['newCategory']) {
                 $editCat = $_SESSION['newCategory'];
                 unset($_SESSION['newCategory']);
-                $category = new Categories_DBObject_Category(); // need this for validation info
+                $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity; // need this for validation info
             }
-            // if we're back from validation get the object from input
+            // if we're back from validation get the posted data from session
             elseif (FormUtil::getValidationErrors()) {
-                $category = new Categories_DBObject_Category(DBObject::GET_FROM_VALIDATION_FAILED); // need this for validation info
-                $editCat = $category->get();
+                $newCatActionData = \SessionUtil::getVar('newCatActionData');
+                \SessionUtil::delVar('newCatActionData');
+                $editCat = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
+                $editCat = $editCat->toArray();
+                $editCat = array_merge($editCat, $newCatActionData);
+                unset($editCat['path']);
+                unset($editCat['ipath']);
+                $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity; // need this for validation info
             }
-            // someone just pressen 'new' -> populate defaults
+            // someone just pressed 'new' -> populate defaults
             else {
-                $category = new Categories_DBObject_Category(); // need this for validation info
+                $category = new \Zikula\Core\Doctrine\Entity\CategoryEntity;
                 $editCat['sort_value'] = '0';
             }
         }
@@ -167,15 +170,14 @@ class AdminController extends \Zikula_AbstractController
         $attributes = isset($editCat['__ATTRIBUTES__']) ? $editCat['__ATTRIBUTES__'] : array();
 
         $this->view->assign('mode', $mode)
-                ->assign('category', $editCat)
-                ->assign('attributes', $attributes)
-                ->assign('languages', $languages)
-                ->assign('categorySelector', $selector)
-                ->assign('validation', $category->_objValidation);
+                   ->assign('category', $editCat)
+                   ->assign('attributes', $attributes)
+                   ->assign('languages', $languages)
+                   ->assign('categorySelector', $selector);
 
         if ($mode == 'edit') {
             $this->view->assign('haveSubcategories', CategoryUtil::haveDirectSubcategories($cid))
-                    ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories($cid, false, true));
+                       ->assign('haveLeafSubcategories', CategoryUtil::haveDirectSubcategories($cid, false, true));
         }
 
         return $this->response($this->view->fetch('Admin/edit.tpl'));
@@ -189,30 +191,21 @@ class AdminController extends \Zikula_AbstractController
 
         $root_id = $this->request->get('dr', 1);
         $id = $this->request->get('id', 0);
-        $ot = FormUtil::getPassedValue('ot', 'registry');
 
-        $class = "Categories_DBObject_" . ucwords($ot);
-        $arrayClass = "Categories_DBObject_" . ucwords($ot) . 'Array';
+        $obj = new \Zikula\Core\Doctrine\Entity\CategoryRegistryEntity();
 
-        $obj = new $class ();
-        $data = $obj->getDataFromInput();
-        if (!$data) {
-            $data = $obj->getFailedValidationData();
-            if (!$data) {
-                $data = array();
-            }
+        $category_registry = $this->request->query->get('category_registry', null);
+        if ($category_registry) {
+            $obj->merge($category_registry);
+            $obj = $obj->toArray();
         }
 
-        $where = '';
-        $sort = 'modname, property';
-        $objArray = new $arrayClass ();
-        $dataA = $objArray->get($where, $sort);
+        $registries = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity')->findBy(array(), array('modname' => 'ASC', 'property' => 'ASC'));
 
-        $this->view->assign('objectArray', $dataA)
-                   ->assign('newobj', $data)
+        $this->view->assign('objectArray', $registries)
+                   ->assign('newobj', $obj)
                    ->assign('root_id', $root_id)
-                   ->assign('id', $id)
-                   ->assign('validation', $obj->_objValidation);
+                   ->assign('id', $id);
 
         return $this->response($this->view->fetch('Admin/registry_edit.tpl'));
     }
@@ -224,12 +217,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         $id = $this->request->get('id', 0);
-        $ot = FormUtil::getPassedValue('ot', 'registry');
 
-        $class = "Categories_DBObject_" . ucwords($ot);
-
-        $obj = new $class ();
-        $data = $obj->get($id);
+        $obj = $this->entityManager->find('Zikula\Core\Doctrine\Entity\CategoryRegistryEntity', $id);
+        $data = $obj->toArray();
 
         $this->view->assign('data', $data)
                    ->assign('id', $id);
@@ -243,7 +233,7 @@ class AdminController extends \Zikula_AbstractController
     public function newcatAction()
     {
         $_POST['mode'] = 'new';
-
+        $this->request->query->set('mode', 'new');
         return $this->editAction();
     }
 
@@ -260,8 +250,7 @@ class AdminController extends \Zikula_AbstractController
             return LogUtil::registerPermissionError();
         }
 
-        $category = new Categories_DBObject_Category();
-        $category = $category->select($cid);
+        $category = CategoryUtil::getCategoryByID($cid);
         $subCats = CategoryUtil::getSubCategories($cid, false, false);
         $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true, $cid);
         $selector = CategoryUtil::getSelector_Categories($allCats);
