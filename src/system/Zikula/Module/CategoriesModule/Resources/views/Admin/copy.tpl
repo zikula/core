@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="copy" size="small"}
+    <span class="icon icon-copy"></span>
     {gt text="Copy category"}
 </h3>
 

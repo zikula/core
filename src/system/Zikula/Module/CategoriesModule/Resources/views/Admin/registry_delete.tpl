@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type='delete' size='small'}
+    <span class="icon icon-trash"></span>
     {gt text='Delete registry entry'}
 </h3>
 

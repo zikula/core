@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="cut" size="small"}
+    <span class="icon icon-cut"></span>
     {gt text="Move category"}
 </h3>
 

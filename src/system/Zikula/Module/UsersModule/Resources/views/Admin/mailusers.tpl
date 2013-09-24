@@ -17,7 +17,7 @@
 
 {adminheader}
 <h3>
-    {icon type="mail" size="small"}
+    <span class="icon icon-envelope"></span>
     {gt text="E-mail Users"}
 </h3>
 

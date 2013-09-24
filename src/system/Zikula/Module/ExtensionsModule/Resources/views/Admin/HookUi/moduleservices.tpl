@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="hook" size="small"}
+    <span class="icon icon-paper-clip"></span>
     {gt text='Module Services'}
 </h3>
 
