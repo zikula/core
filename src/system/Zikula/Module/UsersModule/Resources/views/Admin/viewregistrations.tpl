@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="user" size="small"}
+    <span class="icon icon-user"></span>
     {gt text="Registration applications list"}
 </h3>
 

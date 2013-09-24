@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="display" size="small"}
+    <span class="icon icon-eye-open"></span>
     {gt text='Registration for \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 

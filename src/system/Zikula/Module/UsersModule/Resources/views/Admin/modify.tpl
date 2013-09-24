@@ -284,7 +284,7 @@
 </form>
 
 <h3>
-    {icon type="utilities" size="small"}
+    <span class="icon icon-cog"></span>
     {gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}
 </h3>
 

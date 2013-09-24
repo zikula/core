@@ -1,6 +1,6 @@
 {adminheader}
 <div id="top" class="z-admin-content-pagetitle">
-    {icon type="cubes" size="small"}
+    <span class="icon icon-archive"></span>
     <h3>{gt text="Category registry"}</h3>
 </div>
 
