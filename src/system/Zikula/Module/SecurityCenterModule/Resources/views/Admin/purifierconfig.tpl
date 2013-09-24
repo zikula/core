@@ -3,7 +3,7 @@
 {adminheader}
 
 <h3>
-    {icon type="options" size="small"}
+    <span class="icon icon-wrench"></span>
     {gt text='HTMLPurifier Settings'}
 </h3>
 

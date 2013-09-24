@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="log" size="small"}
+    <span class="icon icon-archive"></span>
     {gt text="View IDS Log"}
 </h3>
 

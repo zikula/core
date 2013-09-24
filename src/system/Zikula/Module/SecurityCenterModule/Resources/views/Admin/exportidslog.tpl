@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="export" size="small"}
+    <span class="icon icon-download-alt"></span>
     {gt text="Export IDS Log"}
 </h3>
 

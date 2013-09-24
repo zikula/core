@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    {icon type="import" size="small"}
+    <span class="icon icon-upload-alt"></span>
     {gt text='Import users'}
 </h3>
 
