@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="new" size="small"}
-    <h3>{gt text="Create new block"}</h3>
-</div>
+<h3>
+    <span class="icon icon-plus"></span>
+    {gt text="Create new block"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
@@ -24,7 +24,7 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="blocks_blockid">{gt text="Block"}</label>
                 <div class="col-lg-9">
-                    <select class="form-control" id="blocks_blockid" name="block[blockid]"{if $block.blockid eq 'error'} class="z-form-error"{/if}>
+                    <select class="form-control" id="blocks_blockid" name="block[blockid]"{if $block.blockid eq 'error'} class="form-error"{/if}>
                         <option value="" label="{gt text='Choose one'}">{gt text='Choose one'}</option>
                         {html_options options=$blockids selected=$block.blockid|default:''}
                     </select>

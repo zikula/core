@@ -1,10 +1,10 @@
 {pageaddvar name="javascript" value="javascript/ajax/prototype.js"}
 {pageaddvar name="javascript" value="system/Zikula/Module/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtm.js"}
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="options" size="small"}
-    <h3>{gt text="Allowed HTML settings"}</h3>
-</div>
+    {gt text="Allowed HTML settings"}
+</h3>
 
 <p class="alert alert-info">{gt text='Filtering of allowed HTML occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
 <form class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="updateallowedhtml"}" method="post" enctype="application/x-www-form-urlencoded">

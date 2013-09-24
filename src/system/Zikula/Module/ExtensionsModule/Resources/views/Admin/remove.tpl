@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}
+</h3>
 
 <p class="alert alert-warning">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 

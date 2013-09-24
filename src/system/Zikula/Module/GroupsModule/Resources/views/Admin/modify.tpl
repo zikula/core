@@ -1,9 +1,9 @@
 {adminheader}
 
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Edit group"}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Edit group"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="csrftoken" value="{insert name="csrftoken"}" />

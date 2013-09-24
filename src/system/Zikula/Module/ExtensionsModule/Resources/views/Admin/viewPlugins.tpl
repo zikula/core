@@ -1,21 +1,12 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="gears" size="small"}
+<h3>
+    <span class="icon icon-table"></span>
     {if $systemplugins}
-    <h3>{gt text="System plugins"}</h3>
+    {gt text="System plugins"}
     {else}
-    <h3>{gt text="Plugins list"}</h3>
+    {gt text="Plugins list"}
     {/if}
-</div>
+</h3>
 
 <table class="table table-bordered table-striped">
     <thead>

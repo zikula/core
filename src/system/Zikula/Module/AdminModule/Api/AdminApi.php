@@ -363,7 +363,7 @@ class AdminApi extends \Zikula_AbstractApi
             $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'view'), 'text' => $this->__('Module categories list'), 'icon' => 'list');
         }
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADD)) {
-            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'icon' => 'file-alt');
+            $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'newcat'), 'text' => $this->__('Create new module category'), 'icon' => 'plus');
         }
         if (SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             $links[] = array('url' => ModUtil::url('ZikulaAdminModule', 'admin', 'help'), 'text' => $this->__('Help'), 'icon' => 'info');

@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Edit module category"}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Edit module category"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
@@ -12,7 +12,7 @@
         <div class="form-group">
             <label class="col-lg-3 control-label" for="admin_name">{gt text="Name"}</label>
             <div class="col-lg-9">
-                <input id="admin_name" name="category[name]" type="text" class="form-control" size="30" maxlength="50" value="{$category.name|safetext}" />
+                <input id="admin_name" name="category[name]" type="text" class="form-control" size="30" maxlength="50" required value="{$category.name|safetext}" />
             </div>
         </div>
         <div class="form-group">

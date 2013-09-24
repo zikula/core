@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type='delete' size='small'}
-    <h3>{gt text='Remove user from group'}</h3>
-</div>
+    {gt text='Remove user from group'}
+</h3>
 
 <p class="alert alert-warning">
     {gt text='Do you really want to remove user "%1$s" from group "%2$s"?' tag1=$uname tag2=$group.name}

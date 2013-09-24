@@ -1,18 +1,8 @@
-{strip}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe("dom:loaded", function() {
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-{/strip}
-
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="user" size="small"}
-    <h3>{gt text="Registration applications list"}</h3>
-</div>
+    {gt text="Registration applications list"}
+</h3>
 
 {if count($reglist) > 0}
 <table class="table table-bordered table-striped">
@@ -30,7 +20,8 @@
     <tbody>
         {gt assign='titleIfSent' text='Send a new e-mail verification code'}
         {gt assign='titleIfNotSent' text='Send an e-mail verification code'}
-        {foreach from=$reglist item='reginfo' name='reglist'}<tr class="{cycle values='z-odd,z-even'}">
+        {foreach from=$reglist item='reginfo' name='reglist'}
+        <tr>
             <td>{$reginfo.uname|safetext}</td>
             <td>{$reginfo.uid|safetext}</td>
             <td>{$reginfo.user_regdate|safetext}</td>

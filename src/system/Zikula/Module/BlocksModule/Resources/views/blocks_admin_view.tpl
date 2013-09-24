@@ -5,10 +5,10 @@
 
 {adminheader}
 
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Blocks list"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Blocks list"}
+</h3>
 
 <p class="alert alert-info">
     {gt text="This is the list of blocks present in your system, you can use the filter to display only certain blocks. The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages. To manage the display order within site pages, scroll down (or <a href=\"#blockpositions\">click here</a>), then edit a block position. You will be able to arrange the order of display for blocks assigned to that block position."}

@@ -1,10 +1,10 @@
 {* Do not allow editing of primaryadmingroup. For now it is read-only. *}
 {adminheader}
 
-<div class="z-admin-content-pagetitle">
-    {icon type="config" size="small"}
-    <h3>{gt text="Settings"}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {gt text="Settings"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="updateconfig"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

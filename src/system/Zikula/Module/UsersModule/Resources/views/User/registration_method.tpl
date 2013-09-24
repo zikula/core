@@ -56,8 +56,10 @@
         </div>
         </fieldset>
 
-        <div class="z-formbuttons z-buttons">
-            {button src='button_ok.png' set='icons/extrasmall' __alt='Continue registration' __title='Continue registration' __text='Continue registration'}
+        <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-9">
+                {button src='button_ok.png' set='icons/extrasmall' __alt='Continue registration' __title='Continue registration' __text='Continue registration'}
+            </div>
         </div>
     </div>
 </form>

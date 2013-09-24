@@ -1,5 +1,5 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">{icon type="info" size="small"}</div>
+<h3><span class="icon icon-info-sign"></span></h3>
 <h3>{gt text="Incompatible version with the core"} - {modgetinfo modid=$id info=displayname}</h3>
 
 <div>{gt text="The version of this module is incompatible with the version of the core."}</div>

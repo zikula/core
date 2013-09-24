@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="cut" size="small"}
-    <h3>{gt text="Move category"}</h3>
-</div>
+    {gt text="Move category"}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="move"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

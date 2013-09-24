@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text='Delete user account' plural='Delete user accounts' count=$users|@count}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {gt text='Delete user account' plural='Delete user accounts' count=$users|@count}
+</h3>
 
 <p class="alert alert-warning">{gt text='Do you really want to delete this user account?' plural='Do you really want to delete these user accounts?' count=$users|@count}</p>
 

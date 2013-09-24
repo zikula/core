@@ -2,10 +2,10 @@
 {pageaddvar name='javascript' value=$configFormJS.scriptfile}
 {adminheader}
 
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="options" size="small"}
-    <h3>{gt text='HTMLPurifier Settings'}</h3>
-</div>
+    {gt text='HTMLPurifier Settings'}
+</h3>
 
 <p class="alert alert-info">{gt text='HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.'}</p>
 

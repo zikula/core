@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text="Delete"}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {gt text="Delete"}
+</h3>
 
 <p class="alert alert-warning">
     {gt text="Do you really want to delete group '%s'?" tag1=$item.name|safetext}

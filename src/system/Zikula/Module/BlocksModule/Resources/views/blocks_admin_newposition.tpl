@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="new" size="small"}
-    <h3>{gt text="Create new block position"}</h3>
-</div>
+<h3>
+    <span class="icon icon-plus"></span>
+    {gt text="Create new block position"}
+</h3>
 
 <p class="alert alert-info">{gt text="After create this block position, you will be able to assign some blocks for it, and adjust the order you want them to be displayed."}</p>
 

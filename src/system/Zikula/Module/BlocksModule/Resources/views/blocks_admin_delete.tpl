@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{$blockname|safetext}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {$blockname|safetext}
+</h3>
 
 <p class="alert alert-warning">{gt text="Do you really want to delete block '%s'?" tag1=$block.title|safetext}</p>
 

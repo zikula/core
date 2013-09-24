@@ -37,10 +37,10 @@
 {/strip}
 
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="new" size="small"}
-    <h3>{gt text='Create new user'}</h3>
-</div>
+<h3>
+    <span class="icon icon-plus"></span>
+    {gt text='Create new user'}
+</h3>
 
 <div id="{$formData->getFormId()}_errormsgs" class="alert alert-danger{if empty($errorMessages)} hide{/if}">
     {if isset($errorMessages)}
@@ -61,29 +61,29 @@
             <legend>{gt text='Account information'}</legend>
             <div class="form-group">
                 {assign var='fieldName' value='uname'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
                 {assign var='fieldName' value='uname'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='email'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
                 {assign var='fieldName' value='email'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error"{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error"{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='emailagain'}
-                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
                 {assign var='fieldName' value='emailagain'}
                 <div class="col-lg-9">
-                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
                     <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                 </div>
             </div>
@@ -124,9 +124,9 @@
             <div data-switch="setpass" data-switch-value="1">
                 {assign var='fieldName' value='pass'}
                 <div class="form-group">
-                    <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                    <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Password'}<span class="required"></span></label>
                     <div class="col-lg-9">
-                        <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
+                        <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
                         <em class="sub help-block">{gt text='Notice: The minimum length for user passwords is %s characters.' tag1=$modvars.ZikulaUsersModule.minpass}</em>
                         <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                         <div id="{$formData->getFormId()}_passmeter"></div>
@@ -135,10 +135,10 @@
                 </div>
                 <div class="form-group">
                     {assign var='fieldName' value='passagain'}
-                    <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat password for verification'}<span class="z-form-mandatory-flag">{gt text="*"}</span></label>
+                    <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat password for verification'}<span class="required"></span></label>
                     {assign var='fieldName' value='passagain'}
                     <div class="col-lg-9">
-                        <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} z-form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
+                        <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="password" name="{$fieldName}" size="30" maxlength="20" />
                         <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
                     </div>
                 </div>

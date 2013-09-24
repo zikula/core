@@ -1,10 +1,10 @@
 {pageaddvar name='javascript' value='plugins/Imagine/javascript/configuration.js'}
 
 {$header}
-<div class="z-admin-content-pagetitle">
-    {icon type='gears' size='small'}
-    <h3>{gt text='Imagine plugin settings'}</h3>
-</div>
+<h3>
+    <span class="icon icon-wrench"></span>
+    {gt text='Imagine plugin settings'}
+</h3>
 
 <form id="imagine-configuration" class="form-horizontal" role="form" action="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='updateConfig'}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

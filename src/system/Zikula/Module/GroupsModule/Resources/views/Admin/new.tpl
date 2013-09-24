@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="new" size="small"}
-    <h3>{gt text="Create new group"}</h3>
-</div>
+<h3>
+    <span class="icon icon-plus"></span>
+    {gt text="Create new group"}
+</h3>
 
 <form id="gg" class="form-horizontal" role="form" action="{modurl modname="Groups" type="admin" func="create"}" method="post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" id="csrftoken" name="csrftoken" value="{insert name="csrftoken"}" />

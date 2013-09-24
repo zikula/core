@@ -6,10 +6,10 @@
 {gt text='Force a change of password for %1$s' tag1=$user_obj.uname|safetext assign='templatetitle'}
 {/if}
 
-<div class="z-admin-content-pagetitle">
+<h3>
     {img modname='core' set='icons/small' src='password_expire.png' alt=$templatetitle}
-    <h3>{$templatetitle}</h3>
-</div>
+    {$templatetitle}
+</h3>
 
 {if $user_must_change_password}
 <p class="alert alert-warning">{gt text='Do you want to cancel the forced password change for %1$s?' tag1=$user_obj.uname|safetext}</p>

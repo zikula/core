@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type='delete' size='small'}
-    <h3>{gt text='Delete registry entry'}</h3>
-</div>
+    {gt text='Delete registry entry'}
+</h3>
 
 <p class="alert alert-warning">
     {gt text='Do you really want to delete this registry entry?'}<br />
@@ -21,7 +21,7 @@
             <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
                     {button class='z-btgreen' src='button_ok.png' set='icons/extrasmall' __alt='Delete' __title='Delete' __text='Delete'}
-                    <a class="btn btn-danger" class="z-btred" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                    <a class="btn btn-danger" href="{modurl modname='ZikulaCategoriesModule' type='admin' func='editregistry'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
         </div>
         </div>

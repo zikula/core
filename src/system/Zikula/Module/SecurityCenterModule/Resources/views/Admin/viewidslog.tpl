@@ -1,24 +1,12 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    document.observe('dom:loaded', function() {
-        $$('.eventfilter').each(function(element) {
-            new Zikula.UI.Window(element);
-        });
-        Zikula.UI.Tooltips($$('.tooltips'));
-    });
-</script>
-{/pageaddvarblock}
-
 {adminheader}
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="log" size="small"}
-    <h3>{gt text="View IDS Log"}</h3>
-</div>
+    {gt text="View IDS Log"}
+</h3>
 
 <ul class="navbar navbar-default">
-    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="smallicon smallicon-export">{gt text="Export IDS Log"}</a></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="smallicon smallicon-delete">{gt text="Purge IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="icon icon-download-alt">{gt text="Export IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="icon icon-trash">{gt text="Purge IDS Log"}</a></li>
 </ul>
 
 {gt text="All" assign=lblAll}

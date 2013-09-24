@@ -25,10 +25,10 @@
 
 {adminheader}
 {include file="permissions_admin_header.tpl"}
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Permission rules list"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Permission rules list"}
+</h3>
 
 <p class="alert alert-info hide" id="permissiondraganddrophint">
     {gt text="Notice: Arrange your permission rules in the desired order of evaluation, using drag and drop. The sort order will be saved immediately and automatically."}
@@ -69,8 +69,8 @@
 
 {checkpermissionblock component='ZikulaPermissionsModule::' instance='::' level=ACCESS_ADMIN}
 <div id="permissions-header" class="clearfix">
-    <a id="appendajax" onclick="javascript:permappend();" class="pull-left smallicon smallicon-new hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
-    <strong id="filterwarning" class="pull-right smallicon smallicon-warning" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
+    <a id="appendajax" onclick="javascript:permappend();" class="pull-left icon icon-plus hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
+    <strong id="filterwarning" class="pull-right icon icon-warning-sign" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
 </div>
 {/checkpermissionblock}
 

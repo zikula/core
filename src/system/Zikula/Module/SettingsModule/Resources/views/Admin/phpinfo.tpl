@@ -1,13 +1,11 @@
-{ajaxheader modname='ZikulaSettingsModule' filename='ZikulaSettingsModule.Admin.Phpinfo.js' noscriptaculous=false effects=false}
-
+{pageaddvar name='javascript' value='system/Zikula/Module/SettingsModule/Resources/public/js/ZikulaSettingsModule.Admin.Phpinfo.js'}
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="info" size="small"}
-    <h3>{gt text="PHP configuration"}</h3>
-</div>
+<h3>
+    <span class="icon icon-info-sign"></span>
+    {gt text="PHP configuration"}
+</h3>
 
 <div id="phpinfo">
     {$phpinfo}
 </div>
-
 {adminfooter}

@@ -1,10 +1,10 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/GroupsModule/Resources/public/js/groups.js'}
 {adminheader}
 
-<div class="z-admin-content-pagetitle">
-    {icon type="view" size="small"}
-    <h3>{gt text="Groups list"}</h3>
-</div>
+<h3>
+    <span class="icon icon-list"></span>
+    {gt text="Groups list"}
+</h3>
 
     
 {checkpermissionblock component='ZikulaGroupsModule::' instance='::' level=ACCESS_ADD}

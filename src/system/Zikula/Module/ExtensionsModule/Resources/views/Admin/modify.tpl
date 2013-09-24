@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Edit module"} - {modgetinfo modid=$id info=displayname}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Edit module"} - {modgetinfo modid=$id info=displayname}
+</h3>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>

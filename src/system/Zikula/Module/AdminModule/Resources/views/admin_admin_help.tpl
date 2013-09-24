@@ -1,18 +1,8 @@
-{ajaxheader ui=true}
-{pageaddvarblock}
-<script type="text/javascript">
-    var accordion;
-    document.observe("dom:loaded", function() {
-        accordion = new Zikula.UI.Accordion('adminhelp');
-    });
-</script>
-{/pageaddvarblock}
-
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="help" size="small"}
-    <h3>{gt text="Help"}</h3>
-</div>
+<h3>
+    <span class="icon icon-info"></span>
+    {gt text="Help"}
+</h3>
 
 
 

@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="delete" size="small"}
-    <h3>{gt text="Delete module category"}</h3>
-</div>
+<h3>
+    <span class="icon icon-trash"></span>
+    {gt text="Delete module category"}
+</h3>
 
 <p class="alert alert-warning">{gt text="Do you really want to delete module category '%s'?" tag1=$category.name|safetext}</p>
 <form class="form-horizontal" role="form" action="{modurl modname="ZikulaAdminModule" type="admin" func="delete"}" method="post" enctype="application/x-www-form-urlencoded">

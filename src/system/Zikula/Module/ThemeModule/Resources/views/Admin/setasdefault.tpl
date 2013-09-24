@@ -1,8 +1,8 @@
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Theme confirmation prompt"}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Theme confirmation prompt"}
+</h3>
 
 <p class="alert alert-warning">{gt text="Do you really want to set '%s' as the active theme for all site users?" tag1=$themename|safetext}</p>
 <form class="form-horizontal" role="form" action="{modurl modname="Theme" type="admin" func="setasdefault" themename=$themename|safetext}" method="post" enctype="application/x-www-form-urlencoded">

@@ -1,10 +1,10 @@
 {adminheader}
 {ajaxheader modname=Groups filename=groups.js ui=true}
 
-<div class="z-admin-content-pagetitle">
+<h3>
     {icon type="group" size="small"}
-    <h3>{gt text="Group membership"} ({$group.name|safetext})</h3>
-</div>
+    {gt text="Group membership"} ({$group.name|safetext})
+</h3>
 
 <table class="table table-bordered table-striped">
     <thead>

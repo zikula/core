@@ -197,10 +197,3 @@
     </div>
 </form>
 {adminfooter}
-
-<script type="text/javascript">
-    document.observe('dom:loaded', function() {
-        Zikula.UI.Tooltips($$('label'));
-        tabstest = new Zikula.UI.Tabs('blocktemplates');
-    });
-</script>

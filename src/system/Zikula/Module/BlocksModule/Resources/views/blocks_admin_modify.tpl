@@ -1,10 +1,10 @@
 {ajaxheader ui=true}
 {pageaddvar name='javascript' value='javascript/helpers/Zikula.itemlist.js'}
 {adminheader}
-<div class="z-admin-content-pagetitle">
-    {icon type="edit" size="small"}
-    <h3>{gt text="Edit block"}</h3>
-</div>
+<h3>
+    <span class="icon icon-pencil"></span>
+    {gt text="Edit block"}
+</h3>
 
 <form id="blockupdateform" class="form-horizontal" role="form" action="{modurl modname="Blocks" type="admin" func="update"}" method="post" enctype="application/x-www-form-urlencoded">
     <div>
@@ -52,7 +52,7 @@
 
                 <div id="block_placement_advanced" style="display:none;">
                     <p class="alert alert-info">{gt text="To restrict the block's visibility to certain modules and module functions, you can create filter(s) and select the module, function type, function name and function arguments that you want to apply to the filter. All fields are optional. If you omit a field, it will act as an *. "}</p>
-                    <p><a id="appendfilter" class="smallicon smallicon-new" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
+                    <p><a id="appendfilter" class="icon icon-plus" href="javascript:void(0);">{gt text="Create new filter"}</a></p>
                     <div>
                         <ol id="placementfilterslist" class="z-itemlist">
                             <li class="z-itemheader clearfix">
