@@ -379,8 +379,8 @@ li.admintabs-add {
     padding: 4px;
 }
 
-#modulelist div {
-    margin-left: 65px;
+#modulelist > li > div {
+    margin-left: 68px;
     text-align: left;
 }
 
