@@ -13,9 +13,7 @@
             {/foreach}
         </select>
     </div>
-    <div class="z-buttons">
-        <input class="z-bt-ok z-bt-small" type="submit" value="{gt text="Change theme" domain='zikula'}" />
-    </div>
+    <input class="btn btn-success" type="submit" value="{gt text="Change theme" domain='zikula'}" />
 </form>
 {else}
 <ul>

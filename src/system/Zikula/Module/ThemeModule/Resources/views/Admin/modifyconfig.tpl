@@ -92,7 +92,7 @@
                 <label class="col-lg-3 control-label" for="theme_force_compile">{gt text="Force re-compilation of theme templates"}</label>
                 <div class="col-lg-9">
                     <input id="theme_force_compile" name="force_compile" type="checkbox" value="1" {if $force_compile eq 1}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_compiled csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
+                    <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_compiled csrftoken=$csrftoken}">{gt text="Delete compiled theme templates"}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -113,7 +113,7 @@
                 <label class="col-lg-3 control-label" for="render_force_compile">{gt text="Force re-compilation of render templates"}</label>
                 <div class="col-lg-9">
                     <input id="render_force_compile" type="checkbox" name="render_force_compile" value="1"{if $render_force_compile} checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
+                    <a class="zikulathememodule-indented" href="{modurl modname="Theme" type="admin" func="render_clear_compiled" csrftoken=$csrftoken}">{gt text="Delete compiled render templates"}</a>
                 </div>
             </div>
         </fieldset>
@@ -123,7 +123,7 @@
                 <label class="col-lg-3 control-label" for="enablecache">{gt text="Enable theme caching"}</label>
                 <div class="col-lg-9">
                     <input id="enablecache" name="enablecache" type="checkbox" value="1" {if $enablecache eq 1}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
+                    <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cache csrftoken=$csrftoken}">{gt text="Delete cached theme pages"}</a>
                 </div>
             </div>
             <div data-switch="enablecache" data-switch-value="1">
@@ -135,7 +135,7 @@
                         <span>
                             <input type="text" class="form-control" name="cache_lifetime" id="cache_lifetime" value="{$cache_lifetime|safetext}" size="6" tabindex="2" />
                             {gt text="seconds"}
-                            <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                            <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=homepage csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                         </span>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                             <div class="z-formlist">
                                 <input id="theme_nocache_{$modname|safetext}" type="checkbox" name="modulesnocache[]" value="{$modname|safetext}"{if isset($modulesnocache.$modname)} checked="checked"{/if} />
                                 <label for="theme_nocache_{$modname|safetext}">{$moddisplayname|safetext}</label>
-                                <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
+                                <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cache cacheid=$modname csrftoken=$csrftoken}">{gt text="Delete cached pages"}</a>
                             </div>
                             {/foreach}
                         </div>
@@ -176,7 +176,7 @@
                 <label class="col-lg-3 control-label" for="render_cache">{gt text="Enable render caching"}</label>
                 <div class="col-lg-9">
                     <input id="render_cache" type="checkbox" name="render_cache" value="1"{if $render_cache}checked="checked"{/if} />
-                    <a class="z-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
+                    <a class="zikulathememodule-indented" href="{modurl modname="Theme" type="admin" func="render_clear_cache"  csrftoken=$csrftoken}">{gt text="Delete cached render pages"}</a>
                 </div>
             </div>
             <div data-switch="render_cache" data-switch-value="1">
@@ -199,7 +199,7 @@
                 <label class="col-lg-3 control-label" for="cssjscombine">{gt text="Enable CSS/JS combination"}</label>
                 <div class="col-lg-9">
                     <input id="cssjscombine" name="cssjscombine" type="checkbox" value="1" {if $cssjscombine eq 1}checked="checked"{ /if } />
-                    <a class="z-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
+                    <a class="zikulathememodule-indented" href="{modurl modname=Theme type=admin func=clear_cssjscombinecache csrftoken=$csrftoken}">{gt text="Delete combination cache"}</a>
                 </div>
             </div>
             <div data-switch="cssjscombine" data-switch-value="1">
