@@ -33,7 +33,7 @@
                     {else}
                     {modgetinfo assign="dModname" info=displayname modname=$obj.modname default=$obj.modname}
                     <td>{$dModname}</td>
-                    <td>{$obj.entityname}</td>
+                    <td>{if isset($obj.entityname)}{$obj.entityname}{/if}</td>
                     <td>{$obj.property}</td>
                     <td>{category_path id=$obj.category_id html=true}</td>
                     <td class="text-right">
