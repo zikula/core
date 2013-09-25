@@ -107,7 +107,6 @@ function smarty_function_button($params, Zikula_View $view)
     if (isset($params['class'])) {
         $class .= ' class="'.DataUtil::formatForDisplay($params['class']).'"';
     }
-    $class .= '"';
     if (isset($params['text'])) {
         $text = ' ' . DataUtil::formatForDisplay($params['text']);
     } else {
