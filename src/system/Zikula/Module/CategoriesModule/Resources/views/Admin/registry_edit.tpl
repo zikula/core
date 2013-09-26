@@ -60,7 +60,7 @@
                         <span class="required"></span>{selector_module name="category_registry[modname]" defaultValue="0" defaultText=$chooseModule selectedValue=$newobj.modname|default:'' submit="1"}
                     </td>
                     <td>
-                        {if isset($newobj.modname)}
+                        {if !empty($newobj.modname)}
                         <span class="required"></span>{selector_module_tables modname=$newobj.modname name="category_registry[entityname]" displayField="name" selectedValue=$newobj.entityname defaultValue="" defaultText=$chooseEntity}
                         {else}----------
                         {/if}
