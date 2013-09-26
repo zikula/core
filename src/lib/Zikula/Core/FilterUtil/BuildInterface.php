@@ -6,16 +6,18 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
+ * @package Zikula\Core\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\FilterUtil;
+
 /**
  * FilterUtil build interface
  */
-interface FilterUtil_BuildInterface
+interface BuildInterface
 {
     /**
      * Adds fields to list in common way.
@@ -53,28 +55,13 @@ interface FilterUtil_BuildInterface
     public function getOperators();
 
     /**
-     * Get SQL
-     *
-     * Return SQL WHERE and DBUtil JOIN array as array('where' => , 'join' =>).
+     * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return array $where
+     * @return Expr\Base Doctrine2 expression
      */
-    public function getSQL($field, $op, $value);
-
-    /**
-     * Get DQL
-     *
-     * Return DQL WHERE and it's params as array('where' => , 'params' =>).
-     *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Value.
-     *
-     * @return array $where
-     */
-    public function getDql($field, $op, $value);
+    public function getExprObj($field, $op, $value);
 }

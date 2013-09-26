@@ -6,68 +6,73 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
+ * @package Zikula\Core\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\FilterUtil;
+
+use Zikula\Core\FilterUtil\Plugin\Compare;
+
 /**
  * Plugin manager class.
  */
-class FilterUtil_PluginManager extends FilterUtil_AbstractBase
+class PluginManager extends AbstractBase
 {
+    /**
+     * Specified restrictions.
+     *
+     * @var array
+     */
+    private $filterUtil;
+    
     /**
      * Loaded plugins.
      *
      * @var array
      */
-    private $_plg = array();
-
-    /**
-     * Loaded plugins list.
-     *
-     * @var array;
-     */
-    private $_loaded = array();
+    private $plugin = array();
 
     /**
      * Loaded operators.
      *
      * @var array
      */
-    private $_ops;
+    private $ops;
 
     /**
      * Loaded replaces.
      *
      * @var array
      */
-    private $_replaces;
+    private $replaces;
 
     /**
      * Specified restrictions.
      *
      * @var array
      */
-    private $_restrictions;
+    private $restrictions;
 
     /**
      * Constructor.
      *
-     * @param FilterUtil_Config $config FilterUtil Configuration object.
-     * @param array             $plgs   Plugins to load in form "plugin name => config array".
+     * @param Config $config FilterUtil Configuration object.
+     * @param array             $args   Plugins to load in form "plugin name => Plugin Object".
      */
-    public function __construct(FilterUtil_Config $config, $plgs = null)
+    public function __construct(Config $config, $plugins, $restrictions)
     {
         parent::__construct($config);
-
-        if ($plgs !== null && is_array($plgs) && count($plgs) > 0) {
-            $ok = $this->loadPlugins($plgs);
+        
+        if (!is_array($plugins)) {
+            $plugins = array();
         }
-
-        if ($ok == false) {
-            return false;
+        $this->loadPlugins($plugins);
+        
+        if ($restrictions !== null) {
+            $this->loadRestrictions($restrictions);
         }
     }
 
@@ -80,13 +85,76 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      */
     public function loadPlugins($plgs)
     {
-        $error = false;
+        $default = false;
 
-        foreach ($plgs as $k => $v) {
-            $error = ($this->loadPlugin($k, $v) ? $error : true);
+        foreach ($plgs as $v) {
+            $default |= $this->loadPlugin($v);
+        }
+        if (!$default) {
+            $this->loadPlugin(new Compare(null));
+        }
+    }
+
+    /**
+     * Loads a single plugin.
+     *
+     * @param string $name   Plugin's name.
+     * @param array  $config Plugin's config.
+     *
+     * @return boolean true if the plugin is the default plugin.
+     */
+    public function loadPlugin(AbstractPlugin $plugin)
+    {
+        $this->plugin[] = $plugin;
+        end($this->plugin);
+        $key = key($this->plugin);
+
+        $plugin->setID($key);
+        $plugin->initPlugin($this->config);
+        $this->registerPlugin($key);
+        
+        return $plugin->getDefault();
+    }
+
+    /**
+     * Register a plugin.
+     *
+     * Check what type the plugin is from and register it.
+     *
+     * @param int $k The Plugin's ID -> Key in the $this->plugin array.
+     *
+     * @return void
+     */
+    private function registerPlugin($k)
+    {
+        $plugin = & $this->plugin[$k];
+        
+        if ($plugin instanceof JoinInterface) {
+            $plugin->addJoinsToQuery();
+        }
+        
+        if ($plugin instanceof BuildInterface) {
+            
+            $ops = $plugin->getOperators();
+            
+            if (isset($ops) && is_array($ops)) {
+                foreach ($ops as $op => $fields) {
+                    $flds = array();
+                    foreach ($fields as $field) {
+                        $flds[$field] = $k;
+                    }
+                    if (isset($this->ops[$op]) && is_array($this->ops[$op])) {
+                        $this->ops[$op] = array_merge($this->ops[$op], $flds);
+                    } else {
+                        $this->ops[$op] = $flds;
+                    }
+                }
+            }
         }
 
-        return $error;
+        if ($plugin instanceof ReplaceInterface) {
+            $this->replaces[] = $k;
+        }
     }
 
     /**
@@ -101,206 +169,16 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
         if (empty($rest) || !is_array($rest)) {
             return;
         }
-
+    
         foreach ($rest as $field => $ops) {
             // accept registered operators only
-            $ops = array_filter(array_intersect((array)$ops, array_keys($this->_ops)));
+            $ops = array_filter(array_intersect((array)$ops, array_keys($this->ops)));
             if (!empty($ops)) {
-                $this->_restrictions[$field] = $ops;
+                $this->restrictions[$field] = $ops;
             }
         }
     }
-
-    /**
-     * Available plugins list.
-     *
-     * @return array List of the available plugins.
-     */
-    public static function getPluginsAvailable()
-    {
-        $classNames = array();
-        $classNames['category']    = 'FilterUtil_Filter_Category';
-        $classNames['default']     = 'FilterUtil_Filter_Default';
-        $classNames['date']        = 'FilterUtil_Filter_Date';
-        $classNames['mnlist']      = 'FilterUtil_Filter_Mnlist';
-        $classNames['pmlist']      = 'FilterUtil_Filter_Pmlist';
-        $classNames['replaceName'] = 'FilterUtil_Filter_ReplaceName';
-
-        // collect classes from other providers also allows for override
-        // TODO A [This is only allowed for the module which owns this object.]
-
-        $event = new \Zikula\Core\Event\GenericEvent();
-        $event->setData($classNames);
-        $classNames = EventUtil::getManager()->dispatch('zikula.filterutil.get_plugin_classes', $event)->getData();
-
-        return $classNames;
-    }
-
-    /**
-     * Loads a single plugin.
-     *
-     * @param string $name   Plugin's name.
-     * @param array  $config Plugin's config.
-     *
-     * @return integer The plugin's id.
-     */
-    public function loadPlugin($name, $config = array())
-    {
-        if ($this->isLoaded($name)) {
-            return $this->_loaded[$name];
-        }
-
-        $plugins = $this->getPluginsAvailable();
-        if (isset($plugins[$name]) && !empty($plugins[$name]) && class_exists($plugins[$name])) {
-            $class = $plugins[$name];
-
-            $this->addCommon($config);
-            $obj = new $class($config);
-
-            $this->_plg[] = $obj;
-            end($this->_plg);
-            $key = key($this->_plg);
-            $obj = $this->_plg[$key];
-
-            $obj->setID($key);
-            $this->_registerPlugin($key);
-            $this->_loaded[$name] = $key;
-
-            return key(end($this->_plg));
-        } elseif (System::isLegacyMode()) {
-            return $this->loadPluginLegacy();
-        }
-
-        return false;
-    }
-
-    /**
-     * Loads a single plugin.
-     *
-     * @param string $name   Plugin's name.
-     * @param array  $config Plugin's config.
-     *
-     * @return integer The plugin's id.
-     */
-    public function loadPluginLegacy($name, $config = array())
-    {
-        $module = $this->getConfig()->getModule();
-        if (strpos($name, '@')) {
-            list ($module, $name) = explode('@', $name, 2);
-        }
-
-        if ($this->isLoaded("$module@$name")) {
-            return true;
-        }
-
-        $class = 'FilterUtil_Filter_' . $name;
-        $file  = 'filter.' . $name . '.class.php';
-
-        // Load hierarchy
-        $dest = array();
-        if ($module != 'core' && ModUtil::available($module)) {
-            $modinfo = ModUtil::getInfoFromName($module);
-            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
-            $directory = $modinfo['directory'];
-            $dest[] = "config/filter/$directory/$file";
-            $dest[] = "$modpath/$directory/filter/$file";
-        }
-        $dest[] = "config/filter/$file";
-        foreach ($dest as $file) {
-            if (is_readable($file)) {
-                include_once $file;
-                break;
-            }
-        }
-
-        $config = array();
-        $this->addCommon($config);
-        $obj = new $class($config);
-
-        $this->_plg[] = $obj;
-        end($this->_plg);
-        $key = key($this->_plg);
-        $obj = & $this->_plg[$key];
-
-        $obj->setID($key);
-        $this->_registerPlugin($key);
-        $this->_loaded["$module@$name"] = $key;
-
-        return key(end($this->_plg));
-    }
-
-    /**
-     * Register a plugin.
-     *
-     * Check what type the plugin is from and register it.
-     *
-     * @param int $k The Plugin's ID -> Key in the $this->_plg array.
-     *
-     * @return void
-     */
-    private function _registerPlugin($k)
-    {
-        $obj = & $this->_plg[$k];
-
-        if ($obj instanceof FilterUtil_BuildInterface) {
-            $ops = $obj->getOperators();
-
-            if (isset($ops) && is_array($ops)) {
-                foreach ($ops as $op => $fields) {
-                    $flds = array();
-                    foreach ($fields as $field) {
-                        $flds[$field] = $k;
-                    }
-                    if (isset($this->_ops[$op]) && is_array($this->_ops[$op])) {
-                        $this->_ops[$op] = array_merge($this->_ops[$op], $flds);
-                    } else {
-                        $this->_ops[$op] = $flds;
-                    }
-                }
-            }
-        }
-
-        if ($obj instanceof FilterUtil_ReplaceInterface) {
-            $this->_replaces[] = $k;
-        }
-    }
-
-    /**
-     * Get plugin's configuration object.
-     *
-     * FIXME What's about this function? $name is not unique!
-     *
-     * @param string $name Plugin's name.
-     *
-     * @return object Plugin's configuration object.
-     */
-    public function getPluginConfig($name)
-    {
-        if (!$this->PluginIsLoaded($name)) {
-            return false;
-        }
-
-        return $this->_plg[$name]->getConfig();
-    }
-
-    /**
-     * Checks if a plugin is loaded.
-     *
-     * FIXME What's about this function? $name is not unique!
-     *
-     * @param string $name Plugin's name.
-     *
-     * @return bool true if the plugin is loaded, false otherwise.
-     */
-    public function isLoaded($name)
-    {
-        if (isset($this->_loaded[$name])) {
-            return true;
-        }
-
-        return false;
-    }
-
+    
     /**
      * Runs replace plugins and return condition set.
      *
@@ -312,10 +190,10 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
      */
     public function replace($field, $op, $value)
     {
-        if (is_array($this->_replaces)) {
-            foreach ($this->_replaces as $k) {
-                $obj = & $this->_plg[$k];
-                list($field, $op, $value) = $obj->replace($field, $op, $value);
+        if (is_array($this->replaces)) {
+            foreach ($this->replaces as $k) {
+                $plugin = & $this->plugin[$k];
+                list($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
 
@@ -325,50 +203,31 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
                      'value' => $value
                     );
     }
-
+    
     /**
-     * Returns SQL code.
+     * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
-     * @param string $value Test value.
+     * @param string $value Value.
      *
-     * @return array Sql set.
+     * @return Expr\Base Doctrine2 expression
      */
-    public function getSQL($field, $op, $value)
+    public function getExprObj($field, $op, $value)
     {
-        if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
-            return '';
-        } elseif (isset($this->_ops[$op][$field])) {
-            return $this->_plg[$this->_ops[$op][$field]]->getSQL($field, $op, $value);
-        } elseif (isset($this->_ops[$op]['-'])) {
-            return $this->_plg[$this->_ops[$op]['-']]->getSQL($field, $op, $value);
-        } else {
-            return '';
+        if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
+            throw new \Exception('Operator not allowed.');
         }
-    }
-
-    /**
-     * Returns DQL code.
-     *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
-     *
-     * @return array Doctrine Query where clause and parameters.
-     */
-    public function getDql($field, $op, $value)
-    {
-        if (!isset($this->_ops[$op]) || !is_array($this->_ops[$op])) {
-            return '';
-        } elseif (isset($this->_restrictions[$field]) && !in_array($op, $this->_restrictions[$field])) {
-            return '';
-        } elseif (isset($this->_ops[$op][$field])) {
-            return $this->_plg[$this->_ops[$op][$field]]->getDql($field, $op, $value);
-        } elseif (isset($this->_ops[$op]['-'])) {
-            return $this->_plg[$this->_ops[$op]['-']]->getDql($field, $op, $value);
-        } else {
-            return '';
+        if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
+            throw new \Exception('Field not allowed.');
+        } 
+        if (isset($this->ops[$op][$field])) {
+            return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
+        } 
+        if (isset($this->ops[$op]['-'])) {
+            return $this->plugin[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
         }
+        
+        return '';
     }
 }

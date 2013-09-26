@@ -6,98 +6,109 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package FilterUtil
+ * @package Zikula\Core\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+namespace Zikula\Core\FilterUtil;
+
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Andx;
+use Doctrine\ORM\Query\Expr\Orx;
 
 /**
  * Adds a Pagesetter like filter.
  */
-class FilterUtil extends FilterUtil_AbstractBase
+class FilterUtil extends AbstractBase
 {
+
     /**
      * The Input variable name.
      *
      * @var string
      */
-    private $_varname;
+    private $varname;
 
     /**
      * Plugin object.
      *
      * @var array
      */
-    private $_plugin;
+    private $plugin;
 
     /**
-     * Filter object holder.
+     * FilterExpression object holder.
      *
      * @var array
      */
-    private $_obj;
+    private $filterExpr;
 
     /**
      * Filter string holder.
      *
      * @var array
      */
-    private $_filter;
-
+    private $filter;
+    
     /**
-     * Filter SQL holder.
-     *
-     * @var array
+     * Request object to get the filter 
+     * 
+     * @var \Zikula_Request_Http
      */
-    private $_sql;
-
-    /**
-     * Filter DQL holder.
-     *
-     * @var array
-     */
-    private $_dql;
+    private $request;
 
     /**
      * Constructor.
      *
      * Argument $args may contain:
-     *  plugins: Set of plugins to load.
-     *  varname: Name of filters in $_REQUEST. Default: filter.
+     * plugins: Set of plugins to load.
+     * varname: Name of filters in $_REQUEST. Default: filter.
+     * restrictions: Array of allowed operators per field in the form "field's name => operator array".
      *
-     * @param string                $module Module name.
-     * @param string|Doctrine_Table $table  Table name.
-     * @param array                 $args   Mixed arguments.
+     * @param string $module
+     *            Module name.
+     * @param string|Doctrine_Table $table
+     *            Table name.
+     * @param array $args
+     *            Mixed arguments.
      */
-    public function __construct($module, $table, $args = array())
+    public function __construct(\Doctrine\ORM\EntityManager $entityMangager, QueryBuilder $qb, $args = array())
     {
         $this->setVarName('filter');
-
-        $args['module'] = $module;
-        $args['table'] = $table;
-        parent::__construct(new FilterUtil_Config($args));
-
-        $this->_plugin = new FilterUtil_PluginManager($this->getConfig(), array('default' => array()));
-
-        if (isset($args['plugins'])) {
-            $this->_plugin->loadPlugins($args['plugins']);
-        }
-        if (isset($args['restrictions'])) {
-            $this->_plugin->loadRestrictions($args['restrictions']);
-        }
+        
+        parent::__construct(new Config($entityMangager, $qb, $args));
+        
+        $this->plugin = new PluginManager($this->getConfig(), 
+            isset($args['plugins']) ? $args['plugins'] : array(), 
+            isset($args['restrictions']) ? $args['restrictions'] : null);
+        
         if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
         }
-
-        return $this;
+        if (isset($args['request'])) {
+            $this->setRequest($args['request']);
+        }
+        
+        return $this; // is this still required?
+    }
+    
+    /**
+     * set the Request Object
+     * 
+     * @var \Zikula_Request_Http
+     */
+    public function setRequest(\Zikula_Request_Http $request) {
+        $this->request = $request;
     }
 
     /**
      * Set name of input variable of filter.
      *
-     * @param string $name Name of input variable.
-     *
+     * @param string $name
+     *            Name of input variable.
+     *            
      * @return bool true on success, false otherwise.
      */
     public function setVarName($name)
@@ -105,9 +116,9 @@ class FilterUtil extends FilterUtil_AbstractBase
         if (!is_string($name)) {
             return false;
         }
-
-        $this->_varname = $name;
-
+        
+        $this->varname = $name;
+        
         return true;
     }
 
@@ -118,202 +129,21 @@ class FilterUtil extends FilterUtil_AbstractBase
      */
     public function getVarName()
     {
-        return $this->_varname;
+        return $this->varname;
     }
 
     /**
      * Get plugin manager class.
      *
-     * @return FilterUtil_PluginManager
+     * @return PluginManager
      */
     public function getPlugin()
     {
-        return $this->_plugin;
+        return $this->plugin;
     }
-
-    //++++++++++++++++ Object handling +++++++++++++++++++
-
-    /**
-     * strip brackets around a filterstring.
-     *
-     * @param string $filter Filterstring.
-     *
-     * @return string Edited filterstring.
-     */
-    private function _stripBrackets($filter)
-    {
-        if (substr($filter, 0, 1) == '(' && substr($filter, -1) == ')') {
-            return substr($filter, 1, -1);
-        }
-
-        return $filter;
-    }
-
-    /**
-     * Create a condition object out of a string.
-     *
-     * @param string $filter Condition string.
-     *
-     * @return array Condition object.
-     */
-    private function _makeCondition($filter)
-    {
-        if (strpos($filter, ':')) {
-            $parts = explode(':', $filter, 3);
-        } elseif (strpos($filter, '^')) {
-            $parts = explode('^', $filter, 3);
-        }
-
-        $obj = array(
-                'field' => false,
-                'op' => false,
-                'value' => false
-        );
-
-        if (isset($parts[2]) && substr($parts[2], 0, 1) == '$') {
-            $value = FormUtil::getPassedValue(substr($parts[2], 1), null);
-            if (empty($value) && !is_numeric($value)) {
-                return false;
-            }
-            $obj['value'] = $value;
-        } elseif (isset($parts) && is_array($parts) && count($parts) > 2) {
-            $obj['value'] = $parts[2];
-        }
-
-        if (isset($parts) && is_array($parts) && count($parts) > 1) {
-            $obj['field'] = $parts[0];
-            $obj['op'] = $parts[1];
-        }
-
-        if (!$obj['field'] || !$obj['op']) {
-            return false; // invalid condition
-        }
-
-        $obj = $this->_plugin->replace($obj['field'], $obj['op'], $obj['value']);
-
-        return $obj;
-    }
-
-    /**
-     * Help function to generate an object out of a string.
-     *
-     * @param string $filter Filterstring.
-     *
-     * @return array Filter object.
-     */
-    private function _genObjectRecursive($filter)
-    {
-        $obj = array();
-        $string = '';
-        $cycle = 0;
-        $op = 0;
-        $level = 0;
-        $sub = false;
-
-        for ($i = 0; $i < strlen($filter); $i++) {
-            $c = substr($filter, $i, 1);
-
-            switch ($c) {
-                case ',': // Operator: AND
-                    if (!empty($string)) {
-                        $sub = $this->_makeCondition($string);
-                        if ($sub != false && count($sub) > 0) {
-                            $obj[$op] = $sub;
-                            $sub = false;
-                        }
-                    }
-                    if (count($obj) > 0) {
-                        $op = 'AND' . $cycle++;
-                    }
-                    $string = '';
-                    break;
-
-                case '*': // Operator: OR
-                    if (!empty($string)) {
-                        $sub = $this->_makeCondition($string);
-                        if ($sub != false && count($sub) > 0) {
-                            $obj[$op] = $sub;
-                            $sub = false;
-                        }
-                    }
-                    if (count($obj) > 0) {
-                        $op = 'OR' . $cycle++;
-                    }
-                    $string = '';
-                    break;
-
-                case '(': // Subquery
-                    $level++;
-                    while ($level != 0 && $i <= strlen($filter)) {
-                        // get end bracket
-                        $i++;
-                        $c = substr($filter, $i, 1);
-                        switch ($c) {
-                            case '(':
-                                $level++;
-                                break;
-                            case ')':
-                                $level--;
-                                break;
-                        }
-                        if ($level > 0) {
-                            $string .= $c;
-                        }
-                    }
-                    if (!empty($string)) {
-                        $sub = $this->_genObjectRecursive($string);
-                        if ($sub != false && count($sub) > 0) {
-                            $obj[$op] = $sub;
-                            $sub = false;
-                        }
-                    }
-                    $string = '';
-                    break;
-
-                default:
-                    $string .= $c;
-                    break;
-            }
-        }
-
-        if (!empty($string)) {
-            $sub = $this->_makeCondition($string);
-            if ($sub != false && count($sub) > 0) {
-                $obj[$op] = $sub;
-                $sub = false;
-            }
-        }
-
-        return $obj;
-    }
-
-    /**
-     * Generate the filter object from a string.
-     *
-     * @return void
-     */
-    public function genObject()
-    {
-        $this->_obj = $this->_genObjectRecursive($this->getFilter());
-    }
-
-    /**
-     * Get the filter object
-     *
-     * @return array Filter object
-     */
-    public function getObject()
-    {
-        if (!isset($this->_obj) || !is_array($this->_obj)) {
-            $this->genObject();
-        }
-
-        return $this->_obj;
-    }
-
-    //---------------- Object handling ---------------------
-    //++++++++++++++++ Filter handling +++++++++++++++++++++
-
+    
+    // ++++++++++++++++ Filter handling +++++++++++++++++++++
+    
     /**
      * Get all filters from Input
      *
@@ -321,28 +151,33 @@ class FilterUtil extends FilterUtil_AbstractBase
      */
     public function getFiltersFromInput()
     {
+        if ($this->request === null) {
+            throw new \Exception('Request object not set.');
+        }
+        
         $i = 1;
         $filter = array();
-
+        
+        //TODO get filter via request object
         // Get unnumbered filter string
-        $filterStr = FormUtil::getPassedValue($this->_varname, '');
+        $filterStr = $this->request->query->filter($this->varname, '', false, FILTER_SANITIZE_STRING);
         if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
-
+        
         // Get filter1 ... filterN
         while (true) {
-            $filterURLName = $this->_varname . "$i";
-            $filterStr = FormUtil::getPassedValue($filterURLName, '');
-
+            $filterURLName = $this->varname . "$i";
+            $filterStr = $this->request->query->filter($filterURLName, '', false, FILTER_SANITIZE_STRING);
+            
             if (empty($filterStr)) {
                 break;
             }
-
+            
             $filter[] = $filterStr;
-            ++$i;
+            ++ $i;
         }
-
+        
         return $filter;
     }
 
@@ -353,37 +188,38 @@ class FilterUtil extends FilterUtil_AbstractBase
      */
     public function getFilter()
     {
-        if (!isset($this->_filter) || empty($this->_filter)) {
+        if (!isset($this->filter) || empty($this->filter)) {
             $filter = $this->getFiltersFromInput();
             if (is_array($filter) && count($filter) > 0) {
-                $this->_filter = "(" . implode(')*(', $filter) . ")";
+                $this->filter = "(" . implode(')*(', $filter) . ")";
             }
         }
-
-        if ($this->_filter == '()') {
-            $this->_filter = '';
+        
+        if ($this->filter == '()') {
+            $this->filter = '';
         }
-
-        return $this->_filter;
+        
+        return $this->filter;
     }
 
     /**
      * Set filterstring.
      *
-     * @param mixed $filter Filter string or array.
-     *
+     * @param mixed $filter
+     *            Filter string or array.
+     *            
      * @return void
      */
     public function setFilter($filter)
     {
         if (is_array($filter)) {
-            $this->_filter = "(" . implode(')*(', $filter) . ")";
+            $this->filter = "(" . implode(')*(', $filter) . ")";
         } else {
-            $this->_filter = $filter;
+            $this->filter = $filter;
         }
-
-        $this->_obj = false;
-        $this->_sql = false;
+        
+        $this->filterExpr = false;
+        $this->sql = false;
     }
 
     /**
@@ -392,8 +228,9 @@ class FilterUtil extends FilterUtil_AbstractBase
      * Adds a filter or an array of filters.
      * If filter does not begin with "," or "*" append it as "and".
      *
-     * @param mixed $filter Filter string or array.
-     *
+     * @param mixed $filter
+     *            Filter string or array.
+     *            
      * @return void
      */
     public function addFilter($filter)
@@ -403,7 +240,7 @@ class FilterUtil extends FilterUtil_AbstractBase
                 $this->addFilter($tmp);
             }
         } elseif (substr($filter, 0, 1) == ',' || substr($filter, 0, 1) == '*') {
-            $this->_filter .= $filter;
+            $this->filter .= $filter;
         } else {
             $this->andFilter($filter);
         }
@@ -412,8 +249,9 @@ class FilterUtil extends FilterUtil_AbstractBase
     /**
      * Add filter string with "AND".
      *
-     * @param mixed $filter Filter string or array.
-     *
+     * @param mixed $filter
+     *            Filter string or array.
+     *            
      * @return void
      */
     public function andFilter($filter)
@@ -423,19 +261,20 @@ class FilterUtil extends FilterUtil_AbstractBase
                 $this->andFilter($tmp);
             }
         } elseif (substr($filter, 0, 1) == ',') {
-            $this->_filter .= $filter;
+            $this->filter .= $filter;
         } elseif (substr($filter, 0, 1) == '*') {
-            $this->_filter .= ',' . (substr($filter, 1));
+            $this->filter .= ',' . (substr($filter, 1));
         } else {
-            $this->_filter .= ',' . ($filter);
+            $this->filter .= ',' . ($filter);
         }
     }
 
     /**
      * Add filter string with "OR".
      *
-     * @param mixed $filter Filter string or array.
-     *
+     * @param mixed $filter
+     *            Filter string or array.
+     *            
      * @return void
      */
     public function orFilter($filter)
@@ -445,157 +284,252 @@ class FilterUtil extends FilterUtil_AbstractBase
                 $this->orFilter($tmp);
             }
         } elseif (substr($filter, 0, 1) == '*') {
-            $this->_filter .= $filter;
+            $this->filter .= $filter;
         } elseif (substr($filter, 0, 1) == ',') {
-            $this->_filter .= '*' . (substr($filter, 1));
+            $this->filter .= '*' . (substr($filter, 1));
         } else {
-            $this->_filter .= '*' . ($filter);
+            $this->filter .= '*' . ($filter);
         }
     }
-
-    //--------------- Filter handling ----------------------
-    //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
-
+    
+    // --------------- Filter handling ----------------------
+    // ++++++++++++++++ String to Querybuilder handling +++++++++++++++++++
     /**
-     * Help function for generate the filter SQL from a Filter-object.
+     * Create a condition object out of a string.
      *
-     * @param array $obj Object array.
-     *
-     * @return array Where and Join sql.
+     * @param string $filter
+     *            Condition string.
+     *            
+     * @return array Condition object.
      */
-    private function _genSqlRecursive($obj)
+    private function makeCondition($filter)
     {
-        if (!is_array($obj) || count($obj) == 0) {
-            return '';
+        if (strpos($filter, ':')) {
+            $parts = explode(':', $filter, 3);
+        } elseif (strpos($filter, '^')) {
+            $parts = explode('^', $filter, 3);
         }
-
-        if (isset($obj['field']) && !empty($obj['field'])) {
-            $obj['value'] = DataUtil::formatForStore($obj['value']);
-            $res = $this->_plugin->getSQL($obj['field'], $obj['op'], $obj['value']);
-            $res['join'] = & $this->join;
-
-            return $res;
-        } else {
-            $where = '';
-            if (isset($obj[0]) && is_array($obj[0])) {
-                $sub = $this->_genSqlRecursive($obj[0]);
-                if (!empty($sub['where'])) {
-                    $where .= $sub['where'];
-                }
-                unset($obj[0]);
-            }
-
-            foreach ($obj as $op => $tmp) {
-                $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
-                if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
-                    $sub = $this->_genSqlRecursive($tmp);
-                    if (!empty($sub['where'])) {
-                        $where .= ' ' . strtoupper($op) . ' ' . $sub['where'];
-                    }
-                }
-            }
-        }
-
-        return array(
-                'where' => (empty($where) ? '' : "(\n $where \n)"),
-                'join' => &$this->join
+        
+        $con = array(
+            'field' => false,
+            'op' => false,
+            'value' => false
         );
+        
+        if (isset($parts) && is_array($parts) && count($parts) > 2) {
+            $con['field'] = $parts[0];
+            $con['op'] = $parts[1];
+            
+            if (substr($parts[2], 0, 1) == '$') {
+                $value = FormUtil::getPassedValue(substr($parts[2], 1), null);
+                // !is_numeric because empty(0) == false
+                if (empty($value) && !is_numeric($value)) {
+                    return null;
+                }
+                $con['value'] = $value;
+            } else {
+                $con['value'] = $parts[2];
+            }
+        }
+        
+        if (!$con['field'] || !$con['op']) {
+            return null; // invalid condition
+        }
+        
+        $con = $this->plugin->replace($con['field'], $con['op'], $con['value']);
+        
+        return $this->plugin->getExprObj($con['field'], $con['op'], $con['value']);
     }
 
     /**
-     * Generate where/join SQL.
+     * if $a and $b are of the same type the parts
+     * of $b are added to $a.
+     *
+     * @param Base  $a expression object to add to
+     * @param mixed $b anything to add to $a
+     */
+    private function addBtoA($a, $b) {
+        if ( ($a instanceof Andx && $b instanceof Andx) ||
+                ($a instanceof Orx && $b instanceof Orx)) {
+            $a->addMultiple($b->getParts());
+        } else {
+            $a->add($b);
+        }
+    }
+    
+    /**
+     * Help function to generate an object out of a string.
+     *
+     * @param string $filter
+     *            Filterstring.
+     *            
+     * @return array Filter object.
+     */
+    private function genFilterExprRecursive($filter)
+    {
+        $or = null;
+        $and = null;
+        $subexpr = null;
+        $op = $or;
+        $string = '';
+        $level = 0;
+        $con = false;
+        
+        /*
+         * Build a tree with an OR object as root (if one excists), 
+         * AND Objects as childs of the OR and conditions as leafs. 
+         * Handle expressions in brackets like normal conditions (parsed recursivly). 
+         * Using Doctrine2 expression objects
+         */
+        $filterlen = strlen($filter);
+        for ($i = 0; $i < $filterlen; $i ++) {
+            $c = substr($filter, $i, 1);
+            switch ($c) {
+                case '*': // Operator: OR
+                    $con = $this->makeCondition($string);
+                    
+                    if ($con === null) {
+                        if ($subexpr !== null) {
+                            $con = $subexpr;
+                            $subexpr = null;
+                        } else {
+                            $string = '';
+                            break;
+                        }
+                    }
+                    
+                    if ($or === null) { // make new or Object
+                        $or = new Expr\Orx();
+                        if ($and !== null) { // add existing and
+                            $this->addBtoA($or, $and);
+                        }
+                    }
+                    if ($op === null) {
+                        $op = $or;
+                    }
+                    
+                    $this->addBtoA($op, $con); // add condition to last operator object
+                    
+                    $op = $or;
+                    $and = null;
+                    
+                    $string = '';
+                    break;
+                
+                case ',': // Operator: AND
+                    $con = $this->makeCondition($string);
+                    
+                    if ($con === null) {
+                        if ($subexpr !== null) {
+                            $con = $subexpr;
+                            $subexpr = null;
+                        } else {
+                            $string = '';
+                            break;
+                        }
+                    }
+                    
+                    if ($and == null) {
+                        $and = new Expr\Andx();
+                        if ($or !== null) {
+                            $this->addBtoA($or, $and);
+                        }
+                        $op = $and;
+                    }
+                    $this->addBtoA($and, $con);
+                    
+                    $string = '';
+                    break;
+                
+                case '(': // Subquery
+                    $level ++;
+                    while ($level != 0 && $i <= strlen($filter)) {
+                        // get closing bracket
+                        $i ++;
+                        $c = substr($filter, $i, 1);
+                        switch ($c) {
+                            case '(':
+                                $level ++;
+                                break;
+                            case ')':
+                                $level --;
+                                break;
+                        }
+                        if ($level > 0) {
+                            $string .= $c;
+                        }
+                    }
+                    if (!empty($string)) {
+                        $subexpr = $this->genFilterExprRecursive($string);
+                    }
+                    $string = '';
+                    break;
+                
+                default:
+                    $string .= $c;
+                    break;
+            }
+        }
+
+        $con = $this->makeCondition($string);
+        if ($con === null) {
+            if ($subexpr !== null) {
+                $con = $subexpr;
+                $subexpr = null;
+            }
+        }
+        
+        if ($op !== null) {
+            $this->addBtoA($op, $con);
+        } else {
+            if ($subexpr !== null) {
+                throw new InvalidArgumentException('Malformed filter string');
+            }
+            return $con;
+        }
+        
+        if ($or !== null) {
+            return $or;
+        }
+        if ($and !== null) {
+            return $and;
+        }
+        if ($subexpr !== null) {
+            return $subexpr;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Generate the filter object from a string.
      *
      * @return void
      */
-    public function genSql()
+    public function genFilterExpr()
     {
-        $object = $this->getObject();
-        $this->_sql = $this->_genSqlRecursive($object);
+        // TODO check filter string (via regex?)
+        $this->filterExpr = $this->genFilterExprRecursive($this->getFilter());
+        return $this->filterExpr;
     }
 
     /**
-     * Get where/join SQL.
+     * Enrich Querybuilder with where clause
      *
-     * @return array Array with where and join.
-     */
-    public function getSql()
-    {
-        if (!isset($this->_sql) || !is_array($this->_sql)) {
-            $this->genSQL();
-        }
-
-        return $this->_sql;
-    }
-
-    //+++++++++++++++ SQL Handling +++++++++++++++++++++++++
-
-    /**
-     * Help function for enrich the Doctrine Query object with the filters from a Filter-object.
-     *
-     * @param array $obj Object array.
-     *
-     * @return array Doctrine Query where clause addition and parameters.
-     */
-    private function _genDqlRecursive($obj)
-    {
-        if (!is_array($obj) || count($obj) == 0) {
-            return '';
-        }
-
-        if (isset($obj['field']) && !empty($obj['field'])) {
-            $obj['value'] = DataUtil::formatForStore($obj['value']);
-            $res = $this->_plugin->getDql($obj['field'], $obj['op'], $obj['value']);
-
-            return $res;
-        } else {
-            $where = '';
-            $params = array();
-            if (isset($obj[0]) && is_array($obj[0])) {
-                $sub = $this->_genDqlRecursive($obj[0]);
-                if (!empty($sub)) {
-                    $where .= $sub['where'];
-                    if (isset($sub['params'])) {
-                        $params = array_merge($params, $sub['params']);
-                    }
-                }
-                unset($obj[0]);
-            }
-            foreach ($obj as $op => $tmp) {
-                $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
-                if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
-                    $sub = $this->_genDqlRecursive($tmp);
-                    if (!empty($sub)) {
-                        $where .= ' ' . strtoupper($op) . ' ' . $sub['where'];
-                        $params = array_merge($params, $sub['params']);
-                    }
-                }
-            }
-        }
-
-        return array(
-            'where'  => (empty($where) ? '' : "($where)"),
-            'params' => $params
-        );
-    }
-
-    /**
-     * Enrich DQL.
-     *
-     * @param Doctrine_Query $query Doctrine Query Object.
-     *
+     * @param Doctrine_Query $query
+     *            Doctrine Query Object.
+     *            
      * @return void
      */
-    public function enrichQuery(Doctrine_Query $query)
+    public function enrichQuery()
     {
-        $object = $this->getObject();
-        $this->getConfig()->setDoctrineQuery($query, $object);
-
-        $result = $this->_genDqlRecursive($object);
-
-        if (is_array($result) && !empty($result['where'])) {
-            $query->andWhere(substr($result['where'], 1, -1), $result['params']);
-            $this->_dql = $result;
+        $qb = $this->config->getQueryBuilder();
+        $filterExpr = $this->genFilterExpr();
+        
+        if ($filterExpr !== null) {
+            $qb->where($filterExpr);
         }
     }
 
+    // ---------------- String to Querybuilder handling ---------------------
 }

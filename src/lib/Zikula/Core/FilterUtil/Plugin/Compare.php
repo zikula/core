@@ -8,279 +8,117 @@
  * @license GNU/LGPv3 (or at your option any later version).
  * @package FilterUtil
  * @subpackage Filter
- *
- * Please see the NOTICE file distributed with this source code for further
- * information regarding copyright and licensing.
+ *            
+ *             Please see the NOTICE file distributed with this source code for further
+ *             information regarding copyright and licensing.
  */
+
+namespace Zikula\Core\FilterUtil\Plugin;
+
+use Zikula\Core\FilterUtil;
 
 /**
  * Provide a set of default filter operations.
  */
-class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
+class Compare extends FilterUtil\AbstractBuildPlugin
 {
-    /**
-     * Enabled operators.
-     *
-     * @var array
-     */
-    protected $_ops = array();
-
-    /**
-     * Fields to use the plugin for.
-     *
-     * @var array
-     */
-    protected $_fields = array();
 
     /**
      * Constructor.
      *
-     * Argument $config may contain
-     *  fields:   Set of fields to use, see setFields().
-     *  ops:      Operators to enable, see activateOperators().
-     *
-     * @param array $config Configuration.
+     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
+     * @param array $ops  Operators to enable, see activateOperators() (optional) (default=null).
+     * @param bool  $default set the plugin to default (optional) (default=true).
      */
-    public function __construct($config)
+    public function __construct($fields = null, $ops = null, $default = true)
     {
-        parent::__construct($config);
-
-        if (isset($config['fields']) && (!isset($this->_fields) || !is_array($this->_fields))) {
-            $this->addFields($config['fields']);
-        }
-
-        if (isset($config['ops']) && (!isset($this->_ops) || !is_array($this->_ops))) {
-            $this->activateOperators($config['ops']);
-        } else {
-            $this->activateOperators(array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull'));
-        }
-
-        if (isset($config['default']) && $config['default'] == true || count($this->_fields) <= 0) {
-            $this->default = true;
-        }
+        parent::__construct($fields, $ops, $default);
     }
 
     /**
-     * Activates the requested Operators.
+     * Returns the operators the plugin can handle.
      *
-     * @param mixed $op Operators to activate.
-     *
-     * @return void
+     * @return array Operators.
      */
-    public function activateOperators($op)
+    public function availableOperators()
     {
-        static $ops = array(
-                            'eq',
-                            'ne',
-                            'lt',
-                            'le',
-                            'gt',
-                            'ge',
-                            'search',
-                            'like',
-                            'likefirst',
-                            'null',
-                            'notnull'
-                           );
-
-        if (is_array($op)) {
-            foreach ($op as $v) {
-                $this->activateOperators($v);
-            }
-        } elseif (!empty($op) && array_search($op, $this->_ops) === false && array_search($op, $ops) !== false) {
-            $this->_ops[] = $op;
-        }
+        return array(
+            'eq',
+            'ne',
+            'lt',
+            'le',
+            'gt',
+            'ge',
+            'search',
+            'like',
+            'likefirst',
+            'likelast',
+            'null',
+            'notnull'
+        );
     }
 
     /**
-     * Adds fields to list in common way.
+     * Get the Doctrine2 expression object
      *
-     * @param mixed $fields Fields to add.
-     *
-     * @return void
+     * @param string $field
+     *            Field name.
+     * @param string $op
+     *            Operator.
+     * @param string $value
+     *            Value.
+     *            
+     * @return Expr\Base Doctrine2 expression
      */
-    public function addFields($fields)
+    public function getExprObj($field, $op, $value)
     {
-        if (is_array($fields)) {
-            foreach ($fields as $fld) {
-                $this->addFields($fld);
-            }
-        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->_fields) === false) {
-            $this->_fields[] = $fields;
-        }
-    }
-
-    /**
-     * Returns the fields.
-     *
-     * @return array List of fields.
-     */
-    public function getFields()
-    {
-        return $this->_fields;
-    }
-
-    /**
-     * Get activated operators.
-     *
-     * @return array Set of Operators and Arrays.
-     */
-    public function getOperators()
-    {
-        $fields = $this->getFields();
-        if ($this->default == true) {
-            $fields[] = '-';
-        }
-
-        $ops = array();
-        foreach ($this->_ops as $op) {
-            $ops[$op] = $fields;
-        }
-
-        return $ops;
-    }
-
-    /**
-     * Returns SQL code.
-     *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
-     *
-     * @return array SQL code array.
-     */
-    public function getSQL($field, $op, $value)
-    {
-        if (!$this->fieldExists($field)) {
-            return '';
-        }
-
-        $where = '';
-        $column = $this->column[$field];
-
+        $config = $this->config;
+        $column = $config->addAliasTo($field);
+        $config->testFieldExists($column);
+        $expr = $config->getQueryBuilder()->expr();
+        
         switch ($op) {
             case 'eq':
-                $where = "$column = '$value'";
-                break;
-
+                return $expr->eq($column, $config->toParam($value, 'compare', $field));
+            
             case 'ne':
-                $where = "$column <> '$value'";
-                break;
-
+                return $expr->neq($column, $config->toParam($value, 'compare', $field));
+            
             case 'lt':
-                $where = "$column < '$value'";
-                break;
-
+                return $expr->lt($column, $config->toParam($value, 'compare', $field));
+            
             case 'le':
-                $where = "$column <= '$value'";
-                break;
-
+                return $expr->lte($column, $config->toParam($value, 'compare', $field));
+            
             case 'gt':
-                $where = "$column > '$value'";
-                break;
-
+                return $expr->gt($column, $config->toParam($value, 'compare', $field));
+            
             case 'ge':
-                $where = "$column >= '$value'";
-                break;
-
+                return $expr->gte($column, $config->toParam($value, 'compare', $field));
+            
             case 'search':
-                $where = "$column LIKE '%$value%'";
-                break;
-
+                return $expr->like($column, $config->toParam('%' . $value . '%', 'compare', $field));
+            
             case 'like':
-                $where = "$column LIKE '$value'";
-                break;
-
+                return $expr->like($column, $config->toParam($value, 'compare', $field));
+            
             case 'likefirst':
-                $where = "$column LIKE '$value%'";
-                break;
-
+                return $expr->like($column, $config->toParam('%' . $value, 'compare', $field));
+            
+            case 'likelast':
+                return $expr->like($column, $config->toParam($value . '%', 'compare', $field));
+            
             case 'null':
-                $where = "($column = '' OR $column IS NULL)";
-                break;
-
+                return $expr->orX(
+                    $expr->isNull($column), 
+                    $expr->eq($column, '')
+                );
+            
             case 'notnull':
-                $where = "($column <> '' OR $column IS NOT NULL)";
-                break;
+                return $expr->orX(
+                    $expr->isNotNull($column), 
+                    $expr->neq($column, '')
+                );
         }
-
-        return array('where' => $where);
-    }
-
-    /**
-     * Returns DQL code.
-     *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
-     *
-     * @return array Doctrine Query where clause and parameters.
-     */
-    public function getDql($field, $op, $value)
-    {
-        if (!$this->fieldExists($field)) {
-            return '';
-        }
-
-        $where = '';
-        $params = array();
-        $column = $this->getColumn($field);
-
-        switch ($op) {
-            case 'eq':
-                $where = "$column = ?";
-                $params[] = $value;
-                break;
-
-            case 'ne':
-                $where = "$column <> ?";
-                $params[] = $value;
-                break;
-
-            case 'lt':
-                $where = "$column < ?";
-                $params[] = $value;
-                break;
-
-            case 'le':
-                $where = "$column <= ?";
-                $params[] = $value;
-                break;
-
-            case 'gt':
-                $where = "$column > ?";
-                $params[] = $value;
-                break;
-
-            case 'ge':
-                $where = "$column >= ?";
-                $params[] = $value;
-                break;
-
-            case 'search':
-                $where = "$column LIKE ?";
-                $params[] = '%'.$value.'%';
-                break;
-
-            case 'like':
-                $where = "$column LIKE ?";
-                $params[] = $value;
-                break;
-
-            case 'likefirst':
-                $where = "$column LIKE ?";
-                $params[] = $value."%";
-                break;
-
-            case 'null':
-                $where = "($column = '' OR $column IS NULL)";
-                break;
-
-            case 'notnull':
-                $where = "($column <> '' OR $column IS NOT NULL)";
-                break;
-        }
-
-        return array('where' => $where, 'params' => $params);
     }
 }

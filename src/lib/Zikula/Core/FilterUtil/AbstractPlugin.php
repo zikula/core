@@ -6,20 +6,22 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
+ * @package Zikula\Core\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\FilterUtil;
+
 /**
  * Base class of all FilterUtil plugins.
  */
-class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
+class AbstractPlugin
 {
     /**
      * Default handler.
-     *
+     * 
      * @var boolean
      */
     protected $default = false;
@@ -30,15 +32,23 @@ class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
      * @var integer
      */
     protected $id;
-
+    
+    /**
+     * Config object.
+     *
+     * @var Config
+     */
+    protected $config;
+    
     /**
      * Constructor.
      *
-     * @param array $config Array with the config key.
+     * Argument $config may contain
+     *
+     * @param array $config Configuration.
      */
-    public function __construct($config)
-    {
-        parent::__construct($config['config']);
+    public function initPlugin(Config $config) {
+        $this->config = $config;
     }
 
     /**
@@ -52,36 +62,11 @@ class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
     {
         $this->id = $id;
     }
-
+    
     /**
-     * Returns empty Sql code.
-     *
-     * Fallback for build plugins without SQL capabilities.
-     *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
-     *
-     * @return string emtpy.
+     * get if this is the default plugin
      */
-    public function getSQL($field, $op, $value)
-    {
-        return '';
-    }
-
-    /**
-     * Returns empty Dql code.
-     *
-     * Fallback for build plugins without DQL capabilities.
-     *
-     * @param string $field Field name.
-     * @param string $op    Operator.
-     * @param string $value Test value.
-     *
-     * @return string empty.
-     */
-    public function getDql($field, $op, $value)
-    {
-        return '';
+    public function getDefault() {
+    	return $this->default;
     }
 }
