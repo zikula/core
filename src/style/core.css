@@ -21,7 +21,7 @@
 * Module linke navbar
 ******************************************************************************/
 
-ul.navbar-modulelinks li {
+ul.navbar-modulelinks > li {
     background: none;
     border-right:1px solid #aaa;
     display:inline;
@@ -29,7 +29,7 @@ ul.navbar-modulelinks li {
     margin:0;
 }
 
-ul.navbar-modulelinks li:last-child {
+ul.navbar-modulelinks > li:last-child {
     border-right-style: none;
 }
 
@@ -37,10 +37,29 @@ ul.navbar-modulelinks {
     min-height: inherit;
     padding: 3px;
     margin-left: 0;
+    z-index: 1001;
 }
 
-ul.navbar li.active a {
+ul.navbar > li.active > a {
     font-weight: bold;
+}
+
+ul.navbar-modulelinks ul {
+    margin-top: 6px;
+    border-top-width: 0px;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+ul.navbar-modulelinks ul > li {
+    padding: 0px;
+    margin: 0px;
+}
+
+ul.navbar-modulelinks ul > li > a {
+    margin: 0px;
+    padding: 8px 15px;
+    font-size: 80%;
 }
 
 /******************************************************************************
@@ -71,10 +90,6 @@ ul.navbar li.active a {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-#admintab {
-    margin: 0;
-}
-
 .breadcrumb > li  li:before {
     content: "\00bb";
     padding: 0 4px 0 0;
@@ -101,19 +116,22 @@ ul.navbar li.active a {
     color: #999;
 }
 
+#admintab {
+    margin: 0;
+}
 
-.dropdown-menu {
+#admintabs .dropdown-menu {
     margin: 0;
     padding: 0;
     font-size: 95%;
     z-index: 1001;
 }
 
-.dropdown-menu > li {
+#admintabs .dropdown-menu > li {
     margin: 0px;
 }
 
-.dropdown-menu > li > a {
+#admintabs .dropdown-menu > li > a {
     margin: 0px;
     padding: 7px;
 }
