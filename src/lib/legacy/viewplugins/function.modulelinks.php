@@ -220,9 +220,15 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             if (!empty($menuitem['url']) && System::getBaseUrl().$menuitem['url'] === System::getCurrentUrl()) {
                 $active = 'active ';
             }
+            
+            $dropdown = '';
+            if (isset($menuitem['links'])) {
+                $dropdown = 'dropdown' ;
+            }
+            
             $html .= '<li';
             $html .= !empty($menuitem['id']) ? ' id="'.$menuitem['id'].'"' : '';
-            $html .= ' class="'.$active;
+            $html .= ' class="'.$active.$dropdown;
             $html .= !empty($class) ? $class : '';
             $html .= '">';
             $attr  = !empty($menuitem['title']) ? ' title="'.$menuitem['title'].'"' : '';
@@ -235,12 +241,30 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                 if (!empty($menuitem['icon'])) {
                     $icon = '<span class="icon icon-'.$menuitem['icon'].'"></span> ';
                 }
-                $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$icon.$menuitem['text'].'</a>';
+                $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr;
+                if (isset($menuitem['links'])) {
+                    $html .= ' class="dropdown-toggle" data-toggle="dropdown"';
+                }
+                $html .= '>'.$icon.$menuitem['text'];
+                if (isset($menuitem['links'])) {
+                    $html .= '<b class="caret"></b>';
+                }
+                $html .= '</a>';
             } else {
                 $html .= '<span'.$attr.'>'.$menuitem['text'].'</span>';
             }
             if (isset($menuitem['links'])) {
-                $html .= _smarty_function_modulelinks($i, $menuitem['links']);
+                $html .= '<ul class="dropdown-menu">';
+                foreach($menuitem['links'] as $submenuitem) {
+                    $html .= '<li>';
+                    if (isset($submenuitem['url'])) {
+                        $html .= '<a href="'.$submenuitem['url'].'">'.$submenuitem['text'].'</a>';
+                    } else {
+                        $html .= $submenuitem['text'];
+                    }
+                    $html .= '</li>';
+                }
+                $html .= '</ul>';
             }
             $html .= '</li>';
         }
@@ -253,37 +277,4 @@ function smarty_function_modulelinks($params, Zikula_View $view)
     } else {
         return $html;
     }
-}
-
-/**
- * Internal function to render a set of links.
- *
- * @param string $id    ID of the context.
- * @param array  $links Array of links to be rendered.
- *
- * @return string HTML output.
- */
-function _smarty_function_modulelinks($id, $links)
-{
-    PageUtil::addVar('javascript', 'zikula.ui');
-
-    $html = '';
-    $html .= '<span id="modcontext' .$id .'" class="z-drop">&nbsp;</span>';
-    $html .= "<script type='text/javascript'>
-            /* <![CDATA[ */
-                var context_modcontext{$id} = new Zikula.UI.ContextMenu('modcontext{$id}',{
-                    leftClick: true,
-                    animation: false
-                });";
-    foreach ($links as $link) {
-        $html .= "context_modcontext{$id}.addItem({
-                    label: '{$link['text']}',
-                    callback: function(){window.location =  '{$link['url']}';}
-                });";
-
-    }
-    $html .= "/* ]]> */
-            </script>";
-
-    return $html;
 }
