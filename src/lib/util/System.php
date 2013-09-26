@@ -161,11 +161,10 @@ class System
      *
      * @param mixed  $var  The variable to validate.
      * @param string $type The type of the validation to perform (email, url etc.).
-     * @param mixed  $args Optional array with validation-specific settings (deprecated).
      *
      * @return boolean True if the validation was successful, false otherwise.
      */
-    public static function varValidate($var, $type, $args = 0)
+    public static function varValidate($var, $type)
     {
         if (!isset($var) || !isset($type)) {
             return false;
@@ -207,35 +206,12 @@ class System
             return false;
         }
 
-        if ($type == 'email' || $type == 'url') {
-            // CSRF protection for email and url
-            $var = str_replace(array(
-                            '\r',
-                            '\n',
-                            '%0d',
-                            '%0a'), '', $var);
-
-            if (self::getVar('idnnames') && extension_loaded('intl')) {
-                // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
-                $var = idn_to_ascii(DataUtil::convertToUTF8($var));
-            }
-            // all characters must be 7 bit ascii
-            $length = strlen($var);
-            $idx = 0;
-            while ($length--) {
-                $c = $var[$idx++];
-                if (ord($c) > 127) {
-                    return false;
-                }
-            }
+        if ($type == 'email' && !filter_var($var, FILTER_VALIDATE_EMAIL)) {
+            return false;
         }
 
-        if ($type == 'url') {
-            // check for url
-            $url_array = @parse_url($var);
-            if (!empty($url_array) && empty($url_array['scheme'])) {
-                return false;
-            }
+        if ($type == 'url' && filter_var($var, FILTER_VALIDATE_URL)) {
+            return false;
         }
 
         if ($type == 'uname') {
