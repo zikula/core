@@ -2189,7 +2189,7 @@ class UserController extends \Zikula_AbstractController
         $newemailagain = $this->request->request->get('newemailagain', '');
 
         $emailErrors = ModUtil::apiFunc($this->name, 'registration', 'getEmailErrors', array(
-            'uid'           => $uservars['uid'],
+            'uid'           => \UserUtil::getVar('uid'),
             'email'         => $newemail,
             'emailagain'    => $newemailagain,
             'checkmode'     => 'modify',
