@@ -215,7 +215,7 @@ class System
                             '%0d',
                             '%0a'), '', $var);
 
-            if (self::getVar('idnnames')) {
+            if (self::getVar('idnnames') && extension_loaded('intl')) {
                 // transfer between the encoded (Punycode) notation and the decoded (8bit) notation.
                 $var = idn_to_ascii(DataUtil::convertToUTF8($var));
             }
