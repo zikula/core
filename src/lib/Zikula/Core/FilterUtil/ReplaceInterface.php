@@ -12,10 +12,12 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\FilterUtil;
+
 /**
  * FilterUtil replace interface
  */
-interface FilterUtil_ReplaceInterface
+interface ReplaceInterface
 {
     /**
      * Replace whatever the plugin has to replace.
