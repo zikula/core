@@ -162,6 +162,8 @@ class System
      * @param mixed  $var  The variable to validate.
      * @param string $type The type of the validation to perform (email, url etc.).
      *
+     * @deprecated since 1.3.6
+     *
      * @return boolean True if the validation was successful, false otherwise.
      */
     public static function varValidate($var, $type)
