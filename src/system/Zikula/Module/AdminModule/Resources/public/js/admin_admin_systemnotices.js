@@ -11,6 +11,12 @@
                 span.removeClass('icon-caret-down');
                 span.addClass('icon-caret-right');
             } else {
+                // We have to do some magic here, because the element has
+                // 'display: none !important;' (Bootstrap's 'hide' class).
+                // So first hide the element the jQuery way and then remove the css class.
+                ul.hide();
+                ul.removeClass('hide');
+
                 ul.slideDown();
                 span.removeClass('icon-caret-right');
                 span.addClass('icon-caret-down');
