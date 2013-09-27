@@ -122,7 +122,7 @@ class AdminController extends \Zikula_AbstractController
         $startlet = strtolower($startlet);
 
         foreach ($allthemes as $key => $theme) {
-            if (strtolower($key[0]) == $startlet) {
+            if (strtolower($theme['displayname'][0]) == $startlet) {
                 $themes[$key] = $theme;
             }
         }
