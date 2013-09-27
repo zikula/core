@@ -66,6 +66,10 @@ class UserApi extends \Zikula_AbstractApi
 
             return true;
         }
+
+        if (!isset($args['fromaddress'])) {
+            $args['fromaddress'] = \System::getVar('adminmail');
+        }
            
         // Check for installed advanced Mailer module
         $event = new \Zikula\Core\Event\GenericEvent($this, $args);
@@ -123,7 +127,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // set fromname and fromaddress, default to 'sitename' and 'adminmail' config vars
         $mail->FromName = (isset($args['fromname']) && $args['fromname']) ? $args['fromname'] : System::getVar('sitename');
-        $mail->From     = (isset($args['fromaddress']) && $args['fromaddress']) ? $args['fromaddress'] : System::getVar('adminmail');
+        $mail->From     = $args['fromaddress'];
 
         // add any to addresses
         if (is_array($args['toaddress'])) {
