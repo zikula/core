@@ -1,4 +1,3 @@
-{ajaxheader modname='ZikulaMailerModule' filename='mailer_admin_modifyconfig.js' noscriptaculous=true effects=true}
 {adminheader}
 <h3>
     <span class="icon icon-wrench"></span>
@@ -51,7 +50,7 @@
         </div>
     </fieldset>
 
-    <fieldset id="mailer_sendmailsettings">
+    <fieldset data-switch="mailertype[]" data-switch-value="2">
         <legend>{gt text="'Sendmail' settings"}</legend>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='sendmailpath' __text="Path to 'Sendmail'"}
@@ -62,7 +61,7 @@
         </div>
     </fieldset>
 
-    <fieldset id="mailer_smtpsettings">
+    <fieldset data-switch="mailertype[]" data-switch-value="4">
         <legend>{gt text="SMTP settings"}</legend>
         <div class="form-group">
             {formlabel cssClass="col-lg-3 control-label" for='smtpserver' __text='SMTP server'}
@@ -97,7 +96,7 @@
                 {formcheckbox id='smtpauth'}
             </div>
         </div>
-            <div id="mailer_smtp_authentication">
+        <div data-switch="smtpauth" data-switch-value="1">
             <div class="form-group">
                 {formlabel cssClass="col-lg-3 control-label" for='smtpusername' __text='SMTP user name'}
                 <div class="col-lg-9">
@@ -109,8 +108,8 @@
                 <div class="col-lg-9">
                     {formtextinput cssClass="form-control" id='smtppassword' textMode='password' size=30 maxLength=50}
                 </div>
+            </div>
         </div>
-    </div>
     </fieldset>
 
     <div class="form-group">
