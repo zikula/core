@@ -42,7 +42,7 @@
     <fieldset>
         <legend>{gt text='Filter search by type' domain='zikula'}</legend>
         <div class="search_toogle">
-            <input type="checkbox" name="togglebox" id="togglebox" checked="checked" tabindex="0" onclick="toggleboxes(this);" />
+            <input type="checkbox" name="togglebox" id="togglebox" checked="checked" tabindex="0" />
             <label for="togglebox">{gt text='De/Select all' domain='zikula'}</label>
         </div>
         {foreach from=$plugin_options key='plugin' item='plugin_option'}
