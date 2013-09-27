@@ -119,6 +119,7 @@ div#z-developernotices span:hover,
 div#z-securityanalyzer strong:hover,
 div#z-updatechecker strong:hover {
     text-decoration: underline;
+    cursor: pointer;
 }
 
 div#z-developernotices a,
@@ -146,6 +147,15 @@ div#z-securityanalyzer ul {
     list-style-type: disc;
     margin: 0 1em;
     padding: 0 1em;
+}
+
+/**
+ * This centers the close icon.
+ */
+div#z-developernotices > button.close,
+div#z-securityanalyzer > button.close,
+div#z-updatechecker > button.close {
+    margin-top: -2px;
 }
 
 div#z-updatechecker p {
