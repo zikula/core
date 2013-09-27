@@ -37,7 +37,6 @@ ul.navbar-modulelinks {
     min-height: inherit;
     padding: 3px;
     margin-left: 0;
-    z-index: 1001;
 }
 
 ul.navbar > li.active > a {
@@ -58,8 +57,8 @@ ul.navbar-modulelinks ul > li {
 
 ul.navbar-modulelinks ul > li > a {
     margin: 0px;
-    padding: 8px 15px;
-    font-size: 80%;
+    padding: 6px 12px;
+    font-size: 78%;
 }
 
 /******************************************************************************
@@ -90,10 +89,13 @@ ul.navbar-modulelinks ul > li > a {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
+/******************************************************************************
+* Breadcrumbs
+******************************************************************************/
+
 .breadcrumb > li  li:before {
     content: "\00bb";
     padding: 0 4px 0 0;
-    
 }
 
 .breadcrumb li {
@@ -116,35 +118,13 @@ ul.navbar-modulelinks ul > li > a {
     color: #999;
 }
 
-#admintab {
-    margin: 0;
-}
-
-#admintabs .dropdown-menu {
-    margin: 0;
-    padding: 0;
-    font-size: 95%;
-    z-index: 1001;
-}
-
-#admintabs .dropdown-menu > li {
-    margin: 0px;
-}
-
-#admintabs .dropdown-menu > li > a {
-    margin: 0px;
-    padding: 7px;
-}
-
 .nav-tabs > li > a {
     background-color: #dddddd;
 }
 
-
 .nav-tabs > li {
     margin: 0 0 -1px 0;
 }
-
 
 .table > thead > tr > th, .table > thead > tr > td {
     background: linear-gradient(#fafafa, #CFCFCF);
