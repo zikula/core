@@ -597,7 +597,7 @@ class UserApi extends \Zikula_AbstractApi
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
-        $dql = "DELETE FROM Zikula\Module\UsersModule\Entity\UserVerification v WHERE v.uid = " . $uid . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $dql = 'DELETE FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.uid = ' . $uid . ' AND v.changetype = ' . UsersConstant::VERIFYCHGTYPE_EMAIL;
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
