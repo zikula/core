@@ -13,10 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+namespace Zikula\Core\FilterUtil\Plugin;
+
+use Zikula\Core\FilterUtil;
+
 /**
  * Simple field name replacement.
  */
-class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements FilterUtil_ReplaceInterface
+class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
 {
     /**
      * Replace pairs.
@@ -35,13 +39,9 @@ class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements
      *
      * @param array $config Configuration.
      */
-    public function __construct($config)
+    public function __construct($pairs = array())
     {
-        parent::__construct($config);
-
-        if (isset($config['pair']) && is_array($config['pair'])) {
-            $this->addPair($config['pair']);
-        }
+        $this->addPair($pairs);
     }
 
     /**
