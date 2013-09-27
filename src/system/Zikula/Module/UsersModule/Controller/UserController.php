@@ -2197,9 +2197,16 @@ class UserController extends \Zikula_AbstractController
 
         if (!empty($emailErrors)) {
             foreach ($emailErrors as $field => $errorList) {
-                foreach ($errorList as $errorMessage) {
-                    $this->registerError($errorMessage);
+                if (is_array($errorList)) {
+                    // More than one error.
+                    foreach ($errorList as $errorMessage) {
+                        $this->registerError($errorMessage);
+                    }
+                } else {
+                    // Only one error.
+                    $this->registerError($errorList);
                 }
+
             }
             return $this->redirect(ModUtil::url($this->name, 'user', 'changeEmail'));
         }
