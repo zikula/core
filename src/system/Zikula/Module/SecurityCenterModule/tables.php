@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
@@ -12,13 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-
 /**
- * Populate pntables array for securitycenter module.
+ * Populate dbtables array for securitycenter module.
  *
- * @return array pntables array.
+ * @return array dbtables array.
  */
-function SecurityCenterModule_tables()
+function ZikulaSecurityCenterModule_tables()
 {
     // Initialise table array
     $dbtable = array();
