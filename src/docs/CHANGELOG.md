@@ -74,7 +74,7 @@ Features:
 - Do not register hooks twice, #484.
 - Do not register eventhandlers twice, #727.
 - Added a `reason` key to module dependendies array in module version file.
-- add 'moduleInstance' template variable for 1.3.6-type modules (is NULL for legacy mods)
+- add 'moduleBundle' template variable for 1.3.6-type modules (is NULL for legacy mods)
   instance of `\Zikula\Core\AbstractModule` for current module
 
 CHANGELOG - ZIKULA 1.3.5

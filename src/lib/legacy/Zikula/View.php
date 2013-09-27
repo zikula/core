@@ -316,7 +316,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('themepath', $this->baseurl . 'themes/' . $theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri)
-             ->assign('moduleInstance', ModUtil::getModule($moduleName)); // is NULL for pre-1.3.6-type modules
+             ->assign('moduleBundle', ModUtil::getModule($moduleName)); // is NULL for pre-1.3.6-type modules
 
         if (System::isLegacyMode()) {
             $this->assign('stylepath', $this->baseurl . 'themes/' . $theme . '/style')
