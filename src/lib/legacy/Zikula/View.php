@@ -252,10 +252,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         if (System::isLegacyMode()) {
             $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
             $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
-            // theme plugins
-            $themePluginsPath = isset($themeBundle) ? $themeBundle->getPath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
-            $this->addPluginDir($themePluginsPath); // Module override in themes
         }
+        // theme plugins module overrides
+        $themePluginsPath = isset($themeBundle) ? $themeBundle->getPath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
+        $this->addPluginDir($themePluginsPath);
 
         //---- Cache handling -------------------------------------------------
         if ($caching && in_array((int)$caching, array(0, 1, 2))) {
@@ -320,25 +320,24 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('themepath', isset($themeBundle) ? $themeBundle->getPath() : $this->baseurl . 'themes/' . $theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri)
-             ->assign('moduleBundle', ModUtil::getModule($moduleName)); // is NULL for pre-1.3.6-type modules
+             ->assign('moduleBundle', ModUtil::getModule($moduleName)) // is NULL for pre-1.3.6-type modules
+             ->assign('themeBundle', $themeBundle);
 
-        if (System::isLegacyMode()) {
-            if (isset($themeBundle)) {
-                $stylePath = $themeBundle->getRelativePath() . "/Resources/public/css";
-                $javascriptPath = $themeBundle->getRelativePath() . "/Resources/public/js";
-                $imagePath = $themeBundle->getRelativePath() . "/Resources/public/images";
-                $imageLangPath = $themeBundle->getRelativePath() . "/Resources/public/images/" . $this->language;
-            } else {
-                $stylePath = $this->baseurl . "themes/$theme/style";
-                $javascriptPath = $this->baseurl . "themes/$theme/javascript";
-                $imagePath = $this->baseurl . "themes/$theme/images";
-                $imageLangPath = $this->baseurl . "themes/$theme/images/" . $this->language;
-            }
-            $this->assign('stylepath', $stylePath)
-                 ->assign('scriptpath', $javascriptPath)
-                 ->assign('imagepath', $imagePath)
-                 ->assign('imagelangpath', $imageLangPath);
+        if (isset($themeBundle)) {
+            $stylePath = $themeBundle->getRelativePath() . "/Resources/public/css";
+            $javascriptPath = $themeBundle->getRelativePath() . "/Resources/public/js";
+            $imagePath = $themeBundle->getRelativePath() . "/Resources/public/images";
+            $imageLangPath = $themeBundle->getRelativePath() . "/Resources/public/images/" . $this->language;
+        } else {
+            $stylePath = $this->baseurl . "themes/$theme/style";
+            $javascriptPath = $this->baseurl . "themes/$theme/javascript";
+            $imagePath = $this->baseurl . "themes/$theme/images";
+            $imageLangPath = $this->baseurl . "themes/$theme/images/" . $this->language;
         }
+        $this->assign('stylepath', $stylePath)
+             ->assign('scriptpath', $javascriptPath)
+             ->assign('imagepath', $imagePath)
+             ->assign('imagelangpath', $imageLangPath);
 
         // for {gt} template plugin to detect gettext domain
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
