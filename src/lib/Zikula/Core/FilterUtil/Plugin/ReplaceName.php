@@ -5,8 +5,8 @@
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
- * @license GNU/LGPv3 (or at your option any later version).
- * @package FilterUtil
+ * @license    GNU/LGPv3 (or at your option any later version).
+ * @package    FilterUtil
  * @subpackage Filter
  *
  * Please see the NOTICE file distributed with this source code for further

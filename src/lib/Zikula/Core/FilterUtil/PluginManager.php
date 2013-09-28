@@ -27,7 +27,7 @@ class PluginManager extends AbstractBase
      * @var array
      */
     private $filterUtil;
-    
+
     /**
      * Loaded plugins.
      *
@@ -60,17 +60,20 @@ class PluginManager extends AbstractBase
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param array             $args   Plugins to load in form "plugin name => Plugin Object".
+     * @param        $plugins
+     * @param        $restrictions
+     *
+     * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
      */
     public function __construct(Config $config, $plugins, $restrictions)
     {
         parent::__construct($config);
-        
+
         if (!is_array($plugins)) {
             $plugins = array();
         }
         $this->loadPlugins($plugins);
-        
+
         if ($restrictions !== null) {
             $this->loadRestrictions($restrictions);
         }
@@ -98,8 +101,10 @@ class PluginManager extends AbstractBase
     /**
      * Loads a single plugin.
      *
-     * @param string $name   Plugin's name.
-     * @param array  $config Plugin's config.
+     * @param AbstractPlugin $plugin
+     *
+     * @internal param string $name Plugin's name.
+     * @internal param array $config Plugin's config.
      *
      * @return boolean true if the plugin is the default plugin.
      */
@@ -112,7 +117,7 @@ class PluginManager extends AbstractBase
         $plugin->setID($key);
         $plugin->initPlugin($this->config);
         $this->registerPlugin($key);
-        
+
         return $plugin->getDefault();
     }
 
@@ -128,15 +133,15 @@ class PluginManager extends AbstractBase
     private function registerPlugin($k)
     {
         $plugin = & $this->plugin[$k];
-        
+
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }
-        
+
         if ($plugin instanceof BuildInterface) {
-            
+
             $ops = $plugin->getOperators();
-            
+
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
                     $flds = array();
@@ -169,7 +174,7 @@ class PluginManager extends AbstractBase
         if (empty($rest) || !is_array($rest)) {
             return;
         }
-    
+
         foreach ($rest as $field => $ops) {
             // accept registered operators only
             $ops = array_filter(array_intersect((array)$ops, array_keys($this->ops)));
@@ -178,7 +183,7 @@ class PluginManager extends AbstractBase
             }
         }
     }
-    
+
     /**
      * Runs replace plugins and return condition set.
      *
@@ -198,12 +203,12 @@ class PluginManager extends AbstractBase
         }
 
         return array(
-                     'field' => $field,
-                     'op'    => $op,
-                     'value' => $value
-                    );
+            'field' => $field,
+            'op' => $op,
+            'value' => $value
+        );
     }
-    
+
     /**
      * Get the Doctrine2 expression object
      *
@@ -220,14 +225,14 @@ class PluginManager extends AbstractBase
         }
         if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
             throw new \Exception('Field not allowed.');
-        } 
+        }
         if (isset($this->ops[$op][$field])) {
             return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
-        } 
+        }
         if (isset($this->ops[$op]['-'])) {
             return $this->plugin[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
         }
-        
+
         return '';
     }
 }

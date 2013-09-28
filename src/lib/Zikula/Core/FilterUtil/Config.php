@@ -13,6 +13,7 @@
  */
 namespace Zikula\Core\FilterUtil;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -73,15 +74,16 @@ class Config
      * join: The join array in form join=>alias
      * alias: Alias to use with the main entity, default tbl.
      *
-     * @param array $args
-     *            Arguments as listed above.
+     * @param EntityManager $em
+     * @param QueryBuilder  $qb
+     * @param array         $args Arguments as listed above.
      */
-    public function __construct(\Doctrine\ORM\EntityManager $em, QueryBuilder $qb, $args)
+    public function __construct(EntityManager $em, QueryBuilder $qb, $args)
     {
         $this->setQueryBuilder($qb);
-        
+
         $this->entityManager = $em;
-        
+
         $this->collectMeta();
     }
 
@@ -91,15 +93,15 @@ class Config
     private function collectMeta()
     {
         $parts = $this->queryBuilder->getDQLParts();
-        
+
         $entity = reset($parts['from']);
         $this->setEntityName($entity->getFrom());
         $this->setAlias($entity->getAlias());
-        
+
         $mdf = $this->entityManager->getMetadataFactory();
-        
+
         $this->meta[$this->alias] = $mdf->getMetadataFor($this->entityName);
-        
+
         foreach ($parts['join'][$this->alias] as $join) {
             $j = explode('.', $join->getJoin(), 2);
             if (count($j) != 2) {
@@ -111,7 +113,7 @@ class Config
             if (!isset($this->meta[$j[0]]->associationMappings[$j[1]])) {
                 throw new \Exception('Unknown Mapping in join: ' . $join->getJoin());
             }
-            
+
             $jEntity = $this->meta[$j[0]]->associationMappings[$j[1]]['targetEntity'];
             $this->meta[$join->getAlias()] = $mdf->getMetadataFor($jEntity);
         }
@@ -120,7 +122,7 @@ class Config
     /**
      * Sets the Doctrine2 Query Builder
      *
-     * @param QueryBuilder $qb            
+     * @param QueryBuilder $qb
      */
     public function setQueryBuilder(QueryBuilder $qb)
     {
@@ -140,13 +142,15 @@ class Config
     /**
      * Generate next parameter key
      *
-     * @param string $pluginname            
-     * @param string $fieldname            
+     * @param string $pluginname
+     * @param string $fieldname
+     *
      * @return string key form :$number_$pluginname_$fieldname
      */
     public function nextUniqueParamkey($pluginname, $fieldname)
     {
-        $this->paramNumber ++;
+        $this->paramNumber++;
+
         return ':' . $this->paramNumber . '_' . $pluginname . '_' . $fieldname;
     }
 
@@ -154,15 +158,17 @@ class Config
      * Generate next parameter key and
      * add the value to the QueryBuilder
      *
-     * @param mixed $value            
-     * @param string $pluginname            
-     * @param string $fieldname            
+     * @param mixed  $value
+     * @param string $pluginname
+     * @param string $fieldname
+     *
      * @return string key form :$pluginname_$fieldname_$number
      */
     public function toParam($value, $pluginname, $fieldname)
     {
         $paramkey = $this->nextUniqueParamkey($pluginname, $fieldname);
         $this->queryBuilder->setParameter($paramkey, $value);
+
         return $paramkey;
     }
 
@@ -171,7 +177,7 @@ class Config
      *
      * @param string $table
      *            Table name.
-     *            
+     *
      * @return bool true on success, false otherwise.
      */
     public function setEntityName($entityName)
@@ -204,7 +210,7 @@ class Config
      *
      * @param string $alias
      *            Entity alias.
-     *            
+     *
      * @return void
      */
     public function setAlias($alias)
@@ -227,14 +233,15 @@ class Config
      * in the string
      * else only $s.
      *
-     * @param $s string            
+     * @param $s string
      *
      * @return string with alias
      */
     public function addAliasTo($s)
     {
-        if (strpos($s, '.') === FALSE)
+        if (strpos($s, '.') === false)
             return $this->alias . '.' . $s;
+
         return $s;
     }
 
@@ -243,17 +250,18 @@ class Config
      * in the string
      * else only $s.
      *
-     * @param $s string            
+     * @param string $field
      *
      * @return string with alias
      */
     public function testFieldExists($field)
     {
         $parts = explode('.', $field, 2);
-        if (count($parts) < 2 
-                || !isset($this->meta[$parts[0]]) 
-                || !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])) {
-            throw new \Exception('Unknown Fieldname: '.$field);
+        if (count($parts) < 2
+            || !isset($this->meta[$parts[0]])
+            || !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])
+        ) {
+            throw new \Exception('Unknown Fieldname: ' . $field);
         }
     }
 }

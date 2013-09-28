@@ -7,7 +7,7 @@
  *
  * @license GNU/LGPv3 (or at your option any later version).
  * @package Zikula\Core\FilterUtil
- *         
+ *
  *          Please see the NOTICE file distributed with this source code for further
  *          information regarding copyright and licensing.
  */
@@ -38,21 +38,20 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      * Constructor.
      *
      * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops  Operators to enable, see activateOperators() (optional) (default=null).
+     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
      * @param bool  $default set the plugin to default (optional) (default=false).
      */
     public function __construct($fields = null, $ops = null, $default = false)
     {
         $this->addFields($fields);
-        $this->activateOperators( (!empty($ops)) ? $ops : $this->availableOperators());
+        $this->activateOperators((!empty($ops)) ? $ops : $this->availableOperators());
         $this->default = $default;
     }
 
     /**
      * Adds fields to list in common way.
      *
-     * @param mixed $fields
-     *            Fields to add.
+     * @param mixed $fields Fields to add.
      *
      * @return void
      */
@@ -62,11 +61,11 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && array_search($fields, $this->fields) === false) {
+        } else if (!empty($fields) && array_search($fields, $this->fields) === false) {
             $this->fields[] = $fields;
         }
     }
-    
+
     /**
      * Returns the fields.
      *
@@ -76,13 +75,12 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     {
         return $this->fields;
     }
-    
+
     /**
      * Activates the requested Operators.
      *
-     * @param mixed $op
-     *            Operators to activate.
-     *            
+     * @param mixed $op Operators to activate.
+     *
      * @return void
      */
     public function activateOperators($op)
@@ -108,15 +106,15 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
         if ($this->default == true) {
             $fields[] = '-';
         }
-        
+
         $ops = array();
         foreach ($this->ops as $op) {
             $ops[$op] = $fields;
         }
-        
+
         return $ops;
     }
-    
+
     /**
      * Returns the operators the plugin can handle.
      *

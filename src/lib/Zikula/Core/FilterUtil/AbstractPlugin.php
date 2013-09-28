@@ -21,7 +21,7 @@ class AbstractPlugin
 {
     /**
      * Default handler.
-     * 
+     *
      * @var boolean
      */
     protected $default = false;
@@ -32,22 +32,23 @@ class AbstractPlugin
      * @var integer
      */
     protected $id;
-    
+
     /**
      * Config object.
      *
      * @var Config
      */
     protected $config;
-    
+
     /**
      * Constructor.
      *
      * Argument $config may contain
      *
-     * @param array $config Configuration.
+     * @param Config $config Configuration.
      */
-    public function initPlugin(Config $config) {
+    public function initPlugin(Config $config)
+    {
         $this->config = $config;
     }
 
@@ -62,11 +63,12 @@ class AbstractPlugin
     {
         $this->id = $id;
     }
-    
+
     /**
      * get if this is the default plugin
      */
-    public function getDefault() {
-    	return $this->default;
+    public function getDefault()
+    {
+        return $this->default;
     }
 }
