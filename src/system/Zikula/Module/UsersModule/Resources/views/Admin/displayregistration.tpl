@@ -4,9 +4,11 @@
     {gt text='Registration for \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 
+<div class="form-horizontal">
 {include file='Admin/includeregistration.tpl'}
 
-<div class="z-buttons text-center" style="margin:0 0 1em; padding:1em 0;">
+
+<div class="text-center">
     {strip}
     {assign var="regactions" value=$actions.list[$reginfo.uid]}
     {gt assign='titleIfSent' text='Resend verification code'}
@@ -14,15 +16,15 @@
     {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
     {* ($regactions.optname == true) means that the operation can be performed for that individual registration record. *}
     {if isset($regactions.approve) && $regactions.approve && !$reginfo.isverified}
-    <a href="{$regactions.approve|safetext}">{img src='button_ok.png' modname='core' set='icons/extrasmall' __title='Approve' __alt='Approve'} {gt text='Approve'}</a>
+    <a class="btn btn-success" href="{$regactions.approve|safetext}"><span class="icon icon-ok"></span> {gt text='Approve'}</a>&nbsp;
     {elseif isset($regactions.approve) && $regactions.approve && $reginfo.isverified}
-    <a href="{$regactions.approve|safetext}">{img src='add_user.png' modname='core' set='icons/extrasmall' __title='Approve (creates a new user account)' __alt='Approve (creates a new user account)'} {gt text='Approve and Add User'}</a>
+    <a class="btn btn-success" href="{$regactions.approve|safetext}"><span class="icon icon-plus"></span> {gt text='Approve and Add User'}</a>&nbsp;
     {/if}
     {if isset($regactions.deny) && $regactions.deny}
-    <a href="{$regactions.deny|safetext}">{img src='delete_user.png' modname='core' set='icons/extrasmall' __title='Deny (deletes registration)' __alt='Deny (deletes registration)'} {gt text='Deny'}</a>
+    <a class="btn btn-danger" href="{$regactions.deny|safetext}"><span class="icon icon-trash"></span> {gt text='Deny'}</a>&nbsp;
     {/if}
     {if isset($regactions.modify) && $regactions.modify}
-    <a href="{$regactions.modify|safetext}">{img src='xedit.png' modname='core' set='icons/extrasmall' __title='Edit registration details' __alt='Edit registration details'} {gt text='Edit'}</a>
+    <a class="btn btn-warning" href="{$regactions.modify|safetext}"><span class="icon icon-pencil"></span> {gt text='Edit'}</a>&nbsp;
     {/if}
 
     {if isset($regactions.verify) && $regactions.verify}
@@ -31,14 +33,17 @@
     {else}
     {assign var='actionTitle' value=$titleIfNotSent}
     {/if}
-    <a href="{$regactions.verify|safetext}">{img src='mail_send.png' modname='core' set='icons/extrasmall' title=$actionTitle alt=$actionTitle}{$actionTitle}</a>
+    <a class="btn btn-info" href="{$regactions.verify|safetext}"><span class="icon icon-envelope"></span> {$actionTitle}</a>&nbsp;
     {/if}
 
     {if isset($regactions.approveForce) && $regactions.approveForce && !$reginfo.isverified}
-    <a href="{$regactions.approveForce|safetext}">{img src='db_update.png' modname='core' set='icons/extrasmall' __title='Skip verification (approves, and creates a new user account)' __alt='Skip verification (approves, and creates a new user account)'} {gt text='Add user without verification'}</a>
+        <a class="btn btn-success" href="{$regactions.approveForce|safetext}" title="title='Skip verification (approves, and creates a new user account)'}"><span class="icon icon-plus"></span> {gt text='Add user without verification'}</a>&nbsp;
     {/if}
 
-    <a href="{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview='true'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Return to registrations list" __title="Return to registrations list"} {gt text='Return to registrations'}</a>
+    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview='true'}"><span class="icon icon-reply"></span> {gt text='Return to registrations'}</a>&nbsp;
     {/strip}
 </div>
+
+    
+    
 {adminfooter}

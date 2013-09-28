@@ -6,9 +6,10 @@
 
 <p class="alert alert-warning">{gt text="Warning! This will delete the registration from the database. It cannot be undone."}</p>
 
-{include file='Admin/includeregistration.tpl'}
-
 <form id="users_denyregistration" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='denyRegistration'}" method="post">
+    
+    {include file='Admin/includeregistration.tpl'}
+
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uid" name="uid" value="{$reginfo.uid}" />
@@ -30,15 +31,17 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label" for="users_reason">{gt text="Reason"}</label>
                 <div class="col-lg-9">
-                <textarea id="users_reason" name="reason" cols="50" rows="6"></textarea>
+                <textarea id="users_reason" class="form-control" name="reason" cols="50" rows="6"></textarea>
                 <div class="help-block">{gt text='Note: The reason is sent in the user notification e-mail. All formatting, including extra spaces and blank lines are ignored.'}</div>
             </div>
         </div>
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button id='confirm' type='submit' src='delete_user.png' set='icons/extrasmall' __alt='Delete registration' __title='Delete registration' __text='Delete registration'}
-                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+                <button class="btn btn-danger" id='confirm' type='submit' title="{gt text='Delete registration'}">
+                    {gt text='Delete registration'}
+                </button>
+                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>

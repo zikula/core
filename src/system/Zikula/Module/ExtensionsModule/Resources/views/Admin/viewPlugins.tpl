@@ -73,7 +73,9 @@
             <td>{$plugin.instance->getMetaDescription()|safetext}</td>
             <td>{$plugin.version|safetext}</td>
             <td class="nowrap">
-                {img src=$plugin.statusimage modname=core set=icons/extrasmall alt=$plugin.status title=$plugin.status}&nbsp;{$plugin.status|safetext}
+                <span class="label label-{$plugin.statusclass}">
+                    {$plugin.status|safetext}
+                </span>
                 {if isset($plugin.newversion)}
                 <br />({$plugin.newversion|safetext})
                 {/if}
