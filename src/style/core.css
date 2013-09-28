@@ -89,35 +89,6 @@ ul.navbar-modulelinks ul > li > a {
     text-shadow: -1px -1px 0 rgba(255, 255, 255, 0.8);
 }
 
-/******************************************************************************
-* Breadcrumbs
-******************************************************************************/
-
-.breadcrumb > li  li:before {
-    content: "\00bb";
-    padding: 0 4px 0 0;
-}
-
-.breadcrumb li {
-    margin: 0px;
-}
-
-.breadcrumb li a {
-    color: #555;
-}
-
-.breadcrumb li a:hover {
-    text-decoration: underline;
-}
-
-.breadcrumb {
-    background-color: transparent;
-}
-
-.breadcrumb span {
-    color: #999;
-}
-
 .nav-tabs > li > a {
     background-color: #dddddd;
 }
