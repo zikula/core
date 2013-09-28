@@ -653,7 +653,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         $activetime = time() - (\System::getVar('secinactivemins') * 60);
 
-        $dql = "SELECT DISTINCT(s.uid) FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
+        $dql = "SELECT DISTINCT s.uid FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
         $query = $this->entityManager->createQuery($dql);
         $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
