@@ -8,7 +8,7 @@
 <h3>
     {if ($callbackFunc == 'composeMail')}
     <span class="icon icon-envelope"></span>
-    {/else}
+    {else}
     <span class="icon icon-search"></span>
     {/if}
     {$templatetitle}
