@@ -9,7 +9,7 @@
 
 <p class="alert alert-info">{gt text='Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many more are available from the %s.' tag1=$extdblink}</p>
 
-{pagerabc posvar="startlet" forwardvars=''}
+{pagerabc posvar="startlet" forwardvars='' printempty=true}
 
 <table class="table table-bordered table-striped">
     <thead>
