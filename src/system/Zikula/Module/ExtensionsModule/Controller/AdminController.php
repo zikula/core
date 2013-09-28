@@ -242,7 +242,7 @@ class AdminController extends \Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'minus-sign',
+                                        'image' => 'minus-sign-alt text-danger',
                                         'color' => '#c00',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
@@ -265,7 +265,7 @@ class AdminController extends \Zikula_AbstractController
                                     'csrftoken' => $csrftoken,
                                     'letter' => $letter,
                                     'state' => $state)),
-                                    'image' => 'plus',
+                                    'image' => 'plus-sign-alt text-success',
                                     'color' => '#0c0',
                                     'title' => $this->__f('Activate \'%s\'', $mod['name']));
                             $actions[] = array(
@@ -341,7 +341,7 @@ class AdminController extends \Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'plus-sign',
+                                        'image' => 'cog text-success',
                                         'color' => '#0c0',
                                         'title' => $this->__f('Install \'%s\'', $mod['name']));
 //                                if ($this->serviceManager['multisites.enabled'] != 1 || ($this->serviceManager['multisites.mainsiteurl'] == FormUtil::getPassedValue('sitedns', null, 'GET') && $this->serviceManager['multisites.based_on_domains'] == 0) || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST'] && $this->serviceManager['multisites.based_on_domains'] == 1)) {
