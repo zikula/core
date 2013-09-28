@@ -12,9 +12,9 @@
 {/if}
 {/if}
 
-{include file='Admin/includeregistration.tpl'}
-
 <form id="users_approveregistration" class="form-horizontal" role="form" action="{modurl modname='ZikulaUsersModule' type='admin' func='approveRegistration'}" method="post">
+    {include file='Admin/includeregistration.tpl'}
+    
     <div>
         <input type="hidden" id="users_csrftoken" name="csrftoken" value="{insert name='csrftoken'}" />
         <input type="hidden" id="users_uid" name="uid" value="{$reginfo.uid}" />
@@ -30,8 +30,10 @@
             {gt text='Approve' assign='actionTitle'}
             {/if}
             {/strip}
-                {button id='confirm' type='submit' src='button_ok.png' set='icons/extrasmall' alt=$actionTitle title=$actionTitle text=$actionTitle}
-                <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt="Cancel" __title="Cancel"} {gt text='Cancel'}</a>
+            <button id='confirm' class="btn btn-success" type='submit' title="{$actionTitle}">
+                {gt text=$actionTitle}
+            </button>
+            <a class="btn btn-default" href="{$cancelurl|safetext}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>

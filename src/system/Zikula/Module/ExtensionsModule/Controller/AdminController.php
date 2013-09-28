@@ -384,37 +384,31 @@ class AdminController extends \Zikula_AbstractController
                 switch ($mod['state']) {
                     case ModUtil::STATE_INACTIVE:
                         $status = $this->__('Inactive');
-                        $statusimage = 'yellowled.png';
                         $statusclass = "warning";
                         break;
 
                     case ModUtil::STATE_ACTIVE:
                         $status = $this->__('Active');
-                        $statusimage = 'greenled.png';
                          $statusclass = "success";
                         break;
 
                     case ModUtil::STATE_MISSING:
                         $status = $this->__('Files missing');
-                        $statusimage = 'redled.png';
                         $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_UPGRADED:
                         $status = $this->__('New version');
-                        $statusimage = 'redled.png';
                         $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_INVALID:
                         $status = $this->__('Invalid structure');
-                        $statusimage = 'redled.png';
                         $statusclass = "danger";
                         break;
 
                     case ModUtil::STATE_NOTALLOWED:
                         $status = $this->__('Not allowed');
-                        $statusimage = 'star-empty';
                         $statusclass = "danger";
                         break;
 
@@ -422,11 +416,9 @@ class AdminController extends \Zikula_AbstractController
                     default:
                         if ($mod['state'] > 10) {
                             $status = $this->__('Incompatible');
-                            $statusimage = 'star-empty';
                             $statusclass = "default";
                         } else {
                             $status = $this->__('Not installed');
-                            $statusimage = 'redled.png';
                             $statusclass = "danger";
                         }
                         break;
@@ -440,7 +432,6 @@ class AdminController extends \Zikula_AbstractController
                 $moduleinfo[] = array(
                         'modinfo' => $mod,
                         'status' => $status,
-                        'statusimage' => $statusimage,
                         'statusclass' => $statusclass,
                         'options' => $actions);
             }
@@ -1059,7 +1050,7 @@ class AdminController extends \Zikula_AbstractController
             switch ($pluginstate['state']) {
                 case PluginUtil::NOTINSTALLED:
                     $status = $this->__('Not installed');
-                    $statusimage = 'redled.png';
+                    $statusclass= "danger";
 
                     $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'initialisePlugin',
                                                     array('plugin' => $className,
@@ -1074,7 +1065,7 @@ class AdminController extends \Zikula_AbstractController
                     break;
                 case PluginUtil::ENABLED:
                     $status = $this->__('Active');
-                    $statusimage = 'greenled.png';
+                    $statusclass = "success";
                     $pluginLink = array();
                     if (!$systemplugins) {
                         $pluginLink['_module'] = $instance->getModuleName();
@@ -1115,7 +1106,7 @@ class AdminController extends \Zikula_AbstractController
                     break;
                 case PluginUtil::DISABLED:
                     $status = $this->__('Inactive');
-                    $statusimage = 'yellowled.png';
+                    $statusclass= "warning";
 
                     $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'activatePlugin',
                                                     array('plugin' => $className,
@@ -1147,7 +1138,7 @@ class AdminController extends \Zikula_AbstractController
                 && $pluginstate['version'] != $instance->getMetaVersion()) {
 
                 $status = $this->__('New version');
-                $statusimage = 'redled.png';
+                $statusclass = "danger";
 
                 $actions = array();
                 $actions[] = array('url' => ModUtil::url('ZikulaExtensionsModule', 'admin', 'upgradePlugin',
@@ -1175,7 +1166,7 @@ class AdminController extends \Zikula_AbstractController
 
             $info =  array('instance'    => $instance,
                            'status'      => $status,
-                           'statusimage' => $statusimage,
+                           'statusclass' => $statusclass,
                            'actions'     => $actions,
                            'version'     => $pluginstate['state'] == PluginUtil::NOTINSTALLED ?
                                                  $instance->getMetaVersion() : $pluginstate['version']);
