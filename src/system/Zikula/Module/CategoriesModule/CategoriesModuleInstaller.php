@@ -87,10 +87,10 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
                     DoctrineHelper::createSchema($this->entityManager, array('Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity'));
                 } catch (\Exception $e) {
                 }
-                try {
-                    DoctrineUtil::createColumn('categories_registry', 'entityname', array('type' => 'string', 'length' => 60), false);
-                } catch (\Exception $e) {
-                }
+                // rename old tablename column for Core 1.3.6
+                $connection = $this->entityManager->getConnection();
+                $sql = 'ALTER TABLE categories_registry CHANGE `tablename` `entityname` varchar (60) NOT NULL DEFAULT \'\'';
+                $connection->executeQuery($sql);
 
                 $this->migrateAttributesFromObjectData();
             case '1.2.3':
