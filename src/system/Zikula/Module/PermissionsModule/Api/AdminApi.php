@@ -499,7 +499,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if (ModUtil::getName() == 'ZikulaPermissionsModule') {
-            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'icon' => 'info');
+            $links[] = array('url' => ModUtil::url('ZikulaPermissionsModule', 'admin', 'viewinstanceinfo'), 'text' => $this->__('Permission rules information'), 'title' => $this->__('Permission rules information'), 'icon' => 'info', 'class' => 'showinstanceinformation');
         }
 
         return $links;
