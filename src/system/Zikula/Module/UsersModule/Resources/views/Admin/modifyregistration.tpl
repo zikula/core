@@ -49,41 +49,41 @@
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='User name'}<span class="required"></span></label>
                 {assign var='fieldName' value='uname'}
                 <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
-                <em class="help-block sub">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
-            </div>
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="25" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <em class="help-block">{gt text='User names can contain letters, numbers, underscores, periods, or dashes.'}</em>
+                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='email'}
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='E-mail address'}<span class="required"></span></label>
                 {assign var='fieldName' value='email'}
                 <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
-            </div>
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)} form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='emailagain'}
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Repeat e-mail address for verification'}<span class="required"></span></label>
                 {assign var='fieldName' value='emailagain'}
                 <div class="col-lg-9">
-                <input id="{$formData->getFieldId($fieldName)}"{if isset($errorFields.$fieldName)} class="form-error"{/if} type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
-            </div>
+                    <input id="{$formData->getFieldId($fieldName)}" class="form-control{if isset($errorFields.$fieldName)}form-error{/if}" type="text" name="{$fieldName}" size="30" maxlength="60" value="{$formData->getFieldData($fieldName)|safetext}" />
+                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                </div>
             </div>
             <div class="form-group">
                 {assign var='fieldName' value='theme'}
                 <label class="col-lg-3 control-label" for="{$formData->getFieldId($fieldName)}">{gt text='Theme'}</label>
                 {assign var='fieldName' value='theme'}
                 <div class="col-lg-9">
-                <select id="{$formData->getFieldId($fieldName)}" name="{$fieldName}">
-                    <option value="">{gt text="Site's default theme"}</option>
-                    {html_select_themes selected=$formData->getFieldData($fieldName) state=ThemeUtil::STATE_ACTIVE filter=ThemeUtil::FILTER_USER}
-                </select>
-                <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                    <select id="{$formData->getFieldId($fieldName)}" class="form-control" name="{$fieldName}">
+                        <option value="">{gt text="Site's default theme"}</option>
+                        {html_select_themes selected=$formData->getFieldData($fieldName) state=ThemeUtil::STATE_ACTIVE filter=ThemeUtil::FILTER_USER}
+                    </select>
+                    <p id="{$formData->getFieldId($fieldName)}_error" class="help-block alert alert-danger{if !isset($errorFields.$fieldName)} hide{/if}">{if isset($errorFields.$fieldName)}{$errorFields.$fieldName}{/if}</p>
+                </div>
             </div>
-        </div>
         </fieldset>
 
         {notifyevent eventname='module.users.ui.form_edit.modify_registration' eventsubject=$formData->toUserArray() id=$formData->getFieldData('uid') assign="eventData"}
@@ -98,14 +98,13 @@
             <p id="{$formData->getFormId()}_checkmessage" class="sub">{gt text="Notice: When you are ready, click on 'Check your entries' to have your entries checked. When your entries are OK, click on 'Save' to continue."}</p>
             <p id="{$formData->getFormId()}_validmessage" class="hide sub">{gt text="Your entries seem to be OK. Please click on 'Save' when you are ready to continue."}</p>
             <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
-                {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
-                    {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
-                    {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
-                    <a class="btn btn-default" href="{if $restoreview == 'view'}{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview=true}{else}{modurl modname='ZikulaUsersModule' type='admin' func='displayRegistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
+                <div class="col-lg-offset-3 col-lg-9">
+                    {img id=$formData->getFormId()|cat:'_ajax_indicator' class='hide center' modname='core' set='ajax' src='indicator_circle.gif' alt=''}
+                        {button id=$formData->getFormId()|cat:'_submitnewuser' type='submit' src='button_ok.png' set='icons/extrasmall' __alt='Save' __title='Save' __text='Save'}
+                        {button id=$formData->getFormId()|cat:'_checkuserajax' type='button' class='hide' src='quick_restart.png' set='icons/extrasmall' __alt='Check your entries' __title='Check your entries' __text='Check your entries'}
+                        <a class="btn btn-default" href="{if $restoreview == 'view'}{modurl modname='ZikulaUsersModule' type='admin' func='viewRegistrations' restoreview=true}{else}{modurl modname='ZikulaUsersModule' type='admin' func='displayRegistration' uid=$formData->getFieldData('uid')}{/if}">{gt text='Cancel'}</a>
                 </div>
-        </div>
-        </div>
+            </div>
         </fieldset>
     </div>
 </form>

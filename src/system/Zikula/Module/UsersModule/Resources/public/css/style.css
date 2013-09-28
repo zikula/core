@@ -75,30 +75,6 @@ div.z-accountlink  img {
     background: transparent url("../../../../../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
-.user-icon-password {
-    background: transparent url("../../../../../../../images/icons/extrasmall/password.png") no-repeat scroll center left;
-    padding: 2px 0 2px 20px;
-}
-
-.user-icon-greenled {
-    background: url("../../../../../../../images/icons/extrasmall/greenled.png") no-repeat scroll 0 50% transparent;
-    padding: 0 0 0 20px;
-}
-
-.user-icon-redled {
-    background: url("../../../../../../../images/icons/extrasmall/redled.png") no-repeat scroll 0 50% transparent;
-    padding: 0 0 0 20px;
-}
-
-.user-icon-mail_delete {
-    background: url("../../../../../../../images/icons/extrasmall/mail_delete.png") no-repeat scroll 0 50% transparent;
-    padding: 0 0 0 20px;
-}
-
-.user-icon-status_unknown {
-    background: url("../../../../../../../images/icons/extrasmall/flag.png") no-repeat scroll 0 50% transparent;
-    padding: 0 0 0 20px;
-}
 
 #users_loginblock_loginform {
     margin:0;
