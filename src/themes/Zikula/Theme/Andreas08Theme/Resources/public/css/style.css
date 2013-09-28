@@ -74,12 +74,22 @@ ul.nav {
     margin:0;
 }
 
+ol.breadcrumb {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 li {
     margin: 0 0 0.5em 1.5em;
 }
 
-.pagination li {
+.pagination li, .breadcrumb > li {
     margin: 0px;
+}
+
+.breadcrumb>li+li:before {
+    content: "\00bb";
+    padding: 0 4px 0 0;
 }
 
 dl {
