@@ -232,7 +232,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->plugins_dir = array();
         $this->addPluginDir('config/plugins'); // Official override
         $this->addPluginDir('lib/legacy/viewplugins'); // Core plugins
-        $this->addPluginDir(isset($themeBundle) ? $themeBundle->getPath() . '/plugins' : "themes/$theme/plugins"); // Theme plugins
+        $this->addPluginDir(isset($themeBundle) ? $themeBundle->getRelativePath() . '/plugins' : "themes/$theme/plugins"); // Theme plugins
         $this->addPluginDir('plugins'); // Smarty core plugins
         $this->addPluginDir($mpluginPathNew); // Plugins for current module
         $this->addPluginDir($mpluginPath); // Plugins for current module
@@ -254,7 +254,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
         }
         // theme plugins module overrides
-        $themePluginsPath = isset($themeBundle) ? $themeBundle->getPath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
+        $themePluginsPath = isset($themeBundle) ? $themeBundle->getRelativePath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
         $this->addPluginDir($themePluginsPath);
 
         //---- Cache handling -------------------------------------------------
@@ -317,7 +317,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('func', $this->func)
              ->assign('lang', $this->language)
              ->assign('themeinfo', $this->themeinfo)
-             ->assign('themepath', isset($themeBundle) ? $themeBundle->getPath() : $this->baseurl . 'themes/' . $theme)
+             ->assign('themepath', isset($themeBundle) ? $themeBundle->getRelativePath() : $this->baseurl . 'themes/' . $theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri)
              ->assign('moduleBundle', ModUtil::getModule($moduleName)) // is NULL for pre-1.3.6-type modules
