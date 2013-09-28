@@ -11,19 +11,18 @@ use UserUtil;
 use ServiceUtil;
 
 use Gedmo\Blameable\BlameableListener;
+use Zikula\Core\Event\GenericEvent;
 
-/**
- * BlameableListener
- *
- * @author David Buchmann <mail@davidbu.ch>
- */
 class BlameListener implements EventSubscriberInterface
 {
+    /**
+     * @var BlameableListener
+     */
+    private $blameableListener;
+
     public function __construct(BlameableListener $blameableListener, SecurityContextInterface $securityContext = null)
     {
-        $em = ServiceUtil::get('doctrine.entitymanager');
-        $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => UserUtil::getVar('uid')));
-        $blameableListener->setUserValue($user);
+        $this->blameableListener = $blameableListener;
     }
 
     /**
@@ -33,6 +32,18 @@ class BlameListener implements EventSubscriberInterface
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        // ...
+    }
+
+    public function onPostInit(GenericEvent $event)
+    {
+        if (\System::isInstalling()) {
+            return;
+        }
+
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        $user = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uid' => UserUtil::getVar('uid')));
+        $this->blameableListener->setUserValue($user);
     }
 
     /**
@@ -43,7 +54,8 @@ class BlameListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => 'onKernelRequest',
+            //KernelEvents::REQUEST => 'onKernelRequest',
+            'core.postinit' => 'onPostInit',
         );
     }
 }
