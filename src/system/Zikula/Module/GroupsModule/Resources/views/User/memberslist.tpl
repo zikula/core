@@ -67,7 +67,17 @@
         {section name='members' loop=$members}
         <tr>
             <td>{$members[members].uname|profilelinkbyuname}</td>
-            <td>{img modname='core' set='icons/extrasmall' src=$members[members].isonline alt=$members[members].isonlinelbl}</td>
+            <td class="actions"> 
+                {if $members[members].isonline}
+                <span class="label label-success">
+                    {gt text='on-line'}
+                </span>
+                {else}
+                <span class="label label-danger">
+                    {gt text='off-line'}
+                </span>
+                {/if}
+            </td>
         </tr>
         {sectionelse}
         <tr class="table table-borderedempty">

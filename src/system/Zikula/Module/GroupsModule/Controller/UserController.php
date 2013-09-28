@@ -270,23 +270,15 @@ class UserController extends \Zikula_AbstractController
             foreach ($group['members'] as $userid) {
                 $userinfo = UserUtil::getVars($userid['uid']);
 
-                $isonline = false;
+                $userinfo['isonline'] = false;
                 if (is_array($onlines)) {
                     foreach ($onlines as $online) {
                         if ($online['uid'] == $userid['uid']) {
-                            $isonline = true;
+                            $userinfo['isonline'] = true;
+                            break;
                         }
                     }
                 }
-
-                if ($isonline) {
-                    $userinfo['isonline']    = 'greenled.png';
-                    $userinfo['isonlinelbl'] = $this->__('on-line');
-                } else {
-                    $userinfo['isonline']     = 'redled.png';
-                    $userinfo['isonlinelbl'] = $this->__('off-line');
-                }
-
                 $members[] = $userinfo;
             }
 
