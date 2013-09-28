@@ -135,7 +135,6 @@ class AdminController extends \Zikula_AbstractController
             }
         }
 
-        $reloadOnCatChange = ($mode != 'edit');
         $allCats = CategoryUtil::getSubCategories($root_id, true, true, true, false, true);
 
         // now remove the categories which are below $editCat ...
@@ -158,7 +157,7 @@ class AdminController extends \Zikula_AbstractController
                                                          null,
                                                          0,
                                                          null,
-                                                         $reloadOnCatChange,
+                                                         false, // do not submit on selector change
                                                          false,
                                                          true,
                                                          1,
