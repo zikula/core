@@ -31,6 +31,24 @@ class Categories_DBObject_Registry extends DBObject
         $this->_init($init, $key);
     }
 
+    public function insertPreProcess($data=null)
+    {
+        if (!$data) {
+            $data = & $this->_objData;
+        }
+
+        if (!$data) {
+            return $data;
+        }
+
+        // set defaults: necessary @since Core 1.3.6
+        $data['obj_status'] = isset($data['obj_status']) ? $data['obj_status'] : 'A';
+
+        $this->_objData = $data;
+
+        return $data;
+    }
+
     public function deletePostProcess($data=null)
     {
         // After delete, it should delete the references to this registry

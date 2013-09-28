@@ -12,10 +12,11 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Zikula\Module\CategoriesModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Category registry entity.
@@ -57,6 +58,37 @@ class CategoryRegistryEntity extends EntityAccess
      */
     private $category_id;
 
+    /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
+     */
+    protected $cr_uid;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
+     */
+    protected $lu_uid;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    protected $cr_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    protected $lu_date;
+
+    /**
+     * @ORM\Column(type="string", length=1)
+     * @var string
+     */
+    protected $obj_status = 'A';
 
     public function getId()
     {
@@ -107,4 +139,86 @@ class CategoryRegistryEntity extends EntityAccess
     {
         $this->category_id = $category_id;
     }
+
+    /**
+     * @param mixed $cr_date
+     */
+    public function setCr_date($cr_date)
+    {
+        $this->cr_date = $cr_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCr_date()
+    {
+        return $this->cr_date;
+    }
+
+    /**
+     * @param mixed $cr_uid
+     */
+    public function setCr_uid($cr_uid)
+    {
+        $this->cr_uid = $cr_uid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCr_uid()
+    {
+        return $this->cr_uid;
+    }
+
+    /**
+     * @param mixed $lu_date
+     */
+    public function setLu_date($lu_date)
+    {
+        $this->lu_date = $lu_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLu_date()
+    {
+        return $this->lu_date;
+    }
+
+    /**
+     * @param mixed $lu_uid
+     */
+    public function setLu_uid($lu_uid)
+    {
+        $this->lu_uid = $lu_uid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLu_uid()
+    {
+        return $this->lu_uid;
+    }
+
+    /**
+     * @param string $obj_status
+     */
+    public function setObj_status($obj_status)
+    {
+        $this->obj_status = $obj_status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObj_status()
+    {
+        return $this->obj_status;
+    }
+
+
 }

@@ -1198,6 +1198,10 @@ class DBUtil
      */
     public static function deleteWhere($table, $where)
     {
+        if ($table == 'categories_mapobj') {
+            // table no longer exists >= 1.3.6
+            return true;
+        }
         $tables = self::getTables();
         $tableName = $tables[$table];
         $where = self::_checkWhereClause($where);

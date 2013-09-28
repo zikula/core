@@ -49,7 +49,7 @@ class GenericUtil
         // on the same level
         $dql = "
         SELECT count(c.id)
-        FROM Zikula\\Core\\Doctrine\\Entity\\CategoryEntity c
+        FROM Zikula\\Module\\CategoriesModule\\Entity\\CategoryEntity c
         WHERE c.name = '" . $data['name'] . "'
           AND c.parent = " . $data['parent_id'];
 
@@ -86,12 +86,12 @@ class GenericUtil
      *
      * @param integer $parent_id   The parent_id of the category.
      *
-     * @return \Zikula\Core\Doctrine\Entity\CategoryEntity the parent entity.
+     * @return \Zikula\Module\CategoriesModule\Entity\CategoryEntity the parent entity.
      */
     public static function processCategoryParent($parent_id)
     {
         $em = \ServiceUtil::get('doctrine.entitymanager');
-        return $em->getReference('Zikula\Core\Doctrine\Entity\CategoryEntity', $parent_id);
+        return $em->getReference('Zikula\Module\CategoriesModule\Entity\CategoryEntity', $parent_id);
     }
 
     /**
@@ -143,7 +143,7 @@ class GenericUtil
     /**
      * Process the attributes of a category
      *
-     * @param \Zikula\Core\Doctrine\Entity\CategoryEntity $category The category to set the attributes for.
+     * @param \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category The category to set the attributes for.
      * @param array $attrib_names                             The attribute names.
      * @param array $attrib_values                            The attribute values.
      *

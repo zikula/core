@@ -12,11 +12,12 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Zikula\Module\CategoriesModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Category entity.
@@ -39,14 +40,14 @@ class CategoryEntity extends EntityAccess
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      * @var CategoryEntity
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
      * @var CategoryEntity
      */
     private $children;
@@ -112,7 +113,7 @@ class CategoryEntity extends EntityAccess
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula\Core\Doctrine\Entity\CategoryAttributeEntity",
+     * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
      *                mappedBy="category",
      *                cascade={"all"},
      *                orphanRemoval=true,
@@ -120,6 +121,38 @@ class CategoryEntity extends EntityAccess
      */
     private $attributes;
 
+    /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
+     */
+    private $cr_uid;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
+     * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
+     */
+    private $lu_uid;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $cr_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $lu_date;
+
+    /**
+     * maintain BC (same as status)
+     * @ORM\Column(type="string", length=1)
+     * @var string
+     */
+    private $obj_status = 'A';
 
     /**
      * constructor
@@ -137,7 +170,8 @@ class CategoryEntity extends EntityAccess
         $this->display_desc = array();
         $this->path = '';
         $this->ipath = '';
-        $this->status = 'I';
+        $this->status = 'A';
+        $this->obj_status = 'A';
 
         $this->attributes = new ArrayCollection();
     }
@@ -273,6 +307,86 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+     * @param mixed $cr_date
+     */
+    public function setCr_date($cr_date)
+    {
+        $this->cr_date = $cr_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCr_date()
+    {
+        return $this->cr_date;
+    }
+
+    /**
+     * @param mixed $cr_uid
+     */
+    public function setCr_uid($cr_uid)
+    {
+        $this->cr_uid = $cr_uid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCr_uid()
+    {
+        return $this->cr_uid;
+    }
+
+    /**
+     * @param mixed $lu_date
+     */
+    public function setLu_date($lu_date)
+    {
+        $this->lu_date = $lu_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLu_date()
+    {
+        return $this->lu_date;
+    }
+
+    /**
+     * @param mixed $lu_uid
+     */
+    public function setLu_uid($lu_uid)
+    {
+        $this->lu_uid = $lu_uid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLu_uid()
+    {
+        return $this->lu_uid;
+    }
+
+    /**
+     * @param string $obj_status
+     */
+    public function setObj_status($obj_status)
+    {
+        $this->obj_status = $obj_status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObj_status()
+    {
+        return $this->obj_status;
+    }
+
+    /**
      * get the attributes of the category
      *
      * @return CategoryAttributeEntity the category's attributes
@@ -319,4 +433,103 @@ class CategoryEntity extends EntityAccess
         }
     }
 
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return bool|int
+     */
+    public function getLocked()
+    {
+        return $this->getIs_locked();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $locked
+     */
+    public function setLocked($locked)
+    {
+        $this->setIs_locked($locked);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return bool|int
+     */
+    public function getLeaf()
+    {
+        return $this->getIs_leaf();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $leaf
+     */
+    public function setLeaf($leaf)
+    {
+        $this->setIs_leaf($leaf);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return int
+     */
+    public function getSortValue()
+    {
+        return $this->getSort_value();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $sortValue
+     */
+    public function setSortValue($sortValue)
+    {
+        $this->setSort_value($sortValue);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return array
+     */
+    public function getDisplayName()
+    {
+        return $this->getDisplay_name();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $displayName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->setDisplay_name($displayName);
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @return array
+     */
+    public function getDisplayDesc()
+    {
+        return $this->getDisplay_desc();
+    }
+
+    /**
+     * @deprecated since 1.3.6
+     *
+     * @param $displayDesc
+     */
+    public function setDisplayDesc($displayDesc)
+    {
+        $this->setDisplay_desc($displayDesc);
+    }
 }
