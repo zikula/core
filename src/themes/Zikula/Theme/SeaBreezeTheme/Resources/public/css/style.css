@@ -77,9 +77,23 @@ ol {
     list-style: decimal;
 }
 
+ol.breadcrumb {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 li {
     margin: 0 0 7px 21px;
     padding: 0;
+}
+
+.pagination li, .breadcrumb > li {
+    margin: 0px;
+}
+
+.breadcrumb>li+li:before {
+    content: "\00bb";
+    padding: 0 4px 0 0;
 }
 
 dl {
