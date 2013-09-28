@@ -69,55 +69,57 @@
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="users_from">{gt text="Sender's name"}</label>
                     <div class="col-lg-9">
-                    <input id="users_from" name="sendmail[from]" type="text" size="40" value="{$modvars.ZConfig.sitename}" />
-                </div>
+                        <input id="users_from" class="form-control" name="sendmail[from]" type="text" size="40" value="{$modvars.ZConfig.sitename}" />
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="users_rpemail">{gt text="Address to which replies should be sent"}</label>
                     <div class="col-lg-9">
-                    <input id="users_rpemail" name="sendmail[rpemail]" type="text" size="40" value="{$modvars.ZConfig.adminmail}" />
-                </div>
+                        <input id="users_rpemail" class="form-control" name="sendmail[rpemail]" type="text" size="40" value="{$modvars.ZConfig.adminmail}" />
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="users_subject">{gt text="Subject"}</label>
                     <div class="col-lg-9">
-                    <input id="users_subject" name="sendmail[subject]" type="text" size="40" />
-                </div>
+                        <input id="users_subject" class="form-control" name="sendmail[subject]" type="text" size="40" />
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="users_format">{gt text='Format'}</label>
                     <div class="col-lg-9">
-                    <select id="users_format" name="sendmail[format]" size="1" >
-                        <option value="text"{if !$modvars.Mailer.html} selected="selected"{/if}>{gt text='Text'}</option>
-                        <option value="html"{if $modvars.Mailer.html} selected="selected"{/if}>{gt text='HTML'}</option>
-                    </select>
-                </div>
+                        <select id="users_format" class="form-control" name="sendmail[format]" size="1" >
+                            <option value="text"{if !isset($modvars.Mailer.html) || !$modvars.Mailer.html} selected="selected"{/if}>{gt text='Text'}</option>
+                            <option value="html"{if isset($modvars.Mailer.html) && $modvars.Mailer.html} selected="selected"{/if}>{gt text='HTML'}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="users_message">{gt text="Message"}</label>
                     <div class="col-lg-9">
-                    <textarea id="users_message" name="sendmail[message]" cols="50" rows="10"></textarea>
-                </div>
+                        <textarea id="users_message" class="form-control" name="sendmail[message]" cols="50" rows="10"></textarea>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="batchsize">{gt text="Send e-mail messages in batches"}</label>
                     <div class="col-lg-9">
-                    <span>
-                        <input name="sendmail[batchsize]" type="text" id="batchsize" value="100" size="5" />
-                        <em>{gt text="messages per batch"}</em>
-                    </span>
+                        <span>
+                            <input name="sendmail[batchsize]" type="text" id="batchsize" class="form-control" value="100" size="5" />
+                            <em>{gt text="messages per batch"}</em>
+                        </span>
+                    </div>
                 </div>
-            </div>
             </fieldset>
 
             {notifydisplayhooks eventname='users.ui_hooks.user.form_edit' id=null}
 
             <div class="form-group">
-            <div class="col-lg-offset-3 col-lg-9">
-                    {button type='submit' src='mail_generic.png' set='icons/extrasmall' __alt="Send e-mail to selected recipients" __title="Send e-mail to selected recipients" __text="Send e-mail to selected recipients"}
-                    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{img modname='core' src='button_cancel.png' set='icons/extrasmall'  __alt='Cancel' __title='Cancel'} {gt text='Cancel'}</a>
+                <div class="col-lg-offset-3 col-lg-9">
+                    <button class="btn btn-success" type='submit' title="{gt text='Send e-mail to selected recipients'}">
+                        {gt text="Send e-mail to selected recipients"}
+                    </button>
+                    <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='index'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
                 </div>
-        </div>
+            </div>
         </div>
     </div>
 </form>
