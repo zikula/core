@@ -101,6 +101,12 @@ doctrine:
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
 
+services:
+    standardfields.listener:
+        class: Zikula\Core\Doctrine\StandardFields\StandardFieldsListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
 stof_doctrine_extensions:
     default_locale: en_US
     orm:
@@ -108,7 +114,7 @@ stof_doctrine_extensions:
             # if removed these values default to false
             translatable: false
             timestampable: true
-            blameable: false
+            blameable: true
             sluggable: true
             tree: true
             loggable: true
@@ -129,3 +135,5 @@ parameters:
     # Append the 'web/' folder to any asset path, because the application kernel of Zikula is not located in
     # the 'web' folder.
     templating.asset.path_package.class: Zikula\Bundle\CoreBundle\Templating\Asset\PathPackage
+    # override stof BlameListener to set Zikula User
+    stof_doctrine_extensions.event_listener.blame.class: Zikula\Bundle\CoreBundle\EventListener\BlameListener

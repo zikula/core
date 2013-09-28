@@ -12,7 +12,7 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Core\Doctrine\Entity;
+namespace Zikula\Module\CategoriesModule\Entity;
 
 use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
@@ -32,7 +32,7 @@ class CategoryAttributeEntity extends EntityAccess
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="Zikula\Core\Doctrine\Entity\CategoryEntity", inversedBy="attributes")
+     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="attributes")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;

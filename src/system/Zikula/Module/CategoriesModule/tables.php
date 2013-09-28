@@ -108,7 +108,7 @@ function ZikulaCategoriesModule_tables()
     $dbtable['categories_registry'] = $table;
     $columns = array('id'           => 'id',
                      'modname'      => 'modname',
-                     'table'        => 'tablename',
+                     'table'        => 'entityname',
                      'property'     => 'property',
                      'category_id'  => 'category_id');
     ObjectUtil::addStandardFieldsToTableDefinition ($columns);

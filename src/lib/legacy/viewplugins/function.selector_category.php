@@ -54,27 +54,16 @@ function smarty_function_selector_category($params, Zikula_View $view)
     $doReplaceRootCat = isset($params['doReplaceRootCat']) ? $params['doReplaceRootCat'] : null;
     $cssClass         = isset($params['cssClass'])         ? $params['cssClass']         : '';
 
-    // disable attribution if we don't need it
-    $_dbTables = null;
-    if (!$fieldIsAttribute) {
-        $t = $_dbTables = DBUtil::getTables();
-        $t['categories_category_db_extra_enable_attribution'] = false;
-        $GLOBALS['dbtables'] = $t;
-    }
-
     if (!$category && !$path && $categoryRegistryModule && $categoryRegistryTable && $categoryRegistryProperty) {
         $category = CategoryRegistryUtil::getRegisteredModuleCategory ($categoryRegistryModule, $categoryRegistryTable, $categoryRegistryProperty);
     }
 
-    $allCats = array();
     // if we don't have a category-id we see if we can get a category by path
     if (!$category && $path) {
         $category = CategoryUtil::getCategoryByPath ($path, $pathfield);
-
     } elseif (is_numeric($category)) {
         // check if we have a numeric category
         $category = CategoryUtil::getCategoryByID ($category);
-
     } elseif (is_string($category) && strpos($category, '/')===0) {
         // check if we have a string/path category
         $category = CategoryUtil::getCategoryByPath ($category, $pathfield);
@@ -84,6 +73,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
     if (!$catCache) {
         $catCache = array();
     }
+
     $cacheKey = "$category[id]||$recurse|$relative|$includeRoot|$includeLeaf|$all|||$attributes|$sortField";
     if (!isset($catCache[$cacheKey])) {
         $catCache[$cacheKey] = CategoryUtil::getSubCategoriesForCategory ($category, $recurse, $relative, $includeRoot,
@@ -97,11 +87,6 @@ function smarty_function_selector_category($params, Zikula_View $view)
     if ($editLink && !empty($category) && SecurityUtil::checkPermission( 'ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
         $url = DataUtil::formatForDisplay(ModUtil::url ('ZikulaCategoriesModule', 'user', 'edit', array('dr' => $category['id'])));
         $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.png\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
-    }
-
-    // re-enable attribution if we disabled it previously
-    if ($_dbTables) {
-        $GLOBALS['dbtables'] = $_dbTables;
     }
 
     if ($assign) {

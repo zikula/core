@@ -2,10 +2,11 @@
 
 namespace Zikula\Core\Doctrine\StandardFields;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata,
-    Doctrine\Common\Persistence\Proxy,
-    Doctrine\Common\EventArgs,
-    Gedmo\Mapping\MappedEventSubscriber;
+use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Gedmo\Mapping\MappedEventSubscriber;
+use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 
 /**
  * The StandardFields listener handles the update of
@@ -28,13 +29,13 @@ class StandardFieldsListener extends MappedEventSubscriber
     }
 
     /**
-     * Mapps additional metadata for the Entity
+     * Maps additional metadata for the Entity
      *
-     * @param EventArgs $eventArgs
+     * @param LoadClassMetadataEventArgs $eventArgs
      *
      * @return void
      */
-    public function loadClassMetadata(EventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
         $ea = $this->getEventAdapter($eventArgs);
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
@@ -44,11 +45,12 @@ class StandardFieldsListener extends MappedEventSubscriber
      * Looks for Timestampable objects being updated
      * to update modification date
      *
-     * @param EventArgs $args
+     * @param OnFlushEventArgs $args
      *
+     * @throws \Gedmo\Exception\UnexpectedValueException
      * @return void
      */
-    public function onFlush(EventArgs $args)
+    public function onFlush(OnFlushEventArgs $args)
     {
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();
@@ -118,11 +120,11 @@ class StandardFieldsListener extends MappedEventSubscriber
      * Checks for persisted Timestampable objects
      * to update creation and modification dates
      *
-     * @param EventArgs $args
+     * @param LifecycleEventArgs $args
      *
      * @return void
      */
-    public function prePersist(EventArgs $args)
+    public function prePersist(LifecycleEventArgs $args)
     {
         $ea = $this->getEventAdapter($args);
         $om = $ea->getObjectManager();

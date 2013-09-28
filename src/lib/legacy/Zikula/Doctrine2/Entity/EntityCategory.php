@@ -44,7 +44,9 @@ abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAcces
      */
     private $category;
 
-    public function __construct($registryId, Zikula_Doctrine2_Entity_Category $category, $entity)
+    public function __construct($registryId,
+                                Zikula_Doctrine2_Entity_Category $category,
+                                $entity)
     {
         $this->categoryRegistryId = $registryId;
         $this->category = $category;
@@ -85,4 +87,3 @@ abstract class Zikula_Doctrine2_Entity_EntityCategory extends Zikula_EntityAcces
 
     abstract public function setEntity($entity);
 }
-
