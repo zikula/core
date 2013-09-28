@@ -336,10 +336,9 @@ div.z-admincontainer {
     width:300px;
 }
 
-#admintab {
+#admintabs {
     margin: 0;
 }
-
 
 .admintabs-dropover {
     background-color: orange!important
@@ -412,6 +411,13 @@ li.admintabs-add {
     margin-left: 68px;
     text-align: left;
 }
+
+#modulelist .dropdown-menu {
+    margin: 0;
+    padding: 0;
+    font-size: 95%;
+}
+
 
 @media (min-width: 550px) {
   #modulelist > li {

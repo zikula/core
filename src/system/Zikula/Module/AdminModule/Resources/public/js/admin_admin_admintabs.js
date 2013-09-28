@@ -163,9 +163,9 @@ $('.dropdown-toggle').click( function() {
     var containerTop = container.position().top;
     var itemTop      = $(this).parent().position().top;
     var avaibleHeight = container.height() - (itemTop-containerTop);
-    var neededHeight = $(this).parent().find('ul').height();
+    var neededHeight = $(this).parent().find('ul').height()+10;
     if (neededHeight > avaibleHeight) {
-        container.height(container.height() + neededHeight - avaibleHeight + 5);
+        container.height(container.height() + neededHeight - avaibleHeight + 30);
     }
 });
 
