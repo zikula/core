@@ -207,7 +207,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // system info
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
-        $themeBundle = ThemeUtil::getTheme($theme);
+        $themeBundle = ThemeUtil::getTheme($this->themeinfo['name']);
 
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
@@ -308,8 +308,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->register_prefilter('z_prefilter_gettext_params');
         //$this->register_prefilter('z_prefilter_notifyfilters');
 
-        $moduleBundle = ModUtil::getModule($moduleName);
-
         // assign some useful settings
         $this->assign('homepage', $this->homepage)
              ->assign('modinfo', $this->modinfo)
@@ -326,20 +324,20 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         if (System::isLegacyMode()) {
             if (isset($themeBundle)) {
-                $stylePath = $themeBundle->getPath() . "/Resources/public/css";
-                $javascriptPath = $themeBundle->getPath() . "/Resources/public/js";
-                $imagePath = $themeBundle->getPath() . "/Resources/public/images";
-                $imageLangPath = $themeBundle->getPath() . "/Resources/public/images/" . $this->language;
+                $stylePath = $themeBundle->getRelativePath() . "/Resources/public/css";
+                $javascriptPath = $themeBundle->getRelativePath() . "/Resources/public/js";
+                $imagePath = $themeBundle->getRelativePath() . "/Resources/public/images";
+                $imageLangPath = $themeBundle->getRelativePath() . "/Resources/public/images/" . $this->language;
             } else {
                 $stylePath = $this->baseurl . "themes/$theme/style";
                 $javascriptPath = $this->baseurl . "themes/$theme/javascript";
                 $imagePath = $this->baseurl . "themes/$theme/images";
                 $imageLangPath = $this->baseurl . "themes/$theme/images/" . $this->language;
             }
-            $this->assign('stylepath', DataUtil::formatForOS($stylePath))
-                 ->assign('scriptpath', DataUtil::formatForOS($javascriptPath))
-                 ->assign('imagepath', DataUtil::formatForOS($imagePath))
-                 ->assign('imagelangpath', DataUtil::formatForOS($imageLangPath));
+            $this->assign('stylepath', $stylePath)
+                 ->assign('scriptpath', $javascriptPath)
+                 ->assign('imagepath', $imagePath)
+                 ->assign('imagelangpath', $imageLangPath);
         }
 
         // for {gt} template plugin to detect gettext domain
