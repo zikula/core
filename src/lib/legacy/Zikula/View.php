@@ -207,6 +207,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // system info
         $this->themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
         $this->theme = $theme = $this->themeinfo['directory'];
+        $themeBundle = ThemeUtil::getTheme($this->themeinfo['name']);
 
         //---- Plugins handling -----------------------------------------------
         // add plugin paths
@@ -231,7 +232,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->plugins_dir = array();
         $this->addPluginDir('config/plugins'); // Official override
         $this->addPluginDir('lib/legacy/viewplugins'); // Core plugins
-        $this->addPluginDir("themes/$theme/plugins"); // Theme plugins
+        $this->addPluginDir(isset($themeBundle) ? $themeBundle->getRelativePath() . '/plugins' : "themes/$theme/plugins"); // Theme plugins
         $this->addPluginDir('plugins'); // Smarty core plugins
         $this->addPluginDir($mpluginPathNew); // Plugins for current module
         $this->addPluginDir($mpluginPath); // Plugins for current module
@@ -251,8 +252,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         if (System::isLegacyMode()) {
             $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
             $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
-            $this->addPluginDir("themes/$theme/templates/modules/$moduleName/plugins"); // Module override in themes
         }
+        // theme plugins module overrides
+        $themePluginsPath = isset($themeBundle) ? $themeBundle->getRelativePath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
+        $this->addPluginDir($themePluginsPath);
 
         //---- Cache handling -------------------------------------------------
         if ($caching && in_array((int)$caching, array(0, 1, 2))) {
@@ -314,17 +317,27 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('func', $this->func)
              ->assign('lang', $this->language)
              ->assign('themeinfo', $this->themeinfo)
-             ->assign('themepath', $this->baseurl . 'themes/' . $theme)
+             ->assign('themepath', isset($themeBundle) ? $themeBundle->getRelativePath() : $this->baseurl . 'themes/' . $theme)
              ->assign('baseurl', $this->baseurl)
              ->assign('baseuri', $this->baseuri)
-             ->assign('moduleBundle', ModUtil::getModule($moduleName)); // is NULL for pre-1.3.6-type modules
+             ->assign('moduleBundle', ModUtil::getModule($moduleName)) // is NULL for pre-1.3.6-type modules
+             ->assign('themeBundle', $themeBundle);
 
-        if (System::isLegacyMode()) {
-            $this->assign('stylepath', $this->baseurl . 'themes/' . $theme . '/style')
-                 ->assign('scriptpath', $this->baseurl . 'themes/' . $theme . '/javascript')
-                 ->assign('imagepath', $this->baseurl . 'themes/' . $theme . '/images')
-                 ->assign('imagelangpath', $this->baseurl . 'themes/' . $theme . '/images/' . $this->language);
+        if (isset($themeBundle)) {
+            $stylePath = $themeBundle->getRelativePath() . "/Resources/public/css";
+            $javascriptPath = $themeBundle->getRelativePath() . "/Resources/public/js";
+            $imagePath = $themeBundle->getRelativePath() . "/Resources/public/images";
+            $imageLangPath = $themeBundle->getRelativePath() . "/Resources/public/images/" . $this->language;
+        } else {
+            $stylePath = $this->baseurl . "themes/$theme/style";
+            $javascriptPath = $this->baseurl . "themes/$theme/javascript";
+            $imagePath = $this->baseurl . "themes/$theme/images";
+            $imageLangPath = $this->baseurl . "themes/$theme/images/" . $this->language;
         }
+        $this->assign('stylepath', $stylePath)
+             ->assign('scriptpath', $javascriptPath)
+             ->assign('imagepath', $imagePath)
+             ->assign('imagelangpath', $imageLangPath);
 
         // for {gt} template plugin to detect gettext domain
         if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
