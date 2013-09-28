@@ -30,7 +30,7 @@ class CategoryRegistryUtil
     public static function deleteEntry($modname, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'modname'));
+            throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
@@ -78,7 +78,7 @@ class CategoryRegistryUtil
     public static function updateEntry($entryID, $modname, $entityname, $property, $categoryID)
     {
         if (!isset($entryID) || !$entryID) {
-            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'entryID'));
+            throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'entryID'));
         }
 
         return self::_processEntry($modname, $entityname, $property, $categoryID, $entryID);
@@ -98,16 +98,16 @@ class CategoryRegistryUtil
     private static function _processEntry($modname, $entityname, $property, $categoryID, $entryID=null)
     {
         if (!isset($modname) || !$modname) {
-            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'modname'));
+            throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'modname'));
         }
         if (!isset($entityname) || !$entityname) {
-            return z_exit(__f("Error! Received invalid parameter '%s'", 'entityname'));
+            throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'entityname'));
         }
         if (!isset($property) || !$property) {
-            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'property'));
+            throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'property'));
         }
         if (!isset($categoryID) || !$categoryID) {
-            throw new \Exception(__f("Error! Received invalid parameter '%s'", 'categoryID'));
+            throw new \InvalidArgumentException(__f("Error! Received invalid parameter '%s'", 'categoryID'));
         }
 
 
@@ -191,7 +191,7 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategories($modname, $entityname, $arraykey='property')
     {
         if (!$modname || !$entityname) {
-            return z_exit(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
+            throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
         }
 
         static $cache = array();
@@ -261,7 +261,7 @@ class CategoryRegistryUtil
     public static function getRegisteredModuleCategoriesIds($modname, $entityname)
     {
         if (!$modname || !$entityname) {
-            return z_exit(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
+            throw new \InvalidArgumentException(__f('Error! Received invalid specifications %1$s, %2$s.', array($modname, $entityname)));
         }
 
         $em = \ServiceUtil::get('doctrine.entitymanager');
