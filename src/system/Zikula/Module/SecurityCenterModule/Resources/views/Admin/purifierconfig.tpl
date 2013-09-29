@@ -85,8 +85,8 @@
                 <em class="help-block sub">{gt text='(Modification not supported.)'} {gt text='Value:'} {$directive.value|serialize|safetext}</em>
             </div>
             {/if}
-        {/if}
         </div>
+        {/if}
     {/foreach}
     </fieldset>
     {/foreach}
