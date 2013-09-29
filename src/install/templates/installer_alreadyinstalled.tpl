@@ -6,7 +6,8 @@
         <meta name="description" content="Zikula Aplication Framework">
         <meta name="author" content="Zikula Development Team">
         <title>{gt text="Zikula is already installed!"}</title>
-        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.min.css" type="text/css" />
 		<link rel="stylesheet" href="install/style/systemdialogs.css" type="text/css" />
     </head>
     <body>

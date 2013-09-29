@@ -8,8 +8,9 @@
         <meta name="generator" content="Zikula Installer -- http://www.zikula.org" />
         <meta http-equiv="X-UA-Compatible" content="chrome=1" />        
         <title>{gt text="Zikula installer script"}</title>
-        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.css" type="text/css" />	
-        <link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />	
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="web/bootstrap/css/bootstrap-theme.css" type="text/css" />
+        <link rel="stylesheet" href="web/font-awesome/css/font-awesome.min.css" type="text/css" />
         <link rel="stylesheet" href="install/style/installer.css" type="text/css" />
         <link rel="stylesheet" href="style/core.css" type="text/css" />
         {browserhack condition="if IE"}<link rel="stylesheet" type="text/css" href="style/core_iehacks.css" media="print,projection,screen" />{/browserhack}
