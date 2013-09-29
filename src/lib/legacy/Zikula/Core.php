@@ -464,11 +464,11 @@ class Zikula_Core
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }
 
-//zzz        if ($stage & self::STAGE_SESSIONS) {
+        if ($stage & self::STAGE_SESSIONS) {
 //            SessionUtil::requireSession();
-//            $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
-//            $this->dispatcher->dispatch('core.init', $coreInitEvent);
-//        }
+            $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
+            $this->dispatcher->dispatch('core.init', $coreInitEvent);
+        }
 
         // Have to load in this order specifically since we cant setup the languages until we've decoded the URL if required (drak)
         // start block

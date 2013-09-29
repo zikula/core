@@ -16,7 +16,7 @@
 /**
  * Zikula_Exception_Redirect class.
  *
- * @deprecated since 1.3.6 return a Symfony\Component\HttpFoundation\RedirectResponse insteac
+ * @deprecated since 1.3.6 return a Symfony\Component\HttpFoundation\RedirectResponse instead
  */
 class Zikula_Exception_Redirect extends Zikula_Exception
 {
