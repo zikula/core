@@ -400,6 +400,11 @@ Please refactor the following calls:
 
 There is a legacy layer in place so the old methods continue to work.
 
+Please note the follow APIs have changed (BC break)
+
+    $request->.....->filter() // the argument order has changed
+    $request->files-> // this API now returns an object, not an array
+
 Documentation: http://symfony.com/doc/master/components/http_foundation/introduction.html#request
 
 
