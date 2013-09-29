@@ -14,6 +14,9 @@
 
 /**
  * This is the configuration class for all FilterUtil classes.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_Config
 {

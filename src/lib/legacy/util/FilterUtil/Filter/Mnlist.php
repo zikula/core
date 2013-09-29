@@ -15,6 +15,9 @@
 
 /**
  * Filter entries using a m:n relationship.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {

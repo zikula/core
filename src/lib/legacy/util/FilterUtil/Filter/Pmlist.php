@@ -16,6 +16,9 @@
 /**
  * FilterUtil plugin to access a single category field.
  *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
+ *
  * Operator "sub" can filter for a category and all its subcategories.
  */
 class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
