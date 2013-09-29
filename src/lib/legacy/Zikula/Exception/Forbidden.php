@@ -13,23 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 /**
  * Zikula_Exception_Forbidden class.
+ *
+ * @deprecated since 1.3.6
+ * @see AccessDeniedHttpException
  */
-class Zikula_Exception_Forbidden extends Zikula_Exception
+class Zikula_Exception_Forbidden extends AccessDeniedHttpException
 {
-    /**
-     * Constructor.
-     *
-     * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 0.
-     * @param mixed   $debug   Debug default = null.
-     */
-    public function __construct($message='', $code=0, $debug=null)
-    {
-        if (empty($message)) {
-            $message = __('Sorry! You have not been granted access to this page.');
-        }
-        parent::__construct($message, $code, $debug);
-    }
 }

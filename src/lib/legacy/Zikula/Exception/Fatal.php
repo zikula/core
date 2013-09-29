@@ -13,23 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\Debug\Exception\FatalErrorException;
+
 /**
  * Zikula_Exception_Fatal class.
+ *
+ * @deprecated since 1.3.6
+ * @see FatalErrorException
  */
-class Zikula_Exception_Fatal extends Zikula_Exception
+class Zikula_Exception_Fatal extends FatalErrorException
 {
-    /**
-     * Constructor.
-     *
-     * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 500.
-     * @param mixed   $debug   Debug default = null.
-     */
-    public function __construct($message='', $code=500, $debug=null)
-    {
-        if (empty($message)) {
-            $message = __('A fatal system error occured.');
-        }
-        parent::__construct($message, $code, $debug);
-    }
 }
