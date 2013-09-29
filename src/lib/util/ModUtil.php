@@ -1090,7 +1090,6 @@ class ModUtil
         // define input, all numbers and booleans to strings
         $modname = isset($modname) ? ((string)$modname) : '';
         $modname = static::convertModuleName($modname);
-        $ftype = ($api ? 'api' : '');
 
         // validate
         if (!System::varValidate($modname, 'mod')) {
@@ -1098,13 +1097,12 @@ class ModUtil
         }
 
         // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
+        if (System::isLegacyMode('1.3.6') && $modname == 'Modules') {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::func() and ModUtil::apiFunc() calls.'));
             $modname = 'ZikulaExtensionsModule';
         }
 
         $modinfo = self::getInfo(self::getIDFromName($modname));
-        $path = ($modinfo['type'] == self::TYPE_SYSTEM ? 'system' : 'modules');
 
         $controller = null;
         $modfunc = null;
@@ -1122,7 +1120,6 @@ class ModUtil
             }
         }
 
-        $modfunc = ($modfunc) ? $modfunc : "{$modname}_{$type}{$ftype}_{$func}";
         $eventManager = EventUtil::getManager();
         $sm = ServiceUtil::getManager();
         if ($loaded) {
@@ -1164,40 +1161,6 @@ class ModUtil
                 }
 
                 return $eventManager->dispatch('module_dispatch.postexecute', $postExecuteEvent)->getData();
-            }
-
-            // get the theme
-            if ($sm->get('zikula')->getStage() & Zikula_Core::STAGE_THEME) {
-                $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
-                if (file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/{$type}{$ftype}/$func.php") || file_exists($file = 'themes/' . $theme['directory'] . '/functions/' . $modname . "/pn{$type}{$ftype}/$func.php")) {
-                    include_once $file;
-                    if (function_exists($modfunc)) {
-                        EventUtil::notify($preExecuteEvent);
-                        $postExecuteEvent->setData($modfunc($args));
-
-                        return EventUtil::notify($postExecuteEvent)->getData();
-                    }
-                }
-            }
-
-            if (file_exists($file = "config/functions/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "config/functions/$modname/pn{$type}{$ftype}/$func.php")) {
-                include_once $file;
-                if (is_callable($modfunc)) {
-                    $eventManager->notify($preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-
-                    return $eventManager->notify($postExecuteEvent)->getData();
-                }
-            }
-
-            if (file_exists($file = "$path/$modname/{$type}{$ftype}/$func.php") || file_exists($file = "$path/$modname/pn{$type}{$ftype}/$func.php")) {
-                include_once $file;
-                if (is_callable($modfunc)) {
-                    $eventManager->notify($preExecuteEvent);
-                    $postExecuteEvent->setData($modfunc($args));
-
-                    return $eventManager->notify($postExecuteEvent)->getData();
-                }
             }
 
             // try to load plugin
