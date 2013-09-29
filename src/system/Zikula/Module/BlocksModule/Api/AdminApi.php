@@ -410,7 +410,7 @@ class AdminApi extends \Zikula_AbstractApi
         foreach ($blockspositions as $blocksposition) {
             $filter['blockposition_id'] = $blocksposition['pid'];
             $submenulinks[] = array('url' => ModUtil::url('ZikulaBlocksModule', 'admin', 'view', array('filter' => $filter)),
-                    'text' => $this->__f('Position \"%s\" ', $blocksposition['name']));
+                    'text' => $this->__f('Position "%s"', $blocksposition['name']));
         }
 
         if (SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
