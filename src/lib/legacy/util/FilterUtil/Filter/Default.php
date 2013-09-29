@@ -15,6 +15,9 @@
 
 /**
  * Provide a set of default filter operations.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {

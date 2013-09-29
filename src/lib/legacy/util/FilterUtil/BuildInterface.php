@@ -14,6 +14,9 @@
 
 /**
  * FilterUtil build interface
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 interface FilterUtil_BuildInterface
 {

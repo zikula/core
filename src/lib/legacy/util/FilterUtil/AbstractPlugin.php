@@ -14,6 +14,9 @@
 
 /**
  * Base class of all FilterUtil plugins.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_AbstractPlugin extends FilterUtil_AbstractBase
 {

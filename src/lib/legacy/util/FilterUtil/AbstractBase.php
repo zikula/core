@@ -14,6 +14,9 @@
 
 /**
  * This is the base class for all FilterUtil classes.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 abstract class FilterUtil_AbstractBase
 {

@@ -14,6 +14,9 @@
 
 /**
  * Plugin manager class.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_PluginManager extends FilterUtil_AbstractBase
 {

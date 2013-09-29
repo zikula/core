@@ -15,6 +15,9 @@
 
 /**
  * Simple field name replacement.
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_Filter_ReplaceName extends FilterUtil_AbstractPlugin implements FilterUtil_ReplaceInterface
 {

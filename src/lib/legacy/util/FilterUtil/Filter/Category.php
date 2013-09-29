@@ -15,6 +15,9 @@
 
 /**
  * FilterUtil category filter plugin
+ *
+ * @deprecated since 1.3.6
+ * @see Zikula\Core\FilterUtil
  */
 class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements FilterUtil_BuildInterface
 {
