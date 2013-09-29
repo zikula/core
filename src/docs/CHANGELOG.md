@@ -82,6 +82,7 @@ Features:
 - Moved Categories to Doctrine2 and moved entities to module. Updated CategoryUtil & CategoryRegistryUtil to use new
 - Copy all category attributes data from `objectdata_attributes` to new `category_attributes` table and adjust
   internal methods to pull from new data source.
+- Removed Errors module
 
 
 CHANGELOG - ZIKULA 1.3.5
