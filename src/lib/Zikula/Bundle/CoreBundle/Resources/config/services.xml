@@ -5,6 +5,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <!--<parameter key="http_kernel.class">Zikula\Bundle\CoreBundle\HttpKernel\ContainerAwareHttpKernel</parameter>-->
         <parameter key="event_dispatcher.class">Zikula_EventManager</parameter>
     </parameters>
 

@@ -266,7 +266,9 @@ class AdminController extends \Zikula_AbstractController
     {
         if (!SecurityUtil::checkPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
-            $this->redirect(System::getHomepageUrl());
+            if (!SecurityUtil::checkPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
+                return LogUtil::registerPermissionError();
+            }
         }
 
         if (!$this->getVar('ignoreinstallercheck') && System::getVar('development') == 0) {

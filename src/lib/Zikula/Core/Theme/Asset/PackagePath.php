@@ -2,6 +2,7 @@
 namespace Zikula\Core\Theme\Asset;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Templating\Asset\PathPackage as BasePathPackage;
 
 class PackagePath extends BasePathPackage
@@ -13,12 +14,13 @@ class PackagePath extends BasePathPackage
     /**
      * Constructor.
      *
-     * @param Request $request The current request.
-     * @param string  $version The version.
-     * @param string  $format  The version format.
+     * @param RequestStack $request The current request.
+     * @param string       $version The version.
+     * @param string       $format  The version format.
      */
-    public function __construct(Request $request, $version = null, $format = null)
+    public function __construct(RequestStack $requestStack, $version = null, $format = null)
     {
+        $request = $requestStack->getCurrentRequest();
         $this->scriptPath = ltrim(\dirname($request->getScriptName()), '/');
         $this->documentRoot = $request->server->get('DOCUMENT_ROOT');
         $this->themeName = $request->attributes->get('_theme');
