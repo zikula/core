@@ -82,7 +82,12 @@ Features:
 - Moved Categories to Doctrine2 and moved entities to module. Updated CategoryUtil & CategoryRegistryUtil to use new
 - Copy all category attributes data from `objectdata_attributes` to new `category_attributes` table and adjust
   internal methods to pull from new data source.
-- Removed Errors module
+- Removed DebugToolbar and replaced with Symfony Debug and Profile Toolbar
+- Switched to Symfony error handling.
+- Switched to HttpKernel request cycle.
+- Removed Errors module.
+- Removed support old function based controllers and APIs.
+- Removed events: systemerror, setup.errorreporting, frontcontroller.exception event.
 
 
 CHANGELOG - ZIKULA 1.3.5
