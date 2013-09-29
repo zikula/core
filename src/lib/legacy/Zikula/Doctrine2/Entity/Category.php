@@ -14,6 +14,7 @@
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity;
 
 /**
  * Category doctrine2 entity.
@@ -107,11 +108,11 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity="Zikula_Doctrine2_Entity_CategoryAttribute",
-     *                mappedBy="objectId", cascade={"all"},
-     *                orphanRemoval=true, indexBy="name")
-     *
-     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Zikula\Module\CategoriesModule\Entity\CategoryAttributeEntity",
+     *                mappedBy="category",
+     *                cascade={"all"},
+     *                orphanRemoval=true,
+     *                indexBy="name")
      */
     private $attributes;
 
@@ -255,16 +256,18 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
         return $this->attributes;
     }
 
+    /**
+     * set a single attribute for the category
+     *
+     * @param $name string attribute name
+     * @param $value string attribute value
+     */
     public function setAttribute($name, $value)
     {
         if (isset($this->attributes[$name])) {
-            if ($value == null) {
-                $this->attributes->remove($name);
-            } else {
-                $this->attributes[$name]->setValue($value);
-            }
+            $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new Zikula_Doctrine2_Entity_CategoryAttribute($this->getId(), 'A', $name, $value);
+            $this->attributes[$name] = new CategoryAttributeEntity($this, $name, $value);
         }
     }
 
