@@ -50,7 +50,6 @@ class ZikulaKernel extends Kernel
         $bundles[] = new Zikula\Module\AdminModule\ZikulaAdminModule();
         $bundles[] = new Zikula\Module\BlocksModule\ZikulaBlocksModule();
         $bundles[] = new Zikula\Module\CategoriesModule\ZikulaCategoriesModule();
-        $bundles[] = new Zikula\Module\ErrorsModule\ZikulaErrorsModule();
         $bundles[] = new Zikula\Module\ExtensionsModule\ZikulaExtensionsModule();
         $bundles[] = new Zikula\Module\GroupsModule\ZikulaGroupsModule();
         $bundles[] = new Zikula\Module\MailerModule\ZikulaMailerModule();

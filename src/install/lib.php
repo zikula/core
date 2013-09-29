@@ -400,7 +400,6 @@ function installmodules($lang = 'en')
         'ZikulaCategoriesModule',
         'ZikulaMailerModule',
         'ZikulaSearchModule',
-        'ZikulaErrorsModule',
     );
 
     // manually install the modules module
@@ -443,7 +442,6 @@ function installmodules($lang = 'en')
             'ZikulaSecurityCenterModule' => __('Security'),
             'ZikulaCategoriesModule' => __('Content'),
             'ZikulaMailerModule' => __('System'),
-            'ZikulaErrorsModule' => __('System'),
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'));
