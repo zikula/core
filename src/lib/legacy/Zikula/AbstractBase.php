@@ -127,7 +127,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
         $this->setContainer($serviceManager);
         $this->dispatcher = $this->getContainer()->get('event_dispatcher');
         $this->eventManager = $this->dispatcher;
-        $this->request =  $this->getContainer()->get('request');
+        $this->request =  \ServiceUtil::get('request');
         $this->entityManager = $this->getContainer()->get('doctrine.entitymanager');
         $this->_configureBase($bundle);
         $this->initialize();

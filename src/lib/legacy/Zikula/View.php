@@ -172,7 +172,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     {
         $this->serviceManager = $serviceManager;
         $this->eventManager = $this->serviceManager->get('event_dispatcher');
-        $this->request = $this->serviceManager->get('request');
+        $this->request = \ServiceUtil::get('request');
 
         // set the error reporting level
         $this->error_reporting = isset($GLOBALS['ZConfig']['Debug']['error_reporting']) ? $GLOBALS['ZConfig']['Debug']['error_reporting'] : E_ALL;

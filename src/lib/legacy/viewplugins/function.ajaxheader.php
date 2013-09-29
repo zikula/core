@@ -54,7 +54,7 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
     $imageviewer = (isset($params['imageviewer'])) ? true : false;
 
     /* @var \Symfony\Component\HttpFoundation\Request $request */
-    $request = ServiceUtil::getManager()->get('request');
+    $request = \ServiceUtil::get('request');
     $basePath = $request->getBasePath();
 
     // create an empty return
