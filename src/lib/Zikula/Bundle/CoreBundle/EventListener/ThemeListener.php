@@ -32,7 +32,9 @@ class ThemeListener implements EventSubscriberInterface
 
         $response = $event->getResponse();
         $request = $event->getRequest();
-        if ($response instanceof PlainResponse || $request->isXmlHttpRequest()) {
+        if ($response instanceof PlainResponse
+            || $request->isXmlHttpRequest()
+            || $request->attributes->get('_route') == '_profiler') {
             return;
         }
 

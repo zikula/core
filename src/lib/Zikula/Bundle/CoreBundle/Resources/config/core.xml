@@ -33,6 +33,7 @@
         <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
         <parameter key="zikula.legacy_route_listener.class">Zikula\Bundle\CoreBundle\EventListener\LegacyRouteListener</parameter>
         <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
+        <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
     </parameters>
 
     <services>

@@ -67,19 +67,24 @@ class LegacyRouteListener implements EventSubscriberInterface
         if ($event->getRequestType() !== Kernel::MASTER_REQUEST) {
             return;
         }
+
         $request = $event->getRequest();
-//        if ($request->attributes->has('_controller')) {
-//            // routing is already done
-//            return;
-//        }
+        if ($request->attributes->has('_controller')) {
+            // routing is already done
+            return;
+        }
+
         if ($request->isXmlHttpRequest()) {
             $this->ajax($event);
         }
+
         $module = $request->attributes->get('_module');
         $type = $request->attributes->get('_type');
         $func = $request->attributes->get('_func');
+
         // check requested module
         $arguments = $request->attributes->get('_args');
+
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);
         if (!$module) {
