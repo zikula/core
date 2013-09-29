@@ -258,7 +258,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                 foreach($menuitem['links'] as $submenuitem) {
                     $html .= '<li>';
                     if (isset($submenuitem['url'])) {
-                        $html .= '<a href="'.$submenuitem['url'].'">'.$submenuitem['text'].'</a>';
+                        $html .= '<a href="'.DataUtil::formatForDisplay($submenuitem['url']).'">'.$submenuitem['text'].'</a>';
                     } else {
                         $html .= $submenuitem['text'];
                     }
