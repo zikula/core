@@ -80,6 +80,8 @@ Features:
 - add 'themeBundle' template variable for 1.3.6-type themes (is NULL for legacy mods)
     instance of `\Zikula\Core\AbstractTheme` for current module
 - Moved Categories to Doctrine2 and moved entities to module. Updated CategoryUtil & CategoryRegistryUtil to use new
+- Copy all category attributes data from `objectdata_attributes` to new `category_attributes` table and adjust
+  internal methods to pull from new data source.
 
 
 CHANGELOG - ZIKULA 1.3.5

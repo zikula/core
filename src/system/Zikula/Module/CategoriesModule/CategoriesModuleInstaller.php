@@ -708,6 +708,11 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
         return array(ZLanguage::getLanguageCode() => '');
     }
 
+    /**
+     * migrates all attributes belonging to categories to the new `categories_attributes` table
+     * regardless of the module they are attached to.
+     * It does _not_ remove the data from the `objectdata_attributes` table.
+     */
     private function migrateAttributesFromObjectData()
     {
         $dataset = DBUtil::selectObjectArray('categories_category');
