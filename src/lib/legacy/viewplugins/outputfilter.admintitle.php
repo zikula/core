@@ -23,14 +23,14 @@
  */
 function smarty_outputfilter_admintitle($source, $view)
 {
-    $source = str_replace("\n", '', $source);
     // get the first heading tags
     // module - usually display module
     preg_match("/<h2>([^<]*)<\/h2>/", $source, $header2);
     // function pagetitle
     preg_match("/<h3>([^<]*)<\/h3>/", $source, $header3);
     if (count($header3) == 0) {
-        preg_match("/<\/span>([^<]*)<\/h3>/", $source, $header3);
+        $sourceWithoutEndOfLine = str_replace("\n", '', $source);
+        preg_match("/<\/span>([^<]*)<\/h3>/", $sourceWithoutEndOfLine, $header3);
     }
 
     // init the args
