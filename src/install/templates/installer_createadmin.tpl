@@ -45,8 +45,10 @@
             </div>
         </div>
         </fieldset>
-        <div class="btn-group"> 
-            <button type="submit" id="submit" class="btn btn-default btn-info"><span class="icon icon-double-angle-right"></span> {gt text="Proceed with Installation"}</button>
+        <div class="form-group"> 
+            <div class="col-lg-offset-3 col-lg-9">
+				<button type="submit" id="submit" class="btn btn-default btn-info"><span class="icon icon-double-angle-right"></span> {gt text="Proceed with Installation"}</button>
+			</div>
         </div>
     </div>
 </form>

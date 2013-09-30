@@ -23,10 +23,12 @@
         </fieldset>
         {/if}
         <br />
-        <div class="btn-group">            
-            <button type="submit" id="submit" class="btn btn-default btn-primary">
-                <span class="icon icon-double-angle-right"></span> {gt text="Next"}
-            </button>
+        <div class="form-group"> 
+            <div class="col-lg-offset-3 col-lg-9">
+				<button type="submit" id="submit" class="btn btn-default btn-primary">
+					<span class="icon icon-double-angle-right"></span> {gt text="Next"}
+				</button>
+			</div>
         </div>
     </div>
 </form>

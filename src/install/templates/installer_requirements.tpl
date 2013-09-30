@@ -93,15 +93,17 @@
               {/foreach}
             </ul>
         </fieldset>
-        <div id="test">
-            {if $checkfailed neq true}
-            <input type="hidden" name="action" value="dbinformation" />
-            <button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-success"><span class="icon icon-double-angle-right"></span> {gt text="Next"}</button>                        
-            {else}
-            <br />
-            <input type="hidden" name="action" value="requirements" />
-            <button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-danger"><span class="icon icon-repeat"></span> {gt text="Check again"}</button>
-            {/if}
+        <div class="form-group"> 
+            <div class="col-lg-offset-3 col-lg-9">
+				{if $checkfailed neq true}
+				<input type="hidden" name="action" value="dbinformation" />
+				<button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-success"><span class="icon icon-double-angle-right"></span> {gt text="Next"}</button>                        
+				{else}
+				<br />
+				<input type="hidden" name="action" value="requirements" />
+				<button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-default btn-danger"><span class="icon icon-repeat"></span> {gt text="Check again"}</button>
+				{/if}
+			</div>
         </div>
     </div>
 </form>
