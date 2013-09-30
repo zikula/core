@@ -547,6 +547,7 @@ function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver
 
 function update_installed_status($state)
 {
-    $file = _installer_replace_keys('installed', $state, file_get_contents('config/config.php'));
-    file_put_contents('config/config.php', $file);
+    $array = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
+    $array['parameters']['installed'] = 'true';
+    file_put_contents(__DIR__.'/../app/config/parameters.yml', Yaml::dump($array));
 }
