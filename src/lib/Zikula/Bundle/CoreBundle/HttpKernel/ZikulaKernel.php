@@ -74,9 +74,6 @@ abstract class ZikulaKernel extends Kernel
                 include $path;
             }
         }
-
-        // relocate ztemp to cache dir (nasty BC, sorry)
-        $GLOBALS['ZConfig']['System']['temp'] = $this->getRootDir()."/cache/{$this->environment}/".$GLOBALS['ZConfig']['System']['temp'];
     }
 
     public function boot()
@@ -86,6 +83,13 @@ abstract class ZikulaKernel extends Kernel
         }
 
         parent::boot();
+
+        // BC for 1.3.6+ @todo remove in 1.4.0
+        $GLOBALS['ZConfig']['System']['temp'] = $this->getContainer()->getParameter('temp_dir');
+        $GLOBALS['ZConfig']['System']['datadir'] = $this->getContainer()->getParameter('datadir');
+        $GLOBALS['ZConfig']['System']['compat_layer'] = $this->getContainer()->getParameter('compat_layer');
+        $GLOBALS['ZConfig']['System']['installed'] = $this->getContainer()->getParameter('installed');
+        $GLOBALS['ZConfig']['System']['system.chmod_dir'] = $this->getContainer()->getParameter('system.chmod_dir');
 
         foreach ($this->bundles as $bundle) {
             if ($bundle instanceof AbstractModule) {

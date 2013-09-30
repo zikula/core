@@ -8,6 +8,12 @@ parameters:
     database_path:     ~
     database_socket:   ~
 
+    installed:        true
+    compat_layer:     true
+    temp_dir:         %kernel.cache_dir%/ztemp
+    datadir:          userdata
+    system.chmod_dir: 777
+
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
     mailer_user:       ~

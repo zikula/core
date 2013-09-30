@@ -711,7 +711,7 @@ class AdminController extends \Zikula_AbstractController
         $modvars = ModUtil::getVar('ZikulaThemeModule');
 
         $data = array();
-        $data['devmode']                     = (bool) $ZConfig['System']['development'];
+        $data['devmode'] = $this->getContainer()->get('kernel')->getEnvironment();
 
         if ($data['devmode'] == true) {
             $data['cssjscombine']                = $modvars['cssjscombine'];

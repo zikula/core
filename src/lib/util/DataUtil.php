@@ -354,7 +354,7 @@ class DataUtil
             }
         } else {
             static $cached;
-            if ($cached == null) {
+            if (null === $cached) {
                 $cached = array();
             }
             if (isset($cached[$var])) {

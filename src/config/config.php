@@ -13,13 +13,7 @@
  */
 
 global $ZConfig;
-$ZConfig['System']['installed'] = 0;        // installer will change this during installation
-$ZConfig['System']['temp'] = 'ztemp';       // location of temporary folder (this should remain as 'ztemp' since 1.3.6)
-$ZConfig['System']['datadir'] = 'userdata';     // location of site data files
-$ZConfig['System']['prefix'] = '';         // database prefix (deprecated).
-$ZConfig['System']['compat_layer'] = true;  // boolean or version string: enables loading of compat code
-                                            // greater than or equal to this version.
-$ZConfig['System']['system.chmod_dir'] = 0777;  // The default chmod for new directories created by Zikula.
+$ZConfig['System'] = array();
 
 // ----------------------------------------------------------------------
 // This is the definition for the default Zikula system database.
@@ -34,16 +28,6 @@ $ZConfig['DBInfo']['databases']['default']['dbtabletype'] = 'myisam';
 $ZConfig['DBInfo']['databases']['default']['charset'] = 'utf8';
 $ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_general_ci';
 // additional DB can be configured here as above external2, external3 etc...
-
-// ----------------------------------------------------------------------
-// Error Reporting
-// ----------------------------------------------------------------------
-// This level of reporting only affect PHP's own native handlers (if you enable them).
-// These settings have no effect on Zikula's error handling and reporting.
-$ZConfig['Debug']['error_reporting_development'] = E_ALL; // preconfigured level
-$ZConfig['Debug']['error_reporting_production'] = E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT; // preconfigured level
-$ZConfig['Debug']['debug_key'] = ($ZConfig['System']['development'] ? 'error_reporting_development' : 'error_reporting_production');
-error_reporting($ZConfig['Debug'][$ZConfig['Debug']['debug_key']]); // now set the appropriate level
 
 // ----------------------------------------------------------------------
 // Logging Settings
