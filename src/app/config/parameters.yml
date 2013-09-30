@@ -8,7 +8,7 @@ parameters:
     database_path:     ~
     database_socket:   ~
 
-    installed:        true
+    installed:        false
     compat_layer:     true
     temp_dir:         %kernel.cache_dir%/ztemp
     datadir:          userdata
