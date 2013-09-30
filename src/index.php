@@ -11,12 +11,7 @@
  * information regarding copyright and licensing.
  */
 
-use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Zikula_Request_Http as Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception;
 
 include 'lib/bootstrap.php';
 
