@@ -18,8 +18,7 @@ ini_set('max_execution_time', 86400);
 ini_set('memory_limit', '64M');
 
 include 'lib/bootstrap.php';
-$request = Request::createFromGlobals();
-$core->getContainer()->set('request', $request);
-
 include 'install/lib.php';
-install($core);
+
+$request = Request::createFromGlobals();
+install($core, $request);

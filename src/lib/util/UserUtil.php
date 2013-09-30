@@ -1895,12 +1895,12 @@ class UserUtil
     {
         static $pagetheme;
 
-        /** @var $request Request */
-        $request = ServiceUtil::get('request');
-
         if (isset($pagetheme) && !$force) {
             return $pagetheme;
         }
+
+        /** @var $request Request */
+        $request = \ServiceUtil::get('request');
 
         $theme = FormUtil::getPassedValue('theme', null, 'GETPOST');
         if (!empty($theme)) {

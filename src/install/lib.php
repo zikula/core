@@ -16,11 +16,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\Request;
 
 ini_set('memory_limit', '84M');
 ini_set('max_execution_time', 300);
 
-function install(Zikula_Core $core)
+function install(Zikula_Core $core, Request $request)
 {
     define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
 
@@ -30,7 +31,7 @@ function install(Zikula_Core $core)
     /** @var $connection Connection */
     $connection = $container->get('doctrine.dbal.default_connection');
 
-    $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS);
+    $core->init(Zikula_Core::STAGE_ALL & ~Zikula_Core::STAGE_THEME & ~Zikula_Core::STAGE_MODS & ~Zikula_Core::STAGE_LANGS & ~Zikula_Core::STAGE_DECODEURLS & ~Zikula_Core::STAGE_SESSIONS, $request);
 
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
@@ -400,7 +401,6 @@ function installmodules($lang = 'en')
         'ZikulaCategoriesModule',
         'ZikulaMailerModule',
         'ZikulaSearchModule',
-        'ZikulaErrorsModule',
     );
 
     // manually install the modules module
@@ -443,7 +443,6 @@ function installmodules($lang = 'en')
             'ZikulaSecurityCenterModule' => __('Security'),
             'ZikulaCategoriesModule' => __('Content'),
             'ZikulaMailerModule' => __('System'),
-            'ZikulaErrorsModule' => __('System'),
             'ZikulaSearchModule' => __('Content'),
             'ZikulaAdminModule' => __('System'),
             'ZikulaSettingsModule' => __('System'));

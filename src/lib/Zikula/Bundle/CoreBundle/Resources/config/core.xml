@@ -28,6 +28,12 @@
 
         <parameter key="zikula_core.class">Zikula\Core\Core</parameter>
         <parameter key="zikula.core_init_listener.class">Zikula\Bundle\CoreBundle\EventListener\InitListener</parameter>
+
+        <parameter key="zikula.site_off_listener.class">Zikula\Bundle\CoreBundle\EventListener\SiteOffListener</parameter>
+        <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
+        <parameter key="zikula.legacy_route_listener.class">Zikula\Bundle\CoreBundle\EventListener\LegacyRouteListener</parameter>
+        <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
+        <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
     </parameters>
 
     <services>
@@ -93,6 +99,17 @@
 
         <service id="zikula.template_override_listener" class="%zikula.template_override_listener.class%">
             <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="zikula.legacy_route_listener" class="%zikula.legacy_route_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+        </service>
+
+        <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
+            <tag name="kernel.event_subscriber" />
+            <tag name="monolog.logger" channel="request" />
         </service>
 
         <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->

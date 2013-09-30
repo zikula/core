@@ -52,8 +52,8 @@
             <argument type="service" id="theme.assets_css" />
         </service>
 
-        <service id="theme.asset.packagepath" scope="request" class="%theme.asset.packagepath.class%">
-            <argument type="service" id="request" strict="false" />
+        <service id="theme.asset.packagepath" class="%theme.asset.packagepath.class%">
+            <argument type="service" id="request_stack" strict="false" />
             <!-- todo, version and format args -->
         </service>
 

@@ -335,30 +335,22 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Module deletion function. Only execute if the module is initialised.
         if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
-            if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-                if (!include_once($file)) {
-                    LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-                }
+            $module = ModUtil::getModule($modinfo['name']);
+            if (null === $module) {
+                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+                $classNameOld = ucwords($modinfo['name']) . '_Installer';
+                $className = class_exists($className) ? $className : $classNameOld;
+            } else {
+                $className = $module->getInstallerClass();
             }
-
-            if ($oomod) {
-                $module = ModUtil::getModule($modinfo['name']);
-                if (null === $module) {
-                    $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-                    $classNameOld = ucwords($modinfo['name']) . '_Installer';
-                    $className = class_exists($className) ? $className : $classNameOld;
-                } else {
-                    $className = $module->getInstallerClass();
-                }
-                $reflectionInstaller = new ReflectionClass($className);
-                if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                    LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
-                }
-                $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
+            $reflectionInstaller = new ReflectionClass($className);
+            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
             }
+            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
             // perform the actual deletion of the module
-            $func = ($oomod) ? array($installer, 'uninstall') : $modinfo['name'] . '_delete';
+            $func = array($installer, 'uninstall');
             if (is_callable($func)) {
                 if (call_user_func($func) != true) {
                     return false;
@@ -371,11 +363,9 @@ class AdminApi extends \Zikula_AbstractApi
         $query = $this->entityManager->createQuery($dql);
         $query->getResult();
 
-        if ($oomod) {
-            HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
-            HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
-            EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
-        }
+        HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
+        HookUtil::unregisterSubscriberBundles($version->getHookSubscriberBundles());
+        EventUtil::unregisterPersistentModuleHandlers($modinfo['name']);
 
         // remove the entry from the modules table
         if ($this->serviceManager['multisites.enabled'] == 1) {
@@ -895,9 +885,7 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod && false === strpos($osdir, '/')) {
+        if (false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         }
 
@@ -912,32 +900,23 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
+        $module = ModUtil::getModule($modinfo['name']);
+        if (null === $module) {
+            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+            $classNameOld = ucwords($modinfo['name']) . '_Installer';
+            $className = class_exists($className) ? $className : $classNameOld;
+        } else {
+            $className = $module->getInstallerClass();
         }
-
-        if ($oomod) {
-            $module = ModUtil::getModule($modinfo['name']);
-            if (null === $module) {
-                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-                $classNameOld = ucwords($modinfo['name']) . '_Installer';
-                $className = class_exists($className) ? $className : $classNameOld;
-            } else {
-                $className = $module->getInstallerClass();
-            }
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
-            }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module));
 
         // perform the actual install of the module
         // system or module
-        $func = ($oomod) ? array($installer, 'install') : $modinfo['name'] . '_init';
-
+        $func = array($installer, 'install');
         if (is_callable($func)) {
             if (call_user_func($func) != true) {
                 return false;
@@ -1002,9 +981,7 @@ class AdminApi extends \Zikula_AbstractApi
         $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
 
         // load module maintainence functions
-        $oomod = ModUtil::isOO($modinfo['name']);
-
-        if ($oomod && false === strpos($osdir, '/')) {
+        if (false === strpos($osdir, '/')) {
             ZLoader::addAutoloader($osdir, array($modpath, "$modpath/$osdir/lib"));
         }
 
@@ -1019,30 +996,22 @@ class AdminApi extends \Zikula_AbstractApi
             }
         }
 
-        if (!$oomod && file_exists($file = "$modpath/$osdir/pninit.php")) {
-            if (!include_once($file)) {
-                LogUtil::registerError($this->__f("Error! Could not load a required file: '%s'.", $file));
-            }
+        $module = ModUtil::getModule($modinfo['name']);
+        if (null === $module) {
+            $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
+            $classNameOld = ucwords($modinfo['name']) . '_Installer';
+            $className = class_exists($className) ? $className : $classNameOld;
+        } else {
+            $className = $module->getInstallerClass();
         }
-
-        if ($oomod) {
-            $module = ModUtil::getModule($modinfo['name']);
-            if (null === $module) {
-                $className = ucwords($modinfo['name']).'\\'.ucwords($modinfo['name']).'Installer';
-                $classNameOld = ucwords($modinfo['name']) . '_Installer';
-                $className = class_exists($className) ? $className : $classNameOld;
-            } else {
-                $className = $module->getInstallerClass();
-            }
-            $reflectionInstaller = new ReflectionClass($className);
-            if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
-                LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
-            }
-            $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf('Zikula_AbstractInstaller')) {
+            LogUtil::registerError($this->__f("%s must be an instance of Zikula_AbstractInstaller", $className));
         }
+        $installer = $reflectionInstaller->newInstanceArgs(array($this->serviceManager, $module ));
 
         // perform the actual upgrade of the module
-        $func = ($oomod) ? array($installer, 'upgrade') : $modinfo['name'] . '_upgrade';
+        $func = array($installer, 'upgrade');
 
         if (is_callable($func)) {
             $result = call_user_func($func, $modinfo['version']);

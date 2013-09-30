@@ -43,8 +43,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
         $this->addHandlerDefinition('core.preinit', 'initDB');
         $this->addHandlerDefinition('core.init', 'setupCsfrProtection');
         $this->addHandlerDefinition('theme.init', 'clickJackProtection');
-        $this->addHandlerDefinition('frontcontroller.predispatch', 'sessionExpired', 3);
-        $this->addHandlerDefinition('frontcontroller.predispatch', 'siteOff', 7);
         $this->addHandlerDefinition('core.postinit', 'doctrineExtensions');
     }
 
@@ -66,31 +64,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
         }
     }
 
-    /**
-     * Listens for 'frontcontroller.predispatch'.
-     *
-     * @param Zikula_Event $event
-     *
-     * @return void
-     */
-    public function siteOff(Zikula_Event $event)
-    {
-        // Get variables
-        $module = FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
-        $func = FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
-
-        // Check for site closed
-        if (System::getVar('siteoff') && !SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'Users' && $func == 'siteOffLogin') || (Zikula_Core::VERSION_NUM != System::getVar('Version_Num'))) {
-            if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
-                UserUtil::logout();
-            }
-            header('HTTP/1.1 503 Service Unavailable');
-            require_once System::getSystemErrorTemplate('siteoff.tpl');
-            System::shutdown();
-        }
-    }
-
-    /**
+     /**
      * Listens for 'bootstrap.getconfig' event.
      *
      * @param Zikula_Event $event Event.
@@ -155,7 +129,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(Zikula_Event $event)
     {
         $session = $this->serviceManager->get('session');
-        $request = $this->serviceManager->get('request');
+        $request = ServiceUtil::get('request');
         $request->setSession($session);
         try {
             if (!$session->start()) {

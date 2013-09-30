@@ -22,7 +22,6 @@ ini_set('max_execution_time', 86400);
 
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
-$core->getContainer()->set('request', $request);
 
 $eventManager = $core->getDispatcher();
 $container = $core->getContainer();
@@ -43,7 +42,7 @@ upgrade_136($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
-$core->init(Zikula_Core::STAGE_ALL);
+$core->init(Zikula_Core::STAGE_ALL, $request);
 
 $action = FormUtil::getPassedValue('action', false, 'GETPOST');
 
