@@ -40,7 +40,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
 {
     $menuLinks          = isset($params['links'])       ? $params['links'] : '';
     $menuId             = isset($params['menuid'])      ? $params['menuid'] : '';
-    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar navbar-default navbar-modulelinks';
+    $menuClass          = isset($params['menuclass'])   ? $params['menuclass'] : 'navbar navbar-default navbar-modulelinks navbar-modulelinks-main';
     $menuItemClass      = isset($params['itemclass'])   ? $params['itemclass'] : '';
     $menuItemFirst      = isset($params['first'])       ? $params['first'] : '';
     $menuItemLast       = isset($params['last'])        ? $params['last'] : '';
