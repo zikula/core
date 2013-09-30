@@ -13,6 +13,7 @@
  */
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -33,6 +34,7 @@ class ThemeListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $request = $event->getRequest();
         if ($response instanceof PlainResponse
+            || $response instanceof JsonResponse
             || $request->isXmlHttpRequest()
             || $request->attributes->get('_route') == '_profiler') {
             return;

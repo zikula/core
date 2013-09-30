@@ -75,7 +75,7 @@ class LegacyRouteListener implements EventSubscriberInterface
         }
 
         if ($request->isXmlHttpRequest()) {
-            $this->ajax($event);
+            return $this->ajax($event);
         }
 
         $module = $request->attributes->get('_module');
@@ -123,63 +123,34 @@ class LegacyRouteListener implements EventSubscriberInterface
                 }
             }
             if ($response->getStatusCode() == 403 && !UserUtil::isLoggedIn()) {
-                $url = ModUtil::url('ZikulaUsersModule', 'user', 'login', array('returnpage' => urlencode($request->getSchemeAndHttpHost() . $request->getRequestUri())));
+                $url = ModUtil::url(
+                    'ZikulaUsersModule',
+                    'user',
+                    'login',
+                    array('returnpage' => urlencode($request->getSchemeAndHttpHost().$request->getRequestUri()))
+                );
                 $response = new RedirectResponse($url, 302);
                 LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url);
                 $event->setResponse($response);
             }
         } else {
-            //throw new \Exception('Something unexpected happened');
+            throw new \Exception('Something unexpected happened');
         }
-
-        return $event->setResponse($response);
-        switch (true) {
-            case ($response->getStatusCode() == 404):
-                $core->getContainer()->enterScope('request');
-                $core->getContainer()->set('request', $request, 'request');
-                $exceptionController = new ExceptionController($core->getContainer()->get('twig'), true);
-                $errorResponse = FlattenException::create($e);
-                $response = $exceptionController->showAction($request, $errorResponse, $core->getContainer()->get('logger'));
-                $response->setStatusCode(404);
-                $event->setResponse($response);
-
-                return;
-                break;
-            case ($response->getStatusCode() == 500):
-            default:
-                if (!System::isDevelopmentMode() || !isset($e)) {
-                    LogUtil::registerError(__f('The \'%1$s\' module returned an error in \'%2$s\'.', array($module, $func)), 500, null);
-                    $response = ModUtil::func('ZikulaErrorsModule', 'user', 'main', array('message' => isset($e) ? $e->getMessage() : '', 'exception' => isset($e) ? $e : null));
-                } else {
-                    // @todo Remove this hacky code in 1.4.0.
-                    $core->getContainer()->enterScope('request');
-                    $core->getContainer()->set('request', $request, 'request');
-                    PageUtil::addVar('stylesheet', 'web/bundles/framework/css/exception.css');
-                    PageUtil::addVar('stylesheet', 'web/bundles/framework/css/structure.css');
-                    PageUtil::addVar('stylesheet', 'web/bundles/framework/css/body.css');
-                    $exceptionController = new ExceptionController($core->getContainer()->get('twig'), true);
-                    $flattenException = FlattenException::create($e);
-                    $response = $exceptionController->showAction($request, $flattenException, $core->getContainer()->get('logger'));
-                    $response->setStatusCode(500);
-                }
-                break;
-        }
-        if (System::isDevelopmentMode()) {
-            $container->enterScope('request');
-            $container->set('request', $request, 'request');
-            $core->getDispatcher()->dispatch('kernel.response', new FilterResponseEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $response));
-        }
+        $event->setResponse($response);
     }
 
     private function ajax(GetResponseEvent $event)
     {
         // Get variables
         $request = $event->getRequest();
+        $response = null;
         $module = $request->attributes->get('_module');
         $type = $request->attributes->get('_type', 'ajax');
         $func = $request->attributes->get('_func');
+
         // get module information
         $modinfo = ModUtil::getInfoFromName($module);
+
         // Check for site closed
         if (System::getVar('siteoff') && !SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN) && !($module == 'ZikulaUsersModule' && $func == 'siteofflogin')) {
             if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && UserUtil::isLoggedIn()) {
@@ -187,24 +158,26 @@ class LegacyRouteListener implements EventSubscriberInterface
             }
             $response = new UnavailableResponse(__('The site is currently off-line.'));
         }
+
         // Dispatch controller.
         try {
             if (!isset($response)) {
                 $response = ModUtil::func($modinfo['name'], $type, $func);
                 if (System::isLegacyMode() && $response === false && LogUtil::hasErrors()) {
-                    throw new FatalErrorException(__('An unknown error occurred in module %s, controller %s, action %s', array($modinfo['name'], $type, $func)));
+                    throw new FatalErrorException(__(
+                        'An unknown error occurred in module %s, controller %s, action %s',
+                        array($modinfo['name'], $type, $func)
+                    ));
                 }
             }
-        }
-        catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException $e) {
             $response = new NotFoundResponse($e->getMessage());
-        }
-        catch (AccessDeniedHttpException $e) {
+        } catch (AccessDeniedHttpException $e) {
             $response = new ForbiddenResponse($e->getMessage());
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $response = new FatalResponse($e->getMessage());
         }
+
         // Process final response.
         // If response is not instanceof Response provide compat solution
         if (!$response instanceof Response) {
@@ -214,18 +187,18 @@ class LegacyRouteListener implements EventSubscriberInterface
         return $event->setResponse($response);
     }
 
-
-    public function onForbiddenResponse(FilterResponseEvent $event)
-    {
-    }
-
     public function onException(GetResponseForExceptionEvent $event)
     {
         $response = $event->getResponse();
         $request = $event->getRequest();
         $exception = $event->getException();
         if ($exception instanceof AccessDeniedHttpException && !UserUtil::isLoggedIn()) {
-            $url = ModUtil::url('ZikulaUsersModule', 'user', 'login', array('returnpage' => urlencode($request->getSchemeAndHttpHost() . $request->getRequestUri())));
+            $url = ModUtil::url(
+                'ZikulaUsersModule',
+                'user',
+                'login',
+                array('returnpage' => urlencode($request->getSchemeAndHttpHost().$request->getRequestUri()))
+            );
             $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
             $event->setResponse($response);
@@ -236,17 +209,17 @@ class LegacyRouteListener implements EventSubscriberInterface
     public function onKernelRequestSiteOff(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-
         // Get variables
         $module = \FormUtil::getPassedValue('module', '', 'GETPOST', FILTER_SANITIZE_STRING);
         $func = \FormUtil::getPassedValue('func', '', 'GETPOST', FILTER_SANITIZE_STRING);
-
         // Check for site closed
         if (\System::getVar('siteoff')
             && !\SecurityUtil::checkPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)
             && !($module == 'Users' && $func == 'siteOffLogin')
-            || (\Zikula_Core::VERSION_NUM != \System::getVar('Version_Num'))) {
-            if (\SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()) {
+            || (\Zikula_Core::VERSION_NUM != \System::getVar('Version_Num'))
+        ) {
+            if (\SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW) && \UserUtil::isLoggedIn()
+            ) {
                 \UserUtil::logout();
             }
             header('HTTP/1.1 503 Service Unavailable');
@@ -268,11 +241,9 @@ class LegacyRouteListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST   => array(array('onKernelRequestSiteOff', 31)),
-            KernelEvents::REQUEST   => array(array('onKernelRequestSessionExpire', 31)),
-            KernelEvents::REQUEST   => array(array('onKernelRequest', 31)),
-            //KernelEvents::RESPONSE => array(array('onForbiddenResponse', 10)),
-            //KernelEvents::EXCEPTION => array(array('onException', 100)),
+            KernelEvents::REQUEST => array(array('onKernelRequestSiteOff', 31)),
+            KernelEvents::REQUEST => array(array('onKernelRequestSessionExpire', 31)),
+            KernelEvents::REQUEST => array(array('onKernelRequest', 31)),
         );
     }
 }
