@@ -15,7 +15,7 @@
 
 namespace Zikula\Component\HookDispatcher;
 
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Component\HookDispatcher\Exception\LogicException;
 
 /**
@@ -31,9 +31,7 @@ class HookDispatcher
     private $storage;
 
     /**
-     * ContainerAwareEventDispatcher.
-     *
-     * @var ContainerAwareEventDispatcher
+     * @var EventDispatcherInterface
      */
     private $dispatcher;
 
@@ -54,11 +52,11 @@ class HookDispatcher
     /**
      * Constructor.
      *
-     * @param StorageInterface              $storage
-     * @param ContainerAwareEventDispatcher $dispatcher
-     * @param ServiceFactory                $factory
+     * @param StorageInterface         $storage
+     * @param EventDispatcherInterface $dispatcher
+     * @param ServiceFactory           $factory
      */
-    public function __construct(StorageInterface $storage, ContainerAwareEventDispatcher $dispatcher, ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher, ServiceFactory $factory)
     {
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
