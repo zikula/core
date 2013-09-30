@@ -17,6 +17,9 @@ if (window.jQuery) {
   jQuery('*').on('hide.bs.modal', function( event ) {
     isBootstrapEvent = true;
   });
+  jQuery('*').on('hide.bs.popover', function( event ) {
+    isBootstrapEvent = true;
+  });
 }
 
 var Prototype = {
