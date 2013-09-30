@@ -394,18 +394,14 @@ class Zikula_Core
      * Carries out a number of initialisation tasks to get Zikula up and
      * running.
      *
-     * @param integer $stage Stage to load.
+     * @param integer             $stage Stage to load.
+     * @param Zikula_Request_Http $request
      *
      * @return boolean True initialisation successful false otherwise.
      */
-    public function init($stage = self::STAGE_ALL)
+    public function init($stage = self::STAGE_ALL, Request $request)
     {
-        if (!$this->container->has('request')) {
-            $request = Request::createFromGlobals();
-            $this->container->set('request', $request);
-        }
-
-        $request = $this->container->get('request');
+        $GLOBALS['__request'] = $request; // hack for pre 1.4.0 - drak
 
         $coreInitEvent = new \Zikula\Core\Event\GenericEvent($this);
 
@@ -421,13 +417,6 @@ class Zikula_Core
 
         // Initialise and load configuration
         if ($stage & self::STAGE_CONFIG) {
-            // error reporting
-            if (!System::isInstalling()) {
-                // this is here because it depends on the config.php loading.
-                $event = new \Zikula\Core\Event\GenericEvent(null, array('stage' => $stage));
-                $this->dispatcher->dispatch('setup.errorreporting', $event);
-            }
-
             // initialise custom event listeners from config.php settings
             $coreInitEvent->setArgument('stage', self::STAGE_CONFIG);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
@@ -476,7 +465,7 @@ class Zikula_Core
         }
 
         if ($stage & self::STAGE_SESSIONS) {
-            SessionUtil::requireSession();
+//            SessionUtil::requireSession();
             $coreInitEvent->setArgument('stage', self::STAGE_SESSIONS);
             $this->dispatcher->dispatch('core.init', $coreInitEvent);
         }

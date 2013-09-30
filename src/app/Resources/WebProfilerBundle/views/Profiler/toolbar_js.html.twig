@@ -34,7 +34,7 @@
                 for (var i = 0; i < links.length; i++) {
                     element = links[i];
                     if (element.href.indexOf('_profiler') != -1) {
-                        var newLink = element.href.substr(0, element.href.indexOf('_profiler') - 1) + '{{ app.request.getBasePath }}' + element.href.substr(element.href.indexOf('_profiler') - 1);
+                        var newLink = element.href.substr(0, element.href.indexOf('_profiler') - 1) + element.href.substr(element.href.indexOf('_profiler') - 1);
                         element.href = newLink;
                     }
                 }

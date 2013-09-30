@@ -13,23 +13,14 @@
  * information regarding copyright and licensing.
  */
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * Zikula_Exception_NotFound class.
+ *
+ * @deprecated since 1.3.6
+ * @see NotFoundHttpException
  */
-class Zikula_Exception_NotFound extends Zikula_Exception
+class Zikula_Exception_NotFound extends NotFoundHttpException
 {
-    /**
-     * Constructor.
-     *
-     * @param string  $message Message default = ''.
-     * @param integer $code    Code default = 404.
-     * @param mixed   $debug   Debug default = null.
-     */
-    public function __construct($message='', $code=404, $debug=null)
-    {
-        if (empty($message)) {
-            $message = __('The requested page could not be found or is not currently accessible.');
-        }
-        parent::__construct($message, $code, $debug);
-    }
 }

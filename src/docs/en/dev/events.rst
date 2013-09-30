@@ -22,7 +22,7 @@ BOOTSTRAP
 #### `boostrap.getconfig`
 Called in bootstrap.
 Receives Zikula_Core as subject.
-Handler should stop().
+Handler should stopPropagation().
 Purpose is to load the config/config.php
 
 #### `bootstrap.custom`
@@ -62,11 +62,6 @@ Modify `$event->data` and `$event->stopPropagation()`
 
 #### `dbobject.pre/post*`
 Takes subject of $this.
-
-FRONT CONTROLLER
-----------------
-
-#### `frontcontroller.predispatch` runs before the front controller does any work.
 
 MODULE
 ------
@@ -155,20 +150,8 @@ sent to `PageUtil::addVar()`.
 
 ERRORS
 ------
-#### `frontcontroller.exception`
-Invoked if an exception is trapped in the front controller (index.php).
-Subject is the exception that was caught.
-Receives arguments array('modinfo' => $modinfo, 'type' => $type, 'func' => $func, 'arguments' => $arguments));
-Event handler must `stop()` if it executes.
-
-#### `setup.errorreporting`
-Invoked during `System::init()`.  Used to activate `set_error_handler()`.  Event must `stop()`.
-
 #### `system.outputfilter`
 Filter type event for output filter HTML sanitisation
-
-#### `systemerror`
-args gets `array('errorno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errcontext' => $errcontext)`
 
 ### THEME AND VIEW
 
@@ -260,7 +243,7 @@ intercept the login process and prevent a successful login from taking place.
 
 This event uses `notify()`, so handlers are called until either one vetoes the login attempt,
 or there are no more handlers for the event. A handler that needs to veto a login attempt
-should call `stop()`. This will prevent other handlers from receiving the event, will
+should call `stopPropagation()`. This will prevent other handlers from receiving the event, will
 return to the login process, and will prevent the login from taking place. A handler that
 vetoes a login attempt should set an appropriate error message and give any additional
 feedback to the user attempting to log in that might be appropriate. If a handler does not
@@ -279,7 +262,7 @@ do not introduce breaches of security.
     * `'authentication_method'` will contain the name of the module and the name of the method that was used to authenticated the user.
     * `'uid'` will contain the user's uid.
 
-An event handler can prevent (veto) the log-in attempt by calling `stop()` on the event. This is
+An event handler can prevent (veto) the log-in attempt by calling `stopPropagation()` on the event. This is
 enough to ensure that the log-in attempt is stopped, however this will result in a `Zikula_Exception_Forbidden`
 exception being thrown.
 

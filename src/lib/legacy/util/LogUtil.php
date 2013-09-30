@@ -13,6 +13,8 @@
  */
 
 use Monolog\Logger as Log;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * LogUtil.
@@ -193,7 +195,7 @@ class LogUtil
 
         // check if we want to redirect
         if ($url) {
-            return System::redirect($url);
+            return new RedirectResponse($url, 302);
         }
 
         return true;
@@ -215,7 +217,7 @@ class LogUtil
 
         // check if we want to redirect
         if ($url) {
-            return System::redirect($url);
+            return new RedirectResponse($url, 302);
         }
 
         return true;
@@ -321,8 +323,7 @@ class LogUtil
         $code = 403;
         if (!UserUtil::isLoggedIn() && $redirect) {
             if (is_null($url)) {
-                $serviceManager = ServiceUtil::getManager();
-                $request = $serviceManager->get('request');
+                $request = ServiceUtil::get('request');
 
                 $loginArgs = array();
                 if ($request->isMethod('GET')) {
@@ -347,26 +348,21 @@ class LogUtil
      *
      * @return false or system redirect if url is set.
      */
-    public static function registerError($message, $type = null, $url = null)
+    public static function registerError($message, $type = 500, $url = null)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
 
         self::addErrorPopup($message);
 
-        // check if we've got an error type
-        if (isset($type) && is_numeric($type)) {
-            SessionUtil::setVar('_ZErrorMsgType', $type);
-        }
-
         // check if we want to redirect
         if ($url) {
-            return System::redirect($url, array(), $type, true);
+            return new RedirectResponse($url, 302);
         }
 
         // since we're registering an error, it makes sense to return false here.
         // This allows the calling code to just return the result of LogUtil::registerError
         // if it wishes to return 'false' (which is what usually happens).
-        return false;
+        return new Response('', $type);
     }
 
     /**

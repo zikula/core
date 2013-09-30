@@ -81,6 +81,10 @@ class ServiceUtil
      */
     public static function get($id)
     {
+        if ($id === 'request') {
+            return $GLOBALS['__request'];
+        }
+
         return self::getManager()->get($id);
     }
 
