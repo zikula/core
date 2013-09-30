@@ -152,7 +152,7 @@ function install(Zikula_Core $core, Request $request)
                 $smarty->assign('dbinvalidname', true);
             } else {
                 update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver, $dbtabletype);
-                update_installed_status(0);
+                update_installed_status(false);
                 try {
                     $dbh = new PDO("$dbdriver:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
                 } catch (PDOException $e) {
@@ -273,7 +273,7 @@ function install(Zikula_Core $core, Request $request)
                     }
 
                     // set site status as installed and protect config.php file
-                    update_installed_status(1);
+                    update_installed_status(true);
                     foreach (array('config/config.php', 'app/config/parameters.yml') as $file) {
                         @chmod($file, 0400);
                         if (!is_readable($file)) {
@@ -548,6 +548,6 @@ function update_config_php($dbhost, $dbusername, $dbpassword, $dbname, $dbdriver
 function update_installed_status($state)
 {
     $array = \Symfony\Component\Yaml\Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
-    $array['parameters']['installed'] = 'true';
+    $array['parameters']['installed'] = $state;
     file_put_contents(__DIR__.'/../app/config/parameters.yml', Yaml::dump($array));
 }
