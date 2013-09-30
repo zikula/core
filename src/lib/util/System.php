@@ -1001,11 +1001,8 @@ class System
      */
     public static function isDevelopmentMode()
     {
-        if (!isset($GLOBALS['ZConfig']['System']['development'])) {
-            return false;
-        }
-
-        return (bool)$GLOBALS['ZConfig']['System']['development'];
+        $s = ServiceUtil::getManager();
+        return $s->getParameter('kernel.environment') !== 'dev' ? false : true;
     }
 
     /**
