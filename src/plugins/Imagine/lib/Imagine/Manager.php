@@ -284,7 +284,7 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
                     ->createThumbnail($image, $preset);
             } catch(Exception $e) {
                 //! %1$s is source image path, %2$s is error message
-                LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', array($imagePath, $e->getMessage())), Zikula_AbstractErrorHandler::INFO);
+                LogUtil::log($this->__f('An error occurred during thumbnail creation for image [%1$s]. Error details: %2$s', array($imagePath, $e->getMessage())), \Monolog\Logger::INFO);
 
                 return $imagePath;
             }

@@ -93,7 +93,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
         }
 
         if (empty($this->authenticationMethods) && (($filter == Zikula_Api_AbstractAuthentication::FILTER_NONE) || ($filter == Zikula_Api_AbstractAuthentication::FILTER_ENABLED))) {
-            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), Zikula_AbstractErrorHandler::CRIT);
+            LogUtil::log($this->__('There were no authentication methods available. Forcing the Users module to be used for authentication.'), \Monolog\Logger::CRIT);
             $this->authenticationMethods[] = new AuthenticationMethodHelper($this->name, 'uname', $this->__('User name'), $this->__('User name and password'));
             $this->nameIndex[$this->name] = array();
         }
@@ -108,10 +108,10 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
                     if (isset($this->nameIndex[$authenticationMethodId['modname']][$authenticationMethodId['method']])) {
                         $this->orderedListableAuthenticationMethods[] = $this->nameIndex[$authenticationMethodId['modname']][$authenticationMethodId['method']];
                     } else {
-                        LogUtil::log($this->__f('The authentication method \'%2$s\' is not a listable method for the module \'%1$s\'. It will be ignored.', array($authenticationMethod['modname'], $authenticationMethod['method'])), Zikula_AbstractErrorHandler::WARN);
+                        LogUtil::log($this->__f('The authentication method \'%2$s\' is not a listable method for the module \'%1$s\'. It will be ignored.', array($authenticationMethod['modname'], $authenticationMethod['method'])), \Monolog\Logger::WARN);
                     }
                 } else {
-                    LogUtil::log($this->__f('The module \'%1$s\' is not a listable authentication module. All methods specified for it will be ignored.', array($authenticationMethod['modname'])), Zikula_AbstractErrorHandler::WARN);
+                    LogUtil::log($this->__f('The module \'%1$s\' is not a listable authentication module. All methods specified for it will be ignored.', array($authenticationMethod['modname'])), \Monolog\Logger::WARN);
                 }
             }
 
@@ -126,7 +126,7 @@ class AuthenticationMethodListHelper extends \Zikula_AbstractHelper implements \
                 }
 
                 $this->orderedListableAuthenticationMethods[] = $this->nameIndex[$forcedMethod['modname']][$forcedMethod['method']];
-                LogUtil::log($this->__f('The set of listable authentication methods did not contain any methods that are currently available. Forcing the \'%2$s\' method defined by the \'%1$s\' module to be listable.', array($forcedMethod['modname'], $forcedMethod['method'])), Zikula_AbstractErrorHandler::WARN);
+                LogUtil::log($this->__f('The set of listable authentication methods did not contain any methods that are currently available. Forcing the \'%2$s\' method defined by the \'%1$s\' module to be listable.', array($forcedMethod['modname'], $forcedMethod['method'])), \Monolog\Logger::WARN);
             }
         } else {
             foreach ($this->authenticationMethods as $index => $authenticationMethod) {

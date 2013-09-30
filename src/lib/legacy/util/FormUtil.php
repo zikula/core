@@ -375,7 +375,7 @@ class FormUtil
             $form->setController($controller);
             $form->assign('controller', $controller);
         } else {
-            LogUtil::log(__('FormUtil::newForm should also include the Zikula_AbstractController as the second argument to enable hooks to work.'), Zikula_AbstractErrorHandler::NOTICE);
+            LogUtil::log(__('FormUtil::newForm should also include the Zikula_AbstractController as the second argument to enable hooks to work.'), \Monolog\Logger::NOTICE);
         }
 
         return $form;

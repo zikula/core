@@ -280,12 +280,12 @@ class LogUtil
      */
     private static function _addPopup($message, $type = E_USER_NOTICE)
     {
-        self::log($message, Zikula_AbstractErrorHandler::DEBUG);
+        self::log($message, Log::DEBUG);
         $session = ServiceUtil::getManager()->get('session');
 
-        if ($type === Zikula_AbstractErrorHandler::INFO) {
+        if ($type === Log::INFO) {
             $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
-        } elseif ($type === Zikula_AbstractErrorHandler::WARN) {
+        } elseif ($type === Log::WARNING) {
             $session->addMessage(Zikula_Session::MESSAGE_WARNING, DataUtil::formatForDisplayHTML($message));
         } elseif ($type === E_USER_ERROR) {
             $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));

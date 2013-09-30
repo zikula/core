@@ -323,7 +323,7 @@ class EventUtil
                             self::attach($handler['eventname'], $handler['callable'], $handler['weight']);
                         }
                     } catch (InvalidArgumentException $e) {
-                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), Zikula_AbstractErrorHandler::ERR);
+                        LogUtil::log(sprintf("Event handler could not be attached because %s", $e->getMessage()), \Monolog\Logger::ERR);
                     }
                 }
             }

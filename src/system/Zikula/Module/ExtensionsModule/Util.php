@@ -44,7 +44,7 @@ class Util
             try {
                 $modversion = new $class($module);
             } catch (\Exception $e) {
-                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), Zikula_AbstractErrorHandler::CRIT);
+                LogUtil::log(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), \Monolog\Logger::CRIT);
                 throw new InvalidArgumentException(__f('%1$s threw an exception reporting: "%2$s"', array($class, $e->getMessage())), 0, $e);
             }
             if (!$modversion instanceof Zikula_AbstractVersion) {
@@ -63,7 +63,7 @@ class Util
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
 //                if (!System::isUpgrading()) {
-//                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), Zikula_AbstractErrorHandler::CRIT);
+//                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRIT);
 //                    LogUtil::registerError(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
 //                }
 //                $modversion = array(
