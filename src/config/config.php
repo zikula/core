@@ -34,11 +34,6 @@ $ZConfig['DBInfo']['databases']['default']['collate'] = 'utf8_general_ci';
 // ----------------------------------------------------------------------
 $ZConfig['Log']['log.apache_uname'] = 0;          // log username to apache logs: please see documentation.  Please check you country's local law covering the logging of personally identifiable user data before enabling.
 
-$ZConfig['Log']['log.display_template'] = 0;        // Overrides PHP's output handler if activated by log.show_php_error_handler and gains full control of output.
-                                                    // This setting is generally NOT desirable when developing/debugging.
-
-$ZConfig['Log']['debug.display_pagerendertime'] = 0;      // display page render time, 0 to disable
-
 // ----------------------------------------------------------------------
 // The following define some data layer settings
 // ----------------------------------------------------------------------
