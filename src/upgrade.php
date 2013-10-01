@@ -179,7 +179,7 @@ function _upg_selectlanguage()
         echo '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
     }
     echo '</select></div></fieldset>'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-default btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
     
     echo '</form>'."\n";
     _upg_footer();
@@ -228,7 +228,7 @@ function _upg_login($showheader = true)
         echo '<input type="hidden" name="lang" value="'.htmlspecialchars($lang).'" />'."\n";
     }
     echo '</fieldset>'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-default btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
     echo '</form>'."\n";
     echo '</div>'."\n";
     if ($showheader == true) {
@@ -330,7 +330,7 @@ function _upg_continue($action, $text, $username, $password)
     echo '<br />'."\n";
     echo '<br />'."\n";
     echo '<input type="hidden" name="action" value="'.htmlspecialchars($action).'" />'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" value="'.htmlspecialchars($text).'" class="btn btn-default btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Proceed to Upgrade').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" value="'.htmlspecialchars($text).'" class="btn btn-primary"><span class="icon icon-double-angle-right"></span> '.__('Proceed to Upgrade').'</button></div>'."\n";
     echo '</fieldset></div>'."\n";
     echo '</form>'."\n";
 
