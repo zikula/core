@@ -266,7 +266,7 @@ class FileUtil
      *
      * @return boolean TRUE on success, FALSE on failure.
      */
-    public static function mkdirs($path, $mode = null, $absolute = false)
+    public static function mkdirs($path, $mode = 0777, $absolute = false)
     {
         if (is_dir($path)) {
             return true;
