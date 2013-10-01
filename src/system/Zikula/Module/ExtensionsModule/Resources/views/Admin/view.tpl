@@ -9,7 +9,7 @@
 
 <p class="alert alert-info">{gt text='Note: Modules are software that extends the functionality of a site. There is a wide choice of add-on modules available from the %s.' tag1=$extdblink}</p>
 
-{pagerabc posvar="letter" forwardvars="module,type,func"}
+{pagerabc posvar="letter" forwardvars="module,type,func" printempty=true}
 
 <table class="table table-bordered table-striped">
     <thead>

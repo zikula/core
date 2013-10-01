@@ -39,7 +39,7 @@
 
 {if $uids}
 <h3>{gt text="Add users to group"}</h3>
-    {pagerabc posvar="letter" separator="&nbsp;|&nbsp;" names="*;A;B;C;D;E;F;G;H;I;J;K;L;M;N;O;P;Q;R;S;T;U;V;W;X;Y;Z;?" forwardvars="module,type,func,gid"}
+    {pagerabc posvar="letter" forwardvars="module,type,func,gid" printempty=true}
 <br />
 
 <p class="alert alert-info">{gt text="Notice: Please select one or more users to add to the group. To select multiple users, use 'Shift-Click' or 'Control-Click'."}</p>
