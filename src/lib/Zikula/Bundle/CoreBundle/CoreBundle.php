@@ -2,6 +2,7 @@
 
 namespace Zikula\Bundle\CoreBundle;
 
+use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\FixChmodOctalPass;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCoreListenersPass;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterKernelListenersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -16,7 +17,6 @@ class CoreBundle extends Bundle
     {
         parent::build($container);
 
-//        $container->addScope(new Scope('request'));
         $container->addCompilerPass(new RegisterKernelListenersPass(), PassConfig::TYPE_AFTER_REMOVING);
         $container->addCompilerPass(new RegisterCoreListenersPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
