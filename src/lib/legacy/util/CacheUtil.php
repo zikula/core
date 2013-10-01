@@ -48,7 +48,7 @@ class CacheUtil
      *
      * @return boolean true if successful, false otherwise.
      */
-    public static function createLocalDir($dir, $mode = null, $absolute = true)
+    public static function createLocalDir($dir, $mode = 0777, $absolute = true)
     {
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
 
