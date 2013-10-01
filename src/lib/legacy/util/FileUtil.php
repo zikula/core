@@ -274,7 +274,10 @@ class FileUtil
 
         $path = DataUtil::formatForOS($path, $absolute);
 
-        return mkdir($path, $mode, true);
+        // mkdir does not set chmod properly
+        mkdir($path, $mode, true);
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs->chmod($path, $mode, 0000, true);
     }
 
     /**
