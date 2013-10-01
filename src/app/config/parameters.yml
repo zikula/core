@@ -12,7 +12,7 @@ parameters:
     compat_layer:     true
     temp_dir:         %kernel.cache_dir%/ztemp
     datadir:          userdata
-    system.chmod_dir: 777
+    system.chmod_dir: 0777
 
     display_pagerendertime: false
 
