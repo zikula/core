@@ -52,7 +52,7 @@ class CacheUtil
     {
         $path = DataUtil::formatForOS(System::getVar('temp'), true) . '/' . $dir;
 
-        $mode = isset($mode) ? (int)$mode : System::getVar('system.chmod_dir');
+        $mode = isset($mode) ? $mode : System::getVar('system.chmod_dir');
 
         if (!FileUtil::mkdirs($path, $mode, $absolute)) {
             return false;

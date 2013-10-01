@@ -89,7 +89,7 @@ abstract class ZikulaKernel extends Kernel
         $GLOBALS['ZConfig']['System']['datadir'] = $this->getContainer()->getParameter('datadir');
         $GLOBALS['ZConfig']['System']['compat_layer'] = $this->getContainer()->getParameter('compat_layer');
         $GLOBALS['ZConfig']['System']['installed'] = $this->getContainer()->getParameter('installed');
-        $GLOBALS['ZConfig']['System']['system.chmod_dir'] = $this->getContainer()->getParameter('system.chmod_dir');
+        $GLOBALS['ZConfig']['System']['system.chmod_dir'] = decoct($this->getContainer()->getParameter('system.chmod_dir'));
 
         foreach ($this->bundles as $bundle) {
             if ($bundle instanceof AbstractModule) {
