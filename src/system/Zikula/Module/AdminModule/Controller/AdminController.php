@@ -706,8 +706,6 @@ class AdminController extends \Zikula_AbstractController
      */
     private function _developernotices()
     {
-        global $ZConfig;
-
         $modvars = ModUtil::getVar('ZikulaThemeModule');
 
         $data = array();
