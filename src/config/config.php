@@ -14,6 +14,7 @@
 
 global $ZConfig;
 $ZConfig['System'] = array();
+$ZConfig['System']['system.chmod_dir'] = 0777;
 
 // ----------------------------------------------------------------------
 // This is the definition for the default Zikula system database.

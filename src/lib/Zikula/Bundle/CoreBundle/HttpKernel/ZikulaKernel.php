@@ -84,6 +84,7 @@ abstract class ZikulaKernel extends Kernel
 
         parent::boot();
 
+
         foreach ($this->bundles as $bundle) {
             if ($bundle instanceof AbstractModule) {
                 $this->modules[] = $bundle;
