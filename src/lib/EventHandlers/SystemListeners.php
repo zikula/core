@@ -30,8 +30,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     protected function setupHandlerDefinitions()
     {
-        $this->addHandlerDefinition('bootstrap.getconfig', 'initialHandlerScan', -10);
-        $this->addHandlerDefinition('bootstrap.getconfig', 'getConfigFile');
         $this->addHandlerDefinition('core.init', 'sessionLogging');
         $this->addHandlerDefinition('session.require', 'requireSession');
         $this->addHandlerDefinition('core.init', 'systemPlugins');
@@ -62,21 +60,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
             $response->send();
             System::shutdown();
         }
-    }
-
-     /**
-     * Listens for 'bootstrap.getconfig' event.
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function initialHandlerScan(Zikula_Event $event)
-    {
-        $core = $this->serviceManager->get('zikula');
-        ServiceUtil::getManager($core);
-        EventUtil::getManager($core);
-        $core->attachHandlers('config/EventHandlers');
     }
 
     /**
@@ -304,22 +287,6 @@ class SystemListeners extends Zikula_AbstractEventHandler
                     'class' => 'smallicon smallicon-gears',
                     'links' => $sublinks);
         }
-    }
-
-    /**
-     * Listens for 'bootstrap.getconfig'
-     *
-     * @param Zikula_Event $event Event.
-     *
-     * @return void
-     */
-    public function getConfigFile(Zikula_Event $event)
-    {
-        foreach ($GLOBALS['ZConfig'] as $config) {
-            $event->getSubject()->getContainer()->loadArguments($config);
-        }
-
-        $event->stopPropagation();
     }
 
     /**

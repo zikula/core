@@ -12,40 +12,35 @@
  * information regarding copyright and licensing.
  */
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Debug\Debug;
-
-if (isset($_SERVER['HTTP_HOST']) && !extension_loaded('xdebug')) {
-    set_exception_handler(function (Exception $e) {
-        echo '<pre>Uncaught exception '.$e->getMessage().' in '.$e->getFile().' line, '.$e->getLine()."\n";
-        echo $e->getTraceAsString()."</pre>";
-    });
-}
 
 $loader = require __DIR__.'/../app/autoload.php';
 ZLoader::register($loader);
 
-$file = is_readable($file = __DIR__.'/../app/config/custom_kernel.yml') ? $file : __DIR__.'/../app/config/kernel.yml';
-$kernelConfig = Yaml::parse(file_get_contents($file));
-if (in_array($kernelConfig['debug'], array('dev', 'test'))) {
-    Debug::enable();
-};
+$kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
+if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
+    $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
+}
+$kernelConfig = $kernelConfig['parameters'];
+$kernelConfig['debug'] === 'prod' ?: Debug::enable();
 
 require __DIR__.'/../app/ZikulaKernel.php';
 
 $kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
 $kernel->boot();
 
+// legacy handling
 $core = new Zikula_Core();
 $core->setKernel($kernel);
 $core->boot();
 
-// Load system configuration
-$event = new \Zikula\Core\Event\GenericEvent($core);
-$core->getDispatcher()->dispatch('bootstrap.getconfig', $event);
+foreach ($GLOBALS['ZConfig'] as $config) {
+    $core->getContainer()->loadArguments($config);
+}
 
-$event = new \Zikula\Core\Event\GenericEvent($core);
-$core->getDispatcher()->dispatch('bootstrap.custom', $event);
+ServiceUtil::getManager($core);
+EventUtil::getManager($core);
+$core->attachHandlers('config/EventHandlers');
 
 return $core;

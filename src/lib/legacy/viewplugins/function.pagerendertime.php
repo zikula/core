@@ -34,7 +34,7 @@
 function smarty_function_pagerendertime($params, Zikula_View $view)
 {
     // show time to render
-    if ($view->getContainer()->getParameter('display_pagerendertime')) {
+    if ($view->getContainer()->getParameter('pagerendertime')) {
         // calcultate time to render
         $dbg_totaltime = $view->getContainer()->get('zikula')->getUptime();
 
