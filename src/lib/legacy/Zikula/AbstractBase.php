@@ -12,7 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -95,7 +95,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Doctrine EntityManager.
      *
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $entityManager;
 
@@ -208,7 +208,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Get entitymanager.
      *
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     public function getEntityManager()
     {
@@ -263,7 +263,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @deprecated since 1.3.6
      * @use self::getDispatcher()
      *
-     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     * @return ContainerAwareEventDispatcher
      */
     public function getEventManager()
     {
@@ -273,7 +273,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Get the EventManager.
      *
-     * @return Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+     * @return ContainerAwareEventDispatcher
      */
     public function getDispatcher()
     {
@@ -308,6 +308,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     /**
      * Get lib/ location for this component.
      *
+     * @deprecated since 1.3.6
+     *
      * @return string
      */
     public function getLibBaseDir()
@@ -317,6 +319,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
 
     /**
      * Get top basedir of the component (modules/ system/ etc)/.
+     *
+     * @deprecated since 1.3.6
      *
      * @return string
      */
@@ -389,6 +393,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string|array $debug   Debug information.
      *
      * @throws Exception\NotFoundHttpException exception.
+     * @deprecated since 1.3.6
      *
      * @return void
      */
@@ -408,7 +413,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string|array $debug     Debug information.
      *
      * @throws Exception\NotFoundHttpException Exception.
-     *
+     * @deprecated since 1.3.6
      * @return void
      */
     protected function throwNotFoundIf($condition, $message='', $code=0, $debug=null)
@@ -429,6 +434,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string|array $debug     Debug information.
      *
      * @throws Exception\NotFoundHttpException Exception.
+     * @deprecated since 1.3.6
      *
      * @return void
      */
@@ -449,6 +455,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string|array $debug   Debug information.
      *
      * @throws Exception\AccessDeniedHttpException Exception.
+     * @deprecated since 1.3.6
      *
      * @return void
      */
@@ -489,6 +496,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string|array $debug     Debug information.
      *
      * @throws Exception\AccessDeniedHttpException Exception.
+     * @deprecated since 1.3.6
      *
      * @return void
      */
@@ -506,6 +514,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param integer $type Redirect code, 302 default.
      *
      * sends RedirectResponse Causing redirect.
+     * @deprecated since 1.3.6 return a RedirectResponse instead!
      *
      * @return void
      */
@@ -559,6 +568,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param string $message Message.
      *
+     * @deprecated since 1.3.6
+     *
      * @throws Zikula_Exception If no message is set.
      *
      * @return object This object.
@@ -584,6 +595,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @throws Zikula_Exception If no message is set.
      *
+     * @deprecated since 1.3.6
+     *
      * @return object This object.
      */
     protected function registerStatusIf($condition, $message)
@@ -602,6 +615,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param boolean $condition Condition.
      * @param string  $message   Message.
+     *
+     * @deprecated since 1.3.6
      *
      * @throws Zikula_Exception If no message is set.
      *
@@ -624,6 +639,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string  $message Message.
      * @param integer $type    Type.
      * @param mixed   $debug   Debug.
+     *
+     * @deprecated since 1.3.6
      *
      * @throws Zikula_Exception If no message is set.
      *
@@ -672,6 +689,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string  $message   Message.
      * @param integer $type      Type.
      * @param mixed   $debug     Debug.
+     *
+     * @deprecated since 1.3.6
      *
      * @throws Zikula_Exception If no message is set.
      *

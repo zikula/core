@@ -3,6 +3,8 @@
 namespace Zikula\Core\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Bundle\ModuleBundle\AbstractModule;
 use Zikula\Common\I18n\TranslatorAwareInterface;
 use Zikula\Common\I18n\Translator;
@@ -86,4 +88,42 @@ abstract class AbstractController extends Controller implements TranslatorAwareI
 
         return $parameters;
     }
+    /**
+     * Returns a NotFoundHttpException.
+     *
+     * This will result in a 404 response code. Usage example:
+     *
+     *     throw $this->createNotFoundException('Page not found!');
+     *
+     * @param string    $message  A message
+     * @param \Exception $previous The previous exception
+     *
+     * @return NotFoundHttpException
+     */
+    public function createNotFoundException($message = null, \Exception $previous = null)
+    {
+        $message = null === $message ? __('Not Found') : $message;
+
+        return new NotFoundHttpException($message, $previous);
+    }
+
+    /**
+     * Returns a NotFoundHttpException.
+     *
+     * This will result in a 404 response code. Usage example:
+     *
+     *     throw $this->createNotFoundException('Page not found!');
+     *
+     * @param string    $message  A message
+     * @param \Exception $previous The previous exception
+     *
+     * @return NotFoundHttpException
+     */
+    public function createAccessDeniedHttpException($message = null, \Exception $previous = null)
+    {
+        $message = null === $message ? __('Access Denied') : $message;
+
+        return new AccessDeniedHttpException($message, $previous);
+    }
+
 }
