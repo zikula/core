@@ -14,6 +14,7 @@
  */
 namespace Zikula\Core\FilterUtil\Plugin;
 
+use Doctrine\ORM\Query\Expr\Func;
 use Zikula\Core\FilterUtil;
 use \CategoryUtil;
 
@@ -22,14 +23,12 @@ use \CategoryUtil;
  */
 class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {
-
     /**
      * modulename of the entity.
      *
      * @var string
      */
     protected $modname;
-
     /**
      * filter on this propery
      *
@@ -40,17 +39,15 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
     /**
      * Constructor.
      *
-     * @param string modulename of the entity.
-     * @param array $property Set of registry propertys to use, see setProperty() (optional)
-     *            (default=null).
-     * @param array $fields  Set of fields to use, see setFields() (optional) (default='category').
-     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=false).
+     * @param              string    Modulename of the entity.
+     * @param array        $property Set of registry properties to use, see setProperty()
+     * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category').
+     * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
+     * @param bool         $default  set the plugin to default (optional) (default=false).
      */
     public function __construct($modname = null, $property = null, $fields = 'category', $ops = null, $default = false)
     {
         parent::__construct($fields, $ops, $default);
-
         $this->setProperty($property);
         $this->modname = $modname;
     }
@@ -77,8 +74,10 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
         $config = $this->config;
         $alias = $config->getAlias();
         $qb = $config->getQueryBuilder();
-        $qb->join($alias . '.categories', $alias . '_cat_plugin')->join(
-            $alias . '_cat_plugin.category', $alias . '_cat_plugin_category');
+        $qb->join($alias.'.categories', $alias.'_cat_plugin')->join(
+            $alias.'_cat_plugin.category',
+            $alias.'_cat_plugin_category'
+        );
     }
 
     /**
@@ -98,7 +97,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
     }
 
     /**
-     * get the id of the registrys defined by $module and $propery.
+     * Get the id of the registry defined by $module and $property.
      *
      * @return array();
      */
@@ -107,16 +106,13 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
         $from = $this->config->getQueryBuilder()->getDQLPart('from');
         $parts = explode('\\', $from[0]->getFrom());
         $entityname = str_replace('Entity', '', end($parts));
-
         $em = $this->config->getEntityManager();
-
-        $rCategories = $em->getRepository(
-            'Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')->findBy(
-            array(
-                'modname' => $this->modname,
-                'entityname' => $entityname
-            ));
-
+        $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')
+            ->findBy(array(
+                     'modname' => $this->modname,
+                     'entityname' => $entityname,
+                )
+            );
         $ids = array();
         foreach ($rCategories as $cat) {
             if (in_array($cat->getProperty(), $this->property)) {
@@ -134,28 +130,24 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return Func Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {
         $config = $this->config;
         $alias = $config->getAlias();
         $expr = $config->getQueryBuilder()->expr();
-
         if ($op == 'sub' || is_numeric($value)) {
-            $column = $alias . '_cat_plugin_category.id';
+            $column = $alias.'_cat_plugin_category.id';
         } else {
-            $column = $alias . '_cat_plugin_category.name';
+            $column = $alias.'_cat_plugin_category.name';
         }
-
         $con = null;
         switch ($op) {
             case 'eq':
                 $con = $expr->eq($column, $config->toParam($value, 'category', $field));
-
             case 'ne':
                 $con = $expr->neq($column, $config->toParam($value, 'category', $field));
-
             case 'sub':
                 $items = array(
                     $value
@@ -166,10 +158,11 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
                 }
                 $con = $expr->in($column, $config->toParam($items, 'category', $field));
         }
-
         if ($this->modname !== null && $this->property !== null) {
-            $propertyCon = $expr->in($alias . '_cat_plugin.categoryRegistryId',
-                $config->toParam($this->getRegistryIds(), 'category', $field));
+            $propertyCon = $expr->in(
+                $alias.'_cat_plugin.categoryRegistryId',
+                $config->toParam($this->getRegistryIds(), 'category', $field)
+            );
             if ($con !== null) {
                 return $expr->andX($con, $propertyCon);
             } else {
