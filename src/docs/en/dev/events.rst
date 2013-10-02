@@ -15,20 +15,6 @@ Any changes made to the `$event` object or `$subject` in the handlers will be ca
 
 #### _List of event names you can take advantage of in the core._
 
-
-BOOTSTRAP
----------
-
-#### `boostrap.getconfig`
-Called in bootstrap.
-Receives Zikula_Core as subject.
-Handler should stopPropagation().
-Purpose is to load the config/config.php
-
-#### `bootstrap.custom`
-Called in bootstrap.
-Receives Zikula_Core as subject.
-
 CORE
 ----
 
