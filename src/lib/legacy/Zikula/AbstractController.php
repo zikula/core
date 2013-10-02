@@ -12,10 +12,10 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Component\HookDispatcher\Hook;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Abstract controller for modules.
@@ -80,7 +80,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Notify any hookable events.
      *
-     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
+     * @param Hook $hook Hook interface.
      *
      * @deprecated since 1.3.6
      * @use self::dispatchHooks()
@@ -95,7 +95,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
     /**
      * Dispatch hooks.
      *
-     * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
+     * @param Hook $hook Hook interface.
      *
      * @return Zikula_AbstractHook
      */
@@ -111,7 +111,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @param null  $code
      * @param array $headers
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function response($text, $code = 200, $headers = array())
     {
@@ -169,5 +169,43 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      */
     public function postDispatch()
     {
+    }
+
+    /**
+     * Returns a NotFoundHttpException.
+     *
+     * This will result in a 404 response code. Usage example:
+     *
+     *     throw $this->createNotFoundException('Page not found!');
+     *
+     * @param string    $message  A message
+     * @param \Exception $previous The previous exception
+     *
+     * @return NotFoundHttpException
+     */
+    public function createNotFoundException($message = null, \Exception $previous = null)
+    {
+        $message = null === $message ? __('Not Found') : $message;
+
+        return new NotFoundHttpException($message, $previous);
+    }
+
+    /**
+     * Returns a NotFoundHttpException.
+     *
+     * This will result in a 404 response code. Usage example:
+     *
+     *     throw $this->createNotFoundException('Page not found!');
+     *
+     * @param string    $message  A message
+     * @param \Exception $previous The previous exception
+     *
+     * @return NotFoundHttpException
+     */
+    public function createAccessDeniedHttpException($message = null, \Exception $previous = null)
+    {
+        $message = null === $message ? __('Access Denied') : $message;
+
+        return new AccessDeniedHttpException($message, $previous);
     }
 }
