@@ -64,8 +64,8 @@
         </fieldset>
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                {button src='button_ok.png' set='icons/extrasmall' __alt='Export' __title='Export' __text='Export'}
-                <a class="btn btn-default" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
+                {button class="btn btn-success" __alt='Export' __title='Export' __text='Export'}
+                <a class="btn btn-danger" href="{modurl modname='ZikulaUsersModule' type='admin' func='view'}" title="{gt text='Cancel'}">{gt text='Cancel'}</a>
             </div>
         </div>
     </div>
