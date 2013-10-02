@@ -21,7 +21,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class Config
 {
-
     /**
      * Doctrine2 Query Builder instance
      */
@@ -75,8 +74,8 @@ class Config
      * alias: Alias to use with the main entity, default tbl.
      *
      * @param EntityManager $em
-     * @param QueryBuilder  $qb
-     * @param array         $args Arguments as listed above.
+     * @param QueryBuilder $qb
+     * @param array $args Arguments as listed above.
      */
     public function __construct(EntityManager $em, QueryBuilder $qb, $args)
     {
@@ -102,20 +101,22 @@ class Config
 
         $this->meta[$this->alias] = $mdf->getMetadataFor($this->entityName);
 
-        foreach ($parts['join'][$this->alias] as $join) {
-            $j = explode('.', $join->getJoin(), 2);
-            if (count($j) != 2) {
-                throw new \Exception('Join in wrong format: ' . $join->getJoin());
-            }
-            if (!isset($this->meta[$j[0]])) {
-                throw new \Exception('Unknown alias in join or wrong order: ' . $join->getJoin());
-            }
-            if (!isset($this->meta[$j[0]]->associationMappings[$j[1]])) {
-                throw new \Exception('Unknown Mapping in join: ' . $join->getJoin());
-            }
+        if (isset($parts['join'][$this->alias])) {
+            foreach ($parts['join'][$this->alias] as $join) {
+                $j = explode('.', $join->getJoin(), 2);
+                if (count($j) != 2) {
+                    throw new \Exception('Join in wrong format: ' . $join->getJoin());
+                }
+                if (!isset($this->meta[$j[0]])) {
+                    throw new \Exception('Unknown alias in join or wrong order: ' . $join->getJoin());
+                }
+                if (!isset($this->meta[$j[0]]->associationMappings[$j[1]])) {
+                    throw new \Exception('Unknown Mapping in join: ' . $join->getJoin());
+                }
 
-            $jEntity = $this->meta[$j[0]]->associationMappings[$j[1]]['targetEntity'];
-            $this->meta[$join->getAlias()] = $mdf->getMetadataFor($jEntity);
+                $jEntity = $this->meta[$j[0]]->associationMappings[$j[1]]['targetEntity'];
+                $this->meta[$join->getAlias()] = $mdf->getMetadataFor($jEntity);
+            }
         }
     }
 
@@ -149,16 +150,16 @@ class Config
      */
     public function nextUniqueParamkey($pluginname, $fieldname)
     {
-        $this->paramNumber++;
+        $this->paramNumber ++;
 
-        return ':' . $this->paramNumber . '_' . $pluginname . '_' . $fieldname;
+        return ':' . $pluginname . '_' . $fieldname . '_' . $this->paramNumber;
     }
 
     /**
      * Generate next parameter key and
      * add the value to the QueryBuilder
      *
-     * @param mixed  $value
+     * @param mixed $value
      * @param string $pluginname
      * @param string $fieldname
      *
@@ -175,8 +176,7 @@ class Config
     /**
      * Sets Entity.
      *
-     * @param string $table
-     *            Table name.
+     * @param string $table Table name.
      *
      * @return bool true on success, false otherwise.
      */
@@ -208,8 +208,7 @@ class Config
     /**
      * Sets alias.
      *
-     * @param string $alias
-     *            Entity alias.
+     * @param string $alias Entity alias.
      *
      * @return void
      */
@@ -230,6 +229,7 @@ class Config
 
     /**
      * returns $s with alias in front if there is no .
+     *
      * in the string
      * else only $s.
      *
@@ -247,6 +247,7 @@ class Config
 
     /**
      * returns $s with alias in front if there is no .
+     *
      * in the string
      * else only $s.
      *
@@ -257,10 +258,8 @@ class Config
     public function testFieldExists($field)
     {
         $parts = explode('.', $field, 2);
-        if (count($parts) < 2
-            || !isset($this->meta[$parts[0]])
-            || !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])
-        ) {
+        if (count($parts) < 2 || !isset($this->meta[$parts[0]]) ||
+             !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])) {
             throw new \Exception('Unknown Fieldname: ' . $field);
         }
     }

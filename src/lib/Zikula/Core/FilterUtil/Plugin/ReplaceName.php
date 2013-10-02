@@ -12,7 +12,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
@@ -35,7 +34,7 @@ class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\Replac
      * Constructor.
      *
      * Argument $config may contain:
-     *  pair: array of replace pairs in form old => new.
+     * pair: array of replace pairs in form old => new.
      *
      * @param array $config Configuration.
      */
@@ -66,7 +65,7 @@ class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\Replac
      * Replace field's value.
      *
      * @param string $field Field name.
-     * @param string $op    Filter operator.
+     * @param string $op Filter operator.
      * @param string $value Filter value.
      *
      * @return array New filter set.
@@ -77,6 +76,10 @@ class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\Replac
             $field = $this->pair[$field];
         }
 
-        return array($field, $op, $value);
+        return array(
+            $field,
+            $op,
+            $value
+        );
     }
 }

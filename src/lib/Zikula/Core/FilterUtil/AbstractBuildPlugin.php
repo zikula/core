@@ -11,7 +11,6 @@
  *          Please see the NOTICE file distributed with this source code for further
  *          information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 /**
@@ -19,7 +18,6 @@ namespace Zikula\Core\FilterUtil;
  */
 abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterface
 {
-
     /**
      * Fields to use the plugin for.
      *
@@ -37,9 +35,9 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Constructor.
      *
-     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=false).
+     * @param array $fields Set of fields to use, see setFields() (optional) (default=null).
+     * @param array $ops Operators to enable, see activateOperators() (optional) (default=null).
+     * @param bool $default set the plugin to default (optional) (default=false).
      */
     public function __construct($fields = null, $ops = null, $default = false)
     {
@@ -61,9 +59,10 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } else if (!empty($fields) && array_search($fields, $this->fields) === false) {
-            $this->fields[] = $fields;
-        }
+        } else
+            if (!empty($fields) && array_search($fields, $this->fields) === false) {
+                $this->fields[] = $fields;
+            }
     }
 
     /**
@@ -90,7 +89,8 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $ops) !== false) {
+        } elseif (!empty($op) && array_search($op, $this->ops) === false &&
+             array_search($op, $ops) !== false) {
             $this->ops[] = $op;
         }
     }

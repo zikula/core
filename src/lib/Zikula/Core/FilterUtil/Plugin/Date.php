@@ -27,7 +27,7 @@ class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceI
      *
      * @param array $fields Set of fields to use, see setFields() (optional) (default=null).
      * @param array $ops Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=false).
+     * @param bool $default set the plugin to default (optional) (default=false).
      */
     public function __construct($fields = null, $ops = null, $default = false)
     {
@@ -167,19 +167,16 @@ class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceI
 
         return array(
             $from,
-            $to,
+            $to
         );
     }
 
     /**
      * Get the Doctrine2 expression object
      *
-     * @param string $field
-     *            Field name.
-     * @param string $op
-     *            Operator.
-     * @param string $value
-     *            Value.
+     * @param string $field Field name.
+     * @param string $op Operator.
+     * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression
      */

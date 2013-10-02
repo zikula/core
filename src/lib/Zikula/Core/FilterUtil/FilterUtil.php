@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FilterUtil extends AbstractBase
 {
-
     /**
      * The Input variable name.
      *
@@ -60,15 +59,21 @@ class FilterUtil extends AbstractBase
      * @var Request
      */
     private $request;
+
     /**
+     *
      * @var EntityManager
      */
     private $entityMangager;
+
     /**
+     *
      * @var QueryBuilder
      */
     private $qb;
+
     /**
+     *
      * @var array
      */
     private $args;
@@ -82,12 +87,13 @@ class FilterUtil extends AbstractBase
      * restrictions: Array of allowed operators per field in the form "field's name => operator array".
      *
      * @param EntityManager $entityMangager
-     * @param QueryBuilder  $qb
-     * @param array         $args
+     * @param QueryBuilder $qb
+     * @param array $args
      *
      * @internal param \Doctrine\ORM\EntityManager $entityManager
      */
-    public function __construct(EntityManager $entityMangager, QueryBuilder $qb, array $args = array())
+    public function __construct(EntityManager $entityMangager, QueryBuilder $qb,
+        array $args = array())
     {
         $this->setVarName('filter');
 
@@ -170,9 +176,10 @@ class FilterUtil extends AbstractBase
         $i = 1;
         $filter = array();
 
-        //TODO get filter via request object
+        // TODO get filter via request object
         // Get unnumbered filter string
-        $filterStr = $this->request->query->filter($this->varname, '', false, FILTER_SANITIZE_STRING);
+        $filterStr = $this->request->query->filter($this->varname, '', false,
+            FILTER_SANITIZE_STRING);
         if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
@@ -180,14 +187,15 @@ class FilterUtil extends AbstractBase
         // Get filter1 ... filterN
         while (true) {
             $filterURLName = $this->varname . "$i";
-            $filterStr = $this->request->query->filter($filterURLName, '', false, FILTER_SANITIZE_STRING);
+            $filterStr = $this->request->query->filter($filterURLName, '', false,
+                FILTER_SANITIZE_STRING);
 
             if (empty($filterStr)) {
                 break;
             }
 
             $filter[] = $filterStr;
-            ++$i;
+            ++ $i;
         }
 
         return $filter;
@@ -259,8 +267,7 @@ class FilterUtil extends AbstractBase
     /**
      * Add filter string with "AND".
      *
-     * @param mixed $filter
-     *            Filter string or array.
+     * @param mixed $filter Filter string or array.
      *
      * @return void
      */
@@ -328,8 +335,8 @@ class FilterUtil extends AbstractBase
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
 
-            if (substr($parts[2], 0, 1) == '$') {
-                $value = \FormUtil::getPassedValue(substr($parts[2], 1), null); // todo convert to $request?
+            if ($this->request !== null && substr($parts[2], 0, 1) == '$') {
+                $value = $this->request->request->filter(substr($parts[2], 1));
                 // !is_numeric because empty(0) == false
                 if (empty($value) && !is_numeric($value)) {
                     return null;
@@ -353,14 +360,12 @@ class FilterUtil extends AbstractBase
      * if $a and $b are of the same type the parts
      * of $b are added to $a.
      *
-     * @param Base  $a expression object to add to
+     * @param Base $a expression object to add to
      * @param mixed $b anything to add to $a
      */
     private function addBtoA($a, $b)
     {
-        if (($a instanceof Andx && $b instanceof Andx) ||
-            ($a instanceof Orx && $b instanceof Orx)
-        ) {
+        if (($a instanceof Andx && $b instanceof Andx) || ($a instanceof Orx && $b instanceof Orx)) {
             $a->addMultiple($b->getParts());
         } else {
             $a->add($b);
@@ -385,13 +390,10 @@ class FilterUtil extends AbstractBase
         $con = false;
 
         /*
-         * Build a tree with an OR object as root (if one excists), 
-         * AND Objects as childs of the OR and conditions as leafs. 
-         * Handle expressions in brackets like normal conditions (parsed recursivly). 
-         * Using Doctrine2 expression objects
+         * Build a tree with an OR object as root (if one excists), AND Objects as childs of the OR and conditions as leafs. Handle expressions in brackets like normal conditions (parsed recursivly). Using Doctrine2 expression objects
          */
         $filterlen = strlen($filter);
-        for ($i = 0; $i < $filterlen; $i++) {
+        for ($i = 0; $i < $filterlen; $i ++) {
             $c = substr($filter, $i, 1);
             switch ($c) {
                 case '*': // Operator: OR
@@ -451,17 +453,17 @@ class FilterUtil extends AbstractBase
                     break;
 
                 case '(': // Subquery
-                    $level++;
+                    $level ++;
                     while ($level != 0 && $i <= strlen($filter)) {
                         // get closing bracket
-                        $i++;
+                        $i ++;
                         $c = substr($filter, $i, 1);
                         switch ($c) {
                             case '(':
-                                $level++;
+                                $level ++;
                                 break;
                             case ')':
-                                $level--;
+                                $level --;
                                 break;
                         }
                         if ($level > 0) {

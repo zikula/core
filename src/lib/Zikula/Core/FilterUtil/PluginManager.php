@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 use Zikula\Core\FilterUtil\Plugin\Compare;
@@ -60,8 +59,8 @@ class PluginManager extends AbstractBase
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param        $plugins
-     * @param        $restrictions
+     * @param $plugins
+     * @param $restrictions
      *
      * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
      */
@@ -177,7 +176,7 @@ class PluginManager extends AbstractBase
 
         foreach ($rest as $field => $ops) {
             // accept registered operators only
-            $ops = array_filter(array_intersect((array)$ops, array_keys($this->ops)));
+            $ops = array_filter(array_intersect((array) $ops, array_keys($this->ops)));
             if (!empty($ops)) {
                 $this->restrictions[$field] = $ops;
             }
@@ -188,7 +187,7 @@ class PluginManager extends AbstractBase
      * Runs replace plugins and return condition set.
      *
      * @param string $field Fieldname.
-     * @param string $op    Operator.
+     * @param string $op Operator.
      * @param string $value Value.
      *
      * @return array condition set.
@@ -198,7 +197,7 @@ class PluginManager extends AbstractBase
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
                 $plugin = & $this->plugin[$k];
-                list($field, $op, $value) = $plugin->replace($field, $op, $value);
+                list ($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
 
@@ -213,7 +212,7 @@ class PluginManager extends AbstractBase
      * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
-     * @param string $op    Operator.
+     * @param string $op Operator.
      * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression
@@ -221,10 +220,10 @@ class PluginManager extends AbstractBase
     public function getExprObj($field, $op, $value)
     {
         if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
-            throw new \Exception('Operator not allowed.');
+            throw new \Exception('Unknown Operator.');
         }
         if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
-            throw new \Exception('Field not allowed.');
+            throw new \Exception('This Operation is not allowd on this Field.');
         }
         if (isset($this->ops[$op][$field])) {
             return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);

@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 /**
@@ -21,7 +20,6 @@ interface JoinInterface
 {
     /**
      * add Join to QueryBuilder.
-     *
      */
     public function addJoinsToQuery();
 }

@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 /**
@@ -58,7 +57,7 @@ interface BuildInterface
      * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
-     * @param string $op    Operator.
+     * @param string $op Operator.
      * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression

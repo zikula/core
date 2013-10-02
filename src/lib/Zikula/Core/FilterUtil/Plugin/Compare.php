@@ -12,7 +12,6 @@
  *             Please see the NOTICE file distributed with this source code for further
  *             information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
@@ -22,13 +21,12 @@ use Zikula\Core\FilterUtil;
  */
 class Compare extends FilterUtil\AbstractBuildPlugin
 {
-
     /**
      * Constructor.
      *
-     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=true).
+     * @param array $fields Set of fields to use, see setFields() (optional) (default=null).
+     * @param array $ops Operators to enable, see activateOperators() (optional) (default=null).
+     * @param bool $default set the plugin to default (optional) (default=true).
      */
     public function __construct($fields = null, $ops = null, $default = true)
     {
@@ -61,12 +59,9 @@ class Compare extends FilterUtil\AbstractBuildPlugin
     /**
      * Get the Doctrine2 expression object
      *
-     * @param string $field
-     *            Field name.
-     * @param string $op
-     *            Operator.
-     * @param string $value
-     *            Value.
+     * @param string $field Field name.
+     * @param string $op Operator.
+     * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression
      */
@@ -109,16 +104,10 @@ class Compare extends FilterUtil\AbstractBuildPlugin
                 return $expr->like($column, $config->toParam($value . '%', 'compare', $field));
 
             case 'null':
-                return $expr->orX(
-                    $expr->isNull($column),
-                    $expr->eq($column, '')
-                );
+                return $expr->orX($expr->isNull($column), $expr->eq($column, ''));
 
             case 'notnull':
-                return $expr->orX(
-                    $expr->isNotNull($column),
-                    $expr->neq($column, '')
-                );
+                return $expr->orX($expr->isNotNull($column), $expr->neq($column, ''));
         }
     }
 }
