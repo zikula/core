@@ -514,7 +514,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param integer $type Redirect code, 302 default.
      *
      * sends RedirectResponse Causing redirect.
-     * @deprecated since 1.3.6
+     * @deprecated since 1.3.6 return a RedirectResponse instead!
      *
      * @return void
      */
