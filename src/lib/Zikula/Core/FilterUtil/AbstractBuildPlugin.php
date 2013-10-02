@@ -18,6 +18,7 @@ namespace Zikula\Core\FilterUtil;
  */
 abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterface
 {
+
     /**
      * Fields to use the plugin for.
      *
@@ -35,9 +36,9 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
     /**
      * Constructor.
      *
-     * @param array $fields Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool $default set the plugin to default (optional) (default=false).
+     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
+     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
+     * @param bool  $default set the plugin to default (optional) (default=false).
      */
     public function __construct($fields = null, $ops = null, $default = false)
     {
@@ -120,5 +121,5 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      *
      * @return array Operators.
      */
-    protected abstract function availableOperators();
+    abstract protected function availableOperators();
 }

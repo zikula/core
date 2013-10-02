@@ -22,6 +22,7 @@ use \CategoryUtil;
  */
 class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {
+
     /**
      * modulename of the entity.
      *
@@ -40,10 +41,11 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * Constructor.
      *
      * @param string modulename of the entity.
-     * @param array $property Set of registry propertys to use, see setProperty() (optional) (default=null).
-     * @param array $fields Set of fields to use, see setFields() (optional) (default='category').
-     * @param array $ops Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool $default set the plugin to default (optional) (default=false).
+     * @param array $property Set of registry propertys to use, see setProperty() (optional)
+     *            (default=null).
+     * @param array $fields  Set of fields to use, see setFields() (optional) (default='category').
+     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
+     * @param bool  $default set the plugin to default (optional) (default=false).
      */
     public function __construct($modname = null, $property = null, $fields = 'category', $ops = null, $default = false)
     {
@@ -100,8 +102,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      *
      * @return array();
      */
-    // TODO protected
-    public function getRegistryIds()
+    protected function getRegistryIds()
     {
         $from = $this->config->getQueryBuilder()->getDQLPart('from');
         $parts = explode('\\', $from[0]->getFrom());
@@ -130,7 +131,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
-     * @param string $op Operator.
+     * @param string $op    Operator.
      * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression

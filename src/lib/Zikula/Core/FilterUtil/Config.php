@@ -21,6 +21,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class Config
 {
+
     /**
      * Doctrine2 Query Builder instance
      */
@@ -74,8 +75,8 @@ class Config
      * alias: Alias to use with the main entity, default tbl.
      *
      * @param EntityManager $em
-     * @param QueryBuilder $qb
-     * @param array $args Arguments as listed above.
+     * @param QueryBuilder  $qb
+     * @param array         $args Arguments as listed above.
      */
     public function __construct(EntityManager $em, QueryBuilder $qb, $args)
     {
@@ -146,11 +147,11 @@ class Config
      * @param string $pluginname
      * @param string $fieldname
      *
-     * @return string key form :$number_$pluginname_$fieldname
+     * @return string key form :$pluginname_$fieldname_$number
      */
     public function nextUniqueParamkey($pluginname, $fieldname)
     {
-        $this->paramNumber ++;
+        $this->paramNumber++;
 
         return ':' . $pluginname . '_' . $fieldname . '_' . $this->paramNumber;
     }
@@ -159,7 +160,7 @@ class Config
      * Generate next parameter key and
      * add the value to the QueryBuilder
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $pluginname
      * @param string $fieldname
      *
@@ -230,6 +231,7 @@ class Config
     /**
      * returns $s with alias in front if there is no .
      *
+     *
      * in the string
      * else only $s.
      *
@@ -247,6 +249,7 @@ class Config
 
     /**
      * returns $s with alias in front if there is no .
+     *
      *
      * in the string
      * else only $s.

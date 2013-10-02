@@ -20,6 +20,7 @@ use Zikula\Core\FilterUtil\Plugin\Compare;
  */
 class PluginManager extends AbstractBase
 {
+
     /**
      * Specified restrictions.
      *
@@ -164,7 +165,8 @@ class PluginManager extends AbstractBase
     /**
      * Loads restrictions.
      *
-     * @param array $rest Array of allowed operators per field in the form "field's name => operator array".
+     * @param array $rest Array of allowed operators per field in the form "field's name => operator
+     *            array".
      *
      * @return void
      */
@@ -187,7 +189,7 @@ class PluginManager extends AbstractBase
      * Runs replace plugins and return condition set.
      *
      * @param string $field Fieldname.
-     * @param string $op Operator.
+     * @param string $op    Operator.
      * @param string $value Value.
      *
      * @return array condition set.
@@ -212,7 +214,7 @@ class PluginManager extends AbstractBase
      * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
-     * @param string $op Operator.
+     * @param string $op    Operator.
      * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression

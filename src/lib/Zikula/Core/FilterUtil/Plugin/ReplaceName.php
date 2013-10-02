@@ -21,6 +21,7 @@ use Zikula\Core\FilterUtil;
  */
 class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
 {
+
     /**
      * Replace pairs.
      *
@@ -65,7 +66,7 @@ class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\Replac
      * Replace field's value.
      *
      * @param string $field Field name.
-     * @param string $op Filter operator.
+     * @param string $op    Filter operator.
      * @param string $value Filter value.
      *
      * @return array New filter set.

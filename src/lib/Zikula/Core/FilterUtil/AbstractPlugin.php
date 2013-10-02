@@ -18,6 +18,7 @@ namespace Zikula\Core\FilterUtil;
  */
 class AbstractPlugin
 {
+
     /**
      * Default handler.
      *

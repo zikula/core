@@ -18,6 +18,7 @@ namespace Zikula\Core\FilterUtil;
  */
 abstract class AbstractBase
 {
+
     /**
      * Config object.
      *

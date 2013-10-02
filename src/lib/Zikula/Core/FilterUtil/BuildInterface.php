@@ -18,6 +18,7 @@ namespace Zikula\Core\FilterUtil;
  */
 interface BuildInterface
 {
+
     /**
      * Adds fields to list in common way.
      *
@@ -57,7 +58,7 @@ interface BuildInterface
      * Get the Doctrine2 expression object
      *
      * @param string $field Field name.
-     * @param string $op Operator.
+     * @param string $op    Operator.
      * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression

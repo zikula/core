@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FilterUtil extends AbstractBase
 {
+
     /**
      * The Input variable name.
      *
@@ -84,11 +85,12 @@ class FilterUtil extends AbstractBase
      * Argument $args may contain:
      * plugins: Set of plugins to load.
      * varname: Name of filters in $_REQUEST. Default: filter.
-     * restrictions: Array of allowed operators per field in the form "field's name => operator array".
+     * restrictions: Array of allowed operators per field in the form "field's name => operator
+     * array".
      *
      * @param EntityManager $entityMangager
-     * @param QueryBuilder $qb
-     * @param array $args
+     * @param QueryBuilder  $qb
+     * @param array         $args
      *
      * @internal param \Doctrine\ORM\EntityManager $entityManager
      */
@@ -195,7 +197,7 @@ class FilterUtil extends AbstractBase
             }
 
             $filter[] = $filterStr;
-            ++ $i;
+            ++$i;
         }
 
         return $filter;
@@ -360,7 +362,7 @@ class FilterUtil extends AbstractBase
      * if $a and $b are of the same type the parts
      * of $b are added to $a.
      *
-     * @param Base $a expression object to add to
+     * @param Base  $a expression object to add to
      * @param mixed $b anything to add to $a
      */
     private function addBtoA($a, $b)
@@ -390,10 +392,12 @@ class FilterUtil extends AbstractBase
         $con = false;
 
         /*
-         * Build a tree with an OR object as root (if one excists), AND Objects as childs of the OR and conditions as leafs. Handle expressions in brackets like normal conditions (parsed recursivly). Using Doctrine2 expression objects
+         * Build a tree with an OR object as root (if one excists), AND Objects as childs of the OR
+         * and conditions as leafs. Handle expressions in brackets like normal conditions (parsed
+         * recursivly). Using Doctrine2 expression objects
          */
         $filterlen = strlen($filter);
-        for ($i = 0; $i < $filterlen; $i ++) {
+        for ($i = 0; $i < $filterlen; $i++) {
             $c = substr($filter, $i, 1);
             switch ($c) {
                 case '*': // Operator: OR
@@ -453,17 +457,17 @@ class FilterUtil extends AbstractBase
                     break;
 
                 case '(': // Subquery
-                    $level ++;
+                    $level++;
                     while ($level != 0 && $i <= strlen($filter)) {
                         // get closing bracket
-                        $i ++;
+                        $i++;
                         $c = substr($filter, $i, 1);
                         switch ($c) {
                             case '(':
-                                $level ++;
+                                $level++;
                                 break;
                             case ')':
-                                $level --;
+                                $level--;
                                 break;
                         }
                         if ($level > 0) {
