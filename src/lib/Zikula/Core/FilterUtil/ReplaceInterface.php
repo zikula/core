@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 /**
@@ -19,6 +18,7 @@ namespace Zikula\Core\FilterUtil;
  */
 interface ReplaceInterface
 {
+
     /**
      * Replace whatever the plugin has to replace.
      *

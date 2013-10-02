@@ -12,7 +12,6 @@
  *             Please see the NOTICE file distributed with this source code for further
  *             information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
@@ -61,12 +60,9 @@ class Compare extends FilterUtil\AbstractBuildPlugin
     /**
      * Get the Doctrine2 expression object
      *
-     * @param string $field
-     *            Field name.
-     * @param string $op
-     *            Operator.
-     * @param string $value
-     *            Value.
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression
      */
@@ -109,16 +105,10 @@ class Compare extends FilterUtil\AbstractBuildPlugin
                 return $expr->like($column, $config->toParam($value . '%', 'compare', $field));
 
             case 'null':
-                return $expr->orX(
-                    $expr->isNull($column),
-                    $expr->eq($column, '')
-                );
+                return $expr->orX($expr->isNull($column), $expr->eq($column, ''));
 
             case 'notnull':
-                return $expr->orX(
-                    $expr->isNotNull($column),
-                    $expr->neq($column, '')
-                );
+                return $expr->orX($expr->isNotNull($column), $expr->neq($column, ''));
         }
     }
 }
