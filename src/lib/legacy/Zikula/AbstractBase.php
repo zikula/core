@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Zikula\Core\AbstractModule;
+use Symfony\Component\HttpKernel\Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
@@ -378,7 +380,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Zikula_Exception_NotFound exception.
+     * Throw Exception\NotFoundHttpException exception.
      *
      * Used to immediately halt execution.
      *
@@ -386,17 +388,17 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Zikula_Exception_NotFound Exception.
+     * @throws Exception\NotFoundHttpException exception.
      *
      * @return void
      */
     protected function throwNotFound($message='', $code=0, $debug=null)
     {
-        throw new Zikula_Exception_NotFound($message, $code, $debug);
+        throw new Exception\NotFoundHttpException($message, null, $code);
     }
 
     /**
-     * Throw Zikula_Exception_NotFound exception if $condition.
+     * Throw Exception\NotFoundHttpException if $condition.
      *
      * Used to immediately halt execution if $condition.
      *
@@ -405,7 +407,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_NotFound Exception.
+     * @throws Exception\NotFoundHttpException Exception.
      *
      * @return void
      */
@@ -417,7 +419,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Zikula_Exception_NotFound exception unless $condition.
+     * Throw Exception\NotFoundHttpException exception unless $condition.
      *
      * Used to immediately halt execution unless $condition.
      *
@@ -426,7 +428,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_NotFound Exception.
+     * @throws Exception\NotFoundHttpException Exception.
      *
      * @return void
      */
@@ -438,7 +440,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Zikula_Exception_Forbidden exception.
+     * Throw Exception\AccessDeniedHttpException exception.
      *
      * Used to immediately halt execution.
      *
@@ -446,17 +448,17 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code    Default 0.
      * @param string|array $debug   Debug information.
      *
-     * @throws Zikula_Exception_Forbidden Exception.
+     * @throws Exception\AccessDeniedHttpException Exception.
      *
      * @return void
      */
     protected function throwForbidden($message='', $code=0, $debug=null)
     {
-        throw new Zikula_Exception_Forbidden($message, $code, $debug);
+        throw new Exception\AccessDeniedHttpException($message, null, $code);
     }
 
     /**
-     * Throw Zikula_Exception_Forbidden exception if $condition.
+     * Throw Exception\AccessDeniedHttpException exception if $condition.
      *
      * Used to immediately halt execution if condition.
      *
@@ -465,7 +467,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_Forbidden Exception.
+     * @throws Exception\AccessDeniedHttpException Exception.
      *
      * @return void
      */
@@ -477,7 +479,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
     }
 
     /**
-     * Throw Zikula_Exception_Forbidden exception unless $condition.
+     * Throw Exception\AccessDeniedHttpException exception unless $condition.
      *
      * Used to immediately halt execution unless condition.
      *
@@ -486,7 +488,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string       $code      Default 0.
      * @param string|array $debug     Debug information.
      *
-     * @throws Zikula_Exception_Forbidden Exception.
+     * @throws Exception\AccessDeniedHttpException Exception.
      *
      * @return void
      */
@@ -503,13 +505,15 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string  $url  Url to redirect to.
      * @param integer $type Redirect code, 302 default.
      *
-     * @throws Zikula_Exception_Redirect Causing redirect.
+     * sends RedirectResponse Causing redirect.
      *
      * @return void
      */
     protected function redirect($url, $type = 302)
     {
-        throw new Zikula_Exception_Redirect($url, $type);
+        $response = new RedirectResponse(System::normalizeUrl($url), $type);
+        $response->send();
+        exit;
     }
 
     /**
@@ -519,7 +523,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string  $url       Url to redirect to.
      * @param integer $type      Redirect code, 302 default.
      *
-     * @throws Zikula_Exception_Redirect Causing redirect.
+     * sends RedirectResponse Causing redirect.
      *
      * @return void
      */
@@ -537,7 +541,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      * @param string  $url       Url to redirect to.
      * @param integer $type      Redirect code, 302 default.
      *
-     * @throws Zikula_Exception_Redirect Causing redirect.
+     * sends RedirectResponse Causing redirect.
      *
      * @return void
      */
@@ -765,7 +769,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      *
      * @param string $token The token, if not set, will pull from $_POST['csrftoken'].
      *
-     * @throws Zikula_Exception_Forbidden If check fails.
+     * @throws Exception\AccessDeniedHttpException If check fails.
      *
      * @return void
      */
@@ -785,7 +789,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
             return;
         }
 
-        throw new Zikula_Exception_Forbidden(__f('Oops, something went wrong: security token validation failed. You might want to go to the <a href="%s">startpage</a>.', $this->request->getBaseUrl()));
+        $this->throwForbidden(__f('Oops, something went wrong: security token validation failed. You might want to go to the <a href="%s">startpage</a>.', $this->request->getBaseUrl()));
     }
 
     /**
