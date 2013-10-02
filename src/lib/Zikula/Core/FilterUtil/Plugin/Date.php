@@ -15,18 +15,18 @@
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
-use DataUtil;
 
 /**
  * FilterUtil date handler plugin
  */
 class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceInterface
 {
+
     /**
      * Constructor.
      *
-     * @param array $fields Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops Operators to enable, see activateOperators() (optional) (default=null).
+     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
+     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
      * @param bool  $default set the plugin to default (optional) (default=false).
      */
     public function __construct($fields = null, $ops = null, $default = false)
@@ -55,7 +55,7 @@ class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceI
      * Replace field's value.
      *
      * @param string $field Field name.
-     * @param string $op Filter operator.
+     * @param string $op    Filter operator.
      * @param string $value Filter value.
      *
      * @return array New filter set.
@@ -167,19 +167,16 @@ class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceI
 
         return array(
             $from,
-            $to,
+            $to
         );
     }
 
     /**
      * Get the Doctrine2 expression object
      *
-     * @param string $field
-     *            Field name.
-     * @param string $op
-     *            Operator.
-     * @param string $value
-     *            Value.
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Value.
      *
      * @return Expr\Base Doctrine2 expression
      */
@@ -233,11 +230,9 @@ class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceI
                 return $expr->gt($column, $config->toParam($time, 'date', $field));
 
             case 'ge':
-
                 return $expr->gte($column, $config->toParam($time, 'date', $field));
 
             case 'lt':
-
                 return $expr->lt($column, $config->toParam($time, 'date', $field));
 
             case 'le':

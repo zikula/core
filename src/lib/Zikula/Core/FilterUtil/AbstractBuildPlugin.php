@@ -11,7 +11,6 @@
  *          Please see the NOTICE file distributed with this source code for further
  *          information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 /**
@@ -61,9 +60,10 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } else if (!empty($fields) && array_search($fields, $this->fields) === false) {
-            $this->fields[] = $fields;
-        }
+        } else
+            if (!empty($fields) && array_search($fields, $this->fields) === false) {
+                $this->fields[] = $fields;
+            }
     }
 
     /**
@@ -90,7 +90,8 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $ops) !== false) {
+        } elseif (!empty($op) && array_search($op, $this->ops) === false &&
+             array_search($op, $ops) !== false) {
             $this->ops[] = $op;
         }
     }
@@ -120,5 +121,5 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
      *
      * @return array Operators.
      */
-    protected abstract function availableOperators();
+    abstract protected function availableOperators();
 }

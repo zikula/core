@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 namespace Zikula\Core\FilterUtil;
 
 use Zikula\Core\FilterUtil\Plugin\Compare;
@@ -21,6 +20,7 @@ use Zikula\Core\FilterUtil\Plugin\Compare;
  */
 class PluginManager extends AbstractBase
 {
+
     /**
      * Specified restrictions.
      *
@@ -60,8 +60,8 @@ class PluginManager extends AbstractBase
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param        $plugins
-     * @param        $restrictions
+     * @param $plugins
+     * @param $restrictions
      *
      * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
      */
@@ -165,7 +165,8 @@ class PluginManager extends AbstractBase
     /**
      * Loads restrictions.
      *
-     * @param array $rest Array of allowed operators per field in the form "field's name => operator array".
+     * @param array $rest Array of allowed operators per field in the form "field's name => operator
+     *            array".
      *
      * @return void
      */
@@ -177,7 +178,7 @@ class PluginManager extends AbstractBase
 
         foreach ($rest as $field => $ops) {
             // accept registered operators only
-            $ops = array_filter(array_intersect((array)$ops, array_keys($this->ops)));
+            $ops = array_filter(array_intersect((array) $ops, array_keys($this->ops)));
             if (!empty($ops)) {
                 $this->restrictions[$field] = $ops;
             }
@@ -198,7 +199,7 @@ class PluginManager extends AbstractBase
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
                 $plugin = & $this->plugin[$k];
-                list($field, $op, $value) = $plugin->replace($field, $op, $value);
+                list ($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
 
@@ -221,10 +222,10 @@ class PluginManager extends AbstractBase
     public function getExprObj($field, $op, $value)
     {
         if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
-            throw new \Exception('Operator not allowed.');
+            throw new \Exception('Unknown Operator.');
         }
         if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
-            throw new \Exception('Field not allowed.');
+            throw new \Exception('This Operation is not allowd on this Field.');
         }
         if (isset($this->ops[$op][$field])) {
             return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);

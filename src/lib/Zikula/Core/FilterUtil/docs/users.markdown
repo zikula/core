@@ -36,9 +36,9 @@ Furthermore you can use brackets to group statements.
 FilterUtil uses filter plugins for processing the statements.
 There is a set of plugins in the core which offers a general behaviour.
 
-### Default ###
+### Compare ###
 
-The Default filter is used if there is no other filter plugin configured for a field.
+The Compare filter is used if there is no other filter plugin configured for a field.
 It offers the following operators.
 
 Operators:
@@ -61,7 +61,7 @@ Operators:
 
 ### Category ###
 
-The Category plugin filters a category ID.
+The Category plugin filters a category ID or name.
 
 Operators:
 
