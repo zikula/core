@@ -354,6 +354,24 @@ you use them:
 Documentation: http://symfony.com/doc/master/components/event_dispatcher/introduction.html
 
 
+Event Names
+-----------
+
+There are lots of new events you can see them here:
+
+http://symfony.com/doc/current/book/internals.html#events
+http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table
+
+The following list of even names have been removed:
+
+  - `boostrap.getconfig` - there is no replacement
+  - `bootstrap.custom` - there is no replacement
+  - `frontcontroller.predispatch` - there is no replacement
+  - `frontcontroller.exception` - Subscribe to Kernel::EXCEPTION instead
+  - `setup.errorreporting` - there is no replacement
+  - `systemerror` - there is no replacement
+
+
 Hooks
 -----
 
