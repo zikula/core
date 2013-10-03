@@ -22,13 +22,6 @@ use Zikula\Core\FilterUtil\Plugin\Compare;
 class PluginManager
 {
     /**
-     * Specified restrictions.
-     *
-     * @var array
-     */
-    private $filterUtil;
-
-    /**
      * Loaded plugins.
      *
      * @var array
@@ -54,7 +47,7 @@ class PluginManager
      *
      * @var array
      */
-    private $restrictions;
+    private $restrictions = array();
 
     /**
      * @var Config
@@ -70,18 +63,11 @@ class PluginManager
      *
      * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
      */
-    public function __construct(Config $config, $plugins, $restrictions)
+    public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
     {
         $this->config = $config;
-
-        if (!is_array($plugins)) {
-            $plugins = array();
-        }
         $this->loadPlugins($plugins);
-
-        if ($restrictions !== null) {
-            $this->loadRestrictions($restrictions);
-        }
+        $this->loadRestrictions($restrictions);
     }
 
     /**
