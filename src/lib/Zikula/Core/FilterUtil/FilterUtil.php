@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Adds a Pagesetter like filter.
  */
-class FilterUtil extends AbstractBase
+class FilterUtil
 {
     /**
      * The Input variable name.
@@ -79,6 +79,11 @@ class FilterUtil extends AbstractBase
     private $args;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Constructor.
      *
      * Argument $args may contain:
@@ -97,7 +102,7 @@ class FilterUtil extends AbstractBase
     {
         $this->setVarName('filter');
 
-        parent::__construct(new Config($entityMangager, $qb, $args));
+        $this->config = new Config($entityMangager, $qb, $args);
 
         $this->plugin = new PluginManager($this->getConfig(),
             isset($args['plugins']) ? $args['plugins'] : array(),
@@ -110,6 +115,16 @@ class FilterUtil extends AbstractBase
         if (isset($args['request'])) {
             $this->setRequest($args['request']);
         }
+    }
+
+    /**
+     * Get configuration.
+     *
+     * @return Config Configuration object.
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**

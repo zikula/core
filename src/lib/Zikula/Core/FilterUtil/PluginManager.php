@@ -13,14 +13,14 @@
  */
 namespace Zikula\Core\FilterUtil;
 
+use Doctrine\ORM\Query\Expr\Func;
 use Zikula\Core\FilterUtil\Plugin\Compare;
 
 /**
  * Plugin manager class.
  */
-class PluginManager extends AbstractBase
+class PluginManager
 {
-
     /**
      * Specified restrictions.
      *
@@ -57,6 +57,11 @@ class PluginManager extends AbstractBase
     private $restrictions;
 
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
@@ -67,7 +72,7 @@ class PluginManager extends AbstractBase
      */
     public function __construct(Config $config, $plugins, $restrictions)
     {
-        parent::__construct($config);
+        $this->config = $config;
 
         if (!is_array($plugins)) {
             $plugins = array();
@@ -77,6 +82,16 @@ class PluginManager extends AbstractBase
         if ($restrictions !== null) {
             $this->loadRestrictions($restrictions);
         }
+    }
+
+    /**
+     * Get configuration.
+     *
+     * @return Config Configuration object.
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
@@ -213,7 +228,7 @@ class PluginManager extends AbstractBase
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return Func Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {
