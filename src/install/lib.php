@@ -35,7 +35,7 @@ function install(Zikula_Core $core, Request $request)
 
     // Power users might have moved the temp folder out of the root and changed the config.php
     // accordingly. Make sure we respect this security related settings
-    $tempDir = (isset($GLOBALS['ZConfig']['System']['temp']) ? $GLOBALS['ZConfig']['System']['temp'] : 'ztemp');
+    $tempDir = $container->getParameter('temp_dir');
 
     // define our smarty object
     $smarty = new Smarty();
@@ -67,10 +67,10 @@ function install(Zikula_Core $core, Request $request)
     $action = FormUtil::getPassedValue('action', '', 'GETPOST');
 
     $notinstalled = isset($_GET['notinstalled']);
-    $installedState = (isset($GLOBALS['ZConfig']['System']['installed']) ? $GLOBALS['ZConfig']['System']['installed'] : 0);
+    $installedState = $container->getParameter('installed');
 
     // if the system is already installed, halt.
-    if ($GLOBALS['ZConfig']['System']['installed']) {
+    if ($installedState) {
         _installer_alreadyinstalled($smarty);
     }
 
@@ -300,7 +300,7 @@ function install(Zikula_Core $core, Request $request)
             break;
 
         case 'requirements':
-            $checks = _check_requirements();
+            $checks = _check_requirements($core);
             $ok = true;
 
             foreach ($checks as $check) {
@@ -483,7 +483,7 @@ function validateMail($mail)
     return true;
 }
 
-function _check_requirements()
+function _check_requirements(Zikula_Core $core)
 {
     $results = array();
 
@@ -500,7 +500,8 @@ function _check_requirements()
     $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
     $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
     $results['json_encode'] = function_exists('json_encode');
-    $datadir = (isset($GLOBALS['ZConfig']['System']['datadir']) ? $GLOBALS['ZConfig']['System']['datadir'] : 'data');
+    $container = $core->getContainer();
+    $datadir = $container->getParameter('datadir');;
     $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
     $results['custom_parameters_yml'] = !is_writable('app/config/custom_parameters.yml');
     $files = array(
