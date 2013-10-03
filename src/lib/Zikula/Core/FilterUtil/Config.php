@@ -73,15 +73,14 @@ class Config
     /**
      * Constructor.
      *
-     * @param EntityManager $em
      * @param QueryBuilder  $qb
      * @param Request       $request
      */
-    public function __construct(EntityManager $em, QueryBuilder $qb, Request $request)
+    public function __construct(QueryBuilder $qb, Request $request)
     {
-        $this->entityManager = $em;
         $this->setQueryBuilder($qb);
         $this->request = $request;
+        $this->entityManager = $qb->getEntityManager();
 
         $this->collectMeta();
     }
