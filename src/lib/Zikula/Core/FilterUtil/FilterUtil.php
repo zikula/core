@@ -36,7 +36,7 @@ class FilterUtil
      *
      * @var array
      */
-    private $plugin;
+    private $pluginManager;
 
     /**
      * FilterExpression object holder.
@@ -66,32 +66,19 @@ class FilterUtil
      * restrictions: Array of allowed operators per field in the form "field's name => operator
      * array".
      *
-     * @param Config  $config
-     * @param array   $args
+     * @param PluginManager $pluginManager
+     * @param array         $args
      */
-    public function __construct(Config $config, array $args = array())
+    public function __construct(PluginManager $pluginManager, array $args = array())
     {
         $this->setVarName('filter');
 
-        $this->config = $config;
-
-        $this->plugin = new PluginManager($config,
-            isset($args['plugins']) ? $args['plugins'] : array(),
-            isset($args['restrictions']) ? $args['restrictions'] : null);
+        $this->pluginManager = $pluginManager;
+        $this->config = $pluginManager->getConfig();
 
         if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
         }
-    }
-
-    /**
-     * Get configuration.
-     *
-     * @return Config Configuration object.
-     */
-    public function getConfig()
-    {
-        return $this->config;
     }
 
     /**
@@ -127,9 +114,9 @@ class FilterUtil
      *
      * @return PluginManager
      */
-    public function getPlugin()
+    public function getPluginManager()
     {
-        return $this->plugin;
+        return $this->pluginManager;
     }
 
     // ++++++++++++++++ Filter handling +++++++++++++++++++++
@@ -142,7 +129,7 @@ class FilterUtil
     public function getFiltersFromInput()
     {
         if ($this->config->getRequest() === null) {
-            throw new \Exception('Request object not set.');
+            throw new \RuntimeException('Request object not set.');
         }
         $i = 1;
         $filter = array();
@@ -320,9 +307,9 @@ class FilterUtil
         if (!$con['field'] || !$con['op']) {
             return null; // invalid condition
         }
-        $con = $this->plugin->replace($con['field'], $con['op'], $con['value']);
+        $con = $this->pluginManager->replace($con['field'], $con['op'], $con['value']);
 
-        return $this->plugin->getExprObj($con['field'], $con['op'], $con['value']);
+        return $this->pluginManager->getExprObj($con['field'], $con['op'], $con['value']);
     }
 
     /**
