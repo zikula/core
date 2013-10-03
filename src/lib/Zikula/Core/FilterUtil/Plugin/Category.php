@@ -16,7 +16,7 @@ namespace Zikula\Core\FilterUtil\Plugin;
 
 use Doctrine\ORM\Query\Expr\Func;
 use Zikula\Core\FilterUtil;
-use \CategoryUtil;
+use CategoryUtil;
 
 /**
  * FilterUtil category filter plugin
@@ -29,6 +29,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * @var string
      */
     protected $modname;
+
     /**
      * filter on this propery
      *
@@ -108,7 +109,8 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
         $entityname = str_replace('Entity', '', end($parts));
         $em = $this->config->getEntityManager();
         $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')
-            ->findBy(array(
+            ->findBy(
+                array(
                      'modname' => $this->modname,
                      'entityname' => $entityname,
                 )

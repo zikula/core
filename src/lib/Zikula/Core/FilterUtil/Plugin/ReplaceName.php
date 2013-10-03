@@ -21,7 +21,6 @@ use Zikula\Core\FilterUtil;
  */
 class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
 {
-
     /**
      * Replace pairs.
      *

@@ -21,7 +21,6 @@ use Zikula\Core\FilterUtil;
  */
 class Compare extends FilterUtil\AbstractBuildPlugin
 {
-
     /**
      * Constructor.
      *
@@ -93,16 +92,16 @@ class Compare extends FilterUtil\AbstractBuildPlugin
                 return $expr->gte($column, $config->toParam($value, 'compare', $field));
 
             case 'search':
-                return $expr->like($column, $config->toParam('%' . $value . '%', 'compare', $field));
+                return $expr->like($column, $config->toParam('%'.$value.'%', 'compare', $field));
 
             case 'like':
                 return $expr->like($column, $config->toParam($value, 'compare', $field));
 
             case 'likefirst':
-                return $expr->like($column, $config->toParam('%' . $value, 'compare', $field));
+                return $expr->like($column, $config->toParam('%'.$value, 'compare', $field));
 
             case 'likelast':
-                return $expr->like($column, $config->toParam($value . '%', 'compare', $field));
+                return $expr->like($column, $config->toParam($value.'%', 'compare', $field));
 
             case 'null':
                 return $expr->orX($expr->isNull($column), $expr->eq($column, ''));
