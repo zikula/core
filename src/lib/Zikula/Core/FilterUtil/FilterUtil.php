@@ -14,7 +14,6 @@
 namespace Zikula\Core\FilterUtil;
 
 use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -61,24 +60,6 @@ class FilterUtil
     private $request;
 
     /**
-     *
-     * @var EntityManager
-     */
-    private $entityMangager;
-
-    /**
-     *
-     * @var QueryBuilder
-     */
-    private $qb;
-
-    /**
-     *
-     * @var array
-     */
-    private $args;
-
-    /**
      * @var Config
      */
     private $config;
@@ -92,28 +73,23 @@ class FilterUtil
      * restrictions: Array of allowed operators per field in the form "field's name => operator
      * array".
      *
-     * @param EntityManager $entityMangager
-     * @param QueryBuilder  $qb
-     * @param array         $args
-     *
-     * @internal param \Doctrine\ORM\EntityManager $entityManager
+     * @param Config  $config
+     * @param Request $request Request
+     * @param array   $args
      */
-    public function __construct(EntityManager $entityMangager, QueryBuilder $qb, array $args = array())
+    public function __construct(Config $config, Request $request = null, array $args = array())
     {
         $this->setVarName('filter');
 
-        $this->config = new Config($entityMangager, $qb, $args);
+        $this->config = $config;
+        $this->request = $request;
 
-        $this->plugin = new PluginManager($this->getConfig(),
+        $this->plugin = new PluginManager($config,
             isset($args['plugins']) ? $args['plugins'] : array(),
             isset($args['restrictions']) ? $args['restrictions'] : null);
 
         if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
-        }
-
-        if (isset($args['request'])) {
-            $this->setRequest($args['request']);
         }
     }
 
