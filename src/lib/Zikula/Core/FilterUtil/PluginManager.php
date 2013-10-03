@@ -60,8 +60,8 @@ class PluginManager extends AbstractBase
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param $plugins
-     * @param $restrictions
+     * @param        $plugins
+     * @param        $restrictions
      *
      * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
      */
@@ -113,7 +113,6 @@ class PluginManager extends AbstractBase
         $this->plugin[] = $plugin;
         end($this->plugin);
         $key = key($this->plugin);
-
         $plugin->setID($key);
         $plugin->initPlugin($this->config);
         $this->registerPlugin($key);
@@ -133,15 +132,12 @@ class PluginManager extends AbstractBase
     private function registerPlugin($k)
     {
         $plugin = & $this->plugin[$k];
-
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }
 
         if ($plugin instanceof BuildInterface) {
-
             $ops = $plugin->getOperators();
-
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
                     $flds = array();
@@ -166,7 +162,7 @@ class PluginManager extends AbstractBase
      * Loads restrictions.
      *
      * @param array $rest Array of allowed operators per field in the form "field's name => operator
-     *            array".
+     *                    array".
      *
      * @return void
      */

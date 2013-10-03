@@ -18,11 +18,10 @@ namespace Zikula\Core\FilterUtil;
  */
 abstract class AbstractBase
 {
-
     /**
      * Config object.
      *
-     * @var FilterUtil_Config
+     * @var Config
      */
     protected $config;
 

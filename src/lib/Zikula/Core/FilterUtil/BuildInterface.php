@@ -18,7 +18,6 @@ namespace Zikula\Core\FilterUtil;
  */
 interface BuildInterface
 {
-
     /**
      * Adds fields to list in common way.
      *

@@ -21,7 +21,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class Config
 {
-
     /**
      * Doctrine2 Query Builder instance
      */
