@@ -53,13 +53,6 @@ class FilterUtil
     private $filter;
 
     /**
-     * Request object to get the filter
-     *
-     * @var Request
-     */
-    private $request;
-
-    /**
      * @var Config
      */
     private $config;
@@ -74,15 +67,13 @@ class FilterUtil
      * array".
      *
      * @param Config  $config
-     * @param Request $request Request
      * @param array   $args
      */
-    public function __construct(Config $config, Request $request = null, array $args = array())
+    public function __construct(Config $config, array $args = array())
     {
         $this->setVarName('filter');
 
         $this->config = $config;
-        $this->request = $request;
 
         $this->plugin = new PluginManager($config,
             isset($args['plugins']) ? $args['plugins'] : array(),
@@ -101,16 +92,6 @@ class FilterUtil
     public function getConfig()
     {
         return $this->config;
-    }
-
-    /**
-     * set the Request Object
-     *
-     * @var Request
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
     }
 
     /**

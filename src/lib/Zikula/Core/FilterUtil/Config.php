@@ -15,6 +15,7 @@ namespace Zikula\Core\FilterUtil;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\BrowserKit\Request;
 
 /**
  * This is the configuration class for all FilterUtil classes.
@@ -36,12 +37,17 @@ class Config
     /**
      * Entity name.
      *
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $entityManager;
 
     /**
-     * Metadata of all Entitys.
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * Metadata of all Entities.
      * array(alias => MetaObject)
      *
      * @var array
@@ -65,29 +71,21 @@ class Config
     /**
      * Constructor.
      *
-     * Sets parameters each Class could need.
-     * Array $args must hold:
-     * module: The module name.
-     * entity: The entity name.
-     * It also may contain:
-     * join: The join array in form join=>alias
-     * alias: Alias to use with the main entity, default tbl.
-     *
      * @param EntityManager $em
      * @param QueryBuilder  $qb
-     * @param array         $args Arguments as listed above.
+     * @param Request       $request
      */
-    public function __construct(EntityManager $em, QueryBuilder $qb, $args)
+    public function __construct(EntityManager $em, QueryBuilder $qb, Request $request)
     {
-        $this->setQueryBuilder($qb);
-
         $this->entityManager = $em;
+        $this->setQueryBuilder($qb);
+        $this->request = $request;
 
         $this->collectMeta();
     }
 
     /**
-     * collectMetadata for all Entitys
+     * collectMetadata for all Entities
      */
     private function collectMeta()
     {
@@ -105,13 +103,13 @@ class Config
             foreach ($parts['join'][$this->alias] as $join) {
                 $j = explode('.', $join->getJoin(), 2);
                 if (count($j) != 2) {
-                    throw new \Exception('Join in wrong format: ' . $join->getJoin());
+                    throw new \InvalidArgumentException('Join in wrong format: ' . $join->getJoin());
                 }
                 if (!isset($this->meta[$j[0]])) {
-                    throw new \Exception('Unknown alias in join or wrong order: ' . $join->getJoin());
+                    throw new \InvalidArgumentException('Unknown alias in join or wrong order: ' . $join->getJoin());
                 }
                 if (!isset($this->meta[$j[0]]->associationMappings[$j[1]])) {
-                    throw new \Exception('Unknown Mapping in join: ' . $join->getJoin());
+                    throw new \InvalidArgumentException('Unknown Mapping in join: ' . $join->getJoin());
                 }
 
                 $jEntity = $this->meta[$j[0]]->associationMappings[$j[1]]['targetEntity'];
@@ -176,7 +174,7 @@ class Config
     /**
      * Sets Entity.
      *
-     * @param string $table Table name.
+     * @param string $entityName Table name.
      *
      * @return bool true on success, false otherwise.
      */
@@ -198,7 +196,7 @@ class Config
     /**
      * Gets entity name.
      *
-     * @return \Doctrine\ORM\EntityManager EntityManager
+     * @return EntityManager EntityManager
      */
     public function getEntityManager()
     {
@@ -247,14 +245,12 @@ class Config
     }
 
     /**
-     * returns $s with alias in front if there is no .
-     *
-     *
-     * in the string
-     * else only $s.
+     * Returns $s with alias in front if there is no .
+     * in the string else only $s.
      *
      * @param string $field
      *
+     * @throws \Exception
      * @return string with alias
      */
     public function testFieldExists($field)
@@ -262,7 +258,7 @@ class Config
         $parts = explode('.', $field, 2);
         if (count($parts) < 2 || !isset($this->meta[$parts[0]]) ||
              !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])) {
-            throw new \Exception('Unknown Fieldname: ' . $field);
+            throw new \InvalidArgumentException('Unknown Fieldname: ' . $field);
         }
     }
 }
