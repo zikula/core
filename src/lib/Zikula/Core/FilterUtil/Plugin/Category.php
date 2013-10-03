@@ -14,7 +14,7 @@
  */
 namespace Zikula\Core\FilterUtil\Plugin;
 
-use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Zikula\Core\FilterUtil;
 use CategoryUtil;
 
@@ -132,7 +132,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Func Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {

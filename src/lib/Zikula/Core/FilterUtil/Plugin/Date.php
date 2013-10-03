@@ -15,6 +15,7 @@
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 
 /**
  * FilterUtil date handler plugin
@@ -195,7 +196,7 @@ class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceI
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {

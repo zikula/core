@@ -33,10 +33,9 @@ class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\Replac
     /**
      * Constructor.
      *
-     * Argument $config may contain:
      * pair: array of replace pairs in form old => new.
      *
-     * @param array $config Configuration.
+     * @param array $pairs
      */
     public function __construct($pairs = array())
     {

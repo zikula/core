@@ -15,7 +15,7 @@ namespace Zikula\Core\FilterUtil;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * This is the configuration class for all FilterUtil classes.
@@ -23,7 +23,9 @@ use Symfony\Component\BrowserKit\Request;
 class Config
 {
     /**
-     * Doctrine2 Query Builder instance
+     * Doctrine2 QueryBuilder instance
+     *
+     * @var QueryBuilder
      */
     private $queryBuilder;
 
@@ -82,6 +84,14 @@ class Config
         $this->request = $request;
 
         $this->collectMeta();
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**

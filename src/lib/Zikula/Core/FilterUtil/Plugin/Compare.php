@@ -15,6 +15,7 @@
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 
 /**
  * Provide a set of default filter operations.
@@ -63,7 +64,7 @@ class Compare extends FilterUtil\AbstractBuildPlugin
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {

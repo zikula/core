@@ -13,7 +13,7 @@
  */
 namespace Zikula\Core\FilterUtil;
 
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -141,14 +141,14 @@ class FilterUtil
      */
     public function getFiltersFromInput()
     {
-        if ($this->request === null) {
+        if ($this->config->getRequest() === null) {
             throw new \Exception('Request object not set.');
         }
         $i = 1;
         $filter = array();
         // TODO get filter via request object
         // Get unnumbered filter string
-        $filterStr = $this->request->query->filter(
+        $filterStr = $this->config->getRequest()->query->filter(
             $this->varname,
             '',
             false,
@@ -160,7 +160,7 @@ class FilterUtil
         // Get filter1 ... filterN
         while (true) {
             $filterURLName = $this->varname."$i";
-            $filterStr = $this->request->query->filter(
+            $filterStr = $this->config->getRequest()->query->filter(
                 $filterURLName,
                 '',
                 false,
@@ -306,8 +306,8 @@ class FilterUtil
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
-            if ($this->request !== null && substr($parts[2], 0, 1) == '$') {
-                $value = $this->request->request->filter(substr($parts[2], 1));
+            if ($this->config->getRequest() !== null && substr($parts[2], 0, 1) == '$') {
+                $value = $this->config->getRequest()->filter(substr($parts[2], 1));
                 // !is_numeric because empty(0) == false
                 if (empty($value) && !is_numeric($value)) {
                     return null;
@@ -329,10 +329,10 @@ class FilterUtil
      * if $a and $b are of the same type the parts
      * of $b are added to $a.
      *
-     * @param Base  $a expression object to add to
-     * @param mixed $b anything to add to $a
+     * @param BaseExpr $a expression object to add to
+     * @param mixed    $b anything to add to $a
      */
-    private function addBtoA($a, $b)
+    private function addBtoA(BaseExpr $a, $b)
     {
         if (($a instanceof Andx && $b instanceof Andx) || ($a instanceof Orx && $b instanceof Orx)) {
             $a->addMultiple($b->getParts());
@@ -380,7 +380,7 @@ class FilterUtil
                     }
 
                     if ($or === null) { // make new or Object
-                        $or = new Expr\Orx();
+                        $or = new Orx();
                         if ($and !== null) { // add existing and
                             $this->addBtoA($or, $and);
                         }
@@ -411,7 +411,7 @@ class FilterUtil
                     }
 
                     if ($and == null) {
-                        $and = new Expr\Andx();
+                        $and = new Andx();
                         if ($or !== null) {
                             $this->addBtoA($or, $and);
                         }
