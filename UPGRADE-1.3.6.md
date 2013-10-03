@@ -37,6 +37,18 @@ document for the purposes of refactoring modules to the new standards
 below with very little effort.
 
 
+Bootstrap and jQuery
+--------------------
+
+Zikula now uses Bootstrap 3 with FontAwesome 4 and jQuery.
+
+There are a few small oddities to maintain compatibility with Prototype
+but in general it's pretty straightforward. Core modules have been
+refactored so there are also working examples in the code.
+
+Documentation: http://zikula.github.io/bootstrap-docs/
+
+
 Namespaces
 ----------
 
@@ -463,6 +475,7 @@ to:
 Paginate (Doctrine Extensions)
 -----------------------------
 The Doctrine Extension Paginate is deprecated. If you are using it, you should refactor it to `Doctrine\ORM\Tools\Pagination\Paginator`.
+
 
 Version.php
 -----------
