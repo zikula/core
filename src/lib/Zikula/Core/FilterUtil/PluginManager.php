@@ -13,7 +13,7 @@
  */
 namespace Zikula\Core\FilterUtil;
 
-use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Zikula\Core\FilterUtil\Plugin\Compare;
 
 /**
@@ -60,8 +60,6 @@ class PluginManager
      * @param Config $config FilterUtil Configuration object.
      * @param        $plugins
      * @param        $restrictions
-     *
-     * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
      */
     public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
     {
@@ -83,15 +81,15 @@ class PluginManager
     /**
      * Loads plugins.
      *
-     * @param array $plgs Array of plugin informations in form "plugin's name => config array".
+     * @param array $plugins Array of plugin informations in form "plugin's name => config array".
      *
      * @return bool true on success, false otherwise.
      */
-    public function loadPlugins($plgs)
+    public function loadPlugins(array $plugins)
     {
         $default = false;
 
-        foreach ($plgs as $v) {
+        foreach ($plugins as $v) {
             $default |= $this->loadPlugin($v);
         }
         if (!$default) {
@@ -127,8 +125,6 @@ class PluginManager
      * Check what type the plugin is from and register it.
      *
      * @param int $k The Plugin's ID -> Key in the $this->plugin array.
-     *
-     * @return void
      */
     private function registerPlugin($k)
     {
@@ -162,18 +158,12 @@ class PluginManager
     /**
      * Loads restrictions.
      *
-     * @param array $rest Array of allowed operators per field in the form "field's name => operator
-     *                    array".
-     *
-     * @return void
+     * @param array $restrictions Array of allowed operators per field in the form
+     *                            field's name => operator array.
      */
-    public function loadRestrictions($rest)
+    public function loadRestrictions(array $restrictions)
     {
-        if (empty($rest) || !is_array($rest)) {
-            return;
-        }
-
-        foreach ($rest as $field => $ops) {
+        foreach ($restrictions as $field => $ops) {
             // accept registered operators only
             $ops = array_filter(array_intersect((array) $ops, array_keys($this->ops)));
             if (!empty($ops)) {
@@ -185,7 +175,7 @@ class PluginManager
     /**
      * Runs replace plugins and return condition set.
      *
-     * @param string $field Fieldname.
+     * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
@@ -214,7 +204,7 @@ class PluginManager
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Func Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {
