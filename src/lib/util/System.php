@@ -980,18 +980,14 @@ class System
      */
     public static function isLegacyMode($targetVersion = null)
     {
-        if (!isset($GLOBALS['ZConfig']['System']['compat_layer']) ||
-            !$GLOBALS['ZConfig']['System']['compat_layer']) {
-            return false;
-        }
-
-        $minVersion = $GLOBALS['ZConfig']['System']['compat_layer'];
+        $minVersion = ServiceUtil::getManager()->getParameter('compat_layer');
 
         if (!is_bool($minVersion)) {
             return version_compare($minVersion, $targetVersion, '<=');
         }
 
-        return true;
+        // boolean so just return that
+        return $minVersion;
     }
 
     /**
