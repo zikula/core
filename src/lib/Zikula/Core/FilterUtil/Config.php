@@ -76,7 +76,7 @@ class Config
      * @param QueryBuilder  $qb
      * @param Request       $request
      */
-    public function __construct(QueryBuilder $qb, Request $request)
+    public function __construct(QueryBuilder $qb, Request $request = null)
     {
         $this->setQueryBuilder($qb);
         $this->request = $request;

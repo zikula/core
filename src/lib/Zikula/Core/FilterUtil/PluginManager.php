@@ -24,7 +24,7 @@ class PluginManager
     /**
      * Loaded plugins.
      *
-     * @var array
+     * @var AbstractPlugin[]
      */
     private $plugin = array();
 
@@ -113,7 +113,7 @@ class PluginManager
         end($this->plugin);
         $key = key($this->plugin);
         $plugin->setID($key);
-        $plugin->initPlugin($this->config);
+        $plugin->setConfig($this->config);
         $this->registerPlugin($key);
 
         return $plugin->getDefault();
@@ -185,7 +185,7 @@ class PluginManager
     {
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
-                $plugin = & $this->plugin[$k];
+                $plugin = $this->plugin[$k];
                 list ($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }

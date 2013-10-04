@@ -46,7 +46,7 @@ class AbstractPlugin
      *
      * @param Config $config Configuration.
      */
-    public function initPlugin(Config $config)
+    public function setConfig(Config $config)
     {
         $this->config = $config;
     }
