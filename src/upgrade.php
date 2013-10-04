@@ -25,7 +25,6 @@ $request = Request::createFromGlobals();
 
 $eventManager = $core->getDispatcher();
 $container = $core->getContainer();
-$eventManager->addListener('core.init', 'upgrade_suppressErrors');
 
 // load zikula core
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
@@ -154,7 +153,7 @@ function _upg_selectlanguage()
 {
     _upg_header();
     $validupgrade = true;
-    if (!$GLOBALS['ZConfig']['System']['installed']) {
+    if (!ServiceUtil::getManager()->getParameter('installed')) {
         $validupgrade = false;
         echo '<h1 class="text-center">'.__('FATAL ERROR!')."</h1>\n";
         echo '<div class="animate shake"><p class="alert alert-danger text-center">'.__("Zikula does not appear to be installed.")."</p></div>\n";
@@ -410,23 +409,6 @@ function upgrade_clear_caches()
     Zikula_View_Theme::getInstance()->clear_cssjscombinecache();
     Zikula_View::getInstance()->clear_all_cache();
     Zikula_View::getInstance()->clear_compiled();
-}
-
-/**
- * Suppress errors event listener.
- *
- * @param Zikula_Event $event Event.
- *
- * @return void
- */
-function upgrade_suppressErrors(Zikula_Event $event)
-{
-    if (!$event['stage'] == Zikula_Core::STAGE_CONFIG) {
-        return;
-    }
-
-    error_reporting(~E_ALL & ~E_NOTICE & ~E_WARNING & ~E_STRICT);
-    $GLOBALS['ZConfig']['System']['development'] = 0;
 }
 
 /**

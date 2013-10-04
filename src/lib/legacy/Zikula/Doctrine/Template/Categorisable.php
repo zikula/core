@@ -70,7 +70,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         sscanf($table->getTableName(), Doctrine_Manager::getInstance()->getAttribute(Doctrine::ATTR_TBLNAME_FORMAT), $tableName);
 
         $dir = 'doctrinemodels/GeneratedDoctrineModel/' . str_replace('_', DIRECTORY_SEPARATOR, $modelClass);
-        if (CacheUtil::createLocalDir($dir, System::getVar('system.chmod_dir'))) {
+        if (CacheUtil::createLocalDir($dir, ServiceUtil::getManager()->getParameter('system.chmod_dir'))) {
             $subclassName = 'GeneratedDoctrineModel_'.$modelClass.'_EntityCategory';
             $fileContents = '<?php class '.$subclassName.' extends Zikula_Doctrine_Model_EntityCategory { }';
             $fileName = 'EntityCategory.php';
