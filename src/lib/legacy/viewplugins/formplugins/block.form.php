@@ -28,8 +28,12 @@ function smarty_block_form($params, $content, $view)
         PageUtil::AddVar('stylesheet', 'system/Zikula/Module/ThemeModule/Resources/public/css/form/style.css');
         $action = htmlspecialchars(System::getCurrentUri());
         $classString = '';
+        $roleString = '';
         if (isset($params['cssClass'])) {
             $classString = "class=\"{$params['cssClass']}\" ";
+        }
+        if (isset($params['role'])) {
+            $roleString = "role=\"{$params['role']}\" ";
         }
 
         $enctype = array_key_exists('enctype', $params) ? $params['enctype'] : null;
@@ -49,7 +53,7 @@ function smarty_block_form($params, $content, $view)
 
         $formId = $view->getFormId();
         $out = "
-<form id=\"{$formId}\" {$classString}action=\"$action\" method=\"post\"{$encodingHtml}>
+<form id=\"{$formId}\" {$roleString}{$classString}action=\"$action\" method=\"post\"{$encodingHtml}>
     $content
     <div>
         {$view->getStateHTML()}
