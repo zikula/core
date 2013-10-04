@@ -21,7 +21,7 @@ use CategoryUtil;
 /**
  * FilterUtil category filter plugin
  */
-class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
+class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {
     /**
      * modulename of the entity.
@@ -40,7 +40,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
     /**
      * Constructor.
      *
-     * @param              string    Modulename of the entity.
+     * @param              string    Module name of the entity.
      * @param array        $property Set of registry properties to use, see setProperty()
      * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category').
      * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).

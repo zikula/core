@@ -20,7 +20,7 @@ use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 /**
  * FilterUtil date handler plugin
  */
-class Date extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceInterface
+class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceInterface
 {
     /**
      * Constructor.

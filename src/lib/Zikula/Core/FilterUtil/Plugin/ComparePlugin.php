@@ -20,7 +20,7 @@ use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 /**
  * Provide a set of default filter operations.
  */
-class Compare extends FilterUtil\AbstractBuildPlugin
+class ComparePlugin extends FilterUtil\AbstractBuildPlugin
 {
     /**
      * Constructor.

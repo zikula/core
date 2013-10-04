@@ -19,7 +19,7 @@ use Zikula\Core\FilterUtil;
 /**
  * Simple field name replacement.
  */
-class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
+class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
 {
     /**
      * Replace pairs.

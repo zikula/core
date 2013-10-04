@@ -14,7 +14,7 @@
 namespace Zikula\Core\FilterUtil;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
-use Zikula\Core\FilterUtil\Plugin\Compare;
+use Zikula\Core\FilterUtil\Plugin\ComparePlugin;
 
 /**
  * Plugin manager class.
@@ -93,7 +93,7 @@ class PluginManager
             $default |= $this->loadPlugin($v);
         }
         if (!$default) {
-            $this->loadPlugin(new Compare(null));
+            $this->loadPlugin(new ComparePlugin(null));
         }
     }
 
