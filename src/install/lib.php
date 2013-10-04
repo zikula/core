@@ -501,7 +501,7 @@ function _check_requirements(Zikula_Core $core)
     $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
     $results['json_encode'] = function_exists('json_encode');
     $container = $core->getContainer();
-    $datadir = $container->getParameter('datadir');;
+    $datadir = $container->getParameter('datadir');
     $results['config_personal_config_php'] = !is_writable('config/personal_config.php');
     $results['custom_parameters_yml'] = !is_writable('app/config/custom_parameters.yml');
     $files = array(
