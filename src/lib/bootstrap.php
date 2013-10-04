@@ -38,9 +38,9 @@ $core->boot();
 foreach ($GLOBALS['ZConfig'] as $config) {
     $core->getContainer()->loadArguments($config);
 }
-$GLOBALS['ZConfig']['System']['temp'] = $this->getContainer()->getParameter('temp_dir');
-$GLOBALS['ZConfig']['System']['datadir'] = $this->getContainer()->getParameter('datadir');
-$GLOBALS['ZConfig']['System']['system.chmod_dir'] = $this->getContainer()->getParameter('system.chmod_dir');
+$GLOBALS['ZConfig']['System']['temp'] = $core->getContainer()->getParameter('temp_dir');
+$GLOBALS['ZConfig']['System']['datadir'] = $core->getContainer()->getParameter('datadir');
+$GLOBALS['ZConfig']['System']['system.chmod_dir'] = $core->getContainer()->getParameter('system.chmod_dir');
 
 ServiceUtil::getManager($core);
 EventUtil::getManager($core);
