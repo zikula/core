@@ -13,12 +13,13 @@
  */
 namespace Zikula\Core\FilterUtil;
 
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
+
 /**
  * FilterUtil build interface
  */
 interface BuildInterface
 {
-
     /**
      * Adds fields to list in common way.
      *
@@ -61,7 +62,7 @@ interface BuildInterface
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value);
 }

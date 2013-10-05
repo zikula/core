@@ -14,14 +14,14 @@
  */
 namespace Zikula\Core\FilterUtil\Plugin;
 
-use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Zikula\Core\FilterUtil;
-use \CategoryUtil;
+use CategoryUtil;
 
 /**
  * FilterUtil category filter plugin
  */
-class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
+class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {
     /**
      * modulename of the entity.
@@ -29,6 +29,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * @var string
      */
     protected $modname;
+
     /**
      * filter on this propery
      *
@@ -39,7 +40,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
     /**
      * Constructor.
      *
-     * @param              string    Modulename of the entity.
+     * @param              string    Module name of the entity.
      * @param array        $property Set of registry properties to use, see setProperty()
      * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category').
      * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
@@ -108,7 +109,8 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
         $entityname = str_replace('Entity', '', end($parts));
         $em = $this->config->getEntityManager();
         $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')
-            ->findBy(array(
+            ->findBy(
+                array(
                      'modname' => $this->modname,
                      'entityname' => $entityname,
                 )
@@ -130,7 +132,7 @@ class Category extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Join
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Func Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {
