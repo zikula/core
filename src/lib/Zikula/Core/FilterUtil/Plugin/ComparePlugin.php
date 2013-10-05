@@ -15,13 +15,13 @@
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Zikula\Core\FilterUtil;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 
 /**
  * Provide a set of default filter operations.
  */
-class Compare extends FilterUtil\AbstractBuildPlugin
+class ComparePlugin extends FilterUtil\AbstractBuildPlugin
 {
-
     /**
      * Constructor.
      *
@@ -64,7 +64,7 @@ class Compare extends FilterUtil\AbstractBuildPlugin
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {
@@ -93,16 +93,16 @@ class Compare extends FilterUtil\AbstractBuildPlugin
                 return $expr->gte($column, $config->toParam($value, 'compare', $field));
 
             case 'search':
-                return $expr->like($column, $config->toParam('%' . $value . '%', 'compare', $field));
+                return $expr->like($column, $config->toParam('%'.$value.'%', 'compare', $field));
 
             case 'like':
                 return $expr->like($column, $config->toParam($value, 'compare', $field));
 
             case 'likefirst':
-                return $expr->like($column, $config->toParam('%' . $value, 'compare', $field));
+                return $expr->like($column, $config->toParam('%'.$value, 'compare', $field));
 
             case 'likelast':
-                return $expr->like($column, $config->toParam($value . '%', 'compare', $field));
+                return $expr->like($column, $config->toParam($value.'%', 'compare', $field));
 
             case 'null':
                 return $expr->orX($expr->isNull($column), $expr->eq($column, ''));

@@ -18,7 +18,6 @@ namespace Zikula\Core\FilterUtil;
  */
 interface ReplaceInterface
 {
-
     /**
      * Replace whatever the plugin has to replace.
      *

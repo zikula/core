@@ -19,9 +19,8 @@ use Zikula\Core\FilterUtil;
 /**
  * Simple field name replacement.
  */
-class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
+class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
 {
-
     /**
      * Replace pairs.
      *
@@ -34,10 +33,9 @@ class ReplaceName extends FilterUtil\AbstractPlugin implements FilterUtil\Replac
     /**
      * Constructor.
      *
-     * Argument $config may contain:
      * pair: array of replace pairs in form old => new.
      *
-     * @param array $config Configuration.
+     * @param array $pairs
      */
     public function __construct($pairs = array())
     {

@@ -13,25 +13,18 @@
  */
 namespace Zikula\Core\FilterUtil;
 
-use Zikula\Core\FilterUtil\Plugin\Compare;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
+use Zikula\Core\FilterUtil\Plugin\ComparePlugin;
 
 /**
  * Plugin manager class.
  */
-class PluginManager extends AbstractBase
+class PluginManager
 {
-
-    /**
-     * Specified restrictions.
-     *
-     * @var array
-     */
-    private $filterUtil;
-
     /**
      * Loaded plugins.
      *
-     * @var array
+     * @var AbstractPlugin[]
      */
     private $plugin = array();
 
@@ -54,47 +47,53 @@ class PluginManager extends AbstractBase
      *
      * @var array
      */
-    private $restrictions;
+    private $restrictions = array();
+
+    /**
+     * @var Config
+     */
+    private $config;
 
     /**
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param $plugins
-     * @param $restrictions
-     *
-     * @internal param array $args Plugins to load in form "plugin name => Plugin Object".
+     * @param        $plugins
+     * @param        $restrictions
      */
-    public function __construct(Config $config, $plugins, $restrictions)
+    public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
     {
-        parent::__construct($config);
-
-        if (!is_array($plugins)) {
-            $plugins = array();
-        }
+        $this->config = $config;
         $this->loadPlugins($plugins);
+        $this->loadRestrictions($restrictions);
+    }
 
-        if ($restrictions !== null) {
-            $this->loadRestrictions($restrictions);
-        }
+    /**
+     * Get configuration.
+     *
+     * @return Config Configuration object.
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
      * Loads plugins.
      *
-     * @param array $plgs Array of plugin informations in form "plugin's name => config array".
+     * @param array $plugins Array of plugin informations in form "plugin's name => config array".
      *
      * @return bool true on success, false otherwise.
      */
-    public function loadPlugins($plgs)
+    public function loadPlugins(array $plugins)
     {
         $default = false;
 
-        foreach ($plgs as $v) {
+        foreach ($plugins as $v) {
             $default |= $this->loadPlugin($v);
         }
         if (!$default) {
-            $this->loadPlugin(new Compare(null));
+            $this->loadPlugin(new ComparePlugin(null));
         }
     }
 
@@ -113,9 +112,8 @@ class PluginManager extends AbstractBase
         $this->plugin[] = $plugin;
         end($this->plugin);
         $key = key($this->plugin);
-
         $plugin->setID($key);
-        $plugin->initPlugin($this->config);
+        $plugin->setConfig($this->config);
         $this->registerPlugin($key);
 
         return $plugin->getDefault();
@@ -127,21 +125,16 @@ class PluginManager extends AbstractBase
      * Check what type the plugin is from and register it.
      *
      * @param int $k The Plugin's ID -> Key in the $this->plugin array.
-     *
-     * @return void
      */
     private function registerPlugin($k)
     {
         $plugin = & $this->plugin[$k];
-
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }
 
         if ($plugin instanceof BuildInterface) {
-
             $ops = $plugin->getOperators();
-
             if (isset($ops) && is_array($ops)) {
                 foreach ($ops as $op => $fields) {
                     $flds = array();
@@ -165,18 +158,12 @@ class PluginManager extends AbstractBase
     /**
      * Loads restrictions.
      *
-     * @param array $rest Array of allowed operators per field in the form "field's name => operator
-     *            array".
-     *
-     * @return void
+     * @param array $restrictions Array of allowed operators per field in the form
+     *                            field's name => operator array.
      */
-    public function loadRestrictions($rest)
+    public function loadRestrictions(array $restrictions)
     {
-        if (empty($rest) || !is_array($rest)) {
-            return;
-        }
-
-        foreach ($rest as $field => $ops) {
+        foreach ($restrictions as $field => $ops) {
             // accept registered operators only
             $ops = array_filter(array_intersect((array) $ops, array_keys($this->ops)));
             if (!empty($ops)) {
@@ -188,7 +175,7 @@ class PluginManager extends AbstractBase
     /**
      * Runs replace plugins and return condition set.
      *
-     * @param string $field Fieldname.
+     * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
@@ -198,7 +185,7 @@ class PluginManager extends AbstractBase
     {
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
-                $plugin = & $this->plugin[$k];
+                $plugin = $this->plugin[$k];
                 list ($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
@@ -217,7 +204,7 @@ class PluginManager extends AbstractBase
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return Expr\Base Doctrine2 expression
+     * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {

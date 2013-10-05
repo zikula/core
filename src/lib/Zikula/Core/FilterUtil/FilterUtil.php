@@ -13,8 +13,7 @@
  */
 namespace Zikula\Core\FilterUtil;
 
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -23,9 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Adds a Pagesetter like filter.
  */
-class FilterUtil extends AbstractBase
+class FilterUtil
 {
-
     /**
      * The Input variable name.
      *
@@ -38,7 +36,7 @@ class FilterUtil extends AbstractBase
      *
      * @var array
      */
-    private $plugin;
+    private $pluginManager;
 
     /**
      * FilterExpression object holder.
@@ -55,29 +53,9 @@ class FilterUtil extends AbstractBase
     private $filter;
 
     /**
-     * Request object to get the filter
-     *
-     * @var Request
+     * @var Config
      */
-    private $request;
-
-    /**
-     *
-     * @var EntityManager
-     */
-    private $entityMangager;
-
-    /**
-     *
-     * @var QueryBuilder
-     */
-    private $qb;
-
-    /**
-     *
-     * @var array
-     */
-    private $args;
+    private $config;
 
     /**
      * Constructor.
@@ -88,40 +66,19 @@ class FilterUtil extends AbstractBase
      * restrictions: Array of allowed operators per field in the form "field's name => operator
      * array".
      *
-     * @param EntityManager $entityMangager
-     * @param QueryBuilder  $qb
+     * @param PluginManager $pluginManager
      * @param array         $args
-     *
-     * @internal param \Doctrine\ORM\EntityManager $entityManager
      */
-    public function __construct(EntityManager $entityMangager, QueryBuilder $qb,
-        array $args = array())
+    public function __construct(PluginManager $pluginManager, array $args = array())
     {
         $this->setVarName('filter');
 
-        parent::__construct(new Config($entityMangager, $qb, $args));
-
-        $this->plugin = new PluginManager($this->getConfig(),
-            isset($args['plugins']) ? $args['plugins'] : array(),
-            isset($args['restrictions']) ? $args['restrictions'] : null);
+        $this->pluginManager = $pluginManager;
+        $this->config = $pluginManager->getConfig();
 
         if (isset($args['varname'])) {
             $this->setVarName($args['varname']);
         }
-
-        if (isset($args['request'])) {
-            $this->setRequest($args['request']);
-        }
-    }
-
-    /**
-     * set the Request Object
-     *
-     * @var Request
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -157,9 +114,9 @@ class FilterUtil extends AbstractBase
      *
      * @return PluginManager
      */
-    public function getPlugin()
+    public function getPluginManager()
     {
-        return $this->plugin;
+        return $this->pluginManager;
     }
 
     // ++++++++++++++++ Filter handling +++++++++++++++++++++
@@ -171,31 +128,34 @@ class FilterUtil extends AbstractBase
      */
     public function getFiltersFromInput()
     {
-        if ($this->request === null) {
-            throw new \Exception('Request object not set.');
+        if ($this->config->getRequest() === null) {
+            throw new \RuntimeException('Request object not set.');
         }
-
         $i = 1;
         $filter = array();
-
         // TODO get filter via request object
         // Get unnumbered filter string
-        $filterStr = $this->request->query->filter($this->varname, '', false,
-            FILTER_SANITIZE_STRING);
+        $filterStr = $this->config->getRequest()->query->filter(
+            $this->varname,
+            '',
+            false,
+            FILTER_SANITIZE_STRING
+        );
         if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
-
         // Get filter1 ... filterN
         while (true) {
-            $filterURLName = $this->varname . "$i";
-            $filterStr = $this->request->query->filter($filterURLName, '', false,
-                FILTER_SANITIZE_STRING);
-
+            $filterURLName = $this->varname."$i";
+            $filterStr = $this->config->getRequest()->query->filter(
+                $filterURLName,
+                '',
+                false,
+                FILTER_SANITIZE_STRING
+            );
             if (empty($filterStr)) {
                 break;
             }
-
             $filter[] = $filterStr;
             ++$i;
         }
@@ -213,10 +173,9 @@ class FilterUtil extends AbstractBase
         if (!isset($this->filter) || empty($this->filter)) {
             $filter = $this->getFiltersFromInput();
             if (is_array($filter) && count($filter) > 0) {
-                $this->filter = "(" . implode(')*(', $filter) . ")";
+                $this->filter = "(".implode(')*(', $filter).")";
             }
         }
-
         if ($this->filter == '()') {
             $this->filter = '';
         }
@@ -234,7 +193,7 @@ class FilterUtil extends AbstractBase
     public function setFilter($filter)
     {
         if (is_array($filter)) {
-            $this->filter = "(" . implode(')*(', $filter) . ")";
+            $this->filter = "(".implode(')*(', $filter).")";
         } else {
             $this->filter = $filter;
         }
@@ -282,9 +241,9 @@ class FilterUtil extends AbstractBase
         } elseif (substr($filter, 0, 1) == ',') {
             $this->filter .= $filter;
         } elseif (substr($filter, 0, 1) == '*') {
-            $this->filter .= ',' . (substr($filter, 1));
+            $this->filter .= ','.(substr($filter, 1));
         } else {
-            $this->filter .= ',' . ($filter);
+            $this->filter .= ','.($filter);
         }
     }
 
@@ -304,9 +263,9 @@ class FilterUtil extends AbstractBase
         } elseif (substr($filter, 0, 1) == '*') {
             $this->filter .= $filter;
         } elseif (substr($filter, 0, 1) == ',') {
-            $this->filter .= '*' . (substr($filter, 1));
+            $this->filter .= '*'.(substr($filter, 1));
         } else {
-            $this->filter .= '*' . ($filter);
+            $this->filter .= '*'.($filter);
         }
     }
 
@@ -326,19 +285,16 @@ class FilterUtil extends AbstractBase
         } elseif (strpos($filter, '^')) {
             $parts = explode('^', $filter, 3);
         }
-
         $con = array(
             'field' => false,
             'op' => false,
             'value' => false
         );
-
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
-
-            if ($this->request !== null && substr($parts[2], 0, 1) == '$') {
-                $value = $this->request->request->filter(substr($parts[2], 1));
+            if ($this->config->getRequest() !== null && substr($parts[2], 0, 1) == '$') {
+                $value = $this->config->getRequest()->filter(substr($parts[2], 1));
                 // !is_numeric because empty(0) == false
                 if (empty($value) && !is_numeric($value)) {
                     return null;
@@ -348,24 +304,22 @@ class FilterUtil extends AbstractBase
                 $con['value'] = $parts[2];
             }
         }
-
         if (!$con['field'] || !$con['op']) {
             return null; // invalid condition
         }
+        $con = $this->pluginManager->replace($con['field'], $con['op'], $con['value']);
 
-        $con = $this->plugin->replace($con['field'], $con['op'], $con['value']);
-
-        return $this->plugin->getExprObj($con['field'], $con['op'], $con['value']);
+        return $this->pluginManager->getExprObj($con['field'], $con['op'], $con['value']);
     }
 
     /**
      * if $a and $b are of the same type the parts
      * of $b are added to $a.
      *
-     * @param Base  $a expression object to add to
-     * @param mixed $b anything to add to $a
+     * @param BaseExpr $a expression object to add to
+     * @param mixed    $b anything to add to $a
      */
-    private function addBtoA($a, $b)
+    private function addBtoA(BaseExpr $a, $b)
     {
         if (($a instanceof Andx && $b instanceof Andx) || ($a instanceof Orx && $b instanceof Orx)) {
             $a->addMultiple($b->getParts());
@@ -390,7 +344,6 @@ class FilterUtil extends AbstractBase
         $string = '';
         $level = 0;
         $con = false;
-
         /*
          * Build a tree with an OR object as root (if one excists), AND Objects as childs of the OR
          * and conditions as leafs. Handle expressions in brackets like normal conditions (parsed
@@ -414,7 +367,7 @@ class FilterUtil extends AbstractBase
                     }
 
                     if ($or === null) { // make new or Object
-                        $or = new Expr\Orx();
+                        $or = new Orx();
                         if ($and !== null) { // add existing and
                             $this->addBtoA($or, $and);
                         }
@@ -445,7 +398,7 @@ class FilterUtil extends AbstractBase
                     }
 
                     if ($and == null) {
-                        $and = new Expr\Andx();
+                        $and = new Andx();
                         if ($or !== null) {
                             $this->addBtoA($or, $and);
                         }
@@ -544,6 +497,5 @@ class FilterUtil extends AbstractBase
             $qb->where($filterExpr);
         }
     }
-
     // ---------------- String to Querybuilder handling ---------------------
 }

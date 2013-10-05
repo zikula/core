@@ -18,7 +18,6 @@ namespace Zikula\Core\FilterUtil;
  */
 interface JoinInterface
 {
-
     /**
      * add Join to QueryBuilder.
      */
