@@ -23,7 +23,6 @@ class Scanner
             ->in($paths)
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
-            ->followLinks()
             ->depth('<'.$depth)
             ->name('composer.json');
 
