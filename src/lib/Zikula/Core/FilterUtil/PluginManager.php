@@ -81,7 +81,7 @@ class PluginManager
     /**
      * Loads plugins.
      *
-     * @param array $plugins Array of plugin informations in form "plugin's name => config array".
+     * @param array $plugins Array of plugin information in form "plugin name => config array".
      *
      * @return bool true on success, false otherwise.
      */
@@ -102,8 +102,8 @@ class PluginManager
      *
      * @param AbstractPlugin $plugin
      *
-     * @internal param string $name Plugin's name.
-     * @internal param array $config Plugin's config.
+     * @internal param string $name Plugin name.
+     * @internal param array $config Plugin config.
      *
      * @return boolean true if the plugin is the default plugin.
      */
@@ -124,7 +124,7 @@ class PluginManager
      *
      * Check what type the plugin is from and register it.
      *
-     * @param int $k The Plugin's ID -> Key in the $this->plugin array.
+     * @param int $k The Plugin ID -> Key in the $this->plugin array.
      */
     private function registerPlugin($k)
     {
@@ -204,15 +204,16 @@ class PluginManager
      * @param string $op    Operator.
      * @param string $value Value.
      *
+     * @throws \InvalidArgumentException
      * @return BaseExpr Doctrine2 expression
      */
     public function getExprObj($field, $op, $value)
     {
         if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
-            throw new \Exception('Unknown Operator.');
+            throw new \InvalidArgumentException('Unknown Operator.');
         }
         if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
-            throw new \Exception('This Operation is not allowd on this Field.');
+            throw new \InvalidArgumentException('This Operation is not allowd on this Field.');
         }
         if (isset($this->ops[$op][$field])) {
             return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
