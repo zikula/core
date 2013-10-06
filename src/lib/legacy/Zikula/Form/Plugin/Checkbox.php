@@ -251,9 +251,6 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
         $checkedHtml = ($this->checked ? " checked=\"checked\"" : '');
 
         $class = $this->getStyleClass();
-        if ($this->cssClass != null) {
-            $class .= ' ' . $this->cssClass;
-        }
 
         $attributes = $this->renderAttributes($view);
 
