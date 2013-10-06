@@ -89,6 +89,7 @@ Features:
 - Removed support old function based controllers and APIs.
 - Removed events: systemerror, setup.errorreporting, frontcontroller.exception event.
 - Development mode is now controlled by editing app/config/kernel.yml `kernel = dev` or `kernel = prod`
+- Removed old legacy (Smarty plugins, hooks etc, old module types).
 
 
 CHANGELOG - ZIKULA 1.3.5
