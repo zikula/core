@@ -84,6 +84,7 @@ abstract class AbstractBundle extends Bundle
      * @return string
      *
      * @todo remove (drak)
+     * @deprecated This is just a workaround
      *
      * @internal This is just required until the transition is over fully to Symfony
      */
@@ -119,8 +120,17 @@ abstract class AbstractBundle extends Bundle
         return false;
     }
 
+    protected function hasExtensions()
+    {
+        return false;
+    }
+
     public function getContainerExtension()
     {
+        if ($this->getState() !== self::STATE_ACTIVE || !$this->hasExtensions()) {
+            return $this->extension = false;
+        }
+
         $type = $this->getNameType();
         $typeLower = strtolower($type);
         if (null === $this->extension) {
