@@ -85,6 +85,8 @@ ul.navbar-modulelinks ul > li > a {
 }
 
 .form-horizontal legend {
+    width: auto;
+    padding: 0 .2em;
     font-size: 1.25em;
     font-weight: normal;
     color: #000;
