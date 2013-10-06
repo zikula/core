@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 class Config
 {
     /**
-     * Doctrine2 QueryBuilder instance
+     * Doctrine QueryBuilder instance
      *
      * @var QueryBuilder
      */
@@ -101,7 +101,7 @@ class Config
     }
 
     /**
-     * Sets the Doctrine2 Query Builder
+     * Sets the Doctrine Query Builder
      *
      * @param QueryBuilder $qb
      */
@@ -111,7 +111,7 @@ class Config
     }
 
     /**
-     * Gets the Doctrine2 Query Builder
+     * Gets the Doctrine Query Builder
      *
      * @return QueryBuilder
      */

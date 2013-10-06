@@ -190,13 +190,13 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     }
 
     /**
-     * Get the Doctrine2 expression object
+     * Get the Doctrine expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return BaseExpr Doctrine2 expression
+     * @return BaseExpr Doctrine expression
      */
     public function getExprObj($field, $op, $value)
     {

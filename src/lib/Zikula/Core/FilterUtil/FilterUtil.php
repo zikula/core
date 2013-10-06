@@ -126,9 +126,9 @@ class FilterUtil
     }
 
     /**
-     * Get filterstring.
+     * Get filter string.
      *
-     * @return string $filter Filterstring.
+     * @return string $filter Filter string.
      */
     public function getFilter()
     {
@@ -306,9 +306,9 @@ class FilterUtil
         $level = 0;
         $con = false;
         /*
-         * Build a tree with an OR object as root (if one excists), AND Objects as childs of the OR
+         * Build a tree with an OR object as root (if one exists), AND Objects as children of the OR
          * and conditions as leafs. Handle expressions in brackets like normal conditions (parsed
-         * recursivly). Using Doctrine2 expression objects
+         * recursively). Using Doctrine expression objects
          */
         $filterlen = strlen($filter);
         for ($i = 0; $i < $filterlen; $i++) {
