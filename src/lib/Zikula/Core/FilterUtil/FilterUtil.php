@@ -25,13 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
 class FilterUtil
 {
     /**
-     * The Input variable name.
-     *
-     * @var string
-     */
-    private $varname;
-
-    /**
      * Plugin object.
      *
      * @var array
@@ -53,60 +46,27 @@ class FilterUtil
     private $filter;
 
     /**
-     * @var Config
+     * @var Request
      */
-    private $config;
+    private $request;
+
+    /**
+     * @var string
+     */
+    private $filterKey;
 
     /**
      * Constructor.
      *
-     * Argument $args may contain:
-     * plugins: Set of plugins to load.
-     * varname: Name of filters in $_REQUEST. Default: filter.
-     * restrictions: Array of allowed operators per field in the form "field's name => operator
-     * array".
-     *
      * @param PluginManager $pluginManager
-     * @param array         $args
+     * @param Request       $request
+     * @param string        $filterKey
      */
-    public function __construct(PluginManager $pluginManager, array $args = array())
+    public function __construct(PluginManager $pluginManager, Request $request = null, $filterKey = 'filter')
     {
-        $this->setVarName('filter');
-
         $this->pluginManager = $pluginManager;
-        $this->config = $pluginManager->getConfig();
-
-        if (isset($args['varname'])) {
-            $this->setVarName($args['varname']);
-        }
-    }
-
-    /**
-     * Set name of input variable of filter.
-     *
-     * @param string $name Name of input variable.
-     *
-     * @return bool true on success, false otherwise.
-     */
-    public function setVarName($name)
-    {
-        if (!is_string($name)) {
-            return false;
-        }
-
-        $this->varname = $name;
-
-        return true;
-    }
-
-    /**
-     * Get name of the input variable.
-     *
-     * @return string Name of the variable.
-     */
-    public function getVarName()
-    {
-        return $this->varname;
+        $this->request = $request;
+        $this->filterKey = $filterKey;
     }
 
     /**
@@ -120,23 +80,25 @@ class FilterUtil
     }
 
     // ++++++++++++++++ Filter handling +++++++++++++++++++++
-
     /**
      * Get all filters from Input
+     *
+     * @throws \LogicException
      *
      * @return array Array of filters
      */
     public function getFiltersFromInput()
     {
-        if ($this->config->getRequest() === null) {
-            throw new \RuntimeException('Request object not set.');
+        if ($this->pluginManager->getConfig()->getRequest() === null) {
+            throw new \LogicException('Request object not set.');
         }
+
         $i = 1;
         $filter = array();
         // TODO get filter via request object
         // Get unnumbered filter string
-        $filterStr = $this->config->getRequest()->query->filter(
-            $this->varname,
+        $filterStr = $this->request->query->filter(
+            $this->pluginManager->getConfig()->getFilterKey(),
             '',
             false,
             FILTER_SANITIZE_STRING
@@ -146,8 +108,8 @@ class FilterUtil
         }
         // Get filter1 ... filterN
         while (true) {
-            $filterURLName = $this->varname."$i";
-            $filterStr = $this->config->getRequest()->query->filter(
+            $filterURLName = $this->filterKey."$i";
+            $filterStr = $this->request->query->filter(
                 $filterURLName,
                 '',
                 false,
@@ -199,7 +161,6 @@ class FilterUtil
         }
 
         $this->filterExpr = false;
-        $this->sql = false;
     }
 
     /**
@@ -293,8 +254,8 @@ class FilterUtil
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
-            if ($this->config->getRequest() !== null && substr($parts[2], 0, 1) == '$') {
-                $value = $this->config->getRequest()->filter(substr($parts[2], 1));
+            if ($this->request !== null && substr($parts[2], 0, 1) == '$') {
+                $value = $this->request->filter(substr($parts[2], 1));
                 // !is_numeric because empty(0) == false
                 if (empty($value) && !is_numeric($value)) {
                     return null;
@@ -355,7 +316,6 @@ class FilterUtil
             switch ($c) {
                 case '*': // Operator: OR
                     $con = $this->makeCondition($string);
-
                     if ($con === null) {
                         if ($subexpr !== null) {
                             $con = $subexpr;
@@ -365,7 +325,6 @@ class FilterUtil
                             break;
                         }
                     }
-
                     if ($or === null) { // make new or Object
                         $or = new Orx();
                         if ($and !== null) { // add existing and
@@ -375,18 +334,13 @@ class FilterUtil
                     if ($op === null) {
                         $op = $or;
                     }
-
                     $this->addBtoA($op, $con); // add condition to last operator object
-
                     $op = $or;
                     $and = null;
-
                     $string = '';
                     break;
-
                 case ',': // Operator: AND
                     $con = $this->makeCondition($string);
-
                     if ($con === null) {
                         if ($subexpr !== null) {
                             $con = $subexpr;
@@ -396,7 +350,6 @@ class FilterUtil
                             break;
                         }
                     }
-
                     if ($and == null) {
                         $and = new Andx();
                         if ($or !== null) {
@@ -405,10 +358,8 @@ class FilterUtil
                         $op = $and;
                     }
                     $this->addBtoA($and, $con);
-
                     $string = '';
                     break;
-
                 case '(': // Subquery
                     $level++;
                     while ($level != 0 && $i <= strlen($filter)) {
@@ -432,13 +383,11 @@ class FilterUtil
                     }
                     $string = '';
                     break;
-
                 default:
                     $string .= $c;
                     break;
             }
         }
-
         $con = $this->makeCondition($string);
         if ($con === null) {
             if ($subexpr !== null) {
@@ -446,7 +395,6 @@ class FilterUtil
                 $subexpr = null;
             }
         }
-
         if ($op !== null) {
             $this->addBtoA($op, $con);
         } else {
@@ -456,15 +404,12 @@ class FilterUtil
 
             return $con;
         }
-
         if ($or !== null) {
             return $or;
         }
-
         if ($and !== null) {
             return $and;
         }
-
         if ($subexpr !== null) {
             return $subexpr;
         }
@@ -490,9 +435,8 @@ class FilterUtil
      */
     public function enrichQuery()
     {
-        $qb = $this->config->getQueryBuilder();
+        $qb = $this->pluginManager->getConfig()->getQueryBuilder();
         $filterExpr = $this->genFilterExpr();
-
         if ($filterExpr !== null) {
             $qb->where($filterExpr);
         }

@@ -15,8 +15,10 @@
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
+use Doctrine\ORM\Query\Expr\From;
 use Zikula\Core\FilterUtil;
 use CategoryUtil;
+use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 
 /**
  * FilterUtil category filter plugin
@@ -24,14 +26,14 @@ use CategoryUtil;
 class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {
     /**
-     * modulename of the entity.
+     * Module name of the entity.
      *
      * @var string
      */
     protected $modname;
 
     /**
-     * filter on this propery
+     * filter on this property
      *
      * @var array
      */
@@ -40,7 +42,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     /**
      * Constructor.
      *
-     * @param              string    Module name of the entity.
+     * @param string       $modname  Module name of the entity.
      * @param array        $property Set of registry properties to use, see setProperty()
      * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category').
      * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
@@ -106,16 +108,17 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     {
         $from = $this->config->getQueryBuilder()->getDQLPart('from');
         $parts = explode('\\', $from[0]->getFrom());
-        $entityname = str_replace('Entity', '', end($parts));
+        $entityName = str_replace('Entity', '', end($parts));
         $em = $this->config->getEntityManager();
         $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')
             ->findBy(
                 array(
                      'modname' => $this->modname,
-                     'entityname' => $entityname,
+                     'entityname' => $entityName,
                 )
             );
         $ids = array();
+        /** @var $cat CategoryRegistryEntity */
         foreach ($rCategories as $cat) {
             if (in_array($cat->getProperty(), $this->property)) {
                 $ids[] = $cat->getId();
