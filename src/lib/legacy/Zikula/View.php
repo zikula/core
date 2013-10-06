@@ -250,7 +250,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // adds legacy plugin paths if needed
         if (System::isLegacyMode()) {
-            $this->addPluginDir('lib/legacy/plugins'); // Core legacy plugins
             $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
         }
         // theme plugins module overrides
