@@ -89,7 +89,7 @@ class FilterUtil
      */
     public function getFiltersFromInput()
     {
-        if ($this->pluginManager->getConfig()->getRequest() === null) {
+        if ($this->request === null) {
             throw new \LogicException('Request object not set.');
         }
 
@@ -98,7 +98,7 @@ class FilterUtil
         // TODO get filter via request object
         // Get unnumbered filter string
         $filterStr = $this->request->query->filter(
-            $this->pluginManager->getConfig()->getFilterKey(),
+            $this->filterKey,
             '',
             false,
             FILTER_SANITIZE_STRING
