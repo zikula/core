@@ -26,7 +26,7 @@ class PluginManager
      *
      * @var AbstractPlugin[]
      */
-    private $plugin = array();
+    private $plugins = array();
 
     /**
      * Loaded operators.
@@ -92,8 +92,9 @@ class PluginManager
         foreach ($plugins as $v) {
             $default |= $this->loadPlugin($v);
         }
+
         if (!$default) {
-            $this->loadPlugin(new ComparePlugin(null));
+            $this->loadPlugin(new ComparePlugin());
         }
     }
 
@@ -109,9 +110,9 @@ class PluginManager
      */
     public function loadPlugin(AbstractPlugin $plugin)
     {
-        $this->plugin[] = $plugin;
-        end($this->plugin);
-        $key = key($this->plugin);
+        $this->plugins[] = $plugin;
+        end($this->plugins);
+        $key = key($this->plugins);
         $plugin->setID($key);
         $plugin->setConfig($this->config);
         $this->registerPlugin($key);
@@ -128,7 +129,7 @@ class PluginManager
      */
     private function registerPlugin($k)
     {
-        $plugin = & $this->plugin[$k];
+        $plugin = & $this->plugins[$k];
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }
@@ -185,7 +186,7 @@ class PluginManager
     {
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
-                $plugin = $this->plugin[$k];
+                $plugin = $this->plugins[$k];
                 list ($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
@@ -216,10 +217,10 @@ class PluginManager
             throw new \InvalidArgumentException('This Operation is not allowd on this Field.');
         }
         if (isset($this->ops[$op][$field])) {
-            return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
+            return $this->plugins[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
         }
         if (isset($this->ops[$op]['-'])) {
-            return $this->plugin[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
+            return $this->plugins[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
         }
 
         return '';
