@@ -58,8 +58,8 @@ class PluginManager
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param        $plugins
-     * @param        $restrictions
+     * @param array  $plugins
+     * @param array  $restrictions
      */
     public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
     {
@@ -82,8 +82,6 @@ class PluginManager
      * Loads plugins.
      *
      * @param array $plugins Array of plugin information in form "plugin name => config array".
-     *
-     * @return bool true on success, false otherwise.
      */
     public function loadPlugins(array $plugins)
     {
@@ -206,23 +204,28 @@ class PluginManager
      * @param string $value Value.
      *
      * @throws \InvalidArgumentException
-     * @return BaseExpr Doctrine expression
+     *
+     * @return string|BaseExpr Doctrine expression or empty string
      */
     public function getExprObj($field, $op, $value)
     {
         if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
             throw new \InvalidArgumentException('Unknown Operator.');
         }
+
         if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
-            throw new \InvalidArgumentException('This Operation is not allowd on this Field.');
+            throw new \InvalidArgumentException('This Operation is not allowed on this Field.');
         }
+
         if (isset($this->ops[$op][$field])) {
             return $this->plugins[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
         }
+
         if (isset($this->ops[$op]['-'])) {
             return $this->plugins[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
         }
 
+        // @todo should this throw an exception if we get to here?
         return '';
     }
 }

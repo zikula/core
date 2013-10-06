@@ -23,24 +23,24 @@ class AbstractPlugin
      *
      * @var boolean
      */
-    protected $default = false;
+    private $default = false;
 
     /**
      * ID of the plugin.
      *
      * @var integer
      */
-    protected $id;
+    private $id;
 
     /**
      * Config object.
      *
      * @var Config
      */
-    protected $config;
+    private $config;
 
     /**
-     * Constructor.
+     * Set Config
      *
      * Argument $config may contain
      *
@@ -58,7 +58,7 @@ class AbstractPlugin
      *
      * @return void
      */
-    public function setID($id)
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -66,8 +66,16 @@ class AbstractPlugin
     /**
      * get if this is the default plugin
      */
-    public function getDefault()
+    public function isDefault()
     {
         return $this->default;
+    }
+
+    /**
+     * @param $boolean
+     */
+    public function setDefault($boolean)
+    {
+        $this->default = $boolean;
     }
 }

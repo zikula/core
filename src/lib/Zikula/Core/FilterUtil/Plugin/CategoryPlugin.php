@@ -30,14 +30,14 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      *
      * @var string
      */
-    protected $modname;
+    private $modname;
 
     /**
      * filter on this property
      *
      * @var array
      */
-    protected $property;
+    private $property;
 
     /**
      * Constructor.
@@ -50,9 +50,10 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      */
     public function __construct($modname = null, $property = null, $fields = 'category', $ops = null, $default = false)
     {
-        parent::__construct($fields, $ops, $default);
         $this->setProperty($property);
         $this->modname = $modname;
+
+        parent::__construct($fields, $ops, $default);
     }
 
     /**

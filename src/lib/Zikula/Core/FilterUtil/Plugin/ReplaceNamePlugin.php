@@ -28,7 +28,7 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
      *
      * @var array
      */
-    protected $pair = array();
+    private $pair = array();
 
     /**
      * Constructor.

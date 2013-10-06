@@ -23,18 +23,6 @@ use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 class ComparePlugin extends FilterUtil\AbstractBuildPlugin
 {
     /**
-     * Constructor.
-     *
-     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=true).
-     */
-    public function __construct($fields = null, $ops = null, $default = true)
-    {
-        parent::__construct($fields, $ops, $default);
-    }
-
-    /**
      * Returns the operators the plugin can handle.
      *
      * @return array Operators.
