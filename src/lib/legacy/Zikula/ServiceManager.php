@@ -128,6 +128,10 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function getService($id)
     {
+        if ($id == 'request') {
+            return $GLOBALS['__request'];
+        }
+
         return $this->get($id);
     }
 
