@@ -100,8 +100,8 @@ class UserUtil
     /**
      * Return a hash structure mapping uid to username.
      *
-     * @param string  $where        The where clause to use (optional, default=array()).
-     * @param string  $orderBy      The order by clause to use (optional, default=array()).
+     * @param array   $where        The where clause to use (optional, default=array()).
+     * @param array   $orderBy      The order by clause to use (optional, default=array()).
      * @param integer $limitOffset  The select-limit offset (optional, default=null).
      * @param integer $limitNumRows The number of rows to fetch (optional, default=null).
      * @param string  $assocKey     The associative key to apply (optional) (default='uid').
