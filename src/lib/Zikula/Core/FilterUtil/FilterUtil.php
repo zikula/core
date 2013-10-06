@@ -70,6 +70,24 @@ class FilterUtil
     }
 
     /**
+     * Factory method
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param array        $plugins
+     * @param array        $restrictions
+     * @param Request      $request
+     * @param string       $filterKey
+     *
+     * @return FilterUtil
+     */
+    public static function create(QueryBuilder $queryBuilder, array $plugins = array(), array $restrictions = array(), Request $request = null, $filterKey = 'filter')
+    {
+        $pluginManager = new PluginManager(new Config($queryBuilder), $plugins, $restrictions);
+
+        return new self($pluginManager, $request, $filterKey);
+    }
+
+    /**
      * Get plugin manager class.
      *
      * @return PluginManager
@@ -79,7 +97,6 @@ class FilterUtil
         return $this->pluginManager;
     }
 
-    // ++++++++++++++++ Filter handling +++++++++++++++++++++
     /**
      * Get all filters from Input
      *
@@ -103,9 +120,11 @@ class FilterUtil
             false,
             FILTER_SANITIZE_STRING
         );
+
         if (!empty($filterStr)) {
             $filter[] = $filterStr;
         }
+
         // Get filter1 ... filterN
         while (true) {
             $filterURLName = $this->filterKey."$i";
@@ -115,6 +134,7 @@ class FilterUtil
                 false,
                 FILTER_SANITIZE_STRING
             );
+
             if (empty($filterStr)) {
                 break;
             }
@@ -138,6 +158,7 @@ class FilterUtil
                 $this->filter = "(".implode(')*(', $filter).")";
             }
         }
+
         if ($this->filter == '()') {
             $this->filter = '';
         }
@@ -230,8 +251,6 @@ class FilterUtil
         }
     }
 
-    // --------------- Filter handling ----------------------
-    // ++++++++++++++++ String to Querybuilder handling +++++++++++++++++++
     /**
      * Create a condition object out of a string.
      *
@@ -246,11 +265,13 @@ class FilterUtil
         } elseif (strpos($filter, '^')) {
             $parts = explode('^', $filter, 3);
         }
+
         $con = array(
             'field' => false,
             'op' => false,
             'value' => false
         );
+
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
@@ -265,9 +286,11 @@ class FilterUtil
                 $con['value'] = $parts[2];
             }
         }
+
         if (!$con['field'] || !$con['op']) {
             return null; // invalid condition
         }
+
         $con = $this->pluginManager->replace($con['field'], $con['op'], $con['value']);
 
         return $this->pluginManager->getExprObj($con['field'], $con['op'], $con['value']);
@@ -292,9 +315,11 @@ class FilterUtil
     /**
      * Help function to generate an object out of a string.
      *
-     * @param string $filter Filterstring.
+     * @param string $filter Filter string.
      *
-     * @return array Filter object.
+     * @throws \InvalidArgumentException
+     *
+     * @return array Filter[] object.
      */
     private function genFilterExprRecursive($filter)
     {
@@ -305,6 +330,7 @@ class FilterUtil
         $string = '';
         $level = 0;
         $con = false;
+
         /*
          * Build a tree with an OR object as root (if one exists), AND Objects as children of the OR
          * and conditions as leafs. Handle expressions in brackets like normal conditions (parsed
@@ -420,7 +446,7 @@ class FilterUtil
     /**
      * Generate the filter object from a string.
      *
-     * @return ???? @todo
+     * @return array Filter[]
      */
     public function genFilterExpr()
     {
@@ -441,5 +467,6 @@ class FilterUtil
             $qb->where($filterExpr);
         }
     }
+
     // ---------------- String to Querybuilder handling ---------------------
 }
