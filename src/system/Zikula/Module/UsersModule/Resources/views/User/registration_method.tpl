@@ -8,7 +8,7 @@
 {/strip}
 <h2>{$templatetitle}</h2>
 
-{getstatusmsg}
+{insert name="getstatusmsg"}
 
 <div>
     <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="hide"{/if}>{gt text="Choose how you would like to log in."}</h5>
