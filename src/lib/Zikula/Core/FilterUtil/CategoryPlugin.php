@@ -15,8 +15,7 @@
 namespace Zikula\Core\FilterUtil\Plugin;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
-use Doctrine\ORM\Query\Expr\From;
-use Zikula\Core\FilterUtil;
+use Zikula\Component\FilterUtil;
 use CategoryUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 

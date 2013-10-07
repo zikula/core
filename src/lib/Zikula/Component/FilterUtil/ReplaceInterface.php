@@ -11,15 +11,21 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil;
+namespace Zikula\Component\FilterUtil;
 
 /**
  * FilterUtil replace interface
  */
-interface JoinInterface
+interface ReplaceInterface
 {
     /**
-     * add Join to QueryBuilder.
+     * Replace whatever the plugin has to replace.
+     *
+     * @param string $field Field name.
+     * @param string $op    Operator.
+     * @param string $value Value.
+     *
+     * @return array ($field, $op, $value)
      */
-    public function addJoinsToQuery();
+    public function replace($field, $op, $value);
 }
