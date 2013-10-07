@@ -250,7 +250,7 @@ class LogUtil
     public static function addWarningPopup($message)
     {
         $message = empty($message) ? __f('Empty [%s] received.', 'message') : $message;
-        self::_addPopup($message, Log::WARN);
+        self::_addPopup($message, Log::WARNING);
     }
 
     /**
