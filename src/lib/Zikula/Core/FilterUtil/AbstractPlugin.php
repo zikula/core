@@ -16,7 +16,7 @@ namespace Zikula\Core\FilterUtil;
 /**
  * Base class of all FilterUtil plugins.
  */
-class AbstractPlugin
+abstract class AbstractPlugin
 {
     /**
      * Default handler.
