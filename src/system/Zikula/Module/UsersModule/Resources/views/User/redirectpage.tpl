@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{lang}" dir="{langdirection}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={charset}" />
-<meta name="description" content="{configgetvar name=sitename}" />
-<meta name="copyright" content="Copyright (c) 2009 by {configgetvar name=sitename}" />
+<meta name="description" content="{$modvars.ZConfig.sitename}" />
+<meta name="copyright" content="Copyright (c) 2009 by {$modvars.ZConfig.sitename}" />
 <meta name="generator" content="Zikula - http://zikula.org" />
 <meta http-equiv="refresh" content="2;url={$url|safetext}" />
-<title>{configgetvar name=sitename}</title>
+<title>{$modvars.ZConfig.sitename}</title>
 <link rel="stylesheet" href="{$stylesheet}" type="text/css" />
 <style type="text/css">
 <!--
