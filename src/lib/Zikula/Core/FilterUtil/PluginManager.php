@@ -92,7 +92,7 @@ class PluginManager
         }
 
         if (!$default) {
-            $this->loadPlugin(new ComparePlugin());
+            $this->loadPlugin(new ComparePlugin(null, array(), true));
         }
     }
 

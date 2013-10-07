@@ -37,7 +37,7 @@ class AbstractPlugin
      *
      * @var Config
      */
-    private $config;
+    protected $config;
 
     /**
      * Set Config
