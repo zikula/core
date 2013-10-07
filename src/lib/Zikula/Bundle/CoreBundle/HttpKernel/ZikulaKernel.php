@@ -136,7 +136,7 @@ abstract class ZikulaKernel extends Kernel
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
      *
-     * @return \Zikula\Core\AbstractTheme|\Zikula\Core\AbstractTheme[]
+     * @return AbstractTheme|AbstractTheme
      */
     public function getTheme($themeName, $first = true)
     {
