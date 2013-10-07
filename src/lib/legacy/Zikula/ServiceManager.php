@@ -12,7 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 
 /**
@@ -108,6 +108,15 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
         $this->removeDefinition($id);
     }
 
+    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
+    {
+        if ($id === 'request') {
+            return $GLOBALS['__request'];
+        }
+
+        return parent::get($id, $invalidBehavior);
+    }
+
     /**
      * Gets a service by identifier.
      *
@@ -128,10 +137,6 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
      */
     public function getService($id)
     {
-        if ($id == 'request') {
-            return $GLOBALS['__request'];
-        }
-
         return $this->get($id);
     }
 
