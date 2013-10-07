@@ -15,9 +15,6 @@
 
 namespace Zikula\Core\Token\Storage;
 
-/**
- * Zikula_Token_Storage class.
- */
 interface StorageInterface
 {
     /**
