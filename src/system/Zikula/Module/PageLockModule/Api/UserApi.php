@@ -46,7 +46,7 @@ class UserApi extends \Zikula_AbstractApi
             PageUtil::AddVar('javascript', 'system/Zikula/Module/PageLockModule/Resources/public/js/pagelock.js');
             PageUtil::AddVar('stylesheet', ThemeUtil::getModuleStylesheet('pagelock'));
 
-            $lockInfo = ModUtil::apiFunc('pagelock', 'user', 'requireLock',
+            $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
                     array('lockName'      => $lockName,
                     'lockedByTitle' => $uname,
                     'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
@@ -102,7 +102,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $locks = ModUtil::apiFunc('pagelock', 'user', 'getLocks', $args);
+        $locks = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'getLocks', $args);
         if (count($locks) > 0) {
             $lockedBy = '';
             foreach ($locks as $lock) {
