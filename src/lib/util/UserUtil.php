@@ -113,7 +113,7 @@ class UserUtil
     public static function getUsers($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
         // first check for string based parameters and use dbutil if found
-        if (is_string($where) || is_string($orderBy)) {
+        if (System::isLegacyMode() && (is_string($where) || is_string($orderBy))) {
             return DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
         }
 
