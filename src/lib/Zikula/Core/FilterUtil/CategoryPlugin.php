@@ -12,7 +12,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil\Plugin;
+namespace Zikula\Core\FilterUtil;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 use Zikula\Component\FilterUtil;
