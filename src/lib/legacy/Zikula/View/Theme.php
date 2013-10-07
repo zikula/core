@@ -257,6 +257,8 @@ class Zikula_View_Theme extends Zikula_View
             $this->load_filter('output', 'trimwhitespace');
         }
 
+        $this->load_filter('output', 'asseturls');
+
         $event = new \Zikula\Core\Event\GenericEvent($this);
         $this->eventManager->dispatch('theme.init', $event);
 
