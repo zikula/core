@@ -12,9 +12,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil\Plugin;
+namespace Zikula\Component\FilterUtil\Plugin;
 
-use Zikula\Core\FilterUtil;
+use Zikula\Component\FilterUtil;
 
 /**
  * Simple field name replacement.
@@ -28,7 +28,7 @@ class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\
      *
      * @var array
      */
-    protected $pair = array();
+    private $pair = array();
 
     /**
      * Constructor.

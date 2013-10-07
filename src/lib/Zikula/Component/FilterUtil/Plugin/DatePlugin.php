@@ -12,9 +12,9 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil\Plugin;
+namespace Zikula\Component\FilterUtil\Plugin;
 
-use Zikula\Core\FilterUtil;
+use Zikula\Component\FilterUtil;
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 
 /**
@@ -22,18 +22,6 @@ use Doctrine\ORM\Query\Expr\Base as BaseExpr;
  */
 class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceInterface
 {
-    /**
-     * Constructor.
-     *
-     * @param array $fields  Set of fields to use, see setFields() (optional) (default=null).
-     * @param array $ops     Operators to enable, see activateOperators() (optional) (default=null).
-     * @param bool  $default set the plugin to default (optional) (default=false).
-     */
-    public function __construct($fields = null, $ops = null, $default = false)
-    {
-        parent::__construct($fields, $ops, $default);
-    }
-
     /**
      * Returns the operators the plugin can handle.
      *
@@ -63,7 +51,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     public function replace($field, $op, $value)
     {
         // First check if this plugin have to work with this field
-        if (array_search($field, $this->fields) === false) {
+        if (array_search($field, $this->getFields()) === false) {
             return array(
                 $field,
                 $op,
@@ -190,13 +178,13 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     }
 
     /**
-     * Get the Doctrine2 expression object
+     * Get the Doctrine expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return BaseExpr Doctrine2 expression
+     * @return BaseExpr Doctrine expression
      */
     public function getExprObj($field, $op, $value)
     {

@@ -6,15 +6,15 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula\Core\FilterUtil
+ * @package Zikula\Component\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil;
+namespace Zikula\Component\FilterUtil;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
-use Zikula\Core\FilterUtil\Plugin\ComparePlugin;
+use Zikula\Component\FilterUtil\Plugin\ComparePlugin;
 
 /**
  * Plugin manager class.
@@ -26,7 +26,7 @@ class PluginManager
      *
      * @var AbstractPlugin[]
      */
-    private $plugin = array();
+    private $plugins = array();
 
     /**
      * Loaded operators.
@@ -58,8 +58,8 @@ class PluginManager
      * Constructor.
      *
      * @param Config $config FilterUtil Configuration object.
-     * @param        $plugins
-     * @param        $restrictions
+     * @param array  $plugins
+     * @param array  $restrictions
      */
     public function __construct(Config $config, array $plugins = array(), array $restrictions = array())
     {
@@ -81,9 +81,7 @@ class PluginManager
     /**
      * Loads plugins.
      *
-     * @param array $plugins Array of plugin informations in form "plugin's name => config array".
-     *
-     * @return bool true on success, false otherwise.
+     * @param array $plugins Array of plugin information in form "plugin name => config array".
      */
     public function loadPlugins(array $plugins)
     {
@@ -92,8 +90,9 @@ class PluginManager
         foreach ($plugins as $v) {
             $default |= $this->loadPlugin($v);
         }
+
         if (!$default) {
-            $this->loadPlugin(new ComparePlugin(null));
+            $this->loadPlugin(new ComparePlugin(null, array(), true));
         }
     }
 
@@ -102,16 +101,16 @@ class PluginManager
      *
      * @param AbstractPlugin $plugin
      *
-     * @internal param string $name Plugin's name.
-     * @internal param array $config Plugin's config.
+     * @internal param string $name Plugin name.
+     * @internal param array $config Plugin config.
      *
      * @return boolean true if the plugin is the default plugin.
      */
     public function loadPlugin(AbstractPlugin $plugin)
     {
-        $this->plugin[] = $plugin;
-        end($this->plugin);
-        $key = key($this->plugin);
+        $this->plugins[] = $plugin;
+        end($this->plugins);
+        $key = key($this->plugins);
         $plugin->setID($key);
         $plugin->setConfig($this->config);
         $this->registerPlugin($key);
@@ -124,11 +123,11 @@ class PluginManager
      *
      * Check what type the plugin is from and register it.
      *
-     * @param int $k The Plugin's ID -> Key in the $this->plugin array.
+     * @param int $k The Plugin ID -> Key in the $this->plugin array.
      */
     private function registerPlugin($k)
     {
-        $plugin = & $this->plugin[$k];
+        $plugin = & $this->plugins[$k];
         if ($plugin instanceof JoinInterface) {
             $plugin->addJoinsToQuery();
         }
@@ -185,7 +184,7 @@ class PluginManager
     {
         if (is_array($this->replaces)) {
             foreach ($this->replaces as $k) {
-                $plugin = $this->plugin[$k];
+                $plugin = $this->plugins[$k];
                 list ($field, $op, $value) = $plugin->replace($field, $op, $value);
             }
         }
@@ -198,29 +197,35 @@ class PluginManager
     }
 
     /**
-     * Get the Doctrine2 expression object
+     * Get the Doctrine expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return BaseExpr Doctrine2 expression
+     * @throws \InvalidArgumentException
+     *
+     * @return string|BaseExpr Doctrine expression or empty string
      */
     public function getExprObj($field, $op, $value)
     {
         if (!isset($this->ops[$op]) || !is_array($this->ops[$op])) {
-            throw new \Exception('Unknown Operator.');
-        }
-        if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
-            throw new \Exception('This Operation is not allowd on this Field.');
-        }
-        if (isset($this->ops[$op][$field])) {
-            return $this->plugin[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
-        }
-        if (isset($this->ops[$op]['-'])) {
-            return $this->plugin[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
+            throw new \InvalidArgumentException('Unknown Operator.');
         }
 
+        if (isset($this->restrictions[$field]) && !in_array($op, $this->restrictions[$field])) {
+            throw new \InvalidArgumentException('This Operation is not allowed on this Field.');
+        }
+
+        if (isset($this->ops[$op][$field])) {
+            return $this->plugins[$this->ops[$op][$field]]->getExprObj($field, $op, $value);
+        }
+
+        if (isset($this->ops[$op]['-'])) {
+            return $this->plugins[$this->ops[$op]['-']]->getExprObj($field, $op, $value);
+        }
+
+        // @todo should this throw an exception if we get to here?
         return '';
     }
 }

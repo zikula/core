@@ -6,14 +6,15 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula\Core\FilterUtil
+ * @package Zikula\Component\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil;
+namespace Zikula\Component\FilterUtil;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 class Config
 {
     /**
-     * Doctrine2 QueryBuilder instance
+     * Doctrine QueryBuilder instance
      *
      * @var QueryBuilder
      */
@@ -35,18 +36,6 @@ class Config
      * @var string
      */
     private $entityName;
-
-    /**
-     * Entity name.
-     *
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @var Request
-     */
-    private $request;
 
     /**
      * Metadata of all Entities.
@@ -73,24 +62,12 @@ class Config
     /**
      * Constructor.
      *
-     * @param QueryBuilder  $qb
-     * @param Request       $request
+     * @param QueryBuilder $qb
      */
-    public function __construct(QueryBuilder $qb, Request $request = null)
+    public function __construct(QueryBuilder $qb)
     {
         $this->setQueryBuilder($qb);
-        $this->request = $request;
-        $this->entityManager = $qb->getEntityManager();
-
         $this->collectMeta();
-    }
-
-    /**
-     * @return Request
-     */
-    public function getRequest()
-    {
-        return $this->request;
     }
 
     /**
@@ -99,28 +76,24 @@ class Config
     private function collectMeta()
     {
         $parts = $this->queryBuilder->getDQLParts();
-
         $entity = reset($parts['from']);
         $this->setEntityName($entity->getFrom());
         $this->setAlias($entity->getAlias());
-
-        $mdf = $this->entityManager->getMetadataFactory();
-
+        $mdf = $this->queryBuilder->getEntityManager()->getMetadataFactory();
         $this->meta[$this->alias] = $mdf->getMetadataFor($this->entityName);
-
         if (isset($parts['join'][$this->alias])) {
+            /** @var Join $join */
             foreach ($parts['join'][$this->alias] as $join) {
                 $j = explode('.', $join->getJoin(), 2);
                 if (count($j) != 2) {
-                    throw new \InvalidArgumentException('Join in wrong format: ' . $join->getJoin());
+                    throw new \InvalidArgumentException('Join in wrong format: '.$join->getJoin());
                 }
                 if (!isset($this->meta[$j[0]])) {
-                    throw new \InvalidArgumentException('Unknown alias in join or wrong order: ' . $join->getJoin());
+                    throw new \InvalidArgumentException('Unknown alias in join or wrong order: '.$join->getJoin());
                 }
                 if (!isset($this->meta[$j[0]]->associationMappings[$j[1]])) {
-                    throw new \InvalidArgumentException('Unknown Mapping in join: ' . $join->getJoin());
+                    throw new \InvalidArgumentException('Unknown Mapping in join: '.$join->getJoin());
                 }
-
                 $jEntity = $this->meta[$j[0]]->associationMappings[$j[1]]['targetEntity'];
                 $this->meta[$join->getAlias()] = $mdf->getMetadataFor($jEntity);
             }
@@ -128,7 +101,7 @@ class Config
     }
 
     /**
-     * Sets the Doctrine2 Query Builder
+     * Sets the Doctrine Query Builder
      *
      * @param QueryBuilder $qb
      */
@@ -138,7 +111,7 @@ class Config
     }
 
     /**
-     * Gets the Doctrine2 Query Builder
+     * Gets the Doctrine Query Builder
      *
      * @return QueryBuilder
      */
@@ -150,16 +123,16 @@ class Config
     /**
      * Generate next parameter key
      *
-     * @param string $pluginname
-     * @param string $fieldname
+     * @param string $pluginName
+     * @param string $fieldName
      *
-     * @return string key form :$pluginname_$fieldname_$number
+     * @return string key form :$pluginName_$fieldName_$number
      */
-    public function nextUniqueParamkey($pluginname, $fieldname)
+    public function nextUniqueParamKey($pluginName, $fieldName)
     {
         $this->paramNumber++;
 
-        return ':' . $pluginname . '_' . $fieldname . '_' . $this->paramNumber;
+        return ':'.$pluginName.'_'.$fieldName.'_'.$this->paramNumber;
     }
 
     /**
@@ -167,17 +140,17 @@ class Config
      * add the value to the QueryBuilder
      *
      * @param mixed  $value
-     * @param string $pluginname
-     * @param string $fieldname
+     * @param string $pluginName
+     * @param string $fieldName
      *
-     * @return string key form :$pluginname_$fieldname_$number
+     * @return string key form :$pluginName_$fieldName_$number
      */
-    public function toParam($value, $pluginname, $fieldname)
+    public function toParam($value, $pluginName, $fieldName)
     {
-        $paramkey = $this->nextUniqueParamkey($pluginname, $fieldname);
-        $this->queryBuilder->setParameter($paramkey, $value);
+        $paramKey = $this->nextUniqueParamKey($pluginName, $fieldName);
+        $this->queryBuilder->setParameter($paramKey, $value);
 
-        return $paramkey;
+        return $paramKey;
     }
 
     /**
@@ -209,7 +182,7 @@ class Config
      */
     public function getEntityManager()
     {
-        return $this->entityManager;
+        return $this->queryBuilder->getEntityManager();
     }
 
     /**
@@ -247,8 +220,9 @@ class Config
      */
     public function addAliasTo($s)
     {
-        if (strpos($s, '.') === false)
-            return $this->alias . '.' . $s;
+        if (strpos($s, '.') === false) {
+            return $this->alias.'.'.$s;
+        }
 
         return $s;
     }
@@ -266,8 +240,9 @@ class Config
     {
         $parts = explode('.', $field, 2);
         if (count($parts) < 2 || !isset($this->meta[$parts[0]]) ||
-             !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])) {
-            throw new \InvalidArgumentException('Unknown Fieldname: ' . $field);
+            !isset($this->meta[$parts[0]]->fieldMappings[$parts[1]])
+        ) {
+            throw new \InvalidArgumentException('Unknown field name: '.$field);
         }
     }
 }
