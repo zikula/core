@@ -309,7 +309,9 @@ class DBUtil
             if ((System::isDevelopmentMode() && SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN))) {
                 echo nl2br($e->getTraceAsString());
             }
-            System::shutDown();
+            if ($exitOnError) {
+                System::shutDown();
+            }
         }
 
         return false;
@@ -1775,9 +1777,18 @@ class DBUtil
             return $objects;
         }
 
+        $exitOnError = true;
         $tables = self::getTables();
         if (!isset($tables["{$table}_column"])) {
-            return false;
+            // For field arrays we construct a temporary literal table entry which allows us to 
+            // do ad-hoc queries on dynamic reference tables which do not have tables.php entry.
+            $tables[$table]                    = $table;
+            $tables["{$table}_column"]         = array();
+            $tables["{$table}_column"][$field] = $field;
+            if ($assocKey) {
+                $tables["{$table}_column"][$assocKey] = $assocKey;
+            }
+            $exitOnError = false;
         }
 
         $columns = $tables["{$table}_column"];
@@ -1798,7 +1809,7 @@ class DBUtil
 
         $sql = "SELECT $dSql $assoc FROM $tableName AS tbl $where $orderby";
 
-        $res = self::executeSQL($sql);
+        $res = self::executeSQL($sql, -1, -1, $exitOnError);
         if ($res === false) {
             return $res;
         }
