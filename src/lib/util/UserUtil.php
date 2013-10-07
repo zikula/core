@@ -100,8 +100,8 @@ class UserUtil
     /**
      * Return a hash structure mapping uid to username.
      *
-     * @param string  $where        The where clause to use (optional, default=array()).
-     * @param string  $orderBy      The order by clause to use (optional, default=array()).
+     * @param array   $where        Array of field values to filter by (optional, default=array()).
+     * @param array   $orderBy      Array fields to sort by (optional, default=array()).
      * @param integer $limitOffset  The select-limit offset (optional, default=null).
      * @param integer $limitNumRows The number of rows to fetch (optional, default=null).
      * @param string  $assocKey     The associative key to apply (optional) (default='uid').
@@ -112,6 +112,12 @@ class UserUtil
      */
     public static function getUsers($where = array(), $orderBy = array(), $limitOffset = null, $limitNumRows = null, $assocKey = 'uid')
     {
+        // first check for string based parameters and use dbutil if found
+        if (is_string($where) || is_string($orderBy)) {
+            return DBUtil::selectObjectArray('users', $where, $orderBy, $limitOffset, $limitNumRows, $assocKey);
+        }
+
+        // we've now ruled out BC parameters
         $em = \ServiceUtil::get('doctrine.entitymanager');
         $users = $em->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findBy($where, $orderBy, $limitNumRows, $limitOffset);
 
