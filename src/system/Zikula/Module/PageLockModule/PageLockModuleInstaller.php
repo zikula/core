@@ -23,9 +23,13 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function install()
     {
-        if (!DBUtil::createTable('pagelock'))
-
-            return false;
+        try {
+            DoctrineHelper::createSchema($this->entityManager, array(
+                'Zikula\Module\PageLockModule\Entity\PageLockEntity',
+            ));
+        } catch (\Exception $e) {
+             return false;
+        }
 
         return true;
     }
@@ -40,7 +44,13 @@ class PageLockModuleInstaller extends \Zikula_AbstractInstaller
      */
     public function uninstall()
     {
-        DBUtil::dropTable('pagelock');
+        try {
+            DoctrineHelper::createSchema($this->dropManager, array(
+                'Zikula\Module\PageLockModule\Entity\PageLockEntity',
+            ));
+        } catch (\Exception $e) {
+             return false;
+        }
 
         return true;
     }
