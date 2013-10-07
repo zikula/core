@@ -19,9 +19,11 @@
         "php": ">=5.3.3",
         "doctrine/orm": ">=2.3"
     },
+    "require-dev": {
+        "symfony/http-foundation": ">=2.1"
+    },
     "suggest": {
         "symfony/http-foundation": ">=2.1"
-
     },
     "target-dir": "Zikula/Component/FilterUtil"
 }
