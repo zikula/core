@@ -6,12 +6,12 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula\Core\FilterUtil
+ * @package Zikula\Component\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil;
+namespace Zikula\Component\FilterUtil;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 
@@ -56,13 +56,13 @@ interface BuildInterface
     public function getOperators();
 
     /**
-     * Get the Doctrine2 expression object
+     * Get the Doctrine expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return BaseExpr Doctrine2 expression
+     * @return BaseExpr Doctrine expression
      */
     public function getExprObj($field, $op, $value);
 }

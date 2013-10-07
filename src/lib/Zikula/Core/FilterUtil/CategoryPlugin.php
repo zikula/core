@@ -12,11 +12,12 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil\Plugin;
+namespace Zikula\Core\FilterUtil;
 
 use Doctrine\ORM\Query\Expr\Base as BaseExpr;
-use Zikula\Core\FilterUtil;
+use Zikula\Component\FilterUtil;
 use CategoryUtil;
+use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 
 /**
  * FilterUtil category filter plugin
@@ -24,23 +25,23 @@ use CategoryUtil;
 class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {
     /**
-     * modulename of the entity.
+     * Module name of the entity.
      *
      * @var string
      */
-    protected $modname;
+    private $modname;
 
     /**
-     * filter on this propery
+     * filter on this property
      *
      * @var array
      */
-    protected $property;
+    private $property;
 
     /**
      * Constructor.
      *
-     * @param              string    Module name of the entity.
+     * @param string       $modname  Module name of the entity.
      * @param array        $property Set of registry properties to use, see setProperty()
      * @param array|string $fields   Set of fields to use, see setFields() (optional) (default='category').
      * @param array        $ops      Operators to enable, see activateOperators() (optional) (default=null).
@@ -48,9 +49,10 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
      */
     public function __construct($modname = null, $property = null, $fields = 'category', $ops = null, $default = false)
     {
-        parent::__construct($fields, $ops, $default);
         $this->setProperty($property);
         $this->modname = $modname;
+
+        parent::__construct($fields, $ops, $default);
     }
 
     /**
@@ -106,16 +108,17 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     {
         $from = $this->config->getQueryBuilder()->getDQLPart('from');
         $parts = explode('\\', $from[0]->getFrom());
-        $entityname = str_replace('Entity', '', end($parts));
+        $entityName = str_replace('Entity', '', end($parts));
         $em = $this->config->getEntityManager();
         $rCategories = $em->getRepository('Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity')
             ->findBy(
                 array(
                      'modname' => $this->modname,
-                     'entityname' => $entityname,
+                     'entityname' => $entityName,
                 )
             );
         $ids = array();
+        /** @var $cat CategoryRegistryEntity */
         foreach ($rCategories as $cat) {
             if (in_array($cat->getProperty(), $this->property)) {
                 $ids[] = $cat->getId();
@@ -126,13 +129,13 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
     }
 
     /**
-     * Get the Doctrine2 expression object
+     * Get the Doctrine expression object
      *
      * @param string $field Field name.
      * @param string $op    Operator.
      * @param string $value Value.
      *
-     * @return BaseExpr Doctrine2 expression
+     * @return BaseExpr Doctrine expression
      */
     public function getExprObj($field, $op, $value)
     {

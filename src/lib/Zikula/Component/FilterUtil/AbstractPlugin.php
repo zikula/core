@@ -6,31 +6,31 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPv3 (or at your option any later version).
- * @package Zikula\Core\FilterUtil
+ * @package Zikula\Component\FilterUtil
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-namespace Zikula\Core\FilterUtil;
+namespace Zikula\Component\FilterUtil;
 
 /**
  * Base class of all FilterUtil plugins.
  */
-class AbstractPlugin
+abstract class AbstractPlugin
 {
     /**
      * Default handler.
      *
      * @var boolean
      */
-    protected $default = false;
+    private $default = false;
 
     /**
      * ID of the plugin.
      *
      * @var integer
      */
-    protected $id;
+    private $id;
 
     /**
      * Config object.
@@ -40,7 +40,7 @@ class AbstractPlugin
     protected $config;
 
     /**
-     * Constructor.
+     * Set Config
      *
      * Argument $config may contain
      *
@@ -58,7 +58,7 @@ class AbstractPlugin
      *
      * @return void
      */
-    public function setID($id)
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -66,8 +66,16 @@ class AbstractPlugin
     /**
      * get if this is the default plugin
      */
-    public function getDefault()
+    public function isDefault()
     {
         return $this->default;
+    }
+
+    /**
+     * @param $boolean
+     */
+    public function setDefault($boolean)
+    {
+        $this->default = $boolean;
     }
 }

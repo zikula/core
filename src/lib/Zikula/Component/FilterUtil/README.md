@@ -12,7 +12,8 @@ in your module.
 ## Implement FilterUtil ##
 
 Implementing FilterUtil is very easy. 
-First get an instance of Doctrine2 querybuilder and initialise it with an entity. You can join other entities if you want to filter on their data.
+First get an instance of Doctrine2 query builder and initialise it with an entity. You can join
+other entities if you want to filter on their data.
 
     [php]
     $queryBuilder = $this->entityManager->createQueryBuilder();
@@ -23,19 +24,21 @@ First get an instance of Doctrine2 querybuilder and initialise it with an entity
 Second load FilterUtil and create a new instance by:
 
     [php]
-    $filterUtil = new FilterUtil($entityManager, $queryBuilder, $config);
+    $pluginManager = new PluginManager(new Config($queryBuilder), $plugins = array(), $restrictions = array());
+    $filterUtil = new FilterUtil($pluginManager, $request = null, $filterKey = 'filter');
     
-`$config` is an optional array of additional attributes:
-
-1. **varname**: The name of the filter variable in the URL. Default: “filter”
-2. **request**: A request object to optain the filter sting
+1. **filterKey**: The name of the filter variable in the URL. Default: “filter”
+2. **request**: A request object to obtain the filter sting
    only needed if the filter is set via GET or it reads values from GET.
-3. **plugins**: Array of plugins to load.
-   If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields. Multiple objects of the same plugin with diffrent configurations are possible.
+3. **plugins**: Array of instantiated plugin classes to load.
+   If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
+   Multiple objects of the same plugin with different configurations are possible.
 4. **restrictions**: Allowed operators per field.
-   Array in the form "field's name => operator array". If a field is not set in this array all operators are allowed.
+   Array in the form "field's name => operator array". If a field is not set in this array all
+   operators are allowed.
 
-Now you can enrich the QueryBuilder by calling the enrichQuery Mehtod and get the Doctrine2 query Object from the QueryBuilder.
+Now you can enrich the QueryBuilder by calling the enrichQuery Method and get the Doctrine2
+query Object from the QueryBuilder.
 
     [php]
     $filterUtil->enrichQuery();
@@ -48,7 +51,7 @@ Now you can enrich the QueryBuilder by calling the enrichQuery Mehtod and get th
 constructor:
 - **$fields**:  Array of fields to use for this plugin. Default: all Fields.
 - **$ops**: Array of operators to enable. Default: all available.
-- **$default**: Set the plugin as default plugin. Default: true.
+- **$default**: Set the plugin as default plugin. Default: false.
 
 available operators:
 - eq, ne, lt, le, gt, ge, search, like, likefirst, likelast, null, notnull
@@ -98,16 +101,6 @@ constructor:
 ### Methods list ###
 
     [php]
-    $filterUtil->setVarName($varname);
-
-Setter of the filter variable name in the URL. 
-
-    [php]
-    $filterUtil->setRequest($request);
-
-Setter of the request object. 
-
-    [php]
     $filterUtil->getFilter();
 
 Current filter as FilterUtil filter string getter.
@@ -142,10 +135,11 @@ Enrich the QueryBuilder with the filter conditions.
 
 ### Adding own plugins to FilterUtil ###
 
-Simply create your own plugin with the following abstract base classes and interfaces and add an instance to the pluginarray.
+Simply create your own plugin with the following abstract base classes and interfaces
+and add an instance to the plugins array.
 
-- **AbstractPlugin** Baseclass for all plugins.
+- **AbstractPlugin** Abstract class for all plugins.
 - **BuildInterface** Interface for plugins that reads conditions from the Filter converts them for the QueryBuilder.
 - **AbstractBuildPlugin** Implementation of the BuildInterface.
 - **JoinInterface** Interface for plugins that add joins to the QueryBuilder.
-- **ReplaceInterface** Interface that can replace any field, operator and value of conditions in the filterstring.
+- **ReplaceInterface** Interface that can replace any field, operator and value of conditions in the filter string.
