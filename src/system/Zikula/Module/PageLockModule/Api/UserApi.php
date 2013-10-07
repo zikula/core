@@ -27,7 +27,7 @@ use Zikula_View;
 use DBUtil;
 use DataUtil;
 use DateUtil;
-use System;
+use ServiceUtil;
 
 class UserApi extends \Zikula_AbstractApi
 {
@@ -209,7 +209,7 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         if ($PageLockAccessCount == 0) {
             global $PageLockFile;
-            $ostemp = DataUtil::formatForOS(System::getVar('temp'), true);
+            $ostemp = DataUtil::formatForOS(ServiceUtil::get('service_container')->getParameter('temp_dir'));
             $PageLockFile = fopen($ostemp . '/pagelock.lock', "w+");
             flock($PageLockFile, LOCK_EX);
             fwrite($PageLockFile, "This is a locking file for synchronizing access to the PageLock module. Please do not delete.");
