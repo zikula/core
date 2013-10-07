@@ -42,6 +42,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
+        // needed for legacy - remove @1.4.0
+        DBUtil::createTable('categoryies_mapobj');
+
         // insert some default data
         $this->insertData_10();
 
