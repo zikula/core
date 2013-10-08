@@ -11,6 +11,7 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
+
 namespace Zikula\Module\PageLockModule\Api;
 
 /**
@@ -28,6 +29,7 @@ use DBUtil;
 use DataUtil;
 use DateUtil;
 use ServiceUtil;
+use Zikula\Module\PageLockModule\Entity\PageLockEntity;
 
 class UserApi extends \Zikula_AbstractApi
 {
@@ -109,46 +111,44 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
                 if (strlen($lockedBy) > 0) {
                     $lockedBy .= ', ';
                 }
-                $lockedBy .= $lock['lockedByTitle'] . " ($lock[lockedByIPNo]) " . $lock['createdDate'];
+                $lockedBy .= $lock['title'] . " ($lock[ipno]) " . $lock['cdate']->format('Y-m-d H:m:s');
             }
-
             return array('hasLock' => false, 'lockedBy' => $lockedBy);
         }
 
         $args['lockedBy'] = null;
 
-        $dbtable = DBUtil::getTables();
-        $pageLockTable = &$dbtable['pagelock'];
-        $pageLockColumn = &$dbtable['pagelock_column'];
+        $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
 
         // Look for existing lock
-
-        $sql = "
-SELECT COUNT(*)
-FROM $pageLockTable
-WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
-
-        $count = DBUtil::selectScalar($sql);
+        $query = $this->entityManager->createQuery("SELECT COUNT(p.id) FROM $entity p WHERE p.name = :lockName AND p.session = :sessionId");
+        $query->setParameter('lockName', $lockName);
+        $query->setParameter('sessionId', $sessionId);
+        $count = $query->getSingleScalarResult();
 
         $now = time();
         $expireDate = $now + PageLockLifetime;
 
         if ($count > 0) {
-            // Update existing lock
-            $sql = "
-UPDATE $pageLockTable
-SET $pageLockColumn[expiresDate] = '" . DateUtil::getDatetime($expireDate) . "'
-WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
-
-            DBUtil::executeSql($sql);
+            // update the existing lock with a new expiry date
+            $dql = "UPDATE $entity p SET p.edate = {$expireDate} WHERE p.name = :lockName AND p.session = :sessionId";
+            $query = $this->entityManager->createQuery($dql);
+            $query->setParameter('lockName', $lockName);
+            $query->setParameter('sessionId', $sessionId);
+            $query->getResult();
+            $this->entityManager->flush();
         } else {
-            $data = array('name' => $lockName,
-                    'createdDate' => DateUtil::getDatetime($now),
-                    'expiresDate' => DateUtil::getDatetime($expireDate),
-                    'lockedBySessionId' => $sessionId,
-                    'lockedByTitle' => $lockedByTitle,
-                    'lockedByIPNo' => $lockedByIPNo);
-            DBUtil::insertObject($data, 'pagelock');
+            // create the new object
+            $newLock = new PageLockEntity();
+            $newLock->setName($lockName);
+            $newLock->setCdate(new \DateTime(DateUtil::getDatetime($now)));
+            $newLock->setEdate(new \DateTime(DateUtil::getDatetime($expireDate)));
+            $newLock->setSession($sessionId);
+            $newLock->setTitle($lockedByTitle);
+            $newLock->setIpno($lockedByIPNo);
+            // write this back to the db
+            $this->entityManager->persist($newLock);
+            $this->entityManager->flush();
         }
 
         $this->_pageLockReleaseAccess();
@@ -168,11 +168,21 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
         $pageLockColumn = &$dbtable['pagelock_column'];
         $now = time();
 
-        $where = "{$pageLockColumn['expiresDate']} < '" . DateUtil::getDatetime($now) . "'";
-        DBUtil::deleteWhere('pagelock', $where);
+        $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
 
-        $where = "{$pageLockColumn['name']} = '" . DataUtil::formatForStore($lockName) . "' AND {$pageLockColumn['lockedBySessionId']} != '" . DataUtil::formatForStore($sessionId) . "'";
-        $locks = DBUtil::selectObjectArray('pagelock', $where);
+        // remove expired locks
+        $query = $this->entityManager->createQuery("DELETE FROM $entity p WHERE p.edate < :now");
+        $query->setParameter('now', $now);
+        $query->getResult();
+
+        // get remaining active locks
+        $query = $this->entityManager->createQuery("SELECT p FROM $entity p WHERE p.name = :lockName AND p.session = :sessionId");
+        $query->setParameter('lockName', $lockName);
+        $query->setParameter('sessionId', $sessionId);
+        $locks = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
+        // now flush to database
+        $this->entityManager->flush();
 
         $this->_pageLockReleaseAccess();
 
@@ -186,12 +196,12 @@ WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND 
 
         $this->_pageLockRequireAccess();
 
-        $dbtable = DBUtil::getTables();
-        $pageLockTable = &$dbtable['pagelock'];
-        $pageLockColumn = &$dbtable['pagelock_column'];
-
-        $sql = "DELETE FROM $pageLockTable WHERE $pageLockColumn[name] = '" . DataUtil::formatForStore($lockName) . "' AND $pageLockColumn[lockedBySessionId] = '" . DataUtil::formatForStore($sessionId) . "'";
-        DBUtil::executeSql($sql);
+        $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
+        $query = $this->entityManager->createQuery("DELETE FROM $entity p WHERE p.name = :lockName AND p.session = :sessionId");
+        $query->setParameter('lockName', $lockName);
+        $query->setParameter('sessionId', $sessionId);
+        $query->getResult();
+        $this->entityManager->flush();
 
         $this->_pageLockReleaseAccess();
 
