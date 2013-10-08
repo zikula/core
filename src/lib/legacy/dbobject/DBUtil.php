@@ -1771,7 +1771,7 @@ class DBUtil
      *
      * @return array The resulting field array.
      */
-    public static function selectFieldArray($table, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1,)
+    public static function selectFieldArray($table, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1)
     {
         $key = $field . $where . $orderby . $distinct . $assocKey;
         $objects = self::getCache($table, $key);
