@@ -25,7 +25,6 @@ use PageUtil;
 use ThemeUtil;
 use ModUtil;
 use Zikula_View;
-use DBUtil;
 use DataUtil;
 use DateUtil;
 use ServiceUtil;
@@ -164,8 +163,6 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $dbtable = DBUtil::getTables();
-        $pageLockColumn = &$dbtable['pagelock_column'];
         $now = time();
 
         $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
