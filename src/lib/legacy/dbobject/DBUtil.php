@@ -1727,7 +1727,7 @@ class DBUtil
      */
     public static function selectField($table, $field, $where = '')
     {
-        $fieldArray = self::selectFieldArray($table, $field, $where);
+        $fieldArray = self::selectFieldArray($table, $field, $where, '', false, '', 0, 1);
 
         if (count($fieldArray) > 0) {
             return $fieldArray[0];
@@ -1760,16 +1760,18 @@ class DBUtil
     /**
      * Select & return a field array.
      *
-     * @param string  $table    The treated table reference.
-     * @param string  $field    The name of the field we wish to marshall.
-     * @param string  $where    The where clause (optional) (default='').
-     * @param string  $orderby  The orderby clause (optional) (default='').
-     * @param boolean $distinct Whether or not to add a 'DISTINCT' clause (optional) (default=false).
-     * @param string  $assocKey The key field to use to build the associative index (optional) (default='').
+     * @param string  $table        The treated table reference.
+     * @param string  $field        The name of the field we wish to marshall.
+     * @param string  $where        The where clause (optional) (default='').
+     * @param string  $orderby      The orderby clause (optional) (default='').
+     * @param boolean $distinct     Whether or not to add a 'DISTINCT' clause (optional) (default=false).
+     * @param string  $assocKey     The key field to use to build the associative index (optional) (default='').
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
      *
      * @return array The resulting field array.
      */
-    public static function selectFieldArray($table, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '')
+    public static function selectFieldArray($table, $field, $where = '', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1,)
     {
         $key = $field . $where . $orderby . $distinct . $assocKey;
         $objects = self::getCache($table, $key);
@@ -1809,7 +1811,7 @@ class DBUtil
 
         $sql = "SELECT $dSql $assoc FROM $tableName AS tbl $where $orderby";
 
-        $res = self::executeSQL($sql, -1, -1, $exitOnError);
+        $res = self::executeSQL($sql, $limitOffset, $limitNumRows, $exitOnError);
         if ($res === false) {
             return $res;
         }
