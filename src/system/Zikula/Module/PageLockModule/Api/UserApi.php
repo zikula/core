@@ -14,12 +14,6 @@
 
 namespace Zikula\Module\PageLockModule\Api;
 
-/**
- * length of time to lock a page
- *
- */
-define('PageLockLifetime', 30);
-
 use UserUtil;
 use PageUtil;
 use ThemeUtil;
@@ -32,6 +26,12 @@ use Zikula\Module\PageLockModule\Entity\PageLockEntity;
 
 class UserApi extends \Zikula_AbstractApi
 {
+    /**
+     * length of time to lock a page
+     *
+     */
+    const PAGELOCKLIFETIME = 30;
+
     public function pageLock($args)
     {
         $lockName = $args['lockName'];
@@ -76,7 +76,7 @@ class UserApi extends \Zikula_AbstractApi
         $lockedHtml = str_replace("\n", "", $lockedHtml);
         $lockedHtml = str_replace("\r", "", $lockedHtml);
 
-        // Use "PageLockLifetime*2/3" to add a good margin to lock timeout when pinging
+        // Use "self::PAGELOCKLIFETIME*2/3" to add a good margin to lock timeout when pinging
 
         // disabled due to #2556 and #2745
         // $returnUrl = DataUtil::formatForDisplayHTML($returnUrl);
@@ -84,7 +84,7 @@ class UserApi extends \Zikula_AbstractApi
         $html .= "
 PageLock.LockName = '$lockName';
 PageLock.ReturnUrl = '$returnUrl';
-PageLock.PingTime = " . (PageLockLifetime*2/3) . ";
+PageLock.PingTime = " . (self::PAGELOCKLIFETIME*2/3) . ";
 PageLock.LockedHTML = '" . $lockedHtml . "';
  /* ]]> */</script>";
 
@@ -126,7 +126,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         $count = $query->getSingleScalarResult();
 
         $now = time();
-        $expireDate = $now + PageLockLifetime;
+        $expireDate = $now + self::PAGELOCKLIFETIME;
 
         if ($count > 0) {
             // update the existing lock with a new expiry date
