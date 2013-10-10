@@ -84,7 +84,8 @@ ul.navbar-modulelinks ul > li > a {
     background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
 }
 
-.form-horizontal legend {
+.form-horizontal legend,
+.form-inline legend {
     width: auto;
     padding: 0 .2em;
     font-size: 1.25em;
