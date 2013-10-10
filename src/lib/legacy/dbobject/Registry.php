@@ -74,7 +74,7 @@ class Categories_DBObject_Registry extends DBObject
     {
         $data = $this->_objData;
         if ($data['modname'] && $data['table'] && $data['property'] && (!isset($data['id']) || !$data['id'])) {
-            $where = "WHERE modname='$data[modname]' AND tablename='$data[table]' AND property='$data[property]'";
+            $where = "WHERE modname='$data[modname]' AND entityname='$data[table]' AND property='$data[property]'";
             $row = DBUtil::selectObject($this->_objType, $where);
             if ($row) {
                 $_SESSION['validationErrors'][$this->_objPath]['property'] = __('Error! There is already a property with this name in the specified module and table.');
