@@ -33,10 +33,10 @@
                         {/if}
                     </td>
                     <td>
-                        {if $variables.$name.type eq 'yesno'}
+                        {if $variables.$name.type|default:'' eq 'yesno'}
                         <input type="radio" name="variablesvalues[{$name|safetext}]" value="1"{if $value eq 1} checked="checked"{/if} />&nbsp;{gt text="Yes"}&nbsp;
                         <input type="radio" name="variablesvalues[{$name|safetext}]" value="0"{if $value eq 0} checked="checked"{/if} />&nbsp;{gt text="No"}
-                        {elseif $variables.$name.type eq 'select'}
+                        {elseif $variables.$name.type|default:'' eq 'select'}
                         {html_options class="form-control" name=variablesvalues[$name] values=$variables.$name.values output=$variables.$name.output selected=$value}
                         {else}
                         <input type="text" class="form-control" name="variablesvalues[{$name|safetext}]" value="{$value|safetext}" />

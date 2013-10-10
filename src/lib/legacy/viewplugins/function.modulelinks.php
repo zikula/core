@@ -92,7 +92,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             $class = trim(implode(' ', $class));
             $i++;
 
-            if (System::isLegacyMode() && !empty($class)) {
+            if (System::isLegacyMode() && !empty($class) && isset($menuitem['class'])) {
                 if ($menuitem['class'] == 'z-icon-es-add') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'plus';

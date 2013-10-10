@@ -13,7 +13,9 @@ jQuery(document).ready(function() {
          }
     );
 
-    jQuery('table').attr('data-role', 'table');
+    // Make sure the table has head and body, otherwise jQueryMobile will fail!
+    //jQuery('table').has('thead').has('tbody').attr('data-role', 'table');
+
 
     jQuery('.z-bt-ok').attr('data-icon','check');
     jQuery('.z-bt-cancel').attr('data-icon','delete');
@@ -45,6 +47,23 @@ jQuery(document).ready(function() {
                 );
             }
         );
-      
-    jQuery('a').attr('data-ajax','false');
+
+    jQuery('a:not([data-rel="popup"])').attr('data-ajax','false');
+
+    jQuery('button.btn').attr('data-role', 'none');
+
+    jQuery('ul.navbar-modulelinks').each(function() {
+        jQuery(this).attr('data-role', 'listview');
+        jQuery(this).attr('data-inset', 'true');
+        jQuery(this).attr('data-mini', 'true');
+        var dropdownLis = jQuery(this).find('li.dropdown');
+        dropdownLis.find('a > b.caret').remove();
+        dropdownLis.find('ul.dropdown-menu').remove();
+        dropdownLis.find('a').removeAttr('data-toggle');
+    });
+    jQuery('ul.navbar-modulelinks > .dropdown').find('.dropdown').remove();
+});
+
+jQuery(document).bind("mobileinit", function(){
+    jQuery.mobile.ignoreContentEnabled = true;
 });

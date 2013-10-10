@@ -14,8 +14,8 @@
                 {img src=$accountLink.icon modname=$accountLink.module set=$iconset width=48 height=48 }
             {/if}
             
-    	    <h3>{$accountLink.title|safetext}</h3>
+            <h3>{$accountLink.title|safetext}</h3>
         </a>
-    </li>					
+    </li>
 {/foreach}
 </ul>
