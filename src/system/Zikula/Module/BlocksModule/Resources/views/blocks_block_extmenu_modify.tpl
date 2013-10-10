@@ -125,7 +125,7 @@
                 {$thislanguage}
             </span>
             <span class="z-itemcell z-w20">
-                <input class="form-control listinput" type="text"id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
                 <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
