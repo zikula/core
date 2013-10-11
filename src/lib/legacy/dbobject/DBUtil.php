@@ -1825,14 +1825,19 @@ class DBUtil
     /**
      * Select & return an array of field by an ID-field value.
      *
-     * @param string $tableName The treated table reference.
-     * @param string $field     The field we wish to select.
-     * @param string $id        The ID value we wish to select with.
-     * @param string $idfield   The idfield to use (optional) (default='id').
+     * @param string $tableName     The treated table reference.
+     * @param string $field         The field we wish to select.
+     * @param string $id            The ID value we wish to select with.
+     * @param string $idfield       The idfield to use (optional) (default='id').
+     * @param string  $orderby      The orderby clause (optional) (default='').
+     * @param boolean $distinct     Whether or not to add a 'DISTINCT' clause (optional) (default=false).
+     * @param string  $assocKey     The key field to use to build the associative index (optional) (default='').
+     * @param integer $limitOffset  The lower limit bound (optional) (default=-1).
+     * @param integer $limitNumRows The upper limit bound (optional) (default=-1).
      *
      * @return mixed The resulting field value.
      */
-    public static function selectFieldArrayByID($tableName, $field, $id, $idfield = 'id')
+    public static function selectFieldArrayByID($tableName, $field, $id, $idfield = 'id', $orderby = '', $distinct = false, $assocKey = '', $limitOffset = -1, $limitNumRows = -1)
     {
         $tables = self::getTables();
         $cols = $tables["{$tableName}_column"];
@@ -1840,7 +1845,7 @@ class DBUtil
 
         $where = $idFieldName . " = " . self::_typesafeQuotedValue ($table, $idfield, $id);
 
-        return self::selectFieldArray($tableName, $field, $where);
+        return self::selectFieldArray($tableName, $field, $where, $orderby, $distinct, $assocKey, $limitOffset, $limitNumRows);
     }
 
     /**
