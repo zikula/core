@@ -18,7 +18,6 @@ use Zikula\Module\ThemeModule\Util;
 use ModUtil;
 use SecurityUtil;
 use LogUtil;
-use DBUtil;
 use System;
 use ThemeUtil;
 use DataUtil;
@@ -106,12 +105,9 @@ class AdminApi extends \Zikula_AbstractApi
 
         // if chosen reset all user theme selections
         if ($args['resetuserselected']) {
-            // this will have to be refactored to Doctrine 2 dql once Users module is refactored
-            $dbtables = DBUtil::getTables();
-            $sql ="UPDATE $dbtables[users] SET theme = ''";
-            if (!DBUtil::executeSQL($sql)) {
-                return false;
-            }
+            $dql = "UPDATE Zikula\Module\UsersModule\Entity\UserEntity u SET u.theme = ''";
+            $query = $this->entityManager->createQuery($dql);
+            $query->getResult();
         }
 
         // change default theme
