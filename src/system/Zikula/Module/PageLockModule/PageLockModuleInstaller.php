@@ -14,8 +14,6 @@
 
 namespace Zikula\Module\PageLockModule;
 
-use DBUtil;
-
 class PageLockModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**

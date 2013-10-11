@@ -19,7 +19,6 @@ use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use Zikula\Module\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
 use SecurityUtil;
-use DBUtil;
 use LogUtil;
 use DataUtil;
 use UserUtil;

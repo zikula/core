@@ -16,7 +16,6 @@ namespace Zikula\Module\PermissionsModule\Api;
 
 use LogUtil;
 use SecurityUtil;
-use DBUtil;
 use DataUtil;
 use BlockUtil;
 use ModUtil;
