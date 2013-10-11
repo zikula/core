@@ -25,7 +25,6 @@ use Zikula_Exception_Fatal;
 use ModUtil;
 use ThemeUtil;
 use LogUtil;
-use DBUtil;
 use DateTimeZone;
 use DateTime;
 use Zikula;

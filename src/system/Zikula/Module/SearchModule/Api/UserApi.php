@@ -23,7 +23,6 @@ use FormUtil;
 use DataUtil;
 use ZLanguage;
 use LogUtil;
-use DBUtil;
 use SecurityUtil;
 use Zikula\Module\SearchModule\ResultHelper;
 use Zikula\Module\SearchModule\Entity\SearchStatEntity;
@@ -218,7 +217,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        return DBUtil::selectObjectCount('search_stat');
+        $query = $this->entityManager->createQuery('SELECT COUNT(s.id) FROM Zikula\Module\SearchModule\Entity\SearchStatEntity s');
+        return $query->getSingleScalarResult();
     }
 
     /**

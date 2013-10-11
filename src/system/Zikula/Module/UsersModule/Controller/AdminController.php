@@ -27,7 +27,6 @@ use System;
 use Zikula\Module\UsersModule\Controller\FormData\NewUserForm;
 use Zikula_Exception_Fatal;
 use Zikula\Module\UsersModule\Controller\FormData\ModifyUserForm;
-use DBUtil;
 use LogUtil;
 use DateTimeZone;
 use DateTime;

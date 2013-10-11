@@ -18,7 +18,6 @@ use ModUtil;
 use FileUtil;
 use LogUtil;
 use ThemeUtil;
-use DBUtil;
 use ServiceUtil;
 use Zikula\Module\ThemeModule\Entity\ThemeEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
