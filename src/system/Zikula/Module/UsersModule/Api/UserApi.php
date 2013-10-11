@@ -19,7 +19,6 @@ use Zikula_Exception_Forbidden;
 use SecurityUtil;
 use LogUtil;
 use Zikula_Exception_Fatal;
-use DBUtil;
 use DataUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use UserUtil;

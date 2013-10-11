@@ -16,7 +16,6 @@ namespace Zikula\Module\PermissionsModule\Controller;
 
 use SecurityUtil;
 use ModUtil;
-use DBUtil;
 use Zikula_Response_Ajax;
 use DataUtil;
 use AjaxUtil;

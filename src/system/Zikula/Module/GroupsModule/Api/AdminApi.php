@@ -20,7 +20,6 @@ use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use LogUtil;
 use SecurityUtil;
-use DBUtil;
 use Zikula;
 use ModUtil;
 use DataUtil;

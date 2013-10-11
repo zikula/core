@@ -19,7 +19,6 @@ use SecurityUtil;
 use UserUtil;
 use Zikula_View;
 use BlockUtil;
-use DBUtil;
 use System;
 use ModUtil;
 
@@ -92,16 +91,17 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
             }
         }
 
-        $table = DBUtil::getTables();
-
-        $sessioninfocolumn = $table['session_info_column'];
         $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));
 
-        $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] > 0";
-        $numusers = DBUtil::selectObjectCount('session_info', $where, 'uid', true);
+        $dql = "SELECT count(s.uid) FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > :activetime AND s.uid > 0";
+        $query = $this->entityManager->createQuery($dql);
+        $query->setParameter('activetime', $activetime);
+        $numusers = (int)$query->getSingleScalarResult();
 
-        $where = "WHERE $sessioninfocolumn[lastused] > '$activetime' AND $sessioninfocolumn[uid] = '0'";
-        $numguests = DBUtil::selectObjectCount('session_info', $where, 'ipaddr', true);
+        $dql = "SELECT count(s.uid) FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > :activetime AND s.uid = 0";
+        $query = $this->entityManager->createQuery($dql);
+        $query->setParameter('activetime', $activetime);
+        $numguests = (int)$query->getSingleScalarResult();
 
         $msgmodule = System::getVar('messagemodule', '');
 

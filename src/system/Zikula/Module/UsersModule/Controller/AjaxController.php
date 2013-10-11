@@ -21,7 +21,6 @@ use Zikula\Core\Hook\ValidationHook;
 use Zikula\Core\Hook\ValidationProviders;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula_View;use ModUtil;
-use DBUtil;
 use DataUtil;
 use SecurityUtil;
 use Zikula_Exception_Forbidden;
