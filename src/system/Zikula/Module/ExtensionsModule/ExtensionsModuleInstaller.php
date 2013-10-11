@@ -14,7 +14,6 @@
 
 namespace Zikula\Module\ExtensionsModule;
 
-use DBUtil;
 use Doctrine_Core;
 use EventUtil;
 use System;

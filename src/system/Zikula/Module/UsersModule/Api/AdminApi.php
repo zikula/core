@@ -19,7 +19,6 @@ use Zikula\Core\Event\GenericEvent;
 use SecurityUtil;
 use System;
 use ModUtil;
-use DBUtil;
 use DataUtil;
 use UserUtil;
 use Zikula\Module\UsersModule\Constant as UsersConstant;

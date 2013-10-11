@@ -14,7 +14,6 @@
 
 namespace Zikula\Module\ExtensionsModule\Api;
 
-use DBUtil;
 use LogUtil;
 use SecurityUtil;
 use ModUtil;
