@@ -29,7 +29,19 @@ class BlocksModuleVersion extends \Zikula_AbstractVersion
         $meta['version'] = '3.8.2';
         $meta['core_min'] = '1.3.6';
         $meta['capabilities'] = array(HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true));
-        $meta['securityschema'] = array('ZikulaBlocksModule::' => 'Block key:Block title:Block ID', 'ZikulaBlocksModule::position' => 'Position name::Position ID', 'Menutree:menutreeblock:' => 'Block ID:Link Name:Link ID', 'ExtendedMenublock::' => 'Block ID:Link ID:');
+        $meta['securityschema'] = array('ZikulaBlocksModule::' => 'Block key:Block title:Block ID',
+                                        'ZikulaBlocksModule::position' => 'Position name::Position ID', 
+                                        'Menutree:menutreeblock:' => 'Block ID:Link Name:Link ID',
+                                        'ExtendedMenublock::' => 'Block ID:Link ID:',
+                                        'fincludeblock::' => 'Block title::',
+                                        'HTMLblock::' => 'Block title::',
+                                        'Languageblock::' => 'Block title::',
+                                        'Menublock::' => 'Block title:Link name:',
+                                        'PendingContent::' => 'Block title::',
+                                        'Textblock::' => 'Block title::',
+                                        'xsltblock::' => 'Block title::',
+                                        );
+        
         // Module depedencies
         $meta['dependencies'] = array(
                 array('modname'    => 'Scribite',

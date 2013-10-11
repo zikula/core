@@ -125,16 +125,16 @@
                 {$thislanguage}
             </span>
             <span class="z-itemcell z-w20">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_image" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_name"  name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w22">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_url"   name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_url"   name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w15">
-                <input class="form-control" type="text" class="listinput" id="links_{$thislanguage}_X_title" name="dummy[]" size="25" maxlength="255" value="" />
+                <input class="form-control listinput" type="text" id="links_{$thislanguage}_X_title" name="dummy[]" size="25" maxlength="255" value="" />
             </span>
             <span class="z-itemcell z-w10">
                 <input class="listinput" type="checkbox" id="links_{$thislanguage}_X_active" name="dummy[]" checked="checked" value="1" />
