@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\AbstractBaseResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_Json extends AbstractBaseResponse
 {

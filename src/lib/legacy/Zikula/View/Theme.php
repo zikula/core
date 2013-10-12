@@ -17,6 +17,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Zikula_View_Theme class.
+ *
+ * @deprecated
  */
 class Zikula_View_Theme extends Zikula_View
 {

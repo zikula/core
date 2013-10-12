@@ -20,6 +20,8 @@
  *
  * You can also use all of the features from the Zikula_Form_Plugin_TextInput plugin since the e-mail input
  * inherits from it.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_EmailInput extends Zikula_Form_Plugin_TextInput
 {

@@ -15,6 +15,8 @@
 
 /**
  * Request collection container.
+ *
+ * @deprecated
  */
 class Zikula_Request_Collection implements ArrayAccess
 {

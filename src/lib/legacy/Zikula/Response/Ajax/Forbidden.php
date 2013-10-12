@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\ForbiddenResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_Forbidden extends ForbiddenResponse
 {

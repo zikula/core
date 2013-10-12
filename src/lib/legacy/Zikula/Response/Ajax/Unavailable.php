@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\UnavailableResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_Unavailable extends UnavailableResponse
 {

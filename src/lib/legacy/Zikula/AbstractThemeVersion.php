@@ -14,6 +14,8 @@
 
 /**
  * Zikula Version base class.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractThemeVersion implements ArrayAccess
 {

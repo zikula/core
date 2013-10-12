@@ -17,6 +17,8 @@ use Monolog\Logger as Log;
 
 /**
  * Zikula ErrorHandler base class.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractErrorHandler
 {

@@ -18,6 +18,8 @@
  *
  * Based on Zikula\Common\ClassLoader but is an all in one class loader
  * for use with the Zikula Kernel.
+ *
+ * @deprecated
  */
 class Zikula_KernelClassLoader
 {

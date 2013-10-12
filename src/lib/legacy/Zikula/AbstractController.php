@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Abstract controller for modules.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractController extends Zikula_AbstractBase
 {

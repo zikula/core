@@ -26,6 +26,8 @@
  *
  * The Zikula_Form_Plugin_TextInput plugin supports basic CSS styling through attributes like "width", "color" and "font_weight". See
  * {@link Zikula_Form_StyledPlugin} for more info.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 {

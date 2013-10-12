@@ -67,6 +67,8 @@
  * 'checkboxes' => array('15','17','22','34'),
  * 'yyy' => 'valueYYY')
  * </code>
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelector
 {

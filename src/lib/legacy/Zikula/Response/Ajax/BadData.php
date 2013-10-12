@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\BadDataResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_BadData extends BadDataResponse
 {

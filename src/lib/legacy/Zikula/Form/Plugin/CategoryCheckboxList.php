@@ -17,6 +17,8 @@
  * Category selector
  *
  * This plugin creates a category selector using a series of checkboxes
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_CheckboxList
 {

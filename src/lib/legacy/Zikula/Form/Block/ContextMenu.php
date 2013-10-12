@@ -49,6 +49,8 @@
  * The commandName value indicates the menu item which was clicked and the commandArgument is the value set
  * at the menu reference. The use of commandArgument makes it easy to identify which $item the menu was
  * activated for.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
 {

@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax extends AjaxResponse
 {

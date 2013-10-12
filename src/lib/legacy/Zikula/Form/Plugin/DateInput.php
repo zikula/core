@@ -22,6 +22,8 @@
  *
  * You can also use all of the features from the Zikula_Form_Plugin_TextInput plugin since the date input
  * inherits from it.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
 {

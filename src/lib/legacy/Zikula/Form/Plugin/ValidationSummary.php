@@ -15,6 +15,8 @@
 
 /**
  * Validation summary
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
 {

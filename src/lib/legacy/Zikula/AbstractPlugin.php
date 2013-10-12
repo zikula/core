@@ -15,6 +15,8 @@
 
 /**
  * Zikula_AbstractPlugin abstract class.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler implements Zikula_TranslatableInterface
 {

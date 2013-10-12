@@ -42,6 +42,7 @@
  * }
  * </code>
  * Beware that {@link Zikula_Form_View::getPluginById()} only works on postback.
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_ErrorMessage extends Zikula_Form_AbstractPlugin
 {

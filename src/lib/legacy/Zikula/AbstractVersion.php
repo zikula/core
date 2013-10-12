@@ -17,6 +17,8 @@ use Zikula\Component\HookDispatcher\ProviderBundle;
 
 /**
  * Zikula Version base class.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractVersion implements ArrayAccess
 {

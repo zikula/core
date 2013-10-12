@@ -14,6 +14,8 @@
 
 /**
  * Zikula_Tree class.
+ *
+ * @deprecated
  */
 class Zikula_Tree
 {

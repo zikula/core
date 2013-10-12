@@ -14,6 +14,8 @@
 
 /**
  * Category
+ *
+ * @deprecated
  */
 class Categories_DBObject_Category extends DBObject
 {

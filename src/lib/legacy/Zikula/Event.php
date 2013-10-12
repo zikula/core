@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  *
+ * @deprecated
  */
 class Zikula_Event extends GenericEvent
 {

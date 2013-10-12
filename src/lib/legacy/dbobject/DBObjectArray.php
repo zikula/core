@@ -14,6 +14,8 @@
 
 /**
  * DBObjectArray.
+ *
+ * @deprecated
  */
 class DBObjectArray
 {

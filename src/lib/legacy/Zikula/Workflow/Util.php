@@ -17,6 +17,8 @@
  *
  * From a developers standpoint, we only use this class to address workflows
  * as the rest is for internal use by the workflow engine.
+ *
+ * @deprecated
  */
 class Zikula_Workflow_Util
 {

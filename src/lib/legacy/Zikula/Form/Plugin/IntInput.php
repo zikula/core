@@ -18,6 +18,7 @@
  *
  * Use for text inputs where you only want to accept integers. The value saved by
  * {@link Zikula_Form_View::GetValues()} is either null or a valid integer valid.
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
 {

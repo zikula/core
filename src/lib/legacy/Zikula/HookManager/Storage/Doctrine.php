@@ -15,6 +15,8 @@
 
 /**
  * Doctrine class.
+ *
+ * @deprecated
  */
 class Zikula_HookManager_Storage_Doctrine implements Zikula\Component\HookDispatcher\StorageInterface
 {

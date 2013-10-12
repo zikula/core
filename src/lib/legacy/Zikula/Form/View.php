@@ -28,6 +28,8 @@
  * }
  * </code>
  * See tutorials elsewhere for general introduction to Form.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_View extends Zikula_View
 {

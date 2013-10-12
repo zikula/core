@@ -14,6 +14,8 @@
 
 /**
  * Zikula_View class.
+ *
+ * @deprecated
  */
 class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 {

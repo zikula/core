@@ -18,6 +18,8 @@
  *  * <code>
  *   $view = FormUtil::newForm('pluginName', $this); // $this has to be instance of Zikula_Controller_AbstractPlugin
  * </code>
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_View_Plugin extends Zikula_Form_View
 {

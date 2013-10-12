@@ -112,6 +112,8 @@
  * - B:render
  * - A::postRender
  * - B::postRender
+ *
+ * @deprecated for Symfony2 Forms
  */
 abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterface
 {

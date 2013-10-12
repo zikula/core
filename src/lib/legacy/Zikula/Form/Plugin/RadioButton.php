@@ -43,6 +43,7 @@
  * {/foreach}
  * </code>
  *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
 {

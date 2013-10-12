@@ -29,6 +29,8 @@
  *
  * $foo = new Foo('data' => 'Hello world);
  * </samp>
+ *
+ * @deprecated
  */
 class Zikula_ClassProperties
 {

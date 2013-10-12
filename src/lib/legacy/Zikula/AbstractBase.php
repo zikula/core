@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * AbstractBase class for module abstract controllers and apis.
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, ContainerAwareInterface
 {

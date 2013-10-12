@@ -12,7 +12,11 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
+/**
+ * Class Zikula_CollectionInterface
+ *
+ * @deprecated
+ */
 interface Zikula_CollectionInterface extends ArrayAccess, Countable, IteratorAggregate
 {
     /**

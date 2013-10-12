@@ -15,6 +15,8 @@
 
 /**
  * Zikula_Form_Plugin_UploadInput
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
 {

@@ -14,6 +14,8 @@
 
 /**
  * Zikula_Plugin_AlwaysOnInterface interface.
+ *
+ * @deprecated
  */
 interface Zikula_Plugin_AlwaysOnInterface
 {

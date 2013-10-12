@@ -14,6 +14,8 @@
 
 /**
  * Zikula Translate interface.
+ *
+ * @deprecated
  */
 interface Zikula_TranslatableInterface
 {

@@ -17,6 +17,8 @@ use Zikula\Core\Response\Ajax\FatalResponse;
 
 /**
  * Ajax class.
+ *
+ * @deprecated
  */
 class Zikula_Response_Ajax_Fatal extends FatalResponse
 {

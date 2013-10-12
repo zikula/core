@@ -19,6 +19,8 @@
  * This plugin creates a language selector using a dropdown list.
  * The selected value of the base dropdown list will be set to the 3-letter language code of
  * the selected language.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_LanguageSelector extends Zikula_Form_Plugin_DropdownList
 {

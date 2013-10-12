@@ -22,6 +22,8 @@
  * inherits from it.
  *
  * A valid URL must contain a protocol prefix ("http:" for instance)
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_UrlInput extends Zikula_Form_Plugin_TextInput
 {

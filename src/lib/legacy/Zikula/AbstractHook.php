@@ -16,6 +16,8 @@ use Zikula\Component\HookDispatcher\Hook;
 
 /**
  * AbstractHook class.
+ *
+ * @deprecated
  */
 class Zikula_AbstractHook extends Hook
 {

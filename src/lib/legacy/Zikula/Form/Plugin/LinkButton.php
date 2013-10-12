@@ -43,6 +43,8 @@
  *
  * The command arguments ($args) passed to the handler contains 'commandName' and
  * 'commandArgument' with the values you passed to the button in the template.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
 {

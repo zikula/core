@@ -18,6 +18,8 @@
  *
  * Use for text inputs where you only want to accept floats. The value saved by
  * {@link Zikula_Form_View::GetValues()} is either null or a valid float.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
 {

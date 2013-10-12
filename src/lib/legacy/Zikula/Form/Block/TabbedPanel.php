@@ -17,6 +17,8 @@
  * Tabbel panel element
  *
  * Use this with the {@link Zikula_Form_Plugin_TabbedPanel}.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
 {

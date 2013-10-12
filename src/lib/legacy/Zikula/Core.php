@@ -34,6 +34,8 @@ mb_regex_encoding('UTF-8');
  * System class.
  *
  * Core class with the base methods.
+ *
+ * @deprecated
  */
 class Zikula_Core
 {

@@ -14,6 +14,8 @@
 
 /**
  * Zikula_Workflow class.
+ *
+ * @deprecated
  */
 class Zikula_Workflow
 {

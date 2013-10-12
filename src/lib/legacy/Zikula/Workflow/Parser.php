@@ -16,6 +16,8 @@
  * Zikula_Workflow_Parser.
  *
  * Parse workflow schema into associative arrays.
+ *
+ * @deprecated
  */
 class Zikula_Workflow_Parser
 {

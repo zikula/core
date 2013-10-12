@@ -25,6 +25,8 @@
  * set to the supplied id. In addition to this, the Zikula_Form_Plugin_Label plugin also sets
  * "myLabel" on the "pointed-to" plugin to the supplied label text. This enables
  * the validation summary to display the label text.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
 {

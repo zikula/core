@@ -17,6 +17,8 @@
  * Context menu reference
  *
  * This plugin adds a menu reference (could also be called a "placeholder").
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_ContextMenu_Reference extends Zikula_Form_AbstractPlugin
 {

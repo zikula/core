@@ -14,6 +14,8 @@
 
 /**
  * Zikula_Plugin_ConfigurableInterface.
+ *
+ * @deprecated
  */
 interface Zikula_Plugin_ConfigurableInterface
 {

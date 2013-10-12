@@ -18,6 +18,8 @@
  *
  * This plugin creates a category selector using a dropdown list.
  * The selected value of the base dropdown list will be set to ID of the selected category.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownList
 {

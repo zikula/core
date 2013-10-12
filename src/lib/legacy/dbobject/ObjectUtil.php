@@ -14,6 +14,8 @@
 
 /**
  * ObjectUtil.
+ *
+ * @deprecated
  */
 class ObjectUtil
 {

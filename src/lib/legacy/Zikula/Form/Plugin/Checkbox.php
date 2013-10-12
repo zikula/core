@@ -17,6 +17,8 @@
  * Check box plugin
  *
  * Plugin to generate a checkbox for true/false selection.
+ *
+ * @deprecated for Symfony2 Forms
  */
 class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
 {

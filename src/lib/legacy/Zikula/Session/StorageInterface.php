@@ -15,6 +15,8 @@
 
 /**
  * Storage interface.
+ *
+ * @deprecated
  */
 interface Zikula_Session_StorageInterface
 {

@@ -27,6 +27,8 @@
  * The handler methods must be implemented as followes:
  *
  * public function handler(Zikula_Event $event)
+ *
+ * @deprecated
  */
 abstract class Zikula_AbstractEventHandler
 {
