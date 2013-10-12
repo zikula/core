@@ -190,10 +190,11 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // reset the theme for any users utilising this theme.
-        // this will have to be refactored to Doctrine 2 dql once Users module is refactored
-        $dbtables = DBUtil::getTables();
-        $sql ="UPDATE $dbtables[users] SET theme = '' WHERE theme = '".DataUtil::formatForStore($themeinfo['name']) ."'";
-        if (!DBUtil::executeSQL($sql)) {
+        $dql = "UPDATE Zikula\Module\UsersModule\Entity\UserEntity u SET u.theme = '' WHERE u.theme = :themeName";
+        $query = $this->entityManager->createQuery($dql);
+        $query->setParameter('themeName', $themeinfo['name']);
+        $result = $query->getResult();
+        if (!$result) {
             return false;
         }
 
