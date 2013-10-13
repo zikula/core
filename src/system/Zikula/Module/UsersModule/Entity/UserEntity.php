@@ -230,6 +230,9 @@ class UserEntity extends EntityAccess
      */
     public function getUname()
     {
+        if ($this->uname == \Users_Constant::UNKNOWN_USER) {
+            return __('Unknown user');
+        }
         return $this->uname;
     }
 

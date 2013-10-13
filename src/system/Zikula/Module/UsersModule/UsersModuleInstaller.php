@@ -22,7 +22,7 @@ use System;
 use DateTime;
 use DateTimeZone;
 use ServiceUtil;
-use Zikula_Exception_Fatal;
+use UserUtil;
 use DBUtil;
 use EventUtil;
 use HookUtil;
@@ -58,6 +58,7 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
 
         // Set default values and modvars for module
         $this->defaultdata();
+        $this->createUnknownUser();
         $this->setVars($this->getDefaultModvars());
 
         // Register persistent event listeners (handlers)
@@ -92,31 +93,30 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '2.2.0':
+            case '2.2.0': // shipped with Core 1.3.5
                 $this->migrateAttributes();
             case '2.2.1':
-                // This is the current version: add 2.2.1 --> next when appropriate
+                $currentModVars = $this->getVars();
+                $defaultModVars = $this->getDefaultModvars();
 
-            $currentModVars = $this->getVars();
-            $defaultModVars = $this->getDefaultModvars();
-
-            // Remove modvars that are no longer defined.
-            foreach ($currentModVars as $modVar => $currentValue) {
-                if (!array_key_exists($modVar, $defaultModVars)) {
-                    $this->delVar($modVar);
+                // Remove modvars that are no longer defined.
+                foreach ($currentModVars as $modVar => $currentValue) {
+                    if (!array_key_exists($modVar, $defaultModVars)) {
+                        $this->delVar($modVar);
+                    }
                 }
-            }
 
-            // Add modvars that are new to the version
-            foreach ($defaultModVars as $modVar => $defaultValue) {
-                if (!array_key_exists($modVar, $currentModVars)) {
-                    $this->setVar($modVar, $defaultValue);
+                // Add modvars that are new to the version
+                foreach ($defaultModVars as $modVar => $defaultValue) {
+                    if (!array_key_exists($modVar, $currentModVars)) {
+                        $this->setVar($modVar, $defaultValue);
+                    }
                 }
-            }
-
-            // Update successful
-            return true;
+                $this->createUnknownUser();
         }
+
+        // Update successful
+        return true;
     }
 
     /**
@@ -235,6 +235,46 @@ class UsersModuleInstaller extends \Zikula_AbstractInstaller
         $user->merge($record);
         $this->entityManager->persist($user);
 
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Create the default data for the users module.
+     *
+     * This function is only ever called once during the lifetime of a particular
+     * module instance.
+     *
+     * @return void
+     */
+    private function createUnknownUser()
+    {
+        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+        $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
+
+        $record = array(
+            'uname'         => \Users_Constant::UNKNOWN_USER,
+            'email'         => '',
+            'pass'          => UserUtil::getHashedPassword(mt_rand(100001, 999999)),
+            'passreminder'  => '',
+            'activated'     => UsersConstant::ACTIVATED_ACTIVE,
+            'approved_date' => $nowUTCStr,
+            'approved_by'   => 2,
+            'user_regdate'  => $nowUTCStr,
+            'lastlogin'     => '1970-01-01 00:00:00',
+            'theme'         => '',
+            'ublockon'      => 0,
+            'ublock'        => '',
+        );
+        $user = new \Zikula\Module\UsersModule\Entity\UserEntity;
+        $user->merge($record);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        // add to User group - no need to both with Groups module
+        $groupMembership = new \Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
+        $groupMembership->setGid(1); // Core Users group
+        $groupMembership->setUid($user->getUid());
+        $this->entityManager->persist($groupMembership);
         $this->entityManager->flush();
     }
 

@@ -168,11 +168,12 @@ class AdminController extends \Zikula_AbstractController
             $isCurrentUser = ($userObj['uid'] == $currentUid);
             $isGuestAccount = ($userObj['uid'] == 1);
             $isAdminAccount = ($userObj['uid'] == 2);
+            $isUnknownUserAccount = ($userObj['uname'] == \Users_Constant::UNKNOWN_USER);
             $hasUsersPassword = (!empty($userObj['pass']) && ($userObj['pass'] != UsersConstant::PWD_NO_USERS_AUTHENTICATION));
-            $currentUserHasReadAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_READ);
-            $currentUserHasModerateAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_MODERATE);
-            $currentUserHasEditAccess = !$isGuestAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_EDIT);
-            $currentUserHasDeleteAccess = !$isGuestAccount && !$isAdminAccount && !$isCurrentUser && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE);
+            $currentUserHasReadAccess = !$isGuestAccount && !$isUnknownUserAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_READ);
+            $currentUserHasModerateAccess = !$isGuestAccount && !$isUnknownUserAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_MODERATE);
+            $currentUserHasEditAccess = !$isGuestAccount && !$isUnknownUserAccount && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_EDIT);
+            $currentUserHasDeleteAccess = !$isGuestAccount && !$isUnknownUserAccount && !$isAdminAccount && !$isCurrentUser && SecurityUtil::checkPermission($this->name . '::', "{$userObj['uname']}::{$userObj['uid']}", ACCESS_DELETE);
 
             $userList[$key]['options'] = array(
                 'lostUsername' => $currentUserHasModerateAccess,

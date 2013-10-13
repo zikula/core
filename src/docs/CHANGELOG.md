@@ -90,6 +90,8 @@ Features:
 - Removed events: systemerror, setup.errorreporting, frontcontroller.exception event.
 - Development mode is now controlled by editing app/config/kernel.yml `kernel = dev` or `kernel = prod`
 - Removed old legacy (Smarty plugins, hooks etc, old module types).
+- Added 'Unknown user' to allow orphaned data to be attached somewhere. use:
+    `$unknownUser = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserEntity')->findOneBy(array('uname' => \Users_Constant::UNKNOWN_USER));`
 
 
 CHANGELOG - ZIKULA 1.3.5
