@@ -397,5 +397,9 @@ namespace Zikula\Module\UsersModule
          * The PCRE regular expression fragment used to validate e-mail address domains.
          */
         const EMAIL_DOMAIN_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,6}';
+        /**
+         * The name of the global unknown user
+         */
+        const UNKNOWN_USER = 'UNKNOWN-lLaNw6kWkx4lO9hdj';
     }
 }
