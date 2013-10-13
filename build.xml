@@ -10,7 +10,7 @@
         BUILD_NUMBER - The current build number, such as "153"
         BUILD_ID - The current build id, (YYYY-MM-DD_hh-mm-ss)
         JOB_NAME - Name of the project of this build, such as "foo"
-        BUILD_TAG - String of "jenkins-${JOBNAME}-${BUILD_NUMBER}".
+        BUILD_TAG - String of "jenkins-${JOB_NAME}-${BUILD_NUMBER}".
         WORKSPACE - The absolute path of the workspace.
         SVN_REVISION - The revision this build is based on.
     -->
@@ -33,7 +33,8 @@
     javascript/helpers/Zikula.UI.js,
     system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_ajax.js,
     system/Zikula/Module/AdminModule/Resources/public/js/admin_admin_modifyconfig.js,
-    system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js,
+    system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js,
+    system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/contextmenu.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/functions.js,
     system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Menutree.Tree.js,

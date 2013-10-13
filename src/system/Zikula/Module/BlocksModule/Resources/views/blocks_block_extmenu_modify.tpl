@@ -1,4 +1,3 @@
-{ajaxheader modname="Blocks" filename="blocks.js"}
 {pageaddvar name="javascript" value="javascript/helpers/Zikula.itemlist.js"}
 {pageaddvar name="stylesheet" value="system/Zikula/Module/BlocksModule/Resources/public/css/extmenu_modify.css"}
 {pageaddvarblock}
