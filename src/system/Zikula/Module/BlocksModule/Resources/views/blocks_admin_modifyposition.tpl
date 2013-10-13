@@ -1,4 +1,5 @@
-{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/blocks.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Common.js'}
+{pageaddvar name='javascript' value='system/Zikula/Module/BlocksModule/Resources/public/js/Zikula.Blocks.Admin.Modifyposition.js'}
 {pageaddvar name='javascript' value='jquery-ui'}
 {adminheader}
 <h3>
@@ -53,6 +54,9 @@
             </tr>
         </thead>
         <tbody>
+            <tr {if !empty($assignedblocks)}style="display: none;"{/if}class="sortable-placeholder">
+                <td class="warning" colspan="7">{gt text='No blocks assigned yet.'}</td>
+            </tr>
             {foreach item=block from=$assignedblocks}
             <tr data-bid="{$block.bid}">
                 <td><span class="icon icon-move"></span></td>
@@ -84,6 +88,9 @@
             </tr>
         </thead>
         <tbody>
+            <tr {if !empty($unassignedblocks)}style="display: none;"{/if}class="sortable-placeholder">
+                <td class="warning" colspan="7">{gt text='All blocks assigned.'}</td>
+            </tr>
             {foreach item=block from=$unassignedblocks}
             <tr data-bid="{$block.bid}">
                 <td><span class="icon icon-move"></span></td>
