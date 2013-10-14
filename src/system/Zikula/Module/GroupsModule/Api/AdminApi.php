@@ -43,7 +43,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['name'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Setting defaults
@@ -94,7 +94,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get item
@@ -162,7 +162,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get item
@@ -218,7 +218,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if ((!isset($args['gid'])) || (!isset($args['uid']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get group
@@ -260,7 +260,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if ((!isset($args['gid'])) || (!isset($args['uid']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get group
@@ -304,7 +304,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['name'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // create a QueryBuilder instance
@@ -383,7 +383,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getapplicationinfo($args)
     {
         if (!isset($args['gid']) || !isset($args['userid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $appInfo = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
@@ -407,7 +407,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function pendingaction($args)
     {
         if (!isset($args['gid']) || !isset($args['userid']) || !isset($args['action'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // delete group application

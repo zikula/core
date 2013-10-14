@@ -94,7 +94,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get item
@@ -177,7 +177,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $dql = "SELECT count(m.gid) FROM Zikula\Module\GroupsModule\Entity\GroupMembershipEntity m WHERE m.gid = {$args['gid']}";
@@ -200,7 +200,7 @@ class UserApi extends \Zikula_AbstractApi
             $args['uid'] = UserUtil::getVar('uid');
         }
         if (!isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $items = array();
@@ -382,7 +382,7 @@ class UserApi extends \Zikula_AbstractApi
     public function saveapplication($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
@@ -426,7 +426,7 @@ class UserApi extends \Zikula_AbstractApi
     public function cancelapp($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Checking first if this user is really pending.
@@ -454,7 +454,7 @@ class UserApi extends \Zikula_AbstractApi
     public function isuserpending($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $applications = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
@@ -478,11 +478,11 @@ class UserApi extends \Zikula_AbstractApi
     public function userupdate($args)
     {
         if (!isset($args['gid']) || !isset($args['action']) || !isset($args['gtype'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if ($args['action'] != 'subscribe' && $args['action'] != 'unsubscribe' && $args['action'] != 'cancel') {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!UserUtil::isLoggedIn()) {
@@ -495,7 +495,7 @@ class UserApi extends \Zikula_AbstractApi
 
             if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
                 if (!isset($args['applytext'])) {
-                    return LogUtil::registerArgsError();
+                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
                 }
 
                 // We save the user in the application table
@@ -561,7 +561,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get group
@@ -613,7 +613,7 @@ class UserApi extends \Zikula_AbstractApi
     public function removeuser($args)
     {
         if (!isset($args['gid']) || !isset($args['uid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get group
@@ -672,7 +672,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         if (!isset($args['uid']) || !is_numeric($args['uid']) ||
             !isset($args['gid']) || !is_numeric($args['gid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
