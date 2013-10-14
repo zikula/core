@@ -2,7 +2,7 @@
 {modurl modname=Theme type=admin func=modifyconfig assign=themeurl}
 {if $notices.developer.devmode}
 <div id="z-developernotices" class="alert alert-info">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <i class="close" data-dismiss="alert">&times;</i>
     <span class="icon icon-caret-right icon-fixed-width"></span>
     <strong>
         {gt text="Developer notices (development mode on)" domain="zikula"}
