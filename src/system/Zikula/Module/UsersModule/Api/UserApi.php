@@ -118,17 +118,13 @@ class UserApi extends \Zikula_AbstractApi
         // Argument check
         if (isset($args['uid'])) {
             if (!is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             } else {
                 $key = (int)$args['uid'];
                 $field = 'uid';
             }
         } elseif (!isset($args['uname']) || !is_string($args['uname'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $key = $args['uname'];
             $field = 'uname';
@@ -138,9 +134,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for a DB error
         if ($obj === false) {
-            $this->registerError($this->__('Error! Could not load data.'));
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Return the item array
@@ -165,9 +159,7 @@ class UserApi extends \Zikula_AbstractApi
         // Check validity of letter arg.
         // $args['letter'] is really an SQL LIKE filter
         if (isset($args['letter']) && (empty($args['letter']) || !is_string($args['letter']) || strstr($args['letter'], '%'))) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // create a QueryBuilder instance
@@ -300,9 +292,7 @@ class UserApi extends \Zikula_AbstractApi
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
@@ -372,9 +362,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield'])
                 || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email') && ($args['idfield'] != 'uid'))
                 ) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if ($args['idfield'] == 'email') {
@@ -469,17 +457,13 @@ class UserApi extends \Zikula_AbstractApi
 
         if (!isset($args['id']) || empty($args['id']) || !isset($args['idfield']) || empty($args['idfield']) || !isset($args['code'])
                 || empty($args['code']) || (($args['idfield'] != 'uname') && ($args['idfield'] != 'email'))) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $user = UserUtil::getVars($args['id'], true, $args['idfield']);
 
         if (!$user) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             // delete all the records for password reset confirmation that have expired
             $chgPassExpireDays = $this->getVar(UsersConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, UsersConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
@@ -687,17 +671,13 @@ class UserApi extends \Zikula_AbstractApi
     public function resetVerifyChgFor($args)
     {
         if (!isset($args['uid'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $uid = $args['uid'];
 
         if (!is_numeric($uid) || ((int)$uid != $uid) || ($uid <= 1)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['changetype'])) {
@@ -711,9 +691,7 @@ class UserApi extends \Zikula_AbstractApi
             }
             foreach ($changeType as $theType) {
                 if (!is_numeric($theType) || ((int)$theType != $theType) || ($theType < 0)) {
-                    $this->registerError(LogUtil::getErrorMsgArgs());
-
-                    return false;
+                    throw new \InvalidArgumentException(__('Invalid arguments array received'));
                 }
             }
         }

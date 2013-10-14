@@ -412,9 +412,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
 
         if (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         $reginfo = $args['reginfo'];
 
@@ -527,9 +525,7 @@ class RegistrationApi extends \Zikula_AbstractApi
     protected function createRegistration(array $reginfo, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
     {
         if (!isset($reginfo) || empty($reginfo)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $createdByAdminOrSubAdmin = $this->currentUserIsAdminOrSubAdmin();
@@ -545,20 +541,14 @@ class RegistrationApi extends \Zikula_AbstractApi
         // Just check some basic things we need directly in this function.
         if (!isset($reginfo['isapproved']) || !isset($reginfo['isverified'])) {
             // Both must be set in order to determine the appropriate flags, but one or the other can be false.
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } elseif ($reginfo['isapproved'] && $reginfo['isverified']) {
             // One or the other must be false, otherwise why are we in this function?
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } elseif ((!isset($reginfo['pass']) || empty($reginfo['pass'])) && ($reginfo['isverified'] || !$createdByAdminOrSubAdmin)) {
             // If the password is not set (or is empty) then both isverified must be set to false AND this
             // function call must be the result of an admin or sub-admin creating the record.
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $approvalOrder = $this->getVar('moderation_order', UsersConstant::APPROVAL_BEFORE);
@@ -747,9 +737,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $currentUserIsAdminOrSubadmin = $this->currentUserIsAdminOrSubAdmin();
 
         if (!isset($reginfo) || empty($reginfo)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // It is only considered 'created by admin' if the reginfo has no id. If it has an id, then the
@@ -759,9 +747,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
         // Just check some basic things we need directly in this function.
         if (!isset($reginfo['email']) || empty($reginfo['email'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Check to see if we are getting a record directly from the registration request process, or one
@@ -772,9 +758,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
             // Just check some basic things we need directly in this function.
             if (!isset($reginfo['isapproved']) || empty($reginfo['isapproved'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
             // Ensure that no user gets created without a password, and that the password is reasonable (no spaces, salted)
@@ -789,9 +773,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 $hasNoUsersAuthenticationPassword = false;
             }
             if (!$hasPassword || (!$hasSaltedPassword && !$hasNoUsersAuthenticationPassword)) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
             $reginfo['uname'] = mb_strtolower($reginfo['uname']);
@@ -867,9 +849,7 @@ class RegistrationApi extends \Zikula_AbstractApi
             // Protected method (not callable from the api), so assume that the data has been validated in registerNewUser().
             // Just check some basic things we need directly in this function.
             if (!isset($reginfo['approved_by']) || empty($reginfo['approved_by'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
             $userObj = $reginfo;
@@ -1024,30 +1004,22 @@ class RegistrationApi extends \Zikula_AbstractApi
                 || (isset($args['uid']) && (isset($args['uname']) || isset($args['email'])))
                 || (isset($args['uname']) && isset($args['email']))
                 || (isset($args['email']) && !$uniqueEmails)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (isset($args['uid'])) {
             if (empty($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $idField = 'uid';
         } elseif (isset($args['uname'])) {
             if (empty($args['uname']) || !is_string($args['uname'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $idField = 'uname';
         } elseif (isset($args['email'])) {
             if (empty($args['email']) || !is_string($args['email'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $idField = 'email';
         }
@@ -1165,9 +1137,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $where = '';
         if (isset($args['filter'])) {
             if (!is_array($args['filter'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
             $args['filter']['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
@@ -1181,9 +1151,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
 
         if (!is_array($args['orderby'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $orderBy = array();
@@ -1251,9 +1219,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         $where = '';
         if (isset($args['filter'])) {
             if (!is_array($args['filter'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             if (isset($args['filter']['isverified'])) {
                 $isVerifiedFilter = $args['filter']['isverified'];
@@ -1330,17 +1296,13 @@ class RegistrationApi extends \Zikula_AbstractApi
 
         if (isset($args['uid'])) {
             if (empty($args['uid']) || !is_numeric($args['uid'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
             $uid = $args['uid'];
         } elseif (!isset($args['reginfo']) || empty($args['reginfo']) || !is_array($args['reginfo'])
                 || !isset($args['reginfo']['uid']) || empty($args['reginfo']['uid']) || !is_numeric($args['reginfo']['uid'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $uid = $args['reginfo']['uid'];
         }
@@ -1445,20 +1407,14 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (isset($args['reginfo'])) {
             // Got a full reginfo record
             if (!is_array($args['reginfo'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
@@ -1567,9 +1523,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         }
 
         if (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid']) || ($args['uid'] <= 1)) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $verifyChg = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserVerificationEntity')->findOneby(array('uid' => $args['uid'], 'changetype' => UsersConstant::VERIFYCHGTYPE_REGEMAIL));
@@ -1590,9 +1544,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (isset($args['reginfo'])) {
             // Got a full reginfo record
             if (!is_array($args['reginfo'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
@@ -1601,9 +1553,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 return false;
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             // Got just a uid.
             $reginfo = UserUtil::getVars($args['uid'], false, 'uid', true);
@@ -1666,9 +1616,7 @@ class RegistrationApi extends \Zikula_AbstractApi
         if (isset($args['reginfo'])) {
             // Got a full reginfo record
             if (!is_array($args['reginfo'])) {
-                $this->registerError(LogUtil::getErrorMsgArgs());
-
-                return false;
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $reginfo = $args['reginfo'];
             if (!$reginfo || !is_array($reginfo) || !isset($reginfo['uid']) || !is_numeric($reginfo['uid'])) {
@@ -1677,9 +1625,7 @@ class RegistrationApi extends \Zikula_AbstractApi
                 return false;
             }
         } elseif (!isset($args['uid']) || !is_numeric($args['uid']) || ((int)$args['uid'] != $args['uid'])) {
-            $this->registerError(LogUtil::getErrorMsgArgs());
-
-            return false;
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             // Got just an id.
             $reginfo = ModUtil::apiFunc($this->name, 'registration', 'get', array('uid' => $args['uid']));
