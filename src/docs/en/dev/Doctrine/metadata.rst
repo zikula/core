@@ -1,5 +1,5 @@
 ================================
- Metadata Doctrine2 extension
+ Metadata Doctrine extension
 ================================
 
 Getting started

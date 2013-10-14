@@ -1,5 +1,5 @@
 ================================
- Attributes Doctrine2 extension
+ Attributes Doctrine extension
 ================================
 
 Getting started

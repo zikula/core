@@ -1,5 +1,5 @@
 ================================
- Categories Doctrine2 extension
+ Categories Doctrine extension
 ================================
 
 Getting started
