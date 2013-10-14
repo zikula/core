@@ -34,7 +34,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Argument check
         if (!isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $args['sortorder'] = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'countitems');
@@ -61,7 +61,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['cid']) || !is_numeric($args['cid']) ||
             !isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Get the existing item
@@ -91,7 +91,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function delete($args)
     {
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
@@ -178,7 +178,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['cid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // retrieve the category object
@@ -203,7 +203,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         if (!isset($args['module']) ||
             !isset($args['category'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // this function is called durung the init process so we have to check in installing
@@ -247,7 +247,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['mid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // check if we've already worked this query out
@@ -284,7 +284,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['mid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         static $associations = array();
@@ -319,7 +319,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (!isset($args['modname']) ||
             !is_string($args['modname']) ||
             !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['exclude']) || !is_array($args['exclude'])) {
@@ -376,7 +376,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function countModsInCat($args)
     {
         if (!isset($args['cid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';

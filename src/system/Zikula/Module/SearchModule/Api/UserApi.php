@@ -51,7 +51,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // query string and firstPage params are required
         if (!isset($args['q']) || empty($args['q']) || !isset($args['firstPage'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         $vars = array();
         $vars['q'] = $args['q'];
@@ -285,13 +285,13 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check we have the required input
         if (!isset($args['modname']) || !isset($args['func']) || !isset($args['args'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['type']) || empty($args['type'])) {
             $args['type'] = 'user';
         } elseif (!is_string($args['type']) || ($args['type'] != 'user')) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (empty($args['func'])) {
@@ -332,7 +332,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check we actually have some vars to work with...
         if (!isset($args['vars'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         System::queryStringSetVar('type', 'user');

@@ -1592,7 +1592,7 @@ class UserUtil
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($hashMethodCodesByName[$hashAlgorithmName])
                 || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
 
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmName'));
         }
 
         return $hashMethodCodesByName[$hashAlgorithmName];
@@ -1616,7 +1616,7 @@ class UserUtil
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
                 || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
 
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmCode'));
         }
 
         return $hashMethodNamesByCode[$hashAlgorithmCode];
@@ -1664,18 +1664,18 @@ class UserUtil
     {
         if (isset($hashMethodCode)) {
             if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
             $hashAlgorithmName = self::getPasswordHashMethodName($hashMethodCode);
             if (!$hashAlgorithmName) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
 
         } else {
             $hashAlgorithmName = ModUtil::getVar('ZikulaUsersModule', 'hash_method', '');
             $hashMethodCode = self::getPasswordHashMethodCode($hashAlgorithmName);
             if (!$hashMethodCode) {
-                return LogUtil::registerArgsError();
+                throw new \InvalidArgumentException(__('Invalid arguments array received'));
             }
         }
 
@@ -1751,11 +1751,11 @@ class UserUtil
         $passwordsMatch = false;
 
         if (!isset($unhashedPassword) || !is_string($unhashedPassword) || empty($unhashedPassword)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, UsersConstant::SALT_DELIM) === false)) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $passwordsMatch = SecurityUtil::checkSaltedHash($unhashedPassword, $hashedPassword, self::getPasswordHashMethods(true), UsersConstant::SALT_DELIM);

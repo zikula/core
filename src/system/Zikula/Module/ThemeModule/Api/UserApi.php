@@ -34,7 +34,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $args['variables'] = $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themevariables.ini', 'sections' => true));
@@ -54,7 +54,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme']) || !isset($args['variables']) || empty($args['variables'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $dom = $this->_getthemedomain($args['theme']);
@@ -116,7 +116,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         return $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'themepalettes.ini', 'sections' => true));
@@ -129,7 +129,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme']) || !isset($args['palette']) || empty($args['palette'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $allpalettes = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettes', array('theme' => $args['theme']));
@@ -144,7 +144,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $allpalettes = ModUtil::apiFunc('ZikulaThemeModule', 'user', 'getpalettes', array('theme' => $args['theme']));
@@ -163,7 +163,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         return $this->_readinifile(array('theme'=> $args['theme'], 'file' => 'pageconfigurations.ini', 'sections' => true));
@@ -176,10 +176,10 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         if (!isset($args['filename']) || empty($args['filename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $config = $this->_readinifile(array('theme'=> $args['theme'], 'file' => $args['filename'], 'sections' => true));
@@ -207,7 +207,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $themeinfo   = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['theme']));
@@ -228,7 +228,7 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $args['type'] = isset($args['type']) ? DataUtil::formatForOS($args['type']) : 'modules';
@@ -260,11 +260,11 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['file']) || empty($args['file'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get the theme info
@@ -297,11 +297,11 @@ class UserApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['file']) || empty($args['file'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['theme']) || empty($args['theme'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get the theme info
