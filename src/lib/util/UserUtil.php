@@ -1592,7 +1592,7 @@ class UserUtil
         if (!isset($hashAlgorithmName) || !is_string($hashAlgorithmName) || empty($hashAlgorithmName) || !isset($hashMethodCodesByName[$hashAlgorithmName])
                 || empty($hashMethodCodesByName[$hashAlgorithmName]) || !is_numeric($hashMethodCodesByName[$hashAlgorithmName])) {
 
-            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithm'));
+            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmName'));
         }
 
         return $hashMethodCodesByName[$hashAlgorithmName];
@@ -1616,7 +1616,7 @@ class UserUtil
         if (!isset($hashAlgorithmCode) || !is_numeric($hashAlgorithmCode) || !isset($hashMethodNamesByCode[$hashAlgorithmCode])
                 || !is_string($hashMethodNamesByCode[$hashAlgorithmCode]) || empty($hashMethodNamesByCode[$hashAlgorithmCode])) {
 
-            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithm'));
+            throw new \InvalidArgumentException(__f('Invalid argument %s', 'hashAlgorithmCode'));
         }
 
         return $hashMethodNamesByCode[$hashAlgorithmCode];
