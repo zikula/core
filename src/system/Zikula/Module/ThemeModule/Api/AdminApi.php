@@ -71,7 +71,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Check our input arguments
         if (!isset($args['themeinfo'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         unset($args['themeinfo']['i18n']);
@@ -97,7 +97,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Check our input arguments
         if (!isset($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
         if (!isset($args['resetuserselected'])) {
             $args['resetuserselected'] = false;
@@ -133,7 +133,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($args['themename']));
         if (!file_exists('themes/' . DataUtil::formatForOS($themeinfo['directory']). '/' . $themeinfo['name'] . '.php')) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
@@ -172,7 +172,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $themeid = (int)ThemeUtil::getIDFromName($args['themename']);
@@ -234,13 +234,13 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['themename']) || empty($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
 
         if (!isset($args['themedirectory']) || empty($args['themedirectory'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $osthemedirectory = DataUtil::formatForOS($args['themedirectory']);
         }
@@ -271,7 +271,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // check our input
         if (!isset($args['themename']) || empty($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
@@ -309,7 +309,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function deleteinifile($args)
     {
         if (!isset($args['themename']) || empty($args['themename'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         } else {
             $themename = $args['themename'];
         }
@@ -320,7 +320,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         if (!isset($args['file']) || empty($args['file'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $ostemp  = CacheUtil::getLocalDir();
@@ -339,7 +339,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['themename']) && !isset($args['pcname'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $themeid = ThemeUtil::getIDFromName($args['themename']);

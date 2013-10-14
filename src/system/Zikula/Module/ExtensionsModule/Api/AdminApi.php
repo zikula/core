@@ -71,7 +71,7 @@ class AdminApi extends \Zikula_AbstractApi
                 !isset($args['displayname']) ||
                 !isset($args['description']) ||
                 !isset($args['url'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
@@ -213,7 +213,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id']) || !isset($args['state'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Security check
@@ -281,7 +281,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!isset($args['removedependents']) || !is_bool($args['removedependents'])) {
@@ -618,7 +618,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['filemodules']) || !is_array($args['filemodules'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $entity = 'Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity';
@@ -859,7 +859,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Get module information
@@ -954,7 +954,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['id']) || !is_numeric($args['id'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $entity = 'Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity';
@@ -1280,7 +1280,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['modid']) || empty($args['modid']) || !is_numeric($args['modid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $dependencies = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionDependencyEntity')->findBy(array('modid' => $args['modid']));
@@ -1300,7 +1300,7 @@ class AdminApi extends \Zikula_AbstractApi
     {
         // Argument check
         if (!isset($args['modid']) || empty($args['modid']) || !is_numeric($args['modid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $modinfo = ModUtil::getInfo($args['modid']);
@@ -1331,7 +1331,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['filemodules']) || !is_array($args['filemodules'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $filemodules = $args['filemodules'];

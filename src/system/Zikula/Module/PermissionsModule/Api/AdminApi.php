@@ -47,7 +47,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
@@ -119,7 +119,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
@@ -203,7 +203,7 @@ class AdminApi extends \Zikula_AbstractApi
                 (!isset($args['component'])) ||
                 (!isset($args['instance'])) ||
                 (!isset($args['level']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get and update permission
@@ -248,7 +248,7 @@ class AdminApi extends \Zikula_AbstractApi
                 (!isset($args['instance'])) ||
                 (!isset($args['level'])) ||
                 (!isset($args['insseq']))) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // Insert Capability
@@ -302,7 +302,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['pid'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // get and delete permission
@@ -385,7 +385,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if (!isset($args['newseq']) || !isset($args['oldseq'])) {
-            return LogUtil::registerArgsError();
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         $newseq = $args['newseq'];
