@@ -1,6 +1,7 @@
 {admincategorymenu}
 
-<h2>{modgetinfo modname=$toplevelmodule info='displayname'}</h2>
+{modulelinks modname=$toplevelmodule type='admin' menuid='mainModuleLinks'}
 
-{modulelinks modname=$toplevelmodule type='admin'}
-
+<script type="text/javascript">
+    jQuery('#mainModuleLinks').prepend('<li data-role="list-divider"><a href="#">{{modgetinfo modname=$toplevelmodule info='displayname'}}</a></li>');
+</script>

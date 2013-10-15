@@ -92,17 +92,8 @@
 * Styling for status security analyzer, update checker and more
 ******************************************************************************/
 
-#z-maincontent #admin-systemnotices divdiv {
+#z-maincontent #admin-systemnotices div div {
     margin-top: -1.15em;
-}
-
-/* styling for status update checker */
-#z-maincontent div#z-updatechecker {
-    background: url("../../../../../../../images/icons/extrasmall/agt_update-product.png") #C4E6BD 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../../../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F1FEF4, #C4E6BD) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../../../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F1FEF4), to(#C4E6BD)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../../../../../images/icons/extrasmall/agt_update-product.png") 99% 0.35em no-repeat, linear-gradient(#F1FEF4, #C4E6BD); /*CSS3*/
-    border: 2px solid #7Ec573;
 }
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
@@ -152,15 +143,10 @@ div#z-securityanalyzer ul {
 /**
  * This centers the close icon.
  */
-div#z-developernotices > button.close,
-div#z-securityanalyzer > button.close,
-div#z-updatechecker > button.close {
-    margin-top: -2px;
-}
-
-div#z-updatechecker p {
-    margin: 0 1em 0.5em;
-    padding: 0 0 0 1em;
+div#z-developernotices > i.close,
+div#z-securityanalyzer > i.close,
+div#z-updatechecker > i.close {
+   margin-top: -2px;
 }
 
 /* Used to style the cancel delete button when asking for a confirmation */

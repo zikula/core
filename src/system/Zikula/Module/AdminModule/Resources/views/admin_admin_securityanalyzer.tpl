@@ -2,7 +2,7 @@
 {checkpermissionblock component='ZikulaAdminModule::' instance='::' level=ACCESS_ADMIN}
 {if $notices.security.magic_quotes_gpc or $notices.security.register_globals or $notices.security.config_php or !$notices.security.app_htaccess or !$notices.security.scactive}
 <div id="z-securityanalyzer" class="alert alert-warning">
-	<button type="button" class="close" data-dismiss="alert">&times;</button>
+    <i class="close" data-dismiss="alert">&times;</i>
     <strong>{gt text="Security analyser warnings" domain="zikula"}</strong>
     <ul>
         {if $notices.security.config_php}

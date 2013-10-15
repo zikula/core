@@ -4,6 +4,7 @@
 system/Zikula/Module/BlocksModule/Resources/views/blocks_block_extmenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaBlocksModule/blocks_block_extmenu.tpl
 system/Zikula/Module/UsersModule/Resources/views/Users/main.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaUsersModule/Users/main.tpl
 system/Zikula/Module/AdminModule/Resources/views/admin_admin_adminpanel.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_adminpanel.tpl
-system/Zikula/Module/AdminModule/Resources/views/admin_admin_categorymenu.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_categorymenu.tpl
+system/Zikula/Module/AdminModule/Resources/views/admin_admin_admintabs.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_admintabs.tpl
 system/Zikula/Module/AdminModule/Resources/views/admin_admin_footer.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_footer.tpl
 system/Zikula/Module/AdminModule/Resources/views/admin_admin_header.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaAdminModule/admin_admin_header.tpl
+system/Zikula/Module/ExtensionsModule/Resources/views/Admin/view.tpl: themes/Zikula/Theme/MobileTheme/Resources/views/modules/ZikulaExtensionsModule/Admin/view.tpl
