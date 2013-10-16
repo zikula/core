@@ -343,6 +343,11 @@ class DBUtil
         }
 
         if (isset($numericFields[$fieldType])) {
+            if ($fieldType[0] == 'I') {
+                $value = (int)$value;
+            } else {
+                $value = (float)$value;
+            }
             return DataUtil::formatForStore($value);
         }
 
