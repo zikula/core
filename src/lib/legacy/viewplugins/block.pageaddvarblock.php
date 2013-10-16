@@ -38,7 +38,7 @@
  *   {pageaddvarblock name='footer'}
  *   <script language="javascript" type="text/javascript">
  *       alert ('The closing </body> tag is coming.');
- *   </style>
+ *   </script>
  *   {/pageaddvarblock}
  * </code>
  *
