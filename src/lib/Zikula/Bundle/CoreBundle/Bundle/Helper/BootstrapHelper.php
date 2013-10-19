@@ -3,6 +3,9 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle\Helper;
 
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Types\IntegerType;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Doctrine\DBAL\Connection;
@@ -33,7 +36,12 @@ class BootstrapHelper
     {
         // add what is in array but missing from db
         foreach ($array as $name => $metadata) {
-            $result = $this->conn->executeQuery("SELECT id, bundlename, bundleclass, autoload, bundletype, bundlestate FROM bundles WHERE bundlename = :name", array('name' => $name));
+            $qb = $this->conn->createQueryBuilder();
+            $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
+                ->from('bundles', 'b')
+                ->where('b.bundlename = :name')
+                ->setParameter('name', $name);
+            $result = $qb->execute();
             $row = $result->fetch();
             if (!$row) {
                 $this->insert($metadata);
@@ -44,7 +52,10 @@ class BootstrapHelper
 
         // remove/mark what is in db by missing from array
         // not sure if a MISSING state is valid here - and if files were restored, what state do we restore them to?
-        $res = $this->conn->executeQuery('SELECT id, bundlename, bundleclass, autoload, bundletype, bundlestate FROM bundles');
+        $qb = $this->conn->createQueryBuilder();
+        $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
+            ->from('bundles', 'b');
+        $res = $qb->execute();
         foreach ($res->fetchAll() as $row) {
             if (!in_array($row['bundlename'], array_keys($array))
                 && (int)$row['bundlestate'] !== AbstractBundle::STATE_MISSING ) {
@@ -55,16 +66,14 @@ class BootstrapHelper
 
     private function updateState($id, $state = AbstractBundle::STATE_DISABLED)
     {
-        $this->conn->executeQuery('UPDATE bundles SET bundlestate = :state WHERE id = :id',
-            array(
-                 'state' => $state,
-                 'id'    => $id,
-            ));
+        $this->conn->update('bundles', array('bundlestate' => $state),
+                                       array('id' => $id)
+        );
     }
 
     private function removeById($id)
     {
-        $this->conn->executeQuery('DELETE FROM bundles WHERE id = :id', array('id' => $id));
+        $this->conn->delete('bundles', array('id' => $id));
     }
 
     private function truncate()
@@ -90,29 +99,29 @@ class BootstrapHelper
             default:
                 throw new \InvalidArgumentException(sprintf('Unknown type %s', $metadata->getType()));
         }
-        $this->conn->executeUpdate(
-            "INSERT INTO bundles (id, bundlename, autoload, bundleclass, bundletype, bundlestate) VALUES (NULL, :name, :autoload, :class, :type, :state)",
-            array(
-                 'name'     => $name,
+
+        $this->conn->insert('bundles', array(
+                 'bundlename'     => $name,
                  'autoload' => $autoload,
-                 'class'    => $class,
-                 'type'     => $type,
-                 'state'    => AbstractBundle::STATE_ACTIVE, // todo - this has to be changed
+                 'bundleclass'    => $class,
+                 'bundletype'     => $type,
+                 'bundlestate'    => AbstractBundle::STATE_ACTIVE, // todo - this has to be changed
             )
         );
     }
 
     public function createSchema()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS `bundles` (
-                `id` int(4) NOT NULL AUTO_INCREMENT,
-                `bundlename` varchar(100) NOT NULL,
-                `autoload` varchar(256) NOT NULL,
-                `bundleclass` varchar(100) NOT NULL,
-                `bundletype` varchar(2) DEFAULT NULL,
-                `bundlestate` varchar(2) NOT NULL,
-                PRIMARY KEY (`id`)
-                ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;";
-        $this->conn->executeUpdate($sql);
+        $schema = $this->conn->getSchemaManager();
+        $table = new Table('bundles');
+        $table->addColumn('id', 'integer', array('autoincrement' => true));
+        $table->addColumn('bundlename', 'string', array('length' => 100));
+        $table->addColumn('autoload', 'string', array('length' => 256));
+        $table->addColumn('bundleclass', 'string', array('length' => 100));
+        $table->addColumn('bundletype', 'string', array('length' => 2));
+        $table->addColumn('bundlestate', 'integer', array('length' => 1));
+        $table->setPrimaryKey(array('id'));
+        $table->addUniqueIndex(array('bundlename'));
+        $schema->createTable($table);
     }
 }

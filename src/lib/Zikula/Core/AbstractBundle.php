@@ -120,14 +120,9 @@ abstract class AbstractBundle extends Bundle
         return false;
     }
 
-    protected function hasExtensions()
-    {
-        return false;
-    }
-
     public function getContainerExtension()
     {
-        if ($this->getState() !== self::STATE_ACTIVE || !$this->hasExtensions()) {
+        if ($this->getState() != self::STATE_ACTIVE) {
             return $this->extension = false;
         }
 
