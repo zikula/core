@@ -120,6 +120,8 @@ class AdminApi extends \Zikula_AbstractApi
                                      ->setParameter('cid', $item['cid'])
                                      ->getQuery();
 
+        $query->getResult();
+
         // Now actually delete the category
         $this->entityManager->remove($item);
         $this->entityManager->flush();
