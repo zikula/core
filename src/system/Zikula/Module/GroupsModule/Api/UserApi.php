@@ -646,7 +646,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserSessionEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
         $this->entityManager->flush();
 
