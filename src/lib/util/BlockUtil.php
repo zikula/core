@@ -11,7 +11,6 @@
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
-
 /**
  * Block util.
  */
@@ -20,7 +19,7 @@ class BlockUtil
     /**
      * Display all blocks in a block position.
      *
-     * @param string  $side    Block position to render.
+     * @param string $side     Block position to render.
      * @param boolean $echo    Whether or not to echo output directly.
      * @param boolean $implode Whether or not to implode lines by \n.
      *
@@ -35,20 +34,16 @@ class BlockUtil
         static $func;
         static $type;
         static $customargs;
-
         if (!isset($side)) {
             return null;
         }
-
         // get the block position
         if (empty($positions)) {
             $positions = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallpositions');
         }
-
         if (!isset($positions[$side])) {
             return;
         }
-
         if (!isset($modname)) {
             if (PageUtil::isHomepage()) {
                 $modname = '_homepage_';
@@ -56,12 +51,10 @@ class BlockUtil
                 $modname = ModUtil::getName();
             }
         }
-
         // get all block placements
         if (empty($blockplacements)) {
             $blockplacements = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getallplacements');
         }
-
         // get variables from input
         if (!isset($func)) {
             $func = FormUtil::getPassedValue('func', 'main', 'GETPOST');
@@ -69,32 +62,33 @@ class BlockUtil
         if (!isset($type)) {
             $type = FormUtil::getPassedValue('type', 'user', 'GETPOST');
         }
-
         if (!isset($customargs)) {
             $customargs = array();
-            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'authid', 'csrftoken');
+            $filtervars = array('module', 'name', 'type', 'func', 'theme', 'csrftoken');
             foreach ($_GET as $var => $value) {
                 if (is_array($value)) {
                     $arguments = explode('&', urldecode(http_build_query(array($var => $value))));
                     foreach ($arguments as $argument) {
                         $args = explode('=', $argument);
                         if (!in_array($args[0], $filtervars)) {
-                            $customargs[] = DataUtil::formatForOS(strip_tags($args[0])) . '=' . DataUtil::formatForOS(strip_tags($args[1]));
+                            $customargs[] = DataUtil::formatForOS(strip_tags($args[0])).'='.DataUtil::formatForOS(
+                                    strip_tags($args[1])
+                                );
                         }
                     }
                 } else {
                     if (!in_array($var, $filtervars)) {
-                        $customargs[] = DataUtil::formatForOS(strip_tags($var)) . '=' . DataUtil::formatForOS(strip_tags($value));
+                        $customargs[] = DataUtil::formatForOS(strip_tags($var)).'='.DataUtil::formatForOS(
+                                strip_tags($value)
+                            );
                     }
                 }
             }
         }
-
         // current language
         if (!isset($currentlang)) {
             $currentlang = ZLanguage::getLanguageCode();
         }
-
         // loop around the blocks and display only the ones we need
         $blockoutput = array();
         foreach ($blockplacements as $blockplacement) {
@@ -102,31 +96,24 @@ class BlockUtil
             if ($blockplacement['pid'] != $positions[$side]['pid']) {
                 continue;
             }
-
             // get the full block info
             $blockinfo = self::getBlockInfo($blockplacement['bid']);
-
             // dont display the block if it's not active or not in matching langauge
             if (!$blockinfo['active'] || (!empty($blockinfo['language']) && $blockinfo['language'] != $currentlang)) {
                 continue;
             }
-
             // block filtering
             if (!empty($blockinfo['filter']) && is_array($blockinfo['filter']) && count($blockinfo['filter'])) {
-
                 $showblock = false;
-
                 // loop for each filter
                 foreach ($blockinfo['filter'] as $filter) {
                     // filter must be an array of values
                     if (!is_array($filter)) {
                         continue;
                     }
-
                     $rule1 = $filter['module'] == $modname;
                     $rule2 = empty($filter['ftype']) ? true : ($filter['ftype'] == $type);
                     $rule3 = empty($filter['fname']) ? true : ($filter['fname'] == $func);
-
                     if (empty($filter['fargs'])) {
                         $rule4 = true;
                     } else {
@@ -141,30 +128,24 @@ class BlockUtil
                             }
                         }
                     }
-
                     if ($rule1 == true && $rule2 == true && $rule3 == true && $rule4 !== false) {
                         $showblock = true;
                         break;
                     }
                 }
-
                 if (!$showblock) {
                     continue;
                 }
             }
-
             $blockinfo['position'] = $positions[$side]['name'];
-
             // get the module info and display the block
             $modinfo = ModUtil::getInfo($blockinfo['mid']);
-
             if ($echo) {
                 echo self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
             } else {
                 $blockoutput[$blockinfo['bid']] = self::show($modinfo['name'], $blockinfo['bkey'], $blockinfo);
             }
         }
-
         if ($echo) {
             return;
         } else {
@@ -188,32 +169,13 @@ class BlockUtil
     public static function show($modname, $blockname, $blockinfo = array())
     {
         global $blocks_modules;
-
         $blockInstance = self::load($modname, $blockname);
-
-        if ($blockInstance instanceof Zikula_Controller_AbstractBlock) {
-            $displayfunc = array($blockInstance, 'display');
-        } else {
-            $displayfunc = "{$modname}_{$blockname}block_display";
-        }
-
+        $displayfunc = array($blockInstance, 'display');
         if (is_callable($displayfunc)) {
             if (is_array($displayfunc)) {
                 return call_user_func($displayfunc, $blockinfo);
             } else {
                 return $displayfunc($blockinfo);
-            }
-        } else {
-            // Old-style blocks
-            if (isset($blocks_modules[0][$blockname]['func_display'])) {
-                return $blocks_modules[0][$blockname]['func_display']($blockinfo);
-            } else {
-                if (SecurityUtil::checkPermission('.*', '.*', ACCESS_ADMIN)) {
-                    $blockinfo['title'] = __f("Block type '%s' not found", $blockname);
-                    $blockinfo['content'] = __f("Error! The '%s' block type was not found. Please check the corresponding blocks directory.", $blockname);
-
-                    return self::themeBlock($blockinfo);
-                }
             }
         }
     }
@@ -228,49 +190,63 @@ class BlockUtil
     public static function themeBlock($blockinfo)
     {
         static $themeinfo, $themedir, $upb, $downb;
-
         if (!isset($blockinfo['bid'])) {
             $blockinfo['bid'] = '';
         }
         if (!isset($blockinfo['title'])) {
             $blockinfo['title'] = '';
         }
-
-        if (UserUtil::isLoggedIn() && ModUtil::getVar('ZikulaBlocksModule', 'collapseable') == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')) {
+        if (UserUtil::isLoggedIn() && ModUtil::getVar(
+                'ZikulaBlocksModule',
+                'collapseable'
+            ) == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')
+        ) {
             if (!isset($themeinfo)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
                 $themedir = DataUtil::formatForOS($themeinfo['directory']);
             }
-
             // check for collapsable menus being enabled, and setup the collapsable menu image.
             if (!isset($upb)) {
-                if (file_exists('themes/' . $themedir . '/images/upb.png')) {
-                    $upb = '<img src="themes/' . $themedir . '/images/upb.png" alt="-" />';
-                } elseif (file_exists('themes/' . $themedir . '/images/14_layer_raiselayer.png')) {
-                    $upb = '<img src="themes/' . $themedir . '/images/14_layer_raiselayer.png" alt="-" />';
+                if (file_exists('themes/'.$themedir.'/images/upb.png')) {
+                    $upb = '<img src="themes/'.$themedir.'/images/upb.png" alt="-" />';
+                } elseif (file_exists('themes/'.$themedir.'/images/14_layer_raiselayer.png')) {
+                    $upb = '<img src="themes/'.$themedir.'/images/14_layer_raiselayer.png" alt="-" />';
                 } else {
                     $upb = '<img src="images/icons/extrasmall/14_layer_raiselayer.png" alt="-" />';
                 }
             }
             if (!isset($downb)) {
-                if (file_exists('themes/' . $themedir . '/images/downb.png')) {
-                    $downb = '<img src="themes/' . $themedir . '/images/downb.png" alt="+" />';
-                } elseif (file_exists('themes/' . $themedir . '/images/14_layer_lowerlayer.png')) {
-                    $downb = '<img src="themes/' . $themedir . '/images/14_layer_lowerlayer.png" alt="+" />';
+                if (file_exists('themes/'.$themedir.'/images/downb.png')) {
+                    $downb = '<img src="themes/'.$themedir.'/images/downb.png" alt="+" />';
+                } elseif (file_exists('themes/'.$themedir.'/images/14_layer_lowerlayer.png')) {
+                    $downb = '<img src="themes/'.$themedir.'/images/14_layer_lowerlayer.png" alt="+" />';
                 } else {
                     $downb = '<img src="images/icons/extrasmall/14_layer_lowerlayer.png" alt="+" />';
                 }
             }
-
             $checkUserBlock = self::checkUserBlock($blockinfo);
             if ($checkUserBlock) {
                 if (!empty($blockinfo['title'])) {
-                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('ZikulaBlocksModule', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $upb . '</a>';
+                    $blockinfo['minbox'] = '<a href="'.DataUtil::formatForDisplay(
+                            ModUtil::url(
+                                'ZikulaBlocksModule',
+                                'user',
+                                'changestatus',
+                                array('bid' => $blockinfo['bid'])
+                            )
+                        ).'">'.$upb.'</a>';
                 }
             } else {
                 $blockinfo['content'] = '';
                 if (!empty($blockinfo['title'])) {
-                    $blockinfo['minbox'] = '<a href="' . DataUtil::formatForDisplay(ModUtil::url('ZikulaBlocksModule', 'user', 'changestatus', array('bid' => $blockinfo['bid']))) . '">' . $downb . '</a>';
+                    $blockinfo['minbox'] = '<a href="'.DataUtil::formatForDisplay(
+                            ModUtil::url(
+                                'ZikulaBlocksModule',
+                                'user',
+                                'changestatus',
+                                array('bid' => $blockinfo['bid'])
+                            )
+                        ).'">'.$downb.'</a>';
                 }
             }
             // end collapseable menu config
@@ -294,99 +270,57 @@ class BlockUtil
     {
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
-
-        $serviceId = strtolower('block.' . $modinfo['name'] . '_' . 'Block_' . $block);
+        $serviceId = strtolower('block.'.$modinfo['name'].'_'.'Block_'.$block);
         if ($sm->has($serviceId)) {
             return $sm->get($serviceId);
         }
-
         if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
-
         $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
         $moddir = DataUtil::formatForOS($modinfo['directory']);
         $blockdir = "$basedir/$moddir/lib/$moddir/Block";
-        $ooblock = "$blockdir/" . ucwords($block) . '.php';
+        $ooblock = "$blockdir/".ucwords($block).'.php';
         ModUtil::load($modname);
-        $isOO = ModUtil::isOO($modname);
-
-        if (!$isOO) {
-            $blockdirOld = $moddir . '/pnblocks';
-            $incfile = DataUtil::formatForOS($block . '.php');
-
-            if (file_exists("$basedir/$blockdirOld/$incfile")) {
-                include_once "$basedir/$blockdirOld/$incfile";
-            } else {
-                return false;
-            }
-        }
-
         // get the block info
-        if ($isOO) {
-            $kernel = $sm->get('kernel');
-            $module = null;
-            try {
-                /** @var $module \Zikula\Core\AbstractModule */
-                $module = $kernel->getModule($modinfo['name']);
-                $className = $module->getNamespace().'\\Block\\'.ucwords($block);
-                $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
-            } catch (\InvalidArgumentException $e) {
-            }
-
-            if (!isset($className)) {
-                $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
-                $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
-                $classNameOld = ucwords($modinfo['name']) . '_' . 'Block_' . ucwords($block);
-                $className = class_exists($className) ? $className :$classNameOld;
-            }
-            $r = new ReflectionClass($className);
-            $blockInstance = $r->newInstanceArgs(array($sm, $module));
-            try {
-                if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
-                    throw new LogicException(sprintf('Block %s must inherit from Zikula_Controller_AbstractBlock', $className));
-                }
-            } catch (LogicException $e) {
-                if (System::isDevelopmentMode()) {
-                    throw $e;
-                } else {
-                    LogUtil::registerError('A fatal error has occured which can be viewed only in development mode.', 500);
-
-                    return false;
-                }
-            }
-
-            $sm->set($serviceId, $blockInstance);
+        $kernel = $sm->get('kernel');
+        $module = null;
+        try {
+            /** @var $module \Zikula\Core\AbstractModule */
+            $module = $kernel->getModule($modinfo['name']);
+            $className = $module->getNamespace().'\\Block\\'.ucwords($block);
+            $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
+        } catch (\InvalidArgumentException $e) {
+        }
+        if (!isset($className)) {
+            $className = ucwords($modinfo['name']).'\\'.'Block\\'.ucwords($block);
+            $className = preg_match('/.*Block$/', $className) ? $className : $className.'Block';
+            $classNameOld = ucwords($modinfo['name']).'_'.'Block_'.ucwords($block);
+            $className = class_exists($className) ? $className : $classNameOld;
+        }
+        $r = new ReflectionClass($className);
+        $blockInstance = $r->newInstanceArgs(array($sm, $module));
+        if (!$blockInstance instanceof Zikula_Controller_AbstractBlock) {
+            throw new LogicException(sprintf(
+                'Block %s must inherit from Zikula_Controller_AbstractBlock',
+                $className
+            ));
         }
 
-        $result = ($isOO ? $blockInstance : true);
-
-        if ($isOO) {
-            $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
-        } else {
-            $infofunc = "{$modname}_{$block}block_info";
-            $blocks_modules[$block] = $infofunc();
-        }
-
+        $sm->set($serviceId, $blockInstance);
+        $result = $blockInstance;
+        $blocks_modules[$block] = call_user_func(array($blockInstance, 'info'));
         // set the module and keys for the new block
         $blocks_modules[$block]['bkey'] = $block;
         $blocks_modules[$block]['module'] = $modname;
         $blocks_modules[$block]['mid'] = ModUtil::getIdFromName($modname);
-
         // merge the blockinfo in the global list of blocks
         if (!isset($GLOBALS['blocks_modules'])) {
             $GLOBALS['blocks_modules'] = array();
         }
         $GLOBALS['blocks_modules'][$blocks_modules[$block]['mid']][$block] = $blocks_modules[$block];
-
         // Initialise block if required (new-style)
-        if ($isOO) {
-            call_user_func(array($blockInstance, 'init'));
-        } else {
-            $initfunc = "{$modname}_{$block}block_init";
-            $initfunc();
-        }
-
+        call_user_func(array($blockInstance, 'init'));
         // add stylesheet to the page vars, this makes manual loading obsolete
         PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet($modname));
 
@@ -401,22 +335,17 @@ class BlockUtil
     public static function loadAll()
     {
         static $blockdirs = array();
-
         // Load new-style blocks from system and modules tree
         $mods = ModUtil::getAllMods();
-
         foreach ($mods as $mod) {
             $modname = $mod['name'];
             $moddir = DataUtil::formatForOS($mod['directory']);
-
             if (!isset($blockdirs[$modname])) {
                 $blockdirs[$modname] = array();
                 $blockdirs[$modname][] = "system/$moddir/Block";
                 $blockdirs[$modname][] = "modules/$moddir/Block";
                 $blockdirs[$modname][] = "system/$moddir/lib/$moddir/Block";
                 $blockdirs[$modname][] = "modules/$moddir/lib/$moddir/Block";
-                $blockdirs[$modname][] = "modules/$moddir/pnblocks";
-
                 foreach ($blockdirs[$modname] as $dir) {
                     if (is_dir($dir) && is_readable($dir)) {
                         $dh = opendir($dir);
@@ -452,7 +381,6 @@ class BlockUtil
 
             return $vars;
         }
-
         // Unserialised content
         $links = explode("\n", $content);
         $vars = array();
@@ -495,24 +423,20 @@ class BlockUtil
     {
         if (UserUtil::isLoggedIn()) {
             $uid = UserUtil::getVar('uid');
-
             $sm = ServiceUtil::getManager();
             $entityManager = $sm->get('doctrine.entitymanager');
-
             $entity = 'Zikula\Module\BlocksModule\Entity\UserBlockEntity';
             $item = $entityManager->getRepository($entity)->findOneBy(array('uid' => $uid, 'bid' => $blockinfo['bid']));
-
             if (!$item) {
                 $item = new $entity;
-                $item['uid'] = (int)$uid;
+                $item['uid'] = (int) $uid;
                 $item['bid'] = $blockinfo['bid'];
                 $item['active'] = $blockinfo['defaultstate'];
-
                 $entityManager->persist($item);
                 $entityManager->flush();
             }
 
-            return (boolean)$item['active'];
+            return (boolean) $item['active'];
         }
 
         return false;
@@ -539,7 +463,6 @@ class BlockUtil
     public static function getBlockInfo($value, $assocKey = 'bid')
     {
         static $blockinfo = array();
-
         if (!isset($blockinfo[$assocKey]) || empty($blockinfo[$assocKey])) {
             $blockinfo[$assocKey] = array();
             $blocks = self::getBlocksInfo();
@@ -548,7 +471,6 @@ class BlockUtil
                 $blockinfo[$assocKey][$key] = $block->toArray();
             }
         }
-
         if (isset($blockinfo[$assocKey][$value])) {
             return $blockinfo[$assocKey][$value];
         }
@@ -591,5 +513,4 @@ class BlockUtil
     {
         return self::themeBlock($blockinfo);
     }
-
 }

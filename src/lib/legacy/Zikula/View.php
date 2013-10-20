@@ -217,17 +217,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             case ModUtil::TYPE_MODULE :
                 $mpluginPathNew = "modules/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "modules/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "modules/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             case ModUtil::TYPE_SYSTEM :
                 $mpluginPathNew = "system/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
                 break;
             default:
                 $mpluginPathNew = "system/" . $this->modinfo['directory'] . "/Resources/views/plugins";
                 $mpluginPath = "system/" . $this->modinfo['directory'] . "/templates/plugins";
-                $mpluginPathOld = "system/" . $this->modinfo['directory'] . "/pntemplates/plugins";
         }
 
         // add standard plugin search path
@@ -250,10 +247,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             }
         }
 
-        // adds legacy plugin paths if needed
-        if (System::isLegacyMode()) {
-            $this->addPluginDir($mpluginPathOld); // Module plugins (legacy paths)
-        }
         // theme plugins module overrides
         $themePluginsPath = isset($themeBundle) ? $themeBundle->getRelativePath() . '/modules/$moduleName/plugins' : "themes/$theme/templates/modules/$moduleName/plugins";
         $this->addPluginDir($themePluginsPath);
@@ -419,10 +412,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             // load the usemodules configuration if exists
             $modpath = ($view->module[$module]['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
             $usepath = "$modpath/" . $view->module[$module]['directory'] . '/templates/config';
-            $usepathOld = "$modpath/" . $view->module[$module]['directory'] . '/pntemplates/config';
             $usemod_confs = array();
             $usemod_confs[] = "$usepath/usemodules.txt";
-            $usemod_confs[] = "$usepathOld/usemodules.txt";
             $usemod_confs[] = "$usepath/usemodules"; // backward compat for < 1.2 // TODO A depreciate from 1.4
             // load the config file
             foreach ($usemod_confs as $usemod_conf) {
@@ -634,7 +625,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         "config/templates/$os_module", //global path
                         $relativepath,
                         "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates", // modpath old
                 );
             } else {
                 $search_path = array("themes/$os_theme/templates/modules/$os_module/$os_modname", // themehookpath
@@ -644,8 +634,6 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         $relativepath,
                         "$os_dir/$os_module/templates/$os_modname", //modhookpath
                         "$os_dir/$os_module/templates", // modpath
-                        "$os_dir/$os_module/pntemplates/$os_modname", // modhookpathold
-                        "$os_dir/$os_module/pntemplates", // modpath old
                 );
             }
 
