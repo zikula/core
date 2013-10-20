@@ -21,10 +21,12 @@ use UserUtil;
 class UserApi extends \Zikula_AbstractApi
 {
     /**
-     * get the roor category for a user
+     * get the root category for a user
      *
+     * @param  int     returnCategory
+     * @param  string  returnField
      */
-    public function getuserrootcat ($args)
+    public function getuserrootcat($args)
     {
         $returnCategory = isset($args['returnCategory']) ? $args['returnCategory'] : false;
         $returnField    = isset($args['returnField'])    ? $args['returnField']    : 'id';
@@ -61,11 +63,12 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get all categories for a user
      *
+     * @param  bool     relative
      */
-    public function getusercategories ($args)
+    public function getusercategories($args)
     {
         $args['returnCategory'] = 1;
-        $userRootCat = $this->getuserrootcat ($args);
+        $userRootCat = $this->getuserrootcat($args);
 
         if (!$userRootCat) {
             return LogUtil::registerError($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
@@ -79,8 +82,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get the username associated with a category
      *
+     * @param  int     uid      the user id
      */
-    public function getusercategoryname ($args)
+    public function getusercategoryname($args)
     {
         $uid   = isset($args['uid']) && $args['uid'] ? $args['uid'] : UserUtil::getVar('uid');
         $uname = UserUtil::getVar('uname', $uid);
@@ -88,5 +92,4 @@ class UserApi extends \Zikula_AbstractApi
 
         return $userCatName;
     }
-
 }
