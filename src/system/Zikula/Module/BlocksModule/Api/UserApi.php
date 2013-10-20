@@ -29,10 +29,10 @@ class UserApi extends \Zikula_AbstractApi
      *
      * This function gets all block entries from the database.
      *
-     * @param 'blockposition_id'    block position id to filter block selection for.
-     * @param 'module_id'           module id to filter block selection for.
-     * @param 'language'            language to filter block selection for.
-     * @param 'active_status'       filter by active status (0=all, 1=active, 2=inactive).
+     * @param  int     blockposition_id    block position id to filter block selection for.
+     * @param  int     module_id           module id to filter block selection for.
+     * @param  string  language            language to filter block selection for.
+     * @param  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
      *
      * @return array array of items, or false on failure.
      */
@@ -49,6 +49,13 @@ class UserApi extends \Zikula_AbstractApi
         // backwards compatibility
         if (isset($args['modid']) && !isset($args['module_id'])) {
             $args['module_id'] = $args['modid'];
+        }
+
+        // Argument check
+        if (isset($args['blockposition_id']) && !is_numeric($args['blockposition_id']) ||
+            isset($args['module_id']) && !is_numeric($args['module_id']) ||
+            isset($args['active_status']) && !is_numeric($args['active_status'])) {
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         // create a QueryBuilder instance
@@ -135,12 +142,12 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockEntity';
-        $dql = "SELECT count(b.bid) FROM $entity b";
-        $query = $this->entityManager->createQuery($dql);
-        $numitems = $query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(b.bid)')
+                                     ->from('Zikula\Module\BlocksModule\Entity\BlockEntity', 'b')
+                                     ->getQuery();
 
-        return $numitems;
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
@@ -162,7 +169,7 @@ class UserApi extends \Zikula_AbstractApi
 
         if (empty($block_positions)) {
 
-            $entity = 'Zikula\Module\BlocksModule\\Entity\BlockPositionEntity';
+            $entity = 'Zikula\Module\BlocksModule\Entity\BlockPositionEntity';
             $items = $this->entityManager->getRepository($entity)->findBy(array(), array('name' => 'ASC'));
 
             foreach ($items as $item) {
@@ -182,7 +189,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function getallplacements()
     {
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockPlacementEntity';
+        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
         $items = $this->entityManager->getRepository($entity)->findBy(array(), array('sortorder' => 'ASC'));
 
         return $items;
@@ -203,7 +210,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Return the item array
-        $entity = 'Zikula\Module\BlocksModule\\Entity\BlockPositionEntity';
+        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPositionEntity';
         $item = $this->entityManager->getRepository($entity)->findOneBy(array('pid' => $args['pid']));
 
         return $item;
@@ -252,7 +259,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Common method for decoding url from bracket notation.
      *
-     * @param strign url String to decode.
+     * @param string url String to decode.
      *
      * @return string Decoded url.
      */

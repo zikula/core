@@ -120,11 +120,11 @@ class AdminApi extends \Zikula_AbstractApi
         // Argument check
         if ((!isset($args['title'])) ||
             (!isset($args['description'])) ||
-            (!isset($args['mid'])) ||
+            (!isset($args['mid']) || !is_numeric($args['mid'])) ||
             (!isset($args['language'])) ||
             (!isset($args['collapsable'])) ||
             (!isset($args['defaultstate'])) ||
-            (!isset($args['bkey']))) {
+            (!isset($args['bkey']) || !is_numeric($args['bkey']))) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -258,16 +258,19 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        // delete block's placements and block itself
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
-        $dql = "DELETE FROM $entity p WHERE p.bid = {$block['bid']}";
-        $query = $this->entityManager->createQuery($dql);
+        // delete block's placements
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\BlocksModule\Entity\BlockPlacementEntity', 'p')
+                                     ->where('p.bid = :bid')
+                                     ->setParameter('bid', $block['bid'])
+                                     ->getQuery();
+
         $query->getResult();
 
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockEntity';
-        $dql = "DELETE FROM $entity b WHERE b.bid = {$block['bid']}";
-        $query = $this->entityManager->createQuery($dql);
-        $query->getResult();
+        // Now actually delete the block
+        $this->entityManager->remove($block);
+        $this->entityManager->flush();
 
         return true;
     }
@@ -323,7 +326,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function updateposition($args)
     {
         // Argument check
-        if (!isset($args['pid']) ||
+        if (!isset($args['pid']) || !is_numeric($args['pid']) ||
             !isset($args['name']) ||
             !isset($args['description'])) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
@@ -378,16 +381,18 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete placements of the position to be deleted
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPlacementEntity';
-        $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\BlocksModule\Entity\BlockPlacementEntity', 'p')
+                                     ->where('p.pid = :pid')
+                                     ->setParameter('pid', $position['pid'])
+                                     ->getQuery();
+
         $query->getResult();
 
-        // delete position
-        $entity = 'Zikula\Module\BlocksModule\Entity\BlockPositionEntity';
-        $dql = "DELETE FROM $entity p WHERE p.pid = {$position['pid']}";
-        $query = $this->entityManager->createQuery($dql);
-        $query->getResult();
+        // Now actually delete the position
+        $this->entityManager->remove($position);
+        $this->entityManager->flush();
 
         // Let the calling process know that we have finished successfully
         return true;
