@@ -40,6 +40,11 @@ class ThemeListener implements EventSubscriberInterface
             return;
         }
 
+        // if theme has already been processed the new way, stop here
+        if (!isset($response->legacy)) {
+            return;
+        }
+
         Zikula_View_Theme::getInstance()->themefooter($response);
     }
 
