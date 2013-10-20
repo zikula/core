@@ -156,13 +156,18 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dql = "SELECT count(g.gid) FROM Zikula\Module\GroupsModule\Entity\GroupEntity g WHERE g.gtype <> " . CommonHelper::GTYPE_CORE;
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('count(g.gid)')
+           ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g')
+           ->where('g.gtype = :gtype')
+           ->setParameter('gtype', CommonHelper::GTYPE_CORE);
 
         if ($this->getVar('hideclosed')) {
-            $dql .= " AND g.state <> " . CommonHelper::STATE_CLOSED;
+            $qb->andWhere('g.state <> :state')
+               ->setParameter('state', CommonHelper::STATE_CLOSED);
         }
 
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         return (int)$query->getSingleScalarResult();
     }
 
@@ -176,12 +181,17 @@ class UserApi extends \Zikula_AbstractApi
     public function countgroupmembers($args)
     {
         // Argument check
-        if (!isset($args['gid'])) {
+        if ((!isset($args['gid']) && !is_numeric($args['gid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $dql = "SELECT count(m.gid) FROM Zikula\Module\GroupsModule\Entity\GroupMembershipEntity m WHERE m.gid = {$args['gid']}";
-        $query = $this->entityManager->createQuery($dql);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('count(m.gid)')
+           ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
+           ->where('m.gid = :gid')
+           ->setParameter('gid', $args['gid']);
+
+        $query = $qb->getQuery();
         return (int)$query->getSingleScalarResult();
     }
 
@@ -199,7 +209,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($args['uid'])) {
             $args['uid'] = UserUtil::getVar('uid');
         }
-        if (!isset($args['uid'])) {
+        if (!isset($args['uid']) && !is_numeric($args['gid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -381,7 +391,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function saveapplication($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -425,7 +436,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function cancelapp($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -453,7 +465,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function isuserpending($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -477,7 +490,9 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function userupdate($args)
     {
-        if (!isset($args['gid']) || !isset($args['action']) || !isset($args['gtype'])) {
+        if (!isset($args['gtype']) && !is_numeric($args['gtype']) || 
+            (!isset($args['uid']) && !is_numeric($args['uid'])) ||
+            !isset($args['action'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -560,7 +575,8 @@ class UserApi extends \Zikula_AbstractApi
     public function adduser($args)
     {
         // Argument check
-        if (!isset($args['gid']) || !isset($args['uid'])) {
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -612,7 +628,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function removeuser($args)
     {
-        if (!isset($args['gid']) || !isset($args['uid'])) {
+        if ((!isset($args['gid']) && !is_numeric($args['gid'])) || 
+            (!isset($args['uid']) && !is_numeric($args['uid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -629,7 +646,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // delete user from group
-        $membership = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
+        $membership = $this->entityManager->getRepository('Zikula\Module\UsersModule\Entity\UserSessionEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['uid']));
         $this->entityManager->remove($membership);
         $this->entityManager->flush();
 
@@ -644,18 +661,22 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Find who is online.
      *
-     * @param unknown_type $args
-     *
      * @return mixed array of users, or false.
      */
     public function whosonline()
     {
         $activetime = time() - (\System::getVar('secinactivemins') * 60);
 
-        $dql = "SELECT DISTINCT s.uid FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > ' " . $activetime . "' AND s.uid <> 0";
-        $query = $this->entityManager->createQuery($dql);
-        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('DISTINCT s.uid')
+           ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 's')
+           ->where('s.lastused > :activetime')
+           ->setParameter('activetime', $activetime)
+           ->andWhere('s.uid <> 0');
 
+        $query = $qb->getQuery();
+
+        $items = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         return $items;
     }
@@ -670,8 +691,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function isgroupmember($args)
     {
-        if (!isset($args['uid']) || !is_numeric($args['uid']) ||
-            !isset($args['gid']) || !is_numeric($args['gid'])) {
+        if ((!isset($args['uid']) && !is_numeric($args['uid'])) ||
+            (!isset($args['gid']) && !is_numeric($args['gid']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -685,13 +706,13 @@ class UserApi extends \Zikula_AbstractApi
 
         // check if group exists
         if (!$group) {
-            // report failiure
+            // report failure
             return false;
         }
 
         // check if the user exists in the group
         if (!isset($group['members'][$args['uid']])) {
-            // report failiure
+            // report failure
             return false;
         }
 
