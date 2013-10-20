@@ -3,20 +3,21 @@ Contributing Guidelines
 
 Pull requests are welcome, please see https://github.com/zikula/core/wiki/Contributing
 
-Pull requests should use the following desription template:
+The following temmplate MUST be used in the PR body. Do not abbreviate.
+
 
 ```
 | Q             | A
 | ------------- | ---
-| Bug fix?      | [yes|no]
-| New feature?  | [yes|no]
-| BC breaks?    | [yes|no]
-| Deprecations? | [yes|no]
-| Tests pass?   | [yes|no]
-| Fixed tickets | [comma separated list of tickets fixed by the PR]
-| Refs tickets  | [comma separated list of tickets fixed by the PR]
+| Bug fix?      | no
+| New feature?  | no
+| BC breaks?    | no
+| Deprecations? | no
+| Tests pass?   | yes
+| Fixed tickets | -
+| Refs tickets  | -
 | License       | MIT
-| Doc PR        | [The reference to the documentation PR if any]
+| Doc PR        | -
 ```
 
 For example:
@@ -35,7 +36,7 @@ For example:
 | Doc PR        | zikula/zikula-docs#123
 ```
 
-If there are any todos, please use this template:
+If there are any todos, please add this template:
 
 ```
 - [ ] fix the tests as they have not been updated yet
