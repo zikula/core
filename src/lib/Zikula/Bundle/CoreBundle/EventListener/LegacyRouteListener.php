@@ -98,7 +98,7 @@ class LegacyRouteListener implements EventSubscriberInterface
                     // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
                     $response = new Response(__('Page not found.'), 404);
 
-                    return $event->setResponse($response);
+                    return $this->setResponse($event, $response);
                 } else {
                     if (true === $return) {
                         // controllers should not return boolean anymore, this is BC for the time being.
@@ -131,12 +131,12 @@ class LegacyRouteListener implements EventSubscriberInterface
                 );
                 $response = new RedirectResponse($url, 302);
                 LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url);
-                $event->setResponse($response);
+                $this->setResponse($event, $response);
             }
         } else {
             throw new \Exception('Something unexpected happened');
         }
-        $event->setResponse($response);
+        $this->setResponse($event, $response);
     }
 
     private function ajax(GetResponseEvent $event)
@@ -184,7 +184,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             $response = new AjaxResponse($response, LogUtil::getStatusMessages());
         }
 
-        return $event->setResponse($response);
+        return $this->setResponse($event, $response);
     }
 
     public function onException(GetResponseForExceptionEvent $event)
@@ -201,7 +201,7 @@ class LegacyRouteListener implements EventSubscriberInterface
             );
             $response = new RedirectResponse($url, 302);
             LogUtil::registerError(LogUtil::getErrorMsgPermission(), 403, $url, false);
-            $event->setResponse($response);
+            $this->setResponse($event, $response);
             $event->stopPropagation();
         }
     }
@@ -233,8 +233,8 @@ class LegacyRouteListener implements EventSubscriberInterface
         if (\SessionUtil::hasExpired()) {
             // Session has expired, display warning
             $response = new Response(\ModUtil::apiFunc('ZikulaUsersModule', 'user', 'expiredsession', 403));
-            $response = \Zikula_View_Theme::getInstance()->themefooter($response);
-            $event->setResponse($response);
+            //$response = \Zikula_View_Theme::getInstance()->themefooter($response);
+            $this->setResponse($event, $response);
         }
     }
 
@@ -245,5 +245,11 @@ class LegacyRouteListener implements EventSubscriberInterface
             KernelEvents::REQUEST => array(array('onKernelRequestSessionExpire', 31)),
             KernelEvents::REQUEST => array(array('onKernelRequest', 31)),
         );
+    }
+
+    private function setResponse(GetResponseEvent $event, Response $response)
+    {
+        $response->legacy = true;
+        $event->setResponse($response);
     }
 }
