@@ -40,14 +40,14 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
     /**
      * Display hook response object.
      *
-     * @var Zikula\Core\Hook\DisplayHookResponse
+     * @var \Zikula\Core\Hook\DisplayHookResponse
      */
     protected $display;
 
     /**
      * Validation object.
      *
-     * @var Zikula\Core\Hook\ValidationResponse
+     * @var \Zikula\Core\Hook\ValidationResponse
      */
     protected $validation;
 
