@@ -122,10 +122,6 @@ abstract class AbstractBundle extends Bundle
 
     public function getContainerExtension()
     {
-        if ($this->getState() != self::STATE_ACTIVE) {
-            return $this->extension = false;
-        }
-
         $type = $this->getNameType();
         $typeLower = strtolower($type);
         if (null === $this->extension) {
