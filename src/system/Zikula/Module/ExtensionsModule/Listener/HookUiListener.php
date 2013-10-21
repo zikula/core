@@ -174,7 +174,8 @@ class HookUiListener
 
                     // create an instance of the provider's version
                     $sbaProviderModuleVersionOld = $sbaProviderModule.'_Version';
-                    $sbaProviderModuleVersion = "$sbaProviderModule\\{$sbaProviderModule}Version";
+                    $module = \ModUtil::getModule($sbaProviderModule);
+                    $sbaProviderModuleVersion = $module->getVersionClass();
                     $sbaProviderModuleVersion = class_exists($sbaProviderModuleVersion) ? $sbaProviderModuleVersion : $sbaProviderModuleVersionOld;
 
                     $sbaProviderModuleVersionObj = new $sbaProviderModuleVersion;
