@@ -27,7 +27,7 @@ class ValidationHook extends Hook
     /**
      * @var ValidationProviders
      */
-    private $validators;
+    protected $validators;
 
     public function __construct(ValidationProviders $validators)
     {
