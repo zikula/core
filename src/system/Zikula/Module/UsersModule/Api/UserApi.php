@@ -298,8 +298,13 @@ class UserApi extends \Zikula_AbstractApi
         $adminRequested = (isset($args['adminRequest']) && is_bool($args['adminRequest']) && $args['adminRequest']);
 
         if ($args['idfield'] == 'email') {
-            $dql = "SELECT count(u.uid) FROM Zikula\\Module\\UsersModule\\Entity\\UserEntity u WHERE u.email = '{$args['id']}'";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('count(u.uid)')
+                                         ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                         ->where('u.email = :email')
+                                         ->setParameter('email', $args['id'])
+                                         ->getQuery();
+
             $ucount = (int)$query->getSingleScalarResult();
 
             if ($ucount > 1) {
@@ -382,8 +387,14 @@ class UserApi extends \Zikula_AbstractApi
             $hashedConfirmationCode = UserUtil::getHashedPassword($confirmationCode);
 
             if ($hashedConfirmationCode !== false) {
-                $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $user['uid'] . " AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                             ->where('v.uid = :uid')
+                                             ->andWhere('v.changetype = :changetype')
+                                             ->setParameter('uid', $user['uid'])
+                                             ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+                                             ->getQuery();
                 $query->getResult();
 
                 $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
@@ -472,8 +483,14 @@ class UserApi extends \Zikula_AbstractApi
                 $staleRecordUTC->modify("-{$chgPassExpireDays} days");
                 $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-                $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_PWD;
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                             ->where('v.created_dt < :staleRecordUTCStr')
+                                             ->andWhere('v.changetype = :changetype')
+                                             ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
+                                             ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+                                             ->getQuery();
                 $query->getResult();
             }
 
@@ -580,8 +597,14 @@ class UserApi extends \Zikula_AbstractApi
         $confirmCode = UserUtil::generatePassword();
         $confirmCodeHash = UserUtil::getHashedPassword($confirmCode);
 
-        $dql = 'DELETE FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.uid = ' . $uid . ' AND v.changetype = ' . UsersConstant::VERIFYCHGTYPE_EMAIL;
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                     ->where('v.uid = :uid')
+                                     ->andWhere('v.changetype = :changetype')
+                                     ->setParameter('uid', $uid)
+                                     ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_EMAIL)
+                                     ->getQuery();
         $query->getResult();
 
         $obj = new \Zikula\Module\UsersModule\Entity\UserVerificationEntity;
@@ -641,8 +664,14 @@ class UserApi extends \Zikula_AbstractApi
             $staleRecordUTC->modify("-{$chgEmailExpireDays} days");
             $staleRecordUTCStr = $staleRecordUTC->format(UsersConstant::DATETIME_FORMAT);
 
-            $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.created_dt < '" . $staleRecordUTCStr . "' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->delete()
+                                         ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                         ->where('v.created_dt < :staleRecordUTCStr')
+                                         ->andWhere('v.changetype = :changetype')
+                                         ->setParameter('staleRecordUTCStr', $staleRecordUTCStr)
+                                         ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_PWD)
+                                         ->getQuery();
             $query->getResult();
         }
 
@@ -696,11 +725,16 @@ class UserApi extends \Zikula_AbstractApi
             }
         }
 
-        $dql = "DELETE FROM Zikula\\Module\\UsersModule\\Entity\\UserVerificationEntity v WHERE v.uid = " . $uid;
+        $qb = $this->entityManager->createQueryBuilder()
+                                  ->delete()
+                                  ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                                  ->where('v.uid = :uid')
+                                  ->setParameter('uid', $uid);
         if (isset($changeType)) {
-            $dql .= " AND v.changetype IN (" . implode(', ', $changeType) . ")";
+            $qb->andWhere($qb->expr()->in('v.changetype', ':changeType'))
+               ->setParameter('changeType', $changeType);
         }
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         $query->getResult();
     }
 
