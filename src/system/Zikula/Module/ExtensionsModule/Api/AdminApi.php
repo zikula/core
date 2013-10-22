@@ -51,7 +51,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function modify($args)
     {
-        return $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity')->findOneBy($args);
+        return $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findOneBy($args);
     }
 
     /**
@@ -99,7 +99,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Rename operation
         /* @var ExtensionEntity $entity */
-        $entity = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity')->findOneBy(array('id' => $args['id']));
+        $entity = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findOneBy(array('id' => $args['id']));
         $entity->setDisplayname($args['displayname']);
         $entity->setDescription($args['description']);
         $entity->setUrl($args['url']);
@@ -140,7 +140,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('e')
-           ->from('Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity', 'e');
+           ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e');
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
@@ -177,7 +177,6 @@ class AdminApi extends \Zikula_AbstractApi
                 break;
         }
 
-
         // add clause for ordering
         $sort = isset($args['sort']) ? (string)$args['sort'] : 'name';
         $sortdir = isset($args['sortdir']) && $args['sortdir'] ? $args['sortdir'] : 'ASC';
@@ -212,7 +211,8 @@ class AdminApi extends \Zikula_AbstractApi
     public function setState($args)
     {
         // Argument check
-        if (!isset($args['id']) || !is_numeric($args['id']) || !isset($args['state'])) {
+        if (!isset($args['id']) || !is_numeric($args['id']) || 
+            !isset($args['state']) || !is_numeric($args['state'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -224,7 +224,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // get module
-        $module = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity')->find($args['id']);
+        $module = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->find($args['id']);
         if (empty($module)) {
             return false;
         }
@@ -358,8 +358,12 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Delete any module variables that the module cleanup function might have missed
-        $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modinfo['name']}'";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                                     ->where('v.modname = :modname')
+                                     ->setParameter('modame', $modinfo['name'])
+                                     ->getQuery();
         $query->getResult();
 
         HookUtil::unregisterProviderBundles($version->getHookProviderBundles());
@@ -373,16 +377,25 @@ class AdminApi extends \Zikula_AbstractApi
             //delete the module infomation only if it is not allowed, missign or invalid
             if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
                 // remove the entry from the modules table
-                $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\Extension e WHERE e.id = {$args['id']}";
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('Zikula\Core\Doctrine\Entity\Extension', 'e')
+                                             ->where('e.id = :id')
+                                             ->setParameter('id', $args['id'])
+                                             ->getQuery();
                 $query->getResult();
             } else {
                 //set state as uninnitialised
                 ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $args['id'], 'state' => ModUtil::STATE_UNINITIALISED));
             }
         } else {
-            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity e WHERE e.id = {$args['id']}";
-            $query = $this->entityManager->createQuery($dql);
+            // remove the entry from the modules table
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->delete()
+                                         ->from('Zikula\Core\Doctrine\Entity\Extension', 'e')
+                                         ->where('e.id = :id')
+                                         ->setParameter('id', $args['id'])
+                                         ->getQuery();
             $query->getResult();
         }
 
@@ -621,14 +634,14 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity';
+        $entity = 'Zikula\Core\Doctrine\Entity\ExtensionEntity';
 
         // default action
         $filemodules = $args['filemodules'];
         $defaults = (isset($args['defaults']) ? $args['defaults'] : false);
 
         // Get all modules in DB
-        $allmodules = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity')->findAll();
+        $allmodules = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionEntity')->findAll();
         if (!$allmodules) {
             return LogUtil::registerError($this->__('Error! Could not load data.'));
         }
@@ -656,19 +669,21 @@ class AdminApi extends \Zikula_AbstractApi
                 foreach ($dbmodules as $dbname => $dbmodinfo) {
                     if (isset($dbmodinfo['name']) && in_array($dbmodinfo['name'], (array)$modinfo['oldnames'])) {
                         // migrate its modvars
-                        $dql = "
-                        UPDATE Zikula\\Core\\DoctrineEntity\\ExtensionVarEntity v
-                        SET v.modname = '{$modinfo['name']}'
-                        WHERE v.modname = '{$dbname}'";
-                        $query = $this->entityManager->createQuery($dql);
+                        $query = $this->entityManager->createQueryBuilder()
+                                                     ->update('UPDATE Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                                                     ->set('v.modname', $modinfo['name'])
+                                                     ->where('v.modname = :dbname')
+                                                     ->setParameter('dbanme', $dbname)
+                                                     ->getQuery();
                         $query->getResult();
 
                         // rename the module register
-                        $dql = "
-                        UPDATE Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity e
-                        SET e.name = '{$modinfo['name']}'
-                        WHERE e.id = {$dbmodules[$dbname]['id']}";
-                        $query = $this->entityManager->createQuery($dql);
+                        $query = $this->entityManager->createQueryBuilder()
+                                                     ->update('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
+                                                     ->set('e.name', $modinfo['name'])
+                                                     ->where('e.id = :dbname')
+                                                     ->setParameter('dbanme', $dbmodules[$dbname]['id'])
+                                                     ->getQuery();
                         $query->getResult();
 
                         // replace the old module with the new one in the dbmodules array
@@ -957,7 +972,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity';
+        $entity = 'Zikula\Core\Doctrine\Entity\ExtensionEntity';
 
         // Get module information
         $modinfo = ModUtil::getInfo($args['id']);
@@ -1110,7 +1125,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // add select and from params
         $qb->select('COUNT(e.id)')
-           ->from('Zikula\\Core\\Doctrine\\Entity\\ExtensionEntity', 'e');
+           ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e');
 
         // filter by first letter of module
         if (isset($args['letter']) && !empty($args['letter'])) {
@@ -1263,7 +1278,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function getalldependencies()
     {
-        $dependencies = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionDependencyEntity')->findBy(array(), array('modid' => 'ASC'));
+        $dependencies = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity')->findBy(array(), array('modid' => 'ASC'));
 
         return $dependencies;
     }
@@ -1283,7 +1298,7 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $dependencies = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionDependencyEntity')->findBy(array('modid' => $args['modid']));
+        $dependencies = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity')->findBy(array('modid' => $args['modid']));
 
         return $dependencies;
     }
@@ -1305,7 +1320,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $modinfo = ModUtil::getInfo($args['modid']);
 
-        $dependents = $this->entityManager->getRepository('Zikula\\Core\\Doctrine\\Entity\\ExtensionDependencyEntity')->findBy(array('modname' => $modinfo['name']));
+        $dependents = $this->entityManager->getRepository('Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity')->findBy(array('modname' => $modinfo['name']));
 
         return $dependents;
     }
