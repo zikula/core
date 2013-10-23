@@ -327,13 +327,17 @@ class ModUtil
 
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
-        if (empty($name)) {
-            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}'";
-        } else {
-            $dql = "DELETE FROM Zikula\\Core\\Doctrine\\Entity\\ExtensionVarEntity v WHERE v.modname = '{$modname}' AND v.name = '{$name}'";
+        $qb = $em->createQueryBuilder()
+                 ->from('DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                 ->where('v.modname = :modname')
+                 ->setParameter('modname', $modname);
+
+        if (!empty($name)) {
+            $qb->andWhere('v.name = :name')
+               ->setParameter('name', $name);
         }
 
-        $query = $em->createQuery($dql);
+        $query = $qb->getQuery();
         $result = $query->getResult();
 
         return (boolean)$result;
@@ -1856,6 +1860,8 @@ class ModUtil
     }
 
     /**
+     * Gets the object associated with a given module name 
+     *
      * @param $moduleName
      *
      * @return null|\Zikula\Core\AbstractModule
@@ -1873,6 +1879,8 @@ class ModUtil
     }
 
     /**
+     * Gets the file system path of the module relative to site root
+     *
      * @param $modName
      *
      * @return bool|mixed False or path
@@ -1889,6 +1897,13 @@ class ModUtil
         return $path;
     }
 
+    /**
+     * Checks if a module is a core (i.e. located in system/) module
+     *
+     * @param $modName
+     *
+     * @return bool|mixed False or path
+     */
     public static function isCore($module)
     {
         return ('system' === self::getModuleBaseDir($module)) ? true : false;
