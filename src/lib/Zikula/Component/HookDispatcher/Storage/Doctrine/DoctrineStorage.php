@@ -302,9 +302,9 @@ class DoctrineStorage implements StorageInterface
     public function bindSubscriber($subscriberArea, $providerArea)
     {
         $sa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneByAreaname($subscriberArea);
+                   ->findOneBy(array('areaname' => $subscriberArea));
         $pa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneByAreaname($providerArea);
+                   ->findOneBy(array('areaname' => $providerArea));
 
         if ($sa->getCategory() != $pa->getCategory()) {
             throw new \LogicException('Cannot bind areas from different categories.');
@@ -328,9 +328,9 @@ class DoctrineStorage implements StorageInterface
     public function unbindSubscriber($subscriberArea, $providerArea)
     {
         $sa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneByAreaname($subscriberArea);
+                   ->findOneBy(array('areaname' => $subscriberArea));
         $pa = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneByAreaname($providerArea);
+                   ->findOneBy(array('areaname' => $providerArea));
 
         $subscriberAreaId = $sa->getId();
         $providerAreaId = $pa->getId();
@@ -360,7 +360,7 @@ class DoctrineStorage implements StorageInterface
     public function getBindingsFor($areaName)
     {
         $area = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity')
-                     ->findOneByAreaname($areaName);
+                     ->findOneBy(array('areaname' => $areaName));
 
         if (!$area) {
             return array();
@@ -397,7 +397,7 @@ class DoctrineStorage implements StorageInterface
     public function setBindOrder($subscriberAreaName, array $providerAreaNames)
     {
         $sareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneByAreaname($subscriberAreaName)
+                        ->findOneBy(array('areaname' => $subscriberAreaName))
                         ->getId();
 
         // convert provider areanames to ids
@@ -405,7 +405,7 @@ class DoctrineStorage implements StorageInterface
         foreach ($providerAreaNames as $name) {
             $providerAreaIds[] =
                 $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                     ->findOneByAreaname($name)
+                     ->findOneBy(array('areaname' => $name))
                      ->getId();
         }
 
@@ -438,11 +438,11 @@ class DoctrineStorage implements StorageInterface
     public function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
         $sareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneByAreaname($subscriberArea)
+                        ->findOneBy(array('areaname' => $subscriberArea))
                         ->getId();
 
         $pareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneByAreaname($providerArea)
+                        ->findOneBy(array('areaname' => $providerArea))
                         ->getId();
 
         return $this->em->createQueryBuilder()->select('t')
@@ -455,7 +455,7 @@ class DoctrineStorage implements StorageInterface
     public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
         $sareaId = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneByAreaname($subscriberArea)
+                        ->findOneBy(array('areaname' => $subscriberArea))
                         ->getId();
 
         $subscribers =
@@ -470,7 +470,7 @@ class DoctrineStorage implements StorageInterface
         foreach ($subscribers as $subscriber) {
             $pareaId =
                 $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                     ->findOneByAreaname($providerArea)
+                     ->findOneBy(array('areaname' => $providerArea))
                      ->getId();
 
             $hookprovider =
@@ -528,7 +528,7 @@ class DoctrineStorage implements StorageInterface
     public function getAreaId($areaName)
     {
         $hookArea = $this->em->getRepository('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneByAreaname($areaName);
+                   ->findOneBy(array('areaname' => $areaName));
 
         if (!$hookArea) {
             return false;
