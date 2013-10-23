@@ -835,7 +835,7 @@ class AdminController extends \Zikula_AbstractController
                 if (!ModUtil::available($modinfo['name'])) {
                     unset($dependents[$key]);
                 } else {
-                    $dependents[$key] = array_merge($dependents[$key], $modinfo);
+                    $dependents[$key] = array_merge($dependents[$key]->toArray(), $modinfo);
                 }
             }
 
