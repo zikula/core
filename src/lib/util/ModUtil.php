@@ -804,30 +804,7 @@ class ModUtil
             return $modname;
         }
 
-        // is OOP module
-        if (self::isOO($modname)) {
-            self::initOOModule($modname);
-        } else {
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-            $ostype = DataUtil::formatForOS($type);
-
-            $cosfile = "config/functions/$osdir/pn{$ostype}{$osapi}.php";
-            $mosfile = "$modpath/$osdir/pn{$ostype}{$osapi}.php";
-            $mosdir = "$modpath/$osdir/pn{$ostype}{$osapi}";
-
-            if (file_exists($cosfile)) {
-                // Load the file from config
-                include_once $cosfile;
-            } elseif (file_exists($mosfile)) {
-                // Load the file from modules
-                include_once $mosfile;
-            } elseif (is_dir($mosdir)) {
-
-            } else {
-                // File does not exist
-                return false;
-            }
-        }
+        self::initOOModule($modname);
 
         self::$cache['loaded'][$modtype] = $modname;
 
@@ -900,11 +877,6 @@ class ModUtil
      */
     public static function getClass($modname, $type, $api = false, $force = false)
     {
-        // do not cache this process - drak
-        if (!self::isOO($modname)) {
-            return false;
-        }
-
         if ($api) {
             $result = self::loadApi($modname, $type);
         } else {
@@ -1730,6 +1702,8 @@ class ModUtil
      *
      * @param string $moduleName Module name.
      *
+     * @deprecated
+     *
      * @return boolean
      */
     public static function isOO($moduleName)
@@ -1739,24 +1713,11 @@ class ModUtil
             self::$ooModules[$moduleName]['initialized'] = false;
             self::$ooModules[$moduleName]['oo'] = false;
             $modinfo = self::getInfo(self::getIdFromName($moduleName));
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
-            $osdir = DataUtil::formatForOS($modinfo['directory']);
-
             if (!$modinfo) {
                 return false;
             }
 
-            if (file_exists("$modpath/$osdir/$osdir.php")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (file_exists("$modpath/$osdir/{$osdir}Version.php")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (is_dir("$modpath/$osdir/lib")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (file_exists("$modpath/$osdir/Version.php")) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            } else if (self::getModule($moduleName)) {
-                self::$ooModules[$moduleName]['oo'] = true;
-            }
+            self::$ooModules[$moduleName]['oo'] = true;
         }
 
         return self::$ooModules[$moduleName]['oo'];
@@ -1816,10 +1777,6 @@ class ModUtil
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.png';
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.jpg';
         $paths[] = $modpath . '/' . $osmoddir . '/images/admin.gif';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.gif';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.jpg';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.jpeg';
-        $paths[] = $modpath . '/' . $osmoddir . '/pnimages/admin.png';
         $paths[] = 'system/Zikula/Module/AdminModule/Resources/public/images/default.gif';
 
         foreach ($paths as $path) {

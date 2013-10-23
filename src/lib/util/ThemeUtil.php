@@ -302,8 +302,6 @@ class ThemeUtil
         }
         $paths[] = "modules/$osmoddir/style";
         $paths[] = "system/$osmoddir/style";
-        $paths[] = "modules/$osmoddir/pnstyle";
-        $paths[] = "system/$osmoddir/pnstyle";
 
         // search for the style sheet
         $csssrc = '';
