@@ -230,11 +230,12 @@ class DoctrineStorage implements StorageInterface
 
     public function getOwnerByArea($areaName)
     {
-        return $this->em->createQueryBuilder()->select('t')
+        $hookarea = $this->em->createQueryBuilder()->select('t')
                     ->from('Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
-                    ->where('areaname = ?1')
+                    ->where('t.areaname = ?1')
                     ->getQuery()->setParameter(1, $areaName)
-                    ->getSingleScalarResult();
+                    ->getSingleResult();
+        return $hookarea->getOwner();
     }
 
     private function generateRuntimeHandlers()
