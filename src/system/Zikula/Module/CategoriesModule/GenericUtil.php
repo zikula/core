@@ -47,17 +47,20 @@ class GenericUtil
 
         // check that we don't have another category with the same name
         // on the same level
-        $dql = "
-        SELECT count(c.id)
-        FROM Zikula\\Module\\CategoriesModule\\Entity\\CategoryEntity c
-        WHERE c.name = '" . $data['name'] . "'
-          AND c.parent = " . $data['parent_id'];
+        $qb = $em->createQueryBuilder();
+        $qb->select('count(c.id)')
+           ->from('Zikula\Module\CategoriesModule\Entity\CategoryEntity', 'c')
+           ->where('c.name = :name')
+           ->andWhere('c.parent = :parentid')
+           ->setParameter('name', $data['name'])
+           ->setParameter('parentid', $data['parent_id']);
 
         if (isset($data['id']) && is_numeric($data['id'])) {
-            $dql .= " AND c.id <> " . $data['id'];
+            $qb->andWhere('c.cid <> :id')
+               ->setParaemter('id', $data['id']);
         }
 
-        $query = $em->createQuery($dql);
+        $query = $qb->getQuery();
         $exists = (int)$query->getSingleScalarResult();
         if ($exists > 0) {
             $msg = $view->__f('Category %s must be unique under parent', $data['name']);
