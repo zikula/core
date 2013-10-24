@@ -46,16 +46,8 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Argument check
-        if (!isset($args['pid'])) {
+        if (!isset($args['pid']) || is_numeric($args['pid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
-        }
-
-        if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where_gid = " AND (p.gid = " . SecurityUtil::PERMS_ALL . " OR p.gid = " . DataUtil::formatForStore($args['permgrp']) . ")";
-            $showpartly = true;
-        } else {
-            $where_gid = '';
-            $showpartly = false;
         }
 
         // get info on current perm
@@ -70,10 +62,23 @@ class AdminApi extends \Zikula_AbstractApi
             $altsequence = $sequence - 1;
 
             // get info on displaced perm
-            $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p $where";
-            $query = $this->entityManager->createQuery($dql);
-            $d_permission = $query->getOneOrNullResult();
+            $qb = $this->entityManager->createQueryBuilder()
+                                      ->select('p)')
+                                      ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                      ->where('p.sequence = :altsequence')
+                                      ->setParameter('altsequence', $altsequence);
+
+            if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
+                $qb->andWhere('(p.gid = :permsall OR p.gid = :permgrp)')
+                   ->setParameter('permsall', SecurityUtil::PERMS_ALL)
+                   ->setParameter('permgrp', $args['permgrp']);
+                $showpartly = true;
+            } else {
+                $showpartly = false;
+            }
+
+            $d_permission = $qb->getQuery()
+                               ->getOneOrNullResult();
 
             if (!$d_permission) {
                 if ($showpartly) {
@@ -118,7 +123,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Argument check
-        if (!isset($args['pid'])) {
+        if (!isset($args['pid']) || is_numeric($args['pid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -143,10 +148,23 @@ class AdminApi extends \Zikula_AbstractApi
             $altsequence = $sequence + 1;
 
             // get info on displaced perm
-            $where = "WHERE p.sequence = " . (int)DataUtil::formatForStore($altsequence) . " $where_gid";
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p $where";
-            $query = $this->entityManager->createQuery($dql);
-            $d_permission = $query->getOneOrNullResult();
+            $qb = $this->entityManager->createQueryBuilder()
+                                      ->select('p)')
+                                      ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                      ->where('p.sequence = :altsequence')
+                                      ->setParameter('altsequence', $altsequence);
+
+            if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
+                $qb->andWhere('(p.gid = :permsall OR p.gid = :permgrp)')
+                   ->setParameter('permsall', SecurityUtil::PERMS_ALL)
+                   ->setParameter('permgrp', $args['permgrp']);
+                $showpartly = true;
+            } else {
+                $showpartly = false;
+            }
+
+            $d_permission = $qb->getQuery()
+                               ->getOneOrNullResult();
 
             if (!$d_permission) {
                 if ($showpartly) {
@@ -179,6 +197,8 @@ class AdminApi extends \Zikula_AbstractApi
      * Update attributes of a permission.
      *
      * @param int    $args ['pid'] the ID of the permission to update.
+     * @param int    $args ['seq'] the order number of the permission.
+     * @param int    $args ['oldseq'] the old order number of the permission.
      * @param string $args ['realm'] the new realm of the permission.
      * @param int    $args ['id'] the new group/user id of the permission.
      * @param string $args ['component'] the new component of the permission.
@@ -195,14 +215,14 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Argument check
-        if ((!isset($args['pid'])) ||
-                (!isset($args['seq'])) ||
-                (!isset($args['oldseq'])) ||
+        if ((!isset($args['pid']) || !is_numeric($args['pid'])) ||
+                (!isset($args['seq']) || !is_numeric($args['seq'])) ||
+                (!isset($args['oldseq']) || !is_numeric($args['oldseq'])) ||
                 (!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
+                (!isset($args['id']) || !is_numeric($args['id'])) ||
                 (!isset($args['component'])) ||
                 (!isset($args['instance'])) ||
-                (!isset($args['level']))) {
+                (!isset($args['level']) || !is_numeric($args['level']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -243,11 +263,11 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Argument check
         if ((!isset($args['realm'])) ||
-                (!isset($args['id'])) ||
+                (!isset($args['id']) || !is_numeric($args['id'])) ||
                 (!isset($args['component'])) ||
                 (!isset($args['instance'])) ||
-                (!isset($args['level'])) ||
-                (!isset($args['insseq']))) {
+                (!isset($args['level']) || !is_numeric($args['level'])) ||
+                (!isset($args['insseq']) || !is_numeric($args['insseq']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -288,7 +308,6 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a perm.
      *
-     * @param string $args ['type'] the type of the permission to update (user or group).
      * @param int    $args ['pid'] the ID of the permission to delete.
      *
      * @return boolean true on success, false on failure.
@@ -301,7 +320,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Argument check
-        if (!isset($args['pid'])) {
+        if (!isset($args['pid']) || !is_numeric($args['pid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -340,7 +359,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function resequence()
     {
         // Security check
-        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', "group::", ACCESS_ADMIN)) {
+        if (!SecurityUtil::checkPermission('ZikulaPermissionsModule::', 'group::', ACCESS_ADMIN)) {
             return LogUtil::registerPermissionError();
         }
 
