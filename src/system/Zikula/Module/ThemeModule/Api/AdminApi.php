@@ -60,6 +60,8 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * update theme settings
      *
+     * @param $themeinfo new theme information to update
+     *
      * @return bool true on success, false otherwise
      */
     public function updatesettings($args)
@@ -86,7 +88,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * set default site theme
      *
-     * optionally reset user theme selections
+     * @param $themename string the name of the theme to set as the default for the site
+     * @param $resetuserselected boolean if true any existing user chosen themes will be reset to the site default
+     *
+     * @return bool true on success, false otherwise
      */
     public function setasdefault($args)
     {
@@ -105,8 +110,11 @@ class AdminApi extends \Zikula_AbstractApi
 
         // if chosen reset all user theme selections
         if ($args['resetuserselected']) {
-            $dql = "UPDATE Zikula\Module\UsersModule\Entity\UserEntity u SET u.theme = ''";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->update('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                         ->set('u.theme', ':null')
+                                         ->setParameter('null', '')
+                                         ->getQuery();
             $query->getResult();
         }
 
@@ -121,6 +129,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * create running configuration
      *
+     * @param $themename string the name of the theme to create a running configuration for
+     *
+     * @return bool true on success, false otherwise
      */
     public function createrunningconfig($args)
     {
@@ -167,6 +178,10 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete a theme
+     *
+     * @param $themename string the name of the theme to delete
+     *
+     * @return bool true on success, false otherwise
      */
     public function delete($args)
     {
@@ -190,9 +205,14 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // reset the theme for any users utilising this theme.
-        $dql = "UPDATE Zikula\Module\UsersModule\Entity\UserEntity u SET u.theme = '' WHERE u.theme = :themeName";
-        $query = $this->entityManager->createQuery($dql);
-        $query->setParameter('themeName', $themeinfo['name']);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->update('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                     ->set('u.theme', ':null')
+                                     ->where('u.theme = :themeName')
+                                     ->setParameter('null', '')
+                                     ->setParameter('themeName', $themeinfo['name'])
+                                     ->getQuery();
+
         $result = $query->getResult();
         if (!$result) {
             return false;
@@ -229,6 +249,10 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete theme files from the file system if possible
+     *
+     * @param $themename string the name of the theme to remove from the file system
+     *
+     * @return bool true on success, false otherwise
      */
     public function deletefiles($args)
     {
@@ -266,6 +290,10 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete a running configuration
+     *
+     * @param $themename the name of the theme of which to the delete the running configuration
+     *
+     * @return bool true on success, false otherwise
      */
     public function deleterunningconfig($args)
     {
@@ -305,6 +333,9 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete ini file
+     *
+     * @param $file string the name of the ini file to delete
+     * @param $themename string the name of the theme to which the ini file belongs
      */
     public function deleteinifile($args)
     {
@@ -334,6 +365,11 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * delete a page configuration assignment
+     *
+     * @param $pcname string the name of the page configuration
+     * @param $themename string the name of the theme the page configuration belongs to
+     *
+     * @return bool true on success, false otherwise
      */
     public function deletepageconfigurationassignment($args)
     {
