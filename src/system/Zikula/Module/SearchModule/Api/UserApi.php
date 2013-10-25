@@ -258,9 +258,7 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function log($args)
     {
-        $searchterms = DataUtil::formatForStore($args['q']);
-
-        $obj = $this->entityManager->getRepository('Zikula\Module\SearchModule\Entity\SearchStatEntity')->findOneBy(array('search' => $searchterms));
+        $obj = $this->entityManager->getRepository('Zikula\Module\SearchModule\Entity\SearchStatEntity')->findOneBy(array('search' => $args['q']));
 
         if (!$obj) {
             $obj = new SearchStatEntity();
@@ -469,5 +467,4 @@ class UserApi extends \Zikula_AbstractApi
 
         return $links;
     }
-
 }
