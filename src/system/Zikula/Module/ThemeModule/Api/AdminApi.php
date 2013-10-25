@@ -219,8 +219,13 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete theme
-        $dql = "DELETE FROM Zikula\\Module\\ThemeModule\\Entity\\ThemeEntity t WHERE t.id = {$themeid}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\ThemeModule\Entity\ThemeEntity', 't')
+                                     ->where('t.id = :id')
+                                     ->setParameter('gid', $themeid)
+                                     ->getQuery();
+
         $result = $query->getResult();
         if (!$result) {
             return LogUtil::registerError(__('Error! Could not perform the deletion.'));
