@@ -610,7 +610,7 @@ class UserApi extends \Zikula_AbstractApi
         $obj = new \Zikula\Module\UsersModule\Entity\UserVerificationEntity;
         $obj['changetype'] = UsersConstant::VERIFYCHGTYPE_EMAIL;
         $obj['uid'] = $uid;
-        $obj['newemail'] = DataUtil::formatForStore($args['newemail']);
+        $obj['newemail'] = $args['newemail'];
         $obj['verifycode'] = $confirmCodeHash;
         $obj['created_dt'] = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
         $this->entityManager->persist($obj);

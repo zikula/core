@@ -72,6 +72,12 @@ class AdminApi extends \Zikula_AbstractApi
         // Set query conditions (unless some one else sends a hardcoded one)
         $where = array();
 
+        $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u $where ORDER BY u.uname ASC";
+        $qb = $this->entityManager->createQueryBuilder()
+                                  ->select('u')
+                                  ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                  ->orderBy('u.name', 'ASC');
+
         if (!isset($args['condition']) || !$args['condition']) {
             // Do not include anonymous user
             $where[] = "u.uid <> 1";
@@ -81,29 +87,34 @@ class AdminApi extends \Zikula_AbstractApi
                     switch ($arg) {
                         case 'uname':
                         case 'email':
-                            $where[] = "u.$arg LIKE '%" . DataUtil::formatForStore($value) . "%'";
+                            $qb->andWhere($qb->expr()->like('u.email', ':value'))
+                               ->setParameter('value', $value);                            
                             break;
 
                         case 'ugroup':
                             $uidList = UserUtil::getUsersForGroup($value);
                             if (is_array($uidList) && !empty($uidList)) {
-                                $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
+                                $qb->andWhere($qb->expr()->in('u.uid', ':uids'))
+                                   ->setParameter('uids', $uidList);                            
                             }
                             break;
 
                         case 'regdateafter':
-                            $where[] = "u.user_regdate > '" . DataUtil::formatForStore($value) . "'";
+                            $qb->andWhere('u.user_regdate > :value')
+                               ->setParameter('value', $value);                            
                             break;
 
                         case 'regdatebefore':
-                            $where[] = "u.user_regdate < '" . DataUtil::formatForStore($value) . "'";
+                            $qb->andWhere('u.user_regdate < :value')
+                               ->setParameter('value', $value);                            
                             break;
 
                         case 'dynadata':
                             if ($useProfileMod) {
                                 $uidList = ModUtil::apiFunc($profileModule, 'user', 'searchDynadata', array('dynadata' => $value));
                                 if (is_array($uidList) && !empty($uidList)) {
-                                    $where[] = "u.uid IN (" . implode(', ', $uidList) . ")";
+                                    $qb->andWhere($qb->expr()->in('u.uid', ':uids'))
+                                       ->setParameter('uids', $uidList);                            
                                 }
                             }
                             break;
@@ -116,12 +127,10 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // TODO - Should this exclude pending delete too?
-        $where[] = "u.activated <> " . UsersConstant::ACTIVATED_PENDING_REG;
+        $qb->andWhere('u.activated <> :statusfilter')
+           ->setParameter('statusfilter', UsersConstant::ACTIVATED_PENDING_REG);
 
-        $where = 'WHERE ' . implode(' AND ', $where);
-
-        $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u $where ORDER BY u.uname ASC";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         $objArray = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         return $objArray;
