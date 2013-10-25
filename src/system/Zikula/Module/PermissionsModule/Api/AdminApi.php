@@ -63,7 +63,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             // get info on displaced perm
             $qb = $this->entityManager->createQueryBuilder()
-                                      ->select('p)')
+                                      ->select('p')
                                       ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
                                       ->where('p.sequence = :altsequence')
                                       ->setParameter('altsequence', $altsequence);
@@ -127,14 +127,6 @@ class AdminApi extends \Zikula_AbstractApi
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        if (!is_null($args['permgrp']) && ($args['permgrp'] != SecurityUtil::PERMS_ALL)) {
-            $where_gid = " AND (p.gid = " . SecurityUtil::PERMS_ALL . " OR p.gid = " . DataUtil::formatForStore($args['permgrp']) . ")";
-            $showpartly = true;
-        } else {
-            $where_gid = '';
-            $showpartly = false;
-        }
-
         // get info on current perm
         $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $args['pid']);
         if (!$permission) {
@@ -149,7 +141,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             // get info on displaced perm
             $qb = $this->entityManager->createQueryBuilder()
-                                      ->select('p)')
+                                      ->select('p')
                                       ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
                                       ->where('p.sequence = :altsequence')
                                       ->setParameter('altsequence', $altsequence);
@@ -277,8 +269,12 @@ class AdminApi extends \Zikula_AbstractApi
             $newseq = $maxseq + 1;
         } else {
             // Increase sequence numbers
-            $dql = "UPDATE Zikula\Module\PermissionsModule\Entity\PermissionEntity p SET p.sequence = p.sequence + 1 WHERE p.sequence >= " . (int)DataUtil::formatForStore($args['insseq']);
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->update('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                         ->set('p.sequence = p.sequence + 1')
+                                         ->where('p.sequence >= :insseq')
+                                         ->setParameter('insseq', $args['insseq'])
+                                         ->getQuery();
             $result = $query->getResult();
 
             if (!$result) {

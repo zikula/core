@@ -102,7 +102,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $permorder = $this->request->request->get('permorder');
 
         for($cnt = 0 ; $cnt < count($permorder) ; $cnt++) {
-            $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', (int)DataUtil::formatForStore($permorder[$cnt]));
+            $permission = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $permorder[$cnt]);
             $permission['sequence'] = $cnt;
         }
 
