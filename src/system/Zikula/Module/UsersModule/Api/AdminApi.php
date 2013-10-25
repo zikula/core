@@ -202,16 +202,24 @@ class AdminApi extends \Zikula_AbstractApi
             } else {
                 // remove all memberships of this user
                 // TODO? - This should be in the Groups module, and happen as a result of an event.
-                $dql = "DELETE FROM Zikula\Module\GroupsModule\Entity\GroupMembershipEntity m WHERE m.uid = {$userObj['uid']}";
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
+                                             ->where('m.uid = :uid')
+                                             ->setParameter('gid', $userObj['uid'])
+                                             ->getQuery();
                 $query->getResult();
 
                 // delete verification records for this user
                 ModUtil::apiFunc($this->name, 'user', 'resetVerifyChgFor', array('uid' => $userObj['uid']));
 
                 // delete session
-                $dql = "DELETE FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.uid = {$userObj['uid']}";
-                $query = $this->entityManager->createQuery($dql);
+                $query = $this->entityManager->createQueryBuilder()
+                                             ->delete()
+                                             ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                             ->where('u.uid = :uid')
+                                             ->setParameter('gid', $userObj['uid'])
+                                             ->getQuery();
                 $query->getResult();
 
                 // delete user
