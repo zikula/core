@@ -217,8 +217,12 @@ class UserApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $query = $this->entityManager->createQuery('SELECT COUNT(s.id) FROM Zikula\Module\SearchModule\Entity\SearchStatEntity s');
-        return $query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(s.id)')
+                                     ->from('Zikula\Module\SearchModule\Entity\SearchStatEntity', 's')
+                                     ->getQuery();
+
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
