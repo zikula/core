@@ -128,16 +128,24 @@ class AdminApi extends \Zikula_AbstractApi
         $this->entityManager->flush();
 
         // remove all memberships of this group
-        $dql = "DELETE FROM Zikula\Module\GroupsModule\Entity\GroupMembershipEntity m WHERE m.gid = {$args['gid']}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
+                                     ->where('m.gid = :gid')
+                                     ->setParameter('gid', $args['gid'])
+                                     ->getQuery();
         $query->getResult();
 
         // TODO: Is there any reason why we don't delete group applications?
         //
 
         // Remove any group permissions for this group
-        $dql = "DELETE FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p WHERE p.gid = {$args['gid']}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                     ->where('p.gid = :gid')
+                                     ->setParameter('gid', $args['gid'])
+                                     ->getQuery();
         $query->getResult();
 
         // Let other modules know that we have deleted a group.
@@ -444,9 +452,12 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $dql = "SELECT count(g.gid) FROM Zikula\Module\GroupsModule\Entity\GroupEntity g";
-        $query = $this->entityManager->createQuery($dql);
-        return (int)$query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(g.gid)')
+                                     ->from('Zikula\Module\GroupsModule\Entity\GroupEntity', 'g')
+                                     ->getQuery();
+
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
