@@ -342,9 +342,12 @@ class AdminApi extends \Zikula_AbstractApi
             return LogUtil::registerPermissionError();
         }
 
-        $dql = "SELECT MAX(p.sequence) FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p";
-        $query = $this->entityManager->createQuery($dql);
-        return (int)$query->getSingleScalarResult();
+        $qb = $this->entityManager->createQueryBuilder();
+        $query = $qb->select($qb->expr()->max('p.sequence'))
+                    ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                    ->getQuery();
+
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
@@ -416,8 +419,16 @@ class AdminApi extends \Zikula_AbstractApi
                 $newseq = 1;
             }
 
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p WHERE p.sequence >= {$newseq} AND p.sequence <= {$oldseq} ORDER BY p.sequence DESC";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('p')
+                                         ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                         ->where('p.sequence >= :newseq')
+                                         ->andWhere('p.sequence <= :oldseq')
+                                         ->setParameter('newseq', $newseq)
+                                         ->setParameter('oldseq', $oldseq)
+                                         ->orderBy('p.sequence', 'DESC')
+                                         ->getQuery();
+
             $permissions = $query->getResult();
 
             foreach ($permissions as $permission) {
@@ -442,8 +453,16 @@ class AdminApi extends \Zikula_AbstractApi
                 $newseq = (int)$maxseq;
             }
 
-            $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p WHERE p.sequence >= {$oldseq} AND p.sequence <= {$newseq} ORDER BY p.sequence ASC";
-            $query = $this->entityManager->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('p')
+                                         ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                         ->where('p.sequence >= :oldseq')
+                                         ->andWhere('p.sequence <= :newseq')
+                                         ->setParameter('oldseq', $oldseq)
+                                         ->setParameter('newseq', $newseq)
+                                         ->orderBy('p.sequence', 'ASC')
+                                         ->getQuery();
+
             $permissions = $query->getResult();
 
             foreach ($permissions as $permission) {
