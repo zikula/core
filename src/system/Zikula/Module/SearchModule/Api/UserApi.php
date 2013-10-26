@@ -111,7 +111,7 @@ class UserApi extends \Zikula_AbstractApi
                                          ->select('count(s.sesid)')
                                          ->from('Zikula\Module\SearchModule\Entity\SearchResultEntity', 's')
                                          ->where('s.sesid = :sid')
-                                         ->setParameter('sid',$sessionId);
+                                         ->setParameter('sid',$sessionId)
                                          ->getQuery();
             $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
@@ -208,8 +208,8 @@ class UserApi extends \Zikula_AbstractApi
         // Get items
         $qb = $this->entityManager->createQueryBuilder()
                                   ->select('s')
-                                  ->from('Zikula\Module\SearchModule\Entity\SearchStatEntity', 's')
-        if (isset($args['sortorder']))
+                                  ->from('Zikula\Module\SearchModule\Entity\SearchStatEntity', 's');
+        if (isset($args['sortorder'])) {
             $qb->orderBy('s.'.$args['sortorder'], 'DESC');
         }
         $query = $qb->setMaxResults($args['numitems'])
