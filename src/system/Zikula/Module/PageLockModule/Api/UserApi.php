@@ -32,6 +32,17 @@ class UserApi extends \Zikula_AbstractApi
      */
     const PAGELOCKLIFETIME = 30;
 
+    /**
+     * Add the page locking code to the page header
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * @param $args['lockName']         The name of the lock to be released
+     * @param $args['returnUrl']        The URL to return control to (optional) (default: null)
+     * @param $args['ignoreEmptyLock']  Ignore an empty lock name (optional) (default: false)
+     *
+     * @returns bool true
+     */
     public function pageLock($args)
     {
         $lockName = $args['lockName'];
@@ -94,6 +105,17 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
     }
 
 
+    /**
+     * Generate a lock on a page
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * @param $args['lockName']   The name of the page to create/update a lock on
+     * @param $args['sessionId']  The ID of the session owning the lock (optional) (default: current session ID
+     *
+     * @returns array('haslock' => true if this user has a lock, false otherwise,
+     *                'lockedBy' => if 'haslock' is false then the user who has the lock, null otherwise)
+     */
     public function requireLock($args)
     {
         $lockName = $args['lockName'];
@@ -117,23 +139,30 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $args['lockedBy'] = null;
 
-        $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
-
         // Look for existing lock
-        $query = $this->entityManager->createQuery("SELECT COUNT(p.id) FROM $entity p WHERE p.name = :lockName AND p.session = :sessionId");
-        $query->setParameter('lockName', $lockName);
-        $query->setParameter('sessionId', $sessionId);
-        $count = $query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(p.id)')
+                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->where('p.name = :lockName')
+                                     ->setParameter('lockName', $lockName)
+                                     ->andWhere('p.session = :sessionId')
+                                     ->setParameter('sessionId', $sessionId)
+                                     ->getQuery();
+        $count = (int)$query->getSingleScalarResult();
 
         $now = time();
         $expireDate = $now + self::PAGELOCKLIFETIME;
 
         if ($count > 0) {
             // update the existing lock with a new expiry date
-            $dql = "UPDATE $entity p SET p.edate = {$expireDate} WHERE p.name = :lockName AND p.session = :sessionId";
-            $query = $this->entityManager->createQuery($dql);
-            $query->setParameter('lockName', $lockName);
-            $query->setParameter('sessionId', $sessionId);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->update('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                         ->set('p.edate = :expireDate')
+                                         ->where('p.name = :lockName')
+                                         ->setParameter('lockName', $lockName)
+                                         ->andWhere('p.session = :sessionId')
+                                         ->setParameter('sessionId', $sessionId)
+                                         ->getQuery();
             $query->getResult();
             $this->entityManager->flush();
         } else {
@@ -156,6 +185,16 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
     }
 
 
+    /**
+     * Get all the locks for a given page
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * @param $args['lockName']   The name of the page to return locks for
+     * @param $args['sessionId']  The ID of the session owning the lock (optional) (default: current session ID)
+     *
+     * @return array array of locks for $args['lockName']
+     */
     public function getLocks($args)
     {
         $lockName = $args['lockName'];
@@ -163,19 +202,24 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $now = time();
-
-        $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
-
         // remove expired locks
-        $query = $this->entityManager->createQuery("DELETE FROM $entity p WHERE p.edate < :now");
-        $query->setParameter('now', $now);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->where('p.edate < :now')
+                                     ->setParameter('now', time())
+                                     ->getQuery();
         $query->getResult();
 
         // get remaining active locks
-        $query = $this->entityManager->createQuery("SELECT p FROM $entity p WHERE p.name = :lockName AND p.session = :sessionId");
-        $query->setParameter('lockName', $lockName);
-        $query->setParameter('sessionId', $sessionId);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('p')
+                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->where('p.name = :lockName')
+                                     ->setParameter('lockName', $lockName)
+                                     ->andWhere('p.session = :sessionId')
+                                     ->setParameter('sessionId', $sessionId)
+                                     ->getQuery();
         $locks = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         // now flush to database
@@ -186,6 +230,16 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         return $locks;
     }
 
+    /**
+     * Releases a lock on a page
+     *
+     * Parameters passed in the $args array:
+     * -------------------------------------
+     * @param $args['lockName']   The name of the lock to be released
+     * @param $args['sessionId']  The ID of the session owning the lock (optional) (default: current session ID)
+     *
+     * @return bool true
+     */
     public function releaseLock($args)
     {
         $lockName = $args['lockName'];
@@ -193,11 +247,16 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
 
         $this->_pageLockRequireAccess();
 
-        $entity = 'Zikula\Module\PageLockModule\Entity\PageLockEntity';
-        $query = $this->entityManager->createQuery("DELETE FROM $entity p WHERE p.name = :lockName AND p.session = :sessionId");
-        $query->setParameter('lockName', $lockName);
-        $query->setParameter('sessionId', $sessionId);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->delete()
+                                     ->from('Zikula\Module\PageLockModule\Entity\PageLockEntity', 'p')
+                                     ->where('p.name = :lockName')
+                                     ->setParameter('lockName', $lockName)
+                                     ->andWhere('p.session = :sessionId')
+                                     ->setParameter('sessionId', $sessionId)
+                                     ->getQuery();
         $query->getResult();
+
         $this->entityManager->flush();
 
         $this->_pageLockReleaseAccess();
@@ -205,8 +264,11 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         return true;
     }
 
-
-    // Internal locking mechanism to avoid concurrency inside the PageLock functions
+    /**
+     * Internal locking mechanism to avoid concurrency inside the PageLock functions
+     *
+     * @return null
+     */
     private function _pageLockRequireAccess()
     {
         global $PageLockAccessCount;
@@ -227,7 +289,11 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
     }
 
 
-    // Internal locking mechanism to avoid concurrency inside the PageLock functions
+    /**
+     * Internal locking mechanism to avoid concurrency inside the PageLock functions
+     *
+     * @return null
+     */
     private function _pageLockReleaseAccess()
     {
         global $PageLockAccessCount;
@@ -240,5 +306,4 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
             fclose($PageLockFile);
         }
     }
-
 }
