@@ -2935,7 +2935,11 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 include($_smarty_compile_path);
             }
         } else {
-            ob_start();
+            if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+                $obStarted = ob_start(null, 0, PHP_OUTPUT_HANDLER_STDFLAGS^PHP_OUTPUT_HANDLER_REMOVABLE);
+            } else {
+                $obStarted = ob_start(null, 0, false);
+            }
             if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
                 include($_smarty_compile_path);
             }
@@ -3045,4 +3049,9 @@ function z_prefilter_add_literal($tpl_source, $view)
 function z_prefilter_gettext_params($tpl_source, $view)
 {
     return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.+?))__([a-zA-Z0-9][a-zA-Z_0-9]*=([\'"])(?:\\\\?+.)*?\3)#', '$1$2|gt:\$zikula_view', $tpl_source);
+}
+
+function correctWD()
+{
+    chdir(dirname($_SERVER['SCRIPT_FILENAME']));
 }
