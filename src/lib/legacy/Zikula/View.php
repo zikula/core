@@ -850,7 +850,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $path .= '/' . $this->modinfo['directory'];
 
         if ($this instanceof Zikula_View_Plugin) {
-            $path .= '_' . $this->pluginName;
+            $path .= '_' . $this->getPluginName();
         }
 
         // add the cache_id path if set
