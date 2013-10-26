@@ -223,7 +223,7 @@ class AdminApi extends \Zikula_AbstractApi
                                      ->delete()
                                      ->from('Zikula\Module\ThemeModule\Entity\ThemeEntity', 't')
                                      ->where('t.id = :id')
-                                     ->setParameter('gid', $themeid)
+                                     ->setParameter('id', $themeid)
                                      ->getQuery();
 
         $result = $query->getResult();
