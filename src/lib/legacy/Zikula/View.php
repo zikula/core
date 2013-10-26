@@ -2936,9 +2936,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             }
         } else {
             if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
-                $obStarted = ob_start(null, 0, PHP_OUTPUT_HANDLER_STDFLAGS^PHP_OUTPUT_HANDLER_REMOVABLE);
+                ob_start(null, 0, PHP_OUTPUT_HANDLER_STDFLAGS^PHP_OUTPUT_HANDLER_REMOVABLE);
             } else {
-                $obStarted = ob_start(null, 0, false);
+                ob_start(null, 0, false);
             }
             if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
                 include($_smarty_compile_path);
