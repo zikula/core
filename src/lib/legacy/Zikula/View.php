@@ -3050,8 +3050,3 @@ function z_prefilter_gettext_params($tpl_source, $view)
 {
     return preg_replace('#((?:(?<!\{)\{(?!\{)(?:\s*)|\G)(?:.+?))__([a-zA-Z0-9][a-zA-Z_0-9]*=([\'"])(?:\\\\?+.)*?\3)#', '$1$2|gt:\$zikula_view', $tpl_source);
 }
-
-function correctWD()
-{
-    chdir(dirname($_SERVER['SCRIPT_FILENAME']));
-}
