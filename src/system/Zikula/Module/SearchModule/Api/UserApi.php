@@ -107,8 +107,12 @@ class UserApi extends \Zikula_AbstractApi
             }
 
             // Count number of found results (pointless, this will alays be 0 as we just deleted these! - drak)
-            $query = $this->entityManager->createQuery("SELECT COUNT(s.sesid) FROM Zikula\Module\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid");
-            $query->setParameter('sid', $sessionId);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('count(s.sesid)')
+                                         ->from('Zikula\Module\SearchModule\Entity\SearchResultEntity', 's')
+                                         ->where('s.sesid = :sid')
+                                         ->setParameter('sid',$sessionId);
+                                         ->getQuery();
             $resultCount = $query->getSingleScalarResult();
             SessionUtil::setVar('searchResultCount', $resultCount);
             SessionUtil::setVar('searchModulesByName', $searchModulesByName);
@@ -140,13 +144,15 @@ class UserApi extends \Zikula_AbstractApi
         // 2) let the modules add "url" to the found (and viewed) items
         $checker = new ResultHelper($searchModulesByName);
 
-        $dql = "SELECT s FROM Zikula\Module\SearchModule\Entity\SearchResultEntity s WHERE s.sesid = :sid ORDER BY s.created ASC";
-        $query = $this->entityManager->createQuery($dql);
-        $query->setParameter('sid', $sessionId);
-        $query->setMaxResults($vars['numlimit']);
-
-        $query->setFirstResult($vars['startnum'] - 1);
-
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('s')
+                                     ->from('Zikula\Module\SearchModule\Entity\SearchResultEntity', 's')
+                                     ->where('s.sesid = :sid')
+                                     ->setParameter('sid', $sessionId)
+                                     ->orderBy('s.created', 'ASC')
+                                     ->setMaxResults($vars['numlimit'])
+                                     ->setFirstResult($vars['startnum'] - 1)
+                                     ->getQuery();
         $results = $query->getArrayResult();
 
         // add displayname of modules found
@@ -200,11 +206,15 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         // Get items
-        $sort = isset($args['sortorder']) ? "ORDER BY s.{$args['sortorder']} DESC" : '';
-        $dql = "SELECT s FROM Zikula\\Module\\SearchModule\\Entity\\SearchStatEntity s $sort";
-        $query = $this->entityManager->createQuery($dql);
-        $query->setMaxResults($args['numitems']);
-        $query->setFirstResult($args['startnum'] - 1);
+        $qb = $this->entityManager->createQueryBuilder()
+                                  ->select('s')
+                                  ->from('Zikula\Module\SearchModule\Entity\SearchStatEntity', 's')
+        if (isset($args['sortorder']))
+            $qb->orderBy('s.'.$args['sortorder'], 'DESC');
+        }
+        $query = $qb->setMaxResults($args['numitems'])
+                    ->setFirstResult($args['startnum'] - 1)
+                    ->getQuery();
         $items = $query->execute();
 
         return $items;
