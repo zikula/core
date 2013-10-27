@@ -128,4 +128,12 @@ class CategoryAttributeEntity extends EntityAccess
         $this->setName($name);
         $this->setValue($value);
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
