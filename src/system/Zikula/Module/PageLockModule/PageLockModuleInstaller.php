@@ -14,6 +14,8 @@
 
 namespace Zikula\Module\PageLockModule;
 
+use DoctrineHelper;
+
 class PageLockModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
