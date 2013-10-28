@@ -379,7 +379,7 @@ class AdminApi extends \Zikula_AbstractApi
                 // remove the entry from the modules table
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Core\Doctrine\Entity\Extension', 'e')
+                                             ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
                                              ->where('e.id = :id')
                                              ->setParameter('id', $args['id'])
                                              ->getQuery();
@@ -392,7 +392,7 @@ class AdminApi extends \Zikula_AbstractApi
             // remove the entry from the modules table
             $query = $this->entityManager->createQueryBuilder()
                                          ->delete()
-                                         ->from('Zikula\Core\Doctrine\Entity\Extension', 'e')
+                                         ->from('Zikula\Core\Doctrine\Entity\ExtensionEntity', 'e')
                                          ->where('e.id = :id')
                                          ->setParameter('id', $args['id'])
                                          ->getQuery();
