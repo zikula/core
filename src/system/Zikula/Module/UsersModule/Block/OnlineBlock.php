@@ -93,14 +93,22 @@ class OnlineBlock extends \Zikula_Controller_AbstractBlock
 
         $activetime = strftime('%Y-%m-%d %H:%M:%S', time() - (System::getVar('secinactivemins') * 60));
 
-        $dql = "SELECT count(s.uid) FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > :activetime AND s.uid > 0";
-        $query = $this->entityManager->createQuery($dql);
-        $query->setParameter('activetime', $activetime);
+        $query = $this->entityManager->createQueryBuilder()
+                      ->select('count(s.uid)')
+                      ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 's')
+                      ->where('s.lastused > :activetime')
+                      ->setParameter('activetime', $activetime)
+                      ->andWhere('s.uid <> 0')
+                      ->getQuery();
         $numusers = (int)$query->getSingleScalarResult();
 
-        $dql = "SELECT count(s.uid) FROM Zikula\Module\UsersModule\Entity\UserSessionEntity s WHERE s.lastused > :activetime AND s.uid = 0";
-        $query = $this->entityManager->createQuery($dql);
-        $query->setParameter('activetime', $activetime);
+        $query = $this->entityManager->createQueryBuilder()
+                      ->select('count(s.uid)')
+                      ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 's')
+                      ->where('s.lastused > :activetime')
+                      ->setParameter('activetime', $activetime)
+                      ->andWhere('s.uid = 0')
+                      ->getQuery();
         $numguests = (int)$query->getSingleScalarResult();
 
         $msgmodule = System::getVar('messagemodule', '');

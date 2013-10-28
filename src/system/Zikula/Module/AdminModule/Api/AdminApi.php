@@ -113,9 +113,13 @@ class AdminApi extends \Zikula_AbstractApi
 
         // move all modules from the category to be deleted into the
         // default category.
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
-        $dql = "UPDATE $entity m SET m.cid = {$defaultcategory} WHERE m.cid = {$item['cid']}";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->update('Zikula\Module\AdminModule\Entity\AdminModuleEntity', 'm')
+                                     ->set('m.cid', $defaultcategory)
+                                     ->where('m.cid = :cid')
+                                     ->setParameter('cid', $item['cid'])
+                                     ->getQuery();
+
         $query->getResult();
 
         // Now actually delete the category
@@ -161,12 +165,12 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function countitems()
     {
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminCategoryEntity';
-        $dql = "SELECT count(c.cid) FROM $entity c";
-        $query = $this->entityManager->createQuery($dql);
-        $numitems = $query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(c.cid)')
+                                     ->from('Zikula\Module\AdminModule\Entity\AdminCategoryEntity', 'c')
+                                     ->getQuery();
 
-        return (int)$numitems;
+        return (int)$query->getSingleScalarResult();;
     }
 
     /**
@@ -177,7 +181,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function get($args)
     {
         // Argument check
-        if (!isset($args['cid'])) {
+        if (!isset($args['cid']) ||!is_numeric($args['cid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -202,7 +206,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function addmodtocategory($args)
     {
         if (!isset($args['module']) ||
-            !isset($args['category'])) {
+            (!isset($args['category']) || !is_numeric($args['category']))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -246,7 +250,7 @@ class AdminApi extends \Zikula_AbstractApi
         static $catitems = array();
 
         // Argument check
-        if (!isset($args['mid'])) {
+        if (!isset($args['mid']) || !is_numeric($args['mid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -283,7 +287,7 @@ class AdminApi extends \Zikula_AbstractApi
     public function getSortOrder($args)
     {
         // Argument check
-        if (!isset($args['mid'])) {
+        if (!isset($args['mid']) || !is_numeric($args['mid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -373,17 +377,25 @@ class AdminApi extends \Zikula_AbstractApi
         return $links;
     }
 
+    /**
+     * count modules in a given category
+     *
+     * @param  int   $args['cid'] id of the category
+     * @return int   number of modules
+     */
     public function countModsInCat($args)
     {
-        if (!isset($args['cid'])) {
+        if (!isset($args['cid']) || !is_numeric($args['cid'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
-        $dql = "SELECT count(m.amid) FROM $entity m WHERE m.cid = {$args['cid']}";
-        $query = $this->entityManager->createQuery($dql);
-        $count = $query->getSingleScalarResult();
+        $query = $this->entityManager->createQueryBuilder()
+                                     ->select('count(m.amid)')
+                                     ->from('Zikula\Module\AdminModule\Entity\AdminModuleEntity', 'm')
+                                     ->where('m.cid = :cid')
+                                     ->setParameter('cid', $args['cid'])
+                                     ->getQuery();
 
-        return (int)$count;
+        return (int)$query->getSingleScalarResult();
     }
 }

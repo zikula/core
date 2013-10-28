@@ -98,13 +98,20 @@ class AdminController extends \Zikula_AbstractController
 
         $ids = $this->getGroupsInfo();
 
-        $where = '';
+        // form the first part of the qbery
+        $qb = $this->entityManager->createQueryBuilder()
+                                  ->select('p')
+                                  ->from('Zikula\Module\PermissionsModule\Entity\PermissionEntity', 'p')
+                                  ->orderBy('p.sequence', 'ASC');
+
         $enableFilter = $this->getVar('filter', 1);
         if ($enableFilter == 1) {
             $permgrpparts = explode('+', $permgrp);
             if ($permgrpparts[0] == 'g') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
-                    $where = "WHERE (p.gid = '" . SecurityUtil::PERMS_ALL . "' OR p.gid = '" . DataUtil::formatForStore($permgrpparts[1]) . "')";
+                    $qb->where('(p.gid = :permsall OR p.gid = :permgrpparts)')
+                       ->setParameter('permsall', SecurityUtil::PERMS_ALL)
+                       ->setParameter('permgrpparts', $permgrpparts[1]);
                     $permgrp = $permgrpparts[1];
                     $this->view->assign('filtertype', 'group');
                 } else {
@@ -112,7 +119,8 @@ class AdminController extends \Zikula_AbstractController
                 }
             } elseif ($permgrpparts[0] == 'c') {
                 if (is_array($permgrpparts) && $permgrpparts[1] != SecurityUtil::PERMS_ALL) {
-                    $where = "WHERE (p.component = '.*' OR p.component LIKE '" . DataUtil::formatForStore($permgrpparts[1]) . "%')";
+                    $qb->where('(p.component = .* OR p.component LIKE :permgrpparts%)')
+                       ->setParameter('permgrpparts', $permgrpparts[1]);
                     $permgrp = $permgrpparts[1];
                     $this->view->assign('filtertype', 'component');
                 } else {
@@ -130,8 +138,7 @@ class AdminController extends \Zikula_AbstractController
             $this->view->assign('permgrp', SecurityUtil::PERMS_ALL);
         }
 
-        $dql = "SELECT p FROM Zikula\Module\PermissionsModule\Entity\PermissionEntity p $where ORDER BY p.sequence ASC";
-        $query = $this->entityManager->createQuery($dql);
+        $query = $qb->getQuery();
         $objArray = $query->getResult();
         $numrows = count($objArray);
 

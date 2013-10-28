@@ -50,10 +50,14 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (SecurityUtil::checkPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $fragment = $this->request->query->get('fragment', $this->request->request->get('fragment'));
 
-            $dql = "SELECT u FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.uname LIKE '% " . DataUtil::formatForStore($fragment) . "%'";
-            $query = $this->entityManager->createQuery($dql);
-            $results = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('u')
+                                         ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                         ->where('u.name LIKE %:fragment%')
+                                         ->setParameter('fragment', $fragment)
+                                         ->getQuery();
 
+            $results = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
             $view->assign('results', $results);
         }
 
