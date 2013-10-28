@@ -342,7 +342,6 @@ class SecurityUtil
             $uids[] = (int)$user;
             $vars['Active User'] = (int)$user;
         }
-//        $uids = implode(',', $uids);
 
         $em = ServiceUtil::get('doctrine.entitymanager');
 
