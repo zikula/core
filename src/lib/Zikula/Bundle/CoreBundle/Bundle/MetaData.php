@@ -40,6 +40,11 @@ class MetaData
         return $this->autoload['psr-0'];
     }
 
+    public function getPsr4()
+    {
+        return $this->autoload['psr-4'];
+    }
+
     public function getAutoload()
     {
         return $this->autoload;

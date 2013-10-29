@@ -44,6 +44,11 @@ class Bootstrap
                     $kernel->getAutoloader()->add($prefix, $path);
                 }
             }
+            if (isset($autoload['psr-4'])) {
+                foreach($autoload['psr-4'] as $prefix => $path) {
+                    $kernel->getAutoloader()->addPsr4($prefix, $path);
+                }
+            }
             if (isset($autoload['classmap'])) {
                 $kernel->getAutoloader()->addClassMap($autoload['classmaps']);
             }
