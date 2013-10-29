@@ -975,21 +975,26 @@ class UserUtil
             return false;
         }
 
-        $uname = DataUtil::formatForStore(mb_strtolower($uname));
+        $uname = mb_strtolower($uname);
 
         // get doctrine manager
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // count of uname appearances in users table
-        $dql = "SELECT count(u.uid) FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.uname = '{$uname}'";
+        $qb = $em->createQueryBuilder()
+                 ->select('count(u.uid)')
+                 ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                 ->where('u.uid = :uname')
+                 ->setParameter('uname', $uname);
+
         if ($excludeUid > 1) {
-            $dql .= " AND u.uid <> {$excludeUid}";
+            $qb->andWhere('u.uid <> :excludeUid')
+               ->setParameter('excludeUid', $excludeUid);
         }
 
-        $query = $em->createQuery($dql);
-        $ucount = $query->getSingleScalarResult();
+        $query = $qb->getQuery();
 
-        return (int)$ucount;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -1006,27 +1011,43 @@ class UserUtil
             return false;
         }
 
-        $emailAddress = DataUtil::formatForStore(mb_strtolower($emailAddress));
+        $emailAddress = mb_strtolower($emailAddress);
 
         // get doctrine manager
         $em = \ServiceUtil::get('doctrine.entitymanager');
 
         // count of email appearances in users table
-        $dql = "SELECT COUNT(u.uid) FROM Zikula\Module\UsersModule\Entity\UserEntity u WHERE u.email = '{$emailAddress}'";
+        $qb = $em->createQueryBuilder()
+                 ->select('count(u.uid)')
+                 ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                 ->where('u.email = :email')
+                 ->setParameter('email', $emailAddress);
+
         if ($excludeUid > 1) {
-            $dql .= " AND u.uid <> {$excludeUid}";
+            $qb->andWhere('u.uid <> :excludeUid')
+               ->setParameter('excludeUid', $excludeUid);
         }
 
-        $query = $em->createQuery($dql);
+        $query = $qb->getQuery();
+
         $ucount = (int)$query->getSingleScalarResult();
 
         // count of email appearances in users verification table
-        $dql = "SELECT COUNT(v.id) FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.newemail = '{$emailAddress}' AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_EMAIL;
+        $qb = $em->createQueryBuilder()
+                 ->select('count(v.uid)')
+                 ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                 ->where('v.newemail = :email')
+                 ->andWhere('v.changetype = :chgtype')
+                 ->setParameter('email', $emailAddress)
+                 ->setParameter('chgtype', UsersConstant::VERIFYCHGTYPE_EMAIL);
+
         if ($excludeUid > 1) {
-            $dql .= " AND v.uid <> {$excludeUid}";
+            $qb->andWhere('u.uid <> :excludeUid')
+               ->setParameter('excludeUid', $excludeUid);
         }
 
-        $query = $em->createQuery($dql);
+        $query = $qb->getQuery();
+
         $vcount = (int)$query->getSingleScalarResult();
 
         return ($ucount + $vcount);
@@ -1054,8 +1075,16 @@ class UserUtil
 
             // Get verificationsent from the users_verifychg table
             $em = \ServiceUtil::get('doctrine.entitymanager');
-            $dql = "SELECT v FROM Zikula\Module\UsersModule\Entity\UserVerificationEntity v WHERE v.uid = {$userObj['uid']} AND v.changetype = " . UsersConstant::VERIFYCHGTYPE_REGEMAIL;
-            $query = $em->createQuery($dql);
+
+            $query = $em->createQueryBuilder()
+                        ->select('v')
+                        ->from('Zikula\Module\UsersModule\Entity\UserVerificationEntity', 'v')
+                        ->where('v.uid = :uid')
+                        ->andWhere('v.changetype = :changetype')
+                        ->setParameter('uid', $userObj['uid'])
+                        ->setParameter('changetype', UsersConstant::VERIFYCHGTYPE_REGEMAIL)
+                        ->getQuery();
+
             $verifyChgList = $query->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
             if ($verifyChgList && is_array($verifyChgList) && !empty($verifyChgList) && is_array($verifyChgList[0]) && !empty($verifyChgList[0])) {
