@@ -1,4 +1,4 @@
-CHANGELOG - ZIKULA 1.3.6
+CHANGELOG - ZIKULA 1.3.7
 ------------------------
 
 Fixes:
