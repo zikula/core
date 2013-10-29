@@ -92,6 +92,13 @@ Features:
 - Removed old legacy (Smarty plugins, hooks etc, old module types).
 
 
+CHANGELOG - ZIKULA 1.3.6
+------------------------
+
+Fixes:
+- Fixed variable sanitization in templates in Users module #1353
+
+
 CHANGELOG - ZIKULA 1.3.5
 ------------------------
 
