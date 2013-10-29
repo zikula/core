@@ -1,0 +1,19 @@
+parameters:
+
+services:
+    acme.addressbook.form.contact:
+        class: Acme\AddressBookModule\Form\ContactType
+        tags:
+            - { name: form.type, alias: acme_addressbook_contact }
+    acme.addressbook.form.contactgroup:
+        class: Acme\AddressBookModule\Form\ContactGroupType
+        tags:
+            - { name: form.type, alias: acme_addressbook_contactgroup }
+    acme.addressbook.form.email:
+        class: Acme\AddressBookModule\Form\EmailType
+        tags:
+            - { name: form.type, alias: acme_addressbook_email }
+    acme.addressbook.form.phonenumber:
+        class: Acme\AddressBookModule\Form\PhoneNumberType
+        tags:
+            - { name: form.type, alias: acme_addressbook_phonenumber }

@@ -1,0 +1,100 @@
+{% use 'form_div_layout.html.twig' %}
+{% use 'BcBootstrapBundle:Form:form_div_layout.html.twig' %}
+
+{#
+ # This theme contains custom extensions of the theme "form_div_layout.html.twig"
+ # in BcBootstrapBundle.
+ #}
+
+{% block form_start %}
+{% spaceless %}
+    {% set method = method|upper %}
+    {% if method in ["GET", "POST"] %}
+        {% set form_method = method %}
+    {% else %}
+        {% set form_method = "POST" %}
+    {% endif %}
+
+    {# Add class "form-horizontal" (for bootstrap) #}
+    {% if form_type is defined and form_type == 'horizontal' %}
+        {% if attr.class is not defined or attr.class is empty %}
+            {% set attr = attr|merge({'class': 'form-horizontal'}) %}
+        {% else %}
+            {% set attr = attr|merge({'class': attr.class ~ ' form-horizontal'}) %}
+        {% endif %}
+    {% endif %}
+
+    <form method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {% if form_method != method %}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block collection_widget %}
+{% spaceless %}
+    {% if prototype is defined %}
+        {% set attr = attr|merge({'data-prototype': '<li>' ~ form_widget(prototype) ~ '</li>' }) %}
+    {% endif %}
+
+    {# Add class "unstyled" #}
+    {% if attr.class is not defined or attr.class is empty %}
+        {% set attr = attr|merge({'class': 'unstyled'}) %}
+    {% else %}
+        {% set attr = attr|merge({'class': attr.class ~ ' unstyled'}) %}
+    {% endif %}
+
+    {# Render as <ul> #}
+    <ul {{ block('widget_container_attributes') }}>
+        {% if form.parent is empty %}
+            {{ form_errors(form) }}
+        {% endif %}
+        {% for child in form %}
+            <li{% if child.vars.errors|length > 0 %} class="error"{% endif %}>
+                {{ form_widget(child) }}
+                {{ form_errors(child) }}
+            </li>
+        {% endfor %}
+        {{ form_rest(form) }}
+    </ul>
+{% endspaceless %}
+{% endblock collection_widget %}
+
+{% block button_widget %}
+{% spaceless %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+
+    {# Add "btn" class#}
+    {% if attr.class is not defined or attr.class is empty %}
+        {% set attr = attr|merge({'class': 'btn'}) %}
+    {% else %}
+        {% set attr = attr|merge({'class': attr.class ~ ' btn'}) %}
+    {% endif %}
+
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+{% endspaceless %}
+{% endblock %}
+
+{% block button_row %}
+{% spaceless %}
+    {% if form_type is defined and form_type == 'horizontal' %}
+        {{ block('horizontal_button_row') }}
+    {% else %}
+        <div>
+            {{ form_widget(form) }}
+        </div>
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block horizontal_button_row %}
+{% spaceless %}
+    <div class="control-group">
+        <div class="controls">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock %}
