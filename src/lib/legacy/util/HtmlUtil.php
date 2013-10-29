@@ -14,6 +14,8 @@
 
 /**
  * HTMLUtil is a class used to generate specific HTML code.
+ *
+ * @deprecated
  */
 class HtmlUtil
 {

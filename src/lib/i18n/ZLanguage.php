@@ -131,6 +131,8 @@ class ZLanguage
      */
     public $i18n;
 
+    public $languageCodeLegacy;
+
     /**
      * Constructor.
      */
@@ -273,7 +275,7 @@ class ZLanguage
         // fatal errors require 404
         header('HTTP/1.1 404 Not Found');
         foreach ($this->errors as $error) {
-            LogUtil::registerError($error);
+            LogUtil::addErrorPopup($error);
         }
     }
 
@@ -281,7 +283,7 @@ class ZLanguage
      * Set locale.
      *
      * @param string   $locale Locale.
-     * @param constant $lc     LC_CONSTANT.
+     * @param integer  $lc     LC_CONSTANT.
      *
      * @return void
      */

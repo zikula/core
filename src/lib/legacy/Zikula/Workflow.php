@@ -250,7 +250,7 @@ class Zikula_Workflow
         $states = array_keys($this->stateMap);
         // checks for an invalid next state value
         if (!in_array($params['nextstate'], $states)) {
-            LogUtil::registerError(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', array($nextState, $operation, $this->getID(), $this->getModule())));
+            LogUtil::addErrorPopup(__f('Invalid next-state value [%1$s] retrieved by the \'%2$s\' operation for the workflow \'%3$s\' [\'%4$s\'].', array($nextState, $operation, $this->getID(), $this->getModule())));
         } else {
             $nextState = $params['nextstate'];
         }

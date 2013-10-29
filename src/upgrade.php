@@ -66,14 +66,6 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
     }
 }
 
-// deactivate file based shorturls
-if (System::getVar('shorturls') && System::getVar('shorturlstype')) {
-    System::setVar('shorturls', false);
-    System::delVar('shorturlstype');
-    System::delVar('shorturlsext');
-    LogUtil::registerError('You were using file based shorturls. This feature will no longer be supported. The shorturls were disabled. Directory based shorturls can be activated in the General settings manager.');
-}
-
 switch ($action) {
     case 'upgradeinit':
         _upg_upgradeinit();

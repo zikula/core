@@ -57,7 +57,7 @@ function smarty_outputfilter_pagevars($source, $view)
     if (is_array($jcss['javascripts']) && !empty($jcss['javascripts'])) {
         foreach ($jcss['javascripts'] as $j => $javascript) {
             if (empty($javascript)) {
-                unset($javascripts[$j]);
+                unset($jcss['javascripts'][$j]);
                 continue;
             }
             // check if the javascript is in the additional_header array

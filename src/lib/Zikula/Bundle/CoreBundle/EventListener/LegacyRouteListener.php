@@ -163,7 +163,7 @@ class LegacyRouteListener implements EventSubscriberInterface
         try {
             if (!isset($response)) {
                 $response = ModUtil::func($modinfo['name'], $type, $func);
-                if (System::isLegacyMode() && $response === false && LogUtil::hasErrors()) {
+                if (System::isLegacyMode() && $response == false && LogUtil::hasErrors()) {
                     throw new FatalErrorException(__(
                         'An unknown error occurred in module %s, controller %s, action %s',
                         array($modinfo['name'], $type, $func)
