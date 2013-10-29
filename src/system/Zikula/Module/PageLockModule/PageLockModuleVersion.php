@@ -24,7 +24,7 @@ class PageLockModuleVersion extends \Zikula_AbstractVersion
         //! module name that appears in URL
         $meta['url']            = $this->__('pagelock');
         $meta['version']        = '1.1.1';
-        $meta['core_min'] = '1.3.6';
+        $meta['core_min'] = '1.3.7';
 
         $meta['securityschema'] = array('ZikulaPageLockModule::' => '::');
 

@@ -11,7 +11,7 @@ class ExampleModuleVersion extends \Zikula_AbstractVersion
         $meta['description']    = $this->__('ExampleModule description');
         $meta['url']            = $this->__('acmeexample');
         $meta['version']        = '0.0.1';
-        $meta['core_min']       = '1.3.6';
+        $meta['core_min']       = '1.3.7';
         $meta['securityschema'] = array('AcmeExampleModule::' => '::');
 
         return $meta;

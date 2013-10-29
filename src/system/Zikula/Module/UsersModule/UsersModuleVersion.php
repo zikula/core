@@ -35,7 +35,7 @@ class UsersModuleVersion extends \Zikula_AbstractVersion
             'description' => $this->__('Provides an interface for configuring and administering registered user accounts. Incorporates all needed functionality, but can work in close unison with the third party profile module configured in the general settings of the site.'),
             'url' => $this->__('users'),
             'capabilities' => array(UsersConstant::CAPABILITY_AUTHENTICATION => array('version' => '1.0'), HookUtil::SUBSCRIBER_CAPABLE => array('enabled' => true)),
-            'core_min' => '1.3.6',
+            'core_min' => '1.3.7',
             'securityschema' => array('ZikulaUsersModule::' => 'Uname::User ID', 'ZikulaUsersModule::MailUsers' => '::'));
     }
 
