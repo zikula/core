@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="{{ lang() }}" dir="{{ langdirection() }}">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}{{ pagegetvar('title') }}{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {% block metatags %}
+    <meta name="description" content="{{ metatags.description }}" />
+    <meta name="keywords" content="{{ metatags.keywords }}" />
+    {% endblock %}
+
+    {% set stylepath = 'themes/zikulaandreas08/css' %}
+    {% set layout = 'grid' %}
+    {{ jsconfig()|raw }}
+    {{ pageaddvar("stylesheet", "bootstrap/css/bootstrap-theme.min.css") }}
+    {{ pageaddvar("stylesheet", stylepath ~ "/fluid960gs/reset.css") }}
+    {{ pageaddvar("stylesheet", stylepath ~ "/fluid960gs/" ~ layout ~ ".css") }}
+    {{ pageaddvar("stylesheet", stylepath ~ "/style.css") }}
+    {% stylesheets
+    "bootstrap/css/bootstrap-theme.min.css"
+    "bootstrap/css/bootstrap-theme.mi.css"
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+<div id="theme_page_container" class="container_16">
+    <div id="theme_header">
+        <h1 class="title"><a href="{{ homepage() }}">{{ modvars.ZConfig.sitename }}</a></h1>
+        <h2 class="slogan">{{ modvars.ZConfig.slogan }}</h2>
+    </div>
+
+<div id="theme_navigation_bar" class="clearfix">
+    {% block navbar %}
+    {% set topnavblock = blockposition('topnav')|raw %}
+    {% if topnavblock is empty %}
+    <ul class="pull-left">
+        <li><a href="{{ homepage() }}" title="{{ __("Go to the site's home page") }}">{{ __('Home') }}</a></li>
+        <li><a href="{{ modurl('ZikulaUsersModule','user','main') }}" title="{{ __('Go to your account panel') }}">{{ __("My Account") }}</a></li>
+        <li><a href="{{ modurl('ZikulaSearchModule','user','main') }}" title="{{ __('Search this site') }}">{{ __("Site search") }}</a></li>
+    </ul>
+    {% else %}
+    {{ topnavblock|raw }}
+    {% endif %}
+    {{ blockposition('search')|raw }}
+    {% endblock %}
+</div>
+    {% set body_template = 'ZikulaAndreas08Theme:body:3col_w_centerblock.html.twig' %}
+    {% include body_template %}
+    <div id="theme_footer">
+        {% block footer %}
+        <p>{{ __("Powered by") }} <a href="http://zikula.org">Zikula</a>{% if modvars.ZikulaThemeModule.enable_mobile_theme %} | <a href="{{ modurl('ZikulaThemeModule', 'User', 'enableMobileTheme') }}">{{ __('Mobile version') }}</a>{% endif %}</p>
+        {% endblock %}
+    </div>
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

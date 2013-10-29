@@ -13,10 +13,41 @@ class CoreExtension extends \Twig_Extension
         $this->container = $container;
     }
 
+    public function getFilters()
+    {
+        return array(
+            'evaluate' => new \Twig_Filter_Method($this, 'evaluateFilter', array(
+                                                                          'needs_environment' => true,
+                                                                          'needs_context' => true,
+                                                                          'is_safe' => array(
+                                                                              'evaluate' => true
+                                                                          )
+                                                                     )),
+        );
+    }
+
+    public function evaluateFilter(\Twig_Environment $environment, $context, $value)
+    {
+        $loader = $environment->getLoader();
+        $environment->setLoader(new \Twig_Loader_String());
+        $return = $environment->render($value, $context);
+        $environment->setLoader($loader);
+
+        return $return;
+    }
+
     public function getTokenParsers()
     {
         return array(
             new Twig\TokenParser\SwitchTokenParser(),
+        );
+    }
+
+    public function getGlobals()
+    {
+        return array(
+            'metatags' => \ServiceUtil::getManager()->getParameter('zikula_view.metatags'),
+            'modvars' => \ModUtil::getModvars(),
         );
     }
 
@@ -27,18 +58,41 @@ class CoreExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-
         return array(
-            'button' => new \Twig_Function_Method($this, 'button'),
-            'img' => new \Twig_Function_Method($this, 'img'),
-            'icon' => new \Twig_Function_Method($this, 'icon'),
-            'lang' => new \Twig_Function_Method($this, 'lang'),
-            'langdirection' => new \Twig_Function_Method($this, 'langDirection'),
-            'showblockposition' => new \Twig_Function_Method($this, 'showBlockPosition'),
-            'showblock' => new \Twig_Function_Method($this, 'showBlock'),
-            'blockinfo' => new \Twig_Function_Method($this, 'getBlockInfo'),
-            'zasset' => new \Twig_Function_Method($this, 'getAssetPath')
+            new \Twig_SimpleFunction('jsconfig', array('JCSSUtil', 'getJSConfig')), // @todo dev-legacy
+            new \Twig_SimpleFunction('pagegetvar', array($this, 'pageGetVar')), // @todo dev-legacy
+            new \Twig_SimpleFunction('pageaddvar', array($this, 'pageAddVar')), // @todo dev-legacy
+            new \Twig_SimpleFunction('pagesetvar', array($this, 'pageSetVar')), // @todo dev-legacy
+            new \Twig_SimpleFunction('langdirection', array('ZLanguage', 'getDirection')), // @todo dev-legacy
+            new \Twig_SimpleFunction('lang', array('ZLanguage', 'getLanguageCode')), // @todo dev-legacy
+            new \Twig_SimpleFunction('charset', array('ZLanguage', 'getHomepageUrl')), // @todo dev-legacy
+            new \Twig_SimpleFunction('homepage', array('System', 'getHomepageUrl')), // @todo dev-legacy
+            new \Twig_SimpleFunction('modurl', array($this, 'modurl')), // @todo dev-legacy
+            new \Twig_SimpleFunction('button', array($this, 'button')),
+            new \Twig_SimpleFunction('img', array($this, 'img')),
+            new \Twig_SimpleFunction('icon', array($this, 'icon')),
+            new \Twig_SimpleFunction('lang', array($this, 'lang')),
+            new \Twig_SimpleFunction('langdirection', array($this, 'langDirection')),
+            new \Twig_SimpleFunction('blockposition', array($this, 'showBlockPosition')),
+            new \Twig_SimpleFunction('showblock', array($this, 'showBlock')),
+            new \Twig_SimpleFunction('blockinfo', array($this, 'getBlockInfo')),
+            new \Twig_SimpleFunction('zasset', array($this, 'getAssetPath')),
         );
+    }
+
+    public function pageAddVar($key, $value)
+    {
+        \PageUtil::addVar($key, $value);
+    }
+
+    public function pageSetVar($key, $value)
+    {
+        \PageUtil::setVar($key, $value);
+    }
+
+    public function pageGetVar($key)
+    {
+        return \PageUtil::getVar($key);
     }
 
     public function getAssetPath($path)
@@ -70,22 +124,9 @@ class CoreExtension extends \Twig_Extension
         return \BlockUtil::show($module, $blockname, $block);
     }
 
-    /**
-     * @todo
-     * @return string
-     */
-    public function lang()
+    public function modurl($a)
     {
-        return 'en';
-    }
-
-    /**
-     * @todo
-     * @return string
-     */
-    public function langDirection()
-    {
-        return 'ltr';
+        return call_user_func_array('ModUtil::url', $a);
     }
 
     public function button()

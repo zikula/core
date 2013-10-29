@@ -105,6 +105,15 @@ class JCSSUtil
         return $jcss;
     }
 
+    public static function getCss()
+    {
+        $cssjscombine = \ModUtil::getVar('ZikulaThemeModule', 'cssjscombine', false);
+        // get list of stylesheets and scripts from JCSSUtil
+        $jcss = \JCSSUtil::prepareJCSS($cssjscombine, \ServiceUtil::getManager()->getParameter('kernel.cache_dir'));
+
+        return $jcss['stylesheets'];
+    }
+
     /**
      * Procedure for managinig stylesheets.
      *
