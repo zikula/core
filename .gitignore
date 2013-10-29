@@ -10,6 +10,7 @@
 /src/config/multisites_config.php
 /src/modules/*
 !/src/modules/acme-example
+!/src/modules/acme-addressbook
 /src/themes/*
 !/src/themes/Zikula
 /src/app/Resources/locale/*

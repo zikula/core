@@ -1,0 +1,4 @@
+acme_address_book:
+    resource: "@AcmeAddressBookModule/Controller/"
+    type:     annotation
+    prefix:   /

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Zikula Address Book Demo{% endblock %}</title>
+        {% stylesheets "css/bootstrap.css" %}
+        <link media="screen, projection" rel="stylesheet" type="text/css"  href="{{ asset_url }}" />
+        {% endstylesheets %}
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{ asset('js/jquery.js') }}"><\/script>')</script>
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
