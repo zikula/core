@@ -360,15 +360,22 @@ class Zikula_Workflow_Util
 
         if (!empty($obj[$idcolumn])) {
             //This is a static function, so we have to user ServiceUtil to get the manager
-            //prep the date for the table 
-            $module = DataUtil::formatForStore($module);
-            $obj_table = DataUtil::formatForStore($dbTable);
-            $obj_idcolumn =  DataUtil::formatForStore($idcolumn);
-            $obj_id = DataUtil::formatForStore($obj[$idcolumn]);
             $em = ServiceUtil::getManager()->get('doctrine.entitymanager');
+
             //build the query and execute
-            $dql = "SELECT w FROM Zikula\Core\Doctrine\Entity\WorkflowEntity w WHERE w.module = '$module' AND w.objIdcolumn = '$idcolumn' AND w.objTable = '$obj_table' AND w.objId = $obj_id";
-            $query = $em->createQuery($dql);
+            $query = $this->entityManager->createQueryBuilder()
+                                         ->select('w')
+                                         ->from('Zikula\Core\Doctrine\Entity\WorkflowEntity', 'w')
+                                         ->where('w.module = :module')
+                                         ->andWhere('w.objIdcolumn = :idcolumn')
+                                         ->andWhere('w.objTable = :dbtable')
+                                         ->andWhere('w.objId = :id')
+                                         ->setParameter('module', $module)
+                                         ->setParameter('idcolumn', $idcolumn)
+                                         ->setParameter('dbtable', $dbTable)
+                                         ->setParameter('id', $obj[$idcolumn])
+                                         ->getQuery();
+
             $workflow = $query->getArrayResult();
             $workflow = $workflow[0];
         }
