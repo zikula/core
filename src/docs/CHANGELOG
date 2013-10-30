@@ -1,3 +1,10 @@
+CHANGELOG - ZIKULA 1.3.7
+------------------------
+
+Fixes:
+- Fixed function.jquery_datepicker.php does't handle minDate and maxDate correctly #1360
+
+
 CHANGELOG - ZIKULA 1.3.6
 ------------------------
 
