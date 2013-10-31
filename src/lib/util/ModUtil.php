@@ -327,8 +327,9 @@ class ModUtil
 
         // if $name is not provided, delete all variables of this module
         // else just delete this specific variable
+        /** @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $em->createQueryBuilder()
-                 ->from('DELETE FROM Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
+                 ->delete('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
                  ->where('v.modname = :modname')
                  ->setParameter('modname', $modname);
 
@@ -338,7 +339,7 @@ class ModUtil
         }
 
         $query = $qb->getQuery();
-        $result = $query->getResult();
+        $result = $query->execute();
 
         return (boolean)$result;
     }
