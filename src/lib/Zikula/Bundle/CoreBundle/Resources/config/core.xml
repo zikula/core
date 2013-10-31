@@ -13,7 +13,8 @@
         <parameter key="zikula.doctrine1_connector.class">Zikula\Bundle\CoreBundle\EventListener\Doctrine1ConnectorListener</parameter>
         <parameter key="zikula.doctrine_connector.class">Zikula\Bundle\CoreBundle\EventListener\DoctrineListener</parameter>
 
-        <parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>
+        <!--<parameter key="hook_dispatcher.class">Zikula\Component\HookDispatcher\HookDispatcher</parameter>-->
+        <parameter key="hook_dispatcher.class">Zikula_HookDispatcher</parameter>
         <parameter key="hook_dispatcher.storage.class">Zikula\Component\HookDispatcher\Storage\Doctrine\DoctrineStorage</parameter>
         <parameter key="hook_dispatcher.servicefactory.class">Zikula\Component\HookDispatcher\ServiceFactory</parameter>
 
