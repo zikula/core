@@ -87,7 +87,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      * @deprecated since 1.3.6
      * @use self::dispatchHooks()
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula\Component\HookDispatcher\Hook
      */
     public function notifyHooks(Hook $hook)
     {
@@ -99,7 +99,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
      *
      * @param Hook $hook Hook interface.
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula\Component\HookDispatcher\Hook
      */
     public function dispatchHooks($name, Hook $hook)
     {

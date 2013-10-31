@@ -4,7 +4,7 @@
     {gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}
 </h3>
 
-<p class="alert alert-warning">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
+<p class="alert alert-danger">{gt text="Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module."}</p>
 
 <form class="form-horizontal" role="form" action="{modurl modname="Extensions" type="admin" func="remove"}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
@@ -18,13 +18,13 @@
         <input type="hidden" name="state" value="{$state}" />
 
         {if $hasBlocks gt 0}
-        <div class="form-group">
-            <p class="alert alert-warning">{gt text="Warning! This module still has %s active block. Removing this module will also permanently remove this block." plural="Warning! This module still has %s active blocks. Removing this module will also permanently remove these blocks." count=$hasBlocks tag1=$hasBlocks}</p>
+        <div class="">
+            <p class="alert alert-danger">{gt text="Warning! This module still has %s active block. Removing this module will also permanently remove this block." plural="Warning! This module still has %s active blocks. Removing this module will also permanently remove these blocks." count=$hasBlocks tag1=$hasBlocks}</p>
         </div>
         {/if}
         {if $dependents}
-        <div class="form-group">
-            <p class="alert alert-info">{gt text="Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled."}</p>
+        <div class="">
+            <p class="alert alert-danger">{gt text="Warning! Other modules present in your system are dependent on this module. If you uninstall this module then all modules that require it will also be uninstalled."}</p>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>

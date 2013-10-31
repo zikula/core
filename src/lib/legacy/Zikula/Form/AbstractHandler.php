@@ -271,7 +271,7 @@ abstract class Zikula_Form_AbstractHandler implements Zikula_TranslatableInterfa
      *
      * @param Zikula\Component\HookDispatcher\Hook $hook Hook interface.
      *
-     * @return Zikula_AbstractHook
+     * @return Zikula\Component\HookDispatcher\Hook
      */
     public function dispatchHooks($name, Hook $hook)
     {

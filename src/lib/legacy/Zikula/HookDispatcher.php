@@ -13,15 +13,19 @@
  * information regarding copyright and licensing.
  */
 
-namespace Zikula\Component\HookDispatcher;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Component\HookDispatcher\Exception\LogicException;
+use Zikula\Component\HookDispatcher\StorageInterface;
+use Zikula\Component\HookDispatcher\ServiceFactory;
+use Zikula\Component\HookDispatcher\Hook;
+use Zikula\Component\HookDispatcher\SubscriberBundle;
+use Zikula\Component\HookDispatcher\ProviderBundle;
 
 /**
  * HookDispatcher class.
+ * @deprecated since 1.3.6 @see \Zikula\Component\HookDispatcher\HookDispatcher
  */
-class HookDispatcher
+class Zikula_HookDispatcher
 {
     /**
      * Storage.
@@ -88,6 +92,7 @@ class HookDispatcher
             $this->loadRuntimeHandlers();
             $this->loaded = true;
         }
+        $hook = $this->revertToBChook($name, $hook);
         $hook->setName($name);
 
         $this->decorateHook($hook);
@@ -293,7 +298,7 @@ class HookDispatcher
     /**
      * Load runtime hook listeners.
      *
-     * @return HookDispatcher
+     * @return Zikula_HookDispatcher
      */
     public function loadRuntimeHandlers()
     {
@@ -307,7 +312,7 @@ class HookDispatcher
                     $callable = array($handler['classname'], $handler['method']);
                     $this->dispatcher->addListener($handler['eventname'], $callable);
                 } catch (\InvalidArgumentException $e) {
-                    throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                    throw new \Zikula\Component\HookDispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
                 }
             }
         }
@@ -355,4 +360,34 @@ class HookDispatcher
         }
     }
 
+    /**
+     * Revert the provided hook to backward compatible hooktype
+     * Do not need to revert FilterHook and DisplayHook because they are already reverted in the template plugins
+     *
+     * @param Hook $hook
+     * @return Hook
+     */
+    private function revertToBChook($name, $hook)
+    {
+        $currentClass = get_class($hook);
+        switch ($currentClass) {
+            case 'Zikula\Core\Hook\ValidationHook':
+                /** @var $hook \Zikula\Core\Hook\ValidationHook */
+                return new \Zikula_ValidationHook($name, $hook->getValidators());
+                break;
+            case 'Zikula\Core\Hook\ProcessHook':
+                /** @var $oldUrl \Zikula\Core\ModUrl */
+                /** @var $hook \Zikula\Core\Hook\ProcessHook */
+                $oldUrl = $hook->getUrl();
+                if (isset($oldUrl)) {
+                    $newUrl = new \Zikula_ModUrl($oldUrl->getApplication(), $oldUrl->getController(), $oldUrl->getAction(), $oldUrl->getLanguage(), $oldUrl->getArgs(), $oldUrl->getFragment());
+                } else {
+                    $newUrl = null;
+                }
+                return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
+                break;
+            default:
+                return $hook;
+        }
+    }
 }

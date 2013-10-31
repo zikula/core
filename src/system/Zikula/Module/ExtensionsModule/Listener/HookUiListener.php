@@ -173,11 +173,7 @@ class HookUiListener
                     $sbaProviderModule = HookUtil::getOwnerByArea($areaname);
 
                     // create an instance of the provider's version
-                    $sbaProviderModuleVersionOld = $sbaProviderModule.'_Version';
-                    $sbaProviderModuleVersion = "$sbaProviderModule\\{$sbaProviderModule}Version";
-                    $sbaProviderModuleVersion = class_exists($sbaProviderModuleVersion) ? $sbaProviderModuleVersion : $sbaProviderModuleVersionOld;
-
-                    $sbaProviderModuleVersionObj = new $sbaProviderModuleVersion;
+                    $sbaProviderModuleVersionObj = Util::getVersionMeta($sbaProviderModule);
 
                     // get the bundle title
                     $currentSortingTitles[$areaname] = $view->__($sbaProviderModuleVersionObj->getHookProviderBundle($areaname)->getTitle());

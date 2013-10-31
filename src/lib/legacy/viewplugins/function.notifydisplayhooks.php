@@ -36,7 +36,7 @@ use Zikula\Core\ModUrl;
  *
  * @see    smarty_function_notifydisplayhooks()
  *
- * @return void The results must be assigned to variable in assigned.
+ * @return string|void if the results are assigned to variable in assigned.
  */
 function smarty_function_notifydisplayhooks($params, Zikula_View $view)
 {
@@ -60,7 +60,7 @@ function smarty_function_notifydisplayhooks($params, Zikula_View $view)
     if ($assign) {
         $view->assign($assign, $responses);
 
-        return;
+        return null;
     }
 
     $output = '';

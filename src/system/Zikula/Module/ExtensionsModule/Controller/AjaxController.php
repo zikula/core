@@ -32,6 +32,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      */
     public function togglesubscriberareastatusAction()
     {
+        // get hookmanager
+        /** @var $hookManager \Zikula\Component\HookDispatcher\StorageInterface */
+        $hookManager = $this->serviceManager->get('hook_dispatcher');
+
         $this->checkAjaxToken();
         
         // get subscriberarea from POST
@@ -41,7 +45,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = HookUtil::getOwnerByArea($subscriberArea);
+        $subscriber = $hookManager->getOwnerByArea($subscriberArea);
         if (empty($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid subscriber.', $subscriber));
         }
@@ -57,7 +61,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
 
         // get provider module based on area and do some checks
-        $provider = HookUtil::getOwnerByArea($providerArea);
+        $provider = $hookManager->getOwnerByArea($providerArea);
         if (empty($provider)) {
             throw new Zikula_Exception_Fatal($this->__f('Module "%s" is not a valid provider.', $provider));
         }
@@ -66,11 +70,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         }
         $this->throwForbiddenUnless(SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN));
 
-        // get hookmanager
-        $hookManager = $this->serviceManager->get('hook_dispatcher');
+
 
         // check if binding between areas exists
-        $binding = HookUtil::getBindingBetweenAreas($subscriberArea, $providerArea);
+        $binding = $hookManager->getBindingBetweenAreas($subscriberArea, $providerArea);
         if (!$binding) {
             $hookManager->bindSubscriber($subscriberArea, $providerArea);
         } else {
