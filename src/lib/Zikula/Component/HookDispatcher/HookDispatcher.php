@@ -88,7 +88,6 @@ class HookDispatcher
             $this->loadRuntimeHandlers();
             $this->loaded = true;
         }
-        $hook = $this->revertToBChook($name, $hook); // @todo remove in 1.4.0
         $hook->setName($name);
 
         $this->decorateHook($hook);
@@ -356,35 +355,4 @@ class HookDispatcher
         }
     }
 
-    /**
-     * Revert the provided hook to backward compatible hooktype
-     * Do not need to revert FilterHook and DisplayHook because they are already reverted in the template plugins
-     *
-     * @param Hook $hook
-     * @return Hook
-     * @deprecated since 1.3.6
-     */
-    private function revertToBChook($name, $hook)
-    {
-        $currentClass = get_class($hook);
-        switch ($currentClass) {
-            case 'Zikula\Core\Hook\ValidationHook':
-                /** @var $hook \Zikula\Core\Hook\ValidationHook */
-                return new \Zikula_ValidationHook($name, $hook->getValidators());
-                break;
-            case 'Zikula\Core\Hook\ProcessHook':
-                /** @var $oldUrl \Zikula\Core\ModUrl */
-                /** @var $hook \Zikula\Core\Hook\ProcessHook */
-                $oldUrl = $hook->getUrl();
-                if (isset($oldUrl)) {
-                    $newUrl = new \Zikula_ModUrl($oldUrl->getApplication(), $oldUrl->getController(), $oldUrl->getAction(), $oldUrl->getLanguage(), $oldUrl->getArgs(), $oldUrl->getFragment());
-                } else {
-                    $newUrl = null;
-                }
-                return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
-                break;
-            default:
-                return $hook;
-        }
-    }
 }
