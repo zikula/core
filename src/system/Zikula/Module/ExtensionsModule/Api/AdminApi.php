@@ -362,7 +362,7 @@ class AdminApi extends \Zikula_AbstractApi
                                      ->delete()
                                      ->from('Zikula\Core\Doctrine\Entity\ExtensionVarEntity', 'v')
                                      ->where('v.modname = :modname')
-                                     ->setParameter('modame', $modinfo['name'])
+                                     ->setParameter('modname', $modinfo['name'])
                                      ->getQuery();
         $query->getResult();
 
