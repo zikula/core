@@ -1,12 +1,12 @@
-Module Specification from Zikula Core 1.3.6
+Module Specification from Zikula Core 1.3.7
 ===========================================
 
 User Upgrade Tasks
 ------------------
 
-Zikula Core 1.3.6 introduces a lot of forward compatibility for new features
+Zikula Core 1.3.7 introduces a lot of forward compatibility for new features
 that will come in Zikula 1.4.0. For safety sake, please only upgrade from
-Zikula Core 1.3.5
+Zikula Core 1.3.6
 
   - Before uploading the new files please delete the `plugins/`, `lib/`, `system/`,
     `themes/` and `ztemp/` folders entirely (replace any custom themes afterwards).
@@ -52,7 +52,7 @@ Documentation: http://zikula.github.io/bootstrap-docs/
 Namespaces
 ----------
 
-Zikula Core 1.3.6 supports PHP namespaces and module should be refactored
+Zikula Core 1.3.7 supports PHP namespaces and module should be refactored
 for namespace compliance which should MUST be in line with PSR-0, PSR-1 and
 PSR-2.
 
@@ -342,12 +342,12 @@ The main changes are:
     
   - Events are triggered by `->dispatch($name, $event)` instead of `->notify($event)`.
 
-Example in Core 1.3.0-1.3.5
+Example in Core 1.3.0-1.3.6
 
     $event = new Zikula_Event('event.name', $subject, $args, $data);
     $eventManager->notify($event);
 
-Example in Core 1.3.6+
+Example in Core 1.3.7+
 
     $event = new Zikula\Core\Event\GenericEvent($subject, $args, $data);
     $dispatcher->dispatch('event.name', $event);
@@ -400,12 +400,12 @@ The main changes are:
 
   - hooks are triggered by `->dispatch($name, $hook)` instead of `->notify($hook)`
 
-Example in Core 1.3.0-1.3.5
+Example in Core 1.3.0-1.3.6
 
     $hook = new Zikula_DisplayHook('hook.name', $id, $url);
     $eventManager->notify($hook);
 
-Example in Core 1.3.6+
+Example in Core 1.3.7+
 
     $hook = new Zikula\Core\Hook\DisplayHook($id, $url);
     $hookDispatcher->dispatch('hook.name', $hook);
@@ -480,7 +480,7 @@ The Doctrine Extension Paginate is deprecated. If you are using it, you should r
 Version.php
 -----------
 
-Modules should have `core_min = 1.3.6`.
+Modules should have `core_min = 1.3.7`.
 
 You now can add a reason for each dependency. Add a `reason` key to any dependency array you want. Example:
 
@@ -492,7 +492,7 @@ You now can add a reason for each dependency. Add a `reason` key to any dependen
                   'reason'     => 'Scribite adds a html editor.'),
     );
 
-*Note: This only works for modules using the new >= 1.3.6 structure. Modules with the < 1.3.6 structure are ignoring this setting.*
+*Note: This only works for modules using the new >= 1.3.7 structure. Modules with the < 1.3.7 structure are ignoring this setting.*
 
 Theme Standard
 --------------
