@@ -111,7 +111,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @param string $block ['description'] the description of the block.
      * @param int    $block ['mid'] the module ID of the block.
      * @param string $block ['language'] the language of the block.
-     * @param int    $block ['bkey'] the key of the block.
+     * @param string $block ['bkey'] the key of the block.
      *
      * @return mixed block Id on success, false on failure.
      */
@@ -124,7 +124,7 @@ class AdminApi extends \Zikula_AbstractApi
             (!isset($args['language'])) ||
             (!isset($args['collapsable'])) ||
             (!isset($args['defaultstate'])) ||
-            (!isset($args['bkey']) || !is_numeric($args['bkey']))) {
+            (!isset($args['bkey']))) {
                 throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
