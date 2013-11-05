@@ -3,25 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}{{ pagegetvar('title') }}{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {#<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />#}
     {% block metatags %}
     <meta name="description" content="{{ metatags.description }}" />
     <meta name="keywords" content="{{ metatags.keywords }}" />
     {% endblock %}
 
-    {% set stylepath = 'themes/zikulaandreas08/css' %}
+    {% set stylepath = 'web/themes/zikulaandreas08/css' %}
     {% set layout = 'grid' %}
     {{ jsconfig()|raw }}
-    {{ pageaddvar("stylesheet", "bootstrap/css/bootstrap-theme.min.css") }}
-    {{ pageaddvar("stylesheet", stylepath ~ "/fluid960gs/reset.css") }}
-    {{ pageaddvar("stylesheet", stylepath ~ "/fluid960gs/" ~ layout ~ ".css") }}
-    {{ pageaddvar("stylesheet", stylepath ~ "/style.css") }}
-    {% stylesheets
-    "bootstrap/css/bootstrap-theme.min.css"
-    "bootstrap/css/bootstrap-theme.mi.css"
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}">
-    {% endstylesheets %}
+    {#{{ pageaddvar("stylesheet", "bootstrap/css/bootstrap-theme.min.css") }}#}
+    {#{{ pageaddvar("stylesheet", stylepath ~ "/fluid960gs/reset.css") }}#}
+    {#{{ pageaddvar("stylesheet", stylepath ~ "/fluid960gs/" ~ layout ~ ".css") }}#}
+    {#{{ pageaddvar("stylesheet", stylepath ~ "/style.css") }}#}
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
@@ -47,8 +41,11 @@
     {{ blockposition('search')|raw }}
     {% endblock %}
 </div>
-    {% set body_template = 'ZikulaAndreas08Theme:body:3col_w_centerblock.html.twig' %}
-    {% include body_template %}
+    {% block maincontent %}
+        {% set body_template = 'ZikulaAndreas08Theme:body:3col_w_centerblock.html.twig' %}
+        {% embed 'ZikulaAndreas08Theme:body:3col_w_centerblock.html.twig' %}
+        {% endembed %}
+    {% endblock %}
     <div id="theme_footer">
         {% block footer %}
         <p>{{ __("Powered by") }} <a href="http://zikula.org">Zikula</a>{% if modvars.ZikulaThemeModule.enable_mobile_theme %} | <a href="{{ modurl('ZikulaThemeModule', 'User', 'enableMobileTheme') }}">{{ __('Mobile version') }}</a>{% endif %}</p>

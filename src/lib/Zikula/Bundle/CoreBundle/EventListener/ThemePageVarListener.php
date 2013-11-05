@@ -14,6 +14,7 @@
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -47,26 +48,43 @@ class ThemePageVarListener implements EventSubscriberInterface
         }
 
         // do replacements
-        $css = $this->getcss();
+        $css = $this->getCss($request);
         $content = str_replace('</head>', "$css\n</head>", $content);
 
-        $js = '';
-        $content = str_replace('</body>', "$js\n</body>", $content);
+        $js = $this->getJs($request);
+        $content = str_replace('</head>', "$js\n</head>", $content);
+//        $content = str_replace('</body>', "$js\n</body>", $content);
 
         $response->setContent($content);
     }
 
-    public function getcss()
+    public function getCss(Request $request)
     {
         $cssjscombine = \ModUtil::getVar('ZikulaThemeModule', 'cssjscombine', false);
         // get list of stylesheets and scripts from JCSSUtil
         $jcss = \JCSSUtil::prepareJCSS($cssjscombine, \ServiceUtil::getManager()->getParameter('kernel.cache_dir'));
         $styles = '';
+
+        $basePath = $request->getBasePath();
         foreach ($jcss['stylesheets'] as $css) {
-            $styles .= ' <link rel="stylesheet" type="text/css" href="'.$css.'" />'."\n";
+            $styles .= ' <link rel="stylesheet" type="text/css" href="'."$basePath/".$css.'" />'."\n";
         }
 
         return $styles;
+    }
+
+    public function getJs(Request $request)
+    {
+        $cssjscombine = \ModUtil::getVar('ZikulaThemeModule', 'cssjscombine', false);
+        // get list of stylesheets and scripts from JCSSUtil
+        $jcss = \JCSSUtil::prepareJCSS($cssjscombine, \ServiceUtil::getManager()->getParameter('kernel.cache_dir'));
+        $jss = '';
+        $basePath = $request->getBasePath();
+        foreach ($jcss['javascripts'] as $js) {
+            $jss .= ' <script type="text/javascript" href="'."$basePath/".$js.'" />'."</script>\n";
+        }
+
+        return $jss;
     }
 
     public static function getSubscribedEvents()

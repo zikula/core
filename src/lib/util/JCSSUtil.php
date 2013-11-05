@@ -163,7 +163,7 @@ class JCSSUtil
      */
     public static function prepareJavascripts($javascripts)
     {
-        array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js');
+//        array_unshift($javascripts, 'jquery', 'javascript/helpers/bootstrap-zikula.js');
         array_unshift($javascripts, 'jquery', 'web/bootstrap/js/bootstrap.min.js');
         // first resolve any dependencies
         $javascripts = self::resolveDependencies($javascripts);
@@ -183,7 +183,7 @@ class JCSSUtil
             }
         }
         if ($gettext) {
-            PageUtil::addVar('jsgettext', 'zikula_js');
+//            PageUtil::addVar('jsgettext', 'zikula_js');
         }
         if (!empty($styles)) {
             PageUtil::addVar('stylesheet', $styles);
@@ -479,20 +479,20 @@ class JCSSUtil
             $jQueryUncompressed = array(
                 'jquery'         => array(
                     'path'    => 'web/jquery/jquery.js',
-                    'require' => array('noconflict', 'jquery-migrate'),
+//                    'require' => array('noconflict', 'jquery-migrate'),
                 ),
-                'noconflict'     => array(
-                    'path' => 'javascript/jquery_config.js',
-                ),
-                'jquery-migrate' => array(
-                    'path' => 'web/jquery/jquery-migrate.min.js',
-                ),
+//                'noconflict'     => array(
+//                    'path' => 'javascript/jquery_config.js',
+//                ),
+//                'jquery-migrate' => array(
+//                    'path' => 'web/jquery/jquery-migrate.min.js',
+//                ),
             );
             $jQueryUiUncompressed = array(
-                'jquery-ui' => array(
-                    'path'    => 'web/jquery-ui/ui/jquery-ui.js',
-                    'require' => array('jquery'),
-                ),
+//                'jquery-ui' => array(
+//                    'path'    => 'web/jquery-ui/ui/jquery-ui.js',
+//                    'require' => array('jquery'),
+//                ),
             );
             $scripts = array_merge($jQueryUncompressed, $jQueryUiUncompressed, $prototypeUncompressed, $livepipeUncompressed, array_slice($scripts, 5));
         }

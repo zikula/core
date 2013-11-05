@@ -34,19 +34,12 @@ class Asset
             return $this->choose($this->resolvePath($path));
         }
 
-        // Maps to AcmeBundle/Resources/public/$assetPath
-        // @AcmeBundle:css/foo.css
-        // @AcmeBundle:jss/foo.js
-        // @AcmeBundle:images/foo.png
-        $bundleName = null;
-        $parts = explode(':', $path);
-        if (count($parts) !== 2) {
-            throw new \InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
+        // Maps @AcmeBundle/Resources/public/$assetPath to real path
+        if (false === $pos = strpos($path, '/')) {
+            throw new \InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle/Resources/public/css/foo.css"');
         }
-
-
-        $bundleName = substr($parts[0], 1, strlen($parts[0]));
-        $assetPath = $parts[1];
+        $bundleName = substr($path, 1, $pos-1);
+        $assetPath = substr($path, $pos, strlen($path));
 
         $parameters = array(
             'bundle_name' => $bundleName,

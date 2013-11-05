@@ -71,8 +71,6 @@ class CoreExtension extends \Twig_Extension
             new \Twig_SimpleFunction('button', array($this, 'button')),
             new \Twig_SimpleFunction('img', array($this, 'img')),
             new \Twig_SimpleFunction('icon', array($this, 'icon')),
-            new \Twig_SimpleFunction('lang', array($this, 'lang')),
-            new \Twig_SimpleFunction('langdirection', array($this, 'langDirection')),
             new \Twig_SimpleFunction('blockposition', array($this, 'showBlockPosition')),
             new \Twig_SimpleFunction('showblock', array($this, 'showBlock')),
             new \Twig_SimpleFunction('blockinfo', array($this, 'getBlockInfo')),

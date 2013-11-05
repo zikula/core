@@ -1,5 +1,5 @@
 {% use 'form_div_layout.html.twig' %}
-{% use 'BcBootstrapBundle:Form:form_div_layout.html.twig' %}
+{% use 'BraincraftedBootstrapBundle:Form:form_div_layout.html.twig' %}
 
 {#
  # This theme contains custom extensions of the theme "form_div_layout.html.twig"
@@ -39,9 +39,9 @@
 
     {# Add class "unstyled" #}
     {% if attr.class is not defined or attr.class is empty %}
-        {% set attr = attr|merge({'class': 'unstyled'}) %}
+        {% set attr = attr|merge({'class': 'list-unstyled'}) %}
     {% else %}
-        {% set attr = attr|merge({'class': attr.class ~ ' unstyled'}) %}
+        {% set attr = attr|merge({'class': attr.class ~ ' list-unstyled'}) %}
     {% endif %}
 
     {# Render as <ul> #}
@@ -68,9 +68,9 @@
 
     {# Add "btn" class#}
     {% if attr.class is not defined or attr.class is empty %}
-        {% set attr = attr|merge({'class': 'btn'}) %}
+        {% set attr = attr|merge({'class': 'btn btn-default'}) %}
     {% else %}
-        {% set attr = attr|merge({'class': attr.class ~ ' btn'}) %}
+        {% set attr = attr|merge({'class': attr.class ~ ' btn btn-default'}) %}
     {% endif %}
 
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
@@ -91,7 +91,7 @@
 
 {% block horizontal_button_row %}
 {% spaceless %}
-    <div class="control-group">
+    <div class="form-group">
         <div class="controls">
             {{ form_widget(form) }}
         </div>

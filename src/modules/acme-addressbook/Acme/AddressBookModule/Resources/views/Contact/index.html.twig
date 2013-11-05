@@ -1,6 +1,6 @@
-{% extends '::base.html.twig' %}
+{% extends 'ZikulaAndreas08Theme::master.html.twig' %}
 
-{% block body -%}
+{% set maincontent %}
     <h1>Address Book</h1>
 
     {% include 'AcmeAddressBookModule:Default:flash.html.twig' with {'scope': 'contacts'} %}
@@ -41,8 +41,8 @@
         </tbody>
     </table>
 
-    <ul class="inline">
-        <li><a href="{{ path('contacts_new') }}" class="btn"><i class="icon-plus"></i> Add contact</a></li>
+    <ul class="list-inline">
+        <li><a href="{{ path('contacts_new') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add contact</a></li>
     </ul>
 
     <h2>Groups</h2>
@@ -61,7 +61,7 @@
                 <td>
                     {% for member in group.members %}
                         <a href="{{ path('contacts_edit', { 'id': member.id }) }}">{{ member.fullName }}</a>
-                        {%- if not loop.last %}, {% endif %}
+                        {% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </td>
             </tr>
@@ -69,7 +69,7 @@
         </tbody>
     </table>
 
-    <ul class="inline">
-        <li><a href="{{ path('groups_new') }}" class="btn"><i class="icon-plus"></i> Add group</a></li>
+    <ul class="list-inline">
+        <li><a href="{{ path('groups_new') }}" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add group</a></li>
     </ul>
-{% endblock %}
+{% endset %}

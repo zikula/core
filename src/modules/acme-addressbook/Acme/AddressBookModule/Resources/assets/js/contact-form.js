@@ -1,9 +1,9 @@
 jQuery(document).ready(function() {
     var $emails = $('#acme_addressbook_contact_emails');
-    var $newEmailLinkLi = $('<li><a href="#" class="add_email_link btn"><i class="icon-plus"></i> Add email</a></li>');
+    var $newEmailLinkLi = $('<li><a href="#" class="add_email_link btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add email</a></li>');
 
     var $phoneNumbers = $('#acme_addressbook_contact_phoneNumbers');
-    var $newPhoneNumberLinkLi = $('<li><a href="#" class="add_phone_number_link btn"><i class="icon-plus"></i> Add phone number</a></li>');
+    var $newPhoneNumberLinkLi = $('<li><a href="#" class="add_phone_number_link btn btn-default"><i class="glyphicon glyphicon-plus"></i> Add phone number</a></li>');
 
     initCollection($emails, $newEmailLinkLi);
     initCollection($phoneNumbers, $newPhoneNumberLinkLi);
@@ -53,7 +53,7 @@ function addLi($collection, $newLinkLi) {
 
 function addDeleteLink($li) {
     // create a new "delete" link
-    var $deleteLink = $('<a href="#"><i class="icon-minus-sign"></i></a>');
+    var $deleteLink = $('<a href="#">DELETE<i class="glyphicon glyphicon-minus-sign"></i></a>');
 
     // add link to the email form
     $li.find('input:last').after($deleteLink);

@@ -33,6 +33,7 @@
         <parameter key="zikula.session_expire_listener.class">Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener</parameter>
         <parameter key="zikula.legacy_route_listener.class">Zikula\Bundle\CoreBundle\EventListener\LegacyRouteListener</parameter>
         <parameter key="zikula.theme_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemeListener</parameter>
+        <parameter key="zikula.theme_pagevar_listener.class">Zikula\Bundle\CoreBundle\EventListener\ThemePageVarListener</parameter>
         <parameter key="router_listener.class">Zikula\Bundle\CoreBundle\EventListener\RouterListener</parameter>
     </parameters>
 
@@ -109,6 +110,10 @@
         <service id="zikula.theme_listener" class="%zikula.theme_listener.class%">
             <tag name="kernel.event_subscriber" />
             <tag name="monolog.logger" channel="request" />
+        </service>
+
+        <service id="zikula.theme_pagevar_listener" class="%zikula.theme_pagevar_listener.class%">
+            <tag name="kernel.event_subscriber" />
         </service>
 
         <!--<service id="zikula.themeinit.subscriber" class="%zikula.themeinit_listener.class%">-->

@@ -57,6 +57,9 @@
         "zikula/jquery-ui-bundle": "dev-master",
         "zikula/bootstrap-bundle": "dev-master",
         "zikula/fontawesome-bundle": "4.0@dev"
+        "braincrafted/bootstrap-bundle": "dev-develop@dev",
+        "twitter/bootstrap": "2.3.*",
+        "leafo/lessphp": "0.4.*@dev"
     },
     "scripts": {
         "post-install-cmd": [
