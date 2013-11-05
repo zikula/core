@@ -206,7 +206,7 @@ class AdminApi extends \Zikula_AbstractApi
                                              ->delete()
                                              ->from('Zikula\Module\GroupsModule\Entity\GroupMembershipEntity', 'm')
                                              ->where('m.uid = :uid')
-                                             ->setParameter('gid', $userObj['uid'])
+                                             ->setParameter('uid', $userObj['uid'])
                                              ->getQuery();
                 $query->getResult();
 
@@ -216,9 +216,9 @@ class AdminApi extends \Zikula_AbstractApi
                 // delete session
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
-                                             ->from('Zikula\Module\UsersModule\Entity\UserEntity', 'u')
+                                             ->from('Zikula\Module\UsersModule\Entity\UserSessionEntity', 'u')
                                              ->where('u.uid = :uid')
-                                             ->setParameter('gid', $userObj['uid'])
+                                             ->setParameter('uid', $userObj['uid'])
                                              ->getQuery();
                 $query->getResult();
 
