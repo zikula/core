@@ -63,7 +63,7 @@ abstract class AbstractHookListener implements Zikula_TranslatableInterface
      *
      * @param EventDispatcher $dispatcher ServiceManager.
      */
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(\Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
         $this->setup();
