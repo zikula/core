@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaCategoriesModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,21 +24,21 @@ class GenericUtil
      * @param array $data   The data for the category.
      *
      * @return boolean true/false Whether the provided data is valid.
+     *
+     * @throws InvalidArgumentException Thrown if no category name is provided or 
+     *                                         if no parent is defined for the category
+     * @throws RuntimeException         Thrown if a category of the same anme already exists under the parent
      */
     public static function validateCategoryData($data)
     {
         $view = \Zikula_View::getInstance();
 
         if (empty($data['name'])) {
-            $msg = $view->__('Error! You did not enter a name for the category.');
-            \LogUtil::registerError($msg);
-            return false;
+            throw new \InvalidArgumentException(__('Error! You did not enter a name for the category.'));
         }
 
         if (empty($data['parent_id'])) {
-            $msg = $view->__('Error! You did not provide a parent for the category.');
-            \LogUtil::registerError($msg);
-            return false;
+            throw new \InvalidArgumentException(('Error! You did not provide a parent for the category.'));
         }
 
         // get entity manager
@@ -63,9 +65,7 @@ class GenericUtil
         $query = $qb->getQuery();
         $exists = (int)$query->getSingleScalarResult();
         if ($exists > 0) {
-            $msg = $view->__f('Category %s must be unique under parent', $data['name']);
-            \LogUtil::registerError($msg);
-            return false;
+            throw new \RuntimeException($view->__f('Category %s must be unique under parent', $data['name']));
         }
 
         return true;
@@ -150,7 +150,7 @@ class GenericUtil
      * @param array $attrib_names                             The attribute names.
      * @param array $attrib_values                            The attribute values.
      *
-     * @return none.
+     * @return void
      */
     public static function processCategoryAttributes($category, $attrib_names, $attrib_values)
     {

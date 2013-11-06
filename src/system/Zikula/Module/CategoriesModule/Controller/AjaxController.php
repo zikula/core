@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaCategoriesModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -33,6 +35,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * Resequence categories
+     *
+     * @return void
      */
     public function resequenceAction()
     {
@@ -61,6 +65,15 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
     }
 
+    /**
+     * Edit a category
+     *
+     * @param string $args['mode']   the mode of operation (new or edit0
+     * @param int    $args['cid']    the category id
+     * @param int    $args['parent'] the parent category id
+     *
+     * @return AjaxResponse
+     */
     public function editAction($args = array())
     {
         $this->checkAjaxToken();
@@ -115,6 +128,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Copy a category
+     *
+     * @return AjaxResponse
+     */
     public function copyAction()
     {
         $this->checkAjaxToken();
@@ -161,6 +179,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Delete a category
+     *
+     * @return AjaxResponse
+     */
     public function deleteAction()
     {
         $this->checkAjaxToken();
@@ -181,6 +204,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Delete a category and move any existing subcategories
+     *
+     * @return AjaxResponse
+     */
     public function deleteandmovesubsAction()
     {
         $this->checkAjaxToken();
@@ -229,6 +257,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Display a dialog to get the category to move subcategories to once the parent has been deleted
+     *
+     * @return AjaxResponse
+     */
     public function deletedialogAction()
     {
         $this->checkAjaxToken();
@@ -252,6 +285,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Activate a category
+     *
+     * @return AjaxResponse
+     */
     public function activateAction()
     {
         $this->checkAjaxToken();
@@ -272,6 +310,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Deactivate a category
+     *
+     * @return AjaxResponse
+     */
     public function deactivateAction()
     {
         $this->checkAjaxToken();
@@ -292,6 +335,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         return new AjaxResponse($result);
     }
 
+    /**
+     * Save a category
+     *
+     * @return AjaxResponse
+     */
     public function saveAction()
     {
         $this->checkAjaxToken();

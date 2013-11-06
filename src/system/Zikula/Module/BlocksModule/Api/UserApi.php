@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -15,7 +17,6 @@
 namespace Zikula\Module\BlocksModule\Api;
 
 use SecurityUtil;
-use LogUtil;
 use System;
 use ModUtil;
 
@@ -35,6 +36,8 @@ class UserApi extends \Zikula_AbstractApi
      * @param  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
      *
      * @return array array of items, or false on failure.
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
     public function getall($args)
     {
@@ -119,7 +122,10 @@ class UserApi extends \Zikula_AbstractApi
      * get a specific block
      *
      * @param        $args['bid'] id of block to get
+     *
      * @return array item array, or false on failure
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
     public function get($args)
     {
@@ -201,6 +207,8 @@ class UserApi extends \Zikula_AbstractApi
      * @param int $args['pid'] position id.
      *
      * @return mixed item array, or false on failure.
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
     public function getposition($args)
     {
@@ -222,6 +230,8 @@ class UserApi extends \Zikula_AbstractApi
      * @param int $args['pid'] position id.
      *
      * @return mixed item array, or false on failure.
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
     public function getblocksinposition($args)
     {
@@ -242,6 +252,8 @@ class UserApi extends \Zikula_AbstractApi
      * @param int $args['bid'] block id.
      *
      * @return mixed item array, or false on failure.
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
     public function getallblockspositions($args)
     {

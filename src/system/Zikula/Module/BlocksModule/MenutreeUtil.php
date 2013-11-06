@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,6 +21,13 @@ use ThemeUtil;
 
 class MenutreeUtil
 {
+    /**
+     * Generate an offset id to avoid id conflicts
+     *
+     * @param int $id the input id
+     *
+     * @return int the input item * 10000
+     */
     public static function getIdOffset($id = null)
     {
         $item = !is_null($id) && !empty($id) ? $id : 1;
@@ -26,6 +35,11 @@ class MenutreeUtil
         return $item*10000;
     }
 
+    /**
+     * Get a list of valid templates for the menu
+     *
+     * @return array array of templates
+     */
     public static function getTemplates()
     {
         $templates = array();
@@ -90,6 +104,11 @@ class MenutreeUtil
         return self::normalize($templates);
     }
 
+    /**
+     * Get a list of valid stylesheets for the menu
+     *
+     * @return array array of stylesheets
+     */
     public static function getStylesheets()
     {
         $stylesheets = array();
@@ -146,6 +165,13 @@ class MenutreeUtil
         return self::normalize($stylesheets);
     }
 
+    /**
+     * Helper function to standard file paths
+     *
+     * @param array array of paths to normalise
+     *
+     * @return array the modified array
+     */
     protected static function normalize($array)
     {
         $normalizedArray = array();
