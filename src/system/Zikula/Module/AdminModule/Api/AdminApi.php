@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaAdminModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -14,20 +16,25 @@
 
 namespace Zikula\Module\AdminModule\Api;
 
-use LogUtil;
 use ModUtil;
 use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
 use SecurityUtil;
 use System;
 use DataUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
-     * create a admin category
+     * create an admin category
+     *
      * @param  string $args['name']        name of the category
      * @param  string $args['description'] description of the category
+     *
      * @return mixed  admin category ID on success, false on failure
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
     public function create($args)
     {
@@ -49,11 +56,17 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * update a admin category
+     * update an admin category
+     *
      * @param  int    $args['cid']         the ID of the category
      * @param  string $args['name']        the new name of the category
      * @param  string $args['description'] the new description of the category
+     *
      * @return bool   true on success, false on failure
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws NotFoundHttpException       Thrown if item to be updated isn't found
+     * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to update the item
      */
     public function update($args)
     {
@@ -68,12 +81,12 @@ class AdminApi extends \Zikula_AbstractApi
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
 
         if (empty($item)) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check (old item)
         if (!SecurityUtil::checkPermission('ZikulaAdminModule::Category', "$item[name]::$args[cid]", ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError ();
+            throw new AccessDeniedHttpException();
         }
 
         $item->merge($args);
@@ -84,9 +97,16 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * delete a admin category
+     * delete an admin category
+     *
      * @param  int  $args['cid'] ID of the category
+     *
      * @return bool true on success, false on failure
+     *
+     * @throws InvalidArgumentException     Thrown if invalid parameters are received in $args
+     * @throws NotFoundHttpException        Thrown if item to be updated isn't found
+     * @throws RuntimeException             Thrown if the category to be deleted is the default for new modules or 
+     *                                             is the initial category to be displayed
      */
     public function delete($args)
     {
@@ -96,19 +116,19 @@ class AdminApi extends \Zikula_AbstractApi
 
         $item = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'get', array('cid' => $args['cid']));
         if (empty($item)) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
         if ($item['cid'] == $defaultcategory) {
-            return LogUtil::registerError($this->__('Error! You cannot delete the default module category used in the administration panel.'));
+            throw new \RuntimeException($this->__('Error! You cannot delete the default module category used in the administration panel.'));
         }
 
         // Avoid deletion of the start category
         $startcategory = $this->getVar('startcategory');
         if ($item['cid'] == $startcategory) {
-            return LogUtil::registerError($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
+            throw new \RuntimeException($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
         }
 
         // move all modules from the category to be deleted into the
@@ -132,8 +152,10 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * get all admin categories
+     *
      * @param  int   $args['startnum'] starting record number
      * @param  int   $args['numitems'] number of items to get
+     *
      * @return mixed array of items, or false on failure
      */
     public function getall($args)
@@ -161,6 +183,7 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * utility function to count the number of items held by this module
+     *
      * @return int number of items held by this module
      */
     public function countitems()
@@ -175,8 +198,12 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * get a specific category
+     *
      * @param  int   $args['cid'] id of example item to get
+     *
      * @return mixed item array, or false on failure
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function get($args)
     {
@@ -199,9 +226,14 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * add a module to a category
+     *
      * @param  string $args['module']   name of the module
      * @param  int    $args['category'] number of the category
+     *
      * @return mixed  admin category ID on success, false on failure
+     *
+     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to add the category
      */
     public function addmodtocategory($args)
     {
@@ -213,7 +245,7 @@ class AdminApi extends \Zikula_AbstractApi
         // this function is called durung the init process so we have to check in installing
         // is set as alternative to the correct permission check
         if (!System::isInstalling() && !SecurityUtil::checkPermission('ZikulaAdminModule::Category', "::", ACCESS_ADD)) {
-            return LogUtil::registerPermissionError ();
+            throw new AccessDeniedHttpException();
         }
 
         $entity = 'Zikula\Module\AdminModule\Entity\AdminModuleEntity';
@@ -241,8 +273,12 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * Get the category a module belongs to
+     *
      * @param  int   $args['mid'] id of the module
+     *
      * @return mixed category id, or false on failure
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getmodcategory($args)
     {
@@ -280,9 +316,13 @@ class AdminApi extends \Zikula_AbstractApi
     }
 
     /**
-     * Get the sortorder of a module
+     * Get the sort order of a module
+     *
      * @param  int   $args['mid'] id of the module
+     *
      * @return mixed category id, or false on failure
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getSortOrder($args)
     {
@@ -314,8 +354,12 @@ class AdminApi extends \Zikula_AbstractApi
 
     /**
      * Get the category a module belongs to
+     *
      * @param  int   $args['mid'] id of the module
+     *
      * @return mixed array of styles if successful, or false on failure
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getmodstyles($args)
     {
@@ -381,7 +425,10 @@ class AdminApi extends \Zikula_AbstractApi
      * count modules in a given category
      *
      * @param  int   $args['cid'] id of the category
+     *
      * @return int   number of modules
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function countModsInCat($args)
     {
