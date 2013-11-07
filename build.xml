@@ -59,11 +59,11 @@
         <exec command="cp -a ${workspace}/source/src ${packagepath}" />
         <delete dir="${packagepath}/themes/Admin" includeemptydirs="true" />
 
-        <exec command="svn export https://github.com/zikula-modules/Legal.git/branches/release-2.0
+        <exec command="svn export https://github.com/zikula-modules/Legal/branches/release-2.0.1
  ${builddir}/tmp/Legal" />
         <exec command="mv ${builddir}/tmp/Legal/src/modules/Legal ${packagepath}/modules" />
 
-        <exec command="svn export https://github.com/zikula-modules/Profile.git/branches/release-1.6
+        <exec command="svn export https://github.com/zikula-modules/Profile/branches/release-1.6.1
  ${builddir}/tmp/Profile" />
         <exec command="mv ${builddir}/tmp/Profile/src/modules/Profile ${packagepath}/modules" />
 
