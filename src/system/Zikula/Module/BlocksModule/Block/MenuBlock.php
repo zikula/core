@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -29,6 +31,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -56,7 +60,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
      * display block
      *
      * @param  array  $blockinfo a blockinfo structure
-     * @return output the rendered bock
+     *
+     * @return string the rendered bock
      */
     public function display($blockinfo)
     {
@@ -142,6 +147,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
      * @param title   menu item title
      * @param url     menu item url
      * @param comment menu item comment
+     *
+     * @return array the prepared array
      */
     public function addMenuItem($title, $url, $comment)
     {
@@ -212,7 +219,8 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
      * modify block settings
      *
      * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -258,6 +266,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
      * update block settings
      *
      * @param  array $blockinfo a blockinfo structure
+     *
      * @return       $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)

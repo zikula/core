@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -45,9 +47,9 @@
  *
  * @param        array       $params      All attributes passed to this function from the template
  * @param        object      $smarty     Reference to the Smarty object
+ *
  * @return       string      unordered html list
  */
-
 function smarty_function_menutree($params, $smarty)
 {
     $treeArray          = isset($params['data'])       ? $params['data'] : '';
@@ -77,10 +79,20 @@ function smarty_function_menutree($params, $smarty)
     } else {
         return $html;
     }
-
 }
 
-function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClass = '')
+/**
+ * Helper function to build an html list from a menutree tree structure
+ *
+ * @param array  $tree            menutree array
+ * @param string $treeNodePrefix  string to prefix the css id attribute of the list items
+ * @param string $treeClassPrefix string to prefix the css class attribute of the list items
+ * @param string $treeId          the id of the list control
+ * @param string $treeClass       the class of the tree control
+ *
+ * @return string the rendered list
+ */
+function _htmlList($tree, $treeNodePrefix, $treeClassPrefix, $treeId = '', $treeClass = '')
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
@@ -99,7 +111,7 @@ function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClas
         } else {
             $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .= !empty($tab['nodes']) ? _htmlList($tab['nodes'],$treeNodePrefix,$treeClassPrefix) : '';
+        $html .= !empty($tab['nodes']) ? _htmlList($tab['nodes'], $treeNodePrefix, $treeClassPrefix) : '';
         $html .= '</li>';
     }
 
@@ -107,7 +119,21 @@ function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClas
 
     return $html;
 }
-function _htmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId = '',$treeClass = '')
+
+/**
+ * Helper function to build an html list from a menutree tree structure
+ *
+ * @param array  $tree            menutree array
+ * @param string $treeNodePrefix  string to prefix the css id attribute of the list items
+ * @param string $treeClassPrefix string to prefix the css class attribute of the list items
+ * @param array  $ext             TODO what does this parameter do?
+ * @param int    $depth           TODO what does this parameter do?
+ * @param string $treeId          the id of the list control
+ * @param string $treeClass       the class of the tree control
+ *
+ * @return string the rendered list
+ */
+function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $treeId = '', $treeClass = '')
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
@@ -136,9 +162,8 @@ function _htmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId
         } else {
             $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1) : '';
+        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'], $treeNodePrefix, $treeClassPrefix, $ext, $depth+1) : '';
         $html .= '</li>';
-
     }
 
     $html .= '</ul>';
