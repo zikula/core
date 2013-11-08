@@ -22,6 +22,11 @@ use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 class BlocksModuleVersion extends \Zikula_AbstractVersion
 {
+    /**
+     * Generate an array of meta data about this module
+     *
+     * @return array meta data array
+     */
     public function getMetaData()
     {
         $meta = array();

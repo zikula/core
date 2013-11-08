@@ -18,6 +18,11 @@ namespace Zikula\Module\AdminModule;
 
 class AdminModuleVersion extends \Zikula_AbstractVersion
 {
+    /**
+     * Generate an array of meta data about this module
+     *
+     * @return array meta data array
+     */
     public function getMetaData()
     {
         $meta = array();
