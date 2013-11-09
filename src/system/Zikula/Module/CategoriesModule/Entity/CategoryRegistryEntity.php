@@ -1,12 +1,14 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula_Form
+ * @copyright Zikula Foundation
+ * @package Zikula
+ * @subpackage ZikulaCategoriesModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -90,58 +92,110 @@ class CategoryRegistryEntity extends EntityAccess
      */
     protected $obj_status = 'A';
 
+    /**
+     * get the registry id
+     *
+     * @return int the id
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * set the registry id
+     *
+     * @param int $id the id
+     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
+    /**
+     * get the registry module name
+     *
+     * @return string the module name
+     */
     public function getModname()
     {
         return $this->modname;
     }
 
+    /**
+     * set the registry module name
+     *
+     * @param string $modname the module name
+     */
     public function setModname($modname)
     {
         $this->modname = $modname;
     }
 
+    /**
+     * get the registry entity name
+     *
+     * @return string the module name
+     */
     public function getEntityname()
     {
         return $this->entityname;
     }
 
+    /**
+     * set the registry entity name
+     *
+     * @param string $entityname the module name
+     */
     public function setEntityname($entityname)
     {
         $this->entityname = $entityname;
     }
 
+    /**
+     * get the registry property name
+     *
+     * @return string the property name
+     */
     public function getProperty()
     {
         return $this->property;
     }
 
+    /**
+     * set the registry property name
+     *
+     * @param string $property the property name
+     */
     public function setProperty($property)
     {
         $this->property = $property;
     }
 
+    /**
+     * get the registry category id
+     *
+     * @return int the category id
+     */
     public function getCategory_Id()
     {
         return $this->category_id;
     }
 
+    /**
+     * set the registry category id
+     *
+     * @param int $category_id the category id
+     */
     public function setCategory_Id($category_id)
     {
         $this->category_id = $category_id;
     }
 
     /**
-     * @param mixed $cr_date
+     * set the creation date
+     *
+     * @param mixed $cr_date the creation date
      */
     public function setCr_date($cr_date)
     {
@@ -149,7 +203,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the creation date
+     *
+     * @return mixed the creation date
      */
     public function getCr_date()
     {
@@ -157,7 +213,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @param mixed $cr_uid
+     * set the creation user id
+     *
+     * @param mixed $cr_uid the user id
      */
     public function setCr_uid($cr_uid)
     {
@@ -165,7 +223,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the creation user id
+     *
+     * @return mixed the user id
      */
     public function getCr_uid()
     {
@@ -173,7 +233,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @param mixed $lu_date
+     * set the last updated date
+     *
+     * @param mixed $lu_date the date of the last update
      */
     public function setLu_date($lu_date)
     {
@@ -181,7 +243,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the last updated date
+     *
+     * @return mixed the date of the last update
      */
     public function getLu_date()
     {
@@ -189,7 +253,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @param mixed $lu_uid
+     * set the user id of the user who last updated the entity
+     *
+     * @param mixed $lu_uid the user id
      */
     public function setLu_uid($lu_uid)
     {
@@ -197,7 +263,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @return mixed
+     * get the user id of the user who last updated the entity
+     *
+     * @return mixed the user id
      */
     public function getLu_uid()
     {
@@ -205,7 +273,9 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @param string $obj_status
+     * set the status of the entity
+     *
+     * @param string $obj_status the entity status
      */
     public function setObj_status($obj_status)
     {
@@ -213,12 +283,12 @@ class CategoryRegistryEntity extends EntityAccess
     }
 
     /**
-     * @return string
+     * get the status of the entity
+     *
+     * @return string the entity status
      */
     public function getObj_status()
     {
         return $this->obj_status;
     }
-
-
 }

@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaCategoriesModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -23,8 +25,13 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get the root category for a user
      *
-     * @param  int     returnCategory
-     * @param  string  returnField
+     * @param  int     $args['returnCategory']
+     * @param  string  $args['returnField']
+     *
+     * @return mixed the return field, false otherwise
+     *
+     * @throws RuntimeException Thrown if the user root points to an invalid category or
+     *                                 if the root user root points to the system root category
      */
     public function getuserrootcat($args)
     {
@@ -33,16 +40,12 @@ class UserApi extends \Zikula_AbstractApi
 
         $userRoot = $this->getVar('userrootcat', 0);
         if (!$userRoot) {
-            return LogUtil::registerError($this->__('Error! Could not determine the user root node.'));
+            throw new \RuntimeException($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
         }
 
         $userRootCat = CategoryUtil::getCategoryByPath ($userRoot);
-        if (!$userRoot) {
-            return LogUtil::registerError($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
-        }
-
         if ($userRootCat == 1) {
-            return LogUtil::registerError($this->__("Error! The root directory cannot be modified in 'user' mode"));
+            throw new \RuntimeException($this->__("Error! The root directory cannot be modified in 'user' mode"));
         }
 
         $userCatName = $this->getusercategoryname();
@@ -63,7 +66,11 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get all categories for a user
      *
-     * @param  bool     relative
+     * @param bool $args['relative']
+     *
+     * @return array array of categories
+     *
+     * @throws RuntimeException Thrown if the user root points to an invalid category
      */
     public function getusercategories($args)
     {
@@ -71,7 +78,7 @@ class UserApi extends \Zikula_AbstractApi
         $userRootCat = $this->getuserrootcat($args);
 
         if (!$userRootCat) {
-            return LogUtil::registerError($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
+            throw new \RuntimeException($this->__f('Error! The user root node seems to point towards an invalid category: %s.', $userRoot));
         }
 
         $relative = (isset($args['relative']) ? $args['relative'] : false);
@@ -82,7 +89,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get the username associated with a category
      *
-     * @param  int     uid      the user id
+     * @param int $args['uid'] the user id
+     *
+     * @return string the username associated with the category
      */
     public function getusercategoryname($args)
     {
