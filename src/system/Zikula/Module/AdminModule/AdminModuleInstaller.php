@@ -19,6 +19,10 @@ namespace Zikula\Module\AdminModule;
 use DoctrineHelper;
 use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
 
+/**
+ * Installation and upgrade routines for the admin module
+ *
+ */
 class AdminModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
@@ -63,7 +67,8 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldVersion version number string to upgrade from
+     * @param  string $oldversion version number string to upgrade from
+     *
      * @return mixed  true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)

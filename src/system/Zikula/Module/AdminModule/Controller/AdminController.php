@@ -28,6 +28,10 @@ use Zikula_Core;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * Administrative contollers for the admin module
+ *
+ */
 class AdminController extends \Zikula_AbstractController
 {
     /**
@@ -62,7 +66,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * View all admin categories
      *
-     * @param  int    $args['startnum'] the starting id to view from - optional
+     * @param int[] $args {<ul>
+     *      <li> @type $startnum the starting id to view from - optional</li>
+     *                     </ul>}
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
@@ -120,10 +126,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function processes the user input from the form in @see this::newcatAction()
      *
-     * @param  string $args['name']        the name of the category to be created
-     * @param  string $args['description'] the description of the category to be created
+     * @param int[] $args {<ul>
+     *      <li>@type string $name        the name of the category to be created
+     *      <li>@type string $description the description of the category to be created
+     *                     </ul>}
      *
-     * @return mixed  category id if create successful, false otherwise
+     * @return int|bool category id if create successful, false otherwise
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
      */
@@ -154,8 +162,10 @@ class AdminController extends \Zikula_AbstractController
      *
      * Displays a form for the user to edit the details of a category. Data is supplied to @see this::updateAction()
      *
-     * @param  int    $args['cid']      category id
-     * @param  int    $args['objectid'] generic object id maps to cid if present
+     * @param int[] $args {<ul>
+     *      <li>@type int $cid      category id
+     *      <li>@type int $objectid generic object id maps to cid if present
+     *                     </ul>}
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
@@ -190,12 +200,14 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function processes the user input from the form in @see this::modifyAction()
      *
-     * @param  int    $args['cid']         the id of the item to be updated
-     * @param  int    $args['objectid']    generic object id maps to cid if present
-     * @param  string $args['name']        the name of the category to be updated
-     * @param  string $args['description'] the description of the item to be updated
+     * @param mixed[] $args {<ul>
+     *      <li>@type int    $cid         the id of the item to be updated</li>
+     *      <li>@type int    $objectid    generic object id maps to cid if present</li>
+     *      <li>@type string $name        the name of the category to be updated</li>
+     *      <li>@type string $description the description of the item to be updated</li>
+     *                       </ul>}
      *
-     * @return bool   true if update successful, false otherwise
+     * @return bool true if update successful, false otherwise
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permission over the category
      */
@@ -231,9 +243,11 @@ class AdminController extends \Zikula_AbstractController
      * This is a standard function that is called whenever an administrator
      * wishes to delete a current module item.
      *
-     * @param  int   $args['cid']          the id of the category to be deleted
-     * @param  int   $args['objectid']     generic object id maps to cid if present
-     * @param  bool  $args['confirmation'] confirmation that this item can be deleted
+     * @param mixed[] $args {<ul>
+     *      <li>@param int  $cid          the id of the category to be deleted</li>
+     *      <li>@param int  $objectid     generic object id maps to cid if present</li>
+     *      <li>@param bool $confirmation confirmation that this item can be deleted</li>
+     *                       </ul>}
      *
      * @return mixed Symfony\Component\HttpFoundation\Response if confirmation is null, true if delete successful, false otherwise
      *
@@ -282,7 +296,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display main admin panel for a category
      *
-     * @param  int    $args['acid'] the id of the category to be displayed
+     * @param int[] $args {<ul>
+     *      <li>@type int $acid the id of the category to be displayed</li>
+     *                     </ul>}
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
@@ -442,7 +458,6 @@ class AdminController extends \Zikula_AbstractController
      * This is a standard function to update the configuration parameters of the
      * module given the information passed back by the modification form.
      *
-     * @see Admin_admin_modifyconfig()
      * @param  int    $modulesperrow  the number of modules to display per row in the admin panel
      * @param  int    $admingraphic   switch for display of admin icons
      * @param  int    $modulename,... the id of the category to set for each module
@@ -510,6 +525,10 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Main category menu.
+     *
+     * @param int[] $args {<ul>
+     *      <li>@type int acid the admin category id</li>
+     *                     </ul>}
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      */
@@ -694,9 +713,11 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Check for updates
      *
-     * @return array new version data or false
+     * @param bool $force force an update check overriding time interval
+     *
+     * @return array|bool new version data or false
      */
-    private function _updatecheck($force=false)
+    private function _updatecheck($force = false)
     {
         if (!System::getVar('updatecheck')) {
             return array('update_show' => false);

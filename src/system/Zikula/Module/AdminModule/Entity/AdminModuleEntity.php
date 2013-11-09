@@ -30,6 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
 class AdminModuleEntity extends EntityAccess
 {
    /**
+     * The id key field
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,16 +39,22 @@ class AdminModuleEntity extends EntityAccess
     private $amid;
 
     /**
+     * The module id
+     *
      * @ORM\Column(type="integer")
      */
     private $mid;
 
     /**
+     * The category id
+     *
      * @ORM\Column(type="integer")
      */
     private $cid;
 
     /**
+     * The sort order for this module
+     *
      * @ORM\Column(type="integer")
      */
     private $sortorder;

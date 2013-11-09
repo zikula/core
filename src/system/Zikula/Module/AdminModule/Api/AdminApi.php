@@ -24,15 +24,21 @@ use DataUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * API functions used by administrative controllers
+ *
+ */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
      * create an admin category
      *
-     * @param  string $args['name']        name of the category
-     * @param  string $args['description'] description of the category
+     * @param mixed[] $args {<ul>
+     *      <li>@type string $name        name of the category</li>
+     *      <li>@type string $description description of the category</li>
+     *                       </ul>}
      *
-     * @return mixed  admin category ID on success, false on failure
+     * @return int|bool admin category ID on success, false on failure
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
@@ -58,11 +64,13 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * update an admin category
      *
-     * @param  int    $args['cid']         the ID of the category
-     * @param  string $args['name']        the new name of the category
-     * @param  string $args['description'] the new description of the category
+     * @param mixed[] $args {<ul>
+     *      <li>@type int    $cid         the ID of the category</li>
+     *      <li>@type string $name        the new name of the category</li>
+     *      <li>@type string $description the new description of the category</li>
+     *                       </ul>}
      *
-     * @return bool   true on success, false on failure
+     * @return bool true on success, false on failure
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      * @throws NotFoundHttpException       Thrown if item to be updated isn't found
@@ -99,7 +107,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete an admin category
      *
-     * @param  int  $args['cid'] ID of the category
+     * @param  int[] $args {<ul>
+     *      <li>@type int $args['cid'] ID of the category</li>
+     *                      </ul>}
      *
      * @return bool true on success, false on failure
      *
@@ -153,10 +163,12 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * get all admin categories
      *
-     * @param  int   $args['startnum'] starting record number
-     * @param  int   $args['numitems'] number of items to get
+     * @param int[] $args {<ul>
+     *      <li>@type int $startnum starting record number</li>
+     *      <li>@type int $numitems number of items to get</li>
+     *                     </ul>}
      *
-     * @return mixed array of items, or false on failure
+     * @return array|bool array of items, or false on failure
      */
     public function getall($args)
     {
@@ -199,9 +211,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * get a specific category
      *
-     * @param  int   $args['cid'] id of example item to get
+     * @param int[] $args {<ul>
+     *      <li>@type int $cid id of example item to get</li>
+     *                     </ul>}
      *
-     * @return mixed item array, or false on failure
+     * @return array|bool item array, or false on failure
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -227,10 +241,12 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * add a module to a category
      *
-     * @param  string $args['module']   name of the module
-     * @param  int    $args['category'] number of the category
+     * @param mixed[] $args {<ul>
+     *      <li>@type  string $module   name of the module</li>
+     *      <li>@type  int    $category number of the category</li>
+     *                       </ul>}
      *
-     * @return mixed  admin category ID on success, false on failure
+     * @return int|bool admin category ID on success, false on failure
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to add the category
@@ -274,9 +290,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the category a module belongs to
      *
-     * @param  int   $args['mid'] id of the module
+     * @param int[] $args {<ul>
+     *      <li>@type int $mid id of the module</li>
+     *                     </ul>}
      *
-     * @return mixed category id, or false on failure
+     * @return int|false category id, or false on failure
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -318,9 +336,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the sort order of a module
      *
-     * @param  int   $args['mid'] id of the module
+     * @param int[] $args {<ul>
+     *      <li>@type int $mid id of the module</li>
+     *                     </ul>}
      *
-     * @return mixed category id, or false on failure
+     * @return int|bool category id, or false on failure
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -355,9 +375,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the category a module belongs to
      *
-     * @param  int   $args['mid'] id of the module
+     * @param int[] $args {<ul>
+     *      <li>@type int $mid id of the module</li>
+     *                     </ul>}
      *
-     * @return mixed array of styles if successful, or false on failure
+     * @return array|bool array of styles if successful, or false on failure
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
      */
@@ -424,7 +446,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * count modules in a given category
      *
-     * @param  int   $args['cid'] id of the category
+     * @param int[] $args {<ul>
+     *      <li>@type int $cid id of the category</li>
+     *                     </ul>}
      *
      * @return int   number of modules
      *

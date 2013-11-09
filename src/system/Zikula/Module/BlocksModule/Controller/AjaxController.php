@@ -20,7 +20,6 @@ use SecurityUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula_Response_Ajax;
-use Zikula_Exception_Fatal;
 use BlockUtil;
 use DataUtil;
 use ModUtil;
