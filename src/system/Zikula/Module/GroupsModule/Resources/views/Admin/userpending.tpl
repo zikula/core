@@ -1,7 +1,7 @@
 {gt text="Membership application" assign=templatetitle}
 {adminheader}
 <h3>
-    <span class="icon icon-plus"></span>
+    <span class="icon-plus"></span>
     {$templatetitle}
 </h3>
 

@@ -239,7 +239,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             } elseif (!empty($menuitem['url'])) {
                 $icon = ''; 
                 if (!empty($menuitem['icon'])) {
-                    $icon = '<span class="icon icon-'.$menuitem['icon'].'"></span> ';
+                    $icon = '<span class="icon-'.$menuitem['icon'].'"></span> ';
                 }
                 $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr;
                 if (isset($menuitem['links'])) {

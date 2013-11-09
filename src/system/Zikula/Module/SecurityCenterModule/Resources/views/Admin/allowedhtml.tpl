@@ -2,7 +2,7 @@
 {pageaddvar name="javascript" value="system/Zikula/Module/SecurityCenterModule/Resources/public/js/securitycenter_admin_allowedhtm.js"}
 {adminheader}
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="icon-list"></span>
     {gt text="Allowed HTML settings"}
 </h3>
 

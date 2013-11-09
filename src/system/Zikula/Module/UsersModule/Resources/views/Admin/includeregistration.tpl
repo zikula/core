@@ -70,14 +70,14 @@
             <div class="form-control-static">
                 {if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}
                 {if !isset($reginfo.verificationsent) || empty($reginfo.verificationsent)}
-                <span class="icon icon-remove icon-fixed-width icon-red"></span>
+                <span class="icon-remove icon-fixed-width icon-red"></span>
                 {gt text='Verification e-mail message not yet sent to the user'}
                 {else}
-                <span class="icon icon-time icon-fixed-width icon-red"></span>
+                <span class="icon-time icon-fixed-width icon-red"></span>
                 {gt text='Not yet verified'}
                 {/if}
                 {else}
-                <span class="icon icon-ok icon-fixed-width icon-green"></span>
+                <span class="icon-ok icon-fixed-width icon-green"></span>
                 {gt text='Verification complete'} <span class="sub">{gt text='(or verification was not required when the registration was completed)'}</span>
                 {/if}
             </div>
@@ -88,10 +88,10 @@
         <div class="col-lg-9">
             <div class="form-control-static">
                 {if !isset($reginfo.isapproved) || empty($reginfo.isapproved) || !$reginfo.isapproved}
-                <span class="icon icon-remove icon-fixed-width icon-red"></span>
+                <span class="icon-remove icon-fixed-width icon-red"></span>
                 {gt text='Not yet approved'}
                 {else}
-                <span class="icon icon-ok icon-fixed-width icon-green"></span>
+                <span class="icon-ok icon-fixed-width icon-green"></span>
                 {gt text='Approved'} <span class="sub">{gt text='(or approval was not required when the registration was completed)'}</span>
                 {/if}
             </div>

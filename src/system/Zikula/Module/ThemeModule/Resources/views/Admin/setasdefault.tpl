@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-pencil"></span>
+    <span class="icon-pencil"></span>
     {gt text="Theme confirmation prompt"}
 </h3>
 

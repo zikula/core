@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-trash"></span>
+    <span class="icon-trash"></span>
     {$blockname|safetext}
 </h3>
 

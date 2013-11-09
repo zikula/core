@@ -21,7 +21,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="icon-list"></span>
     {gt text="Search results"}
 </h3>
 

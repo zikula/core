@@ -62,9 +62,9 @@ $(document).on('click', '.admintabs-add .icon-ok', function (e) {
             var newtab = '<li class="dropdown droppable nowrap" data-catid='+response.data.id+'>'+
                          '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
                          '">'+
-                         '<span class="icon icon-move admintabs-unlock"></span> '+
+                         '<span class="icon-move admintabs-unlock"></span> '+
                          response.data.name+
-                         ' <span class="icon icon-caret-down"></span>'+
+                         ' <span class="icon-caret-down"></span>'+
                          '</a>'+
                          '<ul class="admintabs-new dropdown-menu"></ul>'+
                          '</li>';

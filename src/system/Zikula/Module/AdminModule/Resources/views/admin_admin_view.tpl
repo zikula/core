@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="icon-list"></span>
     {gt text="Module categories list"}
 </h3>
 
@@ -21,10 +21,10 @@
             <td><a href="{modurl modname=ZikulaAdminModule type=admin func=adminpanel acid=$category_id}">{$category_name}</a></td>
             <td class="actions">
                 {if $access_edit}
-                    <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips icon icon-wrench"></a>
+                    <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips icon-wrench"></a>
                 {/if}
                 {if $access_delete}
-                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips icon icon-trash"></a>
+                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips icon-trash"></a>
                 {/if}
             </td>
         </tr>

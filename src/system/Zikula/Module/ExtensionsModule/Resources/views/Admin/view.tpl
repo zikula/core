@@ -3,7 +3,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="icon-list"></span>
     {gt text="Modules list"}
 </h3>
 
@@ -72,7 +72,7 @@
                 {assign var="options" value=$modules[modules].options}
                 {strip}
                 {section name=options loop=$options}
-                <a href="{$options[options].url|safetext}" class="icon icon-{$options[options].image} tooltips" style="color:{$options[options].color}" title="{$options[options].title}"></a>&nbsp;
+                <a href="{$options[options].url|safetext}" class="icon-{$options[options].image} tooltips" style="color:{$options[options].color}" title="{$options[options].title}"></a>&nbsp;
                 {/section}
                 {/strip}
             </td>

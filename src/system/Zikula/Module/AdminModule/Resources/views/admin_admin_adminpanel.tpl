@@ -18,7 +18,7 @@
                 <div>
                     {* movable icon *}
                     <div class="dropdown" style="text-align:left">
-                        <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon icon-move admintabs-lock"></span> 
+                        <span title="{gt text="Drag and drop into a new module category"}" class="tooltips icon-move admintabs-lock"></span>
 
                         {* module title *}
                         <a title="{$adminlink.menutexttitle|safetext}" href="{$adminlink.menutexturl|safehtml}">{$adminlink.menutext|safetext}</a>

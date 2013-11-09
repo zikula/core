@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-info-sign"></span>
+    <span class="icon-info-sign"></span>
     {gt text="Theme credits"}
 </h3>
 

@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-trash"></span>
+    <span class="icon-trash"></span>
     {gt text='Remove user from group'}
 </h3>
 

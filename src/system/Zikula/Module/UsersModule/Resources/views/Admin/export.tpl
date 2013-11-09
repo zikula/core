@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-download-alt"></span>
+    <span class="icon-download-alt"></span>
     {gt text='Export users'}
 </h3>
 

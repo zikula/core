@@ -50,7 +50,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon icon-paper-clip"></span>
+    <span class="icon-paper-clip"></span>
     {gt text='Hooks'}
 </h3>
 
@@ -230,7 +230,7 @@
                                     </div>
 
                                     <div class="pull-left z-w10 text-center">
-                                        <span class="icon icon-paper-clip"></span>
+                                        <span class="icon-paper-clip"></span>
                                     </div>
 
                                     <div class="pull-left z-w45">

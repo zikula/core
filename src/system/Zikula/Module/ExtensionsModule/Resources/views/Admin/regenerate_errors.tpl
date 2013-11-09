@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-warning-sign"></span>
+    <span class="icon-warning-sign"></span>
     {gt text="Error! Could not regenerate the modules list."}
 </h3>
 

@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-wrench"></span>
+    <span class="icon-wrench"></span>
     {gt text="Settings"}
 </h3>
 

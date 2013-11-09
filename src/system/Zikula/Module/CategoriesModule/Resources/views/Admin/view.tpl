@@ -2,7 +2,7 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/CategoriesModule/Resources/public/js/categories_admin_edit.js'}
 {adminheader}
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="icon-list"></span>
     {gt text='Categories list'}
 </h3>
 

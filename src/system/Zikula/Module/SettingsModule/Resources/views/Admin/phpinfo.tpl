@@ -1,7 +1,7 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/SettingsModule/Resources/public/js/ZikulaSettingsModule.Admin.Phpinfo.js'}
 {adminheader}
 <h3>
-    <span class="icon icon-info-sign"></span>
+    <span class="icon-info-sign"></span>
     {gt text="PHP configuration"}
 </h3>
 

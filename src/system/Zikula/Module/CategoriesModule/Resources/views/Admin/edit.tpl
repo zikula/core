@@ -2,13 +2,13 @@
 {adminheader}
 {if $mode == "edit"}
     <h3>
-        <span class="icon icon-pencil"></span>
+        <span class="icon-pencil"></span>
         {gt text="Edit category"}
     </h3>
     <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="edit"}" method="post" enctype="application/x-www-form-urlencoded">
 {else}
     <h3>
-        <span class="icon icon-plus"></span>
+        <span class="icon-plus"></span>
         {gt text="Create new category"}
     </h3>
     <form class="form-horizontal" role="form" action="{modurl modname="ZikulaCategoriesModule" type="adminform" func="newcat"}" method="post" enctype="application/x-www-form-urlencoded">

@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-envelope"></span>
+    <span class="icon-envelope"></span>
     {gt text="Test current settings"}
 </h3>
 

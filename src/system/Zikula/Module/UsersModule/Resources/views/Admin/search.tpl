@@ -7,9 +7,9 @@
 {adminheader}
 <h3>
     {if ($callbackFunc == 'composeMail')}
-    <span class="icon icon-envelope"></span>
+    <span class="icon-envelope"></span>
     {else}
-    <span class="icon icon-search"></span>
+    <span class="icon-search"></span>
     {/if}
     {$templatetitle}
 </h3>

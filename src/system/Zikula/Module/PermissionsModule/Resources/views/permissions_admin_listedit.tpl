@@ -3,12 +3,12 @@
 
 {if $action eq "add"}
 <h3>
-    <span class="icon icon-plus"></span>
+    <span class="icon-plus"></span>
     {$title|safetext}
 </h3>
 {else}
 <h3>
-    <span class="icon icon-pencil"></span>
+    <span class="icon-pencil"></span>
     {$title|safetext}
 </h3>
 {/if}

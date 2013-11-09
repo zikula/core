@@ -2,7 +2,7 @@
 
 {$header}
 <h3>
-    <span class="icon icon-wrench"></span>
+    <span class="icon-wrench"></span>
     {gt text='Imagine plugin settings'}
 </h3>
 
@@ -104,15 +104,15 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
-                    <a class="copy-preset btn btn-default btn-sm" href="#" title="{gt text='Copy'}"><span class="icon icon-file"></span> {gt text='Copy'}</a>
-                    <a class="delete-preset btn btn-default btn-sm{if $preset->getName() == 'default'} hide{/if}" href="#" title="{gt text='Delete'}"><span class="icon icon-trash"></span> {gt text='Delete'}</a>
+                    <a class="copy-preset btn btn-default btn-sm" href="#" title="{gt text='Copy'}"><span class="icon-file"></span> {gt text='Copy'}</a>
+                    <a class="delete-preset btn btn-default btn-sm{if $preset->getName() == 'default'} hide{/if}" href="#" title="{gt text='Delete'}"><span class="icon-trash"></span> {gt text='Delete'}</a>
                 </div>
             </div>
         </fieldset>
         {/foreach}
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                <a class="add-preset btn btn-default btn-sm" href="#" title="{gt text='Add new preset'}"><span class="icon icon-plus"></span> {gt text='Add new preset'}</a>
+                <a class="add-preset btn btn-default btn-sm" href="#" title="{gt text='Add new preset'}"><span class="icon-plus"></span> {gt text='Add new preset'}</a>
             </div>
         </div>
 

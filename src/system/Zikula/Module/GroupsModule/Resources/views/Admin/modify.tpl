@@ -1,7 +1,7 @@
 {adminheader}
 
 <h3>
-    <span class="icon icon-pencil"></span>
+    <span class="icon-pencil"></span>
     {gt text="Edit group"}
 </h3>
 
