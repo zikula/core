@@ -54,37 +54,37 @@
             <td class="actions">
             {if isset($regactions.display)}
                 {if $regactions.display}
-                <a class="icon-info-sign icon-fixed-width tooltips" href="{$regactions.display|safetext}" title="{gt text='Display registration details'}"></a>
+                <a class="icon-info-sign fa-fw tooltips" href="{$regactions.display|safetext}" title="{gt text='Display registration details'}"></a>
                 {else}
                 {* For each option, invisible image to take up as much space as a normal image to maintain alignment. Must be visibility: hidden, not display: none. *}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.modify)}
                 {if $regactions.modify}
-                <a class="icon-edit icon-fixed-width tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
+                <a class="icon-edit fa-fw tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.approve)}
                 {if $regactions.approve && !$reginfo.isverified}
                 {if isset($modvars.ZikulaUsersModule.moderation_order) && ($modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_AFTER'|const)}
-                <a class="icon-check icon-fixed-width tooltips" href="{$regactions.approve|safetext}" text="{gt text='Pre-approve (verification still required)'}"></a>
+                <a class="icon-check fa-fw tooltips" href="{$regactions.approve|safetext}" text="{gt text='Pre-approve (verification still required)'}"></a>
                 {else}
-                <a class="icon-check icon-fixed-width tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve'}"></a>
+                <a class="icon-check fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve'}"></a>
                 {/if}
                 {elseif $regactions.approve && $reginfo.isverified}
-                <a class="icon-check icon-fixed-width tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve (creates a new user account)'}"></a>
+                <a class="icon-check fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve (creates a new user account)'}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.deny)}
                 {if $regactions.deny}
-                <a class="icon-trash icon-fixed-width tooltips" href="{$regactions.deny|safetext}" title="{gt text='Deny (deletes registration)'}"></a>
+                <a class="icon-trash fa-fw tooltips" href="{$regactions.deny|safetext}" title="{gt text='Deny (deletes registration)'}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.verify)}
@@ -94,16 +94,16 @@
                 {else}
                 {assign var='optionTitle' value=$titleIfNotSent}
                 {/if}
-                <a class="icon-envelope icon-fixed-width tooltips" href="{$regactions.verify|safetext}" title={$optionTitle}></a>
+                <a class="icon-envelope fa-fw tooltips" href="{$regactions.verify|safetext}" title={$optionTitle}></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.approveForce)}
                 {if $regactions.approveForce && !$reginfo.isverified}
-                <a class="icon-share icon-fixed-width tooltips" href="{$regactions.approveForce|safetext}" title="{gt text='Skip verification (approves, and creates a new user account)'}"></a>
+                <a class="icon-share fa-fw tooltips" href="{$regactions.approveForce|safetext}" title="{gt text='Skip verification (approves, and creates a new user account)'}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             </td>

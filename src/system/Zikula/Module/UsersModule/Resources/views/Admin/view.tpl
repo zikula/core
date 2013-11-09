@@ -101,7 +101,7 @@
                 {gt text="Send password recovery code to '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a class="icon-key tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='lostPassword' userid=$usersitems[usersitems].uid csrftoken=$csrftoken}" title="{$title}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if $available_options.toggleForcedPasswordChange}
@@ -115,7 +115,7 @@
                 {/if}
                 <a href="{modurl modname='ZikulaUsersModule' type='admin' func='toggleForcedPasswordChange' userid=$usersitems[usersitems].uid}">{img modname='core' set='icons/extrasmall' src=$image title=$title alt=$title class='tooltips'}</a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if $available_options.modify}
@@ -123,15 +123,15 @@
                 {gt text="Edit '%s'" tag1=$usersitems[usersitems].uname assign='title'}
                 <a class="icon-pencil tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='modify' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if $available_options.deleteUsers}
                 {if $usersitems[usersitems].options.deleteUsers}
                 {gt text="Delete '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                <a class="icon-trash icon-fixed-width tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
+                <a class="icon-trash fa-fw tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
-                <span class="icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             </td>
             {/if}
