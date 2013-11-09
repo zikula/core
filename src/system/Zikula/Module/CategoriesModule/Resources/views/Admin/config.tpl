@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-refresh"></span>
+    <span class="fa fa-refresh"></span>
     {gt text="Rebuild paths"}
 </h3>
 

@@ -8,8 +8,8 @@
             var span = $('#z-developernotices span');
             if( $('#z-developernotices ul').is(':visible') ) {
                 ul.slideUp();
-                span.removeClass('icon-caret-down');
-                span.addClass('icon-caret-right');
+                span.removeClass('fa fa-caret-down');
+                span.addClass('fa fa-caret-right');
             } else {
                 // We have to do some magic here, because the element has
                 // 'display: none !important;' (Bootstrap's 'hide' class).
@@ -18,8 +18,8 @@
                 ul.removeClass('hide');
 
                 ul.slideDown();
-                span.removeClass('icon-caret-right');
-                span.addClass('icon-caret-down');
+                span.removeClass('fa fa-caret-right');
+                span.addClass('fa fa-caret-down');
             } 
         });
     });

@@ -2,7 +2,7 @@
 {pageaddvar name='javascript' value='system/Zikula/Module/ThemeModule/Resources/public/js/theme_admin_modifyconfig.js'}
 
 <h3>
-    <span class="icon-wrench"></span>
+    <span class="fa fa-wrench"></span>
     {gt text="Settings"}
 </h3>
 

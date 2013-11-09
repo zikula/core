@@ -129,11 +129,11 @@ img {
     text-align: center;
 }
 
-.icon-ok-ok {
+.fa fa-ok-ok {
     background: url("../images/ok.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 18px;
 }
-.icon-nok-nok {
+.fa fa-nok-nok {
     background: url("../images/nok.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 18px;
 }
@@ -281,15 +281,15 @@ fieldset{
     z-index: 2;
 }
 
-.icon-ok {
+.fa fa-ok {
     color: #61B329;
 }
 
-.icon-remove, .red {
+.fa fa-remove, .red {
     color:red;
 }
 
-.icon-circle{
+.fa fa-circle{
     color: #61B329;
 }
 

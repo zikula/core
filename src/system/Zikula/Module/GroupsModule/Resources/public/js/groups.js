@@ -4,7 +4,7 @@
  * Delete groupe
 *******************************************************************************/
 
-$('.icon-trash').click( function(e) {
+$('.fa fa-trash').click( function(e) {
     e.preventDefault();
     var a = $(this);
     if (confirm(a.data('confirm'))) {

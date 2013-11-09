@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-plus"></span>
+    <span class="fa fa-plus"></span>
     {gt text='Approve registration of \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 

@@ -131,11 +131,11 @@ td.actions .icon {
     color: #555
 }
 
-td.actions .icon-trash {
+td.actions .fa fa-trash {
     color: #C30;
 }
 
-td.actions .icon-ok {
+td.actions .fa fa-ok {
     color: #61B329;
 }
 
@@ -147,49 +147,49 @@ td.actions a:hover {
 * Icon colors
 ******************************************************************************/
 
-.icon-green {
+.fa fa-green {
     color: #61B329;
 }
 
-.icon-red {
+.fa fa-red {
     color: #C30;
 }
 
-.icon-orange {
+.fa fa-orange {
     color: darkorange;
 }
 
-.icon-yellow {
+.fa fa-yellow {
     color: yellow;
 }
 
-.icon-blue {
+.fa fa-blue {
     color: #0000ff;
 }
 
-.icon-bluelight {
+.fa fa-bluelight {
     color: #50A6C2;
 }
 
-.icon-black {
+.fa fa-black {
     color: #000;
 }
 
-.icon-bluedark a {
+.fa fa-bluedark a {
     color: #003366;
 }
 
 /******************************************************************************
 * Icon positioning
-* use icon-overlay classes in combination with icon-stack-base for first layer,
+* use fa fa-overlay classes in combination with fa fa-stack-base for first layer,
 *   then add overlay class to top layer
 ******************************************************************************/
 
-.icon-overlay-lower-right {
+.fa fa-overlay-lower-right {
     bottom: -0.4em;
     right: -0.4em;
 }
-.icon-overlay-upper-left {
+.fa fa-overlay-upper-left {
     top: -0.4em;
     left: -0.4em;
 }

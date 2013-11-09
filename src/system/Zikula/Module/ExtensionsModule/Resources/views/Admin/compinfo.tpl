@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-info-sign"></span>
+    <span class="fa fa-info-sign"></span>
     {gt text="Incompatible version with the core"} - {modgetinfo modid=$id info=displayname}
 </h3>
 

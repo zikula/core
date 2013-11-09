@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-trash"></span>
+    <span class="fa fa-trash"></span>
     {gt text="Delete page configuration assignment"} - {$name|safetext} - {$pcname|safetext}
 </h3>
 

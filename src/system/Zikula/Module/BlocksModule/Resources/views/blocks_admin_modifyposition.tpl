@@ -3,7 +3,7 @@
 {pageaddvar name='javascript' value='jquery-ui'}
 {adminheader}
 <h3>
-    <span class="icon-pencil"></span>
+    <span class="fa fa-pencil"></span>
     {gt text="Edit block position"}
 </h3>
 
@@ -59,7 +59,7 @@
             </tr>
             {foreach item=block from=$assignedblocks}
             <tr data-bid="{$block.bid}">
-                <td><span class="icon-move"></span></td>
+                <td><span class="fa fa-move"></span></td>
                 <td>{$block.bid|safetext}</td>
                 <td id="blockdrag_{$block.bid}">{$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}</td>
                 <td>{$block.modname|safetext}</td>
@@ -93,7 +93,7 @@
             </tr>
             {foreach item=block from=$unassignedblocks}
             <tr data-bid="{$block.bid}">
-                <td><span class="icon-move"></span></td>
+                <td><span class="fa fa-move"></span></td>
                 <td>{$block.bid|safetext}</td>
                 <td id="blockdrag_{$block.bid}">
                     {$block.title|safehtml|default:"&nbsp;"}{if $block.title && $block.description},&nbsp;{/if}{$block.description|safehtml}

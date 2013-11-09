@@ -2,7 +2,7 @@
 
 {$header}
 <h3>
-    <span class="icon-wrench"></span>
+    <span class="fa fa-wrench"></span>
     {gt text='Imagine plugin settings'}
 </h3>
 
@@ -31,7 +31,7 @@
 
             <div class="form-group">  
                 <div class="col-lg-offset-3 col-lg-9">
-                    <a class="z-action-icon smallicon smallicon-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
+                    <a class="z-action-icon smallicon smallfa fa-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
                 </div>
             </div>
         </fieldset>
@@ -104,15 +104,15 @@
 
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
-                    <a class="copy-preset btn btn-default btn-sm" href="#" title="{gt text='Copy'}"><span class="icon-file"></span> {gt text='Copy'}</a>
-                    <a class="delete-preset btn btn-default btn-sm{if $preset->getName() == 'default'} hide{/if}" href="#" title="{gt text='Delete'}"><span class="icon-trash"></span> {gt text='Delete'}</a>
+                    <a class="copy-preset btn btn-default btn-sm" href="#" title="{gt text='Copy'}"><span class="fa fa-file"></span> {gt text='Copy'}</a>
+                    <a class="delete-preset btn btn-default btn-sm{if $preset->getName() == 'default'} hide{/if}" href="#" title="{gt text='Delete'}"><span class="fa fa-trash"></span> {gt text='Delete'}</a>
                 </div>
             </div>
         </fieldset>
         {/foreach}
         <div class="form-group">
             <div class="col-lg-offset-3 col-lg-9">
-                <a class="add-preset btn btn-default btn-sm" href="#" title="{gt text='Add new preset'}"><span class="icon-plus"></span> {gt text='Add new preset'}</a>
+                <a class="add-preset btn btn-default btn-sm" href="#" title="{gt text='Add new preset'}"><span class="fa fa-plus"></span> {gt text='Add new preset'}</a>
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-trash"></span>
+    <span class="fa fa-trash"></span>
     {gt text="Uninstall module"} - {modgetinfo modid=$id info=displayname}
 </h3>
 

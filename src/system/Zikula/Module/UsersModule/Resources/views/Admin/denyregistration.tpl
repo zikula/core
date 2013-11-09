@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-trash"></span>
+    <span class="fa fa-trash"></span>
     {gt text='Deny registration request of \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 

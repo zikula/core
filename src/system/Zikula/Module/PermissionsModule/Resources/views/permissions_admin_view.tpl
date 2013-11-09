@@ -26,7 +26,7 @@
 {adminheader}
 {include file="permissions_admin_header.tpl"}
 <h3>
-    <span class="icon-list"></span>
+    <span class="fa fa-list"></span>
     {gt text="Permission rules list"}
 </h3>
 
@@ -69,8 +69,8 @@
 
 {checkpermissionblock component='ZikulaPermissionsModule::' instance='::' level=ACCESS_ADMIN}
 <div id="permissions-header" class="clearfix">
-    <a id="appendajax" onclick="javascript:permappend();" class="pull-left icon-plus hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
-    <strong id="filterwarning" class="pull-right icon-warning-sign" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
+    <a id="appendajax" onclick="javascript:permappend();" class="pull-left fa fa-plus hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
+    <strong id="filterwarning" class="pull-right fa fa-warning-sign" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
 </div>
 {/checkpermissionblock}
 

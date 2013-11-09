@@ -1,13 +1,13 @@
 {adminheader}
 
 <h3>
-    <span class="icon-trash"></span>
+    <span class="fa fa-trash"></span>
     {gt text="Purge IDS Log"}
 </h3>
 
 <ul class="navbar navbar-default">
-    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="icon-download-alt">{gt text="Export IDS Log"}</a></li>
-    <li><span class="icon-trash">{gt text="Purge IDS Log"}</span></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="fa fa-download-alt">{gt text="Export IDS Log"}</a></li>
+    <li><span class="fa fa-trash">{gt text="Purge IDS Log"}</span></li>
 </ul>
 
 <p class="alert alert-warning">{gt text="Do you really want to delete the entire IDS log?"}</p>

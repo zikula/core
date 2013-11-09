@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-file-plus"></span>
+    <span class="fa fa-file-plus"></span>
     {gt text="Create new module category"}
 </h3>
 

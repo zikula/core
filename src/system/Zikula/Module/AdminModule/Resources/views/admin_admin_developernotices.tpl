@@ -3,7 +3,7 @@
 {if $notices.developer.devmode}
 <div id="z-developernotices" class="alert alert-info">
     <i class="close" data-dismiss="alert">&times;</i>
-    <span class="icon-caret-right fa-fw"></span>
+    <span class="fa fa-caret-right fa-fw"></span>
     <strong>
         {gt text="Developer notices (development mode on)" domain="zikula"}
     </strong>

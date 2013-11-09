@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon-paper-clip"></span>
+    <span class="fa fa-paper-clip"></span>
     {gt text='Module Services'}
 </h3>
 
@@ -9,7 +9,7 @@
 {if count($sublinks) > 0}
 <ul style='list-style: none'>
     {foreach from=$sublinks item='sublink'}
-    <li><a href='{$sublink.url|safetext}' class='icon-cog'>{$sublink.text|safetext}</a></li>
+    <li><a href='{$sublink.url|safetext}' class='fa fa-cog'>{$sublink.text|safetext}</a></li>
     {/foreach}
 </ul>
 {else}

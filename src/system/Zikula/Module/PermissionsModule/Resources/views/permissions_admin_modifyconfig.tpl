@@ -3,7 +3,7 @@
 {adminheader}
 {include file="permissions_admin_header.tpl"}
 <h3>
-    <span class="icon-wrench"></span>
+    <span class="fa fa-wrench"></span>
     {$templatetitle}
 </h3>
 

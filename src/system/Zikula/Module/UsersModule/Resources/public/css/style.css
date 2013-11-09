@@ -67,11 +67,11 @@ div.z-accountlink  img {
     float: left;
 }
 
-.user-icon-adduser {
+.user-fa fa-adduser {
     background: transparent url("../../../../../../../images/icons/extrasmall/add_user.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }
-.user-icon-lostusername {
+.user-fa fa-lostusername {
     background: transparent url("../../../../../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
     padding: 2px 0 2px 20px;
 }

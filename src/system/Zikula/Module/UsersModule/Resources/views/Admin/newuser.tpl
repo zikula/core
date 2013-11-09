@@ -38,7 +38,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon-plus"></span>
+    <span class="fa fa-plus"></span>
     {gt text='Create new user'}
 </h3>
 

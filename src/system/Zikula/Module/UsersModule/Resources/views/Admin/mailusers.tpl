@@ -17,7 +17,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon-envelope"></span>
+    <span class="fa fa-envelope"></span>
     {gt text="E-mail Users"}
 </h3>
 

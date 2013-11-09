@@ -1,5 +1,5 @@
 <h3>
-    <span class="icon-pencil"></span>
+    <span class="fa fa-pencil"></span>
     {gt text="Edit theme"} {$themeinfo.displayname}
 </h3>
 {if $themeinfo.type eq 3}
