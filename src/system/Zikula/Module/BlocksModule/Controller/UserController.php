@@ -47,7 +47,7 @@ class UserController extends \Zikula_AbstractController
      * @param int $args['bid'] The id of the block
      * @param bool $args['showinactive'] Override active status of block
      *
-     * @return string html of the rendered block
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
      */

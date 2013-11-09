@@ -58,7 +58,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * View all blocks.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
      */
@@ -153,7 +153,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int $bid block id
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      */
     public function deactivateAction()
     {
@@ -177,7 +177,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int $bid block id.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      */
     public function activateAction()
     {
@@ -201,7 +201,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param int $bid block id.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the block
      * @throws NotFoundHttpException     Thrown if the requested block doesn't exist
@@ -432,7 +432,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display form for a new block.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Throw if the user doesn't have permission to add a block
      * @throws RuntimeException          Throw if the list of blocks cannot be loaded
@@ -541,7 +541,7 @@ class AdminController extends \Zikula_AbstractController
      * @param int bid the block id.
      * @param bool confirm to delete block.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the block
      * @throws NotFoundHttpException     Thrown the requested block doesn't exist
@@ -597,7 +597,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
@@ -618,7 +618,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      * @throws InvalidArgumentException  Thrown if the position name is empty or not valid or
@@ -655,7 +655,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
@@ -714,7 +714,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display a form to create a new block position.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws InvalidArgumentException Thrown if the position id, name or description is not supplied
      */
@@ -794,7 +794,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Any config options would likely go here in the future.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
