@@ -97,7 +97,7 @@
             <div class="col-lg-offset-3 col-lg-9">
 				{if $checkfailed neq true}
 				<input type="hidden" name="action" value="dbinformation" />
-				<button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-success"><span class="fa fa-double-angle-right"></span> {gt text="Next"}</button>
+				<button type="submit" id="submit" onclick="$('#ZikulaOverlay').show();" class="btn btn-success"><span class="fa fa-angle-double-right"></span> {gt text="Next"}</button>
 				{else}
 				<br />
 				<input type="hidden" name="action" value="requirements" />

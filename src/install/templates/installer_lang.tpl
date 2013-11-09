@@ -26,7 +26,7 @@
         <div class="form-group"> 
             <div class="col-lg-offset-3 col-lg-9">
 				<button type="submit" id="submit" class="btn btn-primary">
-					<span class="fa fa-double-angle-right"></span> {gt text="Next"}
+					<span class="fa fa-angle-double-right"></span> {gt text="Next"}
 				</button>
 			</div>
         </div>

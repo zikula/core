@@ -12,7 +12,7 @@
 
 <ul class="navbar navbar-default">
     {if ($referer)}
-    <li><a class="fa fa-eye-open" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
+    <li><a class="fa fa-eye" href="{modurl modname="ZikulaCategoriesModule" type="user" func="referBack"}">{gt text="Return to referring page"}</a></li>
     {/if}
     <li><a class="fa fa-refresh" href="{$resq|safetext}">{gt text="Resequence"}</a></li>
 </ul>

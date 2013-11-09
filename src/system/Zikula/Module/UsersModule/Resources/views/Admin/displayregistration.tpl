@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="fa fa-eye-open"></span>
+    <span class="fa fa-eye"></span>
     {gt text='Registration for \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 

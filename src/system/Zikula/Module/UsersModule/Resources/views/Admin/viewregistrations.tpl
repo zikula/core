@@ -62,7 +62,7 @@
             {/if}
             {if isset($regactions.modify)}
                 {if $regactions.modify}
-                <a class="fa fa-edit fa-fw tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
+                <a class="fa fa-pencil-square-o fa-fw tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
                 {else}
                 <span class="fa-fw"></span>fa fa-
                 {/if}
@@ -70,12 +70,12 @@
             {if isset($regactions.approve)}
                 {if $regactions.approve && !$reginfo.isverified}
                 {if isset($modvars.ZikulaUsersModule.moderation_order) && ($modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_AFTER'|const)}
-                <a class="fa fa-check fa-fw tooltips" href="{$regactions.approve|safetext}" text="{gt text='Pre-approve (verification still required)'}"></a>
+                <a class="fa fa-check-square-o fa-fw tooltips" href="{$regactions.approve|safetext}" text="{gt text='Pre-approve (verification still required)'}"></a>
                 {else}
-                <a class="fa fa-check fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve'}"></a>
+                <a class="fa fa-check-square-o fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve'}"></a>
                 {/if}
                 {elseif $regactions.approve && $reginfo.isverified}
-                <a class="fa fa-check fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve (creates a new user account)'}"></a>
+                <a class="fa fa-check-square-o fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve (creates a new user account)'}"></a>
                 {else}
                 <span class="fa-fw"></span>
                 {/if}

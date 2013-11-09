@@ -170,7 +170,7 @@ function _upg_selectlanguage()
         echo '<option value="'.$lang.'" label="'.$name.'"'.$selected.'>'.$name."</option>\n";
     }
     echo '</select></div></fieldset>'."\n";
-    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-double-angle-right"></span> '.__('Next').'</button></div>'."\n";
+    echo '<div class="btn-group"><button type="submit" id="submit" class="btn btn-primary"><span class="fa fa-angle-double-right"></span> '.__('Next').'</button></div>'."\n";
     
     echo '</form>'."\n";
     _upg_footer();
