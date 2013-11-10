@@ -20,7 +20,8 @@ use ModUtil;
 use SecurityUtil;
 
 /**
- * Categories_Api_Admin class.
+ * Administrative API's for the categories module
+ *
  */
 class AdminApi extends \Zikula_AbstractApi
 {

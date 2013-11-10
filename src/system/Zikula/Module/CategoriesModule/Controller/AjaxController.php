@@ -29,7 +29,8 @@ use Zikula_View;
 use Zikula\Module\CategoriesModuleGenericUtil;
 
 /**
- * Categories_Controller_Ajax.
+ * Ajax controllers for the categories module
+ *
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
@@ -68,11 +69,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Edit a category
      *
-     * @param string $args['mode']   the mode of operation (new or edit0
-     * @param int    $args['cid']    the category id
-     * @param int    $args['parent'] the parent category id
+     * @param mixed[] $args {<ul>
+     *      @type string $mode   the mode of operation (new or edit)
+     *      @type int    $cid    the category id
+     *      @type int    $parent the parent category id
+     *                       </ul>}
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function editAction($args = array())
     {
@@ -131,7 +134,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Copy a category
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function copyAction()
     {
@@ -182,7 +185,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete a category
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function deleteAction()
     {
@@ -207,7 +210,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete a category and move any existing subcategories
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function deleteandmovesubsAction()
     {
@@ -260,7 +263,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Display a dialog to get the category to move subcategories to once the parent has been deleted
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function deletedialogAction()
     {
@@ -288,7 +291,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Activate a category
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function activateAction()
     {
@@ -313,7 +316,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Deactivate a category
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function deactivateAction()
     {
@@ -338,7 +341,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Save a category
      *
-     * @return AjaxResponse
+     * @return Zikula\Core\Response\Ajax\AjaxResponse
      */
     public function saveAction()
     {

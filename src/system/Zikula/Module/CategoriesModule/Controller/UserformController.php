@@ -26,6 +26,10 @@ use ObjectUtil;
 use Zikula\Module\CategoriesModuleGenericUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * User form contollers for the categories module
+ *
+ */
 class UserformController extends \Zikula_AbstractController
 {
     /**
@@ -33,9 +37,9 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the module
-     * @throws InvalidArgumentException  Thrown if the category or document root aren't supplied or are invalid
-     * @throws RuntimeException          Thrown if the category is locked
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the module
+     * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid
+     * @throws \RuntimeException Thrown if the category is locked
      */
     public function deleteAction()
     {
@@ -75,10 +79,10 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
-     * @throws InvalidArgumentException  Thrown if the document root is invalid or
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws \InvalidArgumentException Thrown if the document root is invalid or
      *                                          if the category id doesn't match a valid category
-     * @throws RuntimeException          Thrown if the category is locked
+     * @throws \RuntimeException Thrown if the category is locked
      */
     public function editAction()
     {
@@ -161,8 +165,8 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
-     * @throws InvalidArgumentException  Thrown if the document root is invalid or
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws \InvalidArgumentException Thrown if the document root is invalid or
      *                                          if the category id doesn't match a valid category or
      *                                          if the direction is invalid
      */
@@ -231,8 +235,8 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have add permissions to the module
-     * @throws InvalidArgumentException  Thrown if the document root is invalid
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have add permissions to the module
+     * @throws \InvalidArgumentException Thrown if the document root is invalid
      */
     public function newcatAction()
     {
@@ -297,8 +301,8 @@ class UserformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
-     * @throws InvalidArgumentException  Thrown if the document root isn't valid
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws \InvalidArgumentException Thrown if the document root isn't valid
      */
     public function resequenceAction()
     {
