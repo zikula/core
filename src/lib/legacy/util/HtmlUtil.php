@@ -199,6 +199,63 @@ class HtmlUtil
     }
 
     /**
+     * Creates an Entity array selector.
+     *
+     * @param string  $modname        Module name.
+     * @param string  $entity         Doctrine 2 entity classname.
+     * @param string  $name           Select field name.
+     * @param string  $field          Value field.
+     * @param string  $displayField   Display field.
+     * @param string  $where          Where clause.
+     * @param string  $sort           Sort clause.
+     * @param string  $selectedValue  Selected value.
+     * @param string  $defaultValue   Value for "default" option.
+     * @param string  $defaultText    Text for "default" option.
+     * @param string  $allValue       Value for "all" option.
+     * @param string  $allText        Text for "all" option.
+     * @param string  $displayField2  Second display field.
+     * @param boolean $submit         Submit on choose.
+     * @param boolean $disabled       Add Disabled attribute to select.
+     * @param string  $fieldSeparator Field seperator if $displayField2 is given.
+     * @param integer $multipleSize   Size for multiple selects.
+     *
+     * @return string The rendered output.
+     */
+    public static function getSelector_EntityArray($modname, $entity, $name, $field = '', $displayField = 'name', $where = '', $sort = '', $selectedValue = '', $defaultValue = 0, $defaultText = '', $allValue = 0, $allText = '', $displayField2 = null, $submit = true, $disabled = false, $fieldSeparator = ', ', $multipleSize = 1)
+    {
+        if (!$modname) {
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('modname', 'HtmlUtil::getSelector_EntityArray')));
+        }
+
+        if ((!$entity) || (!class_exists($entity))) {
+            throw new \Exception(__f('Invalid %1$s passed to %2$s.', array('entity', 'HtmlUtil::getSelector_EntityArray')));
+        }
+
+        if (!SecurityUtil::checkPermission("$entity::", '::', ACCESS_OVERVIEW)) {
+            return __f('Security check failed for %1$s [%2$s] passed to %3$s.', array('modulename', $modname, 'HtmlUtil::getSelector_EntityArray'));
+        }
+
+        /** @var $em \Doctrine\ORM\EntityManager */
+        $em = ServiceUtil::get('doctrine.entitymanager');
+        $qb = $em->createQueryBuilder();
+        $qb->select('e')->from($entity, 'e');
+        $dataArray = $qb->getQuery()->getArrayResult(); // array of Entities
+        // @todo does not accommodate $sort or $where
+
+        $data2 = array();
+        foreach ($dataArray as $object) {
+            $val = $object[$field]; // relies on entityAccess
+            $disp = $object[$displayField];
+            if ($displayField2) {
+                $disp .= $fieldSeparator . $object[$displayField2];
+            }
+            $data2[$val] = $disp;
+        }
+
+        return self::getSelector_Generic($name, $data2, $selectedValue, $defaultValue, $defaultText, $allValue, $allText, $submit, $disabled, $multipleSize);
+    }
+
+    /**
      * Get selector by table field.
      *
      * @param string  $modname       Module name.
