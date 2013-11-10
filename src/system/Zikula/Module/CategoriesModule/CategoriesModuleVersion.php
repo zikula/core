@@ -16,6 +16,10 @@
 
 namespace Zikula\Module\CategoriesModule;
 
+/**
+ * Version information for the categories module
+ *
+ */
 class CategoriesModuleVersion extends \Zikula_AbstractVersion
 {
     /**

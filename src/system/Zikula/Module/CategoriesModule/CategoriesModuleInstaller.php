@@ -24,12 +24,16 @@ use DataUtil;
 use ZLanguage;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
+/**
+ * Installation and upgrade routines for the categories module
+ *
+ */
 class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise module
      *
-     * @return true if succesful, false otherwise
+     * @return bool true if succesful, false otherwise
      */
     public function install()
     {
@@ -77,9 +81,9 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
      * This function must consider all the released versions of the module!
      * If the upgrade fails at some point, it returns the last upgraded version.
      *
-     * @param  string $oldVersion version number string to upgrade from
+     * @param string $oldversion version number string to upgrade from
      *
-     * @return mixed  true on success, last valid version string or false if fails
+     * @return bool|int true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {
@@ -111,7 +115,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * delete module
      *
-     * @return false as this module cannot be deleted
+     * @return bool false as this module cannot be deleted
      */
     public function uninstall()
     {
@@ -713,7 +717,7 @@ class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
     /**
      * convert a display name into a localised array
      *
-     * @param string name the input display name
+     * @param string $name the input display name
      *
      * @return array the localised array
      */

@@ -21,6 +21,10 @@ use SessionUtil;
 use ModUtil;
 use SecurityUtil;
 
+/**
+ * Account profile additions from the categories module
+ *
+ */
 class AccountApi extends \Zikula_AbstractApi
 {
     /**
@@ -28,7 +32,7 @@ class AccountApi extends \Zikula_AbstractApi
      *
      * @return array indexed array of items
      */
-    public function getall($args)
+    public function getall()
     {
         $items = array();
 

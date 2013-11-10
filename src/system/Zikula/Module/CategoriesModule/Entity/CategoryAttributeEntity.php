@@ -33,6 +33,8 @@ use Doctrine\ORM\Mapping as ORM;
 class CategoryAttributeEntity extends EntityAccess
 {
     /**
+     * The id of the category the attribute belongs to
+     *
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="attributes")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
@@ -40,18 +42,26 @@ class CategoryAttributeEntity extends EntityAccess
     private $category;
 
     /**
+     * The name of the attribute
+     *
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
      */
     private $name;
 
     /**
+     * The value of the attribute
+     *
      * @ORM\Column(type="text")
      */
     private $value;
 
     /**
      * constructor
+     *
+     * @param int    $category the category id
+     * @param string $name     the name of the attribute
+     * @param string $value    the value of the attribute
      */
     public function __construct($category, $name, $value)
     {

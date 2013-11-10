@@ -16,18 +16,22 @@
 
 namespace Zikula\Module\CategoriesModule;
 
+/**
+ * Helper functions for the categories module
+ *
+ */
 class GenericUtil
 {
     /**
      * Validate the data for a category
      *
-     * @param array $data   The data for the category.
+     * @param array $data The data for the category.
      *
      * @return boolean true/false Whether the provided data is valid.
      *
-     * @throws InvalidArgumentException Thrown if no category name is provided or 
-     *                                         if no parent is defined for the category
-     * @throws RuntimeException         Thrown if a category of the same anme already exists under the parent
+     * @throws \InvalidArgumentException Thrown if no category name is provided or 
+     *                                          if no parent is defined for the category
+     * @throws \RuntimeException Thrown if a category of the same anme already exists under the parent
      */
     public static function validateCategoryData($data)
     {
@@ -74,7 +78,7 @@ class GenericUtil
     /**
      * Process the name of a category
      *
-     * @param array $name   The name of the category.
+     * @param array $name The name of the category.
      *
      * @return string the processed name.
      */
@@ -87,7 +91,7 @@ class GenericUtil
     /**
      * Process the parent of a category
      *
-     * @param integer $parent_id   The parent_id of the category.
+     * @param integer $parent_id The parent_id of the category.
      *
      * @return \Zikula\Module\CategoriesModule\Entity\CategoryEntity the parent entity.
      */
@@ -100,8 +104,8 @@ class GenericUtil
     /**
      * Process the display name of a category
      *
-     * @param array $displayname    The display name of the category.
-     * @param array $name           The name of the category.
+     * @param array $displayname The display name of the category.
+     * @param array $name        The name of the category.
      *
      * @return array the processed display name.
      */
@@ -147,8 +151,8 @@ class GenericUtil
      * Process the attributes of a category
      *
      * @param \Zikula\Module\CategoriesModule\Entity\CategoryEntity $category The category to set the attributes for.
-     * @param array $attrib_names                             The attribute names.
-     * @param array $attrib_values                            The attribute values.
+     * @param array $attrib_names                                             The attribute names.
+     * @param array $attrib_values                                            The attribute values.
      *
      * @return void
      */

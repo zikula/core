@@ -20,18 +20,24 @@ use LogUtil;
 use CategoryUtil;
 use UserUtil;
 
+/**
+ * User api functions for the categories module
+ *
+ */
 class UserApi extends \Zikula_AbstractApi
 {
     /**
      * get the root category for a user
      *
-     * @param  int     $args['returnCategory']
-     * @param  string  $args['returnField']
+     * @param mixed[] $args {<ul>
+     *      <li>@type  int     $returnCategory
+     *      <li>@type  string  $returnField
+     *                       </ul>}
      *
-     * @return mixed the return field, false otherwise
+     * @return string|array|bool the return field if returnCategory is false, the full category if returnCategory is true, false otherwise
      *
-     * @throws RuntimeException Thrown if the user root points to an invalid category or
-     *                                 if the root user root points to the system root category
+     * @throws \RuntimeException Thrown if the user root points to an invalid category or
+     *                                  if the root user root points to the system root category
      */
     public function getuserrootcat($args)
     {
@@ -66,11 +72,13 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get all categories for a user
      *
-     * @param bool $args['relative']
+     * @param mixed[] $args {<ul>
+     *      <li>@type bool $relative optionally generate relative paths
+     *                       </ul>}
      *
      * @return array array of categories
      *
-     * @throws RuntimeException Thrown if the user root points to an invalid category
+     * @throws \RuntimeException Thrown if the user root points to an invalid category
      */
     public function getusercategories($args)
     {
@@ -89,7 +97,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get the username associated with a category
      *
-     * @param int $args['uid'] the user id
+     * @param mixed[] $args {<ul>
+     *      <li>@type int $uid the user id
+     *                       </ul>}
      *
      * @return string the username associated with the category
      */

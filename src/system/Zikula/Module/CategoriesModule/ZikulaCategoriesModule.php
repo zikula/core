@@ -18,6 +18,10 @@ namespace Zikula\Module\CategoriesModule;
 
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
+/**
+ * Base module definition for the categories module
+ *
+ */
 class ZikulaCategoriesModule extends AbstractCoreModule
 {
 }

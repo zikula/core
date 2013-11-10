@@ -67,10 +67,10 @@ class UserController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
-     * @throws \InvalidArgumentException  Thrown if the category or document root aren't supplied or are invalid or
+     * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid or
      *                                          if the requested document root is the root category or 
      *                                          if the requested document root belongs to another user
-     * @throws \RuntimeException          Thrown if the category is locked or
+     * @throws \RuntimeException Thrown if the category is locked or
      *                                          if the root directory cannot be accessed or
      *                                          if the category is not a leaf category or
      *                                          if the category is not a child of the document root
@@ -174,12 +174,12 @@ class UserController extends \Zikula_AbstractController
      * @return void
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
-     *                                          if the user is not logged in
-     * @throws \RuntimeException          Thrown if user editing of categories isn't enabled or
-     *                                          if the user root cannot be determined or 
-     *                                          if the user root points to an invalid category or
-     *                                          if the user root category name couldn't be determined or
-     *                                          if the user root category doesn't exist and auto-creation isn't enabled
+     *                                                                                 if the user is not logged in
+     * @throws \RuntimeException Thrown if user editing of categories isn't enabled or
+     *                                  if the user root cannot be determined or 
+     *                                  if the user root points to an invalid category or
+     *                                  if the user root category name couldn't be determined or
+     *                                  if the user root category doesn't exist and auto-creation isn't enabled
      */
     public function edituserAction()
     {

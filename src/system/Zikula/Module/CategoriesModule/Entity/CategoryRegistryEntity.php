@@ -29,6 +29,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class CategoryRegistryEntity extends EntityAccess
 {
     /**
+     * The id of the registry entry
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -37,30 +39,40 @@ class CategoryRegistryEntity extends EntityAccess
     private $id;
 
     /**
+     * The module name owning this entry
+     *
      * @ORM\Column(type="string", length=60)
      * @var string
      */
     private $modname;
 
     /**
+     * The name of the entity
+     *
      * @ORM\Column(type="string", length=60)
      * @var string
      */
     private $entityname;
 
     /**
+     * The property of the entity
+     *
      * @ORM\Column(type="string", length=255)
      * @var string
      */
     private $property;
 
     /**
+     * The category id to map this entity to
+     *
      * @ORM\Column(type="integer")
      * @var integer
      */
     private $category_id;
 
     /**
+     * The user id of the creator of this entity
+     *
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
@@ -68,6 +80,8 @@ class CategoryRegistryEntity extends EntityAccess
     protected $cr_uid;
 
     /**
+     * The user id of the last update of this entity
+     *
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
@@ -75,18 +89,24 @@ class CategoryRegistryEntity extends EntityAccess
     protected $lu_uid;
 
     /**
+     * The creation timestamp of this entity
+     *
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     protected $cr_date;
 
     /**
+     * The last updated timestamp of this entity
+     *
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
     protected $lu_date;
 
     /**
+     * The status of the entity
+     *
      * @ORM\Column(type="string", length=1)
      * @var string
      */
@@ -225,7 +245,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * get the creation user id
      *
-     * @return mixed the user id
+     * @return int the user id
      */
     public function getCr_uid()
     {
@@ -265,7 +285,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * get the user id of the user who last updated the entity
      *
-     * @return mixed the user id
+     * @return int the user id
      */
     public function getLu_uid()
     {
