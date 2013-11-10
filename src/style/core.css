@@ -131,11 +131,11 @@ td.actions .icon {
     color: #555
 }
 
-td.actions .fa fa-trash-o {
+td.actions .fa-trash-o {
     color: #C30;
 }
 
-td.actions .fa fa-check {
+td.actions .fa-check {
     color: #61B329;
 }
 
@@ -181,15 +181,15 @@ td.actions a:hover {
 
 /******************************************************************************
 * Icon positioning
-* use fa fa-overlay classes in combination with fa fa-stack-base for first layer,
+* use fa-overlay classes in combination with fa-stack-base for first layer,
 *   then add overlay class to top layer
 ******************************************************************************/
 
-.fa fa-overlay-lower-right {
+.fa-overlay-lower-right {
     bottom: -0.4em;
     right: -0.4em;
 }
-.fa fa-overlay-upper-left {
+.fa-overlay-upper-left {
     top: -0.4em;
     left: -0.4em;
 }
