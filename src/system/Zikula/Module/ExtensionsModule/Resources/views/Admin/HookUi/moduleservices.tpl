@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="fa fa-paper-clip"></span>
+    <span class="fa fa-paperclip"></span>
     {gt text='Module Services'}
 </h3>
 

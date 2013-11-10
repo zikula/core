@@ -47,7 +47,7 @@ $(document).on('click', '.admintabs-add .fa fa-remove', function (e) {
     $('.admintabs-add a').popover('hide');
 });
 
-$(document).on('click', '.admintabs-add .fa fa-ok', function (e) {
+$(document).on('click', '.admintabs-add .fa fa-check', function (e) {
     $('.admintabs-add a').popover('hide')
     var name = $('#admintabs-add-name').val();
     if (name === '') {
@@ -62,7 +62,7 @@ $(document).on('click', '.admintabs-add .fa fa-ok', function (e) {
             var newtab = '<li class="dropdown droppable nowrap" data-catid='+response.data.id+'>'+
                          '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
                          '">'+
-                         '<span class="fa fa-move admintabs-unlock"></span> '+
+                         '<span class="fa fa-arrows admintabs-unlock"></span> '+
                          response.data.name+
                          ' <span class="fa fa-caret-down"></span>'+
                          '</a>'+

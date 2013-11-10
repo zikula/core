@@ -16,7 +16,7 @@
     {* For the following, (isset($regactions.optname) == true) means that the current user can, in general, perform the operation; *}
     {* ($regactions.optname == true) means that the operation can be performed for that individual registration record. *}
     {if isset($regactions.approve) && $regactions.approve && !$reginfo.isverified}
-    <a class="btn btn-success" href="{$regactions.approve|safetext}"><span class="fa fa-ok"></span> {gt text='Approve'}</a>&nbsp;
+    <a class="btn btn-success" href="{$regactions.approve|safetext}"><span class="fa fa-check"></span> {gt text='Approve'}</a>&nbsp;
     {elseif isset($regactions.approve) && $regactions.approve && $reginfo.isverified}
     <a class="btn btn-success" href="{$regactions.approve|safetext}"><span class="fa fa-plus"></span> {gt text='Approve and Add User'}</a>&nbsp;
     {/if}

@@ -59,7 +59,7 @@
                 {gt text='Set as default: %s' tag1=$theme.displayname assign=strSetDefaultTheme}
                 {gt text='Credits: %s' tag1=$theme.displayname assign=strCreditsTheme}
                 {if $theme.displayname neq $currenttheme and $theme.user and $theme.state neq 2 and $theme.structure}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.displayname}"><span class="fa fa-ok tooltips" title="{$strSetDefaultTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="setasdefault" themename=$theme.displayname}"><span class="fa fa-check tooltips" title="{$strSetDefaultTheme}"></span></a>
                 {/if}
                 {if $theme.structure}
                 <a href="{$themeurl|safetext}" title="{$theme.displayname|safetext}"><span class="fa fa-eye tooltips" title="{$strPreviewTheme}"></span></a>
@@ -68,7 +68,7 @@
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
                 <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="fa fa-trash tooltips" title="{$strDeleteTheme}"></span></a>
                 {/if}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="fa fa-info-sign tooltips" title="{$strCreditsTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
             </td>
         </tr>
         {foreachelse}

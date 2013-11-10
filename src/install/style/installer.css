@@ -129,7 +129,7 @@ img {
     text-align: center;
 }
 
-.fa fa-ok-ok {
+.fa fa-check-ok {
     background: url("../images/ok.png") no-repeat scroll 0 50% transparent;
     padding: 2px 0 2px 18px;
 }
@@ -281,7 +281,7 @@ fieldset{
     z-index: 2;
 }
 
-.fa fa-ok {
+.fa fa-check {
     color: #61B329;
 }
 

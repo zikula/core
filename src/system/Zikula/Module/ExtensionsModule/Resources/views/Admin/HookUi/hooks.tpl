@@ -50,7 +50,7 @@
 
 {adminheader}
 <h3>
-    <span class="fa fa-paper-clip"></span>
+    <span class="fa fa-paperclip"></span>
     {gt text='Hooks'}
 </h3>
 
@@ -230,7 +230,7 @@
                                     </div>
 
                                     <div class="pull-left z-w10 text-center">
-                                        <span class="fa fa-paper-clip"></span>
+                                        <span class="fa fa-paperclip"></span>
                                     </div>
 
                                     <div class="pull-left z-w45">

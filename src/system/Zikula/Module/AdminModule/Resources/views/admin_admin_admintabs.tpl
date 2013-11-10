@@ -7,7 +7,7 @@
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {foreach from=$menuoptions name='menuoption' item='menuoption'}
         <li class="dropdown droppable nowrap{if $currentcat eq $menuoption.cid} active{/if}" data-catid="{$menuoption.cid}">
-            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-move admintabs-lock"></span>
+            <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-arrows admintabs-lock"></span>
             <span>{$menuoption.title|safetext}</span>
             <span class="fa fa-caret-down"></span>
             </a>
@@ -46,7 +46,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" name="name" id="admintabs-add-name" />
                     <span class="input-group-addon fa fa-remove fa fa-red pointer"></span>
-                    <span class="input-group-addon fa fa-ok fa fa-green pointer"></span>
+                    <span class="input-group-addon fa fa-check fa fa-green pointer"></span>
                 </div>
             </div>
 

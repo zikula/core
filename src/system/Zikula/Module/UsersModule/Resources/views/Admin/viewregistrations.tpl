@@ -28,14 +28,14 @@
             <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
             <td class="text-center">
                 {if $reginfo.isapproved}
-                <span class="fa fa-ok fa fa-green tooltips" title="{gt text='Approved'}"></span>
+                <span class="fa fa-check fa fa-green tooltips" title="{gt text='Approved'}"></span>
                 {else}
                 <span class="fa fa-remove fa fa-red tooltips" title="{gt text='Pending approval'}"></span>
                 {/if}
             </td>
             <td class="text-center">
                 {if $reginfo.isverified}
-                <span class="fa fa-ok fa fa-green tooltips" title="{gt text='Verified'}"></span>
+                <span class="fa fa-check fa fa-green tooltips" title="{gt text='Verified'}"></span>
                 {elseif !$reginfo.verificationsent}
 
                 {if ($modvars.ZikulaUsersModule.moderation_order != 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const) || (($modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}
@@ -54,7 +54,7 @@
             <td class="actions">
             {if isset($regactions.display)}
                 {if $regactions.display}
-                <a class="fa fa-info-sign fa-fw tooltips" href="{$regactions.display|safetext}" title="{gt text='Display registration details'}"></a>
+                <a class="fa fa-info-circle fa-fw tooltips" href="{$regactions.display|safetext}" title="{gt text='Display registration details'}"></a>
                 {else}
                 {* For each option, invisible image to take up as much space as a normal image to maintain alignment. Must be visibility: hidden, not display: none. *}
                 <span class="fa-fw"></span>
@@ -125,7 +125,7 @@
     <tbody>
         <tr>
             <td class="col-md-6">
-                <span title="{gt text='Approved'}" class="fa fa-ok fa fa-green"></span>
+                <span title="{gt text='Approved'}" class="fa fa-check fa fa-green"></span>
                 {gt text='An administrator has approved the registration, or approval was not required when the registration was completed.'}
             </td>
             <td class="col-md-6">
@@ -144,7 +144,7 @@
     <tbody>
         <tr>
             <td class="col-md-6">
-                <span title="{gt text='Verified'}" class="fa fa-ok fa fa-green"></span>
+                <span title="{gt text='Verified'}" class="fa fa-check fa fa-green"></span>
                 {gt text='The user has completed the e-mail verification process, or e-mail verification was not required when the registration was completed.'}
             </td>
             <td class="col-md-6">

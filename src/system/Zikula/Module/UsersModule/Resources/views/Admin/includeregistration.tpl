@@ -77,7 +77,7 @@
                 {gt text='Not yet verified'}
                 {/if}
                 {else}
-                <span class="fa fa-ok fa-fw fa fa-green"></span>
+                <span class="fa fa-check fa-fw fa fa-green"></span>
                 {gt text='Verification complete'} <span class="sub">{gt text='(or verification was not required when the registration was completed)'}</span>
                 {/if}
             </div>
@@ -91,7 +91,7 @@
                 <span class="fa fa-remove fa-fw fa fa-red"></span>
                 {gt text='Not yet approved'}
                 {else}
-                <span class="fa fa-ok fa-fw fa fa-green"></span>
+                <span class="fa fa-check fa-fw fa fa-green"></span>
                 {gt text='Approved'} <span class="sub">{gt text='(or approval was not required when the registration was completed)'}</span>
                 {/if}
             </div>
