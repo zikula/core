@@ -129,7 +129,7 @@
             {if $available_options.deleteUsers}
                 {if $usersitems[usersitems].options.deleteUsers}
                 {gt text="Delete '%s'" tag1=$usersitems[usersitems].uname assign='title'}
-                <a class="fa fa-trash fa-fw tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
+                <a class="fa fa-trash-o fa-fw tooltips" href="{modurl modname='ZikulaUsersModule' type='admin' func='deleteUsers' userid=$usersitems[usersitems].uid}" title="{$title}"></a>
                 {else}
                 <span class="fa-fw"></span>
                 {/if}

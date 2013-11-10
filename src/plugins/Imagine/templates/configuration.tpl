@@ -105,7 +105,7 @@
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-9">
                     <a class="copy-preset btn btn-default btn-sm" href="#" title="{gt text='Copy'}"><span class="fa fa-file"></span> {gt text='Copy'}</a>
-                    <a class="delete-preset btn btn-default btn-sm{if $preset->getName() == 'default'} hide{/if}" href="#" title="{gt text='Delete'}"><span class="fa fa-trash"></span> {gt text='Delete'}</a>
+                    <a class="delete-preset btn btn-default btn-sm{if $preset->getName() == 'default'} hide{/if}" href="#" title="{gt text='Delete'}"><span class="fa fa-trash-o"></span> {gt text='Delete'}</a>
                 </div>
             </div>
         </fieldset>

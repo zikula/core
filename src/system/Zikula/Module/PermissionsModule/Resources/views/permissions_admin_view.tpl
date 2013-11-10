@@ -70,7 +70,7 @@
 {checkpermissionblock component='ZikulaPermissionsModule::' instance='::' level=ACCESS_ADMIN}
 <div id="permissions-header" class="clearfix">
     <a id="appendajax" onclick="javascript:permappend();" class="pull-left fa fa-plus hide" title="{gt text="Create new permission rule"}" href="javascript:void(0);">{gt text="Create new permission rule"}</a>
-    <strong id="filterwarning" class="pull-right fa fa-warning-sign" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
+    <strong id="filterwarning" class="pull-right fa fa-exclamation-triangle" style="{if $permgrp eq -1}display: none;{/if}color: red; ">{gt text="Caution! Filter is active!"}</strong>
 </div>
 {/checkpermissionblock}
 

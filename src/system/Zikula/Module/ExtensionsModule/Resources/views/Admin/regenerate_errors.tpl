@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="fa fa-warning-sign"></span>
+    <span class="fa fa-exclamation-triangle"></span>
     {gt text="Error! Could not regenerate the modules list."}
 </h3>
 

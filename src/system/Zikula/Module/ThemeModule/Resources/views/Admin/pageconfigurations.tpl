@@ -19,7 +19,7 @@
             <td>{$filesection.important|default:0|yesno}</td>
             <td class="actions">
                 <a class="fa fa-pencil" href="{modurl modname=Theme type=admin func=modifypageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Edit'}"></a>
-                <a class="fa fa-trash" href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
+                <a class="fa fa-trash-o" href="{modurl modname=Theme type=admin func=deletepageconfigurationassignment themename=$themename pcname=$name|urlencode}" title="{gt text='Delete'}"></a>
             </td>
         </tr>
         {/foreach}
@@ -43,7 +43,7 @@
             <td>{$fileexists|yesno}</td>
             <td class="actions">
                 <a class="fa fa-pencil" href="{modurl modname=Theme type=admin func=modifypageconfigtemplates themename=$themename filename=$filename}" title="{gt text='Edit'}"></a>
-                <a class="fa fa-trash" href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}" title="{gt text='Variables'}"></a>
+                <a class="ffa-trash-osh" href="{modurl modname=Theme type=admin func=variables themename=$themename filename=$filename}" title="{gt text='Variables'}"></a>
             </td>
         </tr>
         {/foreach}

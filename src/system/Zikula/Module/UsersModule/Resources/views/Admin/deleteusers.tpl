@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="fa fa-trash"></span>
+    <span class="fa fa-trash-o"></span>
     {gt text='Delete user account' plural='Delete user accounts' count=$users|@count}
 </h3>
 

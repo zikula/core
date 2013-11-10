@@ -30,7 +30,7 @@
                 {if $reginfo.isapproved}
                 <span class="fa fa-check fa fa-green tooltips" title="{gt text='Approved'}"></span>
                 {else}
-                <span class="fa fa-remove fa fa-red tooltips" title="{gt text='Pending approval'}"></span>
+                <span class="fa fa-times fa fa-red tooltips" title="{gt text='Pending approval'}"></span>
                 {/if}
             </td>
             <td class="text-center">
@@ -39,12 +39,12 @@
                 {elseif !$reginfo.verificationsent}
 
                 {if ($modvars.ZikulaUsersModule.moderation_order != 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const) || (($modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}
-                <span class="fa fa-warning-sign fa fa-red tooltips" title="{gt text='E-mail verification not sent; must be resent'}"></span>
+                <span class="fa fa-exclamation-triangle fa fa-red tooltips" title="{gt text='E-mail verification not sent; must be resent'}"></span>
                 {else}
-                <span class="fa fa-remove fa fa-red tooltips" title="{gt text='E-mail verification not sent'}"></span>
+                <span class="fa fa-times fa fa-red tooltips" title="{gt text='E-mail verification not sent'}"></span>
                 {/if}
                 {else}
-                <span class="fa fa-time fa fa-red tooltips"  title="{gt text='Pending verification of e-mail address'}"></span>
+                <span class="fa fa-clock-o fa fa-red tooltips"  title="{gt text='Pending verification of e-mail address'}"></span>
                 {/if}
             </td>
             {assign var="regactions" value=$actions.list[$reginfo.uid]}
@@ -82,7 +82,7 @@
             {/if}
             {if isset($regactions.deny)}
                 {if $regactions.deny}
-                <a class="fa fa-trash fa-fw tooltips" href="{$regactions.deny|safetext}" title="{gt text='Deny (deletes registration)'}"></a>
+                <a class="fa fa-trash-o fa-fw tooltips" href="{$regactions.deny|safetext}" title="{gt text='Deny (deletes registration)'}"></a>
                 {else}
                 <span class="fa-fw"></span>
                 {/if}
@@ -101,7 +101,7 @@
             {/if}
             {if isset($regactions.approveForce)}
                 {if $regactions.approveForce && !$reginfo.isverified}
-                <a class="fa fa-share fa-fw tooltips" href="{$regactions.approveForce|safetext}" title="{gt text='Skip verification (approves, and creates a new user account)'}"></a>
+                <a class="fa fa-share-square-o fa-fw tooltips" href="{$regactions.approveForce|safetext}" title="{gt text='Skip verification (approves, and creates a new user account)'}"></a>
                 {else}
                 <span class="fa-fw"></span>
                 {/if}
@@ -129,7 +129,7 @@
                 {gt text='An administrator has approved the registration, or approval was not required when the registration was completed.'}
             </td>
             <td class="col-md-6">
-                <span title="{gt text='Pending approval'}" class="fa fa-remove fa fa-red"></span>
+                <span title="{gt text='Pending approval'}" class="fa fa-times fa fa-red"></span>
                 {gt text='Waiting for an administrator to approve the registration.'}
             </td>
         </tr>
@@ -148,17 +148,17 @@
                 {gt text='The user has completed the e-mail verification process, or e-mail verification was not required when the registration was completed.'}
             </td>
             <td class="col-md-6">
-                <span title="{gt text='Pending verification of e-mail address'}" class="fa fa-time fa fa-orange"></span>
+                <span title="{gt text='Pending verification of e-mail address'}" class="fa fa-clock-o fa fa-orange"></span>
                 {gt text='An e-mail has been sent to the registered e-mail address, but the user has not yet responded.'}
             </td>
         </tr>
         <tr>
             <td>
-                <span title="{gt text='Verification e-mail message not yet sent'}" class="fa fa-remove fa fa-red"></span>
+                <span title="{gt text='Verification e-mail message not yet sent'}" class="fa fa-times fa fa-red"></span>
             {gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}
             </td>
             <td>
-                <span title="{gt text='E-mail verification not sent; must be resent'}" class="fa fa-warning-sign fa fa-red"></span>
+                <span title="{gt text='E-mail verification not sent; must be resent'}" class="fa fa-exclamation-triangle fa fa-red"></span>
                 {gt text='A verification e-mail has not been sent to the registered e-mail address, but the registration is in a state where one should already have been sent.'}
             </td>
         </tr>

@@ -21,7 +21,7 @@
     <a class="btn btn-success" href="{$regactions.approve|safetext}"><span class="fa fa-plus"></span> {gt text='Approve and Add User'}</a>&nbsp;
     {/if}
     {if isset($regactions.deny) && $regactions.deny}
-    <a class="btn btn-danger" href="{$regactions.deny|safetext}"><span class="fa fa-trash"></span> {gt text='Deny'}</a>&nbsp;
+    <a class="btn btn-danger" href="{$regactions.deny|safetext}"><span class="fa fa-trash-o"></span> {gt text='Deny'}</a>&nbsp;
     {/if}
     {if isset($regactions.modify) && $regactions.modify}
     <a class="btn btn-warning" href="{$regactions.modify|safetext}"><span class="fa fa-pencil"></span> {gt text='Edit'}</a>&nbsp;

@@ -107,7 +107,7 @@
                 <a class="fa fa-pencil tooltips" href="{modurl modname=$module type='admin' func='modify' bid=$block.bid|safetext}" title="{$lbl_edit_block}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="fa fa-trash tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
+                <a class="fa fa-trash-o tooltips" href="{modurl modname=$module type='admin' func='delete' bid=$block.bid|safetext}" title="{$lbl_delete_block}"></a>
                 {/if}
             </td>
         </tr>
@@ -144,7 +144,7 @@
                 <a class="fa fa-pencil tooltips" href="{modurl modname=$module type='admin' func='modifyposition' pid=$position.pid|safetext}" title="{$lbl_edit_blockposition}"></a>
                 {/if}
                 {if $access_delete}
-                <a class="fa fa-trash tooltips" href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>
+                <a class="fa fa-trash-o tooltips" href="{modurl modname=$module type='admin' func='deleteposition' pid=$position.pid|safetext}" title="{$lbl_delete_blockposition}"></a>
                 {/if}
             </td>
         </tr>

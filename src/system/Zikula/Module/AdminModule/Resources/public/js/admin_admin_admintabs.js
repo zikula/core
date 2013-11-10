@@ -43,7 +43,7 @@ $(document).on('click', '.admintabs-add a', function (e) {
     $('#admintabs-add-name').focus();
 });
 
-$(document).on('click', '.admintabs-add .fa fa-remove', function (e) {
+$(document).on('click', '.admintabs-add .fa fa-times', function (e) {
     $('.admintabs-add a').popover('hide');
 });
 

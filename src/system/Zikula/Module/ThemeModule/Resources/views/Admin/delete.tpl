@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="fa fa-trash"></span>
+    <span class="fa fa-trash-o"></span>
     {gt text="Delete theme %s" tag1=$name|safetext}
 </h3>
 

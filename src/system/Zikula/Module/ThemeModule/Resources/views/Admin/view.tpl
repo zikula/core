@@ -66,7 +66,7 @@
                 <a href="{modurl modname="ZikulaThemeModule" type="admin" func="modify" themename=$theme.displayname}"><span class="fa fa-pencil tooltips" title="{$strEditTheme}"></span></a>
                 {/if}
                 {if $theme.name neq $currenttheme and $theme.state neq 2}
-                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="fa fa-trash tooltips" title="{$strDeleteTheme}"></span></a>
+                <a href="{modurl modname="ZikulaThemeModule" type="admin" func="delete" themename=$theme.displayname}"><span class="fa fa-trash-o tooltips" title="{$strDeleteTheme}"></span></a>
                 {/if}
                 <a href="{modurl modname="ZikulaThemeModule" type="admin" func="credits" themename=$theme.displayname}"><span class="fa fa-info-circle tooltips" title="{$strCreditsTheme}"></span></a>
             </td>

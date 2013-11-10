@@ -70,10 +70,10 @@
             <div class="form-control-static">
                 {if !isset($reginfo.isverified) || empty($reginfo.isverified) || !$reginfo.isverified}
                 {if !isset($reginfo.verificationsent) || empty($reginfo.verificationsent)}
-                <span class="fa fa-remove fa-fw fa fa-red"></span>
+                <span class="fa fa-times fa-fw fa fa-red"></span>
                 {gt text='Verification e-mail message not yet sent to the user'}
                 {else}
-                <span class="fa fa-time fa-fw fa fa-red"></span>
+                <span class="fa fa-clock-o fa-fw fa fa-red"></span>
                 {gt text='Not yet verified'}
                 {/if}
                 {else}
@@ -88,7 +88,7 @@
         <div class="col-lg-9">
             <div class="form-control-static">
                 {if !isset($reginfo.isapproved) || empty($reginfo.isapproved) || !$reginfo.isapproved}
-                <span class="fa fa-remove fa-fw fa fa-red"></span>
+                <span class="fa fa-times fa-fw fa fa-red"></span>
                 {gt text='Not yet approved'}
                 {else}
                 <span class="fa fa-check fa-fw fa fa-green"></span>

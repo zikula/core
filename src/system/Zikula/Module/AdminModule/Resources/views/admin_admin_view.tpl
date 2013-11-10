@@ -24,7 +24,7 @@
                     <a href="{modurl modname=$module type='admin' func='modify' cid=$category_id}" title="{gt text="Edit"}" class="tooltips fa fa-wrench"></a>
                 {/if}
                 {if $access_delete}
-                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips fa fa-trash"></a>
+                <a href="{modurl modname=$module type='admin' func='delete' cid=$category_id}" title="{gt text="Delete"}" class="tooltips fa fa-trash-o"></a>
                 {/if}
             </td>
         </tr>

@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="fa fa-upload-alt"></span>
+    <span class="fa fa-upload"></span>
     {gt text='Import users'}
 </h3>
 

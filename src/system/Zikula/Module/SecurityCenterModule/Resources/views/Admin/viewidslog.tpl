@@ -6,7 +6,7 @@
 
 <ul class="navbar navbar-default">
     <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="fa fa-arrow-circle-o-down-alt">{gt text="Export IDS Log"}</a></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash">{gt text="Purge IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash-o">{gt text="Purge IDS Log"}</a></li>
 </ul>
 
 {gt text="All" assign=lblAll}

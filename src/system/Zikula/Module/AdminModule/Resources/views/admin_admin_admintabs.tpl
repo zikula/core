@@ -19,7 +19,7 @@
                         <a href="#"><span class="fa fa-pencil fa-fw" ></span> {gt text='Edit category'}</a>
                     </li>
                     <li class="admintabs-lock admintabs-delete">
-                        <a href="#"><span class="fa fa-trash fa fa-red fa-fw" ></span> {gt text='Delete category'}</a>
+                        <a href="#"><span class="fa fa-trash-o fa fa-red fa-fw" ></span> {gt text='Delete category'}</a>
                     </li>
                     <li class="divider admintabs-lock"></li>
                     <li>
@@ -45,7 +45,7 @@
             <div id="admintabs-add-popover" class="hide">
                 <div class="input-group">
                     <input type="text" class="form-control" name="name" id="admintabs-add-name" />
-                    <span class="input-group-addon fa fa-remove fa fa-red pointer"></span>
+                    <span class="input-group-addon fa fa-times fa fa-red pointer"></span>
                     <span class="input-group-addon fa fa-check fa fa-green pointer"></span>
                 </div>
             </div>

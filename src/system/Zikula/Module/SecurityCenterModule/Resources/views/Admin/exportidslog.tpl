@@ -9,7 +9,7 @@
         <span class="fa fa-download"> {gt text="Export IDS Log"}</span>
     </li>
     <li>
-        <a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash"> {gt text="Purge IDS Log"}</a>
+        <a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash-o"> {gt text="Purge IDS Log"}</a>
     </li>
 </ul>
 
