@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @Copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaExtensionsModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -30,7 +32,8 @@ use Zikula_Plugin_AlwaysOnInterface;
 use Zikula_Plugin_ConfigurableInterface;
 
 /**
- * Extensions_Controller_Admin class.
+ * Administrative contollers for the extensions module
+ *
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -48,7 +51,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Extensions Module main admin function
      *
-     * @return string HTML output string
+     * @return void
      */
     public function indexAction()
     {
@@ -57,7 +60,11 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * Extensions Module main admin function
+     *
      * @deprecated since 1.3.6
+     *
+     * @return void
      */
     public function mainAction()
     {
@@ -66,26 +73,28 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Extensions_admin_modify - modify a module.
+     * Modify a module.
      *
-     * @return string HTML output string.
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested module id doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
      */
     public function modifyAction()
     {
         $id = (int) $this->request->query->get('id', null);
-        if (!is_numeric($id)) {
-            return LogUtil::registerArgsError(ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+        if (!isset($id) || !is_numeric($id)) {
+            throw new \InvalidArgumentException($this->__('Error! The module ID is invalid.'));
         }
 
         $obj = ModUtil::getInfo($id);
-        if (!isset($id) || $obj == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'),
-                    404,
-                    ModUtil::url('ZikulaExtensionsModule', 'admin', 'modify', array('id' => $id)));
+        if ($obj == false) {
+            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "$obj[name]::$id", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $restore = (bool)$this->request->query->get('restore', false);
@@ -125,11 +134,14 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Extensions_admin_update - update a module
-     * @return string HTML output string
-     * @param int 'id' module id
+     * Update a module
+     *
+     * @param int    'id'             module id
      * @param string 'newdisplayname' new display name of the module
      * @param string 'newdescription' new description of the module
+     * @param string 'newurl'         new url of the module
+     *
+     * @return void
      */
     public function updateAction()
     {
@@ -157,14 +169,18 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * Extensions_admin_view - list modules and current settings
-     * @return string HTML output string
+     * List modules and current settings
+     *
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     *
+     * @throws \RuntimeException Thrown if the module list cannot be regenerated
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function viewAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need.
@@ -204,7 +220,7 @@ class AdminController extends \Zikula_AbstractController
             // No inconsistencies, so we can regenerate modules
             $defaults = (int) $this->request->query->get('defaults', false);
             if (!ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'regenerate', array('filemodules' => $filemodules, 'defaults' => $defaults))) {
-                LogUtil::registerError($this->__('Errors were detected regenerating the modules list from file system.'));
+                throw new \RuntimeException($this->__('Errors were detected regenerating the modules list from file system.'));
             }
         }
 
@@ -454,7 +470,10 @@ class AdminController extends \Zikula_AbstractController
      * Initialise a module.
      *
      * @param int 'id' module id
+     *
      * @return bool true
+     *
+     * @throws \InvalidArgumentException Thrown if the module id isn't set or isn't numeric
      */
     public function initialiseAction()
     {
@@ -554,7 +573,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (empty($id) || !is_numeric($id)) {
-            return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
 
         // initialise and activate any dependencies
@@ -616,8 +635,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Activate a module
+     *
      * @param int 'id' module id
-     * @return bool true
+     * @param int 'startnum' starting number from the pager
+     * @param string 'letter' letter from the filter
+     * @param string 'state' state from the filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \RuntimeException Thrown if the module state doesn't allow this action
      */
     public function activateAction()
     {
@@ -629,26 +656,20 @@ class AdminController extends \Zikula_AbstractController
         $letter = $this->request->query->get('letter', null);
         $state = $this->request->query->get('state', null);
         if (empty($id) || !is_numeric($id)) {
-            return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
 
         $moduleinfo = ModUtil::getInfo($id);
         if ($moduleinfo['state'] == 6) {
-            LogUtil::registerError($this->__('Error! Module not allowed.'));
-            return $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array(
-                    'startnum' => $startnum,
-                    'letter' => $letter,
-                    'state' => $state)));
+            throw new \RuntimeException($this->__('Error! Module not allowed.'));
         }
 
         // Update state
         $setstate = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_ACTIVE));
         if ($setstate) {
             // Success
-
             $event = new GenericEvent(null, $moduleinfo);
             $this->getDispatcher()->dispatch('installer.module.activated', $event);
-
             LogUtil::registerStatus($this->__('Done! Activated module.'));
         }
 
@@ -660,8 +681,15 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Upgrade a module
+     *
      * @param int 'id' module id
-     * @return bool true
+     * @param int 'startnum' starting number from the pager
+     * @param string 'letter' letter from the filter
+     * @param string 'state' state from the filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
      */
     public function upgradeAction()
     {
@@ -688,7 +716,7 @@ class AdminController extends \Zikula_AbstractController
             $activate = (bool) $this->request->request->get('activate', null);
         }
         if (empty($id) || !is_numeric($id)) {
-            return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
 
         // Upgrade module
@@ -738,8 +766,17 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Deactivate a module
+     *
      * @param int 'id' module id
-     * @return bool true
+     * @param int 'startnum' starting number from the pager
+     * @param string 'letter' letter from the filter
+     * @param string 'state' state from the filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \RuntimeException Thrown if the requested module is a core module and cannot be deactivated
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested module id doesn't exist
      */
     public function deactivateAction()
     {
@@ -752,27 +789,25 @@ class AdminController extends \Zikula_AbstractController
         $state = $this->request->query->get('state', null);
 
         if (empty($id) || !is_numeric($id)) {
-            return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \InvalidArguments($this->__('Error! No module ID provided.'));
         }
 
         // check if the modules is the systems start module
         $modinfo = ModUtil::getInfo($id);
         if ($modinfo == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
         if (ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'iscoremodule',array('modulename' => $modinfo['name']))) {
-            return LogUtil::registerError($this->__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'), null, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \RuntimeException($this->__('Error! You cannot deactivate this module. It is a mandatory core module, and is needed by the system.'));
         }
 
         // Update state
         $setstate = ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'setstate', array('id' => $id, 'state' => ModUtil::STATE_INACTIVE));
         if ($setstate) {
             // Success
-            
             $event = new GenericEvent(null, $modinfo);
             $this->getDispatcher()->dispatch('installer.module.deactivated', $event);
-            
             LogUtil::registerStatus($this->__('Done! Deactivated module.'));
         }
 
@@ -784,8 +819,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Remove a module
+     *
      * @param int 'id' module id
-     * @return bool true if successful
+     * @param int 'startnum' starting number from the pager
+     * @param string 'letter' letter from the filter
+     * @param string 'state' state from the filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
+     * @throws \RuntimeException Thrown if any blocks associated with the module cannot be deleted
      */
     public function removeAction()
     {
@@ -818,7 +861,7 @@ class AdminController extends \Zikula_AbstractController
         }
 
         if (empty($id) || !is_numeric($id) || !ModUtil::getInfo($id)) {
-            return LogUtil::registerError($this->__('Error! No module ID provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
 
         // Check for confirmation.
@@ -875,11 +918,7 @@ class AdminController extends \Zikula_AbstractController
         foreach ($blocks as $block) {
             if (!ModUtil::apiFunc('ZikulaBlocksModule', 'admin', 'delete', array(
             'bid' => $block['bid']))) {
-                LogUtil::registerError($this->__f('Error! Deleting the block %s .', $block['title']));
-                return $this->redirect(ModUtil::url('ZikulaExtensionsModule', 'admin', 'view', array(
-                        'startnum' => $startnum,
-                        'letter' => $letter,
-                        'state' => $state)));
+                throw new \RuntimeException($this->__f('Error! Deleting the block %s .', $block['title']));
             }
         }
 
@@ -910,15 +949,17 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * This is a standard function to modify the configuration parameters of the
-     * module
-     * @return string HTML string
+     * This is a standard function to modify the configuration parameters of the module
+     *
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     *
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // assign all the module vars and return output
@@ -929,7 +970,11 @@ class AdminController extends \Zikula_AbstractController
     /**
      * This is a standard function to update the configuration parameters of the
      * module given the information passed back by the modification form
-     * @return bool true
+     *
+     * @return void
+     *
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws \InvalidArgumentException Thrown if the itemsperpage parameter is not numeric
      */
     public function updateconfigAction()
     {
@@ -937,17 +982,13 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Update module variables.
         $itemsperpage = (int) $this->request->request->get('itemsperpage', 25);
         if (!is_integer($itemsperpage) || $itemsperpage < 1) {
-            LogUtil::registerError($this->__("Warning! The 'Items per page' setting must be a positive integer. The value you entered was corrected."));
-            $itemsperpage = (int) $itemsperpage;
-            if ($itemsperpage < 1) {
-                $itemsperpage = 25;
-            }
+            throw new \InvalidArgumentException($this->__("Warning! The 'Items per page' setting must be a positive integer. The value you entered was corrected."));
         }
 
         $this->setVar('itemsperpage', $itemsperpage);
@@ -962,8 +1003,14 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Display information of a module compatibility with the version of the core
+     *
      * @param  int 'id' identity of the module
-     * @return string HTML output string
+     *
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the id parameter is not numeric
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested module id doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
      */
     public function compinfoAction()
     {
@@ -975,17 +1022,17 @@ class AdminController extends \Zikula_AbstractController
 
         // check the input
         if (!is_numeric($id)) {
-            return LogUtil::registerArgsError(ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new \InvalidArgumentException($this->__('Error! No module ID provided.'));
         }
 
         // get the modules information from the data base
         $modinfo = ModUtil::getInfo($id);
         if ($modinfo == false) {
-            return LogUtil::registerError($this->__('Error! No such module ID exists.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'view'));
+            throw new NotFoundHttpException($this->__('Error! No such module ID exists.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', "$modinfo[name]::$id", ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get the module information from the files system
@@ -1004,13 +1051,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Lists all plugins.
-     * @return string HTML output string
+     *
+     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     *
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function viewPluginsAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $state = $this->request->get('state', -1);
@@ -1200,7 +1250,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Initialise a plugin
-     * @return bool true
+     *
+     * @param string $plugin   The plugin class
+     * @param int    $state    The state filter
+     * @param string $sort     The sort order
+     * @param string $bymodule The bymodule filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function initialisePluginAction()
     {
@@ -1209,7 +1268,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need
@@ -1220,7 +1279,7 @@ class AdminController extends \Zikula_AbstractController
         $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
-            return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'));
+            throw new \InvalidArgumentException($this->__('Error! No plugin class provided.'));
         }
 
         PluginUtil::loadAllPlugins();
@@ -1236,7 +1295,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Deactivate a plugin
-     * @return bool true
+     *
+     * @param string $plugin   The plugin class
+     * @param int    $state    The state filter
+     * @param string $sort     The sort order
+     * @param string $bymodule The bymodule filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function deactivatePluginAction()
     {
@@ -1245,7 +1313,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need
@@ -1256,7 +1324,7 @@ class AdminController extends \Zikula_AbstractController
         $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
-            return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'));
+            throw new \InvalidArgumentException($this->__('Error! No plugin class provided.'));
         }
 
         PluginUtil::loadAllPlugins();
@@ -1272,7 +1340,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Activate a plugin
-     * @return bool true
+     *
+     * @param string $plugin   The plugin class
+     * @param int    $state    The state filter
+     * @param string $sort     The sort order
+     * @param string $bymodule The bymodule filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function activatePluginAction()
     {
@@ -1281,7 +1358,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need
@@ -1292,7 +1369,7 @@ class AdminController extends \Zikula_AbstractController
         $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
-            return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'));
+            throw new \InvalidArgumentException($this->__('Error! No plugin class provided.'));
         }
 
         PluginUtil::loadAllPlugins();
@@ -1308,7 +1385,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Remove a plugin
-     * @return bool true
+     *
+     * @param string $plugin   The plugin class
+     * @param int    $state    The state filter
+     * @param string $sort     The sort order
+     * @param string $bymodule The bymodule filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function removePluginAction()
     {
@@ -1317,7 +1403,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need
@@ -1328,7 +1414,7 @@ class AdminController extends \Zikula_AbstractController
         $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
-            return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'));
+            throw new \InvalidArgumentException($this->__('Error! No plugin class provided.'));
         }
 
         PluginUtil::loadAllPlugins();
@@ -1344,7 +1430,16 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * Upgrade a plugin
-     * @return bool true
+     *
+     * @param string $plugin   The plugin class
+     * @param int    $state    The state filter
+     * @param string $sort     The sort order
+     * @param string $bymodule The bymodule filter
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function upgradePluginAction()
     {
@@ -1353,7 +1448,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security and sanity checks
         if (!SecurityUtil::checkPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Get parameters from whatever input we need
@@ -1364,7 +1459,7 @@ class AdminController extends \Zikula_AbstractController
         $systemplugins = $this->request->get('systemplugins', false)? true : null;
 
         if (empty($plugin)) {
-            return LogUtil::registerError($this->__('Error! No plugin class provided.'), 404, ModUtil::url('ZikulaExtensionsModule', 'admin', 'viewPlugins'));
+            throw new \InvalidArgumentException($this->__('Error! No plugin class provided.'));
         }
 
         PluginUtil::loadAllPlugins();
@@ -1378,6 +1473,11 @@ class AdminController extends \Zikula_AbstractController
                                                                               'systemplugins' => $systemplugins)));
     }
 
+     /**
+      * Upgrade all modules
+      *
+      * @return void
+      */
     public function upgradeallAction()
     {
         ModUtil::apiFunc('ZikulaExtensionsModule', 'admin', 'upgradeall');
@@ -1387,6 +1487,11 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * viewPlugins sorter: Sorting by module name
+     *
+     * @param $a array first item to compare 
+     * @param $b array second item to compare
+     *
+     * @return int < 0 if plugin a should be ordered before module b > 0 otherwise
      */
     private function viewPluginsSorter_byModule($a, $b)
     {
@@ -1395,6 +1500,11 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * viewPlugins sorter: Sorting by plugin internal name
+     *
+     * @param $a array first item to compare 
+     * @param $b array second item to compare
+     *
+     * @return int < 0 if plugin a should be ordered before module b > 0 otherwise
      */
     private function viewPluginsSorter_byName($a, $b)
     {

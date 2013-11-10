@@ -6,6 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @Copyright Zikula Foundation
+ * @package Zikula
+ * @subpackage ZikulaExtensionsModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -20,12 +23,22 @@ use HookUtil;
 use EventUtil;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\ExtensionsModule\Util;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * HooksUI class.
  */
 class HookUiListener
 {
+    /**
+     * Display hooks user interface
+     *
+     * @param Zikula\Core\Event\GenericEvent $event
+     *
+     * @return void
+     *
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     */
     public static function hooks(GenericEvent $event)
     {
         // check if this is for this handler
@@ -44,7 +57,7 @@ class HookUiListener
 
         // check if user has admin permission on this module
         if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // create an instance of the module's version
@@ -241,6 +254,15 @@ class HookUiListener
         $event->stopPropagation();
     }
 
+    /**
+     * Display services availble to the module
+     *
+     * @param Zikula\Core\Event\GenericEvent $event
+     *
+     * @return void
+     *
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     */
     public static function moduleservices(GenericEvent $event)
     {
         // check if this is for this handler
@@ -252,7 +274,7 @@ class HookUiListener
 
         $moduleName = $subject->getName();
         if (!SecurityUtil::checkPermission($moduleName.'::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $view = Zikula_View::getInstance('ZikulaExtensionsModule', false);
