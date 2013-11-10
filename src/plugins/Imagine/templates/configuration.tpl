@@ -31,7 +31,7 @@
 
             <div class="form-group">  
                 <div class="col-lg-offset-3 col-lg-9">
-                    <a class="z-action-icon smallicon smallfa fa-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
+                    <a class="z-action-icon smallicon smallicon-regenerate" href="{modurl modname='ZikulaExtensionsModule' type='adminplugin' func='dispatch' _plugin='Imagine' _action='cleanup'}" title="{gt text='Clear thumb'}">{gt text='Cleanup thumbnails now'}</a>
                 </div>
             </div>
         </fieldset>
