@@ -119,7 +119,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'trash-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-display') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'eye-on';
+                    $menuitem['icon'] = 'eye';
                 } elseif ($menuitem['class'] == 'z-icon-es-edit') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'pencil-square-o';
