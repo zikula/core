@@ -204,7 +204,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the block
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown if the requested block doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested block doesn't exist
      */
     public function modifyAction()
     {
@@ -544,7 +544,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the block
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown the requested block doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown the requested block doesn't exist
      */
     public function deleteAction()
     {
@@ -621,7 +621,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
-     * @throws \InvalidArgumentException  Thrown if the position name is empty or not valid or
+     * @throws \InvalidArgumentException Thrown if the position name is empty or not valid or
      *                                          if the position description is empty
      */
     public function createpositionAction()
@@ -753,7 +753,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response|bool symfony response if confirmation is null, true if delete successful, false otherwise.
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown if the position doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the position doesn't exist
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete the position
      */
     public function deletepositionAction($args)

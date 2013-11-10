@@ -170,7 +170,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown if the requested category cannot be found
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested category cannot be found
      */
     public function modifyAction($args)
     {
@@ -252,7 +252,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response|bool Symfony response object if confirmation is null, true if delete successful, false otherwise
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete the category
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown if the category cannot be found
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the category cannot be found
      */
     public function deleteAction($args)
     {

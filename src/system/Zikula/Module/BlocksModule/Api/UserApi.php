@@ -39,7 +39,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array|bool array of items, or false on failure.
      *
-     * @throws \InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getall($args)
     {
@@ -129,7 +129,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array|bool item array, or false on failure
      *
-     * @throws \InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function get($args)
     {
@@ -214,7 +214,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array|bool item array, or false on failure.
      *
-     * @throws \InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getposition($args)
     {
@@ -239,7 +239,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array|bool item array, or false on failure.
      *
-     * @throws \InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getblocksinposition($args)
     {
@@ -263,7 +263,7 @@ class UserApi extends \Zikula_AbstractApi
      *
      * @return array|bool item array, or false on failure.
      *
-     * @throws \InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getallblockspositions($args)
     {
