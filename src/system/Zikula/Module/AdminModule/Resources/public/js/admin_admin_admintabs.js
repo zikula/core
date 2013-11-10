@@ -43,11 +43,11 @@ $(document).on('click', '.admintabs-add a', function (e) {
     $('#admintabs-add-name').focus();
 });
 
-$(document).on('click', '.admintabs-add .fa fa-times', function (e) {
+$(document).on('click', '.admintabs-add .fa-times', function (e) {
     $('.admintabs-add a').popover('hide');
 });
 
-$(document).on('click', '.admintabs-add .fa fa-check', function (e) {
+$(document).on('click', '.admintabs-add .fa-check', function (e) {
     $('.admintabs-add a').popover('hide')
     var name = $('#admintabs-add-name').val();
     if (name === '') {
@@ -173,7 +173,7 @@ $('.dropdown-toggle').click( function() {
  * Click and mouse over dropdown hack
 *******************************************************************************/
 
-/*$('#admintabs .fa fa-caret-down').click(
+/*$('#admintabs .fa-caret-down').click(
     function(e) {
         e.preventDefault();
         var li =  $(this).parent().parent()
@@ -201,17 +201,17 @@ $('#admintabs-locker a').click(
         e.preventDefault();
         var s = $(this).find('span');
         
-        if (s.hasClass('fa fa-lock')) {
+        if (s.hasClass('fa-lock')) {
             $('#admintabs').sortable('enable');
             $('#modulelist').sortable('enable');
             $('.admintabs-lock').addClass('admintabs-unlock').removeClass('admintabs-lock');
-            s.removeClass('fa fa-lock').addClass('fa fa-unlock');
+            s.removeClass('fa-lock').addClass('fa-unlock');
             
         } else {
             $('#admintabs').sortable('disable');
             $('#modulelist').sortable('disable');
             $('.admintabs-unlock').addClass('admintabs-lock').removeClass('admintabs-unlock');
-            s.removeClass('fa fa-unlock').addClass('fa fa-lock');
+            s.removeClass('fa-unlock').addClass('fa-lock');
         }        
     }
 );    
