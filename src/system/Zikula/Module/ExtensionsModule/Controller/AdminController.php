@@ -362,7 +362,7 @@ class AdminController extends \Zikula_AbstractController
                                         'startnum' => $startnum,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'info-sign',
+                                        'image' => 'info-circle',
                                         'color' => 'black',
                                         'title' => $this->__f('Incompatible version: \'%s\'', $mod['name']));
                             }
