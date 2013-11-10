@@ -22,7 +22,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_Exception_Fatal;
 use DataUtil;
 use Zikula_Response_Ajax;
-use AjaxUtil;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
@@ -34,11 +33,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Change the category a module belongs to by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string moduleid on success.
+     * @return \Zikula_Response_Ajax Ajax response containg the moduleid on success.
      *
-     * @throws FatalErrorException Thrown if the supplied module ID doesn't exist or
-     *                                    if the module couldn't be added to the category
+     * @throws \FatalErrorException Thrown if the supplied module ID doesn't exist or
+     *                                     if the module couldn't be added to the category
      */
     public function changeModuleCategoryAction()
     {
@@ -82,12 +80,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Add a new admin category by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string the new cid on sucess.
-     *                          url is a formatted url to the new category on success.
+     * @return \Zikula_Response_Ajax Ajax response containing the new cid on sucess
      *
-     * @throws FatalErrorException Thrown if the supplied category name already exists or
-     *                                    if the the category couldn't be created
+     * @throws \FatalErrorException Thrown if the supplied category name already exists or
+     *                                     if the the category couldn't be created
      */
     public function addCategoryAction()
     {
@@ -139,11 +135,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete an admin category by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string cid on success.
+     * @return \Zikula_Response_Ajax Ajax response containing the category id on success
      *
-     * @throws FatalErrorException Thrown if the supplied category doesn't exist or
-     *                                    if the category couldn't be deleted
+     * @throws \FatalErrorException Thrown if the supplied category doesn't exist or
+     *                                     if the category couldn't be deleted
      */
     public function deleteCategoryAction()
     {
@@ -185,12 +180,12 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Edit an admin category by ajax.
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
+     * @return \Zikula_Response_Ajax Ajax response containing the name of the edited category
      *
-     * @throws InvalidArgumentException Thrown if either the category id or name are not supplied or null
-     * @throws FatalErrorException      Thrown if the new category name already exists or
-     *                                         if the category id couldn't be found or
-     *                                         if the changes to the category couldn't be saved
+     * @throws \InvalidArgumentException Thrown if either the category id or name are not supplied or null
+     * @throws \FatalErrorException Thrown if the new category name already exists or
+     *                                     if the category id couldn't be found or
+     *                                     if the changes to the category couldn't be saved
      */
     public function editCategoryAction()
     {
@@ -226,7 +221,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
                 //check to see if the category with same name is the same category.
                 if ($cat['cid'] == $cid) {
                     $output['response'] = $name;
-
                     return new Zikula_Response_Ajax($output);
                 }
 
@@ -249,7 +243,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         $update = ModUtil::apiFunc('ZikulaAdminModule', 'admin', 'update', array('cid' => $cid, 'name' => $name, 'description' => $item['description']));
         if ($update) {
             $output['response'] = $name;
-
             return new Zikula_Response_Ajax($output);
         }
 
@@ -260,11 +253,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Make a category the initially selected one (by ajax).
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a string message on success.
+     * @return \Zikula_Response_Ajax Ajax response containg a sucess message
      *
-     * @throws FatalErrorException Thrown if the category couldn't be found or 
-     *                                    if the category couldn't be set as the default
+     * @throws \FatalErrorException Thrown if the category couldn't be found or 
+     *                                     if the category couldn't be set as the default
      */
     public function defaultCategoryAction()
     {
@@ -291,7 +283,6 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if ($makedefault) {
             // Success
             $output['response'] = $this->__f('Category "%s" was successfully made default.', $item['name']);
-
             return new Zikula_Response_Ajax($output);
         }
 
@@ -302,8 +293,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Sort the admin categories 
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a null array on success.
+     * @return \Zikula_Response_Ajax Ajax response containing a null array on success.
      */
     public function sortCategoriesAction()
     {
@@ -324,15 +314,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $this->entityManager->flush();
 
-
         return new Zikula_Response_Ajax(array());
     }
 
     /**
      * Sort the modules
      *
-     * @return AjaxUtil::output Output to the calling ajax request is returned.
-     *                          response is a null array on success.
+     * @return \Zikula_Response_Ajax Ajax response containing a null array on success.
      */
     public function sortModulesAction()
     {

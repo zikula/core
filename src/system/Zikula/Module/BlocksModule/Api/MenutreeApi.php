@@ -27,6 +27,10 @@ use System;
 use ServiceUtil;
 use UserUtil;
 
+/**
+ * Suppport API functions for the menutree block
+ *
+ */
 class MenutreeApi extends \Zikula_AbstractApi
 {
     /**
@@ -39,11 +43,13 @@ class MenutreeApi extends \Zikula_AbstractApi
      * 'category' additionally groups the admin links by their category.
      * You can combine 'flat' and 'category' to have the category links added in the current menu.
      *
-     * @param  array  $args['item']      menu node to be replaced
-     * @param  string $args['lang']      current menu language
-     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped. if 'category' module links grouped by category
+     * @param mixed[] $args {<ul>
+     *      <li>@type array  $item      menu node to be replaced</li>
+     *      <li>@type string $lang      current menu language</li>
+     *      <li>@type string $'extrainfo additional params - if 'flat' then return links ungrouped. if 'category' module links grouped by category</li>
+     *                       </ul>}
      *
-     * @return mixed  array of links if successful, false otherwise
+     * @return array|bool array of links if successful, false otherwise
      */
     public function adminlinks($args)
     {
@@ -201,11 +207,13 @@ class MenutreeApi extends \Zikula_AbstractApi
      *     [extrainfo] => foo=1&bar=2
      * )
      *
-     * @param  array  $args['item']      menu node to be replaced
-     * @param  string $args['lang']      current menu language
-     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     * @param mixed[] $args {<ul>
+     *      <li>@type array  $item      menu node to be replaced</li>
+     *      <li>@type string $lang      current menu language</li>
+     *      <li>@type string $extrainfo additional params - if 'flat' then return links ungrouped</li>
+     *                       </ul>}
      *
-     * @return mixed  array of links if successful, false otherwise
+     * @return array|bool array of links if successful, false otherwise
      */
     public function blank($args)
     {
@@ -288,12 +296,13 @@ class MenutreeApi extends \Zikula_AbstractApi
      *      groupby = menuitem (default) or page, all other values stands for none
      *      parent - id of parent node - this allows to get specified node of Content pages
      *
+     * @param mixed[] $args {<ul>
+     *      <li>@type  array  $item      menu node to be replaced</li>
+     *      <li>@type  string $lang      current menu language</li>
+     *      <li>@type  string $extrainfo additional params</li>
+     *                       </ul>}
      *
-     * @param  array  $args['item']      menu node to be replaced
-     * @param  string $args['lang']      current menu language
-     * @param  string $args['extrainfo'] additional params
-     *
-     * @return mixed  array of links if successful, false otherwise
+     * @return array|bool array of links if successful, false otherwise
      */
     public function Content($args)
     {
@@ -385,11 +394,13 @@ class MenutreeApi extends \Zikula_AbstractApi
      * {ext:ZikulaBlocksModule:modules:[flat]}
      * Last param is optional
      *
-     * @param  array  $args['item']      menu node to be replaced
-     * @param  string $args['lang']      current menu language
-     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     * @param mixed[] $args {<ul>
+     *      <li>@type  array  $item      menu node to be replaced</li>
+     *      <li>@type  string $lang      current menu language</li>
+     *      <li>@type  string $extrainfo additional params - if 'flat' then return links ungrouped</li>
+     *                       </ul>}
      *
-     * @return mixed  array of links if successful, false otherwise
+     * @return array|bool array of links if successful, false otherwise
      */
     public function modules($args)
     {
@@ -463,11 +474,13 @@ class MenutreeApi extends \Zikula_AbstractApi
      *          - arch - link to News archive
      *          Items are displayed in order provided in menutree
      *
-     * @param  array  $args['item']      menu node to be replaced
-     * @param  string $args['lang']      current menu language
-     * @param  string $args['extrainfo'] additional params
+     * @param mixed[] $args {<ul>
+     *      <li>@type  array  $item      menu node to be replaced</li>
+     *      <li>@type  string $lang      current menu language</li>
+     *      <li>@type  string $extrainfo additional params</li>
+     *                       </ul>}
      *
-     * @return mixed  array of links if successful, false otherwise
+     * @return array|bool array of links if successful, false otherwise
      */
     public function news($args)
     {
@@ -663,11 +676,13 @@ class MenutreeApi extends \Zikula_AbstractApi
      * If you provide an additional param extrainfo = flat, then the links are not grouped within
      * Your Accont element
      *
-     * @param  array  $args['item']      menu node to be replaced
-     * @param  string $args['lang']      current menu language
-     * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     * @param mixed[] $args {<ul>
+     *      <li>@type  array  $item      menu node to be replaced</li>
+     *      <li>@type  string $lang      current menu language</li>
+     *      <li>@type  string $extrainfo additional params - if 'flat' then return links ungrouped</li>
+     *                       </ul>}
      *
-     * @return mixed  array of links if successful, false otherwise
+     * @return array|bool array of links if successful, false otherwise
      */
     public function userlinks($args)
     {

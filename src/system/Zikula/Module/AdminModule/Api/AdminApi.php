@@ -40,7 +40,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int|bool admin category ID on success, false on failure
      *
-     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function create($args)
     {
@@ -72,9 +72,9 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true on success, false on failure
      *
-     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
-     * @throws NotFoundHttpException       Thrown if item to be updated isn't found
-     * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to update the item
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if item to be updated isn't found
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to update the item
      */
     public function update($args)
     {
@@ -113,10 +113,10 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return bool true on success, false on failure
      *
-     * @throws InvalidArgumentException     Thrown if invalid parameters are received in $args
-     * @throws NotFoundHttpException        Thrown if item to be updated isn't found
-     * @throws RuntimeException             Thrown if the category to be deleted is the default for new modules or 
-     *                                             is the initial category to be displayed
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if item to be updated isn't found
+     * @throws \RuntimeException Thrown if the category to be deleted is the default for new modules or 
+     *                                  if the category to be deleted is the initial category to be displayed
      */
     public function delete($args)
     {
@@ -217,7 +217,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array|bool item array, or false on failure
      *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function get($args)
     {
@@ -248,8 +248,8 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int|bool admin category ID on success, false on failure
      *
-     * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
-     * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to add the category
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
      */
     public function addmodtocategory($args)
     {
@@ -296,7 +296,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int|false category id, or false on failure
      *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getmodcategory($args)
     {
@@ -342,7 +342,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int|bool category id, or false on failure
      *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getSortOrder($args)
     {
@@ -381,7 +381,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array|bool array of styles if successful, or false on failure
      *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getmodstyles($args)
     {
@@ -452,7 +452,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int   number of modules
      *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function countModsInCat($args)
     {

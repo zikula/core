@@ -29,6 +29,10 @@ use ServiceUtil;
 use Zikula\Module\CategoriesModuleCategoriesInstaller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * User contollers for the categories module
+ *
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
@@ -36,7 +40,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
      */
     public function mainAction()
     {
@@ -62,11 +66,11 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
-     * @throws InvalidArgumentException  Thrown if the category or document root aren't supplied or are invalid or
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
+     * @throws \InvalidArgumentException  Thrown if the category or document root aren't supplied or are invalid or
      *                                          if the requested document root is the root category or 
      *                                          if the requested document root belongs to another user
-     * @throws RuntimeException          Thrown if the category is locked or
+     * @throws \RuntimeException          Thrown if the category is locked or
      *                                          if the root directory cannot be accessed or
      *                                          if the category is not a leaf category or
      *                                          if the category is not a child of the document root
@@ -169,9 +173,9 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
      *                                          if the user is not logged in
-     * @throws RuntimeException          Thrown if user editing of categories isn't enabled or
+     * @throws \RuntimeException          Thrown if user editing of categories isn't enabled or
      *                                          if the user root cannot be determined or 
      *                                          if the user root points to an invalid category or
      *                                          if the user root category name couldn't be determined or
@@ -184,7 +188,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (!UserUtil::isLoggedIn()) {
-            throw new AccessDeniedHttpException(($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
+            throw new AccessDeniedHttpException($this->__('Error! Editing mode for user-owned categories is only available to users who have logged-in.'));
         }
 
         $allowUserEdit = $this->getVar('allowusercatedit', 0);

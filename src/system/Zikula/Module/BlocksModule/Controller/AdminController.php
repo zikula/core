@@ -60,7 +60,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
      */
     public function viewAction()
     {
@@ -203,8 +203,8 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the block
-     * @throws NotFoundHttpException     Thrown if the requested block doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the block
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested block doesn't exist
      */
     public function modifyAction()
     {
@@ -335,9 +335,9 @@ class AdminController extends \Zikula_AbstractController
      * @param string $language    the new language of the block.
      * @param string $content     the new content of the block.
      *
-     * @throws NotFoundHttpException Thrown if the block to be updated doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the block to be updated doesn't exist
      *
-     * @return bool true if succesful, false otherwise
+     * @return void
      */
     public function updateAction()
     {
@@ -434,8 +434,8 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Throw if the user doesn't have permission to add a block
-     * @throws RuntimeException          Throw if the list of blocks cannot be loaded
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Throw if the user doesn't have permission to add a block
+     * @throws \RuntimeException          Throw if the list of blocks cannot be loaded
      */
     public function newblockAction()
     {
@@ -494,9 +494,9 @@ class AdminController extends \Zikula_AbstractController
      * @param string $language    the language to assign to the block.
      * @param string $position    the position of the block.
      *
-     * @return bool true if successful, false otherwise.
+     * @return void
      *
-     * @throws InvalidArgumentException Thrown if no block id is supplied
+     * @throws \InvalidArgumentException Thrown if no block id is supplied
      */
     public function createAction()
     {
@@ -543,8 +543,8 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the block
-     * @throws NotFoundHttpException     Thrown the requested block doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have delete permissions over the block
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown the requested block doesn't exist
      */
     public function deleteAction()
     {
@@ -599,7 +599,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function newpositionAction()
     {
@@ -620,8 +620,8 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
-     * @throws InvalidArgumentException  Thrown if the position name is empty or not valid or
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \InvalidArgumentException Thrown if the position name is empty or not valid or
      *                                          if the position description is empty
      */
     public function createpositionAction()
@@ -657,7 +657,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifypositionAction()
     {
@@ -716,7 +716,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws InvalidArgumentException Thrown if the position id, name or description is not supplied
+     * @throws \InvalidArgumentException Thrown if the position id, name or description is not supplied
      */
     public function updatepositionAction()
     {
@@ -745,14 +745,16 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Delete a block position.
      *
-     * @param int  $args['pid']          the id of the position to be deleted.
-     * @param int  $args['objectid']     generic object id maps to pid if present.
-     * @param bool $args['confirmation'] confirmation that this item can be deleted.
+     * @param mixed[] $args {<ul>
+     *      <li>@type int  $pid          the id of the position to be deleted</li>
+     *      <li>@type int  $objectid     generic object id maps to pid if present</li>
+     *      <li>@type bool $confirmation confirmation that this item can be deleted</li>
+     *                       </ul>}
      *
-     * @return mixed HTML string if confirmation is null, true if delete successful, false otherwise.
+     * @return Symfony\Component\HttpFoundation\Response|bool symfony response if confirmation is null, true if delete successful, false otherwise.
      *
-     * @throws NotFoundHttpException     Thrown if the position doesn't exist
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the position
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the position doesn't exist
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete the position
      */
     public function deletepositionAction($args)
     {
@@ -796,7 +798,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
@@ -815,9 +817,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Set config variable(s).
      *
-     * @return string bool true if successful, false otherwise.
+     * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updateconfigAction()
     {

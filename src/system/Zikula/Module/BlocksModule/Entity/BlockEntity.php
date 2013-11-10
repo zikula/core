@@ -30,6 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
 class BlockEntity extends EntityAccess
 {
     /**
+     * The block id
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,66 +39,94 @@ class BlockEntity extends EntityAccess
     private $bid;
 
     /**
+     * The block key
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $bkey;
 
     /**
+     * The block title
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * The block description
+     *
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     * The block content 
+     *
+     * A seralized array of block content variables
+     *
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * The block url
+     *
      * @ORM\Column(type="text")
      */
     private $url;
 
     /**
+     * The id of the module owning the block
+     *
      * @ORM\Column(type="integer")
      */
     private $mid;
 
     /**
+     * The display filter to apply to the block
+     *     
      * @ORM\Column(type="array")
      */
     private $filter;
 
     /**
+     * The active status of the block
+     *
      * @ORM\Column(type="integer")
      */
     private $active;
 
     /**
+     * Is the block collapseable
+     *
      * @ORM\Column(type="integer")
      */
     private $collapsable;
 
     /**
+     * The default display state of the block (collapsed, uncollapsed)
+     *
      * @ORM\Column(type="integer")
      */
     private $defaultstate;
 
     /**
+     * The refresh time for the block content
+     *
      * @ORM\Column(type="integer")
      */
     private $refresh;
 
     /**
+     * The last updated timestamp of the block
+     *
      * @ORM\Column(type="datetime")
      */
     private $last_update;
 
     /**
+     * The language of the block
+     *
      * @ORM\Column(type="string", length=30)
      */
     private $language;
