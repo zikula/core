@@ -19,16 +19,18 @@ namespace Zikula\Module\AdminModule\Api;
 use ModUtil;
 use SecurityUtil;
 
+/**
+ * Account profile additions from the admin module
+ *
+ */
 class AccountApi extends \Zikula_AbstractApi
 {
     /**
      * Return an array of items to show in the your account panel.
      *
-     * @param array $array The arguments to pass to the function.
-     *
      * @return array indexed array of items.
      */
-    public function getall($args)
+    public function getall()
     {
         $items = array();
 

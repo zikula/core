@@ -30,6 +30,8 @@ use Zikula\Core\Doctrine\EntityAccess;
 class AdminCategoryEntity extends EntityAccess
 {
     /**
+     * The category id
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,16 +39,22 @@ class AdminCategoryEntity extends EntityAccess
     private $cid;
 
     /**
+     * The category name
+     *
      * @ORM\Column(type="string", length=32)
      */
     private $name;
 
     /**
+     * The category description
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $description;
 
     /**
+     * The sort order of the category
+     *
      * @ORM\Column(type="integer")
      */
     private $sortorder;

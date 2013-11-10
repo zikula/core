@@ -22,6 +22,10 @@ use BlockUtil;
 use ModUtil;
 use DataUtil;
 
+/**
+ * Administrative navigation block
+ *
+ */
 class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -64,6 +68,12 @@ class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * display block
+     *
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return string html of the rendered blcok
      */
