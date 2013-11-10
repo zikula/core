@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-info"></span>
+    <span class="fa fa-info"></span>
     {gt text="Help"}
 </h3>
 

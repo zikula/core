@@ -67,7 +67,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon icon-pencil"></span>
+    <span class="fa fa-pencil"></span>
     {$templatetitle}
 </h3>
 
@@ -284,7 +284,7 @@
 </form>
 
 <h3>
-    <span class="icon icon-cog"></span>
+    <span class="fa fa-cog"></span>
     {gt text='Other actions for %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}
 </h3>
 

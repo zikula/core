@@ -43,11 +43,11 @@ $(document).on('click', '.admintabs-add a', function (e) {
     $('#admintabs-add-name').focus();
 });
 
-$(document).on('click', '.admintabs-add .icon-remove', function (e) {
+$(document).on('click', '.admintabs-add .fa-times', function (e) {
     $('.admintabs-add a').popover('hide');
 });
 
-$(document).on('click', '.admintabs-add .icon-ok', function (e) {
+$(document).on('click', '.admintabs-add .fa-check', function (e) {
     $('.admintabs-add a').popover('hide')
     var name = $('#admintabs-add-name').val();
     if (name === '') {
@@ -62,9 +62,9 @@ $(document).on('click', '.admintabs-add .icon-ok', function (e) {
             var newtab = '<li class="dropdown droppable nowrap" data-catid='+response.data.id+'>'+
                          '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
                          '">'+
-                         '<span class="icon icon-move admintabs-unlock"></span> '+
+                         '<span class="fa fa-arrows admintabs-unlock"></span> '+
                          response.data.name+
-                         ' <span class="icon icon-caret-down"></span>'+
+                         ' <span class="fa fa-caret-down"></span>'+
                          '</a>'+
                          '<ul class="admintabs-new dropdown-menu"></ul>'+
                          '</li>';
@@ -173,7 +173,7 @@ $('.dropdown-toggle').click( function() {
  * Click and mouse over dropdown hack
 *******************************************************************************/
 
-/*$('#admintabs .icon-caret-down').click(
+/*$('#admintabs .fa-caret-down').click(
     function(e) {
         e.preventDefault();
         var li =  $(this).parent().parent()
@@ -201,17 +201,17 @@ $('#admintabs-locker a').click(
         e.preventDefault();
         var s = $(this).find('span');
         
-        if (s.hasClass('icon-lock')) {
+        if (s.hasClass('fa-lock')) {
             $('#admintabs').sortable('enable');
             $('#modulelist').sortable('enable');
             $('.admintabs-lock').addClass('admintabs-unlock').removeClass('admintabs-lock');
-            s.removeClass('icon-lock').addClass('icon-unlock');
+            s.removeClass('fa-lock').addClass('fa-unlock');
             
         } else {
             $('#admintabs').sortable('disable');
             $('#modulelist').sortable('disable');
             $('.admintabs-unlock').addClass('admintabs-lock').removeClass('admintabs-unlock');
-            s.removeClass('icon-unlock').addClass('icon-lock');
+            s.removeClass('fa-unlock').addClass('fa-lock');
         }        
     }
 );    

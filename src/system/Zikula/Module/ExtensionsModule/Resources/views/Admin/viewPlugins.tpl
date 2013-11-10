@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-table"></span>
+    <span class="fa fa-table"></span>
     {if $systemplugins}
     {gt text="System plugins"}
     {else}

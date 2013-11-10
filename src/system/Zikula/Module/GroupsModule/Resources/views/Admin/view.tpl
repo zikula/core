@@ -2,14 +2,14 @@
 {adminheader}
 
 <h3>
-    <span class="icon icon-list"></span>
+    <span class="fa fa-list"></span>
     {gt text="Groups list"}
 </h3>
 
     
 {checkpermissionblock component='ZikulaGroupsModule::' instance='::' level=ACCESS_ADD}
 <br />
-<a id="appendajax" {*onclick="groupappend();"*} title="{gt text="Create new group"}" href="{modurl modname='ZikulaGroupsModule' type='admin' func='newgroup'}"><span class="icon icon-plus-sign"></span> {gt text="Create new group"}</a>
+<a id="appendajax" {*onclick="groupappend();"*} title="{gt text="Create new group"}" href="{modurl modname='ZikulaGroupsModule' type='admin' func='newgroup'}"><span class="fa fa-plus-circle"></span> {gt text="Create new group"}</a>
 <br /><br />
 {/checkpermissionblock}
 
@@ -70,12 +70,12 @@
             {gt text='Delete: %s' tag1=$group.name assign=strDeleteGroup}
             {gt text='Cancel: %s' tag1=$group.name assign=strCancelGroup}
             <td id="groupaction_{$group.gid}" class="actions">
-                <a id="modify_{$group.gid}" class="tooltips icon icon-pencil" href="{$group.editurl|safetext}" title="{$strEditGroup}"></a>
-                <a href="{$group.membersurl|safetext}" class="icon icon-group tooltips" title="{gt text="Group membership"}"></a>
+                <a id="modify_{$group.gid}" class="tooltips fa fa-pencil" href="{$group.editurl|safetext}" title="{$strEditGroup}"></a>
+                <a href="{$group.membersurl|safetext}" class="fa fa-users tooltips" title="{gt text="Group membership"}"></a>
                 {if $group.gid neq $defaultgroup && $group.gid neq $primaryadmingroup}
-                <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='delete' gid=$group.gid}" class="icon icon-trash con-fixed-width tooltips" data-gid="{$group.gid}" title="{$strDeleteGroup}" data-confirm="{gt text="Do you really want to delete this group?"}"></a>
+                <a href="{modurl modname='ZikulaGroupsModule' type='admin' func='delete' gid=$group.gid}" class="fa fa-trash-o con-fixed-width tooltips" data-gid="{$group.gid}" title="{$strDeleteGroup}" data-confirm="{gt text="Do you really want to delete this group?"}"></a>
                 {else}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             </td>
         </tr>

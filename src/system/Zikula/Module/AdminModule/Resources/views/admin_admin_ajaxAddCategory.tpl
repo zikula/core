@@ -2,8 +2,8 @@
     <form id="ajaxNewCatForm" class="clearfix" action="#">
         <div>
             <input type="text" class="ajaxNewCat" name="name" id="ajaxNewCat" />&nbsp;
-            <a href="#" class="ajaxCatImage save"><span class="icon icon-ok icon-green"></span></a>
-            <a href="#" class="ajaxCatImage cancel"><span class="icon icon-remove icon-red"></span></a>
+            <a href="#" class="ajaxCatImage save"><span class="fa fa-check fa-green"></span></a>
+            <a href="#" class="ajaxCatImage cancel"><span class="fa fa-times fa-red"></span></a>
         </div>
     </form>
 </div>

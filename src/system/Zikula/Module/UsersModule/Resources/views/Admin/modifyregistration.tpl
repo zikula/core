@@ -30,7 +30,7 @@
 
 {adminheader}
 <h3>
-    <span class="icon icon-plus"></span>
+    <span class="fa fa-plus"></span>
     {gt text='Edit registration of %s' tag1=$user_attributes.realname|default:$formData->getFieldData('uname')}
 </h3>
 

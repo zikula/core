@@ -33,9 +33,9 @@ class AdminApi extends \Zikula_AbstractApi
         $links = array();
 
         if (SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Main settings'), 'icon' => 'icon icon-wrench');
+            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'modifyconfig'), 'text' => $this->__('Main settings'), 'icon' => 'fa fa-wrench');
             $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'multilingual'), 'text' => $this->__('Localisation settings'), 'icon' => 'globe');
-            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'phpinfo'), 'text' => $this->__('PHP configuration'), 'icon' => 'info-sign');
+            $links[] = array('url' => ModUtil::url('ZikulaSettingsModule', 'admin', 'phpinfo'), 'text' => $this->__('PHP configuration'), 'icon' => 'info-circle');
         }
 
         return $links;

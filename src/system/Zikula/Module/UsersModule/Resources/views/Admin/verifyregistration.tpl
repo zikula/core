@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-user"></span>
+    <span class="fa fa-user"></span>
     {gt text='Confirm verification code is to be sent to \'%1$s\'' tag1=$reginfo.uname}
 </h3>
 

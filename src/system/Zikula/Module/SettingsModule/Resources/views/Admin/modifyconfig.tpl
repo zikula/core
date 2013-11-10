@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-wrench"></span>
+    <span class="fa fa-wrench"></span>
     {gt text="Main settings"}
 </h3>
 

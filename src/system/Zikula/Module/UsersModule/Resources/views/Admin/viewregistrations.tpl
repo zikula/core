@@ -1,6 +1,6 @@
 {adminheader}
 <h3>
-    <span class="icon icon-user"></span>
+    <span class="fa fa-user"></span>
     {gt text="Registration applications list"}
 </h3>
 
@@ -28,23 +28,23 @@
             <td>{if !empty($reginfo.email)}<a href="mailto:{$reginfo.email|urlencode}">{$reginfo.email|safetext}</a>{else}---{/if}</td>
             <td class="text-center">
                 {if $reginfo.isapproved}
-                <span class="icon icon-ok icon-green tooltips" title="{gt text='Approved'}"></span>
+                <span class="fa fa-check fa-green tooltips" title="{gt text='Approved'}"></span>
                 {else}
-                <span class="icon icon-remove icon-red tooltips" title="{gt text='Pending approval'}"></span>
+                <span class="fa fa-times fa-red tooltips" title="{gt text='Pending approval'}"></span>
                 {/if}
             </td>
             <td class="text-center">
                 {if $reginfo.isverified}
-                <span class="icon icon-ok icon-green tooltips" title="{gt text='Verified'}"></span>
+                <span class="fa fa-check fa-green tooltips" title="{gt text='Verified'}"></span>
                 {elseif !$reginfo.verificationsent}
 
                 {if ($modvars.ZikulaUsersModule.moderation_order != 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const) || (($modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const) && ($reginfo.isapproved))}
-                <span class="icon icon-warning-sign icon-red tooltips" title="{gt text='E-mail verification not sent; must be resent'}"></span>
+                <span class="fa fa-exclamation-triangle fa-red tooltips" title="{gt text='E-mail verification not sent; must be resent'}"></span>
                 {else}
-                <span class="icon icon-remove icon-red tooltips" title="{gt text='E-mail verification not sent'}"></span>
+                <span class="fa fa-times fa-red tooltips" title="{gt text='E-mail verification not sent'}"></span>
                 {/if}
                 {else}
-                <span class="icon icon-time icon-red tooltips"  title="{gt text='Pending verification of e-mail address'}"></span>
+                <span class="fa fa-clock-o fa-red tooltips"  title="{gt text='Pending verification of e-mail address'}"></span>
                 {/if}
             </td>
             {assign var="regactions" value=$actions.list[$reginfo.uid]}
@@ -54,37 +54,37 @@
             <td class="actions">
             {if isset($regactions.display)}
                 {if $regactions.display}
-                <a class="icon icon-info-sign icon-fixed-width tooltips" href="{$regactions.display|safetext}" title="{gt text='Display registration details'}"></a>
+                <a class="fa fa-info-circle fa-fw tooltips" href="{$regactions.display|safetext}" title="{gt text='Display registration details'}"></a>
                 {else}
                 {* For each option, invisible image to take up as much space as a normal image to maintain alignment. Must be visibility: hidden, not display: none. *}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.modify)}
                 {if $regactions.modify}
-                <a class="icon icon-edit icon-fixed-width tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
+                <a class="fa fa-pencil-square-o fa-fw tooltips" href="{$regactions.modify|safetext}" title="{gt text='Modify registration details'}"></a>
                 {else}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>fa fa-
                 {/if}
             {/if}
             {if isset($regactions.approve)}
                 {if $regactions.approve && !$reginfo.isverified}
                 {if isset($modvars.ZikulaUsersModule.moderation_order) && ($modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_AFTER'|const)}
-                <a class="icon icon-check icon-fixed-width tooltips" href="{$regactions.approve|safetext}" text="{gt text='Pre-approve (verification still required)'}"></a>
+                <a class="fa fa-check-square-o fa-fw tooltips" href="{$regactions.approve|safetext}" text="{gt text='Pre-approve (verification still required)'}"></a>
                 {else}
-                <a class="icon icon-check icon-fixed-width tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve'}"></a>
+                <a class="fa fa-check-square-o fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve'}"></a>
                 {/if}
                 {elseif $regactions.approve && $reginfo.isverified}
-                <a class="icon icon-check icon-fixed-width tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve (creates a new user account)'}"></a>
+                <a class="fa fa-check-square-o fa-fw tooltips" href="{$regactions.approve|safetext}" title="{gt text='Approve (creates a new user account)'}"></a>
                 {else}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.deny)}
                 {if $regactions.deny}
-                <a class="icon icon-trash icon-fixed-width tooltips" href="{$regactions.deny|safetext}" title="{gt text='Deny (deletes registration)'}"></a>
+                <a class="fa fa-trash-o fa-fw tooltips" href="{$regactions.deny|safetext}" title="{gt text='Deny (deletes registration)'}"></a>
                 {else}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.verify)}
@@ -94,16 +94,16 @@
                 {else}
                 {assign var='optionTitle' value=$titleIfNotSent}
                 {/if}
-                <a class="icon icon-envelope icon-fixed-width tooltips" href="{$regactions.verify|safetext}" title={$optionTitle}></a>
+                <a class="fa fa-envelope fa-fw tooltips" href="{$regactions.verify|safetext}" title={$optionTitle}></a>
                 {else}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             {if isset($regactions.approveForce)}
                 {if $regactions.approveForce && !$reginfo.isverified}
-                <a class="icon icon-share icon-fixed-width tooltips" href="{$regactions.approveForce|safetext}" title="{gt text='Skip verification (approves, and creates a new user account)'}"></a>
+                <a class="fa fa-share-square-o fa-fw tooltips" href="{$regactions.approveForce|safetext}" title="{gt text='Skip verification (approves, and creates a new user account)'}"></a>
                 {else}
-                <span class="icon icon-fixed-width"></span>
+                <span class="fa-fw"></span>
                 {/if}
             {/if}
             </td>
@@ -125,11 +125,11 @@
     <tbody>
         <tr>
             <td class="col-md-6">
-                <span title="{gt text='Approved'}" class="icon icon-ok icon-green"></span>
+                <span title="{gt text='Approved'}" class="fa fa-check fa-green"></span>
                 {gt text='An administrator has approved the registration, or approval was not required when the registration was completed.'}
             </td>
             <td class="col-md-6">
-                <span title="{gt text='Pending approval'}" class="icon icon-remove icon-red"></span>
+                <span title="{gt text='Pending approval'}" class="fa fa-times fa-red"></span>
                 {gt text='Waiting for an administrator to approve the registration.'}
             </td>
         </tr>
@@ -144,21 +144,21 @@
     <tbody>
         <tr>
             <td class="col-md-6">
-                <span title="{gt text='Verified'}" class="icon icon-ok icon-green"></span>
+                <span title="{gt text='Verified'}" class="fa fa-check fa-green"></span>
                 {gt text='The user has completed the e-mail verification process, or e-mail verification was not required when the registration was completed.'}
             </td>
             <td class="col-md-6">
-                <span title="{gt text='Pending verification of e-mail address'}" class="icon icon-time icon-orange"></span>
+                <span title="{gt text='Pending verification of e-mail address'}" class="fa fa-clock-o fa-orange"></span>
                 {gt text='An e-mail has been sent to the registered e-mail address, but the user has not yet responded.'}
             </td>
         </tr>
         <tr>
             <td>
-                <span title="{gt text='Verification e-mail message not yet sent'}" class="icon icon-remove icon-red"></span>
+                <span title="{gt text='Verification e-mail message not yet sent'}" class="fa fa-times fa-red"></span>
             {gt text='A verification e-mail has not been sent to the registered e-mail address.'}{if $modvars.ZikulaUsersModule.moderation_order == 'Zikula\Module\UsersModule\Constant::APPROVAL_BEFORE'|const} {gt text='If it is not yet approved, then it will be sent on approval.'}{/if}
             </td>
             <td>
-                <span title="{gt text='E-mail verification not sent; must be resent'}" class="icon icon-warning-sign icon-red"></span>
+                <span title="{gt text='E-mail verification not sent; must be resent'}" class="fa fa-exclamation-triangle fa-red"></span>
                 {gt text='A verification e-mail has not been sent to the registered e-mail address, but the registration is in a state where one should already have been sent.'}
             </td>
         </tr>

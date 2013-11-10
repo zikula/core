@@ -2,7 +2,7 @@
 {ajaxheader modname=Groups filename=groups.js ui=true}
 
 <h3>
-    <span class="icon icon-group"></span>
+    <span class="fa fa-users"></span>
     {gt text="Group membership"} ({$group.name|safetext})
 </h3>
 
