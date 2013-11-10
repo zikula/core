@@ -18,7 +18,7 @@
  * @package Zikula_System_Modules
  * @subpackage SecurityCenter
  */
-class SecurityCenterSecurityCenterTheme_DBObject_Intrusion extends DBObject
+class SecurityCenter_DBObject_Intrusion extends DBObject
 {
     public function __construct($init = null, $key = 0, $field = null)
     {
