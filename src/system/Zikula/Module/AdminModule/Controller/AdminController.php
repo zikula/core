@@ -467,7 +467,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
-     * @throws \InvalidArgumentsException Thrown if the modulesperrow or itemsperpage parameters are not numeric
+     * @throws \InvalidArgumentException Thrown if the modulesperrow or itemsperpage parameters are not numeric
      * @throws \RuntimeException Thrown if a module couldn't be added to the requested category
      */
     public function updateconfigAction()
