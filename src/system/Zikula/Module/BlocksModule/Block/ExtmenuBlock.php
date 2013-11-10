@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -31,6 +33,8 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -58,7 +62,8 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
      * display block
      *
      * @param  array  $blockinfo a blockinfo structure
-     * @return output the rendered bock
+     *
+     * @return string the rendered bock
      */
     public function display($blockinfo)
     {
@@ -210,9 +215,10 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
     }
 
     /**
-     * do a simple check .. to see if the current URL is the menu item
+     * Check to see if the current URL is the menu item
      *
-     * @param none
+     * @param strung $url The url to check
+     *
      * @return boolean
      */
     public function is_recent_page($url)
@@ -231,7 +237,8 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
      * modify block settings
      *
      * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -359,7 +366,8 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
      * update block settings
      *
      * @param  array $blockinfo a blockinfo structure
-     * @return       $blockinfo  the modified blockinfo structure
+     *
+     * @return array $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
     {
@@ -417,6 +425,13 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         return $blockinfo;
     }
 
+    /**
+     * helper function validate an image link
+     *
+     * @param string $link path to image
+     *
+     * @return void
+     */
     protected function checkImage(&$link)
     {
         if (!empty($link['image'])) {

@@ -6,15 +6,16 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaCategoriesModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
-
 /**
- * Populate pntables array for Categories module.
+ * Populate tables array for Categories module.
  *
  * @return array Array of informations related to the Categories module tables.
  */

@@ -1,4 +1,18 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
+ * @package Zikula
+ * @subpackage ZikulaAdminModule
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Module\AdminModule\Entity;
 
@@ -16,6 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
 class AdminModuleEntity extends EntityAccess
 {
    /**
+     * The id key field
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -23,16 +39,22 @@ class AdminModuleEntity extends EntityAccess
     private $amid;
 
     /**
+     * The module id
+     *
      * @ORM\Column(type="integer")
      */
     private $mid;
 
     /**
+     * The category id
+     *
      * @ORM\Column(type="integer")
      */
     private $cid;
 
     /**
+     * The sort order for this module
+     *
      * @ORM\Column(type="integer")
      */
     private $sortorder;

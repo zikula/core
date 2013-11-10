@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -27,6 +29,8 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -62,7 +66,9 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display the block
      *
-     * @param        row           blockinfo array
+     * @param array $blockinfo blockinfo array
+     *
+     * @return string the rendered block
      */
     public function display($blockinfo)
     {
@@ -200,7 +206,8 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
      * modify block settings
      *
      * @param  array  $blockinfo a blockinfo structure
-     * @return output the bock form
+     *
+     * @return string the bock form
      */
     public function modify($blockinfo)
     {
@@ -232,7 +239,8 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
      * update block settings
      *
      * @param  array $blockinfo a blockinfo structure
-     * @return       $blockinfo  the modified blockinfo structure
+     *
+     * @return array $blockinfo  the modified blockinfo structure
      */
     public function update($blockinfo)
     {
@@ -260,6 +268,13 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
         return $blockinfo;
     }
 
+    /**
+     * Get a list of available languages
+     *
+     * @param int translate flag to localise the language name
+     *
+     * @return array list of languages
+     */
     public function getAvailableLanguages($translate)
     {
         $savedLanguage = ZLanguage::getLanguageCode();
@@ -288,6 +303,16 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     }
 }
 
+/**
+ * Callback function to assist in sorting languages
+ *
+ * @param string $a the first language
+ * @param string $b the second language
+ *
+ * @see LangBlock::getAvailableLanguages
+ *
+ * @return int <0 if $a < $b, >0 otherwise
+ */
 function _blocks_thelangblock_sort($a, $b)
 {
     return strcmp($a['name'], $b['name']);

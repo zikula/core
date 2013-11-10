@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -25,13 +27,14 @@ use FormUtil;
 use System;
 use Zikula_View;
 use DataUtil;
-use LogUtil;
 use Zikula_View_Theme;
 
 class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
      * initialise block
+     *
+     * @return void
      */
     public function init()
     {
@@ -40,6 +43,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * get information on block
+     *
+     * @return array block information array
      */
     public function info()
     {
@@ -55,6 +60,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * display block
+     *
+     * @param array block information array
+     *
+     * @return string html of rendered block
      */
     public function display($blockinfo)
     {
@@ -172,6 +181,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * block configuration
+     *
+     * @param array block information array
+     *
+     * @return string html of block modification form
      */
     public function modify($blockinfo)
     {
@@ -315,6 +328,12 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * update block configuration
+     *
+     * @param array block information array
+     *
+     * @return array updated block information array
+     *
+     * @throws RuntimeException Thrown if the changes couldn't be saved
      */
     public function update($blockinfo)
     {
@@ -332,7 +351,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         if (!$this->validate_menu($vars['menutree_content'])) {
-            return LogUtil::registerError($this->__('Error! Could not save your changes.'));
+            throw new \RuntimeException($this->__('Error! Could not save your changes.'));
         }
 
         // sort tree array according to lineno key
@@ -411,6 +430,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         return $blockinfo;
     }
 
+    /**
+     * Return an array of localised permissions levels strings
+     *
+     * @return array list if permisisons level strings
+     */
     private function _permlevels()
     {
         return array('ACCESS_EDIT'   => $this->__('Edit access'),
@@ -421,6 +445,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * Get list of menus with type supported to import
+     *
+     * @return array list of menu types
      */
     private function _get_current_menus($bid)
     {
@@ -441,6 +467,10 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Convert data of selected menu to menutree style
      * Used to import menus
+     *
+     * @param int $bid block id
+     *
+     * @return array converted block data
      */
     private function _import_menu($bid)
     {
@@ -537,17 +567,23 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         return $data;
     }
 
+    /**
+     * Validate an array as a valid menutree data array
+     *
+     * Menu should be an array of arrays:
+     * [id] = array(
+     *     [lang] = array (
+     *         [data][lang] = [lang]
+     *         [data][parent] = exist
+     *     )
+     * )
+     *
+     * @param array $array the array to validate
+     *
+     * @return bool true if the array validates, false otherwise
+     */
     private function validate_menu($array)
     {
-        /*
-         * Menu should be an array of arrays:
-         * [id] = array(
-         *     [lang] = array (
-         *         [data][lang] = [lang]
-         *         [data][parent] = exist
-         *     )
-         * )
-         */
         if (!is_array($array)) {
             return false;
         }

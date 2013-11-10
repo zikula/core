@@ -6,7 +6,9 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
+ * @copyright Zikula Foundation
  * @package Zikula
+ * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -40,6 +42,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * @param  array  $args['item']      menu node to be replaced
      * @param  string $args['lang']      current menu language
      * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped. if 'category' module links grouped by category
+     *
      * @return mixed  array of links if successful, false otherwise
      */
     public function adminlinks($args)
@@ -173,42 +176,39 @@ class MenutreeApi extends \Zikula_AbstractApi
         $links = array_merge($links, $catlinks, $adminlinks);
 
         return $links;
-
     }
 
     /**
      * "Blank", sample plugin
      *
+     * args may look like this:
+     * Array
+     * (
+     *     [item] => Array
+     *         (
+     *             [id] => 999
+     *             [name] => Name given in menutree form
+     *             [href] => {ext:blank:foo=1&bar=2}
+     *             [title] => Some title
+     *             [className] => important
+     *             [state] => 1
+     *             [lang] => eng
+     *             [lineno] => 99
+     *             [parent] => 0
+     *         )
+     *     [lang] => pol
+     *     [bid] => 999
+     *     [extrainfo] => foo=1&bar=2
+     * )
+     *
      * @param  array  $args['item']      menu node to be replaced
      * @param  string $args['lang']      current menu language
      * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     *
      * @return mixed  array of links if successful, false otherwise
      */
     public function blank($args)
     {
-        /**
-         * args may look like this:
-         * Array
-         * (
-         *     [item] => Array
-         *         (
-         *             [id] => 999
-         *             [name] => Name given in menutree form
-         *             [href] => {ext:blank:foo=1&bar=2}
-         *             [title] => Some title
-         *             [className] => important
-         *             [state] => 1
-         *             [lang] => eng
-         *             [lineno] => 99
-         *             [parent] => 0
-         *         )
-
-         *     [lang] => pol
-         *     [bid] => 999
-         *     [extrainfo] => foo=1&bar=2
-         * )
-         *
-         */
         $dom = ZLanguage::getModuleDomain('menutree');
         $item       = isset($args['item']) && !empty($args['item']) ? $args['item'] : null;
         $lang       = isset($args['lang']) && !empty($args['lang']) ? $args['lang'] : null;
@@ -292,6 +292,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * @param  array  $args['item']      menu node to be replaced
      * @param  string $args['lang']      current menu language
      * @param  string $args['extrainfo'] additional params
+     *
      * @return mixed  array of links if successful, false otherwise
      */
     public function Content($args)
@@ -377,7 +378,6 @@ class MenutreeApi extends \Zikula_AbstractApi
         return $links;
     }
 
-
     /**
      * Return list of user modules
      *
@@ -388,6 +388,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * @param  array  $args['item']      menu node to be replaced
      * @param  string $args['lang']      current menu language
      * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     *
      * @return mixed  array of links if successful, false otherwise
      */
     public function modules($args)
@@ -465,6 +466,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * @param  array  $args['item']      menu node to be replaced
      * @param  string $args['lang']      current menu language
      * @param  string $args['extrainfo'] additional params
+     *
      * @return mixed  array of links if successful, false otherwise
      */
     public function news($args)
@@ -639,7 +641,6 @@ class MenutreeApi extends \Zikula_AbstractApi
         return $links;
     }
 
-
     /**
      * Return some common user links
      *
@@ -665,6 +666,7 @@ class MenutreeApi extends \Zikula_AbstractApi
      * @param  array  $args['item']      menu node to be replaced
      * @param  string $args['lang']      current menu language
      * @param  string $args['extrainfo'] additional params - if 'flat' then return links ungrouped
+     *
      * @return mixed  array of links if successful, false otherwise
      */
     public function userlinks($args)
