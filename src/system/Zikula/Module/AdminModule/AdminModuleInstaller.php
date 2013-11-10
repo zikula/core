@@ -6,9 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @copyright Zikula Foundation
- * @package Zikula
- * @subpackage ZikulaAdminModule
+
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -27,10 +25,11 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the Admin module.
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
      *
-     * @return boolean True if initialisation succcesful, false otherwise.
+     * @return boolean True if initialisation successful, false otherwise.
      */
     public function install()
     {
@@ -85,9 +84,11 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete the Admin module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
-     * @return bool true if deletetion succcesful, false otherwise
+     *
+     * @return bool true if deletion successful, false otherwise
      */
     public function uninstall()
     {

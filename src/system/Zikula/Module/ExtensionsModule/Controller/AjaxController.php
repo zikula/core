@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @Copyright Zikula Foundation
+
  * @package Zikula
  * @subpackage ZikulaExtensionsModule
  *
@@ -35,7 +35,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param subscriberarea string area to be attached/detached
      * @param providerarea   string area to attach/detach
      *
-     * @return Zikula\Core\Response\Ajax\AjaxResponse response
+     * @return AjaxResponse
      *
      * @throws \InvalidArgumentException Thrown if either the subsriber, provider or subsriberArea parameters are empty
      * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
@@ -114,7 +114,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param subscriber    string     name of the subscriber
      * @param providerorder array      array of sorted provider ids
      *
-     * @return Zikula\Core\Response\Ajax\AjaxResponse response
+     * @return AjaxResponse
      *
      * @throws \InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
      * @throws \RuntimeException Thrown if the subscriber module isn't available

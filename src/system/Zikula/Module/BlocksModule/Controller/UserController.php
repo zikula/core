@@ -6,9 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @copyright Zikula Foundation
- * @package Zikula
- * @subpackage ZikulaBlocksModule
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -33,7 +30,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * The main blocks user function.
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown when accessed to indicate this function isn't valid
+     * @throws NotFoundHttpException Thrown when accessed to indicate this function isn't valid
      * @return void
      */
     public function mainAction()
@@ -51,7 +48,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
      */
     public function displayAction($args)
     {
