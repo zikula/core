@@ -147,35 +147,35 @@ td.actions a:hover {
 * Icon colors
 ******************************************************************************/
 
-.fa fa-green {
+.fa-green {
     color: #61B329;
 }
 
-.fa fa-red {
+.fa-red {
     color: #C30;
 }
 
-.fa fa-orange {
+.fa-orange {
     color: darkorange;
 }
 
-.fa fa-yellow {
+.fa-yellow {
     color: yellow;
 }
 
-.fa fa-blue {
+.fa-blue {
     color: #0000ff;
 }
 
-.fa fa-bluelight {
+.fa-bluelight {
     color: #50A6C2;
 }
 
-.fa fa-black {
+.fa-black {
     color: #000;
 }
 
-.fa fa-bluedark a {
+.fa-bluedark a {
     color: #003366;
 }
 
