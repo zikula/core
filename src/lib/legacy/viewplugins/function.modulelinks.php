@@ -101,34 +101,34 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'arrow-left';
                 } elseif ($menuitem['class'] == 'z-icon-es-cancel') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'remove';
+                    $menuitem['icon'] = 'times';
                 } elseif ($menuitem['class'] == 'z-icon-es-config') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'wrench';
                 } elseif ($menuitem['class'] == 'z-icon-es-copy') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'copy';
+                    $menuitem['icon'] = 'files-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-cubes') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'th';
                 } elseif ($menuitem['class'] == 'z-icon-es-cut') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'cut';
+                    $menuitem['icon'] = 'scissors';
                 } elseif ($menuitem['class'] == 'z-icon-es-delete') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'trash';
+                    $menuitem['icon'] = 'trash-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-display') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'eye-on';
                 } elseif ($menuitem['class'] == 'z-icon-es-edit') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'edit';
+                    $menuitem['icon'] = 'pencil-square-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-error') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'warning-sign';
+                    $menuitem['icon'] = 'exclamation-triangle';
                 } elseif ($menuitem['class'] == 'z-icon-es-export') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'upload-alt';
+                    $menuitem['icon'] = 'upload';
                 } elseif ($menuitem['class'] == 'z-icon-es-gears') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'gears';
@@ -137,7 +137,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'filter';
                 } elseif ($menuitem['class'] == 'z-icon-es-group') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'group';
+                    $menuitem['icon'] = 'users';
                 } elseif ($menuitem['class'] == 'z-icon-es-help') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'info';
@@ -146,10 +146,10 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'home';
                 } elseif ($menuitem['class'] == 'z-icon-es-hook') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'paper-clip';
+                    $menuitem['icon'] = 'paperclip';
                 } elseif ($menuitem['class'] == 'z-icon-es-import') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'download-alt';
+                    $menuitem['icon'] = 'download';
                 } elseif ($menuitem['class'] == 'z-icon-es-info') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'info';
@@ -164,13 +164,13 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'archive';
                 } elseif ($menuitem['class'] == 'z-icon-es-mail') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'icon-inbox';
+                    $menuitem['icon'] = 'inbox';
                 } elseif ($menuitem['class'] == 'z-icon-es-new') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'file-alt';
+                    $menuitem['icon'] = 'file-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-ok') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'ok';
+                    $menuitem['icon'] = 'check';
                 } elseif ($menuitem['class'] == 'z-icon-es-options') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'th-list';
@@ -188,13 +188,13 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'refresh';
                 } elseif ($menuitem['class'] == 'z-icon-es-remove') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'remove';
+                    $menuitem['icon'] = 'times';
                 } elseif ($menuitem['class'] == 'z-icon-es-save') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'save';
+                    $menuitem['icon'] = 'floppy-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-saveas') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'save';
+                    $menuitem['icon'] = 'floppy-o';
                 } elseif ($menuitem['class'] == 'z-icon-es-search') {
                     $menuitem['class'] = null;
                     $menuitem['icon'] = 'search';
@@ -206,13 +206,13 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $menuitem['icon'] = 'user';
                 } elseif ($menuitem['class'] == 'z-icon-es-view') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'eye-open';
+                    $menuitem['icon'] = 'eye';
                 } elseif ($menuitem['class'] == 'z-icon-es-warning') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'warning-sign';
+                    $menuitem['icon'] = 'exclamation-triangle';
                 } elseif ($menuitem['class'] == 'z-icon-es-rss') {
                     $menuitem['class'] = null;
-                    $menuitem['icon'] = 'rss-sign';
+                    $menuitem['icon'] = 'rss-square';
                 }
             }
             
@@ -239,7 +239,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
             } elseif (!empty($menuitem['url'])) {
                 $icon = ''; 
                 if (!empty($menuitem['icon'])) {
-                    $icon = '<span class="icon-'.$menuitem['icon'].'"></span> ';
+                    $icon = '<span class="fa fa-'.$menuitem['icon'].'"></span> ';
                 }
                 $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr;
                 if (isset($menuitem['links'])) {
