@@ -29,6 +29,10 @@ use Zikula_View;
 use DataUtil;
 use Zikula_View_Theme;
 
+/**
+ * Block to display a multi-level menu
+ *
+ */
 class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -61,7 +65,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * display block
      *
-     * @param array block information array
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return string html of rendered block
      */
@@ -182,7 +190,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * block configuration
      *
-     * @param array block information array
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return string html of block modification form
      */
@@ -329,7 +341,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block configuration
      *
-     * @param array block information array
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return array updated block information array
      *
@@ -445,6 +461,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
     /**
      * Get list of menus with type supported to import
+     *
+     * @param int $bid the block id
      *
      * @return array list of menu types
      */

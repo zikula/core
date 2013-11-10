@@ -25,6 +25,7 @@ use BlockUtil;
 
 /**
  * Pending Content block
+ *
  */
 class PendingContentBlock extends \Zikula_Controller_AbstractBlock
 {
@@ -57,7 +58,11 @@ class PendingContentBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display block.
      *
-     * @param array $blockinfo Blockinfo structure.
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return string Rendered block.
      */

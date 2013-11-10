@@ -30,18 +30,24 @@ use Doctrine\ORM\Mapping as ORM;
 class BlockPlacementEntity extends EntityAccess
 {
     /**
+     * The id of the block postion
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
     private $pid;
 
     /**
+     * The id of the block
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
     private $bid;
 
     /**
+     * The sort order of the block within the position
+     *
      * @ORM\Column(type="integer")
      */
     private $sortorder;

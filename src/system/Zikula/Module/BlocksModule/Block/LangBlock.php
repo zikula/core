@@ -25,6 +25,10 @@ use FormUtil;
 use ModUtil;
 use Zikula_View_Theme;
 
+/**
+ * Block to display a language selection interface
+ *
+ */
 class LangBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -66,7 +70,11 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display the block
      *
-     * @param array $blockinfo blockinfo array
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return string the rendered block
      */
@@ -205,7 +213,11 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * modify block settings
      *
-     * @param  array  $blockinfo a blockinfo structure
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return string the bock form
      */
@@ -238,7 +250,11 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * update block settings
      *
-     * @param  array $blockinfo a blockinfo structure
+     * @param mixed[] $blockinfo {<ul>
+     *      <li>@type string $title   the title of the block</li>
+     *      <li>@type int    $bid     the id of the block</li>
+     *      <li>@type string $content the seralized block content array</li>
+     *                            </ul>}
      *
      * @return array $blockinfo  the modified blockinfo structure
      */
@@ -271,7 +287,7 @@ class LangBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Get a list of available languages
      *
-     * @param int translate flag to localise the language name
+     * @param int $translate flag to localise the language name
      *
      * @return array list of languages
      */

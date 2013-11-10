@@ -30,6 +30,8 @@ use Doctrine\ORM\Mapping as ORM;
 class BlockPositionEntity extends EntityAccess
 {
     /**
+     * The id of the block postion
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,11 +39,15 @@ class BlockPositionEntity extends EntityAccess
     private $pid;
 
     /**
+     * The name of the block position
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * The description of the block position
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $description;

@@ -19,6 +19,10 @@ namespace Zikula\Module\BlocksModule;
 use FileUtil;
 use ThemeUtil;
 
+/**
+ * Supporting functions for the menutree block
+ *
+ */
 class MenutreeUtil
 {
     /**
@@ -168,7 +172,7 @@ class MenutreeUtil
     /**
      * Helper function to standard file paths
      *
-     * @param array array of paths to normalise
+     * @param array $array of paths to normalise
      *
      * @return array the modified array
      */

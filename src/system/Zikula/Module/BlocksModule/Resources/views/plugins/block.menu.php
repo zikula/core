@@ -20,8 +20,8 @@
  *
  * @param array   $params  All attributes passed to this function from the template.
  * @param string  $content The content between the block tags.
- * @param Smarty  $smarty Reference to the {@link Zikula_View} object.
- * @param boolean &$repeat Controls block repetition. See {@link http://www.smarty.net/manual/en/plugins.block.functions.php Smarty - Block Functions}.
+ * @param Smarty  $smarty  Reference to the {@link Zikula_View} object.
+ * @param boolean $repeat  Controls block repetition. See {@link http://www.smarty.net/manual/en/plugins.block.functions.php Smarty - Block Functions}.
  *
  * @return void|string The content of the matching case.
  */
@@ -114,6 +114,11 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
     return;
 }
 
+/**
+ * Helper function to parse the menu 
+ *
+ * @param array $params the parameter array passed to the plugin
+ */
 function _smarty_block_menu_parsemenu($params)
 {
     if (isset($params['multilang'])) {
@@ -162,6 +167,14 @@ function _smarty_block_menu_parsemenu($params)
     return _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass,$listId);
 }
 
+/**
+ * Helper function to build the html of the parsed menu
+ *
+ * @param array  $tree      the menu tree
+ * @param string $listTag   the type if tag to wrap the menu
+ * @param string $listClass the css class to apply to the list
+ * @param string $listId    the css id to apply to the list
+ */
 function _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass=null,$listId=null)
 {
     $html  = '<'.$listTag;
@@ -183,6 +196,11 @@ function _smarty_block_menu_parsemenu_html($tree,$listTag,$listClass=null,$listI
     return $html;
 }
 
+/**
+ * Helper function to parse the menu header
+ *
+ * @param array $params the parameter array passed to the plugin
+ */
 function _smarty_block_menu_parseheader($params)
 {
     $listClass = isset($params['class']) ? $params['class'] : null;

@@ -30,23 +30,31 @@ use Doctrine\ORM\Mapping as ORM;
 class UserBlockEntity extends EntityAccess
 {
     /**
+     * The id of the user
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
     private $uid;
 
     /**
+     * The id of the block
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      */
     private $bid;
 
     /**
+     * The active flag for the user block
+     *
      * @ORM\Column(type="integer")
      */
     private $active;
 
     /**
+     * The timestamp of the last update
+     *
      * @ORM\Column(type="datetime")
      */
     private $last_update;

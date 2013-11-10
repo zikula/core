@@ -30,12 +30,14 @@ class UserApi extends \Zikula_AbstractApi
      *
      * This function gets all block entries from the database.
      *
-     * @param  int     blockposition_id    block position id to filter block selection for.
-     * @param  int     module_id           module id to filter block selection for.
-     * @param  string  language            language to filter block selection for.
-     * @param  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
+     * @param mixed[] $args {<ul>
+     *      <li>@type  int     blockposition_id    block position id to filter block selection for.
+     *      <li>@type  int     module_id           module id to filter block selection for.
+     *      <li>@type  string  language            language to filter block selection for.
+     *      <li>@type  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
+     *                       </ul>}
      *
-     * @return array array of items, or false on failure.
+     * @return array|bool array of items, or false on failure.
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
@@ -121,9 +123,11 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get a specific block
      *
-     * @param        $args['bid'] id of block to get
+     * @param int[] $args {<ul>
+     *      <li>@type        $args['bid'] id of block to get
+     *                     </ul>}
      *
-     * @return array item array, or false on failure
+     * @return array|bool item array, or false on failure
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
@@ -204,9 +208,11 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get a specific block position.
      *
-     * @param int $args['pid'] position id.
+     * @param int[] $args {<ul>
+     *      <li>@type int $args['pid'] position id.
+     *                     </ul>}
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
@@ -227,9 +233,11 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all blocks that are placed in a position
      *
-     * @param int $args['pid'] position id.
+     * @param int[] $args {<ul>
+     *      <li>@type int $args['pid'] position id.
+     *                     </ul>}
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
@@ -249,9 +257,11 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all placements of a block
      *
-     * @param int $args['bid'] block id.
+     * @param int[] $args {<ul>
+     *      <li>@type int $args['bid'] block id.
+     *                     </ul>}
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      */
@@ -271,7 +281,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Common method for decoding url from bracket notation.
      *
-     * @param string url String to decode.
+     * @param string $url the input url
      *
      * @return string Decoded url.
      */

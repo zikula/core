@@ -26,20 +26,23 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Blocks_Api_Admin class.
+ * API functions used by administrative controllers
+ *
  */
 class AdminApi extends \Zikula_AbstractApi
 {
     /**
-     * Update attributes of a block.
+     * Update attributes of a block
      *
-     * @param int    $args ['bid'] the ID of the block to update.
-     * @param string $args ['title'] the new title of the block.
-     * @param string $args ['description'] the new description of the block.
-     * @param string $args ['positions'] the new positions of the block.
-     * @param string $args ['url'] the new URL of the block.
-     * @param string $args ['language'] the new language of the block.
-     * @param string $args ['content'] the new content of the block.
+     * @param mixed[] $args {<ul>
+     *      <li>@type int    $bid         the ID of the block to update</li>
+     *      <li>@type string $title       the new title of the block</li>
+     *      <li>@type string $description the new description of the block</li>
+     *      <li>@type string $positions   the new positions of the block</li>
+     *      <li>@type string $url         the new URL of the block</li>
+     *      <li>@type string $language    the new language of the block</li>
+     *      <li>@type string $content     the new content of the block</li>
+     *                       </ul>}
      *
      * @return bool true on success, false on failure.
      *
@@ -113,13 +116,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a new block.
      *
-     * @param string $block ['title'] the title of the block.
-     * @param string $block ['description'] the description of the block.
-     * @param int    $block ['mid'] the module ID of the block.
-     * @param string $block ['language'] the language of the block.
-     * @param int    $block ['bkey'] the key of the block.
+     * @param mixed[] $args {<ul>
+     *      <li>@type string $title       the title of the block</li>
+     *      <li>@type string $description the description of the block</li>
+     *      <li>@type int    $mid         the module ID of the block</li>
+     *      <li>@type string $language    the language of the block</li>
+     *      <li>@type int    $bkey        the key of the block</li>
+     *                       </ul>
      *
-     * @return mixed block Id on success, false on failure.
+     * @return int|bool block id on success, false on failure.
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to create the block
@@ -182,7 +187,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Set a block's active state.
      *
-     * @param int $args ['bid'] the ID of the block to deactivate.
+     * @param int[] $block {<ul>
+     *      <li>@type int $bid the ID of the block to deactivate</li>
+     *                      </ul>} 
      *
      * @return bool true on success, false on failure.
      *
@@ -214,7 +221,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Deactivate a block.
      *
-     * @param int $args ['bid'] the ID of the block to deactivate.
+     * @param int[] $args {<ul>
+     *      <li>@type int $bid the ID of the block to deactivate</li>
+     *                     </ul>} 
      *
      * @return bool true on success, false on failure.
      *
@@ -235,7 +244,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Activate a block.
      *
-     * @param int $args ['bid'] the ID of the block to activate.
+     * @param int[] $args {<ul>
+     *      <li>@type int $bid the ID of the block to activate.
+     *                     </ul>}
      *
      * @return bool true on success, false on failure.
      *
@@ -256,7 +267,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a block.
      *
-     * @param int $args ['bid'] the ID of the block to delete.
+     * @param int[] $args {<ul>
+     *      <li>@type int $args ['bid'] the ID of the block to delete</li>
+     *                     </ul>
      *
      * @return bool true on success, false on failure.
      *
@@ -297,10 +310,12 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a block position.
      *
-     * @param string $args['name']        name of the position.
-     * @param string $args['description'] description of the position.
+     * @param string[] $args {<ul>
+     *      <li>@type string $name        name of the position</li>
+     *      <li>@type string $description description of the position</li>
+     *                        </ul>
      *
-     * @return mixed position ID on success, false on failure.
+     * @return int|bool position ID on success, false on failure.
      *
      * @throws InvalidArgumentException    Thrown if invalid parameters are received in $args
      * @throws AccessDeniedHttpException   Thrown if the user doesn't have permission to create the block position
@@ -340,9 +355,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update a block position item.
      *
-     * @param int    $args['pid']         the ID of the item.
-     * @param string $args['name']        name of the block position.
-     * @param string $args['description'] description of the block position.
+     * @param mixed[] $args {<ul>
+     *      <li>@type int    $pid         the ID of the item</li>
+     *      <li>@type string $name        name of the block position</li>
+     *      <li>@type string $description description of the block position</li>
+     *                       </ul>}
      *
      * @return bool true if successful, false otherwise.
      *
@@ -392,7 +409,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a block position.
      *
-     * @param int $args['pid'] ID of the position.
+     * @param int[] $args {<ul>
+     *      <li>@type int $pid ID of the position</li>
+     *                     </ul>}
      *
      * @return bool true on success, false on failure.
      *

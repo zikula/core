@@ -44,8 +44,10 @@ class UserController extends \Zikula_AbstractController
     /**
      * Display a block if is active
      *
-     * @param int $args['bid'] The id of the block
-     * @param bool $args['showinactive'] Override active status of block
+     * @param mixed[] $args {<ul>
+     *      <li>@type int  $bid          The id of the block</li>
+     *      <li>@type bool $showinactive Override active status of block</li>
+     *                       </ul>}
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
