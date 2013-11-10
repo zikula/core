@@ -72,7 +72,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permission to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permission to the module
      */
     public function viewAction($args = array())
     {
@@ -109,7 +109,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
      */
     public function newcatAction()
     {
@@ -131,9 +131,9 @@ class AdminController extends \Zikula_AbstractController
      *      <li>@type string $description the description of the category to be created
      *                     </ul>}
      *
-     * @return int|bool category id if create successful, false otherwise
+     * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
      */
     public function createAction($args)
     {
@@ -169,8 +169,8 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
-     * @throws NotFoundHttpException     Thrown if the requested category cannot be found
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown if the requested category cannot be found
      */
     public function modifyAction($args)
     {
@@ -207,9 +207,9 @@ class AdminController extends \Zikula_AbstractController
      *      <li>@type string $description the description of the item to be updated</li>
      *                       </ul>}
      *
-     * @return bool true if update successful, false otherwise
+     * @return void
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permission over the category
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permission over the category
      */
     public function updateAction($args)
     {
@@ -249,10 +249,10 @@ class AdminController extends \Zikula_AbstractController
      *      <li>@param bool $confirmation confirmation that this item can be deleted</li>
      *                       </ul>}
      *
-     * @return mixed Symfony\Component\HttpFoundation\Response if confirmation is null, true if delete successful, false otherwise
+     * @return Symfony\Component\HttpFoundation\Response|bool Symfony response object if confirmation is null, true if delete successful, false otherwise
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the category
-     * @throws NotFoundHttpException     Thrown if the category cannot be found
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete the category
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException     Thrown if the category cannot be found
      */
     public function deleteAction($args)
     {
@@ -302,7 +302,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions to the module
      */
     public function adminpanelAction($args)
     {
@@ -802,7 +802,7 @@ class AdminController extends \Zikula_AbstractController
      * @param  string $url
      * @param  ing    $timeout default=5
      *
-     * @return mixed, false or string
+     * @return string|bool false if no url handling functions are present or url string
      */
     private function _zcurl($url, $timeout=5)
     {

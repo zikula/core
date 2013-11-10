@@ -69,7 +69,7 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
      *
      * @param  string $oldversion version number string to upgrade from
      *
-     * @return mixed  true on success, last valid version string or false if fails
+     * @return bool|string true on success, last valid version string or false if fails
      */
     public function upgrade($oldversion)
     {

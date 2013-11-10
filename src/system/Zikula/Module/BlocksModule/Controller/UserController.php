@@ -33,7 +33,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * The main blocks user function.
      *
-     * @throws NotFoundHttpException Thrown when accessed to indicate this function isn't valid
+     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown when accessed to indicate this function isn't valid
      * @return void
      */
     public function mainAction()
@@ -51,7 +51,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
+     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
      */
     public function displayAction($args)
     {

@@ -349,7 +349,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
      *
      * @return array updated block information array
      *
-     * @throws RuntimeException Thrown if the changes couldn't be saved
+     * @throws \RuntimeException Thrown if the changes couldn't be saved
      */
     public function update($blockinfo)
     {
