@@ -72,7 +72,7 @@
                 </div>
                 {/foreach}
             </td>
-            <td>{$event.date|safetext}</td>
+            <td>{$event.date|dateformat|safetext}</td>
             <td class="text-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
         </tr>
         {foreachelse}
