@@ -25,10 +25,11 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * Initialise the Admin module.
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
      *
-     * @return boolean True if initialisation succcesful, false otherwise.
+     * @return boolean True if initialisation successful, false otherwise.
      */
     public function install()
     {
@@ -83,9 +84,11 @@ class AdminModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * delete the Admin module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
-     * @return bool true if deletetion succcesful, false otherwise
+     *
+     * @return bool true if deletion successful, false otherwise
      */
     public function uninstall()
     {
