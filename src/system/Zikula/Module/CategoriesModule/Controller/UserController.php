@@ -25,6 +25,7 @@ use UserUtil;
 use ServiceUtil;
 use Zikula\Module\CategoriesModuleCategoriesInstaller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User contollers for the categories module
@@ -35,7 +36,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * main user function
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
      */
@@ -61,7 +62,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * edit category for a simple, non-recursive set of categories
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
      * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid or

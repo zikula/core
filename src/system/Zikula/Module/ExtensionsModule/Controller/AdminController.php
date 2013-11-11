@@ -27,6 +27,7 @@ use PluginUtil;
 use Zikula_View_Theme;
 use Zikula_Plugin_AlwaysOnInterface;
 use Zikula_Plugin_ConfigurableInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrative contollers for the extensions module
@@ -72,7 +73,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Modify a module.
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
@@ -168,7 +169,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * List modules and current settings
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws \RuntimeException Thrown if the module list cannot be regenerated
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
@@ -948,7 +949,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * This is a standard function to modify the configuration parameters of the module
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
@@ -1003,7 +1004,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @param  int 'id' identity of the module
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is not numeric
      * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
@@ -1049,7 +1050,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Lists all plugins.
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */

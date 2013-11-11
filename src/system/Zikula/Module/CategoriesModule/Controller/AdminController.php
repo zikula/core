@@ -23,6 +23,7 @@ use StringUtil;
 use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 use Zikula\Module\CategoriesModule\Entity\CategoryRegistryEntity;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrative contollers for the categories module
@@ -55,7 +56,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * view categories
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
      */
@@ -82,7 +83,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display configure module page
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module configuration
      */
@@ -98,7 +99,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * edit category
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit or add the category
      * @throws \RuntimeException Thrown if a valid category ID isn't supplied
@@ -205,7 +206,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * edit category registry
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
      * @throws \RuntimeException Thrown if a valid category ID isn't supplied
@@ -241,7 +242,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * delete category registry
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
      */
@@ -265,7 +266,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * display new category form
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      */
     public function newcatAction()
     {
@@ -277,7 +278,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * generic function to handle copy, delete and move operations
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have access to delete the category
      */
@@ -306,7 +307,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * global module preferences
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
      */
