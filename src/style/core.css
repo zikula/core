@@ -147,6 +147,10 @@ td.actions a:hover {
 * Icon colors
 ******************************************************************************/
 
+.text-more-muted {
+    color: #eeeeee;
+}
+
 .fa-green {
     color: #61B329;
 }
