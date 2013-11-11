@@ -20,6 +20,7 @@ use SecurityUtil;
 use System;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Blocks_Controller_User class.
@@ -46,7 +47,7 @@ class UserController extends \Zikula_AbstractController
      *      <li>@type bool $showinactive Override active status of block</li>
      *                       </ul>}
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
      */
