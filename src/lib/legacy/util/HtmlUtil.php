@@ -239,7 +239,7 @@ class HtmlUtil
         $em = ServiceUtil::get('doctrine.entitymanager');
         $qb = $em->createQueryBuilder();
         $qb->select('e')->from($entity, 'e');
-        $dataArray = $qb->getQuery()->getArrayResult(); // array of Entities
+        $dataArray = $qb->getQuery()->getResult(); // array of Entities
         // @todo does not accommodate $sort or $where
 
         $data2 = array();
