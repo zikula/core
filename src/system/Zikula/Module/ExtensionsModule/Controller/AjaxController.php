@@ -6,7 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @Copyright Zikula Foundation
+
  * @package Zikula
  * @subpackage ZikulaExtensionsModule
  *
