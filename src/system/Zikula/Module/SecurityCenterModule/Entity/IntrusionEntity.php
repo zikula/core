@@ -205,6 +205,16 @@ class IntrusionEntity extends EntityAccess
         return $this->user;
     }
 
+    public function getUid()
+    {
+        return $this->getUser()->getUid();
+    }
+
+    public function getUsername()
+    {
+        return $this->getUser()->getUname();
+    }
+
     /**
      * Set ip
      *
