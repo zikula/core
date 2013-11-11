@@ -72,8 +72,8 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if item to be updated isn't found
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to update the item
+     * @throws NotFoundHttpException Thrown if item to be updated isn't found
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the item
      */
     public function update($args)
     {
@@ -113,7 +113,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if item to be updated isn't found
+     * @throws NotFoundHttpException Thrown if item to be updated isn't found
      * @throws \RuntimeException Thrown if the category to be deleted is the default for new modules or 
      *                                  if the category to be deleted is the initial category to be displayed
      */
@@ -248,7 +248,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return int|bool admin category ID on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add the category
      */
     public function addmodtocategory($args)
     {

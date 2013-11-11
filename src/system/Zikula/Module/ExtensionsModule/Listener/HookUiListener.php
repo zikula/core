@@ -34,7 +34,7 @@ class HookUiListener
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public static function hooks(GenericEvent $event)
     {
@@ -258,7 +258,7 @@ class HookUiListener
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public static function moduleservices(GenericEvent $event)
     {

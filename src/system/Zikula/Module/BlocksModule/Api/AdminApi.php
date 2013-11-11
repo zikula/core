@@ -44,7 +44,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to update the block
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the block
      */
     public function update($args)
     {
@@ -124,7 +124,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return int|bool block id on success, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to create the block
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to create the block
      */
     public function create($args)
     {
@@ -191,7 +191,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to update the block
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the block
      */
     public function setActiveState($block)
     {
@@ -271,7 +271,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete the block
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the block
      */
     public function delete($args)
     {
@@ -315,7 +315,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return int|bool position ID on success, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to create the block position
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to create the block position
      * @throws \RuntimeException Thrown if a block position with the same name already exists
      */
     public function createposition($args)
@@ -361,8 +361,8 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true if successful, false otherwise.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to update the block position
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the block position to be updated doesn't exist
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to update the block position
+     * @throws NotFoundHttpException Thrown if the block position to be updated doesn't exist
      * @throws \RuntimeException Thrown if a block position with the same name, but different id, already exists
      */
     public function updateposition($args)
@@ -413,7 +413,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return bool true on success, false on failure.
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete the block position
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete the block position
      */
     public function deleteposition($args)
     {

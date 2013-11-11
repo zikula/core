@@ -75,8 +75,8 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested module id doesn't exist
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
+     * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
      */
     public function modifyAction()
     {
@@ -171,7 +171,7 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws \RuntimeException Thrown if the module list cannot be regenerated
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function viewAction()
     {
@@ -773,7 +773,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @throws \InvalidArgumentException Thrown if the id paraemter is not provided or not numeric
      * @throws \RuntimeException Thrown if the requested module is a core module and cannot be deactivated
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested module id doesn't exist
+     * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
      */
     public function deactivateAction()
     {
@@ -950,7 +950,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function modifyconfigAction()
     {
@@ -970,7 +970,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      * @throws \InvalidArgumentException Thrown if the itemsperpage parameter is not numeric
      */
     public function updateconfigAction()
@@ -1006,8 +1006,8 @@ class AdminController extends \Zikula_AbstractController
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is not numeric
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the requested module id doesn't exist
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
+     * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the requested module
      */
     public function compinfoAction()
     {
@@ -1051,7 +1051,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function viewPluginsAction()
     {
@@ -1256,7 +1256,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function initialisePluginAction()
     {
@@ -1301,7 +1301,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function deactivatePluginAction()
     {
@@ -1346,7 +1346,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function activatePluginAction()
     {
@@ -1391,7 +1391,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function removePluginAction()
     {
@@ -1436,7 +1436,7 @@ class AdminController extends \Zikula_AbstractController
      * @return void
      *
      * @throws \InvalidArgumentException Thrown if the plugin paraemter is not provided
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permission to the module
      */
     public function upgradePluginAction()
     {

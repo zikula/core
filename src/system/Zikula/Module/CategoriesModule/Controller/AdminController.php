@@ -57,7 +57,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit the category
      */
     public function viewAction()
     {
@@ -84,7 +84,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module configuration
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module configuration
      */
     public function configAction()
     {
@@ -100,9 +100,9 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to edit or add the category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit or add the category
      * @throws \RuntimeException Thrown if a valid category ID isn't supplied
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the category isn't found 
+     * @throws NotFoundHttpException Thrown if the category isn't found 
      */
     public function editAction()
     {
@@ -207,9 +207,9 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
      * @throws \RuntimeException Thrown if a valid category ID isn't supplied
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the category isn't found 
+     * @throws NotFoundHttpException Thrown if the category isn't found 
      */
     public function editregistryAction()
     {
@@ -243,7 +243,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
      */
     public function deleteregistryAction()
     {
@@ -279,7 +279,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have access to delete the category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have access to delete the category
      */
     public function opAction()
     {
@@ -308,7 +308,7 @@ class AdminController extends \Zikula_AbstractController
      *
      * @return Symfony\Component\HttpFoundation\Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to administrate the module
      */
     public function preferencesAction()
     {

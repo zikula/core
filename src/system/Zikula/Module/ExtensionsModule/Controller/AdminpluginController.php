@@ -53,7 +53,7 @@ class AdminpluginController extends \Zikula_AbstractController
      *
      * @return mixed
      * 
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function dispatchAction()
     {

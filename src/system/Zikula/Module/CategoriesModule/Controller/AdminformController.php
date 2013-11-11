@@ -35,7 +35,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function editAction()
     {
@@ -134,7 +134,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
      */
     public function newcatAction()
     {
@@ -189,7 +189,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to delete a category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to delete a category
      */
     public function deleteAction()
     {
@@ -230,7 +230,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to add a category
      */
     public function copyAction()
     {
@@ -262,7 +262,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have permission to edit a category
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have permission to edit a category
      */
     public function moveAction()
     {
@@ -294,7 +294,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function rebuild_pathsAction()
     {
@@ -315,7 +315,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      * @throws \InvalidArgumentException Thrown if the module name isn't supplied or if
      *                                          if the entityname isn't supplied or if
      *                                          if the property isn't supplied or if
@@ -387,7 +387,7 @@ class AdminformController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function preferencesAction()
     {
