@@ -14,5 +14,3 @@
 
 // register event handlers
 EventUtil::attachEventHandler('Zikula\Module\SecurityCenterModule\Listener\FilterListener');
-include 'DBObject/Intrusion.php';
-include 'DBObject/IntrusionArray.php';
