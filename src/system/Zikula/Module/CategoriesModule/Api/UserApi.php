@@ -25,10 +25,10 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get the root category for a user
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type  int     $returnCategory
-     *      <li>@type  string  $returnField
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type  int     $returnCategory
+     *      @type  string  $returnField
+     *                       }
      *
      * @return string|array|bool the return field if returnCategory is false, the full category if returnCategory is true, false otherwise
      *
@@ -68,9 +68,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get all categories for a user
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type bool $relative optionally generate relative paths
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type bool $relative optionally generate relative paths
+     *                       }
      *
      * @return array array of categories
      *
@@ -93,9 +93,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get the username associated with a category
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int $uid the user id
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int $uid the user id
+     *                       }
      *
      * @return string the username associated with the category
      */

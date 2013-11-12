@@ -27,12 +27,12 @@ class UserApi extends \Zikula_AbstractApi
      *
      * This function gets all block entries from the database.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type  int     blockposition_id    block position id to filter block selection for.
-     *      <li>@type  int     module_id           module id to filter block selection for.
-     *      <li>@type  string  language            language to filter block selection for.
-     *      <li>@type  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type  int     blockposition_id    block position id to filter block selection for.
+     *      @type  int     module_id           module id to filter block selection for.
+     *      @type  string  language            language to filter block selection for.
+     *      @type  int     active_status       filter by active status (0=all, 1=active, 2=inactive).
+     *                       }
      *
      * @return array|bool array of items, or false on failure.
      *
@@ -120,9 +120,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * get a specific block
      *
-     * @param int[] $args {<ul>
-     *      <li>@type        $args['bid'] id of block to get
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type        $args['bid'] id of block to get
+     *                     }
      *
      * @return array|bool item array, or false on failure
      *
@@ -205,9 +205,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get a specific block position.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $args['pid'] position id.
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $args['pid'] position id.
+     *                     }
      *
      * @return array|bool item array, or false on failure.
      *
@@ -230,9 +230,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all blocks that are placed in a position
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $args['pid'] position id.
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $args['pid'] position id.
+     *                     }
      *
      * @return array|bool item array, or false on failure.
      *
@@ -254,9 +254,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all placements of a block
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $args['bid'] block id.
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $args['bid'] block id.
+     *                     }
      *
      * @return array|bool item array, or false on failure.
      *

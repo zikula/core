@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,26 +17,29 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\Module\GroupsModule\Entity\GroupEntity;
 use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
 use Zikula\Module\GroupsModule\Helper\CommonHelper;
-use LogUtil;
 use SecurityUtil;
 use Zikula;
 use ModUtil;
-use DataUtil;
 use UserUtil;
 use System;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Groups_Api_Admin class.
+ * Adminstrative API functions for the groups module
  */
 class AdminApi extends \Zikula_AbstractApi
 {
-
     /**
      * Create a new group item.
      *
-     * @param string $args['name'] name of the group.
+     * @param string[] $args {
+     *      @type string $name name of the group
+     *                       }
      *
-     * @return mixed group ID on success, false on failure.
+     * @return int|bool group ID on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the current user does not have add access.
      */
     public function create($args)
     {
@@ -56,7 +58,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Add item
@@ -84,11 +86,16 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a group item.
      *
-     * @param int $args['gid'] ID of the item.
+     * @param int[] $args {
+     *      @type int $gid ID of the item
+     *                    }
      *
      * @todo call permissions API to remove group permissions associated with the group
      *
      * @return boolean true on success, false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws AccessDeniedHttpException Thrown if the current user does not have delete access for the group.
      */
     public function delete($args)
     {
@@ -101,7 +108,7 @@ class AdminApi extends \Zikula_AbstractApi
         $item = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
 
         if (!$item) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // keep item to pass it to dispatcher later
@@ -109,18 +116,18 @@ class AdminApi extends \Zikula_AbstractApi
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Special groups check
         $defaultgroupid = $this->getVar('defaultgroup', 0);
         if ($item['gid'] == $defaultgroupid) {
-            return LogUtil::registerError($this->__('Sorry! You cannot delete the default users group.'));
+            throw new \RuntimeException($this->__('Sorry! You cannot delete the default users group.'));
         }
 
         $primaryadmingroupid = $this->getVar('primaryadmingroup', 0);
         if ($item['gid'] == $primaryadmingroupid) {
-            return LogUtil::registerError($this->__('Sorry! You cannot delete the primary administrators group.'));
+            throw new \RuntimeException($this->__('Sorry! You cannot delete the primary administrators group.'));
         }
 
         // Delete the group
@@ -159,17 +166,20 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update a group item.
      *
-     * @param int    $args['gid']  the ID of the item.
-     * @param string $args['name'] the new name of the item.
-     *
-     * @todo add missing 'name' to modargs check.
+     * @param mixed[] $args {
+     *      @type int    $gid  the ID of the item
+     *      @type string $name the new name of the item
+     *                      }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
      */
     public function update($args)
     {
         // Argument check
-        if (!isset($args['gid'])) {
+        if (!isset($args['gid']) || !isset($args['name'])) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -177,12 +187,12 @@ class AdminApi extends \Zikula_AbstractApi
         $item = $this->entityManager->find('Zikula\Module\GroupsModule\Entity\GroupEntity', $args['gid']);
 
         if (!$item) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Other check
@@ -191,7 +201,7 @@ class AdminApi extends \Zikula_AbstractApi
                               'checkgid' => $args['gid']));
 
         if ($checkname != false) {
-            return LogUtil::registerError($this->__('Error! There is already a group with that name.'));
+            throw new \RuntimeException($this->__('Error! There is already a group with that name.'));
         }
 
         // Setting defaults
@@ -217,10 +227,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Add a user to a group item.
      *
-     * @param int $args['gid'] the ID of the item.
-     * @param int $args['uid'] the ID of the user.
+     * @param int[] $args {
+     *      @type int $gid the ID of the item
+     *      @type int $uid the ID of the user
+     *                    }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
      */
     public function adduser($args)
     {
@@ -233,12 +248,12 @@ class AdminApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Add user to group
@@ -259,10 +274,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Remove a user from a group item.
      *
-     * @param int $args['gid'] the ID of the item.
-     * @param int $args['uid'] the ID of the user.
+     * @param int[] $args {
+     *      @type int $gid the ID of the item
+     *      @type int $uid the ID of the user
+     *                    }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
      */
     public function removeuser($args)
     {
@@ -275,12 +295,12 @@ class AdminApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // delete user from group
@@ -303,10 +323,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get a specific group id from a group name.
      *
-     * @param $args['name'] name of group item to get.
-     * @param $args['checkgid'] optional gid of the group.
+     * @param mixed[] $args {
+     *      @type string $name name of group item to get
+     *      @type int    $checkgid optional gid of the group
+     *                      }
      *
-     * @return int item, or false on failure.
+     * @return int|bool item, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getgidbyname($args)
     {
@@ -349,14 +373,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get applications.
      *
-     * @return mixed array, false on failure.
+     * @return array|bool array of applications, false on failure.
      */
     public function getapplications()
     {
         $objArray = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findBy(array(), array('app_id' => 'ASC'));
 
         if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
         $items = array();
@@ -383,10 +407,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get application info.
      *
-     * @param int $args['gid']
-     * @param int $args['userid']
+     * @param int[] $args {
+     *      @type int $gid group id
+     *      @type int $userid user id
+     *                    }
      *
      * @return array
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function getapplicationinfo($args)
     {
@@ -397,7 +425,7 @@ class AdminApi extends \Zikula_AbstractApi
         $appInfo = $this->entityManager->getRepository('Zikula\Module\GroupsModule\Entity\GroupApplicationEntity')->findOneBy(array('gid' => $args['gid'], 'uid' => $args['userid']));
 
         if (!$appInfo) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
         return $appInfo->toArray();
@@ -406,11 +434,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Pending action.
      *
-     * @param int    $args['gid']
-     * @param int    $args['userid']
-     * @param string $args['action']
+     * @param mixed[] $args {
+     *      @type int    $gid    group id
+     *      @type int    $userid user id
+     *      @type string $action action to take ('accept'|'reject')
+     *                      }
      *
      * @return boolean
+     *
+     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
     public function pendingaction($args)
     {

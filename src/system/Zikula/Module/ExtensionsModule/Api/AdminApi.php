@@ -45,9 +45,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update module information
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $id The id number of the module</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $id The id number of the module
+     *                     }
      *
      * @return array An associative array containing the module information for the specified module id
      */
@@ -59,12 +59,12 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update module information
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int    $id          The id number of the module to update</li>
-     *      <li>@type string $displayname The new display name of the module</li>
-     *      <li>@type string $description The new description of the module</li>
-     *      <li>@type string $url         The url of the module</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int    $id          The id number of the module to update
+     *      @type string $displayname The new display name of the module
+     *      @type string $description The new description of the module
+     *      @type string $url         The url of the module
+     *                       }
      *
      * @return boolean True on success, false on failure
      *
@@ -124,14 +124,14 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Obtain a list of modules.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int    $startnum The number of the module at which to start the list (for paging); optional, defaults to 1</li>
-     *      <li>@type int    $numitems The number of the modules to return in the list (for paging); optional, defaults to
-     *                                 -1, which returns modules starting at the specified number without limit</li>
-     *      <li>@type int    $state    Filter the list by this state; optional</li>
-     *      <li>@type int    $type     Filter the list by this type; optional</li>
-     *      <li>@type string $letter   Filter the list by module names beginning with this letter; optional</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int    $startnum The number of the module at which to start the list (for paging); optional, defaults to 1
+     *      @type int    $numitems The number of the modules to return in the list (for paging); optional, defaults to
+     *                                 -1, which returns modules starting at the specified number without limit
+     *      @type int    $state    Filter the list by this state; optional
+     *      @type int    $type     Filter the list by this type; optional
+     *      @type string $letter   Filter the list by module names beginning with this letter; optional
+     *                       }
      *
      * @return array An associative array of known modules
      *
@@ -213,10 +213,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Set the state of a module.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $id    The module id</li>
-     *      <li>@type int $state The new state</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $id    The module id
+     *      @type int $state The new state
+     *                     }
      *
      * @return boolean True if successful, false otherwise
      *
@@ -287,11 +287,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Remove a module.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int     $id                 The id of the module</li>
-     *      <li>@type boolean $removedependents   Remove any modules dependent on this module (default: false)</li>
-     *      <li>@type boolean $interactive_remove Whether to operat in interactive mode or not</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int     $id                 The id of the module
+     *      @type boolean $removedependents   Remove any modules dependent on this module (default: false)
+     *      @type boolean $interactive_remove Whether to operat in interactive mode or not
+     *                       }
      *
      * @return boolean True on success, false on failure
      *
@@ -635,10 +635,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Regenerate modules list.
      *
-     * @param array[] $args {<ul>
-     *      <li>@type array $filemodules An array of modules in the filesystem, as would be returned by
-     *                                  {@link getfilemodules()}; optional, defaults to the results of $this->getfilemodules()</li>
-     *                       </ul>}
+     * @param array[] $args {
+     *      @type array $filemodules An array of modules in the filesystem, as would be returned by
+     *                                  {@link getfilemodules()}; optional, defaults to the results of $this->getfilemodules()
+     *                       }
      *
      * @return boolean True on success, false on failure
      *
@@ -895,10 +895,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Initialise a module.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int     $id               The module ID</li>
-     *      <li>@type boolean $interactive_mode Perform the initialization in interactive mode or not</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int     $id               The module ID
+     *      @type boolean $interactive_mode Perform the initialization in interactive mode or not
+     *                       }
      *
      * @return boolean|void True on success, false on failure, or null when we bypassed the installation
      *
@@ -998,10 +998,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Upgrade a module.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int     $id                  The module ID</li>
-     *      <li>@type boolean $interactive_upgrade Whether or not to upgrade in interactive mode</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int     $id                  The module ID
+     *      @type boolean $interactive_upgrade Whether or not to upgrade in interactive mode
+     *                       }
      *
      * @return boolean True on success, false on failure
      *
@@ -1158,10 +1158,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Utility function to count the number of items held by this module.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type string $letter Filter the count by the first letter of the module name; optional</li>
-     *      <li>@type int    $state  Filter the count by the module state; optional</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type string $letter Filter the count by the first letter of the module name; optional
+     *      @type int    $state  Filter the count by the module state; optional
+     *                       }
      *
      * @return integer The number of items held by this module.
      */
@@ -1329,9 +1329,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get dependencies for a module.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $modid Id of module to get dependencies for</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $modid Id of module to get dependencies for
+     *                     }
      *
      * @return array|boolean Array of dependencies; false otherwise
      *
@@ -1352,9 +1352,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get dependents of a module.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $modid Id of module to get dependants for</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $modid Id of module to get dependants for
+     *                     }
      *
      * @return array|boolean Array of dependents; false otherwise.
      *
@@ -1377,9 +1377,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Check modules for consistency.
      *
-     * @param array[] $args {<ul>
-     *      <li>@type array $filemodules Array of modules in the filesystem, as returned by {@link getfilemodules()}</li>
-     *                       </ul>}
+     * @param array[] $args {
+     *      @type array $filemodules Array of modules in the filesystem, as returned by {@link getfilemodules()}
+     *                       }
      *
      * @see    getfilemodules()
      *
@@ -1442,9 +1442,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Check if a module comes from the core.
      *
-     * @param string[] $args {<ul>
-     *      <li>@type string $modulename The name of the module to check.</li>
-     *                        </ul>}
+     * @param string[] $args {
+     *      @type string $modulename The name of the module to check.
+     *                        }
      *
      * @return boolean True if it's a core module; otherwise false.
      */

@@ -743,11 +743,11 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Delete a block position.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int  $pid          the id of the position to be deleted</li>
-     *      <li>@type int  $objectid     generic object id maps to pid if present</li>
-     *      <li>@type bool $confirmation confirmation that this item can be deleted</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int  $pid          the id of the position to be deleted
+     *      @type int  $objectid     generic object id maps to pid if present
+     *      @type bool $confirmation confirmation that this item can be deleted
+     *                       }
      *
      * @return Response|bool symfony response if confirmation is null, true if delete successful, false otherwise.
      *

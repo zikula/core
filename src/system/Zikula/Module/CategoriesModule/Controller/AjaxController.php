@@ -65,11 +65,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Edit a category
      *
-     * @param mixed[] $args {<ul>
+     * @param mixed[] $args {
      *      @type string $mode   the mode of operation (new or edit)
      *      @type int    $cid    the category id
      *      @type int    $parent the parent category id
-     *                       </ul>}
+     *                       }
      *
      * @return AjaxResponse ajax response object
      */
