@@ -460,6 +460,17 @@ function upgrade_136($dbname, Connection $conn)
     $conn->executeQuery("UPDATE $dbname.themes SET name = 'ZikulaRssTheme', directory = 'Zikula/Theme/RssTheme' WHERE name = 'RSS'");
     echo "Updated theme: RSS<br />\n";
 
+    // update 'Users' -> 'ZikulaUsersModule' in all the hook tables
+    $sqls = array();
+    $sqls[] = "UPDATE $dbname.hook_area SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
+    $sqls[] = "UPDATE $dbname.hook_binding SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
+    $sqls[] = "UPDATE $dbname.hook_runtime SET sowner = 'ZikulaUsersModule' WHERE sowner = 'Users'";
+    $sqls[] = "UPDATE $dbname.hook_subscriber SET owner = 'ZikulaUsersModule' WHERE owner = 'Users'";
+    foreach ($sqls as $sql) {
+        $conn->executeQuery($sql);
+    }
+    echo "Updated hook tables for User module hooks.<br />\n";
+
 //$conn->executeQuery("UPDATE $dbname.module_vars SET value = 'ZikulaAndreas08Theme' WHERE modname = 'ZConfig' AND value='Default_Theme'");
 //echo "Updated default theme to Andreas08<br />\n";
 }
