@@ -22,7 +22,7 @@ use ModUtil;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
- * Blocks_Controller_Ajax class.
+ * Ajax controllers for the blocks module
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
