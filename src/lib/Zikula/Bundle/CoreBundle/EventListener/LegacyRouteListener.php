@@ -93,7 +93,19 @@ class LegacyRouteListener implements EventSubscriberInterface
         } elseif ($modinfo) {
             try {
                 // call the requested/homepage module
-                $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+                try {
+                    ModUtil::getModule($module);
+                    $newType = true;
+                } catch (\Exception $e) {
+                    $newType = false;
+                }
+
+                if ($newType) {
+                    $return = ModUtil::func($modinfo['name'], $type, $func);
+                } else {
+                    $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
+                }
+
                 if (false === $return) {
                     // hack for BC since modules currently use ModUtil::func without expecting exceptions - drak.
                     $response = new Response(__('Page not found.'), 404);
