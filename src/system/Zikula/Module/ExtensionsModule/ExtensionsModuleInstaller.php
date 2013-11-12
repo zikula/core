@@ -36,11 +36,11 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
             'Zikula\Core\Doctrine\Entity\ExtensionEntity',
             'Zikula\Core\Doctrine\Entity\ExtensionDependencyEntity',
             'Zikula\Core\Doctrine\Entity\ExtensionVarEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
-            //'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookAreaEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookBindingEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookProviderEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
+            'Zikula\Component\HookDispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
         );
 
         try {
@@ -49,10 +49,6 @@ class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
             return false;
         }
 
-
-        // create hook provider table.
-        Doctrine_Core::createTablesFromArray(array('Zikula_Doctrine_Model_HookArea', 'Zikula_Doctrine_Model_HookProvider', 'Zikula_Doctrine_Model_HookSubscriber', 'Zikula_Doctrine_Model_HookBinding', 'Zikula_Doctrine_Model_HookRuntime'));
-        
         EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'hooks'));
         EventUtil::registerPersistentModuleHandler('ZikulaExtensionsModule', 'controller.method_not_found', array('Zikula\Module\ExtensionsModule\Listener\HookUiListener', 'moduleservices'));
 
