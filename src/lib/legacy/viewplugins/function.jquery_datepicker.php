@@ -116,15 +116,19 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
      * mixed (php DateTime object or string formatted in same manner as display object
      * (optional) minimum date allowed to be selected in datepicker (default: null - choose any date)
      */
-    $minDate = (isset($params['mindate'])) ? $params['mindate'] : null;
-    unset($params['mindate']);
+    $minDate = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? $params['mindate'] : null;   
+    $minDateString = (isset($params['mindate']) && ($params['mindate'] instanceof DateTime)) ? null : $params['mindate'];
+    unset($params['mindate']);      
+    /**$minDate = (isset($params['mindate'])) ? $params['mindate'] : null;
+    unset($params['mindate']);*/
     /**
      * maxdate
      * mixed (php DateTime object or string formatted in same manner as display object
      * (optional) maximum date allowed to be selected in datepicker (default: null - choose any date)
      */
-    $maxDate = (isset($params['maxdate'])) ? $params['maxdate'] : null;
-    unset($params['maxdate']);
+    $maxDate = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? $params['maxdate'] : null;   
+    $maxDateString = (isset($params['maxdate']) && ($params['maxdate'] instanceof DateTime)) ? null : $params['maxdate'];
+    unset($params['maxdate']);  
     /**
      * theme
      * string
@@ -147,9 +151,6 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
         return false;
     }
 
-    $minDateValue = ($minDate instanceof DateTime) ? $minDate->format($displayFormat_dateTime) : $minDate;
-    $maxDateValue = ($maxDate instanceof DateTime) ? $maxDate->format($displayFormat_dateTime) : $maxDate;
-
     // load required javascripts
     PageUtil::addVar("javascript", "jquery-ui");
     if (!empty($lang) && ($lang <> 'en')) {
@@ -160,7 +161,16 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
 
     // build the datepicker
     $javascript = "
-        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\");
+        var {$displayElement}DefaultDate = new Date(\"{$defaultDate->format($displayFormat_dateTime)}\")";
+    if (isset($minDate)) {
+        $javascript .= "
+        var {$displayElement}minDate = new Date(\"{$minDate->format($displayFormat_dateTime)}\")";
+    }
+    if (isset($maxDate)) {
+        $javascript .= "
+        var {$displayElement}maxDate = new Date(\"{$maxDate->format($displayFormat_dateTime)}\")";
+    }    
+    $javascript .= "    
         jQuery(document).ready(function() {
             jQuery('#$displayElement').datepicker({";
     // add additional parameters set in template first
@@ -174,13 +184,19 @@ function smarty_function_jquery_datepicker($params, Zikula_View $view)
                 altField: '#$valueStorageElement',
                 altFormat: '$valueStorageFormat_javascript',";
     }
-    if (isset($minDate)) {
+    if (!empty($minDate)) {
         $javascript .= "
-                minDate: '$minDateValue',";
+                minDate: {$displayElement}minDate,";
+    } elseif (!empty($minDateString)) {
+        $javascript .= "
+                minDate: '$minDateString',";        
     }
-    if (isset($maxDate)) {
+    if (!empty($maxDate)) {
         $javascript .= "
-                maxDate: '$maxDateValue',";
+                maxDate: {$displayElement}maxDate,";
+    } elseif (!empty($maxDateString)) {
+        $javascript .= "
+                maxDate: '$maxDateString',";        
     }
     if (isset($onSelectCallback)) {
         $javascript .= "
