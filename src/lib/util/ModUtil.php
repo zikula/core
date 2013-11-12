@@ -1105,7 +1105,7 @@ class ModUtil
                         $modfunc[0]->preDispatch();
                     }
 
-                    if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase && isset($methodArgs)) {
+                    if (!$api && $newType && isset($methodArgs)) {
                         $postExecuteEvent->setData(call_user_func_array($modfunc, $methodArgs));
                     } else {
                         $postExecuteEvent->setData(call_user_func($modfunc, $args));
