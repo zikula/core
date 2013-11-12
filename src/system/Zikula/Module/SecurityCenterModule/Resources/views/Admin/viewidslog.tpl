@@ -4,29 +4,29 @@
     {gt text="View IDS Log"}
 </h3>
 
-<ul class="navbar navbar-default">
-    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="fa fa-arrow-circle-o-down-alt">{gt text="Export IDS Log"}</a></li>
-    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash-o">{gt text="Purge IDS Log"}</a></li>
+<ul class="navbar navbar-default navbar-modulelinks">
+    <li><a href="{modurl modname=SecurityCenter type=admin func="exportidslog"}" title="{gt text="Download the entire log to a csv file"}" class="fa fa-arrow-circle-o-down"> {gt text="Export IDS Log"}</a></li>
+    <li><a href="{modurl modname=SecurityCenter type=admin func="purgeidslog"}" title="{gt text="Delete the entire log"}" class="fa fa-trash-o"> {gt text="Purge IDS Log"}</a></li>
 </ul>
 
-{gt text="All" assign=lblAll}
+{gt text="All" assign='lblAll'}
 <form id="securitycenter_logfilter" class="form-horizontal" role="form" action="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}" method="post" enctype="application/x-www-form-urlencoded">
     <fieldset>
         <legend>{gt text="Filter"}</legend>
         <label>{gt text="User Name"}</label>
-        {selector_object_array name="filter[uid]" modname="SecurityCenter" class="intrusion" field="uid" displayField="username" selectedValue=$filter.uid defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[uid]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="uid" displayField="username" selectedValue=$filter.uid defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         <label>{gt text="Name"}</label>
-        {selector_object_array name="filter[name]" modname="SecurityCenter" class="intrusion" field="name" displayField="name" selectedValue=$filter.name defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[name]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="name" displayField="name" selectedValue=$filter.name defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         <label>{gt text="Tag"}</label>
-        {selector_object_array name="filter[tag]" modname="SecurityCenter" class="intrusion" field="tag" displayField="tag" selectedValue=$filter.tag defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[tag]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="tag" displayField="tag" selectedValue=$filter.tag defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         <label>{gt text="Value"}</label>
-        {selector_object_array name="filter[value]" modname="SecurityCenter" class="intrusion" field="value" displayField="value" selectedValue=$filter.value defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[value]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="value" displayField="value" selectedValue=$filter.value defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         <label>{gt text="Page"}</label>
-        {selector_object_array name="filter[page]" modname="SecurityCenter" class="intrusion" field="page" displayField="page" selectedValue=$filter.page defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[page]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="page" displayField="page" selectedValue=$filter.page defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         <label>{gt text="IP Address"}</label>
-        {selector_object_array name="filter[ip]" modname="SecurityCenter" class="intrusion" field="ip" displayField="ip" selectedValue=$filter.ip defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[ip]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="ip" displayField="ip" selectedValue=$filter.ip defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         <label>{gt text="Impact"}</label>
-        {selector_object_array name="filter[impact]" modname="SecurityCenter" class="intrusion" field="impact" displayField="impact" selectedValue=$filter.impact defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
+        {selector_object_array entity=1 name="filter[impact]" modname="SecurityCenter" class="Zikula\Module\SecurityCenterModule\Entity\IntrusionEntity" field="impact" displayField="impact" selectedValue=$filter.impact defaultValue="0" defaultText="$lblAll" distinct="1" submit="1"}
         {if ($filter.uid || $filter.name || $filter.tag || $filter.value || $filter.page || $filter.ip || $filter.impact)}
         <a href="{modurl modname="SecurityCenter" type="admin" func="viewidslog"}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Clear filter" __title="Clear filter"}</a>
         {/if}
@@ -34,7 +34,7 @@
 </form>
 
 <div>
-    <input type="hidden" name="csrftoken" value="{insert name='csrftoken'}" />
+    <input type="hidden" name="csrftoken" value="{insert name='csrftoken' assign='csrftoken'}{$csrftoken}" />
 </div>
 
 <table class="table table-bordered table-striped">
@@ -72,8 +72,8 @@
                 </div>
                 {/foreach}
             </td>
-            <td>{$event.date|safetext}</td>
-            <td class="text-right"><a href="{modurl modname="SecurityCenter" type="adminform" func="deleteidsentry" id=$event.id}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
+            <td>{$event.date|dateformat|safetext}</td>
+            <td class="text-right"><a href="{modurl modname=$module type="adminform" func="deleteidsentry" id=$event.id csrftoken=$csrftoken}">{img src=button_cancel.png modname=core set=icons/extrasmall __alt="Delete" __title="Delete" class='tooltips'}</a></td>
         </tr>
         {foreachelse}
         <tr class="table table-borderedempty"><td colspan="10">{gt text="No logged intrusions found."}</td></tr>

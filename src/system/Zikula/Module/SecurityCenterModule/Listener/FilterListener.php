@@ -51,6 +51,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
         if ($event['stage'] & Zikula_Core::STAGE_MODS && System::getVar('useids') == 1) {
             // Run IDS if desired
             try {
+                $request = array();
                 // build request array defining what to scan
                 // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
                 if (isset($_REQUEST)) {
@@ -95,7 +96,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
                 $ids = new \IDS\Monitor($init);
 
                 // run the request check and fetch the results
-                $result = $ids->run();
+                $result = $ids->run($request);
 
                 // analyze the results
                 if (!$result->isEmpty()) {
@@ -128,7 +129,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             $config['General']['filter_type'] = 'xml';
         }
 
-        $config['General']['base_path'] = PHPIDS_PATH_PREFIX;
+        $config['General']['base_path'] = ''; //PHPIDS_PATH_PREFIX;
         // we don't use the base path because the tmp directory is in zkTemp (see below)
         $config['General']['use_base_path'] = false;
 
@@ -243,7 +244,7 @@ class FilterListener extends \Zikula_AbstractEventHandler
             }
 
             // get entity manager
-            $em = ServiceUtil::get('doctrine.manager');
+            $em = ServiceUtil::get('doctrine.entitymanager');
 
             $intrusionItems = array();
 
