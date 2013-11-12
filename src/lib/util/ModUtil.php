@@ -1083,7 +1083,13 @@ class ModUtil
 
                 // Check $modfunc is an object instance (OO) or a function (old)
                 if (is_array($modfunc)) {
-                    if (!$api && !$modfunc[0] instanceof Zikula_AbstractBase) {
+                    try {
+                        self::getModule($modname);
+                        $newType = true;
+                    } catch (\Exception $e) {
+                        $newType = false;
+                    }
+                    if (!$api && $newType) {
                         // resolve request args
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
                         $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
