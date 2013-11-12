@@ -28,7 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrative contollers for the admin module
- *
  */
 class AdminController extends \Zikula_AbstractController
 {

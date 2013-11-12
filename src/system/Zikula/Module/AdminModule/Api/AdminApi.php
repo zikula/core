@@ -25,7 +25,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * API functions used by administrative controllers
- *
  */
 class AdminApi extends \Zikula_AbstractApi
 {

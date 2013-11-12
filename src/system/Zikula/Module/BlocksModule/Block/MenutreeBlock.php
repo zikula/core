@@ -28,7 +28,6 @@ use Zikula_View_Theme;
 
 /**
  * Block to display a multi-level menu
- *
  */
 class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 {

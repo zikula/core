@@ -15,7 +15,6 @@ namespace Zikula\Module\CategoriesModule;
 
 /**
  * Helper functions for the categories module
- *
  */
 class GenericUtil
 {

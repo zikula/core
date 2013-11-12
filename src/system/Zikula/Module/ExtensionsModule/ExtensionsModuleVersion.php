@@ -15,7 +15,6 @@ namespace Zikula\Module\ExtensionsModule;
 
 /**
  * Version information for the extensions module
- *
  */
 class ExtensionsModuleVersion extends \Zikula_AbstractVersion
 {

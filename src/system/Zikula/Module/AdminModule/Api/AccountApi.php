@@ -18,7 +18,6 @@ use SecurityUtil;
 
 /**
  * Account profile additions from the admin module
- *
  */
 class AccountApi extends \Zikula_AbstractApi
 {

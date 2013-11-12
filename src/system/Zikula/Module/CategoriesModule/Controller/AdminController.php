@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrative contollers for the categories module
- *
  */
 class AdminController extends \Zikula_AbstractController
 {

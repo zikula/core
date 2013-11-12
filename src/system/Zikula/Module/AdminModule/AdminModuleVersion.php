@@ -15,7 +15,6 @@ namespace Zikula\Module\AdminModule;
 
 /**
  * Version information for the admin module
- *
  */
 class AdminModuleVersion extends \Zikula_AbstractVersion
 {

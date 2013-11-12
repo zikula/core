@@ -20,7 +20,6 @@ use SecurityUtil;
 
 /**
  * Account profile additions from the categories module
- *
  */
 class AccountApi extends \Zikula_AbstractApi
 {

@@ -17,7 +17,6 @@ use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 
 /**
  * Base module definition for the blocks module
- *
  */
 class ZikulaBlocksModule extends AbstractCoreModule
 {

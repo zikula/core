@@ -21,7 +21,6 @@ use HookUtil;
 
 /**
  * Installation and upgrade routines for the blocks module
- *
  */
 class BlocksModuleInstaller extends \Zikula_AbstractInstaller
 {

@@ -24,7 +24,6 @@ use Zikula_View_Theme;
 
 /**
  * Block to display a language selection interface
- *
  */
 class LangBlock extends \Zikula_Controller_AbstractBlock
 {

@@ -18,7 +18,6 @@ use BlockUtil;
 
 /**
  * Block to display html 
- *
  */
 class HtmlBlock extends \Zikula_Controller_AbstractBlock
 {

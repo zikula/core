@@ -18,7 +18,6 @@ use BlockUtil;
 
 /**
  * Block to display simple rendered text
- *
  */
 class TextBlock extends \Zikula_Controller_AbstractBlock
 {

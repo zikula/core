@@ -26,7 +26,6 @@ use UserUtil;
 
 /**
  * Suppport API functions for the menutree block
- *
  */
 class MenutreeApi extends \Zikula_AbstractApi
 {
