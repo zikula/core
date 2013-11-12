@@ -1089,6 +1089,9 @@ class ModUtil
                     } catch (\Exception $e) {
                         $newType = false;
                     }
+                    if ($args) {
+                        $newType = false;
+                    }
                     if (!$api && $newType) {
                         // resolve request args
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
