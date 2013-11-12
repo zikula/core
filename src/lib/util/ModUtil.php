@@ -1092,7 +1092,7 @@ class ModUtil
                     if ($args) {
                         $newType = false;
                     }
-                    if (!$api && $newType) {
+                    if (!$api && $newType && !$modfunc[0] instanceof \Zikula_AbstractBase) {
                         // resolve request args
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
                         $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
@@ -1108,7 +1108,7 @@ class ModUtil
                         $modfunc[0]->preDispatch();
                     }
 
-                    if (!$api && $newType && isset($methodArgs)) {
+                    if (!$api && $newType && !$modfunc[0] instanceof \Zikula_AbstractBase && isset($methodArgs)) {
                         $postExecuteEvent->setData(call_user_func_array($modfunc, $methodArgs));
                     } else {
                         $postExecuteEvent->setData(call_user_func($modfunc, $args));
