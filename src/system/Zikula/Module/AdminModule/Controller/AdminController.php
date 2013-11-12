@@ -63,9 +63,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * View all admin categories
      *
-     * @param int[] $args {<ul>
-     *      <li> @type $startnum the starting id to view from - optional</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type $startnum the starting id to view from - optional
+     *                     }
      *
      * @return Response symfony response object
      *
@@ -123,10 +123,10 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function processes the user input from the form in @see this::newcatAction()
      *
-     * @param int[] $args {<ul>
-     *      <li>@type string $name        the name of the category to be created
-     *      <li>@type string $description the description of the category to be created
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type string $name        the name of the category to be created
+     *      @type string $description the description of the category to be created
+     *                     }
      *
      * @return void
      *
@@ -159,10 +159,10 @@ class AdminController extends \Zikula_AbstractController
      *
      * Displays a form for the user to edit the details of a category. Data is supplied to @see this::updateAction()
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $cid      category id
-     *      <li>@type int $objectid generic object id maps to cid if present
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $cid      category id
+     *      @type int $objectid generic object id maps to cid if present
+     *                     }
      *
      * @return Response symfony response object
      *
@@ -197,12 +197,12 @@ class AdminController extends \Zikula_AbstractController
      *
      * This function processes the user input from the form in @see this::modifyAction()
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int    $cid         the id of the item to be updated</li>
-     *      <li>@type int    $objectid    generic object id maps to cid if present</li>
-     *      <li>@type string $name        the name of the category to be updated</li>
-     *      <li>@type string $description the description of the item to be updated</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int    $cid         the id of the item to be updated
+     *      @type int    $objectid    generic object id maps to cid if present
+     *      @type string $name        the name of the category to be updated
+     *      @type string $description the description of the item to be updated
+     *                       }
      *
      * @return void
      *
@@ -240,11 +240,11 @@ class AdminController extends \Zikula_AbstractController
      * This is a standard function that is called whenever an administrator
      * wishes to delete a current module item.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@param int  $cid          the id of the category to be deleted</li>
-     *      <li>@param int  $objectid     generic object id maps to cid if present</li>
-     *      <li>@param bool $confirmation confirmation that this item can be deleted</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int  $cid          the id of the category to be deleted
+     *      @type int  $objectid     generic object id maps to cid if present
+     *      @type bool $confirmation confirmation that this item can be deleted
+     *                       }
      *
      * @return Response|void Symfony response object if confirmation is null
      *
@@ -293,9 +293,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display main admin panel for a category
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $acid the id of the category to be displayed</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $acid the id of the category to be displayed
+     *                     }
      *
      * @return Response symfony response object
      *
@@ -529,9 +529,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Main category menu.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int acid the admin category id</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int acid the admin category id
+     *                     }
      *
      * @return Response symfony response object
      */

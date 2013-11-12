@@ -31,10 +31,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * create an admin category
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type string $name        name of the category</li>
-     *      <li>@type string $description description of the category</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type string $name        name of the category
+     *      @type string $description description of the category
+     *                       }
      *
      * @return int|bool admin category ID on success, false on failure
      *
@@ -62,11 +62,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * update an admin category
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int    $cid         the ID of the category</li>
-     *      <li>@type string $name        the new name of the category</li>
-     *      <li>@type string $description the new description of the category</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int    $cid         the ID of the category
+     *      @type string $name        the new name of the category
+     *      @type string $description the new description of the category
+     *                       }
      *
      * @return bool true on success, false on failure
      *
@@ -105,9 +105,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * delete an admin category
      *
-     * @param  int[] $args {<ul>
-     *      <li>@type int $args['cid'] ID of the category</li>
-     *                      </ul>}
+     * @param  int[] $args {
+     *      @type int $args['cid'] ID of the category
+     *                      }
      *
      * @return bool true on success, false on failure
      *
@@ -161,10 +161,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * get all admin categories
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $startnum starting record number</li>
-     *      <li>@type int $numitems number of items to get</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $startnum starting record number
+     *      @type int $numitems number of items to get
+     *                     }
      *
      * @return array|bool array of items, or false on failure
      */
@@ -209,9 +209,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * get a specific category
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $cid id of example item to get</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $cid id of example item to get
+     *                     }
      *
      * @return array|bool item array, or false on failure
      *
@@ -239,10 +239,10 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * add a module to a category
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type  string $module   name of the module</li>
-     *      <li>@type  int    $category number of the category</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type  string $module   name of the module
+     *      @type  int    $category number of the category
+     *                       }
      *
      * @return int|bool admin category ID on success, false on failure
      *
@@ -288,9 +288,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the category a module belongs to
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $mid id of the module</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $mid id of the module
+     *                     }
      *
      * @return int|false category id, or false on failure
      *
@@ -334,9 +334,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the sort order of a module
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $mid id of the module</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $mid id of the module
+     *                     }
      *
      * @return int|bool category id, or false on failure
      *
@@ -373,9 +373,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get the category a module belongs to
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $mid id of the module</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $mid id of the module
+     *                     }
      *
      * @return array|bool array of styles if successful, or false on failure
      *
@@ -444,9 +444,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * count modules in a given category
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $cid id of the category</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $cid id of the category
+     *                     }
      *
      * @return int   number of modules
      *

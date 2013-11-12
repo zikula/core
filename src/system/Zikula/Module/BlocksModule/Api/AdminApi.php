@@ -30,15 +30,15 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update attributes of a block
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int    $bid         the ID of the block to update</li>
-     *      <li>@type string $title       the new title of the block</li>
-     *      <li>@type string $description the new description of the block</li>
-     *      <li>@type string $positions   the new positions of the block</li>
-     *      <li>@type string $url         the new URL of the block</li>
-     *      <li>@type string $language    the new language of the block</li>
-     *      <li>@type string $content     the new content of the block</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int    $bid         the ID of the block to update
+     *      @type string $title       the new title of the block
+     *      @type string $description the new description of the block
+     *      @type string $positions   the new positions of the block
+     *      @type string $url         the new URL of the block
+     *      @type string $language    the new language of the block
+     *      @type string $content     the new content of the block
+     *                       }
      *
      * @return bool true on success, false on failure.
      *
@@ -112,12 +112,12 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a new block.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type string $title       the title of the block</li>
-     *      <li>@type string $description the description of the block</li>
-     *      <li>@type int    $mid         the module ID of the block</li>
-     *      <li>@type string $language    the language of the block</li>
-     *      <li>@type int    $bkey        the key of the block</li>
+     * @param mixed[] $args {
+     *      @type string $title       the title of the block
+     *      @type string $description the description of the block
+     *      @type int    $mid         the module ID of the block
+     *      @type string $language    the language of the block
+     *      @type int    $bkey        the key of the block
      *                       </ul>
      *
      * @return int|bool block id on success, false on failure.
@@ -183,9 +183,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Set a block's active state.
      *
-     * @param int[] $block {<ul>
-     *      <li>@type int $bid the ID of the block to deactivate</li>
-     *                      </ul>} 
+     * @param int[] $block {
+     *      @type int $bid the ID of the block to deactivate
+     *                      } 
      *
      * @return bool true on success, false on failure.
      *
@@ -217,9 +217,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Deactivate a block.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $bid the ID of the block to deactivate</li>
-     *                     </ul>} 
+     * @param int[] $args {
+     *      @type int $bid the ID of the block to deactivate
+     *                     } 
      *
      * @return bool true on success, false on failure.
      *
@@ -240,9 +240,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Activate a block.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $bid the ID of the block to activate.
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $bid the ID of the block to activate.
+     *                     }
      *
      * @return bool true on success, false on failure.
      *
@@ -263,8 +263,8 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a block.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $args ['bid'] the ID of the block to delete</li>
+     * @param int[] $args {
+     *      @type int $args ['bid'] the ID of the block to delete
      *                     </ul>
      *
      * @return bool true on success, false on failure.
@@ -306,9 +306,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Create a block position.
      *
-     * @param string[] $args {<ul>
-     *      <li>@type string $name        name of the position</li>
-     *      <li>@type string $description description of the position</li>
+     * @param string[] $args {
+     *      @type string $name        name of the position
+     *      @type string $description description of the position
      *                        </ul>
      *
      * @return int|bool position ID on success, false on failure.
@@ -351,11 +351,11 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Update a block position item.
      *
-     * @param mixed[] $args {<ul>
-     *      <li>@type int    $pid         the ID of the item</li>
-     *      <li>@type string $name        name of the block position</li>
-     *      <li>@type string $description description of the block position</li>
-     *                       </ul>}
+     * @param mixed[] $args {
+     *      @type int    $pid         the ID of the item
+     *      @type string $name        name of the block position
+     *      @type string $description description of the block position
+     *                       }
      *
      * @return bool true if successful, false otherwise.
      *
@@ -405,9 +405,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Delete a block position.
      *
-     * @param int[] $args {<ul>
-     *      <li>@type int $pid ID of the position</li>
-     *                     </ul>}
+     * @param int[] $args {
+     *      @type int $pid ID of the position
+     *                     }
      *
      * @return bool true on success, false on failure.
      *

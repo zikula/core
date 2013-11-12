@@ -54,11 +54,11 @@ class PendingContentBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display block.
      *
-     * @param mixed[] $blockinfo {<ul>
-     *      <li>@type string $title   the title of the block</li>
-     *      <li>@type int    $bid     the id of the block</li>
-     *      <li>@type string $content the seralized block content array</li>
-     *                            </ul>}
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
      *
      * @return string Rendered block.
      */
