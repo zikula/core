@@ -101,7 +101,7 @@ class LegacyRouteListener implements EventSubscriberInterface
                 }
 
                 if ($newType) {
-                    $return = ModUtil::func($modinfo['name'], $type, $func, $request);
+                    $return = ModUtil::func($modinfo['name'], $type, $func);
                 } else {
                     $return = ModUtil::func($modinfo['name'], $type, $func, $arguments);
                 }
