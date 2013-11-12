@@ -18,7 +18,7 @@ use System;
 use ModUtil;
 
 /**
- * Blocks_Api_User class.
+ * API functions used by user controllers
  */
 class UserApi extends \Zikula_AbstractApi
 {

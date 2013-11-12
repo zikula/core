@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Blocks_Controller_User class.
+ * User controllers for the blocks module
  */
 class UserController extends \Zikula_AbstractController
 {
