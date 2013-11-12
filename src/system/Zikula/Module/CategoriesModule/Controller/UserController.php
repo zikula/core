@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @copyright Zikula Foundation
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -26,6 +25,7 @@ use UserUtil;
 use ServiceUtil;
 use Zikula\Module\CategoriesModuleCategoriesInstaller;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User contollers for the categories module
@@ -36,9 +36,9 @@ class UserController extends \Zikula_AbstractController
     /**
      * main user function
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module
      */
     public function mainAction()
     {
@@ -62,9 +62,9 @@ class UserController extends \Zikula_AbstractController
     /**
      * edit category for a simple, non-recursive set of categories
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the document root
      * @throws \InvalidArgumentException Thrown if the category or document root aren't supplied or are invalid or
      *                                          if the requested document root is the root category or 
      *                                          if the requested document root belongs to another user
@@ -171,7 +171,7 @@ class UserController extends \Zikula_AbstractController
      *
      * @return void
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over categories in the module or
      *                                                                                 if the user is not logged in
      * @throws \RuntimeException Thrown if user editing of categories isn't enabled or
      *                                  if the user root cannot be determined or 

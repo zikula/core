@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @copyright Zikula Foundation
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -21,6 +20,7 @@ use SecurityUtil;
 use System;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Blocks_Controller_User class.
@@ -31,7 +31,7 @@ class UserController extends \Zikula_AbstractController
     /**
      * The main blocks user function.
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown when accessed to indicate this function isn't valid
+     * @throws NotFoundHttpException Thrown when accessed to indicate this function isn't valid
      * @return void
      */
     public function mainAction()
@@ -47,9 +47,9 @@ class UserController extends \Zikula_AbstractController
      *      <li>@type bool $showinactive Override active status of block</li>
      *                       </ul>}
      *
-     * @return Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedHttpException Throw if the user doesn't have edit permissions to the module
      */
     public function displayAction($args)
     {

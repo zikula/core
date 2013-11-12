@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @Copyright Zikula Foundation
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -54,7 +53,7 @@ class AdminpluginController extends \Zikula_AbstractController
      *
      * @return mixed
      * 
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function dispatchAction()
     {

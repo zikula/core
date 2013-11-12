@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @Copyright Zikula Foundation
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -71,7 +70,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @throws \InvalidArgumentException Thrown if the id, displayname, description or url parameters are not set or empty or
      *                                          if the id is not numeric
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      * @throws \RuntimeException Thrown if the input module already exists
      */
     public function update($args)
@@ -136,7 +135,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return array An associative array of known modules
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function listmodules($args)
     {
@@ -222,7 +221,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True if successful, false otherwise
      *
      * @throws \InvalidArgumentException Thrown if either the id or state parameters are not set or numeric
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module or
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have edit permissions over the module or
      *                                                                                 if the module cannot be obtained from the database
      * @throws \RuntimeException Thrown if the requested state transition is invalid
      */
@@ -297,8 +296,8 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the id parameter is either not set or not numeric
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if requested module id isn't a valid module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws NotFoundHttpException Thrown if requested module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state cannot be changed or
      *                                  if the installer class isn't of the correct type
      */
@@ -436,7 +435,7 @@ class AdminApi extends \Zikula_AbstractApi
      * This function scans the file system for modules and returns an array with all (potential) modules found.
      * This information is used to regenerate the module list.
      *
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      * @throws \RuntimeException Thrown if the version information of a module cannot be found
      *
      * @return array An array of modules found in the file system.
@@ -644,8 +643,8 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if module information cannot be obtained from the database
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws NotFoundHttpException Thrown if module information cannot be obtained from the database
      */
     public function regenerate($args)
     {
@@ -904,7 +903,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean|void True on success, false on failure, or null when we bypassed the installation
      *
      * @throws \InvalidArgumentException Thrown if the module id parameter is either not set or not numeric
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the module id isn't a valid module
+     * @throws NotFoundHttpException Thrown if the module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state prevents installation or if
      *                                  if the module isn't compatible with this version of Zikula or
      *                                  if the installer class isn't of the correct type or
@@ -1007,7 +1006,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return boolean True on success, false on failure
      *
      * @throws \InvalidArgumentException Thrown if the module id parameter is either not set or not numeric
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException Thrown if the module id isn't a valid module
+     * @throws NotFoundHttpException Thrown if the module id isn't a valid module
      * @throws \RuntimeException Thrown if the module state prevents upgrade or if
      *                                  if the module isn't compatible with this version of Zikula or
      *                                  if the installer class isn't of the correct type
@@ -1387,7 +1386,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return array An array of arrays with links to inconsistencies
      *
      * @throws \InvalidArgumentException Thrown if the filemodules parameter is either not set or not an array
-     * @throws Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin permissions over the module
      */
     public function checkconsistency($args)
     {
