@@ -25,7 +25,6 @@ use Zikula\Core\Response\Ajax\AjaxResponse;
 
 /**
  * Ajax controllers for the extensions module
- *
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {

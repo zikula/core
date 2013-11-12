@@ -26,7 +26,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Form controller for the categories module
- *
  */
 class AdminformController extends \Zikula_AbstractController
 {

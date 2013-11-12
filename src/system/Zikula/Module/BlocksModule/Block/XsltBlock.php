@@ -22,7 +22,6 @@ use FormUtil;
 
 /**
  * Block to display a parsed xml document
- *
  */
 class XsltBlock extends \Zikula_Controller_AbstractBlock
 {

@@ -23,7 +23,6 @@ use System;
 
 /**
  * Helper functions for the extensions module
- *
  */
 class Util
 {

@@ -23,7 +23,6 @@ use Zikula\Core\Doctrine\Entity\ExtensionEntity;
 
 /**
  * Installation and upgrade routines for the extensions module
- *
  */
 class ExtensionsModuleInstaller extends \Zikula_AbstractInstaller
 {

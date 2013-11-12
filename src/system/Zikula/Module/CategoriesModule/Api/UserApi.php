@@ -19,7 +19,6 @@ use UserUtil;
 
 /**
  * User api functions for the categories module
- *
  */
 class UserApi extends \Zikula_AbstractApi
 {

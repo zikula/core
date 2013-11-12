@@ -21,7 +21,6 @@ use FormUtil;
 
 /**
  * Block to display the contents of a file
- *
  */
 class FincludeBlock extends \Zikula_Controller_AbstractBlock
 {

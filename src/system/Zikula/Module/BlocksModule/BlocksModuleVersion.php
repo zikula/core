@@ -19,7 +19,6 @@ use Zikula\Component\HookDispatcher\SubscriberBundle;
 
 /**
  * Version information for the blocks module
- *
  */
 class BlocksModuleVersion extends \Zikula_AbstractVersion
 {

@@ -29,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User contollers for the categories module
- *
  */
 class UserController extends \Zikula_AbstractController
 {

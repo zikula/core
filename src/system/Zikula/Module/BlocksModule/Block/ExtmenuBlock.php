@@ -28,7 +28,6 @@ use DataUtil;
 
 /**
  * Block to display an extended menu
- *
  */
 class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
 {

@@ -23,7 +23,6 @@ use Zikula\Module\CategoriesModule\Entity\CategoryEntity;
 
 /**
  * Installation and upgrade routines for the categories module
- *
  */
 class CategoriesModuleInstaller extends \Zikula_AbstractInstaller
 {

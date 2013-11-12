@@ -22,7 +22,6 @@ use BlockUtil;
 
 /**
  * Pending Content block
- *
  */
 class PendingContentBlock extends \Zikula_Controller_AbstractBlock
 {

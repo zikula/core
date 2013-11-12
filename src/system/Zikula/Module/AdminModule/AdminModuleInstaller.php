@@ -18,7 +18,6 @@ use Zikula\Module\AdminModule\Entity\AdminCategoryEntity;
 
 /**
  * Installation and upgrade routines for the admin module
- *
  */
 class AdminModuleInstaller extends \Zikula_AbstractInstaller
 {

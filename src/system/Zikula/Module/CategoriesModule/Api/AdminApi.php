@@ -18,7 +18,6 @@ use SecurityUtil;
 
 /**
  * Administrative API's for the categories module
- *
  */
 class AdminApi extends \Zikula_AbstractApi
 {

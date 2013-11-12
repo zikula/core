@@ -18,7 +18,6 @@ use ThemeUtil;
 
 /**
  * Supporting functions for the menutree block
- *
  */
 class MenutreeUtil
 {

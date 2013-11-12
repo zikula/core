@@ -21,7 +21,6 @@ use DataUtil;
 
 /**
  * Administrative navigation block
- *
  */
 class AdminnavBlock extends \Zikula_Controller_AbstractBlock
 {

@@ -27,7 +27,6 @@ use Zikula\Module\CategoriesModuleGenericUtil;
 
 /**
  * Ajax controllers for the categories module
- *
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {

@@ -23,7 +23,6 @@ use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Ajax controllers for the admin module
- *
  */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {

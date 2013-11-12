@@ -26,7 +26,6 @@ use Zikula_View_Theme;
 
 /**
  * Simple list menu block
- *
  */
 class MenuBlock extends \Zikula_Controller_AbstractBlock
 {
