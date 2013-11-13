@@ -28,7 +28,7 @@ $container = $core->getContainer();
 
 // load zikula core
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
-define('_Z_MINUPGVER', '1.3.6');
+define('_Z_MINUPGVER', '1.3.5');
 
 // Signal that upgrade is running.
 $GLOBALS['_ZikulaUpgrader'] = array();
@@ -422,7 +422,7 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
 }
 
 /**
- * Upgrade tables from 1.3.6
+ * Upgrade tables from 1.3.5+
  *
  * @param $dbname
  * @param Connection $conn
