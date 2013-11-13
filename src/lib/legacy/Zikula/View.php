@@ -346,7 +346,24 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         parent::assign('eventManager', $this->eventManager);
         parent::assign('zikula_core', $this->serviceManager->get('zikula'));
         parent::assign('request', $this->request);
-        parent::assign('modvars', ModUtil::getModvars()); // Get all modvars from any modules that have accessed their modvars at least once.
+        $modvars = ModUtil::getModvars(); // Get all modvars from any modules that have accessed their modvars at least once.
+        // provide compatibility 'alias' array keys
+        // @todo remove after v1.3.7
+        if (isset($modvars['ZikulaAdminModule'])) { $modvars['Admin'] = $modvars['ZikulaAdminModule']; }
+        if (isset($modvars['ZikulaBlocksModule'])) { $modvars['Blocks'] = $modvars['ZikulaBlocksModule']; }
+        if (isset($modvars['ZikulaCategoriesModule'])) { $modvars['Categories'] = $modvars['ZikulaCategoriesModule']; }
+        if (isset($modvars['ZikulaExtensionsModule'])) { $modvars['Extensions'] = $modvars['ZikulaExtensionsModule']; }
+        if (isset($modvars['ZikulaGroupsModule']))  { $modvars['Groups'] = $modvars['ZikulaGroupsModule']; }
+        if (isset($modvars['ZikulaMailerModule'])) { $modvars['Mailer'] = $modvars['ZikulaMailerModule']; }
+        if (isset($modvars['ZikulaPageLockModule'])) { $modvars['PageLock'] = $modvars['ZikulaPageLockModule']; }
+        if (isset($modvars['ZikulaPermissionsModule'])) { $modvars['Permissions'] = $modvars['ZikulaPermissionsModule']; }
+        if (isset($modvars['ZikulaSearchModule'])) { $modvars['Search'] = $modvars['ZikulaSearchModule']; }
+        if (isset($modvars['ZikulaSecurityCenterModule'])) { $modvars['SecurityCenter'] = $modvars['ZikulaSecurityCenterModule']; }
+        if (isset($modvars['ZikulaSettingsModule'])) { $modvars['Settings'] = $modvars['ZikulaSettingsModule']; }
+        if (isset($modvars['ZikulaThemeModule'])) { $modvars['Theme'] = $modvars['ZikulaThemeModule']; }
+        if (isset($modvars['ZikulaUsersModule'])) { $modvars['Users'] = $modvars['ZikulaUsersModule']; }
+        // end compatibility aliases
+        parent::assign('modvars', $modvars);
 
         $this->add_core_data();
 
