@@ -28,7 +28,7 @@ $container = $core->getContainer();
 
 // load zikula core
 define('_ZINSTALLVER', Zikula_Core::VERSION_NUM);
-define('_Z_MINUPGVER', '1.3.5');
+define('_Z_MINUPGVER', '1.3.6');
 
 // Signal that upgrade is running.
 $GLOBALS['_ZikulaUpgrader'] = array();
@@ -37,7 +37,7 @@ $dbname = $container['databases']['default']['dbname'];
 /** @var $connection Connection */
 $connection = $container->get('doctrine.dbal.default_connection');
 
-upgrade_136($dbname, $connection);
+upgrade_137($dbname, $connection);
 
 $installedVersion = upgrade_getCurrentInstalledCoreVersion($connection);
 
@@ -67,19 +67,19 @@ if ($action === 'upgrademodules' || $action === 'convertdb' || $action === 'sani
 }
 
 switch ($action) {
-    case 'upgradeinit':
+    case 'upgradeinit': // step two
         _upg_upgradeinit();
         break;
-    case 'login':
+    case 'login': // occurs in step two
         _upg_login(true);
         break;
-    case 'sanitycheck':
+    case 'sanitycheck': // step three
         _upg_sanity_check($username, $password);
         break;
-    case 'upgrademodules':
+    case 'upgrademodules': // step four
         _upg_upgrademodules($username, $password);
         break;
-    default:
+    default: // step one
         _upg_selectlanguage();
         break;
 }
@@ -422,12 +422,12 @@ function upgrade_getCurrentInstalledCoreVersion(\Doctrine\DBAL\Connection $conne
 }
 
 /**
- * Upgrade tables from 1.3.5
+ * Upgrade tables from 1.3.6
  *
  * @param $dbname
  * @param Connection $conn
  */
-function upgrade_136($dbname, Connection $conn)
+function upgrade_137($dbname, Connection $conn)
 {
     $res = $conn->executeQuery("SELECT name FROM $dbname.modules WHERE name = 'ZikulaExtensionsModule'");
     if ($res->fetch()) {
