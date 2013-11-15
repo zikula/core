@@ -146,7 +146,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                            'list' => $lang,
                            'flat' => true);
 
-            $tree = new Blocks_MenutreeTree();
+            $tree = new MenutreeTree();
             $tree->setOption('langs',(array)$langs['list']);
             $tree->setOption('flat',$langs['flat']);
             $tree->setOption('parseURL',true);
