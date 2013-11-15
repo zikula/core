@@ -21,6 +21,7 @@ use UserUtil;
 use ZLanguage;
 use ModUtil;
 use Zikula\Module\BlocksModule\MenutreeUtil;
+use Zikula\Module\BlocksModule\MenutreeTree;
 use FormUtil;
 use System;
 use Zikula_View;
@@ -236,7 +237,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             }
         }
         // decode tree array
-        $tree = new Blocks_MenutreeTree();
+        $tree = new MenutreeTree();
         $tree->setOption('id', 'adm-menutree'.$blockinfo['bid']);
         $tree->setOption('sortable', true);
         if (isset($langs)) {
@@ -248,8 +249,8 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars['menutree_content'] = $tree->getHTML();
 
         // get all templates and stylesheets.
-        $vars['tpls'] = Blocks_MenutreeUtil::getTemplates();
-        $vars['styles'] =  Blocks_MenutreeUtil::getStylesheets();
+        $vars['tpls'] = MenutreeUtil::getTemplates();
+        $vars['styles'] =  MenutreeUtil::getStylesheets();
         $someThemes = $this->__('Only in some themes');
         $vars['somethemes'] = isset($vars['tpls'][$someThemes]) || isset($vars['styles'][$someThemes]) ? true : false;
 
@@ -336,7 +337,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // sort tree array according to lineno key
-        uasort($vars['menutree_content'], array('Blocks_Block_Menutree','sort_menu'));
+        uasort($vars['menutree_content'], array('Zikula\Module\BlocksModule\Block\MenutreeBlock','sort_menu'));
 
         // get other form data
         $menutree_data = FormUtil::getPassedValue('menutree');
