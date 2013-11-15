@@ -53,7 +53,7 @@
 
     {if $multilingual && $menutree_titlesaccess}
     <fieldset>
-        <legend>{gt text="Block titles""}</legend>
+        <legend>{gt text="Block titles"}</legend>
         <p class="help-block alert alert-info">{gt text="You can specify a diferent block title for each language. If blank, the default block title will be displayed."}</p>
         {foreach from=$languages key=code item=name}
         <div class="form-group">
@@ -217,46 +217,6 @@
     });
     {{/if}}
 </script>
-
-{capture assign="itemForm"}
-<div id="menutree_form_container" title="{gt text='Edit menu item'}" style="display: none;">
-    <p id="forminfo" class="alert alert-warning">{gt text="Field Name is required."}</p>
-    <p id="requiredInfo" class="alert alert-danger" style="display: none;">{gt text="Please fill required fields"}</p>
-    <form action="#" id="nodeBuilder" class="form-horizontal" role="form">
-        <div>
-            <fieldset>
-                <legend>{gt text="Menu item data"}</legend>
-                {if $multilingual}
-                <div class="form-group">
-                    <label class="col-lg-3 control-label" for="link_lang">{gt text="Language"}</label>
-        <ul class="navbar navbar-default">
-            <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
-            <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
-            <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
-            {if $multilingual}
-            <li>
-                {gt text="Change active language:"}
-                {foreach from=$languages key=code item=name name=langloop}
-                <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
-                {/foreach}
-            </li>
-            {/if}
-        </ul>
-
-        {if !empty($menutree_menus)}
-        <div id="menuTreeImportOptions">
-            <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
-            <select id="menutree_menus" name="menutree_menus">
-                <option value="null">{gt text="Choose menu"}</option>
-                {html_options options=$menutree_menus}
-            </select>
-        </div>
-        {/if}
-        <div id="menuTreeContainer">
-            {$menutree_content}
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
     var tabs = new Zikula.UI.Tabs('menutree_tabs',{linkSelector:'li a.menutree_tabcontrol'});
