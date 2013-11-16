@@ -134,7 +134,7 @@
     {/if}
 {/capture}
 {capture name='email'}
-    <fieldset>
+    <fieldset {if isset($hideEmail) && $hideEmail}class="hide"{/if}>
         <legend>{gt text="Enter your e-mail address"}</legend>
         <div class="form-group{if isset ($fieldName) && isset($errorFields.$fieldName)} has-error{/if}">
             {assign var='fieldName' value='email'}

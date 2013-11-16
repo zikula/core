@@ -34,7 +34,7 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     /**
      * The name of the defined authentication method.
      *
-     * @var type
+     * @var string
      */
     protected $method;
 
@@ -87,6 +87,13 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
     protected $longDescription;
 
     /**
+     * Either a path to a picture from Zikula root or the name of a FontAwesome icon representing the authentication provider.
+     *
+     * @var string
+     */
+    protected $icon;
+
+    /**
      * Construct an instance of the method definition.
      *
      * @param string  $modname               The name of the authentication module that defines the method.
@@ -95,12 +102,13 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
      * @param string  $longDescription       The more complete description.
      * @param boolean $capableOfRegistration True if the method is an external authentication method that can be used with the registration process; otherwise false.
      */
-    public function __construct($modname, $method, $shortDescription, $longDescription, $capableOfRegistration = false)
+    public function __construct($modname, $method, $shortDescription, $longDescription, $capableOfRegistration = false, $icon = false)
     {
         $this->setModule($modname);
         $this->setMethod($method);
         $this->setShortDescription($shortDescription);
         $this->setLongDescription($longDescription);
+        $this->setIcon($icon);
 
         $this->enabledForAuthentication = true;
         $this->capableOfRegistration = (bool)$capableOfRegistration;
@@ -235,6 +243,24 @@ class AuthenticationMethodHelper extends \Zikula_AbstractHelper
                 empty($longDescription) ? 'NULL' : $longDescription)
             ));
         }
+    }
+
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    private function setIcon($icon)
+    {
+        $this->icon = $icon;
+    }
+
+    public function isFontAwesomeIcon()
+    {
+        if(strpos($this->icon, '/') !== false || strpos($this->icon, 'fa-') !== 0 || empty($this->icon)) {
+            return false;
+        }
+        return true;
     }
 
     /**

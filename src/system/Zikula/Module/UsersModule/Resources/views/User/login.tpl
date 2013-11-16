@@ -1,5 +1,6 @@
 {* TODO - handle re-display of display hooks when AJAX changes log-in method. For now, disable AJAX switching of login method and use URL fallback. *}
 {* ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Login.js' *}
+{ajaxheader modname='ZikulaUsersModule' filename='Zikula.Users.Util.CapsLock.js'}
 {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
 {if ('ZikulaUsersModule' != $authentication_method.modname)}
     {ajaxheader modname=$authentication_method.modname filename=$authentication_method.modname|cat:'.Login.js'}
@@ -9,22 +10,16 @@
 {modulelinks modname='ZikulaUsersModule' type='user'}
 {include file='User/menu.tpl'}
 {if (count($authentication_method_display_order) > 1)}
-<div>
-    <h5 id="users_login_h5_no_authentication_method"{if !empty($selected_authentication_method)} class="hide"{/if}>{gt text="Choose how you would like to log in by clicking on one of the following..."}</h5>
-    <h5 id="users_login_h5_authentication_method"{if empty($selected_authentication_method)} class="hide"{/if}>{gt text="Log in below, or change how you would like to log in by clicking on one of the following..."}</h5>
-    <h5 id="users_login_h5" class="hide"></h5>
-    <div class="authentication_select_method_bigbutton">
-    {modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode assign='form_action'}
-    {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
-        {if $smarty.foreach.authentication_method_display_order.iteration == 6}
-            </div>
-            <div class="authentication_select_method_smallbutton z-clearer">
-        {/if}
-        {authentication_method_selector form_type='loginscreen' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
-    {/foreach}
+    <div>
+        <h5 id="users_login_h5_no_authentication_method"class="alert alert-info{if !empty($selected_authentication_method)} hide{/if}">{gt text="Choose how you would like to log in by clicking on one of the following buttons."}</h5>
+        <h5 id="users_login_h5_authentication_method" class="alert alert-info{if empty($selected_authentication_method)} hide{/if}">{gt text="Log in below, or change how you would like to log in by clicking on one of the following buttons."}</h5>
+        <h5 id="users_login_h5" class="alert alert-info hide"></h5>
+        {modurl modname='ZikulaUsersModule' type='user' func='login' returnpage=$returnpage|urlencode assign='form_action'}
+        {foreach from=$authentication_method_display_order item='authentication_method' name='authentication_method_display_order'}
+            {authentication_method_selector form_type='loginscreen' form_action=$form_action authentication_method=$authentication_method selected_authentication_method=$selected_authentication_method}
+        {/foreach}
     </div>
-</div>
-<div class="clearfix" style="margin-bottom:20px"></div>
+    <div class="clearfix" style="margin-bottom:20px"></div>
 {/if}
 {if !empty($selected_authentication_method)}
     {login_form_fields form_type='loginscreen' authentication_method=$selected_authentication_method assign='login_form_fields'}
@@ -53,6 +48,7 @@
             {/if}
         </fieldset>
 
+        <div id="zikulausersmodule-login-event-display">
         {if isset($user_obj) && !empty($user_obj)}
             {notifyevent eventname='module.users.ui.form_edit.login_screen' id=$user_obj.uid eventsubject=$user_obj assign='eventData'}
         {else}
@@ -62,15 +58,24 @@
         {foreach item='eventDisplay' from=$eventData}
             {$eventDisplay}
         {/foreach}
-            
+        </div>
+
         {if isset($user_obj) && !empty($user_obj)}
-            {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=$user_obj.uid}
+            {notifydisplayhooks eventname='users.ui_hooks.login_screen.form_edit' id=$user_obj.uid assign='hooks'}
         {else}
-            {notifydisplayhooks eventname='users.ui_hooks.login_block.form_edit' id=null}
+            {notifydisplayhooks eventname='users.ui_hooks.login_screen.form_edit' id=null assign='hooks'}
+        {/if}
+        {if is_array($hooks) && count($hooks)}
+            <div id="zikulausersmodule-login-hooks">
+                {foreach key='providerArea' item='hook' from=$hooks}
+                    {$hook}
+                {/foreach}
+            </div>
         {/if}
 
         <div>
-            <button class="btn btn-default" title="{gt text='Log in'}">
+            <button class="btn btn-success col-lg-offset-3" title="{gt text='Log in'}">
+                <i class="fa fa-arrow-right"></i>
                 {gt text='Log in'}
             </button>
         </div>
@@ -93,5 +98,7 @@
     </p>
 </div>
 <script type="text/javascript" language="JavaScript">
-document.getElementById("users_login_login_id").focus();
+    if (document.getElementById("users_login_login_id") !== null) {
+        document.getElementById("users_login_login_id").focus();
+    }
 </script>

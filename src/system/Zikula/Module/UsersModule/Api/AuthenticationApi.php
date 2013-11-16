@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\UsersModule\Api;
 
+use Symfony\Component\Debug\Exception\FatalErrorException;
 use Zikula\Module\UsersModule\Constant as UsersConstant;
 use Zikula\Module\UsersModule\Helper\AuthenticationMethodHelper;
 use Zikula_Exception_Fatal;
@@ -55,7 +56,8 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 'uname',
                 $this->__('User name'),
                 $this->__('User name and password'),
-                false
+                false,
+                "fa-user"
         );
         if (($loginViaOption == UsersConstant::LOGIN_METHOD_UNAME)) {
             $authenticationMethod->enableForAuthentication();
@@ -70,7 +72,8 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
                 'email',
                 $this->__('E-mail address'),
                 $this->__('E-mail address and password'),
-                false
+                false,
+                "fa-envelope"
         );
         if (($loginViaOption == UsersConstant::LOGIN_METHOD_EMAIL)) {
             $authenticationMethod->enableForAuthentication();
@@ -85,7 +88,8 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
             'unameoremail',
             $this->__('User name or e-mail address'),
             $this->__('User name / e-mail address and password'),
-            false
+            false,
+            "fa-user"
         );
         if ($loginViaOption == UsersConstant::LOGIN_METHOD_ANY) {
             $authenticationMethod->enableForAuthentication();
@@ -219,6 +223,32 @@ class AuthenticationApi extends \Zikula_Api_AbstractAuthentication
         }
 
         return $authenticationMethods;
+    }
+
+    /**
+     * Retrieves an authentication method defined by this module.
+     *
+     * Parameters passed in $args:
+     * ---------------------------
+     * string 'method' The name of the authentication method.
+     *
+     * @param array $args All arguments passed to this function.
+     *
+     * @return array An array containing the authentication method requested.
+     *
+     * @throws Zikula_Exception_Fatal Thrown if invalid parameters are sent in $args.
+     */
+    public function getAuthenticationMethod(array $args)
+    {
+        if (!isset($args['method'])) {
+            throw new \InvalidArgumentException($this->__f('An invalid value for the \'method\' parameter was received (\'%1$s\').', array($args['method'])));
+        }
+
+        if (!isset($this->authenticationMethods[($args['method'])])) {
+            throw new FatalErrorException($this->__f('The requested authentication method \'%1$s\' does not exist.', array($args['method'])));
+        }
+
+        return $this->authenticationMethods[($args['method'])];
     }
 
     /**

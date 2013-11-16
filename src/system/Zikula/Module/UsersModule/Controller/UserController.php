@@ -379,12 +379,20 @@ class UserController extends \Zikula_AbstractController
 
                             $registrationInfo = (isset($checkPasswordResult['registration_info']) && is_array($checkPasswordResult['registration_info'])) ? $checkPasswordResult['registration_info'] : array();
                             if (!empty($registrationInfo)) {
-                                if (isset($registrationInfo['nickname']) && !empty($registrationInfo['nickname'])) {
-                                    $formData->setField('uname', $registrationInfo['nickname']);
+                                if (isset($registrationInfo['uname']) && !empty($registrationInfo['uname'])) {
+                                    $formData->setField('uname', $registrationInfo['uname']);
                                 }
                                 if (isset($registrationInfo['email']) && !empty($registrationInfo['email'])) {
                                     $formData->setField('email', $registrationInfo['email']);
                                 }
+                                if (isset($registrationInfo['hideEmail']) && $registrationInfo['hideEmail'] == true) {
+                                    $formData->setField('emailagain', $registrationInfo['email']);
+                                    $this->view->assign('hideEmail', true);
+                                }
+                                // @todo Add this as soon as #1330 is implemented.
+                                //if (isset($registrationInfo['lang']) && !empty($registrationInfo['lang'])) {
+                                //    $formData->setField('lang', $registrationInfo['lang']);
+                                //}
                             }
 
                             $state = 'display_registration';
