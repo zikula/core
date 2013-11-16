@@ -132,7 +132,7 @@
                     <label class="col-lg-3 control-label" for="menutree_linkclass">{gt text="Construct class list for links"}</label>
                     <div class="col-lg-9">
                         <input id="menutree_linkclass" type="checkbox" name="menutree[linkclass]" class="form-control" {if $menutree_linkclass}checked="checked"{/if}/>
-                        <p class="help-block alert alert-info">{gt text="You can assign a CSS class for each link in the menu. This option allows you to prepare a list of classes, which you will be able to choose."}</p>
+                        <p class="help-block alert alert-info">{gt text="You can assign a CSS class for each link in the menu. This option allows you to prepare a list of classes, from which you will be able to select for application."}</p>
                     </div>
                     <fieldset id="menutree_linkclasses_group" style="margin: 0 1em;">
                         <legend>{gt text="Class list for links"}</legend>
