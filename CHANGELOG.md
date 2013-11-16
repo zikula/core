@@ -93,6 +93,8 @@ Features:
 - Removed old legacy (Smarty plugins, hooks etc, old module types).
 - Made it possible to hide the email adress field during registration for external auth modules.
 - [BC BREAK] Renamed the `$registrationInfo` field `nickname` to `uname` to be less OpenID specific and more general.
+- Login provider now can specify the path to an icon or the name of a FontAwesome icon to display in the login buttons.
+
 
 CHANGELOG - ZIKULA 1.3.6
 ------------------------

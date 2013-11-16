@@ -15,8 +15,8 @@
 
 namespace Zikula\Module\UsersModule\Controller;
 
+use Symfony\Component\Debug\Exception\FatalErrorException;
 use Zikula_View;
-use Zikula_Exception_Fatal;
 
 /**
  * Access to user-initiated authentication actions for the Users module.
@@ -48,121 +48,49 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      *
      * @return string The rendered template.
      *
-     * @throws Zikula_Exception_Fatal Thrown if the $args array is invalid, or contains an invalid value.
+     * @throws \InvalidArgumentException Thrown if the $args array is invalid, or contains an invalid value.
+     * @throws FatalErrorException Thrown if the template could not be found.
      */
     public function getLoginFormFieldsAction(array $args)
     {
         // Parameter extraction and error checking
         if (!isset($args) || !is_array($args)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid \'$args\' parameter was received.'));
+            throw new \InvalidArgumentException($this->__('An invalid \'$args\' parameter was received.'));
         }
 
         if (!isset($args['form_type']) || !is_string($args['form_type'])) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid form type (\'%1$s\') was received.', array(
+            throw new \InvalidArgumentException($this->__('An invalid form type (\'%1$s\') was received.', array(
                 isset($args['form_type']) ? $args['form_type'] : 'NULL'))
             );
         }
 
         if (!isset($args['method']) || !is_string($args['method']) || !$this->supportsAuthenticationMethod($args['method'])) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid method (\'%1$s\') was received.', array(
+            throw new \InvalidArgumentException($this->__('An invalid method (\'%1$s\') was received.', array(
                 isset($args['method']) ? $args['method'] : 'NULL'))
             );
         }
         // End parameter extraction and error checking
 
         if ($this->authenticationMethodIsEnabled($args['method'])) {
-            $templateName = "Authentication/".mb_strtolower("loginformfields_{$args['form_type']}_{$args['method']}.tpl");
+            $templateName = "Authentication/LoginFormFields/{$args['form_type']}/{$args['method']}.tpl";
             if (!$this->view->template_exists($templateName)) {
-                $templateName = "Authentication/".mb_strtolower("loginformfields_default_{$args['method']}.tpl");
+                $templateName = "Authentication/LoginFormFields/Default/{$args['method']}.tpl";
                 if (!$this->view->template_exists($templateName)) {
-                    $templateName = "Authentication/".mb_strtolower("loginformfields_{$args['form_type']}_default.tpl");
+                    $templateName = "Authentication/LoginFormFields/{$args['form_type']}/Default.tpl";
                     if (!$this->view->template_exists($templateName)) {
-                        $templateName = "Authentication/".mb_strtolower("loginformfields_default_default.tpl");
+                        $templateName = "Authentication/LoginFormFields/Default/Default.tpl";
                         if (!$this->view->template_exists($templateName)) {
-                            throw new Zikula_Exception_Fatal($this->__f('A form fields template was not found for the
-                             %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
+                            throw new FatalErrorException($this->__f('A form fields template was not found for the %1$s method using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
                         }
                     }
                 }
             }
 
-            return $this->response($this->view->assign('authentication_method', $args['method'])
-                    ->fetch($templateName));
-        }
-    }
-
-    /**
-     * Renders the template that displays the authentication module's icon in the Users module's login block.
-     *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * - string $args['form_type']   An indicator of the type of form on which the selector will appear.
-     * - string $args['form_action'] The URL to which the selector form should submit.
-     * - string $args['method']      The authentication method for which a selector should be returned.
-     *
-     * @param array $args The parameters for this function.
-     *
-     * @return string The rendered template.
-     *
-     * @throws Zikula_Exception_Fatal Thrown if the $args array is invalid, or contains an invalid value.
-     */
-    public function getAuthenticationMethodSelectorAction(array $args)
-    {
-        // Parameter extraction and error checking
-        if (!isset($args) || !is_array($args)) {
-            throw new Zikula_Exception_Fatal($this->__('An invalid \'$args\' parameter was received.'));
+            $this->view->assign('authentication_method', $args['method']);
+            return $this->response($this->view->fetch($templateName));
         }
 
-        if (!isset($args['form_type']) || !is_string($args['form_type'])) {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid form type (\'%1$s\') was received.', array(
-                isset($args['form_type']) ? $args['form_type'] : 'NULL'))
-            );
-        }
-
-        if (!isset($args['form_action']) || !is_string($args['form_action'])) {
-            throw new Zikula_Exception_Fatal($this->__f('An invalid form action (\'%1$s\') was received.', array(
-                isset($args['form_action']) ? $args['form_action'] : 'NULL'))
-            );
-        }
-
-        if (!isset($args['method']) || !is_string($args['method']) || !$this->supportsAuthenticationMethod($args['method'])) {
-            throw new Zikula_Exception_Fatal($this->__f('Error: An invalid method (\'%1$s\') was received.', array(
-                isset($args['method']) ? $args['method'] : 'NULL'))
-            );
-        }
-        // End parameter extraction and error checking
-
-        if ($this->authenticationMethodIsEnabled($args['method']) || ($args['form_type'] == 'registration' && $args['method'] == 'uname')) {
-            // A hacky way to force displaying the uname/pass button for registration even if it is not activated.
-
-            $templateVars = array(
-                'authentication_method' => array(
-                    'modname'   => $this->name,
-                    'method'    => $args['method'],
-                ),
-                'is_selected'           => isset($args['is_selected']) && $args['is_selected'],
-                'form_type'             => $args['form_type'],
-                'form_action'           => $args['form_action'],
-            );
-
-            $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_{$args['form_type']}_{$args['method']}.tpl");
-            if (!$this->view->template_exists($templateName)) {
-                $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_default_{$args['method']}.tpl");
-                if (!$this->view->template_exists($templateName)) {
-                    $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_{$args['form_type']}_default.tpl");
-                    if (!$this->view->template_exists($templateName)) {
-                        $templateName = "Authentication/".mb_strtolower("authenticationmethodselector_default_default.tpl");
-                        if (!$this->view->template_exists($templateName)) {
-                            throw new Zikula_Exception_Fatal($this->__f('An authentication method selector template was not found for method \'%1$s\' using form type \'%2$s\'.', array($args['method'], $args['form_type'])));
-                        }
-                    }
-                }
-            }
-
-            return $this->response(
-                $this->view->assign($templateVars)
-                     ->fetch($templateName));
-        }
+        return $this->response('');
     }
 
     /**
@@ -183,7 +111,7 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
      * @return boolean True if the authentication information (the user's credentials) pass initial user-interface level validation;
      *                  otherwise false and an error status message is set.
      *
-     * @throws Zikula_Exception_Fatal Thrown if no authentication module name or method is specified, or if the module name or method
+     * @throws FatalErrorException Thrown if no authentication module name or method is specified, or if the module name or method
      *                                  is invalid for this module.
      */
     public function validateAuthenticationInformationAction(array $args)
@@ -194,15 +122,15 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
         $authenticationInfo   = isset($args['authenticationInfo']) ? $args['authenticationInfo'] : array();
 
         if (!is_array($authenticationMethod) || empty($authenticationMethod) || !isset($authenticationMethod['modname'])) {
-            throw new Zikula_Exception_Fatal($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
+            throw new FatalErrorException($this->__('The authentication module name was not specified during an attempt to validate user authentication information.'));
         } elseif ($authenticationMethod['modname'] != 'ZikulaUsersModule') {
-            throw new Zikula_Exception_Fatal($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
+            throw new FatalErrorException($this->__f('Attempt to validate authentication information with incorrect authentication module. Credentials should be validated with the \'%1$s\' module instead.', array($authenticationMethod['modname'])));
         }
 
         if (!isset($authenticationMethod['method'])) {
-            throw new Zikula_Exception_Fatal($this->__('The authentication method name was not specified during an attempt to validate user authentication information.'));
+            throw new FatalErrorException($this->__('The authentication method name was not specified during an attempt to validate user authentication information.'));
         } elseif (($authenticationMethod['method'] != 'uname') && ($authenticationMethod['method'] != 'email') && ($authenticationMethod['method'] != 'unameoremail')) {
-            throw new Zikula_Exception_Fatal($this->__f('Unknown authentication method (\'%1$s\') while attempting to validate user authentication information in the Users module.', array($authenticationMethod['method'])));
+            throw new FatalErrorException($this->__f('Unknown authentication method (\'%1$s\') while attempting to validate user authentication information in the Users module.', array($authenticationMethod['method'])));
         }
 
         if (!is_array($authenticationInfo) || empty($authenticationInfo) || !isset($authenticationInfo['login_id'])
@@ -210,17 +138,17 @@ class AuthenticationController extends \Zikula_Controller_AbstractAuthentication
                 ) {
             // This is an internal error that the user cannot recover from, and should not happen (it is an exceptional situation).
             if ($authenticationMethod['method'] == 'uname') {
-                throw new Zikula_Exception_Fatal($this->__('A user name was not specified, or the user name provided was invalid.'));
+                throw new FatalErrorException($this->__('A user name was not specified, or the user name provided was invalid.'));
             } elseif ($authenticationMethod['method'] == 'email') {
-                throw new Zikula_Exception_Fatal($this->__('An e-mail address was not specified, or the e-mail address provided was invalid.'));
+                throw new FatalErrorException($this->__('An e-mail address was not specified, or the e-mail address provided was invalid.'));
             } elseif ($authenticationMethod['method'] == 'unameoremail') {
-                throw new Zikula_Exception_Fatal($this->__('An user name / e-mail address was not specified, or the user name / e-mail address provided was invalid.'));
+                throw new FatalErrorException($this->__('An user name / e-mail address was not specified, or the user name / e-mail address provided was invalid.'));
             }
         }
 
         if (!isset($authenticationInfo['pass']) || !is_string($authenticationInfo['pass'])) {
             // This is an internal error that the user cannot recover from, and should not happen (it is an exceptional situation).
-            throw new Zikula_Exception_Fatal($this->__('A password was not specified, or the password provided was invalid.'));
+            throw new FatalErrorException($this->__('A password was not specified, or the password provided was invalid.'));
         }
 
         // No need to be too fancy or too specific here. If the login id (the uname or email) is not empty, then that's sufficient.

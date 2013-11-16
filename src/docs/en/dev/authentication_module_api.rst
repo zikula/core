@@ -7,7 +7,7 @@ The Authentication Module API allows the developer to implement alternative
 authentication methods for the Zikula CMS through a custom-built Zikula module.
 
 Zikula, as shipped, includes a standard authentication method via it's _Users_
-system module. This module accepts an maintains a user name (and/or e-mail
+system module. This module accepts and maintains a user name (and/or e-mail
 address) and password, which are used to authenticate a user, granting access
 to the Zikula-based web site (in other words, to _log in_). For many sites, a
 user name (or e-mail address) and password managed by Zikula is sufficient for
@@ -78,10 +78,10 @@ actual "log in" of the user.
 
 In addition to the `authenticateUser()` method, the API defines several other
 methods that must be implemented. Each is fully documented below. The
-[OpenID module](http://code.zikula.org/openid) serves as an example
+[OpenID module](http://github.com/zikula-modules/OpenID) serves as an example
 implementation of an authentication module. It provides authentication methods
 for OpenID, Google Federated Login (including "regular" Google Accounts and
-Google Apps Accounts), VeriSign&trade; SeatBelt, and several other providers
+Google Apps Accounts), VeriSign&trade; and several other providers
 that offer some flavor of the OpenID protocol. This example module is fully
 documented, and can be used as a template for creating your own custom
 authentication module.
@@ -137,8 +137,8 @@ confirmation to an external authenticating system in order to complete the
 process.
 
 An example of a reentrant authentication module is the
-[OpenID module](http://code.zikula.org/openid) available on the
-[Cozi](http://code.zikula.org). When a user attempts to log in with an OpenID,
+[OpenID module](http://github.com/zikula-modules/OpenID).
+When a user attempts to log in with an OpenID,
 the module must pass the OpenID to the external system so that the user can
 provide a password (or otherwise confirm that the Zikula-based site is
 authorized to use the OpenID for the purposes of logging in). Once that
@@ -152,7 +152,7 @@ identifies reentrant authentication modules by calling the `isReentrant()`
 method of the authentication module's `Api_Auth` class, and receiving back a
 value of `true`.
 
-It is important that Zikula identify reentrant authentication processes.
+It is important that Zikula identifies reentrant authentication processes.
 Remember that an authentication module does not encompass the entire log in
 process, but instead only implements the authentication part of the process.
 The _Users_ system module is still in charge of the overall login process, and
@@ -234,12 +234,12 @@ All classes and functions described are required, unless otherwise specified.
 In all cases in this documentation, _ModName_ should be replaced with the
 module name of the custom authentication module. For example, the OpenID
 module is found in the `modules/OpenID` directory, and its classes are named
-`OpenID_Api_Auth` (found in `modules/OpenID/lib/OpenID/Api/Auth.php`),
-`OpenID_Api_Account`, `OpenID_Controller_Auth`, etc.
+`OpenID_Api_Authentication` (found in `modules/OpenID/lib/OpenID/Api/Authentication.php`),
+`OpenID_Api_Account`, `OpenID_Controller_Authentication`, etc.
 
-**ModName_Api_Auth Class**
+**ModName_Api_Authentication Class**
 
-The `ModName_Api_Auth` Class implements the functions necessary for Zikula to
+The `ModName_Api_Authentication` Class implements the functions necessary for Zikula to
 request authentication of user information.
 
 *`isReentrant()` Function*
@@ -326,7 +326,7 @@ Other API classes may be defined by the module as the developer sees fit.
 Controller Classes and Functions
 --------------------------------
 
-**ModName_Controller_Auth Class**
+**ModName_Controller_Authentication Class**
 
 The _Users_ system module's log in screen and log in block have been designed
 to detect and display additional authentication methods as options, and to
@@ -337,41 +337,31 @@ administrator.
 
 In order to use this facility, certain functions must be defined.
 
-*`loginBlockFields()` Function*
+*`getLoginFormFieldsAction()` Function*
 
-(_Optional and ignored if the multiple authentication log in block facility is
-not used, required if this facility is used._) Return the fields to display
-to gather the authentication information (the `'authentication_info'`) entered by the
-user for this authentication method on the _users_ module's log in block. The
-return value should be a rendered template of form fields compatible with the
-_Users_ module's log in block (or the equivalent of a rendered template).
-
-*`loginBlockIcon()` Function*
-
-(_Optional and ignored if the multiple authentication log in block facility is
-not used, required if this facility is used._) Return one or more icons to
-display as part of a list or collection of icons that the user clicks on in
-the _Users_ module's log in block to choose this authentication method. The
-return value should be a rendered template of icons with links to appropriate
-functions (or the equivalent of a rendered template).
-
-*`loginFormFields()` Function*
-
-(_Optional and ignored if the multiple authentication log in form facility is
-not used, required if this facility is used._) Return the fields to display
+Return the fields to display
 to gather the authentication information (the `'authentication_info'`) entered by the
 user for this authentication method on the _Users_ module log in form. The
 return value should be a rendered template of form fields compatible with the
 _Users_ module's log in form (or the equivalent of a rendered template).
 
-*`loginFormIcon()` Function*
+*`validateAuthenticationInformationAction()` Function*
+Performs initial user-interface level validation on the authentication information received by the user from the login process.
+Each authentication method is free to define its own validation of the authentication information (user name and
+password, or the equivalient for the authentication method), however the validation performed should be at the
+user interface level. In other words, if all authentication information fields required by the authentication
+method are supplied and the data is supplied in the proper form, then this validation will likely succeed, whereas
+the actual attempt to log in with those credentials may still fail because the supplied information does not point
+to a user. Likewise, this function may indicate that validation succeeds, but if the password (or password equivalent)
+does not match that on file for the user to whom the credentials resolve then the attempt to log in with those
+credentials may still fail.
 
-(_Optional and ignored if the multiple authentication log in form facility is
-not used, required if this facility is used._) Return one or more icons to
-display as part of a list or collection of icons that the user clicks on in
-the _Users_ module's log in form to choose this authentication method. The
-return value should be a rendered template of icons with links to appropriate
-functions (or the equivalent of a rendered template).
+If this function returns true, indicating that validation is successful, then it *must be possible* (although not
+guaranteed) to successfully log in with the validated credentials. If this function returns false, indicating that
+validation was not successful, then it *must be impossible* to use the supplied credentials to log in under any
+circumstances at all. When this function returns false, it must also set the appropriate error message for the
+user's redirection to an appropriate page by the calling function (or it must ensure that one has been set by some
+subordinate function).
 
 **ModName_Controller_User and/or ModName_Controller_Admin and other Classes**
 

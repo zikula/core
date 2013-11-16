@@ -389,10 +389,10 @@ class UserController extends \Zikula_AbstractController
                                     $formData->setField('emailagain', $registrationInfo['email']);
                                     $this->view->assign('hideEmail', true);
                                 }
-                                # @todo Add this as soon as #1330 is implemented.
-                                #if (isset($registrationInfo['lang']) && !empty($registrationInfo['lang'])) {
-                                #    $formData->setField('lang', $registrationInfo['lang']);
-                                #}
+                                // @todo Add this as soon as #1330 is implemented.
+                                //if (isset($registrationInfo['lang']) && !empty($registrationInfo['lang'])) {
+                                //    $formData->setField('lang', $registrationInfo['lang']);
+                                //}
                             }
 
                             $state = 'display_registration';
