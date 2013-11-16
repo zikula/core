@@ -1,19 +1,22 @@
 <?php
 /**
- * Zikula Application Framework
+ * Copyright Zikula Foundation 2001 - Zikula Application Framework
  *
- * @copyright (c) 2001, Zikula Development Team
- * @link http://www.zikula.org
- * @version $Id$
- * @license GNU/GPL - http://www.gnu.org/copyleft/gpl.html
- * @package Zikula_System_Modules
- * @subpackage Groups
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
  */
 
 /**
  * Internal Groups module function.
  *
  * This function is called internally by the core whenever the module is loaded.  It adds in the information.
+ *
+ * @return array Return tables array.
  */
 function ZikulaGroupsModule_tables()
 {

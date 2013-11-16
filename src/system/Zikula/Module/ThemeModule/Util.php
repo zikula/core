@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -24,12 +23,14 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use ZLoader;
 
 /**
- * Theme_Util class.
+ * Helper functions for the theme module
  */
 class Util
 {
     /**
-     * Regenerates the theme list.
+     * Regenerates the theme list
+     *
+     * @return bool true
      */
     public static function regenerate()
     {

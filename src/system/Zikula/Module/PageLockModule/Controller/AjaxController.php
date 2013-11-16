@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,14 +17,17 @@ use UserUtil;
 use ModUtil;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 
+/**
+ * Ajax controllers for the pagelock module
+ */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
      * refresh a page lock
      *
-     * @returns { hasLock: bool, message: string, lockedBy: string }
+     * @returns AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
      */
-    public function refreshpagelockAction(array $args = array())
+    public function refreshpagelockAction()
     {
         $this->checkAjaxToken();
         $lockName = $this->request->request->get('lockname');
@@ -50,8 +52,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * change a page lock
      *
+     * @returns AjaxResponse containing { hasLock: bool, message: string, lockedBy: string, message:string|null }
      */
-    public function checkpagelockAction(array $args = array())
+    public function checkpagelockAction()
     {
         $this->checkAjaxToken();
         $lockName = $this->request->request->get('lockname');
@@ -60,9 +63,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $lockInfo = ModUtil::apiFunc('ZikulaPageLockModule', 'user', 'requireLock',
                 array('lockName'      => $lockName,
-                'sessionId'     => session_id(),
-                'lockedByTitle' => $uname,
-                'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
+                      'sessionId'     => session_id(),
+                      'lockedByTitle' => $uname,
+                      'lockedByIPNo'  => $_SERVER['REMOTE_ADDR']));
 
         if (!$lockInfo['hasLock']) {
             $lockInfo['message'] = $this->__('Error! Lock broken!');
@@ -72,5 +75,4 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         return new AjaxResponse($lockInfo);
     }
-
 }

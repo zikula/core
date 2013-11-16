@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -28,6 +27,8 @@ use Doctrine\ORM\Mapping as ORM;
 class GroupApplicationEntity extends EntityAccess
 {
     /**
+     * id of the group application
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -35,21 +36,29 @@ class GroupApplicationEntity extends EntityAccess
     private $app_id;
 
     /**
+     * user id of the applicant
+     *
      * @ORM\Column(type="integer")
      */
     private $uid;
 
     /**
+     * group id for the application
+     *
      * @ORM\Column(type="integer")
      */
     private $gid;
 
     /**
+     * Details of the application
+     *
      * @ORM\Column(type="text")
      */
     private $application;
 
     /**
+     * Status of the application
+     *
      * @ORM\Column(type="smallint")
      */
     private $status;

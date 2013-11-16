@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -19,25 +18,28 @@ use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use Zikula\Module\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\Module\GroupsModule\Entity\GroupMembershipEntity;
 use SecurityUtil;
-use LogUtil;
-use DataUtil;
 use UserUtil;
 use ModUtil;
 use System;
 use Zikula;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
- * Groups_Api_User class.
+ * User API functions for the groups module
  */
 class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all group items.
      *
-     * @param int $args['startnum'] record number to start get from.
-     * @param int $args['numitems'] number of items to get.
+     * @param int[] $args {
+     *      @type int $startnum record number to start get from
+     *      @type int $numitems  number of items to get
+     *                     }
      *
-     * @return mixed array of group items, or false on failure.
+     * @return array array of group items
+     *
+     * @throws NotFoundHttpException Thrown if no items are found
      */
     public function getall($args)
     {
@@ -74,7 +76,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for an error with the database code
         if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
         // Return the items
@@ -84,11 +86,15 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get a specific group item.
      *
-     * @param int $args['gid'] id of group item to get.
-     * @param int $args['startnum'] record number to start get from (group membership).
-     * @param int $args['numitems'] number of items to get (group membership).
+     * @param int[] $args {
+     *      @type int $gid      id of group item to get
+     *      @type int $startnum record number to start get from (group membership)
+     *      @type int $numitems number of items to get (group membership)
+     *                     }
      *
-     * @return mixed item array, or false on failure.
+     * @return array|bool item array, or false on failure.
+     *
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
      */
     public function get($args)
     {
@@ -174,9 +180,13 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Utility function to count the number of items held by this module.
      *
-     * @param int $args['gid'] id of group item to get.
+     * @param int[] $args {
+     *      @type int $gid id of group item to get
+     *                     }
      *
      * @return int number of items held by this module.
+     *
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
      */
     public function countgroupmembers($args)
     {
@@ -198,10 +208,15 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all of a user's group memberships.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['clean'] flag to return an array of GIDs.
+     * @param int[] $args {
+     *      @type int $uid   user id
+     *      @type int $clean flag to return an array of GIDs
+     *                     }
      *
-     * @return mixed array of group items, or false on failure.
+     * @return array array of group items
+     *
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided or isn't numeric
+     * @throws NotFoundHttpException Thrown if no group memberships are found for the input user id
      */
     public function getusergroups($args)
     {
@@ -224,7 +239,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // Check for an error with the database code
         if ($groupmembership === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
         $objArray = array();
@@ -249,9 +264,14 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Get all groups.
      *
-     * @param array $args
+     * @param int[] $args {
+     *      @type int $startnum record number to start get from
+     *      @type int $numitems  number of items to get
+     *                     }
      *
-     * @return array of groups.
+     * @return array array of groups.
+     *
+     * @throws NotFoundHttpException Thrown if no groups are found
      */
     public function getallgroups($args)
     {
@@ -294,7 +314,7 @@ class UserApi extends \Zikula_AbstractApi
         $objArray = $query->getResult();
 
         if ($objArray === false) {
-            return LogUtil::registerError($this->__('Error! Could not load data.'));
+            throw new NotFoundHttpException($this->__('Error! Could not load data.'));
         }
 
         $uid = UserUtil::getVar('uid');
@@ -384,10 +404,17 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Save application.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gid'] group id.
+     * @param int[] $args {
+     *      @type int $uid user id
+     *      @type int $gid group id
+     *                     }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws AccessDeniedHttpException Thrown if the current user does not have read access to the group.
+     * @throws NotFoundHttpException Thrown if the group isn't found
+     * @throws \RuntimeException Thrown if the user has already applied for this group
      */
     public function saveapplication($args)
     {
@@ -399,11 +426,11 @@ class UserApi extends \Zikula_AbstractApi
         $item = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$item) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new \Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         // Check in case the user already applied
@@ -412,7 +439,7 @@ class UserApi extends \Zikula_AbstractApi
                               'uid' => $args['uid']));
 
         if ($pending) {
-            return LogUtil::registerError($this->__('Error! You have already applied for membership of this group.'));
+            throw new \RuntimeException($this->__('Error! You have already applied for membership of this group.'));
         }
 
         $application = new GroupApplicationEntity;
@@ -430,9 +457,14 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Delete app from group_applications.
      *
-     * @param array $args
+     * @param int[] $args {
+     *      @type int $gid group id
+     *      @type int $uid user id
+     *                     }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */
     public function cancelapp($args)
     {
@@ -458,10 +490,14 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Check if user is pending.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gid'] group id.
+     * @param int[] $args {
+     *      @type int $uid user id
+     *      @type int $gid group id
+     *                     }
      *
-     * @return boolean
+     * @return bool true if user has a pending application to the group, false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */
     public function isuserpending($args)
     {
@@ -482,11 +518,20 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Update user.
      *
-     * @param int    $args['uid']     user id.
-     * @param int    $args['gtype'].
-     * @param string $args['action'].
+     * @param mixed[] $args {
+     *      @type int    $uid    user id
+     *      @type int    $gtype  group type
+     *      @type string $action action
+     *                       }
      *
-     * @return boolean
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either gtype or uid are not set or not numeric or 
+     *                                          if action isn't set or one of 'subscribe', 'unsubscribe' or 'cancel'
+     * @throws AccessDeniedHttpException Thrown if the user is not logged in.
+     * @throws \RuntimeException Thrown if the user couldn't be added to the group, 
+     *                                  if the application to the group couldn't be cancelled, or
+     *                                  if the user couldn't be removed from the group
      */
     public function userupdate($args)
     {
@@ -501,7 +546,7 @@ class UserApi extends \Zikula_AbstractApi
         }
 
         if (!UserUtil::isLoggedIn()) {
-            LogUtil::registerError($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedHttpException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $userid = UserUtil::getVar('uid');
@@ -538,7 +583,7 @@ class UserApi extends \Zikula_AbstractApi
                                       'uid' => $userid));
 
                 if ($save == false) {
-                    return LogUtil::registerError($this->__('Error! Could not add the user to the group.'));
+                    throw new \RuntimeException($this->__('Error! Could not add the user to the group.'));
                 }
             }
         } elseif ($args['action'] == 'cancel') {
@@ -548,7 +593,7 @@ class UserApi extends \Zikula_AbstractApi
                                   'uid' => $userid));
 
             if ($save == false) {
-                return LogUtil::registerError($this->__('Error! Could not remove the user from the group.'));
+                throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         } else {
 
@@ -557,7 +602,7 @@ class UserApi extends \Zikula_AbstractApi
                                   'uid' => $userid));
 
             if ($save == false) {
-                return LogUtil::registerError($this->__('Error! Could not remove the user from the group.'));
+                throw new \RuntimeException($this->__('Error! Could not remove the user from the group.'));
             }
         }
 
@@ -567,10 +612,16 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Add a user to a group item.
      *
-     * @param int $args['gid'] the ID of the item.
-     * @param int $args['uid'] the ID of the user.
+     * @param int[] $args {
+     *      @type int $gid the ID of the item
+     *      @type int $uid the ID of the user
+     *                     }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful, false otherwise
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws NotFoundHttpException Thrown if the group cannot be found
+     * @throws AccessDeniedHttpException Thrown if the current user does not have read access to the group.
      */
     public function adduser($args)
     {
@@ -584,12 +635,12 @@ class UserApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new \Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         // verify if the user is alredy a member of this group
@@ -611,7 +662,7 @@ class UserApi extends \Zikula_AbstractApi
                 return false;
             }
 
-            return LogUtil::registerError($this->__('Error! You are already a member of this group.'));
+            throw new \RuntimeException($this->__('Error! You are already a member of this group.'));
         }
 
         // Let the calling process know that we have finished successfully
@@ -621,10 +672,16 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Remove a user from a group item.
      *
-     * @param int $args['gid'] the ID of the item.
-     * @param int $args['uid'] the ID of the user.
+     * @param int[] $args {
+     *      @type int $gid the ID of the item
+     *      @type int $uid the ID of the user
+     *                     }
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws NotFoundHttpException Thrown if the group cannot be found
+     * @throws AccessDeniedHttpException Thrown if the current user does not have read access tp the group.
      */
     public function removeuser($args)
     {
@@ -637,12 +694,12 @@ class UserApi extends \Zikula_AbstractApi
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $args['gid']));
 
         if (!$group) {
-            return LogUtil::registerError($this->__('Sorry! No such item found.'));
+            throw new NotFoundHttpException($this->__('Sorry! No such item found.'));
         }
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaGroupsModule::', $args['gid'] . '::', ACCESS_READ)) {
-            throw new \Zikula_Exception_Forbidden();
+            throw new AccessDeniedHttpException();
         }
 
         // delete user from group
@@ -661,7 +718,7 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Find who is online.
      *
-     * @return mixed array of users, or false.
+     * @return array array of users
      */
     public function whosonline()
     {
@@ -684,10 +741,14 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Check if a user is a member of a group.
      *
-     * @param int $args['uid'] user id.
-     * @param int $args['gid'] group id.
+     * @param int[] $args {
+     *      @type int $uid user id
+     *      @type int $gid group id
+     *                     }
      *
      * @return boolean true if member of a group, false otherwise.
+     *
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
      */
     public function isgroupmember($args)
     {
@@ -719,5 +780,4 @@ class UserApi extends \Zikula_AbstractApi
         // report the user is a member of the group
         return true;
     }
-
 }

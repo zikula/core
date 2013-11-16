@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -21,7 +20,9 @@ use Zikula_Event;
 use ZLanguage;
 
 /**
- * EventHandlers class.
+ * Event Handler for the settings moodule.
+ *
+ * Listens for installer.module.deactivated to change the start page if the deactivated module was the default module.
  */
 class ModuleListener
 {

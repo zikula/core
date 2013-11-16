@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -29,9 +28,11 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
 use FileUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
- * SecurityCenter_Controller_Admin class.
+ * Administrative controllers for the security centre module
  */
 class AdminController extends \Zikula_AbstractController
 {
@@ -49,14 +50,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * The main administration function.
      *
-     * This function is the default function, and is called whenever the
-     * module is initiated without defining arguments.  As such it can
-     * be used for a number of things, but most commonly it either just
-     * shows the module menu and returns or calls whatever the module
-     * designer feels should be the default function (often this is the
-     * view() function).
-     *
-     * @return string HTML string.
+     * @return void
      */
     public function indexAction()
     {
@@ -65,7 +59,11 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
+     * The main administration function.
+     *
      * @deprecated since 1.3.6
+     *
+     * @return void
      */
     public function mainAction()
     {
@@ -76,13 +74,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * This is a standard function to modify the configuration parameters of the module.
      *
-     * @return string HTML string.
+     * @return Response symfony response object.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function modifyconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $this->view->assign('itemsperpage', $this->getVar('itemsperpage'));
@@ -96,11 +96,13 @@ class AdminController extends \Zikula_AbstractController
     }
 
     /**
-     * This is a standard function to update the configuration parameters of the
-     * module given the information passed back by the modification form
-     * @see Admin/modifyconfig()
+     * Ppdate the configuration parameters of the module given the information passed back by the modification form
      *
      * @return bool true if successful, false otherwise.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     * @throws \RuntimeException Thrown if the session path is invalid or 
+     *                                  if the phpids rule is invalid
      */
     public function updateconfigAction()
     {
@@ -108,7 +110,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $validates = true;
@@ -177,8 +179,7 @@ class AdminController extends \Zikula_AbstractController
 
             if ($cause_logout == false) {
                 // an error occured - we do not change the way of storing session data
-                LogUtil::registerStatus($this->__('Error! Session path not writeable!'));
-                $storeTypeCanBeWritten = false;
+                throw new \RuntimeException($this->__('Error! Session path not writeable!'));
             }
         }
         if ($storeTypeCanBeWritten == true) {
@@ -259,7 +260,7 @@ class AdminController extends \Zikula_AbstractController
         if (is_readable($idsrulepath)) {
             System::setVar('idsrulepath', $idsrulepath);
         } else {
-            LogUtil::registerError($this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', $idsrulepath));
+            throw new \RuntimeException($this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', $idsrulepath));
             $validates = false;
         }
 
@@ -336,12 +337,14 @@ class AdminController extends \Zikula_AbstractController
      * HTMLPurifier configuration.
      *
      * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function purifierconfigAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $reset = (bool)($this->request->get('reset', null) == 'default');
@@ -456,6 +459,8 @@ class AdminController extends \Zikula_AbstractController
      * Update HTMLPurifier configuration.
      *
      * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updatepurifierconfigAction()
     {
@@ -463,7 +468,7 @@ class AdminController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // Load HTMLPurifier Classes
@@ -573,13 +578,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Function to view ids log events.
      *
-     * @return string HTML output string.
+     * @return Response symfony response object.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function viewidslogAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // sorting
@@ -653,12 +660,14 @@ class AdminController extends \Zikula_AbstractController
      * Export ids log.
      *
      * @return string
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function exportidslogAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get input values
@@ -768,12 +777,14 @@ class AdminController extends \Zikula_AbstractController
      * Purge ids log.
      *
      * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function purgeidslogAction()
     {
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $confirmation = $this->request->get('confirmation');
@@ -800,13 +811,15 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Display the allowed html form.
      *
-     * @return string html output.
+     * @return Response symfony response object.
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function allowedhtmlAction(array $args = array())
     {
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         $this->view->assign('htmltags', $this->_gethtmltags())
@@ -825,7 +838,9 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Update allowed html settings.
      *
-     * @return mixed true if successful, false if unsuccessful, error string otherwise.
+     * @return void
+     *
+     * @throws AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
      */
     public function updateallowedhtmlAction(array $args = array())
     {
@@ -833,7 +848,7 @@ class AdminController extends \Zikula_AbstractController
 
         // security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // update the allowed html settings
@@ -865,7 +880,7 @@ class AdminController extends \Zikula_AbstractController
     /**
      * Utility function to return the list of available tags.
      *
-     * @return string html output.
+     * @return Response symfony response object.
      */
     private function _gethtmltags()
     {
@@ -982,5 +997,4 @@ class AdminController extends \Zikula_AbstractController
                 'video' => 'http://www.w3schools.com/html5/tag_video.asp',
                 'wbr' => 'http://www.w3schools.com/html5/tag_wbr.asp');
     }
-
 }

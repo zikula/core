@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,9 +17,11 @@ use Zikula_View;
 use SecurityUtil;
 use BlockUtil;
 use ModUtil;
-use LogUtil;
 use FormUtil;
 
+/**
+ * Block to display a custom template
+ */
 class RenderBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -83,8 +84,13 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Display the block
      *
-     * @param         $blockinfo blockinfo array
-     * @return string HTML output string
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string rendered block output
      */
     public function display($blockinfo)
     {
@@ -107,7 +113,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // If the template is not speficied or empty it register an error for the admin
         if (!isset($vars['template']) || empty($vars['template'])) {
             if ($showerror) {
-                LogUtil::registerError($this->__f('Misconfigured block. ID: %s', $blockinfo['bid']));
+                throw new \RuntimeException($this->__f('Misconfigured block. ID: %s', $blockinfo['bid']));
             }
 
             return;
@@ -119,7 +125,7 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
         // checks the existance of the template
         if (!$this->view->template_exists($vars['template'])) {
             if ($showerror) {
-                LogUtil::registerError($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', array($vars['module'], $blockinfo['bid'])));
+                throw new \RuntimeException($this->__f('The specified template for the render block doesn\'t exists for the \'%1$s\' module. Block ID: %2$s', array($vars['module'], $blockinfo['bid'])));
             }
 
             return;
@@ -146,8 +152,13 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Modify the block
      *
-     * @param         $blockinfo blockinfo array
-     * @return string HTML output string
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string rendered block modification form components
      */
     public function modify($blockinfo)
     {
@@ -191,7 +202,12 @@ class RenderBlock extends \Zikula_Controller_AbstractBlock
     /**
      * Update the block
      *
-     * @param        $blockinfo old blockinfo array
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
      * @return array new blockinfo array
      */
     public function update($blockinfo)

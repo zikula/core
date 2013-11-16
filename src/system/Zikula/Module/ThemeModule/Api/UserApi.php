@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -24,11 +23,23 @@ use System;
 use SecurityUtil;
 use UserUtil;
 use ZLanguage;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * API functions used by user controllers
+ */
 class UserApi extends \Zikula_AbstractApi
 {
     /**
      * Get all settings for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *                       }
+     *
+     * @return array array of defined theme variables
+     *
+     * @throws \InvalidArgumentException Thrown if the theme parameter isn't provided or is empty
      */
     public function getvariables($args)
     {
@@ -49,6 +60,15 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Format the variables of a theme or pageconfiguration
      * It uses the theme additional variables as a base which should be variables specifications
+     *
+     * @param mixed[] $args {
+     *      @type string $theme     name of the theme
+     *      @type array  $variables array of theme variables
+     *                      }
+     *
+     * @return array array of defined theme variables
+     *
+     * @throws \InvalidArgumentException Thrown if either the theme or variables parameters aren't provided or are empty
      */
     public function formatvariables($args)
     {
@@ -95,6 +115,12 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Internal variable options processor
+     *
+     * @param array  $options the options array of a variable
+     * @param array  $args settings to use when processing the variable
+     * @param string $dom language domain
+     *
+     * @return void
      */
     private function _variable_options(&$options, $args, $dom)
     {
@@ -111,6 +137,14 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get all paletters for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *                       }
+     *
+     * @return array array of defined theme palettes
+     *
+     * @throws \InvalidArgumentException Thrown of the theme parameter isn't provided or is empty
      */
     public function getpalettes($args)
     {
@@ -124,6 +158,15 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get one palette for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme   name of the theme
+     *      @type string $palette name of the palette
+     *                       }
+     *
+     * @return array array of palette colours
+     *
+     * @throws \InvalidArgumentException Thrown of the theme parameter isn't provided or is empty
      */
     public function getpalette($args)
     {
@@ -139,6 +182,14 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get a list of palettes available for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *                       }
+     *
+     * @return array array of defined palette names
+     *
+     * @throws \InvalidArgumentException Thrown of the theme parameter isn't provided or is empty
      */
     public function getpalettenames($args)
     {
@@ -158,6 +209,14 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get all page configurations for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *                       }
+     *
+     * @return array array of defined theme page configurations
+     *
+     * @throws \InvalidArgumentException Thrown of the theme parameter isn't provided or is empty
      */
     public function getpageconfigurations($args)
     {
@@ -171,6 +230,15 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get a page configuration for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme    name of the theme
+     *      @type string $filename filename of the page configuration
+     *                       }
+     *
+     * @return array array of page configuration parameters
+     *
+     * @throws \InvalidArgumentException Thrown if either the theme or filename parameters aren't provided or are empty
      */
     public function getpageconfiguration($args)
     {
@@ -202,6 +270,14 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get all configurations available for a theme
+     *
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *                       }
+     *
+     * @return array array of defined page configurations
+     *
+     * @throws \InvalidArgumentException Thrown of the theme parameter isn't provided or is empty
      */
     public function getconfigurations($args)
     {
@@ -223,6 +299,14 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Get all templates for a theme
+     *
+     * @param mixed[] $args {
+     *      @type string $theme name of the theme
+     *                      }
+     *
+     * @return array array of defined theme templates
+     *
+     * @throws \InvalidArgumentException Thrown of the theme parameter isn't provided or is empty
      */
     public function gettemplates($args)
     {
@@ -255,6 +339,14 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * read an ini file from either the master theme config or running config
      *
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *      @type string $file  name of the ini file to read
+     *                      }
+     *
+     * @return array the parsed ini file
+     *
+     * @throws \InvalidArgumentException Thrown if either the theme or file parameters aren't provided or are empty
      */
     public function _readinifile($args)
     {
@@ -291,7 +383,15 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * write an ini file to the running configuration directory
      *
-     * @return boolean
+     * @param string[] $args {
+     *      @type string $theme name of the theme
+     *      @type string $file  name of the file to write
+     *                      }
+     *
+     * @return bool true if successful
+     *
+     * @throws \InvalidArgumentException Thrown if either the theme or file parameters aren't provided or are empty
+     * @throws \RuntimeException Thrown if the file cannot be opened or written to.
      */
     public function writeinifile($args)
     {
@@ -331,19 +431,19 @@ class UserApi extends \Zikula_AbstractApi
             if (!file_exists($zpath.'/'.$osfile) || is_writable($zpath.'/'.$osfile)) {
                 $handle = fopen($zpath.'/'.$osfile, 'w+');
             } else {
-                return LogUtil::registerError($this->__f('Error! Cannot write in "%1$s" or "%2$s" to store the contents of "%3$s"', array($tpath, $zpath, $osfile)));
+                throw new \RuntimeException($this->__f('Error! Cannot write in "%1$s" or "%2$s" to store the contents of "%3$s"', array($tpath, $zpath, $osfile)));
             }
         }
 
         // validate the resulting handler and the write operation result
         if (!isset($handle) || !is_resource($handle)) {
-            return LogUtil::registerError($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
+            throw new \RuntimeException($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
 
         } else {
             if (fwrite($handle, $content) === false) {
                 fclose($handle);
 
-                return LogUtil::registerError($this->__f('Error! Could not write to file: %s', $osfile));
+                throw new \RuntimeException($this->__f('Error! Could not write to file: %s', $osfile));
             }
             fclose($handle);
 
@@ -354,7 +454,12 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * create an ini file
      *
-     * @return mixed string ini file contents if succesful, boolean false otherwise
+     * @param mixed[] $args {
+     *      @type array $assoc_arr      name of the content array
+     &      @type bool  $has_sections   content array has sections
+     *                      }
+     *
+     * @return string file content if successful, false otherwise
      */
     public function createinifile($args)
     {
@@ -395,16 +500,24 @@ class UserApi extends \Zikula_AbstractApi
 
     /**
      * Reset the current users theme to the site default
+     *
+     * @param mixed[] $args {
+     *                      }
+     *
+     * @return bool true if successful
+     *
+     * @throws \AccessDeniedException Thrown if the user doesn't have comment permissions over the theme module
+     * @throws \RuntimeException Thrown if theme switching is disabled
      */
     public function resettodefault($args)
     {
         // Security check
         if (!System::getVar('theme_change')) {
-            return LogUtil::registerError($this->__('Notice: Theme switching is currently disabled.'));
+            throw new \RuntimeException($this->__('Notice: Theme switching is currently disabled.'));
         }
 
         if (!SecurityUtil::checkPermission('ZikulaThemeModule::', '::', ACCESS_COMMENT)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // update the users record to an empty string - if this user var is empty then the site default is used.
@@ -416,7 +529,9 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Retrieves the theme domain
      *
-     * @param string $themename Name of the theme to parse
+     * @param string $themename theme name to get the domain
+     *
+     * @return string language domain assoicated with the theme
      */
     public function _getthemedomain($themename)
     {

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,6 +21,9 @@ use ModUtil;
 use CacheUtil;
 use HTMLPurifier;
 
+/**
+ * Utility methods for the security center module
+ */
 class Util
 {
     /**
@@ -92,9 +94,9 @@ class Util
     /**
      * Retrieves configuration array for HTML Purifier.
      *
-     * @param array $args All parameters for the function.
-     *                    boolean $args['forcedefault'] true to force return of default config / false to auto detect
-     * @param
+     * @param bool[] $args {
+     *      @type bool $forcedefault true to force return of default config / false to auto detect
+     *                    }
      *
      * @return array HTML Purifier configuration settings.
      */
@@ -123,9 +125,10 @@ class Util
      * The instance returned is either a newly created instance, or previously created instance
      * that has been cached in a static variable.
      *
-     * @param array $args All arguments for the function.
-     *                    bool $args['force'] If true, the HTMLPurifier instance will be generated anew, rather than using an
-     *                                          existing instance from the static variable.
+     * @param bool[] $args {
+     *      @type bool $force If true, the HTMLPurifier instance will be generated anew, rather than using an
+     *                        existing instance from the static variable.
+     *                     }
      *
      * @staticvar array $purifier The HTMLPurifier instance.
      *

@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -24,6 +23,9 @@ use DateUtil;
 use ServiceUtil;
 use Zikula\Module\PageLockModule\Entity\PageLockEntity;
 
+/**
+ * API functions used by user controllers
+ */
 class UserApi extends \Zikula_AbstractApi
 {
     /**
@@ -35,11 +37,11 @@ class UserApi extends \Zikula_AbstractApi
     /**
      * Add the page locking code to the page header
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * @param $args['lockName']         The name of the lock to be released
-     * @param $args['returnUrl']        The URL to return control to (optional) (default: null)
-     * @param $args['ignoreEmptyLock']  Ignore an empty lock name (optional) (default: false)
+     * @param mixed[] $args {
+     *      @type string $lockName         The name of the lock to be released
+     *      @type string $returnUrl        The URL to return control to (optional) (default: null)
+     *      @type bool   $ignoreEmptyLock  Ignore an empty lock name (optional) (default: false)
+     *                      }
      *
      * @returns bool true
      */
@@ -104,14 +106,13 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         return true;
     }
 
-
     /**
      * Generate a lock on a page
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * @param $args['lockName']   The name of the page to create/update a lock on
-     * @param $args['sessionId']  The ID of the session owning the lock (optional) (default: current session ID
+     * @param string[] $args { 
+     *      @type string $lockName   The name of the page to create/update a lock on
+     *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID
+     *                       }
      *
      * @returns array('haslock' => true if this user has a lock, false otherwise,
      *                'lockedBy' => if 'haslock' is false then the user who has the lock, null otherwise)
@@ -184,14 +185,13 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         return array('hasLock' => true);
     }
 
-
     /**
      * Get all the locks for a given page
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * @param $args['lockName']   The name of the page to return locks for
-     * @param $args['sessionId']  The ID of the session owning the lock (optional) (default: current session ID)
+     * @param string[] $args {
+     *      @type string $lockName   The name of the page to return locks for
+     *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID)
+     *                       }
      *
      * @return array array of locks for $args['lockName']
      */
@@ -233,10 +233,10 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
     /**
      * Releases a lock on a page
      *
-     * Parameters passed in the $args array:
-     * -------------------------------------
-     * @param $args['lockName']   The name of the lock to be released
-     * @param $args['sessionId']  The ID of the session owning the lock (optional) (default: current session ID)
+     * @param string[] $args {
+     *      @type string $lockName   The name of the lock to be released
+     *      @type string $sessionId  The ID of the session owning the lock (optional) (default: current session ID)
+     *                       }
      *
      * @return bool true
      */
@@ -267,7 +267,7 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
     /**
      * Internal locking mechanism to avoid concurrency inside the PageLock functions
      *
-     * @return null
+     * @return void
      */
     private function _pageLockRequireAccess()
     {
@@ -279,20 +279,19 @@ PageLock.LockedHTML = '" . $lockedHtml . "';
         if ($PageLockAccessCount == 0) {
             global $PageLockFile;
             $ostemp = DataUtil::formatForOS(ServiceUtil::get('service_container')->getParameter('temp_dir'));
-            $PageLockFile = fopen($ostemp . '/pagelock.lock', "w+");
+            $PageLockFile = fopen($ostemp . '/pagelock.lock', 'w+');
             flock($PageLockFile, LOCK_EX);
-            fwrite($PageLockFile, "This is a locking file for synchronizing access to the PageLock module. Please do not delete.");
+            fwrite($PageLockFile, 'This is a locking file for synchronizing access to the PageLock module. Please do not delete.');
             fflush($PageLockFile);
         }
 
         ++$PageLockAccessCount;
     }
 
-
     /**
      * Internal locking mechanism to avoid concurrency inside the PageLock functions
      *
-     * @return null
+     * @return void
      */
     private function _pageLockReleaseAccess()
     {

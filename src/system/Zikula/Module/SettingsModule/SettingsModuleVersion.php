@@ -6,16 +6,23 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
 
 namespace Zikula\Module\SettingsModule;
 
+/**
+ * Version information for the settings module
+ */
 class SettingsModuleVersion extends \Zikula_AbstractVersion
 {
+    /**
+     * Generate an array of meta data about this module
+     *
+     * @return array meta data array
+     */
     public function getMetaData()
     {
         $meta = array();

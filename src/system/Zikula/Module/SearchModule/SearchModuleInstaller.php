@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -17,12 +16,18 @@ namespace Zikula\Module\SearchModule;
 use EventUtil;
 use DoctrineHelper;
 
+/**
+ * installation routines for the search module
+ */
 class SearchModuleInstaller extends \Zikula_AbstractInstaller
 {
     /**
      * initialise the Search module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
+     *
+     * @return boolean True if initialisation successful, false otherwise.
      */
     public function install()
     {
@@ -53,6 +58,16 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
         return true;
     }
 
+    /**
+     * upgrade the module from an old version
+     *
+     * This function must consider all the released versions of the module!
+     * If the upgrade fails at some point, it returns the last upgraded version.
+     *
+     * @param  string $oldversion version number string to upgrade from
+     *
+     * @return bool|string true on success, last valid version string or false if fails
+     */
     public function upgrade($oldversion)
     {
         // Upgrade dependent on old version number
@@ -71,8 +86,11 @@ class SearchModuleInstaller extends \Zikula_AbstractInstaller
 
     /**
      * Delete the Search module
+     *
      * This function is only ever called once during the lifetime of a particular
      * module instance
+     *
+     * @return bool true if deletion successful, false otherwise
      */
     public function uninstall()
     {

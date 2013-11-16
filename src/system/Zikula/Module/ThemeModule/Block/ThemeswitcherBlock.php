@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -25,6 +24,9 @@ use Zikula_View;
 use FormUtil;
 use Zikula_View_Theme;
 
+/**
+ * Block to display a theme switching interface
+ */
 class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
 {
     /**
@@ -61,6 +63,17 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
                      'requirement'       => $requirement_message);
     }
 
+    /**
+     * render the theme switching block
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string rendered block
+     */
     public function display($blockinfo)
     {
         // check if the module is available
@@ -123,6 +136,17 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         return BlockUtil::themeBlock($blockinfo);
     }
 
+    /**
+     * render the theme switching block modifcation options
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return string rendered block modify form components
+     */
     public function modify($blockinfo)
     {
         // Get current content
@@ -143,6 +167,17 @@ class ThemeswitcherBlock extends \Zikula_Controller_AbstractBlock
         return $this->view->fetch('Block/themeswitcher_modify.tpl');
     }
 
+    /**
+     * update the theme switching block
+     *
+     * @param mixed[] $blockinfo {
+     *      @type string $title   the title of the block
+     *      @type int    $bid     the id of the block
+     *      @type string $content the seralized block content array
+     *                            }
+     *
+     * @return array modified block info array
+     */
     public function update($blockinfo)
     {
         // Get current content

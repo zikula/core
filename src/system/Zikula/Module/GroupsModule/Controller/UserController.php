@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -24,18 +23,19 @@ use Zikula\Module\GroupsModule\Helper\CommonHelper;
 use LogUtil;
 use DataUtil;
 use System;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * User controllers for the groups module
+ */
 class UserController extends \Zikula_AbstractController
 {
     /**
      * Groups Module main user function
-     * This function is the default function, and is called whenever the
-     * module is initiated without defining arguments.  As such it can
-     * be used for a number of things, but most commonly it either just
-     * shows the module menu and returns or calls whatever the module
-     * designer feels should be the default function (often this is the
-     * view() function)
-     * @return string HTML output string
+     *
+     * @return void
      */
     public function mainAction()
     {
@@ -45,9 +45,8 @@ class UserController extends \Zikula_AbstractController
 
     /**
      * Display items
-     * This is a standard function to provide detailed information
-     * available from the module.
-     * @return string HTML string
+     *
+     * @return Response symfony response object
      */
     public function viewAction()
     {
@@ -122,6 +121,16 @@ class UserController extends \Zikula_AbstractController
     /**
      * display the membership of a public group
      *
+     * @return Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the group isn't set or isn't numeric or
+     *                                          if the action isn't one of subscribe|unsubscribe|cancel
+     * @throws AccessDeniedHttpException Thrown if the user isn't logged in
+     * @throws NotFoundHttpException Thrown if the group cannot be found
+     * @throws \RuntimeException Thrown if the user is already a member of the group or
+     *                                  if the group cannot be applied for or
+     *                                  if the maximum user count for the group has been reached or
+     *                                  if the group is closed
      */
     public function membershipAction()
     {
@@ -137,11 +146,11 @@ class UserController extends \Zikula_AbstractController
         }
 
         if ($action != 'subscribe' && $action != 'unsubscribe' && $action != 'cancel') {
-            return LogUtil::registerArgsError(ModUtil::url('ZikulaGroupsModule', 'user', 'view'));
+            throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
         if (!UserUtil::isLoggedIn()) {
-            return LogUtil::registerError($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedHttpException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
 
         $uid = UserUtil::getVar('uid');
@@ -150,7 +159,7 @@ class UserController extends \Zikula_AbstractController
         $group = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'get', array('gid' => $gid));
 
         if (!$group) {
-            return DataUtil::formatForDisplay($this->__("Error! That group does not exist."));
+            throw new NotFoundHttpException($this->__('Error! That group does not exist.'));
         }
 
         // And lastly, we must check if he didn't rewrote the url,
@@ -158,21 +167,21 @@ class UserController extends \Zikula_AbstractController
         // $isopen = ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'getginfo', array('gid' => $gid));
         if ($action == 'subscribe') {
             if (ModUtil::apiFunc('ZikulaGroupsModule', 'user', 'isgroupmember',array('gid' => $gid, 'uid' => $uid))) {
-                return DataUtil::formatForDisplay($this->__('Error! You are already a member of this group.'));
+                throw new \RuntimeException($this->__('Error! You are already a member of this group.'));
             }
 
             if ($group['gtype'] == CommonHelper::GTYPE_CORE) {
-                return DataUtil::formatForDisplay($this->__('Sorry! You cannot apply for membership of that group.'));
+                throw new \RuntimeException($this->__('Sorry! You cannot apply for membership of that group.'));
             }
 
             if ($group['nbumax'] != 0) {
                 if (($group['nbumax'] - $group['nbuser']) <= 0) {
-                    return DataUtil::formatForDisplay($this->__('Sorry! That group has reached full membership.'));
+                    throw new \RuntimeException($this->__('Sorry! That group has reached full membership.'));
                 }
             }
 
             if ($group['state'] == CommonHelper::STATE_CLOSED) {
-                return DataUtil::formatForDisplay($this->__('Sorry! That group is closed.'));
+                throw new \RuntimeException($this->__('Sorry! That group is closed.'));
             }
         }
 
@@ -186,10 +195,15 @@ class UserController extends \Zikula_AbstractController
         return $this->response($this->view->fetch('User/membership.tpl'));
     }
 
-    /*
- * update a users group applications
- *
-    */
+    /**
+     * update a users group applications
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentsException Thrown if the group id isn't set or isn't numeric or
+     *                                           if no action is requested
+     * @throws \RuntimeException Thrown if the user hasn't confirmed the action
+     */
     public function userupdateAction()
     {
         $this->checkCsrfToken();
@@ -204,7 +218,7 @@ class UserController extends \Zikula_AbstractController
         }
 
         if (empty($tag)) {
-            return DataUtil::formatForDisplay($this->__('Error! You must click on the checkbox to confirm your action.'));
+            throw new \RuntimeException($this->__('Error! You must click on the checkbox to confirm your action.'));
         }
 
         $applytext = '';
@@ -230,6 +244,9 @@ class UserController extends \Zikula_AbstractController
     /**
      * display the membership of a group
      *
+     * @return Response symfony response object
+     *
+     * @throws \InvalidArgumentException Thrown if the startnum parameter isn't numeric
      */
     public function memberslistAction()
     {
