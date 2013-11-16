@@ -242,7 +242,7 @@ class AdminController extends \Zikula_AbstractController
                                         'csrftoken' => $csrftoken,
                                         'letter' => $letter,
                                         'state' => $state)),
-                                        'image' => 'minus-sign-alt text-danger',
+                                        'image' => 'minus-circle text-danger',
                                         'color' => '#c00',
                                         'title' => $this->__f('Deactivate \'%s\' module', $mod['name']));
                             }
