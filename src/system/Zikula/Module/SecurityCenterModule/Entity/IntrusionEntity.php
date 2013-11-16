@@ -1,4 +1,15 @@
 <?php
+/**
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
+ *
+ * This work is contributed to the Zikula Foundation under one or more
+ * Contributor Agreements and licensed to You under the following license:
+ *
+ * @license GNU/LGPLv3 (or at your option, any later version).
+ *
+ * Please see the NOTICE file distributed with this source code for further
+ * information regarding copyright and licensing.
+ */
 
 namespace Zikula\Module\SecurityCenterModule\Entity;
 
@@ -14,6 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
 class IntrusionEntity extends EntityAccess
 {
     /**
+     * ID of the entity
+     *
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
@@ -23,6 +36,8 @@ class IntrusionEntity extends EntityAccess
     private $id;
 
     /**
+     * name of the entity
+     *
      * @var string $name
      *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
@@ -30,6 +45,8 @@ class IntrusionEntity extends EntityAccess
     private $name;
 
     /**
+     * tag
+     *
      * @var string $tag
      *
      * @ORM\Column(name="tag", type="string", length=40, nullable=true)
@@ -37,6 +54,8 @@ class IntrusionEntity extends EntityAccess
     private $tag;
 
     /**
+     * value
+     *
      * @var text $value
      *
      * @ORM\Column(name="value", type="text", nullable=false)
@@ -44,6 +63,8 @@ class IntrusionEntity extends EntityAccess
     private $value;
 
     /**
+     * page called when intrusion was detected
+     *
      * @var text $page
      *
      * @ORM\Column(name="page", type="text", nullable=false)
@@ -51,12 +72,16 @@ class IntrusionEntity extends EntityAccess
     private $page;
 
     /**
+     * user id assoicated with the intrusion
+     *
      * @ORM\ManyToOne(targetEntity="Zikula\Module\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
      */
     private $user;
 
     /**
+     * ip address of the intrustion
+     *
      * @var string $ip
      *
      * @ORM\Column(name="ip", type="string", length=40, nullable=false)
@@ -64,6 +89,8 @@ class IntrusionEntity extends EntityAccess
     private $ip;
 
     /**
+     * impact
+     *
      * @var integer $impact
      *
      * @ORM\Column(name="impact", type="integer", nullable=false)
@@ -71,6 +98,8 @@ class IntrusionEntity extends EntityAccess
     private $impact;
 
     /**
+     * filters
+     *
      * @var text $filters
      *
      * @ORM\Column(name="filters", type="text", nullable=false)
@@ -78,6 +107,8 @@ class IntrusionEntity extends EntityAccess
     private $filters;
 
     /**
+     * timestamp of the intrusion
+     *
      * @var \Datetime $date
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)

@@ -6,8 +6,7 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -18,7 +17,12 @@ use LogUtil;
 use SecurityUtil;
 use FormUtil;
 use ModUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * form handler controllers for the security centre module
+ */
 class AdminformController extends \Zikula_AbstractController
 {
     /**
@@ -28,11 +32,16 @@ class AdminformController extends \Zikula_AbstractController
      */
     protected function initialize()
     {
-        // Do not setup a view pfor this controller.
+        // Do not setup a view for this controller.
     }
 
     /**
-     * Function to delete an ids log entry
+     * Delete an ids log entry
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException Thrown if the object id is not numeric or if
+     * @throws NotFoundHttpException Thrown if the object cannot be found
      */
     public function deleteidsentryAction()
     {
@@ -42,7 +51,7 @@ class AdminformController extends \Zikula_AbstractController
 
         // Security check
         if (!SecurityUtil::checkPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
-            return LogUtil::registerPermissionError();
+            throw new AccessDeniedHttpException();
         }
 
         // get paramters
@@ -50,14 +59,14 @@ class AdminformController extends \Zikula_AbstractController
 
         // sanity check
         if (!is_numeric($id)) {
-            return LogUtil::registerError($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
+            throw new \InvalidArgumentException($this->__f("Error! Received a non-numeric object ID '%s'.", $id));
         }
 
         $intrusion = $this->entityManager->find('SecurityCenterModule\Entity\IntrusionEntity', $id);
 
         // check for valid object
         if (!$intrusion) {
-            return LogUtil::registerError($this->__f('Error! Invalid %s received.', "object ID [$id]"));
+            throw new NotFoundHttpException($this->__f('Error! Invalid %s received.', "object ID [$id]"));
         } else {
             // delete object
             $this->entityManager->remove($intrusion);
