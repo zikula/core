@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,18 +17,33 @@ use Zikula_Form_View;
 use SecurityUtil;
 use LogUtil;
 use DataUtil;
-use Zikula_Exception_Forbidden;
 use ZLanguage;
 use ModUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
+/**
+ * Form handler for the mailer modules modifyconfig form
+ */
 class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
 {
+    /**
+     * @var array values for this form
+     */
     private $formValues;
 
+    /**
+     * initialise the form
+     *
+     * @param \Zikula_Form_view $view view object
+     *
+     * @return bool true if succcessful
+     (
+     * @throws \AccessDeniedHttpException Thrown if the user doesn't have admin access to the module
+     */
     public function initialize(Zikula_Form_View $view)
     {
         if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            throw new Zikula_Exception_Forbidden(LogUtil::getErrorMsgPermission());
+            throw new AccessDeniedHttpException();
         }
 
         // assign the module mail agent types
@@ -61,6 +75,14 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         return true;
     }
 
+    /**
+     * Handle form commands
+     *
+     * @param \Zikula_Form_View $view view object
+     * @param array $args
+     *
+     * @return void|bool false if the form to be saved isn't valid, void otherwise
+     */
     public function handleCommand(Zikula_Form_View $view, &$args)
     {
         switch($args['commandName']) {
@@ -112,6 +134,14 @@ class ModifyConfigHandler extends \Zikula_Form_AbstractHandler
         return $view->redirect(ModUtil::url('ZikulaMailerModule', 'admin', 'modifyconfig'));
     }
 
+    /**
+     * Get the value of a form field
+     *
+     * @param string $key     the field key to query
+     * @param string $default the default value for the query
+     *
+     * @return mixed the form value (or default otherwise)
+     */
     private function getFormValue($key, $default)
     {
         return isset($this->formValues[$key]) ? $this->formValues[$key] : $default;

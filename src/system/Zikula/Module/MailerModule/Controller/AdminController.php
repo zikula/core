@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -22,6 +21,9 @@ use FormUtil;
 use Zikula\Module\MailerModule\Form\Handler\ModifyConfigHandler;
 use Zikula\Module\MailerModule\Form\Handler\TestConfigHandler;
 
+/**
+ * Administrative controllers for the mailer module
+ */
 class AdminController extends \Zikula_AbstractController
 {
     /**
@@ -37,13 +39,8 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * the main administration function
-     * This function is the default function, and is called whenever the
-     * module is initiated without defining arguments.  As such it can
-     * be used for a number of things, but most commonly it either just
-     * shows the module menu and returns or calls whatever the module
-     * designer feels should be the default function (often this is the
-     * view() function)
-     * @return string HTML string
+     *
+     * @return void
      */
     public function indexAction()
     {
@@ -54,7 +51,8 @@ class AdminController extends \Zikula_AbstractController
     /**
      * This is a standard function to modify the configuration parameters of the
      * module
-     * @return string HTML string
+     *
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
     public function modifyconfigAction()
     {
@@ -68,7 +66,8 @@ class AdminController extends \Zikula_AbstractController
 
     /**
      * This function displays a form to sent a test mail
-     * @return string HTML string
+     *
+     * @return mixed False on errors, true on redirects, and otherwise it returns the HTML output for the page.
      */
     public function testconfigAction()
     {
