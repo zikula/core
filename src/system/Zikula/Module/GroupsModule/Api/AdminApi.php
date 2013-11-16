@@ -23,6 +23,7 @@ use ModUtil;
 use UserUtil;
 use System;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Adminstrative API functions for the groups module
@@ -36,9 +37,9 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $name name of the group
      *                       }
      *
-     * @return int|bool group ID on success, false on failure.
+     * @return int the id of the new group
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if the name parameter is provided
      * @throws AccessDeniedHttpException Thrown if the current user does not have add access.
      */
     public function create($args)
@@ -92,10 +93,12 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @todo call permissions API to remove group permissions associated with the group
      *
-     * @return boolean true on success, false on failure.
+     * @return boolean true if successful
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args.
+     * @throws \InvalidArgumentException Thrown if the gid parameter isn't provided
      * @throws AccessDeniedHttpException Thrown if the current user does not have delete access for the group.
+     * @throws NotFoundHttpException Thrown if the group cannot be found
+     * @throws \RuntimeException Thrown if the requested group is either the default users group or primary admins group
      */
     public function delete($args)
     {
@@ -171,9 +174,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $name the new name of the item
      *                      }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if either the gid or name parameters are not provided
+     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
      */
     public function update($args)
@@ -232,9 +236,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                    }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
      */
     public function adduser($args)
@@ -279,9 +284,10 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type int $uid the ID of the user
      *                    }
      *
-     * @return bool true if successful, false otherwise.
+     * @return bool true if successful
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if either gid or uid are not set or not numeric
+     * @throws NotFoundHttpException Thrown if the group cannot be found
      * @throws AccessDeniedHttpException Thrown if the current user does not have edit access to the group.
      */
     public function removeuser($args)
@@ -330,7 +336,7 @@ class AdminApi extends \Zikula_AbstractApi
      *
      * @return int|bool item, or false on failure.
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws \InvalidArgumentException Thrown if the name parameter isn't provided
      */
     public function getgidbyname($args)
     {
@@ -373,7 +379,9 @@ class AdminApi extends \Zikula_AbstractApi
     /**
      * Get applications.
      *
-     * @return array|bool array of applications, false on failure.
+     * @return array array of group applications
+     *
+     * @throws NotFoundHttpException Thrown if no group applications are found
      */
     public function getapplications()
     {
@@ -415,6 +423,7 @@ class AdminApi extends \Zikula_AbstractApi
      * @return array
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
+     * @throws NotFoundHttpException Thrown if the group application cannot be found
      */
     public function getapplicationinfo($args)
     {
@@ -440,7 +449,7 @@ class AdminApi extends \Zikula_AbstractApi
      *      @type string $action action to take ('accept'|'reject')
      *                      }
      *
-     * @return boolean
+     * @return boolean true if the pending action was successfully processed
      *
      * @throws \InvalidArgumentException Thrown if invalid parameters are received in $args
      */
