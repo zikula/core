@@ -362,7 +362,11 @@ Zikula.Menutree.Tree = Class.create(Zikula.TreeSortable,{
     },
     buildForm: function() {
         if(!this.formDialog) {
-            this.formDialog = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm.bind(this),{title: $('menutree_form_container').title});
+            var options = {
+                title: $('menutree_form_container').title,
+                height: 400
+            };
+            this.formDialog = new Zikula.UI.FormDialog($('menutree_form_container'),this.submitForm.bind(this),options);
             this.form = this.formDialog.window.container.down('form');
 //            this.form = this.formDialog.form;
             if($('link_lang')){
