@@ -10,16 +10,18 @@
 <input type="hidden" id="returntoblock" name="returntoblock" value="{$blockinfo.bid}" />
 {/if}
 
-<ul id="menutree_tabs" class="z-tabs">
-    <li class="tab"><a href="#menutree_tabmenu" id="menutree_tabmenu_control" class="menutree_tabcontrol">{gt text="Block content"}</a></li>
+<div class='pull-right clearfix'><i class='fa fa-ambulance fa-lg text-danger'></i> {helplink filename='Menutree/Adminhelp.txt' popup=1 __title='Help'|gt:$zikula_view}</div>
+
+<ul id="menutree_tabs" class="nav nav-tabs">
+    <li class="active"><a href="#menutree_tabmenu" id="menutree_tabmenu_control" data-toggle="tab">{gt text="Block content"}</a></li>
     {if $menutree_anysettingsaccess}
-        <li class="tab"><a href="#menutree_tabsettings" id="menutree_tabsettings_control" class="menutree_tabcontrol">{gt text="Block settings"}</a></li>
+        <li><a href="#menutree_tabsettings" id="menutree_tabsettings_control" data-toggle="tab">{gt text="Block settings"}</a></li>
     {/if}
-    <li class="tab">{helplink filename='Menutree/Adminhelp.txt' popup=1 __title='Help'|gt:$zikula_view}</li>
 </ul>
 
+<div class="tab-content">
 {if $menutree_anysettingsaccess}
-    <div id="menutree_tabsettings" class="menutree_tabcontent">
+    <div id="menutree_tabsettings" class="tab-pane">
         {if $menutree_adminaccess}
             <fieldset>
                 <legend>{gt text="Permissions"}</legend>
@@ -174,43 +176,41 @@
     </div>
 {/if}
 
-<div id="menutree_tabmenu" class="menutree_tabcontent">
-    <ul class="navbar navbar-default navbar-modulelinks">
-        <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
-        <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
-        <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
-        {if $multilingual}
-            <li>
-                {gt text="Change active language:"}
-                {foreach from=$languages key=code item=name name=langloop}
-                    <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
-                {/foreach}
-            </li>
-        {/if}
-    </ul>
+    <div id="menutree_tabmenu" class="tab-pane active">
+        <ul class="navbar navbar-default navbar-modulelinks">
+            <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
+            <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
+            <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
+            {if $multilingual}
+                <li>
+                    {gt text="Change active language:"}
+                    {foreach from=$languages key=code item=name name=langloop}
+                        <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
+                    {/foreach}
+                </li>
+            {/if}
+        </ul>
 
-    {if !empty($menutree_menus)}
-        <div id="menuTreeImportOptions">
-            <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
-            <select id="menutree_menus" name="menutree_menus">
-                <option value="null">{gt text="Choose menu"}</option>
-                {html_options options=$menutree_menus}
-            </select>
+        {if !empty($menutree_menus)}
+            <div id="menuTreeImportOptions">
+                <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
+                <select id="menutree_menus" name="menutree_menus">
+                    <option value="null">{gt text="Choose menu"}</option>
+                    {html_options options=$menutree_menus}
+                </select>
+            </div>
+        {/if}
+        <div id="menuTreeContainer">
+            {$menutree_content}
         </div>
-    {/if}
-    <div id="menuTreeContainer">
-        {$menutree_content}
     </div>
-</div>
+</div><!-- /.tab-content -->
 
 <script type="text/javascript">
-    var tabs = new Zikula.UI.Tabs('menutree_tabs', {linkSelector:'li a.menutree_tabcontrol'});
-
     //add this url
     {{if $menutree_newurl}}
     Event.observe(window, 'load', function() {
         var data = {link_href: '{{$menutree_newurl|safetext}}'};
-        $('menutree_tabs').scrollTo();
         Zikula.Menutree.Tree.inst.newNode(data);
     });
     {{/if}}
