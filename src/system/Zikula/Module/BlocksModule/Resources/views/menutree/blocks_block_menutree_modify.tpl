@@ -178,9 +178,9 @@
 
     <div id="menutree_tabmenu" class="tab-pane active">
         <ul class="navbar navbar-default navbar-modulelinks">
-            <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
-            <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
-            <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
+            <li><a href="#" id="menutree_newnode"><i class='fa fa-plus'></i> {gt text="Add menu parent item"}</a></li>
+            <li><a href="#" id="menutree_expandall"><i class='fa fa-expand'></i> {gt text="Expand all"}</a></li>
+            <li><a href="#" id="menutree_collapseall"><i class='fa fa-compress'></i> {gt text="Collapse all"}</a></li>
             {if $multilingual}
                 <li>
                     {gt text="Change active language:"}
@@ -201,8 +201,10 @@
             </div>
         {/if}
         <div id="menuTreeContainer">
+            <div class="alert alert-info">{gt text='click on an item to edit, delete, add child, etc.'}</div>
             {$menutree_content}
         </div>
+        <div class="alert alert-warning">{gt text='Be sure to save your changes by clicking the "save" button below.'}</div>
     </div>
 </div><!-- /.tab-content -->
 
@@ -217,71 +219,61 @@
 </script>
 
 {capture assign="itemForm"}
+    {* ATTENTION: Zikula.UI.FormDialog does not support bootstrap form styling. There is no reason to refactor until Zikula.UI is replaced *}
     <div id="menutree_form_container" title="{gt text='Edit menu item'}" style="display: none;">
-        <p id="forminfo" class="alert alert-warning">{gt text="Field Name is required."}</p>
-        <p id="requiredInfo" class="alert alert-danger" style="display: none;">{gt text="Please fill required fields"}</p>
-        <form action="#" id="nodeBuilder" class="form-horizontal" role="form">
+        <p id="forminfo" class="z-warningmsg">{gt text="Field Name is required."}</p>
+        <p id="requiredInfo" class="z-errormsg" style="display: none;">{gt text="Please fill required fields"}</p>
+        <form action="#" id="nodeBuilder" class="z-form" role="form">
             <div>
                 <fieldset>
                     <legend>{gt text="Menu item data"}</legend>
                     {if $multilingual}
-                    <div class="form-group">
-                        <div class="col-lg-9">
-                            {html_options name="link_lang" id="link_lang" options=$languages}
-                        </div>
+                    <div class="z-formrow">
+                        <label for="link_lang">{gt text="Language"}</label>
+                        {html_options name="link_lang" id="link_lang" options=$languages}
                     </div>
                     {/if}
                     <input type="hidden" name="clang" id="clang" />
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="link_name">{gt text="Name"}</label>
-                        <div class="col-lg-9">
-                            <input type="text" name="link_name" id="link_name" class="required" />
-                        </div>
+                    <div class="z-formrow">
+                        <label for="link_name">{gt text="Name"}</label>
+                        <input type="text" name="link_name" id="link_name" class="required" />
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="link_title">{gt text="Title"}</label>
-                        <div class="col-lg-9">
-                            <input type="text" name="link_title" id="link_title" />
-                        </div>
+                    <div class="z-formrow">
+                        <label for="link_title">{gt text="Title"}</label>
+                        <input type="text" name="link_title" id="link_title" />
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="link_href">{gt text="URL"}</label>
-                        <div class="col-lg-9">
-                            <input type="text" name="link_href" id="link_href" />
-                            {if $multilingual}
-                                <div class="sub help-block">
-                                    <input type="checkbox" class="checkbox" name="global_link_href" id="global_link_href" />
-                                    <label for="global_link_href">{gt text="Use one for all languages"}</label>
-                                </div>
-                            {/if}
-                        </div>
+                    <div class="z-formrow">
+                        <label for="link_href">{gt text="URL"}</label>
+                        <input type="text" name="link_href" id="link_href" />
+                        {if $multilingual}
+                            <div class="sub help-block">
+                                <input type="checkbox" class="checkbox" name="global_link_href" id="global_link_href" />
+                                <label for="global_link_href">{gt text="Use one for all languages"}</label>
+                            </div>
+                        {/if}
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="link_className">{gt text="CSS class"}</label>
-                        <div class="col-lg-9">
-                            {if $menutree_linkclass}
-                                <select name="link_className" id="link_className">
-                                    <option value="">{gt text="Choose class"}</option>
-                                    {foreach from=$menutree_linkclasses key=id item=class}
-                                        <option value="{$class.name}">{$class.title}</option>
-                                    {/foreach}
-                                </select>
-                            {else}
-                                <input type="text" name="link_className" id="link_className" />
-                            {/if}
-                            {if $multilingual}
-                                <div class="sub help-block">
-                                    <input type="checkbox" class="checkbox" name="global_link_className" id="global_link_className" />
-                                    <label for="global_link_className">{gt text="Use one for all languages"}</label>
-                                </div>
-                            {/if}
-                        </div>
+                    <div class="z-formrow">
+                        <label for="link_className">{gt text="CSS class"}</label>
+                        {if $menutree_linkclass}
+                            <select name="link_className" id="link_className">
+                                <option value="">{gt text="Choose class"}</option>
+                                {foreach from=$menutree_linkclasses key=id item=class}
+                                    <option value="{$class.name}">{$class.title}</option>
+                                {/foreach}
+                            </select>
+                        {else}
+                            <input type="text" name="link_className" id="link_className" />
+                        {/if}
+                        {if $multilingual}
+                            <div class="sub help-block">
+                                <input type="checkbox" class="checkbox" name="global_link_className" id="global_link_className" />
+                                <label for="global_link_className">{gt text="Use one for all languages"}</label>
+                            </div>
+                        {/if}
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="link_state">{gt text="Active?"}</label>
-                        <div class="col-lg-9">
-                            <input type="checkbox" class="checkbox" name="link_state" id="link_state" />
-                        </div>
+                    <div class="z-formrow">
+                        <label for="link_state">{gt text="Active?"}</label>
+                        <input type="checkbox" class="checkbox" name="link_state" id="link_state" />
                     </div>
                 </fieldset>
             </div>
