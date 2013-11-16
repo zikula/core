@@ -173,32 +173,32 @@
 {/if}
 
 <div id="menutree_tabmenu" class="menutree_tabcontent">
-        <ul class="navbar navbar-default navbar-modulelinks">
-            <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
-            <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
-            <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
-            {if $multilingual}
-            <li>
-                {gt text="Change active language:"}
-                {foreach from=$languages key=code item=name name=langloop}
-                <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
-                {/foreach}
-            </li>
-            {/if}
-        </ul>
-
-        {if !empty($menutree_menus)}
-        <div id="menuTreeImportOptions">
-            <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
-            <select id="menutree_menus" name="menutree_menus">
-                <option value="null">{gt text="Choose menu"}</option>
-                {html_options options=$menutree_menus}
-            </select>
-        </div>
+    <ul class="navbar navbar-default navbar-modulelinks">
+        <li><a href="#" id="menutree_newnode">{gt text="Add"}</a></li>
+        <li><a href="#" id="menutree_expandall">{gt text="Expand all"}</a></li>
+        <li><a href="#" id="menutree_collapseall">{gt text="Collapse all"}</a></li>
+        {if $multilingual}
+        <li>
+            {gt text="Change active language:"}
+            {foreach from=$languages key=code item=name name=langloop}
+            <a href="#" lang="{$code}" class="menutree_langcontrols{if $code == $defaultanguage} activelang{/if}">{$name}</a> {if !$smarty.foreach.langloop.last} | {/if}
+            {/foreach}
+        </li>
         {/if}
-        <div id="menuTreeContainer">
-            {$menutree_content}
-        </div>
+    </ul>
+
+    {if !empty($menutree_menus)}
+    <div id="menuTreeImportOptions">
+        <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
+        <select id="menutree_menus" name="menutree_menus">
+            <option value="null">{gt text="Choose menu"}</option>
+            {html_options options=$menutree_menus}
+        </select>
+    </div>
+    {/if}
+    <div id="menuTreeContainer">
+        {$menutree_content}
+    </div>
 </div>
 
 <script type="text/javascript">
