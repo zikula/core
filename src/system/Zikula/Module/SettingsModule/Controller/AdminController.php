@@ -270,7 +270,7 @@ class AdminController extends \Zikula_AbstractController
      * @todo Remove this hacky code in 1.4.0.
      * @return PlainResponse
      */
-    public function debugToolbarAction()
+    public function debugToolbar()
     {
         if (!System::isDevelopmentMode()) {
             return $this->throwForbidden();

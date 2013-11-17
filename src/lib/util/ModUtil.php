@@ -1092,26 +1092,10 @@ class ModUtil
                     if ($args) {
                         $newType = false;
                     }
-                    if (!$api && $newType) {
+                    if (!$api && $newType && !$modfunc[0] instanceof \Zikula_AbstractBase) {
                         // resolve request args
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
-                        try {
-                            $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
-                        } catch(\RuntimeException $e) {
-                            if ($modfunc[0] instanceof \Zikula_AbstractBase) {
-                                $r = new \ReflectionMethod($modfunc[0], $modfunc[1]);
-                                $parameters = $r->getParameters();
-                                if (count($parameters) == 1) {
-                                    $firstParameter = $parameters[0];
-                                    if ($firstParameter->getName() == 'args') {
-                                        $newType = false;
-                                    }
-                                }
-                            }
-                            if ($newType !== false) {
-                                throw $e;
-                            }
-                        }
+                        $methodArgs = $resolver->getArguments($request = $sm->get('request'), $modfunc);
                     }
 
                     if ($modfunc[0] instanceof Zikula_AbstractController) {
@@ -1124,7 +1108,7 @@ class ModUtil
                         $modfunc[0]->preDispatch();
                     }
 
-                    if (!$api && $newType && isset($methodArgs)) {
+                    if (!$api && $newType && !$modfunc[0] instanceof \Zikula_AbstractBase && isset($methodArgs)) {
                         $postExecuteEvent->setData(call_user_func_array($modfunc, $methodArgs));
                     } else {
                         $postExecuteEvent->setData(call_user_func($modfunc, $args));
