@@ -68,7 +68,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $vars = BlockUtil::varsFromContent($blockinfo['content']);
 
         // stylesheet
-        if (file_exists($vars['menutree_stylesheet'])) {
+        if (isset($vars['menutree_stylesheet']) && file_exists($vars['menutree_stylesheet'])) {
             PageUtil::addVar('stylesheet', $vars['menutree_stylesheet']);
         }
 
@@ -100,7 +100,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         $lang = ZLanguage::getLanguageCode();
         $deflang = 'en';
 
-        if (!in_array($lang, array_keys(current($vars['menutree_content'])))) {
+        if ((count($vars['menutree_content']) > 0) && !in_array($lang, array_keys(current($vars['menutree_content'])))) {
             $lang = $deflang;
         }
 
