@@ -57,6 +57,7 @@ function smarty_function_menutree($params, $smarty)
     $treeClassPrefix    = isset($params['classprefix']) ? $params['classprefix'] : '';
     $extended           = isset($params['ext'])        ? $params['ext'] : false;
     $extendedOpt        = isset($params['extopt'])     ? $params['extopt'] : '';
+    $bootstrap          = !empty($params['bootstrap']) ? true : false;
     if ($extended) {
         $ext_tmp = explode(',', $extendedOpt);
         $ext = array();
@@ -67,9 +68,9 @@ function smarty_function_menutree($params, $smarty)
         $ext['childless']   = !empty($ext_tmp[4]) ? $ext_tmp[4] : 'childless';
         $ext['level']       = !empty($ext_tmp[5]) ? $ext_tmp[5] : 'level';
         $depth = 1;
-        $html = _htmlListExt($treeArray,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId,$treeClass);
+        $html = _htmlListExt($treeArray,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId,$treeClass,$bootstrap);
     } else {
-        $html = _htmlList($treeArray,$treeNodePrefix,$treeClassPrefix,$treeId,$treeClass);
+        $html = _htmlList($treeArray,$treeNodePrefix,$treeClassPrefix,$treeId,$treeClass,$bootstrap);
     }
 
     if (isset($params['assign'])) {
@@ -80,7 +81,7 @@ function smarty_function_menutree($params, $smarty)
 
 }
 
-function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClass = '')
+function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClass = '',$bootstrap=false)
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
@@ -107,36 +108,52 @@ function _htmlList($tree,$treeNodePrefix,$treeClassPrefix,$treeId = '',$treeClas
 
     return $html;
 }
-function _htmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId = '',$treeClass = '')
+function _htmlListExt($tree,$treeNodePrefix,$treeClassPrefix,$ext,$depth,$treeId = '',$treeClass = '',$bootstrap=false)
 {
     $html = '<ul';
     $html .= !empty($treeId) ? ' id="'.$treeId.'"' : '';
-    $html .= !empty($treeClass) ? ' class="'.$treeClass.' '.$ext['level'].$depth.'"' : ' class="'.$ext['level'].$depth.'"';
+    if ($bootstrap) {
+        $ulClass = (($depth - 1) > 0) ? "dropdown-menu" : '';
+        if (empty($ulClass)) {
+            $ulClass = !empty($treeClass) ? $treeClass : '';
+        }
+        $html .= !empty($ulClass) ? " class='$ulClass'" : '';
+    } else {
+        $html .= !empty($treeClass) ? ' class="'.$treeClass.' '.$ext['level'].$depth.'"' : ' class="'.$ext['level'].$depth.'"';
+    }
     $html .= '>';
 
     $size = count($tree);
     $i = 1;
     foreach ($tree as $tab) {
-        $class = array();
-        $class[] = $size == 1 ? $ext['single'] : '';
-        $class[] = ($i == 1 && $size > 1) ? $ext['first'] : '';
-        $class[] = ($i == $size && $size > 1) ? $ext['last'] : '';
-        $class[] = !empty($tab['nodes']) ? $ext['parent'] : $ext['childless'];
-        $class[] = !empty($treeClassPrefix) ? $treeClassPrefix.$tab['item']['id'] : '';
-        $class = trim(implode(' ', $class));
+        $classes = array();
+        if (!$bootstrap) {
+            $classes[] = $size == 1 ? $ext['single'] : '';
+            $classes[] = ($i == 1 && $size > 1) ? $ext['first'] : '';
+            $classes[] = ($i == $size && $size > 1) ? $ext['last'] : '';
+            $classes[] = !empty($treeClassPrefix) ? $treeClassPrefix.$tab['item']['id'] : '';
+            $classes[] = !empty($tab['nodes']) ? $ext['parent'] : $ext['childless'];
+        } else {
+            $classes[] = !empty($tab['nodes']) ? $ext['parent'] : '';
+        }
+        $classList = trim(implode(' ', $classes));
         $i++;
 
         $html .= '<li';
         $html .= !empty($treeNodePrefix) ? ' id="'.$treeNodePrefix.$tab['item']['id'].'"' : '';
-        $html .= ' class="'.$class.'">';
+        $html .= !empty($classList) ? ' class="'.$classList.'">' : '>';
         $attr  = !empty($tab['item']['title']) ? ' title="'.$tab['item']['title'].'"' : '';
         $attr .= !empty($tab['item']['class']) ? ' class="'.$tab['item']['class'].'"' : '';
         if (!empty($tab['item']['href'])) {
-            $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
+            if ($bootstrap && in_array('dropdown', $classes)) {
+                $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$tab['item']['name'].' <b class="caret"></b></a>';
+            } else {
+                $html .= '<a href="'.DataUtil::formatForDisplay($tab['item']['href']).'"'.$attr.'>'.$tab['item']['name'].'</a>';
+            }
         } else {
             $html .= '<span'.$attr.'>'.$tab['item']['name'].'</span>';
         }
-        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1) : '';
+        $html .= !empty($tab['nodes']) ? _htmlListExt($tab['nodes'],$treeNodePrefix,$treeClassPrefix,$ext,$depth+1,'','',$bootstrap) : '';
         $html .= '</li>';
 
     }
