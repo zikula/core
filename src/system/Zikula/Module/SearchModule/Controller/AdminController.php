@@ -20,6 +20,7 @@ use SecurityUtil;
 use FormUtil;
 use EventUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrative controllers for the search module

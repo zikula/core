@@ -29,6 +29,7 @@ use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
 use FileUtil;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrative controllers for the security centre module

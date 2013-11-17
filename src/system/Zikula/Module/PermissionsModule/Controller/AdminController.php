@@ -22,6 +22,7 @@ use UserUtil;
 use DataUtil;
 use System;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Permissions_Controller_Admin class.

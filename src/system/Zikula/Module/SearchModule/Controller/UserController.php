@@ -23,6 +23,7 @@ use System;
 use DataUtil;
 use ZLanguage;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User controllers for the search module
