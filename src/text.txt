@@ -1,0 +1,7 @@
+{% stylesheets '/core13/src/web/font-awesome/css/font-awesome.min.css'
+'/core13/src/web/bootstrap/css/bootstrap.min.css'
+'/core13/src/style/core.css'
+'/core13/src/style/legacy.css'
+ %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}

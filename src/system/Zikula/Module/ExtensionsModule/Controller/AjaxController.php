@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\ExtensionsModule\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_Exception_Fatal;
 use HookUtil;
 use ModUtil;
@@ -52,7 +53,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (!ModUtil::available($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // get providerarea from POST
         $providerArea = $this->request->request->get('providerarea','');
@@ -68,7 +71,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (!ModUtil::available($provider)) {
             throw new Zikula_Exception_Fatal($this->__f('Provider module "%s" is not available.', $provider));
         }
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission($provider.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
 
 
@@ -120,7 +125,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         if (!ModUtil::available($subscriber)) {
             throw new Zikula_Exception_Fatal($this->__f('Subscriber module "%s" is not available.', $subscriber));
         }
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         // get providers' areas from POST
         $providerarea = $this->request->request->get('providerarea','');

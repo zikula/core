@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\SettingsModule\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Zikula\Core\Response\PlainResponse;
@@ -253,7 +254,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function phpinfoAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         ob_start();
         phpinfo();

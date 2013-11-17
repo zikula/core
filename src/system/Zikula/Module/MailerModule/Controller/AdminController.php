@@ -15,6 +15,7 @@
 namespace Zikula\Module\MailerModule\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula_View;
 use ModUtil;
 use SecurityUtil;
@@ -59,7 +60,9 @@ class AdminController extends \Zikula_AbstractController
     public function modifyconfigAction()
     {
         // security check
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 
@@ -72,7 +75,9 @@ class AdminController extends \Zikula_AbstractController
      */
     public function testconfigAction()
     {
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $form = FormUtil::newForm('ZikulaMailerModule', $this);
 

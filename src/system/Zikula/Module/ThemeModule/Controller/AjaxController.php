@@ -14,6 +14,7 @@
 
 namespace Zikula\Module\ThemeModule\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zikula\Core\Event\GenericEvent;
 
 class AjaxController extends \Zikula_Controller_AbstractAjax
@@ -21,7 +22,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function dispatchAction()
     {
         $event = $this->getDispatcher()->dispatch('theme.ajax_request', new GenericEvent());
-        $this->throwNotFoundUnless($event->isPropagationStopped(), $this->__('No event handlers responded.'));
+        if (!$event->isPropagationStopped()) {
+            throw new NotFoundHttpException($this->__('No event handlers responded.'));
+        }
 
         return $event->getData();
     }
