@@ -56,7 +56,7 @@
         {if $multilingual && $menutree_titlesaccess}
             <fieldset>
                 <legend>{gt text="Block titles"}</legend>
-                <p class="help-block alert alert-info">{gt text="You can specify a diferent block title for each language. If blank, the default block title will be displayed."}</p>
+                <p class="help-block alert alert-info">{gt text="You can specify a different a block title for each language. If left blank, the default block title will be displayed."}</p>
                 {foreach from=$languages key=code item=name}
                 <div class="form-group">
                     <label class="col-lg-3 control-label" for="menutree_titles_{$code}">{$name}</label>
@@ -193,7 +193,7 @@
 
         {if !empty($menutree_menus)}
             <div id="menuTreeImportOptions">
-                <p>{gt text="You can import one of existing menus. To this purpose choose the appropriate menu from the drop-down list. If the chosen menu had marked appropriate option - links to all modules will be imported."}</p>
+                <p>{gt text="You can import one of the existing menus. To do so, choose the appropriate menu from the drop-down list and click 'save'. If the selected menu had properly formatted links, they will be imported."}</p>
                 <select id="menutree_menus" name="menutree_menus">
                     <option value="null">{gt text="Choose menu"}</option>
                     {html_options options=$menutree_menus}
