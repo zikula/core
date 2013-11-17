@@ -281,7 +281,7 @@ class UserApi extends \Zikula_AbstractApi
 
         $obj['count'] = isset($obj['count']) ? $obj['count'] + 1 : 1;
         $obj['date'] = new \DateTime('now', new \DateTimeZone('UTC'));
-        $obj['search'] = $searchterms;
+        $obj['search'] = $args['q'];
 
         $this->entityManager->flush();
 
