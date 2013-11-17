@@ -114,12 +114,18 @@ function smarty_function_helplink($params, Zikula_View $view)
     $modname = $view->getModuleName();
     $linkID = (isset($params['linkid'])) ? $params['linkid'] : DataUtil::formatForDisplay(strtolower('manuallink_' . $modname . '_' . hash('md5', serialize($params))));
 
-    $base = ModUtil::getModuleBaseDir($modname) . "/$modname/docs";
-    $paths = array(
-            "$base/$userLang/$fileName",
-            "$base/$systemLang/$fileName",
-            "$base/en/$fileName",
-    );
+    $paths = array();
+    $module = ModUtil::getModule($modname);
+    if ($module) {
+        $base = $module->getPath();
+        $paths[] = "$base/Resources/docs/$userLang/$fileName";
+        $paths[] = "$base/Resources/docs/$systemLang/$fileName";
+        $paths[] = "$base/Resources/docs/en/$fileName";
+    }
+    $base = ModUtil::getModuleBaseDir($modname) . "/$modname/docs";;
+    $paths[] = "$base/$userLang/$fileName";
+    $paths[] = "$base/docs/$systemLang/$fileName";
+    $paths[] = "$base/en/$fileName";
 
     $found = false;
     foreach ($paths as $path) {

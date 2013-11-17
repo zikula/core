@@ -173,7 +173,7 @@ function menutree_stylehelper_reset(event)
     hideeffect('menutree_stylesheet_helper');
 }
 
-function menutree_toogle(event)
+function menutree_toggle(event)
 {
     event.stop();
     var element = event.element().previous();

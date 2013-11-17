@@ -27,3 +27,10 @@ a.activelang {
     background-position: left center;
     background-repeat: no-repeat;
 }
+
+div.tab-content {
+    padding: 1em;
+    border: 1px solid #DCDCDC;
+    border-top: none;
+    margin: 0 0 1em 0;
+}

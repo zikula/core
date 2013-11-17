@@ -274,6 +274,12 @@ class UserApi extends \Zikula_AbstractApi
             return $url;
         }
 
+        // filter out links that begin with `ext` (Menutree)
+        // send original string back for later processing
+        if (strpos($url,'{ext:') === 0) {
+            return $url;
+        }
+
         $url = explode(':', $matches[1]);
 
         $modname = $url[0];
