@@ -15,6 +15,7 @@
 namespace Zikula\Module\BlocksModule\Controller;
 
 use SecurityUtil;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Zikula\Module\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula_Response_Ajax;
 use Zikula_Exception_Fatal;
@@ -38,7 +39,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function changeblockorderAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $blockorder = $this->request->request->get('blockorder');
         $position = $this->request->request->get('position');
@@ -77,7 +80,9 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     public function toggleblockAction()
     {
         $this->checkAjaxToken();
-        $this->throwForbiddenUnless(SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN));
+        if (!SecurityUtil::checkPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $bid = $this->request->request->get('bid', -1);
 

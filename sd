@@ -1,0 +1,1 @@
+curl http://src.satoshidice.com/longpoll.php?tx=$1
