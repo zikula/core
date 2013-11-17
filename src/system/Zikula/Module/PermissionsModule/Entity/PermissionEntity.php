@@ -1,13 +1,12 @@
 <?php
 /**
- * Copyright Zikula Foundation 2009 - Zikula Application Framework
+ * Copyright Zikula Foundation 2013 - Zikula Application Framework
  *
  * This work is contributed to the Zikula Foundation under one or more
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
- *
+  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
  */
@@ -28,6 +27,8 @@ use Doctrine\ORM\Mapping as ORM;
 class PermissionEntity extends EntityAccess
 {
     /**
+     * permission rule id
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -35,36 +36,50 @@ class PermissionEntity extends EntityAccess
     private $pid;
 
     /**
+     * group id for the rule
+     *
      * @ORM\Column(type="integer")
      */
     private $gid;
 
     /**
+     * the place of the rule in the sequence
+     *
      * @ORM\Column(type="integer")
      */
     private $sequence;
 
     /**
+     * the realm assoiciated with this rule
+     *
      * @ORM\Column(type="integer")
      */
     private $realm;
 
     /**
+     * the component part of the rule
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $component;
 
     /**
+     * the instance part of the rule
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $instance;
 
     /**
+     * the access level of the rule
+     *
      * @ORM\Column(type="integer")
      */
     private $level;
 
     /**
+     * the bond of the rule
+     *
      * @ORM\Column(type="integer")
      */
     private $bond;

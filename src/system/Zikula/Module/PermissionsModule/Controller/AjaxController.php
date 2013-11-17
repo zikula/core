@@ -6,7 +6,6 @@
  * Contributor Agreements and licensed to You under the following license:
  *
  * @license GNU/LGPLv3 (or at your option, any later version).
- * @package Zikula
  *
  * Please see the NOTICE file distributed with this source code for further
  * information regarding copyright and licensing.
@@ -18,10 +17,12 @@ use SecurityUtil;
 use ModUtil;
 use Zikula_Response_Ajax;
 use DataUtil;
-use AjaxUtil;
-use Zikula_Exception_Fatal;
 use UserUtil;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
+/**
+ * Ajax controllers for the search module
+ */
 class AjaxController extends \Zikula_Controller_AbstractAjax
 {
     /**
@@ -33,7 +34,8 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
      * @param component the permission component
      * @param instance the permission instance
      * @param level the permission level
-     * @return mixed updated permission as array or Ajax error
+     *
+     * @return \Zikula_Response_Ajax Ajax repsonse with updated permissions
      */
     public function updatepermissionAction()
     {
@@ -91,8 +93,11 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     }
 
     /**
+     * Change the order of a permission rule
+     *
      * @param permorder array of sorted permissions (value = permission id)
-     * @return mixed true or Ajax error
+     *
+     * @return \Zikula_Response_Ajax ajax response containing true
      */
     public function changeorderAction()
     {
@@ -114,7 +119,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Create a blank permission and return it
      *
-     * @return mixed array with new permission or Ajax error
+     * @return \Zikula_Response_Ajax array with new permission
      */
     public function createpermissionAction()
     {
@@ -133,7 +138,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
 
         $newperm = ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'create', $dummyperm);
         if ($newperm == false) {
-            AjaxUtil::error($this->__('Error! Could not create new permission rule.'));
+            throw new FatalErrorException($this->__('Error! Could not create new permission rule.'));
         }
 
         $accesslevels = SecurityUtil::accesslevelnames();
@@ -149,7 +154,10 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
     /**
      * Delete a permission
      *
-     * @return mixed the id of the permission that has been deleted or Ajax error
+     * @return \Zikula_Response_Ajax Ajax response containg the id of the permission that has been deleted
+     *
+     * @thrown FatalErrorException Thrown if the requested permission rule is the default admin rule or if
+     *                                    if the permission rule couldn't be deleted
      */
     public function deletepermissionAction()
     {
@@ -161,7 +169,7 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
         // check if this is the overall admin permssion and return if this shall be deleted
         $perm = $this->entityManager->find('Zikula\Module\PermissionsModule\Entity\PermissionEntity', $pid);
         if ($perm['pid'] == 1 && $perm['level'] == ACCESS_ADMIN && $perm['component'] == '.*' && $perm['instance'] == '.*') {
-            throw new Zikula_Exception_Fatal($this->__('Notice: You cannot delete the main administration permission rule.'));
+            throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
 
         if (ModUtil::apiFunc('ZikulaPermissionsModule', 'admin', 'delete', array('pid' => $pid)) == true) {
@@ -173,13 +181,13 @@ class AjaxController extends \Zikula_Controller_AbstractAjax
             return new Zikula_Response_Ajax(array('pid' => $pid));
         }
 
-        throw new Zikula_Exception_Fatal($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
+        throw new FatalErrorException($this->__f('Error! Could not delete permission rule with ID %s.', $pid));
     }
 
     /**
      * Test a permission rule for a given username
      *
-     * @return string with test result for display
+     * @return \Zikula_Response_Ajax Ajax response containing string with test result for display
      */
     public function testpermissionAction()
     {
